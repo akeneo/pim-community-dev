@@ -42,12 +42,12 @@ class ExtendManager
      */
     protected $lazyEm;
 
-    public function __construct(ServiceLink $lazyEm, ConfigProvider $configProvider, $backend, $entityCacheDir)
+    public function __construct(ServiceLink $lazyEm, ConfigProvider $configProvider, Generator $generator)
     {
         $this->lazyEm         = $lazyEm;
         $this->configProvider = $configProvider;
+        $this->generator      = $generator;
         $this->proxyFactory   = new ProxyObjectFactory($this);
-        $this->generator      = new Generator($configProvider, $backend, $entityCacheDir);
         $this->extendFactory  = new ExtendFactory($this);
     }
 

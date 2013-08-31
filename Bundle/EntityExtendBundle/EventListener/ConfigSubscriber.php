@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\EventListener;
 
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
@@ -92,6 +93,23 @@ class ConfigSubscriber implements EventSubscriberInterface
 
                 $event->getConfigManager()->persist($entityConfig);
             }
+        }
+
+        if ($scope == 'datagrid'
+            && $event->getConfig()->getId() instanceof FieldConfigIdInterface
+            && !in_array($event->getConfig()->getId()->getFieldType(), array('text'))
+            && isset($change['is_visible'])
+
+        ) {
+            /** @var ConfigProvider $extendConfigProvider */
+            $extendConfigProvider = $event->getConfigManager()->getProvider('extend');
+
+            $fieldName = $event->getConfig()->getId()->getFieldName();
+
+            $extendConfig = $extendConfigProvider->getConfig($className, $fieldName);
+            $extendConfig->set('is_indexable', $event->getConfig()->get('is_visible'));
+
+            $event->getConfigManager()->persist($extendConfig);
         }
     }
 }

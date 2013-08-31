@@ -17,6 +17,9 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class Generator
 {
+    const ENTITY = 'Extend\\Entity\\';
+    const PROXY  = 'Extend\\Proxy\\';
+
     /**
      * @var string
      */
@@ -44,7 +47,7 @@ class Generator
      */
     public function __construct(ConfigProvider $configProvider, $backend, $entityCacheDir)
     {
-        $this->backend        = $backend;
+        $this->backend        = $backend . '\\';
         $this->entityCacheDir = $entityCacheDir;
         $this->configProvider = $configProvider;
     }
@@ -58,48 +61,63 @@ class Generator
     {
         $extendClass = $this->generateExtendClassName($entityName);
         $proxyClass  = $this->generateProxyClassName($entityName);
-        $validators  = $this->entityCacheDir . DIRECTORY_SEPARATOR . 'validator.yml';
 
         if ((!class_exists($extendClass) || !class_exists($proxyClass)) || $force) {
             /** write Dynamic class */
-            file_put_contents(
-                $this->entityCacheDir . DIRECTORY_SEPARATOR . str_replace(
-                    '\\',
-                    DIRECTORY_SEPARATOR,
-                    $extendClass
-                ) . '.php',
-                "<?php\n\n" . $this->generateDynamicClass($entityName, $extendClass)
-            );
+            $this->writeFile($extendClass, '.php', $this->generateDynamicClass($entityName, $extendClass));
 
             /** write Dynamic yml */
-            file_put_contents(
-                $this->entityCacheDir . DIRECTORY_SEPARATOR . str_replace(
-                    '\\',
-                    DIRECTORY_SEPARATOR,
-                    $extendClass
-                ) . '.orm.yml',
+            $this->writeFile(
+                $extendClass,
+                '.orm.yml',
                 Yaml::dump($this->generateDynamicYml($entityName, $extendClass), 5)
             );
 
             /** write Proxy class */
-            file_put_contents(
-                $this->entityCacheDir . DIRECTORY_SEPARATOR . str_replace(
-                    '\\',
-                    DIRECTORY_SEPARATOR,
-                    $proxyClass
-                ) . '.php',
-                "<?php\n\n" . $this->generateProxyClass($entityName, $proxyClass, $extend)
-            );
+            $this->writeFile($proxyClass, '.php', $this->generateProxyClass($entityName, $proxyClass, $extend));
         }
 
-        if (!file_exists($validators)) {
-            file_put_contents($validators, '');
+        $validatorsPath  = $this->entityCacheDir . DIRECTORY_SEPARATOR . 'validator.yml';
+        if (!file_exists($validatorsPath)) {
+            touch($validatorsPath);
         }
 
-        file_put_contents(
-            $validators,
-            Yaml::dump($this->generateValidator($entityName, Yaml::parse($validators)))
+        $this->writeFile(
+            'validator',
+            '.yml',
+            Yaml::dump($this->generateValidator($entityName, Yaml::parse($validatorsPath)))
         );
+
+    }
+
+    /**
+     * @param $className
+     * @param $fileExtension
+     * @param $content
+     */
+    protected function writeFile($className, $fileExtension, $content)
+    {
+        $fileUri  = explode('\\', $className);
+        $fileName = array_pop($fileUri);
+
+        $filePath = $this->entityCacheDir . DIRECTORY_SEPARATOR . implode(
+            DIRECTORY_SEPARATOR,
+            $fileUri
+        ) . DIRECTORY_SEPARATOR;
+
+        if (!is_dir($filePath)) {
+            if (true === mkdir($filePath, 0777, true)) {
+                if (false == touch($filePath . $fileName . $fileExtension)) {
+                    /** TODO Exception */
+                    die('can\'t create file');
+                }
+            } else {
+                /** TODO Exception */
+                die('can\'t create dir');
+            }
+        }
+
+        file_put_contents($filePath . $fileName . $fileExtension, $content);
     }
 
     /**
@@ -108,7 +126,7 @@ class Generator
      */
     public function generateExtendClassName($entityName)
     {
-        return 'Extend\\Entity\\' . $this->backend . '\\' . $this->generateClassName($entityName);
+        return self::ENTITY . $this->backend . $entityName;
     }
 
     /**
@@ -117,16 +135,7 @@ class Generator
      */
     public function generateProxyClassName($entityName)
     {
-        return 'Extend\\Proxy\\' . $this->generateClassName($entityName);
-    }
-
-    /**
-     * @param $entityName
-     * @return string
-     */
-    protected function generateClassName($entityName)
-    {
-        return str_replace('\\', '', $entityName);
+        return self::PROXY . $entityName;
     }
 
     /**
@@ -153,39 +162,41 @@ class Generator
         if ($fieldIds = $this->configProvider->getIds($entityName)) {
             foreach ($fieldIds as $fieldId) {
                 if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
-                    $config = $this->configProvider->getConfigById($fieldId);
+                    $config    = $this->configProvider->getConfigById($fieldId);
+                    $fieldName = $fieldId->getfieldName();
+
                     switch ($fieldId->getFieldType()) {
                         case 'integer':
                         case 'smallint':
                         case 'bigint':
-                            $yml['properties'][$fieldId->getfieldName()][] = array(
+                            $yml['properties'][$fieldName][] = array(
                                 'Regex' => '/\d+/'
                             );
                             break;
                         case 'string':
-                            $yml['properties'][$fieldId->getfieldName()][] = array(
+                            $yml['properties'][$fieldName][] = array(
                                 'Length' => array('max' => $config->get('length'))
                             );
                             break;
                         case 'decimal':
-                            $yml['properties'][$fieldId->getfieldName()][] = array(
+                            $yml['properties'][$fieldName][] = array(
                                 'Regex' => '/\d{1,' . $config->get('precision') . '}\.\d{1,' . $config->get(
                                     'scale'
                                 ) . '}/'
                             );
                             break;
                         case 'date':
-                            $yml['properties'][$fieldId->getfieldName()][] = array(
+                            $yml['properties'][$fieldName][] = array(
                                 'Date' => '~'
                             );
                             break;
                         case 'time':
-                            $yml['properties'][$fieldId->getfieldName()][] = array(
+                            $yml['properties'][$fieldName][] = array(
                                 'Time' => '~'
                             );
                             break;
                         case 'datetime':
-                            $yml['properties'][$fieldId->getfieldName()][] = array(
+                            $yml['properties'][$fieldName][] = array(
                                 'DateTime' => '~'
                             );
                             break;
@@ -238,19 +249,23 @@ class Generator
 
         if ($fieldIds = $this->configProvider->getIds($entityName)) {
             foreach ($fieldIds as $fieldId) {
-                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')
-                    //&& $this->configProvider->getConfigById($fieldId)->get('state') != ExtendManager::STATE_DELETED
-                ) {
-                    $yml[$extendClass]['fields'][$fieldId->getFieldName()]['code'] = $fieldId->getFieldName();
-                    $yml[$extendClass]['fields'][$fieldId->getFieldName()]['type'] = $fieldId->getFieldType();
+                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
+                    $fieldName = $fieldId->getFieldName();
+
+                    $yml[$extendClass]['fields'][$fieldName]['code'] = $fieldName;
+                    $yml[$extendClass]['fields'][$fieldName]['type'] = $fieldId->getFieldType();
 
                     $fieldConfig = $this->configProvider->getConfigById($fieldId);
 
-                    $yml[$extendClass]['fields'][$fieldId->getFieldName()]['length']    = $fieldConfig->get('length');
-                    $yml[$extendClass]['fields'][$fieldId->getFieldName()]['precision'] = $fieldConfig->get(
+                    $yml[$extendClass]['fields'][$fieldName]['length']    = $fieldConfig->get('length');
+                    $yml[$extendClass]['fields'][$fieldName]['precision'] = $fieldConfig->get(
                         'precision'
                     );
-                    $yml[$extendClass]['fields'][$fieldId->getFieldName()]['scale']     = $fieldConfig->get('scale');
+                    $yml[$extendClass]['fields'][$fieldName]['scale']     = $fieldConfig->get('scale');
+
+                    if ($fieldConfig->get('is_indexable')) {
+                        $yml[$extendClass]['indexes'][$fieldName . '_index']['columns'] = array($fieldName);
+                    }
                 }
             }
         }
@@ -284,7 +299,8 @@ class Generator
     {
         $this->writer = new Writer();
 
-        $class = PhpClass::create($this->generateClassName($entityName))
+        //$class = PhpClass::create($this->generateClassName($entityName))
+        $class = PhpClass::create($entityName)
             ->setName($className)
             ->setInterfaceNames(array('Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface'))
             ->setProperty(PhpProperty::create('id')->setVisibility('protected'))
@@ -319,9 +335,7 @@ class Generator
         $toArray = '';
         if ($fieldIds = $this->configProvider->getIds($entityName)) {
             foreach ($fieldIds as $fieldId) {
-                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')
-                    //&& $this->configProvider->getConfigById($fieldId)->get('state') != ExtendManager::STATE_DELETED
-                ) {
+                if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
                     $fieldName = $fieldId->getFieldName();
                     $class
                         ->setProperty(PhpProperty::create($fieldName)->setVisibility('protected'))
@@ -352,7 +366,7 @@ class Generator
 
         $strategy = new DefaultGeneratorStrategy();
 
-        return $strategy->generate($class);
+        return "<?php\n\n" . $strategy->generate($class);
     }
 
     /**
@@ -366,7 +380,7 @@ class Generator
     {
         $this->writer = new Writer();
 
-        $class = PhpClass::create($this->generateClassName($entityName))->setName($className);
+        $class = PhpClass::create($entityName)->setName($className);
 
         if ($extend) {
             $class->setParentClassName($entityName);
@@ -443,6 +457,6 @@ class Generator
 
         $strategy = new DefaultGeneratorStrategy();
 
-        return $strategy->generate($class);
+        return "<?php\n\n" . $strategy->generate($class);
     }
 }
