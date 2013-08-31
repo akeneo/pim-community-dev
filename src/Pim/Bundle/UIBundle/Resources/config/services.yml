@@ -1,0 +1,5 @@
+services:
+    pim_ui.form.extension.help:
+        class: Pim\Bundle\UIBundle\Form\Extension\FormTypeHelpExtension
+        tags:
+            - { name: form.type_extension, alias: form }
