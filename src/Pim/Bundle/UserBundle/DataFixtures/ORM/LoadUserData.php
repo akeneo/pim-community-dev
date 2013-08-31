@@ -74,7 +74,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     /**
      * Get locale manager
      *
-     * @return \Pim\Bundle\ProductBundle\Manager\LocaleManager
+     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
      */
     protected function getLocaleManager()
     {
@@ -84,7 +84,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     /**
      * Get channel manager
      *
-     * @return \Pim\Bundle\ProductBundle\Manager\ChannelManager
+     * @return \Pim\Bundle\CatalogBundle\Manager\ChannelManager
      */
     protected function getChannelManager()
     {

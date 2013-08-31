@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\ProductBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Family normalizer

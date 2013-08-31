@@ -1,0 +1,61 @@
+parameters:
+    pim_product.manager.product.class:                Pim\Bundle\CatalogBundle\Manager\ProductManager
+
+    pim_product.entity.product.class:                 Pim\Bundle\CatalogBundle\Entity\Product
+    pim_product.form.type.product.view.class:         Pim\Bundle\CatalogBundle\Form\View\ProductFormView
+    pim_product.form.type.product.class:              Pim\Bundle\CatalogBundle\Form\Type\ProductType
+    pim_product.form.type.product_create.class:       Pim\Bundle\CatalogBundle\Form\Type\ProductCreateType
+    pim_product.form.type.product_value.class:        Pim\Bundle\CatalogBundle\Form\Type\ProductValueType
+    pim_product.form.type.image.class:                Pim\Bundle\CatalogBundle\Form\Type\ImageType
+
+    pim_product.handler.product_create.class:         Pim\Bundle\CatalogBundle\Form\Handler\ProductCreateHandler
+
+    pim_product.entity.product_attribute.class:        Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+    pim_product.entity.product_value.class:            Pim\Bundle\CatalogBundle\Entity\ProductValue
+
+    pim_product.form.type.product_attribute.class:     Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType
+    pim_product.form.handler.product_attribute.class:  Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler
+
+    pim_product.entity.attribute_group.class:          Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+    pim_product.handler.attribute_group.class:         Pim\Bundle\CatalogBundle\Form\Handler\AttributeGroupHandler
+    pim_product.type.family.class:                     Pim\Bundle\CatalogBundle\Form\Type\FamilyType
+    pim_product.type.attribute_group.class:            Pim\Bundle\CatalogBundle\Form\Type\AttributeGroupType
+
+    pim_product.entity.category.class:                 Pim\Bundle\CatalogBundle\Entity\Category
+    pim_product.entity.category_translation.class:     Pim\Bundle\CatalogBundle\Entity\CategoryTranslation
+    pim_product.manager.category.class:                Pim\Bundle\CatalogBundle\Manager\CategoryManager
+    pim_product.form.type.category.class:              Pim\Bundle\CatalogBundle\Form\Type\CategoryType
+
+    pim_product.listener.user_context.class:           Pim\Bundle\CatalogBundle\EventListener\UserContextListener
+
+    pim_product.subscriber.add_attribute_type.class:   Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
+    pim_product.form.transform_imported_product_data_subscriber.class: Pim\Bundle\CatalogBundle\Form\Subscriber\TransformImportedProductDataSubscriber
+
+    pim_product.manager.attribute_type.class:          Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager
+    pim_product.manager.media.class:                   Pim\Bundle\CatalogBundle\Manager\MediaManager
+
+    pim_product.form.type.product_value_wysiwyg.class:          Pim\Bundle\CatalogBundle\Form\Type\WysiwygType
+    pim_product.form.type.product_value_price.class:            Pim\Bundle\CatalogBundle\Form\Type\PriceType
+    pim_product.form.type.product_value_price_collection.class: Pim\Bundle\CatalogBundle\Form\Type\PriceCollectionType
+
+    pim_product.form.type.attribute_property_scopable.class:         Pim\Bundle\CatalogBundle\Form\Type\AttributeProperty\ScopableType
+    pim_product.form.type.attribute_property_available_locale.class: Pim\Bundle\CatalogBundle\Form\Type\AttributeProperty\AvailableLocalesType
+    pim_product.form.type.attribute_property_options.class:          Pim\Bundle\CatalogBundle\Form\Type\AttributeProperty\OptionsType
+
+    pim_product.manager.currency.class:      Pim\Bundle\CatalogBundle\Manager\CurrencyManager
+    pim_product.form.handler.currency.class: Pim\Bundle\CatalogBundle\Form\Handler\CurrencyHandler
+    pim_product.form.type.currency.class:    Pim\Bundle\CatalogBundle\Form\Type\CurrencyType
+
+    pim_product.manager.locale.class:        Pim\Bundle\CatalogBundle\Manager\LocaleManager
+    pim_product.form.handler.locale.class:   Pim\Bundle\CatalogBundle\Form\Handler\LocaleHandler
+    pim_product.form.type.locale.class:      Pim\Bundle\CatalogBundle\Form\Type\LocaleType
+
+    pim_product.manager.channel.class:       Pim\Bundle\CatalogBundle\Manager\ChannelManager
+    pim_product.form.handler.channel.class:  Pim\Bundle\CatalogBundle\Form\Handler\ChannelHandler
+    pim_product.form.type.channel.class:     Pim\Bundle\CatalogBundle\Form\Type\ChannelType
+
+    pim_product.event_listener.user_preferences.class:    Pim\Bundle\CatalogBundle\EventListener\UserPreferencesListener
+    pim_product.event_listener.update_completeness.class: Pim\Bundle\CatalogBundle\EventListener\UpdateCompletenessListener
+
+    pim_product.calculator.completeness.class:       Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator
+    pim_product.calculator.batch_completeness.class: Pim\Bundle\CatalogBundle\Calculator\BatchCompletenessCalculator

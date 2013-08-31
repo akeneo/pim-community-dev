@@ -5,7 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Pim\Bundle\ProductBundle\Controller\Controller;
+use Pim\Bundle\CatalogBundle\Controller\Controller;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;

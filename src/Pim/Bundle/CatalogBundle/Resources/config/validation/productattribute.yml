@@ -1,0 +1,196 @@
+Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttribute: ~
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetric:
+            groups:
+                - pim_product_metric
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueMatrix:
+            groups:
+                - pim_product_identifier
+                - pim_product_text
+                - pim_product_number
+                - pim_product_date
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\ValidDateRange:
+            groups:
+                - pim_product_date
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\ValidNumberRange:
+            groups:
+                - pim_product_number
+                - pim_product_price_collection
+                - pim_product_metric
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\ValidDefaultValue:
+            groups:
+                - pim_product_text
+                - pim_product_textarea
+                - pim_product_price_collection
+                - pim_product_number
+                - pim_product_date
+                - pim_product_metric
+        - Callback:
+            methods:
+                - [Pim\Bundle\CatalogBundle\Validator\ProductAttributeValidator, areOptionsValid]
+            groups:
+                - pim_product_multiselect
+                - pim_product_simpleselect
+    properties:
+        attributeType:
+            - Choice:
+                choices:
+                    - pim_product_identifier
+                    - pim_product_text
+                    - pim_product_textarea
+                    - pim_product_multiselect
+                    - pim_product_simpleselect
+                    - pim_product_price_collection
+                    - pim_product_number
+                    - pim_product_boolean
+                    - pim_product_date
+                    - pim_product_file
+                    - pim_product_image
+                    - pim_product_metric
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: "/^[a-zA-Z0-9_]+$/"
+                message: "Attribute code may contain only letters, numbers and underscores"
+            - Length:
+                max: 255
+            - Regex:
+                pattern: "/^(?!(treeId|categoryId|scope|enabled|family)$)/"
+                message: This code is not available.
+        description:
+            - Length:
+                max: 255
+        searchable:
+            - Type: bool
+        translatable:
+            - Type: bool
+        scopable:
+            - NotNull: ~
+        useableAsGridColumn:
+            - Type: bool
+        useableAsGridFilter:
+            - Type: bool
+        wysiwygEnabled:
+            - Type: bool
+        valueCreationAllowed:
+            - Type: bool
+        decimalsAllowed:
+            - Type: bool
+        negativeAllowed:
+            - Type: bool
+        maxCharacters:
+            - Type: int
+            - GreaterThanOrEqual:
+                value: 0
+            - Range:
+                max: 255
+                groups: [pim_product_text, pim_product_identifier]
+            - Range:
+                max: 65535
+                groups: [pim_product_textarea]
+        sortOrder:
+            - Type: int
+            - GreaterThanOrEqual:
+                value: 0
+        unique:
+            - Type: bool
+            - "False":
+                message: This attribute type can't have unique value
+                groups:
+                    - pim_product_textarea
+                    - pim_product_price_collection
+                    - pim_product_multiselect
+                    - pim_product_simpleselect
+                    - pim_product_image
+                    - pim_product_file
+                    - pim_product_metric
+                    - pim_product_boolean
+        options:
+            - Count:
+                min: 1
+                minMessage: You must specify at least one option
+                groups: [pim_product_simpleselect, pim_product_multiselect]
+        dateType:
+            - Choice:
+                choices: [date, time, datetime]
+                groups: [pim_product_date]
+        allowedFileSources:
+            - Choice:
+                choices: [upload, external]
+                groups: [pim_product_file, pim_product_image]
+        maxFileSize:
+            - GreaterThanOrEqual:
+                value: 0
+            - Type:
+                type: integer
+                groups: [pim_product_file, pim_product_image]
+        defaultValue:
+            - Blank:
+                message: No default value may be specified for this attribute type
+                groups: [pim_product_file, pim_product_image, pim_product_identifier]
+            - Length:
+                max: 65535
+            - Length:
+                max: 255
+                groups: [pim_product_text]
+            - Choice:
+                choices: [0, 1]
+                message: This value should be Yes or No
+                groups: [pim_product_boolean]
+            - Email:
+                groups: [email]
+            - Url:
+                groups: [url]
+        dateMin:
+            - DateTime:
+                groups: [pim_product_date]
+        dateMax:
+            - DateTime:
+                groups: [pim_product_date]
+        validationRule:
+            - Choice:
+                choices: [url, email, regexp]
+                groups: [pim_product_text]
+        validationRegexp:
+            - Blank:
+                groups:
+                    - pim_product_textarea
+                    - pim_product_multiselect
+                    - pim_product_simpleselect
+                    - pim_product_price_collection
+                    - pim_product_number
+                    - pim_product_boolean
+                    - pim_product_date
+                    - pim_product_file
+                    - pim_product_image
+                    - pim_product_metric
+            - Pim\Bundle\CatalogBundle\Validator\Constraints\ValidRegex:
+                groups:
+                    - pim_product_text
+                    - pim_product_identifier
+        allowedExtensions:
+            - NotNull:
+                groups: [pim_product_file, pim_product_image]
+                message: This value should not be blank
+        translations:
+            - Valid: ~
+
+Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation:
+    properties:
+        label:
+            - Length:
+                max: 64
+
+Pim\Bundle\CatalogBundle\Entity\AttributeOption:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: "/^[a-zA-Z0-9_]+$/"
+                message: "Option code may contain only letters, numbers and underscores"
+            - Length:
+                max: 255

@@ -3,8 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Pim\Bundle\ProductBundle\Manager\ChannelManager;
-use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
 

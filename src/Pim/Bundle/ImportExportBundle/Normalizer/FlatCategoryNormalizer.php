@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Pim\Bundle\ProductBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
  * A normalizer to transform a category entity into a flat array

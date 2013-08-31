@@ -3,11 +3,11 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\AttributeNormalizer;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-use Pim\Bundle\ProductBundle\Entity\AttributeOption;
-use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
-use Pim\Bundle\ProductBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 
 /**
  * Test class for AttributeNormalizer
@@ -57,8 +57,8 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\ProductBundle\Entity\ProductAttribute', 'json',  true),
-            array('Pim\Bundle\ProductBundle\Entity\ProductAttribute', 'csv', false),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'csv', false),
             array('stdClass',                                         'json',  false),
             array('stdClass',                                         'csv', false),
         );

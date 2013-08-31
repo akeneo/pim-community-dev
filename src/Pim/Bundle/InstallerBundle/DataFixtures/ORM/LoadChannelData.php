@@ -4,7 +4,7 @@ namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\ProductBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Load fixtures for channels
@@ -37,7 +37,7 @@ class LoadChannelData extends AbstractInstallerFixture
      * @param string[] $locales    Locales
      * @param string[] $currencies Currencies
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\Channel
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
      */
     protected function createChannel($code, $name, $locales, $currencies)
     {

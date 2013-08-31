@@ -50,11 +50,11 @@ class ScopeFilterTypeTest extends ChoiceFilterTypeTest
     /**
      * Create mock channel manager
      *
-     * @return Pim\Bundle\ProductBundle\Manager\ChannelManager
+     * @return Pim\Bundle\CatalogBundle\Manager\ChannelManager
      */
     protected function createMockChannelManager()
     {
-        $channelManager = $this->getMockBuilder('Pim\Bundle\ProductBundle\Manager\ChannelManager')
+        $channelManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
                                ->disableOriginalConstructor()
                                ->getMock();
 

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\ProductBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 
 /**
  * Load fixtures for locales

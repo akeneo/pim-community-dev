@@ -5,14 +5,14 @@ namespace Pim\Bundle\VersioningBundle\Tests\Unit\EventListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
-use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
-use Pim\Bundle\ProductBundle\Entity\Family;
-use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
-use Pim\Bundle\ProductBundle\Entity\AttributeOption;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Entity\ProductPrice;
-use Pim\Bundle\ProductBundle\Entity\ProductValue;
-use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Entity\ProductValue;
+use Pim\Bundle\CatalogBundle\Entity\Product;
 
 /**
  * Test related class

@@ -4,7 +4,7 @@ namespace Context\Page\Product;
 
 use Context\Page\Base\Form;
 use Behat\Mink\Exception\ElementNotFoundException;
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
  * Product edit page

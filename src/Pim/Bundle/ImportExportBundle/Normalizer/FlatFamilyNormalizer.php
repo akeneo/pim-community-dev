@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Pim\Bundle\ProductBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Flat family normalizer
