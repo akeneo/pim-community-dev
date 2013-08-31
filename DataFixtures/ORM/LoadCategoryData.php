@@ -7,8 +7,8 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Pim\Bundle\ProductBundle\Entity\CategoryTranslation;
-use Pim\Bundle\ProductBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Load data for category tree
@@ -142,7 +142,7 @@ class LoadCategoryData extends AbstractDemoFixture
      * @param string         $locale Locale used
      * @param string         $title  Title translated in locale value linked
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\CategoryTranslation
+     * @return \Pim\Bundle\CatalogBundle\Entity\CategoryTranslation
      */
     protected function createTranslation($entity, $locale, $title)
     {
