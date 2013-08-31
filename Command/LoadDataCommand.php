@@ -59,7 +59,7 @@ class LoadDataCommand extends ContainerAwareCommand
             $this->totalNodesCount
         ));
 
-        $class = 'Pim\Bundle\ProductBundle\Entity\Category';
+        $class = 'Pim\Bundle\CatalogBundle\Entity\Category';
         $fixtures[$class]['root'] = array(
             'code (unique)' => '<sentence(2)>',
             'title'         => '<sentence(2)>',
@@ -104,7 +104,7 @@ class LoadDataCommand extends ContainerAwareCommand
     {
         $em = $this->getEntityManager();
         $rsm = new ResultSetMappingBuilder($em);
-        $rsm->addRootEntityFromClassMetadata('Pim\Bundle\ProductBundle\Entity\Product', 'u');
+        $rsm->addRootEntityFromClassMetadata('Pim\Bundle\CatalogBundle\Entity\Product', 'u');
         $query = $em->createNativeQuery(sprintf(
             'SELECT * FROM pim_product order by rand() limit %d', rand(0, $maxProductsPerNode)
         ), $rsm);
