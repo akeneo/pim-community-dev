@@ -72,16 +72,17 @@ class LocaleController extends Controller
     /**
      * Disable locale
      *
-     * @param Locale $locale
+     * @param Request $request
+     * @param Locale  $locale
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function disableAction(Locale $locale)
+    public function disableAction(Request $request, Locale $locale)
     {
         $locale->setActivated(false);
         $this->persist($locale);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
             return $this->redirect($this->generateUrl('pim_product_locale_index'));
@@ -91,16 +92,17 @@ class LocaleController extends Controller
     /**
      * Enable locale
      *
-     * @param Locale $locale
+     * @param Request $request
+     * @param Locale  $locale
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function enableAction(Locale $locale)
+    public function enableAction(Request $request, Locale $locale)
     {
         $locale->setActivated(true);
         $this->persist($locale);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
             return $this->redirect($this->generateUrl('pim_product_locale_index'));

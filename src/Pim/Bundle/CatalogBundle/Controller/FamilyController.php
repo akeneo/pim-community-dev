@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Family controller
@@ -130,11 +130,12 @@ class FamilyController extends Controller
     /**
      * Add attributes to a family
      *
-     * @param int $id The family id to which add attributes
+     * @param Request $request The request object
+     * @param integer $id      The family id to which add attributes
      *
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addProductAttributesAction($id)
+    public function addProductAttributesAction(Request $request, $id)
     {
         $family              = $this->findOr404('PimCatalogBundle:Family', $id);
         $availableAttributes = new AvailableProductAttributes();
@@ -143,7 +144,7 @@ class FamilyController extends Controller
             $availableAttributes
         );
 
-        $attributesForm->bind($this->getRequest());
+        $attributesForm->bind($request);
 
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $family->addAttribute($attribute);

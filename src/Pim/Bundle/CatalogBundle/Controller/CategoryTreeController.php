@@ -24,13 +24,14 @@ class CategoryTreeController extends Controller
      * List category trees. The select_node_id request parameter
      * allow to send back the tree where the node belongs with a selected
      * attribute
+     * @param Request $request
      *
      * @Template
      * @return array
      */
-    public function listTreeAction()
+    public function listTreeAction(Request $request)
     {
-        $selectNodeId = $this->getRequest()->get('select_node_id');
+        $selectNodeId = $request->get('select_node_id');
         $selectNode = null;
 
         if ($selectNodeId != null) {
@@ -78,21 +79,22 @@ class CategoryTreeController extends Controller
      *
      * If the node to select is not a direct child of the parent category, the tree
      * is expanded until the selected node is found amongs the children
+     * @param Request $request
      *
      * @Template
      * @return array
      */
-    public function childrenAction()
+    public function childrenAction(Request $request)
     {
         try {
-            $parent = $this->findCategory($this->getRequest()->get('id'));
+            $parent = $this->findCategory($request->get('id'));
         } catch (NotFoundHttpException $e) {
             return array('data' => array());
         }
 
-        $selectNodeId = $this->getRequest()->get('select_node_id');
-        $withProductsCount = $this->getRequest()->get('with_products_count', false);
-        $includeParent = $this->getRequest()->get('include_parent', false);
+        $selectNodeId      = $request->get('select_node_id');
+        $withProductsCount = $request->get('with_products_count', false);
+        $includeParent     = $request->get('include_parent', false);
 
         $selectNode = null;
 
@@ -154,12 +156,13 @@ class CategoryTreeController extends Controller
     /**
      * Create a tree or category
      *
+     * @param Request $request
      * @param integer $parent
      *
      * @Template("PimCatalogBundle:CategoryTree:edit.html.twig")
      * @return array
      */
-    public function createAction($parent = null)
+    public function createAction(Request $request, $parent = null)
     {
         if ($parent) {
             $parent = $this->findCategory($parent);
@@ -169,7 +172,6 @@ class CategoryTreeController extends Controller
             $category = $this->getTreeManager()->getTreeInstance();
         }
 
-        $request = $this->getRequest();
         $category->setCode($request->get('title'));
 
         $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
@@ -204,15 +206,14 @@ class CategoryTreeController extends Controller
     /**
      * Edit tree action
      *
+     * @param Request  $request
      * @param Category $category
      *
      * @Template
      * @return array
      */
-    public function editAction(Category $category)
+    public function editAction(Request $request, Category $category)
     {
-        $request = $this->getRequest();
-
         $datagrid = $this->getDataAuditDatagrid(
             $category,
             'pim_product_categorytree_edit',

@@ -67,12 +67,13 @@ class ProductAttributeController extends Controller
     /**
      * Edit attribute form
      *
+     * @param Request          $request
      * @param ProductAttribute $attribute
      *
      * @Template("PimCatalogBundle:ProductAttribute:form.html.twig")
      * @return array
      */
-    public function editAction(ProductAttribute $attribute)
+    public function editAction(Request $request, ProductAttribute $attribute)
     {
         if ($this->get('pim_product.form.handler.attribute')->process($attribute)) {
             $this->addFlash('success', 'Attribute successfully saved');
@@ -88,7 +89,7 @@ class ProductAttributeController extends Controller
         );
         $datagridView = $datagrid->createView();
 
-        if ('json' == $this->getRequest()->getRequestFormat()) {
+        if ('json' == $request->getRequestFormat()) {
             return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
         }
 
@@ -186,14 +187,15 @@ class ProductAttributeController extends Controller
     /**
      * Remove attribute
      *
-     * @param Attribute $entity
+     * @param Request          $request
+     * @param ProductAttribute $entity
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function removeAction(ProductAttribute $entity)
+    public function removeAction(Request $request, ProductAttribute $entity)
     {
         if ($entity->getAttributeType() === 'pim_product_identifier') {
-            if ($this->getRequest()->isXmlHttpRequest()) {
+            if ($request->isXmlHttpRequest()) {
                 return new Response('', 403);
             } else {
                 return $this->redirectToRoute('pim_product_productattribute_index');
@@ -202,7 +204,7 @@ class ProductAttributeController extends Controller
 
         $this->remove($entity);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
             return $this->redirectToRoute('pim_product_productattribute_index');

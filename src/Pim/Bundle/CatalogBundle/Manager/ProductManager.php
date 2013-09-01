@@ -77,7 +77,7 @@ class ProductManager extends FlexibleManager
      * Find a product by id
      * Also ensure that it contains all required values
      *
-     * @param int $id
+     * @param integer $id
      *
      * @return Product|null
      */

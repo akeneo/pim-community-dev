@@ -33,8 +33,8 @@ class ProductController extends Controller
     {
         /** @var $gridManager ProductDatagridManager */
         $gridManager = $this->get('pim_product.datagrid.manager.product');
-        $gridManager->setFilterTreeId($this->getRequest()->get('treeId', 0));
-        $gridManager->setFilterCategoryId($this->getRequest()->get('categoryId', 0));
+        $gridManager->setFilterTreeId($request->get('treeId', 0));
+        $gridManager->setFilterCategoryId($request->get('categoryId', 0));
         $datagrid = $gridManager->getDatagrid();
 
         if ('json' == $request->getRequestFormat()) {
@@ -56,14 +56,15 @@ class ProductController extends Controller
     /**
      * Create product
      *
-     * @param string $dataLocale data locale
+     * @param Request $request
+     * @param string  $dataLocale
      *
      * @Template
      * @return array
      */
-    public function createAction($dataLocale)
+    public function createAction(Request $request, $dataLocale)
     {
-        if (!$this->getRequest()->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest()) {
             return $this->redirectToRoute('pim_product_product_index');
         }
 
@@ -178,11 +179,12 @@ class ProductController extends Controller
     /**
      * Add attributes to product
      *
-     * @param int $id The product id to which add attributes
+     * @param Request $request The request object
+     * @param integer $id      The product id to which add attributes
      *
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addProductAttributesAction($id)
+    public function addProductAttributesAction(Request $request, $id)
     {
         $product             = $this->findProductOr404($id);
         $manager             = $this->getProductManager();
@@ -191,7 +193,7 @@ class ProductController extends Controller
             $product->getAttributes(),
             $availableAttributes
         );
-        $attributesForm->bind($this->getRequest());
+        $attributesForm->bind($request);
 
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $manager->addAttributeToProduct($product, $attribute);
@@ -207,16 +209,17 @@ class ProductController extends Controller
     /**
      * Remove product
      *
-     * @param integer $id Id of the product to remove
+     * @param Request $request
+     * @param integer $id
      *
      * @return Response
      */
-    public function removeAction($id)
+    public function removeAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
         $this->remove($product);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
             return $this->redirectToRoute('pim_product_product_index');
@@ -226,8 +229,8 @@ class ProductController extends Controller
     /**
      * Remove an attribute form a product
      *
-     * @param int $productId
-     * @param int $attributeId
+     * @param integer $productId
+     * @param integer $attributeId
      *
      * @return array
      */
@@ -257,8 +260,9 @@ class ProductController extends Controller
      * List categories associated with the provided product and descending from the category
      * defined by the parent parameter.
      *
-     * @param integer  $id     Product id
-     * @param Category $parent The parent category
+     * @param Request  $request The request object
+     * @param integer  $id      Product id
+     * @param Category $parent  The parent category
      *
      * httpparam include_category if true, will include the parentCategory in the response
      *
@@ -266,12 +270,12 @@ class ProductController extends Controller
      * @Template
      * @return array
      */
-    public function listCategoriesAction($id, Category $parent)
+    public function listCategoriesAction(Request $request, $id, Category $parent)
     {
         $product = $this->findProductOr404($id);
         $categories = null;
 
-        $includeParent = $this->getRequest()->get('include_parent', false);
+        $includeParent = $request->get('include_parent', false);
         $includeParent = ($includeParent === 'true');
 
         if ($product != null) {
@@ -421,7 +425,7 @@ class ProductController extends Controller
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param int $id the product id
+     * @param integer $id the product id
      *
      * @return Pim\Bundle\CatalogBundle\Model\ProductInterface
      *

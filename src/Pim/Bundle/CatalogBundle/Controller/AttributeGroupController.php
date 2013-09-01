@@ -49,9 +49,9 @@ class AttributeGroupController extends Controller
         }
 
         return array(
-            'groups' => $groups,
-            'group'  => $group,
-            'form'   => $this->get('pim_product.form.attribute_group')->createView(),
+            'groups'         => $groups,
+            'group'          => $group,
+            'form'           => $this->get('pim_product.form.attribute_group')->createView(),
             'attributesForm' => $this->getAvailableProductAttributesForm($this->getGroupedAttributes())->createView()
         );
     }
@@ -90,17 +90,16 @@ class AttributeGroupController extends Controller
     /**
      * Remove attribute group
      *
+     * @param Request        $request
      * @param AttributeGroup $group
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removeAction(AttributeGroup $group)
+    public function removeAction(Request $request, AttributeGroup $group)
     {
         $this->remove($group);
 
         $this->addFlash('success', 'Attribute group successfully removed');
-
-        $request = $this->getRequest();
 
         if ($request->get('_redirectBack')) {
             $referer = $request->headers->get('referer');
@@ -115,11 +114,12 @@ class AttributeGroupController extends Controller
     /**
      * Add attributes to a group
      *
-     * @param int $id The group id to add attributes to
+     * @param Request $request The request object
+     * @param integer $id      The group id to add attributes to
      *
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addProductAttributesAction($id)
+    public function addProductAttributesAction(Request $request, $id)
     {
         $group               = $this->findOr404('PimCatalogBundle:AttributeGroup', $id);
         $availableAttributes = new AvailableProductAttributes();
@@ -129,7 +129,7 @@ class AttributeGroupController extends Controller
             $availableAttributes
         );
 
-        $attributesForm->bind($this->getRequest());
+        $attributesForm->bind($request);
 
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $group->addAttribute($attribute);

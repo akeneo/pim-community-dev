@@ -85,15 +85,16 @@ class ChannelController extends Controller
     /**
      * Remove channel
      *
+     * @param Request $request
      * @param Channel $channel
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function removeAction(Channel $channel)
+    public function removeAction(Request $request, Channel $channel)
     {
         $this->remove($channel);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
             $this->addFlash('success', 'Channel successfully removed');

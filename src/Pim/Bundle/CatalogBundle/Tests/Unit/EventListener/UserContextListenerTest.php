@@ -89,7 +89,7 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param int $type
+     * @param integer $type
      *
      * @return Symfony\Component\HttpKernel\Event\GetResponseEvent
      */

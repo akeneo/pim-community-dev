@@ -112,7 +112,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      *
      * @param Family $family
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     * @return Product
      */
     public function setFamily($family)
     {
@@ -267,6 +267,12 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         return $this->categories;
     }
 
+    /**
+     * Add a category
+     * @param Category $category
+     *
+     * @return Product
+     */
     public function addCategory(Category $category)
     {
         if (!$this->categories->contains($category)) {
@@ -276,6 +282,12 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         return $this;
     }
 
+    /**
+     * Remove a category
+     * @param Category $category
+     *
+     * @return Product
+     */
     public function removeCategory(Category $category)
     {
         $this->categories->removeElement($category);
@@ -311,9 +323,9 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     /**
      * Setter for predicate enabled
      *
-     * @param bool $enabled
+     * @param boolean $enabled
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     * @return Product
      */
     public function setEnabled($enabled)
     {
@@ -365,7 +377,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      *
      * @param Completeness $completeness
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     * @return Product
      */
     public function addCompleteness(Completeness $completeness)
     {
@@ -381,7 +393,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      *
      * @param Completeness $completeness
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     * @return Product
      */
     public function removeCompleteness(Completeness $completeness)
     {
@@ -420,7 +432,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      *
      * @param array $completenesses
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     * @return Product
      */
     public function setCompletenesses(array $completenesses = array())
     {
