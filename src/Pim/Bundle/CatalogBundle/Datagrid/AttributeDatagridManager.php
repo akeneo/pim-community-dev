@@ -137,7 +137,7 @@ class AttributeDatagridManager extends DatagridManager
     /**
      * Create attribute type field description for datagrid
      *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     * @return FieldDescription
      */
     protected function createAttributeTypeField()
     {
@@ -165,7 +165,7 @@ class AttributeDatagridManager extends DatagridManager
     /**
      * Create a group field and filter
      *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     * @return FieldDescription
      */
     protected function createGroupField()
     {

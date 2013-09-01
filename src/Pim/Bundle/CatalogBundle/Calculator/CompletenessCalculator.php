@@ -31,22 +31,22 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 class CompletenessCalculator
 {
     /**
-     * @var \Pim\Bundle\CatalogBundle\Manager\ChannelManager
+     * @var ChannelManager
      */
     protected $channelManager;
 
     /**
-     * @var \Pim\Bundle\CatalogBundle\Manager\LocaleManager
+     * @var LocaleManager
      */
     protected $localeManager;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     protected $em;
 
     /**
-     * @var Symfony\Component\Validator\Validator
+     * @var Validator
      */
     protected $validator;
 
@@ -86,7 +86,7 @@ class CompletenessCalculator
      *
      * @param Channel[] $channels
      *
-     * @return \Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator
+     * @return CompletenessCalculator
      */
     public function setChannels(array $channels = array())
     {
@@ -100,7 +100,7 @@ class CompletenessCalculator
      *
      * @param Locale[] $locales
      *
-     * @return \Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator
+     * @return CompletenessCalculator
      */
     public function setLocales(array $locales = array())
     {
@@ -240,7 +240,7 @@ class CompletenessCalculator
      * @param Channel          $channel
      * @param Locale           $locale
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Completeness
+     * @return Completeness
      */
     protected function createCompleteness(ProductInterface $product, Channel $channel, Locale $locale)
     {

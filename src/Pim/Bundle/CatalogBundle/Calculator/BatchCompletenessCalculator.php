@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Calculator;
 
 use Doctrine\ORM\EntityManager;
-
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
 
@@ -17,17 +16,17 @@ use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
 class BatchCompletenessCalculator
 {
     /**
-     * @var \Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator $calculator
+     * @var CompletenessCalculator $calculator
      */
     protected $calculator;
 
     /**
-     * @var \Pim\Bundle\CatalogBundle\Manager\ProductManager $productManager
+     * @var ProductManager $productManager
      */
     protected $productManager;
 
     /**
-     * @var \Doctrine\ORM\EntityManager $entityManager
+     * @var EntityManager $entityManager
      */
     protected $entityManager;
 
@@ -44,8 +43,8 @@ class BatchCompletenessCalculator
     /**
      * Constructor
      * @param CompletenessCalculator $calculator
-     * @param ProductManager $productManager
-     * @param EntityManager $em
+     * @param ProductManager         $productManager
+     * @param EntityManager          $em
      */
     public function __construct(CompletenessCalculator $calculator, ProductManager $productManager, EntityManager $em)
     {
@@ -90,7 +89,7 @@ class BatchCompletenessCalculator
         $this->calculator->setChannels($channels);
         $this->calculator->setLocales($locales);
         $this->calculator->calculate($products);
-        $this->removePendings();
+        $this->removePending();
     }
 
     /**
@@ -115,7 +114,7 @@ class BatchCompletenessCalculator
     /**
      * Get products to be calculated
      *
-     * @param \Pim\Bundle\CatalogBundle\Entity\Family[]
+     * @param \Pim\Bundle\CatalogBundle\Entity\Family[] $families
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
@@ -198,9 +197,9 @@ class BatchCompletenessCalculator
     }
 
     /**
-     * Remove pendings entities from database
+     * Remove pending entities from database
      */
-    protected function removePendings()
+    protected function removePending()
     {
         foreach ($this->pendings as $pending) {
             $this->entityManager->remove($pending);

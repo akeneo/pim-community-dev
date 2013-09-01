@@ -38,7 +38,7 @@ class Completeness
     protected $id;
 
     /**
-     * @var \Pim\Bundle\CatalogBundle\Entity\Locale $locale
+     * @var Locale $locale
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Locale")
      */
@@ -117,7 +117,7 @@ class Completeness
     /**
      * Getter locale
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     * @return Locale
      */
     public function getLocale()
     {
@@ -129,7 +129,7 @@ class Completeness
      *
      * @param Locale $locale
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Completeness
+     * @return Completeness
      */
     public function setLocale(Locale $locale)
     {
@@ -141,7 +141,7 @@ class Completeness
     /**
      * Getter channel
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
+     * @return Channel
      */
     public function getChannel()
     {
@@ -153,7 +153,7 @@ class Completeness
      *
      * @param Channel $channel
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Completeness
+     * @return Completeness
      */
     public function setChannel(Channel $channel)
     {
@@ -177,7 +177,7 @@ class Completeness
      *
      * @param integer $ratio
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Completeness
+     * @return Completeness
      */
     public function setRatio($ratio)
     {
@@ -201,7 +201,7 @@ class Completeness
      *
      * @param integer $missingCount
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Completeness
+     * @return Completeness
      */
     public function setMissingCount($missingCount)
     {
@@ -225,7 +225,7 @@ class Completeness
      *
      * @param integer $requiredCount
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Completeness
+     * @return Completeness
      */
     public function setRequiredCount($requiredCount)
     {
@@ -249,7 +249,7 @@ class Completeness
      *
      * @param datetime $updated
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Completeness
+     * @return Completeness
      */
     public function setUpdated($updated)
     {
@@ -261,7 +261,7 @@ class Completeness
     /**
      * Getter product
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     * @return Product
      */
     public function getProduct()
     {
@@ -273,7 +273,7 @@ class Completeness
      *
      * @param Product $product
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Completeness
+     * @return Completeness
      */
     public function setProduct(Product $product)
     {
@@ -285,7 +285,7 @@ class Completeness
     /**
      * Getter for the missing attributes
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return ArrayCollection
      */
     public function getMissingAttributes()
     {
@@ -297,7 +297,7 @@ class Completeness
      *
      * @param array $missingAttributes
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Completeness
+     * @return Completeness
      */
     public function setMissingAttributes(array $missingAttributes = array())
     {
@@ -311,7 +311,7 @@ class Completeness
      *
      * @param ProductAttribute $attribute
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Completeness
+     * @return Completeness
      */
     public function addMissingAttribute(ProductAttribute $attribute)
     {
@@ -327,7 +327,7 @@ class Completeness
      *
      * @param ProductAttribute $attribute
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Completeness
+     * @return Completeness
      */
     public function removeMissingAttribute(ProductAttribute $attribute)
     {

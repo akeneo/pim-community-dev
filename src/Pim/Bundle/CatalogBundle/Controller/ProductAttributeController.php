@@ -190,7 +190,7 @@ class ProductAttributeController extends Controller
      * @param Request          $request
      * @param ProductAttribute $entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function removeAction(Request $request, ProductAttribute $entity)
     {

@@ -21,8 +21,7 @@ class LocaleController extends Controller
      *
      * @param Request $request
      *
-     * @Template
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -75,7 +74,7 @@ class LocaleController extends Controller
      * @param Request $request
      * @param Locale  $locale
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function disableAction(Request $request, Locale $locale)
     {
@@ -95,7 +94,7 @@ class LocaleController extends Controller
      * @param Request $request
      * @param Locale  $locale
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function enableAction(Request $request, Locale $locale)
     {

@@ -100,7 +100,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     /**
      * Get family
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Family
+     * @return Family
      */
     public function getFamily()
     {
@@ -365,7 +365,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     /**
      * Getter for product completenesses
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return ArrayCollection
      */
     public function getCompletenesses()
     {
@@ -408,7 +408,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      * @param string $locale
      * @param string $channel
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Completeness|null
+     * @return Completeness|null
      */
     public function getCompleteness($locale, $channel)
     {

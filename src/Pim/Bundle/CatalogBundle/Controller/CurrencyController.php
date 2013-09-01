@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 
 /**
@@ -20,7 +19,6 @@ class CurrencyController extends Controller
      *
      * @param Request $request
      *
-     * @Template
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -50,7 +48,7 @@ class CurrencyController extends Controller
      *
      * @param Currency $currency
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function toggleAction(Currency $currency)
     {

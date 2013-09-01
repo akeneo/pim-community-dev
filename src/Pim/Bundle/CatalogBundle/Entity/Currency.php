@@ -83,7 +83,7 @@ class Currency
      *
      * @param integer $id
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Currency
+     * @return Currency
      */
     public function setId($id)
     {
@@ -107,7 +107,7 @@ class Currency
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Currency
+     * @return Currency
      */
     public function setCode($code)
     {
@@ -139,7 +139,7 @@ class Currency
      *
      * @param boolean $activated
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Currency
+     * @return Currency
      */
     public function setActivated($activated)
     {
@@ -151,7 +151,7 @@ class Currency
     /**
      * Get locales
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ArrayCollection
+     * @return ArrayCollection
      */
     public function getLocales()
     {
@@ -163,7 +163,7 @@ class Currency
      *
      * @param array $locales
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Currency
+     * @return Currency
      */
     public function setLocales($locales = array())
     {

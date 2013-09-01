@@ -144,7 +144,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      *
      * @param ProductInterface $product
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Category
+     * @return Category
      */
     public function addProduct(ProductInterface $product)
     {
@@ -168,7 +168,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      *
      * @param ProductInterface $product
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Category
+     * @return Category
      */
     public function removeProduct(ProductInterface $product)
     {
@@ -180,7 +180,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     /**
      * Get products for this category node
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return ArrayCollection
      */
     public function getProducts()
     {
@@ -212,7 +212,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      *
      * @param boolean $dynamic
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Category
+     * @return Category
      */
     public function setDynamic($dynamic)
     {

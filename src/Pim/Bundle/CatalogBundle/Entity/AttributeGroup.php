@@ -8,6 +8,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
  * Attribute Group entity
@@ -128,7 +129,7 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
      *
      * @param integer $id
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     * @return AttributeGroup
      */
     public function setId($id)
     {
@@ -152,7 +153,7 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     * @return AttributeGroup
      */
     public function setCode($code)
     {
@@ -176,7 +177,7 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
      *
      * @param string $sortOrder
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     * @return AttributeGroup
      */
     public function setSortOrder($sortOrder)
     {
@@ -200,7 +201,7 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
      *
      * @param datetime $created
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     * @return AttributeGroup
      */
     public function setCreated($created)
     {
@@ -224,7 +225,7 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
      *
      * @param datetime $updated
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     * @return AttributeGroup
      */
     public function setUpdated($updated)
     {
@@ -236,11 +237,11 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
     /**
      * Add attributes
      *
-     * @param \Pim\Bundle\CatalogBundle\Entity\ProductAttribute $attribute
+     * @param ProductAttribute $attribute
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     * @return AttributeGroup
      */
-    public function addAttribute(\Pim\Bundle\CatalogBundle\Entity\ProductAttribute $attribute)
+    public function addAttribute(ProductAttribute $attribute)
     {
         $this->attributes[] = $attribute;
         $attribute->setGroup($this);
@@ -251,11 +252,11 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
     /**
      * Remove attributes
      *
-     * @param \Pim\Bundle\CatalogBundle\Entity\ProductAttribute $attribute
+     * @param ProductAttribute $attribute
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     * @return AttributeGroup
      */
-    public function removeAttribute(\Pim\Bundle\CatalogBundle\Entity\ProductAttribute $attribute)
+    public function removeAttribute(ProductAttribute $attribute)
     {
         $this->attributes->removeElement($attribute);
         $attribute->setGroup(null);
@@ -266,7 +267,7 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
     /**
      * Get attributes
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ArrayCollection
      */
     public function getAttributes()
     {
@@ -276,11 +277,11 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
     /**
      * Check if the group has an attribute
      *
-     * @param \Pim\Bundle\CatalogBundle\Entity\ProductAttribute $attribute
+     * @param ProductAttribute $attribute
      *
      * @return boolean
      */
-    public function hasAttribute(\Pim\Bundle\CatalogBundle\Entity\ProductAttribute $attribute)
+    public function hasAttribute(ProductAttribute $attribute)
     {
         return $this->attributes->contains($attribute);
     }
@@ -378,7 +379,7 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
      *
      * @param string $name
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     * @return AttributeGroup
      */
     public function setName($name)
     {

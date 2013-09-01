@@ -483,7 +483,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     /**
      * Get group
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     * @return AttributeGroup
      */
     public function getGroup()
     {
@@ -494,7 +494,7 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * Get virtual group
      * Returns a group named 'Other' if entity doesn't belong to a group
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     * @return AttributeGroup
      */
     public function getVirtualGroup()
     {

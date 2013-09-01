@@ -174,7 +174,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @param AbstractEntityAttributeOption $option
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     * @return ProductValue
      */
     public function removeOption(AbstractEntityAttributeOption $option)
     {
@@ -198,7 +198,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @param \Oro\Bundle\FlexibleEntityBundle\Entity\Media $media
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\ProductValue
+     * @return ProductValue
      */
     public function setMedia($media)
     {
@@ -222,7 +222,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @param Metric $metric
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\ProductValue
+     * @return ProductValue
      */
     public function setMetric($metric)
     {

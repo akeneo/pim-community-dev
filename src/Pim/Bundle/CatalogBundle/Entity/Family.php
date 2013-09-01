@@ -215,7 +215,7 @@ class Family implements TranslatableInterface, VersionableInterface
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Family
+     * @return Family
      */
     public function setCode($code)
     {
@@ -229,7 +229,7 @@ class Family implements TranslatableInterface, VersionableInterface
      *
      * @param ProductAttribute $attribute
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Family
+     * @return Family
      */
     public function addAttribute(ProductAttribute $attribute)
     {

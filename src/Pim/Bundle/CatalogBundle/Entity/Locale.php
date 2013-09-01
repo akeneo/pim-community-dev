@@ -62,7 +62,7 @@ class Locale
     protected $activated = false;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var ArrayCollection
      *
      * @ORM\ManyToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Channel",
@@ -104,7 +104,7 @@ class Locale
      *
      * @param integer $id
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     * @return Locale
      */
     public function setId($id)
     {
@@ -128,7 +128,7 @@ class Locale
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     * @return Locale
      */
     public function setCode($code)
     {
@@ -152,7 +152,7 @@ class Locale
      *
      * @param string $fallback
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     * @return Locale
      */
     public function setFallback($fallback)
     {
@@ -188,7 +188,7 @@ class Locale
      *
      * @param Currency $currency
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     * @return Locale
      *
      * @TODO : must be removed
      */
@@ -202,7 +202,7 @@ class Locale
     /**
      * Get channels
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * @return ArrayCollection
      */
     public function getChannels()
     {
@@ -212,9 +212,9 @@ class Locale
     /**
      * Set channels
      *
-     * @param \Doctrine\Common\Collections\ArrayCollection $channels
+     * @param ArrayCollection $channels
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     * @return Locale
      */
     public function setChannels($channels)
     {
@@ -226,7 +226,7 @@ class Locale
     /**
      * Activate the locale
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     * @return Locale
      */
     public function activate()
     {
@@ -239,7 +239,7 @@ class Locale
      * Deactivate the locale
      * Only if it's no more link to a channel so <= 1 because it's call before persist
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     * @return Locale
      */
     public function deactivate()
     {

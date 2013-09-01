@@ -102,7 +102,7 @@ class Channel
      *
      * @param integer $id
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
+     * @return Channel
      */
     public function setId($id)
     {
@@ -126,7 +126,7 @@ class Channel
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
+     * @return Channel
      */
     public function setCode($code)
     {
@@ -150,7 +150,7 @@ class Channel
      *
      * @param string $name
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
+     * @return Channel
      */
     public function setName($name)
     {

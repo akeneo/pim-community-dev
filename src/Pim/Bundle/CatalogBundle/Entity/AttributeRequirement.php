@@ -60,7 +60,7 @@ class AttributeRequirement
      *
      * @param Family $family
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+     * @return AttributeRequirement
      */
     public function setFamily(Family $family)
     {
@@ -72,7 +72,7 @@ class AttributeRequirement
     /**
      * Getter family
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Family
+     * @return Family
      */
     public function getFamily()
     {
@@ -84,7 +84,7 @@ class AttributeRequirement
      *
      * @param ProductAttribute $attribute
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+     * @return AttributeRequirement
      */
     public function setAttribute(ProductAttribute $attribute)
     {
@@ -96,7 +96,7 @@ class AttributeRequirement
     /**
      * Getter product attribute
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     * @return ProductAttribute
      */
     public function getAttribute()
     {
@@ -108,7 +108,7 @@ class AttributeRequirement
      *
      * @param Channel $channel
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+     * @return AttributeRequirement
      */
     public function setChannel(Channel $channel)
     {
@@ -120,7 +120,7 @@ class AttributeRequirement
     /**
      * Getter channel
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
+     * @return Channel
      */
     public function getChannel()
     {
@@ -132,7 +132,7 @@ class AttributeRequirement
      *
      * @param boolean $required
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+     * @return AttributeRequirement
      */
     public function setRequired($required)
     {

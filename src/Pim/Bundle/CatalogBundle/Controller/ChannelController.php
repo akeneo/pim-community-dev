@@ -22,7 +22,7 @@ class ChannelController extends Controller
      * @param Request $request
      *
      * @Template
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -88,7 +88,7 @@ class ChannelController extends Controller
      * @param Request $request
      * @param Channel $channel
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function removeAction(Request $request, Channel $channel)
     {

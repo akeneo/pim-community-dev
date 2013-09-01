@@ -263,7 +263,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     /**
      * Create a family field and filter
      *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     * @return FieldDescription
      */
     protected function createFamilyField()
     {
@@ -293,7 +293,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     /**
      * Create scope field description for datagrid
      *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     * @return FieldDescription
      */
     protected function createScopeField()
     {
@@ -315,6 +315,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
         return $field;
     }
 
+    /**
+     * Create the completeness field
+     *
+     * @return FieldDescription
+     */
     protected function createCompletenessField()
     {
         $fieldCompleteness = new FieldDescription();
@@ -469,6 +474,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     /**
      * Prepare query for completeness field
      * @param ProxyQueryInterface $proxyQuery
+     * @param string              $rootAlias
      */
     protected function prepareQueryForCompleteness(ProxyQueryInterface $proxyQuery, $rootAlias)
     {
