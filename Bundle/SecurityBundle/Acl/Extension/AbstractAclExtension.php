@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
+use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
@@ -26,6 +27,14 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     public function hasMasks($permission)
     {
         return isset($this->map[$permission]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepareRootAceMask($aceMask, $object)
+    {
+        return $aceMask;
     }
 
     /**
@@ -79,20 +88,19 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     /**
      * Builds InvalidAclMaskException object
      *
-     * @param string $permission
      * @param int $mask
      * @param mixed $object
      * @param string|null $errorDescription
      * @return InvalidAclMaskException
      */
-    protected function createInvalidAclMaskException($permission, $mask, $object, $errorDescription = null)
+    protected function createInvalidAclMaskException($mask, $object, $errorDescription = null)
     {
         $objectDescription = is_object($object) && !($object instanceof ObjectIdentityInterface)
             ? get_class($object)
             : (string)$object;
         $msg = sprintf(
             'Invalid ACL mask "%s" for %s.',
-            $this->createMaskBuilder($permission)->getPatternFor($mask),
+            $this->getMaskPattern($mask),
             $objectDescription
         );
         if (!empty($errorDescription)) {

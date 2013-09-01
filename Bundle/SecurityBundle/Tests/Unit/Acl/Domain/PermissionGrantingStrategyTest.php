@@ -313,6 +313,6 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
      */
     private function getMaskBuilder($permission, $object)
     {
-        return $this->selector->select($object)->createMaskBuilder($permission);
+        return $this->selector->select($object)->getMaskBuilder($permission);
     }
 }

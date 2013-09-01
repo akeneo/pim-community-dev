@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Extension;
 
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension;
 use Oro\Bundle\SecurityBundle\Acl\Extension\EntityMaskBuilder;
 use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
@@ -144,102 +145,127 @@ class EntityAclExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider validateMaskForOrganizationProvider
      */
-    public function testValidateMaskForOrganization($permission, $mask)
+    public function testValidateMaskForOrganization($mask)
     {
-        $this->extension->validateMask($permission, $mask, new Organization());
+        $this->extension->validateMask($mask, new Organization());
     }
 
     /**
      * @dataProvider validateMaskForOrganizationInvalidProvider
      * @expectedException \Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException
      */
-    public function testValidateMaskForOrganizationInvalid($permission, $mask)
+    public function testValidateMaskForOrganizationInvalid($mask)
     {
-        $this->extension->validateMask($permission, $mask, new Organization());
+        $this->extension->validateMask($mask, new Organization());
     }
 
     /**
      * @dataProvider validateMaskForBusinessUnitProvider
      */
-    public function testValidateMaskForBusinessUnit($permission, $mask)
+    public function testValidateMaskForBusinessUnit($mask)
     {
-        $this->extension->validateMask($permission, $mask, new BusinessUnit());
+        $this->extension->validateMask($mask, new BusinessUnit());
     }
 
     /**
      * @dataProvider validateMaskForBusinessUnitInvalidProvider
      * @expectedException \Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException
      */
-    public function testValidateMaskForBusinessUnitInvalid($permission, $mask)
+    public function testValidateMaskForBusinessUnitInvalid($mask)
     {
-        $this->extension->validateMask($permission, $mask, new BusinessUnit());
+        $this->extension->validateMask($mask, new BusinessUnit());
     }
 
     /**
      * @dataProvider validateMaskForUserProvider
      */
-    public function testValidateMaskForUser($permission, $mask)
+    public function testValidateMaskForUser($mask)
     {
-        $this->extension->validateMask($permission, $mask, new User());
+        $this->extension->validateMask($mask, new User());
     }
 
     /**
      * @dataProvider validateMaskForUserInvalidProvider
      * @expectedException \Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException
      */
-    public function testValidateMaskForUserInvalid($permission, $mask)
+    public function testValidateMaskForUserInvalid($mask)
     {
-        $this->extension->validateMask($permission, $mask, new User());
+        $this->extension->validateMask($mask, new User());
     }
 
     /**
      * @dataProvider validateMaskForOrganizationOwnedProvider
      */
-    public function testValidateMaskForOrganizationOwned($permission, $mask)
+    public function testValidateMaskForOrganizationOwned($mask)
     {
         $this->metadataProvider->setMetadata(
             'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
             new OwnershipMetadata('ORGANIZATION', 'owner', 'owner_id')
         );
-        $this->extension->validateMask($permission, $mask, new TestEntity());
+        $this->extension->validateMask($mask, new TestEntity());
     }
 
     /**
      * @dataProvider validateMaskForOrganizationOwnedInvalidProvider
      * @expectedException \Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException
      */
-    public function testValidateMaskForOrganizationOwnedInvalid($permission, $mask)
+    public function testValidateMaskForOrganizationOwnedInvalid($mask)
     {
         $this->metadataProvider->setMetadata(
             'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
             new OwnershipMetadata('ORGANIZATION', 'owner', 'owner_id')
         );
-        $this->extension->validateMask($permission, $mask, new TestEntity());
+        $this->extension->validateMask($mask, new TestEntity());
     }
 
     /**
      * @dataProvider validateMaskForUserOwnedProvider
      */
-    public function testValidateMaskForUserOwned($permission, $mask)
+    public function testValidateMaskForUserOwned($mask)
     {
         $this->metadataProvider->setMetadata(
             'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
             new OwnershipMetadata('USER', 'owner', 'owner_id')
         );
-        $this->extension->validateMask($permission, $mask, new TestEntity());
+        $this->extension->validateMask($mask, new TestEntity());
     }
 
     /**
      * @dataProvider validateMaskForUserOwnedInvalidProvider
      * @expectedException \Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException
      */
-    public function testValidateMaskForUserOwnedInvalid($permission, $mask)
+    public function testValidateMaskForUserOwnedInvalid($mask)
     {
         $this->metadataProvider->setMetadata(
             'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
             new OwnershipMetadata('USER', 'owner', 'owner_id')
         );
-        $this->extension->validateMask($permission, $mask, new TestEntity());
+        $this->extension->validateMask($mask, new TestEntity());
+    }
+
+    /**
+     * @dataProvider validateMaskForUserOwnedProvider
+     */
+    public function testValidateMaskForRoot($mask)
+    {
+        $this->extension->validateMask($mask, new ObjectIdentity('entity', ObjectIdentityFactory::ROOT_IDENTITY_TYPE));
+    }
+
+    /**
+     * @dataProvider validateMaskForUserOwnedInvalidProvider
+     * @expectedException \Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException
+     */
+    public function testValidateMaskForRootInvalid($mask)
+    {
+        $this->extension->validateMask($mask, new ObjectIdentity('entity', ObjectIdentityFactory::ROOT_IDENTITY_TYPE));
+    }
+
+    public function testGetAllPermissions()
+    {
+        $this->assertEquals(
+            array('VIEW', 'CREATE', 'EDIT', 'DELETE', 'ASSIGN', 'SHARE'),
+            $this->extension->getAllPermissions()
+        );
     }
 
     /**
@@ -277,6 +303,46 @@ class EntityAclExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             $expectedResult,
             $this->extension->decideIsGranting($triggeredMask, $object, $token)
+        );
+    }
+
+    public function testGetMaskBuilder()
+    {
+        $this->assertEquals(new EntityMaskBuilder(), $this->extension->getMaskBuilder('VIEW'));
+        $this->assertEquals(new EntityMaskBuilder(), $this->extension->getMaskBuilder('CREATE'));
+        $this->assertEquals(new EntityMaskBuilder(), $this->extension->getMaskBuilder('EDIT'));
+        $this->assertEquals(new EntityMaskBuilder(), $this->extension->getMaskBuilder('DELETE'));
+        $this->assertEquals(new EntityMaskBuilder(), $this->extension->getMaskBuilder('ASSIGN'));
+        $this->assertEquals(new EntityMaskBuilder(), $this->extension->getMaskBuilder('SHARE'));
+    }
+
+    public function testGetAllMaskBuilders()
+    {
+        $this->assertEquals(array(new EntityMaskBuilder()), $this->extension->getAllMaskBuilders());
+    }
+
+    /**
+     * @dataProvider prepareRootAceMaskProvider
+     */
+    public function testPrepareRootAceMask($object, $ownerType, $aceMask, $expectedMask)
+    {
+        if ($ownerType !== null) {
+            $this->metadataProvider->setMetadata(
+                'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity',
+                new OwnershipMetadata($ownerType, 'owner', 'owner_id')
+            );
+        }
+
+        $resultMask = $this->extension->prepareRootAceMask($aceMask, $object);
+        $this->assertEquals(
+            $expectedMask,
+            $resultMask,
+            sprintf(
+                'Expected "%s" -> "%s"; Actual: "%s"',
+                $this->extension->getMaskPattern($aceMask),
+                $this->extension->getMaskPattern($expectedMask),
+                $this->extension->getMaskPattern($resultMask)
+            )
         );
     }
 
@@ -353,180 +419,267 @@ class EntityAclExtensionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public static function prepareRootAceMaskProvider()
+    {
+        return array(
+            array(
+                new TestEntity(),
+                null,
+                EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_CREATE_SYSTEM,
+                EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_CREATE_SYSTEM
+            ),
+            array(
+                new TestEntity(),
+                null,
+                EntityMaskBuilder::MASK_VIEW_BASIC | EntityMaskBuilder::MASK_CREATE_LOCAL,
+                EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_CREATE_SYSTEM
+            ),
+            array(
+                new TestEntity(),
+                null,
+                EntityMaskBuilder::MASK_ASSIGN_SYSTEM | EntityMaskBuilder::MASK_SHARE_BASIC,
+                EntityMaskBuilder::GROUP_NONE
+            ),
+            array(
+                new Organization(),
+                null,
+                EntityMaskBuilder::MASK_VIEW_BASIC | EntityMaskBuilder::MASK_CREATE_LOCAL,
+                EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_CREATE_SYSTEM
+            ),
+            array(
+                new BusinessUnit(),
+                null,
+                EntityMaskBuilder::MASK_VIEW_BASIC | EntityMaskBuilder::MASK_CREATE_LOCAL,
+                EntityMaskBuilder::MASK_VIEW_LOCAL | EntityMaskBuilder::MASK_CREATE_LOCAL
+            ),
+            array(
+                new BusinessUnit(),
+                null,
+                EntityMaskBuilder::MASK_VIEW_DEEP | EntityMaskBuilder::MASK_CREATE_LOCAL,
+                EntityMaskBuilder::MASK_VIEW_DEEP | EntityMaskBuilder::MASK_CREATE_LOCAL
+            ),
+            array(
+                new User(),
+                null,
+                EntityMaskBuilder::MASK_VIEW_BASIC | EntityMaskBuilder::MASK_CREATE_LOCAL,
+                EntityMaskBuilder::MASK_VIEW_LOCAL | EntityMaskBuilder::MASK_CREATE_LOCAL
+            ),
+            array(
+                new TestEntity(),
+                'ORGANIZATION',
+                EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_CREATE_DEEP,
+                EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_CREATE_GLOBAL
+            ),
+            array(
+                new TestEntity(),
+                'BUSINESS_UNIT',
+                EntityMaskBuilder::MASK_VIEW_DEEP | EntityMaskBuilder::MASK_CREATE_BASIC,
+                EntityMaskBuilder::MASK_VIEW_DEEP | EntityMaskBuilder::MASK_CREATE_LOCAL
+            ),
+            array(
+                new TestEntity(),
+                'USER',
+                EntityMaskBuilder::MASK_VIEW_GLOBAL | EntityMaskBuilder::MASK_CREATE_BASIC,
+                EntityMaskBuilder::MASK_VIEW_GLOBAL | EntityMaskBuilder::MASK_CREATE_BASIC
+            ),
+        );
+    }
+
     public static function validateMaskForOrganizationProvider()
     {
         return array(
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_SYSTEM),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_SYSTEM),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_SYSTEM),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_SYSTEM),
+            array(EntityMaskBuilder::MASK_VIEW_SYSTEM),
+            array(EntityMaskBuilder::MASK_CREATE_SYSTEM),
+            array(EntityMaskBuilder::MASK_EDIT_SYSTEM),
+            array(EntityMaskBuilder::MASK_DELETE_SYSTEM),
+            array(EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_DELETE_SYSTEM),
         );
     }
 
     public static function validateMaskForOrganizationInvalidProvider()
     {
         return array(
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_SYSTEM),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_SYSTEM),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_GLOBAL),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_DEEP),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_LOCAL),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_BASIC),
+            array(EntityMaskBuilder::MASK_ASSIGN_SYSTEM),
+            array(EntityMaskBuilder::MASK_SHARE_SYSTEM),
+            array(EntityMaskBuilder::MASK_VIEW_GLOBAL),
+            array(EntityMaskBuilder::MASK_VIEW_DEEP),
+            array(EntityMaskBuilder::MASK_VIEW_LOCAL),
+            array(EntityMaskBuilder::MASK_VIEW_BASIC),
         );
     }
 
     public static function validateMaskForBusinessUnitProvider()
     {
         return array(
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_SYSTEM),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_SYSTEM),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_SYSTEM),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_SYSTEM),
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_SYSTEM),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_SYSTEM),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_GLOBAL),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_GLOBAL),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_GLOBAL),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_GLOBAL),
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_GLOBAL),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_GLOBAL),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_DEEP),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_DEEP),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_DEEP),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_DEEP),
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_DEEP),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_DEEP),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_LOCAL),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_LOCAL),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_LOCAL),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_LOCAL),
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_LOCAL),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_LOCAL),
+            array(EntityMaskBuilder::MASK_VIEW_SYSTEM),
+            array(EntityMaskBuilder::MASK_CREATE_SYSTEM),
+            array(EntityMaskBuilder::MASK_EDIT_SYSTEM),
+            array(EntityMaskBuilder::MASK_DELETE_SYSTEM),
+            array(EntityMaskBuilder::MASK_ASSIGN_SYSTEM),
+            array(EntityMaskBuilder::MASK_SHARE_SYSTEM),
+            array(EntityMaskBuilder::MASK_VIEW_GLOBAL),
+            array(EntityMaskBuilder::MASK_CREATE_GLOBAL),
+            array(EntityMaskBuilder::MASK_EDIT_GLOBAL),
+            array(EntityMaskBuilder::MASK_DELETE_GLOBAL),
+            array(EntityMaskBuilder::MASK_ASSIGN_GLOBAL),
+            array(EntityMaskBuilder::MASK_SHARE_GLOBAL),
+            array(EntityMaskBuilder::MASK_VIEW_DEEP),
+            array(EntityMaskBuilder::MASK_CREATE_DEEP),
+            array(EntityMaskBuilder::MASK_EDIT_DEEP),
+            array(EntityMaskBuilder::MASK_DELETE_DEEP),
+            array(EntityMaskBuilder::MASK_ASSIGN_DEEP),
+            array(EntityMaskBuilder::MASK_SHARE_DEEP),
+            array(EntityMaskBuilder::MASK_VIEW_LOCAL),
+            array(EntityMaskBuilder::MASK_CREATE_LOCAL),
+            array(EntityMaskBuilder::MASK_EDIT_LOCAL),
+            array(EntityMaskBuilder::MASK_DELETE_LOCAL),
+            array(EntityMaskBuilder::MASK_ASSIGN_LOCAL),
+            array(EntityMaskBuilder::MASK_SHARE_LOCAL),
+            array(
+                EntityMaskBuilder::MASK_VIEW_SYSTEM
+                | EntityMaskBuilder::MASK_CREATE_GLOBAL
+                | EntityMaskBuilder::MASK_EDIT_DEEP
+                | EntityMaskBuilder::MASK_DELETE_LOCAL
+            ),
         );
     }
 
     public static function validateMaskForBusinessUnitInvalidProvider()
     {
         return array(
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_BASIC),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_VIEW_GLOBAL),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_GLOBAL | EntityMaskBuilder::MASK_VIEW_DEEP),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_DEEP | EntityMaskBuilder::MASK_VIEW_LOCAL),
+            array(EntityMaskBuilder::MASK_VIEW_BASIC),
+            array(EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_VIEW_GLOBAL),
+            array(EntityMaskBuilder::MASK_VIEW_GLOBAL | EntityMaskBuilder::MASK_VIEW_DEEP),
+            array(EntityMaskBuilder::MASK_VIEW_DEEP | EntityMaskBuilder::MASK_VIEW_LOCAL),
         );
     }
 
     public static function validateMaskForUserProvider()
     {
         return array(
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_SYSTEM),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_SYSTEM),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_SYSTEM),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_SYSTEM),
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_SYSTEM),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_SYSTEM),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_GLOBAL),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_GLOBAL),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_GLOBAL),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_GLOBAL),
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_GLOBAL),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_GLOBAL),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_DEEP),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_DEEP),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_DEEP),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_DEEP),
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_DEEP),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_DEEP),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_LOCAL),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_LOCAL),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_LOCAL),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_LOCAL),
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_LOCAL),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_LOCAL),
+            array(EntityMaskBuilder::MASK_VIEW_SYSTEM),
+            array(EntityMaskBuilder::MASK_CREATE_SYSTEM),
+            array(EntityMaskBuilder::MASK_EDIT_SYSTEM),
+            array(EntityMaskBuilder::MASK_DELETE_SYSTEM),
+            array(EntityMaskBuilder::MASK_ASSIGN_SYSTEM),
+            array(EntityMaskBuilder::MASK_SHARE_SYSTEM),
+            array(EntityMaskBuilder::MASK_VIEW_GLOBAL),
+            array(EntityMaskBuilder::MASK_CREATE_GLOBAL),
+            array(EntityMaskBuilder::MASK_EDIT_GLOBAL),
+            array(EntityMaskBuilder::MASK_DELETE_GLOBAL),
+            array(EntityMaskBuilder::MASK_ASSIGN_GLOBAL),
+            array(EntityMaskBuilder::MASK_SHARE_GLOBAL),
+            array(EntityMaskBuilder::MASK_VIEW_DEEP),
+            array(EntityMaskBuilder::MASK_CREATE_DEEP),
+            array(EntityMaskBuilder::MASK_EDIT_DEEP),
+            array(EntityMaskBuilder::MASK_DELETE_DEEP),
+            array(EntityMaskBuilder::MASK_ASSIGN_DEEP),
+            array(EntityMaskBuilder::MASK_SHARE_DEEP),
+            array(EntityMaskBuilder::MASK_VIEW_LOCAL),
+            array(EntityMaskBuilder::MASK_CREATE_LOCAL),
+            array(EntityMaskBuilder::MASK_EDIT_LOCAL),
+            array(EntityMaskBuilder::MASK_DELETE_LOCAL),
+            array(EntityMaskBuilder::MASK_ASSIGN_LOCAL),
+            array(EntityMaskBuilder::MASK_SHARE_LOCAL),
+            array(
+                EntityMaskBuilder::MASK_VIEW_SYSTEM
+                | EntityMaskBuilder::MASK_CREATE_GLOBAL
+                | EntityMaskBuilder::MASK_EDIT_DEEP
+                | EntityMaskBuilder::MASK_DELETE_LOCAL
+            ),
         );
     }
 
     public static function validateMaskForUserInvalidProvider()
     {
         return array(
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_BASIC),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_VIEW_GLOBAL),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_GLOBAL | EntityMaskBuilder::MASK_VIEW_DEEP),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_DEEP | EntityMaskBuilder::MASK_VIEW_LOCAL),
+            array(EntityMaskBuilder::MASK_VIEW_BASIC),
+            array(EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_VIEW_GLOBAL),
+            array(EntityMaskBuilder::MASK_VIEW_GLOBAL | EntityMaskBuilder::MASK_VIEW_DEEP),
+            array(EntityMaskBuilder::MASK_VIEW_DEEP | EntityMaskBuilder::MASK_VIEW_LOCAL),
         );
     }
 
     public static function validateMaskForUserOwnedProvider()
     {
         return array(
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_SYSTEM),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_SYSTEM),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_SYSTEM),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_SYSTEM),
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_SYSTEM),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_SYSTEM),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_GLOBAL),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_GLOBAL),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_GLOBAL),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_GLOBAL),
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_GLOBAL),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_GLOBAL),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_DEEP),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_DEEP),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_DEEP),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_DEEP),
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_DEEP),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_DEEP),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_LOCAL),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_LOCAL),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_LOCAL),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_LOCAL),
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_LOCAL),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_LOCAL),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_BASIC),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_BASIC),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_BASIC),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_BASIC),
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_BASIC),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_BASIC),
+            array(EntityMaskBuilder::MASK_VIEW_SYSTEM),
+            array(EntityMaskBuilder::MASK_CREATE_SYSTEM),
+            array(EntityMaskBuilder::MASK_EDIT_SYSTEM),
+            array(EntityMaskBuilder::MASK_DELETE_SYSTEM),
+            array(EntityMaskBuilder::MASK_ASSIGN_SYSTEM),
+            array(EntityMaskBuilder::MASK_SHARE_SYSTEM),
+            array(EntityMaskBuilder::MASK_VIEW_GLOBAL),
+            array(EntityMaskBuilder::MASK_CREATE_GLOBAL),
+            array(EntityMaskBuilder::MASK_EDIT_GLOBAL),
+            array(EntityMaskBuilder::MASK_DELETE_GLOBAL),
+            array(EntityMaskBuilder::MASK_ASSIGN_GLOBAL),
+            array(EntityMaskBuilder::MASK_SHARE_GLOBAL),
+            array(EntityMaskBuilder::MASK_VIEW_DEEP),
+            array(EntityMaskBuilder::MASK_CREATE_DEEP),
+            array(EntityMaskBuilder::MASK_EDIT_DEEP),
+            array(EntityMaskBuilder::MASK_DELETE_DEEP),
+            array(EntityMaskBuilder::MASK_ASSIGN_DEEP),
+            array(EntityMaskBuilder::MASK_SHARE_DEEP),
+            array(EntityMaskBuilder::MASK_VIEW_LOCAL),
+            array(EntityMaskBuilder::MASK_CREATE_LOCAL),
+            array(EntityMaskBuilder::MASK_EDIT_LOCAL),
+            array(EntityMaskBuilder::MASK_DELETE_LOCAL),
+            array(EntityMaskBuilder::MASK_ASSIGN_LOCAL),
+            array(EntityMaskBuilder::MASK_SHARE_LOCAL),
+            array(EntityMaskBuilder::MASK_VIEW_BASIC),
+            array(EntityMaskBuilder::MASK_CREATE_BASIC),
+            array(EntityMaskBuilder::MASK_EDIT_BASIC),
+            array(EntityMaskBuilder::MASK_DELETE_BASIC),
+            array(EntityMaskBuilder::MASK_ASSIGN_BASIC),
+            array(EntityMaskBuilder::MASK_SHARE_BASIC),
+            array(
+                EntityMaskBuilder::MASK_VIEW_SYSTEM
+                | EntityMaskBuilder::MASK_CREATE_GLOBAL
+                | EntityMaskBuilder::MASK_EDIT_DEEP
+                | EntityMaskBuilder::MASK_DELETE_LOCAL
+                | EntityMaskBuilder::MASK_ASSIGN_BASIC
+            ),
         );
     }
 
     public static function validateMaskForUserOwnedInvalidProvider()
     {
         return array(
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_VIEW_GLOBAL),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_GLOBAL | EntityMaskBuilder::MASK_VIEW_DEEP),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_DEEP | EntityMaskBuilder::MASK_VIEW_LOCAL),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_LOCAL | EntityMaskBuilder::MASK_VIEW_BASIC),
+            array(EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_VIEW_GLOBAL),
+            array(EntityMaskBuilder::MASK_VIEW_GLOBAL | EntityMaskBuilder::MASK_VIEW_DEEP),
+            array(EntityMaskBuilder::MASK_VIEW_DEEP | EntityMaskBuilder::MASK_VIEW_LOCAL),
+            array(EntityMaskBuilder::MASK_VIEW_LOCAL | EntityMaskBuilder::MASK_VIEW_BASIC),
         );
     }
 
     public static function validateMaskForOrganizationOwnedProvider()
     {
         return array(
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_SYSTEM),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_SYSTEM),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_SYSTEM),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_SYSTEM),
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_SYSTEM),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_SYSTEM),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_GLOBAL),
-            array('CREATE', EntityMaskBuilder::MASK_CREATE_GLOBAL),
-            array('EDIT', EntityMaskBuilder::MASK_EDIT_GLOBAL),
-            array('DELETE', EntityMaskBuilder::MASK_DELETE_GLOBAL),
-            array('ASSIGN', EntityMaskBuilder::MASK_ASSIGN_GLOBAL),
-            array('SHARE', EntityMaskBuilder::MASK_SHARE_GLOBAL),
+            array(EntityMaskBuilder::MASK_VIEW_SYSTEM),
+            array(EntityMaskBuilder::MASK_CREATE_SYSTEM),
+            array(EntityMaskBuilder::MASK_EDIT_SYSTEM),
+            array(EntityMaskBuilder::MASK_DELETE_SYSTEM),
+            array(EntityMaskBuilder::MASK_ASSIGN_SYSTEM),
+            array(EntityMaskBuilder::MASK_SHARE_SYSTEM),
+            array(EntityMaskBuilder::MASK_VIEW_GLOBAL),
+            array(EntityMaskBuilder::MASK_CREATE_GLOBAL),
+            array(EntityMaskBuilder::MASK_EDIT_GLOBAL),
+            array(EntityMaskBuilder::MASK_DELETE_GLOBAL),
+            array(EntityMaskBuilder::MASK_ASSIGN_GLOBAL),
+            array(EntityMaskBuilder::MASK_SHARE_GLOBAL),
+            array(EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_CREATE_GLOBAL),
         );
     }
 
     public static function validateMaskForOrganizationOwnedInvalidProvider()
     {
         return array(
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_DEEP),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_LOCAL),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_BASIC),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_VIEW_GLOBAL),
-            array('VIEW', EntityMaskBuilder::MASK_VIEW_GLOBAL | EntityMaskBuilder::MASK_VIEW_DEEP),
+            array(EntityMaskBuilder::MASK_VIEW_DEEP),
+            array(EntityMaskBuilder::MASK_VIEW_LOCAL),
+            array(EntityMaskBuilder::MASK_VIEW_BASIC),
+            array(EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_VIEW_GLOBAL),
+            array(EntityMaskBuilder::MASK_VIEW_GLOBAL | EntityMaskBuilder::MASK_VIEW_DEEP),
         );
     }
 }

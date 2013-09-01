@@ -11,15 +11,12 @@ use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
  */
 class ObjectIdentityFactory
 {
+    const ROOT_IDENTITY_TYPE = '(root)';
+
     /**
      * @var AclExtensionSelector
      */
     protected $extensionSelector;
-
-    /**
-     * @var ObjectIdentity
-     */
-    protected $root;
 
     /**
      * Constructor
@@ -29,18 +26,26 @@ class ObjectIdentityFactory
     public function __construct(AclExtensionSelector $extensionSelector)
     {
         $this->extensionSelector = $extensionSelector;
-        $this->root = new ObjectIdentity('root', 'Root');
     }
 
     /**
      * Constructs an ObjectIdentity is used for grant default permissions
      * if more appropriate permissions are not specified
      *
+     * @param ObjectIdentity|string $oidOrRootId Can be ObjectIdentity or string:
+     *              ObjectIdentity: The object identity the root identity should be constructed for
+     *              string: The root identifier returned by AclExtensionInterface::getRootId
      * @return ObjectIdentity
      */
-    public function root()
+    public function root($oidOrRootId)
     {
-        return $this->root;
+        if ($oidOrRootId instanceof ObjectIdentity) {
+            $oidOrRootId = $this->extensionSelector
+                ->select($oidOrRootId)
+                ->getRootId();
+        }
+
+        return new ObjectIdentity($oidOrRootId, static::ROOT_IDENTITY_TYPE);
     }
 
     /**
@@ -60,7 +65,7 @@ class ObjectIdentityFactory
         try {
             $result = $this->extensionSelector
                 ->select($domainObjectOrDescriptor)
-                ->createObjectIdentity($domainObjectOrDescriptor);
+                ->getObjectIdentity($domainObjectOrDescriptor);
 
             if ($result === null) {
                 $objInfo = is_object($domainObjectOrDescriptor)

@@ -1,4 +1,8 @@
 parameters:
+    # replace the default ACL provider with an extended version of the provider
+    security.acl.dbal.provider.class:                          Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider
+
+    oro_security.acl.manager.class:                            Oro\Bundle\SecurityBundle\Acl\Manager\AclManager
     oro_security.acl.extension_selector.class:                 Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector
     oro_security.acl.extension.entity.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension
     oro_security.acl.extension.action.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension
@@ -14,6 +18,14 @@ parameters:
     oro_security.owner.decision_maker.class:                   Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker
 
 services:
+    oro_security.acl.manager:
+        class: %oro_security.acl.manager.class%
+        scope: prototype
+        arguments:
+            - @oro_security.acl.object_identity_factory
+            - @oro_security.acl.extension_selector
+            - @?security.acl.dbal.provider
+
     oro_security.acl.extension_selector:
         public: false
         class: %oro_security.acl.extension_selector.class%

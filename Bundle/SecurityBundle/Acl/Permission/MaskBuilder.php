@@ -62,10 +62,10 @@ abstract class MaskBuilder
     /**
      * Constructor
      *
-     * @param integer $mask optional; defaults to 0
+     * @param integer $mask
      * @throws \InvalidArgumentException
      */
-    public function __construct($mask = 0)
+    protected function __construct($mask)
     {
         if (!is_int($mask)) {
             throw new \InvalidArgumentException('$mask must be an integer.');
@@ -210,6 +210,17 @@ abstract class MaskBuilder
         }
 
         return static::ON;
+    }
+
+    /**
+     * Checks whether a constant with the given name is defined in this mask builder
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public static function hasConst($name)
+    {
+        return defined('static::' . $name);
     }
 
     /**
