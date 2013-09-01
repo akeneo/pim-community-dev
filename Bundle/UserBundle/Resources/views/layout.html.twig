@@ -36,6 +36,11 @@
     % }
     <script type="text/javascript" src="{{ asset_url }}"></script>
     { % endjavascripts % #}
+    {% include 'OroUIBundle:Default:require.js.config.html.twig' %}
+    <script type="text/javascript">
+        var require = require || {};
+        require.paths['oro/init-signin'] = 'orouser/js/init-signin';
+    </script>
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/require.js') }}"></script>
     <script type="text/javascript">
         require(['jquery', 'bootstrap', 'oro/init-layout', 'oro/init-signin'])

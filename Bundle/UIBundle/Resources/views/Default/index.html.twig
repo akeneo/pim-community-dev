@@ -13,17 +13,20 @@
             {% endblock %}
 
             {% block script %}
+                {% include 'OroUIBundle:Default:require.js.config.html.twig' %}
+                <script type="text/javascript" src="{{ asset('bundles/oroui/lib/require.js') }}"></script>
+                <script type="text/javascript">
+                    require(['routing'], function() { require(['/js/routes.js']); });
+                    require(['oro/init-layout', 'oro/init-errors']);
+                </script>
                 {% placeholder scripts_before %}
 
                 <script type="text/javascript" src="{{ url('oro_translation_jstranslation') }}"></script>
 
-                <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.jstree.js') }}"></script>
-                <script type="text/javascript" src="{{ asset('bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js') }}"></script>
-                <script type="text/javascript" src="{{ asset('bundles/oroui/lib/jstree/jquery.hotkeys.js') }}"></script>
                 {% if app.debug %}
                     <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
                     <script type="text/javascript">
-                        require('oro/app', function(app){app.debug = true;});
+                        require(['oro/app'], function(app){app.debug = true;});
                     </script>
                 {% endif %}
                 <!--[if lte IE 9]>

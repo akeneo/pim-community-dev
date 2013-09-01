@@ -1,7 +1,7 @@
 /* jshint browser:true */
 /* global define, base64_encode */
-define(['underscore', 'backbone', 'Url', 'routing', 'oro/app', 'oro/mediator', 'base64', 'json'],
-function(_, Backbone, Url, routing, app, mediator) {
+define(['underscore', 'backbone', 'url', 'routing', 'oro/navigation', 'oro/mediator', 'base64', 'json'],
+function(_, Backbone, Url, routing, Navigation, mediator) {
     'use strict';
 
     var pageStateTimer;
@@ -149,10 +149,11 @@ function(_, Backbone, Url, routing, app, mediator) {
         },
 
         filterUrl: function() {
-            var self = this;
-            var url = window.location;
-            if (app.hashNavigationEnabled() && app.hashNavigationInstance) {
-                url = new Url(app.hashNavigationInstance.getHashUrl());
+            var self = this,
+                url = window.location,
+                navigation = Navigation.getInstance();
+            if (navigation) {
+                url = new Url(navigation.getHashUrl());
                 url.search = url.query.toString();
                 url.pathname = url.path;
             }

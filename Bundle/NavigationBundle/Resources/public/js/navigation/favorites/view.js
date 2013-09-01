@@ -23,6 +23,7 @@ function(_, Backbone, app, mediator, error,
         },
 
         initialize: function() {
+            AbstractView.prototype.initialize.apply(this, arguments);
             if (!this.options.collection) {
                 /** @type {oro.navigation.Collection} */
                 this.options.collection = new NavigationCollection();

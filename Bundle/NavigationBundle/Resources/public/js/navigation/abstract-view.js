@@ -1,7 +1,7 @@
 /* jshint browser:true */
 /* global define */
-define(['underscore', 'backbone', 'oro/app', 'oro/navigation/dotmenu/view'],
-function(_, Backbone, app, DotmenuView) {
+define(['underscore', 'backbone', 'oro/navigation', 'oro/navigation/dotmenu/view'],
+function(_, Backbone, Navigation, DotmenuView) {
     'use strict';
 
     /**
@@ -68,9 +68,10 @@ function(_, Backbone, app, DotmenuView) {
          * @return {Object}
          */
         getCurrentPageItemData: function() {
-            var url = '';
-            if (app.hashNavigationEnabled()) {
-                url = app.hashNavigationInstance.getHashUrl(true, true);
+            var url = '',
+                navigation = Navigation.getInstance();
+            if (navigation) {
+                url = navigation.getHashUrl(true, true);
             } else {
                 url = window.location.pathname + window.location.search + window.location.hash;
             }

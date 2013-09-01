@@ -1,5 +1,5 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'routing'],
+define(['jquery', 'underscore', 'backbone', 'routing', 'bootstrap'],
 function($, _, Backbone, routing) {
     'use strict';
 

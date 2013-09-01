@@ -1,8 +1,8 @@
 /* jshint browser:true */
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/mediator', 'oro/navigation/abstract-view',
+define(['jquery', 'underscore', 'backbone', 'oro/navigation', 'oro/mediator', 'oro/navigation/abstract-view',
     'oro/navigation/pinbar/item-view', 'oro/navigation/pinbar/collection', 'oro/navigation/pinbar/model'],
-function($, _, Backbone, app, mediator, AbstractView,
+function($, _, Backbone, Navigation, mediator, AbstractView,
     PinbarItemView, PinbarCollection, PinbarModel) {
     'use strict';
 
@@ -32,6 +32,7 @@ function($, _, Backbone, app, mediator, AbstractView,
         },
 
         initialize: function() {
+            AbstractView.prototype.initialize.apply(this, arguments);
             this.$listBar = this.getBackboneElement(this.options.listBar);
             this.$minimizeButton = Backbone.$(this.options.minimizeButton);
             this.$icon = this.$minimizeButton.find('i');
@@ -74,7 +75,9 @@ function($, _, Backbone, app, mediator, AbstractView,
             this.render();
         },
 
-        resetCollection: _.bind(this.options.collection, this.options.collection.reset),
+        resetCollection: function() {
+            this.options.collection.reset.apply(this.options.collection, arguments);
+        },
 
         /**
          * Get backbone DOM element
@@ -93,14 +96,16 @@ function($, _, Backbone, app, mediator, AbstractView,
          */
         handleItemStateChange: function(item) {
             if (!this.massAdd) {
-                var url = null;
-                var changeLocation = item.get('maximized');
+                var url = null,
+                    navigation,
+                    changeLocation = item.get('maximized');
                 if (changeLocation) {
                     url = item.get('url');
                 }
                 if (this.cleanupUrl(url) != this.cleanupUrl(this.getCurrentPageItemData().url)) {
-                    if (app.hashNavigationEnabled() && changeLocation) {
-                        app.hashNavigationInstance.setLocation(url, {useCache: true});
+                    navigation = Navigation.getInstance();
+                    if (navigation && changeLocation) {
+                        navigation.setLocation(url, {useCache: true});
                     }
                     item.save(
                         null,
@@ -108,7 +113,7 @@ function($, _, Backbone, app, mediator, AbstractView,
                             wait: true,
                             success: _.bind(function () {
                                 this.checkPinbarIcon();
-                                if (!app.hashNavigationEnabled() && changeLocation) {
+                                if (!navigation && changeLocation) {
                                     window.location.href = url;
                                 }
                             }, this)
@@ -174,10 +179,12 @@ function($, _, Backbone, app, mediator, AbstractView,
          *  Update current page item state to use new url
          */
         updatePinbarState: function() {
-            if (app.hashNavigationEnabled() && app.hashNavigationInstance.useCache) {
-                var pinnedItem = this.getItemForCurrentPage(true);
+            var pinnedItem, hashUrl,
+                navigation = Navigation.getInstance();
+            if (navigation && navigation.useCache) {
+                pinnedItem = this.getItemForCurrentPage(true);
                 if (pinnedItem.length) {
-                     var hashUrl = app.hashNavigationInstance.getHashUrl(true, true);
+                     hashUrl = navigation.getHashUrl(true, true);
                      _.each(pinnedItem, function(item) {
                          if (item.get('url') !== hashUrl) {
                              item.set('url', hashUrl);

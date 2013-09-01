@@ -1,33 +1,35 @@
 /* jshint browser:true, devel:true */
 /* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger', 'oro/registry',
-    'oro/modal', 'oro/loading-mask', 'oro/navigations/pagestate/view', 'oro/navigations/pagestate/model',
+    'oro/modal', 'oro/loading-mask', 'oro/navigation/pagestate/view', 'oro/navigation/pagestate/model',
     'oro/pageable-collection'],
 function($, _, Backbone, __, app, mediator, messenger, registry,
          Modal, LoadingMask, PagestateView, PagestateModel,
          PageableCollection) {
     'use strict';
 
-    var pageCacheStates = {
-        state: {},
+    var Navigation,
+        instance,
+        pageCacheStates = {
+            state: {},
 
-        registerStateObject: function(type, fields) {
-            this.state[type] = {};
-            _.each(fields, function(field) {
-                this.state[type][field] = '';
-            }, this);
-        },
+            registerStateObject: function(type, fields) {
+                this.state[type] = {};
+                _.each(fields, function(field) {
+                    this.state[type][field] = '';
+                }, this);
+            },
 
-        saveObjectCache: function(type, values) {
-            _.each(values, function(value, key) {
-                this.state[type][key] = value;
-            }, this);
-        },
+            saveObjectCache: function(type, values) {
+                _.each(values, function(value, key) {
+                    this.state[type][key] = value;
+                }, this);
+            },
 
-        getObjectCache: function(type) {
-            return this.state[type];
-        }
-    };
+            getObjectCache: function(type) {
+                return this.state[type];
+            }
+        };
 
     pageCacheStates.registerStateObject('grid',['collection']);
     pageCacheStates.registerStateObject('form',['form_data']);
@@ -39,7 +41,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
      * @class   oro.Navigation
      * @extends Backbone.Router
      */
-    return Backbone.Router.extend({
+    Navigation = Backbone.Router.extend({
         /**
          * Hash navigation enabled/disabled flag
          */
@@ -1209,4 +1211,33 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
             return true;
         }
     });
+
+    /**
+     * Fetches flag - hash navigation is enabled or not
+     *
+     * @returns {boolean}
+     */
+    Navigation.isEnabled = function() {
+        return Boolean(Navigation.prototype.enabled);
+    };
+
+    /**
+     * Fetches navigation (Oro router) instance
+     *
+     * @returns {oro.Navigation}
+     */
+    Navigation.getInstance = function() {
+        return instance;
+    };
+
+    /**
+     * Creates navigation instance
+     *
+     * @param {Object} options
+     */
+    Navigation.setup = function(options) {
+        instance = new Navigation(options);
+    };
+
+    return Navigation;
 });

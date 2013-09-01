@@ -12,9 +12,6 @@ function($, _) {
         /** @type {boolean} */
         debug: false,
 
-        /** @type {oro.Navigation|null} */
-        hashNavigationInstance: null,
-
         /**
          * Pack object to string
          *
@@ -153,15 +150,6 @@ function($, _) {
          */
         deepClone: function(value) {
             return $.extend(true, {}, value);
-        },
-
-        /**
-         * Checks if hash navigation is enabled
-         *
-         * @return {Boolean}
-         */
-        hashNavigationEnabled: function() {
-            return Boolean(this.hashNavigationInstance);
         }
     };
 });

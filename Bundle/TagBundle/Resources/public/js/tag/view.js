@@ -1,6 +1,6 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/translator', 'oro/tag/collection'],
-function($, _, Backbone, app, __, TagCollection) {
+define(['jquery', 'underscore', 'backbone', 'oro/navigation', 'oro/translator', 'oro/tag/collection'],
+function($, _, Backbone, Navigation, __, TagCollection) {
     'use strict';
 
     /**
@@ -83,8 +83,9 @@ function($, _, Backbone, app, __, TagCollection) {
                 this.template(this.getCollection().getFilteredCollection(this.options.filter))
             );
             // process tag click redirect
-            if (app.hashNavigationEnabled()) {
-                app.hashNavigationInstance.processClicks($('#tag-list a'));
+            var navigation = Navigation.getInstance();
+            if (navigation) {
+                navigation.processClicks($('#tag-list a'));
             }
     
             return this;

@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'backbone', 'oro/app', 'oro/mediator'],
-function(_, Backbone, app, mediator) {
+define(['underscore', 'backbone', 'oro/navigation', 'oro/mediator'],
+function(_, Backbone, Navigation, mediator) {
     'use strict';
 
     /**
@@ -67,10 +67,11 @@ function(_, Backbone, app, mediator) {
             if (options.ignoreSaveStateInUrl) {
                 return;
             }
-            var encodedStateData = collection.encodeStateData(collection.state);
-            var url = '';
-            if (app.hashNavigationEnabled()) {
-                url = 'url=' + app.hashNavigationInstance.getHashUrl() + '|g/' + encodedStateData;
+            var encodedStateData = collection.encodeStateData(collection.state),
+                url = '',
+                navigation = Navigation.getInstance();
+            if (navigation) {
+                url = 'url=' + navigation.getHashUrl() + '|g/' + encodedStateData;
             } else {
                 url = 'g/' + encodedStateData;
             }

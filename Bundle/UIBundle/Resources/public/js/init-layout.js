@@ -12,7 +12,7 @@ function($, __, app, mediator, layout, Navigation, Modal) {
         layout.init();
 
         /* hide progress bar on page ready in case we don't need hash navigation request*/
-        if (!app.hashNavigationEnabled() || !Navigation.prototype.checkHashForUrl()) {
+        if (!Navigation.isEnabled() || !Navigation.prototype.checkHashForUrl()) {
             if ($('#page-title').size()) {
                 document.title = $('#page-title').text();
             }
@@ -247,8 +247,9 @@ function($, __, app, mediator, layout, Navigation, Modal) {
                     url: el.data('url'),
                     type: 'DELETE',
                     success: function (data) {
-                        if (app.hashNavigationEnabled()) {
-                            app.hashNavigationInstance.setLocation(el.data('redirect'));
+                        var navigation = Navigation.getInstance();
+                        if (navigation) {
+                            navigation.setLocation(el.data('redirect'));
                         } else {
                             window.location.href = el.data('redirect');
                         }

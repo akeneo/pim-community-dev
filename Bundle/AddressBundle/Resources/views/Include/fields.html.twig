@@ -143,7 +143,7 @@
     {% set has_types = form.vars.prototype.types is defined %}
     {% if has_primary or has_types or show_form_when_empty %}
         <script type="text/javascript">
-            require('jquery',
+            require(['jquery'],
             function($){
                 $(function() {
                     var container = $('#{{ id }}_collection');

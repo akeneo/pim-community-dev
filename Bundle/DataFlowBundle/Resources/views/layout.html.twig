@@ -16,16 +16,16 @@
     <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="screen" />
     {% endstylesheets %}
 
-    {% javascripts
+    {# % javascripts
         '@OroUIBundle/Resources/public/lib/jquery-1.10.2.js'
         '@OroUIBundle/Resources/public/lib/less-1.3.1.min.js'
         '@OroUIBundle/Resources/public/lib/bootstrap.min.js'
         '@OroUIBundle/Resources/public/js/layout.js'
 
         output='js/all.js'
-    %}
+    % }
     <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    { % endjavascripts % #}
     {% endblock %}
 </head>
 
