@@ -52,11 +52,16 @@ class ConfigurableTest extends \PHPUnit_Framework_TestCase
     {
         $postAction = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface')
             ->disableOriginalConstructor()
-            ->setMethods(array('execute'))
             ->getMockForAbstractClass();
         $postAction->expects($this->exactly(2))
             ->method('execute')
             ->with($this->testContext);
+
+        $condition = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+        $condition->expects($this->never())
+            ->method('isAllowed');
 
         $this->assembler->expects($this->once())
             ->method('assemble')
@@ -64,6 +69,7 @@ class ConfigurableTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($postAction));
 
         $this->configurablePostAction->initialize($this->testConfiguration);
+        $this->configurablePostAction->setCondition($condition);
 
         // run twice to test cached post action
         $this->configurablePostAction->execute($this->testContext);

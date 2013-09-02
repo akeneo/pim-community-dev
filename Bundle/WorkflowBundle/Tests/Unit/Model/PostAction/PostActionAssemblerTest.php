@@ -6,6 +6,7 @@ use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionAssembler;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\TreeExecutor;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory;
+use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory;
 use Oro\Bundle\WorkflowBundle\Model\Pass\ParameterPass;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction\Stub\ArrayPostAction;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction\Stub\ArrayCondition;
@@ -78,6 +79,7 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
             );
 
         /** @var PostActionFactory $postActionFactory */
+        /** @var ConditionFactory $conditionFactory */
         /** @var ParameterPass $pass */
         $assembler = new PostActionAssembler($postActionFactory, $conditionFactory, $pass);
         /** @var TreeExecutor $actualTree */
