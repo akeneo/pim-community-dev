@@ -11,6 +11,8 @@
 
     <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat"/>
 
+    <target name="build-behat-coverage" depends="prepare,composer,vendors,setupdb,dumpassets,behat-coverage"/>
+
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
     <target name="clean" description="Cleanup build artifacts">
