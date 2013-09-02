@@ -1,5 +1,5 @@
 connector:
-    name: "Akeneo"
+    name: "Akeneo CSV Connector"
     jobs:
         product_export:
             title:      pim_import_export.jobs.product_export.title
