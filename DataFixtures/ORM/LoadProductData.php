@@ -2,17 +2,9 @@
 
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Oro\Bundle\FlexibleEntityBundle\Entity\Price;
 use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
-
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Product;
@@ -52,7 +44,7 @@ class LoadProductData extends AbstractDemoFixture
      */
     protected function getProductManager()
     {
-        return $this->container->get('pim_product.manager.product');
+        return $this->container->get('pim_catalog.manager.product');
     }
 
     /**
@@ -128,6 +120,9 @@ class LoadProductData extends AbstractDemoFixture
     }
 
     /**
+     * @param Family  $family
+     * @param Channel $channel
+     *
      * @return string[]
      */
     protected function getRandomAttributesToFulfill(Family $family, Channel $channel)
@@ -194,9 +189,9 @@ class LoadProductData extends AbstractDemoFixture
     /**
      * Add values
      *
-     * @param Product $product
+     * @param Product          $product
      * @param ProductAttribute $attribute
-     * @param Channel $channel
+     * @param Channel          $channel
      */
     protected function addValues(Product $product, ProductAttribute $attribute, Channel $channel)
     {
