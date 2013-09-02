@@ -1,41 +1,41 @@
 services:
 
     # Handlers
-    pim_product.form.handler.product_create:
-        class: %pim_product.handler.product_create.class%
+    pim_catalog.form.handler.product_create:
+        class: %pim_catalog.form.handler.product_create.class%
         scope: request
-        arguments: [@pim_product.form.product_create, @request, @pim_product.manager.product, @pim_product.calculator.completeness]
+        arguments: [@pim_catalog.form.product_create, @request, @pim_catalog.manager.product, @pim_catalog.calculator.completeness]
 
-    pim_product.form.handler.attribute:
-        class: %pim_product.form.handler.product_attribute.class%
+    pim_catalog.form.handler.attribute:
+        class: %pim_catalog.form.handler.product_attribute.class%
         scope: request
-        arguments: [@pim_product.form.attribute, @request, @doctrine.orm.entity_manager, @pim_product.manager.attribute_type, @pim_versioning.manager.pending]
+        arguments: [@pim_catalog.form.attribute, @request, @doctrine.orm.entity_manager, @pim_catalog.manager.attribute_type, @pim_versioning.manager.pending]
 
-    pim_product.form.handler.attribute_group:
-        class: %pim_product.handler.attribute_group.class%
+    pim_catalog.form.handler.attribute_group:
+        class: %pim_catalog.form.handler.attribute_group.class%
         scope: request
-        arguments: [@pim_product.form.attribute_group, @request, @doctrine.orm.entity_manager]
+        arguments: [@pim_catalog.form.attribute_group, @request, @doctrine.orm.entity_manager]
 
-    pim_product.form.handler.channel:
-        class: %pim_product.form.handler.channel.class%
+    pim_catalog.form.handler.channel:
+        class: %pim_catalog.form.handler.channel.class%
         scope: request
         arguments:
-            - @pim_product.form.channel
+            - @pim_catalog.form.channel
             - @request
             - @doctrine.orm.entity_manager
 
-    pim_product.form.handler.currency:
-        class: %pim_product.form.handler.currency.class%
+    pim_catalog.form.handler.currency:
+        class: %pim_catalog.form.handler.currency.class%
         scope: request
         arguments:
-            - @pim_product.form.currency
+            - @pim_catalog.form.currency
             - @request
             - @doctrine.orm.entity_manager
 
-    pim_product.form.handler.locale:
-        class: %pim_product.form.handler.locale.class%
+    pim_catalog.form.handler.locale:
+        class: %pim_catalog.form.handler.locale.class%
         scope: request
         arguments:
-            - @pim_product.form.locale
+            - @pim_catalog.form.locale
             - @request
             - @doctrine.orm.entity_manager

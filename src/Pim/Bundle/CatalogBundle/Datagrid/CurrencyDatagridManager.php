@@ -38,7 +38,7 @@ class CurrencyDatagridManager extends DatagridManager
 
         return array(
             new FieldProperty($fieldId),
-            new UrlProperty('toggle_link', $this->router, 'pim_product_currency_toggle', array('id')),
+            new UrlProperty('toggle_link', $this->router, 'pim_catalog_currency_toggle', array('id')),
         );
     }
 

@@ -5,9 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Doctrine\Common\Collections\Collection;
-use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
@@ -52,7 +50,7 @@ class ProductValueNotBlankValidator extends ConstraintValidator
             return;
         }
 
-        if ($value->getAttribute() and $value->getAttribute()->getAttributeType() === 'pim_product_price_collection') {
+        if ($value->getAttribute() and $value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
             $channel = $constraint->getChannel();
             if (!$this->validatePrices($value, $channel)) {
                 $this->context->addViolation($constraint->messageNotBlank);
@@ -80,7 +78,6 @@ class ProductValueNotBlankValidator extends ConstraintValidator
             foreach ($value->getData() as $price) {
                 if ($price->getCurrency() === $currency) {
                     if ($price->getData() === null) {
-
                         return false;
                     }
                 }

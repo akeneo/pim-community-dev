@@ -80,8 +80,8 @@ class AttributeTypeManager
     public function prepareFormData($data)
     {
         $optionTypes = array(
-            'pim_product_multiselect',
-            'pim_product_simpleselect'
+            'pim_catalog_multiselect',
+            'pim_catalog_simpleselect'
         );
 
         // If the attribute type can have options but no options have been created,

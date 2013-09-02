@@ -23,7 +23,7 @@ class LoadAttributeData extends AbstractInstallerFixture
      */
     protected function getProductManager()
     {
-        return $this->container->get('pim_product.manager.product');
+        return $this->container->get('pim_catalog.manager.product');
     }
 
     /**
@@ -109,7 +109,7 @@ class LoadAttributeData extends AbstractInstallerFixture
         $parameters['dateMin']= (isset($parameters['dateMin'])) ? new \DateTime($parameters['dateMin']) : null;
         $parameters['dateMax']= (isset($parameters['dateMax'])) ? new \DateTime($parameters['dateMax']) : null;
 
-        if ($data['type'] === 'pim_product_simpleselect' and isset($parameters['defaultValue'])) {
+        if ($data['type'] === 'pim_catalog_simpleselect' and isset($parameters['defaultValue'])) {
             $parameters['defaultValue']= $this->getReference('product-attributeoption.'.$parameters['defaultValue']);
         }
 

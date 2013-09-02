@@ -28,7 +28,7 @@ class EmailGuesserTest extends ConstraintGuesserTest
     {
         $this->assertTrue(
             $this->target->supportAttribute(
-                $this->getAttributeMock(array('attributeType' => 'pim_product_text',))
+                $this->getAttributeMock(array('attributeType' => 'pim_catalog_text',))
             )
         );
     }
@@ -36,7 +36,7 @@ class EmailGuesserTest extends ConstraintGuesserTest
     public function testGuessEmailConstraint()
     {
         $constraints = $this->target->guessConstraints(
-            $this->getAttributeMock(array('attributeType'  => 'pim_product_text','validationRule' => 'email',))
+            $this->getAttributeMock(array('attributeType'  => 'pim_catalog_text','validationRule' => 'email',))
         );
 
         $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Email', $constraints);
@@ -45,7 +45,7 @@ class EmailGuesserTest extends ConstraintGuesserTest
     public function testDoNotGuessEmailConstraint()
     {
         $constraints = $this->target->guessConstraints(
-            $this->getAttributeMock(array('attributeType'  => 'pim_product_text','validationRule' => null,))
+            $this->getAttributeMock(array('attributeType'  => 'pim_catalog_text','validationRule' => null,))
         );
 
         $this->assertEquals(0, count($constraints));

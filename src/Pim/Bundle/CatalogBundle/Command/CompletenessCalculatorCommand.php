@@ -38,7 +38,7 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $batchCalculator = $this->getContainer()->get('pim_product.calculator.batch_completeness');
+        $batchCalculator = $this->getContainer()->get('pim_catalog.calculator.batch_completeness');
         $batchCalculator->execute();
     }
 
@@ -49,7 +49,7 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
      */
     protected function getCompletenessCalculator()
     {
-        return $this->getContainer()->get('pim_product.calculator.completeness');
+        return $this->getContainer()->get('pim_catalog.calculator.completeness');
     }
 
     /**
@@ -59,7 +59,7 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
      */
     protected function getChannelManager()
     {
-        return $this->getContainer()->get('pim_product.manager.channel');
+        return $this->getContainer()->get('pim_catalog.manager.channel');
     }
 
     /**
@@ -69,7 +69,7 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
      */
     protected function getLocaleManager()
     {
-        return $this->getContainer()->get('pim_product.manager.locale');
+        return $this->getContainer()->get('pim_catalog.manager.locale');
     }
 
     /**
@@ -79,7 +79,7 @@ class CompletenessCalculatorCommand extends ContainerAwareCommand
      */
     protected function getProductManager()
     {
-        return $this->getContainer()->get('pim_product.manager.product');
+        return $this->getContainer()->get('pim_catalog.manager.product');
     }
 
     /**

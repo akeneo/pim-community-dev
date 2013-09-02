@@ -52,7 +52,7 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                'pim_product_date',
+                'pim_catalog_date',
                 array(
                     'defaultValue' => new \DateTime('+1 month'),
                     'dateType'     => 'datetime',
@@ -61,7 +61,7 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             array(
-                'pim_product_price_collection',
+                'pim_catalog_price_collection',
                 array(
                     'defaultValue'    => 9.99,
                     'numberMin'       => 0.01,
@@ -71,7 +71,7 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             array(
-                'pim_product_number',
+                'pim_catalog_number',
                 array(
                     'defaultValue'    => -10,
                     'numberMin'       => -100.1,
@@ -81,14 +81,14 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             array(
-                'pim_product_textarea',
+                'pim_catalog_textarea',
                 array(
                     'defaultValue'  => 'test value',
                     'maxCharacters' => 200
                 )
             ),
             array(
-                'pim_product_metric',
+                'pim_catalog_metric',
                 array(
                     'defaultValue'      => 20,
                     'numberMin'         => -273,
@@ -100,7 +100,7 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             array(
-                'pim_product_text',
+                'pim_catalog_text',
                 array(
                     'defaultValue'     => 'Test123',
                     'maxCharacters'    => 100,
@@ -109,14 +109,14 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             array(
-                'pim_product_text',
+                'pim_catalog_text',
                 array(
                     'defaultValue'   => 'user@sub.domain.museum',
                     'validationRule' => 'email'
                 )
             ),
             array(
-                'pim_product_text',
+                'pim_catalog_text',
                 array(
                     'defaultValue'   => 'http://symfony.com/',
                     'validationRule' => 'url'
@@ -151,7 +151,7 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                'pim_product_date',
+                'pim_catalog_date',
                 array(
                     'defaultValue' => new \DateTime('now'),
                     'dateMin'      => new \DateTime('+1 day'),
@@ -160,7 +160,7 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
                 'This value should be between the min and max date.'
             ),
             array(
-                'pim_product_price_collection',
+                'pim_catalog_price_collection',
                 array(
                     'defaultValue' => 1,
                     'numberMin'    => 5.5,
@@ -168,7 +168,7 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
                 'This value should be between the min and max number.'
             ),
             array(
-                'pim_product_number',
+                'pim_catalog_number',
                 array(
                     'defaultValue'    => -100,
                     'negativeAllowed' => false
@@ -176,7 +176,7 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
                 'This value should be greater than or equal to 0'
             ),
             array(
-                'pim_product_metric',
+                'pim_catalog_metric',
                 array(
                     'defaultValue'    => 0.1,
                     'decimalsAllowed' => false
@@ -184,7 +184,7 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
                 'This value should be a whole number.'
             ),
             array(
-                'pim_product_textarea',
+                'pim_catalog_textarea',
                 array(
                     'defaultValue'  => 'test value',
                     'maxCharacters' => 5
@@ -192,14 +192,14 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
                 'This value should not exceed max characters.'
             ),
             array(
-                'pim_product_date',
+                'pim_catalog_date',
                 array(
                     'defaultValue'     => 'Test123'
                 ),
                 'This date format is not valid.'
             ),
             array(
-                'pim_product_text',
+                'pim_catalog_text',
                 array(
                     'defaultValue'     => 'Some text',
                     'validationRule'   => 'regexp',

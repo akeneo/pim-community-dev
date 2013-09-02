@@ -26,7 +26,7 @@ class ReindexCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $locale = $input->getArgument('locale');
-        $this->getContainer()->get('pim_product.manager.product')->setLocale($locale);
+        $this->getContainer()->get('pim_catalog.manager.product')->setLocale($locale);
         $this->getContainer()->get('pim_translation.listener.add_locale')->setLocale($locale);
 
         $output->writeln('Starting reindex task');

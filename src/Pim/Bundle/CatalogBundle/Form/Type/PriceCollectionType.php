@@ -18,6 +18,6 @@ class PriceCollectionType extends CollectionType
      */
     public function getName()
     {
-        return 'pim_product_price_collection';
+        return 'pim_catalog_price_collection';
     }
 }

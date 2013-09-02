@@ -42,16 +42,16 @@ class AttributeGroupController extends Controller
     {
         $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToNameOrderedBySortOrder();
 
-        if ($this->get('pim_product.form.handler.attribute_group')->process($group)) {
+        if ($this->get('pim_catalog.form.handler.attribute_group')->process($group)) {
             $this->addFlash('success', 'Attribute group successfully saved');
 
-            return $this->redirectToRoute('pim_product_attributegroup_edit', array('id' => $group->getId()));
+            return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
         }
 
         return array(
             'groups'         => $groups,
             'group'          => $group,
-            'form'           => $this->get('pim_product.form.attribute_group')->createView(),
+            'form'           => $this->get('pim_catalog.form.attribute_group')->createView(),
             'attributesForm' => $this->getAvailableProductAttributesForm($this->getGroupedAttributes())->createView()
         );
     }
@@ -66,7 +66,7 @@ class AttributeGroupController extends Controller
     public function sortAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_product_attributegroup_create');
+            return $this->redirectToRoute('pim_catalog_attributegroup_create');
         }
 
         $data = $request->request->all();
@@ -108,7 +108,7 @@ class AttributeGroupController extends Controller
             }
         }
 
-        return $this->redirectToRoute('pim_product_attributegroup_create');
+        return $this->redirectToRoute('pim_catalog_attributegroup_create');
     }
 
     /**
@@ -137,7 +137,7 @@ class AttributeGroupController extends Controller
 
         $this->flush();
 
-        return $this->redirectToRoute('pim_product_attributegroup_edit', array('id' => $group->getId()));
+        return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
     }
 
     /**
@@ -164,7 +164,7 @@ class AttributeGroupController extends Controller
 
         $this->addFlash('success', 'Attribute group successfully updated.');
 
-        return $this->redirectToRoute('pim_product_attributegroup_edit', array('id' => $group->getId()));
+        return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
 
     }
 

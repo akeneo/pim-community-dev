@@ -1,37 +1,37 @@
 parameters:
-    pim_product.datagrid.manager.productattribute.class:  Pim\Bundle\CatalogBundle\Datagrid\AttributeDatagridManager
-    pim_product.datagrid.manager.product.class:           Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager
-    pim_product.datagrid.manager.channel_datagrid.class:  Pim\Bundle\CatalogBundle\Datagrid\ChannelDatagridManager
-    pim_product.datagrid.manager.currency_datagrid.class: Pim\Bundle\CatalogBundle\Datagrid\CurrencyDatagridManager
-    pim_product.datagrid.manager.locale_datagrid.class:   Pim\Bundle\CatalogBundle\Datagrid\LocaleDatagridManager
+    pim_catalog.datagrid.manager.productattribute.class:  Pim\Bundle\CatalogBundle\Datagrid\AttributeDatagridManager
+    pim_catalog.datagrid.manager.product.class:           Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager
+    pim_catalog.datagrid.manager.channel_datagrid.class:  Pim\Bundle\CatalogBundle\Datagrid\ChannelDatagridManager
+    pim_catalog.datagrid.manager.currency_datagrid.class: Pim\Bundle\CatalogBundle\Datagrid\CurrencyDatagridManager
+    pim_catalog.datagrid.manager.locale_datagrid.class:   Pim\Bundle\CatalogBundle\Datagrid\LocaleDatagridManager
 
 
 services:
     # Product attribute grid manager
-    pim_product.datagrid.manager.productattribute:
-        class: "%pim_product.datagrid.manager.productattribute.class%"
+    pim_catalog.datagrid.manager.productattribute:
+        class: "%pim_catalog.datagrid.manager.productattribute.class%"
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: attributes
               entity_hint: attributes
-              route_name: pim_product_productattribute_index
+              route_name: pim_catalog_productattribute_index
         calls:
-            - [ setProductManager, [@pim_product.manager.product] ]
+            - [ setProductManager, [@pim_catalog.manager.product] ]
 
     # Product grid manager
-    pim_product.datagrid.manager.product:
-        class: "%pim_product.datagrid.manager.product.class%"
+    pim_catalog.datagrid.manager.product:
+        class: "%pim_catalog.datagrid.manager.product.class%"
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: products
-              entity_name: %pim_product.entity.product.class%
+              entity_name: %pim_catalog.entity.product.class%
               entity_hint: products
               flexible: true
-              route_name: pim_product_product_index
+              route_name: pim_catalog_product_index
         calls:
-            - [ setCategoryManager, [@pim_product.manager.category] ]
+            - [ setCategoryManager, [@pim_catalog.manager.category] ]
 
-    pim_product.datagrid.manager.history:
+    pim_catalog.datagrid.manager.history:
         class: Pim\Bundle\CatalogBundle\Datagrid\AuditDatagridManager
         tags:
             - name: oro_grid.datagrid.manager
@@ -39,28 +39,28 @@ services:
               entity_hint: attributes
               route_name: current
 
-    pim_product.datagrid.manager.channel:
-        class: %pim_product.datagrid.manager.channel_datagrid.class%
+    pim_catalog.datagrid.manager.channel:
+        class: %pim_catalog.datagrid.manager.channel_datagrid.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: channels
               entity_hint: channels
-              route_name: pim_product_channel_index
+              route_name: pim_catalog_channel_index
         calls:
-            - [ setCategoryManager, [@pim_product.manager.category] ]
+            - [ setCategoryManager, [@pim_catalog.manager.category] ]
 
-    pim_product.datagrid.manager.currency:
-        class: %pim_product.datagrid.manager.currency_datagrid.class%
+    pim_catalog.datagrid.manager.currency:
+        class: %pim_catalog.datagrid.manager.currency_datagrid.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: currencies
               entity_hint: currencies
-              route_name: pim_product_currency_index
+              route_name: pim_catalog_currency_index
 
-    pim_product.datagrid.manager.locale:
-        class: %pim_product.datagrid.manager.locale_datagrid.class%
+    pim_catalog.datagrid.manager.locale:
+        class: %pim_catalog.datagrid.manager.locale_datagrid.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: locales
               entity_hint: locales
-              route_name: pim_product_locale_index
+              route_name: pim_catalog_locale_index

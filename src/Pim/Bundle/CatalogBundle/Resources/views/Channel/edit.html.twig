@@ -4,17 +4,17 @@
 
     {{ JSFV(form) }}
     <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
-        path('pim_product_channel_edit', { id: form.vars.value.id }) :
-        path('pim_product_channel_create') }}" method="POST">
+        path('pim_catalog_channel_edit', { id: form.vars.value.id }) :
+        path('pim_catalog_channel_create') }}" method="POST">
 
         {% set title = 'Channels'|trans %}
 
         {% set subtitle = form.vars.value.id ? form.vars.value.code : 'New channel'|trans %}
 
         {% set buttons %}
-            {{ elements.backLink(path('pim_product_channel_index')) }}
+            {{ elements.backLink(path('pim_catalog_channel_index')) }}
             {% if form.vars.value.id %}
-                {{ elements.deleteLink(path('pim_product_channel_remove', { id: form.vars.value.id }), 'Are you sure you want to delete this channel?') }}
+                {{ elements.deleteLink(path('pim_catalog_channel_remove', { id: form.vars.value.id }), 'Are you sure you want to delete this channel?') }}
             {% endif %}
             {{ elements.submitBtn }}
         {% endset %}

@@ -61,6 +61,6 @@ class ProductControllerTest extends ControllerTest
      */
     protected function getProductManager()
     {
-        return static::getContainer()->get('pim_product.manager.product');
+        return static::getContainer()->get('pim_catalog.manager.product');
     }
 }

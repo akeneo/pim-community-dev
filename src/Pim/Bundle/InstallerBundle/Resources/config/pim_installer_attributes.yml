@@ -3,7 +3,7 @@
         'labels':
             'en_US': 'SKU'
             'fr_FR':   'SKU'
-        'type': 'pim_product_identifier'
+        'type': 'pim_catalog_identifier'
         'description': 'the product sku'
         'group': 'general'
         'parameters':

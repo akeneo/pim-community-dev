@@ -189,7 +189,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemoveIdentifierAttribute()
     {
-        $attribute = $this->getAttributeMock('pim_product_identifier');
+        $attribute = $this->getAttributeMock('pim_catalog_identifier');
         $this->family->removeAttribute($attribute);
     }
 
@@ -239,7 +239,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
      *
      * @return Pim\Bundle\CatalogBundle\Entity\ProductAttribute
      */
-    protected function getAttributeMock($type = 'pim_product_text', $code = null)
+    protected function getAttributeMock($type = 'pim_catalog_text', $code = null)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
 
@@ -290,7 +290,7 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
 
         $requirement->expects($this->any())
             ->method('getAttribute')
-            ->will($this->returnValue($this->getAttributeMock('pim_product_text', $attributeCode)));
+            ->will($this->returnValue($this->getAttributeMock('pim_catalog_text', $attributeCode)));
 
         return $requirement;
     }

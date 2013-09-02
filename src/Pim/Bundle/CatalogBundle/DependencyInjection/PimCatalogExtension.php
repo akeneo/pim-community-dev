@@ -24,16 +24,16 @@ class PimCatalogExtension extends Extension
         // process configuration to validation and merge
         $currencyConfig = Yaml::parse(realpath(__DIR__ .'/../Resources/config/pim_currencies.yml'));
         $this->processConfiguration(new CurrencyConfiguration(), $currencyConfig);
-        $container->setParameter('pim_product.currencies', $currencyConfig);
+        $container->setParameter('pim_catalog.currencies', $currencyConfig);
 
         $localeConfig = Yaml::parse(realpath(__DIR__.'/../Resources/config/pim_locales.yml'));
         $this->processConfiguration(new LocaleConfiguration(), $localeConfig);
-        $container->setParameter('pim_product.locales', $localeConfig);
+        $container->setParameter('pim_catalog.locales', $localeConfig);
 
         $config = $this->processConfiguration(new Configuration, $configs);
 
         $container->setParameter(
-            'pim_product.imported_product_data_transformer',
+            'pim_catalog.imported_product_data_transformer',
             $config['imported_product_data_transformer']
         );
 

@@ -120,18 +120,18 @@ class ProductDatagridManager extends FlexibleDatagridManager
             new UrlProperty(
                 'edit_link',
                 $this->router,
-                'pim_product_product_edit',
+                'pim_catalog_product_edit',
                 array('id', 'dataLocale' => self::LOCALE_FIELD_NAME)
             ),
             new UrlProperty(
                 'edit_categories_link',
                 $this->router,
-                'pim_product_product_edit',
+                'pim_catalog_product_edit',
                 array('id', 'dataLocale' => self::LOCALE_FIELD_NAME),
                 false,
                 '#categories'
             ),
-            new UrlProperty('delete_link', $this->router, 'pim_product_product_remove', array('id')),
+            new UrlProperty('delete_link', $this->router, 'pim_catalog_product_remove', array('id')),
         );
     }
 
