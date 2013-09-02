@@ -88,12 +88,40 @@ class FixturesContext extends RawMinkContext
      */
     public function resetAcl()
     {
-        $root        = $this->createAcl('root', null, array(User::ROLE_DEFAULT, 'ROLE_SUPER_ADMIN'));
-        $oroSecurity = $this->createAcl('oro_security', $root, array('IS_AUTHENTICATED_ANONYMOUSLY'));
+        $root = $this->createAcl('root', null, array(User::ROLE_DEFAULT, 'ROLE_SUPER_ADMIN'));
 
+        $oroSecurity = $this->createAcl('oro_security', $root, array('IS_AUTHENTICATED_ANONYMOUSLY'));
         $this->createAcl('oro_login', $oroSecurity);
         $this->createAcl('oro_login_check', $oroSecurity);
         $this->createAcl('oro_logout', $oroSecurity);
+
+        $aclBundle = $this->createAcl('oro_user', $root);
+        $class = 'Oro\Bundle\UserBundle\Controller\RoleController';
+        $aclController = $this->createAcl('oro_user_role', $root);
+        $acl = $this->createAcl('oro_user_role_create', $aclController, array(), $class, 'createAction');
+        $acl = $this->createAcl('oro_user_role_list', $aclController, array(), $class, 'indexAction');
+        $acl = $this->createAcl('oro_user_role_update', $aclController, array(), $class, 'updateAction');
+
+        $aclBundle = $this->createAcl('pim_catalog', $root);
+        $aclLocales = $this->createAcl('pim_catalog_locales', $aclBundle);
+        $acl = $this->createAcl('pim_catalog_locale_fr_FR', $aclLocales);
+        $acl = $this->createAcl('pim_catalog_locale_en_US', $aclLocales);
+        $acl = $this->createAcl('pim_catalog_locale_de_DE', $aclLocales);
+
+        $class = 'Pim\Bundle\CatalogBundle\Controller\ProductController';
+        $aclController = $this->createAcl('pim_catalog_product', $aclBundle);
+        $acl = $this->createAcl('pim_catalog_product_index', $aclController, array(), $class, 'indexAction');
+        $acl = $this->createAcl('pim_catalog_product_create', $aclController, array(), $class, 'createAction');
+        $acl = $this->createAcl('pim_catalog_product_edit', $aclController, array(), $class, 'editAction');
+        $acl = $this->createAcl('pim_catalog_product_remove', $aclController, array(), $class, 'removeAction');
+
+        $class = 'Pim\Bundle\CatalogBundle\Controller\CategoryController';
+        $aclController = $this->createAcl('pim_catalog_category', $aclBundle);
+        $acl = $this->createAcl('pim_catalog_category_list', $aclController, array(), $class, 'listTreeAction');
+        $acl = $this->createAcl('pim_catalog_category_children', $aclController, array(), $class, 'childrenAction');
+        $acl = $this->createAcl('pim_catalog_category_create', $aclController, array(), $class, 'createAction');
+        $acl = $this->createAcl('pim_catalog_category_edit', $aclController, array(), $class, 'editAction');
+        $acl = $this->createAcl('pim_catalog_category_remove', $aclController, array(), $class, 'removeAction');
     }
 
     /**
@@ -1143,10 +1171,12 @@ class FixturesContext extends RawMinkContext
      * @param string $name
      * @param Acl    $parent
      * @param array  $roles
+     * @param string $class
+     * @param string $method
      *
      * @return Acl
      */
-    private function createAcl($name, $parent = null, array $roles = array())
+    private function createAcl($name, $parent = null, array $roles = array(), $class = null, $method = null)
     {
         $acl = new Acl();
         $acl->setId($name);
@@ -1154,6 +1184,12 @@ class FixturesContext extends RawMinkContext
         $acl->setDescription($this->camelize($name));
         if ($parent) {
             $acl->setParent($parent);
+        }
+        if ($class) {
+            $acl->setClass($class);
+        }
+        if ($method) {
+            $acl->setMethod($method);
         }
         foreach ($roles as $role) {
             $acl->addAccessRole($this->getRoleOrCreate($role));
