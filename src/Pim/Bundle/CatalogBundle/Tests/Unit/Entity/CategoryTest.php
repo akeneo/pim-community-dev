@@ -143,20 +143,20 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
         $newCode = 'code';
         $expectedCode = '['. $newCode .']';
         $this->category->setCode($newCode);
-        $this->assertEquals($expectedCode, $this->category->getTitle());
+        $this->assertEquals($expectedCode, $this->category->__toString());
 
         $newTitle = 'test-label';
         $this->assertEntity($this->category->setLocale('en_US'));
         $this->assertEntity($this->category->setTitle($newTitle));
-        $this->assertEquals($newTitle, $this->category->getTitle());
+        $this->assertEquals($newTitle, $this->category->__toString());
 
         // if no translation, assert the expected code is returned
         $this->category->setLocale('fr_FR');
-        $this->assertEquals($expectedCode, $this->category->getTitle());
+        $this->assertEquals($expectedCode, $this->category->__toString());
 
         // if empty translation, assert the expected code is returned
         $this->category->setTitle('');
-        $this->assertEquals($expectedCode, $this->category->getTitle());
+        $this->assertEquals($expectedCode, $this->category->__toString());
     }
 
     /**
@@ -208,6 +208,15 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     public function testGetCreated()
     {
         $this->assertNull($this->category->getCreated());
+    }
+
+    /**
+     * Test related method
+     * Only test if getVersion return a value or null. Setter is not accessible.
+     */
+    public function testGetVersion()
+    {
+        $this->assertNull($this->category->getVersion());
     }
 
     /**
