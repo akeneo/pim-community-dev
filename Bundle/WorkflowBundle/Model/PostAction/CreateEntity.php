@@ -37,7 +37,7 @@ class CreateEntity extends AbstractPostAction
     /**
      * {@inheritdoc}
      */
-    public function execute($context)
+    protected function executeAction($context)
     {
         $entity = $this->createEntity($context);
         $this->contextAccessor->setValue($context, $this->options['attribute'], $entity);

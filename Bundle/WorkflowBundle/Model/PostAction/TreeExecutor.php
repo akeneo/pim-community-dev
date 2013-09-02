@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
 use Psr\Log\LoggerInterface;
 
-class TreeExecutor implements PostActionInterface
+class TreeExecutor extends AbstractPostAction
 {
     const ALIAS = 'tree';
 
@@ -51,7 +51,7 @@ class TreeExecutor implements PostActionInterface
     /**
      * {@inheritDoc}
      */
-    public function execute($context)
+    protected function executeAction($context)
     {
         foreach ($this->postActions as $postActionConfig) {
             try {

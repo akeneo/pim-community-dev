@@ -6,9 +6,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface;
+use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
 
 class ArrayPostAction extends ArrayCollection implements PostActionInterface
 {
+    /**
+     * @var ConditionInterface
+     */
+    protected $condition;
+
     /**
      * Do nothing
      *
@@ -19,8 +25,6 @@ class ArrayPostAction extends ArrayCollection implements PostActionInterface
     }
 
     /**
-     * Initialize post action based on passed options.
-     *
      * @param array $options
      * @return PostActionInterface
      * @throws InvalidParameterException
@@ -29,5 +33,22 @@ class ArrayPostAction extends ArrayCollection implements PostActionInterface
     {
         $this->set('parameters', $options);
         return $this;
+    }
+
+    /**
+     * @param ConditionInterface $condition
+     * @return mixed
+     */
+    public function setCondition(ConditionInterface $condition)
+    {
+        $this->condition = $condition;
+    }
+
+    /**
+     * @return ConditionInterface
+     */
+    public function getCondition()
+    {
+        return $this->condition;
     }
 }

@@ -3,6 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
 use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
+use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
 
 interface PostActionInterface
 {
@@ -21,4 +22,12 @@ interface PostActionInterface
      * @throws InvalidParameterException
      */
     public function initialize(array $options);
+
+    /**
+     * Set optional condition for post action
+     *
+     * @param ConditionInterface $condition
+     * @return mixed
+     */
+    public function setCondition(ConditionInterface $condition);
 }

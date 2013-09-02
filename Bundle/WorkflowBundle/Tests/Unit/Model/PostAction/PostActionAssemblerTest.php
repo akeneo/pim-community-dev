@@ -8,6 +8,7 @@ use Oro\Bundle\WorkflowBundle\Model\PostAction\TreeExecutor;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory;
 use Oro\Bundle\WorkflowBundle\Model\Pass\ParameterPass;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction\Stub\ArrayPostAction;
+use Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction\Stub\ArrayCondition;
 
 class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,22 +22,41 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
     {
         $test = $this;
 
-        $factory = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory')
+        $postActionFactory = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory')
             ->disableOriginalConstructor()
             ->setMethods(array('create'))
             ->getMock();
-        $factory->expects($this->any())
+        $postActionFactory->expects($this->any())
             ->method('create')
             ->will(
                 $this->returnCallback(
-                    function ($type, $options) use ($test) {
+                    function ($type, $options, $condition) use ($test) {
                         if ($type == TreeExecutor::ALIAS) {
                             $postAction = $test->getTreeExecutorMock();
                         } else {
                             $postAction = new ArrayPostAction(array('_type' => $type));
                             $postAction->initialize($options);
                         }
+                        if ($condition) {
+                            $postAction->setCondition($condition);
+                        }
                         return $postAction;
+                    }
+                )
+            );
+
+        $conditionFactory = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory')
+            ->disableOriginalConstructor()
+            ->setMethods(array('create'))
+            ->getMock();
+        $conditionFactory->expects($this->any())
+            ->method('create')
+            ->will(
+                $this->returnCallback(
+                    function ($type, $options) {
+                        $condition = new ArrayCondition(array('_type' => $type));
+                        $condition->initialize($options);
+                        return $condition;
                     }
                 )
             );
@@ -57,9 +77,9 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        /** @var PostActionFactory $factory */
+        /** @var PostActionFactory $postActionFactory */
         /** @var ParameterPass $pass */
-        $assembler = new PostActionAssembler($factory, $pass);
+        $assembler = new PostActionAssembler($postActionFactory, $conditionFactory, $pass);
         /** @var TreeExecutor $actualTree */
         $actualTree = $assembler->assemble($source);
         $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Model\PostAction\TreeExecutor', $actualTree);
@@ -67,6 +87,7 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      * @return array
      */
     public function assembleDataProvider()
@@ -166,6 +187,46 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
+            'condition configuration' => array(
+                'source' => array(
+                    array(
+                        '@tree' => array(
+                            'conditions' => array('@not_empty' => '$contact'),
+                            'post_actions' => array(
+                                array(
+                                    '@assign_value' => array(
+                                        'conditions' => array('@not_empty' => '$contact.foo'),
+                                        'parameters' => array('from' => 'name', 'to' => 'contact.foo'),
+                                    )
+                                ),
+                            ),
+                            'break_on_failure' => false,
+                        )
+                    ),
+                ),
+                'expected' => array(
+                    array(
+                        'instance' => array(
+                            '_type' => 'tree',
+                            'post_actions' => array(
+                                array(
+                                    'instance' => array(
+                                        '_type' => 'assign_value',
+                                        'parameters' => array('from' => 'name', 'to' => 'contact.foo', '_pass' => true),
+                                        'condition' => array('_type' => 'configurable', '@not_empty' => '$contact.foo'),
+                                    ),
+                                    'breakOnFailure' => true,
+                                ),
+                            ),
+                            'condition' => array(
+                                '_type' => 'configurable',
+                                '@not_empty' => '$contact'
+                            ),
+                        ),
+                        'breakOnFailure' => false,
+                    ),
+                ),
+            ),
         );
     }
 
@@ -188,11 +249,17 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
             $postActionData = $postAction->toArray();
         }
 
+        $conditionData = $this->getCondition($postAction);
+        if ($conditionData) {
+            $postActionData['condition'] = $conditionData;
+        }
+
         $treePostActions = $postActionsReflection->getValue($treeExecutor);
         $treePostActions[] = array(
             'instance'       => $postActionData,
             'breakOnFailure' => $breakOnFailure
         );
+
         $postActionsReflection->setValue($treeExecutor, $treePostActions);
     }
 
@@ -240,5 +307,27 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
             );
 
         return $treeExecutor;
+    }
+
+    /**
+     * @param PostActionInterface $postAction
+     * @return array|null
+     */
+    protected function getCondition(PostActionInterface $postAction)
+    {
+        /** @var ArrayCondition $condition */
+        $condition = null;
+        if ($postAction instanceof TreeExecutor) {
+            $reflection = new \ReflectionProperty(
+                'Oro\Bundle\WorkflowBundle\Model\PostAction\TreeExecutor',
+                'condition'
+            );
+            $reflection->setAccessible(true);
+            $condition = $reflection->getValue($postAction);
+        } elseif ($postAction instanceof ArrayPostAction) {
+            $condition = $postAction->getCondition();
+        }
+
+        return $condition ? $condition->toArray() : null;
     }
 }
