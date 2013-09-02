@@ -157,10 +157,29 @@ class OwnershipSqlFilterBuilder
             // "deny access" SQL condition
             $constraint = empty($targetTableAlias)
                 ? '1 = 0'
-                : sprintf('\'%s\' = \'\'', $targetTableAlias);
+                : sprintf('\'%s\' = \'\'', $targetTableAlias); //added to see all tables aliases with denied permissions
         }
 
         return $constraint;
+    }
+
+    /**
+     * Gets the id of logged in user
+     *
+     * @return int|string
+     */
+    public function getUserId()
+    {
+        $token = $this->getSecurityContext()->getToken();
+        if (!$token) {
+            return null;
+        }
+        $user = $token->getUser();
+        if (!is_object($user) || !is_a($user, $this->metadataProvider->getUserClass())) {
+            return null;
+        }
+
+        return $this->objectIdAccessor->getId($user);
     }
 
     /**
@@ -247,31 +266,6 @@ class OwnershipSqlFilterBuilder
                 }
             }
         }
-    }
-
-    /**
-     * Gets the id of logged in user
-     *
-     * @return int|string
-     * @throws InvalidDomainObjectException
-     */
-    protected function getUserId()
-    {
-        $token = $this->getSecurityContext()->getToken();
-        if (!$token) {
-            return null;
-        }
-        $user = $token->getUser();
-        if (!is_object($user) || !is_a($user, $this->metadataProvider->getUserClass())) {
-            throw new InvalidDomainObjectException(
-                sprintf(
-                    '$user must be an instance of %s.',
-                    $this->metadataProvider->getUserClass()
-                )
-            );
-        }
-
-        return $this->objectIdAccessor->getId($user);
     }
 
     /**

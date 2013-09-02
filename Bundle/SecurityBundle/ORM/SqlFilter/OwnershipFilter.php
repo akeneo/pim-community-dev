@@ -16,15 +16,27 @@ class OwnershipFilter extends SQLFilter
 
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
-        if (!($targetEntity->reflClass->getName() == "Oro\\Bundle\\UserBundle\\Entity\\User")) {
+        return ''; //TODO: Removed after new acl implemented
+        /*if (!($targetEntity->reflClass->getName() == "OroCRM\\Bundle\\AccountBundle\\Entity\\Account")) {
             return '';
-        }
+        }*/
 
         return $this->builder->buildFilterConstraint($targetEntity->reflClass->getName(), $targetTableAlias);
     }
 
+    /**
+     * @param OwnershipSqlFilterBuilder $builder
+     */
     public function setBuilder(OwnershipSqlFilterBuilder $builder)
     {
         $this->builder = $builder;
+    }
+
+    /**
+     * Setting current user id parameter to prevent doctrine queries caching with current filter for all users
+     */
+    public function setUserParameter()
+    {
+        $this->setParameter('user_id', $this->builder->getUserId());
     }
 }
