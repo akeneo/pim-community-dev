@@ -1,7 +1,7 @@
 parameters:
     oro_workflow.post_action_factory.class: Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory
 
-    oro_workflow.post_action.list.class: Oro\Bundle\WorkflowBundle\Model\PostAction\ListExecutor
+    oro_workflow.post_action.tree.class: Oro\Bundle\WorkflowBundle\Model\PostAction\TreeExecutor
     oro_workflow.post_action.configurable.class: Oro\Bundle\WorkflowBundle\Model\PostAction\Configurable
     oro_workflow.post_action.assign_value.class: Oro\Bundle\WorkflowBundle\Model\PostAction\AssignValue
     oro_workflow.post_action.unset_value.class: Oro\Bundle\WorkflowBundle\Model\PostAction\UnsetValue
@@ -16,12 +16,12 @@ services:
             - @service_container
             - []
 
-    oro_workflow.post_action.list:
-        class: %oro_workflow.post_action.list.class%
+    oro_workflow.post_action.tree:
+        class: %oro_workflow.post_action.tree.class%
         arguments:
             - @?logger
         tags:
-            - { name: oro_workflow.post_action, alias: list }
+            - { name: oro_workflow.post_action, alias: tree }
 
     oro_workflow.post_action.configurable:
         class: %oro_workflow.post_action.configurable.class%
