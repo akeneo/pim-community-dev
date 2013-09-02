@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
@@ -16,6 +17,13 @@ use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Acl(
+ *      id="pim_catalog_product",
+ *      name="Product manipulation",
+ *      description="Product manipulation",
+ *      parent="pim_catalog"
+ * )
  */
 class ProductController extends Controller
 {
@@ -26,7 +34,12 @@ class ProductController extends Controller
      * List product attributes
      *
      * @param Request $request the request
-     *
+     * @Acl(
+     *      id="pim_catalog_product_index",
+     *      name="View product list",
+     *      description="View product list",
+     *      parent="pim_catalog_product"
+     * )
      * @return template
      */
     public function indexAction(Request $request)
@@ -58,8 +71,13 @@ class ProductController extends Controller
      *
      * @param Request $request
      * @param string  $dataLocale
-     *
      * @Template
+     * @Acl(
+     *      id="pim_catalog_product_create",
+     *      name="Create a product",
+     *      description="Create a product",
+     *      parent="pim_catalog_product"
+     * )
      * @return array
      */
     public function createAction(Request $request, $dataLocale)
@@ -102,8 +120,13 @@ class ProductController extends Controller
      *
      * @param Request $request
      * @param integer $id
-     *
      * @Template
+     * @Acl(
+     *      id="pim_catalog_product_edit",
+     *      name="Edit a product",
+     *      description="Edit a product",
+     *      parent="pim_catalog_product"
+     * )
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -181,7 +204,12 @@ class ProductController extends Controller
      *
      * @param Request $request The request object
      * @param integer $id      The product id to which add attributes
-     *
+     * @Acl(
+     *      id="pim_catalog_product_add_attribute",
+     *      name="Add an attribute to a product",
+     *      description="Add an attribute to a product",
+     *      parent="pim_catalog_product"
+     * )
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addProductAttributesAction(Request $request, $id)
@@ -211,7 +239,12 @@ class ProductController extends Controller
      *
      * @param Request $request
      * @param integer $id
-     *
+     * @Acl(
+     *      id="pim_catalog_product_remove",
+     *      name="Remove a product",
+     *      description="Remove a product",
+     *      parent="pim_catalog_product"
+     * )
      * @return Response
      */
     public function removeAction(Request $request, $id)
@@ -231,7 +264,12 @@ class ProductController extends Controller
      *
      * @param integer $productId
      * @param integer $attributeId
-     *
+     * @Acl(
+     *      id="pim_catalog_product_remove_attribute",
+     *      name="Remove a product's attribute",
+     *      description="Remove a product's attribute",
+     *      parent="pim_catalog_product"
+     * )
      * @return array
      */
     public function removeProductAttributeAction($productId, $attributeId)
@@ -268,6 +306,12 @@ class ProductController extends Controller
      *
      * @ParamConverter("parent", class="PimCatalogBundle:Category", options={"id" = "category_id"})
      * @Template
+     * @Acl(
+     *      id="pim_catalog_product_categories_view",
+     *      name="Consult the categories of a product",
+     *      description="Consult the categories of a product",
+     *      parent="pim_catalog_product"
+     * )
      * @return array
      */
     public function listCategoriesAction(Request $request, $id, Category $parent)
