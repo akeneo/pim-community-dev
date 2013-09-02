@@ -124,6 +124,12 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data, $this->workflowItem->getSerializedData());
     }
 
+    public function testGetResult()
+    {
+        $this->assertInstanceOf('Doctrine\Common\Collections\Collection', $this->workflowItem->getResult());
+        $this->assertTrue($this->workflowItem->getResult()->isEmpty());
+    }
+
     public function testClosed()
     {
         $this->assertFalse($this->workflowItem->isClosed());

@@ -79,6 +79,21 @@ class ParameterPassTest extends \PHPUnit_Framework_TestCase
                 ),
                 'prefix' => 'prefix'
             ),
+            'data with root ignore prefix' => array(
+                'sourceData' => array(
+                    'a' => '$.path.component',
+                    'b' => array(
+                        'c' => '$.another.path.component'
+                    )
+                ),
+                'expectedData' => array(
+                    'a' => array('path', 'component'),
+                    'b' => array(
+                        'c' => array('another', 'path', 'component'),
+                    )
+                ),
+                'prefix' => 'prefix'
+            ),
         );
     }
 }

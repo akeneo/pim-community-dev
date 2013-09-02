@@ -55,7 +55,10 @@ class ParameterPass implements PassInterface
     protected function convertParameterToPropertyPath($string)
     {
         $property = substr($string, 1);
-        if ($this->prefix) {
+
+        if (0 === strpos($property, '.')) {
+            $property = substr($property, 1);
+        } elseif ($this->prefix) {
             $property = $this->prefix . '.' .  $property;
         }
 

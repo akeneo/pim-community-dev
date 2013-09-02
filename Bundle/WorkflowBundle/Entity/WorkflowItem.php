@@ -104,6 +104,11 @@ class WorkflowItem
     protected $data;
 
     /**
+     * @var Collection
+     */
+    protected $result;
+
+    /**
      * @var WorkflowAwareSerializer
      */
     protected $serializer;
@@ -121,6 +126,7 @@ class WorkflowItem
         $this->bindEntities = new ArrayCollection();
         $this->closed = false;
         $this->data = new WorkflowData();
+        $this->result = new ArrayCollection();
     }
 
     /**
@@ -350,6 +356,17 @@ class WorkflowItem
     {
         $this->serializer = $serializer;
         $this->serializeFormat = $format;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getResult()
+    {
+        if (!$this->result) {
+            $this->result = new ArrayCollection();
+        }
+        return $this->result;
     }
 
     /**
