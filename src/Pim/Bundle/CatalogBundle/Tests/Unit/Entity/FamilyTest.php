@@ -220,15 +220,60 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
             )
         );
 
+        $expectedAttrRequirements = array(
+            'name_mobile'           => $mobileName,
+            'description_mobile'    => $mobileDescription,
+            'name_ecommerce'        => $ecommerceName,
+            'description_ecommerce' => $ecommerceDescription,
+        );
         $this->assertEquals(
-            array(
-                'name_mobile'           => $mobileName,
-                'description_mobile'    => $mobileDescription,
-                'name_ecommerce'        => $ecommerceName,
-                'description_ecommerce' => $ecommerceDescription,
-            ),
+            $expectedAttrRequirements,
             $this->family->getAttributeRequirements()
         );
+
+        // test add method
+        $ipadName = $this->getAttributeRequirementMock('ipad', 'name');
+        $this->family->addAttributeRequirement($ipadName);
+
+        $expectedAttrRequirements['name_ipad'] = $ipadName;
+        $this->assertEquals(
+            $expectedAttrRequirements,
+            $this->family->getAttributeRequirements()
+        );
+    }
+
+    /**
+     * Test related method
+     */
+    public function testGetVersion()
+    {
+        $this->assertNull($this->family->getVersion());
+    }
+
+    /**
+     * Test getter/setter for created property
+     */
+    public function testCreated()
+    {
+        $this->assertNull($this->family->getCreated());
+
+        // change value and assert new
+        $newCreated = new \Datetime();
+        $this->assertEntity($this->family->setCreated($newCreated));
+        $this->assertEquals($newCreated, $this->family->getCreated());
+    }
+
+    /**
+     * Test getter/setter for updated property
+     */
+    public function testUpdated()
+    {
+        $this->assertEmpty($this->family->getUpdated());
+
+        // Change value and assert new
+        $newUpdated = new \Datetime();
+        $this->assertEntity($this->family->setUpdated($newUpdated));
+        $this->assertEquals($newUpdated, $this->family->getUpdated());
     }
 
     /**
