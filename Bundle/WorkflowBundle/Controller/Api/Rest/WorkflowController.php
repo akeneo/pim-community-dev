@@ -3,6 +3,8 @@
 namespace Oro\Bundle\WorkflowBundle\Controller\Api\Rest;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -30,6 +32,7 @@ class WorkflowController extends FOSRestController
     /**
      * Returns:
      * - HTTP_OK (200) response: array('workflowItemId' => workflowItemId)
+     * - HTTP_BAD_REQUEST (400) response: array('message' => errorMessageString)
      * - HTTP_FORBIDDEN (403) response: array('message' => errorMessageString)
      * - HTTP_NOT_FOUND (404) response: array('message' => errorMessageString)
      * - HTTP_INTERNAL_SERVER_ERROR (500) response: array('message' => errorMessageString)
@@ -39,31 +42,36 @@ class WorkflowController extends FOSRestController
      * @AclAncestor("oro_workflow")
      *
      * @param string $workflowName
-     * @param string $entityClass
-     * @param mixed $entityId
      * @param string $transitionName
      * @return Response
      */
-    public function startAction($workflowName, $entityClass, $entityId, $transitionName)
+    public function startAction($workflowName, $transitionName)
     {
         try {
-            /** @var EntityManager $em */
-            $em = $this->getDoctrine()->getManagerForClass($entityClass);
-            $entity = $em->getReference($entityClass, $entityId);
-
             /** @var WorkflowManager $workflowManager */
             $workflowManager = $this->get('oro_workflow.manager');
+
+            $entity = null;
+            $entityClass = $this->getRequest()->get('entityClass');
+            $entityId = $this->getRequest()->get('entityId');
+
+            if ($entityClass && $entityId) {
+                $entity = $this->getEntityReference($entityClass, $entityId);
+            }
+
             $workflowItem = $workflowManager->startWorkflow($workflowName, $entity, $transitionName);
+        } catch (HttpException $e) {
+            return $this->handleError($e->getMessage(), $e->getStatusCode());
         } catch (WorkflowNotFoundException $e) {
-            return $this->handleNotFoundException($e->getMessage());
+            return $this->handleError($e->getMessage(), Codes::HTTP_NOT_FOUND);
         } catch (UnknownAttributeException $e) {
-            return $this->handleNotFoundException($e->getMessage());
+            return $this->handleError($e->getMessage(), Codes::HTTP_BAD_REQUEST);
         } catch (UnknownTransitionException $e) {
-            return $this->handleNotFoundException($e->getMessage());
+            return $this->handleError($e->getMessage(), Codes::HTTP_BAD_REQUEST);
         } catch (ForbiddenTransitionException $e) {
-            return $this->handleForbiddenException($e->getMessage());
+            return $this->handleError($e->getMessage(), Codes::HTTP_FORBIDDEN);
         } catch (\Exception $e) {
-            return $this->handleDefaultException($e);
+            return $this->handleError($e->getMessage(), Codes::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $this->handleView(
@@ -72,8 +80,30 @@ class WorkflowController extends FOSRestController
     }
 
     /**
+     * Gets reference to entity
+     *
+     * @param string $entityClass $entityId
+     * @param mixed $entityId
+     * @return object
+     * @throws BadRequestHttpException If entity class is invalid
+     */
+    protected function getEntityReference($entityClass, $entityId)
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManagerForClass($entityClass);
+        if (!$em) {
+            throw new BadRequestHttpException(
+                sprintf('Class "%s" is not manageable entity', $entityClass)
+            );
+        }
+
+        return $em->getReference($entityClass, $entityId);
+    }
+
+    /**
      * Returns:
      * - HTTP_OK (200) response: true
+     * - HTTP_BAD_REQUEST (400) response: array('message' => errorMessageString)
      * - HTTP_FORBIDDEN (403) response: array('message' => errorMessageString)
      * - HTTP_NOT_FOUND (404) response: array('message' => errorMessageString)
      * - HTTP_INTERNAL_SERVER_ERROR (500) response: array('message' => errorMessageString)
@@ -92,17 +122,32 @@ class WorkflowController extends FOSRestController
         try {
             $this->get('oro_workflow.manager')->transit($workflowItem, $transitionName);
         } catch (WorkflowNotFoundException $e) {
-            return $this->handleNotFoundException($e->getMessage());
+            return $this->handleError($e->getMessage(), Codes::HTTP_NOT_FOUND);
         } catch (UnknownTransitionException $e) {
-            return $this->handleNotFoundException($e->getMessage());
+            return $this->handleError($e->getMessage(), Codes::HTTP_BAD_REQUEST);
         } catch (ForbiddenTransitionException $e) {
-            return $this->handleForbiddenException($e->getMessage());
+            return $this->handleError($e->getMessage(), Codes::HTTP_FORBIDDEN);
         } catch (\Exception $e) {
-            return $this->handleDefaultException($e);
+            return $this->handleError($e->getMessage(), Codes::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return $this->handleView(
             $this->view(true, Codes::HTTP_OK)
+        );
+    }
+
+    /**
+     * @param string $message
+     * @param int $code
+     * @return Response
+     */
+    protected function handleError($message, $code)
+    {
+        return $this->handleView(
+            $this->view(
+                $this->formatErrorResponse($message),
+                $code
+            )
         );
     }
 
@@ -113,47 +158,5 @@ class WorkflowController extends FOSRestController
     protected function formatErrorResponse($message)
     {
         return array('message' => $message);
-    }
-
-    /**
-     * @param string $message
-     * @return Response
-     */
-    protected function handleNotFoundException($message)
-    {
-        return $this->handleView(
-            $this->view(
-                $this->formatErrorResponse($message),
-                Codes::HTTP_NOT_FOUND
-            )
-        );
-    }
-
-    /**
-     * @param string $message
-     * @return Response
-     */
-    protected function handleForbiddenException($message)
-    {
-        return $this->handleView(
-            $this->view(
-                $this->formatErrorResponse($message),
-                Codes::HTTP_FORBIDDEN
-            )
-        );
-    }
-
-    /**
-     * @param \Exception $exception
-     * @return Response
-     */
-    protected function handleDefaultException(\Exception $exception)
-    {
-        return $this->handleView(
-            $this->view(
-                $this->formatErrorResponse($exception->getMessage()),
-                Codes::HTTP_INTERNAL_SERVER_ERROR
-            )
-        );
     }
 }
