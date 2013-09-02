@@ -196,7 +196,7 @@ class ProductManager extends FlexibleManager
     public function addMissingPrices(ProductInterface $product)
     {
         foreach ($product->getValues() as $value) {
-            if ($value->getAttribute()->getAttributeType() === 'pim_product_price_collection') {
+            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
                 $activeCurrencies = $this->currencyManager->getActiveCodes();
                 $value->addMissingPrices($activeCurrencies);
                 $value->removeDisabledPrices($activeCurrencies);
@@ -249,7 +249,7 @@ class ProductManager extends FlexibleManager
      */
     public function getIdentifierAttribute()
     {
-        return $this->getAttributeRepository()->findOneBy(array('attributeType' => 'pim_product_identifier'));
+        return $this->getAttributeRepository()->findOneBy(array('attributeType' => 'pim_catalog_identifier'));
     }
 
     /**

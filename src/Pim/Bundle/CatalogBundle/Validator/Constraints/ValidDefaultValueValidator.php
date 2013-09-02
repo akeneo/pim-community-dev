@@ -14,12 +14,12 @@ use Symfony\Component\Validator\ConstraintValidator;
 class ValidDefaultValueValidator extends ConstraintValidator
 {
     protected $methodMapping = array(
-        'pim_product_date'             => 'validateDate',
-        'pim_product_price_collection' => 'validateNumber',
-        'pim_product_number'           => 'validateNumber',
-        'pim_product_metric'           => 'validateNumber',
-        'pim_product_text'             => 'validateText',
-        'pim_product_textarea'         => 'validateText'
+        'pim_catalog_date'             => 'validateDate',
+        'pim_catalog_price_collection' => 'validateNumber',
+        'pim_catalog_number'           => 'validateNumber',
+        'pim_catalog_metric'           => 'validateNumber',
+        'pim_catalog_text'             => 'validateText',
+        'pim_catalog_textarea'         => 'validateText'
     );
 
     /**
@@ -122,7 +122,7 @@ class ValidDefaultValueValidator extends ConstraintValidator
             }
         }
 
-        if ($entity->getAttributeType() === 'pim_product_text' && $entity->getValidationRule() == 'regexp') {
+        if ($entity->getAttributeType() === 'pim_catalog_text' && $entity->getValidationRule() == 'regexp') {
             if (@preg_match($entity->getValidationRegexp(), $value)) {
                 return;
             }

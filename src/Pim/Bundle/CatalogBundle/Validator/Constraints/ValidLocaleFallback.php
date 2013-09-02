@@ -34,7 +34,7 @@ class ValidLocaleFallback extends Constraint
      */
     public function validatedBy()
     {
-        return 'pim_product.validator.valid_locale_fallback_validator';
+        return 'pim_catalog.validator.valid_locale_fallback_validator';
     }
 
     /**

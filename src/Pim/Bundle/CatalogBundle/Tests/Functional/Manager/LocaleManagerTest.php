@@ -39,7 +39,7 @@ class LocaleManagerTest extends WebTestCase
 
         $this->container = static::$kernel->getContainer();
 
-        $this->localeManager = $this->container->get('pim_product.manager.locale');
+        $this->localeManager = $this->container->get('pim_catalog.manager.locale');
     }
 
     /**

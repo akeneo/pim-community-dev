@@ -23,8 +23,8 @@ class FileGuesser implements ConstraintGuesserInterface
         return in_array(
             $attribute->getAttributeType(),
             array(
-                'pim_product_file',
-                'pim_product_image',
+                'pim_catalog_file',
+                'pim_catalog_image',
             )
         );
     }

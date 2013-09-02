@@ -223,7 +223,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                 'label'         => 'Name',
                 'sortOrder'     => 0,
                 'scopable'      => false,
-                'attributeType' => 'pim_product_price_collection'
+                'attributeType' => 'pim_catalog_price_collection'
             )
         );
 

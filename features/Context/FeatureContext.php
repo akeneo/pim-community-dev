@@ -123,6 +123,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function getMailRecorder()
     {
-        return $this->getContainer()->get('pim_product.mailer.mail_recorder');
+        return $this->getContainer()->get('pim_catalog.mailer.mail_recorder');
     }
 }

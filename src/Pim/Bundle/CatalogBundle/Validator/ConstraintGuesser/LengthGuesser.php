@@ -23,9 +23,9 @@ class LengthGuesser implements ConstraintGuesserInterface
         return in_array(
             $attribute->getAttributeType(),
             array(
-                'pim_product_text',
-                'pim_product_textarea',
-                'pim_product_identifier',
+                'pim_catalog_text',
+                'pim_catalog_textarea',
+                'pim_catalog_identifier',
             )
         );
     }

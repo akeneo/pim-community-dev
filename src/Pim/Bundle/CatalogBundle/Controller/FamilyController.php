@@ -33,7 +33,7 @@ class FamilyController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $manager    = $this->container->get('pim_product.manager.product');
+                $manager    = $this->container->get('pim_catalog.manager.product');
                 $identifier = $manager->getIdentifierAttribute();
                 $family->addAttribute($identifier);
                 $this->persist($family);
@@ -44,7 +44,7 @@ class FamilyController extends Controller
                     $pendingManager->createVersionAndAudit($pending);
                 }
 
-                return $this->redirectToRoute('pim_product_family_edit', array('id' => $family->getId()));
+                return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
             }
         }
 
@@ -66,7 +66,7 @@ class FamilyController extends Controller
     public function editAction(Request $request, $id)
     {
         $family   = $this->findOr404('PimCatalogBundle:Family', $id);
-        $datagrid = $this->getDataAuditDatagrid($family, 'pim_product_family_edit', array('id' => $family->getId()));
+        $datagrid = $this->getDataAuditDatagrid($family, 'pim_catalog_family_edit', array('id' => $family->getId()));
         $datagridView = $datagrid->createView();
 
         if ('json' === $request->getRequestFormat()) {
@@ -74,7 +74,7 @@ class FamilyController extends Controller
         }
 
         $families = $this->getRepository('PimCatalogBundle:Family')->getIdToLabelOrderedByLabel();
-        $channels = $this->get('pim_product.manager.channel')->getChannels();
+        $channels = $this->get('pim_catalog.manager.channel')->getChannels();
         $form = $this->createForm(
             'pim_family',
             $family,
@@ -95,7 +95,7 @@ class FamilyController extends Controller
                     $pendingManager->createVersionAndAudit($pending);
                 }
 
-                return $this->redirectToRoute('pim_product_family_edit', array('id' => $id));
+                return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $id));
             }
         }
 
@@ -124,7 +124,7 @@ class FamilyController extends Controller
 
         $this->addFlash('success', 'Family successfully removed');
 
-        return $this->redirectToRoute('pim_product_family_create');
+        return $this->redirectToRoute('pim_catalog_family_create');
     }
 
     /**
@@ -152,7 +152,7 @@ class FamilyController extends Controller
 
         $this->flush();
 
-        return $this->redirectToRoute('pim_product_family_edit', array('id' => $family->getId()));
+        return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
     }
 
     /**
@@ -170,7 +170,7 @@ class FamilyController extends Controller
 
         if (false === $family->hasAttribute($attribute)) {
             $this->addFlash('error', sprintf('Attribute "%s" is not attached to "%s" family', $attribute, $family));
-        } elseif ($attribute->getAttributeType() === 'pim_product_identifier') {
+        } elseif ($attribute->getAttributeType() === 'pim_catalog_identifier') {
             $this->addFlash('error', 'Identifier attribute can not be removed from a family.');
         } elseif ($attribute === $family->getAttributeAsLabel()) {
             $this->addFlash('error', 'You cannot remove this attribute because it is used as label for the family.');
@@ -181,6 +181,6 @@ class FamilyController extends Controller
             $this->addFlash('success', 'The family is successfully updated.');
         }
 
-        return $this->redirectToRoute('pim_product_family_edit', array('id' => $family->getId()));
+        return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
     }
 }

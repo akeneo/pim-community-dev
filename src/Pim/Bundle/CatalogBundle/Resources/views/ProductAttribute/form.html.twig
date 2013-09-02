@@ -3,15 +3,15 @@
 {% block content %}
     {{ JSFV(form) }}
     <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
-        path('pim_product_productattribute_edit', { id: form.vars.value.id }) :
-        path('pim_product_productattribute_create') }}" method="POST">
+        path('pim_catalog_productattribute_edit', { id: form.vars.value.id }) :
+        path('pim_catalog_productattribute_create') }}" method="POST">
 
         {% set title = 'Attributes'|trans %}
 
         {% set buttons %}
-            {{ elements.backLink(path('pim_product_productattribute_index')) }}
-            {% if form.vars.value.id and form.attributeType.vars.value != 'pim_product_identifier' %}
-                {{ elements.deleteLink(path('pim_product_productattribute_remove', { id: form.vars.value.id }), 'Are you sure you want to delete the attribute %attribute% ?'|trans({'%attribute%': form.vars.value.label})) }}
+            {{ elements.backLink(path('pim_catalog_productattribute_index')) }}
+            {% if form.vars.value.id and form.attributeType.vars.value != 'pim_catalog_identifier' %}
+                {{ elements.deleteLink(path('pim_catalog_productattribute_remove', { id: form.vars.value.id }), 'Are you sure you want to delete the attribute %attribute% ?'|trans({'%attribute%': form.vars.value.label})) }}
             {% endif %}
             {{ elements.submitBtn }}
         {% endset %}

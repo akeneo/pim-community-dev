@@ -21,25 +21,25 @@
         <div id="tree"
             data-tree="manage"
             data-assets-path="{{ asset('bundles/pimcatalog/') }}"
-            data-edit-url="{{ path('pim_product_categorytree_edit', { id: 0 }) }}"
-            data-create-url="{{ path('pim_product_categorytree_create') }}"
-            data-move-url="{{ path('pim_product_categorytree_movenode') }}"
-            data-listtree-url="{{ path('pim_product_categorytree_listtree', { '_format': 'json' }) }}"
+            data-edit-url="{{ path('pim_catalog_categorytree_edit', { id: 0 }) }}"
+            data-create-url="{{ path('pim_catalog_categorytree_create') }}"
+            data-move-url="{{ path('pim_catalog_categorytree_movenode') }}"
+            data-listtree-url="{{ path('pim_catalog_categorytree_listtree', { '_format': 'json' }) }}"
             data-no-tree-message="{{ 'No tree available'|trans }}"
             data-edit-label="{{ 'Edit'|trans }}"
-            data-children-url="{{ path('pim_product_categorytree_children', { '_format': 'json' }) }}"
+            data-children-url="{{ path('pim_catalog_categorytree_children', { '_format': 'json' }) }}"
             {% if form.vars.value.id %}data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %}data-node-id="{{ form.vars.value.parent.id }}"{% endif %}
         ></div>
 
         <div id="category-form">
             {{ JSFV(form) }}
             <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
-                path('pim_product_categorytree_edit', { id: form.vars.value.id }) :
-                path('pim_product_categorytree_create', { parent: parentId }) }}" method="POST">
+                path('pim_catalog_categorytree_edit', { id: form.vars.value.id }) :
+                path('pim_catalog_categorytree_create', { parent: parentId }) }}" method="POST">
 
                 {% set buttons %}
                     {% if form.vars.value.id %}
-                        {{ elements.deleteLink(path('pim_product_categorytree_remove', { id: form.vars.value.id }), 'Are you sure you want to delete this category ?'|trans) }}
+                        {{ elements.deleteLink(path('pim_catalog_categorytree_remove', { id: form.vars.value.id }), 'Are you sure you want to delete this category ?'|trans) }}
                     {% endif %}
                     {{ elements.submitBtn }}
                 {% endset %}

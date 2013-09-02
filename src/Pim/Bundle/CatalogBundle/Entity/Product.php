@@ -133,7 +133,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         $values = array_filter(
             $this->getValues()->toArray(),
             function ($value) {
-                return $value->getAttribute()->getAttributeType() === 'pim_product_identifier';
+                return $value->getAttribute()->getAttributeType() === 'pim_catalog_identifier';
             }
         );
 
@@ -343,7 +343,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      */
     public function isAttributeRemovable(ProductAttribute $attribute)
     {
-        if ('pim_product_identifier' === $attribute->getAttributeType()) {
+        if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
             return false;
         }
 

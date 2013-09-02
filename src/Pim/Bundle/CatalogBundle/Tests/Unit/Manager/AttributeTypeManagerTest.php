@@ -62,8 +62,8 @@ class AttributeTypeManagerTest extends WebTestCase
         static::$kernel = static::createKernel(array('environment' => 'dev'));
         static::$kernel->boot();
 
-        $this->productManager = static::$kernel->getContainer()->get('pim_product.manager.product');
-        $this->localeManager = static::$kernel->getContainer()->get('pim_product.manager.locale');
+        $this->productManager = static::$kernel->getContainer()->get('pim_catalog.manager.product');
+        $this->localeManager = static::$kernel->getContainer()->get('pim_catalog.manager.locale');
         $this->factory = static::$kernel->getContainer()
             ->get('oro_flexibleentity.attributetype.factory');
 
@@ -99,11 +99,11 @@ class AttributeTypeManagerTest extends WebTestCase
      */
     public function testCreateAttributeFromFormData()
     {
-        $data = array('attributeType' => 'pim_product_metric');
+        $data = array('attributeType' => 'pim_catalog_metric');
         $attribute = $this->attTypeManager->createAttributeFromFormData($data);
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', $attribute);
 
-        $attribute = $this->createProductAttribute('pim_product_price_collection');
+        $attribute = $this->createProductAttribute('pim_catalog_price_collection');
         $newAttribute = $this->attTypeManager->createAttributeFromFormData($attribute);
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', $newAttribute);
         $this->assertEquals($attribute, $newAttribute);
@@ -118,7 +118,7 @@ class AttributeTypeManagerTest extends WebTestCase
      */
     public function testPrepareFormData()
     {
-        $data = array('attributeType' => 'pim_product_multiselect');
+        $data = array('attributeType' => 'pim_catalog_multiselect');
         $data = $this->attTypeManager->prepareFormData($data);
         $this->assertNotEmpty($data);
         $this->assertArrayHasKey('options', $data);

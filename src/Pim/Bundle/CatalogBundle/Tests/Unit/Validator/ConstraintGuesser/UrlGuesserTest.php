@@ -28,7 +28,7 @@ class UrlGuesserTest extends ConstraintGuesserTest
     {
         $this->assertTrue(
             $this->target->supportAttribute(
-                $this->getAttributeMock(array('attributeType' => 'pim_product_text',))
+                $this->getAttributeMock(array('attributeType' => 'pim_catalog_text',))
             )
         );
     }
@@ -38,7 +38,7 @@ class UrlGuesserTest extends ConstraintGuesserTest
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
                 array(
-                    'attributeType'  => 'pim_product_text',
+                    'attributeType'  => 'pim_catalog_text',
                     'validationRule' => 'url',
                 )
             )
@@ -52,7 +52,7 @@ class UrlGuesserTest extends ConstraintGuesserTest
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
                 array(
-                    'attributeType'  => 'pim_product_text',
+                    'attributeType'  => 'pim_catalog_text',
                     'validationRule' => null,
                 )
             )

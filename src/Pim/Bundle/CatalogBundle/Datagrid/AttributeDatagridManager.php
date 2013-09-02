@@ -52,8 +52,8 @@ class AttributeDatagridManager extends DatagridManager
 
         return array(
             new FieldProperty($fieldId),
-            new UrlProperty('edit_link', $this->router, 'pim_product_productattribute_edit', array('id')),
-            new UrlProperty('delete_link', $this->router, 'pim_product_productattribute_remove', array('id')),
+            new UrlProperty('edit_link', $this->router, 'pim_catalog_productattribute_edit', array('id')),
+            new UrlProperty('delete_link', $this->router, 'pim_catalog_productattribute_remove', array('id')),
         );
     }
 

@@ -38,7 +38,7 @@ class CurrencyManagerTest extends WebTestCase
 
         $this->container = static::$kernel->getContainer();
 
-        $this->currencyManager = $this->container->get('pim_product.manager.currency');
+        $this->currencyManager = $this->container->get('pim_catalog.manager.currency');
     }
 
     /**

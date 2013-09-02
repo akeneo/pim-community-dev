@@ -34,11 +34,11 @@ class BooleanType extends OroBooleanType
             ),
             array(
                 'name'      => 'availableLocales',
-                'fieldType' => 'pim_product_available_locales'
+                'fieldType' => 'pim_catalog_available_locales'
             ),
             array(
                 'name'      => 'scopable',
-                'fieldType' => 'pim_product_scopable',
+                'fieldType' => 'pim_catalog_scopable',
                 'options'   => array(
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
@@ -62,6 +62,6 @@ class BooleanType extends OroBooleanType
      */
     public function getName()
     {
-        return 'pim_product_boolean';
+        return 'pim_catalog_boolean';
     }
 }
