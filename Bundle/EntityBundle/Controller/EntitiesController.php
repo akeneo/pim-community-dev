@@ -34,7 +34,11 @@ class EntitiesController extends Controller
 {
     /**
      * Lists all Flexible entities.
-     * @Route("/", name="oro_entity_index")
+     * @Route(
+     *      "/{id}",
+     *      name="oro_entity_index",
+     *      defaults={"id"=0}
+     * )
      * @Acl(
      *      id="oro_entity_index",
      *      name="View custom entity",
@@ -45,10 +49,34 @@ class EntitiesController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /** @var  ConfigDatagridManager $datagrid */
-        $datagridManager = $this->get('oro_entity_config.datagrid.manager');
+        /** @var EntityConfigModel $entity */
+        $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($request->get('id'));
 
-        $datagrid        = $datagridManager->getDatagrid();
+        /** @var ConfigProvider $extendConfigProvider */
+        $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
+        $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
+
+//        var_dump($entity->getClassName());
+//        var_dump($extendConfig->get('extend_class'));
+//        var_dump($extendConfig);
+//        die;
+
+        /** @var  ConfigDatagridManager $datagrid */
+        $datagridManager = $this->get('oro_entity.custom_datagrid.manager');
+
+        $datagrid = $datagridManager->getDatagrid();
+
+        $datagrid->getRouteGenerator()->setRouteParameters(array('id' => $request->get('id')));
+        $datagrid->setEntityName($extendConfig->get('extend_class'));
+
+
+        var_dump($datagrid->getRouteGenerator());
+
+
+
+        var_dump($datagrid->getEntityName());
+        die;
+
         $view            = 'json' == $request->getRequestFormat()
             ? 'OroGridBundle:Datagrid:list.json.php'
             : 'OroEntityBundle:Entities:index.html.twig';
@@ -56,9 +84,14 @@ class EntitiesController extends Controller
         return $this->render(
             $view,
             array(
-                'buttonConfig' => $datagridManager->getLayoutActions(),
+                //'buttonConfig' => $datagridManager->getLayoutActions(),
                 'datagrid'     => $datagrid->createView()
             )
         );
+    }
+
+    public function viewAction(Request $request)
+    {
+
     }
 }

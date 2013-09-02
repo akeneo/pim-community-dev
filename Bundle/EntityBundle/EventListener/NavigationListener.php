@@ -17,14 +17,22 @@ class NavigationListener
     /** @var ConfigProvider $entityConfigProvider */
     protected $entityConfigProvider = null;
 
+    /** @var ConfigProvider $entityExtendProvider */
+    protected $entityExtendProvider = null;
+
     /**
      * @param EntityManager $entityManager
      * @param ConfigProvider $entityConfigProvider
+     * @param ConfigProvider $entityExtendProvider
      */
-    public function __construct(EntityManager $entityManager, ConfigProvider $entityConfigProvider)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        ConfigProvider $entityConfigProvider,
+        ConfigProvider $entityExtendProvider
+    ) {
         $this->em                   = $entityManager;
         $this->entityConfigProvider = $entityConfigProvider;
+        $this->entityExtendProvider = $entityExtendProvider;
     }
 
     /**
@@ -41,12 +49,15 @@ class NavigationListener
             $entities = $this->em->getRepository(EntityConfigModel::ENTITY_NAME)->findAll();
             if ($entities) {
                 foreach ($entities as $entity) {
-                    $config = $this->entityConfigProvider->getConfig($entity->getClassname());
+                    if ($this->entityExtendProvider->getConfig($entity->getClassName())->is('is_extend')) {
+                        continue;
+                    }
 
+                    $config = $this->entityConfigProvider->getConfig($entity->getClassname());
                     $childs[$config->get('label')] = array(
                         'label'   => $config->get('label'),
                         'options' => array(
-                            'label'   => $config->get('label') . '<i class="' . $config->get(
+                            'label'           => $config->get('label') . '<i class="' . $config->get(
                                 'icon'
                             ) . ' hide-text pull-right"></i>',
                             'route'           => 'oro_entity_index',
@@ -55,7 +66,6 @@ class NavigationListener
                             ),
                             'extras'          => array(
                                 'safe_label' => true,
-                                //'icon' => $config->get('icon'),
                             ),
                         )
                     );

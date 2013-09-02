@@ -21,8 +21,7 @@ use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
  * @Config(
  *      routeName="oro_user_group_index",
  *      defaultValues={
- *          "entity"={"icon"="group", "label"="Group", "plural_label"="Groups"},
- *          "extend"= {"is_extend"=true},
+ *          "entity"={"label"="Group", "plural_label"="Groups"},
  *          "ownership"={
  *              "owner_type"="BUSINESS_UNIT",
  *              "owner_field_name"="owner",
