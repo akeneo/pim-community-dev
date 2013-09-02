@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 
@@ -17,6 +18,13 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Acl(
+ *      id="pim_catalog_category",
+ *      name="Category manipulation",
+ *      description="Category manipulation",
+ *      parent="pim_catalog"
+ * )
  */
 class CategoryTreeController extends Controller
 {
@@ -25,8 +33,13 @@ class CategoryTreeController extends Controller
      * allow to send back the tree where the node belongs with a selected
      * attribute
      * @param Request $request
-     *
      * @Template
+     * @Acl(
+     *      id="pim_catalog_category_list",
+     *      name="View tree list",
+     *      description="View tree list",
+     *      parent="pim_catalog_category"
+     * )
      * @return array
      */
     public function listTreeAction(Request $request)
@@ -52,7 +65,12 @@ class CategoryTreeController extends Controller
     /**
      * Move a node
      * @param Request $request
-     *
+     * @Acl(
+     *      id="pim_catalog_category_move",
+     *      name="Move category",
+     *      description="Move category",
+     *      parent="pim_catalog_category"
+     * )
      * @return Response
      */
     public function moveNodeAction(Request $request)
@@ -82,6 +100,12 @@ class CategoryTreeController extends Controller
      * @param Request $request
      *
      * @Template
+     * @Acl(
+     *      id="pim_catalog_category_children",
+     *      name="See category children",
+     *      description="See category children",
+     *      parent="pim_catalog_category"
+     * )
      * @return array
      */
     public function childrenAction(Request $request)
@@ -138,6 +162,12 @@ class CategoryTreeController extends Controller
      * @param Category $category
      *
      * @Template
+     * @Acl(
+     *      id="pim_catalog_category_products",
+     *      name="See category's products",
+     *      description="See category's products",
+     *      parent="pim_catalog_category"
+     * )
      * @return array
      */
     public function listItemsAction(Category $category)
@@ -160,6 +190,12 @@ class CategoryTreeController extends Controller
      * @param integer $parent
      *
      * @Template("PimCatalogBundle:CategoryTree:edit.html.twig")
+     * @Acl(
+     *      id="pim_catalog_category_create",
+     *      name="Create a category",
+     *      description="Create a category",
+     *      parent="pim_catalog_category"
+     * )
      * @return array
      */
     public function createAction(Request $request, $parent = null)
@@ -208,8 +244,13 @@ class CategoryTreeController extends Controller
      *
      * @param Request  $request
      * @param Category $category
-     *
      * @Template
+     * @Acl(
+     *      id="pim_catalog_category_edit",
+     *      name="Edit a category",
+     *      description="Edit a category",
+     *      parent="pim_catalog_category"
+     * )
      * @return array
      */
     public function editAction(Request $request, Category $category)
@@ -258,7 +299,12 @@ class CategoryTreeController extends Controller
      * Remove category tree
      *
      * @param Category $category
-     *
+     * @Acl(
+     *      id="pim_catalog_category_remove",
+     *      name="Remove a category",
+     *      description="Remove a category",
+     *      parent="pim_catalog_category"
+     * )
      * @return RedirectResponse
      */
     public function removeAction(Category $category)
