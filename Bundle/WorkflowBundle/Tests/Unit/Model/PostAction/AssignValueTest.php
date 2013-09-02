@@ -25,7 +25,6 @@ class AssignValueTest extends \PHPUnit_Framework_TestCase
         $this->postAction = new AssignValue($this->contextAccessor);
     }
 
-
     /**
      * @expectedException Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
      * @expectedExceptionMessage Attribute and value parameters are required.
