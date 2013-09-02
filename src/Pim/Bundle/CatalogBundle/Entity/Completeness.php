@@ -88,7 +88,7 @@ class Completeness
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Product",
      *     inversedBy="completenesses"
      * )
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $product;
 
