@@ -11,11 +11,11 @@ Feature: Display the attribute history
       | Manufacturer | text |
     And I am logged in as "admin"
     And the following attribute "Brand" updates:
-      | action | loggedAt  | updatedBy | change                                      |
-      | update | yesterday | admin     | description: Some info => The product brand |
+      | action | loggedAt  | updatedBy | change             |
+      | update | yesterday | admin     | max_characters: '' => 50 |
     And I am on the "Manufacturer" attribute page
-    When I visit the "Values" tab
-    And I change the Description to "The product manufacturer"
+    When I visit the "Parameters" tab
+    And I change the "Max characters" to "30"
     And I save the attribute
     When I visit the "History" tab
     Then there should be 1 update
