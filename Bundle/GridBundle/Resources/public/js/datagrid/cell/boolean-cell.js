@@ -11,7 +11,7 @@ function($, _, Backgrid) {
      *  - "editing" when a cell has finished switching to edit mode
      *  - "edited" when cell editing is finished
      *
-     * @export  oro/datagrid/boolean-сell
+     * @export  oro/datagrid/boolean-cell
      * @class   oro.datagrid.BooleanCell
      * @extends Backgrid.BooleanCell
      */

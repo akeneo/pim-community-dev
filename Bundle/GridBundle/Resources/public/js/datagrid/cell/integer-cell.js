@@ -11,7 +11,7 @@ function(Backgrid) {
      *  - "editing" when a cell has finished switching to edit mode
      *  - "edited" when cell editing is finished
      *
-     * @export  oro/datagrid/integer-сell
+     * @export  oro/datagrid/integer-cell
      * @class   oro.datagrid.IntegerCell
      * @extends Backgrid.IntegerCell
      */

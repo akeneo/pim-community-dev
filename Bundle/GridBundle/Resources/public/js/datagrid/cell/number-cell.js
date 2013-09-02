@@ -11,7 +11,7 @@ function(Backgrid) {
      *  - "editing" when a cell has finished switching to edit mode
      *  - "edited" when cell editing is finished
      *
-     * @export  oro/datagrid/number-сell
+     * @export  oro/datagrid/number-cell
      * @class   oro.datagrid.NumberCell
      * @extends Backgrid.NumberCell
      */

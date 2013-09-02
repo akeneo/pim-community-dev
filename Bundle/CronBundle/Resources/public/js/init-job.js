@@ -50,6 +50,9 @@ function($, __) {
         setInterval(function () {
             var statusBtn = $('#status-daemon'),
                 img = statusBtn.closest('div').find('img');
+            if (!statusBtn.length) {
+                return;
+            }
 
             img.show();
 

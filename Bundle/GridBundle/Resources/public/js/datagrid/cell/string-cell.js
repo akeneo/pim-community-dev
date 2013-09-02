@@ -11,7 +11,7 @@ function(Backgrid, CellFormatter) {
      *  - "editing" when a cell has finished switching to edit mode
      *  - "edited" when cell editing is finished
      *
-     * @export  oro/datagrid/string-сell
+     * @export  oro/datagrid/string-cell
      * @class   oro.datagrid.StringCell
      * @extends Backgrid.StringCell
      */

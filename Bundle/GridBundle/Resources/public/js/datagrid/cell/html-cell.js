@@ -1,5 +1,5 @@
 /* global define */
-define(['oro/datagrid/string-сell'],
+define(['oro/datagrid/string-cell'],
 function(StringCell) {
     'use strict';
 
@@ -11,7 +11,7 @@ function(StringCell) {
      *  - "editing" when a cell has finished switching to edit mode
      *  - "edited" when cell editing is finished
      *
-     * @export  oro/datagrid/html-сell
+     * @export  oro/datagrid/html-cell
      * @class   oro.datagrid.HtmlCell
      * @extends oro.datagrid.StringCell
      */

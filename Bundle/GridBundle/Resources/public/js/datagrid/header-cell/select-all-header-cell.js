@@ -1,5 +1,5 @@
 /* global define */
-define(['jquery', '_', 'backgrid', 'oro/datagrid/select-row-сell'],
+define(['jquery', 'underscore', 'backgrid', 'oro/datagrid/select-row-cell'],
 function ($, _, Backgrid, SelectRowCell) {
     "use strict";
 

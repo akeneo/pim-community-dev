@@ -6,7 +6,7 @@ function ($, Backbone, Backgrid) {
     /**
      * Renders a checkbox for row selection.
      *
-     * @export  oro/datagrid/select-row-сell
+     * @export  oro/datagrid/select-row-cell
      * @class   oro.datagrid.SelectRowCell
      * @extends Backbone.View
      */

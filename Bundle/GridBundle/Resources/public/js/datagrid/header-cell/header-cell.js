@@ -1,5 +1,5 @@
 /* global define */
-define(['jquery', '_', 'backbone', 'backgrid'],
+define(['jquery', 'underscore', 'backbone', 'backgrid'],
 function ($, _, Backbone, Backgrid) {
     "use strict";
 
