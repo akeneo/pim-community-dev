@@ -39,37 +39,34 @@ class ProcessorDecoratorTest extends \PHPUnit_Framework_TestCase
             'merge levels test' =>array(
                 array(
                     ProcessorDecorator::ROOT => array(
-                        ProcessorDecorator::LEVELS_ROOT => array('someLevel')
+                        ProcessorDecorator::SCOPES_ROOT => array('someLevel')
                     )
                 ),
                 array(
                     ProcessorDecorator::ROOT => array(
-                        ProcessorDecorator::LEVELS_ROOT => array('someNewLevel')
+                        ProcessorDecorator::SCOPES_ROOT => array('someNewLevel')
                     )
                 ),
                 array(
                     ProcessorDecorator::ROOT => array(
-                        ProcessorDecorator::LEVELS_ROOT => array('someLevel', 'someNewLevel')
+                        ProcessorDecorator::SCOPES_ROOT => array('someLevel', 'someNewLevel')
                     )
                 ),
             ),
-            'merge tree and tags test' =>array(
+            'merge tree test' =>array(
                 array(
                     ProcessorDecorator::ROOT => array(
                         ProcessorDecorator::TREE_ROOT => array('group1' => array('group2' => array('field'))),
-                        ProcessorDecorator::TAGS_ROOT => array('tag1' => array('field'))
                     )
                 ),
                 array(
                     ProcessorDecorator::ROOT => array(
                         ProcessorDecorator::TREE_ROOT => array('group1' => array('group2' => array('field2'))),
-                        ProcessorDecorator::TAGS_ROOT => array('tag1' => array('field2'))
                     )
                 ),
                 array(
                     ProcessorDecorator::ROOT => array(
                         ProcessorDecorator::TREE_ROOT => array('group1' => array('group2' => array('field', 'field2'))),
-                        ProcessorDecorator::TAGS_ROOT => array('tag1' => array('field', 'field2'))
                     )
                 ),
             ),

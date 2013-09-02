@@ -1,4 +1,4 @@
 oro_system_configuration:
-    # required not empty levels node
-    levels:
+    # required not empty scopes node
+    scopes:
        - global
