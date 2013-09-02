@@ -12,21 +12,15 @@ class WorkflowDefinitionRepository extends EntityRepository
      * Get available workflow definitions for entity class
      *
      * @param string $entityClass
-     * @param string|null $workflowName
      * @return WorkflowDefinition[]
      */
-    public function findByEntityClass($entityClass, $workflowName = null)
+    public function findByEntityClass($entityClass)
     {
         $entityClasses = $this->getAllEntityClasses($entityClass);
 
         $queryBuilder = $this->createQueryBuilder('wd');
         $queryBuilder->innerJoin('wd.workflowDefinitionEntities', 'wde')
             ->where($queryBuilder->expr()->in('wde.className', $entityClasses));
-
-        if ($workflowName) {
-            $queryBuilder->andWhere('wd.name = :workflowName')
-                ->setParameter('workflowName', $workflowName);
-        }
 
         return $queryBuilder->getQuery()->execute();
     }

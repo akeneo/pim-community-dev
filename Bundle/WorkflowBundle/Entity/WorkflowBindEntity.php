@@ -7,7 +7,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Workflow item relation with custom entity
  *
- * @ORM\Table(name="oro_workflow_bind_entity")
+ * @ORM\Table(
+ *      name="oro_workflow_bind_entity",
+*       indexes={
+ *          @ORM\Index(name="oro_workflow_bind_entity_entity_idx", columns={"entity_class", "entity_id"})
+ *      }
+ * )
  * @ORM\Entity
  */
 class WorkflowBindEntity

@@ -24,7 +24,7 @@ class WidgetController extends Controller
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManagerForClass($entityClass);
         $entity = $em->getReference($entityClass, $entityId);
-        $workflowName = $this->getRequest()->get('workflow');
+        $workflowName = $this->getRequest()->get('workflowName');
 
         /** @var WorkflowManager $workflowManager */
         $workflowManager = $this->get('oro_workflow.manager');

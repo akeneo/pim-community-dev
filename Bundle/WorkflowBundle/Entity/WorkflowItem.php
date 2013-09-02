@@ -16,7 +16,12 @@ use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 /**
  * Workflow item
  *
- * @ORM\Table(name="oro_workflow_item")
+ * @ORM\Table(
+ *      name="oro_workflow_item",
+ *      indexes={
+ *          @ORM\Index(name="oro_workflow_item_workflow_name_idx", columns={"workflow_name"})
+ *      }
+ *  )
  * @ORM\Entity(repositoryClass="Oro\Bundle\WorkflowBundle\Entity\Repository\WorkflowItemRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable

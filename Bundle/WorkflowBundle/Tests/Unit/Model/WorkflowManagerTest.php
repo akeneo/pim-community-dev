@@ -292,10 +292,26 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
         $usedMultipleWorkflow = $this->createWorkflow('used_multiple_workflow', array($multipleEntityAttribute));
         $allowedWorkflows = array($newWorkflow, $usedSingleWorkflow, $usedMultipleWorkflow);
 
-        $this->workflowRegistry->expects($this->any())
-            ->method('getWorkflowsByEntityClass')
-            ->with($entityClass, $requiredWorkflowName)
-            ->will($this->returnValue($allowedWorkflows));
+        if ($requiredWorkflowName) {
+            $this->workflowRegistry->expects($this->exactly(2))
+                ->method('getWorkflow')
+                ->with($requiredWorkflowName)
+                ->will($this->returnValue($newWorkflow));
+            // expected workflows (single managed entity with existing workflow items is not allowed)
+            $expectedWorkflows = array(
+                $newWorkflow->getName() => $newWorkflow
+            );
+        } else {
+            // expected workflows (single managed entity with existing workflow items is not allowed)
+            $expectedWorkflows = array(
+                $newWorkflow->getName() => $newWorkflow,
+                $usedMultipleWorkflow->getName() => $usedMultipleWorkflow,
+            );
+            $this->workflowRegistry->expects($this->any())
+                ->method('getWorkflowsByEntityClass')
+                ->with($entityClass)
+                ->will($this->returnValue($allowedWorkflows));
+        }
 
         // mocks for workflow items
         $workflowItems = array(
@@ -316,12 +332,6 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getRepository')
             ->with('OroWorkflowBundle:WorkflowItem')
             ->will($this->returnValue($workflowItemsRepository));
-
-        // expected workflows (single managed entity with existing workflow items is not allowed)
-        $expectedWorkflows = array(
-            $newWorkflow->getName() => $newWorkflow,
-            $usedMultipleWorkflow->getName() => $usedMultipleWorkflow,
-        );
 
         // with automatic workflow item extraction
         $this->assertEquals(
