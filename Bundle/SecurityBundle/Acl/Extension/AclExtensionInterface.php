@@ -19,23 +19,23 @@ interface AclExtensionInterface
     public function supports($type, $id);
 
     /**
-     * Gets root ACL type
+     * Gets root ACL identifier
      *
      * @return string
      */
-    public function getRootType();
+    public function getRootId();
 
     /**
      * Checks if the given bitmask is valid for the given object.
      *
      * This method throws InvalidAclMaskException if the mask is invalid.
      *
-     * @param string $permission
      * @param int $mask The bitmask
      * @param mixed $object An object to test
+     * @param string|null $permission If null checks all permissions; otherwise, check only the given permission
      * @throws InvalidAclMaskException
      */
-    public function validateMask($permission, $mask, $object);
+    public function validateMask($mask, $object, $permission = null);
 
     /**
      * Constructs an ObjectIdentity for the given object
@@ -43,16 +43,31 @@ interface AclExtensionInterface
      * @param mixed $object
      * @return ObjectIdentity
      */
-    public function createObjectIdentity($object);
+    public function getObjectIdentity($object);
 
     /**
      * Gets the new instance of the mask builder which can be used to build permission bitmask
-     * is supported by this ACL extension
+     * supported this ACL extension
      *
      * @param string $permission
      * @return MaskBuilder
      */
-    public function createMaskBuilder($permission);
+    public function getMaskBuilder($permission);
+
+    /**
+     * Gets all mask builders supported this ACL extension
+     *
+     * @return MaskBuilder[]
+     */
+    public function getAllMaskBuilders();
+
+    /**
+     * Gets a human-readable representation of the given mask
+     *
+     * @param int $mask
+     * @return string
+     */
+    public function getMaskPattern($mask);
 
     /**
      * Returns an array of bitmasks for the given permission.
@@ -71,6 +86,15 @@ interface AclExtensionInterface
      * @return bool
      */
     public function hasMasks($permission);
+
+    /**
+     * Check the given ACE mask of the root ACL and remove redundant for the given object bits from it
+     *
+     * @param int $aceMask
+     * @param mixed $object
+     * @return int The ACE mask without redundant bits
+     */
+    public function prepareRootAceMask($aceMask, $object);
 
     /**
      * Remove all bits except service ones from the given mask
@@ -95,6 +119,21 @@ interface AclExtensionInterface
      * @return int Can be one of AccessLevel::*_LEVEL constants
      */
     public function getAccessLevel($mask);
+
+    /**
+     * Gets permissions encoded in the given mask
+     *
+     * @param int $mask
+     * @return string[]
+     */
+    public function getPermissions($mask);
+
+    /**
+     * Gets all permissions supported by this ACL extension
+     *
+     * @return string[]
+     */
+    public function getAllPermissions();
 
     /**
      * Determines whether the access to the given domain object is granted

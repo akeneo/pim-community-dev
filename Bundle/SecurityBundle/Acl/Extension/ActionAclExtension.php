@@ -2,8 +2,9 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
-use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 
 class ActionAclExtension extends AbstractAclExtension
 {
@@ -24,13 +25,17 @@ class ActionAclExtension extends AbstractAclExtension
      */
     public function supports($type, $id)
     {
-        return $type === $this->getRootType();
+        if ($type === ObjectIdentityFactory::ROOT_IDENTITY_TYPE && $id === $this->getRootId()) {
+            return true;
+        }
+
+        return $type === $this->getRootId();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getRootType()
+    public function getRootId()
     {
         return 'action';
     }
@@ -38,7 +43,7 @@ class ActionAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function validateMask($permission, $mask, $object)
+    public function validateMask($mask, $object, $permission = null)
     {
         if ($mask === 0) {
             return;
@@ -47,13 +52,13 @@ class ActionAclExtension extends AbstractAclExtension
             return;
         }
 
-        throw $this->createInvalidAclMaskException($permission, $mask, $object);
+        throw $this->createInvalidAclMaskException($mask, $object);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createObjectIdentity($object)
+    public function getObjectIdentity($object)
     {
         $type = $id = null;
         $this->parseDescriptor($object, $type, $id);
@@ -64,9 +69,25 @@ class ActionAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function createMaskBuilder($permission)
+    public function getMaskBuilder($permission)
     {
         return new ActionMaskBuilder();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllMaskBuilders()
+    {
+        return array(new ActionMaskBuilder());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMaskPattern($mask)
+    {
+        return ActionMaskBuilder::getPatternFor($mask);
     }
 
     /**
@@ -75,5 +96,26 @@ class ActionAclExtension extends AbstractAclExtension
     public function getAccessLevel($mask)
     {
         return AccessLevel::SYSTEM_LEVEL;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPermissions($mask)
+    {
+        $result = array();
+        if ($mask !== 0) {
+            $result[] = 'EXECUTE';
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllPermissions()
+    {
+        return array('EXECUTE');
     }
 }

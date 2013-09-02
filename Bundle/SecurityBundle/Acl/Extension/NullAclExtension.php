@@ -23,7 +23,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getRootType()
+    public function getRootId()
     {
         throw new \LogicException('Not supported by NullAclExtension.');
     }
@@ -31,7 +31,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function validateMask($permission, $mask, $object)
+    public function validateMask($mask, $object, $permission = null)
     {
         throw new InvalidAclMaskException('Not supported by NullAclExtension.');
     }
@@ -39,7 +39,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function createObjectIdentity($object)
+    public function getObjectIdentity($object)
     {
         throw new InvalidDomainObjectException('Not supported by NullAclExtension.');
     }
@@ -47,9 +47,25 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function createMaskBuilder($permission)
+    public function getMaskBuilder($permission)
     {
         throw new \LogicException('Not supported by NullAclExtension.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllMaskBuilders()
+    {
+        throw new \LogicException('Not supported by NullAclExtension.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMaskPattern($mask)
+    {
+        return 'NullAclExtension: ' . $mask;
     }
 
     /**
@@ -66,6 +82,14 @@ final class NullAclExtension implements AclExtensionInterface
     public function hasMasks($permission)
     {
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepareRootAceMask($aceMask, $object)
+    {
+        return $aceMask;
     }
 
     /**
@@ -90,6 +114,22 @@ final class NullAclExtension implements AclExtensionInterface
     public function getAccessLevel($mask)
     {
         return AccessLevel::SYSTEM_LEVEL;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPermissions($mask)
+    {
+        return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllPermissions()
+    {
+        return array();
     }
 
     /**

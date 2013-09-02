@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
 use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\EntryInterface;
@@ -228,13 +227,20 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      *
      * @param integer $requiredMask
      * @param EntryInterface $ace
+     * @param AclInterface $acl
      * @return bool
      * @throws \RuntimeException if the ACE strategy is not supported
      */
-    protected function isAceApplicable($requiredMask, EntryInterface $ace)
+    protected function isAceApplicable($requiredMask, EntryInterface $ace, AclInterface $acl)
     {
         $extension = $this->context->getAclExtension();
         $aceMask = $ace->getMask();
+        if ($acl->getObjectIdentity()->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+            if ($acl->getObjectIdentity()->getIdentifier() !== $extension->getRootId()) {
+                return false;
+            }
+            $aceMask = $extension->prepareRootAceMask($aceMask, $this->context->getObject());
+        }
         if ($extension->getServiceBits($requiredMask) !== $extension->getServiceBits($aceMask)) {
             return false;
         }

@@ -24,9 +24,17 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testRoot()
     {
-        $id = $this->factory->root();
-        $this->assertEquals('root', $id->getIdentifier());
-        $this->assertEquals('Root', $id->getType());
+        $id = $this->factory->root($this->factory->get('Entity: Test:TestEntity'));
+        $this->assertEquals('entity', $id->getIdentifier());
+        $this->assertEquals(ObjectIdentityFactory::ROOT_IDENTITY_TYPE, $id->getType());
+
+        $id = $this->factory->root($this->factory->get(new TestEntity(123)));
+        $this->assertEquals('entity', $id->getIdentifier());
+        $this->assertEquals(ObjectIdentityFactory::ROOT_IDENTITY_TYPE, $id->getType());
+
+        $id = $this->factory->root($this->factory->get('Action: Some Action'));
+        $this->assertEquals('action', $id->getIdentifier());
+        $this->assertEquals(ObjectIdentityFactory::ROOT_IDENTITY_TYPE, $id->getType());
     }
 
     public function testFromDomainObjectPrefersInterfaceOverGetId()
