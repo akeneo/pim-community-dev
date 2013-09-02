@@ -27,10 +27,6 @@ Feature: Edit an identifier attribute
     And I fill in the following information:
       | Code           | mySecondId |
       | Max characters | 100        |
-    And I visit the "Values" tab
-    And I fill in the following information:
-      | en_US       | Sku2              |
-      | Description | My 2nd identifier |
     And I press the "Save" button
     And I visit the "Parameters" tab
     Then I should see validation error "An identifier attribute already exists."
