@@ -1,16 +1,21 @@
+parameters:
+    pim_filter.form.type.filter.completeness_class: Pim\Bundle\FilterBundle\Form\Type\Filter\CompletenessFilterType
+    pim_filter.form.type.filter.currency_class:     Pim\Bundle\FilterBundle\Form\Type\Filter\CurrencyFilterType
+    pim_filter.form.type.filter.scope_class:        Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType
+
 services:
     pim_filter.form.type.filter.currency:
-        class:     Pim\Bundle\FilterBundle\Form\Type\Filter\CurrencyFilterType
+        class:     %pim_filter.form.type.filter.currency_class%
         arguments:
             - @translator
-            - @pim_product.manager.currency
+            - @pim_catalog.manager.currency
         tags:
             - { name: form.type, alias: pim_type_currency_filter }
 
     pim_filter.form.type.filter.scope:
-        class:     Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType
+        class:     %pim_filter.form.type.filter.scope_class%
         arguments:
             - @translator
-            - @pim_product.manager.channel
+            - @pim_catalog.manager.channel
         tags:
             - { name: form.type, alias: pim_type_scope_filter }

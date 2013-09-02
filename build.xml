@@ -1,30 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="pim" default="build">
+    <property environment="env"/>
+    <property name="jobName" value="${env.JOB_NAME}" />
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
 
-    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb,fixtures,phpunit-no-coverage"/>
+    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb,fixtures,phpunit"/>
 
-    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb,fixtures,phpunit"/>
+    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb,fixtures,phpunit-coverage"/>
 
-    <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat,behat-check"/>
+    <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat"/>
 
-    <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd"/>
+    <target name="build-behat-coverage" depends="prepare,composer,vendors,setupdb,dumpassets,behat-coverage"/>
 
-    <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb"/>
-
-    <target name="tools-parallel" description="Run tools in parallel">
-        <parallel threadCount="2">
-            <sequential>
-                <antcall target="pdepend"/>
-                <antcall target="phpmd-ci"/>
-            </sequential>
-            <antcall target="phpcpd"/>
-            <antcall target="phpcs-ci"/>
-            <antcall target="phploc"/>
-            <antcall target="phpdox"/>
-        </parallel>
-    </target>
+    <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/app/build/api"/>
@@ -49,8 +38,8 @@
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
         <mkdir dir="${basedir}/app/cache" />
-        <copy file="/var/lib/jenkins/conf-akeneo-pim-standard/parameters.yml" tofile="${basedir}/app/config/parameters.yml" />
-        <copy file="/var/lib/jenkins/conf-akeneo-pim-standard/parameters.yml" tofile="${basedir}/app/config/parameters_test.yml" />
+        <copy file="/var/lib/jenkins/apps-conf/${jobName}/parameters.yml" tofile="${basedir}/app/config/parameters.yml" />
+        <copy file="/var/lib/jenkins/apps-conf/${jobName}/parameters.yml" tofile="${basedir}/app/config/parameters_test.yml" />
         <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" />
     </target>
 
@@ -83,6 +72,7 @@
             <arg value="--jdepend-xml=${basedir}/app/build/logs/jdepend.xml" />
             <arg value="--jdepend-chart=${basedir}/app/build/pdepend/dependencies.svg" />
             <arg value="--overview-pyramid=${basedir}/app/build/pdepend/overview-pyramid.svg" />
+            <arg value="--ignore=Tests" />
             <arg path="${basedir}/src/Pim" />
         </exec>
     </target>
@@ -96,7 +86,7 @@
 
     <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
         <exec executable="${basedir}/app/Resources/jenkins/phpmd_akeneo">
-            <arg path="${basedir}/src/Pim,${basedir}/features" />
+            <arg path="${basedir}/src/Pim" />
             <arg value="xml" />
             <arg value="--reportfile" />
             <arg value="${basedir}/app/build/logs/pmd.xml" />
@@ -109,6 +99,13 @@
             <arg value="--extensions=php" />
             <arg path="${basedir}/src/Pim" />
             <arg path="${basedir}/features" />
+        </exec>
+    </target>
+
+    <target name="phpdoc" description="Check php documentation">
+        <exec executable="phpdoc">
+            <arg line="--directory ${basedir}/src" />
+            <arg line="--target ${basedir}/build/api" />
         </exec>
     </target>
 
@@ -125,6 +122,8 @@
 
     <target name="phpcpd" description="Find duplicate code using PHPCPD">
         <exec executable="phpcpd">
+            <arg value="--exclude" />
+            <arg value="Tests" />
             <arg value="--log-pmd" />
             <arg value="${basedir}/app/build/logs/pmd-cpd.xml" />
             <arg path="${basedir}/src/Pim" />
@@ -139,6 +138,20 @@
         </exec>
     </target>
 
+    <target name="phpunit-coverage" description="Run unit tests with PHPUnit and generate coverage">
+        <exec executable="sh" outputproperty="xdebug_path">
+            <arg value="-c" />
+            <arg value="php -i | grep extension_dir | cut -d ' ' -f3"/>
+        </exec>
+        <exec executable="php">
+            <arg value="-d zend_extension=${xdebug_path}/xdebug.so" />
+            <arg value="/usr/bin/phpunit" />
+            <arg value="-c" />
+            <arg path="${basedir}/app/phpunit.jenkins-coverage.xml" />
+            <arg value="--testsuite=Jenkins_PIM_Test" />
+        </exec>
+    </target>
+
     <target name="phpunit" description="Run unit tests with PHPUnit">
         <exec executable="phpunit">
             <arg value="-c" />
@@ -147,35 +160,24 @@
         </exec>
     </target>
 
-    <target name="phpunit-no-coverage" description="Run unit tests with PHPUnit without coverage">
-        <exec executable="phpunit">
-            <arg value="-c" />
-            <arg path="${basedir}/app/phpunit.jenkins-no-coverage.xml" />
-            <arg value="--testsuite=Jenkins_PIM_Test" />
-        </exec>
-    </target>
-
     <target name="behat" description="Run acceptance tests with Behat">
-        <exec executable="bin/behat">
+        <exec executable="bin/behat" failonerror="true">
             <env key="DISPLAY" value=":0" />
             <arg value="--profile=jenkins" />
             <arg value="--ansi" />
-            <arg value="--no-paths" />
             <arg value="--tags=~skip" />
+            <arg value="-fprogress" />
         </exec>
     </target>
 
-    <target name="behat-check" description="Check Behat output">
-        <fail message="At least one scenario has failed">
-            <condition>
-                <resourcecontains resource="./app/build/logs/behat/pretty.out" substring="failed"/>
-            </condition>
-        </fail>
-        <fail message="A fatal error occured">
-            <condition>
-                <resourcecontains resource="./app/build/logs/behat/pretty.out" substring="PHP Fatal error"/>
-            </condition>
-        </fail>
+    <target name="behat-coverage" description="Run acceptance tests with Behat and produce coverage">
+        <exec executable="bin/behat" failonerror="true">
+            <env key="DISPLAY" value=":0" />
+            <arg value="--profile=jenkins-coverage" />
+            <arg value="--ansi" />
+            <arg value="--tags=~skip" />
+            <arg value="-fprogress" />
+        </exec>
     </target>
 
     <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">

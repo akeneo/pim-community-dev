@@ -13,7 +13,7 @@ class ReferenceFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreateReference()
     {
-        $factory = new ReferenceFactory;
+        $factory = new ReferenceFactory();
         $reference = $factory->createReference('foo.bar');
         $this->assertInstanceOf('Symfony\Component\DependencyInjection\Reference', $reference);
         $this->assertEquals('foo.bar', (string) $reference);

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Step;
 
 use Pim\Bundle\BatchBundle\Step\AbstractStep;
-use Pim\Bundle\BatchBundle\Step\StepExecution;
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Step used for test and always declared a stopped execution
@@ -11,12 +11,11 @@ use Pim\Bundle\BatchBundle\Step\StepExecution;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class InterruptedStep extends AbstractStep
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfiguration()
     {
@@ -24,7 +23,7 @@ class InterruptedStep extends AbstractStep
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setConfiguration(array $config)
     {
@@ -33,7 +32,7 @@ class InterruptedStep extends AbstractStep
     /**
      * {@inheritdoc}
      */
-    public function doExecute(StepExecution $execution)
+    protected function doExecute(StepExecution $execution)
     {
         $execution->setTerminateOnly();
     }

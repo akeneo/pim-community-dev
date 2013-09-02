@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraints\ChoiceValidator;
-use Pim\Bundle\ProductBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -26,7 +26,7 @@ class ChannelValidator extends ChoiceValidator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function validate($value, Constraint $constraint)
     {

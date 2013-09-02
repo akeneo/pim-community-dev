@@ -2,12 +2,15 @@
 
 namespace Pim\Bundle\BatchBundle\Step;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\Event;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
 use Pim\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Pim\Bundle\BatchBundle\Job\JobInterruptedException;
-use Pim\Bundle\BatchBundle\Item\ExecutionContext;
 use Pim\Bundle\BatchBundle\Entity\StepExecution;
+use Pim\Bundle\BatchBundle\Event\StepExecutionEvent;
+use Pim\Bundle\BatchBundle\Event\EventInterface;
 
 /**
  * A Step implementation that provides common behavior to subclasses, including registering and calling
@@ -18,17 +21,14 @@ use Pim\Bundle\BatchBundle\Entity\StepExecution;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 abstract class AbstractStep implements StepInterface
 {
     private $name;
 
-    private $logger;
+    private $eventDispatcher;
 
-    //private CompositeStepExecutionListener stepExecutionListener = new CompositeStepExecutionListener();
-
-    /* @var JobRepositoryInterace $jobRepository */
+    /* @var JobRepositoryInterace */
     private $jobRepository;
 
     /**
@@ -41,39 +41,35 @@ abstract class AbstractStep implements StepInterface
     }
 
     /**
-     * Set the logger
+     * Set the event dispatcher
      *
-     * @param object $logger The logger
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function setLogger($logger)
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
-        $this->logger = $logger;
-    }
+        $this->eventDispatcher = $eventDispatcher;
 
-    /**
-     * Get the logger for internal use
-     *
-     * @return object
-     */
-    protected function getLogger()
-    {
-        return $this->logger;
+        return $this;
     }
 
     /**
      * Public setter for {@link JobRepositoryInterface}.
      *
      * @param JobRepositoryInterface $jobRepository jobRepository is a mandatory dependence (no default).
+     *
+     * @return $this
      */
     public function setJobRepository(JobRepositoryInterface $jobRepository)
     {
         $this->jobRepository = $jobRepository;
+
+        return $this;
     }
 
     /**
      * @return JobRepositoryInterface
      */
-    protected function getJobRepository()
+    public function getJobRepository()
     {
         return $this->jobRepository;
     }
@@ -88,11 +84,16 @@ abstract class AbstractStep implements StepInterface
 
     /**
      * Set the name property
+     *
      * @param string $name
+     *
+     * @return this
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -104,18 +105,6 @@ abstract class AbstractStep implements StepInterface
      * @throws Exception
      */
     abstract protected function doExecute(StepExecution $stepExecution);
-
-    /**
-     * Extension point for subclasses to provide callbacks to their collaborators at the beginning of a step, to open or
-     * acquire resources. Does nothing by default.
-     *
-     * @param ExecutionContext $ctx the {@link ExecutionContext} to use
-     *
-     * @throws Exception
-     */
-    protected function open(ExecutionContext $ctx)
-    {
-    }
 
     /**
      * Provide the configuration of the step
@@ -132,21 +121,7 @@ abstract class AbstractStep implements StepInterface
     abstract public function setConfiguration(array $config);
 
     /**
-     * Extension point for subclasses to provide callbacks to their collaborators at the end of a step (right at the end
-     * of the finally block), to close or release resources. Does nothing by default.
-     *
-     * @param ExecutionContext $ctx the {@link ExecutionContext} to use
-     *
-     * @throws Exception
-     */
-    protected function close(ExecutionContext $ctx)
-    {
-    }
-
-    /**
-     * Template method for step execution logic - calls abstract methods for resource initialization (
-     * {@link #open(ExecutionContext)}), execution logic ({@link #doExecute(StepExecution)}) and resource closing (
-     * {@link #close(ExecutionContext)}).
+     * Template method for step execution logic
      *
      * @param StepExecution $stepExecution
      *
@@ -155,7 +130,7 @@ abstract class AbstractStep implements StepInterface
      */
     final public function execute(StepExecution $stepExecution)
     {
-        $this->getLogger()->debug("Executing: id=" . $stepExecution->getId());
+        $this->dispatchStepExecutionEvent(EventInterface::BEFORE_STEP_EXECUTION, $stepExecution);
 
         $stepExecution->setStartTime(new \DateTime());
         $stepExecution->setStatus(new BatchStatus(BatchStatus::STARTED));
@@ -165,12 +140,7 @@ abstract class AbstractStep implements StepInterface
         // Start with a default value that will be trumped by anything
         $exitStatus = new ExitStatus(ExitStatus::EXECUTING);
 
-        //StepSynchronizationManager.register(stepExecution);
-
         try {
-            //getCompositeListener().beforeStep(stepExecution);
-            //$this->open($stepExecution->getExecutionContext());
-
             $this->doExecute($stepExecution);
 
             $exitStatus = new ExitStatus(ExitStatus::COMPLETED);
@@ -182,8 +152,8 @@ abstract class AbstractStep implements StepInterface
 
             // Need to upgrade here not set, in case the execution was stopped
             $stepExecution->upgradeStatus(BatchStatus::COMPLETED);
-            $this->getLogger()->debug("Step execution success: id=" . $stepExecution->getId());
-        } catch (Exception $e) {
+            $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_SUCCEEDED, $stepExecution);
+        } catch (\Exception $e) {
             $stepExecution->upgradeStatus($this->determineBatchStatus($e));
 
             $exitStatus = $exitStatus->logicalAnd($this->getDefaultExitStatusForFailure($e));
@@ -191,58 +161,17 @@ abstract class AbstractStep implements StepInterface
             $stepExecution->addFailureException($e);
 
             if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
-                $this->getLogger()->info("Encountered interruption executing step: " . $e->getMessage());
-                $this->getLogger()->debug("Full exception", array('exception', $e));
+                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_INTERRUPTED, $stepExecution);
             } else {
-                $this->getLogger()->error("Encountered an error executing the step", array('exception' => $e));
+                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_ERRORED, $stepExecution);
             }
-        }
-
-        try {
-            // Update the step execution to the latest known value so the
-            // listeners can act on it
-            $exitStatus = $exitStatus->logicalAnd($stepExecution->getExitStatus());
-            $stepExecution->setExitStatus($exitStatus);
-            //$exitStatus = $exitStatus->and($this->getCompositeListener()->afterStep($stepExecution));
-        } catch (\Exception $e) {
-            $this->getLogger()->error("Exception in afterStep callback", array('exception' => $e));
-        }
-
-        try {
-            //getJobRepository().updateExecutionContext(stepExecution);
-        } catch (\Exception $e) {
-            $stepExecution->setStatus(new BatchStatus(BatchStatus::UNKNOWN));
-            $exitStatus = $exitStatus->and(ExitStatus::UNKNOWN);
-            $stepExecution->addFailureException($e);
-            $errorMsg =  "Encountered an error saving batch meta data."
-                ."This job is now in an unknown state and should not be restarted.";
-            $this->getLogger()->error($errorMsg, array('exception' => $e));
         }
 
         $stepExecution->setEndTime(new \DateTime());
         $stepExecution->setExitStatus($exitStatus);
 
-        try {
-            //getJobRepository().update(stepExecution);
-        } catch (\Exception $e) {
-            $stepExecution->setStatus(new BatchStatus(BatchStatus::UNKNOWN));
-            $stepExecution->setExitStatus($exitStatus->and(ExitStatus::UNKNOWN));
-            $stepExecution->addFailureException($e);
-            $errorMsg = "Encountered an error saving batch meta data. "
-                . "This job is now in an unknown state and should not be restarted.";
-            $this->getLogger()->error($errorMsg, array('exception' => $e));
-        }
-
-        try {
-            $this->close($stepExecution->getExecutionContext());
-        } catch (\Exception $e) {
-            $this->getLogger()->error("Exception while closing step execution resources", array('exception' => $e));
-            $stepExecution->addFailureException($e);
-        }
-
-        //StepSynchronizationManager.release();
-
-        $this->getLogger()->debug("Step execution complete: " . $stepExecution->getSummary());
+        $this->getJobRepository()->updateStepExecution($stepExecution);
+        $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_COMPLETED, $stepExecution);
     }
 
     /**
@@ -275,13 +204,34 @@ abstract class AbstractStep implements StepInterface
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
             $exitStatus->addExitDescription(get_class(new JobInterruptedException()));
-            /*} elseif (ex instanceof NoSuchJobException || ex.getCause() instanceof NoSuchJobException) {
-                exitStatus = new ExitStatus(ExitCodeMapper.NO_SUCH_JOB, ex.getClass().getName());*/
         } else {
             $exitStatus = new ExitStatus(ExitStatus::FAILED);
             $exitStatus->addExitDescription($e);
         }
 
         return $exitStatus;
+    }
+
+    /**
+     * Trigger event linked to Step
+     *
+     * @param string        $eventName Name of the event
+     * @param StepInterface $step      Step object
+     */
+    protected function dispatchStepExecutionEvent($eventName, StepExecution $stepExecution)
+    {
+        $event = new StepExecutionEvent($stepExecution);
+        $this->dispatch($eventName, $event);
+    }
+
+    /**
+     * Generic batch event dispatcher
+     *
+     * @param string $eventName Name of the event
+     * @param Event  $event     Event object
+     */
+    private function dispatch($eventName, Event $event)
+    {
+        $this->eventDispatcher->dispatch($eventName, $event);
     }
 }

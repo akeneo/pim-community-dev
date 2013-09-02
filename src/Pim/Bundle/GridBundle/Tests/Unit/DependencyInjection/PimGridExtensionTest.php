@@ -11,7 +11,6 @@ use Pim\Bundle\GridBundle\DependencyInjection\PimGridExtension;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class PimGridExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -48,13 +47,13 @@ class PimGridExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $expectedFilters = array(
             'pim_grid.orm.filter.type.currency',
-            'pim_grid.orm.filter.type.entity',
-            'pim_grid.orm.filter.type.scope'
+            'pim_grid.orm.filter.type.scope',
+            'pim_grid.orm.filter.type.completeness'
         );
 
         $this->extension->load($this->configs, $this->containerBuilder);
 
-        $this->assertCount(4, $this->containerBuilder->getServiceIds());
+        $this->assertCount(count($expectedFilters)+1, $this->containerBuilder->getServiceIds());
         foreach ($expectedFilters as $expectedFilter) {
             $this->assertContains($expectedFilter, $this->containerBuilder->getServiceIds());
         }

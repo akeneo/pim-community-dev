@@ -101,6 +101,32 @@ class Index extends Grid
     /**
      * @param string $code
      */
+    public function filterPerPrice($value, $currency)
+    {
+        $filter = $this->getFilter('Price');
+
+        if (!$filter) {
+            throw new \Exception('Could not find filter for price.');
+        }
+
+        $this->openFilter($filter);
+
+        $criteriaElt = $filter->find('css', 'div.filter-criteria');
+
+        $criteriaElt->fillField('value', $value);
+
+        // Open the dropdown menu with currency list
+        $this->pressButton('Currency');
+
+        // Click on the Euro line in the currency menu
+        $this->pressButton('EUR');
+
+        $filter->find('css', 'button.filter-update')->click();
+    }
+
+    /**
+     * @param string $code
+     */
     public function filterPerChannel($code)
     {
         $elt = $this->getElement('Filters')->find('css', sprintf(':contains("%s") select', $code));

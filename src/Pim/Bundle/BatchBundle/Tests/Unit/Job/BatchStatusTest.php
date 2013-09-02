@@ -10,7 +10,6 @@ use Pim\Bundle\BatchBundle\Job\BatchStatus;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class BatchStatusTest extends \PHPUnit_Framework_TestCase
 {
@@ -126,5 +125,21 @@ class BatchStatusTest extends \PHPUnit_Framework_TestCase
 
         $starting = new BatchStatus(BatchStatus::STARTING);
         $this->assertFalse($starting->isUnsuccessful());
+    }
+
+    public function testGetAllLabels()
+    {
+        $expectedLabels = array(
+            BatchStatus::COMPLETED => 'COMPLETED',
+            BatchStatus::STARTING  => 'STARTING',
+            BatchStatus::STARTED   => 'STARTED',
+            BatchStatus::STOPPING  => 'STOPPING',
+            BatchStatus::STOPPED   => 'STOPPED',
+            BatchStatus::FAILED    => 'FAILED',
+            BatchStatus::ABANDONED => 'ABANDONED',
+            BatchStatus::UNKNOWN   => 'UNKNOWN'
+        );
+
+        $this->assertEquals($expectedLabels, BatchStatus::getAllLabels());
     }
 }

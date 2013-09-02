@@ -1,0 +1,196 @@
+// Get form name
+var formName = 'pim_catalog_attribute_form';
+
+$(function() {
+
+    var $optionList;
+
+    function updateForm() {
+        $.post(
+            '{{ path("pim_catalog_productattribute_preprocess") }}',
+            $('#'+formName).serialize(),
+            function(data) {
+                for (var prop in data) {
+                    $('#'+prop).html(data[prop]);
+                }
+                $('#'+formName+' div.alert').remove();
+                initializeForm();
+            }
+        );
+    }
+
+    function initializeForm() {
+        $('#'+formName+' .switch:not(.has-switch)').bootstrapSwitch();
+        $('#'+formName+' a.validation-tooltip').tooltip();
+        $('#'+formName+' select').select2();
+        $('#'+formName+' input.multiselect').each(function() {
+            $el = $(this);
+            var value = $el.val() ? $el.val().split(',') : [];
+            tags = $el.attr('data-tags') ? $el.attr('data-tags').split(',') : [];
+            value = _.map(value, $.trim);
+            tags = _.map(tags, $.trim);
+            tags = _.union(tags, value).sort();
+            $el.select2({ tags: tags, tokenSeparators: [',', ' '] });
+        });
+        initializeOptions();
+        $('#'+formName+'_attributeType').select2().on('change', function() {
+            updateForm();
+        });
+
+        // Enable/disable scope and translatable fields according to unique field value
+        $('#'+formName+'_unique').closest('.has-switch').on('switch-change', function (e, data) {
+            if (data.value) {
+                $('#'+formName+'_scopable').select2('val', 0).select2('disable');
+                $('#'+formName+'_translatable').closest('.has-switch').bootstrapSwitch('setState', false);
+                $('#'+formName+'_translatable').closest('.has-switch').bootstrapSwitch('setActive', false);
+            } else {
+                $('#'+formName+'_scopable').select2('enable');
+                $('#'+formName+'_translatable').closest('.has-switch').bootstrapSwitch('setActive', true);
+            }
+        });
+
+        $('#'+formName+'_validationRule').change(function() {
+            if ($(this).val() == 'regexp') {
+                $('#'+formName+'_validationRegexp').parent().parent().show();
+            } else {
+                $('#'+formName+'_validationRegexp').val('').parent().parent().hide();
+            }
+        }).trigger('change');
+
+        if ($('#'+formName+'_availableLocales').val()) {
+            $('#'+formName+'_availableLocales').parent().parent().show();
+            $('#limitLocales-switch').bootstrapSwitch('setState', true);
+        }
+
+        $('#limitLocales-switch').on('switch-change', function (e, data) {
+            if (data.value) {
+                $(this).parent().parent().next().show();
+            } else {
+                $('select[id*=availableLocales]').select2('val', '');
+                $(this).parent().parent().next().hide();
+            }
+        });
+
+        $('#'+formName+'_metricFamily').select2({ data: Pim.measures.getMetricTypes() }).change(function() {
+            $('#'+formName+'_defaultMetricUnit').select2({
+                data: Pim.measures.getMetricUnits($(this).select2('val'))
+            });
+        }).trigger('change');
+
+        $('.picker-datetime').datetimepicker();
+        $('.picker-date').datetimepicker({ pickTime: false });
+        $('.picker-time').datetimepicker({ pickDate: false });
+
+        $('.picker-date, .picker-datetime').on('changeDate', function(e) {
+            var val = e.date ? e.date.toISOString() : '';
+            $(this).parent().children('input').val(val);
+        });
+
+        $('.picker-time').on('changeDate', function(e) {
+            var val = '';
+            if (e.localDate) {
+                var h = e.localDate.getHours();
+                var m = e.localDate.getMinutes();
+                h = (h > 9) ? h : '0' + h;
+                m = (m > 9) ? m : '0' + m;
+                val = h + ':' + m;
+            }
+            $(this).parent().children('input').val(val);
+        });
+    }
+
+    initializeForm();
+
+    function initializeOptions() {
+        $optionList = $('table#sortable_options');
+        if (!$optionList.length) {
+            return;
+        }
+        $optionList.after($('<a class="btn btn-small add_option_link" href="javascript:void(0);"><i class="fa-icon-plus"></i>{{ "Add an option"|trans }}</a>'));
+
+        $optionList.find('tr.att-option').each(function() {
+            $(this).append($('<td><button type="button" class="btn btn-small action-delete-inline"><i class="fa-icon-remove"></i></button></td>'));
+        });
+
+        $(document).on('click', 'a.add_option_link', function(e) {
+            e.preventDefault();
+            addOption();
+        });
+
+        $(document).on('click', 'button.action-delete-inline', function(e) {
+            var rows = $optionList.find('tbody tr').length;
+            if (rows > 1) {
+                $(this).parent().parent().remove();
+                if (rows === 2) {
+                    $('button.action-delete-inline').attr('disabled', 'disabled');
+                }
+            }
+        });
+
+        if ($('button.action-delete-inline').length === 1) {
+            $('button.action-delete-inline').attr('disabled', 'disabled');
+        }
+
+        $(document).on('change', 'input[name="default"]', updateDefaultField);
+
+        $optionList.find('.handle input').hide();
+
+        $optionList.find('tbody').sortable({
+            handle: '.handle',
+            containment: 'parent',
+            tolerance: 'pointer',
+            update: updateSortOrder,
+            helper: function(e, tr) {
+                var $originals = tr.children();
+                var $helper = tr.clone();
+                $helper.children().each(function(index) {
+                    $(this).width($originals.eq(index).width());
+                });
+
+                return $helper;
+            }
+        });
+    }
+
+    function addOption() {
+        var option = $optionList.find('tr').last().html();
+
+        var optionNumber = $optionList.find('tr.att-option').length + 1;
+        while ($optionList.find('[id*='+formName+'_options_'+optionNumber+']').length) {
+            optionNumber++;
+        }
+
+        option = option.replace(/\[options\]\[([0-9]+)\]/g, "[options][" + optionNumber + "]");
+        option = option.replace(/_options_([0-9]+)_/g, "_options_" + optionNumber + "_");
+        option = option.replace('checked="checked"', '');
+        option = option.replace(/\s+/g, ' ');
+
+        var $option = $('<tr class="att-option">' + option + '</tr>');
+
+        // Empty all fields except for locale
+        $option.find('input').each(function() {
+            if ($(this).attr('name').indexOf('locale') == -1) {
+                $(this).removeAttr('value');
+            }
+        });
+
+        $optionList.find('tbody').append($option);
+
+        $('button.action-delete-inline').removeAttr('disabled');
+        updateSortOrder();
+    }
+
+    function updateSortOrder() {
+        var num = 0;
+        $optionList.find('tr').each(function() {
+            $(this).find('td.handle input').val(num);
+            num++;
+        });
+    }
+
+    function updateDefaultField() {
+        $optionList.find('input[name="default"]').each(function() {
+            $(this).prev().val($(this).is(':checked') ? 1 : 0);
+        });
+    }
+});

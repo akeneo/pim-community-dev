@@ -4,8 +4,8 @@ namespace Pim\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
-use Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType;
 use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter\ChoiceFilterTypeTest;
+use Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType;
 
 /**
  * Test related class
@@ -13,7 +13,6 @@ use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter\ChoiceFilterTypeTest;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class ScopeFilterTypeTest extends ChoiceFilterTypeTest
 {
@@ -51,11 +50,11 @@ class ScopeFilterTypeTest extends ChoiceFilterTypeTest
     /**
      * Create mock channel manager
      *
-     * @return Pim\Bundle\ProductBundle\Manager\ChannelManager
+     * @return Pim\Bundle\CatalogBundle\Manager\ChannelManager
      */
     protected function createMockChannelManager()
     {
-        $channelManager = $this->getMockBuilder('Pim\Bundle\ProductBundle\Manager\ChannelManager')
+        $channelManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
                                ->disableOriginalConstructor()
                                ->getMock();
 
@@ -84,7 +83,7 @@ class ScopeFilterTypeTest extends ChoiceFilterTypeTest
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefaultOptionsDataProvider()
     {

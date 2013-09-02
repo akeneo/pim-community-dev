@@ -180,29 +180,19 @@ var jsfv = new function () {
         },
 {% block removeErrors_method %}
         removeErrors: function (field) {
-            field = $(field);
-            if (field.parent().filter('.error').length) {
-                field = field.parent();
-            }
-            field.removeClass('error').parent().filter('.controls').removeClass('validation-error');
+            $(field).removeClass('error').parent().filter('.controls').removeClass('validation-error');
         },
 {% endblock %}
 {% block addError_method %}
         addError: function (field, errorMessage) {
             // Add errors block
-            field = $(field);
-            var target = field;
-            if (field.parent().filter('.selector').length || field.parent().filter('.uploader').length) {
-                target = field.parent();
+            var $field = $(field);
+            var $iconContainer = $field.siblings('.icons-container').first();
+            if ($iconContainer.find('.validation-tooltip').length === 0)  {
+                $('<a class="validation-tooltip" data-placement="right" data-toggle="tooltip"></a>').appendTo($iconContainer);
             }
-            if (target.siblings('a.validation-tooltip').length == 0)  {
-                $('<a class="validation-tooltip" data-placement="top" data-toggle="tooltip"></a>').insertAfter(target);
-            }
-            target.siblings('a.validation-tooltip')
-                        .attr('data-original-title', errorMessage)
-                        .html(errorMessage)
-                        .tooltip();
-            target.addClass('error').parent().filter('.controls').addClass('validation-error');
+            $iconContainer.find('.validation-tooltip').attr('data-original-title', errorMessage).tooltip();
+            $field.addClass('error').parent().filter('.controls').addClass('validation-error');
         },
 {% endblock %}
         onEvent: function (field, eventType, handler) {

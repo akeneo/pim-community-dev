@@ -22,11 +22,11 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
      */
     public function __construct(ReferenceFactory $factory = null)
     {
-        $this->factory = $factory ?: new ReferenceFactory;
+        $this->factory = $factory ?: new ReferenceFactory();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {

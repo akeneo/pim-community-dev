@@ -3,7 +3,7 @@
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\ProductBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 
 /**
  * Load fixtures for locales
@@ -11,7 +11,6 @@ use Pim\Bundle\ProductBundle\Entity\Locale;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class LoadLocaleData extends AbstractInstallerFixture
 {
@@ -20,7 +19,7 @@ class LoadLocaleData extends AbstractInstallerFixture
      */
     public function load(ObjectManager $manager)
     {
-        $allLocales = $this->container->getParameter('pim_product.locales');
+        $allLocales = $this->container->getParameter('pim_catalog.locales');
 
         foreach (array_keys($allLocales['locales']) as $localeCode) {
             $locale = new Locale();

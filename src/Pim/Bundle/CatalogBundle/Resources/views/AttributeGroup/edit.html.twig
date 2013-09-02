@@ -1,0 +1,88 @@
+{% extends 'PimCatalogBundle:AttributeGroup:index.html.twig' %}
+
+{% block groupTab %}
+{{ JSFV(form) }}
+<form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
+    path('pim_catalog_attributegroup_edit', { id: form.vars.value.id }) :
+    path('pim_catalog_attributegroup_create') }}" method="POST">
+
+    {% set title = form.vars.value.id ? 'Group'|trans ~ ' - ' ~ form.vars.data.name : 'New group'|trans %}
+
+    {% set buttons %}
+        {% if form.vars.value.id %}
+            {{ elements.deleteLink(path('pim_catalog_attributegroup_remove', {'id': form.vars.value.id}), 'Are you sure you want to delete the group %group%?'|trans({'%group%': form.vars.data.name})) }}
+        {% endif %}
+        {{ elements.submitBtn }}
+    {% endset %}
+
+    {{ elements.page_header(title, buttons) }}
+
+    {% set tabs = form.vars.value.id ? ['Properties', 'Attributes'] : 'Properties' %}
+
+    {{ elements.form_navbar(tabs) }}
+
+    <div class="tab-content">
+
+        {{ elements.form_errors(form) }}
+
+        <div class="tab-pane active" id="properties">
+            {{ elements.accordion({ 'General Properties': form_row(form.code), 'Group values': form_row(form.name) }) }}
+        </div>
+        {{ form_row(form.sort_order) }}
+        {{ form_row(form._token) }}
+
+        {% if form.vars.value.id %}
+            <div class="tab-pane" id="attributes">
+                <div id="attribute-buttons"></div>
+                <div class="clearfix"></div>
+                <table class="table groups">
+                    <thead>
+                        <th>&nbsp;</th>
+                        <th>{{ 'Name'|trans }}</th>
+                        <th>{{ 'Type'|trans }}</th>
+                        <th>{{ 'Scope'|trans }}</th>
+                        <th>{{ 'Translatable'|trans }}</th>
+                        <th>&nbsp;</th>
+                    </thead>
+                        <tbody id="attributes-sortable">
+                            {% for attribute in group.attributes %}
+                                <tr>
+                                    <td>
+                                        <span class="handle">
+                                            <i class="fa-icon-reorder"></i>
+                                            <input name="{{ attribute.id }}" type="hidden" value="{{ attribute.sortOrder }}">
+                                        </span>
+                                    </td>
+                                    <td>{{ attribute.label }}</td>
+                                    <td>{{ attribute.attributeType|trans }}</td>
+                                    <td>{{ attribute.scopable ? 'Channel'|trans : 'Global'|trans }}</td>
+                                    <td>
+                                        <input type="checkbox" disabled="disabled"{% if attribute.translatable %} checked="checked"{% endif %}>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0);" class="remove-attribute" data-url="{{ path('pim_catalog_attributegroup_removeproductattribute', {'groupId': group.id, 'attributeId': attribute.id}) }}" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
+                                            <i class="icon-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+</form>
+
+{% if form.vars.value.id %}
+    {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+        'form': attributesForm,
+        'action': path('pim_catalog_attributegroup_addproductattributes', {id: form.vars.value.id ? form.vars.value.id : 0})
+    } %}
+{% endif %}
+
+{% include 'PimCatalogBundle:AttributeGroup:_attribute-sort-form.html.twig' with {
+    'list': '#attributes-sortable',
+    'attributes': group.attributes
+} %}
+
+{% endblock %}

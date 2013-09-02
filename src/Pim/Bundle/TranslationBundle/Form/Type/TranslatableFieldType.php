@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\ProductBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
 
 /**
@@ -16,7 +16,6 @@ use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class TranslatableFieldType extends AbstractType
 {

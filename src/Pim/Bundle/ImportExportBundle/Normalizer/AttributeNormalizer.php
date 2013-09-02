@@ -3,12 +3,12 @@
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
- * A normalizer to transform a ProductAttribute entity into a flat array
+ * A normalizer to transform a ProductAttribute entity into array
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -21,8 +21,14 @@ class AttributeNormalizer implements NormalizerInterface
     const CHANNEL_SCOPE       = 'Channel';
     const ALL_LOCALES         = 'All';
 
-    protected $supportedFormats = array('csv');
+    /**
+     * @var array
+     */
+    protected $supportedFormats = array('json', 'xml');
 
+    /**
+     * @var array
+     */
     private $results;
 
     /**
@@ -44,7 +50,8 @@ class AttributeNormalizer implements NormalizerInterface
         $this->results = array(
             'type'                    => end($attributeTypes),
             'code'                    => $attribute->getCode(),
-            'description'             => $attribute->getDescription(),
+            'label'                   => $this->normalizeLabel($attribute),
+            'available_locales'       => $this->normalizeAvailableLocales($attribute),
             'group'                   => $attribute->getVirtualGroup()->getCode(),
             'sort_order'              => $attribute->getSortOrder(),
             'required'                => $attribute->getRequired(),
@@ -70,14 +77,11 @@ class AttributeNormalizer implements NormalizerInterface
             'metric_family'           => (string) $attribute->getMetricFamily(),
             'default_metric_unit'     => (string) $attribute->getDefaultMetricUnit(),
             'allowed_file_sources'    => (string) $attribute->getAllowedFileSources(),
-            'allowed_extensions' => implode(self::ITEM_SEPARATOR, $attribute->getAllowedExtensions()),
+            'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $attribute->getAllowedExtensions()),
             'max_file_size'           => (string) $attribute->getMaxFileSize(),
+            'options'                 => $this->normalizeOptions($attribute),
+            'default_options'         => $this->normalizeDefaultOptions($attribute)
         );
-
-        $this->normalizeLabel($attribute);
-        $this->normalizeAvailableLocales($attribute);
-        $this->normalizeOptions($attribute);
-        $this->normalizeDefaultOptions($attribute);
 
         return $this->results;
     }
@@ -100,21 +104,16 @@ class AttributeNormalizer implements NormalizerInterface
      *
      * @param ProductAttribute $attribute
      *
-     * @return void
+     * @return array
      */
     protected function normalizeLabel(ProductAttribute $attribute)
     {
-        $pattern = self::LOCALIZABLE_PATTERN;
-        $labels = $attribute->getTranslations()->map(
-            function ($translation) use ($pattern) {
-                $label = str_replace('{locale}', $translation->getLocale(), $pattern);
-                $label = str_replace('{value}', $translation->getLabel(), $label);
+        $labels = array();
+        foreach ($attribute->getTranslations() as $translation) {
+            $labels[$translation->getLocale()]= $translation->getLabel();
+        }
 
-                return $label;
-            }
-        )->toArray();
-
-        $this->results['label'] = implode(self::ITEM_SEPARATOR, $labels);
+        return $labels;
     }
 
     /**
@@ -122,77 +121,57 @@ class AttributeNormalizer implements NormalizerInterface
      *
      * @param ProductAttribute $attribute
      *
-     * @return void
+     * @return array
      */
     protected function normalizeAvailableLocales($attribute)
     {
-        $availableLocales = $attribute->getAvailableLocales();
-
-        if ($availableLocales) {
-            $availableLocales = $availableLocales->map(
-                function ($locale) {
-                    return $locale->getCode();
-                }
-            )->toArray();
-            $availableLocales = implode(self::ITEM_SEPARATOR, $availableLocales);
+        $locales = array();
+        foreach ($attribute->getAvailableLocales() as $locale) {
+            $locales[]= $locale->getCode();
         }
 
-        $this->results['available_locales'] = $availableLocales ?: self::ALL_LOCALES;
+        return $locales;
     }
 
     /**
      * Normalize options
      *
      * @param ProductAttribute $attribute
+     *
+     * @return array
      */
     protected function normalizeOptions($attribute)
     {
+        $data = array();
         $options = $attribute->getOptions();
-
-        if ($options->isEmpty()) {
-            $options = '';
-        } else {
-            $data = array();
-            foreach ($options as $option) {
-                $item = array();
-                foreach ($option->getOptionValues() as $value) {
-                    $label = str_replace('{locale}', $value->getLocale(), self::LOCALIZABLE_PATTERN);
-                    $label = str_replace('{value}', $value->getValue(), $label);
-                    $item[] = $label;
-                }
-                $data[] = implode(self::ITEM_SEPARATOR, $item);
+        foreach ($options as $option) {
+            $data[$option->getCode()]= array();
+            foreach ($option->getOptionValues() as $value) {
+                $data[$option->getCode()][$value->getLocale()]= $value->getValue();
             }
-            $options = implode(self::GROUP_SEPARATOR, $data);
         }
 
-        $this->results['options'] = $options;
+        return $data;
     }
 
     /**
      * Normalize default options
      *
      * @param ProductAttribute $attribute
+     *
+     * @return array
      */
     protected function normalizeDefaultOptions($attribute)
     {
-        $defaultOptions = $attribute->getDefaultOptions();
-
-        if ($defaultOptions->isEmpty()) {
-            $defaultOptions = '';
-        } else {
-            $data = array();
-            foreach ($defaultOptions as $option) {
-                $item = array();
-                foreach ($option->getOptionValues() as $value) {
-                    $label = str_replace('{locale}', $value->getLocale(), self::LOCALIZABLE_PATTERN);
-                    $label = str_replace('{value}', $value->getValue(), $label);
-                    $item[] = $label;
-                }
-                $data[] = implode(self::ITEM_SEPARATOR, $item);
+        $data = array();
+        $options = $attribute->getDefaultOptions();
+        foreach ($options as $option) {
+            $data[$option->getCode()]= array();
+            foreach ($option->getOptionValues() as $value) {
+                $data[$option->getCode()][$value->getLocale()]= $value->getValue();
             }
-            $defaultOptions = implode(self::GROUP_SEPARATOR, $data);
         }
 
-        $this->results['default_options'] = $defaultOptions;
+        return $data;
     }
 }

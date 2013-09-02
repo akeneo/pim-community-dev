@@ -4,8 +4,8 @@ namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Routing\Router;
-use Pim\Bundle\ProductBundle\Model\ProductInterface;
-use Pim\Bundle\ProductBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * A normalizer to transform a product entity into an array
@@ -16,6 +16,11 @@ use Pim\Bundle\ProductBundle\Entity\Channel;
  */
 class ProductNormalizer implements NormalizerInterface
 {
+    /**
+     * @var array
+     */
+    protected $supportedFormats = array('json', 'xml');
+
     /**
      * @var Router
      */
@@ -32,6 +37,8 @@ class ProductNormalizer implements NormalizerInterface
     protected $locale;
 
     /**
+     * TODO : make that normalizer useable without channel and router (use context ?)
+     *
      * Constructor
      *
      * @param Router $router
@@ -91,7 +98,7 @@ class ProductNormalizer implements NormalizerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function normalize($product, $format = null, array $context = array())
     {
@@ -121,14 +128,16 @@ class ProductNormalizer implements NormalizerInterface
 
         $identifier = $product->getIdentifier();
 
-        $data['resource'] = $this->router->generate(
-            'oro_api_get_product',
-            array(
-                'scope' => $this->channel->getCode(),
-                'identifier' => $identifier->getData()
-            ),
-            true
-        );
+        if ($this->router) {
+            $data['resource'] = $this->router->generate(
+                'oro_api_get_product',
+                array(
+                    'scope' => $this->channel->getCode(),
+                    'identifier' => $identifier->getData()
+                ),
+                true
+            );
+        }
 
         return array($identifier->getData() => $data);
     }
@@ -191,16 +200,16 @@ class ProductNormalizer implements NormalizerInterface
     }
 
     /**
-     * Checks whether the given class is supported for normalization by this normalizer
+     * Indicates whether this normalizer can normalize the given data
      *
-     * @param mixed  $data   Data to normalize
-     * @param string $format Serialization format
+     * @param mixed  $data
+     * @param string $format
      *
      * @return boolean
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductInterface && in_array($format, array('json'));
+        return $data instanceof ProductInterface && in_array($format, $this->supportedFormats);
     }
 
     /**

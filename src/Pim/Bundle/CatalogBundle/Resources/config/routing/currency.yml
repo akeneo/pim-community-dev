@@ -1,0 +1,11 @@
+pim_catalog_currency_index:
+    path: /.{_format}
+    defaults: { _controller: PimCatalogBundle:Currency:index, _format: html }
+    requirements:
+        _format: html|json
+
+pim_catalog_currency_toggle:
+    path: /{id}/toggle
+    defaults: { _controller: PimCatalogBundle:Currency:toggle }
+    requirements:
+        id: \d+

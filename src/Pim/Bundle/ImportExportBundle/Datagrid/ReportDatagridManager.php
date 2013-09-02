@@ -8,6 +8,9 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
+use Oro\Bundle\GridBundle\Property\FieldProperty;
+use Oro\Bundle\GridBundle\Property\UrlProperty;
+use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 
@@ -17,7 +20,6 @@ use Pim\Bundle\BatchBundle\Job\BatchStatus;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class ReportDatagridManager extends DatagridManager
 {
@@ -31,28 +33,40 @@ class ReportDatagridManager extends DatagridManager
     /**
      * {@inheritdoc}
      */
+    public function prepareQuery(ProxyQueryInterface $proxyQuery)
+    {
+        $proxyQuery->innerJoin($proxyQuery->getRootAlias() .'.jobInstance', 'jobInstance');
+        $proxyQuery->addSelect('jobInstance.code as jobCode');
+        $proxyQuery->addSelect('jobInstance.label as jobLabel');
+        $proxyQuery->addSelect('jobInstance.alias as jobAlias');
+        $proxyQuery->addSelect($proxyQuery->getRootAlias() .'.exitCode as exitCode');
+
+        if ($this->jobType !== null) {
+            $proxyQuery->andWhere('jobInstance.type = :job_type');
+            $proxyQuery->setParameter('job_type', $this->jobType);
+        }
+    }
+
+    /**
+     * Set job type
+     *
+     * @param string $jobType
+     *
+     * @return \Pim\Bundle\ImportExportBundle\Datagrid\ReportDatagridManager
+     */
+    public function setJobType($jobType)
+    {
+        $this->jobType = $jobType;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $field = new FieldDescription();
-        $field->setName('code');
-        $field->setOptions(
-            array(
-                'type'            => FieldDescriptionInterface::TYPE_TEXT,
-                'label'           => $this->translate('Code'),
-                'field_name'      => 'jobCode',
-                'expression'      => 'job.id',
-                'filter_type'     => FilterInterface::TYPE_ENTITY,
-                'sortable'        => false,
-                'filterable'      => true,
-                'show_filter'     => true,
-                'class'           => 'PimBatchBundle:Job',
-                'property'        => 'code',
-                'query_builder'   => function (EntityRepository $repository) {
-                    return $repository->createQueryBuilder('j')->orderBy('j.code', 'ASC');
-                },
-                'filter_by_where' => true,
-            )
-        );
+        $field = $this->createCodeField();
         $fieldsCollection->add($field);
 
         $field = new FieldDescription();
@@ -110,6 +124,76 @@ class ReportDatagridManager extends DatagridManager
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function getProperties()
+    {
+        $fieldId = new FieldDescription();
+        $fieldId->setName('id');
+        $fieldId->setOptions(
+            array(
+                'type'     => FieldDescriptionInterface::TYPE_INTEGER,
+                'required' => true,
+            )
+        );
+
+        return array(
+            new FieldProperty($fieldId),
+            new UrlProperty('download_link', $this->router, 'pim_importexport_report_download', array('id')),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getRowActions()
+    {
+        $downloadLogFileAction = array(
+            'name'         => 'download',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'root',
+            'options'      => array(
+                'label'   => $this->translate('download'),
+                'icon'    => 'download',
+                'link'    => 'download_link',
+                'backUrl' => true
+            )
+        );
+
+        return array($downloadLogFileAction);
+    }
+    /**
+     * Create status field
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createCodeField()
+    {
+        $field = new FieldDescription();
+        $field->setName('code');
+        $field->setOptions(
+            array(
+                'type'            => FieldDescriptionInterface::TYPE_TEXT,
+                'label'           => $this->translate('Code'),
+                'field_name'      => 'jobCode',
+                'expression'      => 'jobInstance.id',
+                'filter_type'     => FilterInterface::TYPE_ENTITY,
+                'sortable'        => false,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'class'           => 'PimBatchBundle:JobInstance',
+                'property'        => 'code',
+                'query_builder'   => function (EntityRepository $repository) {
+                    return $repository->createQueryBuilder('j')->orderBy('j.code', 'ASC');
+                },
+                'filter_by_where' => true,
+            )
+        );
+
+        return $field;
+    }
+
+    /**
      * Create job field
      *
      * @return \Oro\Bundle\GridBundle\Field\FieldDescription
@@ -124,12 +208,12 @@ class ReportDatagridManager extends DatagridManager
                 'type'            => FieldDescriptionInterface::TYPE_TEXT,
                 'label'           => $this->translate('Job'),
                 'field_name'      => 'jobAlias',
-                'expression'      => 'job.id',
+                'expression'      => 'jobInstance.id',
                 'filter_type'     => FilterInterface::TYPE_ENTITY,
                 'sortable'        => false,
                 'filterable'      => true,
                 'show_filter'     => true,
-                'class'           => 'PimBatchBundle:Job',
+                'class'           => 'PimBatchBundle:JobInstance',
                 'property'        => 'alias',
                 'query_builder'   => function (EntityRepository $repository) use ($jobType) {
                     $qb = $repository->createQueryBuilder('j')->orderBy('j.alias', 'ASC');
@@ -145,36 +229,5 @@ class ReportDatagridManager extends DatagridManager
         );
 
         return $field;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepareQuery(ProxyQueryInterface $proxyQuery)
-    {
-        $proxyQuery->innerJoin($proxyQuery->getRootAlias() .'.job', 'job');
-        $proxyQuery->addSelect('job.code as jobCode');
-        $proxyQuery->addSelect('job.label as jobLabel');
-        $proxyQuery->addSelect('job.alias as jobAlias');
-        $proxyQuery->addSelect($proxyQuery->getRootAlias() .'.exitCode as exitCode');
-
-        if ($this->jobType !== null) {
-            $proxyQuery->andWhere('job.type = :job_type');
-            $proxyQuery->setParameter('job_type', $this->jobType);
-        }
-    }
-
-    /**
-     * Set job type
-     *
-     * @param string $jobType
-     *
-     * @return \Pim\Bundle\ImportExportBundle\Datagrid\ReportDatagridManager
-     */
-    public function setJobType($jobType)
-    {
-        $this->jobType = $jobType;
-
-        return $this;
     }
 }

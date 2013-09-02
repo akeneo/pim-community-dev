@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Pim\Bundle\ProductBundle\Controller\Controller;
+use Pim\Bundle\CatalogBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * Report controller
@@ -23,6 +25,23 @@ class ReportController extends Controller
         $gridManager = $this->get('pim_import_export.datagrid.manager.report');
 
         return $this->renderDatagrid($gridManager);
+    }
+
+    /**
+     * Download the log file of the job execution
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function downloadLogFileAction($id)
+    {
+        $jobExecution = $this->findOr404('PimBatchBundle:JobExecution', $id);
+
+        $logger = $this->get('pim_batch.logger.batch_log_handler');
+
+        $response = new BinaryFileResponse($logger->getRealPath($jobExecution->getLogFile()));
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+
+        return $response;
     }
 
     /**

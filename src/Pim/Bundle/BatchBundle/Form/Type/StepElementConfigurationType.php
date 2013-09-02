@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class StepElementConfigurationType extends AbstractType
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -47,12 +47,10 @@ class StepElementConfigurationType extends AbstractType
                                 $stepElement->getName(),
                                 $field
                             ),
-                            'attr'            => array(
-                                'help' => sprintf(
-                                    'pim_batch.%s.%s.help',
-                                    $stepElement->getName(),
-                                    $field
-                                )
+                            'help' => sprintf(
+                                'pim_batch.%s.%s.help',
+                                $stepElement->getName(),
+                                $field
                             )
                         ),
                         $config['options']

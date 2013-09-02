@@ -2,10 +2,12 @@
 
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
+use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\ProductBundle\Entity\Family;
-use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 
 /**
  * Load fixtures for families
@@ -13,7 +15,6 @@ use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class LoadFamilyData extends AbstractInstallerFixture
 {
@@ -55,6 +56,16 @@ class LoadFamilyData extends AbstractInstallerFixture
             $family->addAttribute($this->getReference('product-attribute.'.$attribute));
         }
 
+        foreach ($data['requirements'] as $channel => $attributes) {
+            foreach ($attributes as $attribute) {
+                $requirement =  new AttributeRequirement();
+                $requirement->setAttribute($this->getReference('product-attribute.'.$attribute));
+                $requirement->setChannel($this->getReference('channel.'.$channel));
+                $requirement->setRequired(true);
+                $family->addAttributeRequirement($requirement);
+            }
+        }
+
         if (isset($data['attributeAsLabel'])) {
             $family->setAttributeAsLabel($this->getReference('product-attribute.'.$data['attributeAsLabel']));
         }
@@ -69,7 +80,7 @@ class LoadFamilyData extends AbstractInstallerFixture
      * @param string $locale  Locale used
      * @param string $content Translated content
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\FamilyTranslation
+     * @return \Pim\Bundle\CatalogBundle\Entity\FamilyTranslation
      */
     public function createTranslation($family, $locale, $content)
     {

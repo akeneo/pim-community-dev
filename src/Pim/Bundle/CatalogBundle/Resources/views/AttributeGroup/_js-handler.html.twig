@@ -1,0 +1,31 @@
+<script type="text/javascript">
+$(function() {
+    'use strict';
+
+    function updateSortOrder() {
+        var num = 0;
+        $('#entities-sortable').find('li').each(function() {
+            $(this).find('.handle input').val(num);
+            num++;
+        });
+
+        $.ajax({
+            url: '{{ path("pim_catalog_attributegroup_sort") }}',
+            type: 'POST',
+            data: $('#pim_catalog_attributegroup_sort').serialize()
+        });
+    }
+
+    $('#entities-sortable').sortable({
+        handle: '.handle',
+        containment: 'parent',
+        tolerance: 'pointer',
+        update: updateSortOrder
+    });
+
+    var addBtn = $('<a href="{{ path("pim_catalog_attributegroup_create") }}">')
+        .html($('<i>', { 'class': 'icon-plus-sign' }));
+
+    $('#group-container').sidebarize({ buttons: [ addBtn ] });
+});
+</script>

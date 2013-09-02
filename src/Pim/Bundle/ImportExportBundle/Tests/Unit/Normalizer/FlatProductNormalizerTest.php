@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\ProductBundle\Exception\MissingIdentifierException;
+use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 
 /**
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
@@ -18,8 +18,8 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\ProductBundle\Model\ProductInterface', 'csv',  true),
-            array('Pim\Bundle\ProductBundle\Model\ProductInterface', 'json', false),
+            array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'csv',  true),
+            array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'json', false),
             array('stdClass',                                        'csv',  false),
             array('stdClass',                                        'json', false),
         );
@@ -53,7 +53,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
                 new ArrayCollection(array('roue', 'poignées', 'benne'))
             ),
         );
-        $identifier = $this->getValueMock($this->getAttributeMock('sku', false, 'pim_product_identifier'), 'KB0001');
+        $identifier = $this->getValueMock($this->getAttributeMock('sku', false, 'pim_catalog_identifier'), 'KB0001');
         $family     = $this->getFamilyMock('garden-tool');
         $product    = $this->getProductMock($identifier, $values, $family, 'cat1, cat2, cat3');
 
@@ -87,7 +87,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
                 new ArrayCollection(array('roue', 'poignées', 'benne'))
             ),
         );
-        $identifier = $this->getValueMock($this->getAttributeMock('sku', false, 'pim_product_identifier'), 'KB0001');
+        $identifier = $this->getValueMock($this->getAttributeMock('sku', false, 'pim_catalog_identifier'), 'KB0001');
         $product    = $this->getProductMock($identifier, $values, null, 'cat1, cat2, cat3');
 
         $result = array(
@@ -108,7 +108,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Pim\Bundle\ProductBundle\Exception\MissingIdentifierException
+     * @expectedException Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException
      */
     public function testNormalizeProductWithoutIdentifier()
     {
@@ -131,7 +131,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
 
     private function getProductMock($identifier = null, array $values = array(), $family = null, $categories = '')
     {
-        $product = $this->getMock('Pim\Bundle\ProductBundle\Entity\Product');
+        $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
         if ($identifier) {
             $identifierReturn = $this->returnValue($identifier);
         } else {
@@ -159,7 +159,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
 
     private function getValueMock($attribute = null, $data = null, $locale = null)
     {
-        $value = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductValue');
+        $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
 
         $value->expects($this->any())
             ->method('getAttribute')
@@ -176,9 +176,9 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         return $value;
     }
 
-    private function getAttributeMock($code, $translatable = false, $type = 'pim_product_text')
+    private function getAttributeMock($code, $translatable = false, $type = 'pim_catalog_text')
     {
-        $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
 
         $attribute->expects($this->any())
             ->method('getCode')
@@ -197,7 +197,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
 
     private function getFamilyMock($code)
     {
-        $family = $this->getMock('Pim\Bundle\ProductBundle\Entity\Family');
+        $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family');
 
         $family->expects($this->any())
             ->method('getCode')

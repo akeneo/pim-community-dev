@@ -26,7 +26,7 @@ Feature: Remove an attribute from a product
       | sku    | family  |
       | kangoo | vehicle |
     And the following product attribute:
-      | product | label | group   | family  |
+      | product | label | group | family  |
       |         | Model | Other | vehicle |
       | kangoo  | Color | Other |         |
     And I am logged in as "admin"

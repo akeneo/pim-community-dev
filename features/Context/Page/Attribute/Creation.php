@@ -28,11 +28,11 @@ class Creation extends Form
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Attribute type selector' => array('css' => '#pim_product_attribute_form_attributeType'),
+                'Attribute type selector' => array('css' => '#pim_catalog_attribute_form_attributeType'),
                 'Attribute options table' => array('css' => 'table#sortable_options'),
                 'Attribute options'       => array('css' => 'table#sortable_options tbody tr'),
                 'Add option button'       => array('css' => 'a.btn.add_option_link'),
-                'Default label field'     => array('css' => '#pim_product_attribute_form_label_default'),
+                'Default label field'     => array('css' => '#pim_catalog_attribute_form_label_default'),
             )
         );
     }
@@ -76,6 +76,7 @@ class Creation extends Form
                 if ($selectedByDefault) {
                     $row->find('css', 'input[name="default"]')->click();
                 }
+
                 return;
             }
         }

@@ -31,6 +31,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('webUser', new WebUser());
         $this->useContext('webApi', new WebApiContext($parameters['base_url']));
         $this->useContext('datagrid', new DataGridContext());
+        $this->useContext('command', new CommandContext());
     }
 
     /**
@@ -113,5 +114,15 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function wait($time = 5000, $condition = 'document.readyState == "complete" && !$.active')
     {
         $this->getSession()->wait($time, $condition);
+    }
+
+    /**
+     * Get the mail recorder
+     *
+     * @return MailRecorder
+     */
+    public function getMailRecorder()
+    {
+        return $this->getContainer()->get('pim_catalog.mailer.mail_recorder');
     }
 }

@@ -26,6 +26,7 @@ class Form extends Base
                 'Tabs'                            => array('css' => '#form-navbar'),
                 'Active tab'                      => array('css' => '.form-horizontal .tab-pane.active'),
                 'Groups'                          => array('css' => '.tab-groups'),
+                'Validation errors'               => array('css' => '.validation-tooltip'),
                 'Available attributes form'       => array('css' => '#pim_available_product_attributes'),
                 'Available attributes button'     => array('css' => 'button:contains("Add attributes")'),
                 'Available attributes list'       => array('css' => '.pimmultiselect .ui-multiselect-checkboxes'),
@@ -84,6 +85,23 @@ class Form extends Base
     }
 
     /**
+     * Get validation errors
+     *
+     * @return array:string
+     */
+    public function getValidationErrors()
+    {
+        $tooltips = $this->findAll('css', $this->elements['Validation errors']['css']);
+        $errors = array();
+
+        foreach ($tooltips as $tooltip) {
+            $errors[] = $tooltip->getAttribute('data-original-title');
+        }
+
+        return $errors;
+    }
+
+    /**
      * Open the available attributes popin
      */
     public function openAvailableAttributesMenu()
@@ -129,5 +147,53 @@ class Form extends Base
                 $attribute
             )
         );
+    }
+
+    /**
+     * Attach file to file field
+     *
+     * @param string $locator
+     * @param string $path
+     *
+     * @throws ElementNotFoundException
+     */
+    public function attachFileToField($locator, $path)
+    {
+        $field = $this->findField($locator);
+
+        if (null === $field) {
+            throw new ElementNotFoundException($this->getSession(), 'form field', 'id|name|label|value', $locator);
+        }
+
+        $field->attachFile($path);
+    }
+
+    /**
+     * Remove file from file field
+     *
+     * @param string $locator
+     *
+     * @throws ElementNotFoundException
+     */
+    public function removeFileFromField($locator)
+    {
+        $field = $this->findField($locator);
+
+        if (null === $field) {
+            throw new ElementNotFoundException($this->getSession(), 'form field', 'id|name|label|value', $locator);
+        }
+
+        $checkbox = $field->getParent()->find('css', 'input[type="checkbox"]');
+
+        if (null === $checkbox) {
+            throw new ElementNotFoundException(
+                $this->getSession(),
+                'Remove checkbox',
+                'associated file input',
+                $locator
+            );
+        }
+
+        $checkbox->check();
     }
 }

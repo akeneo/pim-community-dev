@@ -19,7 +19,7 @@ class CsvEncoder implements EncoderInterface
     protected $hasHeader      = false;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function encode($data, $format, array $context = array())
     {
@@ -76,7 +76,7 @@ class CsvEncoder implements EncoderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supportsEncoding($format)
     {

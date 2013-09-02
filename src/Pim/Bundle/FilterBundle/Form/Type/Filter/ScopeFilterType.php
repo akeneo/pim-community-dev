@@ -5,7 +5,7 @@ namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
-use Pim\Bundle\ProductBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 
 /**
  * Overriding of ChoiceFilterType
@@ -13,7 +13,6 @@ use Pim\Bundle\ProductBundle\Manager\ChannelManager;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class ScopeFilterType extends ChoiceFilterType
 {
@@ -47,7 +46,7 @@ class ScopeFilterType extends ChoiceFilterType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParent()
     {
@@ -55,7 +54,7 @@ class ScopeFilterType extends ChoiceFilterType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {

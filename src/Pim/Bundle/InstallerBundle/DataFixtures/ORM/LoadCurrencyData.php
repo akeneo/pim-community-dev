@@ -4,7 +4,7 @@ namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\ProductBundle\Entity\Currency;
+use Pim\Bundle\CatalogBundle\Entity\Currency;
 
 /**
  * Load fixtures for currencies
@@ -12,7 +12,6 @@ use Pim\Bundle\ProductBundle\Entity\Currency;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class LoadCurrencyData extends AbstractInstallerFixture
 {
@@ -21,7 +20,7 @@ class LoadCurrencyData extends AbstractInstallerFixture
      */
     public function load(ObjectManager $manager)
     {
-        $allCurrencies = $this->container->getParameter('pim_product.currencies');
+        $allCurrencies = $this->container->getParameter('pim_catalog.currencies');
         $activatedCurrencies = Yaml::parse(realpath($this->getFilePath()));
 
         foreach (array_keys($allCurrencies['currencies']) as $currencyCode) {
@@ -39,7 +38,7 @@ class LoadCurrencyData extends AbstractInstallerFixture
      * @param string  $code      Currency code
      * @param boolean $activated Define if currency is activated or not
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\Currency
+     * @return \Pim\Bundle\CatalogBundle\Entity\Currency
      */
     protected function createCurrency($code, $activated = false)
     {

@@ -44,7 +44,7 @@ class Index extends Grid
     public function activateCurrencies(array $currencies)
     {
         foreach ($currencies as $currency) {
-            $this->clickOnAction($currency, 'Toggle');
+            $this->clickOnAction($currency, 'Change status');
         }
     }
 
@@ -54,7 +54,7 @@ class Index extends Grid
     public function deactivateCurrencies(array $currencies)
     {
         foreach ($currencies as $currency) {
-            $this->clickOnAction($currency, 'Toggle');
+            $this->clickOnAction($currency, 'Change status');
         }
     }
 }

@@ -55,7 +55,7 @@ assetic:
         - OroEntityExtendBundle
         - OroSegmentationTreeBundle
         - PimUIBundle
-        - PimProductBundle
+        - PimCatalogBundle
 
     #java: /usr/bin/java
     filters:
@@ -84,9 +84,9 @@ doctrine:
         auto_mapping:         true
         resolve_target_entities:
             Symfony\Component\Security\Core\User\UserInterface:   Oro\Bundle\UserBundle\Entity\User
-            Pim\Bundle\ProductBundle\Model\ProductValueInterface: Pim\Bundle\ProductBundle\Entity\ProductValue
-            Pim\Bundle\ProductBundle\Model\ProductInterface:      Pim\Bundle\ProductBundle\Entity\Product
-            Pim\Bundle\ProductBundle\Model\CategoryInterface:     Pim\Bundle\ProductBundle\Entity\Category
+            Pim\Bundle\CatalogBundle\Model\ProductValueInterface: Pim\Bundle\CatalogBundle\Entity\ProductValue
+            Pim\Bundle\CatalogBundle\Model\ProductInterface:      Pim\Bundle\CatalogBundle\Entity\Product
+            Pim\Bundle\CatalogBundle\Model\CategoryInterface:     Pim\Bundle\CatalogBundle\Entity\Category
             Pim\Bundle\ImportExportBundle\Model\ExportInterface:  Pim\Bundle\ImportExportBundle\Entity\Export
 
 # Swiftmailer Configuration
@@ -169,6 +169,16 @@ liip_imagine:
             filters:
                 thumbnail:    { size: [58, 58], mode: outbound }
                 strip:        ~
+        thumbnail_small:
+            quality:          95
+            filters:
+                thumbnail:    { size: [80, 120], mode: inset }
+                strip:        ~
+        image_preview:
+            quality:          95
+            filters:
+                thumbnail:    { size: [900, 600], mode: inset }
+                strip:        ~
 
 genemu_form:
     select2: ~
@@ -197,7 +207,7 @@ oro_translation:
 
 jms_di_extra:
     doctrine_integration: false
-    
+
 oro_entity_extend:
     backend:        Dynamic
     backup:         "%kernel.root_dir%/entities/Backup/"
@@ -217,68 +227,8 @@ knp_gaufrette:
             adapter: pim_adapter
             alias:   pim_filesystem
 
-pim_batch:
-    jobs:
-        product_export:
-            title:      pim_import_export.jobs.product_export.title
-            connector: "Akeneo"
-            type:      "export"
-            steps:
-                export:
-                    title:      pim_import_export.jobs.product_export.export.title
-                    reader:     pim_import_export.reader.product
-                    processor:  pim_import_export.processor.heterogeneous_csv_serializer
-                    writer:     pim_import_export.writer.file
-        category_export:
-            title:     pim_import_export.jobs.category_export.title
-            connector: "Akeneo"
-            type:      "export"
-            steps:
-                export:
-                    title:      pim_import_export.jobs.category_export.export.title
-                    reader:     pim_import_export.reader.category
-                    processor:  pim_import_export.processor.homogeneous_csv_serializer
-                    writer:     pim_import_export.writer.file
-        attribute_export:
-            title:     pim_import_export.jobs.attribute_export.title
-            connector: "Akeneo"
-            type:      "export"
-            steps:
-                export:
-                    title:      pim_import_export.jobs.attribute_export.export.title
-                    reader:     pim_import_export.reader.attribute
-                    processor:  pim_import_export.processor.homogeneous_csv_serializer
-                    writer:     pim_import_export.writer.file
-        product_import:
-            title:     pim_import_export.jobs.product_import.title
-            connector: "Akeneo"
-            type:      "import"
-            steps:
-                export:
-                    title:      pim_import_export.jobs.product_import.import.title
-                    reader:     pim_import_export.reader.csv
-                    processor:  pim_import_export.processor.valid_product_creation
-                    writer:     pim_import_export.writer.orm_product    #TODO : to replace by concret implementation
-        category_import:
-            title:     pim_import_export.jobs.category_import.title
-            connector: "Akeneo"
-            type:      "import"
-            steps:
-                export:
-                    title:      pim_import_export.jobs.category_import.import.title
-                    reader:     pim_import_export.reader.dummy    #TODO : to replace by concret implementation
-                    processor:  pim_import_export.processor.dummy #TODO : to replace by concret implementation
-                    writer:     pim_import_export.writer.dummy    #TODO : to replace by concret implementation
-        attribute_import:
-            title:     pim_import_export.jobs.attribute_import.title
-            connector: "Akeneo"
-            type:      "import"
-            steps:
-                export:
-                    title:      pim_import_export.jobs.attribute_import.import.title
-                    reader:     pim_import_export.reader.dummy    #TODO : to replace by concret implementation
-                    processor:  pim_import_export.processor.dummy #TODO : to replace by concret implementation
-                    writer:     pim_import_export.writer.dummy    #TODO : to replace by concret implementation
-
 pim_demo:
     load_data: true
+
+pim_catalog:
+    imported_product_data_transformer: pim_import_export.form.transform_imported_product_data_subscriber

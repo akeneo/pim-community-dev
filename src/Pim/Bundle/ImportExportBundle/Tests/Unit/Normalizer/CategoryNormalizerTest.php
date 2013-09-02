@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\CategoryNormalizer;
-use Pim\Bundle\ProductBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Test class for CategoryNormalizer
@@ -14,7 +14,10 @@ use Pim\Bundle\ProductBundle\Entity\Category;
  */
 class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
 {
-    private $normalizer;
+    /**
+     * @var CategoryNormalizer
+     */
+    protected $normalizer;
 
     /**
      * {@inheritdoc}
@@ -31,10 +34,10 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\ProductBundle\Model\CategoryInterface', 'csv',  true),
-            array('Pim\Bundle\ProductBundle\Model\CategoryInterface', 'json', false),
-            array('stdClass',                                         'csv',  false),
-            array('stdClass',                                         'json', false),
+            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'csv', false),
+            array('stdClass',                                         'json',  false),
+            array('stdClass',                                         'csv', false),
         );
     }
 
@@ -63,7 +66,7 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'code'    => 'root_category',
-                    'title'   => 'en:Root category,fr:Categorie racine',
+                    'title'   => array('en' => 'Root category', 'fr' => 'Categorie racine'),
                     'parent'  => '',
                     'dynamic' => '0',
                     'left'    => '1',
@@ -74,7 +77,7 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'code'    => 'child_category',
-                    'title'   => 'en:Child category,fr:Catégorie enfant',
+                    'title'   => array('en' => 'Child category', 'fr' => 'fr:Catégorie enfant'),
                     'parent'  => '1',
                     'dynamic' => '0',
                     'left'    => '2',
@@ -107,19 +110,15 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
      *
      * @return Category
      */
-    private function createCategory(array $data)
+    protected function createCategory(array $data)
     {
         $category = new Category();
         $category->setCode($data['code']);
 
-        $titles = explode(',', $data['title']);
-
-        foreach ($titles as $title) {
-            $title = explode(':', $title);
-            $locale = reset($title);
-            $title = end($title);
+        foreach ($this->getTitles($data) as $locale => $title) {
             $translation = $category->getTranslation($locale);
             $translation->setTitle($title);
+            $category->addTranslation($translation);
         }
 
         if ($data['parent']) {
@@ -134,5 +133,13 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
         $category->setRight($data['right']);
 
         return $category;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getTitles($data)
+    {
+        return $data['title'];
     }
 }

@@ -43,7 +43,10 @@ class ItemMapping
      */
     public function remove(FieldMapping $field)
     {
-        // TODO ?
+        if (isset($fields[$field])) {
+            unset($fields[$field]);
+        }
+
         return $this;
     }
 

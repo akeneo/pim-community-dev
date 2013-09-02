@@ -1,0 +1,14 @@
+Pim\Bundle\ImportExportBundle\Processor\ValidCategoryCreationProcessor:
+    properties:
+        titleDelimiter:
+            - NotBlank: ~
+            - Choice:
+                choices: [',', '/']
+                message: Valid delimiters are "," and "/"
+        localeDelimiter:
+            - NotBlank: ~
+            - Choice:
+                choices: [':', '|']
+                message: Valid delimiters are ":" and "|"
+        checkCircularRefs:
+            - Type: boolean

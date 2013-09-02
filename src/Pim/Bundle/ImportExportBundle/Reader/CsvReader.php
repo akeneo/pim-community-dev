@@ -3,9 +3,12 @@
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Pim\Bundle\ProductBundle\Validator\Constraints as PimAssert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\File;
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Pim\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Csv reader
@@ -14,11 +17,11 @@ use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInterface
+class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInterface, UploadedFileAwareInterface
 {
     /**
      * @Assert\NotBlank(groups={"Execution"})
-     * @PimAssert\File(groups={"Execution"}, allowedExtensions={"csv"})
+     * @File(groups={"Execution"}, allowedExtensions={"csv"})
      */
     protected $filePath;
 
@@ -39,73 +42,191 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
      */
     protected $escape = '\\';
 
+    /**
+     * @var boolean
+     *
+     * @Assert\Type(type="bool")
+     * @Assert\True(groups={"UploadExecution"})
+     */
+    protected $allowUpload = false;
+
+    /**
+     * @var SplFileObject
+     */
     private $csv;
 
+    /**
+     * Get uploaded file constraints
+     *
+     * @return array
+     */
+    public function getUploadedFileConstraints()
+    {
+        return array(
+            new Assert\NotBlank(),
+            new File(array('allowedExtensions' => array('csv'))),
+        );
+    }
+
+    /**
+     * Set uploaded file
+     * @param string $uploadedFile
+     *
+     * @return CsvReader
+     */
+    public function setUploadedFile(UploadedFile $uploadedFile)
+    {
+        $this->filePath = $uploadedFile->getRealPath();
+
+        return $this;
+    }
+
+    /**
+     * Set file path
+     * @param string $filePath
+     *
+     * @return CsvReader
+     */
     public function setFilePath($filePath)
     {
         $this->filePath = $filePath;
+
+        return $this;
     }
 
+    /**
+     * Get file path
+     * @return string $filePath
+     */
     public function getFilePath()
     {
         return $this->filePath;
     }
 
+    /**
+     * Set delimiter
+     * @param string $delimiter
+     *
+     * @return CsvReader
+     */
     public function setDelimiter($delimiter)
     {
         $this->delimiter = $delimiter;
+
+        return $this;
     }
 
+    /**
+     * Get delimiter
+     * @return string $delimiter
+     */
     public function getDelimiter()
     {
         return $this->delimiter;
     }
 
+    /**
+     * Set enclosure
+     * @param string $enclosure
+     *
+     * @return CsvReader
+     */
     public function setEnclosure($enclosure)
     {
         $this->enclosure = $enclosure;
+
+        return $this;
     }
 
+    /**
+     * Get enclosure
+     * @return string $enclosure
+     */
     public function getEnclosure()
     {
         return $this->enclosure;
     }
 
+    /**
+     * Set escape
+     * @param string $escape
+     *
+     * @return CsvReader
+     */
     public function setEscape($escape)
     {
         $this->escape = $escape;
+
+        return $this;
     }
 
+    /**
+     * Get escape
+     * @return string $escape
+     */
     public function getEscape()
     {
         return $this->escape;
     }
 
     /**
-     * {@inheritDoc}
+     * Set the allowUpload property
+     * @param boolean $allowUpload
+     *
+     * @return CsvReader
      */
-    public function read()
+    public function setAllowUpload($allowUpload)
+    {
+        $this->allowUpload = $allowUpload;
+
+        return $this;
+    }
+
+    /**
+     * Get the allowUpload property
+     * @return boolean $allowUpload
+     */
+    public function getAllowUpload()
+    {
+        return $this->allowUpload;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function read(StepExecution $stepExecution)
     {
         if (null === $this->csv) {
             $this->csv = new \SplFileObject($this->filePath);
-            $this->csv->setFlags(\SplFileObject::READ_CSV);
+            $this->csv->setFlags(
+                \SplFileObject::READ_CSV   |
+                \SplFileObject::READ_AHEAD |
+                \SplFileObject::SKIP_EMPTY |
+                \SplFileObject::DROP_NEW_LINE
+            );
             $this->csv->setCsvControl($this->delimiter, $this->enclosure, $this->escape);
             $this->fieldNames = $this->csv->fgetcsv();
         }
 
-        if ($data = $this->csv->fgetcsv()) {
-            if (array(null) === $data) {
-                return;
+        $data = $this->csv->fgetcsv();
+        if (false !== $data) {
+            if ($data === array(null) || $data === null) {
+                return null;
             }
+            $stepExecution->incrementReadCount();
 
             if (count($this->fieldNames) !== count($data)) {
-                throw new \Exception(
+                $stepExecution->addReaderWarning(
+                    $this,
                     sprintf(
                         'Expecting to have %d columns, actually have %d.',
                         count($this->fieldNames),
                         count($data)
-                    )
+                    ),
+                    $data
                 );
+
+                return false;
             }
 
             $data = array_combine($this->fieldNames, $data);
@@ -122,10 +243,13 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
     public function getConfigurationFields()
     {
         return array(
-            'filePath'   => array(),
-            'delimiter'  => array(),
-            'enclosure'  => array(),
-            'escape'     => array(),
+            'filePath'    => array(),
+            'allowUpload' => array(
+                'type' => 'checkbox',
+            ),
+            'delimiter'   => array(),
+            'enclosure'   => array(),
+            'escape'      => array(),
         );
     }
 }

@@ -37,7 +37,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     protected $userRepository;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setContainer(ContainerInterface $container = null)
     {
@@ -47,7 +47,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -74,21 +74,21 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     /**
      * Get locale manager
      *
-     * @return \Pim\Bundle\ProductBundle\Manager\LocaleManager
+     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
      */
     protected function getLocaleManager()
     {
-        return $this->container->get('pim_product.manager.locale');
+        return $this->container->get('pim_catalog.manager.locale');
     }
 
     /**
      * Get channel manager
      *
-     * @return \Pim\Bundle\ProductBundle\Manager\ChannelManager
+     * @return \Pim\Bundle\CatalogBundle\Manager\ChannelManager
      */
     protected function getChannelManager()
     {
-        return $this->container->get('pim_product.manager.channel');
+        return $this->container->get('pim_catalog.manager.channel');
     }
 
     /**
@@ -132,8 +132,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      * Persist object
      *
      * @param mixed $object
-     *
-     * @return void
      */
     protected function persist($object)
     {
@@ -142,8 +140,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 
     /**
      * Flush objects
-     *
-     * @return void
      */
     protected function flush()
     {

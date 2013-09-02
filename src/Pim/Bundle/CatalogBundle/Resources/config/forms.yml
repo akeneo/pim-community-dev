@@ -1,0 +1,49 @@
+services:
+    # Form
+    pim_catalog.form.product_create:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments: ["pim_product_create_form", "pim_product_create"]
+
+    pim_catalog.form.attribute:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments: ["pim_catalog_attribute_form", "pim_catalog_attribute"]
+
+    pim_catalog.form.attribute_group:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments: ["pim_attribute_group_form", "pim_attribute_group"]
+
+    pim_catalog.form.family:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments: ["pim_family_form", "pim_family"]
+
+    pim_catalog.form.channel:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - "pim_catalog_channel_form"
+            - "pim_catalog_channel"
+
+    pim_catalog.form.currency:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - "pim_catalog_currency_form"
+            - "pim_catalog_currency"
+
+    pim_catalog.form.locale:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - "pim_catalog_locale_form"
+            - "pim_catalog_locale"

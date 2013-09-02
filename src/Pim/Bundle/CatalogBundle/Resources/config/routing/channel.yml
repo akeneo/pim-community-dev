@@ -1,0 +1,22 @@
+pim_catalog_channel_index:
+    path: /.{_format}
+    defaults: { _controller: PimCatalogBundle:Channel:index, _format: html }
+    requirements:
+        _format: html|json
+
+pim_catalog_channel_create:
+    path: /create
+    defaults: { _controller: PimCatalogBundle:Channel:create }
+
+pim_catalog_channel_edit:
+    path: /{id}/edit
+    defaults: { _controller: PimCatalogBundle:Channel:edit }
+    requirements:
+        id: \d+
+
+pim_catalog_channel_remove:
+    path: /{id}/remove
+    defaults: { _controller: PimCatalogBundle:Channel:remove }
+    requirements:
+        id: \d+
+    methods: [DELETE]

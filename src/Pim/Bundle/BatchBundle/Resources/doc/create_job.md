@@ -11,7 +11,6 @@ use Oro\Bundle\DataFlowBundle\Job\AbstractJob;
 
 class ImportAttributesJob extends AbstractJob
 {
-
     public function run()
     {
         // do some stuff ...

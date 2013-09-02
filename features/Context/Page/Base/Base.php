@@ -4,6 +4,7 @@ namespace Context\Page\Base;
 
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\Mink\Exception\ElementNotFoundException;
 
 /**
  * Base page
@@ -81,7 +82,13 @@ class Base extends Page
      */
     public function pressButton($locator)
     {
-        $button = $this->findButton($locator);
+        # Search with exact name at first
+        $button = $this->find('xpath', "//button[text() = '".$locator."']");
+
+        if (!$button) {
+            # Use Mink search, which use "contains" xpath condition
+            $button = $this->findButton($locator);
+        }
 
         if (!$button) {
             $button =  $this->find(

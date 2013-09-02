@@ -4,8 +4,8 @@ namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation;
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
  * Load fixtures for attribute groups
@@ -13,7 +13,6 @@ use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class LoadGroupData extends AbstractInstallerFixture
 {
@@ -47,7 +46,7 @@ class LoadGroupData extends AbstractInstallerFixture
      * @param string $code
      * @param array  $translations
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroup
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
      */
     protected function createGroup($code, $translations)
     {
@@ -70,7 +69,7 @@ class LoadGroupData extends AbstractInstallerFixture
      * @param string         $locale Locale used
      * @param string         $name   Name translated in locale value linked
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\AttributeGroupTranslation
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation
      */
     protected function createTranslation($entity, $locale, $name)
     {

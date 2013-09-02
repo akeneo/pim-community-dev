@@ -11,19 +11,19 @@ namespace Pim\Bundle\BatchBundle\Step;
  */
 class StepFactory
 {
-    protected $logger;
+    protected $eventDispatcher;
     protected $jobRepository;
 
-    public function __construct($logger, $jobRepository)
+    public function __construct($eventDispatcher, $jobRepository)
     {
-        $this->logger        = $logger;
-        $this->jobRepository = $jobRepository;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->jobRepository   = $jobRepository;
     }
 
     public function createStep($title, $reader, $processor, $writer)
     {
         $step = new ItemStep($title);
-        $step->setLogger($this->logger);
+        $step->setEventDispatcher($this->eventDispatcher);
         $step->setJobRepository($this->jobRepository);
         $step->setReader($reader);
         $step->setProcessor($processor);

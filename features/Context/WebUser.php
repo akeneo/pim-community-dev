@@ -2,17 +2,15 @@
 
 namespace Context;
 
-use Behat\Mink\Exception\ExpectationException;
-
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Exception\PendingException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
  * Context of the website
@@ -51,6 +49,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function resetCurrentPage()
     {
         $this->currentPage = null;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearRecordedMails()
+    {
+        $this->getMailRecorder()->clear();
     }
 
     /**
@@ -210,6 +216,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /* -------------------- Other methods -------------------- */
 
     /**
+     * @param string $error
+     *
+     * @Then /^I should see validation error "([^"]*)"$/
+     */
+    public function iShouldSeeValidationError($error)
+    {
+        $errors = $this->getCurrentPage()->getValidationErrors();
+        assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
+    }
+
+    /**
      * @param string $deactivated
      * @param string $currencies
      *
@@ -237,7 +254,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $not
      * @param string $currencies
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return Step\Then
      *
      * @Then /^I should (not )?see currency (.*)$/
      * @Then /^I should (not )?see currencies (.*)$/
@@ -274,7 +291,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $currencies
      *
-     * @return \Behat\Behat\Context\Step\Given
+     * @return Step\Then
      *
      * @Then /^I should see sorted currencies (.*)$/
      */
@@ -335,7 +352,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $not
      * @param string $locales
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return Step\Then
      *
      * @Then /^I should (not )?see locales? (.*)$/
      */
@@ -349,7 +366,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $locales
      *
-     * @return \Behat\Behat\Context\Step\Given
+     * @return Step\Then
      *
      * @Then /^I should see sorted locales (.*)$/
      */
@@ -613,7 +630,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $language
      *
      * @return void
+     *
      * @When /^I change the (?P<field>\w+) to "([^"]*)"$/
+     * @When /^I change the "(?P<field>[^"]*)" to "([^"]*)"$/
      * @When /^I change the (?P<language>\w+) (?P<field>\w+) to "(?P<value>[^"]*)"$/
      * @When /^I change the (?P<field>\w+) to an invalid value$/
      */
@@ -843,6 +862,26 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $locale
+     *
+     * @Given /^I select the locale "([^"]*)"$/
+     */
+    public function iSelectLocale($locale)
+    {
+        $this->getPage('Channel creation')->selectLocale($locale);
+    }
+
+    /**
+     * @param string $currency
+     *
+     * @Given /^I select the currency "([^"]*)"$/
+     */
+    public function iSelectCurrency($currency)
+    {
+        $this->getPage('Channel creation')->selectCurrency($currency);
+    }
+
+    /**
      * @param string $fields
      *
      * @Then /^I should see the (.*) fields?$/
@@ -869,6 +908,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             $field = $this->getCurrentPage()->findField($fieldName);
             if (!$field) {
                 throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $fieldName));
+
                 return;
             }
             if (!$field->hasAttribute('disabled')) {
@@ -886,6 +926,65 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         foreach ($table->getRowsHash() as $field => $value) {
             $this->getCurrentPage()->fillField($field, $value);
+        }
+    }
+
+    /**
+     * @param string $file
+     * @param string $field
+     *
+     * @Given /^I attach file "([^"]*)" to "([^"]*)"$/
+     */
+    public function attachFileToField($file, $field)
+    {
+        if ($this->getMinkParameter('files_path')) {
+            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR)
+                .DIRECTORY_SEPARATOR.$file;
+            if (is_file($fullPath)) {
+                $file = $fullPath;
+            }
+        }
+
+        $this->getCurrentPage()->attachFileToField($field, $file);
+
+        try {
+            $this->getSession()->executeScript('$("[disabled]").removeAttr("disabled");');
+        } catch (UnsupportedDriverActionException $e) {
+        }
+    }
+
+    /**
+     * @param string $field
+     *
+     * @Given /^I remove the "([^"]*)" file$/
+     */
+    public function iRemoveTheFile($field)
+    {
+        try {
+            $this->getSession()->executeScript(
+                "$('label:contains(\"{$field}\")').parent().find('.remove-upload').click();"
+            );
+        } catch (UnsupportedDriverActionException $e) {
+            $this->getCurrentPage()->removeFileFromField($field);
+        }
+    }
+
+    /**
+     * @param string $link
+     *
+     * @return Step\Given
+     * @Given /^I open "([^"]*)" in the current window$/
+     */
+    public function iOpenInTheCurrentWindow($link)
+    {
+        try {
+            $this->getSession()->executeScript(
+                "$('[target]').removeAttr('target');"
+            );
+
+            return new Step\Given(sprintf('I follow "%s"', $link));
+        } catch (UnsupportedDriverActionException $e) {
+            throw $this->createExpectationException('You must use selenium for this feature.');
         }
     }
 
@@ -979,7 +1078,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $not
      * @param string $channels
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return Step\Then
      *
      * @Then /^I should (not )?see channels? (.*)$/
      */
@@ -993,7 +1092,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $channels
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return Step\Then
      *
      * @Then /^I should see sorted channels (.*)$/
      */
@@ -1008,7 +1107,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $not
      * @param string $attributes
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return Step\Then
      *
      * @Then /^I should (not )?see attributes? ((?!in group).)*$/
      */
@@ -1022,7 +1121,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $attributes
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return Step\Then
      *
      * @Then /^I should see sorted attributes (.*)$/
      */
@@ -1061,6 +1160,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param integer $count
      *
      * @Then /^there should be (\d+) update$/
+     * @Then /^there should be (\d+) updates$/
      */
     public function thereShouldBeUpdate($count)
     {
@@ -1078,6 +1178,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $category = $this->getCategory($code);
         $this->getPage('Product index')->clickCategoryFilterLink($category);
+        $this->wait();
+    }
+
+    /**
+     * @param string $value
+     * @param string $currency
+     *
+     * @When /^I filter per price with value "([^"]*)" and currency "([^"]*)"$/
+     */
+    public function iFilterPerPrice($value, $currency)
+    {
+        $this->getPage('Product index')->filterPerPrice($value, $currency);
         $this->wait();
     }
 
@@ -1116,7 +1228,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $not
      * @param string $products
      *
-     * @Then /^I should (not )?see products (.*)$/
+     * @return Step\Then
+     *
+     * @Then /^I should (not )?see products? ((?!with data).)*$/
      */
     public function iShouldSeeProducts($not, $products)
     {
@@ -1145,6 +1259,35 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             if (strpos($rowHtml, $cellData) === false) {
                 throw $this->createExpectationException(
                     sprintf('Expecting to see product data %s, not found', $cellData)
+                );
+            }
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^I should see history:$/
+     */
+    public function iShouldSeeHistoryWithData(TableNode $table)
+    {
+        $expectedUpdates = $table->getHash();
+        $rows = $this->getCurrentPage()->getHistoryRows();
+        foreach ($expectedUpdates as $updateRow) {
+            $isPresent = false;
+            foreach ($rows as $row) {
+                $rowStr       = str_replace(array(' ', "\n"), '', strip_tags(nl2br($row->getHtml())));
+                $actionFound  = (strpos($rowStr, $updateRow['action']) !== false);
+                $versionFound = (strpos($rowStr, $updateRow['version']) !== false);
+                $dataFound    = (strpos($rowStr, $updateRow['data']) !== false);
+                if ($actionFound and $versionFound and $dataFound) {
+                    $isPresent = true;
+                    break;
+                }
+            }
+            if (!$isPresent) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see history data %s, not found', implode(', ', $updateRow))
                 );
             }
         }
@@ -1240,7 +1383,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $profiles
      *
-     * @return \Behat\Behat\Context\Step\Given
+     * @return Step\Then
      *
      * @Then /^I should see sorted (?:import|export) profiles? (.*)$/
      */
@@ -1252,9 +1395,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $not
      * @param string $profiles
      *
-     * @return \Behat\Behat\Context\Step\Then
+     * @return Step\Then
      *
      * @Then /^I should (not )?see (?:import|export) profiles? (.*)$/
      */
@@ -1280,35 +1424,35 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $job
+     * @param string $code
      *
      * @Then /^I should be on the "([^"]*)" import job page$/
      */
-    public function iShouldBeOnTheImportJobPage($job)
+    public function iShouldBeOnTheImportJobPage($code)
     {
-        $expectedAddress = $this->getPage('Import show')->getUrl(array('id' => $this->getJob($job)->getId()));
+        $expectedAddress = $this->getPage('Import show')->getUrl(array('id' => $this->getJobInstance($code)->getId()));
         $this->assertAddress($expectedAddress);
     }
 
     /**
-     * @param string $job
+     * @param string $code
      *
      * @Given /^I am on the "([^"]*)" import job page$/
      */
-    public function iAmOnTheImportJobPage($job)
+    public function iAmOnTheImportJobPage($code)
     {
-        $this->openPage('Import show', array('id' => $this->getJob($job)->getId()));
+        $this->openPage('Import show', array('id' => $this->getJobInstance($code)->getId()));
         $this->wait();
     }
 
     /**
-     * @param string $job
+     * @param string $code
      *
      * @When /^I launch the "([^"]*)" import job$/
      */
-    public function iLaunchTheImportJob($job)
+    public function iLaunchTheImportJob($code)
     {
-        $this->openPage('Import launch', array('id' => $this->getJob($job)->getId()));
+        $this->openPage('Import launch', array('id' => $this->getJobInstance($code)->getId()));
     }
 
     /**
@@ -1316,7 +1460,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $exportCode
      * @param string $status
      *
-     * @return Step
+     * @return Step\Given
      * @Then /^the column "([^"]*)" of the row "([^"]*)" should contain the value "([^"]*)"$/
      */
     public function theColumnOfTheRowShouldContainTheValue($column, $exportCode, $status)
@@ -1332,31 +1476,31 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $job
+     * @param string $code
      *
      * @Then /^I should be on the "([^"]*)" export job page$/
      */
-    public function iShouldBeOnTheExportJobPage($job)
+    public function iShouldBeOnTheExportJobPage($code)
     {
-        $expectedAddress = $this->getPage('Export show')->getUrl(array('id' => $this->getJob($job)->getId()));
+        $expectedAddress = $this->getPage('Export show')->getUrl(array('id' => $this->getJobInstance($code)->getId()));
         $this->assertAddress($expectedAddress);
     }
 
     /**
-     * @param string $job
+     * @param string $code
      *
      * @Given /^I am on the "([^"]*)" export job page$/
      */
-    public function iAmOnTheExportJobPage($job)
+    public function iAmOnTheExportJobPage($code)
     {
-        $this->openPage('Export show', array('id' => $this->getJob($job)->getId()));
+        $this->openPage('Export show', array('id' => $this->getJobInstance($code)->getId()));
         $this->wait();
     }
 
     /**
      * @param string $jobCode
      *
-     * @return Step
+     * @return Step\Given
      * @When /^I delete the "([^"]*)" job$/
      */
     public function iDeleteTheJob($jobCode)
@@ -1402,13 +1546,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $job
+     * @param string $code
      *
      * @When /^I launch the "([^"]*)" export job$/
      */
-    public function iLaunchTheExportJob($job)
+    public function iLaunchTheExportJob($code)
     {
-        $this->openPage('Export launch', array('id' => $this->getJob($job)->getId()));
+        $this->openPage('Export launch', array('id' => $this->getJobInstance($code)->getId()));
     }
 
     /**
@@ -1495,6 +1639,97 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iSwitchTheAttributeRequirementInChannel($attribute, $channel)
     {
         $this->getPage('Family edit')->switchAttributeRequirement($attribute, $channel);
+    }
+
+    /**
+     * @Then /^I should see the completeness summary$/
+     */
+    public function iShouldSeeTheCompletenessSummary()
+    {
+        $this->getPage('Product edit')->findCompletenessContent();
+        $this->getPage('Product edit')->findCompletenessLegend();
+    }
+
+    /**
+     * @param string $state
+     * @param string $channel
+     * @param string $locale
+     *
+     * @Given /^I should see the completeness state "([^"]*)" for channel "([^"]*)" and locale "([^"]*)"$/
+     */
+    public function iShouldSeeCompletenessStateForChannelAndLocale($state, $channel, $locale)
+    {
+        $channelCode = strtoupper($channel);
+
+        try {
+            $this->getPage('Product edit')->checkCompletenessState($channelCode, $locale, $state);
+        } catch (\InvalidArgumentException $e) {
+            throw $this->createExpectationException($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $ratio
+     * @param string $channel
+     * @param string $locale
+     *
+     * @Given /^I should see the completeness ratio (\d+)% for channel "([^"]*)" and locale "([^"]*)"$/
+     */
+    public function iShouldSeeTheCompletenessRatioForChannelAndLocale($ratio, $channel, $locale)
+    {
+        $channelCode = strtoupper($channel);
+
+        try {
+            $this->getPage('Product edit')->checkCompletenessRatio($channelCode, $locale, $ratio);
+        } catch (\InvalidArgumentException $e) {
+            throw $this->createExpectationException($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $message
+     * @param string $channel
+     * @param string $locale
+     *
+     * @Given /^I should see the completeness message "([^"]*)" for channel "([^"]*)" and locale "([^"]*)"$/
+     */
+    public function iShouldSeeTheCompletenesssMessageForChannelAndLocale($message, $channel, $locale)
+    {
+        $channelCode = strtoupper($channel);
+
+        try {
+            $this->getPage('Product edit')->checkCompletenessMessage($channelCode, $locale, $message);
+        } catch (\InvalidArgumentException $e) {
+            throw $this->createExpectationException($e->getMessage());
+        }
+    }
+
+    /**
+     * @param string $email
+     *
+     * @Given /^an email to "([^"]*)" should have been sent$/
+     */
+    public function anEmailToShouldHaveBeenSent($email)
+    {
+        $recorder = $this->getMailRecorder();
+        if (0 === $recorder->getMailsSentTo($email)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'No emails were sent to %s.',
+                    $email
+                )
+            );
+        }
+    }
+
+    /**
+     * @param integer $seconds
+     *
+     * @Then /^I wait (\d+) seconds$/
+     */
+    public function iWaitSeconds($seconds)
+    {
+        $this->wait($seconds * 1000, false);
     }
 
     /**
@@ -1649,6 +1884,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $code
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
+     */
+    private function getChannel($code)
+    {
+        return $this->getFixturesContext()->getChannel($code);
+    }
+
+    /**
      * @return FixturesContext
      */
     private function getFixturesContext()
@@ -1677,13 +1921,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $job
+     * @param string $code
      *
      * @return Job
      */
-    private function getJob($job)
+    private function getJobInstance($code)
     {
-        return $this->getFixturesContext()->getJob($job);
+        return $this->getFixturesContext()->getJobInstance($code);
     }
 
     /**
@@ -1694,5 +1938,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function createExpectationException($message)
     {
         return $this->getMainContext()->createExpectationException($message);
+    }
+
+    /**
+     * Get the mail recorder
+     *
+     * @return MailRecorder
+     */
+    private function getMailRecorder()
+    {
+        return $this->getMainContext()->getMailRecorder();
     }
 }

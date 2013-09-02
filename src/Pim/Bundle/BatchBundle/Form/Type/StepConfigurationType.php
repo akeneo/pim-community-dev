@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormEvent;
 class StepConfigurationType extends AbstractType
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

@@ -1,0 +1,35 @@
+pim_catalog_family_index:
+    path: ""
+    defaults: { _controller: PimCatalogBundle:Family:create }
+
+pim_catalog_family_create:
+    path: /create
+    defaults: { _controller: PimCatalogBundle:Family:create }
+
+pim_catalog_family_edit:
+    path: /{id}/edit
+    defaults: { _controller: PimCatalogBundle:Family:edit }
+    requirements:
+        id: \d+
+
+pim_catalog_family_remove:
+    path: /{id}/remove
+    defaults: { _controller: PimCatalogBundle:Family:remove }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_catalog_family_addproductattributes:
+    path: /{id}/attributes
+    defaults: { _controller: PimCatalogBundle:Family:addProductAttributes }
+    requirements:
+        id: \d+
+    methods: [POST]
+
+pim_catalog_family_removeproductattribute:
+    path: /{familyId}/attribute/{attributeId}/remove
+    defaults: { _controller: PimCatalogBundle:Family:removeProductAttribute }
+    requirements:
+        familyId: \d+
+        attributeId: \d+
+    methods: [DELETE]

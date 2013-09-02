@@ -3,9 +3,10 @@
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Pim\Bundle\ProductBundle\Manager\ChannelManager;
-use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
+use Pim\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Product reader
@@ -35,17 +36,18 @@ class ProductReader extends ORMReader
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function read()
+    public function read(StepExecution $stepExecution)
     {
         if (!$this->query) {
+            $channel = current($this->channelManager->getChannels(array('code' => $this->channel)));
             $this->query = $this->repository
-                ->buildByScope($this->channel)
+                ->buildByChannelAndCompleteness($channel)
                 ->getQuery();
         }
 
-        return parent::read();
+        return parent::read($stepExecution);
     }
 
     /**

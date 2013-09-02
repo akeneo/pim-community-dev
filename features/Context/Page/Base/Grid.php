@@ -26,6 +26,7 @@ class Grid extends Index
                 'Grid'         => array('css' => 'table.grid'),
                 'Grid content' => array('css' => 'table.grid tbody'),
                 'Filters'      => array('css' => 'div.filter-box'),
+                'Grid toolbar' => array('css' => 'div.grid-toolbar'),
             )
         );
     }
@@ -90,10 +91,12 @@ class Grid extends Index
         $rowElement = $this->getRow($element);
         $rowElement->find('css', 'a.dropdown-toggle')->click();
 
-        $action = $rowElement->find('css', sprintf('a.action[title=%s]', $actionName));
+        $action = $rowElement->find('css', sprintf('a.action[title="%s"]', $actionName));
 
         if (!$action) {
-            throw new \Exception(sprintf('Could not find action "%s".', $actionName));
+            throw new \InvalidArgumentException(
+                sprintf('Could not find action "%s".', $actionName)
+            );
         }
 
         $action->click();
@@ -116,7 +119,9 @@ class Grid extends Index
             $elt->fillField('value', $value);
             $filter->find('css', 'button.filter-update')->click();
         } else {
-            throw new \InvalidArgumentException(sprintf('Filtering by "%s" is not yet implemented"', $filterName));
+            throw new \InvalidArgumentException(
+                sprintf('Filtering by "%s" is not yet implemented"', $filterName)
+            );
         }
     }
 
@@ -294,7 +299,11 @@ class Grid extends Index
      */
     public function getFilter($filterName)
     {
-        $filter = $this->getElement('Filters')->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
+        if (strtolower($filterName) === 'channel') {
+            $filter = $this->getElement('Grid toolbar')->find('css', 'div.filter-item');
+        } else {
+            $filter = $this->getElement('Filters')->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
+        }
 
         if (!$filter) {
             throw new \InvalidArgumentException(

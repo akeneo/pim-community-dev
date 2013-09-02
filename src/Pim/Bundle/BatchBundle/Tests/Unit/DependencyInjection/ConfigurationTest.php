@@ -7,8 +7,6 @@ use Pim\Bundle\BatchBundle\DependencyInjection\Configuration;
 
 /**
  * Test related class
- *
- *
  */
 class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {

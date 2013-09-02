@@ -2,16 +2,14 @@
 
 namespace Pim\Bundle\BatchBundle\Tests\Unit\Job;
 
-use Monolog\Logger;
-use Monolog\Handler\TestHandler;
 use Pim\Bundle\BatchBundle\Step\ItemStep;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BatchBundle\Job\Job;
+use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\BatchBundle\Job\ExitStatus;
-use Pim\Bundle\BatchBundle\Job\SimpleStepHandler;
 use Pim\Bundle\BatchBundle\Tests\Unit\Step\InterruptedStep;
-use Pim\Bundle\BatchBundle\Tests\Unit\Job\MockJobRepository;
+use Pim\Bundle\BatchBundle\Tests\Unit\Step\IncompleteStep;
 
 /**
  * Tests related to the Job class
@@ -19,26 +17,26 @@ use Pim\Bundle\BatchBundle\Tests\Unit\Job\MockJobRepository;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class JobTest extends \PHPUnit_Framework_TestCase
 {
     const JOB_TEST_NAME = 'job_test';
 
-    protected $job           = null;
-    protected $logger        = null;
-    protected $jobRepository = null;
+    protected $job             = null;
+    protected $jobRepository   = null;
+    protected $eventDispatcher = null;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
-        $this->logger = new Logger('JobLogger');
-        $this->logger->pushHandler(new TestHandler());
-
-        $this->jobRepository = new MockJobRepository();
+        $this->jobRepository   = $this->getMock('Pim\\Bundle\\BatchBundle\\Job\\JobRepositoryInterface');
+        $this->eventDispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
 
         $this->job = new Job(self::JOB_TEST_NAME);
-        $this->job->setLogger($this->logger);
-        $this->job->setStepHandler(new SimpleStepHandler($this->logger, $this->jobRepository));
+        $this->job->setEventDispatcher($this->eventDispatcher);
+        $this->job->setJobRepository($this->jobRepository);
     }
 
     public function testGetName()
@@ -54,13 +52,14 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $this->markTestSkipped();
-        $beforeExecute = time();
+        $beforeExecute = new \DateTime();
 
-        $jobExecution = $this->jobRepository->createJobExecution($this->job->getName());
+        $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
 
-        $this->assertEquals(0, $jobExecution->getStartTime());
-        $this->assertEquals(0, $jobExecution->getEndTIme());
+        $jobExecution = new JobExecution($jobInstance);
+
+        $this->assertNull($jobExecution->getStartTime());
+        $this->assertNull($jobExecution->getEndTIme());
         $this->assertEquals(BatchStatus::STARTING, $jobExecution->getStatus()->getValue(), 'Batch status starting');
 
         $this->job->setJobRepository($this->jobRepository);
@@ -90,18 +89,17 @@ class JobTest extends \PHPUnit_Framework_TestCase
      */
     public function testExecuteException()
     {
-        $this->markTestSkipped();
         $exception = new \Exception('My test exception');
 
-        $jobExecution = $this->jobRepository->createJobExecution($this->job->getName());
-        $this->job->setJobRepository($this->jobRepository);
+        $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
+        $jobExecution = new JobExecution($jobInstance);
 
         $mockStep = $this->getMockForAbstractClass(
             'Pim\\Bundle\\BatchBundle\\Step\\AbstractStep',
             array('my_mock_step')
         );
 
-        $mockStep->setLogger($this->logger);
+        $mockStep->setEventDispatcher($this->eventDispatcher);
         $mockStep->setJobRepository($this->jobRepository);
         $mockStep->expects($this->any())
             ->method('doExecute')
@@ -126,8 +124,8 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteStoppingWithNoStep()
     {
-        $this->markTestSkipped();
-        $jobExecution = $this->jobRepository->createJobExecution($this->job->getName());
+        $jobInstance = new JobInstance('test_connector', JobInstance::TYPE_IMPORT, 'test_job_instance');
+        $jobExecution = new JobExecution($jobInstance);
         $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));
 
         $this->job->setJobRepository($this->jobRepository);
@@ -140,13 +138,10 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteInterrupted()
     {
-        $this->markTestSkipped();
-        $exception = new \Exception('My test exception');
-
-        $jobExecution = $this->jobRepository->createJobExecution($this->job->getName());
+        $jobExecution = new JobExecution();
 
         $step = new InterruptedStep('my_interrupted_step');
-        $step->setLogger($this->logger);
+        $step->setEventDispatcher($this->eventDispatcher);
         $step->setJobRepository($this->jobRepository);
 
         $this->job->setJobRepository($this->jobRepository);
@@ -165,6 +160,27 @@ class JobTest extends \PHPUnit_Framework_TestCase
             'Exit description'
         );
 
+    }
+
+    public function testExecuteIncomplete()
+    {
+        $jobExecution = new JobExecution();
+
+        $step = new IncompleteStep('my_incomplete_step');
+        $step->setEventDispatcher($this->eventDispatcher);
+        $step->setJobRepository($this->jobRepository);
+
+        $this->job->setJobRepository($this->jobRepository);
+        $this->job->addStep($step);
+        $this->job->execute($jobExecution);
+
+        $this->assertEquals(BatchStatus::FAILED, $jobExecution->getStatus()->getValue(), 'Batch status stopped');
+
+        $this->assertEquals(
+            ExitStatus::COMPLETED,
+            $jobExecution->getExitStatus()->getExitCode(),
+            'Exit status code stopped'
+        );
     }
 
     public function testToString()

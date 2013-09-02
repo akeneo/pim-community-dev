@@ -4,8 +4,8 @@ namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation;
 
 /**
  * Load fixtures for Product attributes
@@ -23,7 +23,7 @@ class LoadAttributeData extends AbstractInstallerFixture
      */
     protected function getProductManager()
     {
-        return $this->container->get('pim_product.manager.product');
+        return $this->container->get('pim_catalog.manager.product');
     }
 
     /**
@@ -56,7 +56,6 @@ class LoadAttributeData extends AbstractInstallerFixture
     {
         $attribute = $this->getProductManager()->createAttribute($data['type']);
         $attribute->setCode($code);
-        $attribute->setDescription($data['description']);
         $attribute->setGroup($this->getReference('attribute-group.'.$data['group']));
 
         foreach ($data['labels'] as $locale => $label) {
@@ -84,7 +83,7 @@ class LoadAttributeData extends AbstractInstallerFixture
      * @param string           $locale    Locale used
      * @param string           $content   Translated content
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation
      */
     public function createTranslation($attribute, $locale, $content)
     {
@@ -101,7 +100,7 @@ class LoadAttributeData extends AbstractInstallerFixture
      *
      * @param array $data
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\ProductAttributeTranslation
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation
      */
     public function prepareParameters($data)
     {
@@ -109,7 +108,7 @@ class LoadAttributeData extends AbstractInstallerFixture
         $parameters['dateMin']= (isset($parameters['dateMin'])) ? new \DateTime($parameters['dateMin']) : null;
         $parameters['dateMax']= (isset($parameters['dateMax'])) ? new \DateTime($parameters['dateMax']) : null;
 
-        if ($data['type'] === 'pim_product_simpleselect' and isset($parameters['defaultValue'])) {
+        if ($data['type'] === 'pim_catalog_simpleselect' and isset($parameters['defaultValue'])) {
             $parameters['defaultValue']= $this->getReference('product-attributeoption.'.$parameters['defaultValue']);
         }
 

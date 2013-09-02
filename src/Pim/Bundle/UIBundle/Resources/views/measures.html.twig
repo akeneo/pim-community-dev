@@ -1,13 +1,13 @@
-window.OroApp = window.OroApp || {};
+var Pim = Pim || {};
 
-OroApp.measures = {
+Pim.measures = {
 {% autoescape false %}
     values: {{ measures.measures_config|json_encode() }},
 {% endautoescape %}
     getMetricTypes: function() {
         var types = [];
         for (var i in this.values) {
-            types.push({ id:i, text:i });
+            types.push({ id:i, text:_.__(i) });
         }
         return types;
     },
@@ -17,7 +17,7 @@ OroApp.measures = {
             return units;
         }
         for (var i in this.values[metricType].units) {
-            units.push({ id:i, text:i });
+            units.push({ id:i, text:_.__(i) });
         }
         return units;
     }

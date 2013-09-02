@@ -1,0 +1,40 @@
+pim_catalog_attributegroup_index:
+    path: ""
+    defaults: { _controller: PimCatalogBundle:AttributeGroup:create }
+
+pim_catalog_attributegroup_create:
+    path: /create
+    defaults: { _controller: PimCatalogBundle:AttributeGroup:create }
+
+pim_catalog_attributegroup_edit:
+    path: /{id}/edit
+    defaults: { _controller: PimCatalogBundle:AttributeGroup:edit }
+    requirements:
+        id: \d+
+
+pim_catalog_attributegroup_sort:
+    path: /sort
+    defaults: { _controller: PimCatalogBundle:AttributeGroup:sort }
+    methods: [POST]
+
+pim_catalog_attributegroup_remove:
+    path: /{id}/remove
+    defaults: { _controller: PimCatalogBundle:AttributeGroup:remove }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_catalog_attributegroup_addproductattributes:
+    path: /{id}/attributes
+    defaults: { _controller: PimCatalogBundle:AttributeGroup:addProductAttributes }
+    requirements:
+        id: \d+
+    methods: [POST]
+
+pim_catalog_attributegroup_removeproductattribute:
+    path: /{groupId}/attribute/{attributeId}/remove
+    defaults: { _controller: PimCatalogBundle:AttributeGroup:removeProductAttribute }
+    requirements:
+        groupId: \d+
+        attributeId: \d+
+    methods: [DELETE]

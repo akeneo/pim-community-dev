@@ -17,7 +17,7 @@ use Symfony\Component\Config\FileLocator;
 class PimImportExportExtension extends Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {

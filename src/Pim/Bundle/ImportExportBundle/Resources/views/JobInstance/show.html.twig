@@ -1,0 +1,76 @@
+{% extends 'PimCatalogBundle::layout.html.twig' %}
+
+{% macro configuration(title, config, stepIndex, violations, stepType) %}
+    <li>{{ ('pim_batch.' ~ title ~ '.title')|trans }}
+        <ul>
+        {% for field, value in config %}
+            <li>
+                <b>{{ ('pim_batch.' ~ title ~ '.' ~ field ~ '.label')|trans }}:</b>
+                <span class="label">{{ value|normalizeValue }}</span>
+                {{ getViolations(violations, stepIndex, stepType, field) }}
+            </li>
+        {% else %}
+            <li><i>{{ 'No configuration'|trans }}</i></li>
+        {% endfor %}
+        </ul>
+    </li>
+{% endmacro %}
+
+{% block content %}
+
+    {% set subtitle = jobInstance.label  %}
+
+    {% set left %}
+        <ul class="inline">
+           <li>{{ 'Code'|trans }}: {{ jobInstance.code|upper }}</li>
+           <li>{{ 'Connector'|trans }}: {{ jobInstance.job.name|trans }}</li>
+       </ul>
+    {% endset %}
+
+    {% set buttons %}
+        {{ elements.backLink(indexRoute) }}
+        {% if jobInstance.status != constant('Pim\\Bundle\\BatchBundle\\Entity\\JobInstance::STATUS_IN_PROGRESS') %}
+            {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
+        {% endif %}
+        {% if uploadAllowed and uploadViolations|length == 0 %}
+            {{ elements.link('Upload and '~title|lower, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
+        {% endif %}
+        {% if violations|length == 0 %}
+            {{ elements.link(title~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
+        {% endif %}
+    {% endset %}
+
+    {{ elements.page_header(title, buttons, subtitle, left) }}
+
+    {% if form is defined and form is not empty and uploadAllowed and uploadViolations|length == 0 %}
+        <form id="pim_importexport_import_upload" method="POST" class="form-horizontal form-upload hide" action="{{ path('pim_importexport_import_launch', { id: jobInstance.id }) }}" {{ form_enctype(form) }}>
+            {{ elements.form_errors(form) }}
+            <div class="row-fluid">
+                {{ form_row(form.file) }}
+                {{ form_row(form._token) }}
+                {{ elements.submitBtn('Upload and '~title|lower~' now'|trans) }}
+            </div>
+        </form>
+    {% endif %}
+
+    {% set accordionContent = {} %}
+    {% for stepTitle, stepConfig in jobInstance.job.configuration %}
+
+        {% set heading = 'Step %stepIndex%'|trans({ '%stepIndex%': loop.index }) ~ ' - ' ~ stepTitle|trans %}
+
+        {% set content %}
+            <ul>
+                {% set step = jobInstance.job.step(stepTitle) %}
+                {% set stepIndex = loop.index - 1 %}
+                {{ _self.configuration(step.reader.name, stepConfig.reader, stepIndex, violations, 'reader') }}
+                {{ _self.configuration(step.processor.name, stepConfig.processor, stepIndex, violations, 'processor') }}
+                {{ _self.configuration(step.writer.name, stepConfig.writer, stepIndex, violations, 'writer') }}
+            </ul>
+        {% endset %}
+
+        {% set accordionContent = accordionContent|merge({ (heading): content }) %}
+    {% endfor %}
+
+    {{ elements.accordion(accordionContent) }}
+
+{% endblock %}

@@ -184,6 +184,20 @@ form.form-signin {
 
 /* Basic Form *******************************************************************************************************/
 
+.icons-container {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 17px;
+  margin-left: 5px;
+  color: @textColor + #333;
+  i {
+    outline: none;
+    &[data-dialog] {
+      cursor: pointer;
+    }
+  }
+}
+
 a.select2-choice {
   outline: none;
 }
@@ -214,6 +228,12 @@ a.select2-choice {
     background-image: none;
     border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
   }
+}
+
+.navbar-buttons .btn-group>.btn-primary {
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
 }
 
 .btn-group.open .btn-primary.dropdown-toggle {
@@ -326,7 +346,7 @@ div.btn-group > .has-switch {
 }
 
 #attribute-buttons {
-  margin-right: 10px;
+  margin: 10px;
   float: right;
 }
 
@@ -336,6 +356,84 @@ div.btn-group > .has-switch {
 
 #lbOverlay {
   z-index: 900;
+}
+
+.upload-zone {
+  height: 100px;
+  margin: 1px;
+  border: 1px solid @textColor + #888;
+  border-radius: 10px;
+  color: @textColor + #333;
+  cursor: pointer;
+  &.empty {
+    margin: 0;
+    border-style: dashed;
+    border-width: 2px;
+    &:hover {
+      border-color: @textColor + #555;
+    }
+    div.upload-info {
+      min-width: 278px;
+    }
+  }
+  &:hover {
+    background-color: @color-purple_hover;
+  }
+  div.upload-info {
+    display: inline-block;
+    min-width: 229px;
+    height: 80px;
+    line-height: 80px;
+    margin: 10px;
+    font-size: 22px;
+    text-align: center;
+    .upload-preview, img {
+      display: inline-block;
+      min-width: 40px;
+      max-width: 120px;
+      max-height: 80px;
+      font-size: 40px;
+      line-height: 80px;
+      color: @textColor + #333;
+      vertical-align: middle;
+      text-decoration: none;
+      cursor: pointer;
+      &.empty {
+        display: none;
+      }
+    }
+    img {
+      display: block;
+    }
+    span.upload-filename {
+      padding: 0 5px;
+      line-height: 80px;
+    }
+  }
+  .remove-upload {
+    float: right;
+    height: 100px;
+    margin-top: -1px;
+    margin-right: -1px;
+    padding: 0 9px;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    line-height: 100px;
+    font-size: 26px;
+    width: 30px;
+  }
+}
+
+input[type="file"] {
+  display: block;
+  z-index: 99;
+  position: relative;
+  top: -100px;
+  width: 100%!important;
+  height: 100%;
+  border-radius: 20px;
+  cursor: pointer;
+  opacity: 0;
 }
 
 /* Collapsable sidebar **********************************************************************************************/
@@ -516,6 +614,7 @@ table.ui-sortable, tbody.ui-sortable {
 
 .product-edit #attributes {
   #attribute-buttons {
+    margin-top: 0;
     position: relative;
     top: 4px;
     .btn-group>a.btn {
@@ -560,7 +659,7 @@ table.ui-sortable, tbody.ui-sortable {
     float: left;
     font: bold 17px/18px 'HelveticaNeue bold',Arial,Helvetica,sans-serif;
   }
-  .locale-switcher, .scope-switcher {
+  .locale-switcher {
     height: 30px;
   }
 }
@@ -828,8 +927,30 @@ div.entity-updated {
 /* Product edit form - categories tab */
 
 #categories .nav-list li a i { min-width: 19px; display: inline-block; margin-left: 3px; margin-right: 2px; }
-i.icon-tick { background: url("../../pimproduct/images/tick.png") 0px 0px no-repeat !important;}
-i.icon-tick-off { background: url("../../pimproduct/images/tick-off.png") 0px 0px no-repeat !important;}
+i.icon-tick { background: url("../../pimcatalog/images/tick.png") 0px 0px no-repeat !important;}
+i.icon-tick-off { background: url("../../pimcatalog/images/tick-off.png") 0px 0px no-repeat !important;}
+
+/* Import upload file form */
+
+form.form-upload {
+  text-align: center;
+  .control-group {
+    margin-botton: 0;
+    .control-label {
+      display: none;
+    }
+    .controls {
+      margin-left: 20px;
+      margin-right: 20px;
+      .upload-zone {
+        width: 100%;
+      }
+      .icons-container {
+        float: right;
+      }
+    }
+  }
+}
 
 /* Pim multiselect styles */
 button.pimmultiselect {
@@ -892,7 +1013,7 @@ button.pimmultiselect {
 .table-hover tbody tr:hover > td {background-color: @color-purple_hover; }
 table.grid { margin-bottom: 0; }
 .grid-container { overflow: visible; }
-#pim_product_product_create {
+#pim_catalog_product_create {
   label {
     text-align: left;
     width: 200px;
@@ -1012,6 +1133,17 @@ ul.medias label.remove-media {
   }
 }
 
+.btn.scope-filter {
+  height: 28px;
+  min-width: 130px;
+  padding-right: 0px;
+  padding-left: 5px;
+}
+
+.ui-multiselect-menu.scope-filter-select {
+  min-width: 150px!important; // Added !important otherwise position is incorrect on first display
+}
+
 /** Dashboard ********************************************************************************************************/
 .dashboard {
   background: @backgroundColor
@@ -1029,4 +1161,61 @@ ul.medias label.remove-media {
   overflow: hidden;
   .border-radius(5px);
   .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
+}
+
+/** Product completeness *******************************************************************************/
+div#legend {
+  margin-left: 15px;
+  margin-top: 15px;
+  .progress {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    background-color: none;
+    background-image: none;
+    height: 10px;
+  }
+  .bar {
+    margin-right: 10px;
+  }
+  .progress-bars {
+    width: 100px;
+  }
+  .progress-legend {
+    margin-left: 10px;
+    span {
+      display: block;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+table#progress-table {
+  .progress {
+    margin-bottom: 5px;
+    background-image: linear-gradient(to bottom,#e4e4e4,#eee);
+    border-radius: 6px;
+    height: 10px;
+  }
+  .progress-cell {
+    margin-left: 15px;
+    margin-right: 15px;
+    div.center {
+      text-align: center;
+    }
+    span.progress-info {
+      color: #5e8dcb;
+    }
+  }
+}
+
+.progress-disabled .bar,
+.progress .bar-disabled {
+  background-color: #cccccc;
+  background-image: -moz-linear-gradient(top, #bbbbbb, #cccccc);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#bbbbbb), to(#cccccc));
+  background-image: -webkit-linear-gradient(top, #bbbbbb, #cccccc);
+  background-image: -o-linear-gradient(top, #bbbbbb, #cccccc);
+  background-image: linear-gradient(to bottom, #bbbbbb, #cccccc);
+  background-repeat: repeat-x;
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffbbbbbb', endColorstr='#ffcccccc', GradientType=0);
 }

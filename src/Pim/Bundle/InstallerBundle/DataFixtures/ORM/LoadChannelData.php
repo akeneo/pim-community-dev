@@ -4,7 +4,7 @@ namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\ProductBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Load fixtures for channels
@@ -23,7 +23,7 @@ class LoadChannelData extends AbstractInstallerFixture
         $configuration = Yaml::parse(realpath($this->getFilePath()));
 
         foreach ($configuration['channels'] as $data) {
-            $channel = $this->createChannel($data['code'], $data['label'], $data['locales']);
+            $channel = $this->createChannel($data['code'], $data['label'], $data['locales'], $data['currencies']);
             $manager->persist($channel);
         }
 
@@ -32,19 +32,23 @@ class LoadChannelData extends AbstractInstallerFixture
 
     /**
      * Create a channel
-     * @param string $code    Channel code
-     * @param string $name    Channel name
-     * @param array  $locales Activated locales
+     * @param string   $code       Channel code
+     * @param string   $name       Channel name
+     * @param string[] $locales    Locales
+     * @param string[] $currencies Currencies
      *
-     * @return \Pim\Bundle\ProductBundle\Entity\Channel
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
      */
-    protected function createChannel($code, $name, $locales)
+    protected function createChannel($code, $name, $locales, $currencies)
     {
         $channel = new Channel();
         $channel->setCode($code);
         $channel->setName($name);
         foreach ($locales as $locale) {
             $channel->addLocale($this->getReference('locale.'.$locale));
+        }
+        foreach ($currencies as $currency) {
+            $channel->addCurrency($this->getReference('currency.'.$currency));
         }
         $this->setReference('channel.'. $code, $channel);
 

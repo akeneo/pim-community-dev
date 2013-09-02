@@ -1,6 +1,7 @@
 <?php
-
 namespace Pim\Bundle\BatchBundle\Job;
+
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * A job instance factory
@@ -11,27 +12,31 @@ namespace Pim\Bundle\BatchBundle\Job;
  */
 class JobFactory
 {
-    protected $logger;
-
     /* @var JobRepositoryInterface */
     protected $jobRepository;
 
-    /* @var StepHandlerInterface */
-    protected $stepHandler;
-
-    public function __construct($logger, JobRepositoryInterface $jobRepository, StepHandlerInterface $stepHandler)
+    /**
+     * @param JobRepositoryInterface $jobRepository Object responsible
+     *     for persisting jobExecution and stepExection states
+     */
+    public function __construct(EventDispatcherInterface $eventDispatcher, JobRepositoryInterface $jobRepository)
     {
-        $this->logger        = $logger;
-        $this->jobRepository = $jobRepository;
-        $this->stepHandler   = $stepHandler;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->jobRepository   = $jobRepository;
     }
 
+    /**
+     * Create a job object
+     *
+     * @param string $title Title of the Job Object
+     *
+     * @return Job $job The created job
+     */
     public function createJob($title)
     {
         $job = new Job($title);
-        $job->setLogger($this->logger);
         $job->setJobRepository($this->jobRepository);
-        $job->setStepHandler($this->stepHandler);
+        $job->setEventDispatcher($this->eventDispatcher);
 
         return $job;
     }

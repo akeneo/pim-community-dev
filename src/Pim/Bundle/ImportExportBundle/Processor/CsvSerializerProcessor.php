@@ -103,7 +103,7 @@ abstract class CsvSerializerProcessor extends AbstractConfigurableStepElement im
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigurationFields()
     {
@@ -113,7 +113,6 @@ abstract class CsvSerializerProcessor extends AbstractConfigurableStepElement im
             'withHeader' => array(
                 'type' => 'checkbox',
             ),
-
         );
     }
 }

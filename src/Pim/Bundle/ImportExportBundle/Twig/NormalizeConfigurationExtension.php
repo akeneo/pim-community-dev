@@ -12,7 +12,7 @@ namespace Pim\Bundle\ImportExportBundle\Twig;
 class NormalizeConfigurationExtension extends \Twig_Extension
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -76,7 +76,7 @@ class NormalizeConfigurationExtension extends \Twig_Extension
      */
     public function getViolationsFunction($violations, $step, $element, $field)
     {
-        $currentPropertyPath = sprintf('jobDefinition.steps[%d].%s.%s', $step, strtolower($element), $field);
+        $currentPropertyPath = sprintf('job.steps[%d].%s.%s', $step, strtolower($element), $field);
         $messages            = array();
 
         foreach ($violations as $violation) {

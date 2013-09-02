@@ -3,8 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\ProductBundle\Model\ProductInterface;
-use Pim\Bundle\ProductBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -15,10 +15,19 @@ use Pim\Bundle\ProductBundle\Entity\Family;
  */
 class FlatProductNormalizer implements NormalizerInterface
 {
+    /**
+     * @var string
+     */
     const ITEM_SEPARATOR = ',';
 
+    /**
+     * @var array
+     */
     protected $supportedFormats = array('csv');
 
+    /**
+     * @var array
+     */
     private $results;
 
     /**
@@ -78,8 +87,18 @@ class FlatProductNormalizer implements NormalizerInterface
 
         if ($data instanceof \DateTime) {
             $data = $data->format('r');
+        } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
+            $data = $data->getCode();
         } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
-            $data = join(self::ITEM_SEPARATOR, $data->toArray());
+            $result = array();
+            foreach ($data as $key => $val) {
+                if ($val instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
+                    $result[] = $val->getCode();
+                } else {
+                    $result[] = (string) $val;
+                }
+            }
+            $data = join(self::ITEM_SEPARATOR, $result);
         }
 
         $this->results[$value->getAttribute()->getCode().$suffix] = (string) $data;

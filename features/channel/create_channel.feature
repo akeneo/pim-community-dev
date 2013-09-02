@@ -21,8 +21,8 @@ Feature: Create a channel
     And I fill in the following information:
       | Code          | foo            |
       | Default label | bar            |
-      | Currencies    | EUR            |
-      | Locales       | French         |
       | Category tree | Mobile Catalog |
+    And I select the currency "EUR"
+    And I select the locale "French"
     And I press the "Save" button
     Then I should see "Channel successfully saved"

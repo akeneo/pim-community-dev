@@ -13,6 +13,9 @@ use Context\Page\Family\Creation;
  */
 class Edit extends Creation
 {
+    /**
+     * @var string $path
+     */
     protected $path = '/configuration/family/{id}/edit';
 
     /**
@@ -27,6 +30,7 @@ class Edit extends Creation
             array(
                 'Attributes'                      => array('css' => '#attributes table'),
                 'Attribute as label choices'      => array('css' => '#pim_family_attributeAsLabel'),
+                'Updates grid'                    => array('css' => '#history table.grid'),
             )
         );
     }
@@ -149,5 +153,13 @@ class Edit extends Creation
         }
 
         return $cells[$columnIdx];
+    }
+
+    /**
+     * @return array
+     */
+    public function getHistoryRows()
+    {
+        return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
     }
 }

@@ -9,12 +9,6 @@ Feature: Edit a family
       | smartphone |
       | bags       |
       | jewels     |
-    And the following family translations:
-      | family     | language | label      |
-      | jewels     | english  | Jewels     |
-      | jewels     | french   | Bijoux     |
-      | smartphone | english  | Smartphone |
-      | bags       | english  | Bags       |
     And I am logged in as "admin"
     When I am on the families page
 
@@ -28,16 +22,16 @@ Feature: Edit a family
     Given I edit the "Bags" family
     When I change the Code to "smartphone"
     And I save the family
-    Then I should see "This code is already taken."
+    Then I should see "This value is already used."
 
   Scenario: Fail to set a non-valid code
     Given I edit the "Bags" family
     When I change the Code to an invalid value
     And I save the family
-    Then I should see "The code must only contain alphanumeric characters."
+    Then I should see "Family code may contain only letters, numbers and underscores"
 
   Scenario: Successfully set the translations of the name
     Given I am on the "Jewels" family page
-    And I change the english Label to "Jewelery"
+    And I change the english Label to "NewJewelery"
     And I save the family
-    Then I should see the families Bags, Jewelery and Smartphone
+    Then I should see the families bags, NewJewelery and smartphone
