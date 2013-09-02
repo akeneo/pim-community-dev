@@ -21,7 +21,6 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     private $normalizer;
 
     private $optionalProperties = array(
-        'description',
         'default_value',
         'value_creation_allowed',
         'max_characters',
@@ -91,7 +90,6 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
                     'type'                   => 'multiselect',
                     'code'                   => 'color',
                     'label'                  => array('en' => 'Color', 'fr' => 'Couleur'),
-                    'description'            => 'Color of the product',
                     'group'                  => 'general',
                     'sort_order'             => '5',
                     'required'               => '0',
@@ -115,7 +113,6 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
                     'type'                   => 'text',
                     'code'                   => 'description',
                     'label'                  => array('en' => 'Description', 'fr' => 'Description'),
-                    'description'            => 'A desccription of the product',
                     'group'                  => 'info',
                     'sort_order'             => '1',
                     'required'               => '1',
