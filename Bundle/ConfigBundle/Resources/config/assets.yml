@@ -1,0 +1,3 @@
+css:
+    'config':
+      - '@OroConfigBundle/Resources/public/css/style.css'

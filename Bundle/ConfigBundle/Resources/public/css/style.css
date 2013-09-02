@@ -1,0 +1,22 @@
+.system-configuration-container {
+    padding-top: 10px;
+}
+.system-configuration-container .nav.nav-tabs > .active > a,
+.system-configuration-container .nav.nav-tabs > .active > a:hover,
+.system-configuration-container .nav.nav-tabs > .active > a:focus {
+    background-color: #fff;
+    }
+.system-configuration-container .nav-stacked li.active a {
+    background: #323B45;
+    color: #D6D8DA;
+    }
+.system-configuration-container .system-configuration-sidebar dl {
+    margin: 0;
+    }
+.system-configuration-container .row-fluid-divider {
+    background-position: 16% 0;
+    }
+.search-header .configuration-search-form {
+    margin-top: 0;
+    margin-bottom: 16px;
+}

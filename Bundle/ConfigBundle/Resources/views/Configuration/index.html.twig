@@ -1,41 +1,75 @@
 {% extends bap.layout %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroConfigBundle::macros.html.twig' as __ %}
 
 {% block content %}
     {% set pageTitle = 'Configuration' %}
+
     {% set buttons = [
-            UI.addButton({
-                path:   'javascript:void(0);',
-                aClass: 'no-hash btn-info oro-config-refresh',
-                title:  'Refresh',
-                label:  'Refresh',
-            })
+            UI.saveAndStayButton(),
+            UI.saveAndCloseButton()
         ]
     %}
 
-    <div class="container-fluid">
-        <h1>{{ (pageTitle is defined ? pageTitle : '')|trans }}
-            {% if buttons is defined %}
-                {% for button in buttons %}
-                    {{ button }}
-                {% endfor %}
-            {% endif %}
-        </h1>
-
+    {{ __.renderTitleAndSearch(pageTitle is defined ? pageTitle : '', buttons) }}
+    <div class="">
         <div class="row">
-            <div class="span6 pull-left">
-                {% if data is defined %}
-                    {{ dump(data) }}
-                {% endif %}
-            </div>
+
+
         </div>
     </div>
 
-    <script type="text/javascript">
-        (function() {
-            $(function() {
-                $('.oro-config-refresh').click(_.bind(Oro.hashNavigationInstance.refreshPage, Oro.hashNavigationInstance));
-            });
-        }());
-    </script>
+    {% set currentTab = {
+            label: 'Localization',
+            description: 'Some additional information about possible localization setup and real need of localization settings (help block)',
+            children: [
+                {
+                    label: 'Locale options',
+                    children: [
+                        '<div class="control-group">
+                            <label class="control-label" for="orocrm_contact_form_namePrefix">Name prefix</label>
+                            <div class="controls">
+                                <input type="text" id="orocrm_contact_form_namePrefix" name="orocrm_contact_form[namePrefix]">
+                            </div>
+                        </div>',
+                        '<div class="control-group">
+                            <label class="control-label required" for="orocrm_contact_form_firstName"><em>*</em>First name</label>
+                            <div class="controls">
+                                <input type="text" id="orocrm_contact_form_firstName" name="orocrm_contact_form[firstName]" required="required">
+                            </div>
+                        </div>'
+                    ]
+                }
+            ]
+        }
+    %}
+
+    {% set DATA = [
+            {
+                name: 'platform',
+                label: 'Platform',
+                icon: 'icon-hdd',
+                children: [
+                    {
+                        label: 'General setup',
+                        children: [
+                            {
+                                name: 'localiztion_settings',
+                                label: 'Localization',
+                                icon: 'icon-time',
+                            },
+                            {
+                                name: 'themes_settings',
+                                label: 'Themes',
+                            }
+                        ]
+                    }
+                ]
+                ,  current: currentTab
+
+            }
+        ]
+    %}
+
+    {{ __.renderScrollData(DATA) }}
 {% endblock content %}
