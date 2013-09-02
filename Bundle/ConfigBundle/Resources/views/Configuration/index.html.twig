@@ -12,12 +12,6 @@
     %}
 
     {{ __.renderTitleAndSearch(pageTitle is defined ? pageTitle : '', buttons) }}
-    <div class="">
-        <div class="row">
-
-
-        </div>
-    </div>
 
     {% set currentTab = {
             label: 'Localization',
@@ -44,31 +38,46 @@
         }
     %}
 
-    {% set DATA = [
-            {
-                name: 'platform',
-                label: 'Platform',
-                icon: 'icon-hdd',
-                children: [
-                    {
-                        label: 'General setup',
-                        children: [
-                            {
-                                name: 'localiztion_settings',
-                                label: 'Localization',
-                                icon: 'icon-time',
-                            },
-                            {
-                                name: 'themes_settings',
-                                label: 'Themes',
-                            }
-                        ]
-                    }
-                ]
-                ,  current: currentTab
-
-            }
-        ]
+    {% set DATA = {
+        formData: [
+                {
+                    name: 'platform',
+                    label: 'Platform',
+                    icon: 'icon-hdd',
+                    children: [
+                        {
+                            label: 'General setup',
+                            children: [
+                                {
+                                    name: 'localiztion_settings',
+                                    label: 'Localization',
+                                    icon: 'icon-time',
+                                },
+                                {
+                                    name: 'themes_settings',
+                                    label: 'Themes',
+                                }
+                            ]
+                        }
+                    ]
+                }, {
+                    name: 'sales',
+                    label: 'Sales',
+                    children: [
+                        {
+                            label: 'Customers',
+                            children: [
+                                {
+                                    label: 'Login options',
+                                    name:  'login_options'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            current: currentTab
+        }
     %}
 
     {{ __.renderScrollData(DATA) }}

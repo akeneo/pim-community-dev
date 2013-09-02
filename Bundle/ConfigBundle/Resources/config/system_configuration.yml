@@ -1,0 +1,47 @@
+oro_system_configuration:
+    scopes:
+       - global
+
+    groups:
+        platform:
+            label: 'Platform'
+            icon:  icon-hdd
+
+        general_setup:
+            label: 'General setup'
+
+        application_information:
+            label: 'Application information'
+            position: 10
+
+        localization:
+            label: 'Localization'
+            icon:  icon-time
+            position: 20
+
+        locale_options:
+            label: 'Locale options'
+
+    fields:
+        date_format:
+            type: text
+            options:
+               label: 'Date format'
+            scopes: [ global ]
+            position: 10
+
+    tree:
+        system_configuration:
+            platform:
+                position: 10
+                children:
+                    general_setup:
+                        position: 10
+                        children:
+                            application_information:
+                                children: ~
+                            localization:
+                                children:
+                                    locale_options:
+                                        children:
+                                            - date_format

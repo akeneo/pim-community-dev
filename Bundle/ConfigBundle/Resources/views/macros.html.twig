@@ -34,8 +34,8 @@
     <div class="tabbable system-configuration-container">
         <div class="container-fluid">
             <ul class="nav nav-tabs">
-                {% if data is iterable %}
-                    {% for tab in data %}
+                {% if data.formData is iterable %}
+                    {% for tab in data.formData %}
                         {% if (activeTab != '' and activeTab == tab.name) or (activeTab == '' and loop.first) %}
                             {% set tab = tab|merge({ isActive: true }) %}
                         {% endif %}
@@ -46,12 +46,12 @@
         </div>
         <div class="scrollable-container">
             <div class="tab-content container-fluid">
-                {% if data is iterable %}
-                    {% for tab in data %}
+                {% if data.formData is iterable %}
+                    {% for tab in data.formData %}
                         {% if (activeTab != '' and activeTab == tab.name) or (activeTab == '' and loop.first) %}
                             {% set tab = tab|merge({ isActive: true }) %}
                         {% endif %}
-                        {{ __.renderHorizontalTabContent(tab) }}
+                        {{ __.renderHorizontalTabContent(tab, data.current) }}
                     {% endfor %}
                 {% endif %}
             </div>
@@ -83,14 +83,14 @@
         data.name        - Tab name
         data.current     - Current open tab data content(raw html)
 #}
-{% macro renderHorizontalTabContent(data) %}
+{% macro renderHorizontalTabContent(data, current) %}
     {% import _self as __ %}
     <div class="tab-pane usser-row{% if data.isActive is defined and data.isActive %} active{% endif %}" id="{{ data.name }}">
         <div class="row-fluid row-fluid-divider">
             {{ __.renderVerticalSubmenu(data) }}
 
-            {% if data.current is defined %}
-                {{ __.renderCurrentTab(data.current) }}
+            {% if current is defined %}
+                {{ __.renderCurrentTab(current) }}
             {% endif %}
         </div>
     </div>

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\ConfigBundle\DependencyInjection\Compiler;
 
+use Oro\Bundle\ConfigBundle\Provider\FormProvider;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -11,7 +12,6 @@ use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDec
 class SystemConfigurationPass implements CompilerPassInterface
 {
     const CONFIG_FILE_NAME  = 'system_configuration.yml';
-    const CONFIG_PARAM_NAME = 'oro_config.system_configuration.config_data';
 
     /**
      * {@inheritDoc}
@@ -30,11 +30,15 @@ class SystemConfigurationPass implements CompilerPassInterface
             }
         }
 
-        if (!empty($config)) {
-            /**
-             * @TODO config data should be added via setter to services needed it
-             */
-            $container->setParameter(self::CONFIG_PARAM_NAME, $processor->process($config));
+        $taggedServices = $container->findTaggedServiceIds(FormProvider::TAG_NAME);
+        if (!empty($config) && $taggedServices) {
+            $config = $processor->process($config);
+
+            foreach ($taggedServices as $id => $attributes) {
+                $container
+                    ->getDefinition($id)
+                    ->addArgument($config);
+            }
         }
     }
 }

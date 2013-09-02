@@ -1,6 +1,7 @@
 parameters:
-    oro_config.user.class:            Oro\Bundle\ConfigBundle\Config\UserConfigManager
-    oro_config.twig_extension.class:  Oro\Bundle\ConfigBundle\Twig\ConfigExtension
+    oro_config.user.class:                   Oro\Bundle\ConfigBundle\Config\UserConfigManager
+    oro_config.twig_extension.class:         Oro\Bundle\ConfigBundle\Twig\ConfigExtension
+    oro_config.provider.form_provider.class: Oro\Bundle\ConfigBundle\Provider\FormProvider
 
 services:
     oro_config.user:
@@ -16,3 +17,8 @@ services:
         arguments:                    ["@oro_config.user", %oro_config.entities%]
         tags:
             - { name: twig.extension }
+
+    oro_config.provider.form_provider:
+        class:                        %oro_config.provider.form_provider.class%
+        tags:
+            -  { name: oro_config.configuration_form_provider }
