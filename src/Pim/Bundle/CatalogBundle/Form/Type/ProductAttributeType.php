@@ -53,8 +53,6 @@ class ProductAttributeType extends AttributeType
 
         $this->addFieldLabel($builder);
 
-        $this->addFieldDescription($builder);
-
         $this->addFieldVariantBehavior($builder);
 
         $this->addFieldSmart($builder);
@@ -94,15 +92,6 @@ class ProductAttributeType extends AttributeType
                 'property_path'     => 'translations'
             )
         );
-    }
-
-    /**
-     * Add a field for description
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldDescription(FormBuilderInterface $builder)
-    {
-        $builder->add('description', 'textarea', array('required' => false));
     }
 
     /**

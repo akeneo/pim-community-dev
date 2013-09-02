@@ -59,9 +59,6 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
             - Regex:
                 pattern: "/^(?!(treeId|categoryId|scope|enabled|family)$)/"
                 message: This code is not available.
-        description:
-            - Length:
-                max: 255
         searchable:
             - Type: bool
         translatable:
