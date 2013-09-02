@@ -108,12 +108,12 @@ class Controller extends BaseController
                 sprintf('Expected Object argument, got %s', gettype($entity))
             );
         }
-        $queryFactory = $this->get('pim_product.datagrid.manager.history.default_query_factory');
+        $queryFactory = $this->get('pim_catalog.datagrid.manager.history.default_query_factory');
         $queryFactory->setQueryBuilder(
             $this->getRepository('OroDataAuditBundle:Audit')->getLogEntriesQueryBuilder($entity)
         );
 
-        $datagridManager = $this->get('pim_product.datagrid.manager.history');
+        $datagridManager = $this->get('pim_catalog.datagrid.manager.history');
         $datagridManager->getRouteGenerator()->setRouteName($route);
         $datagridManager->getRouteGenerator()->setRouteParameters($routeParams);
 
@@ -125,7 +125,7 @@ class Controller extends BaseController
      */
     protected function getProductManager()
     {
-        return $this->get('pim_product.manager.product');
+        return $this->get('pim_catalog.manager.product');
     }
 
     /**

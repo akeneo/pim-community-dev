@@ -12,11 +12,11 @@ Feature: Browse attributes
       | Marketing |
     And the following attributes:
       | code        | label       | type                   | scopable | localizable | group     |
-      | sku         | Sku         | pim_product_identifier | false    | false       | General   |
-      | name        | Name        | pim_product_text       | false    | true        | General   |
-      | short_descr | Short descr | pim_product_textarea   | true     | true        | Marketing |
-      | long_descr  | Long descr  | pim_product_textarea   | true     | true        | Marketing |
-      | count       | Count       | pim_product_number     | false    | false       | General   |
+      | sku         | Sku         | pim_catalog_identifier | false    | false       | General   |
+      | name        | Name        | pim_catalog_text       | false    | true        | General   |
+      | short_descr | Short descr | pim_catalog_textarea   | true     | true        | Marketing |
+      | long_descr  | Long descr  | pim_catalog_textarea   | true     | true        | Marketing |
+      | count       | Count       | pim_catalog_number     | false    | false       | General   |
     And I am logged in as "admin"
 
   Scenario: Successfully display attributes

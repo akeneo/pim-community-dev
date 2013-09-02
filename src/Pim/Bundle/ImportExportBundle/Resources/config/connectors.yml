@@ -26,8 +26,8 @@ services:
     pim_import_export.reader.product:
         class: %pim_import_export.reader.product.class%
         arguments:
-            - @pim_product.manager.product
-            - @pim_product.manager.channel
+            - @pim_catalog.manager.product
+            - @pim_catalog.manager.channel
 
     pim_import_export.reader.category:
         class: %pim_import_export.reader.category.class%
@@ -66,8 +66,8 @@ services:
         class: %pim_import_export.processor.valid_product_creation.class%
         arguments:
             - @form.factory
-            - @pim_product.manager.product
-            - @pim_product.manager.channel
+            - @pim_catalog.manager.product
+            - @pim_catalog.manager.channel
 
     pim_import_export.processor.valid_category_creation:
         class: %pim_import_export.processor.valid_category_creation.class%
@@ -85,7 +85,7 @@ services:
     pim_import_export.writer.orm_product:
         class: %pim_import_export.writer.orm_product.class%
         arguments:
-            - @pim_product.manager.product
+            - @pim_catalog.manager.product
             - @doctrine.orm.default_entity_manager
 
     pim_import_export.writer.orm_category:

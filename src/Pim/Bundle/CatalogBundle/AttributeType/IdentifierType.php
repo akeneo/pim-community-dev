@@ -43,7 +43,7 @@ class IdentifierType extends OroTextType
             ),
             array(
                 'name'      => 'scopable',
-                'fieldType' => 'pim_product_scopable',
+                'fieldType' => 'pim_catalog_scopable',
                 'options'   => array(
                     'data'      => false,
                     'disabled'  => true,
@@ -96,6 +96,6 @@ class IdentifierType extends OroTextType
      */
     public function getName()
     {
-        return 'pim_product_identifier';
+        return 'pim_catalog_identifier';
     }
 }

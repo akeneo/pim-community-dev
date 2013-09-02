@@ -167,7 +167,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     private function createAttribute(array $data)
     {
         $attribute = new ProductAttribute();
-        $attribute->setAttributeType(sprintf('pim_product_%s', strtolower($data['type'])));
+        $attribute->setAttributeType(sprintf('pim_catalog_%s', strtolower($data['type'])));
 
         $labels = explode(',', $data['label']);
         foreach ($labels as $label) {

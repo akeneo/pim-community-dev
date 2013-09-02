@@ -27,7 +27,7 @@ class RegexGuesserTest extends ConstraintGuesserTest
     public function testSupportAttribute()
     {
         $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_text',)))
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_text',)))
         );
     }
 
@@ -36,7 +36,7 @@ class RegexGuesserTest extends ConstraintGuesserTest
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
                 array(
-                    'attributeType'    => 'pim_product_text',
+                    'attributeType'    => 'pim_catalog_text',
                     'validationRule'   => 'regexp',
                     'validationRegexp' => '/foo/',
                 )
@@ -59,7 +59,7 @@ class RegexGuesserTest extends ConstraintGuesserTest
                 $this->target->guessConstraints(
                     $this->getAttributeMock(
                         array(
-                            'attributeType'  => 'pim_product_text',
+                            'attributeType'  => 'pim_catalog_text',
                             'validationRule' => 'regexp',
                         )
                     )
@@ -73,7 +73,7 @@ class RegexGuesserTest extends ConstraintGuesserTest
                 $this->target->guessConstraints(
                     $this->getAttributeMock(
                         array(
-                            'attributeType'  => 'pim_product_text',
+                            'attributeType'  => 'pim_catalog_text',
                             'validationRule' => null,
                         )
                     )

@@ -95,7 +95,7 @@ class ProductFormView
             $classes['translatable'] = true;
         }
 
-        if ('pim_product_price_collection' === $attribute->getAttributeType()) {
+        if ('pim_catalog_price_collection' === $attribute->getAttributeType()) {
             $classes['currency'] = true;
         }
 

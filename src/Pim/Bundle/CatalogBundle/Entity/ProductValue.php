@@ -337,7 +337,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
             return true;
         }
 
-        if ('pim_product_identifier' === $this->attribute->getAttributeType()) {
+        if ('pim_catalog_identifier' === $this->attribute->getAttributeType()) {
             return false;
         }
 

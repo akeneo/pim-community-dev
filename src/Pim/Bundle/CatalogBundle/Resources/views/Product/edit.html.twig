@@ -12,20 +12,20 @@
 
     {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
         'form': attributesForm,
-        'action': path('pim_product_product_addproductattributes', {'id': product.id, 'dataLocale': dataLocale})
+        'action': path('pim_catalog_product_addproductattributes', {'id': product.id, 'dataLocale': dataLocale})
     } %}
 
     {{ JSFV(form) }}
-    <form id="{{ form.vars.id }}" method="POST" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}"  data-updated-message="{{ 'You will lose changes to the product if you leave the page.'|trans }}" action="{{ path('pim_product_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
+    <form id="{{ form.vars.id }}" method="POST" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}"  data-updated-message="{{ 'You will lose changes to the product if you leave the page.'|trans }}" action="{{ path('pim_catalog_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
         {% set title = 'Products'|trans %}
 
         {% set buttons %}
-            {{ elements.backLink(path('pim_product_product_index')) }}
+            {{ elements.backLink(path('pim_catalog_product_index')) }}
             <div class="btn-group">
                 {{ form_widget(form.enabled) }}
             </div>
-            {{ elements.deleteLink(path('pim_product_product_remove', { id: form.vars.value.id }), 'Are you sure you want to delete this product ?'|trans) }}
+            {{ elements.deleteLink(path('pim_catalog_product_remove', { id: form.vars.value.id }), 'Are you sure you want to delete this product ?'|trans) }}
             {{ elements.submitBtn }}
         {% endset %}
 
@@ -39,7 +39,7 @@
                 <ul class="dropdown-menu">
                     {% for locale in locales %}
                         <li class="{{ locale.code == dataLocale ? 'activeLocale' : '' }}">
-                            <a href="{{ path('pim_product_product_edit', {id: form.vars.value.id, dataLocale: locale.code}) }}" title="{{ localeLabel(locale.code) }}">
+                            <a href="{{ path('pim_catalog_product_edit', {id: form.vars.value.id, dataLocale: locale.code}) }}" title="{{ localeLabel(locale.code) }}">
                                 {% if locale == dataLocale %}
                                     <span class="icon">
                                         <i class="icon-bullet"></i>

@@ -72,17 +72,17 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                'pim_product_multiselect',
+                'pim_catalog_multiselect',
                 array('a', 'b', null),
                 ProductAttributeValidator::VIOLATION_OPTION_CODE_REQUIRED
             ),
             array(
-                'pim_product_simpleselect',
+                'pim_catalog_simpleselect',
                 array(1, null, 3),
                 ProductAttributeValidator::VIOLATION_OPTION_CODE_REQUIRED
             ),
             array(
-                'pim_product_simpleselect',
+                'pim_catalog_simpleselect',
                 array('a', 'a', 'b'),
                 ProductAttributeValidator::VIOLATION_DUPLICATE_OPTION_CODE
             ),

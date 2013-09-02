@@ -23,7 +23,7 @@ class Creation extends Form
      */
     public function findField($field)
     {
-        $label = $this->find('css', sprintf('#pim_product_product_create label:contains("%s")', $field));
+        $label = $this->find('css', sprintf('#pim_catalog_product_create label:contains("%s")', $field));
 
         if (!$label) {
             throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $field);

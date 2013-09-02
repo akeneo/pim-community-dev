@@ -249,7 +249,7 @@ class Family implements TranslatableInterface, VersionableInterface
      */
     public function removeAttribute(ProductAttribute $attribute)
     {
-        if ('pim_product_identifier' === $attribute->getAttributeType()) {
+        if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
             throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
         }
 
@@ -325,8 +325,8 @@ class Family implements TranslatableInterface, VersionableInterface
                 return in_array(
                     $attribute->getAttributeType(),
                     array(
-                        'pim_product_text',
-                        'pim_product_identifier'
+                        'pim_catalog_text',
+                        'pim_catalog_identifier'
                     )
                 );
             }

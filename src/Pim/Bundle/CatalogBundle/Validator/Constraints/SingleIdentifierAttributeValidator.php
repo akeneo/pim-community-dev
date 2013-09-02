@@ -38,10 +38,10 @@ class SingleIdentifierAttributeValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if ($value->getAttributeType() === 'pim_product_identifier') {
+        if ($value->getAttributeType() === 'pim_catalog_identifier') {
             $identifier = $this->manager->getAttributeRepository()->findOneBy(
                 array(
-                    'attributeType' => 'pim_product_identifier'
+                    'attributeType' => 'pim_catalog_identifier'
                 )
             );
 

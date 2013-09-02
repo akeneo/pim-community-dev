@@ -42,6 +42,6 @@ class PriceType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_product_price';
+        return 'pim_catalog_price';
     }
 }

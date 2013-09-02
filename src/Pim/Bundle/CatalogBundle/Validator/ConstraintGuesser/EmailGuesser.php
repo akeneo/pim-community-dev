@@ -20,7 +20,7 @@ class EmailGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AbstractAttribute $attribute)
     {
-        return 'pim_product_text' === $attribute->getAttributeType();
+        return 'pim_catalog_text' === $attribute->getAttributeType();
     }
 
     /**

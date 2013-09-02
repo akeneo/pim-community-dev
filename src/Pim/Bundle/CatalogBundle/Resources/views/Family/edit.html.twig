@@ -4,17 +4,17 @@
 
 {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
 'form': attributesForm,
-'action': path('pim_product_family_addproductattributes', {'id': family.id})
+'action': path('pim_catalog_family_addproductattributes', {'id': family.id})
 } %}
 
 {{ JSFV(form) }}
 
-<form id="{{ form.vars.id }}" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}" data-updated-message="{{ 'You will lose changes to the family if you leave the page.'|trans }}" action="{{ path('pim_product_family_edit', { id: family.id }) }}" method="POST">
+<form id="{{ form.vars.id }}" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}" data-updated-message="{{ 'You will lose changes to the family if you leave the page.'|trans }}" action="{{ path('pim_catalog_family_edit', { id: family.id }) }}" method="POST">
 
     {% set title = 'Family'|trans ~ ' - ' ~ family.label %}
     {% set buttons %}
         {% if form.vars.value.id %}
-            {{ elements.deleteLink(path('pim_product_family_remove', {'id': family.id}), 'Are you sure you want to remove the family %family%?'|trans({'%family%': family.label})) }}
+            {{ elements.deleteLink(path('pim_catalog_family_remove', {'id': family.id}), 'Are you sure you want to remove the family %family%?'|trans({'%family%': family.label})) }}
         {% endif %}
         {{ elements.submitBtn }}
     {% endset %}

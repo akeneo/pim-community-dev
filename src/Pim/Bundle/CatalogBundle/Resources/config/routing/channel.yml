@@ -1,20 +1,20 @@
-pim_product_channel_index:
+pim_catalog_channel_index:
     path: /.{_format}
     defaults: { _controller: PimCatalogBundle:Channel:index, _format: html }
     requirements:
         _format: html|json
 
-pim_product_channel_create:
+pim_catalog_channel_create:
     path: /create
     defaults: { _controller: PimCatalogBundle:Channel:create }
 
-pim_product_channel_edit:
+pim_catalog_channel_edit:
     path: /{id}/edit
     defaults: { _controller: PimCatalogBundle:Channel:edit }
     requirements:
         id: \d+
 
-pim_product_channel_remove:
+pim_catalog_channel_remove:
     path: /{id}/remove
     defaults: { _controller: PimCatalogBundle:Channel:remove }
     requirements:

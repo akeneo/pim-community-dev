@@ -168,7 +168,7 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     private function createAttribute(array $data)
     {
         $attribute = new ProductAttribute();
-        $attribute->setAttributeType(sprintf('pim_product_%s', strtolower($data['type'])));
+        $attribute->setAttributeType(sprintf('pim_catalog_%s', strtolower($data['type'])));
 
         foreach ($data['label'] as $locale => $label) {
             $translation = $attribute->getTranslation($locale);
