@@ -4,9 +4,9 @@ namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
 use Psr\Log\LoggerInterface;
 
-class ListExecutor implements PostActionInterface
+class TreeExecutor implements PostActionInterface
 {
-    const ALIAS = 'list';
+    const ALIAS = 'tree';
 
     /**
      * @var array
@@ -23,6 +23,10 @@ class ListExecutor implements PostActionInterface
      */
     protected $logLevel;
 
+    /**
+     * @param LoggerInterface $logger
+     * @param string $logLevel
+     */
     public function __construct(LoggerInterface $logger = null, $logLevel = 'ALERT')
     {
         $this->logger = $logger;
@@ -32,7 +36,7 @@ class ListExecutor implements PostActionInterface
     /**
      * @param PostActionInterface $postAction
      * @param bool $breakOnFailure
-     * @return ListExecutor
+     * @return TreeExecutor
      */
     public function addPostAction(PostActionInterface $postAction, $breakOnFailure = true)
     {

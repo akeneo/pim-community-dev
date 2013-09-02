@@ -84,7 +84,7 @@ Bind Entity
 List Executor
 -------------
 
-**Class:** Oro\Bundle\WorkflowBundle\Model\PostAction\ListExecutor
+**Class:** Oro\Bundle\WorkflowBundle\Model\PostAction\TreeExecutor
 
 **Alias:** list
 
@@ -98,8 +98,8 @@ and then referencing to it in configuration as to single Post Action.
 /** @var PostActionInterface $customPostAction */
 $customPostAction = $postActionFactory->create('custom_post_action', $postActionParameters);
 
-/** @var ListExecutor $listPostAction */
-$listPostAction = $postActionFactory->create(ListExecutor::ALIAS);
+/** @var TreeExecutor $listPostAction */
+$listPostAction = $postActionFactory->create(TreeExecutor::ALIAS);
 $listPostAction->addPostAction($customPostAction);
 
 $listPostAction->execute($context); // execute all nested post actions

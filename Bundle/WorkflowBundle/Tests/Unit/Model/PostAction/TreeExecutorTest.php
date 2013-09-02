@@ -2,12 +2,12 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction;
 
-use Oro\Bundle\WorkflowBundle\Model\PostAction\ListExecutor;
+use Oro\Bundle\WorkflowBundle\Model\PostAction\TreeExecutor;
 
-class ListExecutorTest extends \PHPUnit_Framework_TestCase
+class TreeExecutorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ListExecutor
+     * @var TreeExecutor
      */
     protected $listPostAction;
 
@@ -18,7 +18,7 @@ class ListExecutorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->listPostAction = new ListExecutor();
+        $this->listPostAction = new TreeExecutor();
     }
 
     protected function tearDown()
@@ -92,7 +92,7 @@ class ListExecutorTest extends \PHPUnit_Framework_TestCase
         $logger->expects($this->once())
             ->method('log')
             ->with('ALERT', 'TEST');
-        $listPostAction = new ListExecutor($logger);
+        $listPostAction = new TreeExecutor($logger);
         $postActionError = $this->getExceptionPostAction();
         $listPostAction->addPostAction($postActionError, false);
         $listPostAction->execute(array());
