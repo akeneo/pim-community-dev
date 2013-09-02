@@ -1,87 +1,87 @@
 services:
-    pim_product.form.type.product.view:
+    pim_catalog.form.type.product.view:
         public: false
-        class: %pim_product.form.type.product.view.class%
+        class: %pim_catalog.form.type.product.view.class%
 
     # Types
-    pim_product.form.type.product:
-        class:     %pim_product.form.type.product.class%
+    pim_catalog.form.type.product:
+        class:     %pim_catalog.form.type.product.class%
         arguments:
-            - @pim_product.manager.product
+            - @pim_catalog.manager.product
             - 'pim_product_value'
-            - @pim_product.form.type.product.view
-            - @pim_product.form.transform_imported_product_data_subscriber
+            - @pim_catalog.form.type.product.view
+            - @pim_catalog.form.transform_imported_product_data_subscriber
         tags:
             - { name: form.type, alias: pim_product }
 
-    pim_product.form.type.product_create:
-        class:     %pim_product.form.type.product_create.class%
-        arguments: [@pim_product.manager.product, 'pim_product_value']
+    pim_catalog.form.type.product_create:
+        class:     %pim_catalog.form.type.product_create.class%
+        arguments: [@pim_catalog.manager.product, 'pim_product_value']
         tags:
             - { name: form.type, alias: pim_product_create }
 
-    pim_product.form.type.product_value:
-        class:     %pim_product.form.type.product_value.class%
+    pim_catalog.form.type.product_value:
+        class:     %pim_catalog.form.type.product_value.class%
         arguments:
-            - @pim_product.manager.product
+            - @pim_catalog.manager.product
             - @oro_flexibleentity.value_form.value_subscriber
-            - @pim_product.form.type.product.view
+            - @pim_catalog.form.type.product.view
         tags:
             - { name: form.type, alias: pim_product_value }
 
-    pim_product.form.type.attribute:
-        class: %pim_product.form.type.product_attribute.class%
+    pim_catalog.form.type.attribute:
+        class: %pim_catalog.form.type.product_attribute.class%
         tags:
-            - { name: form.type, alias: pim_product_attribute }
-        arguments: [@pim_product.manager.attribute_type, @pim_product.form.subscriber.attribute]
+            - { name: form.type, alias: pim_catalog_attribute }
+        arguments: [@pim_catalog.manager.attribute_type, @pim_catalog.form.subscriber.attribute]
 
-    pim_product.form.type.attribute_group:
-        class: %pim_product.type.attribute_group.class%
+    pim_catalog.form.type.attribute_group:
+        class: %pim_catalog.form.type.attribute_group.class%
         tags:
             - { name: form.type, alias: pim_attribute_group }
 
-    pim_product.form.type.family:
-        class: %pim_product.type.family.class%
+    pim_catalog.form.type.family:
+        class: %pim_catalog.form.type.family.class%
         tags:
             - { name: form.type, alias: pim_family }
 
-    pim_product.form.type.wysiwyg:
-        class: %pim_product.form.type.product_value_wysiwyg.class%
+    pim_catalog.form.type.wysiwyg:
+        class: %pim_catalog.form.type.product_value_wysiwyg.class%
         tags:
             - { name: form.type, alias: pim_wysiwyg }
 
-    pim_product.form.type.price:
-        class: %pim_product.form.type.product_value_price.class%
+    pim_catalog.form.type.price:
+        class: %pim_catalog.form.type.product_value_price.class%
         tags:
-            - { name: form.type, alias: pim_product_price }
+            - { name: form.type, alias: pim_catalog_price }
 
-    pim_product.form.type.price_collection:
-        class: %pim_product.form.type.product_value_price_collection.class%
+    pim_catalog.form.type.price_collection:
+        class: %pim_catalog.form.type.product_value_price_collection.class%
         tags:
-            - { name: form.type, alias: pim_product_price_collection }
+            - { name: form.type, alias: pim_catalog_price_collection }
 
-    pim_product.form.type.category:
-        class: %pim_product.form.type.category.class%
-        arguments: [%pim_product.entity.category.class%, %pim_product.entity.category_translation.class%]
+    pim_catalog.form.type.category:
+        class: %pim_catalog.form.type.category.class%
+        arguments: [%pim_catalog.entity.category.class%, %pim_catalog.entity.category_translation.class%]
         tags:
             - { name: form.type, alias: pim_category }
 
-    pim_product.form.type.channel:
-        class: %pim_product.form.type.channel.class%
+    pim_catalog.form.type.channel:
+        class: %pim_catalog.form.type.channel.class%
         arguments:
-            - @pim_product.manager.locale
-            - @pim_product.helper.locale
+            - @pim_catalog.manager.locale
+            - @pim_catalog.helper.locale
         tags:
-            - { name: form.type, alias: pim_product_channel }
+            - { name: form.type, alias: pim_catalog_channel }
 
-    pim_product.form.type.currency:
-        class: %pim_product.form.type.currency.class%
+    pim_catalog.form.type.currency:
+        class: %pim_catalog.form.type.currency.class%
         arguments:
-            - %pim_product.currencies%
+            - %pim_catalog.currencies%
         tags:
-            - { name: form.type, alias: pim_product_currency }
+            - { name: form.type, alias: pim_catalog_currency }
 
-    pim_product.form.type.locale:
-        class: %pim_product.form.type.locale.class%
+    pim_catalog.form.type.locale:
+        class: %pim_catalog.form.type.locale.class%
         tags:
-            - { name: form.type, alias: pim_product_locale }
+            - { name: form.type, alias: pim_catalog_locale }

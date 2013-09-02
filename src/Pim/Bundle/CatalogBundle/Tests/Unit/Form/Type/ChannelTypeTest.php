@@ -22,7 +22,7 @@ class ChannelTypeTest extends AbstractFormTypeTest
     {
         parent::setUp();
 
-        $this->markTestIncomplete('Find a way to test the "pim_product_available_locales" form type or drop this test');
+        $this->markTestIncomplete('Find a way to test the "pim_catalog_available_locales" form type or drop this test');
 
         // Create form type
         $this->type = new ChannelType($config);
@@ -46,7 +46,7 @@ class ChannelTypeTest extends AbstractFormTypeTest
         );
 
         // Assert name
-        $this->assertEquals('pim_product_channel', $this->form->getName());
+        $this->assertEquals('pim_catalog_channel', $this->form->getName());
     }
 
     /**

@@ -32,11 +32,11 @@ class LocaleController extends Controller
             ->from('PimCatalogBundle:Locale', 'l');
 
         /** @var $queryFactory QueryFactory */
-        $queryFactory = $this->get('pim_product.datagrid.manager.locale.default_query_factory');
+        $queryFactory = $this->get('pim_catalog.datagrid.manager.locale.default_query_factory');
         $queryFactory->setQueryBuilder($queryBuilder);
 
         /** @var $datagridManager LocaleDatagridManager */
-        $datagridManager = $this->get('pim_product.datagrid.manager.locale');
+        $datagridManager = $this->get('pim_catalog.datagrid.manager.locale');
         $datagrid = $datagridManager->getDatagrid();
 
         $view = ('json' === $request->getRequestFormat()) ?
@@ -55,16 +55,16 @@ class LocaleController extends Controller
      */
     public function editAction(Locale $locale)
     {
-        if ($this->get('pim_product.form.handler.locale')->process($locale)) {
+        if ($this->get('pim_catalog.form.handler.locale')->process($locale)) {
             $this->addFlash('success', 'Locale successfully saved');
 
             return $this->redirect(
-                $this->generateUrl('pim_product_locale_index')
+                $this->generateUrl('pim_catalog_locale_index')
             );
         }
 
         return array(
-            'form' => $this->get('pim_product.form.locale')->createView()
+            'form' => $this->get('pim_catalog.form.locale')->createView()
         );
     }
 
@@ -84,7 +84,7 @@ class LocaleController extends Controller
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirect($this->generateUrl('pim_product_locale_index'));
+            return $this->redirect($this->generateUrl('pim_catalog_locale_index'));
         }
     }
 
@@ -104,7 +104,7 @@ class LocaleController extends Controller
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirect($this->generateUrl('pim_product_locale_index'));
+            return $this->redirect($this->generateUrl('pim_catalog_locale_index'));
         }
     }
 }

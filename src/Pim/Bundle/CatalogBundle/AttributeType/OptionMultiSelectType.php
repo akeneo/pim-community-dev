@@ -62,7 +62,7 @@ class OptionMultiSelectType extends AbstractAttributeType
             ),
             array(
                 'name'      => 'options',
-                'fieldType' => 'pim_product_options'
+                'fieldType' => 'pim_catalog_options'
             ),
             array(
                 'name'      => 'translatable',
@@ -74,11 +74,11 @@ class OptionMultiSelectType extends AbstractAttributeType
             ),
             array(
                 'name'      => 'availableLocales',
-                'fieldType' => 'pim_product_available_locales'
+                'fieldType' => 'pim_catalog_available_locales'
             ),
             array(
                 'name'      => 'scopable',
-                'fieldType' => 'pim_product_scopable',
+                'fieldType' => 'pim_catalog_scopable',
                 'options'   => array(
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
@@ -102,6 +102,6 @@ class OptionMultiSelectType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_product_multiselect';
+        return 'pim_catalog_multiselect';
     }
 }

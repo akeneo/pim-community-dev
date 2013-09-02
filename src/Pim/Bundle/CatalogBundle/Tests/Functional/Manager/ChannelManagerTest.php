@@ -37,7 +37,7 @@ class ChannelManagerTest extends WebTestCase
 
         $this->container = static::$kernel->getContainer();
 
-        $this->channelManager = $this->container->get('pim_product.manager.channel');
+        $this->channelManager = $this->container->get('pim_catalog.manager.channel');
     }
 
     /**

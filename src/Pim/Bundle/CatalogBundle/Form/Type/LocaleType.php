@@ -72,6 +72,6 @@ class LocaleType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_product_locale';
+        return 'pim_catalog_locale';
     }
 }

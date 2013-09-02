@@ -45,6 +45,6 @@ class AvailableLocalesType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_product_available_locales';
+        return 'pim_catalog_available_locales';
     }
 }

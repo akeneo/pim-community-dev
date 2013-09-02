@@ -28,20 +28,20 @@ class RangeGuesserTest extends ConstraintGuesserTest
     {
         $this->assertTrue(
             $this->target->supportAttribute(
-                $this->getAttributeMock(array('attributeType' => 'pim_product_price_collection',))
+                $this->getAttributeMock(array('attributeType' => 'pim_catalog_price_collection',))
             )
         );
 
         $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_metric',)))
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_metric',)))
         );
 
         $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_number',)))
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_number',)))
         );
 
         $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_date',)))
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_date',)))
         );
     }
 
@@ -50,7 +50,7 @@ class RangeGuesserTest extends ConstraintGuesserTest
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
                 array(
-                    'attributeType' => 'pim_product_number',
+                    'attributeType' => 'pim_catalog_number',
                     'numberMin'     => 100,
                 )
             )
@@ -69,7 +69,7 @@ class RangeGuesserTest extends ConstraintGuesserTest
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
                 array(
-                    'attributeType'   => 'pim_product_number',
+                    'attributeType'   => 'pim_catalog_number',
                     'negativeAllowed' => false,
                     'numberMin'       => 100,
                 )
@@ -89,7 +89,7 @@ class RangeGuesserTest extends ConstraintGuesserTest
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
                 array(
-                    'attributeType' => 'pim_product_number',
+                    'attributeType' => 'pim_catalog_number',
                     'numberMax'     => 300,
                 )
             )
@@ -108,7 +108,7 @@ class RangeGuesserTest extends ConstraintGuesserTest
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
                 array(
-                    'attributeType' => 'pim_product_number',
+                    'attributeType' => 'pim_catalog_number',
                     'numberMin'     => 100,
                     'numberMax'     => 300,
                 )
@@ -127,7 +127,7 @@ class RangeGuesserTest extends ConstraintGuesserTest
     {
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
-                array('attributeType' => 'pim_product_number',)
+                array('attributeType' => 'pim_catalog_number',)
             )
         );
 
@@ -138,7 +138,7 @@ class RangeGuesserTest extends ConstraintGuesserTest
     {
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
-                array('attributeType' => 'pim_product_date', 'dateMin' => '2012-01-01',)
+                array('attributeType' => 'pim_catalog_date', 'dateMin' => '2012-01-01',)
             )
         );
 
@@ -155,7 +155,7 @@ class RangeGuesserTest extends ConstraintGuesserTest
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
                 array(
-                    'attributeType' => 'pim_product_date',
+                    'attributeType' => 'pim_catalog_date',
                     'dateMax'       => '2013-05-14',
                 )
             )
@@ -176,7 +176,7 @@ class RangeGuesserTest extends ConstraintGuesserTest
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
                 array(
-                    'attributeType' => 'pim_product_date',
+                    'attributeType' => 'pim_catalog_date',
                     'dateMin'       => '2012-01-01',
                     'dateMax'       => '2013-05-14',
                 )

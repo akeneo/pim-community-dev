@@ -27,18 +27,18 @@ class FileGuesserTest extends ConstraintGuesserTest
     public function testSupportAttribute()
     {
         $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_file',)))
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_file',)))
         );
 
         $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_product_image',)))
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_image',)))
         );
     }
 
     public function testGuessFileMaxSizeConstraint()
     {
         $constraints = $this->target->guessConstraints(
-            $this->getAttributeMock(array('attributeType' => 'pim_product_file', 'maxFileSize'   => 5000,))
+            $this->getAttributeMock(array('attributeType' => 'pim_catalog_file', 'maxFileSize'   => 5000,))
         );
 
         $this->assertContainsInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\File', $constraints);
@@ -54,7 +54,7 @@ class FileGuesserTest extends ConstraintGuesserTest
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
                 array(
-                    'attributeType'         => 'pim_product_file',
+                    'attributeType'         => 'pim_catalog_file',
                     'allowedExtensions' => array('gif', 'jpg'),
                 )
             )
@@ -73,7 +73,7 @@ class FileGuesserTest extends ConstraintGuesserTest
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
                 array(
-                    'attributeType'         => 'pim_product_file',
+                    'attributeType'         => 'pim_catalog_file',
                     'maxFileSize'           => 5000,
                     'allowedExtensions' => array('gif', 'jpg'),
                 )

@@ -1,5 +1,5 @@
 // Get form name
-var formName = 'pim_product_attribute_form';
+var formName = 'pim_catalog_attribute_form';
 
 $(function() {
 
@@ -7,7 +7,7 @@ $(function() {
 
     function updateForm() {
         $.post(
-            '{{ path("pim_product_productattribute_preprocess") }}',
+            '{{ path("pim_catalog_productattribute_preprocess") }}',
             $('#'+formName).serialize(),
             function(data) {
                 for (var prop in data) {

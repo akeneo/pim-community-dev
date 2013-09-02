@@ -174,7 +174,7 @@ class CategoryTreeController extends Controller
 
         $category->setCode($request->get('title'));
 
-        $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
+        $form = $this->createForm($this->get('pim_catalog.form.type.category'), $category);
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -194,7 +194,7 @@ class CategoryTreeController extends Controller
                     $pendingManager->createVersionAndAudit($pending);
                 }
 
-                return $this->redirectToRoute('pim_product_categorytree_edit', array('id' => $category->getId()));
+                return $this->redirectToRoute('pim_catalog_categorytree_edit', array('id' => $category->getId()));
             }
         }
 
@@ -216,7 +216,7 @@ class CategoryTreeController extends Controller
     {
         $datagrid = $this->getDataAuditDatagrid(
             $category,
-            'pim_product_categorytree_edit',
+            'pim_catalog_categorytree_edit',
             array(
                 'id' => $category->getId()
             )
@@ -226,7 +226,7 @@ class CategoryTreeController extends Controller
             return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagrid->createView());
         }
 
-        $form = $this->createForm($this->get('pim_product.form.type.category'), $category);
+        $form = $this->createForm($this->get('pim_catalog.form.type.category'), $category);
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -281,12 +281,12 @@ class CategoryTreeController extends Controller
             $parent = $category->getParent();
             $params = ($parent !== null) ? array('node' => $parent->getId()) : array();
 
-            return $this->redirectToRoute('pim_product_categorytree_create', $params);
+            return $this->redirectToRoute('pim_catalog_categorytree_create', $params);
         }
 
         $this->addFlash('error', $message);
 
-        return $this->redirectToRoute('pim_product_categorytree_edit', array('id' => $category->getId()));
+        return $this->redirectToRoute('pim_catalog_categorytree_edit', array('id' => $category->getId()));
     }
 
     /**
@@ -314,6 +314,6 @@ class CategoryTreeController extends Controller
      */
     protected function getTreeManager()
     {
-        return $this->container->get('pim_product.manager.category');
+        return $this->container->get('pim_catalog.manager.category');
     }
 }

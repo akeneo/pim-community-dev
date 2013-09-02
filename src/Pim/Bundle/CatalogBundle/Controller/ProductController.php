@@ -32,7 +32,7 @@ class ProductController extends Controller
     public function indexAction(Request $request)
     {
         /** @var $gridManager ProductDatagridManager */
-        $gridManager = $this->get('pim_product.datagrid.manager.product');
+        $gridManager = $this->get('pim_catalog.datagrid.manager.product');
         $gridManager->setFilterTreeId($request->get('treeId', 0));
         $gridManager->setFilterCategoryId($request->get('categoryId', 0));
         $datagrid = $gridManager->getDatagrid();
@@ -65,12 +65,12 @@ class ProductController extends Controller
     public function createAction(Request $request, $dataLocale)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_product_product_index');
+            return $this->redirectToRoute('pim_catalog_product_index');
         }
 
         $entity = $this->getProductManager()->createFlexible(true);
 
-        if ($this->get('pim_product.form.handler.product_create')->process($entity)) {
+        if ($this->get('pim_catalog.form.handler.product_create')->process($entity)) {
 
             $pendingManager = $this->container->get('pim_versioning.manager.pending');
             if ($pending = $pendingManager->getPendingVersion($entity)) {
@@ -83,7 +83,7 @@ class ProductController extends Controller
                 $dataLocale = $this->getDataLocale();
             }
             $url = $this->generateUrl(
-                'pim_product_product_edit',
+                'pim_catalog_product_edit',
                 array('id' => $entity->getId(), 'dataLocale' => $dataLocale)
             );
             $response = array('status' => 1, 'url' => $url);
@@ -92,7 +92,7 @@ class ProductController extends Controller
         }
 
         return array(
-            'form'       => $this->get('pim_product.form.product_create')->createView(),
+            'form'       => $this->get('pim_catalog.form.product_create')->createView(),
             'dataLocale' => $this->getDataLocale()
         );
     }
@@ -112,7 +112,7 @@ class ProductController extends Controller
 
         $datagrid = $this->getDataAuditDatagrid(
             $product,
-            'pim_product_product_edit',
+            'pim_catalog_product_edit',
             array(
                 'id' => $product->getId()
             )
@@ -136,7 +136,7 @@ class ProductController extends Controller
 
             if ($form->isValid()) {
                 // Call completeness calculator after validating data
-                $calculator = $this->container->get('pim_product.calculator.completeness');
+                $calculator = $this->container->get('pim_catalog.calculator.completeness');
                 $calculator->calculateForAProduct($product);
 
                 $categoriesData = $this->getCategoriesData($request->request->all());
@@ -154,7 +154,7 @@ class ProductController extends Controller
                 // TODO : Check if the locale exists and is activated
                 $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
 
-                return $this->redirectToRoute('pim_product_product_edit', $params);
+                return $this->redirectToRoute('pim_catalog_product_edit', $params);
             } else {
                 $this->addFlash('error', 'Please check your entry and try again.');
             }
@@ -203,7 +203,7 @@ class ProductController extends Controller
 
         $this->addFlash('success', 'Attributes are added to the product form.');
 
-        return $this->redirectToRoute('pim_product_product_edit', array('id' => $product->getId()));
+        return $this->redirectToRoute('pim_catalog_product_edit', array('id' => $product->getId()));
     }
 
     /**
@@ -222,7 +222,7 @@ class ProductController extends Controller
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_product_product_index');
+            return $this->redirectToRoute('pim_catalog_product_index');
         }
     }
 
@@ -253,7 +253,7 @@ class ProductController extends Controller
 
         $this->addFlash('success', 'Attribute was successfully removed.');
 
-        return $this->redirectToRoute('pim_product_product_edit', array('id' => $productId));
+        return $this->redirectToRoute('pim_catalog_product_edit', array('id' => $productId));
     }
 
     /**
@@ -341,7 +341,7 @@ class ProductController extends Controller
      */
     protected function getProductManager()
     {
-        $manager = $this->container->get('pim_product.manager.product');
+        $manager = $this->container->get('pim_catalog.manager.product');
         $manager->setLocale($this->getDataLocale());
 
         return $manager;
@@ -354,7 +354,7 @@ class ProductController extends Controller
      */
     protected function getCategoryManager()
     {
-        return $this->container->get('pim_product.manager.category');
+        return $this->container->get('pim_catalog.manager.category');
     }
 
     /**
@@ -364,7 +364,7 @@ class ProductController extends Controller
      */
     protected function getLocaleManager()
     {
-        return $this->container->get('pim_product.manager.locale');
+        return $this->container->get('pim_catalog.manager.locale');
     }
 
     /**

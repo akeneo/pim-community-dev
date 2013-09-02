@@ -43,14 +43,14 @@ class FixturesContext extends RawMinkContext
     );
 
     private $attributeTypes = array(
-        'text'       => 'pim_product_text',
-        'number'     => 'pim_product_number',
-        'textarea'   => 'pim_product_textarea',
-        'identifier' => 'pim_product_identifier',
-        'metric'     => 'pim_product_metric',
-        'prices'     => 'pim_product_price_collection',
-        'image'      => 'pim_product_image',
-        'file'       => 'pim_product_file',
+        'text'       => 'pim_catalog_text',
+        'number'     => 'pim_catalog_number',
+        'textarea'   => 'pim_catalog_textarea',
+        'identifier' => 'pim_catalog_identifier',
+        'metric'     => 'pim_catalog_metric',
+        'prices'     => 'pim_catalog_price_collection',
+        'image'      => 'pim_catalog_image',
+        'file'       => 'pim_catalog_file',
     );
 
     /**
@@ -682,7 +682,7 @@ class FixturesContext extends RawMinkContext
     public function thereIsNoIdentifierAttribute()
     {
         $attributes = $this->getRepository('PimCatalogBundle:ProductAttribute')
-                ->findBy(array('attributeType' => 'pim_product_identifier'));
+                ->findBy(array('attributeType' => 'pim_catalog_identifier'));
 
         foreach ($attributes as $attribute) {
             $this->remove($attribute);
@@ -1234,7 +1234,7 @@ class FixturesContext extends RawMinkContext
      */
     private function getProductManager()
     {
-        return $this->getContainer()->get('pim_product.manager.product');
+        return $this->getContainer()->get('pim_catalog.manager.product');
     }
 
     /**

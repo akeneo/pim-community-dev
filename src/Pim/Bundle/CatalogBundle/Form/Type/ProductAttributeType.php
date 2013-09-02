@@ -253,6 +253,6 @@ class ProductAttributeType extends AttributeType
      */
     public function getName()
     {
-        return 'pim_product_attribute';
+        return 'pim_catalog_attribute';
     }
 }

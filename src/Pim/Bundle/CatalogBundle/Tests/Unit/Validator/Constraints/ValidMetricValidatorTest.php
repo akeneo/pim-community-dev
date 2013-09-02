@@ -79,7 +79,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $attribute = new ProductAttribute();
 
-        $attribute->setAttributeType('pim_product_metric');
+        $attribute->setAttributeType('pim_catalog_metric');
         $attribute->setMetricFamily($metricFamily);
         $attribute->setDefaultMetricUnit($metricUnit);
 

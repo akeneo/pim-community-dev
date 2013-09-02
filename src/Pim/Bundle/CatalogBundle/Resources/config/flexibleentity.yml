@@ -1,6 +1,6 @@
 entities_config:
     Pim\Bundle\CatalogBundle\Entity\Product:
-        flexible_manager:             pim_product.manager.product
+        flexible_manager:             pim_catalog.manager.product
         flexible_class:               Pim\Bundle\CatalogBundle\Entity\Product
         flexible_value_class:         Pim\Bundle\CatalogBundle\Entity\ProductValue
         attribute_class:              Pim\Bundle\CatalogBundle\Entity\ProductAttribute

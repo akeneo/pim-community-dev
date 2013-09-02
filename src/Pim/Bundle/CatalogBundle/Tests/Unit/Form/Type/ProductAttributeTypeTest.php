@@ -61,7 +61,7 @@ class ProductAttributeTypeTest extends AbstractFormTypeTest
         );
 
         // Assert name
-        $this->assertEquals('pim_product_attribute', $this->form->getName());
+        $this->assertEquals('pim_catalog_attribute', $this->form->getName());
     }
 
     /**

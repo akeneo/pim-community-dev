@@ -78,7 +78,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     protected function getLocaleManager()
     {
-        return $this->container->get('pim_product.manager.locale');
+        return $this->container->get('pim_catalog.manager.locale');
     }
 
     /**
@@ -88,7 +88,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
      */
     protected function getChannelManager()
     {
-        return $this->container->get('pim_product.manager.channel');
+        return $this->container->get('pim_catalog.manager.channel');
     }
 
     /**

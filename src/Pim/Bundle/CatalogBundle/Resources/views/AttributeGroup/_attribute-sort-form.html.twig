@@ -1,4 +1,4 @@
-<form id="pim_product_productattribute_sort" action="{{ path('pim_product_productattribute_sort') }}" method="POST">
+<form id="pim_catalog_productattribute_sort" action="{{ path('pim_catalog_productattribute_sort') }}" method="POST">
 	{% for attribute in attributes %}
         <input name="{{ attribute.id }}" type="hidden" value="{{ attribute.sortOrder }}">
 	{% endfor %}
@@ -7,7 +7,7 @@
 <script>
 $(function() {
 	'use strict';
-	var $form = $('#pim_product_productattribute_sort');
+	var $form = $('#pim_catalog_productattribute_sort');
 	var $list = $('{{ list }}');
 
     function updateAttributeSortOrder() {
@@ -21,7 +21,7 @@ $(function() {
         });
 
         $.ajax({
-            url: '{{ path("pim_product_productattribute_sort") }}',
+            url: '{{ path("pim_catalog_productattribute_sort") }}',
             type: 'POST',
             data: $form.serialize()
         });

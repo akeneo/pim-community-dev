@@ -53,7 +53,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
                 new ArrayCollection(array('roue', 'poignées', 'benne'))
             ),
         );
-        $identifier = $this->getValueMock($this->getAttributeMock('sku', false, 'pim_product_identifier'), 'KB0001');
+        $identifier = $this->getValueMock($this->getAttributeMock('sku', false, 'pim_catalog_identifier'), 'KB0001');
         $family     = $this->getFamilyMock('garden-tool');
         $product    = $this->getProductMock($identifier, $values, $family, 'cat1, cat2, cat3');
 
@@ -87,7 +87,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
                 new ArrayCollection(array('roue', 'poignées', 'benne'))
             ),
         );
-        $identifier = $this->getValueMock($this->getAttributeMock('sku', false, 'pim_product_identifier'), 'KB0001');
+        $identifier = $this->getValueMock($this->getAttributeMock('sku', false, 'pim_catalog_identifier'), 'KB0001');
         $product    = $this->getProductMock($identifier, $values, null, 'cat1, cat2, cat3');
 
         $result = array(
@@ -176,7 +176,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         return $value;
     }
 
-    private function getAttributeMock($code, $translatable = false, $type = 'pim_product_text')
+    private function getAttributeMock($code, $translatable = false, $type = 'pim_catalog_text')
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
 

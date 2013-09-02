@@ -119,6 +119,8 @@ class ProductManager extends FlexibleManager
      *
      * @param ProductInterface $product
      * @param ProductAttribute $attribute
+     *
+     * @return null
      */
     public function addAttributeToProduct(ProductInterface $product, ProductAttribute $attribute)
     {
@@ -165,6 +167,8 @@ class ProductManager extends FlexibleManager
      * @param ProductInterface $product
      * @param ArrayCollection  $categories
      * @param array            $onlyTree
+     *
+     * @return null
      */
     public function save(ProductInterface $product, ArrayCollection $categories = null, array $onlyTree = null)
     {
@@ -186,11 +190,13 @@ class ProductManager extends FlexibleManager
      * Add missing prices (a price per currency)
      *
      * @param ProductInterface $product the product
+     *
+     * @return null
      */
     public function addMissingPrices(ProductInterface $product)
     {
         foreach ($product->getValues() as $value) {
-            if ($value->getAttribute()->getAttributeType() === 'pim_product_price_collection') {
+            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
                 $activeCurrencies = $this->currencyManager->getActiveCodes();
                 $value->addMissingPrices($activeCurrencies);
                 $value->removeDisabledPrices($activeCurrencies);
@@ -238,11 +244,12 @@ class ProductManager extends FlexibleManager
 
     /**
      * Return the identifier attribute
+     *
      * @return ProductAttribute|null
      */
     public function getIdentifierAttribute()
     {
-        return $this->getAttributeRepository()->findOneBy(array('attributeType' => 'pim_product_identifier'));
+        return $this->getAttributeRepository()->findOneBy(array('attributeType' => 'pim_catalog_identifier'));
     }
 
     /**
@@ -413,6 +420,8 @@ class ProductManager extends FlexibleManager
 
     /**
      * @param ProductInterface $product
+     *
+     * @return null
      */
     protected function handleMedia(ProductInterface $product)
     {

@@ -42,6 +42,6 @@ class LocaleTypeTest extends AbstractFormTypeTest
         );
 
         // Assert name
-        $this->assertEquals('pim_product_locale', $this->form->getName());
+        $this->assertEquals('pim_catalog_locale', $this->form->getName());
     }
 }

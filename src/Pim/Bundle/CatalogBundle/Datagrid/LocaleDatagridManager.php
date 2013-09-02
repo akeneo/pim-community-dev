@@ -38,8 +38,8 @@ class LocaleDatagridManager extends DatagridManager
 
         return array(
             new FieldProperty($fieldId),
-            new UrlProperty('edit_link', $this->router, 'pim_product_locale_edit', array('id')),
-            new UrlProperty('disable_link', $this->router, 'pim_product_locale_disable', array('id'))
+            new UrlProperty('edit_link', $this->router, 'pim_catalog_locale_edit', array('id')),
+            new UrlProperty('disable_link', $this->router, 'pim_catalog_locale_disable', array('id'))
         );
     }
 

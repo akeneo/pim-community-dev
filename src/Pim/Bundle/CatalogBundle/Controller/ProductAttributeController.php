@@ -26,7 +26,7 @@ class ProductAttributeController extends Controller
     public function indexAction(Request $request)
     {
         /** @var $gridManager AttributeDatagridManager */
-        $gridManager  = $this->get('pim_product.datagrid.manager.productattribute');
+        $gridManager  = $this->get('pim_catalog.datagrid.manager.productattribute');
         $datagrid     = $gridManager->getDatagrid();
 
         if ('json' == $request->getRequestFormat()) {
@@ -46,18 +46,18 @@ class ProductAttributeController extends Controller
      */
     public function createAction()
     {
-        $attribute = $this->getProductManager()->createAttribute('pim_product_text');
+        $attribute = $this->getProductManager()->createAttribute('pim_catalog_text');
 
-        if ($this->get('pim_product.form.handler.attribute')->process($attribute)) {
+        if ($this->get('pim_catalog.form.handler.attribute')->process($attribute)) {
             $this->addFlash('success', 'Attribute successfully created');
 
-            return $this->redirectToRoute('pim_product_productattribute_edit', array('id' => $attribute->getId()));
+            return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id' => $attribute->getId()));
         }
 
-        $localeManager = $this->get('pim_product.manager.locale');
+        $localeManager = $this->get('pim_catalog.manager.locale');
 
         return array(
-            'form'            => $this->get('pim_product.form.attribute')->createView(),
+            'form'            => $this->get('pim_catalog.form.attribute')->createView(),
             'locales'         => $localeManager->getActiveLocales(),
             'disabledLocales' => $localeManager->getDisabledLocales(),
             'measures'        => $this->container->getParameter('oro_measure.measures_config')
@@ -75,16 +75,16 @@ class ProductAttributeController extends Controller
      */
     public function editAction(Request $request, ProductAttribute $attribute)
     {
-        if ($this->get('pim_product.form.handler.attribute')->process($attribute)) {
+        if ($this->get('pim_catalog.form.handler.attribute')->process($attribute)) {
             $this->addFlash('success', 'Attribute successfully saved');
 
-            return $this->redirectToRoute('pim_product_productattribute_edit', array('id' => $attribute->getId()));
+            return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id' => $attribute->getId()));
         }
 
-        $localeManager = $this->get('pim_product.manager.locale');
+        $localeManager = $this->get('pim_catalog.manager.locale');
         $datagrid = $this->getDataAuditDatagrid(
             $attribute,
-            'pim_product_productattribute_edit',
+            'pim_catalog_productattribute_edit',
             array('id' => $attribute->getId())
         );
         $datagridView = $datagrid->createView();
@@ -96,7 +96,7 @@ class ProductAttributeController extends Controller
         $auditManager = $this->container->get('pim_versioning.manager.audit');
 
         return array(
-            'form'            => $this->get('pim_product.form.attribute')->createView(),
+            'form'            => $this->get('pim_catalog.form.attribute')->createView(),
             'locales'         => $localeManager->getActiveLocales(),
             'disabledLocales' => $localeManager->getDisabledLocales(),
             'measures'        => $this->container->getParameter('oro_measure.measures_config'),
@@ -117,19 +117,19 @@ class ProductAttributeController extends Controller
     public function preProcessAction(Request $request)
     {
         $data = $request->request->all();
-        if (!isset($data['pim_product_attribute_form'])) {
-            return $this->redirectToRoute('pim_product_productattribute_create');
+        if (!isset($data['pim_catalog_attribute_form'])) {
+            return $this->redirectToRoute('pim_catalog_productattribute_create');
         }
 
         // Add custom fields to the form and set the entered data to the form
         $this
-            ->get('pim_product.form.handler.attribute')
-            ->preProcess($data['pim_product_attribute_form']);
+            ->get('pim_catalog.form.handler.attribute')
+            ->preProcess($data['pim_catalog_attribute_form']);
 
-        $localeManager   = $this->get('pim_product.manager.locale');
+        $localeManager   = $this->get('pim_catalog.manager.locale');
         $locales         = $localeManager->getActiveLocales();
         $disabledLocales = $localeManager->getDisabledLocales();
-        $form            = $this->get('pim_product.form.attribute')->createView();
+        $form            = $this->get('pim_catalog.form.attribute')->createView();
 
         $data = array(
             'parameters' => $this->renderView(
@@ -163,7 +163,7 @@ class ProductAttributeController extends Controller
     public function sortAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_product_productattribute_index');
+            return $this->redirectToRoute('pim_catalog_productattribute_index');
         }
 
         $data = $request->request->all();
@@ -194,11 +194,11 @@ class ProductAttributeController extends Controller
      */
     public function removeAction(Request $request, ProductAttribute $entity)
     {
-        if ($entity->getAttributeType() === 'pim_product_identifier') {
+        if ($entity->getAttributeType() === 'pim_catalog_identifier') {
             if ($request->isXmlHttpRequest()) {
                 return new Response('', 403);
             } else {
-                return $this->redirectToRoute('pim_product_productattribute_index');
+                return $this->redirectToRoute('pim_catalog_productattribute_index');
             }
         }
 
@@ -207,7 +207,7 @@ class ProductAttributeController extends Controller
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_product_productattribute_index');
+            return $this->redirectToRoute('pim_catalog_productattribute_index');
         }
     }
 }

@@ -178,7 +178,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 
     public function testGetIdentifier()
     {
-        $identifier = $this->getValueMock($this->getAttributeMock(null, 'pim_product_identifier'));
+        $identifier = $this->getValueMock($this->getAttributeMock(null, 'pim_catalog_identifier'));
         $name       = $this->getValueMock($this->getAttributeMock());
 
         $this->product->addValue($identifier);
@@ -291,7 +291,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         return $locale;
     }
 
-    private function getAttributeMock($group = null, $type = 'pim_product_text')
+    private function getAttributeMock($group = null, $type = 'pim_catalog_text')
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
 

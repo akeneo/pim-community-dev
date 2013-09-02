@@ -29,7 +29,7 @@ class SetImportedProductDataTransformerPassTest extends \PHPUnit_Framework_TestC
         $container = $this->getContainerBuilderMock($productType);
         $container->expects($this->any())
             ->method('getParameter')
-            ->with('pim_product.imported_product_data_transformer')
+            ->with('pim_catalog.imported_product_data_transformer')
             ->will($this->returnValue('the_foo_transformer'));
 
         $this->pass->process($container);
@@ -46,7 +46,7 @@ class SetImportedProductDataTransformerPassTest extends \PHPUnit_Framework_TestC
         $container = $this->getContainerBuilderMock($productType);
         $container->expects($this->any())
             ->method('getParameter')
-            ->with('pim_product.imported_product_data_transformer')
+            ->with('pim_catalog.imported_product_data_transformer')
             ->will($this->returnValue(null));
 
         $this->pass->process($container);
@@ -70,7 +70,7 @@ class SetImportedProductDataTransformerPassTest extends \PHPUnit_Framework_TestC
 
         $container->expects($this->any())
             ->method('hasDefinition')
-            ->with('pim_product.form.type.product')
+            ->with('pim_catalog.form.type.product')
             ->will($this->returnValue(null !== $definition));
 
         if ($definition) {

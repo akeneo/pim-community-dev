@@ -21,7 +21,7 @@
                 <td>{{ attribute.label }}</td>
                 {% for channel in channels %}
                     <td>
-                        {% if attribute.attributeType == 'pim_product_identifier' %}
+                        {% if attribute.attributeType == 'pim_catalog_identifier' %}
                             <div class="attribute-requirement identifier">
                                 <i class="fa-icon-ok required" data-toggle="tooltip" data-original-title="{{ 'Required'|trans }}" data-placement="right"></i>
                             </div>
@@ -31,8 +31,8 @@
                     </td>
                 {% endfor %}
                 <td>
-                    {% if attribute.attributeType != 'pim_product_identifier' %}
-                        <a href="javascript:void(0);" data-url="{{ path('pim_product_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}" class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
+                    {% if attribute.attributeType != 'pim_catalog_identifier' %}
+                        <a href="javascript:void(0);" data-url="{{ path('pim_catalog_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}" class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
                             <i class="icon-trash"></i>
                         </a>
                     {% endif %}
