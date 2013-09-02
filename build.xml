@@ -168,6 +168,16 @@
         </exec>
     </target>
 
+    <target name="behat-coverage" description="Run acceptance tests with Behat and produce coverage">
+        <exec executable="bin/behat" failonerror="true">
+            <env key="DISPLAY" value=":0" />
+            <arg value="--profile=jenkins-coverage" />
+            <arg value="--ansi" />
+            <arg value="--tags=~skip" />
+            <arg value="-fprogress" />
+        </exec>
+    </target>
+
     <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
         <exec executable="phpcb">
             <arg value="--log" />
