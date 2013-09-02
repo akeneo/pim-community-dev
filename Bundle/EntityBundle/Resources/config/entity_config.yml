@@ -11,14 +11,10 @@ oro_entity_config:
                 icon:
                     options:
                         priority:           10
-                    constraints:
-                        - NotBlank:         ~
                     form:
                         type:               oro_icon_select
-                        required:           true
                         options:
                             block:          entity
-                            required:       true
                 label:
                     options:
                         priority:           20

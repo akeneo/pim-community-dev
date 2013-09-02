@@ -35,7 +35,6 @@ class OroIconType extends AbstractType
                 'placeholder'        => 'oro.form.choose_value',
                 'allowClear'         => true,
                 'configs'            => array(
-                    'width'                   => '600px',
                     'placeholder'             => 'oro.form.choose_value',
                     'result_template_twig'    => 'OroFormBundle:Js:configResult.html.twig',
                     'selection_template_twig' => 'OroFormBundle:Js:configSelection.html.twig',
