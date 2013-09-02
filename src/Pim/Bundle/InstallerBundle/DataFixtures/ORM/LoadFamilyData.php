@@ -62,7 +62,7 @@ class LoadFamilyData extends AbstractInstallerFixture
                 $requirement->setAttribute($this->getReference('product-attribute.'.$attribute));
                 $requirement->setChannel($this->getReference('channel.'.$channel));
                 $requirement->setRequired(true);
-                $family->addAttributeRequirements($requirement);
+                $family->addAttributeRequirement($requirement);
             }
         }
 

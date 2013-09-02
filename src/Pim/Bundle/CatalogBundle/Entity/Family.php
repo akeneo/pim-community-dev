@@ -271,7 +271,7 @@ class Family implements TranslatableInterface, VersionableInterface
     /**
      * Get grouped attributes
      *
-     * @return ArrayCollection
+     * @return ProductAttribute[]
      */
     public function getGroupedAttributes()
     {
@@ -438,7 +438,7 @@ class Family implements TranslatableInterface, VersionableInterface
      *
      * @return Family
      */
-    public function addAttributeRequirements(AttributeRequirement $requirement)
+    public function addAttributeRequirement(AttributeRequirement $requirement)
     {
         $requirement->setFamily($this);
         $this->attributeRequirements[] = $requirement;
