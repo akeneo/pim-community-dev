@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 
+use Oro\Bundle\WorkflowBundle\Exception\WorkflowNotFoundException;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException;
@@ -141,7 +142,15 @@ class WorkflowManager
         }
 
         $entityClass = $this->metadataManager->getEntityClass($entity);
-        $allowedWorkflows = $this->workflowRegistry->getWorkflowsByEntityClass($entityClass, $workflowName);
+        if ($workflowName) {
+            try {
+                $allowedWorkflows = array($this->workflowRegistry->getWorkflow($workflowName));
+            } catch (WorkflowNotFoundException $e) {
+                $allowedWorkflows = array();
+            }
+        } else {
+            $allowedWorkflows = $this->workflowRegistry->getWorkflowsByEntityClass($entityClass);
+        }
 
         $applicableWorkflows = array();
         foreach ($allowedWorkflows as $workflow) {

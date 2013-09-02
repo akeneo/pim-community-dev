@@ -9,7 +9,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Definition of Workflow
  *
- * @ORM\Table(name="oro_workflow_definition")
+ * @ORM\Table(
+ *      name="oro_workflow_definition", indexes={
+ *          @ORM\Index(name="oro_workflow_definition_enabled_idx", columns={"enabled"})
+ *      }
+ * )
  * @ORM\Entity(repositoryClass="Oro\Bundle\WorkflowBundle\Entity\Repository\WorkflowDefinitionRepository")
  * @ORM\HasLifecycleCallbacks()
  */
