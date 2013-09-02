@@ -75,7 +75,15 @@ class WorkflowController extends FOSRestController
         }
 
         return $this->handleView(
-            $this->view(array('workflowItemId' => $workflowItem->getId()), Codes::HTTP_OK)
+            $this->view(
+                array(
+                    'workflowItem' => array(
+                        'id' => $workflowItem->getId(),
+                        'result' => $workflowItem->getResult()->getValues(),
+                    )
+                ),
+                Codes::HTTP_OK
+            )
         );
     }
 
@@ -132,7 +140,15 @@ class WorkflowController extends FOSRestController
         }
 
         return $this->handleView(
-            $this->view(true, Codes::HTTP_OK)
+            $this->view(
+                array(
+                    'workflowItem' => array(
+                        'id' => $workflowItem->getId(),
+                        'result' => $workflowItem->getResult()->getValues(),
+                    )
+                ),
+                Codes::HTTP_OK
+            )
         );
     }
 

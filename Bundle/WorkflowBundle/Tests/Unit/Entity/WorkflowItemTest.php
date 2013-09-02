@@ -126,7 +126,7 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
 
     public function testGetResult()
     {
-        $this->assertInstanceOf('Doctrine\Common\Collections\Collection', $this->workflowItem->getResult());
+        $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Model\WorkflowResult', $this->workflowItem->getResult());
         $this->assertTrue($this->workflowItem->getResult()->isEmpty());
     }
 

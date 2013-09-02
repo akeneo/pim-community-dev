@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer;
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowResult;
 
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
@@ -99,7 +100,7 @@ class WorkflowItem
     protected $data;
 
     /**
-     * @var Collection
+     * @var WorkflowResult
      */
     protected $result;
 
@@ -121,7 +122,7 @@ class WorkflowItem
         $this->bindEntities = new ArrayCollection();
         $this->closed = false;
         $this->data = new WorkflowData();
-        $this->result = new ArrayCollection();
+        $this->result = new WorkflowResult();
     }
 
     /**
@@ -354,12 +355,12 @@ class WorkflowItem
     }
 
     /**
-     * @return Collection
+     * @return WorkflowResult
      */
     public function getResult()
     {
         if (!$this->result) {
-            $this->result = new ArrayCollection();
+            $this->result = new WorkflowResult();
         }
         return $this->result;
     }
