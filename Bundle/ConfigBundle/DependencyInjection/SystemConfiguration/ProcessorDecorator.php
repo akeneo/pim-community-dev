@@ -9,11 +9,10 @@ use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 class ProcessorDecorator
 {
     const ROOT                 = 'oro_system_configuration';
-    const LEVELS_ROOT          = 'levels';
+    const SCOPES_ROOT          = 'scopes';
     const GROUPS_NODE          = 'groups';
     const FIELDS_ROOT          = 'fields';
     const TREE_ROOT            = 'tree';
-    const TAGS_ROOT            = 'tags';
 
     /** @var Processor */
     protected $processor;
@@ -44,8 +43,8 @@ class ProcessorDecorator
         if (!empty($newData[self::ROOT])) {
             foreach ((array)$newData[self::ROOT] as $nodeName => $node) {
                 switch ($nodeName) {
-                    // merge levels node
-                    case self::LEVELS_ROOT:
+                    // merge scopes node
+                    case self::SCOPES_ROOT:
                         $source[self::ROOT][$nodeName] = array_merge(
                             $source[self::ROOT][$nodeName],
                             $node
@@ -53,7 +52,6 @@ class ProcessorDecorator
                         break;
                     // merge recursive all nodes in tree
                     case self::TREE_ROOT:
-                    case self::TAGS_ROOT:
                         $source[self::ROOT][$nodeName] = array_merge_recursive(
                             $source[self::ROOT][$nodeName],
                             $node
@@ -81,7 +79,7 @@ class ProcessorDecorator
     {
         $result = array(
             self::ROOT => array_fill_keys(
-                array(self::LEVELS_ROOT, self::GROUPS_NODE, self::FIELDS_ROOT, self::TREE_ROOT , self::TAGS_ROOT),
+                array(self::SCOPES_ROOT, self::GROUPS_NODE, self::FIELDS_ROOT, self::TREE_ROOT),
                 array()
             )
         );
@@ -109,11 +107,10 @@ class ProcessorDecorator
         $tree = new TreeBuilder();
 
         $tree->root(self::ROOT)->children()
-                ->append($this->getLevelsNode())
+                ->append($this->getScopesNode())
                 ->append($this->getGroupsNode())
                 ->append($this->getFieldsNode())
                 ->append($this->getTreeNode())
-                ->append($this->getTagsNode())
             ->end();
 
         return $tree;
@@ -122,11 +119,11 @@ class ProcessorDecorator
     /**
      * @return NodeDefinition
      */
-    protected function getLevelsNode()
+    protected function getScopesNode()
     {
         $builder = new TreeBuilder();
 
-        $node = $builder->root(self::LEVELS_ROOT)
+        $node = $builder->root(self::SCOPES_ROOT)
                 ->isRequired()
                 ->requiresAtLeastOneElement()
                 ->prototype('scalar')
@@ -168,11 +165,13 @@ class ProcessorDecorator
                     ->arrayNode('options')
                         ->prototype('variable')->end()
                     ->end()
-                    ->arrayNode('levels')
+                    ->arrayNode('scopes')
                         ->isRequired()
                         ->requiresAtLeastOneElement()
                         ->prototype('scalar')->end()
                     ->end()
+                    ->scalarNode('acl_resource')->end()
+                    ->integerNode('position')->end()
                 ->end()
             ->end();
 
@@ -189,26 +188,15 @@ class ProcessorDecorator
         $node = $builder->root(self::TREE_ROOT)
             ->prototype('array')
                 ->prototype('array')
-                    ->prototype('array')
-                        ->prototype('scalar')->end()
+                    ->children()
+                        ->arrayNode('children')
+                            ->prototype('array')
+                                ->prototype('variable')->end()
+                            ->end()
+                        ->end()
+                        ->integerNode('position')->end()
                     ->end()
                 ->end()
-            ->end();
-
-        return $node;
-    }
-
-    /**
-     * @return NodeDefinition
-     */
-    protected function getTagsNode()
-    {
-        $builder = new TreeBuilder();
-
-        // tags is group of fields
-        $node = $builder->root(self::TAGS_ROOT)
-            ->prototype('array')
-                ->prototype('scalar')->end()
             ->end();
 
         return $node;
