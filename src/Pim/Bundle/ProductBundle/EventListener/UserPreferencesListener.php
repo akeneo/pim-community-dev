@@ -45,7 +45,8 @@ class UserPreferencesListener implements EventSubscriber
     {
         return array(
             'prePersist',
-            'preUpdate'
+            'preUpdate',
+            'preRemove'
         );
     }
 
@@ -57,12 +58,16 @@ class UserPreferencesListener implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-
-        if ($entity instanceof Locale) {
-            $this->addOptionValue('cataloglocale', $entity->getCode());
-
-        } elseif ($entity instanceof Channel) {
+        if ($entity instanceof Channel) {
             $this->addOptionValue('catalogscope', $entity->getCode());
+        }
+    }
+
+    public function preRemove(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+        if ($entity instanceof Channel) {
+            $this->removeOption('catalogscope', $entity->getCode());
         }
     }
 
@@ -75,10 +80,12 @@ class UserPreferencesListener implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        if ($entity instanceof Locale
-            && $args->hasChangedField('activated')
-            && $args->getNewValue('activated')) {
-            $this->addOptionValue('cataloglocale', $entity->getCode());
+        if ($entity instanceof Locale && $args->hasChangedField('activated')) {
+            if ($args->getNewValue('activated')) {
+                $this->addOptionValue('cataloglocale', $entity->getCode());
+            } else {
+                $this->removeOption('cataloglocale', $entity->getCode());
+            }
         }
     }
 
@@ -98,6 +105,49 @@ class UserPreferencesListener implements EventSubscriber
             $option->addOptionValue($value);
             $attribute->addOption($option);
             $userManager->getStorageManager()->persist($attribute);
+        }
+    }
+    
+    /**
+     * Remove a value as user attribute option for removed locale or removed scope (=channel)
+     *
+     * @param string $attributeCode
+     * @param string $optionValue
+     */
+    protected function removeOption($attributeCode, $value)
+    {
+        $userManager = $this->container->get('oro_user.manager');
+        $flexRepository = $userManager->getFlexibleRepository();
+        $attribute = $flexRepository->findAttributeByCode($attributeCode);
+        $storageManager = $userManager->getStorageManager();
+        
+        if ($attribute) {
+            foreach ($attribute->getOptions() as $option) {
+                if ($value == $option->getOptionValue()->getValue()) {
+                    $removedOption = $option;
+                } else {
+                    $defaultOption = $option;
+                }
+                if (isset($removedOption) && isset($defaultOption)) {
+                    break;
+                }
+            }
+            if (!isset($defaultOption)) {
+                throw new \LogicException(sprintf('Tried to delete last %s attribute option', $attributeCode));
+            }
+            
+            $usersQB = $flexRepository->findByWithAttributesQB(array($attributeCode));
+            $flexRepository->applyFilterByAttribute($usersQB, $attributeCode, array($removedOption->getOptionValue()->getId()), 'IN');
+            $users = $usersQB->getQuery()->getResult();
+            foreach ($users as $user) {
+                $value = $user->getValue($attributeCode);
+                $value->setData($defaultOption);
+                $storageManager->persist($value);
+            }
+            
+            $attribute->removeOption($removedOption);
+            
+            $storageManager->persist($attribute);
         }
     }
 }
