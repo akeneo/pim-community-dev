@@ -21,7 +21,7 @@ function($, _, __, AbstractFilter) {
                 '<%= label %>: <strong class="filter-criteria-hint"><%= criteriaHint %></strong>' +
                 '<span class="caret"></span>' +
             '</button>' +
-            '<a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- __("Close") %></i></a>' +
+            '<a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a>' +
             '<div class="filter-criteria dropdown-menu" />'
         ),
 
@@ -37,7 +37,7 @@ function($, _, __, AbstractFilter) {
                 '</div>' +
                 '<div class="oro-action">' +
                     '<div class="btn-group">' +
-                        '<button type="button" class="btn btn-primary filter-update"><%- __("Update") %></button>' +
+                        '<button type="button" class="btn btn-primary filter-update"><%- _.__("Update") %></button>' +
                     '</div>' +
                 '</div>' +
             '</div>'

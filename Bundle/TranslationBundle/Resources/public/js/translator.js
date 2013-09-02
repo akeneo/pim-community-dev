@@ -10,6 +10,9 @@ function(_, Translator) {
         get = Translator.get,
         fromJSON = Translator.fromJSON;
 
+    Translator.placeHolderPrefix = '{{ ';
+    Translator.placeHolderSuffix = ' }}';
+
     /**
      * Adds a translation to Translator object and stores
      * translation id in protected dictionary
@@ -68,11 +71,20 @@ function(_, Translator) {
         }
     }
 
+    _.mixin({
+        /**
+         * Shortcut for Translator.get() method call,
+         * Due to it's underscore mixin, it can be used inside templates
+         * @returns {string}
+         */
+        __: _.bind(Translator.get, Translator)
+    });
+
     /**
      * Shortcut for Translator.get() method call
      *
      * @export oro/translator
      * @returns {string}
      */
-    return _.bind(Translator.get, Translator);
+    return _.__;
 });

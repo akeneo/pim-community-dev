@@ -2,7 +2,7 @@
 /* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger', 'oro/registry',
     'oro/modal', 'oro/loading-mask', 'oro/navigation/pagestate/view', 'oro/navigation/pagestate/model',
-    'oro/pageable-collection'],
+    'oro/pageable-collection', 'jquery.form'],
 function($, _, Backbone, __, app, mediator, messenger, registry,
          Modal, LoadingMask, PagestateView, PagestateModel,
          PageableCollection) {
@@ -169,7 +169,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
         beforeDefaultAction: function() {
             //reset pagestate restore flag in case we left the page
             if (this.url !== this.getHashUrl(false, true)) {
-                this.pagestate.needServerRestore = true;
+                this.getPagestate().needServerRestore = true;
             }
         },
 
@@ -197,10 +197,6 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
          * @param options
          */
         initialize: function(options) {
-            this.pagestate = new PagestateView({
-                model: new PagestateModel()
-            });
-
             for (var selector in this.selectors) if (this.selectors.hasOwnProperty(selector)) {
                 this.selectorCached[selector] = $(this.selectors[selector]);
             }
@@ -223,6 +219,15 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
             this.init();
 
             Backbone.Router.prototype.initialize.apply(this, arguments);
+        },
+
+        getPagestate: function() {
+            if (!this.pagestate) {
+                this.pagestate = new PagestateView({
+                    model: new PagestateModel()
+                });
+            }
+            return this.pagestate;
         },
 
         /**
@@ -292,16 +297,17 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
          * @param cacheData
          */
         restoreFormState: function(cacheData) {
-            var formState = {};
+            var formState = {},
+                pagestate = this.getPagestate();
             if (this.formState) {
                 formState = this.formState;
             } else if (cacheData.states) {
                 formState = cacheData.states.getObjectCache('form');
             }
             if (formState['form_data'] && formState['form_data'].length) {
-                this.pagestate.updateState(formState['form_data']);
-                this.pagestate.restore();
-                this.pagestate.needServerRestore = false;
+                pagestate.updateState(formState['form_data']);
+                pagestate.restore();
+                pagestate.needServerRestore = false;
             }
         },
 

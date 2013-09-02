@@ -7,6 +7,7 @@ function($, _) {
      * Main Application
      *
      * @export oro/app
+     * @name oro.app
      */
     return {
         /** @type {boolean} */

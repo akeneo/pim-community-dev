@@ -96,4 +96,6 @@ function(_, AbstractFormatter) {
             if (_.isNumber(result) && !_.isNaN(result)) return result;
         }
     });
+
+    return NumberFormatter;
 });

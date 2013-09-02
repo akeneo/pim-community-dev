@@ -18,11 +18,11 @@ function(Backbone, routing) {
         },
 
         url: function(method) {
-            var args = ['oro_api_put_pagestate'];
+            var args = ['oro_api_post_pagestate'];
             if (this.id) {
-                args.push({id: this.id});
+                args = ['oro_api_put_pagestate', {id: this.id}];
             }
-            return routing.generate.apply(routing.generate, args);
+            return routing.generate.apply(routing, args);
         }
     });
 });

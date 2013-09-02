@@ -1,5 +1,5 @@
 /* jshint browser:true */
-/* global define, base64_encode */
+/* global define, require, base64_encode */
 define(['underscore', 'backbone', 'url', 'routing', 'oro/navigation', 'oro/mediator', 'base64', 'json'],
 function(_, Backbone, Url, routing, Navigation, mediator) {
     'use strict';
@@ -70,9 +70,7 @@ function(_, Backbone, Url, routing, Navigation, mediator) {
                         this.restore();
                     }
 
-                    pageStateTimer = setInterval(_.bind(function() {
-                        this.collect();
-                    }, this), 2000);
+                    pageStateTimer = setInterval(_.bind(this.collect, this), 2000);
                 }, this)
             )
         },
@@ -151,7 +149,7 @@ function(_, Backbone, Url, routing, Navigation, mediator) {
         filterUrl: function() {
             var self = this,
                 url = window.location,
-                navigation = Navigation.getInstance();
+                navigation = require('oro/navigation').getInstance();
             if (navigation) {
                 url = new Url(navigation.getHashUrl());
                 url.search = url.query.toString();

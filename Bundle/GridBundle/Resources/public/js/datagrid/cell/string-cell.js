@@ -19,7 +19,7 @@ function(Backgrid, CellFormatter) {
         /**
          @property {(Backgrid.CellFormatter|Object|string)}
          */
-        formatter: new CellFormatter.CellFormatter(),
+        formatter: new CellFormatter(),
 
         /**
          * @inheritDoc

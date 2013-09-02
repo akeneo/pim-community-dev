@@ -1,7 +1,7 @@
 /* global define */
-define(['underscore', 'backbone', 'oro/datagrid/pagination-input',
+define(['underscore', 'backbone', 'oro/translator', 'oro/datagrid/pagination-input',
     'oro/datagrid/page-size', 'oro/datagrid/actions-panel'],
-function(_, Backbone, PaginationInput, PageSize, ActionsPanel) {
+function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
     'use strict';
 
     /**

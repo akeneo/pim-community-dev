@@ -41,7 +41,7 @@
         'oro/datagrid/delete-action', 'oro/datagrid/navigate-action', 'oro/datagrid/mass-action',
         'oro/datafilter/choice-filter', 'oro/datafilter/number-filter', 'oro/datafilter/date-filter',
         'oro/datafilter/datetime-filter', 'oro/datafilter/select-filter', 'oro/datafilter/multiselect-filter',
-        'oro/datafilter/select-row-filter'],
+        'oro/datafilter/select-row-filter', 'oro/datagrid/ajax-action'],
     function($, _, Backbone, mediator, registry, LoadingMask,
         Grid, GridRouter, PageableCollection, FilterList,
         MomentCell, NumberCell, IntegerCell,
@@ -49,8 +49,8 @@
         DeleteAction, NavigateAction, MassAction,
         ChoiceFilter, NumberFilter, DateFilter,
         DatetimeFilter, SelectFilter, MultiselectFilter,
-        SelectRowFilter
-    ) {
+        SelectRowFilter, AjaxAction
+    ) {$(function() {
         var datagridOptions = {
             grid: {
                 name: '{{ datagrid.name }}',
@@ -158,7 +158,7 @@
                 datagridOptions.results,
                 _.extend({parse: true}, datagridOptions.collection)
             );
-            midiator.trigger("datagrid_collection_set_after", datagridCollection);
+            mediator.trigger("datagrid_collection_set_after", datagridCollection);
             // Basic grid layout
             var template = _.template($(datagridTemplateSelector).html());
             $(containerSelector).append(template);
@@ -219,7 +219,7 @@
         if (!Backbone.History.started) {
             Backbone.history.start();
         }
-    });
+    })});
 </script>
 
 <script type="text/template" id="{{ templateElId }}">

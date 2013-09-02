@@ -16,11 +16,10 @@
                 {% include 'OroUIBundle:Default:require.js.config.html.twig' %}
                 <script type="text/javascript" src="{{ asset('bundles/oroui/lib/require.js') }}"></script>
                 <script type="text/javascript">
-                    require(['oro/init-layout', 'oro/init-errors', 'oro/init-job']);
+                    require(['oro/init-layout', 'oro/init-errors', 'jquery.uniform']);
                 </script>
-                {% placeholder scripts_before %}
 
-                <script type="text/javascript" src="{{ url('oro_translation_jstranslation') }}"></script>
+                {% placeholder scripts_before %}
 
                 {% if app.debug %}
                     <script type="text/javascript">

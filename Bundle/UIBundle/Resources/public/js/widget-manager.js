@@ -4,6 +4,7 @@ define(function() {
 
     /**
      * @export oro/widget-manager
+     * @name   oro.widgetManager
      */
     return {
         types: {},

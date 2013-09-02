@@ -32,7 +32,7 @@ function($, _, __, ChoiceFilter) {
                 '</div>' +
                 '<div class="oro-action">' +
                     '<div class="btn-group">' +
-                        '<button class="btn btn-primary filter-update" type="button"><%- __("Update") %></button>' +
+                        '<button class="btn btn-primary filter-update" type="button"><%- _.__("Update") %></button>' +
                     '</div>' +
                 '</div>' +
             '</div>'

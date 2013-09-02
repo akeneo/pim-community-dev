@@ -33,7 +33,7 @@ function($, _, __, TextFilter) {
                         '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= _.invert(choices)[first] %>"/>' +
                         '</div>' +
                     '</div>' +
-                    '<button class="btn btn-primary filter-update" type="button"><%- __("Update") %></button>' +
+                    '<button class="btn btn-primary filter-update" type="button"><%- _.__("Update") %></button>' +
                 '</div>' +
             '</div>'
         ),

@@ -27,9 +27,7 @@ function($, _, Backbone, Navigation, __, TagCollection) {
                         '<%} %>' +
                     '</li>' +
                 '<%}) %>' +
-                '<% if (models.length == 0) { %>' +
-                    __('Not tagged') +
-                '<%} %>' +
+                '<% if (models.length == 0) { %><%= _.__("Not tagged") %><%} %>' +
             '</ul>'
         ),
     

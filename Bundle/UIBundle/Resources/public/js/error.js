@@ -10,6 +10,7 @@ function(_, Backbone, routing, app, Modal) {
 
         /**
          * @export oro/error
+         * @name oro.error
          */
         error = {
             dispatch: function(model, xhr, options) {

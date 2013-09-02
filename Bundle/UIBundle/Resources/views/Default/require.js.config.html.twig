@@ -1,6 +1,7 @@
 <script type="text/javascript">
 var require = {
     baseUrl: '/bundles',
+    waitSeconds: 0,
     shim: {
         'jquery': {
             exports: 'jQuery'
@@ -32,7 +33,7 @@ var require = {
         'jquery.uniform': {
             deps: ['jquery']
         },
-        'jquery/select2': {
+        'jquery.select2': {
             deps: ['jquery']
         },
         'jquery.jstree': {
@@ -67,7 +68,8 @@ var require = {
             deps: ['jquery', 'underscore', 'backbone']
         },
         'backgrid': {
-            deps: ['jquery', 'underscore', 'backbone']
+            deps: ['jquery', 'underscore', 'backbone'],
+            exports: 'Backgrid'
         },
         'backgrid/moment': {
             deps: ['jquery', 'underscore', 'backbone', 'backgrid', 'moment']
@@ -83,6 +85,12 @@ var require = {
         },
         'routing': {
             exports: 'window.Routing'
+        },
+        'oro/translations': {
+            deps: ['oro/translator', 'translator'],
+            init: function(__) {
+                return __;
+            }
         }
     },
     paths: {
@@ -98,12 +106,12 @@ var require = {
         'jquery.mousewheel': 'oroui/lib/jquery/jquery.mousewheel.min',
         'jquery.numeric': 'oroui/lib/jquery/jquery.numeric',
         'jquery.uniform': 'oroui/lib/jquery/jquery.uniform.min',
-        'jquery/select2': 'oroui/lib/jquery/select2',
+        'jquery.select2': 'oroui/lib/jquery/select2',
         'jquery.jstree': 'oroui/lib/jstree/jquery.jstree',
-        'jstree/jquery.jstree.tree_selector': 'oroui/js/lib/jstree/jquery.jstree.tree_selector',
+        'jstree/jquery.jstree.tree_selector': 'orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector',
         'jstree/jquery.cookie': 'oroui/lib/jstree/jquery.cookie',
         'jstree/jquery.hotkeys': 'oroui/lib/jstree/jquery.hotkeys',
-        'jquery.bind-first': 'orojsformvalidation/lib/jquery.bind-first-0.2.0.min',
+        'jquery.bind-first': 'orojsformvalidation/lib/jquery.bind-first-0.2.1',
         'bootstrap': 'oroui/lib/bootstrap.min',
         'underscore': 'oroui/lib/underscore',
         'backbone': 'oroui/lib/backbone',
@@ -149,6 +157,7 @@ var require = {
         'oro/datagrid/action-launcher': 'orogrid/js/datagrid/action-launcher',
         'oro/datagrid/abstract-action': 'orogrid/js/datagrid/action/abstract-action',
         'oro/datagrid/delete-action': 'orogrid/js/datagrid/action/delete-action',
+        'oro/datagrid/ajax-action': 'orogrid/js/datagrid/action/ajax-action',
         'oro/datagrid/mass-action': 'orogrid/js/datagrid/action/mass-action',
         'oro/datagrid/model-action': 'orogrid/js/datagrid/action/model-action',
         'oro/datagrid/navigate-action': 'orogrid/js/datagrid/action/navigate-action',
@@ -202,6 +211,7 @@ var require = {
         'oro/tag/model': 'orotag/js/tag/model',
         'oro/tag/update-view': 'orotag/js/tag/update-view',
         'oro/tag/view': 'orotag/js/tag/view',
+        'oro/translations': '{{ url('oro_translation_jstranslation')[0:-3] }}',
         'oro/translator': 'orotranslation/js/translator',
         'oro/app': 'oroui/js/app',
         'oro/error': 'oroui/js/error',
@@ -226,10 +236,14 @@ var require = {
             'backbone/../../../../UIBundle/Resources/public/lib/underscore': 'underscore'
         },
         '*': {
-            'jquery': 'oro/jquery-setup'
+            'jquery': 'oro/jquery-setup',
+            'oro/translator': 'oro/translations'
         },
         'oro/jquery-setup': {
             'jquery': 'jquery'
+        },
+        'oro/translations': {
+            'oro/translator': 'oro/translator'
         }
     }
 };

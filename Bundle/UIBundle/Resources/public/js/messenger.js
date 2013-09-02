@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'backbone'],
-function(_, Backbone) {
+define(['jquery', 'underscore', 'backbone'],
+function($, _, Backbone) {
     'use strict';
 
     var Model = Backbone.Model.extend({
@@ -19,16 +19,16 @@ function(_, Backbone) {
             },
 
             template: _.template(
-                '<div class="alert <% if (type) { %><%= "alert-" + type %><% } %> fade in top-messages ">'
-                    + '<a class="close" href="#">&times;</a>'
-                    + '<div class="message"><%= message %></div>'
-                    + '</div>'
+                '<div class="alert <% if (type) { %><%= "alert-" + type %><% } %> fade in top-messages ">' +
+                    '<a class="close" href="#">&times;</a>' +
+                    '<div class="message"><%= message %></div>' +
+                '</div>'
             ),
 
             initialize: function(options)
             {
                 this.listenTo(this.model, 'destroy', this.remove);
-                this.message = jQuery(this.template(this.model.toJSON()));
+                this.message = $(this.template(this.model.toJSON()));
                 this.message.find('.close').on('click', _.bind(this.close, this));
 
                 this.$frame = this.$el.find(this.options.frameEl);
@@ -70,10 +70,11 @@ function(_, Backbone) {
 
     /**
      * @export oro/messenger
+     * @name   oro.messenger
      */
     return {
         notificationMessage: function(type, message, options) {
-            options = options ? options : {};
+            options = options || {};
             options.model = new Model({
                 'type': type,
                 'message': message
@@ -82,7 +83,7 @@ function(_, Backbone) {
         },
 
         notificationFlashMessage: function(type, message, delay, options) {
-            options = options ? options : {};
+            options = options || {};
             options.delay = (delay !== undefined && delay) ? delay : 5000;
             options.model = new Model({
                 'type': type,

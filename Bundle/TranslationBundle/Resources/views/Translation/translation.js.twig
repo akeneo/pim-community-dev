@@ -1,4 +1,1 @@
-require(['oro/translator', 'translator'],
-function(__, Translator){
-    Translator.fromJSON({{ json|json_encode|raw }});
-});
+Translator.fromJSON({{ json|json_encode|raw }});

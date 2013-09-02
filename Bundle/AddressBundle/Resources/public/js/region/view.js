@@ -1,5 +1,5 @@
 /* global define */
-define(['underscore', 'backbone', 'jquery/select2'],
+define(['underscore', 'backbone', 'jquery.select2'],
 function(_, Backbone) {
     'use strict';
 

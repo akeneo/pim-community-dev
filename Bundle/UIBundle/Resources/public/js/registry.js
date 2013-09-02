@@ -12,15 +12,16 @@ function(_) {
      * Global registry implementation
      *
      * @export oro/registry
+     * @name   oro.registry
      */
     return {
         /**
          * Returns element stored under specified keys
          *
          * Example: lets assume that storage = {a: {f: 1, s: 2}, b : {t: 3, f: 4}}, then
-         * Oro.Registry.getElement('a')      will return {f: 1, s: 2}
-         * Oro.Registry.getElement('b', 't') will return 3
-         * Oro.Registry.getElement('c')      will return undefined
+         * oro.registry.getElement('a')      will return {f: 1, s: 2}
+         * oro.registry.getElement('b', 't') will return 3
+         * oro.registry.getElement('c')      will return undefined
          *
          * @return {*}
          */
@@ -47,8 +48,8 @@ function(_) {
          * Set elements to registry storage under specified keys
          *
          * Example: lets assume that storage = {}, then
-         * Oro.Registry.setElement('a', 1)      will set storage to {a: 1}
-         * Oro.Registry.setElement('b', 's', 2) will set storage to {a: 1, b: {s: 2}}
+         * oro.registry.setElement('a', 1)      will set storage to {a: 1}
+         * oro.registry.setElement('b', 's', 2) will set storage to {a: 1, b: {s: 2}}
          */
         setElement: function() {
             if (frozen) {
