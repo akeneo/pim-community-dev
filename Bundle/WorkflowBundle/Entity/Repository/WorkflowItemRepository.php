@@ -13,9 +13,10 @@ class WorkflowItemRepository extends EntityRepository
      *
      * @param string $entityClass
      * @param string|array $entityIdentifier
+     * @param string|null $workflowName
      * @return array
      */
-    public function findByEntityMetadata($entityClass, $entityIdentifier)
+    public function findByEntityMetadata($entityClass, $entityIdentifier, $workflowName = null)
     {
         $entityIdentifierString = WorkflowBindEntity::convertIdentifiersToString($entityIdentifier);
 
@@ -28,6 +29,11 @@ class WorkflowItemRepository extends EntityRepository
             ->andWhere('wbe.entityId = :entityId')
             ->setParameter('entityClass', $entityClass)
             ->setParameter('entityId', $entityIdentifierString);
+
+        if ($workflowName) {
+            $qb->andWhere('wi.workflowName = :workflowName')
+                ->setParameter('workflowName', $workflowName);
+        }
 
         return $qb->getQuery()->getResult();
     }

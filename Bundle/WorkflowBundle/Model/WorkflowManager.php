@@ -126,12 +126,13 @@ class WorkflowManager
     /**
      * @param object $entity
      * @param WorkflowItem[]|Collection $workflowItems
+     * @param string|null $workflowName
      * @return Workflow[]
      */
-    public function getApplicableWorkflows($entity, $workflowItems = null)
+    public function getApplicableWorkflows($entity, $workflowItems = null, $workflowName = null)
     {
         if (null === $workflowItems) {
-            $workflowItems = $this->getWorkflowItemsByEntity($entity);
+            $workflowItems = $this->getWorkflowItemsByEntity($entity, $workflowName);
         }
 
         $usedWorkflows = array();
@@ -140,7 +141,7 @@ class WorkflowManager
         }
 
         $entityClass = $this->metadataManager->getEntityClass($entity);
-        $allowedWorkflows = $this->workflowRegistry->getWorkflowsByEntityClass($entityClass);
+        $allowedWorkflows = $this->workflowRegistry->getWorkflowsByEntityClass($entityClass, $workflowName);
 
         $applicableWorkflows = array();
         foreach ($allowedWorkflows as $workflow) {
@@ -162,9 +163,10 @@ class WorkflowManager
      * Get workflow items for entity.
      *
      * @param object $entity
+     * @param string|null $workflowName
      * @return WorkflowItem[]
      */
-    public function getWorkflowItemsByEntity($entity)
+    public function getWorkflowItemsByEntity($entity, $workflowName = null)
     {
         $entityClass = $this->metadataManager->getEntityClass($entity);
         $entityIdentifier = $this->metadataManager->getEntityIdentifier($entity);
@@ -172,7 +174,7 @@ class WorkflowManager
         /** @var WorkflowItemRepository $workflowItemsRepository */
         $workflowItemsRepository = $this->registry->getRepository('OroWorkflowBundle:WorkflowItem');
 
-        return $workflowItemsRepository->findByEntityMetadata($entityClass, $entityIdentifier);
+        return $workflowItemsRepository->findByEntityMetadata($entityClass, $entityIdentifier, $workflowName);
     }
 
     /**

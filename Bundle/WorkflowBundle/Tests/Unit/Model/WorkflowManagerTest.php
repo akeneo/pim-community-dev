@@ -262,7 +262,11 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
         $this->workflowManager->transit($workflowItem, 'test_transition');
     }
 
-    public function testGetApplicableWorkflows()
+    /**
+     * @dataProvider workflowNameDataProvider
+     * @param string|null $requiredWorkflowName
+     */
+    public function testGetApplicableWorkflows($requiredWorkflowName)
     {
         // mocks for entity metadata
         $entity = new \DateTime('now');
@@ -290,7 +294,7 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->workflowRegistry->expects($this->any())
             ->method('getWorkflowsByEntityClass')
-            ->with($entityClass)
+            ->with($entityClass, $requiredWorkflowName)
             ->will($this->returnValue($allowedWorkflows));
 
         // mocks for workflow items
@@ -306,7 +310,7 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
                 ->getMock();
         $workflowItemsRepository->expects($this->any())
             ->method('findByEntityMetadata')
-            ->with($entityClass, $entityId)
+            ->with($entityClass, $entityId, $requiredWorkflowName)
             ->will($this->returnValue($workflowItems));
         $this->registry->expects($this->any())
             ->method('getRepository')
@@ -322,17 +326,21 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
         // with automatic workflow item extraction
         $this->assertEquals(
             $expectedWorkflows,
-            $this->workflowManager->getApplicableWorkflows($entity)
+            $this->workflowManager->getApplicableWorkflows($entity, null, $requiredWorkflowName)
         );
 
         // with manual workflow item setting
         $this->assertEquals(
             $expectedWorkflows,
-            $this->workflowManager->getApplicableWorkflows($entity, $workflowItems)
+            $this->workflowManager->getApplicableWorkflows($entity, $workflowItems, $requiredWorkflowName)
         );
     }
 
-    public function testGetWorkflowItemsByEntity()
+    /**
+     * @dataProvider workflowNameDataProvider
+     * @param string|null $requiredWorkflowName
+     */
+    public function testGetWorkflowItemsByEntity($requiredWorkflowName)
     {
         $entity = new \DateTime('now');
         $entityClass = get_class($entity);
@@ -352,14 +360,25 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
                 ->getMock();
         $workflowItemsRepository->expects($this->any())
             ->method('findByEntityMetadata')
-            ->with($entityClass, $entityId)
+            ->with($entityClass, $entityId, $requiredWorkflowName)
             ->will($this->returnValue($workflowItems));
         $this->registry->expects($this->any())
             ->method('getRepository')
             ->with('OroWorkflowBundle:WorkflowItem')
             ->will($this->returnValue($workflowItemsRepository));
 
-        $this->assertEquals($workflowItems, $this->workflowManager->getWorkflowItemsByEntity($entity));
+        $this->assertEquals(
+            $workflowItems,
+            $this->workflowManager->getWorkflowItemsByEntity($entity, $requiredWorkflowName)
+        );
+    }
+
+    public function workflowNameDataProvider()
+    {
+        return array(
+            array(null),
+            array('test_workflow')
+        );
     }
 
     /**
