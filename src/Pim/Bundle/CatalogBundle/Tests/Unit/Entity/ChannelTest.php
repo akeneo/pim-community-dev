@@ -181,6 +181,28 @@ class ChannelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test related method
+     */
+    public function testPreRemove()
+    {
+        $locale1 = $this->createLocale('en_US');
+        $locale1->activate();
+        $locale2 = $this->createLocale('fr_FR');
+        $locale2->activate();
+
+        $this->assertTrue($locale1->isActivated());
+        $this->assertTrue($locale2->isActivated());
+
+        $this->channel->addLocale($locale1);
+        $this->channel->addLocale($locale2);
+
+        $this->channel->preRemove();
+
+        $this->assertFalse($locale1->isActivated());
+        $this->assertFalse($locale2->isActivated());
+    }
+
+    /**
      * Create a locale for testing
      *
      * @param string $code
