@@ -99,7 +99,7 @@
             <arg path="${basedir}/features" />
         </exec>
     </target>
-    
+
     <target name="phpdoc" description="Check php documentation">
         <exec executable="phpdoc">
             <arg line="--directory ${basedir}/src" />
@@ -164,6 +164,7 @@
             <arg value="--profile=jenkins" />
             <arg value="--ansi" />
             <arg value="--tags=~skip" />
+            <arg value="-fprogress" />
         </exec>
     </target>
 
