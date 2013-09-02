@@ -5,19 +5,21 @@ Feature: Display the product history
 
   @javascript
   Scenario: Display product updates
-    Given a "Camera" product
-    And a "Bike" product
-    And the following product attributes:
-      | product | label        |
-      | Camera  | Brand        |
-      | Camera  | Manufacturer |
-      | Camera  | File upload  |
+    Given the following product attributes:
+      | label        | required |
+      | SKU          | yes      |
+      | Brand        | no       |
+      | Manufacturer | no       |
     And I am logged in as "admin"
-    And the following product "Bike" updates:
-      | action | loggedAt  | updatedBy | change                 |
-      | update | yesterday | admin     | SKU: bike => motorbike |
-    And I am on the "Camera" product page
-    And I change the Brand to "Syno"
-    And I save the product
+    And I am on the products page
+    And I create a new product
+    And I fill in the following information:
+      | SKU               | cam  |
+    And I press the "Create" button
+    Then I should see "Product successfully saved."
+    And I edit the "cam" product
     When I visit the "History" tab
-    Then there should be 2 updates
+    Then there should be 1 update
+    And I should see history:
+    | action | version | data    |
+    | create | 1       | sku:cam |

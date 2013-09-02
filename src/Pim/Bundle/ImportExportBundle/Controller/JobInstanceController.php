@@ -5,7 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Pim\Bundle\ProductBundle\Controller\Controller;
+use Pim\Bundle\CatalogBundle\Controller\Controller;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
@@ -143,11 +143,12 @@ class JobInstanceController extends Controller
     /**
      * Edit a job instance
      *
+     * @param Request $request
      * @param integer $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
      */
-    public function editAction($id)
+    public function editAction(Request $request, $id)
     {
         try {
             $jobInstance = $this->getJobInstance($id);
@@ -158,7 +159,6 @@ class JobInstanceController extends Controller
         }
         $form = $this->createForm(new JobInstanceType(), $jobInstance);
 
-        $request = $this->getRequest();
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -184,11 +184,12 @@ class JobInstanceController extends Controller
     /**
      * Remove a job
      *
+     * @param Request $request
      * @param integer $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function removeAction($id)
+    public function removeAction(Request $request, $id)
     {
         try {
             $jobInstance = $this->getJobInstance($id);
@@ -200,7 +201,7 @@ class JobInstanceController extends Controller
 
         $this->remove($jobInstance);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
             $this->addFlash('success', sprintf('The %s has been successfully removed', $this->getJobType()));

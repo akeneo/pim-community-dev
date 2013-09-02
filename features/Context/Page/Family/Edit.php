@@ -13,6 +13,9 @@ use Context\Page\Family\Creation;
  */
 class Edit extends Creation
 {
+    /**
+     * @var string $path
+     */
     protected $path = '/configuration/family/{id}/edit';
 
     /**

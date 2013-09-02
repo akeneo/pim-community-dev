@@ -1,0 +1,78 @@
+{% extends bap.layout %}
+
+{% block content %}
+    <div class="scrollable-container dashboard">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="dashboard-widget span6">
+                    <div class="clearfix">
+                        <div class="image-wrap pull-left">
+                            <p class="text-center">{{ 'Extract'|trans }}</p>
+                            <a href="javascript:void(0);" class="widget-image extract-image"></a>
+                        </div>
+                        <div class="list-wrap pull-left">
+                            <ul class="nav nav-list">
+                                <li class=""><a href="{{ path('pim_importexport_import_index') }}">{{ 'Manage import profiles'|trans }}</a></li>
+                                <li class=""><a href="{{ path('pim_importexport_import_create', {connector: 'Akeneo', alias: 'product_import'}) }}">{{ 'Create an import CSV'|trans }}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-widget span6">
+                    <div class="clearfix">
+                        <div class="image-wrap pull-left">
+                            <p class="text-center">{{ 'Enrich'|trans }}</p>
+                            <a href="javascript:void(0);" class="widget-image enrich-image"></a>
+                        </div>
+                        <div class="list-wrap pull-left">
+                            <ul class="nav nav-list">
+                                <li class=""><a href="{{ path('pim_product_product_index') }}">{{ 'Manage products'|trans }}</a></li>
+                                <li class=""><a href="{{ path('pim_product_categorytree_create') }}">{{ 'Manage categories'|trans }}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="dashboard-widget span6">
+                    <div class="clearfix">
+                        <div class="image-wrap pull-left">
+                            <p class="text-center">{{ 'Spread'|trans }}</p>
+                            <a href="javascript:void(0);" class="widget-image spread-image"></a>
+                        </div>
+                        <div class="list-wrap pull-left">
+                            <ul class="nav nav-list">
+                                <li class=""><a href="{{ path('pim_importexport_export_index') }}">{{ 'Manage export profiles'|trans }}</a></li>
+                                <li class=""><a href="{{ path('pim_importexport_export_create', {connector: 'Akeneo', alias: 'product_export'}) }}">{{ 'Create an export CSV'|trans }}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-widget span6">
+                    <div class="clearfix">
+                        <div class="image-wrap pull-left">
+                            <p class="text-center">{{ 'Configure'|trans }}</p>
+                            <a href="javascript:void(0);" class="widget-image configure-image"></a>
+                        </div>
+                        <div class="list-wrap pull-left">
+                            <ul class="nav nav-list">
+                                <li class=""><a href="{{ path('pim_product_productattribute_index') }}">{{ 'Manage attributes'|trans }}</a></li>
+                                <li class=""><a href="{{ path('pim_product_family_create') }}">{{ 'Manage families'|trans }}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="version-container">
+            <strong>Version:</strong> 1.0.0-alpha4
+        </div>
+    </div>
+{% endblock %}

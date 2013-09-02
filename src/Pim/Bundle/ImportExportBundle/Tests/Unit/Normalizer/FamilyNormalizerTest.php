@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
-use Pim\Bundle\ProductBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FamilyNormalizer;
-use Pim\Bundle\ProductBundle\Entity\Family;
-use Pim\Bundle\ProductBundle\Entity\FamilyTranslation;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Entity\AttributeRequirement;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 
 /**
  * Family normalizer test
@@ -39,8 +39,8 @@ class FamilyNormalizerTest extends \PHPUnit_Framework_TestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\ProductBundle\Entity\Family', 'json',  true),
-            array('Pim\Bundle\ProductBundle\Entity\Family', 'csv', false),
+            array('Pim\Bundle\CatalogBundle\Entity\Family', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\Family', 'csv', false),
             array('stdClass', 'json',  false),
             array('stdClass', 'csv', false),
         );

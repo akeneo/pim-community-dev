@@ -1,0 +1,23 @@
+pim_product_locale_index:
+    path: /.{_format}
+    defaults: { _controller: PimCatalogBundle:Locale:index, _format: html }
+    requirements:
+        _format: html|json
+
+pim_product_locale_edit:
+    path: /{id}/edit
+    defaults: { _controller: PimCatalogBundle:Locale:edit }
+    requirements:
+        id: \d+
+
+pim_product_locale_disable:
+    path: /{id}/disable
+    defaults: { _controller: PimCatalogBundle:Locale:disable }
+    requirements:
+        id: \d+
+
+pim_product_locale_enable:
+    path: /{id}/enable
+    defaults: { _controller: PimCatalogBundle:Locale:enable }
+    requirements:
+        id: \d+

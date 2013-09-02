@@ -19,7 +19,7 @@ class ProductCategoriesConverterTest extends \PHPUnit_Framework_TestCase
         $this->repository = $this->getRepositoryMock();
         $em->expects($this->any())
             ->method('getRepository')
-            ->with('PimProductBundle:Category')
+            ->with('PimCatalogBundle:Category')
             ->will($this->returnValue($this->repository));
 
         $this->converter = new ProductCategoriesConverter($em);
@@ -80,7 +80,7 @@ class ProductCategoriesConverterTest extends \PHPUnit_Framework_TestCase
 
     protected function getCategoryMock($id)
     {
-        $category = $this->getMock('Pim\Bundle\ProductBundle\Entity\Category');
+        $category = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Category');
 
         $category->expects($this->any())
             ->method('getId')

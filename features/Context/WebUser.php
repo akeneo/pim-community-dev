@@ -10,7 +10,7 @@ use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
  * Context of the website
@@ -857,6 +857,26 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iSelectChannel($channel)
     {
         $this->getPage('Export creation')->selectChannel($channel);
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @Given /^I select the locale "([^"]*)"$/
+     */
+    public function iSelectLocale($locale)
+    {
+        $this->getPage('Channel creation')->selectLocale($locale);
+    }
+
+    /**
+     * @param string $currency
+     *
+     * @Given /^I select the currency "([^"]*)"$/
+     */
+    public function iSelectCurrency($currency)
+    {
+        $this->getPage('Channel creation')->selectCurrency($currency);
     }
 
     /**
@@ -1859,6 +1879,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getFamily($code)
     {
         return $this->getFixturesContext()->getFamily($code);
+    }
+
+    /**
+     * @param string $code
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
+     */
+    private function getChannel($code)
+    {
+        return $this->getFixturesContext()->getChannel($code);
     }
 
     /**

@@ -20,7 +20,7 @@ pim_import_export:
                 type: Pim\Bundle\ImportExportBundle\Reader\DoctrineReader
                 options:
                     em: @doctrine.orm.default_entity_manager
-                    entity: "PimProductBundle:Product"
+                    entity: "PimCatalogBundle:Product"
                     method_name: findBy
                     method_params:
                         - { enabled: false }

@@ -9,9 +9,7 @@
                 {{ form_label(form, '' , { label_attr: label_attr|merge({ class: 'control-label' })}) }}
                 <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
                     {{ form_widget(form) }}
-                    <div class="icons-container">
-                        {{ form_errors(form) }}
-                    </div>
+                    {{ block('form_info') }}
                 </div>
             </div>
         {% endif %}
@@ -36,9 +34,22 @@
 {% endspaceless %}
 {% endblock form_label %}
 
+{% block form_info %}
+    {% spaceless %}
+        {% if type is not defined or type != 'hidden' %}
+            <div class="icons-container">
+                {% if help is defined %}
+                    <i class="fa-icon-info-sign" data-toggle="tooltip" data-original-title="{{ help|trans }}"></i>
+                {% endif %}
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_info %}
+
 {% block pim_wysiwyg_widget %}
     {{ block('textarea_widget') }}
-{% endblock %}
+{% endblock pim_wysiwyg_widget %}
 
 {% block pim_translatable_field_row %}
     {{ form_errors(form) }}
@@ -124,8 +135,8 @@
                 {% if empty %}
                     {{ form_widget(form.file) }}
                 {% else %}
-                    {{ form_widget(form.file, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
-                    {{ form_widget(form.removed, {'attr': { 'class': 'noswitch hide' }}) }}
+                    {{ form_widget(form.file, { 'attr': { 'class': 'hide', 'disabled': 'disabled' }}) }}
+                    {{ form_widget(form.removed, { 'attr': { 'class': 'noswitch hide' }}) }}
                 {% endif %}
             </label>
             <div class="icons-container">
@@ -196,18 +207,7 @@
 
 {% block pim_batch_step_element_configuration_widget %}
     {% for child in form %}
-        <div id="{{ child.vars.id }}">
-            <div class="control-group">
-                {{ form_label(child, child.vars.label, {label_attr: {class: 'control-label'}}) }}
-                <div class="controls {{ not child.vars.valid ? ' validation-error' : '' }}">
-                    {{ form_widget(child) }}
-                    {{ form_errors(child) }}
-                    {% if child.vars.attr.help is defined %}
-                        <span class="help-inline">{{ child.vars.attr.help|trans }}</span>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+        {{ form_row(child) }}
     {% else %}
         {{ 'No configuration'|trans }}
     {% endfor %}

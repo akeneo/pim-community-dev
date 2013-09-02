@@ -11,9 +11,7 @@
 
     {% set buttons %}
     <div class="btn-group">
-        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
-            <i class="icon-plus icon-white"></i>{{ createBtnLbl }}
-        </a>
+        {{ elements.createBtn(createBtnLbl, null, null, { 'data-toggle': 'dropdown', 'class': 'dropdown-toggle' }) }}
         <ul class="dropdown-menu pull-right">
             {% for connector, jobs in connectors %}
             <li class="disabled"><a href="javascript:void(0);"><b>{{ connector }}</b></a></li>

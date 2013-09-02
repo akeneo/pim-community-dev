@@ -5,7 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Writer;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
-use Pim\Bundle\ProductBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Product writer using ORM method
@@ -59,9 +59,9 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements ItemWr
         }
         $this->productManager->getStorageManager()->flush();
 
-        $this->productManager->getStorageManager()->clear('Pim\\Bundle\\ProductBundle\\Entity\\ProductValue');
-        $this->productManager->getStorageManager()->clear('Pim\\Bundle\\ProductBundle\\Entity\\ProductPrice');
-        $this->productManager->getStorageManager()->clear('Pim\\Bundle\\ProductBundle\\Entity\\Product');
+        $this->productManager->getStorageManager()->clear('Pim\\Bundle\\CatalogBundle\\Entity\\ProductValue');
+        $this->productManager->getStorageManager()->clear('Pim\\Bundle\\CatalogBundle\\Entity\\ProductPrice');
+        $this->productManager->getStorageManager()->clear('Pim\\Bundle\\CatalogBundle\\Entity\\Product');
         $this->productManager->getStorageManager()->clear('Oro\\Bundle\\SearchBundle\\Entity\\Item');
         $this->productManager->getStorageManager()->clear('Oro\\Bundle\\SearchBundle\\Entity\\IndexText');
     }

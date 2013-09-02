@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
-use Pim\Bundle\ProductBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Category form processor
@@ -404,6 +404,6 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      */
     private function findCategory($code)
     {
-        return $this->entityManager ->getRepository('PimProductBundle:Category')->findOneBy(array('code' => $code));
+        return $this->entityManager ->getRepository('PimCatalogBundle:Category')->findOneBy(array('code' => $code));
     }
 }

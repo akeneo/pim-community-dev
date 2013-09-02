@@ -11,12 +11,12 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 use Pim\Bundle\VersioningBundle\Entity\Pending;
-use Pim\Bundle\ProductBundle\Entity\Family;
-use Pim\Bundle\ProductBundle\Model\ProductValueInterface;
-use Pim\Bundle\ProductBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\ProductBundle\Entity\AttributeOption;
-use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 
 /**
  * Aims to audit data updates on product, attribute, family, category
