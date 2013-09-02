@@ -19,7 +19,11 @@ use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
 use Oro\Bundle\SecurityBundle\Acl\Manager\Batch\BatchItem;
+use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class AclManager
 {
     const CLASS_ACE = 'Class';
@@ -62,16 +66,20 @@ class AclManager
      * @param ObjectIdentityFactory $objectIdentityFactory
      * @param AclExtensionSelector $extensionSelector
      * @param MutableAclProvider $aclProvider
+     * @param AceManipulationHelper $aceProvider
      */
     public function __construct(
         ObjectIdentityFactory $objectIdentityFactory,
         AclExtensionSelector $extensionSelector,
-        MutableAclProvider $aclProvider = null
+        MutableAclProvider $aclProvider = null,
+        AceManipulationHelper $aceProvider = null
     ) {
         $this->objectIdentityFactory = $objectIdentityFactory;
         $this->extensionSelector = $extensionSelector;
         $this->aclProvider = $aclProvider;
-        $this->aceProvider = new AceManipulationHelper();
+        $this->aceProvider = $aceProvider !== null
+            ? $aceProvider
+            : new AceManipulationHelper();
     }
 
     /**
@@ -92,6 +100,37 @@ class AclManager
     public function getAllExtensions()
     {
         return $this->extensionSelector->all();
+    }
+
+    /**
+     * Gets the new instance of the mask builder which can be used to build permission bitmask
+     * for an object with the given object identity.
+     *
+     * As one ACL extension can support several masks (each mask is stored in own ACE; an example of
+     * ACL extension which supports several masks is 'Entity' extension - see EntityAclExtension class)
+     * you need to provide any permission supported by expected mask builder instance.
+     * Also you can omit $permission argument. In this case a default mask builder is returned.
+     * For example the following calls return the same mask builder:
+     *     $manager->getMaskBuilder($manager->getOid('entity: AcmeBundle:AcmeEntity'))
+     *     $manager->getMaskBuilder($manager->getOid('entity: AcmeBundle:AcmeEntity'), 'VIEW')
+     *     $manager->getMaskBuilder($manager->getOid('entity: AcmeBundle:AcmeEntity'), 'DELETE')
+     * because VIEW, CREATE, EDIT, DELETE, ASSIGN and SHARE permissions are supported by EntityMaskBuilder class and
+     * it is the default mask builder for 'Entity' extension.
+     *
+     * If you sure that some ACL extension supports only one mask, you can omit $permission argument as well.
+     * For example the following calls are identical:
+     *     $manager->getMaskBuilder($manager->getOid('action: Acme Action'))
+     *     $manager->getMaskBuilder($manager->getOid('entity: Acme Action'), 'EXECUTE')
+     *
+     * @param OID $oid
+     * @param string|null $permission Any permission you sure the expected mask builder supports
+     * @return MaskBuilder
+     */
+    public function getMaskBuilder(OID $oid, $permission = null)
+    {
+        return $this->extensionSelector
+            ->select($oid)
+            ->getMaskBuilder($permission);
     }
 
     /**
@@ -252,14 +291,185 @@ class AclManager
     }
 
     /**
+     * Updates or creates object-based or class-based ACE with the given attributes.
+     *
+     * If the given object identity represents a domain object the object-based ACE is set;
+     * otherwise, class-based ACE is set.
+     * If the given object identity represents a "root" ACL the object-based ACE is set.
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param int $mask
+     * @param bool $granting
+     * @param string|null $strategy If null the strategy should not be changed for existing ACE
+     *                              or the appropriate strategy should be  selected automatically for new ACE
+     *                                  ALL strategy is used for $granting = true
+     *                                  ANY strategy is used for $granting = false
+     * @throws InvalidAclMaskException
+     */
+    public function setPermission(SID $sid, OID $oid, $mask, $granting = true, $strategy = null)
+    {
+        if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+            $this->setObjectPermission($sid, $oid, $mask, $granting, $strategy);
+        } else {
+            $extension = $this->extensionSelector->select($oid);
+            if ($oid->getType() === $extension->getRootId()) {
+                $this->setClassPermission($sid, $oid, $mask, $granting, $strategy);
+            } else {
+                $this->setObjectPermission($sid, $oid, $mask, $granting, $strategy);
+            }
+        }
+    }
+
+    /**
+     * Updates or creates object-field-based or class-field-based ACE with the given attributes.
+     *
+     * If the given object identity represents a domain object the object-field-based ACE is set;
+     * otherwise, class-field-based ACE is set.
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param string $field
+     * @param int $mask
+     * @param bool $granting
+     * @param string|null $strategy If null the strategy should not be changed for existing ACE
+     *                              or the appropriate strategy should be  selected automatically for new ACE
+     *                                  ALL strategy is used for $granting = true
+     *                                  ANY strategy is used for $granting = false
+     * @throws InvalidAclMaskException
+     * @throws \InvalidArgumentException
+     */
+    public function setFieldPermission(SID $sid, OID $oid, $field, $mask, $granting = true, $strategy = null)
+    {
+        if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+            throw new \InvalidArgumentException('Not supported for root ACL.');
+        }
+
+        $extension = $this->extensionSelector->select($oid);
+        if ($oid->getType() === $extension->getRootId()) {
+            $this->setClassFieldPermission($sid, $oid, $field, $mask, $granting, $strategy);
+        } else {
+            $this->setObjectFieldPermission($sid, $oid, $field, $mask, $granting, $strategy);
+        }
+    }
+
+    /**
+     * Deletes object-based or class-based ACE with the given attributes.
+     *
+     * If the given object identity represents a domain object the object-based ACE is deleted;
+     * otherwise, class-based ACE is deleted.
+     * If the given object identity represents a "root" ACL the object-based ACE is deleted.
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param int $mask
+     * @param bool $granting
+     * @param string|null $strategy If null ACE with any strategy should be deleted
+     * @throws InvalidAclMaskException
+     */
+    public function deletePermission(SID $sid, OID $oid, $mask, $granting = true, $strategy = null)
+    {
+        if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+            $this->deleteObjectPermission($sid, $oid, $mask, $granting, $strategy);
+        } else {
+            $extension = $this->extensionSelector->select($oid);
+            if ($oid->getType() === $extension->getRootId()) {
+                $this->deleteClassPermission($sid, $oid, $mask, $granting, $strategy);
+            } else {
+                $this->deleteObjectPermission($sid, $oid, $mask, $granting, $strategy);
+            }
+        }
+    }
+
+    /**
+     * Deletes object-field-based or class-field-based ACE with the given attributes.
+     *
+     * If the given object identity represents a domain object the object-field-based ACE is deleted;
+     * otherwise, class-field-based ACE is deleted.
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param string $field
+     * @param int $mask
+     * @param bool $granting
+     * @param string|null $strategy If null ACE with any strategy should be deleted
+     * @throws InvalidAclMaskException
+     * @throws \InvalidArgumentException
+     */
+    public function deleteFieldPermission(SID $sid, OID $oid, $field, $mask, $granting = true, $strategy = null)
+    {
+        if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+            throw new \InvalidArgumentException('Not supported for root ACL.');
+        }
+
+        $extension = $this->extensionSelector->select($oid);
+        if ($oid->getType() === $extension->getRootId()) {
+            $this->deleteClassFieldPermission($sid, $oid, $field, $mask, $granting, $strategy);
+        } else {
+            $this->deleteObjectFieldPermission($sid, $oid, $field, $mask, $granting, $strategy);
+        }
+    }
+
+    /**
+     * Deletes all object-based or class-based ACEs for the given security identity
+     *
+     * If the given object identity represents a domain object the object-based ACEs are deleted;
+     * otherwise, class-based ACEs are deleted.
+     * If the given object identity represents a "root" ACL the object-based ACEs are deleted.
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @throws InvalidAclMaskException
+     */
+    public function deleteAllPermissions(SID $sid, OID $oid)
+    {
+        if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+            $this->deleteAllObjectPermissions($sid, $oid);
+        } else {
+            $extension = $this->extensionSelector->select($oid);
+            if ($oid->getType() === $extension->getRootId()) {
+                $this->deleteAllClassPermissions($sid, $oid);
+            } else {
+                $this->deleteAllObjectPermissions($sid, $oid);
+            }
+        }
+    }
+
+    /**
+     * Deletes all object-field-based or class-field-based ACEs for the given security identity
+     *
+     * If the given object identity represents a domain object the object-field-based ACEs are deleted;
+     * otherwise, class-field-based ACEs are deleted.
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param string $field
+     * @throws InvalidAclMaskException
+     * @throws \InvalidArgumentException
+     */
+    public function deleteAllFieldPermissions(SID $sid, OID $oid, $field)
+    {
+        if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+            throw new \InvalidArgumentException('Not supported for root ACL.');
+        }
+
+        $extension = $this->extensionSelector->select($oid);
+        if ($oid->getType() === $extension->getRootId()) {
+            $this->deleteAllClassFieldPermissions($sid, $oid, $field);
+        } else {
+            $this->deleteAllObjectFieldPermissions($sid, $oid, $field);
+        }
+    }
+
+    /**
      * Gets all class-based ACEs associated with given ACL
      *
      * @param OID $oid
      * @return EntryInterface[]
      */
-    public function getClassAces(OID $oid)
+    protected function getClassAces(OID $oid)
     {
-        return $this->getAces($oid, self::CLASS_ACE, null);
+        return $this->doGetAces($oid, self::CLASS_ACE, null);
     }
 
     /**
@@ -269,9 +479,9 @@ class AclManager
      * @param string $field
      * @return EntryInterface[]
      */
-    public function getClassFieldAces(OID $oid, $field)
+    protected function getClassFieldAces(OID $oid, $field)
     {
-        return $this->getAces($oid, self::CLASS_FIELD_ACE, $field);
+        return $this->doGetAces($oid, self::CLASS_FIELD_ACE, $field);
     }
 
     /**
@@ -280,9 +490,9 @@ class AclManager
      * @param OID $oid
      * @return EntryInterface[]
      */
-    public function getObjectAces(OID $oid)
+    protected function getObjectAces(OID $oid)
     {
-        return $this->getAces($oid, self::OBJECT_ACE, null);
+        return $this->doGetAces($oid, self::OBJECT_ACE, null);
     }
 
     /**
@@ -292,73 +502,13 @@ class AclManager
      * @param string $field
      * @return EntryInterface[]
      */
-    public function getObjectFieldAces(OID $oid, $field)
+    protected function getObjectFieldAces(OID $oid, $field)
     {
-        return $this->getAces($oid, self::OBJECT_FIELD_ACE, $field);
-    }
-
-    public function setClassPermission(SID $sid, OID $oid, $mask, $granting = true, $strategy = null)
-    {
-        $this->setPermission($sid, $oid, true, self::CLASS_ACE, null, $granting, $mask, $strategy);
-    }
-
-    public function setClassFieldPermission(SID $sid, OID $oid, $field, $mask, $granting = true, $strategy = null)
-    {
-        $this->setPermission($sid, $oid, true, self::CLASS_FIELD_ACE, $field, $granting, $mask, $strategy);
-    }
-
-    public function setObjectPermission(SID $sid, OID $oid, $mask, $granting = true, $strategy = null)
-    {
-        $this->setPermission($sid, $oid, true, self::OBJECT_ACE, null, $granting, $mask, $strategy);
-    }
-
-    public function setObjectFieldPermission(SID $sid, OID $oid, $field, $mask, $granting = true, $strategy = null)
-    {
-        $this->setPermission($sid, $oid, true, self::OBJECT_FIELD_ACE, $field, $granting, $mask, $strategy);
-    }
-
-    public function deleteClassPermission(SID $sid, OID $oid, $mask, $granting = true, $strategy = null)
-    {
-        $this->deletePermission($sid, $oid, self::CLASS_ACE, null, $granting, $mask, $strategy);
-    }
-
-    public function deleteClassFieldPermission(SID $sid, OID $oid, $field, $mask, $granting = true, $strategy = null)
-    {
-        $this->deletePermission($sid, $oid, self::CLASS_FIELD_ACE, $field, $granting, $mask, $strategy);
-    }
-
-    public function deleteObjectPermission(SID $sid, OID $oid, $mask, $granting = true, $strategy = null)
-    {
-        $this->deletePermission($sid, $oid, self::OBJECT_ACE, null, $granting, $mask, $strategy);
-    }
-
-    public function deleteObjectFieldPermission(SID $sid, OID $oid, $field, $mask, $granting = true, $strategy = null)
-    {
-        $this->deletePermission($sid, $oid, self::OBJECT_FIELD_ACE, $field, $granting, $mask, $strategy);
-    }
-
-    public function deleteAllClassPermissions(SID $sid, OID $oid)
-    {
-        $this->deleteAllPermissions($sid, $oid, self::CLASS_ACE, null);
-    }
-
-    public function deleteAllClassFieldPermissions(SID $sid, OID $oid, $field)
-    {
-        $this->deleteAllPermissions($sid, $oid, self::CLASS_FIELD_ACE, $field);
-    }
-
-    public function deleteAllObjectPermissions(SID $sid, OID $oid)
-    {
-        $this->deleteAllPermissions($sid, $oid, self::OBJECT_ACE, null);
-    }
-
-    public function deleteAllObjectFieldPermissions(SID $sid, OID $oid, $field)
-    {
-        $this->deleteAllPermissions($sid, $oid, self::OBJECT_FIELD_ACE, $field);
+        return $this->doGetAces($oid, self::OBJECT_FIELD_ACE, $field);
     }
 
     /**
-     * Gets all class-based ACEs associated with given ACL
+     * Gets all ACEs associated with given ACL
      *
      * @param OID $oid
      * @param string $type The ACE type. Can be one of self::*_ACE constants
@@ -367,7 +517,7 @@ class AclManager
      *                           Set to not null class-field-based or object-field-based ACE
      * @return EntryInterface[]
      */
-    protected function getAces(OID $oid, $type, $field)
+    protected function doGetAces(OID $oid, $type, $field)
     {
         $acl = $this->getAcl($oid);
         if (!$acl) {
@@ -375,6 +525,80 @@ class AclManager
         }
 
         return $this->aceProvider->getAces($acl, $type, $field);
+    }
+
+    /**
+     * Updates or creates class-based ACE with the given attributes.
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param int $mask
+     * @param bool $granting
+     * @param string|null $strategy If null the strategy should not be changed for existing ACE
+     *                              or the appropriate strategy should be  selected automatically for new ACE
+     *                                  ALL strategy is used for $granting = true
+     *                                  ANY strategy is used for $granting = false
+     * @throws InvalidAclMaskException
+     */
+    protected function setClassPermission(SID $sid, OID $oid, $mask, $granting = true, $strategy = null)
+    {
+        $this->doSetPermission($sid, $oid, true, self::CLASS_ACE, null, $mask, $granting, $strategy);
+    }
+
+    /**
+     * Updates or creates object-based ACE with the given attributes.
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param int $mask
+     * @param bool $granting
+     * @param string|null $strategy If null the strategy should not be changed for existing ACE
+     *                              or the appropriate strategy should be  selected automatically for new ACE
+     *                                  ALL strategy is used for $granting = true
+     *                                  ANY strategy is used for $granting = false
+     * @throws InvalidAclMaskException
+     */
+    protected function setObjectPermission(SID $sid, OID $oid, $mask, $granting = true, $strategy = null)
+    {
+        $this->doSetPermission($sid, $oid, true, self::OBJECT_ACE, null, $mask, $granting, $strategy);
+    }
+
+    /**
+     * Updates or creates class-field-based ACE with the given attributes.
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param string $field
+     * @param int $mask
+     * @param bool $granting
+     * @param string|null $strategy If null the strategy should not be changed for existing ACE
+     *                              or the appropriate strategy should be  selected automatically for new ACE
+     *                                  ALL strategy is used for $granting = true
+     *                                  ANY strategy is used for $granting = false
+     * @throws InvalidAclMaskException
+     */
+    protected function setClassFieldPermission(SID $sid, OID $oid, $field, $mask, $granting = true, $strategy = null)
+    {
+        $this->doSetPermission($sid, $oid, true, self::CLASS_FIELD_ACE, $field, $mask, $granting, $strategy);
+    }
+
+    /**
+     * Updates or creates object-field-based ACE with the given attributes.
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param string $field
+     * @param int $mask
+     * @param bool $granting
+     * @param string|null $strategy If null the strategy should not be changed for existing ACE
+     *                              or the appropriate strategy should be  selected automatically for new ACE
+     *                                  ALL strategy is used for $granting = true
+     *                                  ANY strategy is used for $granting = false
+     * @throws InvalidAclMaskException
+     */
+    protected function setObjectFieldPermission(SID $sid, OID $oid, $field, $mask, $granting = true, $strategy = null)
+    {
+        $this->doSetPermission($sid, $oid, true, self::OBJECT_FIELD_ACE, $field, $mask, $granting, $strategy);
     }
 
     /**
@@ -387,15 +611,15 @@ class AclManager
      * @param string|null $field The name of a field.
      *                           Set to null for class-based or object-based ACE
      *                           Set to not null class-field-based or object-field-based ACE
-     * @param bool $granting
      * @param int $mask
+     * @param bool $granting
      * @param string|null $strategy If null the strategy should not be changed for existing ACE
      *                              or the appropriate strategy should be  selected automatically for new ACE
      *                                  ALL strategy is used for $granting = true
      *                                  ANY strategy is used for $granting = false
      * @throws InvalidAclMaskException
      */
-    protected function setPermission(SID $sid, OID $oid, $replace, $type, $field, $granting, $mask, $strategy = null)
+    protected function doSetPermission(SID $sid, OID $oid, $replace, $type, $field, $mask, $granting, $strategy = null)
     {
         $acl = $this->getAcl($oid, true);
         $key = $this->getKey($oid);
@@ -424,6 +648,74 @@ class AclManager
     }
 
     /**
+     * Deletes class-based ACE with the given attributes.
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param int $mask
+     * @param bool $granting
+     * @param string|null $strategy If null ACE with any strategy should be deleted
+     * @throws InvalidAclMaskException
+     */
+    protected function deleteClassPermission(SID $sid, OID $oid, $mask, $granting = true, $strategy = null)
+    {
+        $this->doDeletePermission($sid, $oid, self::CLASS_ACE, null, $mask, $granting, $strategy);
+    }
+
+    /**
+     * Deletes object-based ACE with the given attributes.
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param int $mask
+     * @param bool $granting
+     * @param string|null $strategy If null ACE with any strategy should be deleted
+     * @throws InvalidAclMaskException
+     */
+    protected function deleteObjectPermission(SID $sid, OID $oid, $mask, $granting = true, $strategy = null)
+    {
+        $this->doDeletePermission($sid, $oid, self::OBJECT_ACE, null, $mask, $granting, $strategy);
+    }
+
+    /**
+     * Deletes class-field-based ACE with the given attributes.
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param string $field
+     * @param int $mask
+     * @param bool $granting
+     * @param string|null $strategy If null ACE with any strategy should be deleted
+     * @throws InvalidAclMaskException
+     */
+    protected function deleteClassFieldPermission(SID $sid, OID $oid, $field, $mask, $granting = true, $strategy = null)
+    {
+        $this->doDeletePermission($sid, $oid, self::CLASS_FIELD_ACE, $field, $mask, $granting, $strategy);
+    }
+
+    /**
+     * Deletes object-field-based ACE with the given attributes.
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param string $field
+     * @param int $mask
+     * @param bool $granting
+     * @param string|null $strategy If null ACE with any strategy should be deleted
+     * @throws InvalidAclMaskException
+     */
+    protected function deleteObjectFieldPermission(
+        SID $sid,
+        OID $oid,
+        $field,
+        $mask,
+        $granting = true,
+        $strategy = null
+    ) {
+        $this->doDeletePermission($sid, $oid, self::OBJECT_FIELD_ACE, $field, $mask, $granting, $strategy);
+    }
+
+    /**
      * Deletes ACE with the given attributes
      *
      * @param SID $sid
@@ -432,11 +724,11 @@ class AclManager
      * @param string|null $field The name of a field.
      *                           Set to null for class-based or object-based ACE
      *                           Set to not null class-field-based or object-field-based ACE
-     * @param bool $granting
      * @param int $mask
-     * @param string|null $strategy
+     * @param bool $granting
+     * @param string|null $strategy If null ACE with any strategy should be deleted
      */
-    protected function deletePermission(SID $sid, OID $oid, $type, $field, $granting, $mask, $strategy = null)
+    protected function doDeletePermission(SID $sid, OID $oid, $type, $field, $mask, $granting, $strategy = null)
     {
         $acl = $this->getAcl($oid);
         $key = $this->getKey($oid);
@@ -461,6 +753,56 @@ class AclManager
     }
 
     /**
+     * Deletes all class-based ACEs for the given security identity
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @throws InvalidAclMaskException
+     */
+    protected function deleteAllClassPermissions(SID $sid, OID $oid)
+    {
+        $this->doDeleteAllPermissions($sid, $oid, self::CLASS_ACE, null);
+    }
+
+    /**
+     * Deletes all object-based ACEs for the given security identity
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @throws InvalidAclMaskException
+     */
+    protected function deleteAllObjectPermissions(SID $sid, OID $oid)
+    {
+        $this->doDeleteAllPermissions($sid, $oid, self::OBJECT_ACE, null);
+    }
+
+    /**
+     * Deletes all class-field-based ACEs for the given security identity
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param string $field
+     * @throws InvalidAclMaskException
+     */
+    protected function deleteAllClassFieldPermissions(SID $sid, OID $oid, $field)
+    {
+        $this->doDeleteAllPermissions($sid, $oid, self::CLASS_FIELD_ACE, $field);
+    }
+
+    /**
+     * Deletes all object-field-based ACEs for the given security identity
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param string $field
+     * @throws InvalidAclMaskException
+     */
+    protected function deleteAllObjectFieldPermissions(SID $sid, OID $oid, $field)
+    {
+        $this->doDeleteAllPermissions($sid, $oid, self::OBJECT_FIELD_ACE, $field);
+    }
+
+    /**
      * Deletes all ACEs the given type and security identity
      *
      * @param SID $sid
@@ -470,7 +812,7 @@ class AclManager
      *                           Set to null for class-based or object-based ACE
      *                           Set to not null class-field-based or object-field-based ACE
      */
-    protected function deleteAllPermissions(SID $sid, OID $oid, $type, $field)
+    protected function doDeleteAllPermissions(SID $sid, OID $oid, $type, $field)
     {
         $acl = $this->getAcl($oid);
         $key = $this->getKey($oid);

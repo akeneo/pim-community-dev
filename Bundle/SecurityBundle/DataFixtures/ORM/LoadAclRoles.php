@@ -52,7 +52,7 @@ class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, C
                 $fullAccessMask = $maskBuilder->hasConst('GROUP_SYSTEM')
                     ? $maskBuilder->getConst('GROUP_SYSTEM')
                     : $maskBuilder->getConst('GROUP_ALL');
-                $manager->setObjectPermission($sid, $rootOid, $fullAccessMask, true);
+                $manager->setPermission($sid, $rootOid, $fullAccessMask, true);
             }
         }
     }
@@ -79,7 +79,7 @@ class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, C
                 } else {
                     $mask = $maskBuilder->getConst('GROUP_ALL');
                 }
-                $manager->setObjectPermission($sid, $rootOid, $mask, true);
+                $manager->setPermission($sid, $rootOid, $mask, true);
             }
         }
     }
@@ -106,7 +106,7 @@ class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, C
                 } else {
                     $mask = $maskBuilder->getConst('GROUP_NONE');
                 }
-                $manager->setObjectPermission($sid, $rootOid, $mask, true);
+                $manager->setPermission($sid, $rootOid, $mask, true);
             }
         }
     }

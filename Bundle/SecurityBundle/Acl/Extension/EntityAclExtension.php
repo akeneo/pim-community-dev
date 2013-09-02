@@ -220,6 +220,10 @@ class EntityAclExtension extends AbstractAclExtension
      */
     public function getMaskBuilder($permission)
     {
+        if (empty($permission)) {
+            $permission = 'VIEW';
+        }
+
         $identity = $this->permissionToMaskBuilderIdentity[$permission];
         $maskBuilderClassName = $this->maskBuilderClassNames[$identity];
 
