@@ -48,7 +48,6 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->attribute->getSearchable());
         $this->assertFalse($this->attribute->getTranslatable());
         $this->assertFalse($this->attribute->getScopable());
-        $this->assertEquals('', $this->attribute->getDescription());
         $this->assertFalse($this->attribute->isSmart());
         $this->assertFalse($this->attribute->getVariant());
         $this->assertFalse($this->attribute->isUseableAsGridColumn());
@@ -116,19 +115,6 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         // if empty translation, assert the expected code is returned
         $this->attribute->setLabel('');
         $this->assertEquals($expectedCode, $this->attribute->__toString());
-    }
-
-    /**
-     * Test getter/setter for description property
-     */
-    public function testGetSetDescription()
-    {
-        $this->assertEmpty($this->attribute->getDescription());
-
-        // Change value and assert new
-        $newDescription = 'test-description';
-        $this->assertEntity($this->attribute->setDescription($newDescription));
-        $this->assertEquals($newDescription, $this->attribute->getDescription());
     }
 
     /**

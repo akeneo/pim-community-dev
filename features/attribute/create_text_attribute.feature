@@ -11,10 +11,8 @@ Feature: Create an attribute
   @javascript
   Scenario: Sucessfully create and validate a text attribute
     Given I fill in the following information:
-     | Code | short_descsription |
+     | Code | short_description |
     And I visit the "Values" tab
-    And I fill in the following information:
-     | Description | Short description attribute |
     And I save the attribute
     Then I should see "Attribute successfully created"
 
@@ -22,13 +20,6 @@ Feature: Create an attribute
     Given I change the Code to an invalid value
     And I save the attribute
     Then I should see validation error "Attribute code may contain only letters, numbers and underscores"
-
-  @javascript
-  Scenario: Fail to create a text attribute with an invalid description
-    Given I visit the "Values" tab
-    When I change the Description to an invalid value
-    And I save the attribute
-    Then I should see validation error "This value is too long. It should have 255 characters or less."
 
   @javascript
   Scenario: Fail to create a text attribute with an invalid validation regex
