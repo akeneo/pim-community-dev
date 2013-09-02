@@ -76,12 +76,13 @@ class WorkflowRegistry
      * Get list of Workflows that are applicable to entity class
      *
      * @param string $entityClass
+     * @param string|null $workflowName
      * @return Workflow[]
      */
-    public function getWorkflowsByEntityClass($entityClass)
+    public function getWorkflowsByEntityClass($entityClass, $workflowName = null)
     {
         $result = array();
-        $workflowDefinitions = $this->getWorkflowDefinitionRepository()->findByEntityClass($entityClass);
+        $workflowDefinitions = $this->getWorkflowDefinitionRepository()->findByEntityClass($entityClass, $workflowName);
 
         foreach ($workflowDefinitions as $workflowDefinition) {
             $result[$workflowDefinition->getName()] = $this->getAssembledWorkflow($workflowDefinition);

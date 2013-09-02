@@ -24,11 +24,12 @@ class WidgetController extends Controller
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManagerForClass($entityClass);
         $entity = $em->getReference($entityClass, $entityId);
+        $workflowName = $this->getRequest()->get('workflow');
 
         /** @var WorkflowManager $workflowManager */
         $workflowManager = $this->get('oro_workflow.manager');
-        $existingWorkflowItems = $workflowManager->getWorkflowItemsByEntity($entity);
-        $newWorkflows = $workflowManager->getApplicableWorkflows($entity, $existingWorkflowItems);
+        $existingWorkflowItems = $workflowManager->getWorkflowItemsByEntity($entity, $workflowName);
+        $newWorkflows = $workflowManager->getApplicableWorkflows($entity, $existingWorkflowItems, $workflowName);
         $startData = array();
         foreach ($newWorkflows as $workflow) {
             $transitions = $workflowManager->getAllowedStartTransitions($workflow, $entity);
