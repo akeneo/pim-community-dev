@@ -226,14 +226,13 @@ function init() {
         'class': 'fa-icon-globe',
         'attr': {
             'data-original-title': _.__('Localized value'),
-            'rel': 'tooltip'
+            'data-toggle': 'tooltip',
+            'data-placement': 'right'
         }
     });
     $('.attribute-field.translatable').each(function() {
         $(this).find('div.controls .icons-container').append($localizableIcon.clone());
     });
-
-    $('[rel="tooltip"]').tooltip();
 
     $('form').on('change', 'input[type="file"]', function() {
         var $input = $(this);

@@ -39,7 +39,7 @@
         {% if type is not defined or type != 'hidden' %}
             <div class="icons-container">
                 {% if help is defined %}
-                    <i class="fa-icon-info-sign" data-toggle="tooltip" data-original-title="{{ help|trans }}"></i>
+                    <i class="fa-icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="{{ help|trans }}"></i>
                 {% endif %}
                 {{ form_errors(form) }}
             </div>

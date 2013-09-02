@@ -630,7 +630,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $language
      *
      * @return void
+     *
      * @When /^I change the (?P<field>\w+) to "([^"]*)"$/
+     * @When /^I change the "(?P<field>[^"]*)" to "([^"]*)"$/
      * @When /^I change the (?P<language>\w+) (?P<field>\w+) to "(?P<value>[^"]*)"$/
      * @When /^I change the (?P<field>\w+) to an invalid value$/
      */
