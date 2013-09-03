@@ -1,6 +1,6 @@
 parameters:
     oro_wamp.publisher.class:     Oro\Bundle\SyncBundle\Wamp\TopicPublisher
-    oro_wamp.listenerюclass:      Oro\Bundle\SyncBundle\EventListener\OroWampEventListener
+    oro_wamp.listener.class:      Oro\Bundle\SyncBundle\EventListener\OroWampEventListener
 
 services:
     oro_wamp.publisher:
