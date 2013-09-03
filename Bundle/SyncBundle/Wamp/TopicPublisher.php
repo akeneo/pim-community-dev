@@ -30,6 +30,10 @@ class TopicPublisher
      */
     public function __construct($host = '127.0.0.1', $port = 8080)
     {
+        if ('*' == $host) {
+            $host = '127.0.0.1';
+        }
+
         $this->host = $host;
         $this->port = (int) $port;
     }

@@ -1,6 +1,6 @@
-js:
-    'sync':
-        - '@OroSyncBundle/Resources/public/js/sync.js'
-        - '@OroSyncBundle/Resources/public/js/sync/ajax.js'
-        - '@OroSyncBundle/Resources/public/lib/autobahn.js'
-        - '@OroSyncBundle/Resources/public/js/sync/wamp.js'
+#js:
+#    'sync':
+#        - '@OroSyncBundle/Resources/public/js/sync.js'
+#        - '@OroSyncBundle/Resources/public/js/sync/ajax.js'
+#        - '@OroSyncBundle/Resources/public/lib/autobahn.js'
+#        - '@OroSyncBundle/Resources/public/js/sync/wamp.js'

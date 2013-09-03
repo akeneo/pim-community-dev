@@ -6,8 +6,8 @@ services:
     oro_wamp.publisher:
         class:                    %oro_wamp.publisher.class%
         arguments:
-            - %jdare_clank.web_socket_server.host%
-            - %jdare_clank.web_socket_server.port%
+            - %websocket_host%
+            - %websocket_port%
 
     kernel.listener.clank.client_event:
         class:                    %oro_wamp.listener.class%
