@@ -425,6 +425,10 @@ class ProductController extends Controller
             throw new \Exception('User must have a catalog locale defined');
         }
 
+        if (!$this->container->get('oro_user.acl_manager')->isResourceGranted('pim_catalog_locale_'.$dataLocale)) {
+            throw new \Exception(sprintf("User doesn't have access to the locale '%s'", $dataLocale));
+        }
+
         return $dataLocale;
     }
 
