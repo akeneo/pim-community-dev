@@ -36,11 +36,14 @@ Oro\Bundle\UserBundle\Entity\User:
 
 **Entity Manager**
 
-In order to extend some native Doctrine Entity Manager functionality a new class OroEntityManager was implemented. In case any other modification are required, this class should be extended instead of Doctrine Entity Manager.
+In order to extend some native Doctrine Entity Manager functionality a new class OroEntityManager was implemented.
+In case any other modification are required, this class should be extended instead of Doctrine Entity Manager.
 
 **Filter Collection**
 
-Standard Doctrine filter collection implementation allows to add/enable sql filter by passing class name only. It makes impossible to use custom services as filter collections. To extend this functionality, a new FilterCollection class was implemented that allows to add filter objects directly.
+Standard Doctrine filter collection implementation allows to add/enable sql filter by passing class name only.
+It makes impossible to use custom services as filter collections. To extend this functionality,
+a new FilterCollection class was implemented that allows to add filter objects directly.
 
 Necessary filters can be automatically added to the filters collection by adding oro_entity.orm.sql_filter tag:
 
