@@ -71,7 +71,8 @@ class Generator
             $this->writeFile(
                 $extendClass,
                 '.orm.yml',
-                Yaml::dump($this->generateDynamicYml($entityName, $extendClass), 5)
+                Yaml::dump($this->generateDynamicYml($entityName, $extendClass), 5),
+                self::ENTITY . $this->backend
             );
 
             /** write Proxy class */
@@ -95,12 +96,19 @@ class Generator
      * @param $className
      * @param $fileExtension
      * @param $content
+     * @param null $ymlPath
      * @throws RuntimeException
      */
-    protected function writeFile($className, $fileExtension, $content)
+    protected function writeFile($className, $fileExtension, $content, $ymlPath = null)
     {
         $fileUri  = explode('\\', $className);
         $fileName = array_pop($fileUri);
+
+        if ($fileExtension == '.orm.yml' && $ymlPath) {
+            $fileUri  = explode('\\', str_replace(array(self::ENTITY, self::PROXY, $this->backend), '', $className));
+            $fileName = implode('.', $fileUri);
+            $fileUri = explode('\\', $ymlPath);
+        }
 
         $filePath = $this->entityCacheDir . DIRECTORY_SEPARATOR . implode(
             DIRECTORY_SEPARATOR,
