@@ -2,23 +2,21 @@
 
 namespace Oro\Bundle\EntityBundle\Controller;
 
-use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
+use Oro\Bundle\EntityBundle\Datagrid\CustomEntityDatagrid;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+
+use Doctrine\ORM\QueryBuilder;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\GridBundle\Datagrid\Datagrid;
+
+//use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
+//use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-
-use Oro\Bundle\EntityConfigBundle\Datagrid\EntityFieldsDatagridManager;
-use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
-
-use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
 /**
@@ -33,7 +31,7 @@ use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 class EntitiesController extends Controller
 {
     /**
-     * Lists all Flexible entities.
+     * Grid of Custom/Extend entity.
      * @Route(
      *      "/{id}",
      *      name="oro_entity_index",
@@ -41,8 +39,8 @@ class EntitiesController extends Controller
      * )
      * @Acl(
      *      id="oro_entity_index",
-     *      name="View custom entity",
-     *      description="View custom entity",
+     *      name="Grid custom entity",
+     *      description="Grid custom entity",
      *      parent="oro_entity"
      * )
      * @Template()
@@ -56,41 +54,76 @@ class EntitiesController extends Controller
         $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
         $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
 
-//        var_dump($entity->getClassName());
-//        var_dump($extendConfig->get('extend_class'));
-//        var_dump($extendConfig);
-//        die;
-
-        /** @var  ConfigDatagridManager $datagrid */
+        /** @var  CustomEntityDatagrid $datagrid */
         $datagridManager = $this->get('oro_entity.custom_datagrid.manager');
 
-        $datagrid = $datagridManager->getDatagrid();
+        $datagridManager->setCustomEntityClass($entity->getClassName(), $extendConfig->get('extend_class'));
 
-        $datagrid->getRouteGenerator()->setRouteParameters(array('id' => $request->get('id')));
-        $datagrid->setEntityName($extendConfig->get('extend_class'));
+        $datagridManager->setEntityName($extendConfig->get('extend_class'));
+        $datagridManager->getRouteGenerator()->setRouteParameters(array('id' => $request->get('id')));
 
-
-        var_dump($datagrid->getRouteGenerator());
-
-
-
-        var_dump($datagrid->getEntityName());
-        die;
-
-        $view            = 'json' == $request->getRequestFormat()
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'OroEntityBundle:Entities:index.html.twig';
-
-        return $this->render(
-            $view,
-            array(
-                //'buttonConfig' => $datagridManager->getLayoutActions(),
-                'datagrid'     => $datagrid->createView()
-            )
-        );
+        $view = $datagridManager->getDatagrid()->createView();
+        return 'json' == $this->getRequest()->getRequestFormat()
+            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
+            : $this->render('OroEntityBundle:Entities:index.html.twig', array('datagrid' => $view));
     }
 
+    /**
+     * View custom entity instance.
+     * @Route(
+     *      "/view/{id}",
+     *      name="oro_entity_view",
+     *      defaults={"id"=0}
+     * )
+     * @Acl(
+     *      id="oro_entity_view",
+     *      name="View custom entity",
+     *      description="View custom entity",
+     *      parent="oro_entity"
+     * )
+     * @Template()
+     */
     public function viewAction(Request $request)
+    {
+
+    }
+
+    /**
+     * Update custom entity instance.
+     * @Route(
+     *      "/update/{id}",
+     *      name="oro_entity_update",
+     *      defaults={"id"=0}
+     * )
+     * @Acl(
+     *      id="oro_entity_update",
+     *      name="Update custom entity",
+     *      description="Update custom entity",
+     *      parent="oro_entity"
+     * )
+     * @Template()
+     */
+    public function updateAction()
+    {
+
+    }
+
+    /**
+     * Delete custom entity instance.
+     * @Route(
+     *      "/delete/{id}",
+     *      name="oro_entity_delete",
+     *      defaults={"id"=0}
+     * )
+     * @Acl(
+     *      id="oro_entity_delete",
+     *      name="Delete custom entity",
+     *      description="Delete custom entity",
+     *      parent="oro_entity"
+     * )
+     * @Template()
+     */
+    public function deleteAction()
     {
 
     }

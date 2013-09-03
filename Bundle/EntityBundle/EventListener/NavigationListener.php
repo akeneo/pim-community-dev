@@ -49,7 +49,7 @@ class NavigationListener
             $entities = $this->em->getRepository(EntityConfigModel::ENTITY_NAME)->findAll();
             if ($entities) {
                 foreach ($entities as $entity) {
-                    if ($this->entityExtendProvider->getConfig($entity->getClassName())->is('is_extend')) {
+                    if (!$this->entityExtendProvider->getConfig($entity->getClassName())->is('is_extend')) {
                         continue;
                     }
 
