@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\BatchProduct;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\ScopeBatchProductQueryStringSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\BatchProduct\AddSelectedOperationSubscriber;
 
 /**
  *
@@ -26,16 +26,11 @@ class BatchProductType extends AbstractType
                 'multiple'  => true,
                 'read_only' => true,
             ))
-            ->add('operation', 'choice', array(
-                'choices' => BatchProduct::getOperationChoices(),
-                'expanded' => true,
-                'multiple' => false,
-            ))
-            ->addEventSubscriber(new ScopeBatchProductQueryStringSubscriber());
+            ->addEventSubscriber(new AddSelectedOperationSubscriber());
     }
 
     public function getName()
     {
-        return 'batch_products';
+        return '';
     }
 }

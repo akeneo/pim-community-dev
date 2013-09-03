@@ -7,6 +7,7 @@ parameters:
     pim_catalog.form.type.product_create.class:       Pim\Bundle\CatalogBundle\Form\Type\ProductCreateType
     pim_catalog.form.type.product_value.class:        Pim\Bundle\CatalogBundle\Form\Type\ProductValueType
     pim_catalog.form.type.image.class:                Pim\Bundle\CatalogBundle\Form\Type\ImageType
+    pim_catalog.form.type.batch_product.class:        Pim\Bundle\CatalogBundle\Form\Type\BatchProductType
 
     pim_catalog.form.handler.product_create.class:     Pim\Bundle\CatalogBundle\Form\Handler\ProductCreateHandler
 
@@ -26,10 +27,10 @@ parameters:
     pim_catalog.manager.category.class:                Pim\Bundle\CatalogBundle\Manager\CategoryManager
     pim_catalog.form.type.category.class:              Pim\Bundle\CatalogBundle\Form\Type\CategoryType
 
-    pim_catalog.event_listener.user_context.class:           Pim\Bundle\CatalogBundle\EventListener\UserContextListener
-
-    pim_catalog.form.subscriber.add_attribute_type.class:   Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
-    pim_catalog.form.transform_imported_product_data_subscriber.class: Pim\Bundle\CatalogBundle\Form\Subscriber\TransformImportedProductDataSubscriber
+    pim_catalog.event_listener.user_context.class:                      Pim\Bundle\CatalogBundle\EventListener\UserContextListener
+    pim_catalog.form.subscriber.add_attribute_type.class:               Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
+    pim_catalog.form.transform_imported_product_data_subscriber.class:  Pim\Bundle\CatalogBundle\Form\Subscriber\TransformImportedProductDataSubscriber
+    pim_catalog.form.add_selected_operation_subscriber.class:           Pim\Bundle\CatalogBundle\Form\Subscriber\BatchProduct\AddSelectedOperationSubscriber
 
     pim_catalog.manager.attribute_type.class:          Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager
     pim_catalog.manager.media.class:                   Pim\Bundle\CatalogBundle\Manager\MediaManager

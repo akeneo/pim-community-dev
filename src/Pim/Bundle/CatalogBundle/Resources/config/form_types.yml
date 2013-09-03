@@ -85,3 +85,11 @@ services:
         class: %pim_catalog.form.type.locale.class%
         tags:
             - { name: form.type, alias: pim_catalog_locale }
+
+    pim_catalog.form.type.batch_product:
+        class: %pim_catalog.form.type.batch_product.class%
+        arguments:
+            - @pim_catalog.form.add_selected_operation_subscriber
+        tags:
+            - { name: form.type, alias: pim_catalog_batch_product }
+

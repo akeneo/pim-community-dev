@@ -293,15 +293,22 @@ class ProductController extends Controller
     /**
      * @Template
      */
-    public function batchEditAction(Request $request)
+    public function configureBatchOperationAction(Request $request)
     {
+        $ids = $request->query->get('products');
+        if (!$ids) {
+            return $this->redirectToRoute('pim_catalog_product_index');
+        }
+
+        $operation = $request->query->get('operation');
+        $products = $this->getProductManager()->getFlexibleRepository()->findByIds($ids);
         $batchProduct = new BatchProduct;
+        $batchProduct->setProducts($products);
+        $batchProduct->setOperation($operation);
 
         $form = $this->createForm(new BatchProductType, $batchProduct, array(
             'csrf_protection' => false,
         ));
-
-        $form->submit($request);
 
         return array(
             'form' => $form->createView(),

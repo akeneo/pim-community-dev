@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\BatchOperation\EditAttribute;
+use Pim\Bundle\CatalogBundle\BatchOperation\ChangeStatus;
 
 /**
  * A batch of products with the operation to apply on them
@@ -15,7 +16,7 @@ use Pim\Bundle\CatalogBundle\BatchOperation\EditAttribute;
  */
 class BatchProduct
 {
-    const OPERATION_EDIT_ATTRIBUTES = 'edit_attributes';
+    const OPERATION_CHANGE_STATUS = 'change_status';
 
     protected $products;
 
@@ -27,19 +28,22 @@ class BatchProduct
     {
         $this->products = new ArrayCollection();
         $this->operations = array(
-            self::OPERATION_EDIT_ATTRIBUTES => new EditAttribute()
+            self::OPERATION_CHANGE_STATUS => new ChangeStatus()
         );
     }
 
     public static function getOperationChoices()
     {
         return array(
-            self::OPERATION_EDIT_ATTRIBUTES => 'Edit attributes',
+            self::OPERATION_CHANGE_STATUS => 'Change status (Enabled/Disabled)',
         );
     }
 
-    public function setProducts(Collection $products)
+    public function setProducts($products)
     {
+        if (!$products instanceof Collection) {
+            $products = new ArrayCollection($products);
+        }
         $this->products = $products;
 
         return $this;
@@ -52,7 +56,9 @@ class BatchProduct
 
     public function setOperation($operation)
     {
-        $this->operation = $operation;
+        if (isset($this->operations[$operation])) {
+            $this->operation = $this->operations[$operation];
+        }
 
         return $this;
     }
