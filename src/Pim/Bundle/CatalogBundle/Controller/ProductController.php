@@ -37,11 +37,8 @@ class ProductController extends Controller
         $gridManager->setFilterCategoryId($request->get('categoryId', 0));
         $datagrid = $gridManager->getDatagrid();
 
-        if ('json' == $request->getRequestFormat()) {
-            $view = 'OroGridBundle:Datagrid:list.json.php';
-        } else {
-            $view = 'PimCatalogBundle:Product:index.html.twig';
-        }
+        $view =  ('json' === $request->getRequestFormat()) ?
+            'OroGridBundle:Datagrid:list.json.php' : 'PimCatalogBundle:Product:index.html.twig';
 
         $params = array(
             'datagrid'   => $datagrid->createView(),
