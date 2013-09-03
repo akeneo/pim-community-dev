@@ -8,7 +8,6 @@ use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
-use Oro\Bundle\GridBundle\Property\FieldProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 
@@ -40,17 +39,7 @@ class ChannelDatagridManager extends DatagridManager
      */
     protected function getProperties()
     {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
-            array(
-                'type'     => FieldDescriptionInterface::TYPE_INTEGER,
-                'required' => true,
-            )
-        );
-
         return array(
-            new FieldProperty($fieldId),
             new UrlProperty('edit_link', $this->router, 'pim_catalog_channel_edit', array('id')),
             new UrlProperty('delete_link', $this->router, 'pim_catalog_channel_remove', array('id'))
         );
