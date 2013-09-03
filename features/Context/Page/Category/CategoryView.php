@@ -35,11 +35,12 @@ abstract class CategoryView extends Form
      * @param string $category
      *
      * @return NodeElement
+     *
+     * @throws \InvalidArgumentException
      */
     public function findCategoryInTree($category)
     {
         $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains(%s)', $category));
-
         if (!$elt) {
             throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
         }
@@ -50,16 +51,16 @@ abstract class CategoryView extends Form
     /**
      * @param string $action
      *
-     * @return Creation
+     * @return CategoryView
+     *
+     * @throws \InvalidArgumentException
      */
     public function rightClickAction($action)
     {
         $elt = $this->getElement('Right click menu')->find('css', sprintf('li a:contains(%s)', $action));
-
         if (!$elt) {
             throw new \InvalidArgumentException(sprintf('Unable to find action "%s" in the menu', $action));
         }
-
         $elt->click();
 
         return $this;
@@ -68,12 +69,11 @@ abstract class CategoryView extends Form
     /**
      * @param string $category
      *
-     * @return Creation
+     * @return CategoryView
      */
     public function expandCategory($category)
     {
         $category = $this->findCategoryInTree($category);
-
         $category->getParent()->find('css', 'ins')->click();
 
         return $this;
@@ -83,7 +83,7 @@ abstract class CategoryView extends Form
      * @param string $category1
      * @param string $category2
      *
-     * @return Creation
+     * @return CategoryView
      */
     public function dragCategoryTo($category1, $category2)
     {
