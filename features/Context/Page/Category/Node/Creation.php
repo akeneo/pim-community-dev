@@ -13,5 +13,8 @@ use Context\Page\Category\Tree\Creation as TreeCreation;
  */
 class Creation extends TreeCreation
 {
+    /**
+     * @var string
+     */
     protected $path = '/enrich/category-tree/create/{id}';
 }

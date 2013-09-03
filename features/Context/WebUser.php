@@ -174,15 +174,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $child
      * @param string $parent
      *
-     * @Then /^I should see the "([^"]*)" category under the "([^"]*)" category$/
+     * @Then /^I should (not )?see the "([^"]*)" category under the "([^"]*)" category$/
      */
-    public function iShouldSeeTheCategoryUnderTheCategory($child, $parent)
+    public function iShouldSeeTheCategoryUnderTheCategory($not, $child, $parent)
     {
-        $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
+        $not = ($not !== '') ? true : false;
 
+        $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
         $childNode = $parentNode->getParent()->find('css', sprintf('li a:contains(%s)', $child));
 
-        if (!$childNode) {
+        if (($not && $childNode) || (!$not && !$childNode)) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting to see category "%s" under the category "%s", not found',
