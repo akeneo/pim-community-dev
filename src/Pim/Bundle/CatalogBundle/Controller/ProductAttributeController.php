@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
@@ -14,13 +15,25 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Acl(
+ *      id="pim_catalog_attribute",
+ *      name="Attribute manipulation",
+ *      description="Attribute manipulation",
+ *      parent="pim_catalog"
+ * )
  */
 class ProductAttributeController extends Controller
 {
     /**
      * List product attributes
      * @param Request $request
-     *
+     * @Acl(
+     *      id="pim_catalog_attribute_index",
+     *      name="View attribute list",
+     *      description="View attribute list",
+     *      parent="pim_catalog_locale"
+     * )
      * @return template
      */
     public function indexAction(Request $request)
@@ -42,6 +55,12 @@ class ProductAttributeController extends Controller
      * Create attribute
      *
      * @Template("PimCatalogBundle:ProductAttribute:form.html.twig")
+     * @Acl(
+     *      id="pim_catalog_attribute_create",
+     *      name="Create an attribute",
+     *      description="Create an attribute",
+     *      parent="pim_catalog_locale"
+     * )
      * @return array
      */
     public function createAction()
@@ -69,8 +88,13 @@ class ProductAttributeController extends Controller
      *
      * @param Request          $request
      * @param ProductAttribute $attribute
-     *
      * @Template("PimCatalogBundle:ProductAttribute:form.html.twig")
+     * @Acl(
+     *      id="pim_catalog_attribute_edit",
+     *      name="Edit an attribute",
+     *      description="Edit an attribute",
+     *      parent="pim_catalog_locale"
+     * )
      * @return array
      */
     public function editAction(Request $request, ProductAttribute $attribute)
@@ -110,7 +134,6 @@ class ProductAttributeController extends Controller
      * Preprocess attribute form
      *
      * @param Request $request
-     *
      * @Template("PimCatalogBundle:ProductAttribute:_form_parameters.html.twig")
      * @return array
      */
