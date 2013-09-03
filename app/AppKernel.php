@@ -20,7 +20,6 @@ class AppKernel extends Kernel
 
             // BAP deps
             new JMS\AopBundle\JMSAopBundle(),
-            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\JobQueueBundle\JMSJobQueueBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle($this),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
