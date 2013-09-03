@@ -15,7 +15,7 @@ class AssignValue extends AbstractPostAction
     /**
      * {@inheritdoc}
      */
-    public function execute($context)
+    protected function executeAction($context)
     {
         $this->contextAccessor->setValue($context, $this->getAttribute(), $this->getValue());
     }

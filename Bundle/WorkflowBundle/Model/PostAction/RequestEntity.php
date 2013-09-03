@@ -37,7 +37,7 @@ class RequestEntity extends AbstractPostAction
     /**
      * {@inheritdoc}
      */
-    public function execute($context)
+    protected function executeAction($context)
     {
         $entity = $this->getEntityReference($context);
         $this->contextAccessor->setValue($context, $this->options['attribute'], $entity);

@@ -3,6 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
 use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
+use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
 
 class UnsetValue implements PostActionInterface
 {
@@ -41,5 +42,16 @@ class UnsetValue implements PostActionInterface
             $options['value'] = null;
         }
         $this->assignValuePostAction->initialize($options);
+    }
+
+    /**
+     * Set optional condition for post action
+     *
+     * @param ConditionInterface $condition
+     * @return mixed
+     */
+    public function setCondition(ConditionInterface $condition)
+    {
+        $this->assignValuePostAction->setCondition($condition);
     }
 }

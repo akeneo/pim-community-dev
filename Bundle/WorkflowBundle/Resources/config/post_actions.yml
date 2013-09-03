@@ -58,7 +58,7 @@ services:
             - @oro_workflow.context_accessor
             - @doctrine
         tags:
-            - { name: oro_workflow.post_action, alias: request_entity }
+            - { name: oro_workflow.post_action, alias: request_entity|find_entity }
 
     oro_workflow.post_action.call_method:
         class: %oro_workflow.post_action.call_method.class%

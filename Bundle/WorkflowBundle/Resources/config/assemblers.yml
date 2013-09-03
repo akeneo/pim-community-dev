@@ -24,6 +24,7 @@ services:
         class: %oro_workflow.post_action_assembler.class%
         arguments:
             - @oro_workflow.post_action_factory
+            - @oro_workflow.condition_factory
             - @oro_workflow.pass.parameter
 
     oro_workflow.attribute_assembler:

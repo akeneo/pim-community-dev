@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
+use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
+
 class Configurable implements PostActionInterface
 {
     const ALIAS = 'configurable';
@@ -48,5 +50,14 @@ class Configurable implements PostActionInterface
         }
 
         $this->postAction->execute($context);
+    }
+
+    /**
+     * Configurable action is always allowed
+     *
+     * {@inheritDoc}
+     */
+    public function setCondition(ConditionInterface $condition)
+    {
     }
 }

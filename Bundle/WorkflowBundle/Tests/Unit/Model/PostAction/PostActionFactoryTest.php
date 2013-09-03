@@ -3,6 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction;
 
 use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory;
+use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
 
 class PostActionFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -66,23 +67,66 @@ class PostActionFactoryTest extends \PHPUnit_Framework_TestCase
         $factory->create(self::TEST_TYPE);
     }
 
-    public function testCreate()
+    /**
+     * @param string $type
+     * @param string $id
+     * @param array $options
+     * @param boolean $isCondition
+     * @dataProvider createDataProvider
+     */
+    public function testCreate($type, $id, $options = array(), $isCondition = false)
     {
-        $postActionMock = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface')
+        $postAction = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
+        $postAction->expects($this->once())
+            ->method('initialize')
+            ->with($options);
 
-        $containerMock = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
+        $condition = null;
+        if ($isCondition) {
+            /** @var ConditionInterface $condition */
+            $condition = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface')
+                ->disableOriginalConstructor()
+                ->getMockForAbstractClass();
+            $postAction->expects($this->once())
+                ->method('setCondition')
+                ->with($condition);
+        } else {
+            $postAction->expects($this->never())
+                ->method('setCondition');
+        }
+
+        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerInterface')
             ->disableOriginalConstructor()
             ->setMethods(array('get'))
             ->getMockForAbstractClass();
-        $containerMock->expects($this->once())
+        $container->expects($this->once())
             ->method('get')
-            ->with(self::TEST_TYPE_SERVICE)
-            ->will($this->returnValue($postActionMock));
+            ->with($id)
+            ->will($this->returnValue($postAction));
 
-        $factory = $this->buildFilterFactory(array('container' => $containerMock));
+        $factory = $this->buildFilterFactory(array('container' => $container));
 
-        $this->assertEquals($postActionMock, $factory->create(self::TEST_TYPE));
+        $this->assertEquals($postAction, $factory->create($type, $options, $condition));
+    }
+
+    /**
+     * @return array
+     */
+    public function createDataProvider()
+    {
+        return array(
+            'empty condition' => array(
+                'type' => self::TEST_TYPE,
+                'id'   => self::TEST_TYPE_SERVICE,
+            ),
+            'existing condition' => array(
+                'type'        => self::TEST_TYPE,
+                'id'          => self::TEST_TYPE_SERVICE,
+                'options'     => array('key' => 'value'),
+                'isCondition' => true,
+            ),
+        );
     }
 }

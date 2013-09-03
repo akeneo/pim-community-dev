@@ -4,6 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface;
+use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
 
 class PostActionFactory
 {
@@ -30,10 +31,11 @@ class PostActionFactory
     /**
      * @param string $type
      * @param array $options
+     * @param ConditionInterface $condition
      * @throws \RunTimeException
      * @return PostActionInterface
      */
-    public function create($type, array $options = array())
+    public function create($type, array $options = array(), ConditionInterface $condition = null)
     {
         if (!$type) {
             throw new \RunTimeException('The post action type must be defined');
@@ -53,6 +55,10 @@ class PostActionFactory
         }
 
         $postAction->initialize($options);
+
+        if ($condition) {
+            $postAction->setCondition($condition);
+        }
 
         return $postAction;
     }

@@ -14,7 +14,7 @@ class CallMethod extends AbstractPostAction
     /**
      * {@inheritdoc}
      */
-    public function execute($context)
+    protected function executeAction($context)
     {
         if (!empty($this->options['object'])) {
             $callback = array($this->options['object'], $this->options['method']);

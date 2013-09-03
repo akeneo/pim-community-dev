@@ -23,6 +23,7 @@ class UnsetValueTest extends \PHPUnit_Framework_TestCase
         $this->assignValue = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\PostAction\AssignValue')
             ->disableOriginalConstructor()
             ->getMock();
+
         $this->action = new UnsetValue($this->assignValue);
     }
 
@@ -62,5 +63,18 @@ class UnsetValueTest extends \PHPUnit_Framework_TestCase
                 array('test'), array('test', null)
             )
         );
+    }
+
+    public function testSetCondition()
+    {
+        $condition = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
+
+        $this->assignValue->expects($this->once())
+            ->method('setCondition')
+            ->with($condition);
+
+        $this->action->setCondition($condition);
     }
 }
