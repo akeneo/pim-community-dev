@@ -1,6 +1,6 @@
 pim_catalog:
-    name: Akeneo PIM
-    description: General node for Akeneo PIM
+    name: PIM Catalog
+    description: General node for catalog management
     parent: root
 
 pim_catalog_locales:
