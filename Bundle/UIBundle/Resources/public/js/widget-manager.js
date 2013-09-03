@@ -1,12 +1,13 @@
 /* global define */
-define(function() {
+define(['oro/block-widget', 'oro/dialog-widget'],
+function(BlockWidget, DialogWidget) {
     'use strict';
 
     /**
      * @export oro/widget-manager
      * @name   oro.widgetManager
      */
-    return {
+    var widgetManager = {
         types: {},
         widgets: {},
 
@@ -32,4 +33,9 @@ define(function() {
             delete this.widgets[wid];
         }
     };
+
+    widgetManager.registerWidgetContainer('block', BlockWidget);
+    widgetManager.registerWidgetContainer('dialog', DialogWidget);
+
+    return widgetManager;
 });

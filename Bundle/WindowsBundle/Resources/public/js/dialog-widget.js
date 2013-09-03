@@ -1,8 +1,7 @@
 /* global define */
-define(['underscore', 'backbone', 'oro/app', 'oro/error',
-    'oro/widget-manager', 'oro/abstract-widget', 'oro/dialog/state/model', 'jquery.dialog.extended'],
-function(_, Backbone, app, error,
-     widgetManager, AbstractWidget, StateModel) {
+define(['underscore', 'backbone', 'oro/app', 'oro/error', 'oro/abstract-widget', 'oro/dialog/state/model',
+    'jquery.dialog.extended'],
+function(_, Backbone, app, error, AbstractWidget, StateModel) {
     'use strict';
 
     /**
@@ -10,7 +9,7 @@ function(_, Backbone, app, error,
      * @class   oro.DialogWidget
      * @extends oro.AbstractWidget
      */
-    var DialogWidget = AbstractWidget.extend({
+    return AbstractWidget.extend({
         options: _.extend({}, AbstractWidget.prototype.options, {
             type: 'dialog',
             dialogOptions: null,
@@ -212,8 +211,4 @@ function(_, Backbone, app, error,
             };
         }
     });
-
-    widgetManager.registerWidgetContainer('dialog', DialogWidget);
-
-    return DialogWidget;
 });

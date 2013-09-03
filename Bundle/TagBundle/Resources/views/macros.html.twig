@@ -9,10 +9,11 @@
     </div>
 
     <script type="text/javascript">
-        require(['jquery'],
-        function($){
-            $(function () {
-                var tagView = new Oro.Tags.TagView();
+        require(['jquery', 'oro/tag/view'],
+        function($, TagView){
+            $(function() {
+                /** @type oro.tag.View */
+                var tagView = new TagView();
                 tagView.getCollection().reset({{ oro_tag_get_list(entity)|json_encode|raw }});
             });
         });

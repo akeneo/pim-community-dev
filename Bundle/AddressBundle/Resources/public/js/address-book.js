@@ -102,7 +102,7 @@ function(_, Backbone, __, mediator, messenger, widgetManager,
 
         _openAddressEditForm: function(title, url) {
             if (!this.addressEditDialog) {
-                this.addressEditDialog = widgetManager('dialog', {
+                this.addressEditDialog = widgetManager.createWidget('dialog', {
                     'url': url,
                     'title': title,
                     'stateEnabled': false,

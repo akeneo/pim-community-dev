@@ -50,7 +50,7 @@
         ChoiceFilter, NumberFilter, DateFilter,
         DatetimeFilter, SelectFilter, MultiselectFilter,
         SelectRowFilter, AjaxAction
-    ) {$(function() {
+    ) {
         var datagridOptions = {
             grid: {
                 name: '{{ datagrid.name }}',
@@ -219,7 +219,7 @@
         if (!Backbone.History.started) {
             Backbone.history.start();
         }
-    })});
+    });
 </script>
 
 <script type="text/template" id="{{ templateElId }}">

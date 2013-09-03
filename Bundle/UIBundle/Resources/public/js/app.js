@@ -88,7 +88,7 @@ function($, _) {
          *
          * Example of usage:
          *
-         * Oro.invertKeys({foo: 'x', bar: 'y'}, {foo: 'f', bar: 'b'})
+         * oro.app.invertKeys({foo: 'x', bar: 'y'}, {foo: 'f', bar: 'b'})
          * will return {f: 'x', b: 'y'}
          *
          * @param {Object} object
