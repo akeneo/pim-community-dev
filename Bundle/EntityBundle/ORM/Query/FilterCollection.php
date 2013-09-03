@@ -132,8 +132,6 @@ class FilterCollection
      * @param string $name Name of the filter.
      *
      * @return SQLFilter The disabled filter.
-     *
-     * @throws \InvalidArgumentException If the filter does not exist.
      */
     public function disable($name)
     {
