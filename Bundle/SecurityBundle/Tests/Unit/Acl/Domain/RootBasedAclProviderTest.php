@@ -67,7 +67,7 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
     {
         $oid = new ObjectIdentity('test', 'Test');
         $sids = array($this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface'));
-        $rootOid = new ObjectIdentity('Test', ObjectIdentityFactory::ROOT_IDENTITY_TYPE);
+        $rootOid = new ObjectIdentity('test', ObjectIdentityFactory::ROOT_IDENTITY_TYPE);
         $rootAcl = $this->getMock('Symfony\Component\Security\Acl\Model\AclInterface');
         $this->baseProvider->expects($this->at(0))
             ->method('findAcl')
@@ -88,7 +88,7 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
     {
         $oid = new ObjectIdentity('test', 'Test');
         $sids = array($this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface'));
-        $rootOid = new ObjectIdentity('Test', ObjectIdentityFactory::ROOT_IDENTITY_TYPE);
+        $rootOid = new ObjectIdentity('test', ObjectIdentityFactory::ROOT_IDENTITY_TYPE);
         $this->baseProvider->expects($this->at(0))
             ->method('findAcl')
             ->with($this->identicalTo($oid), $this->equalTo($sids))

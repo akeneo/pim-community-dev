@@ -313,7 +313,7 @@ class AclManager
             $this->setObjectPermission($sid, $oid, $mask, $granting, $strategy);
         } else {
             $extension = $this->extensionSelector->select($oid);
-            if ($oid->getType() === $extension->getRootId()) {
+            if ($oid->getIdentifier() === $extension->getRootId()) {
                 $this->setClassPermission($sid, $oid, $mask, $granting, $strategy);
             } else {
                 $this->setObjectPermission($sid, $oid, $mask, $granting, $strategy);
@@ -346,7 +346,7 @@ class AclManager
         }
 
         $extension = $this->extensionSelector->select($oid);
-        if ($oid->getType() === $extension->getRootId()) {
+        if ($oid->getIdentifier() === $extension->getRootId()) {
             $this->setClassFieldPermission($sid, $oid, $field, $mask, $granting, $strategy);
         } else {
             $this->setObjectFieldPermission($sid, $oid, $field, $mask, $granting, $strategy);
@@ -373,7 +373,7 @@ class AclManager
             $this->deleteObjectPermission($sid, $oid, $mask, $granting, $strategy);
         } else {
             $extension = $this->extensionSelector->select($oid);
-            if ($oid->getType() === $extension->getRootId()) {
+            if ($oid->getIdentifier() === $extension->getRootId()) {
                 $this->deleteClassPermission($sid, $oid, $mask, $granting, $strategy);
             } else {
                 $this->deleteObjectPermission($sid, $oid, $mask, $granting, $strategy);
@@ -403,7 +403,7 @@ class AclManager
         }
 
         $extension = $this->extensionSelector->select($oid);
-        if ($oid->getType() === $extension->getRootId()) {
+        if ($oid->getIdentifier() === $extension->getRootId()) {
             $this->deleteClassFieldPermission($sid, $oid, $field, $mask, $granting, $strategy);
         } else {
             $this->deleteObjectFieldPermission($sid, $oid, $field, $mask, $granting, $strategy);
@@ -427,7 +427,7 @@ class AclManager
             $this->deleteAllObjectPermissions($sid, $oid);
         } else {
             $extension = $this->extensionSelector->select($oid);
-            if ($oid->getType() === $extension->getRootId()) {
+            if ($oid->getIdentifier() === $extension->getRootId()) {
                 $this->deleteAllClassPermissions($sid, $oid);
             } else {
                 $this->deleteAllObjectPermissions($sid, $oid);
@@ -454,7 +454,7 @@ class AclManager
         }
 
         $extension = $this->extensionSelector->select($oid);
-        if ($oid->getType() === $extension->getRootId()) {
+        if ($oid->getIdentifier() === $extension->getRootId()) {
             $this->deleteAllClassFieldPermissions($sid, $oid, $field);
         } else {
             $this->deleteAllObjectFieldPermissions($sid, $oid, $field);

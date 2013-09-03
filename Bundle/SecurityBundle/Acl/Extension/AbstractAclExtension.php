@@ -81,8 +81,8 @@ abstract class AbstractAclExtension implements AclExtensionInterface
             );
         }
 
-        $type = strtolower(substr($descriptor, 0, $delim));
-        $id = trim(substr($descriptor, $delim + 1));
+        $id = strtolower(substr($descriptor, 0, $delim));
+        $type = trim(substr($descriptor, $delim + 1));
     }
 
     /**

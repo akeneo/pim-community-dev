@@ -149,9 +149,8 @@ class EntityAclExtension extends AbstractAclExtension
             return true;
         }
 
-        if ($type === $this->getRootId()) {
-            $type = $this->entityClassResolver->getEntityClass($this->entityClassAccessor->getClass($id));
-            $id = null;
+        if ($id === $this->getRootId()) {
+            $type = $this->entityClassResolver->getEntityClass($this->entityClassAccessor->getClass($type));
         } else {
             $type = $this->entityClassAccessor->getClass($type);
         }
@@ -414,10 +413,10 @@ class EntityAclExtension extends AbstractAclExtension
         $type = $id = null;
         $this->parseDescriptor($descriptor, $type, $id);
 
-        if ($type === $this->getRootId()) {
+        if ($id === $this->getRootId()) {
             return new ObjectIdentity(
-                $this->entityClassResolver->getEntityClass($this->entityClassAccessor->getClass($id)),
-                $this->getRootId()
+                $id,
+                $this->entityClassResolver->getEntityClass($this->entityClassAccessor->getClass($type))
             );
         }
 
