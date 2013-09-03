@@ -1,4 +1,11 @@
 {% extends bap.layout %}
+{% import 'OroUIBundle::macros.html.twig' as macros %}
+
+{# TODO: Move this to OroUIBundle::macros.html.twig #}
+{% macro renderRow(label, value) %}
+    {% import 'OroUIBundle::macros.html.twig' as macros %}
+    {{ macros.renderAttribute(label, '<p class="control-label">' ~ value|default('N/A'|trans) ~ '</p>') }}
+{% endmacro %}
 
 {% macro render_form_row(name) %}
     <div class="control-group">
@@ -10,31 +17,89 @@
 {% endmacro %}
 
 {% block content %}
+    {% block workflow_header %}
+    <div class="navigation clearfix navbar-extra navbar-extra-right" style="border-bottom: 1px solid #c8c8c8">
+        <div class="row">
+            <div class="pull-right">
+                <div class="pull-left">
+                    {% block workflow_actions %}
+                    <div class="btn-group icons-holder">
+                        <a title="Duplicate" class="btn icons-holder-text " href="#">
+                            <i class="icon-copy  hide-text">Duplicate</i>
+                            Duplicate
+                        </a>
+                        <a title="Share" class="btn icons-holder-text " href="#">
+                            <i class="icon-share  hide-text">Share</i>
+                            Share
+                        </a>
+                        <a title="Delete" class="btn icons-holder-text " href="#">
+                            <i class="icon-remove  hide-text">Delete</i>
+                            Delete
+                        </a>
+                    </div>
+                    {% endblock workflow_actions %}
+
+                    {% block workflow_transitions %}
+                    <div class="btn-group icons-holder">
+                        <a title="Qualify" class="btn btn-primary icons-holder-text " href="#">
+                            <i class="icon-ok hide-text">Qualify</i>
+                            Qualify
+                        </a>
+                    </div>
+                    {% endblock workflow_transitions %}
+                </div>
+            </div>
+            <div class="span9">
+                <div class="customer-info customer-simple well-small">
+                    <div class="customer-content pull-left">
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <div class="sub-title"><a href="#">Workflows</a></div>
+                                <span class="separator">/</span>
+                                <h1 class="user-name">Sales Flow (Step two)</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
     {% block step_form %}
     <style type="text/css">
+        /** Step form styles */
         .step-form-header {
-            padding: 20px 0 10px 0;
+            padding: 20px 0 0;
             border-bottom: 1px solid #ededed;
         }
 
-        .step-form-header > li.current {
+        .step-form-header li.current {
             font-weight: bold;
 
         }
 
-        .step-form-header > li {
+        .step-form-header li {
             font-size: 15px;
 
         }
 
-        .step-form-header > li.divider {
+        .step-form-header li.step:not(:last-child):after {
+            content: "-";
+            padding-left: 10px;
             color: #c8c8c8;
+            font-weight: normal;
         }
 
-        .step-form-header > li.divider > sup {
+        .step-form-header li:first-child:before {
+            content: "...";
             font-size: 24px;
+            color: #c8c8c8;
             top: -2px;
+            display: inline-block;
+            position: relative;
             font-family: sans;
+            padding-right: 10px;
         }
 
         .step-form-container {
@@ -45,56 +110,175 @@
             font-weight: normal;
         }
 
-        .no-margin {
-            margin: 0;
+        /** Bottom layout */
+        .span6.no-margin {
+            margin: 0 !important;
+            width: 50%;
+        }
+
+        .workflow-data {
+            border-top: 1px solid #d0d0d0;
+        }
+
+        .workflow-data.dark-bg {
+            background: #fbfbfb;
+        }
+
+        .workflow-data > :first-child {
+            border-right: 1px solid #d0d0d0;
+        }
+
+        .workflow-data > :last-child {
+            border-left: 1px solid #d0d0d0;
+            position: relative;
+            left: -1px;
+        }
+
+        /** Widget styles */
+        .workflow-data .box-type1 {
+            border: none;
+            background: inherit;
+            margin-top: 20px;
+        }
+
+        .workflow-data .box-type1 .title {
+            height: 1px;
+            margin: 20px 0;
+            padding: 0;
+            position: relative;
+            text-align: left;
+            border-color: #d0d0d0;
+        }
+
+        .workflow-data .box-type1 .title .widget-title {
+            background: #FBFBFB;
+            display: inline-block;
+            line-height: 15px;
+            padding-right: 15px;
+            position: relative;
+            top: -0.6em;
+        }
+
+        /** Accordion stub */
+        .accordion-toogler {
+            line-height: 26px;
+            border-bottom: 1px solid #d0d0d0;
+            background-color: #eeeeee;
+            cursor: pointer;
         }
     </style>
-    <div class="container-fluid">
-        <div class="container-fluid form-container">
-            <form method="post" action="" class="form-horizontal">
-                <ul class="inline step-form-header">
-                    <li class="divider"><sup>...</sup></li>
-                    <li>Step one</li>
-                    <li class="divider">-</li>
-                    <li class="current">Step two</li>
-                    <li class="divider">-</li>
-                    <li>Step three</li>
-                    <li class="pull-right btn-group">
-                        <input type="submit" class="btn btn-small" value="{{ 'Save'|trans }}"/>
-                    </li>
-                </ul>
-                <div class="step-form-container clearfix">
-                    <fieldset class="span6 offset3">
-                        {{ _self.render_form_row('nickname') }}
-                        {{ _self.render_form_row('contact') }}
-                        {{ _self.render_form_row('company_name') }}
-                        {{ _self.render_form_row('annual_revenue') }}
-                    </fieldset>
-                    <fieldset class="span6 offset3">
-                        {{ _self.render_form_row('nickname') }}
-                        {{ _self.render_form_row('contact') }}
-                        {{ _self.render_form_row('company_name') }}
-                        {{ _self.render_form_row('annual_revenue') }}
-                    </fieldset>
+    <div class="container-fluid form-container">
+        <form method="post" action="" class="form-horizontal">
+            <div class="step-form-header">
+                <div class="clearfix">
+                    <div class="pull-left">
+                        <ul class="inline">
+                            <li class="step">Step one</li>
+                            <li class="step current">Step two</li>
+                            <li class="step">Step three</li>
+
+                        </ul>
+                    </div>
+                    <div class="pull-right btn-group">
+                        <input type="submit" class="btn btn-success btn-small" value="{{ 'Save'|trans }}"/>
+                    </div>
                 </div>
-            </form>
-        </div>
+            </div>
+            <div class="step-form-container row-fluid">
+                <fieldset class="span4 offset1">
+                    {{ _self.render_form_row('nickname') }}
+                    {{ _self.render_form_row('contact') }}
+                    {{ _self.render_form_row('company_name') }}
+                    {{ _self.render_form_row('annual_revenue') }}
+                </fieldset>
+                <fieldset class="span4 offset1">
+                    {{ _self.render_form_row('nickname') }}
+                    {{ _self.render_form_row('contact') }}
+                    {{ _self.render_form_row('company_name') }}
+                    {{ _self.render_form_row('annual_revenue') }}
+                </fieldset>
+            </div>
+        </form>
     </div>
-    <hr/>
     {% endblock step_form %}
 
     {% block workflow_data %}
-        <div class="workflow-data clearfix  dark-bg">
-            <div class="span12 no-margin">
-            {% block workflow_entities %}
-                LEFT
-            {% endblock workflow_entities %}
+        <div class="workflow-data row-fluid dark-bg">
+            <div class="span6 no-margin">
+                <div class="container-fluid" style="padding: 20px;">
+                    {% block workflow_entities %}
+                        <div>
+                            <div class="box-type1">
+                                <div class="title">
+                                    <div class="pull-right widget-actions-container"></div>
+                                    <span class="widget-title">Opportunity Information</span>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="widget-content">
+                                        <div class="form-horizontal container-fluid">
+                                            {{ _self.renderRow('First Name'|trans, 'Test') }}
+                                            {{ _self.renderRow('Last Name'|trans, 'Opportunity') }}
+                                            {{ _self.renderRow('Contact'|trans, 'Test Contact') }}
+
+                                            {{ _self.renderRow('Job Title'|trans, 'CTO') }}
+                                            {{ _self.renderRow('Company Name'|trans, 'Lead International Ltd.') }}
+                                            {{ _self.renderRow('Industry'|trans, 'IT/Web development') }}
+                                            {{ _self.renderRow('Number Of Employees'|trans, 1) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endblock workflow_entities %}
+                </div>
             </div>
 
-            <div class="span12 no-margin">
-            {% block workflow_toolbox %}
-                RIGHT
-            {% endblock workflow_toolbox %}
+            <div class="span6 no-margin">
+
+                    {% block workflow_toolbox %}
+                        <div class="accordion-toogler"><i class="icon icon-chevron-right"></i> Activities</div>
+                        <div class="accordion-toogler"><i class="icon icon-chevron-down"></i> Notes</div>
+
+                        <div id="notes-content">
+                            <div class="container-fluid" style="padding-top: 20px;">
+
+                                <div class="clearfix">
+                                    <form method="post" action="" style="width: 80%">
+                                        <fieldset>
+                                            <div class="control-group">
+                                                <label for="notes" style="font-weight: bold;">Summary:</label>
+                                                <div class="control">
+                                                    <textarea rows="3" style="width: 100%" id="notes" name="notes"></textarea>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+
+                                        <div class="pull-right">
+                                            <button type="submit" class="btn">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <p class="muted">2 days ago</p>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur suscipit, quam eget convallis congue, mauris nibh dignissim sem, et consectetur turpis metus non mauris. Nulla gravida sem a massa euismod, ut rhoncus nulla sollicitudin. Mauris urna enim, euismod sed arcu a, luctus varius nibh. In vitae est gravida, pharetra nisl vitae, suscipit odio. Donec id augue rutrum, egestas tellus nec, placerat mi. Nam fringilla gravida nunc, id euismod urna gravida quis. Proin a aliquam augue. Integer egestas quis risus scelerisque gravida. Sed pulvinar purus a augue sagittis, in sagittis diam sodales. Nunc cursus quam auctor, semper arcu ac, commodo nibh. Phasellus in cursus enim. Integer dictum augue libero, et placerat nisl pretium vitae. Sed feugiat aliquam velit vel rutrum.
+                                </p>
+                                <hr/>
+
+                                <p class="muted">2 days ago</p>
+                                <p>
+                                    Nulla viverra quam vitae mauris viverra, vel dictum dolor ultricies. Sed pulvinar augue malesuada mattis tincidunt. Aenean condimentum consectetur lacinia. Ut eget sapien rhoncus, lacinia nulla vitae, tincidunt arcu. Suspendisse metus mi, gravida a lorem vel, luctus accumsan quam. Nunc molestie nisi ac lacus consequat rutrum. Fusce eu ornare augue. Vestibulum varius tristique magna, eget auctor metus facilisis pretium. Donec eleifend laoreet odio, fringilla adipiscing felis ullamcorper varius. Aliquam eget gravida purus, tristique fermentum risus. Fusce porta ipsum sed eros dignissim egestas. Sed non gravida justo.
+                                </p>
+                                <hr/>
+
+                                <p class="muted">2 days ago</p>
+                                <p>
+                                    Aliquam consequat, lacus at varius tristique, tellus arcu dictum dolor, in dapibus sem leo vel sapien. Phasellus vulputate elementum mi, quis tincidunt diam sodales vel. Etiam consequat enim felis, quis fermentum ligula condimentum in. Vestibulum ultricies tempor nisi, mattis malesuada libero. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Maecenas aliquam faucibus magna. Morbi rhoncus convallis urna vel volutpat. Maecenas convallis neque sit amet tellus dignissim tincidunt.
+                                </p>
+                            </div>
+                        </div>
+                    {% endblock workflow_toolbox %}
+
             </div>
         </div>
     {% endblock workflow_data %}
