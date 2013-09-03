@@ -131,10 +131,15 @@ class FilterCollection
      *
      * @param string $name Name of the filter.
      *
+     * @throws \InvalidArgumentException If the filter is not enabled/disabled
+     *
      * @return SQLFilter The disabled filter.
      */
     public function disable($name)
     {
+        if (isset($this->disabledFilters[$name])) {
+            return $this->disabledFilters[$name];
+        }
         // Get the filter to return it
         $filter = $this->getFilter($name);
         //Saving filter in disabled filters for possible future uses
