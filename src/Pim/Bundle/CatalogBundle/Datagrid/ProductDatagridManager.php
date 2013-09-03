@@ -106,17 +106,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function getProperties()
     {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
-            array(
-                'type'     => FieldDescriptionInterface::TYPE_INTEGER,
-                'required' => true,
-            )
-        );
-
         return array(
-            new FieldProperty($fieldId),
             new UrlProperty(
                 'edit_link',
                 $this->router,

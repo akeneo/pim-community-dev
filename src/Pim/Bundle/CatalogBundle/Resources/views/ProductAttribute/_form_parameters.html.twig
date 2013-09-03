@@ -54,12 +54,7 @@
 {% endset %}
 
 {% set backendParameters %}
-    <div class="control-group">
-        {{ form_label(form.group, 'Attribute group'|trans, { 'label_attr': {'class': 'control-label'} }) }}
-        <div class="controls">
-            {{ form_widget(form.group, { 'attr': { 'class': 'input-large', 'data-placeholder': 'Choose a group'|trans }}) }}
-        </div>
-    </div>
+    {{ form_row(form.group, { 'label': 'Attribute group' }) }}
 
     {# form_row(form.variant, { 'label': 'Variants behavior when edited'|trans }) #}
     {# form_row(form.smart) #}
