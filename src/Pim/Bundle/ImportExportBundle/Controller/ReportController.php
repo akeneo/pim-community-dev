@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Controller;
 use Pim\Bundle\CatalogBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 
 /**
  * Report controller
@@ -12,12 +13,25 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Acl(
+ *      id="pim_importexport_report",
+ *      name="Report manipulation",
+ *      description="Report manipulation",
+ *      parent="pim_importexport"
+ * )
  */
 class ReportController extends Controller
 {
     /**
      * List the reports
      *
+     * @Acl(
+     *      id="pim_importexport_report_index",
+     *      name="View import/export report list",
+     *      description="View import/export report list",
+     *      parent="pim_importexport_report"
+     * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
@@ -30,6 +44,12 @@ class ReportController extends Controller
     /**
      * Download the log file of the job execution
      *
+     * @Acl(
+     *      id="pim_importexport_report_download",
+     *      name="Download an import/export log",
+     *      description="Download import/export log",
+     *      parent="pim_importexport_report"
+     * )
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function downloadLogFileAction($id)
@@ -47,6 +67,12 @@ class ReportController extends Controller
     /**
      * List the export reports
      *
+     * @Acl(
+     *      id="pim_importexport_report_export_index",
+     *      name="View the list of export reports",
+     *      description="View the list of export reports",
+     *      parent="pim_importexport_report"
+     * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function exportAction()
@@ -59,6 +85,12 @@ class ReportController extends Controller
     /**
      * List the import reports
      *
+     * @Acl(
+     *      id="pim_importexport_report_export_index",
+     *      name="View the list of import reports",
+     *      description="View the list of import reports",
+     *      parent="pim_importexport_report"
+     * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function importAction()
