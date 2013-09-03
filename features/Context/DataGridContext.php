@@ -145,7 +145,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $column
+     * @param string $columnName
+     * @param string $order
      *
      * @When /^I sort by "(.*)" value (ascending|descending)$/
      */
@@ -270,7 +271,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $filter
+     * @param string $filterName
      * @param string $value
      *
      * @Then /^I filter by "([^"]*)" with value "([^"]*)"$/
