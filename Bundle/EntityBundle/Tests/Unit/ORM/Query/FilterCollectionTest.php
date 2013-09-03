@@ -59,9 +59,11 @@ class FilterCollectionTest extends \PHPUnit_Framework_TestCase
 
     protected function disable()
     {
-        $this->filterCollection->disable("test");
+        $this->assertEquals($this->filter, $this->filterCollection->disable("test"));
         $this->assertContainsOnly($this->filter, $this->filterCollection->getDisabledFilters());
         $this->assertEmpty($this->filterCollection->getEnabledFilters());
+        //checking double filter disabling
+        $this->assertEquals($this->filter, $this->filterCollection->disable("test"));
     }
 
     public function testSetFiltersStateDirty()
@@ -85,5 +87,23 @@ class FilterCollectionTest extends \PHPUnit_Framework_TestCase
         $this->config->expects($this->at(0))->method('getFilterClassName')->with('test')
             ->will($this->returnValue(null));
         $this->filterCollection->enable('test');
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testGetFilter()
+    {
+        $this->filterCollection->getFilter('test');
+    }
+
+    public function testGetHash()
+    {
+        $this->assertEmpty($this->filterCollection->getHash());
+        $this->filterCollection->addFilter('test', $this->filter);
+        $this->filterCollection->enable('test');
+        $this->assertEquals('testN;', $this->filterCollection->getHash());
+        $this->filterCollection->disable('test');
+        $this->assertEmpty($this->filterCollection->getHash());
     }
 }

@@ -181,6 +181,15 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetUserIdWithNonLoginUser()
+    {
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+        $token->expects($this->any())
+            ->method('getUser')
+            ->will($this->returnValue('anon'));
+        $this->assertNull($this->builder->getUserId());
+    }
+
     public static function buildFilterConstraintProvider()
     {
         return array(
