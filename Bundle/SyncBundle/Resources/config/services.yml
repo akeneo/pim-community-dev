@@ -1,0 +1,18 @@
+parameters:
+    oro_wamp.publisher.class:     Oro\Bundle\SyncBundle\Wamp\TopicPublisher
+    oro_wamp.listenerюclass:      Oro\Bundle\SyncBundle\EventListener\OroWampEventListener
+
+services:
+    oro_wamp.publisher:
+        class:                    %oro_wamp.publisher.class%
+        arguments:
+            - %jdare_clank.web_socket_server.host%
+            - %jdare_clank.web_socket_server.port%
+
+    kernel.listener.clank.client_event:
+        class:                    %oro_wamp.listener.class%
+        arguments:
+            - "@session.handler.pdo"
+            - %session.storage.options%
+        tags:
+            - { name: kernel.event_listener, event: clank.client.connected, method: onClientConnect }
