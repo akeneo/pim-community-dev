@@ -5,6 +5,7 @@ parameters:
     oro_form.type.entity_identifier.class:          Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
     oro_form.type.jqueryselect2_hidden.class:       Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
     oro_form.extension.data_block.class:            Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension
+    oro_form.type.icon.class:                       Oro\Bundle\FormBundle\Form\Type\OroIconType
 
 services:
     # Form types
@@ -17,6 +18,11 @@ services:
         class: %oro_form.type.datetime.class%
         tags:
             - { name: form.type, alias: oro_datetime }
+
+    oro_form.type.icon:
+        class: %oro_form.type.icon.class%
+        tags:
+            - { name: form.type, alias: oro_icon_select }
 
     oro_form.type.entity_identifier:
         class: %oro_form.type.entity_identifier.class%

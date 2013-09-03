@@ -2,5 +2,6 @@
 request:
     name: Group_1_%str%
     roles: [2]
+    owner: 1
 response:
     return: true

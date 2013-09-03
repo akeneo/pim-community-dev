@@ -205,7 +205,18 @@ Oro.Navigation = Backbone.Router.extend({
                     var state = Oro.PageableCollection.prototype.decodeStateData(this.encodedStateData);
                     var collection = new Oro.PageableCollection({}, {inputName: state.gridName});
 
-                    var stringState = collection.processQueryParams({}, state);
+                    var stringState = {};
+                    stringState = collection.processQueryParams(stringState, state);
+                    stringState = collection.processFiltersParams(stringState, state);
+
+                    Oro.Events.once(
+                        "datagrid_filters:rendered",
+                        function (collection) {
+                            collection.trigger('updateState', collection);
+                        },
+                        this
+                    );
+
                     this.skipGridStateChange = true;
                 } else {
                     var stringState = [];
