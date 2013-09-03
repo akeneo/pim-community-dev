@@ -1,0 +1,101 @@
+{% extends bap.layout %}
+
+{% macro render_form_row(name) %}
+    <div class="control-group">
+        <label class="control-label" for="{{ name }}">{{ name|replace('_', ' ')|capitalize }}</label>
+        <div class="controls">
+            <input type="text" name="{{ name }}" id="{{ name }}" class="input-large"/>
+        </div>
+    </div>
+{% endmacro %}
+
+{% block content %}
+    {% block step_form %}
+    <style type="text/css">
+        .step-form-header {
+            padding: 20px 0 10px 0;
+            border-bottom: 1px solid #ededed;
+        }
+
+        .step-form-header > li.current {
+            font-weight: bold;
+
+        }
+
+        .step-form-header > li {
+            font-size: 15px;
+
+        }
+
+        .step-form-header > li.divider {
+            color: #c8c8c8;
+        }
+
+        .step-form-header > li.divider > sup {
+            font-size: 24px;
+            top: -2px;
+            font-family: sans;
+        }
+
+        .step-form-container {
+            padding: 20px 0 20px;
+        }
+
+        .form-horizontal .step-form-container .control-label {
+            font-weight: normal;
+        }
+
+        .no-margin {
+            margin: 0;
+        }
+    </style>
+    <div class="container-fluid">
+        <div class="container-fluid form-container">
+            <form method="post" action="" class="form-horizontal">
+                <ul class="inline step-form-header">
+                    <li class="divider"><sup>...</sup></li>
+                    <li>Step one</li>
+                    <li class="divider">-</li>
+                    <li class="current">Step two</li>
+                    <li class="divider">-</li>
+                    <li>Step three</li>
+                    <li class="pull-right btn-group">
+                        <input type="submit" class="btn btn-small" value="{{ 'Save'|trans }}"/>
+                    </li>
+                </ul>
+                <div class="step-form-container clearfix">
+                    <fieldset class="span6 offset3">
+                        {{ _self.render_form_row('nickname') }}
+                        {{ _self.render_form_row('contact') }}
+                        {{ _self.render_form_row('company_name') }}
+                        {{ _self.render_form_row('annual_revenue') }}
+                    </fieldset>
+                    <fieldset class="span6 offset3">
+                        {{ _self.render_form_row('nickname') }}
+                        {{ _self.render_form_row('contact') }}
+                        {{ _self.render_form_row('company_name') }}
+                        {{ _self.render_form_row('annual_revenue') }}
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr/>
+    {% endblock step_form %}
+
+    {% block workflow_data %}
+        <div class="workflow-data clearfix  dark-bg">
+            <div class="span12 no-margin">
+            {% block workflow_entities %}
+                LEFT
+            {% endblock workflow_entities %}
+            </div>
+
+            <div class="span12 no-margin">
+            {% block workflow_toolbox %}
+                RIGHT
+            {% endblock workflow_toolbox %}
+            </div>
+        </div>
+    {% endblock workflow_data %}
+{% endblock content %}

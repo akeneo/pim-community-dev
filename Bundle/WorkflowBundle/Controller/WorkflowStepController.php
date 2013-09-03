@@ -16,13 +16,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-/**
- * @Route("/step")
- */
-class WorkflowController extends Controller
+class WorkflowStepController extends Controller
 {
     /**
      * @Route("/edit/{id}", name="oro_workflow_step_edit")
+     * @Template
      * @AclAncestor("oro_workflow")
      */
     public function editAction(Request $request, WorkflowItem $workflowItem)
@@ -53,12 +51,19 @@ class WorkflowController extends Controller
             }
         }
 
-        return array(
+        $data = array(
             'workflow' => $workflow,
             'currentStep' => $currentStep,
             'stepForm' => $stepForm->createView(),
             'workflowItem' => $workflowItem,
         );
+
+        $customTemplate = $currentStep->getTemplate();
+        if ($customTemplate) {
+            return $this->render($customTemplate, $data);
+        } else {
+            return $data;
+        }
     }
 
     /**
