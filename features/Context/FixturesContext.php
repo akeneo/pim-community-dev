@@ -104,6 +104,8 @@ class FixturesContext extends RawMinkContext
         );
 
         $this->getContainer()->get('oro_user.acl_manager')->synchronizeAclResources();
+        $role = $this->getRoleOrCreate('ROLE_SUPER_ADMIN');
+        $this->getContainer()->get('oro_user.acl_manager')->saveRoleAcl($role);
     }
 
     /**
