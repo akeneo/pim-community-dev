@@ -11,6 +11,8 @@ use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowResult;
 
+use JMS\Serializer\Annotation as Serializer;
+
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
 /**
@@ -25,6 +27,7 @@ use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
  * @ORM\Entity(repositoryClass="Oro\Bundle\WorkflowBundle\Entity\Repository\WorkflowItemRepository")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
+ * @Serializer\ExclusionPolicy("all")
  */
 class WorkflowItem
 {
@@ -34,6 +37,7 @@ class WorkflowItem
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose()
      */
     protected $id;
 
@@ -43,6 +47,7 @@ class WorkflowItem
      * @var string
      *
      * @ORM\Column(name="workflow_name", type="string", length=255)
+     * @Serializer\Expose()
      */
     protected $workflowName;
 
@@ -52,6 +57,7 @@ class WorkflowItem
      * @var string
      *
      * @ORM\Column(name="current_step", type="string", length=255)
+     * @Serializer\Expose()
      */
     protected $currentStepName;
 
@@ -59,6 +65,7 @@ class WorkflowItem
      * @var string
      *
      * @ORM\Column(name="closed", type="boolean")
+     * @Serializer\Expose()
      */
     protected $closed;
 
@@ -106,6 +113,8 @@ class WorkflowItem
 
     /**
      * @var WorkflowResult
+     *
+     * @Serializer\Expose()
      */
     protected $result;
 

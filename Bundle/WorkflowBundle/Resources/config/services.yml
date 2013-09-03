@@ -3,6 +3,7 @@ parameters:
     oro_workflow.metadata_manager.class: Oro\Bundle\WorkflowBundle\Model\MetadataManager
     oro_workflow.registry.class: Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry
     oro_workflow.manager.class: Oro\Bundle\WorkflowBundle\Model\WorkflowManager
+    oro_workflow.workflow_result.class: Oro\Bundle\WorkflowBundle\Model\WorkflowResult
 
 services:
     oro_workflow.context_accessor:

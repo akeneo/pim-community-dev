@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class AddAttributeNormalizerCompilerPass implements CompilerPassInterface
 {
     const ATTRIBUTE_NORMALIZER_TAG = 'oro_workflow.attribute_normalizer';
-    const NORMALIZER_SERVICE = 'oro_workflow.data_serialize.normalizer';
+    const NORMALIZER_SERVICE = 'oro_workflow.serializer.data.normalizer';
 
     /**
      * @param ContainerBuilder $container

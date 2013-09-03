@@ -10,9 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\Rest\Util\Codes;
-use FOS\RestBundle\Controller\Annotations\NamePrefix;
-use FOS\RestBundle\Controller\Annotations\Get;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use Oro\Bundle\UserBundle\Annotation\AclAncestor;
@@ -25,19 +24,19 @@ use Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException;
 
 /**
- * @NamePrefix("oro_api_workflow_")
+ * @Rest\NamePrefix("oro_api_workflow_")
  */
 class WorkflowController extends FOSRestController
 {
     /**
      * Returns:
-     * - HTTP_OK (200) response: array('workflowItemId' => workflowItemId)
+     * - HTTP_OK (200) response: array('workflowItem' => array('id' => int, 'result' => array(...), ...))
      * - HTTP_BAD_REQUEST (400) response: array('message' => errorMessageString)
      * - HTTP_FORBIDDEN (403) response: array('message' => errorMessageString)
      * - HTTP_NOT_FOUND (404) response: array('message' => errorMessageString)
      * - HTTP_INTERNAL_SERVER_ERROR (500) response: array('message' => errorMessageString)
      *
-     * @Get("/start/{workflowName}/{entityClass}/{entityId}/{transitionName}")
+     * @Rest\Get("/start/{workflowName}/{transitionName}")
      * @ApiDoc(description="Start workflow for entity from transition", resource=true)
      * @AclAncestor("oro_workflow")
      *
@@ -77,10 +76,7 @@ class WorkflowController extends FOSRestController
         return $this->handleView(
             $this->view(
                 array(
-                    'workflowItem' => array(
-                        'id' => $workflowItem->getId(),
-                        'result' => $workflowItem->getResult()->getValues(),
-                    )
+                    'workflowItem' => $workflowItem
                 ),
                 Codes::HTTP_OK
             )
@@ -110,13 +106,13 @@ class WorkflowController extends FOSRestController
 
     /**
      * Returns:
-     * - HTTP_OK (200) response: true
+     * - HTTP_OK (200) response: array('workflowItem' => array('id' => int, 'result' => array(...), ...))
      * - HTTP_BAD_REQUEST (400) response: array('message' => errorMessageString)
      * - HTTP_FORBIDDEN (403) response: array('message' => errorMessageString)
      * - HTTP_NOT_FOUND (404) response: array('message' => errorMessageString)
      * - HTTP_INTERNAL_SERVER_ERROR (500) response: array('message' => errorMessageString)
      *
-     * @Get("/transit/{workflowItemId}/{transitionName}", requirements={"workflowItemId"="\d+"})
+     * @Rest\Get("/transit/{workflowItemId}/{transitionName}", requirements={"workflowItemId"="\d+"})
      * @ParamConverter("workflowItem", options={"id"="workflowItemId"})
      * @ApiDoc(description="Perform transition for workflow item", resource=true)
      * @AclAncestor("oro_workflow")
@@ -142,10 +138,31 @@ class WorkflowController extends FOSRestController
         return $this->handleView(
             $this->view(
                 array(
-                    'workflowItem' => array(
-                        'id' => $workflowItem->getId(),
-                        'result' => $workflowItem->getResult()->getValues(),
-                    )
+                    'workflowItem' => $workflowItem
+                ),
+                Codes::HTTP_OK
+            )
+        );
+    }
+
+    /**
+     * Returns
+     * - HTTP_OK (200) response: array('workflowItem' => array('id' => int, 'result' => array(...), ...))
+     *
+     * @Rest\Get("/get/{workflowItemId}", requirements={"workflowItemId"="\d+"})
+     * @ParamConverter("workflowItem", options={"id"="workflowItemId"})
+     * @ApiDoc(description="Get workflow item", resource=true)
+     * @AclAncestor("oro_workflow")
+     *
+     * @param WorkflowItem $workflowItem
+     * @return Response
+     */
+    public function getAction(WorkflowItem $workflowItem)
+    {
+        return $this->handleView(
+            $this->view(
+                array(
+                    'workflowItem' => $workflowItem
                 ),
                 Codes::HTTP_OK
             )

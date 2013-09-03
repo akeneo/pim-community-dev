@@ -1,39 +1,53 @@
 parameters:
-    oro_workflow.data_serialize.serializer.class: Oro\Bundle\WorkflowBundle\Serializer\WorkflowDataSerializer
-    oro_workflow.data_serialize.normalizer.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowDataNormalizer
-    oro_workflow.data_serialize.attribute_normalizer.standard.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\StandardAttributeNormalizer
-    oro_workflow.data_serialize.attribute_normalizer.entity.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\EntityAttributeNormalizer
-    oro_workflow.data_serialize.doctrine_subscriber.class: Oro\Bundle\WorkflowBundle\EventListener\WorkflowDataSerializeSubscriber
+    oro_workflow.serializer.data.serializer.class: Oro\Bundle\WorkflowBundle\Serializer\WorkflowDataSerializer
+    oro_workflow.serializer.data.normalizer.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowDataNormalizer
+    oro_workflow.serializer.data.attribute_normalizer.standard.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\StandardAttributeNormalizer
+    oro_workflow.serializer.data.attribute_normalizer.entity.class: Oro\Bundle\WorkflowBundle\Serializer\Normalizer\EntityAttributeNormalizer
+    oro_workflow.serializer.data.doctrine_subscriber.class: Oro\Bundle\WorkflowBundle\EventListener\WorkflowDataSerializeSubscriber
+
+    oro_workflow.serializer.handler.workflow_result.class: Oro\Bundle\WorkflowBundle\Serializer\Handler\WorkflowResultHandler
 
 services:
     # Services for WorkflowData serialization
-    oro_workflow.data_serialize.serializer:
-        class: %oro_workflow.data_serialize.serializer.class%
+    oro_workflow.serializer.data.serializer:
+        class: %oro_workflow.serializer.data.serializer.class%
         arguments:
-          - [@oro_workflow.data_serialize.normalizer]
+          - [@oro_workflow.serializer.data.normalizer]
           - [@serializer.encoder.json]
         calls:
           - [setWorkflowRegistry, [@oro_workflow.registry]]
 
-    oro_workflow.data_serialize.normalizer:
-        class: %oro_workflow.data_serialize.normalizer.class%
+    oro_workflow.serializer.data.normalizer:
+        class: %oro_workflow.serializer.data.normalizer.class%
 
-    oro_workflow.data_serialize.attribute_normalizer.standard:
-        class: %oro_workflow.data_serialize.attribute_normalizer.standard.class%
+    oro_workflow.serializer.data.attribute_normalizer.standard:
+        class: %oro_workflow.serializer.data.attribute_normalizer.standard.class%
         tags:
             - { name: oro_workflow.attribute_normalizer }
 
-    oro_workflow.data_serialize.attribute_normalizer.entity:
-        class: %oro_workflow.data_serialize.attribute_normalizer.entity.class%
+    oro_workflow.serializer.data.attribute_normalizer.entity:
+        class: %oro_workflow.serializer.data.attribute_normalizer.entity.class%
         arguments:
             - @doctrine
             - @oro_workflow.metadata_manager
         tags:
             - { name: oro_workflow.attribute_normalizer }
 
-    oro_workflow.data_serialize.doctrine_subscriber:
-        class: %oro_workflow.data_serialize.doctrine_subscriber.class%
+    oro_workflow.serializer.data.doctrine_subscriber:
+        class: %oro_workflow.serializer.data.doctrine_subscriber.class%
         arguments:
-            - @oro_workflow.data_serialize.serializer
+            - @oro_workflow.serializer.data.serializer
         tags:
             - { name: doctrine.event_subscriber }
+
+    oro_workflow.serializer.handler.workflow_result:
+        class: %oro_workflow.serializer.handler.workflow_result.class%
+        arguments:
+            - @oro_workflow.metadata_manager
+        tags:
+            -
+              name: jms_serializer.handler
+              method: workflowResultToJson
+              type: %oro_workflow.workflow_result.class%
+              format: json
+              direction: serialization
