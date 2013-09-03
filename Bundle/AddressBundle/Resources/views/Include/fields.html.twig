@@ -20,6 +20,7 @@
         require(['jquery', 'oro/region/view', 'oro/region/collection'],
         function($, RegionView, RegionCollection){
             $(function() {
+                /** @type oro.region.View */
                 new RegionView({
                     el: $('{{ country_field }}'),
                     target: $('#{{ id }}'),

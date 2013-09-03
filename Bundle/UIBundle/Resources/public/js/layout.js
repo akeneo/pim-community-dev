@@ -79,7 +79,7 @@ function($, __) {
 
         styleForm: function(container) {
             if ($.isPlainObject($.uniform)) {
-                var elements = $(container).find('input:file, select:not(.select2-offscreen)');
+                var elements = $(container).find('input:file, select:not(.select2)');
                 elements.uniform();
                 elements.trigger('uniformInit');
             }

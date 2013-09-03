@@ -9,7 +9,7 @@ function(_, Backbone, app, error, AbstractWidget, StateModel) {
      * @class   oro.DialogWidget
      * @extends oro.AbstractWidget
      */
-    return AbstractWidget.extend({
+    var DialogWidget = AbstractWidget.extend({
         options: _.extend({}, AbstractWidget.prototype.options, {
             type: 'dialog',
             dialogOptions: null,
@@ -211,4 +211,6 @@ function(_, Backbone, app, error, AbstractWidget, StateModel) {
             };
         }
     });
+
+    return DialogWidget;
 });

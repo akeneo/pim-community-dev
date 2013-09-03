@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'oro/app', 'oro/translator', 'oro/modal', 'oro/datagrid/model-action'],
-function(_, app, __, Modal, ModelAction) {
+define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/datagrid/model-action'],
+function(_, messenger, __, Modal, ModelAction) {
     'use strict';
 
     /**
@@ -38,7 +38,7 @@ function(_, app, __, Modal, ModelAction) {
                 },
                 success: function() {
                     var messageText = __('Item was deleted');
-                    app.NotificationFlashMessage('success', messageText);
+                    messenger.notificationFlashMessage('success', messageText);
                 }
             });
         },

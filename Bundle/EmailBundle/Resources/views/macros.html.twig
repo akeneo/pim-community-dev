@@ -42,7 +42,7 @@
 
 {% macro renderPreviewDialog(formName, title) %}
     <script type="text/javascript">
-        require(['jquery', 'underscore', 'oro/translate', 'oro/modal', 'jquery.bind-first'],
+        require(['jquery', 'underscore', 'oro/translator', 'oro/modal', 'jquery.bind-first'],
         function($, _, __, Modal){
             $(function () {
                 var showEmailPreviewDialog = function(el) {

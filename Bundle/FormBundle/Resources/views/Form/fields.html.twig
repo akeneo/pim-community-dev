@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block genemu_jqueryselect2_row %}
-    {{ form_row(form) }}
+    {{ form_row(form, { 'attr': {'class': 'select2'} }) }}
     {{ form_javascript(form) }}
 {% endblock %}
 

@@ -1,5 +1,14 @@
 /* jshint browser:true */
 /* global require */
+require(['oro/mediator'],
+function(mediator) {
+    mediator.once('tab:changed', function() {
+        setTimeout(function() {
+            // emulates 'document ready state' for selenium tests
+            document['page-rendered'] = true;
+        }, 50);
+    });
+});
 require(['jquery', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout', 'oro/navigation', 'oro/modal',
     'bootstrap', 'jquery-ui', 'jquery-ui-timepicker'],
 function($, __, app, mediator, layout, Navigation, Modal) {
@@ -268,8 +277,7 @@ function($, __, app, mediator, layout, Navigation, Modal) {
     $(document).on('click', '.add-list-item', function (e) {
         e.preventDefault();
         var cList  = $(this).siblings('.collection-fields-list'),
-            cCount = cList.children().length,
-            widget = cList.attr('data-prototype').replace(/__name__/g, cCount + 1),
+            widget = cList.attr('data-prototype').replace(/__name__/g, cList.children().length),
             data = $('<div/>').html(widget);
 
         data.children().appendTo(cList);

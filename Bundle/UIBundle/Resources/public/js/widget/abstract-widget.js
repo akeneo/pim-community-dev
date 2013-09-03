@@ -1,7 +1,7 @@
 /* jshint devel:true*/
-/* global define */
+/* global define, require */
 define(['jquery', 'underscore', 'backbone', 'oro/widget-manager'],
-function($, _, Backbone, widgetManager) {
+function($, _, Backbone) {
     'use strict';
 
     /**
@@ -28,7 +28,8 @@ function($, _, Backbone, widgetManager) {
         },
 
         remove: function() {
-            widgetManager.removeWidget(this.getWid());
+            // cause that's circular dependency
+            require('oro/widget-manager').removeWidget(this.getWid());
             Backbone.View.prototype.remove.call(this);
         },
 

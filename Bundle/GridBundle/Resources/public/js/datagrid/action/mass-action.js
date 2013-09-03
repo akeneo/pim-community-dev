@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'oro/app', 'oro/translator', 'oro/modal', 'oro/datagrid/abstract-action'],
-function(_, app, __, Modal, AbstractAction) {
+define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/datagrid/abstract-action'],
+function(_, messenger, __, Modal, AbstractAction) {
     'use strict';
 
     /**
@@ -32,7 +32,7 @@ function(_, app, __, Modal, AbstractAction) {
         execute: function() {
             var selectionState = this.datagrid.getSelectionState();
             if (_.isEmpty(selectionState.selectedModels) && selectionState.inset) {
-                app.NotificationFlashMessage('warning', this.messages.empty_selection);
+                messenger.notificationFlashMessage('warning', this.messages.empty_selection);
             } else {
                 AbstractAction.prototype.execute.call(this);
             }

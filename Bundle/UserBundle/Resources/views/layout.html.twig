@@ -43,6 +43,13 @@
     </script>
     <script type="text/javascript" src="{{ asset('bundles/oroui/lib/require.js') }}"></script>
     <script type="text/javascript">
+        require(['jquery'],
+        function($) {
+            $(function() {
+                // emulates 'document ready state' for selenium tests
+                document['page-rendered'] = true;
+            });
+        });
         require(['jquery', 'bootstrap', 'oro/init-layout', 'oro/init-signin'])
     </script>
 

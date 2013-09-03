@@ -162,7 +162,7 @@
             {% endfor %}
         {% endif %}
 
-        {% if statistics is not empty %}
+        {# % if statistics is not empty %}
         <h3>{{ 'oro.cron.header.statistics'|trans }}</h3>
         <div id="statistics" style="width:900px; height:300px;"></div>
         <script type="text/javascript">
@@ -170,8 +170,8 @@
             Oro.Job = Oro.Job || {};
             Oro.Job.statistics = {{ statistics|json_encode|raw }};
         </script>
-        {% endif %}
         </div>
+        {% endif % #}
     </div>
 </div>
 {% endblock %}

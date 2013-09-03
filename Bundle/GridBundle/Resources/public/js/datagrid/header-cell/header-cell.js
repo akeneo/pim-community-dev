@@ -100,7 +100,7 @@ function ($, _, Backbone, Backgrid) {
                         if (leftVal === rightVal) {
                             return 0;
                         }
-                        else if (leftVal > rightVal) { return -1; }
+                        else if (leftVal.toLowerCase() > rightVal.toLowerCase()) { return -1; }
                         return 1;
                     });
                 }
@@ -114,7 +114,7 @@ function ($, _, Backbone, Backgrid) {
                         if (leftVal === rightVal) {
                             return 0;
                         }
-                        else if (leftVal < rightVal) { return -1; }
+                        else if (leftVal.toLowerCase() < rightVal.toLowerCase()) { return -1; }
                         return 1;
                     });
                 }

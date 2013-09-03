@@ -149,6 +149,7 @@ function(_, Backbone, Url, routing, Navigation, mediator) {
         filterUrl: function() {
             var self = this,
                 url = window.location,
+                // cause that's circular dependency
                 navigation = require('oro/navigation').getInstance();
             if (navigation) {
                 url = new Url(navigation.getHashUrl());
