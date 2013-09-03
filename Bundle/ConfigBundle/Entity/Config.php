@@ -41,7 +41,7 @@ class Config
      *
      * @ORM\Column(name="settings", type="json_array")
      */
-    protected $settings;
+    protected $values;
 
     /**
      * Get id
@@ -104,20 +104,20 @@ class Config
      *
      * @return array Entity related settings
      */
-    public function getSettings()
+    public function getValues()
     {
-        return $this->settings;
+        return $this->values;
     }
 
     /**
      * Pass an associative array of settings => values and re-set settings with new ones.
      *
-     * @param  array  $settings Array of setting => value pairs
+     * @param array $values Array of setting => value pairs
      * @return Config
      */
-    public function setSettings(array $settings)
+    public function setValues(array $values)
     {
-        $this->settings = $settings;
+        $this->values = $values;
 
         return $this;
     }
