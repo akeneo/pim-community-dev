@@ -57,6 +57,7 @@ class StartWorkflowTest extends \PHPUnit_Framework_TestCase
                 'workflowName' => 'acmeWorkflow',
                 'entityValue' => new \DateTime('now'),
                 'startTransition' => 'acmeStartTransition',
+                'someKey' => 'someValue'
             )
         );
 
@@ -78,9 +79,15 @@ class StartWorkflowTest extends \PHPUnit_Framework_TestCase
                     'attribute' => new PropertyPath('workflowItem'),
                     'entity' => new PropertyPath('entityValue'),
                     'transition' => $actualContext->startTransition,
+                    'data' => array(
+                        'plainData' => 'plainDataValue',
+                    )
                 ),
                 'actualContext' => $actualContext,
                 'expectedContext' => $expectedContext,
+                'expectedData' => array(
+                    'plainData' => 'plainDataValue',
+                )
             ),
             'maximum property path options' => array(
                 'options' => array(
@@ -88,9 +95,15 @@ class StartWorkflowTest extends \PHPUnit_Framework_TestCase
                     'attribute' => new PropertyPath('workflowItem'),
                     'entity' => new PropertyPath('entityValue'),
                     'transition' => new PropertyPath('startTransition'),
+                    'data' => array(
+                        'propertyData' => new PropertyPath('someKey'),
+                    ),
                 ),
                 'actualContext' => $actualContext,
                 'expectedContext' => $expectedContext,
+                'expectedData' => array(
+                    'propertyData' => $expectedContext->someKey,
+                ),
             ),
         );
     }
@@ -149,10 +162,15 @@ class StartWorkflowTest extends \PHPUnit_Framework_TestCase
      * @param array $options
      * @param ItemStub $actualContext
      * @param ItemStub $expectedContext
+     * @param array $expectedData
      * @dataProvider optionsDataProvider
      */
-    public function testExecute(array $options, ItemStub $actualContext, ItemStub $expectedContext)
-    {
+    public function testExecute(
+        array $options,
+        ItemStub $actualContext,
+        ItemStub $expectedContext,
+        array $expectedData = array()
+    ) {
         $expectedWorkflowName = $expectedContext->workflowName;
         $expectedEntity = !empty($options['entity']) ? $expectedContext->entityValue : null;
         $expectedTransition = !empty($options['transition']) ? $expectedContext->startTransition : null;
@@ -160,7 +178,7 @@ class StartWorkflowTest extends \PHPUnit_Framework_TestCase
 
         $this->workflowManager->expects($this->once())
             ->method('startWorkflow')
-            ->with($expectedWorkflowName, $expectedEntity, $expectedTransition)
+            ->with($expectedWorkflowName, $expectedEntity, $expectedTransition, $expectedData)
             ->will($this->returnValue($expectedWorkflowItem));
 
         $this->postAction->initialize($options);

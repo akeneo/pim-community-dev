@@ -37,6 +37,7 @@ class StartWorkflow extends AbstractPostAction
      *  - attribute - property path used to save created workflow item
      *  - entity (optional) - attribute with entity used to start workflow
      *  - transition (optional) - start transition name (can be an attribute)
+     *  - data (optional) - list of additional workflow item parameters
      *
      * {@inheritDoc}
      */
@@ -70,8 +71,9 @@ class StartWorkflow extends AbstractPostAction
         $workflowName = $this->getName($context);
         $entity = $this->getEntity($context);
         $startTransition = $this->getTransition($context);
+        $data = $this->getData($context);
 
-        $workflowItem = $this->workflowManager->startWorkflow($workflowName, $entity, $startTransition);
+        $workflowItem = $this->workflowManager->startWorkflow($workflowName, $entity, $startTransition, $data);
         $attribute = $this->getAttribute();
         $this->contextAccessor->setValue($context, $attribute, $workflowItem);
     }
@@ -123,5 +125,20 @@ class StartWorkflow extends AbstractPostAction
         }
 
         return $this->contextAccessor->getValue($context, $this->options['transition']);
+    }
+
+    /**
+     * @param mixed $context
+     * @return array
+     */
+    protected function getData($context)
+    {
+        $data = !empty($this->options['data']) ? $this->options['data'] : array();
+
+        foreach ($data as $key => $value) {
+            $data[$key] = $this->contextAccessor->getValue($context, $value);
+        }
+
+        return $data;
     }
 }

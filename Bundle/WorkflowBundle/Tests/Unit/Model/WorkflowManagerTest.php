@@ -144,12 +144,14 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
     public function testStartWorkflow()
     {
         $transition = 'test_transition';
+        $workflowData = array('key' => 'value');
         $workflowItem = new WorkflowItem();
+        $workflowItem->getData()->add($workflowData);
 
         $workflow = $this->createWorkflow();
         $workflow->expects($this->once())
             ->method('start')
-            ->with(array(), $transition)
+            ->with($workflowData, $transition)
             ->will($this->returnValue($workflowItem));
 
         $entityManager = $this->createEntityManager();
@@ -167,10 +169,10 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getManager')
             ->will($this->returnValue($entityManager));
 
-        $this->assertEquals(
-            $workflowItem,
-            $this->workflowManager->startWorkflow($workflow, null, $transition)
-        );
+        $actualWorkflowItem = $this->workflowManager->startWorkflow($workflow, null, $transition, $workflowData);
+
+        $this->assertEquals($workflowItem, $actualWorkflowItem);
+        $this->assertEquals($workflowData, $actualWorkflowItem->getData()->getValues());
     }
 
     /**
