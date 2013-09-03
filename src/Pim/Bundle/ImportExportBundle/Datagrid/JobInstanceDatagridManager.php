@@ -8,7 +8,6 @@ use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Oro\Bundle\GridBundle\Property\FieldProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
@@ -44,22 +43,12 @@ class JobInstanceDatagridManager extends DatagridManager
      */
     protected function getProperties()
     {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
-            array(
-                'type'     => FieldDescriptionInterface::TYPE_INTEGER,
-                'required' => true,
-            )
-        );
-
         // prepare route names
         $editLink   = sprintf('pim_importexport_%s_edit', $this->jobType);
         $showLink   = sprintf('pim_importexport_%s_show', $this->jobType);
         $deleteLink = sprintf('pim_importexport_%s_remove', $this->jobType);
 
         return array(
-            new FieldProperty($fieldId),
             new UrlProperty('edit_link', $this->router, $editLink, array('id')),
             new UrlProperty('show_link', $this->router, $showLink, array('id')),
             new UrlProperty('delete_link', $this->router, $deleteLink, array('id'))
