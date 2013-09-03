@@ -187,6 +187,9 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
         $token->expects($this->any())
             ->method('getUser')
             ->will($this->returnValue('anon'));
+        $this->securityContext->expects($this->any())
+            ->method('getToken')
+            ->will($this->returnValue($token));
         $this->assertNull($this->builder->getUserId());
     }
 
