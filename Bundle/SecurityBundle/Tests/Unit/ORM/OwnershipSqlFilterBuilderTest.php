@@ -55,16 +55,21 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $this->securityContextLink = $this->getMockBuilder(
+            'Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink'
+        )->disableOriginalConstructor()->getMock();
+        $this->securityContextLink->expects($this->any())->method('getService')
+            ->will($this->returnValue($this->securityContext));
         $this->aclVoter = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter')
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->builder = new OwnershipSqlFilterBuilder(
-            $this->securityContext,
-            $this->aclVoter,
+            $this->securityContextLink,
             new ObjectIdAccessor(),
             $this->metadataProvider,
-            $this->tree
+            $this->tree,
+            $this->aclVoter
         );
     }
 
@@ -145,7 +150,7 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
 
         /** @var OneShotIsGrantedObserver $aclObserver */
         $aclObserver = null;
-        $this->aclVoter->expects($this->once())
+        $this->aclVoter->expects($this->any())
             ->method('addOneShotIsGrantedObserver')
             ->will(
                 $this->returnCallback(
@@ -162,13 +167,13 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
         $token->expects($this->any())
             ->method('getUser')
             ->will($this->returnValue($user));
-        $this->securityContext->expects($this->once())
+        $this->securityContext->expects($this->any())
             ->method('isGranted')
             ->with($this->equalTo('VIEW'), $this->equalTo('entity:' . $targetEntityClassName))
             ->will($this->returnValue($isGranted));
         $this->securityContext->expects($this->any())
             ->method('getToken')
-            ->will($this->returnValue($token));
+            ->will($this->returnValue($userId ? $token : null));
 
         $this->assertEquals(
             $expectedConstraint,
@@ -182,8 +187,8 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
     public static function buildFilterConstraintProvider()
     {
         return array(
-            array('', false, AccessLevel::UNDEFINED, null, self::TEST_ENTITY, '', '1 = 0'),
-            array('', false, AccessLevel::UNDEFINED, null, self::TEST_ENTITY, 't', "'t' = ''"),
+            array('', false, AccessLevel::UNDEFINED, null, self::TEST_ENTITY, '', ''),
+            array('', false, AccessLevel::UNDEFINED, null, self::TEST_ENTITY, 't', ''),
             array('', true, AccessLevel::UNDEFINED, null, '\stdClass', '', ''),
             array('user4', true, AccessLevel::SYSTEM_LEVEL, null, self::TEST_ENTITY, '', ''),
             array('user4', true, AccessLevel::SYSTEM_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', ''),
