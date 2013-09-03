@@ -21,7 +21,7 @@ use Pim\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @Acl(
- *      id="pim_importexport_job",
+ *      id="pim_importexport_jobinstance",
  *      name="Import/export profile manipulation",
  *      description="Import/export profile manipulation",
  *      parent="pim_importexport"
@@ -34,10 +34,10 @@ class JobInstanceController extends Controller
      *
      * @param Request $request
      * @Acl(
-     *      id="pim_importexport_job_index",
+     *      id="pim_importexport_jobinstance_index",
      *      name="View import/export profile list",
      *      description="View import/export profile list",
-     *      parent="pim_importexport_job"
+     *      parent="pim_importexport_jobinstance"
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -66,10 +66,10 @@ class JobInstanceController extends Controller
      *
      * @param Request $request
      * @Acl(
-     *      id="pim_importexport_job_create",
+     *      id="pim_importexport_jobinstance_create",
      *      name="Create an import/export profile",
      *      description="Create an import/export profile",
-     *      parent="pim_importexport_job"
+     *      parent="pim_importexport_jobinstance"
      * )
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
      */
@@ -121,10 +121,10 @@ class JobInstanceController extends Controller
      *
      * @param integer $id
      * @Acl(
-     *      id="pim_importexport_job_show",
+     *      id="pim_importexport_jobinstance_show",
      *      name="View the configuration of an import/export profile",
      *      description="View the configuration of an import/export profile",
-     *      parent="pim_importexport_job"
+     *      parent="pim_importexport_jobinstance"
      * )
      * @return template
      */
@@ -169,10 +169,10 @@ class JobInstanceController extends Controller
      * @param Request $request
      * @param integer $id
      * @Acl(
-     *      id="pim_importexport_job_edit",
+     *      id="pim_importexport_jobinstance_edit",
      *      name="Edit the configuration of an import/export profile",
      *      description="Edit the configuration of an import/export profile",
-     *      parent="pim_importexport_job"
+     *      parent="pim_importexport_jobinstance"
      * )
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
      */
@@ -215,10 +215,10 @@ class JobInstanceController extends Controller
      * @param Request $request
      * @param integer $id
      * @Acl(
-     *      id="pim_importexport_job_edit",
+     *      id="pim_importexport_jobinstance_edit",
      *      name="Remove an import/export profile",
      *      description="Remove an import/export profile",
-     *      parent="pim_importexport_job"
+     *      parent="pim_importexport_jobinstance"
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -258,10 +258,10 @@ class JobInstanceController extends Controller
      * @param Request $request
      * @param integer $id
      * @Acl(
-     *      id="pim_importexport_job_launch",
+     *      id="pim_importexport_jobinstance_launch",
      *      name="Launch an import/export profile",
      *      description="Launch an import/export profile",
-     *      parent="pim_importexport_job"
+     *      parent="pim_importexport_jobinstance"
      * )
      * @return RedirectResponse
      */
