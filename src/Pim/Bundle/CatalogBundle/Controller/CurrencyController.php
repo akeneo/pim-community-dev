@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 
 /**
@@ -11,6 +12,13 @@ use Pim\Bundle\CatalogBundle\Entity\Currency;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Acl(
+ *      id="pim_catalog_currency",
+ *      name="Currency manipulation",
+ *      description="Currency manipulation",
+ *      parent="pim_catalog"
+ * )
  */
 class CurrencyController extends Controller
 {
@@ -18,7 +26,12 @@ class CurrencyController extends Controller
      * List currencies
      *
      * @param Request $request
-     *
+     * @Acl(
+     *      id="pim_catalog_currency_index",
+     *      name="View currency list",
+     *      description="View currency list",
+     *      parent="pim_catalog_currency"
+     * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -47,7 +60,12 @@ class CurrencyController extends Controller
      * Activate/Desactivate a currency
      *
      * @param Currency $currency
-     *
+     * @Acl(
+     *      id="pim_catalog_currency_toggle",
+     *      name="Change currency status",
+     *      description="Change currency status",
+     *      parent="pim_catalog_currency"
+     * )
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function toggleAction(Currency $currency)
