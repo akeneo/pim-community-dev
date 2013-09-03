@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 
 /**
@@ -13,6 +14,13 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Acl(
+ *      id="pim_catalog_locale",
+ *      name="Locale manipulation",
+ *      description="Locale manipulation",
+ *      parent="pim_catalog"
+ * )
  */
 class LocaleController extends Controller
 {
@@ -20,7 +28,12 @@ class LocaleController extends Controller
      * List locales
      *
      * @param Request $request
-     *
+     * @Acl(
+     *      id="pim_catalog_locale_index",
+     *      name="View locale list",
+     *      description="View locale list",
+     *      parent="pim_catalog_locale"
+     * )
      * @return Response
      */
     public function indexAction(Request $request)
@@ -51,6 +64,12 @@ class LocaleController extends Controller
      * @param Locale $locale
      *
      * @Template
+     * @Acl(
+     *      id="pim_catalog_locale_edit",
+     *      name="Edit a locale",
+     *      description="Edit a locale",
+     *      parent="pim_catalog_locale"
+     * )
      * @return array
      */
     public function editAction(Locale $locale)
@@ -73,7 +92,12 @@ class LocaleController extends Controller
      *
      * @param Request $request
      * @param Locale  $locale
-     *
+     * @Acl(
+     *      id="pim_catalog_locale_disable",
+     *      name="Disable a locale",
+     *      description="Disable a locale",
+     *      parent="pim_catalog_locale"
+     * )
      * @return Response
      */
     public function disableAction(Request $request, Locale $locale)
@@ -93,7 +117,12 @@ class LocaleController extends Controller
      *
      * @param Request $request
      * @param Locale  $locale
-     *
+     * @Acl(
+     *      id="pim_catalog_locale_enable",
+     *      name="Enable a locale",
+     *      description="Enable a locale",
+     *      parent="pim_catalog_locale"
+     * )
      * @return Response
      */
     public function enableAction(Request $request, Locale $locale)
