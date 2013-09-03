@@ -9,6 +9,6 @@ services:
             - name: oro_grid.datagrid.manager
               datagrid_name: emailtemplate
               entity_name: %oro_email.emailtemplate.entity.class%
-              entity_hint: email templates
+              entity_hint: email template
               route_name: oro_email_emailtemplate_index
               identifier_field: "id"

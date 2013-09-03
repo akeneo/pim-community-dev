@@ -15,8 +15,7 @@
                     </div>
                 </div>
                 <div class="controls">
-                    {{ form_widget(form.autocomplete) }}
-                    {{ form_javascript(form.autocomplete) }}
+                    {{ form_row(form.autocomplete) }}
                 </div>
             </div>
         {% endif %}
@@ -70,4 +69,9 @@
     {% if not resource_granted('oro_tag_create') %}
         select2Config.placeholder = '{{ 'oro.tag.form.choose_tag'|trans }}';
     {% endif %}
+{% endblock %}
+
+{% block oro_tag_autocomplete_row %}
+    {{ form_widget(form) }}
+    {{ form_javascript(form) }}
 {% endblock %}

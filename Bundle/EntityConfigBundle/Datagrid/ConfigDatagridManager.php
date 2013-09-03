@@ -25,6 +25,10 @@ use Oro\Bundle\GridBundle\Property\ActionConfigurationProperty;
 
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.NPathComplexity)
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ */
 class ConfigDatagridManager extends DatagridManager
 {
     /**

@@ -105,42 +105,36 @@ class VariableProviderTest extends \PHPUnit_Framework_TestCase
 
         // fields for entity
         $fieldsCollection = new ArrayCollection();
-        $this->configProvider->expects($this->at(1))->method('filter')
-            ->will(
-                $this->returnCallback(
-                    function ($callback) use ($fieldsCollection) {
-                        return $fieldsCollection->filter($callback)->toArray();
-                    }
-                )
-            );
+        $this->configProvider->expects($this->at(1))->method('filter')->will(
+            $this->returnCallback(
+                function ($callback) use ($fieldsCollection) {
+                    return $fieldsCollection->filter($callback)->toArray();
+                }
+            )
+        );
         $fieldsCollection[] = $field1;
         $fieldsCollection[] = $field2;
-
 
         if (!$entityIsUser) {
             $field3Id = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface')
                 ->disableOriginalConstructor()
                 ->getMock();
-            $field3Id->expects($this->any())
-                ->method('getFieldName')
-                ->will($this->returnValue('someAnotherCode'));
+            $field3Id->expects($this->any())->method('getFieldName')->will($this->returnValue('someAnotherCode'));
 
             $field3 = clone $field1;
-            $field3->expects($this->atLeastOnce())->method('is')
-                ->with('available_in_template')
+            $field3->expects($this->atLeastOnce())->method('is')->with('available_in_template')
                 ->will($this->returnValue(true));
             $field3->expects($this->atLeastOnce())->method('getId')
                 ->will($this->returnValue($field3Id));
 
-            $this->configProvider->expects($this->at(2))->method('filter')
-                ->will(
-                    $this->returnCallback(
-                        function ($callback) use ($fieldsCollection, $field3) {
-                            $fieldsCollection[] = $field3;
-                            return $fieldsCollection->filter($callback)->toArray();
-                        }
-                    )
-                );
+            $this->configProvider->expects($this->at(2))->method('filter')->will(
+                $this->returnCallback(
+                    function ($callback) use ($fieldsCollection, $field3) {
+                        $fieldsCollection[] = $field3;
+                        return $fieldsCollection->filter($callback)->toArray();
+                    }
+                )
+            );
 
             $result = $this->provider->getTemplateVariables(self::TEST_ENTITY_NAME);
         } else {

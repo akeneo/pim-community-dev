@@ -193,6 +193,9 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->builder->getUserId());
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public static function buildFilterConstraintProvider()
     {
         return array(

@@ -1,7 +1,7 @@
 oro_menu_config:
     items:
         oro_cron_job:
-            label: Job queue
+            label: Job Queue
             route: oro_cron_job_index
 
 
@@ -21,5 +21,5 @@ oro_menu_config:
                 oro_cron_job_shortcut: ~
 
 oro_titles:
-    oro_cron_job_index: Job queue
+    oro_cron_job_index: Job Queue
     oro_cron_job_view:  'Job "%%command%%" (ID: %%id%%)'

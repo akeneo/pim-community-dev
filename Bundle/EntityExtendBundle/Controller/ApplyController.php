@@ -73,7 +73,7 @@ class ApplyController extends Controller
                 continue;
             }
 
-            if (in_array($fieldConfig->get('state'), array('New', 'Updated', 'To be deleted'))) {
+            if (in_array($fieldConfig->get('state'), array('New', 'Requires update', 'To be deleted'))) {
                 if ($fieldConfig->get('state') == 'New') {
                     $isValid = true;
                 } else {

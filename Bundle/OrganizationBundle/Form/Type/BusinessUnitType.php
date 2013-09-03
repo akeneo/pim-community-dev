@@ -54,7 +54,7 @@ class BusinessUnitType extends AbstractType
                 'organization',
                 'entity',
                 array(
-                    'label'    => 'Organization',
+                    'label'    => 'Parent',
                     'class'    => 'OroOrganizationBundle:Organization',
                     'property' => 'name',
                     'required' => true,

@@ -11,6 +11,9 @@ use Oro\Bundle\SecurityBundle\Acl\Manager\Batch\BatchItem;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ */
 class AclManagerTest extends \PHPUnit_Framework_TestCase
 {
     /** @var AclManager */
