@@ -98,14 +98,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $columns = $this->getMainContext()->listToArray($columns);
 
         $expectedColumns = count($columns);
-        $countColumns    = $this->datagrid->countColumns() - 2;
+        $countColumns    = $this->datagrid->countColumns() - 1;
         if ($expectedColumns !== $countColumns) {
             throw $this->createExpectationException(
                 sprintf('Expected %d columns but contains %d', $expectedColumns, $countColumns)
             );
         }
 
-        $expectedPosition = 1;
+        $expectedPosition = 0;
         foreach ($columns as $column) {
             $position = $this->datagrid->getColumnPosition(strtoupper($column));
             if ($expectedPosition++ !== $position) {
