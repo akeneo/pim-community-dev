@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\Controller\AbstractDoctrineController;
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;

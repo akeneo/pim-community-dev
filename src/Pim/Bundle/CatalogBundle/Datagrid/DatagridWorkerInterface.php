@@ -6,6 +6,7 @@ use Oro\Bundle\GridBundle\Datagrid\DatagridManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 
 /**
+ * Shortcut methods used to manage datagrids
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
