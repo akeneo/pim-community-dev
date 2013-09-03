@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
@@ -13,6 +14,13 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Acl(
+ *      id="pim_catalog_channel",
+ *      name="Channel manipulation",
+ *      description="Channel manipulation",
+ *      parent="pim_catalog"
+ * )
  */
 class ChannelController extends Controller
 {
@@ -22,6 +30,12 @@ class ChannelController extends Controller
      * @param Request $request
      *
      * @Template
+     * @Acl(
+     *      id="pim_catalog_channel_index",
+     *      name="View channel list",
+     *      description="View channel list",
+     *      parent="pim_catalog_channel"
+     * )
      * @return Response
      */
     public function indexAction(Request $request)
@@ -50,6 +64,12 @@ class ChannelController extends Controller
      * Create channel
      *
      * @Template("PimCatalogBundle:Channel:edit.html.twig")
+     * @Acl(
+     *      id="pim_catalog_channel_create",
+     *      name="Create a channel",
+     *      description="Create a channel",
+     *      parent="pim_catalog_channel"
+     * )
      * @return array
      */
     public function createAction()
@@ -65,6 +85,12 @@ class ChannelController extends Controller
      * @param Channel $channel
      *
      * @Template
+     * @Acl(
+     *      id="pim_catalog_channel_edit",
+     *      name="Edit a channel",
+     *      description="Edit a channel",
+     *      parent="pim_catalog_channel"
+     * )
      * @return array
      */
     public function editAction(Channel $channel)
@@ -87,7 +113,12 @@ class ChannelController extends Controller
      *
      * @param Request $request
      * @param Channel $channel
-     *
+     * @Acl(
+     *      id="pim_catalog_channel_remove",
+     *      name="Remove a channel",
+     *      description="Remove a channel",
+     *      parent="pim_catalog_channel"
+     * )
      * @return Response
      */
     public function removeAction(Request $request, Channel $channel)
