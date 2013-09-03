@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Pim\Bundle\CatalogBundle\Controller\Controller;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 use Pim\Bundle\BatchBundle\Entity\JobInstance;
@@ -18,6 +19,13 @@ use Pim\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Acl(
+ *      id="pim_importexport_job",
+ *      name="Import/export profile manipulation",
+ *      description="Import/export profile manipulation",
+ *      parent="pim_importexport"
+ * )
  */
 class JobInstanceController extends Controller
 {
@@ -25,7 +33,12 @@ class JobInstanceController extends Controller
      * List the jobs instances
      *
      * @param Request $request
-     *
+     * @Acl(
+     *      id="pim_importexport_job_index",
+     *      name="View import/export profile list",
+     *      description="View import/export profile list",
+     *      parent="pim_importexport_job"
+     * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -52,7 +65,12 @@ class JobInstanceController extends Controller
      * Create a job instance
      *
      * @param Request $request
-     *
+     * @Acl(
+     *      id="pim_importexport_job_create",
+     *      name="Create an import/export profile",
+     *      description="Create an import/export profile",
+     *      parent="pim_importexport_job"
+     * )
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
      */
     public function createAction(Request $request)
@@ -102,7 +120,12 @@ class JobInstanceController extends Controller
      * Show a job instance
      *
      * @param integer $id
-     *
+     * @Acl(
+     *      id="pim_importexport_job_show",
+     *      name="View the configuration of an import/export profile",
+     *      description="View the configuration of an import/export profile",
+     *      parent="pim_importexport_job"
+     * )
      * @return template
      */
     public function showAction($id)
@@ -145,7 +168,12 @@ class JobInstanceController extends Controller
      *
      * @param Request $request
      * @param integer $id
-     *
+     * @Acl(
+     *      id="pim_importexport_job_edit",
+     *      name="Edit the configuration of an import/export profile",
+     *      description="Edit the configuration of an import/export profile",
+     *      parent="pim_importexport_job"
+     * )
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
      */
     public function editAction(Request $request, $id)
@@ -186,7 +214,12 @@ class JobInstanceController extends Controller
      *
      * @param Request $request
      * @param integer $id
-     *
+     * @Acl(
+     *      id="pim_importexport_job_edit",
+     *      name="Remove an import/export profile",
+     *      description="Remove an import/export profile",
+     *      parent="pim_importexport_job"
+     * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function removeAction(Request $request, $id)
@@ -224,7 +257,12 @@ class JobInstanceController extends Controller
      *
      * @param Request $request
      * @param integer $id
-     *
+     * @Acl(
+     *      id="pim_importexport_job_launch",
+     *      name="Launch an import/export profile",
+     *      description="Launch an import/export profile",
+     *      parent="pim_importexport_job"
+     * )
      * @return RedirectResponse
      */
     public function launchAction(Request $request, $id)
