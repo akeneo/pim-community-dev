@@ -8,7 +8,7 @@ var OroAddressView = Backbone.View.extend({
     events: {
         'click': 'activate',
         'click button:has(.icon-remove)': 'close',
-        'click button:has(.icon-edit)': 'edit'
+        'click button:has(.icon-pencil)': 'edit'
     },
 
     initialize: function() {
