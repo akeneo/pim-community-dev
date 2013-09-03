@@ -1,0 +1,8 @@
+{% extends 'PimCatalogBundle::layout.html.twig' %}
+
+{% block content %}
+<form action="{{ path('pim_catalog_product_batch_edit') }}" method="POST" class="form-horizontal">
+        {{ form_widget(form) }}
+        <input type="submit" value="Continue &rarr;" class="btn">
+    </form>
+{% endblock %}

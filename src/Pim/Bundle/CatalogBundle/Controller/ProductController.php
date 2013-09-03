@@ -9,6 +9,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
+use Pim\Bundle\CatalogBundle\Form\Type\BatchProductType;
+use Pim\Bundle\CatalogBundle\Model\BatchProduct;
 
 /**
  * Product Controller
@@ -286,6 +288,24 @@ class ProductController extends Controller
         $treesData = CategoryHelper::listCategoriesResponse($trees, $categories);
 
         return array('trees' => $treesData);
+    }
+
+    /**
+     * @Template
+     */
+    public function batchEditAction(Request $request)
+    {
+        $batchProduct = new BatchProduct;
+
+        $form = $this->createForm(new BatchProductType, $batchProduct, array(
+            'csrf_protection' => false,
+        ));
+
+        $form->submit($request);
+
+        return array(
+            'form' => $form->createView(),
+        );
     }
 
     /**
