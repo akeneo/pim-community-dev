@@ -3,7 +3,6 @@
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction;
 
 use Symfony\Component\PropertyAccess\PropertyPath;
-use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\WorkflowBundle\Model\PostAction\StartWorkflow;
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;

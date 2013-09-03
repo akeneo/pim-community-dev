@@ -133,7 +133,7 @@ class StartWorkflow extends AbstractPostAction
      */
     protected function getData($context)
     {
-        $data = !empty($this->options['data']) ? $this->options['data'] : array();
+        $data = $this->getOption($this->options, 'data', array());
 
         foreach ($data as $key => $value) {
             $data[$key] = $this->contextAccessor->getValue($context, $value);

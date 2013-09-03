@@ -9,6 +9,7 @@ parameters:
     oro_workflow.post_action.request_entity.class: Oro\Bundle\WorkflowBundle\Model\PostAction\RequestEntity
     oro_workflow.post_action.call_method.class: Oro\Bundle\WorkflowBundle\Model\PostAction\CallMethod
     oro_workflow.post_action.start_workflow.class: Oro\Bundle\WorkflowBundle\Model\PostAction\StartWorkflow
+    oro_workflow.post_action.redirect.class: Oro\Bundle\WorkflowBundle\Model\PostAction\Redirect
 
 services:
     oro_workflow.post_action_factory:
@@ -75,3 +76,12 @@ services:
             - @oro_workflow.manager
         tags:
             - { name: oro_workflow.post_action, alias: start_workflow }
+
+    oro_workflow.post_action.redirect:
+        class: %oro_workflow.post_action.redirect.class%
+        arguments:
+            - @oro_workflow.context_accessor
+            - @router
+            - 'result.redirectUrl'
+        tags:
+            - { name: oro_workflow.post_action, alias: redirect }
