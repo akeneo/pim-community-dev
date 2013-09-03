@@ -39,7 +39,12 @@
 
                 {% set buttons %}
                     {% if form.vars.value.id %}
-                        {{ elements.deleteLink(path('pim_catalog_categorytree_remove', { id: form.vars.value.id }), 'Are you sure you want to delete this category ?'|trans) }}
+                        {{ elements.deleteLink(
+                            path('pim_catalog_categorytree_remove', { id: form.vars.value.id }),
+                            'Are you sure you want to delete this category ?'|trans ~ '<br />'
+                            ~ 'All sub-categories will be deleted !'|trans ~ '<br />'
+                            ~ 'All products contained in all categories will not be removed but they will no more be classified in these categories !'|trans
+                        ) }}
                     {% endif %}
                     {{ elements.submitBtn }}
                 {% endset %}
