@@ -36,6 +36,8 @@ http://getcomposer.org/ or just run the following command:
 
 - Initialize application with install script : init-db.sh
 
+- Deploy assets : assets.sh
+
 After installation you can login as application administrator using user name "admin" and password "admin".
 
 Checking your System Configuration

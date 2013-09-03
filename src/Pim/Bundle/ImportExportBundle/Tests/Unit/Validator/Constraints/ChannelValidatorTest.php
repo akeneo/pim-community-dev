@@ -17,7 +17,8 @@ class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
-        $this->validator = new ChannelValidator($this->getChannelManagerMock());
+        $this->manager = $this->getChannelManagerMock();
+        $this->validator = new ChannelValidator($this->manager);
         $this->validator->initialize($this->context);
     }
 
@@ -28,6 +29,10 @@ class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testValidChannel()
     {
+        $this->manager->expects($this->any())
+            ->method('getChannelChoices')
+            ->will($this->returnValue(array('foo' => 'bar')));
+
         $this->context->expects($this->never())
             ->method('addViolation');
 
@@ -36,6 +41,10 @@ class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidChannel()
     {
+        $this->manager->expects($this->any())
+            ->method('getChannelChoices')
+            ->will($this->returnValue(array('foo' => 'bar')));
+
         $constraint = new Channel();
         $this->context->expects($this->once())
             ->method('addViolation')
@@ -44,16 +53,21 @@ class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate('baz', $constraint);
     }
 
-    private function getChannelManagerMock()
+    /**
+     * @expectedException Symfony\Component\Validator\Exception\ConstraintDefinitionException
+     * @expectedExceptionMessage No channel is set in the application
+     */
+    public function testInvalidInitialization()
+    {
+        $this->validator->validate('foo', new Channel);
+    }
+
+    private function getChannelManagerMock($channels = array())
     {
         $manager = $this
             ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $manager->expects($this->any())
-            ->method('getChannelChoices')
-            ->will($this->returnValue(array('foo' => 'Foo', 'bar' => 'Bar',)));
 
         return $manager;
     }

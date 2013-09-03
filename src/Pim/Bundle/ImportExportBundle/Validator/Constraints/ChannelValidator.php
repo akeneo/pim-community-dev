@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraints\ChoiceValidator;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 /**
  * Validate that the selected channel exists
@@ -30,7 +31,11 @@ class ChannelValidator extends ChoiceValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        $constraint->choices = array_keys($this->manager->getChannelChoices());
+        $channels = $this->manager->getChannelChoices();
+        if (0 === count($channels)) {
+            throw new ConstraintDefinitionException('No channel is set in the application');
+        }
+        $constraint->choices = array_keys($channels);
 
         parent::validate($value, $constraint);
     }
