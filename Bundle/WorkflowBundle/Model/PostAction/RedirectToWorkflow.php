@@ -34,25 +34,32 @@ class RedirectToWorkflow implements PostActionInterface
 
     /**
      * Allowed options:
-     *  - workflow_item - attribute that contains WorklfowItem to perform redirect
+     *  - workflow_item|0 - attribute that contains WorklfowItem to perform redirect
      *
      * {@inheritDoc}
      */
     public function initialize(array $options)
     {
-        if (empty($options['workflow_item'])) {
+        if (empty($options['workflow_item']) && empty($options[0])) {
             throw new InvalidParameterException('Workflow item parameter is required');
         }
-        if (!$options['workflow_item'] instanceof PropertyPath) {
-            throw new InvalidParameterException('Workflow item must be valid property definition');
+
+        if (!empty($options['workflow_item'])) {
+            $workflowItemProperty = $options['workflow_item'];
+            unset($options['workflow_item']);
+        } else {
+            $workflowItemProperty = $options[0];
+            unset($options[0]);
         }
 
-        $workflowItemPath = (string)$options['workflow_item'];
+        if (!$workflowItemProperty instanceof PropertyPath) {
+            throw new InvalidParameterException('Workflow item must be valid property definition');
+        }
 
         // route parameters to generate URL that leads to workflow item edit page
         $options['route'] = 'oro_workflow_step_edit';
         $options['route_parameters'] = array(
-            'id' => new PropertyPath($workflowItemPath . '.id')
+            'id' => new PropertyPath((string)$workflowItemProperty . '.id')
         );
 
         $this->redirectAction->initialize($options);

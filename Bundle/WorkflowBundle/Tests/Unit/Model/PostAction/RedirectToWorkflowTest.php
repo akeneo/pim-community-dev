@@ -34,26 +34,44 @@ class RedirectToWorkflowTest extends \PHPUnit_Framework_TestCase
         unset($this->postAction);
     }
 
-    public function testInitialize()
+    /**
+     * @param array $inputOptions
+     * @param array $expectedOptions
+     * @dataProvider initializeDataProvider
+     */
+    public function testInitialize(array $inputOptions, array $expectedOptions)
     {
-        $inputOptions = array(
-            'workflow_item' => new PropertyPath('data.workflow_item')
-        );
-        $expectedOptions = array_merge(
-            $inputOptions,
-            array(
-                'route' => 'oro_workflow_step_edit',
-                'route_parameters' => array(
-                    'id' => new PropertyPath('data.workflow_item.id')
-                ),
-            )
-        );
-
         $this->parentPostAction->expects($this->once())
             ->method('initialize')
             ->with($expectedOptions);
 
         $this->postAction->initialize($inputOptions);
+    }
+
+    /**
+     * @return array
+     */
+    public function initializeDataProvider()
+    {
+        $workflowPropertyPath = new PropertyPath('data.workflow_item');
+
+        $expectedOptions = array(
+            'route' => 'oro_workflow_step_edit',
+            'route_parameters' => array(
+                'id' => new PropertyPath('data.workflow_item.id')
+            ),
+        );
+
+        return array(
+            'string property' => array(
+                'inputOptions' => array('workflow_item' => $workflowPropertyPath),
+                'expectedOptions' => $expectedOptions,
+            ),
+            'numeric property' => array(
+                'inputOptions' => array($workflowPropertyPath),
+                'expectedOptions' => $expectedOptions,
+            ),
+        );
     }
 
     /**
