@@ -14,7 +14,7 @@ class WorkflowResult implements \ArrayAccess, \IteratorAggregate, \Countable
      */
     public function __construct(array $data = array())
     {
-        $this->data = array();
+        $this->data = $data;
     }
 
     /**

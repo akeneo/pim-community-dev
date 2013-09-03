@@ -18,6 +18,16 @@ class WorkflowResultTest extends \PHPUnit_Framework_TestCase
         $this->result = new WorkflowResult();
     }
 
+    public function testConstructor()
+    {
+        $this->assertEquals(array(), $this->result->getValues());
+        $values = array(
+            'foo' => 'bar'
+        );
+        $this->result = new WorkflowResult($values);
+        $this->assertEquals($values, $this->result->getValues());
+    }
+
     public function testHasGetSetRemove()
     {
         $this->assertFalse($this->result->has('foo'));
