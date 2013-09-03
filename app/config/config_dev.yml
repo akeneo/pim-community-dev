@@ -19,9 +19,8 @@ monolog:
             type:  firephp
             level: info
 
-assetic:
-    use_controller: false
-    debug:          true
-
-#swiftmailer:
-#    delivery_address: me@example.com
+oro_assetic:
+    js_debug:       ~
+    js_debug_all:   false
+    css_debug:      ~
+    css_debug_all:  false
