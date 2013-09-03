@@ -82,8 +82,8 @@ class AttributeGroupController extends Controller
      * @param Request $request
      * @Acl(
      *      id="pim_catalog_attribute_group_sort",
-     *      name="Sort group",
-     *      description="Sort group",
+     *      name="Sort groups",
+     *      description="Sort groups",
      *      parent="pim_catalog_attribute_group"
      * )
      * @return Response
