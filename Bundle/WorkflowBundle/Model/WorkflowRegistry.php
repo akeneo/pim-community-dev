@@ -23,16 +23,14 @@ class WorkflowRegistry
     /**
      * @var Workflow[]
      */
-    protected $workflowByName;
+    protected $workflowByName = array();
 
     /**
      * @param ManagerRegistry $managerRegistry
      * @param WorkflowAssembler $workflowAssembler
      */
-    public function __construct(
-        ManagerRegistry $managerRegistry,
-        WorkflowAssembler $workflowAssembler
-    ) {
+    public function __construct(ManagerRegistry $managerRegistry, WorkflowAssembler $workflowAssembler)
+    {
         $this->managerRegistry = $managerRegistry;
         $this->workflowAssembler = $workflowAssembler;
     }
@@ -46,13 +44,14 @@ class WorkflowRegistry
      */
     public function getWorkflow($workflowName)
     {
-        if (!$this->workflowByName[$workflowName]) {
+        if (!isset($this->workflowByName[$workflowName])) {
             $workflowDefinition = $this->findWorkflowDefinition($workflowName);
             if (!$workflowDefinition) {
                 throw new WorkflowNotFoundException($workflowName);
             }
             return $this->getAssembledWorkflow($workflowDefinition);
         }
+
         return $this->workflowByName[$workflowName];
     }
 
@@ -65,10 +64,11 @@ class WorkflowRegistry
     protected function getAssembledWorkflow(WorkflowDefinition $workflowDefinition)
     {
         $workflowName = $workflowDefinition->getName();
-        if (!$this->workflowByName[$workflowName]) {
+        if (!isset($this->workflowByName[$workflowName])) {
             $workflow = $this->assembleWorkflow($workflowDefinition);
             $this->workflowByName[$workflowName] = $workflow;
         }
+
         return $this->workflowByName[$workflowName];
     }
 
