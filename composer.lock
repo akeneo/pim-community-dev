@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/a2lix/TranslationFormBundle.git",
-                "reference": "fbb3efc3d2a90571ecee799d5c692e6ba14fccb0"
+                "reference": "5ede9fbb37cf53a6fd70fa27bd43c3510c2a90cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/fbb3efc3d2a90571ecee799d5c692e6ba14fccb0",
-                "reference": "fbb3efc3d2a90571ecee799d5c692e6ba14fccb0",
+                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/5ede9fbb37cf53a6fd70fa27bd43c3510c2a90cb",
+                "reference": "5ede9fbb37cf53a6fd70fa27bd43c3510c2a90cb",
                 "shasum": ""
             },
             "require": {
