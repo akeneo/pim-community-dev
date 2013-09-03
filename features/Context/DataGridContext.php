@@ -98,16 +98,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $columns = $this->getMainContext()->listToArray($columns);
 
         $expectedColumns = count($columns);
-        $countColumns    = $this->datagrid->countColumns()-1;
+        $countColumns    = $this->datagrid->countColumns() - 2;
         if ($expectedColumns !== $countColumns) {
             throw $this->createExpectationException(
-                'Expected %d columns but contains %d',
-                $expectedColumns,
-                $countColumns
+                sprintf('Expected %d columns but contains %d', $expectedColumns, $countColumns)
             );
         }
 
-        $expectedPosition = 0;
+        $expectedPosition = 1;
         foreach ($columns as $column) {
             $position = $this->datagrid->getColumnPosition(strtoupper($column));
             if ($expectedPosition++ !== $position) {
@@ -145,7 +143,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $column
+     * @param string $columnName
+     * @param string $order
      *
      * @When /^I sort by "(.*)" value (ascending|descending)$/
      */
@@ -270,7 +269,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $filter
+     * @param string $filterName
      * @param string $value
      *
      * @Then /^I filter by "([^"]*)" with value "([^"]*)"$/

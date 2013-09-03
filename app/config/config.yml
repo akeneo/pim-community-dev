@@ -15,7 +15,6 @@ framework:
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig', 'php'] } #assets_version: SomeVersionScheme
     trusted_proxies: ~
-    trusted_proxies: ~
     session:
         cookie_lifetime:      43200
         name:                 BAPID
@@ -204,10 +203,6 @@ oro_translation:
     js_translation:
         # order of domains reflects messages fallback
         domains: [jsmessages, validators]
-
-oro_assetic:
-    uncompress_js: ~
-    uncompress_css: ~
 
 jms_di_extra:
     doctrine_integration: false

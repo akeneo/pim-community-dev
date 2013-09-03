@@ -6,11 +6,11 @@ Feature: Sort export profiles
 
   Background:
     Given the following jobs:
-      | connector | alias            | code           | label                        | type   |
-      | Akeneo    | product_export   | acme_product   | Product Acme      | export |
-      | Akeneo    | attribute_export | acme_attribute | Attribute         | export |
-      | Akeneo    | product_export   | foo_product    | Product           | export |
-      | Akeneo    | category_export  | acme_category  | Category for Acme | export |
+      | connector            | alias            | code           | label             | type   |
+      | Akeneo CSV Connector | product_export   | acme_product   | Product Acme      | export |
+      | Akeneo CSV Connector | attribute_export | acme_attribute | Attribute         | export |
+      | Akeneo CSV Connector | product_export   | foo_product    | Product           | export |
+      | Akeneo CSV Connector | category_export  | acme_category  | Category for Acme | export |
     Given I am logged in as "admin"
 
   Scenario: Successfully display the sortable columns
