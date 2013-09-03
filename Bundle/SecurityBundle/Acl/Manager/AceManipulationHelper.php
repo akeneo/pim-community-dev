@@ -15,7 +15,7 @@ class AceManipulationHelper
      * @param ACL $acl
      * @param AclExtensionInterface $extension
      * @param bool $replace If true the mask and strategy of the existing ACE should be replaced with the given ones
-     * @param string $type The ACE type. Can be one of self::*_ACE constants
+     * @param string $type The ACE type. Can be one of AclManager::*_ACE constants
      * @param string|null $field The name of a field.
      *                           Set to null for class-based or object-based ACE
      *                           Set to not null class-field-based or object-field-based ACE
@@ -66,7 +66,7 @@ class AceManipulationHelper
      * Deletes ACE with the given attributes from the given ACL
      *
      * @param ACL $acl
-     * @param string $type The ACE type. Can be one of self::*_ACE constants
+     * @param string $type The ACE type. Can be one of AclManager::*_ACE constants
      * @param string|null $field The name of a field.
      *                           Set to null for class-based or object-based ACE
      *                           Set to not null class-field-based or object-field-based ACE
@@ -103,7 +103,7 @@ class AceManipulationHelper
      * Deletes all ACEs for the given security identity from the given ACL
      *
      * @param ACL $acl
-     * @param string $type The ACE type. Can be one of self::*_ACE constants
+     * @param string $type The ACE type. Can be one of AclManager::*_ACE constants
      * @param string|null $field The name of a field.
      *                           Set to null for class-based or object-based ACE
      *                           Set to not null class-field-based or object-field-based ACE
@@ -128,7 +128,7 @@ class AceManipulationHelper
      * Gets all ACEs associated with the given ACL
      *
      * @param ACL $acl
-     * @param string $type The ACE type. Can be one of self::*_ACE constants
+     * @param string $type The ACE type. Can be one of AclManager::*_ACE constants
      * @param string|null $field The name of a field.
      *                           Set to null for class-based or object-based ACE
      *                           Set to not null class-field-based or object-field-based ACE
@@ -147,7 +147,7 @@ class AceManipulationHelper
      * Inserts an ACE into the given ACL
      *
      * @param ACL $acl
-     * @param string $type The ACE type. Can be one of self::*_ACE constants
+     * @param string $type The ACE type. Can be one of AclManager::*_ACE constants
      * @param string|null $field The name of a field.
      *                           Set to null for class-based or object-based ACE
      *                           Set to not null class-field-based or object-field-based ACE
@@ -172,7 +172,7 @@ class AceManipulationHelper
      * Updates an ACE with the given index in the given ACL
      *
      * @param ACL $acl
-     * @param string $type The ACE type. Can be one of self::*_ACE constants
+     * @param string $type The ACE type. Can be one of AclManager::*_ACE constants
      * @param string|null $field The name of a field.
      *                           Set to null for class-based or object-based ACE
      *                           Set to not null class-field-based or object-field-based ACE
@@ -193,7 +193,7 @@ class AceManipulationHelper
      * Deletes an ACE with the given index from the given ACL
      *
      * @param ACL $acl
-     * @param string $type The ACE type. Can be one of self::*_ACE constants
+     * @param string $type The ACE type. Can be one of AclManager::*_ACE constants
      * @param string|null $field The name of a field.
      *                           Set to null for class-based or object-based ACE
      *                           Set to not null class-field-based or object-field-based ACE

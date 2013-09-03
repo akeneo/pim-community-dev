@@ -58,8 +58,8 @@ class AclExtensionSelector
         if (is_string($object)) {
             $delim = strpos($object, ':');
             if ($delim) {
-                $type = strtolower(substr($object, 0, $delim));
-                $id = trim(substr($object, $delim + 1));
+                $type = trim(substr($object, $delim + 1));
+                $id = strtolower(substr($object, 0, $delim));
             }
         } elseif (is_object($object)) {
             if ($object instanceof ObjectIdentityInterface) {

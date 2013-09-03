@@ -29,7 +29,7 @@ class ActionAclExtension extends AbstractAclExtension
             return true;
         }
 
-        return $type === $this->getRootId();
+        return $id === $this->getRootId();
     }
 
     /**

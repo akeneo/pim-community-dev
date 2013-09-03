@@ -72,7 +72,7 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getProvider
      */
-    public function testGet($descriptor, $expectedType, $expectedId)
+    public function testGet($descriptor, $expectedId, $expectedType)
     {
         $id = $this->factory->get($descriptor);
         $this->assertEquals($expectedType, $id->getType());
