@@ -44,7 +44,6 @@ class AbstractPostActionTest extends \PHPUnit_Framework_TestCase
     {
         $context = array('key' => 'value');
 
-
         if ($expectedAllowed) {
             $this->postAction->expects($this->once())
                 ->method('executeAction')

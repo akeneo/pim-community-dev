@@ -26,7 +26,7 @@ class AssignValueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
      * @expectedExceptionMessage Attribute and value parameters are required.
      * @dataProvider invalidOptionsNumberDataProvider
      * @param array $options
@@ -48,7 +48,7 @@ class AssignValueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
      * @expectedExceptionMessage Attribute must be valid property definition.
      * @dataProvider invalidOptionsAttributeDataProvider
      * @param array $options
@@ -67,7 +67,7 @@ class AssignValueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
      * @expectedExceptionMessage Attribute must be defined.
      */
     public function testInitializeExceptionNoAttribute()
@@ -76,7 +76,7 @@ class AssignValueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
      * @expectedExceptionMessage Value must be defined.
      */
     public function testInitializeExceptionNoValue()
@@ -100,8 +100,18 @@ class AssignValueTest extends \PHPUnit_Framework_TestCase
     public function optionsDataProvider()
     {
         return array(
-            array(array($this->getPropertyPath(), 'value')),
-            array(array('attribute' => $this->getPropertyPath(), 'value' => 'value')),
+            'numeric arguments' => array(
+                'options' => array($this->getPropertyPath(), 'value')
+            ),
+            'string arguments' => array(
+                'options' => array('attribute' => $this->getPropertyPath(), 'value' => 'value')
+            ),
+            'numeric null value' => array(
+                'options' => array($this->getPropertyPath(), null)
+            ),
+            'string null value' => array(
+                'options' => array('attribute' => $this->getPropertyPath(), 'value' => null)
+            ),
         );
     }
 
