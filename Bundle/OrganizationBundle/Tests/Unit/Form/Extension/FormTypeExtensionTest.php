@@ -104,7 +104,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
         $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\EntityConfig')
+        $this->config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $this->configProvider->expects($this->any())
@@ -112,7 +112,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             ->with($entityClassName)
             ->will($this->returnValue($this->config));
         $this->configProvider->expects($this->any())
-            ->method('hasConfig')
+            ->method('isConfigurable')
             ->with($entityClassName)
             ->will($this->returnValue(true));
         $token->expects($this->any())

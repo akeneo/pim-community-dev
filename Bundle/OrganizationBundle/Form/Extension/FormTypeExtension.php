@@ -92,7 +92,7 @@ class FormTypeExtension extends AbstractTypeExtension
         $user = $token->getUser();
         if ($user
             && $dataClassName
-            && $this->configProvider->hasConfig($dataClassName)
+            && $this->configProvider->isConfigurable($dataClassName)
         ) {
             if (!method_exists($dataClassName, 'getOwner')) {
                 throw new \LogicException(

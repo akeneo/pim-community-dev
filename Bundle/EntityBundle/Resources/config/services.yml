@@ -1,10 +1,6 @@
 parameters:
 
 services:
-    oro_entity.config.entity_config_provider:
+    oro_entity_config.link.provider_bag.method:
         tags:
-            - { name: oro_entity_config.provider, scope: entity }
-
-    oro_entity.config.datagrid_config_provider:
-        tags:
-            - { name: oro_entity_config.provider, scope: datagrid }
+            - { name: oro_service_method,  service: oro_entity_config.provider_bag, method: testAction }

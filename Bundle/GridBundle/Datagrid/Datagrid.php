@@ -143,14 +143,14 @@ class Datagrid implements DatagridInterface
     protected $identifierFieldName;
 
     /**
-     * @param ProxyQueryInterface $query
+     * @param ProxyQueryInterface        $query
      * @param FieldDescriptionCollection $columns
-     * @param PagerInterface $pager
-     * @param FormBuilderInterface $formBuilder
-     * @param RouteGeneratorInterface $routeGenerator
-     * @param ParametersInterface $parameters
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param string $name
+     * @param PagerInterface             $pager
+     * @param FormBuilderInterface       $formBuilder
+     * @param RouteGeneratorInterface    $routeGenerator
+     * @param ParametersInterface        $parameters
+     * @param EventDispatcherInterface   $eventDispatcher
+     * @param string                     $name
      */
     public function __construct(
         ProxyQueryInterface $query,
@@ -265,7 +265,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param SorterInterface $sorter
+     * @param  SorterInterface $sorter
      * @return void
      */
     public function addSorter(SorterInterface $sorter)
@@ -300,6 +300,7 @@ class Datagrid implements DatagridInterface
     public function getPager()
     {
         $this->applyPager();
+
         return $this->pager;
     }
 
@@ -368,7 +369,7 @@ class Datagrid implements DatagridInterface
 
         $pagerParameters = $this->parameters->get(ParametersInterface::PAGER_PARAMETERS);
         $this->pager->setPage(isset($pagerParameters['_page']) ? $pagerParameters['_page'] : 1);
-        $this->pager->setMaxPerPage(isset($pagerParameters['_per_page']) ? (int)$pagerParameters['_per_page'] : 10);
+        $this->pager->setMaxPerPage(isset($pagerParameters['_per_page']) ? (int) $pagerParameters['_per_page'] : 10);
         $this->pager->init();
 
         $this->pagerApplied = true;
@@ -490,7 +491,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param ActionInterface $action
+     * @param  ActionInterface $action
      * @return void
      */
     public function addRowAction(ActionInterface $action)
@@ -499,7 +500,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param MassActionInterface $action
+     * @param  MassActionInterface $action
      * @return void
      */
     public function addMassAction(MassActionInterface $action)

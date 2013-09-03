@@ -27,7 +27,7 @@ use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 use DateTime;
 
@@ -41,12 +41,13 @@ use DateTime;
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
- * @Configurable(
- *  routeName="oro_user_index",
- *  defaultValues={
- *      "entity"={"icon"="icon-user","label"="User", "plural_label"="Users"},
- *      "ownership"={"owner_type"="BUSINESS_UNIT"}
- *  }
+ * @Config(
+ *      routeName="oro_user_index",
+ *      defaultValues={
+ *          "entity"={"icon"="icon-user","label"="User", "plural_label"="Users"},
+ *          "ownership"={"owner_type"="BUSINESS_UNIT"},
+ *          "extend"={"is_extend"=true}
+ *      }
  * )
  */
 class User extends AbstractEntityFlexible implements

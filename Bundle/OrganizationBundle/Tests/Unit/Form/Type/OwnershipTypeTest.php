@@ -35,16 +35,9 @@ class OwnershipTypeTest extends \PHPUnit_Framework_TestCase
     {
         $optionResolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolverInterface');
 
-        $choices = OwnershipType::getOwnershipsArray();
-        $i = 0;
-        foreach ($choices as $key => $value) {
-            $this->translator->expects($this->at($i))->method('trans')->will($this->returnValue($value));
-            $i++;
-        }
-
         $optionResolver->expects($this->once())
             ->method('setDefaults')
-            ->with(array('choices' => $choices));
+            ->with(array('choices' => $this->type->getOwnershipsArray()));
         $this->type->setDefaultOptions($optionResolver);
     }
 

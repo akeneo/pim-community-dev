@@ -47,7 +47,7 @@ class OwnerTypeExtension extends \Twig_Extension
         if (!$this->configProvider->hasConfig($ownerClassName)) {
             return;
         }
-        $config = $this->configProvider->getConfig($ownerClassName)->getValues();
+        $config = $this->configProvider->getConfig($ownerClassName)->all();
 
         return $config['owner_type'];
     }

@@ -25,7 +25,7 @@ class SoapApiTest extends WebTestCase
                 'email' => 'email@email.localhost',
                 'fax' => '321-321-321',
                 'parent' => null,
-                'appendUsers' => null,
+                'appendUsers' => array(1),
                 'owner' => '1',
             )
     );
