@@ -10,7 +10,9 @@
 {% block content %}
 
     {% set buttons %}
-        {{ elements.createBtn('New product', null, 'create-product', { 'data-form': 'dialog', 'data-form-url': path('pim_catalog_product_create') }) }}
+        {% if resource_granted('pim_catalog_product_create') %}
+            {{ elements.createBtn('New product', null, 'create-product', { 'data-form': 'dialog', 'data-form-url': path('pim_catalog_product_create') }) }}
+        {% endif %}
     {% endset %}
 
     {% set subtitle %}
