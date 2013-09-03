@@ -176,6 +176,9 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public static function buildFilterConstraintProvider()
     {
         return array(
