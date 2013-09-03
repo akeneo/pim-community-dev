@@ -2,8 +2,19 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Validator\ValidatorInterface;
+use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\CatalogBundle\Form\Handler\LocaleHandler;
+use Symfony\Component\Form\Form;
+
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 
@@ -14,8 +25,30 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocaleController extends Controller
+class LocaleController extends AbstractDoctrineController
 {
+    private $datagridWorker;
+    private $localeForm;
+    private $localeHandler;
+    
+    public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
+        SecurityContextInterface $securityContext,
+        RegistryInterface $doctrine,
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator,
+        DatagridWorkerInterface $datagridWorker,
+        LocaleHandler $localeHandler,
+        Form $localeForm
+    ) {
+        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
+        $this->datagridWorker = $datagridWorker;
+        $this->localeForm = $localeForm;
+        $this->localeHandler = $localeHandler;
+    }
+    
     /**
      * List locales
      *
@@ -31,13 +64,7 @@ class LocaleController extends Controller
             ->select('l')
             ->from('PimCatalogBundle:Locale', 'l');
 
-        /** @var $queryFactory QueryFactory */
-        $queryFactory = $this->get('pim_catalog.datagrid.manager.locale.default_query_factory');
-        $queryFactory->setQueryBuilder($queryBuilder);
-
-        /** @var $datagridManager LocaleDatagridManager */
-        $datagridManager = $this->get('pim_catalog.datagrid.manager.locale');
-        $datagrid = $datagridManager->getDatagrid();
+        $datagrid = $this->datagridWorker->getDatagrid('locale', $queryBuilder);
 
         $view = ('json' === $request->getRequestFormat()) ?
             'OroGridBundle:Datagrid:list.json.php' : 'PimCatalogBundle:Locale:index.html.twig';
@@ -55,7 +82,7 @@ class LocaleController extends Controller
      */
     public function editAction(Locale $locale)
     {
-        if ($this->get('pim_catalog.form.handler.locale')->process($locale)) {
+        if ($this->localeHandler->process($locale)) {
             $this->addFlash('success', 'Locale successfully saved');
 
             return $this->redirect(
@@ -64,7 +91,7 @@ class LocaleController extends Controller
         }
 
         return array(
-            'form' => $this->get('pim_catalog.form.locale')->createView()
+            'form' => $this->localeForm->createView()
         );
     }
 
@@ -79,7 +106,8 @@ class LocaleController extends Controller
     public function disableAction(Request $request, Locale $locale)
     {
         $locale->setActivated(false);
-        $this->persist($locale);
+        $this->getManager()->persist($locale);
+        $this->getManager()->flush();
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -99,7 +127,8 @@ class LocaleController extends Controller
     public function enableAction(Request $request, Locale $locale)
     {
         $locale->setActivated(true);
-        $this->persist($locale);
+        $this->getManager()->persist($locale);
+        $this->getManager()->flush();
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);

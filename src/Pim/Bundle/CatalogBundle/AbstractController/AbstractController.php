@@ -1,0 +1,197 @@
+<?php
+namespace Pim\Bundle\CatalogBundle\AbstractController;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+/**
+ *
+ * @author    Antoine Guigan <antoine@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+abstract class AbstractController
+{
+    private $request;
+    private $templating;
+    private $router;
+    private $securityContext;
+    
+    public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
+        SecurityContextInterface $securityContext
+    ) {
+        $this->request = $request;
+        $this->templating = $templating;
+        $this->router = $router;
+        $this->securityContext = $securityContext;
+    }
+    
+    /**
+     * Returns the request service.
+     *
+     * @return Request
+     */
+    protected function getRequest()
+    {
+        return $this->request;
+    }
+    
+    /**
+     * Returns the templating service
+     * 
+     * @return EngineInterface
+     */
+    protected function getTemplating()
+    {
+        return $this->templating;
+    }
+
+    /**
+     * Returns the router service
+     * 
+     * @return RouterInterface
+     */
+    protected function getRouter()
+    {
+        return $this->router;
+    }
+
+    /**
+     * Returns the security cotnext service
+     * 
+     * @return SecurityContextInterface
+     */
+    protected function getSecurityContext()
+    {
+        return $this->securityContext;
+    }
+
+    /**
+     * Generates a URL from the given parameters.
+     *
+     * @param string         $route         The name of the route
+     * @param mixed          $parameters    An array of parameters
+     * @param Boolean|string $referenceType The type of reference (one of the constants in UrlGeneratorInterface)
+     *
+     * @return string The generated URL
+     *
+     * @see UrlGeneratorInterface
+     */
+    protected function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    {
+        return $this->router->generate($route, $parameters, $referenceType);
+    }
+    
+    /**
+     * Returns a RedirectResponse to the given URL.
+     *
+     * @param string  $url    The URL to redirect to
+     * @param integer $status The status code to use for the Response
+     *
+     * @return RedirectResponse
+     */
+    protected function redirect($url, $status = 302)
+    {
+        return new RedirectResponse($url, $status);
+    }
+    
+    /**
+     * Returns a rendered view.
+     *
+     * @param string $view       The view name
+     * @param array  $parameters An array of parameters to pass to the view
+     *
+     * @return string The rendered view
+     */
+    protected function renderView($view, array $parameters = array())
+    {
+        return $this->templating->render($view, $parameters);
+    }
+    
+    /**
+     * Renders a view.
+     *
+     * @param string   $view       The view name
+     * @param array    $parameters An array of parameters to pass to the view
+     * @param Response $response   A response instance
+     *
+     * @return Response A Response instance
+     */
+    public function render($view, array $parameters = array(), Response $response = null)
+    {
+        return $this->templating->renderResponse($view, $parameters, $response);
+    }
+    
+    /**
+     * Get a user from the Security Context
+     *
+     * @return mixed
+     *
+     * @see Symfony\Component\Security\Core\Authentication\Token\TokenInterface::getUser()
+     */
+    public function getUser()
+    {
+        if (null === $token = $this->securityContext->getToken()) {
+            return null;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            return null;
+        }
+
+        return $user;
+    }
+    
+    /**
+     * Add flash message
+     *
+     * @param string $type    the flash type
+     * @param string $message the flash message
+     *
+     * @return null
+     */
+    protected function addFlash($type, $message)
+    {
+        $this->request->getSession()->getFlashBag()->add($type, $message);
+    }
+    
+    /**
+     * Create a redirection to a given route
+     *
+     * @param string  $route
+     * @param mixed   $parameters
+     * @param integer $status
+     *
+     * @return RedirectResponse
+     */
+    protected function redirectToRoute($route, $parameters = array(), $status = 302)
+    {
+        return $this->redirect($this->generateUrl($route, $parameters), $status);
+    }
+    
+    /**
+     * Returns a NotFoundHttpException.
+     *
+     * This will result in a 404 response code. Usage example:
+     *
+     *     throw $this->createNotFoundException('Page not found!');
+     *
+     * @param string    $message  A message
+     * @param \Exception $previous The previous exception
+     *
+     * @return NotFoundHttpException
+     */
+    public function createNotFoundException($message = 'Not Found', \Exception $previous = null)
+    {
+        return new NotFoundHttpException($message, $previous);
+    }
+}

@@ -2,10 +2,24 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Validator\ValidatorInterface;
+use Oro\Bundle\GridBundle\Renderer\GridRenderer;
+use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\VersioningBundle\Manager\PendingManager;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
+use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 
 /**
  * Family controller
@@ -14,8 +28,37 @@ use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyController extends Controller
+class FamilyController extends AbstractDoctrineController
 {
+    private $gridRenderer;
+    private $dataGridWorker;
+    private $channelManager;
+    private $productManager;
+    private $pendingManager;
+
+
+    public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
+        SecurityContextInterface $securityContext,
+        RegistryInterface $doctrine,
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator,
+        GridRenderer $gridRenderer,
+        DatagridWorkerInterface $dataGridWorker,
+        ChannelManager $channelManager,
+        ProductManager $productManager,
+        PendingManager $pendingManager
+    ) {
+        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
+        $this->gridRenderer = $gridRenderer;
+        $this->dataGridWorker = $dataGridWorker;
+        $this->channelManager = $channelManager;
+        $this->productManager = $productManager;
+        $this->pendingManager = $pendingManager;
+    }
+    
     /**
      * Create a family
      *
@@ -33,15 +76,14 @@ class FamilyController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $manager    = $this->container->get('pim_catalog.manager.product');
-                $identifier = $manager->getIdentifierAttribute();
+                $identifier = $this->productManager->getIdentifierAttribute();
                 $family->addAttribute($identifier);
-                $this->persist($family);
+                $this->getManager()->persist($family);
+                $this->getManager()->flush();
                 $this->addFlash('success', 'Family successfully created');
 
-                $pendingManager = $this->container->get('pim_versioning.manager.pending');
-                if ($pending = $pendingManager->getPendingVersion($family)) {
-                    $pendingManager->createVersionAndAudit($pending);
+                if ($pending = $this->pendingManager->getPendingVersion($family)) {
+                    $this->pendingManager->createVersionAndAudit($pending);
                 }
 
                 return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
@@ -66,15 +108,15 @@ class FamilyController extends Controller
     public function editAction(Request $request, $id)
     {
         $family   = $this->findOr404('PimCatalogBundle:Family', $id);
-        $datagrid = $this->getDataAuditDatagrid($family, 'pim_catalog_family_edit', array('id' => $family->getId()));
+        $datagrid = $this->dataGridWorker->getDataAuditDatagrid($family, 'pim_catalog_family_edit', array('id' => $family->getId()));
         $datagridView = $datagrid->createView();
 
         if ('json' === $request->getRequestFormat()) {
-            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
+            return $this->gridRenderer->renderResultsJsonResponse($datagridView);
         }
 
         $families = $this->getRepository('PimCatalogBundle:Family')->getIdToLabelOrderedByLabel();
-        $channels = $this->get('pim_catalog.manager.channel')->getChannels();
+        $channels = $this->channelManager->getChannels();
         $form = $this->createForm(
             'pim_family',
             $family,
@@ -87,12 +129,11 @@ class FamilyController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->flush();
+                $this->getManager()->flush();
                 $this->addFlash('success', 'Family successfully updated.');
 
-                $pendingManager = $this->container->get('pim_versioning.manager.pending');
-                if ($pending = $pendingManager->getPendingVersion($family)) {
-                    $pendingManager->createVersionAndAudit($pending);
+                if ($pending = $this->pendingManager->getPendingVersion($family)) {
+                    $this->pendingManager->createVersionAndAudit($pending);
                 }
 
                 return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $id));
@@ -120,7 +161,8 @@ class FamilyController extends Controller
      */
     public function removeAction(Family $entity)
     {
-        $this->remove($entity);
+        $this->getManager()->remove($entity);
+        $this->getManager()->flush();
 
         $this->addFlash('success', 'Family successfully removed');
 
@@ -150,7 +192,7 @@ class FamilyController extends Controller
             $family->addAttribute($attribute);
         }
 
-        $this->flush();
+        $this->getManager()->flush();
 
         return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
     }
@@ -176,11 +218,30 @@ class FamilyController extends Controller
             $this->addFlash('error', 'You cannot remove this attribute because it is used as label for the family.');
         } else {
             $family->removeAttribute($attribute);
-            $this->flush();
+            $this->getManager()->flush();
 
             $this->addFlash('success', 'The family is successfully updated.');
         }
 
         return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
+    }
+    
+    /**
+     * Get the AvailbleProductAttributes form
+     *
+     * @param array                      $attributes          The product attributes
+     * @param AvailableProductAttributes $availableAttributes The available attributes container
+     *
+     * @return Symfony\Component\Form\Form
+     */
+    protected function getAvailableProductAttributesForm(
+        array $attributes = array(),
+        AvailableProductAttributes $availableAttributes = null
+    ) {
+        return $this->createForm(
+            new AvailableProductAttributesType,
+            $availableAttributes ?: new AvailableProductAttributes,
+            array('attributes' => $attributes)
+        );
     }
 }
