@@ -109,7 +109,7 @@ class PostActionAssembler extends AbstractAssembler
 
     /**
      * @param array $conditionConfiguration
-     * @return null|Configurable
+     * @return null|ConfigurableCondition
      */
     protected function createConfigurableCondition(array $conditionConfiguration)
     {

@@ -2,16 +2,14 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction;
 
+use Symfony\Component\PropertyAccess\PropertyPath;
+
+use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\CallMethod;
-use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface;
+use Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Stub\ItemStub;
 
 class CallMethodTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $contextAccessor;
-
     /**
      * @var CallMethod
      */
@@ -19,26 +17,37 @@ class CallMethodTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->contextAccessor = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\ContextAccessor')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->postAction = new CallMethod($this->contextAccessor);
+        $this->postAction = new CallMethod(new ContextAccessor());
     }
 
     /**
      * @expectedException \Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
      * @expectedExceptionMessage Method name parameter is required
      */
-    public function testInitializeException()
+    public function testInitializeNoMethod()
     {
         $this->postAction->initialize(array());
+    }
+
+    /**
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
+     * @expectedExceptionMessage Object must be valid property definition
+     */
+    public function testInitializeInvalidObject()
+    {
+        $this->postAction->initialize(
+            array(
+                'method' => 'do',
+                'object' => 'stringData'
+            )
+        );
     }
 
     public function testInitialize()
     {
         $options = array(
             'method' => 'test',
-            'object' => new \stdClass(),
+            'object' => new PropertyPath('object'),
             'method_parameters' => null,
             'attribute' => 'test'
         );
@@ -51,51 +60,51 @@ class CallMethodTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteMethod()
     {
-        $context = array();
+        $context = new ItemStub(array('key' => 'value'));
         $options = array(
             'method' => function ($a) {
-                \PHPUnit_Framework_Assert::assertEquals('test', $a);
+                \PHPUnit_Framework_Assert::assertEquals('value', $a);
                 return 'bar';
             },
-            'method_parameters' => array('test'),
+            'method_parameters' => array(new PropertyPath('key')),
             'attribute' => 'test'
         );
-        $this->contextAccessor->expects($this->once())
-            ->method('setValue')
-            ->with($context, 'test', 'bar');
 
         $this->postAction->initialize($options);
         $this->postAction->execute($context);
+
+        $this->assertEquals(array('key' => 'value', 'test' => 'bar'), $context->getData());
     }
 
     public function testExecuteClassMethod()
     {
-        $context = array();
+        $context = new ItemStub(array('object' => $this));
         $options = array(
             'method' => 'assertCall',
-            'object' => $this,
+            'object' => new PropertyPath('object'),
             'method_parameters' => array('test'),
             'attribute' => 'test'
         );
-        $this->contextAccessor->expects($this->once())
-            ->method('setValue')
-            ->with($context, 'test', 'bar');
+
         $this->postAction->initialize($options);
         $this->postAction->execute($context);
+
+        $this->assertEquals(array('object' => $this, 'test' => 'bar'), $context->getData());
     }
 
     public function testExecuteClassMethodNoAssign()
     {
-        $context = array();
+        $context = new ItemStub(array('object' => $this));
         $options = array(
             'method' => 'assertCall',
-            'object' => $this,
+            'object' => new PropertyPath('object'),
             'method_parameters' => array('test')
         );
-        $this->contextAccessor->expects($this->never())
-            ->method('setValue');
+
         $this->postAction->initialize($options);
         $this->postAction->execute($context);
+
+        $this->assertEquals(array('object' => $this), $context->getData());
     }
 
     public function assertCall($a)
