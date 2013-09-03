@@ -248,6 +248,7 @@ class Grid extends Index
                 sprintf('Column %s is not sortable', $columnName)
             );
         }
+
         return $this->getColumn($columnName)->find('css', 'a');
     }
 
