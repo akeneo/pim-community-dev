@@ -1,4 +1,5 @@
-{% if record.getValue('icon') is defined %}
-    <i class="{{ record.getValue('icon') }} hide-text"></i>
-{% endif %}
 {{ value }}
+{% if record.getValue('icon') is defined %}
+    <i class="{{ record.getValue('icon') }} hide-text pull-right"></i>
+{% endif %}
+

@@ -232,6 +232,7 @@ abstract class DatagridManager implements DatagridManagerInterface
             $this->identifierField =
                 current($this->entityManager->getClassMetadata($this->entityName)->getIdentifierFieldNames());
         }
+
         return $this->identifierField;
     }
 
@@ -364,6 +365,7 @@ abstract class DatagridManager implements DatagridManagerInterface
     {
         $query = $this->queryFactory->createQuery();
         $this->prepareQuery($query);
+
         return $query;
     }
 
@@ -601,6 +603,7 @@ abstract class DatagridManager implements DatagridManagerInterface
             $options['pageSize']['items'],
             function ($item) {
                 $item = isset($item['size']) ? $item['size'] : $item;
+
                 return $item == 0;
             }
         );
@@ -628,9 +631,9 @@ abstract class DatagridManager implements DatagridManagerInterface
     }
 
     /**
-     * @param string $id
-     * @param array $parameters
-     * @param string $domain
+     * @param  string $id
+     * @param  array  $parameters
+     * @param  string $domain
      * @return string
      */
     protected function translate($id, array $parameters = array(), $domain = null)

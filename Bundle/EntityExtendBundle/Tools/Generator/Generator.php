@@ -71,7 +71,6 @@ class Generator
                 "<?php\n\n" . $this->generateDynamicClass($entityName, $extendClass)
             );
 
-
             /** write Dynamic yml */
             file_put_contents(
                 $this->entityCacheDir . DIRECTORY_SEPARATOR . str_replace(
@@ -131,6 +130,7 @@ class Generator
     }
 
     /**
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @param $entityName
      * @param $validators
      * @return mixed
