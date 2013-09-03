@@ -57,6 +57,17 @@ abstract class AbstractPostAction implements PostActionInterface
     }
 
     /**
+     * @param array $options
+     * @param string $key
+     * @param mixed|null $default
+     * @return null
+     */
+    protected function getOption(array $options, $key, $default = null)
+    {
+        return array_key_exists($key, $options) ? $options[$key] : $default;
+    }
+
+    /**
      * @param mixed $context
      */
     abstract protected function executeAction($context);

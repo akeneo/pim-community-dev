@@ -10,11 +10,14 @@ class UnsetValue implements PostActionInterface
     /**
      * @var AssignValue
      */
-    protected $assignValuePostAction;
+    protected $assignValueAction;
 
-    public function __construct(AssignValue $assignValuePostAction)
+    /**
+     * @param AssignValue $assignValueAction
+     */
+    public function __construct(AssignValue $assignValueAction)
     {
-        $this->assignValuePostAction = $assignValuePostAction;
+        $this->assignValueAction = $assignValueAction;
     }
 
     /**
@@ -24,7 +27,7 @@ class UnsetValue implements PostActionInterface
      */
     public function execute($context)
     {
-        $this->assignValuePostAction->execute($context);
+        $this->assignValueAction->execute($context);
     }
 
     /**
@@ -41,7 +44,9 @@ class UnsetValue implements PostActionInterface
         } else {
             $options['value'] = null;
         }
-        $this->assignValuePostAction->initialize($options);
+        $this->assignValueAction->initialize($options);
+
+        return $this;
     }
 
     /**
@@ -52,6 +57,6 @@ class UnsetValue implements PostActionInterface
      */
     public function setCondition(ConditionInterface $condition)
     {
-        $this->assignValuePostAction->setCondition($condition);
+        $this->assignValueAction->setCondition($condition);
     }
 }

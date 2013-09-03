@@ -76,13 +76,14 @@ class WorkflowManager
      * @param string $workflow
      * @param object|null $entity
      * @param string|Transition|null $transition
+     * @param array $data
      * @return WorkflowItem
      * @throws \Exception
      */
-    public function startWorkflow($workflow, $entity = null, $transition = null)
+    public function startWorkflow($workflow, $entity = null, $transition = null, array $data = array())
     {
         $workflow = $this->getWorkflow($workflow);
-        $initData = $this->getWorkflowData($workflow, $entity);
+        $initData = $this->getWorkflowData($workflow, $entity, $data);
 
         /** @var EntityManager $em */
         $em = $this->registry->getManager();
@@ -154,13 +155,15 @@ class WorkflowManager
 
         $applicableWorkflows = array();
         foreach ($allowedWorkflows as $workflow) {
-            $managedEntityAttribute = $this->getManagedEntityAttributeByEntity($workflow, $entity);
-            if ($managedEntityAttribute) {
-                $isMultiple = $managedEntityAttribute->getOption('multiple') == true;
+            if ($workflow->isEnabled()) {
+                $managedEntityAttribute = $this->getManagedEntityAttributeByEntity($workflow, $entity);
+                if ($managedEntityAttribute) {
+                    $isMultiple = $managedEntityAttribute->getOption('multiple') == true;
 
-                // if workflow allows multiple workflow items or there is no workflow item for current class
-                if ($isMultiple || !in_array($workflow->getName(), $usedWorkflows)) {
-                    $applicableWorkflows[$workflow->getName()] = $workflow;
+                    // if workflow allows multiple workflow items or there is no workflow item for current class
+                    if ($isMultiple || !in_array($workflow->getName(), $usedWorkflows)) {
+                        $applicableWorkflows[$workflow->getName()] = $workflow;
+                    }
                 }
             }
         }
@@ -189,13 +192,12 @@ class WorkflowManager
     /**
      * @param Workflow $workflow
      * @param object $entity
+     * @param array $data
      * @return array
      * @throws UnknownAttributeException
      */
-    protected function getWorkflowData(Workflow $workflow, $entity = null)
+    protected function getWorkflowData(Workflow $workflow, $entity = null, array $data = array())
     {
-        $data = array();
-
         // try to find appropriate entity
         if ($entity) {
             $entityAttributeName = null;

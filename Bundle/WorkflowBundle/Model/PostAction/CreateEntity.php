@@ -126,6 +126,6 @@ class CreateEntity extends AbstractPostAction
      */
     protected function getEntityData()
     {
-        return !empty($this->options['data']) ? $this->options['data'] : array();
+        return $this->getOption($this->options, 'data', array());
     }
 }
