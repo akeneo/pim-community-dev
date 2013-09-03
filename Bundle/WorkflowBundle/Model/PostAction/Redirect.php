@@ -74,6 +74,8 @@ class Redirect extends AbstractPostAction
         }
 
         $this->options = $options;
+
+        return $this;
     }
 
     /**

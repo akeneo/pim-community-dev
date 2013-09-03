@@ -63,9 +63,7 @@ class RedirectTest extends \PHPUnit_Framework_TestCase
             'route with parameters' => array(
                 'options' => array(
                     'route' => 'test_route_name',
-                    'route_parameters' => array(
-                        'id' => 1
-                    ),
+                    'route_parameters' => array('id' => 1),
                 ),
                 'expectedUrl' => $this->generateTestUrl('test_route_name', array('id' => 1)),
             ),
