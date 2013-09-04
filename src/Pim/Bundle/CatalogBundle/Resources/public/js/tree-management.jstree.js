@@ -135,8 +135,10 @@ Pim.tree.manage = function(elementId) {
                 async: false,
                 type: 'GET',
                 url: Routing.generate('pim_catalog_categorytree_edit', { id: id }),
-                success: function (response) {
-                    console.log(response);
+                success: function (data) {
+                    if (data) {
+                        $('#category-form').html(data);
+                    }
                 }
             });
         })

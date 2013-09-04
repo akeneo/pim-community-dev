@@ -12,7 +12,7 @@
         {% if form.vars.value.id %}
             {{ elements.deleteLink(path('pim_catalog_attributegroup_remove', {'id': form.vars.value.id}), 'Are you sure you want to delete the group %group%?'|trans({'%group%': form.vars.data.name})) }}
         {% endif %}
-        {{ elements.submitBtn }}
+        {{ elements.submitBtn() }}
     {% endset %}
 
     {{ elements.page_header(title, buttons) }}

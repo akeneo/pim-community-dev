@@ -209,7 +209,6 @@ class CategoryTreeController extends Controller
      * @param Request  $request
      * @param Category $category
      *
-     * @Template
      * @return array
      */
     public function editAction(Request $request, Category $category)
@@ -248,9 +247,12 @@ class CategoryTreeController extends Controller
             }
         }
 
-        return array(
-            'form' => $form->createView(),
-            'datagrid' => $datagrid->createView(),
+        return $this->render(
+            sprintf('PimCatalogBundle:CategoryTree:%s.html.twig', $request->isXmlHttpRequest() ? 'form' : 'edit'),
+            array(
+                'form'     => $form->createView(),
+                'datagrid' => $datagrid->createView(),
+            )
         );
     }
 
