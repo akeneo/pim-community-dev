@@ -160,7 +160,7 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
      * Create a attribute
      * @param array $data
      *
-     * @return attribute
+     * @return ProductAttribute
      */
     private function createAttribute(array $data)
     {
