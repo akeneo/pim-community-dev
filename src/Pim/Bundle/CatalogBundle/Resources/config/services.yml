@@ -37,6 +37,11 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    pim_catalog.event_listener.request:
+        class: Pim\Bundle\CatalogBundle\EventListener\RequestListener
+        tags:
+            - { name: kernel.event_subscriber }
+
     pim_catalog.form.transform_imported_product_data_subscriber:
         public: false
         class: %pim_catalog.form.transform_imported_product_data_subscriber.class%
