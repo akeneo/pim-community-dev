@@ -32,6 +32,7 @@ Feature: Filter attributes
     And I should see attributes short_descr, long_descr and count
     And I should not see attributes sku and name
 
+  @skip
   Scenario: Successfully filter by label
     Given I am on the attributes page
     When I filter by "Label" with value "descr"
