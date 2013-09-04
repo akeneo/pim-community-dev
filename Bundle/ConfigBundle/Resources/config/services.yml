@@ -35,6 +35,7 @@ services:
 
     oro_config.form.handler.config:
         class: %oro_config.form.handler.config.class%
+        scope: request
         arguments:
             - @request
             - @doctrine.orm.entity_manager
