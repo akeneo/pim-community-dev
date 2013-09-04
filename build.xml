@@ -171,8 +171,14 @@
     </target>
 
     <target name="behat-coverage" description="Run acceptance tests with Behat and produce coverage">
-        <exec executable="bin/behat" failonerror="true">
+        <exec executable="sh" outputproperty="xdebug_path">
+            <arg value="-c" />
+            <arg value="php -i | grep extension_dir | cut -d ' ' -f3"/>
+        </exec>
+        <exec executable="php" failonerror="true">
             <env key="DISPLAY" value=":0" />
+            <arg value="-d zend_extension=${xdebug_path}/xdebug.so" />
+            <arg value="${basedir}/app/Resources/jenkins/behat_coverage/behat-coverage" />
             <arg value="--profile=jenkins-coverage" />
             <arg value="--ansi" />
             <arg value="--tags=~skip" />

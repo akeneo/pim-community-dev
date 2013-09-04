@@ -135,11 +135,13 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $actionName
      * @param string $element
      *
+     * @When /^I (delete) the "([^"]*)" job$/
      * @Given /^I click on the "([^"]*)" action of the row which contains "([^"]*)"$/
      */
     public function iClickOnTheActionOfTheRowWhichContains($actionName, $element)
     {
-        $this->datagrid->clickOnAction($element, $actionName);
+        $action = ucfirst(strtolower($actionName));
+        $this->datagrid->clickOnAction($element, $action);
     }
 
     /**
@@ -198,7 +200,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @throws ExpectationException
      *
-     * @Then /^I should see entities (.*)$/
+     * @Then /^I should see products? ((?!with data).)*$/
+     * @Then /^I should see attributes? ((?!in group).)*$/
+     * @Then /^I should see (?:(?:entit|currenc)(?:y|ies)|channels?|locales?|(?:import|export) profiles?) (.*)$/
      */
     public function iShouldSeeEntities($elements)
     {
@@ -212,11 +216,35 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param array $entities
+     *
+     * @Then /^I should not see products? ((?!with data).)*$/
+     * @Then /^I should not see attributes? ((?!in group).)*$/
+     * @Then /^I should not see (?:(?:entit|currenc)(?:y|ies)|channels?|locales?|(?:import|export) profiles?) (.*)$/
+     */
+    public function iShouldNotSeeEntities($entities)
+    {
+        $entities = $this->getMainContext()->listToArray($entities);
+
+        foreach ($entities as $entity) {
+            try {
+                $this->datagrid->getRow($entity);
+                $this->createExpectationException(
+                    sprintf('Entity "%s" should not be seen', $entity)
+                );
+            } catch (\InvalidArgumentException $e) {
+                // here we must catch an exception because the row is not found
+                continue;
+            }
+        }
+    }
+
+    /**
      * @param array $elements
      *
      * @throws \InvalidArgumentException
      *
-     * @Then /^I should see sorted entities (.*)$/
+     * @Then /^I should see sorted (?:entities|channels|currencies|locales|attributes|(?:import|export) profiles) (.*)$/
      */
     public function iShouldSeeSortedEntities($elements)
     {
@@ -243,28 +271,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 );
             }
             $expectedPosition++;
-        }
-    }
-
-    /**
-     * @param array $entities
-     *
-     * @When /^I should not see entities (.*)$/
-     */
-    public function iShouldNotSeeEntities($entities)
-    {
-        $entities = $this->getMainContext()->listToArray($entities);
-
-        foreach ($entities as $entity) {
-            try {
-                $this->datagrid->getRow($entity);
-                $this->createExpectationException(
-                    sprintf('Entity "%s" should not be seen', $entity)
-                );
-            } catch (\InvalidArgumentException $e) {
-                // here we must catch an exception because the row is not found
-                continue;
-            }
         }
     }
 

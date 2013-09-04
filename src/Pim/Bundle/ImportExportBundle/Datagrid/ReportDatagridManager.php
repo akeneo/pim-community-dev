@@ -137,7 +137,7 @@ class ReportDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-        $downloadLogFileAction = array(
+        $downloadLogAction = array(
             'name'         => 'download',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
@@ -149,7 +149,7 @@ class ReportDatagridManager extends DatagridManager
             )
         );
 
-        return array($downloadLogFileAction);
+        return array($downloadLogAction);
     }
     /**
      * Create status field
