@@ -10,6 +10,8 @@ parameters:
     pim_serializer.normalizer.flat_attribute.class:  Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeNormalizer
     pim_serializer.normalizer.family.class:          Pim\Bundle\ImportExportBundle\Normalizer\FamilyNormalizer
     pim_serializer.normalizer.flat_family.class:     Pim\Bundle\ImportExportBundle\Normalizer\FlatFamilyNormalizer
+    pim_serializer.normalizer.attribute_group.class:      Pim\Bundle\ImportExportBundle\Normalizer\AttributeGroupNormalizer
+    pim_serializer.normalizer.flat_attribute_group.class: Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeGroupNormalizer
     pim_serializer.normalizer.get_set_method.class:  Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
     pim_serializer.encoder.csv.class:                Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder
 
@@ -58,6 +60,16 @@ services:
 
     pim_serializer.normalizer.flat_family:
         class: %pim_serializer.normalizer.flat_family.class%
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_serializer.normalizer.attribute_group:
+        class: %pim_serializer.normalizer.attribute_group.class%
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_serializer.normalizer.flat_attribute_group:
+        class: %pim_serializer.normalizer.flat_attribute_group.class%
         tags:
             - { name: pim_serializer.normalizer }
 
