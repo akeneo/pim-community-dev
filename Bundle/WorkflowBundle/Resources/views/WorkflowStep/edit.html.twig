@@ -40,12 +40,12 @@
                     {% endblock workflow_actions %}
 
                     {% block workflow_transitions %}
-                    <div class="btn-group icons-holder">
-                        <a title="Qualify" class="btn btn-primary icons-holder-text " href="#">
-                            <i class="icon-ok hide-text">Qualify</i>
-                            Qualify
-                        </a>
-                    </div>
+                        {{ oro_widget_render({
+                            'widgetType': 'buttons',
+                            'url': path('oro_workflow_widget_buttons_wizard', {
+                                workflowItemId: workflowItem.id
+                            })
+                        }) }}
                     {% endblock workflow_transitions %}
                 </div>
             </div>

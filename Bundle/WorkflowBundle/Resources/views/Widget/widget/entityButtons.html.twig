@@ -1,0 +1,41 @@
+{% import 'OroWorkflowBundle::macros.html.twig' as workflowMacros %}
+
+{% set blockId = 'entity-transitions-container-' ~ random() %}
+<div class="widget-content btn-group" id="{{ blockId }}">
+    {% for data in new_workflows_data %}
+        {% for transition in data.transitions %}
+            {{ workflowMacros.renderTransitionButton(
+                data.workflow,
+                transition,
+                path(
+                    'oro_workflow_api_rest_workflow_start',
+                    {
+                        workflowName: data.workflow.name,
+                        entityClass: entity_class,
+                        entityId: entity_id,
+                        transitionName: transition.name
+                    }
+                )
+            ) }}
+        {% endfor %}
+    {% endfor %}
+
+    {% for data in exisiting_workflows_data %}
+        {% for transition in data.transitions %}
+            {{ workflowMacros.renderTransitionButton(
+                data.workflow,
+                transition,
+                path(
+                    'oro_workflow_api_rest_workflow_transit',
+                    {
+                        workflowItemId: data.workflowItem.id,
+                        transitionName: transition.name
+                    }
+                )
+            ) }}
+        {% endfor %}
+    {% endfor %}
+
+    {% set workflowData = new_workflows_data|merge(exisiting_workflows_data) %}
+    {{ workflowMacros.renderTransitionsJs(workflowData, blockId) }}
+</div>
