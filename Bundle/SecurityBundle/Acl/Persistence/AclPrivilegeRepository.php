@@ -3,6 +3,7 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Persistence;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface as SID;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity as OID;
@@ -70,29 +71,28 @@ class AclPrivilegeRepository
      * Gets all privileges associated with the given security identity.
      *
      * @param SID $sid
-     * @return AclPrivilege[]
+     * @return ArrayCollection|AclPrivilege[]
      */
     public function getPrivileges(SID $sid)
     {
         $privileges = new ArrayCollection();
         foreach ($this->manager->getAllExtensions() as $extension) {
+            $rootId = $extension->getRootId();
+
             // fill a list of object identities;
             // the root object identity is added to the top of the list (for performance reasons)
             /** @var OID[] $oids */
             $oids = array();
             foreach ($extension->getClasses() as $class) {
-                $oids[] = new OID($extension->getRootId(), $class);
+                $oids[] = new OID($rootId, $class);
             }
-            $rootOid = $this->manager->getRootOid($extension->getRootId());
+            $rootOid = $this->manager->getRootOid($rootId);
             array_unshift($oids, $rootOid);
 
             // load ACLs for all object identities
             $acls = $this->findAcls($sid, $oids);
             // find ACL for the root object identity
-            $rootAcl = null;
-            if ($acls->contains($rootOid)) {
-                $rootAcl = $acls->offsetGet($rootOid);
-            }
+            $rootAcl = $this->findAclByOid($acls, $rootOid);
 
             foreach ($oids as $oid) {
                 if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
@@ -100,7 +100,7 @@ class AclPrivilegeRepository
                 } else {
                     $name = '?';
                 }
-                $group = '';
+                $group = '?';
 
                 $privilege = new AclPrivilege();
                 $privilege
@@ -111,7 +111,7 @@ class AclPrivilegeRepository
                         )
                     )
                     ->setGroup($group)
-                    ->setRootId($extension->getRootId());
+                    ->setRootId($rootId);
 
                 $this->addPermissions($privilege, $oid, $acls, $extension, $rootAcl);
 
@@ -128,9 +128,9 @@ class AclPrivilegeRepository
      * Associates privileges with the given security identity.
      *
      * @param SID $sid
-     * @param array $privileges
+     * @param ArrayCollection|AclPrivilege[] $privileges
      */
-    public function savePrivileges(SID $sid, array $privileges)
+    public function savePrivileges(SID $sid, ArrayCollection $privileges)
     {
 
     }
@@ -157,16 +157,49 @@ class AclPrivilegeRepository
      *
      * @param ArrayCollection|AclPrivilege[] $privileges
      */
-    protected function sortPrivileges(ArrayCollection $privileges)
+    protected function sortPrivileges(ArrayCollection &$privileges)
     {
-        usort(
-            $privileges,
+        /** @var \ArrayIterator $iterator */
+        $iterator = $privileges->getIterator();
+        $iterator->uasort(
             function (AclPrivilege $a, AclPrivilege $b) {
-                return strpos($a->getIdentity()->getId(), ObjectIdentityFactory::ROOT_IDENTITY_TYPE)
-                    ? 1
-                    : strcmp($a->getIdentity()->getName(), $b->getIdentity()->getName());
+                if (strpos($a->getIdentity()->getId(), ObjectIdentityFactory::ROOT_IDENTITY_TYPE)) {
+                    return -1;
+                }
+                if (strpos($b->getIdentity()->getId(), ObjectIdentityFactory::ROOT_IDENTITY_TYPE)) {
+                    return 1;
+                }
+
+                return strcmp($a->getIdentity()->getName(), $b->getIdentity()->getName());
             }
         );
+
+        $result = new ArrayCollection();
+        foreach ($iterator as $item) {
+            $result->add($item);
+        }
+
+        $privileges = $result;
+    }
+
+    /**
+     * Gets ACL associated with the given object identity from the collections specified in $acls argument.
+     *
+     * @param \SplObjectStorage $acls
+     * @param OID $oid
+     * @return AclInterface|null
+     */
+    protected function findAclByOid(\SplObjectStorage $acls, ObjectIdentity $oid)
+    {
+        $result = null;
+        foreach ($acls as $aclOid) {
+            if ($oid->equals($aclOid)) {
+                $result = $acls->offsetGet($aclOid);
+                break;
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -186,15 +219,9 @@ class AclPrivilegeRepository
         AclInterface $rootAcl = null
     ) {
         $allowedPermissions = $extension->getAllowedPermissions($oid);
-        if ($acls->contains($oid)) {
-            $this->addAclPermissions(
-                null,
-                $privilege,
-                $allowedPermissions,
-                $extension,
-                $acls->offsetGet($oid),
-                $rootAcl
-            );
+        $acl = $this->findAclByOid($acls, $oid);
+        if ($acl !== null) {
+            $this->addAclPermissions(null, $privilege, $allowedPermissions, $extension, $acl, $rootAcl);
         } elseif ($rootAcl !== null) {
             $this->addAclPermissions(null, $privilege, $allowedPermissions, $extension, $rootAcl);
         }
@@ -271,17 +298,23 @@ class AclPrivilegeRepository
         array $aces,
         AclExtensionInterface $extension
     ) {
-        if (!empty($aces)) {
-            foreach ($aces as $ace) {
-                if ($ace->isGranting()) {
-                    // @todo denying ACE is not supported yet
-                    continue;
-                }
-                $mask = $ace->getMask();
-                foreach ($extension->getPermissions($mask) as $permission) {
-                    if (isset($permissions[$permission]) && !$privilege->hasPermission($permission)) {
-                        $privilege->addPermission(new AclPermission($permission, $extension->getAccessLevel($mask)));
-                    }
+        if (empty($aces)) {
+            return;
+        }
+        foreach ($aces as $ace) {
+            if (!$ace->isGranting()) {
+                // @todo denying ACE is not supported yet
+                continue;
+            }
+            $mask = $ace->getMask();
+            foreach ($extension->getPermissions($mask) as $permission) {
+                if (!$privilege->hasPermission($permission) && in_array($permission, $permissions)) {
+                    $privilege->addPermission(
+                        new AclPermission(
+                            $permission,
+                            $extension->getAccessLevel($mask, $permission)
+                        )
+                    );
                 }
             }
         }
