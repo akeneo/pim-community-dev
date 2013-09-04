@@ -22,6 +22,8 @@ class BatchProduct
 
     protected $operation;
 
+    protected $operationAlias;
+
     protected $operations = array();
 
     public function __construct()
@@ -56,9 +58,7 @@ class BatchProduct
 
     public function setOperation($operation)
     {
-        if (isset($this->operations[$operation])) {
-            $this->operation = $this->operations[$operation];
-        }
+        $this->operation = $operation;
 
         return $this;
     }
@@ -66,5 +66,29 @@ class BatchProduct
     public function getOperation()
     {
         return $this->operation;
+    }
+
+    public function setOperationAlias($operationAlias)
+    {
+        $this->operationAlias = $operationAlias;
+
+        if (!isset($this->operations[$operationAlias])) {
+            throw new \Exception;
+        }
+        $this->operation = $this->operations[$operationAlias];
+
+        return $this;
+    }
+
+    public function getOperationAlias()
+    {
+        return $this->operationAlias;
+    }
+
+    public function performOperation()
+    {
+        if ($this->operation) {
+            return $this->operation->perform($this->products);
+        }
     }
 }

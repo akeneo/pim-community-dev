@@ -3,6 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\BatchOperation;
 
 use Pim\Bundle\CatalogBundle\Form\Type\BatchOperation\ChangeStatusType;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Batch operation to change products status
@@ -30,5 +32,12 @@ class ChangeStatus implements BatchOperation
     public function getEnable()
     {
         return $this->enable;
+    }
+
+    public function perform(Collection $products)
+    {
+        foreach ($products as $product) {
+            $product->setEnabled($this->enable);
+        }
     }
 }

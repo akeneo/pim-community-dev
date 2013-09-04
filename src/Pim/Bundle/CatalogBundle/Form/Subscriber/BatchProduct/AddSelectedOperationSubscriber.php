@@ -34,14 +34,9 @@ class AddSelectedOperationSubscriber implements EventSubscriberInterface
 
         $operation = $data->getOperation();
         if ($operation instanceof BatchOperation) {
-            $form->add('operation', $operation->getFormType());
-        } else {
             $form
-               ->add('operation', 'choice', array(
-                   'choices' => BatchProduct::getOperationChoices(),
-                   'expanded' => true,
-                   'multiple' => false,
-               ));
+                ->remove('operationAlias')
+                ->add('operation', $operation->getFormType());
         }
     }
 }

@@ -19,25 +19,69 @@ class BatchOperationController extends Controller
     /**
      * @Template
      */
-    public function configureAction(Request $request)
+    public function chooseAction(Request $request)
     {
-        $productIds = $request->query->get('batch[products]', null, true);
-        if (!$productIds || !is_array($productIds)) {
-            return $this->redirectToRoute('pim_catalog_product_index');
-        }
-        $products = $this->getProductManager()->getFlexibleRepository()->findByIds($productIds);
+        $batchProduct = new BatchProduct();
 
-        $batchProduct = new BatchProduct;
-        $batchProduct->setProducts($products);
-        if ($operation = $request->query->get('batch[operation]', null, true)) {
-            $batchProduct->setOperation($operation);
+        if ($request->isMethod('GET')) {
+            $productIds = $request->query->get('products');
+            if (!$productIds || !is_array($productIds)) {
+                return $this->redirectToRoute('pim_catalog_product_index');
+            }
+            $products = $this->getProductManager()->getFlexibleRepository()->findByIds($productIds);
+            $batchProduct->setProducts($products);
         }
 
         $form = $this->createForm(new BatchProductType, $batchProduct);
 
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                return $this->redirectToRoute(
+                    'pim_catalog_batch_operation_configure',
+                    array(
+                        'products' => $batchProduct->getProducts()->map(function ($product) { return $product->getId();})->toArray(),
+                        'operationAlias' => $batchProduct->getOperationAlias(),
+                    )
+                );
+            }
+        }
+
         return array(
-            'form'         => $form->createView(),
-            'batchProduct' => $batchProduct
+            'form' => $form->createView(),
+            'batchProduct' => $batchProduct,
+        );
+    }
+
+    /**
+     * @Template
+     */
+    public function configureAction(Request $request, $operationAlias)
+    {
+        $batchProduct = new BatchProduct();
+        $batchProduct->setOperationAlias($operationAlias);
+
+        if ($request->isMethod('GET')) {
+            $productIds = $request->query->get('products');
+            if (!$productIds || !is_array($productIds)) {
+                return $this->redirectToRoute('pim_catalog_product_index');
+            }
+            $products = $this->getProductManager()->getFlexibleRepository()->findByIds($productIds);
+            $batchProduct->setProducts($products);
+        }
+
+        $form = $this->createForm(new BatchProductType, $batchProduct);
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $batchProduct->performOperation();
+                $this->flush();
+            }
+        }
+
+        return array(
+            'form' => $form->createView(),
+            'operationAlias' => $operationAlias,
         );
     }
 }

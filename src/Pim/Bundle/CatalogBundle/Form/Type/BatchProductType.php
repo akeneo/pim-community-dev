@@ -26,6 +26,11 @@ class BatchProductType extends AbstractType
                 'multiple'  => true,
                 'read_only' => true,
             ))
+            ->add('operationAlias', 'choice', array(
+                'choices' => BatchProduct::getOperationChoices(),
+                'expanded' => true,
+                'multiple' => false,
+            ))
             ->addEventSubscriber(new AddSelectedOperationSubscriber());
     }
 

@@ -1,7 +1,7 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
 {% block content %}
-    <form action="{{ path('pim_catalog_batch_operation_configure', {'operationAlias': operationAlias}) }}" method="POST" class="form-horizontal">
+    <form action="{{ path('pim_catalog_batch_operation_choose') }}" method="POST" class="form-horizontal">
         {{ form_widget(form) }}
         <input type="submit" value="Continue &rarr;" class="btn">
     </form>
