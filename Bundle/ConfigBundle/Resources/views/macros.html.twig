@@ -57,7 +57,7 @@
                     <div class="row-fluid row-fluid-divider tab-content">
                         {% if activeVTab and form != false %}
                             {{ __.renderVerticalSubmenu(activeTab, activeVTab) }}
-                            {{ __.renderTab(form) }}
+                            {{ __.renderTab(form, path('oro_config_configuration_system', {activeGroup: activeTab.name, activeSubGroup: activeVTab})) }}
                         {% endif %}
                     </div>
                 </div>
@@ -123,7 +123,7 @@
 {#
     Renders tab content by name
 #}
-{% macro renderTab(form) %}
+{% macro renderTab(form, formAction) %}
     {% import _self as __ %}
     {% import 'OroUIBundle::macros.html.twig' as UI %}
 
@@ -136,12 +136,13 @@
     {% set data = oro_form_process(data, form) %}
 
     <div class="span10 form-container">
-        <div class="pull-right">
-            {{ UI.saveAndStayButton() }}
-        </div>
         {{ JSFV(form) }}
-        <form id="{{ form.vars.name }}" {{ form_enctype(form) }}
+        <form id="{{ form.vars.name }}" {{ form_enctype(form) }} action="{{ formAction }}"
               method="post" data-collect="true" class="scrollable-substructure">
+            <div class="pull-right">
+                {{ UI.saveAndStayButton() }}
+                <input type="hidden" name="input_action" value="" data-form-id="{{ form.vars.name }}"/>
+            </div>
             {% if data.formErrors is defined and data.formErrors | length%}
                 <div class="customer-info-actions container-fluid well-small alert-wrap">
                     <div class="alert alert-error">
