@@ -84,6 +84,19 @@ class WorkflowItem
     protected $bindEntities;
 
     /**
+     * Corresponding Workflow Definition
+     *
+     * @var WorkflowDefinition
+     *
+     * @ORM\ManyToOne(
+     *  targetEntity="WorkflowDefinition",
+     *  cascade={"persist", "remove"}
+     * )
+     * @ORM\JoinColumn(name="workflow_name", referencedColumnName="name")
+     */
+    protected $definition;
+
+    /**
      * @var \Datetime $created
      *
      * @ORM\Column(type="datetime")
@@ -287,6 +300,29 @@ class WorkflowItem
         }
 
         return $this;
+    }
+
+    /**
+     * Set workflow definition
+     *
+     * @param WorkflowDefinition $definition
+     * @return WorkflowItem
+     */
+    public function setDefinition(WorkflowDefinition $definition)
+    {
+        $this->definition = $definition;
+
+        return $this;
+    }
+
+    /**
+     * Get workflow definition
+     *
+     * @return WorkflowDefinition
+     */
+    public function getDefinition()
+    {
+        return $this->definition;
     }
 
     /**

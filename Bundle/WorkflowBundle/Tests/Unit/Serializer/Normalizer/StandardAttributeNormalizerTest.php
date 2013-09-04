@@ -95,12 +95,12 @@ class StandardAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             'not_array' => array(
                 'type' => 'array',
                 'value' => '-12345.67',
-                'expected' => array(),
+                'expected' => $this->serializeBase64(array()),
             ),
             'array' => array(
                 'type' => 'array',
                 'value' => array(1, 2, 3),
-                'expected' => array(1, 2, 3),
+                'expected' => $this->serializeBase64(array(1, 2, 3)),
             ),
         );
     }
@@ -142,13 +142,13 @@ class StandardAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             'object' => array(
                 'value' => new \stdClass(),
                 'class' => 'stdClass',
-                'expected' => new \stdClass(),
+                'expected' => $this->serializeBase64(new \stdClass()),
             ),
         );
     }
 
     /**
-     * @dataProvider normalizeScalarsAndArrayDataProvider
+     * @dataProvider denormalizeScalarsAndArrayDataProvider
      *
      * @param string $type
      * @param mixed $value
@@ -163,8 +163,64 @@ class StandardAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->normalizer->denormalize($this->workflow, $this->attribute, $value));
     }
 
+    public function denormalizeScalarsAndArrayDataProvider()
+    {
+        return array(
+            'string' => array(
+                'type' => 'string',
+                'value' => '000',
+                'expected' => '000',
+            ),
+            'string_object' => array(
+                'type' => 'string',
+                'value' => new \stdClass(),
+                'expected' => null,
+            ),
+            'int' => array(
+                'type' => 'int',
+                'value' => '01.1',
+                'expected' => 1,
+            ),
+            'integer' => array(
+                'type' => 'integer',
+                'value' => '-12345.67',
+                'expected' => -12345,
+            ),
+            'bool' => array(
+                'type' => 'bool',
+                'value' => '',
+                'expected' => false,
+            ),
+            'boolean' => array(
+                'type' => 'boolean',
+                'value' => 'false',
+                'expected' => true,
+            ),
+            'float' => array(
+                'type' => 'float',
+                'value' => '-12345.67',
+                'expected' => -12345.67,
+            ),
+            'not_array' => array(
+                'type' => 'array',
+                'value' => false,
+                'expected' => array(),
+            ),
+            'not_array_after_unserialized' => array(
+                'type' => 'array',
+                'value' => $this->serializeBase64('somestring'),
+                'expected' => array(),
+            ),
+            'array' => array(
+                'type' => 'array',
+                'value' => $this->serializeBase64(array(1, 2, 3)),
+                'expected' => array(1, 2, 3),
+            ),
+        );
+    }
+
     /**
-     * @dataProvider normalizeObjectDataProvider
+     * @dataProvider denormalizeObjectDataProvider
      *
      * @param mixed $value
      * @param mixed $class
@@ -182,6 +238,27 @@ class StandardAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($class));
 
         $this->assertEquals($expected, $this->normalizer->denormalize($this->workflow, $this->attribute, $value));
+    }
+
+    public function denormalizeObjectDataProvider()
+    {
+        return array(
+            'not_object' => array(
+                'value' => $this->serializeBase64('01.1'),
+                'class' => 'stdClass',
+                'expected' => null,
+            ),
+            'not_instance_of_class' => array(
+                'value' => $this->serializeBase64(new \DateTime()),
+                'class' => 'stdClass',
+                'expected' => null,
+            ),
+            'object' => array(
+                'value' => $this->serializeBase64(new \stdClass()),
+                'class' => 'stdClass',
+                'expected' => new \stdClass(),
+            ),
+        );
     }
 
     /**
@@ -222,5 +299,15 @@ class StandardAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             array('denormalization', 'object', true),
             array('denormalization', 'entity', false),
         );
+    }
+
+    protected function serializeBase64($value)
+    {
+        return base64_encode(serialize($value));
+    }
+
+    protected function unserializeBase64($value)
+    {
+        return unserialize(base64_decode($value));
     }
 }

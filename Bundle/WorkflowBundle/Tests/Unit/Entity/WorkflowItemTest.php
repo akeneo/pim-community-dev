@@ -2,11 +2,10 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity;
 
 class WorkflowItemTest extends \PHPUnit_Framework_TestCase
 {
@@ -199,6 +198,14 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
         $entityBaz->expects($this->at(0))->method('hasSameEntity')->with($entityFoo)->will($this->returnValue(true));
 
         $this->assertTrue($this->workflowItem->hasBindEntity($entityBaz));
+    }
+
+    public function testDefinition()
+    {
+        $this->assertNull($this->workflowItem->getDefinition());
+        $value = new WorkflowDefinition();
+        $this->workflowItem->setDefinition($value);
+        $this->assertEquals($value, $this->workflowItem->getDefinition());
     }
 
     public function testCreatedAtAndPrePersist()

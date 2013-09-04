@@ -6,6 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Events;
 
 use Doctrine\ORM\UnitOfWork;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -43,8 +44,10 @@ class WorkflowDataSerializeSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array(
-            'onFlush',
-            'postLoad'
+            // @codingStandardsIgnoreStart
+            Events::onFlush,
+            Events::postLoad
+            // @codingStandardsIgnoreEnd
         );
     }
 

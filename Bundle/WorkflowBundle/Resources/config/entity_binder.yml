@@ -1,6 +1,5 @@
 parameters:
     oro_workflow.entity_binder.class: Oro\Bundle\WorkflowBundle\Model\EntityBinder
-    oro_workflow.entity_binder.doctrine_subscriber.class: Oro\Bundle\WorkflowBundle\EventListener\WorkflowBindEntitySubscriber
 
 services:
     oro_workflow.entity_binder:
@@ -8,10 +7,3 @@ services:
         arguments:
             - @oro_workflow.registry
             - @oro_workflow.doctrine_helper
-
-    oro_workflow.entity_binder.doctrine_subscriber:
-        class: %oro_workflow.entity_binder.doctrine_subscriber.class%
-        arguments:
-            - @oro_workflow.entity_binder
-        tags:
-            - { name: doctrine.event_subscriber }

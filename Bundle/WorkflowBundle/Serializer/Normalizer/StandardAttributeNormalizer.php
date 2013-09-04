@@ -76,7 +76,7 @@ class StandardAttributeNormalizer implements AttributeNormalizer
         if (!is_array($value)) {
             $value = array();
         }
-        return $value;
+        return $this->serialize($value);
     }
 
     /**
@@ -86,14 +86,11 @@ class StandardAttributeNormalizer implements AttributeNormalizer
      */
     protected function normalizeObject($value, Attribute $attribute)
     {
-        if (!is_object($value)) {
-            $value = null;
-        }
         $class = $attribute->getOption('class');
-        if (!$value instanceof $class) {
-            $value = null;
+        if (!is_object($value) || !$value instanceof $class) {
+            return null;
         }
-        return $value;
+        return $this->serialize($value);
     }
 
     /**
@@ -148,8 +145,12 @@ class StandardAttributeNormalizer implements AttributeNormalizer
      */
     protected function denormalizeArray($value)
     {
+        if (!is_string($value)) {
+            return array();
+        }
+        $value = $this->unserialize($value);
         if (!is_array($value)) {
-            $value = array();
+            return array();
         }
         return $value;
     }
@@ -161,11 +162,9 @@ class StandardAttributeNormalizer implements AttributeNormalizer
      */
     protected function denormalizeObject($value, Attribute $attribute)
     {
-        if (!is_object($value)) {
-            $value = null;
-        }
+        $value = $this->unserialize($value);
         $class = $attribute->getOption('class');
-        if (!$value instanceof $class) {
+        if (!is_object($value) || !$value instanceof $class) {
             $value = null;
         }
         return $value;
@@ -185,5 +184,30 @@ class StandardAttributeNormalizer implements AttributeNormalizer
     public function supportsDenormalization(Workflow $workflow, Attribute $attribute, $attributeValue)
     {
         return !empty($this->normalTypes[$attribute->getType()]);
+    }
+
+    /**
+     * @param mixed $value
+     * @return string
+     */
+    protected function serialize($value)
+    {
+        return base64_encode(serialize($value));
+    }
+
+    /**
+     * @param string $value
+     * @return mixed|null
+     */
+    protected function unserialize($value)
+    {
+        if (!is_string($value)) {
+            return null;
+        }
+        $value = base64_decode($value);
+        if (!is_string($value) || !$value) {
+            return null;
+        }
+        return unserialize($value);
     }
 }

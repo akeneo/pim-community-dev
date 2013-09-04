@@ -6,6 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
+use Doctrine\ORM\Events;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\EntityBinder;
@@ -35,7 +36,11 @@ class WorkflowBindEntitySubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array('preFlush');
+        return array(
+            // @codingStandardsIgnoreStart
+            Events::preFlush
+            // @codingStandardsIgnoreEnd
+        );
     }
 
     /**
