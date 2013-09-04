@@ -1,0 +1,16 @@
+<div class="tab-pane active" id="attributes">
+    {% include 'PimProductBundle:Product:_attributes.html.twig' with { 'product': product, 'channels': channels, 'forn': form } %}
+</div>
+
+<div class="tab-pane" id="categories">
+   {% include 'PimProductBundle:Product:_associateCategories.html.twig' %}
+</div>
+
+<div class="tab-pane" id="completeness">
+   {% include 'PimProductBundle:Product:_completeness.html.twig' %}
+</div>
+
+<div class="tab-pane" id="history">
+    <div id="history-grid"></div>
+</div>
+

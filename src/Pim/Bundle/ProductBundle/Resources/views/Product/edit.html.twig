@@ -71,28 +71,12 @@
         {{ elements.page_header(title, buttons, subtitle, left, right) }}
 
         <div class="layout-content">
-
-            {{ elements.form_navbar(['Attributes', 'Categories', 'Completeness', 'History']) }}
+            {% include 'PimProductBundle:Product:_navbar.html.twig' %}
 
             <div class="row-fluid tab-content">
-
                 {{ elements.form_errors(form) }}
 
-                <div class="tab-pane active" id="attributes">
-                    {% include 'PimProductBundle:Product:_attributes.html.twig' with { 'product': product, 'channels': channels, 'forn': form } %}
-                </div>
-
-                <div class="tab-pane" id="categories">
-                   {% include 'PimProductBundle:Product:_associateCategories.html.twig' %}
-                </div>
-
-                <div class="tab-pane" id="completeness">
-                   {% include 'PimProductBundle:Product:_completeness.html.twig' %}
-                </div>
-
-                <div class="tab-pane" id="history">
-                    <div id="history-grid"></div>
-                </div>
+                {% include 'PimProductBundle:Product:_tab-panes.html.twig' with { 'product': product, 'channels': channels, 'forn': form } %}
 
                 {{ form_row(form.id) }}
                 {{ form_row(form._token) }}
