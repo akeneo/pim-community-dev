@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManager;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
+ * Test related class
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -25,6 +26,9 @@ class UserPreferencesListenerTest extends WebTestCase
      */
     private $entityManager;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $kernel = $this->createKernel();
@@ -73,8 +77,9 @@ class UserPreferencesListenerTest extends WebTestCase
         $user = $this->userManager->findUserByUsername($prefix);
         $channel1 = $this->entityManager->getRepository('PimCatalogBundle:Channel')->find($channel1->getId());
         $this->assertNotEquals(
-                $removedOption->getOptionValue()->getValue(),
-                $user->getCatalogscope()->getData()->getOptionValue()->getValue());
+            $removedOption->getOptionValue()->getValue(),
+            $user->getCatalogscope()->getData()->getOptionValue()->getValue()
+        );
 
         $this->entityManager->remove($channel1);
         $this->entityManager->remove($user);

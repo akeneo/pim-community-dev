@@ -117,7 +117,7 @@ class UserPreferencesListener implements EventSubscriber
      * Remove a value as user attribute option for removed locale or removed scope (=channel)
      *
      * @param string $attributeCode
-     * @param string $optionValue
+     * @param string $value
      */
     protected function removeOption($attributeCode, $value)
     {
@@ -142,7 +142,12 @@ class UserPreferencesListener implements EventSubscriber
             }
 
             $usersQB = $flexRepository->findByWithAttributesQB(array($attributeCode));
-            $flexRepository->applyFilterByAttribute($usersQB, $attributeCode, array($removedOption->getOptionValue()->getId()), 'IN');
+            $flexRepository->applyFilterByAttribute(
+                $usersQB,
+                $attributeCode,
+                array($removedOption->getOptionValue()->getId()),
+                'IN'
+            );
             $users = $usersQB->getQuery()->getResult();
             foreach ($users as $user) {
                 $value = $user->getValue($attributeCode);
