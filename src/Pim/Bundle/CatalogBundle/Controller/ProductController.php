@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ProductCreateHandler;
 use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
@@ -56,57 +57,63 @@ class ProductController extends AbstractDoctrineController
     const TREE_APPLY_PREFIX = "apply_on_tree_";
 
     /**
-     * @var unknown_type
+     * @var GridRenderer
      */
     private $gridRenderer;
 
     /**
-     * @var unknown_type
+     * @var DatagridWorkerInterface
      */
     private $datagridWorker;
 
     /**
-     * @var unknown_type
+     * @var ProductCreateHandler
      */
     private $productCreateHandler;
 
     /**
-     * @var unknown_type
+     * @var Form
      */
     private $productCreateForm;
 
     /**
-     * @var unknown_type
+     * @var CompletenessCalculator
      */
     private $completenessCalculator;
 
     /**
-     * @var unknown_type
+     * @var ProductManager
      */
     private $productManager;
 
     /**
-     * @var unknown_type
+     * @var CategoryManager
      */
     private $categoryManager;
 
     /**
-     * @var unknown_type
+     * @var LocaleManager
      */
     private $localeManager;
 
     /**
-     * @var unknown_type
+     * @var PendingManager
      */
     private $pendingManager;
 
     /**
-     * @var unknown_type
+     * @var AuditManager
      */
     private $auditManager;
 
     /**
+     * @var AclManager
+     */
+    private $aclManager;
+
+    /**
      * Constructor
+     *
      * @param Request                  $request
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
@@ -124,6 +131,7 @@ class ProductController extends AbstractDoctrineController
      * @param LocaleManager            $localeManager
      * @param PendingManager           $pendingManager
      * @param AuditManager             $auditManager
+     * @param AclManager               $aclManager
      */
     public function __construct(
         Request $request,
@@ -142,7 +150,8 @@ class ProductController extends AbstractDoctrineController
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
         PendingManager $pendingManager,
-        AuditManager $auditManager
+        AuditManager $auditManager,
+        AclManager $aclManager
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
         $this->gridRenderer = $gridRenderer;
@@ -155,6 +164,7 @@ class ProductController extends AbstractDoctrineController
         $this->localeManager = $localeManager;
         $this->pendingManager = $pendingManager;
         $this->auditManager = $auditManager;
+        $this->aclManager = $aclManager;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -516,8 +526,7 @@ class ProductController extends AbstractDoctrineController
         if (!$dataLocale) {
             throw new \Exception('User must have a catalog locale defined');
         }
-		// TODO : must be injected !
-        if (!$this->container->get('oro_user.acl_manager')->isResourceGranted('pim_catalog_locale_'.$dataLocale)) {
+        if (!$this->aclManager->isResourceGranted('pim_catalog_locale_'.$dataLocale)) {
             throw new \Exception(sprintf("User doesn't have access to the locale '%s'", $dataLocale));
         }
 
@@ -577,8 +586,6 @@ class ProductController extends AbstractDoctrineController
                 sprintf('Product with id %d could not be found.', $id)
             );
         }
-
-        // TODO : Maybe just check if the locale is well activated
 
         $this->productManager->addMissingPrices($product);
 
