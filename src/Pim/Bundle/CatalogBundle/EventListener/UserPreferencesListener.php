@@ -141,23 +141,27 @@ class UserPreferencesListener implements EventSubscriber
                 throw new \LogicException(sprintf('Tried to delete last %s attribute option', $attributeCode));
             }
 
-            $usersQB = $flexRepository->findByWithAttributesQB(array($attributeCode));
-            $flexRepository->applyFilterByAttribute(
-                $usersQB,
-                $attributeCode,
-                array($removedOption->getOptionValue()->getId()),
-                'IN'
-            );
-            $users = $usersQB->getQuery()->getResult();
-            foreach ($users as $user) {
-                $value = $user->getValue($attributeCode);
-                $value->setData($defaultOption);
-                $storageManager->persist($value);
+            // TODO : quick fix to pass behat, waiting for refactoring of that listener
+            if (isset($removedOption)) {
+
+                $usersQB = $flexRepository->findByWithAttributesQB(array($attributeCode));
+                $flexRepository->applyFilterByAttribute(
+                    $usersQB,
+                    $attributeCode,
+                    array($removedOption->getOptionValue()->getId()),
+                    'IN'
+                );
+                $users = $usersQB->getQuery()->getResult();
+                foreach ($users as $user) {
+                    $value = $user->getValue($attributeCode);
+                    $value->setData($defaultOption);
+                    $storageManager->persist($value);
+                }
+
+                $attribute->removeOption($removedOption);
+
+                $storageManager->persist($attribute);
             }
-
-            $attribute->removeOption($removedOption);
-
-            $storageManager->persist($attribute);
         }
     }
 }
