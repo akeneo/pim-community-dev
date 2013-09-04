@@ -1,9 +1,10 @@
 <?php
-namespace Pim\Bundle\ProductBundle\Tests\Functional\EventListener;
+
+namespace Pim\Bundle\CatalogBundle\Tests\Functional\EventListener;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\ProductBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -32,7 +33,7 @@ class UserPreferencesListenerTest extends WebTestCase
         $this->userManager = $container->get('oro_user.manager');
         $this->entityManager = $container->get('doctrine.orm.default_entity_manager');
     }
-    
+
     /**
      * Tests attribute removal when a channel is updated
      */
@@ -42,20 +43,20 @@ class UserPreferencesListenerTest extends WebTestCase
         $channel1 = new Channel;
         $channel1->setCode($prefix . 'channel1')->setName('channel1');
         $this->entityManager->persist($channel1);
-        
+
         $channel2 = new Channel;
         $channel2->setCode($prefix . 'channel2')->setName('channel2');
         $this->entityManager->persist($channel2);
-        
+
         $this->entityManager->flush();
-        
+
         $attribute = $this->userManager->getFlexibleRepository()->findAttributeByCode('catalogscope');
         foreach ($attribute->getOptions() as $option) {
             if (($prefix . 'channel2') == $option->getOptionValue()->getValue()) {
                 $removedOption = $option;
             }
         }
-        
+
         $user = $this->userManager->createFlexible();
         $user
                 ->setUsername($prefix)
@@ -64,15 +65,15 @@ class UserPreferencesListenerTest extends WebTestCase
         $value = $user->setCatalogscope($removedOption);
         $this->userManager->updateUser($user);
         $this->entityManager->flush();
-        
+
         $this->entityManager->remove($channel2);
         $this->entityManager->flush();
-        
+
         $user = $this->userManager->findUserByUsername($prefix);
         $this->assertNotEquals(
                 $removedOption->getOptionValue()->getValue(),
                 $user->getCatalogscope()->getData()->getOptionValue()->getValue());
-        
+
         $this->entityManager->remove($channel1);
         $this->entityManager->remove($user);
         $this->entityManager->flush();
