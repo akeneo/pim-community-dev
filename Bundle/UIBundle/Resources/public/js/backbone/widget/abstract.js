@@ -8,6 +8,7 @@ Oro.widget.Abstract = Backbone.View.extend({
         url: false,
         elementFirst: true,
         title: '',
+        alias: null,
         wid: null
     },
 
@@ -50,6 +51,10 @@ Oro.widget.Abstract = Backbone.View.extend({
             this._wid = this._getUniqueIdentifier();
         }
         return this._wid;
+    },
+
+    getAlias: function() {
+        return this.options.alias;
     },
 
     _getUniqueIdentifier: function() {
@@ -275,6 +280,7 @@ Oro.widget.Abstract = Backbone.View.extend({
                 this.actionsEl = null;
                 this.setElement($(content).filter('.widget-content'));
                 this._show();
+                Oro.Events.trigger('hash_navigation_request:complete');
             } catch (error) {
                 // Remove state with unrestorable content
                 this.trigger('contentLoadError', this);

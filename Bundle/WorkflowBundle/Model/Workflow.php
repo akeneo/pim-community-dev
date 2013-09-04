@@ -192,6 +192,23 @@ class Workflow
     }
 
     /**
+     * Get steps sorted by order.
+     *
+     * @return Collection
+     */
+    public function getOrderedSteps()
+    {
+        $steps = $this->getSteps()->toArray();
+        usort(
+            $steps,
+            function (Step $stepOne, Step $stepTwo) {
+                return ($stepOne->getOrder() >= $stepTwo->getOrder()) ? 1 : -1;
+            }
+        );
+        return new ArrayCollection($steps);
+    }
+
+    /**
      * Set attributes.
      *
      * @param Attribute[]|Collection $attributes

@@ -1,0 +1,102 @@
+{% macro render_form_col(fields) %}
+    <fieldset class="span4 offset1">
+        {% for field in fields %}
+            {{ form_row(field) }}
+        {% endfor %}
+    </fieldset>
+{% endmacro %}
+
+{% set elementId = 'step-form-' ~ random() %}
+<div class="container-fluid form-container widget-content" id="{{ elementId }}">
+    <style type="text/css">
+        .step-form-header li.current {
+            font-weight: bold;
+
+        }
+
+        .step-form-header li {
+            font-size: 15px;
+
+        }
+
+        .step-form-header li.step:not(:last-child):after {
+            content: "-";
+            padding-left: 10px;
+            color: #c8c8c8;
+            font-weight: normal;
+        }
+
+        .step-form-header li:first-child:before {
+            content: "...";
+            font-size: 24px;
+            color: #c8c8c8;
+            top: -2px;
+            display: inline-block;
+            position: relative;
+            font-family: sans;
+            padding-right: 10px;
+        }
+
+        .step-form-container {
+            padding: 20px 0 20px;
+        }
+
+        .form-horizontal .step-form-container .control-label {
+            font-weight: normal;
+        }
+    </style>
+
+    <div class="step-form-header">
+        <ul class="inline">
+            {% for step in steps %}
+                <li class="step{% if step.name == currentStep.name %} current{% endif %}">
+                    {{ step.label|trans }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% if workflowItem.closed %}
+        <h1>{{ 'Workflow closed'|trans }}</h1>
+    {% else %}
+    {% if saved %}
+        <script type="text/javascript">
+            Oro.widget.Manager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }})
+                .trigger('formSave');
+        </script>
+    {% endif %}
+
+    {{ JSFV(form) }}
+
+    <form method="post"
+        data-nohash="true"
+        id="{{ form.vars.name }}"
+        action="{{ path('oro_workflow_widget_step_form', {workflowItemId: workflowItem.id}) }}"
+        class="form-horizontal">
+        <div class="step-form-container row-fluid">
+            {% set fieldsPerCol = 4 %}
+            {% set numberOfColumns = 2 %}
+            {% set formFieldsPerCol = form|length/numberOfColumns %}
+            {% if formFieldsPerCol > fieldsPerCol  %}
+                {% set fieldsPerCol = formFieldsPerCol %}
+            {% endif %}
+            {% for colNum in 1..numberOfColumns %}
+                {% set start = (colNum - 1) * fieldsPerCol %}
+                {{ _self.render_form_col(form|slice(start, fieldsPerCol)) }}
+            {% endfor %}
+        </div>
+
+        {% if currentStep.formOptions.attribute_fields is defined and currentStep.formOptions.attribute_fields|length %}
+        <div class="widget-actions">
+            <button type="submit" class="btn btn-success btn-small">{{ 'Save'|trans }}</button>
+        </div>
+        {% endif %}
+    </form>
+    {% endif %}
+
+    <script type="text/javascript">
+        $('#{{ elementId }}').on('widgetize', function(e, widget) {
+            widget.setTitle(widget.$el.find('.step-form-header'))
+        });
+    </script>
+</div>

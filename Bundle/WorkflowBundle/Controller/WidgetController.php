@@ -2,24 +2,74 @@
 
 namespace Oro\Bundle\WorkflowBundle\Controller;
 
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Annotation\AclAncestor;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\DoctrineHelper;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException;
 
 class WidgetController extends Controller
 {
     /**
-     * @Route("/buttons/entity/{entityClass}/{entityId}", name="oro_workflow_widget_buttons_entity")
+     * @Route("/step/edit/item/{workflowItemId}", name="oro_workflow_widget_step_form")
+     * @ParamConverter("workflowItem", options={"id"="workflowItemId"})
+     * @Template
+     * @AclAncestor("oro_workflow")
+     */
+    public function stepFormAction(WorkflowItem $workflowItem)
+    {
+        /** @var WorkflowManager $workflowManager */
+        $workflowManager = $this->get('oro_workflow.manager');
+        $workflow = $workflowManager->getWorkflow($workflowItem);
+        $workflowData = $workflowItem->getData();
+        $currentStep = $workflow->getStep($workflowItem->getCurrentStepName());
+        if (!$currentStep) {
+            throw new \LogicException(
+                sprintf('There is no step "%s"', $workflowItem->getCurrentStepName())
+            );
+        }
+
+        $stepForm = $this->createForm(
+            $currentStep->getFormType(),
+            $workflowData,
+            array('workflow' => $workflow, 'step' => $currentStep)
+        );
+
+        $saved = false;
+        if ($this->getRequest()->isMethod('POST')) {
+            $stepForm->submit($this->getRequest());
+
+            if ($stepForm->isValid()) {
+                $workflowItem->setUpdated();
+                $this->getEntityManager()->flush();
+
+                $saved = true;
+            }
+        }
+
+        return array(
+            'saved' => $saved,
+            'workflow' => $workflow,
+            'steps' => $workflow->getOrderedSteps(),
+            'currentStep' => $currentStep,
+            'form' => $stepForm->createView(),
+            'workflowItem' => $workflowItem,
+        );
+    }
+
+    /**
+     * @Route("/buttons/entity/{entityClass}/{entityId}", name="oro_workflow_widget_buttons")
      * @Template
      * @AclAncestor("oro_workflow")
      */
@@ -75,7 +125,7 @@ class WidgetController extends Controller
     {
         /** @var WorkflowManager $workflowManager */
         $workflowManager = $this->get('oro_workflow.manager');
-        $workflow = $workflowManager->getWorkflow($workflowItem->getWorkflowName());
+        $workflow = $workflowManager->getWorkflow($workflowItem);
         $transitions = $workflow->getAllowedTransitions($workflowItem);
 
         return array(
@@ -125,8 +175,8 @@ class WidgetController extends Controller
      *
      * @param string $entityClass
      * @param mixed $entityId
-     * @return mixed
      * @throws BadRequestHttpException
+     * @return mixed
      */
     protected function getEntityReference($entityClass, $entityId)
     {
@@ -139,5 +189,13 @@ class WidgetController extends Controller
         }
 
         return $entity;
+    }
+
+    /**
+     * @return EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->getDoctrine()->getManagerForClass('OroWorkflowBundle:WorkflowItem');
     }
 }
