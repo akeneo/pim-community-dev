@@ -15,7 +15,10 @@ Pim.tree.manage = function(elementId) {
     createUrl        = $el.attr('data-create-url'),
     editUrl          = $el.attr('data-edit-url'),
     moveUrl          = $el.attr('data-move-url'),
-    editLabel        = $el.attr('data-edit-label');
+    editLabel        = $el.attr('data-edit-label'),
+    loadingMask      = new Oro.LoadingMask();
+
+    loadingMask.render().$el.appendTo($('#container'));
 
     this.config = {
         'core': {
@@ -130,15 +133,23 @@ Pim.tree.manage = function(elementId) {
             });
         })
         .bind('select_node.jstree', function (e, data) {
-            var id = data.rslt.obj.attr('id').replace('node_','');
+            loadingMask.show();
+            var id = data.rslt.obj.attr('id').replace('node_',''),
+            url = Routing.generate('pim_catalog_categorytree_edit', { id: id });
             $.ajax({
-                async: false,
+                async: true,
                 type: 'GET',
-                url: Routing.generate('pim_catalog_categorytree_edit', { id: id }),
+                url: url,
                 success: function (data) {
                     if (data) {
                         $('#category-form').html(data);
+                        Backbone.history.navigate('url=' + url, {trigger: false});
+                        loadingMask.hide();
                     }
+                },
+                error: function(jqXHR) {
+                    Oro.BackboneError.Dispatch(null, jqXHR);
+                    loadingMask.hide();
                 }
             });
         })
