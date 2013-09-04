@@ -32,15 +32,65 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  */
 class ProductAttributeController extends AbstractDoctrineController
 {
+    /**
+     * @var GridRenderer
+     */
     private $gridRenderer;
+
+    /**
+     * @var DatagridWorkerInterface
+     */
     private $datagridWorker;
+
+    /**
+     * @var ProductAttributeHandler
+     */
     private $attributeHandler;
+
+    /**
+     * @var Form
+     */
     private $attributeForm;
+
+    /**
+     * @var ProductManager
+     */
     private $productManager;
+
+    /**
+     * @var LocaleManager
+     */
     private $localeManager;
+
+    /**
+     * @var AuditManager
+     */
     private $auditManager;
+
+    /**
+     * @var array
+     */
     private $measuresConfig;
-    
+
+    /**
+     * Constructor
+     *
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param RegistryInterface        $doctrine
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param GridRenderer             $gridRenderer
+     * @param DatagridWorkerInterface  $datagridWorker
+     * @param ProductAttributeHandler  $attributeHandler
+     * @param Form                     $attributeForm
+     * @param ProductManager           $productManager
+     * @param LocaleManager            $localeManager
+     * @param AuditManager             $auditManager
+     * @param array                    $measuresConfig
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,
