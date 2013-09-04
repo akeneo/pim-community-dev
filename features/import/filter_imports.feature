@@ -6,11 +6,11 @@ Feature: Filter import profiles
 
   Background:
     Given the following jobs:
-      | connector | alias            | code                  | label                        | type   |
-      | Akeneo    | product_export   | acme_product_export   | Product export for Acme.com  | export |
-      | Akeneo    | product_import   | acme_product_import   | Product import for Acme.com  | import |
-      | Akeneo    | category_import  | acme_category_import  | Category import for Acme.com | import |
-      | Akeneo    | category_import  | foo_category_import   | Category import for foo      | import |
+      | connector            | alias           | code                 | label                        | type   |
+      | Akeneo CSV Connector | product_export  | acme_product_export  | Product export for Acme.com  | export |
+      | Akeneo CSV Connector | product_import  | acme_product_import  | Product import for Acme.com  | import |
+      | Akeneo CSV Connector | category_import | acme_category_import | Category import for Acme.com | import |
+      | Akeneo CSV Connector | category_import | foo_category_import  | Category import for foo      | import |
     Given I am logged in as "admin"
 
   Scenario: Successfully display filters
@@ -25,7 +25,7 @@ Feature: Filter import profiles
     When I filter by "Code" with value "acme"
     Then the grid should contain 2 elements
     And I should see import profiles acme_product_import and acme_category_import
-    And I should not see import profiles foo_product_import and acme_product_export 
+    And I should not see import profiles foo_product_import and acme_product_export
 
   Scenario: Successfully filter by label
     Given I am on the imports page
@@ -43,7 +43,7 @@ Feature: Filter import profiles
 
   Scenario: Successfully filter by connector
     Given I am on the imports page
-    When I filter by "Connector" with value "Akeneo"
+    When I filter by "Connector" with value "Akeneo CSV Connector"
     Then the grid should contain 3 elements
     And I should see import profiles acme_product_import, acme_category_import and foo_category_import
     And I should not see import profile acme_product_export

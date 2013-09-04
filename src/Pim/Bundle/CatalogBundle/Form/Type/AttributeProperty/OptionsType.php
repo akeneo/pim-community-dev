@@ -43,6 +43,6 @@ class OptionsType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_product_options';
+        return 'pim_catalog_options';
     }
 }

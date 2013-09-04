@@ -49,7 +49,7 @@
                     </div>
             {% endif %}
             {% if attributeView.isRemovable %}
-                <i class="fa-icon-remove remove-attribute" rel="tooltip" data-url="{{ path('pim_product_product_removeproductattribute', { 'productId': product.id, 'attributeId': attributeId, 'dataLocale': dataLocale }) }}" data-original-title="{{ 'Remove this attribute'|trans }}" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attributeView.label}) }}"></i>
+                <i class="fa-icon-remove remove-attribute" data-toggle="tooltip" data-placement="right" data-url="{{ path('pim_catalog_product_removeproductattribute', { 'productId': product.id, 'attributeId': attributeId, 'dataLocale': dataLocale }) }}" data-original-title="{{ 'Remove this attribute'|trans }}" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attributeView.label}) }}"></i>
             {% endif %}
             </div>
         {% endfor %}

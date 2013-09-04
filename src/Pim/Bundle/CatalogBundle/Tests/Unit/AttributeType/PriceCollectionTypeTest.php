@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\AttributeType\PriceCollectionType;
  */
 class PriceCollectionTypeTest extends AttributeTypeTest
 {
-    protected $name = 'pim_product_price_collection';
+    protected $name = 'pim_catalog_price_collection';
 
     public function setUp()
     {
@@ -41,7 +41,7 @@ class PriceCollectionTypeTest extends AttributeTypeTest
                 array('options'      => array('constraints' => array('constraints'),),
                 'label'        => null,
                 'required'     => null,
-                'type'         => 'pim_product_price',
+                'type'         => 'pim_catalog_price',
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'by_reference' => false,

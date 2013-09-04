@@ -44,6 +44,6 @@ class ScopableType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_product_scopable';
+        return 'pim_catalog_scopable';
     }
 }

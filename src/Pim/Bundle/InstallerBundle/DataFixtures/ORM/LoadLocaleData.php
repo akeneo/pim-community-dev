@@ -19,7 +19,7 @@ class LoadLocaleData extends AbstractInstallerFixture
      */
     public function load(ObjectManager $manager)
     {
-        $allLocales = $this->container->getParameter('pim_product.locales');
+        $allLocales = $this->container->getParameter('pim_catalog.locales');
 
         foreach (array_keys($allLocales['locales']) as $localeCode) {
             $locale = new Locale();

@@ -3,7 +3,7 @@
     {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% endif %}
 {% endspaceless %}
-{% set accordionContent = { 'Label translations': form_row(form.label), 'Description': form_row(form.description) } %}
+{% set accordionContent = { 'Label translations': form_row(form.label) } %}
 
 {% if form.options is defined %}
     {% set optionsContent %}
@@ -42,7 +42,7 @@
                     {% endfor %}
                     <td>
                         {{ form_row(option.default) }}
-                        <input type="{{ form.attributeType.vars.value == 'pim_product_multiselect' ? 'checkbox' : 'radio' }}" name="default"{% if option.vars.value.default %} checked="checked"{% endif %}>
+                        <input type="{{ form.attributeType.vars.value == 'pim_catalog_multiselect' ? 'checkbox' : 'radio' }}" name="default"{% if option.vars.value.default %} checked="checked"{% endif %}>
                     </td>
                     {% if disabledLocales is not empty %}
                     <td style="display:none;">

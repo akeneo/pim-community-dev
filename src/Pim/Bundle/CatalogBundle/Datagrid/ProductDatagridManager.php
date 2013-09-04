@@ -106,32 +106,22 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function getProperties()
     {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
-            array(
-                'type'     => FieldDescriptionInterface::TYPE_INTEGER,
-                'required' => true,
-            )
-        );
-
         return array(
-            new FieldProperty($fieldId),
             new UrlProperty(
                 'edit_link',
                 $this->router,
-                'pim_product_product_edit',
+                'pim_catalog_product_edit',
                 array('id', 'dataLocale' => self::LOCALE_FIELD_NAME)
             ),
             new UrlProperty(
                 'edit_categories_link',
                 $this->router,
-                'pim_product_product_edit',
+                'pim_catalog_product_edit',
                 array('id', 'dataLocale' => self::LOCALE_FIELD_NAME),
                 false,
                 '#categories'
             ),
-            new UrlProperty('delete_link', $this->router, 'pim_product_product_remove', array('id')),
+            new UrlProperty('delete_link', $this->router, 'pim_catalog_product_remove', array('id')),
         );
     }
 

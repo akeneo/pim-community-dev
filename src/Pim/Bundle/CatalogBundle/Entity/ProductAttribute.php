@@ -58,13 +58,6 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     protected $sortOrder = 0;
 
     /**
-     * @var string $description
-     *
-     * @ORM\Column(name="description", type="string", length=255, nullable=true)
-     */
-    protected $description;
-
-    /**
      * @var string $variant
      *
      * @ORM\Column(name="variant", type="string", length=255, nullable=true)
@@ -288,7 +281,6 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
         $this->searchable          = false;
         $this->translatable        = false;
         $this->scopable            = false;
-        $this->description         = '';
         $this->smart               = false;
         $this->variant             = false;
         $this->useableAsGridColumn = false;
@@ -406,30 +398,6 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     public function __toString()
     {
         return $this->getLabel();
-    }
-
-    /**
-     * Get description
-     *
-     * @return string $description
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return ProductAttribute
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
     }
 
     /**

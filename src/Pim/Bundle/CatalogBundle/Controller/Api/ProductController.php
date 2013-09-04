@@ -87,14 +87,14 @@ class ProductController extends FOSRestController
      */
     protected function handleGetListRequest($scope, $page, $limit)
     {
-        $manager = $this->get('pim_product.manager.product');
+        $manager = $this->get('pim_catalog.manager.product');
         $manager->setScope($scope);
 
         $offset = --$page * $limit;
 
         $products = $manager->getFlexibleRepository()->findBy(array(), array('id' => 'ASC'), $limit, $offset);
 
-        $channels = $this->get('pim_product.manager.channel')->getChannels(array('code' => $scope));
+        $channels = $this->get('pim_catalog.manager.channel')->getChannels(array('code' => $scope));
         $channel = reset($channels);
 
         if (!$channel) {
@@ -120,7 +120,7 @@ class ProductController extends FOSRestController
      */
     protected function handleGetRequest($scope, $identifier)
     {
-        $manager = $this->get('pim_product.manager.product');
+        $manager = $this->get('pim_catalog.manager.product');
         $manager->setScope($scope);
 
         $product = $manager->findByIdentifier($identifier);
@@ -129,7 +129,7 @@ class ProductController extends FOSRestController
             return new Response('', 404);
         }
 
-        $channels = $this->get('pim_product.manager.channel')->getChannels(array('code' => $scope));
+        $channels = $this->get('pim_catalog.manager.channel')->getChannels(array('code' => $scope));
         $channel = reset($channels);
 
         if (!$channel) {

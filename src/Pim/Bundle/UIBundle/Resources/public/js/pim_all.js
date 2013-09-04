@@ -4,6 +4,28 @@ Pim.navigate = function(route) {
     Oro.hashNavigationInstance.setLocation(route);
 };
 
+Pim.initSelect2 = function() {
+    $('form input.multiselect').each(function() {
+        var $el = $(this),
+        value = _.map(_.compact($el.val().split(',')), $.trim);
+        tags = _.map(_.compact($el.attr('data-tags').split(',')), $.trim);
+        tags = _.union(tags, value).sort();
+        $el.select2({ tags: tags, tokenSeparators: [',', ' '] });
+    });
+
+    $('select').each(function() {
+        var $el = $(this),
+        $empty = $el.children('[value=""]');
+        if ($empty.length && $empty.html()) {
+            $el.attr('data-placeholder', $empty.html());
+            $empty.html('');
+        }
+    });
+
+    $('form select[data-placeholder]').select2({ allowClear: true });
+    $('form select:not(.select2-offscreen)').select2();
+};
+
 // Listener for form update events (used in product edit form)
 Pim.updateListener = function($form) {
     this.updated = false;
@@ -74,12 +96,7 @@ function init() {
     $('.has-sidebar').sidebarize();
 
     // Apply Select2
-    $('form select').select2({ allowClear: true });
-
-    // Apply Select2 multiselect
-    $('form input.multiselect').each(function() {
-        $(this).select2({ tags: $(this).val() });
-    });
+    Pim.initSelect2();
 
     // Apply bootstrapSwitch
     $('.switch:not(.has-switch)').bootstrapSwitch();
@@ -226,14 +243,13 @@ function init() {
         'class': 'fa-icon-globe',
         'attr': {
             'data-original-title': _.__('Localized value'),
-            'rel': 'tooltip'
+            'data-toggle': 'tooltip',
+            'data-placement': 'right'
         }
     });
     $('.attribute-field.translatable').each(function() {
         $(this).find('div.controls .icons-container').append($localizableIcon.clone());
     });
-
-    $('[rel="tooltip"]').tooltip();
 
     $('form').on('change', 'input[type="file"]', function() {
         var $input = $(this);

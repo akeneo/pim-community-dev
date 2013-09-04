@@ -8,7 +8,7 @@ services:
         class:     %pim_filter.form.type.filter.currency_class%
         arguments:
             - @translator
-            - @pim_product.manager.currency
+            - @pim_catalog.manager.currency
         tags:
             - { name: form.type, alias: pim_type_currency_filter }
 
@@ -16,6 +16,6 @@ services:
         class:     %pim_filter.form.type.filter.scope_class%
         arguments:
             - @translator
-            - @pim_product.manager.channel
+            - @pim_catalog.manager.channel
         tags:
             - { name: form.type, alias: pim_type_scope_filter }

@@ -11,6 +11,8 @@
 
     <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat"/>
 
+    <target name="build-behat-coverage" depends="prepare,composer,vendors,setupdb,dumpassets,behat-coverage"/>
+
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
     <target name="clean" description="Cleanup build artifacts">
@@ -99,7 +101,7 @@
             <arg path="${basedir}/features" />
         </exec>
     </target>
-    
+
     <target name="phpdoc" description="Check php documentation">
         <exec executable="phpdoc">
             <arg line="--directory ${basedir}/src" />
@@ -164,6 +166,17 @@
             <arg value="--profile=jenkins" />
             <arg value="--ansi" />
             <arg value="--tags=~skip" />
+            <arg value="-fprogress" />
+        </exec>
+    </target>
+
+    <target name="behat-coverage" description="Run acceptance tests with Behat and produce coverage">
+        <exec executable="bin/behat" failonerror="true">
+            <env key="DISPLAY" value=":0" />
+            <arg value="--profile=jenkins-coverage" />
+            <arg value="--ansi" />
+            <arg value="--tags=~skip" />
+            <arg value="-fprogress" />
         </exec>
     </target>
 

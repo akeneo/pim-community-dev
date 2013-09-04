@@ -23,7 +23,7 @@ class DateGuesser implements ConstraintGuesserInterface
         return in_array(
             $attribute->getAttributeType(),
             array(
-                'pim_product_date',
+                'pim_catalog_date',
             )
         );
     }

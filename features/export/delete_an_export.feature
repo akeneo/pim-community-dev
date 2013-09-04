@@ -7,11 +7,11 @@ Feature: Delete export
 
   Background:
     Given the following jobs:
-      | connector | alias            | code                  | label                       | type   |
-      | Akeneo    | product_export   | acme_product_export   | Product export for Acme.com | export |
-      | Akeneo    | attribute_export | acme_attribute_export | Attribute export            | export |
-      | Akeneo    | product_export   | foo_product_export    | Product export for foo      | export |
-      | Akeneo    | product_import   | acme_product_import   | Product import for Acme.com | import |
+      | connector            | alias            | code                  | label                       | type   |
+      | Akeneo CSV Connector | product_export   | acme_product_export   | Product export for Acme.com | export |
+      | Akeneo CSV Connector | attribute_export | acme_attribute_export | Attribute export            | export |
+      | Akeneo CSV Connector | product_export   | foo_product_export    | Product export for foo      | export |
+      | Akeneo CSV Connector | product_import   | acme_product_import   | Product import for Acme.com | import |
     Given I am logged in as "admin"
 
   Scenario: Successfully delete an export job

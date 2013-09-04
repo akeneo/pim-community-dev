@@ -33,11 +33,11 @@ class ChannelController extends Controller
             ->from('PimCatalogBundle:Channel', 'c');
 
         /** @var $queryFactory QueryFactory */
-        $queryFactory = $this->get('pim_product.datagrid.manager.channel.default_query_factory');
+        $queryFactory = $this->get('pim_catalog.datagrid.manager.channel.default_query_factory');
         $queryFactory->setQueryBuilder($queryBuilder);
 
         /** @var $datagridManager LocaleDatagridManager */
-        $datagridManager = $this->get('pim_product.datagrid.manager.channel');
+        $datagridManager = $this->get('pim_catalog.datagrid.manager.channel');
         $datagrid = $datagridManager->getDatagrid();
 
         $view = ('json' === $request->getRequestFormat()) ?
@@ -69,16 +69,16 @@ class ChannelController extends Controller
      */
     public function editAction(Channel $channel)
     {
-        if ($this->get('pim_product.form.handler.channel')->process($channel)) {
+        if ($this->get('pim_catalog.form.handler.channel')->process($channel)) {
             $this->addFlash('success', 'Channel successfully saved');
 
             return $this->redirect(
-                $this->generateUrl('pim_product_channel_index')
+                $this->generateUrl('pim_catalog_channel_index')
             );
         }
 
         return array(
-            'form' => $this->get('pim_product.form.channel')->createView()
+            'form' => $this->get('pim_catalog.form.channel')->createView()
         );
     }
 
@@ -99,7 +99,7 @@ class ChannelController extends Controller
         } else {
             $this->addFlash('success', 'Channel successfully removed');
 
-            return $this->redirect($this->generateUrl('pim_product_channel_index'));
+            return $this->redirect($this->generateUrl('pim_catalog_channel_index'));
         }
     }
 }

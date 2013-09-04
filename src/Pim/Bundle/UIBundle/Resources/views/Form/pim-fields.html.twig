@@ -39,7 +39,7 @@
         {% if type is not defined or type != 'hidden' %}
             <div class="icons-container">
                 {% if help is defined %}
-                    <i class="fa-icon-info-sign" data-toggle="tooltip" data-original-title="{{ help|trans }}"></i>
+                    <i class="fa-icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="{{ help|trans }}"></i>
                 {% endif %}
                 {{ form_errors(form) }}
             </div>
@@ -185,7 +185,7 @@
 {% endspaceless %}
 {% endblock oro_flexibleentity_metric_widget %}
 
-{% block pim_product_price_collection_widget %}
+{% block pim_catalog_price_collection_widget %}
     {% for child in form.children %}
         {% if child.vars.value.currency == localeCurrency() %}
             {{ form_widget(child) }}
@@ -196,14 +196,14 @@
             {{ form_widget(child) }}
         {% endif %}
     {% endfor %}
-{% endblock pim_product_price_collection_widget %}
+{% endblock pim_catalog_price_collection_widget %}
 
-{% block pim_product_price_widget %}
+{% block pim_catalog_price_widget %}
 {% spaceless %}
     {{ form_widget(form.currency) }}
     {{ form_row(form.data, {label:currencySymbol(form.currency.vars.value)} ) }}
 {% endspaceless %}
-{% endblock pim_product_price_widget %}
+{% endblock pim_catalog_price_widget %}
 
 {% block pim_batch_step_element_configuration_widget %}
     {% for child in form %}

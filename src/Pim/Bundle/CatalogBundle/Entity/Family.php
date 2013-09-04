@@ -33,30 +33,6 @@ class Family implements TranslatableInterface, VersionableInterface
     protected $id;
 
     /**
-     * @var datetime $created
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
-     */
-    protected $created;
-
-    /**
-     * @var datetime $updated
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
-     */
-    protected $updated;
-
-    /**
-     * @var integer $version
-     *
-     * @ORM\Column(name="version", type="integer")
-     * @ORM\Version
-     */
-    protected $version;
-
-    /**
      * @var string $code
      *
      * @ORM\Column(name="code", type="string", length=100, unique=true)
@@ -111,6 +87,30 @@ class Family implements TranslatableInterface, VersionableInterface
      * )
      */
     protected $attributeRequirements;
+
+    /**
+     * @var datetime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var datetime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime")
+     */
+    protected $updated;
+
+    /**
+     * @var integer $version
+     *
+     * @ORM\Column(name="version", type="integer")
+     * @ORM\Version
+     */
+    protected $version;
 
     /**
      * Constructor
@@ -249,7 +249,7 @@ class Family implements TranslatableInterface, VersionableInterface
      */
     public function removeAttribute(ProductAttribute $attribute)
     {
-        if ('pim_product_identifier' === $attribute->getAttributeType()) {
+        if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
             throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
         }
 
@@ -325,8 +325,8 @@ class Family implements TranslatableInterface, VersionableInterface
                 return in_array(
                     $attribute->getAttributeType(),
                     array(
-                        'pim_product_text',
-                        'pim_product_identifier'
+                        'pim_catalog_text',
+                        'pim_catalog_identifier'
                     )
                 );
             }

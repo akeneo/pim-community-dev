@@ -30,11 +30,11 @@ class CurrencyController extends Controller
             ->from('PimCatalogBundle:Currency', 'c');
 
         /** @var $queryFactory QueryFactory */
-        $queryFactory = $this->get('pim_product.datagrid.manager.currency.default_query_factory');
+        $queryFactory = $this->get('pim_catalog.datagrid.manager.currency.default_query_factory');
         $queryFactory->setQueryBuilder($queryBuilder);
 
         /** @var $datagridManager LocaleDatagridManager */
-        $datagridManager = $this->get('pim_product.datagrid.manager.currency');
+        $datagridManager = $this->get('pim_catalog.datagrid.manager.currency');
         $datagrid = $datagridManager->getDatagrid();
 
         $view = ('json' === $request->getRequestFormat()) ?
@@ -61,6 +61,6 @@ class CurrencyController extends Controller
             $this->addFlash('error', 'Action failed. Please retry.');
         }
 
-        return $this->redirect($this->generateUrl('pim_product_currency_index'));
+        return $this->redirect($this->generateUrl('pim_catalog_currency_index'));
     }
 }

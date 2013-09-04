@@ -9,7 +9,6 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
-use Oro\Bundle\GridBundle\Property\FieldProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 /**
@@ -27,19 +26,9 @@ class LocaleDatagridManager extends DatagridManager
      */
     protected function getProperties()
     {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
-            array(
-                'type'     => FieldDescriptionInterface::TYPE_INTEGER,
-                'required' => true,
-            )
-        );
-
         return array(
-            new FieldProperty($fieldId),
-            new UrlProperty('edit_link', $this->router, 'pim_product_locale_edit', array('id')),
-            new UrlProperty('disable_link', $this->router, 'pim_product_locale_disable', array('id'))
+            new UrlProperty('edit_link', $this->router, 'pim_catalog_locale_edit', array('id')),
+            new UrlProperty('disable_link', $this->router, 'pim_catalog_locale_disable', array('id'))
         );
     }
 

@@ -17,12 +17,12 @@ class SetImportedProductDataTransformerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('pim_product.form.type.product')) {
+        if (!$container->hasDefinition('pim_catalog.form.type.product')) {
             return;
         }
 
-        $productType = $container->getDefinition('pim_product.form.type.product');
-        $transformer = $container->getParameter('pim_product.imported_product_data_transformer');
+        $productType = $container->getDefinition('pim_catalog.form.type.product');
+        $transformer = $container->getParameter('pim_catalog.imported_product_data_transformer');
 
         if ($transformer) {
             $productType->replaceArgument(3, new Reference($transformer));

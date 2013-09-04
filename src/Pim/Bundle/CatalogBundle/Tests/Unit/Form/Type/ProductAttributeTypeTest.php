@@ -45,7 +45,6 @@ class ProductAttributeTypeTest extends AbstractFormTypeTest
     {
         // Assert fields
         $this->assertField('label', 'pim_translatable_field');
-        $this->assertField('description', 'textarea');
         $this->assertField('variant', 'choice');
         $this->assertField('smart', 'checkbox');
         $this->assertField('useableAsGridColumn', 'checkbox');
@@ -62,7 +61,7 @@ class ProductAttributeTypeTest extends AbstractFormTypeTest
         );
 
         // Assert name
-        $this->assertEquals('pim_product_attribute', $this->form->getName());
+        $this->assertEquals('pim_catalog_attribute', $this->form->getName());
     }
 
     /**

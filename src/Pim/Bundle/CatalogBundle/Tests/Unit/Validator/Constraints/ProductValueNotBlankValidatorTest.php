@@ -72,7 +72,7 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $attribute = new ProductAttribute();
         $attribute->setCode('price');
-        $attribute->setAttributeType('pim_product_price_collection');
+        $attribute->setAttributeType('pim_catalog_price_collection');
         $price = new ProductPrice();
         $price->setCurrency('EUR');
         $price->setData(12.5);
@@ -126,7 +126,7 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $attribute = new ProductAttribute();
         $attribute->setCode('price');
-        $attribute->setAttributeType('pim_product_price_collection');
+        $attribute->setAttributeType('pim_catalog_price_collection');
         $price = new ProductPrice();
         $price->setCurrency('EUR');
         $price->setData(null);
@@ -173,7 +173,7 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a product value mock
      *
-     * @param mixed $return
+     * @param mixed            $return
      * @param ProductAttribute $attribute
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue

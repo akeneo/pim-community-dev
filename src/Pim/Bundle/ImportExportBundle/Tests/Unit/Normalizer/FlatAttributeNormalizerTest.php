@@ -21,7 +21,6 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     private $normalizer;
 
     private $optionalProperties = array(
-        'description',
         'default_value',
         'value_creation_allowed',
         'max_characters',
@@ -91,7 +90,6 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                     'type'                   => 'multiselect',
                     'code'                   => 'color',
                     'label'                  => 'default:Color,en:Color,fr:Couleur',
-                    'description'            => 'Color of the product',
                     'group'                  => 'general',
                     'sort_order'             => '5',
                     'required'               => '0',
@@ -112,7 +110,6 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                     'type'                   => 'text',
                     'code'                   => 'description',
                     'label'                  => 'default:Description,en:Description,fr:Description',
-                    'description'            => 'A desccription of the product',
                     'group'                  => 'info',
                     'sort_order'             => '1',
                     'required'               => '1',
@@ -167,7 +164,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     private function createAttribute(array $data)
     {
         $attribute = new ProductAttribute();
-        $attribute->setAttributeType(sprintf('pim_product_%s', strtolower($data['type'])));
+        $attribute->setAttributeType(sprintf('pim_catalog_%s', strtolower($data['type'])));
 
         $labels = explode(',', $data['label']);
         foreach ($labels as $label) {
