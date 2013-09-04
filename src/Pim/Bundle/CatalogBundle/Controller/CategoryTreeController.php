@@ -6,9 +6,21 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Oro\Bundle\UserBundle\Annotation\Acl;
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\CatalogBundle\Form\Type\CategoryType;
+use Pim\Bundle\VersioningBundle\Manager\PendingManager;
 use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 
@@ -26,13 +38,77 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
  *      parent="pim_catalog"
  * )
  */
-class CategoryTreeController extends Controller
+class CategoryTreeController extends AbstractDoctrineController
 {
+    /**
+     * @var GridRenderer
+     */
+    private $gridRenderer;
+
+    /**
+     * @var DatagridWorkerInterface
+     */
+    private $dataGridWorker;
+
+    /**
+     * @var CategoryManager
+     */
+    private $categoryManager;
+
+    /**
+     * @var CategoryType
+     */
+    private $categoryType;
+
+    /**
+     * @var PendingManager
+     */
+    private $pendingManager;
+
+    /**
+     * Constructor
+     *
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param RegistryInterface        $doctrine
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param GridRenderer             $gridRenderer
+     * @param DatagridWorkerInterface  $dataGridWorker
+     * @param CategoryManager          $categoryManager
+     * @param CategoryType             $categoryType
+     * @param PendingManager           $pendingManager
+     */
+    public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
+        SecurityContextInterface $securityContext,
+        RegistryInterface $doctrine,
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator,
+        GridRenderer $gridRenderer,
+        DatagridWorkerInterface $dataGridWorker,
+        CategoryManager $categoryManager,
+        CategoryType $categoryType,
+        PendingManager $pendingManager
+    ) {
+        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
+        $this->gridRenderer = $gridRenderer;
+        $this->dataGridWorker = $dataGridWorker;
+        $this->categoryManager = $categoryManager;
+        $this->categoryType = $categoryType;
+        $this->pendingManager = $pendingManager;
+    }
+
     /**
      * List category trees. The select_node_id request parameter
      * allow to send back the tree where the node belongs with a selected
      * attribute
      * @param Request $request
+     *
      * @Template
      * @Acl(
      *      id="pim_catalog_category_list",
@@ -55,7 +131,7 @@ class CategoryTreeController extends Controller
             }
         }
 
-        $trees = $this->getTreeManager()->getTrees();
+        $trees = $this->categoryManager->getTrees();
 
         $treesResponse = CategoryHelper::treesResponse($trees, $selectNode);
 
@@ -80,12 +156,12 @@ class CategoryTreeController extends Controller
         $prevSiblingId = $request->get('prev_sibling');
 
         if ($request->get('copy') == 1) {
-            $this->getTreeManager()->copy($segmentId, $parentId, $prevSiblingId);
+            $this->categoryManager->copy($segmentId, $parentId, $prevSiblingId);
         } else {
-            $this->getTreeManager()->move($segmentId, $parentId, $prevSiblingId);
+            $this->categoryManager->move($segmentId, $parentId, $prevSiblingId);
         }
 
-        $this->getTreeManager()->getStorageManager()->flush();
+        $this->categoryManager->getStorageManager()->flush();
 
         return new JsonResponse(array('status' => 1));
     }
@@ -131,13 +207,13 @@ class CategoryTreeController extends Controller
         }
 
         if (($selectNode != null)
-            && (!$this->getTreeManager()->isAncestor($parent, $selectNode))) {
+            && (!$this->categoryManager->isAncestor($parent, $selectNode))) {
             $selectNode = null;
         }
 
         // FIXME: Simplify and use a single helper method able to manage both cases
         if ($selectNode != null) {
-            $categories = $this->getTreeManager()->getChildren($parent->getId(), $selectNode->getId());
+            $categories = $this->categoryManager->getChildren($parent->getId(), $selectNode->getId());
             if ($includeParent) {
                 $data = CategoryHelper::childrenTreeResponse($categories, $selectNode, $withProductsCount, $parent);
             } else {
@@ -145,7 +221,7 @@ class CategoryTreeController extends Controller
             }
 
         } else {
-            $categories = $this->getTreeManager()->getChildren($parent->getId());
+            $categories = $this->categoryManager->getChildren($parent->getId());
             if ($includeParent) {
                 $data = CategoryHelper::childrenResponse($categories, $withProductsCount, $parent);
             } else {
@@ -202,21 +278,21 @@ class CategoryTreeController extends Controller
     {
         if ($parent) {
             $parent = $this->findCategory($parent);
-            $category = $this->getTreeManager()->getSegmentInstance();
+            $category = $this->categoryManager->getSegmentInstance();
             $category->setParent($parent);
         } else {
-            $category = $this->getTreeManager()->getTreeInstance();
+            $category = $this->categoryManager->getTreeInstance();
         }
 
         $category->setCode($request->get('title'));
 
-        $form = $this->createForm($this->get('pim_catalog.form.type.category'), $category);
+        $form = $this->createForm($this->categoryType, $category);
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
 
             if ($form->isValid()) {
-                $manager = $this->getTreeManager()->getStorageManager();
+                $manager = $this->categoryManager->getStorageManager();
                 $manager->persist($category);
                 $manager->flush();
 
@@ -225,9 +301,8 @@ class CategoryTreeController extends Controller
                     sprintf('%s successfully created.', $category->getParent() ? 'Category' : 'Tree')
                 );
 
-                $pendingManager = $this->container->get('pim_versioning.manager.pending');
-                if ($pending = $pendingManager->getPendingVersion($category)) {
-                    $pendingManager->createVersionAndAudit($pending);
+                if ($pending = $this->pendingManager->getPendingVersion($category)) {
+                    $this->pendingManager->createVersionAndAudit($pending);
                 }
 
                 return $this->redirectToRoute('pim_catalog_categorytree_edit', array('id' => $category->getId()));
@@ -244,6 +319,7 @@ class CategoryTreeController extends Controller
      *
      * @param Request  $request
      * @param Category $category
+     *
      * @Template
      * @Acl(
      *      id="pim_catalog_category_edit",
@@ -255,7 +331,7 @@ class CategoryTreeController extends Controller
      */
     public function editAction(Request $request, Category $category)
     {
-        $datagrid = $this->getDataAuditDatagrid(
+        $datagrid = $this->dataGridWorker->getDataAuditDatagrid(
             $category,
             'pim_catalog_categorytree_edit',
             array(
@@ -264,16 +340,16 @@ class CategoryTreeController extends Controller
         );
 
         if ('json' == $request->getRequestFormat()) {
-            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagrid->createView());
+            return $this->gridRenderer->renderResultsJsonResponse($datagrid->createView());
         }
 
-        $form = $this->createForm($this->get('pim_catalog.form.type.category'), $category);
+        $form = $this->createForm($this->categoryType, $category);
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
 
             if ($form->isValid()) {
-                $manager = $this->getTreeManager()->getStorageManager();
+                $manager = $this->categoryManager->getStorageManager();
                 $manager->persist($category);
                 $manager->flush();
 
@@ -282,9 +358,8 @@ class CategoryTreeController extends Controller
                     sprintf('%s successfully updated.', $category->getParent() ? 'Category' : 'Tree')
                 );
 
-                $pendingManager = $this->container->get('pim_versioning.manager.pending');
-                if ($pending = $pendingManager->getPendingVersion($category)) {
-                    $pendingManager->createVersionAndAudit($pending);
+                if ($pending = $this->pendingManager->getPendingVersion($category)) {
+                    $this->pendingManager->createVersionAndAudit($pending);
                 }
             }
         }
@@ -312,8 +387,8 @@ class CategoryTreeController extends Controller
         $parent = $category->getParent();
         $params = ($parent !== null) ? array('node' => $parent->getId()) : array();
 
-        $this->getTreeManager()->remove($category);
-        $this->getTreeManager()->getStorageManager()->flush();
+        $this->categoryManager->remove($category);
+        $this->categoryManager->getStorageManager()->flush();
 
         $this->addFlash('success', 'Category successfully removed');
 
@@ -329,22 +404,12 @@ class CategoryTreeController extends Controller
      */
     protected function findCategory($categoryId)
     {
-        $category = $this->getTreeManager()->getEntityRepository()->find($categoryId);
+        $category = $this->categoryManager->getEntityRepository()->find($categoryId);
 
         if (!$category) {
             throw $this->createNotFoundException('Category not found');
         }
 
         return $category;
-    }
-
-    /**
-     * Get category tree manager
-     *
-     * @return \Pim\Bundle\CatalogBundle\Manager\CategoryManager
-     */
-    protected function getTreeManager()
-    {
-        return $this->container->get('pim_catalog.manager.category');
     }
 }

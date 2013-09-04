@@ -2,12 +2,30 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Oro\Bundle\UserBundle\Annotation\Acl;
+use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\CatalogBundle\Form\Handler\ProductCreateHandler;
+use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\VersioningBundle\Manager\PendingManager;
+use Pim\Bundle\VersioningBundle\Manager\AuditManager;
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
+use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 
@@ -25,11 +43,121 @@ use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
  *      parent="pim_catalog"
  * )
  */
-class ProductController extends Controller
+class ProductController extends AbstractDoctrineController
 {
+    /**
+     * @var string
+     */
     const CATEGORY_PREFIX = "category_node_";
+
+    /**
+     * @var string
+     */
     const TREE_APPLY_PREFIX = "apply_on_tree_";
 
+    /**
+     * @var unknown_type
+     */
+    private $gridRenderer;
+
+    /**
+     * @var unknown_type
+     */
+    private $datagridWorker;
+
+    /**
+     * @var unknown_type
+     */
+    private $productCreateHandler;
+
+    /**
+     * @var unknown_type
+     */
+    private $productCreateForm;
+
+    /**
+     * @var unknown_type
+     */
+    private $completenessCalculator;
+
+    /**
+     * @var unknown_type
+     */
+    private $productManager;
+
+    /**
+     * @var unknown_type
+     */
+    private $categoryManager;
+
+    /**
+     * @var unknown_type
+     */
+    private $localeManager;
+
+    /**
+     * @var unknown_type
+     */
+    private $pendingManager;
+
+    /**
+     * @var unknown_type
+     */
+    private $auditManager;
+
+    /**
+     * Constructor
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param RegistryInterface        $doctrine
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param GridRenderer             $gridRenderer
+     * @param DatagridWorkerInterface  $datagridWorker
+     * @param ProductCreateHandler     $productCreateHandler
+     * @param Form                     $productCreateForm
+     * @param CompletenessCalculator   $completenessCalculator
+     * @param ProductManager           $productManager
+     * @param CategoryManager          $categoryManager
+     * @param LocaleManager            $localeManager
+     * @param PendingManager           $pendingManager
+     * @param AuditManager             $auditManager
+     */
+    public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
+        SecurityContextInterface $securityContext,
+        RegistryInterface $doctrine,
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator,
+        GridRenderer $gridRenderer,
+        DatagridWorkerInterface $datagridWorker,
+        ProductCreateHandler $productCreateHandler,
+        Form $productCreateForm,
+        CompletenessCalculator $completenessCalculator,
+        ProductManager $productManager,
+        CategoryManager $categoryManager,
+        LocaleManager $localeManager,
+        PendingManager $pendingManager,
+        AuditManager $auditManager
+    ) {
+        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
+        $this->gridRenderer = $gridRenderer;
+        $this->datagridWorker = $datagridWorker;
+        $this->productCreateHandler = $productCreateHandler;
+        $this->productCreateForm = $productCreateForm;
+        $this->completenessCalculator = $completenessCalculator;
+        $this->productManager = $productManager;
+        $this->categoryManager = $categoryManager;
+        $this->localeManager = $localeManager;
+        $this->pendingManager = $pendingManager;
+        $this->auditManager = $auditManager;
+
+        $this->productManager->setLocale($this->getDataLocale());
+    }
     /**
      * List product attributes
      *
@@ -45,7 +173,7 @@ class ProductController extends Controller
     public function indexAction(Request $request)
     {
         /** @var $gridManager ProductDatagridManager */
-        $gridManager = $this->get('pim_catalog.datagrid.manager.product');
+        $gridManager = $this->datagridWorker->getDatagridManager('product');
         $gridManager->setFilterTreeId($request->get('treeId', 0));
         $gridManager->setFilterCategoryId($request->get('categoryId', 0));
         $datagrid = $gridManager->getDatagrid();
@@ -55,7 +183,7 @@ class ProductController extends Controller
 
         $params = array(
             'datagrid'   => $datagrid->createView(),
-            'locales'    => $this->getLocaleManager()->getActiveLocales(),
+            'locales'    => $this->localeManager->getActiveLocales(),
             'dataLocale' => $this->getDataLocale(),
             'dataScope' => $this->getDataScope(),
         );
@@ -68,6 +196,7 @@ class ProductController extends Controller
      *
      * @param Request $request
      * @param string  $dataLocale
+     *
      * @Template
      * @Acl(
      *      id="pim_catalog_product_create",
@@ -83,13 +212,12 @@ class ProductController extends Controller
             return $this->redirectToRoute('pim_catalog_product_index');
         }
 
-        $entity = $this->getProductManager()->createFlexible(true);
+        $entity = $this->productManager->createFlexible(true);
 
-        if ($this->get('pim_catalog.form.handler.product_create')->process($entity)) {
+        if ($this->productCreateHandler->process($entity)) {
 
-            $pendingManager = $this->container->get('pim_versioning.manager.pending');
-            if ($pending = $pendingManager->getPendingVersion($entity)) {
-                $pendingManager->createVersionAndAudit($pending);
+            if ($pending = $this->pendingManager->getPendingVersion($entity)) {
+                $this->pendingManager->createVersionAndAudit($pending);
             }
 
             $this->addFlash('success', 'Product successfully saved.');
@@ -107,7 +235,7 @@ class ProductController extends Controller
         }
 
         return array(
-            'form'       => $this->get('pim_catalog.form.product_create')->createView(),
+            'form'       => $this->productCreateForm->createView(),
             'dataLocale' => $this->getDataLocale()
         );
     }
@@ -117,6 +245,7 @@ class ProductController extends Controller
      *
      * @param Request $request
      * @param integer $id
+     *
      * @Template
      * @Acl(
      *      id="pim_catalog_product_edit",
@@ -130,7 +259,7 @@ class ProductController extends Controller
     {
         $product  = $this->findProductOr404($id);
 
-        $datagrid = $this->getDataAuditDatagrid(
+        $datagrid = $this->datagridWorker->getDataAuditDatagrid(
             $product,
             'pim_catalog_product_edit',
             array(
@@ -139,11 +268,11 @@ class ProductController extends Controller
         );
 
         if ('json' === $request->getRequestFormat()) {
-            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagrid->createView());
+            return $this->gridRenderer->renderResultsJsonResponse($datagrid->createView());
         }
 
         $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
-        $trees    = $this->getCategoryManager()->getEntityRepository()->getProductsCountByTree($product);
+        $trees    = $this->categoryManager->getEntityRepository()->getProductsCountByTree($product);
 
         $form     = $this->createForm(
             'pim_product',
@@ -156,19 +285,17 @@ class ProductController extends Controller
 
             if ($form->isValid()) {
                 // Call completeness calculator after validating data
-                $calculator = $this->container->get('pim_catalog.calculator.completeness');
-                $calculator->calculateForAProduct($product);
+                $this->completenessCalculator->calculateForAProduct($product);
 
                 $categoriesData = $this->getCategoriesData($request->request->all());
-                $categories = $this->getCategoryManager()->getCategoriesByIds($categoriesData['categories']);
+                $categories = $this->categoryManager->getCategoriesByIds($categoriesData['categories']);
 
-                $this->getProductManager()->save($product, $categories, $categoriesData['trees']);
+                $this->productManager->save($product, $categories, $categoriesData['trees']);
 
                 $this->addFlash('success', 'Product successfully saved');
 
-                $pendingManager = $this->container->get('pim_versioning.manager.pending');
-                if ($pending = $pendingManager->getPendingVersion($product)) {
-                    $pendingManager->createVersionAndAudit($pending);
+                if ($pending = $this->pendingManager->getPendingVersion($product)) {
+                    $this->pendingManager->createVersionAndAudit($pending);
                 }
 
                 // TODO : Check if the locale exists and is activated
@@ -180,8 +307,6 @@ class ProductController extends Controller
             }
         }
 
-        $auditManager = $this->container->get('pim_versioning.manager.audit');
-
         return array(
             'form'           => $form->createView(),
             'dataLocale'     => $this->getDataLocale(),
@@ -189,10 +314,10 @@ class ProductController extends Controller
             'attributesForm' => $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
             'product'        => $product,
             'trees'          => $trees,
-            'created'        => $auditManager->getFirstLogEntry($product),
-            'updated'        => $auditManager->getLastLogEntry($product),
+            'created'        => $this->auditManager->getFirstLogEntry($product),
+            'updated'        => $this->auditManager->getLastLogEntry($product),
             'datagrid'       => $datagrid->createView(),
-            'locales'        => $this->getLocaleManager()->getActiveLocales()
+            'locales'        => $this->localeManager->getActiveLocales()
         );
     }
 
@@ -212,7 +337,6 @@ class ProductController extends Controller
     public function addProductAttributesAction(Request $request, $id)
     {
         $product             = $this->findProductOr404($id);
-        $manager             = $this->getProductManager();
         $availableAttributes = new AvailableProductAttributes();
         $attributesForm      = $this->getAvailableProductAttributesForm(
             $product->getAttributes(),
@@ -221,10 +345,10 @@ class ProductController extends Controller
         $attributesForm->bind($request);
 
         foreach ($availableAttributes->getAttributes() as $attribute) {
-            $manager->addAttributeToProduct($product, $attribute);
+            $this->productManager->addAttributeToProduct($product, $attribute);
         }
 
-        $manager->save($product);
+        $this->productManager->save($product);
 
         $this->addFlash('success', 'Attributes are added to the product form.');
 
@@ -247,7 +371,8 @@ class ProductController extends Controller
     public function removeAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-        $this->remove($product);
+        $this->getManager()->remove($product);
+        $this->getManager()->flush();
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -284,7 +409,7 @@ class ProductController extends Controller
             );
         }
 
-        $this->getProductManager()->removeAttributeFromProduct($product, $attribute);
+        $this->productManager->removeAttributeFromProduct($product, $attribute);
 
         $this->addFlash('success', 'Attribute was successfully removed.');
 
@@ -322,7 +447,7 @@ class ProductController extends Controller
         if ($product != null) {
             $categories = $product->getCategories();
         }
-        $trees = $this->getCategoryManager()->getFilledTree($parent, $categories);
+        $trees = $this->categoryManager->getFilledTree($parent, $categories);
 
         $treesData = CategoryHelper::listCategoriesResponse($trees, $categories);
 
@@ -376,39 +501,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Get product manager
-     *
-     * @return ProductManager
-     */
-    protected function getProductManager()
-    {
-        $manager = $this->container->get('pim_catalog.manager.product');
-        $manager->setLocale($this->getDataLocale());
-
-        return $manager;
-    }
-
-    /**
-     * Get category tree manager
-     *
-     * @return \Pim\Bundle\CatalogBundle\Manager\CategoryManager
-     */
-    protected function getCategoryManager()
-    {
-        return $this->container->get('pim_catalog.manager.category');
-    }
-
-    /**
-     * Get locale manager
-     *
-     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
-     */
-    protected function getLocaleManager()
-    {
-        return $this->container->get('pim_catalog.manager.locale');
-    }
-
-    /**
      * Get data locale code
      *
      * @throws \Exception
@@ -424,7 +516,7 @@ class ProductController extends Controller
         if (!$dataLocale) {
             throw new \Exception('User must have a catalog locale defined');
         }
-
+		// TODO : must be injected !
         if (!$this->container->get('oro_user.acl_manager')->isResourceGranted('pim_catalog_locale_'.$dataLocale)) {
             throw new \Exception(sprintf("User doesn't have access to the locale '%s'", $dataLocale));
         }
@@ -442,7 +534,7 @@ class ProductController extends Controller
     protected function getDataCurrency()
     {
         $dataLocaleCode = $this->getDataLocale();
-        $dataLocale = $this->getLocaleManager()->getLocaleByCode($dataLocaleCode);
+        $dataLocale = $this->localeManager->getLocaleByCode($dataLocaleCode);
 
         return $dataLocale->getDefaultCurrency();
     }
@@ -478,7 +570,7 @@ class ProductController extends Controller
      */
     protected function findProductOr404($id)
     {
-        $product = $this->getProductManager()->find($id);
+        $product = $this->productManager->find($id);
 
         if (!$product) {
             throw $this->createNotFoundException(
@@ -488,8 +580,27 @@ class ProductController extends Controller
 
         // TODO : Maybe just check if the locale is well activated
 
-        $this->getProductManager()->addMissingPrices($product);
+        $this->productManager->addMissingPrices($product);
 
         return $product;
+    }
+
+    /**
+     * Get the AvailbleProductAttributes form
+     *
+     * @param array                      $attributes          The product attributes
+     * @param AvailableProductAttributes $availableAttributes The available attributes container
+     *
+     * @return Symfony\Component\Form\Form
+     */
+    protected function getAvailableProductAttributesForm(
+        array $attributes = array(),
+        AvailableProductAttributes $availableAttributes = null
+    ) {
+        return $this->createForm(
+            new AvailableProductAttributesType,
+            $availableAttributes ?: new AvailableProductAttributes,
+            array('attributes' => $attributes)
+        );
     }
 }

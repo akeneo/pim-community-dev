@@ -1,39 +1,39 @@
 pim_catalog_categorytree_listtree:
     path: /list-tree.{_format}
-    defaults: { _controller: PimCatalogBundle:CategoryTree:listTree }
+    defaults: { _controller: pim_catalog.controller.category_tree:listTreeAction }
     requirements:
         _format: json
 
 pim_catalog_categorytree_movenode:
     path: /move-node
-    defaults: { _controller: PimCatalogBundle:CategoryTree:moveNode }
+    defaults: { _controller: pim_catalog.controller.category_tree:moveNodeAction }
 
 pim_catalog_categorytree_children:
     path: /children.{_format}
-    defaults: { _controller: PimCatalogBundle:CategoryTree:children }
+    defaults: { _controller: pim_catalog.controller.category_tree:childrenAction }
     requirements:
         _format: json
 
 pim_catalog_categorytree_listitems:
     path: /list-items.{_format}/{id}
-    defaults: { _controller: PimCatalogBundle:CategoryTree:listItems }
+    defaults: { _controller: pim_catalog.controller.category_tree:listItemsAction }
     requirements:
         _format: json
         id: \d+
 
 pim_catalog_categorytree_create:
     path: /create/{parent}
-    defaults: { _controller: PimCatalogBundle:CategoryTree:create, parent: null }
+    defaults: { _controller: pim_catalog.controller.category_tree:createAction, parent: null }
 
 pim_catalog_categorytree_edit:
     path: /{id}/edit
-    defaults: { _controller: PimCatalogBundle:CategoryTree:edit }
+    defaults: { _controller: pim_catalog.controller.category_tree:editAction }
     requirements:
         id: \d+
 
 pim_catalog_categorytree_remove:
     path: /{id}/remove
-    defaults: { _controller: PimCatalogBundle:CategoryTree:remove }
+    defaults: { _controller: pim_catalog.controller.category_tree:removeAction }
     requirements:
         id: \d+
     methods: [DELETE]

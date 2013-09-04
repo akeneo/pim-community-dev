@@ -51,6 +51,10 @@ class Edit extends Form
     {
         $link = $this->getElement('Locales dropdown')->findLink($locale);
 
+        if (!$link) {
+            throw new ElementNotFoundException(sprintf('Locale %s link not found', $locale));
+        }
+
         if ($content) {
             if (strpos($link->getText(), $content) === false) {
                 return null;

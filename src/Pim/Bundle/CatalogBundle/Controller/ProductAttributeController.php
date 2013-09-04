@@ -3,10 +3,24 @@
 namespace Pim\Bundle\CatalogBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Form\Form;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\GridBundle\Renderer\GridRenderer;
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
@@ -23,8 +37,94 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  *      parent="pim_catalog"
  * )
  */
-class ProductAttributeController extends Controller
+class ProductAttributeController extends AbstractDoctrineController
 {
+    /**
+     * @var GridRenderer
+     */
+    private $gridRenderer;
+
+    /**
+     * @var DatagridWorkerInterface
+     */
+    private $datagridWorker;
+
+    /**
+     * @var ProductAttributeHandler
+     */
+    private $attributeHandler;
+
+    /**
+     * @var Form
+     */
+    private $attributeForm;
+
+    /**
+     * @var ProductManager
+     */
+    private $productManager;
+
+    /**
+     * @var LocaleManager
+     */
+    private $localeManager;
+
+    /**
+     * @var AuditManager
+     */
+    private $auditManager;
+
+    /**
+     * @var array
+     */
+    private $measuresConfig;
+
+    /**
+     * Constructor
+     *
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param RegistryInterface        $doctrine
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param GridRenderer             $gridRenderer
+     * @param DatagridWorkerInterface  $datagridWorker
+     * @param ProductAttributeHandler  $attributeHandler
+     * @param Form                     $attributeForm
+     * @param ProductManager           $productManager
+     * @param LocaleManager            $localeManager
+     * @param AuditManager             $auditManager
+     * @param array                    $measuresConfig
+     */
+    public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
+        SecurityContextInterface $securityContext,
+        RegistryInterface $doctrine,
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator,
+        GridRenderer $gridRenderer,
+        DatagridWorkerInterface $datagridWorker,
+        ProductAttributeHandler $attributeHandler,
+        Form $attributeForm,
+        ProductManager $productManager,
+        LocaleManager $localeManager,
+        AuditManager $auditManager,
+        $measuresConfig
+    ) {
+        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
+        $this->gridRenderer = $gridRenderer;
+        $this->datagridWorker = $datagridWorker;
+        $this->attributeHandler = $attributeHandler;
+        $this->attributeForm = $attributeForm;
+        $this->productManager = $productManager;
+        $this->localeManager = $localeManager;
+        $this->auditManager = $auditManager;
+        $this->measuresConfig = $measuresConfig;
+    }
     /**
      * List product attributes
      * @param Request $request
@@ -38,9 +138,7 @@ class ProductAttributeController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /** @var $gridManager AttributeDatagridManager */
-        $gridManager  = $this->get('pim_catalog.datagrid.manager.productattribute');
-        $datagrid     = $gridManager->getDatagrid();
+        $datagrid = $this->datagridWorker->getDatagrid('productattribute');
 
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
@@ -65,21 +163,19 @@ class ProductAttributeController extends Controller
      */
     public function createAction()
     {
-        $attribute = $this->getProductManager()->createAttribute('pim_catalog_text');
+        $attribute = $this->productManager->createAttribute('pim_catalog_text');
 
-        if ($this->get('pim_catalog.form.handler.attribute')->process($attribute)) {
+        if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'Attribute successfully created');
 
             return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id' => $attribute->getId()));
         }
 
-        $localeManager = $this->get('pim_catalog.manager.locale');
-
         return array(
-            'form'            => $this->get('pim_catalog.form.attribute')->createView(),
-            'locales'         => $localeManager->getActiveLocales(),
-            'disabledLocales' => $localeManager->getDisabledLocales(),
-            'measures'        => $this->container->getParameter('oro_measure.measures_config')
+            'form'            => $this->attributeForm->createView(),
+            'locales'         => $this->localeManager->getActiveLocales(),
+            'disabledLocales' => $this->localeManager->getDisabledLocales(),
+            'measures'        => $this->measuresConfig
         );
     }
 
@@ -88,6 +184,7 @@ class ProductAttributeController extends Controller
      *
      * @param Request          $request
      * @param ProductAttribute $attribute
+     *
      * @Template("PimCatalogBundle:ProductAttribute:form.html.twig")
      * @Acl(
      *      id="pim_catalog_attribute_edit",
@@ -99,14 +196,13 @@ class ProductAttributeController extends Controller
      */
     public function editAction(Request $request, ProductAttribute $attribute)
     {
-        if ($this->get('pim_catalog.form.handler.attribute')->process($attribute)) {
+        if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'Attribute successfully saved');
 
             return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id' => $attribute->getId()));
         }
 
-        $localeManager = $this->get('pim_catalog.manager.locale');
-        $datagrid = $this->getDataAuditDatagrid(
+        $datagrid = $this->datagridWorker->getDataAuditDatagrid(
             $attribute,
             'pim_catalog_productattribute_edit',
             array('id' => $attribute->getId())
@@ -114,19 +210,17 @@ class ProductAttributeController extends Controller
         $datagridView = $datagrid->createView();
 
         if ('json' == $request->getRequestFormat()) {
-            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
+            return $this->gridRenderer->renderResultsJsonResponse($datagridView);
         }
 
-        $auditManager = $this->container->get('pim_versioning.manager.audit');
-
         return array(
-            'form'            => $this->get('pim_catalog.form.attribute')->createView(),
-            'locales'         => $localeManager->getActiveLocales(),
-            'disabledLocales' => $localeManager->getDisabledLocales(),
-            'measures'        => $this->container->getParameter('oro_measure.measures_config'),
+            'form'            => $this->attributeForm->createView(),
+            'locales'         => $this->localeManager->getActiveLocales(),
+            'disabledLocales' => $this->localeManager->getDisabledLocales(),
+            'measures'        => $this->measuresConfig,
             'datagrid'        => $datagridView,
-            'created'         => $auditManager->getFirstLogEntry($attribute),
-            'updated'         => $auditManager->getLastLogEntry($attribute),
+            'created'         => $this->auditManager->getFirstLogEntry($attribute),
+            'updated'         => $this->auditManager->getLastLogEntry($attribute),
         );
     }
 
@@ -134,6 +228,7 @@ class ProductAttributeController extends Controller
      * Preprocess attribute form
      *
      * @param Request $request
+     *
      * @Template("PimCatalogBundle:ProductAttribute:_form_parameters.html.twig")
      * @return array
      */
@@ -145,14 +240,11 @@ class ProductAttributeController extends Controller
         }
 
         // Add custom fields to the form and set the entered data to the form
-        $this
-            ->get('pim_catalog.form.handler.attribute')
-            ->preProcess($data['pim_catalog_attribute_form']);
+        $this->attributeHandler->preProcess($data['pim_catalog_attribute_form']);
 
-        $localeManager   = $this->get('pim_catalog.manager.locale');
-        $locales         = $localeManager->getActiveLocales();
-        $disabledLocales = $localeManager->getDisabledLocales();
-        $form            = $this->get('pim_catalog.form.attribute')->createView();
+        $locales         = $this->localeManager->getActiveLocales();
+        $disabledLocales = $this->localeManager->getDisabledLocales();
+        $form            = $this->attributeForm->createView();
 
         $data = array(
             'parameters' => $this->renderView(
@@ -201,10 +293,10 @@ class ProductAttributeController extends Controller
                 $attribute = $this->getRepository('PimCatalogBundle:ProductAttribute')->find((int) $id);
                 if ($attribute) {
                     $attribute->setSortOrder((int) $sort);
-                    $this->persist($attribute, false);
+                    $this->getManager()->persist($attribute);
                 }
             }
-            $this->flush();
+            $this->getManager()->flush();
 
             return new Response(1);
         }
@@ -230,7 +322,8 @@ class ProductAttributeController extends Controller
             }
         }
 
-        $this->remove($entity);
+        $this->getManager()->remove($entity);
+        $this->getManager()->flush();
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);

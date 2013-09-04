@@ -21,7 +21,7 @@ Feature: Delete a channel
     Then I should see "Item was deleted"
     And I should not see channel FOO
 
-  Scenario: Successfully delete a channel 
+  Scenario: Successfully delete a channel
     Given I edit the "FOO" channel
     When I press the "Delete" button
     And I confirm the deletion

@@ -2,7 +2,17 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\Controller\Controller;
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Validator\ValidatorInterface;
+use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
+
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Oro\Bundle\UserBundle\Annotation\Acl;
@@ -21,8 +31,26 @@ use Oro\Bundle\UserBundle\Annotation\Acl;
  *      parent="pim_importexport"
  * )
  */
-class ReportController extends Controller
+class ReportController extends AbstractDoctrineController
 {
+    private $dataGridWorker;
+    private $batchLogHandler;
+    
+    public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
+        SecurityContextInterface $securityContext,
+        RegistryInterface $doctrine,
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator,
+        DatagridWorkerInterface $dataGridWorker,
+        BatchLogHandler $batchLogHandler
+    ) {
+        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
+        $this->dataGridWorker = $dataGridWorker;
+        $this->batchLogHandler = $batchLogHandler;
+    }
     /**
      * List the reports
      *
@@ -30,7 +58,7 @@ class ReportController extends Controller
      */
     public function indexAction()
     {
-        $gridManager = $this->get('pim_import_export.datagrid.manager.report');
+        $gridManager = $this->dataGridWorker->getDatagridManager('report', 'pim_import_export');
 
         return $this->renderDatagrid($gridManager);
     }
@@ -50,9 +78,8 @@ class ReportController extends Controller
     {
         $jobExecution = $this->findOr404('PimBatchBundle:JobExecution', $id);
 
-        $logger = $this->get('pim_batch.logger.batch_log_handler');
 
-        $response = new BinaryFileResponse($logger->getRealPath($jobExecution->getLogFile()));
+        $response = new BinaryFileResponse($this->batchLogHandler->getRealPath($jobExecution->getLogFile()));
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
 
         return $response;
@@ -71,7 +98,7 @@ class ReportController extends Controller
      */
     public function exportAction()
     {
-        $gridManager = $this->get('pim_import_export.datagrid.manager.export_report');
+        $gridManager = $this->dataGridWorker->getDatagridManager('export_report', 'pim_import_export');
 
         return $this->renderDatagrid($gridManager);
     }
@@ -89,7 +116,7 @@ class ReportController extends Controller
      */
     public function importAction()
     {
-        $gridManager = $this->get('pim_import_export.datagrid.manager.import_report');
+        $gridManager = $this->dataGridWorker->getDatagridManager('import_report', 'pim_import_export');
 
         return $this->renderDatagrid($gridManager);
     }

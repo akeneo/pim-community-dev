@@ -1,34 +1,34 @@
 pim_catalog_family_index:
     path: ""
-    defaults: { _controller: PimCatalogBundle:Family:create }
+    defaults: { _controller: pim_catalog.controller.family:createAction }
 
 pim_catalog_family_create:
     path: /create
-    defaults: { _controller: PimCatalogBundle:Family:create }
+    defaults: { _controller: pim_catalog.controller.family:createAction }
 
 pim_catalog_family_edit:
     path: /{id}/edit
-    defaults: { _controller: PimCatalogBundle:Family:edit }
+    defaults: { _controller: pim_catalog.controller.family:editAction }
     requirements:
         id: \d+
 
 pim_catalog_family_remove:
     path: /{id}/remove
-    defaults: { _controller: PimCatalogBundle:Family:remove }
+    defaults: { _controller: pim_catalog.controller.family:removeAction }
     requirements:
         id: \d+
     methods: [DELETE]
 
 pim_catalog_family_addproductattributes:
     path: /{id}/attributes
-    defaults: { _controller: PimCatalogBundle:Family:addProductAttributes }
+    defaults: { _controller: pim_catalog.controller.family:addProductAttributesAction }
     requirements:
         id: \d+
     methods: [POST]
 
 pim_catalog_family_removeproductattribute:
     path: /{familyId}/attribute/{attributeId}/remove
-    defaults: { _controller: PimCatalogBundle:Family:removeProductAttribute }
+    defaults: { _controller: pim_catalog.controller.family:removeProductAttributeAction }
     requirements:
         familyId: \d+
         attributeId: \d+

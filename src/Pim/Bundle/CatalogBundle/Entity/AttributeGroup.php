@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
+use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
@@ -20,7 +21,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository")
  * @ORM\Table(name="pim_catalog_attribute_group")
  */
-class AttributeGroup implements TimestampableInterface, TranslatableInterface
+class AttributeGroup implements TranslatableInterface, VersionableInterface
 {
     /**
      * @staticvar string
@@ -93,6 +94,14 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
      * )
      */
     protected $translations;
+
+    /**
+     * @var integer $version
+     *
+     * @ORM\Column(name="version", type="integer")
+     * @ORM\Version
+     */
+    protected $version;
 
     /**
      * Constructor
@@ -386,5 +395,15 @@ class AttributeGroup implements TimestampableInterface, TranslatableInterface
         $this->getTranslation()->setName($name);
 
         return $this;
+    }
+
+    /**
+     * Get version
+     *
+     * @return string $version
+     */
+    public function getVersion()
+    {
+        return $this->version;
     }
 }

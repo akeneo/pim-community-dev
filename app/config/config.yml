@@ -204,8 +204,6 @@ oro_translation:
         # order of domains reflects messages fallback
         domains: [jsmessages, validators]
 
-jms_di_extra:
-    doctrine_integration: false
 
 oro_entity_extend:
     backend:        Dynamic
