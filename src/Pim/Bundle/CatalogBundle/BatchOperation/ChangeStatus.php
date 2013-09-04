@@ -3,8 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\BatchOperation;
 
 use Pim\Bundle\CatalogBundle\Form\Type\BatchOperation\ChangeStatusType;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Doctrine\Common\Collections\Collection;
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
  * Batch operation to change products status
@@ -15,7 +14,20 @@ use Doctrine\Common\Collections\Collection;
  */
 class ChangeStatus implements BatchOperation
 {
+    /**
+     * @var FlexibleManager $manager
+     */
+    protected $manager;
+
+    /**
+     * @var boolean $enable Wether or not to enable products
+     */
     protected $enable = true;
+
+    public function __construct(FlexibleManager $manager)
+    {
+        $this->manager = $manager;
+    }
 
     public function setEnable($enable)
     {

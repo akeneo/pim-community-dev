@@ -4,9 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pim\Bundle\CatalogBundle\Form\Type\BatchProductType;
-use Pim\Bundle\CatalogBundle\Model\BatchProduct;
 use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperator;
+use Pim\Bundle\CatalogBundle\Form\Type\BatchOperatorType;
 
 /**
  * Batch operation controller
@@ -90,7 +89,7 @@ class BatchOperationController extends Controller
     private function getBatchOperatorForm(BatchOperator $batchOperator)
     {
         return $this->createForm(
-            new BatchProductType,
+            new BatchOperatorType(),
             $batchOperator,
             array('operations' => $batchOperator->getOperationChoices())
         );

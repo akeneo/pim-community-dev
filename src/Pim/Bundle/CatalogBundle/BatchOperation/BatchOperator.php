@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\BatchOperation;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperation;
-use Pim\Bundle\CatalogBundle\BatchOperation\ChangeStatus;
 
 /**
  * A batch operation operator
@@ -16,8 +15,6 @@ use Pim\Bundle\CatalogBundle\BatchOperation\ChangeStatus;
  */
 class BatchOperator
 {
-    const OPERATION_CHANGE_STATUS = 'change_status';
-
     protected $productIds = array();
 
     protected $operation;
@@ -28,9 +25,17 @@ class BatchOperator
 
     protected $operations = array();
 
-    public function __construct(ProductManager $manager)
+    public function __construct(FlexibleManager $manager)
     {
         $this->manager = $manager;
+    }
+
+    public function registerBatchOperation($alias, BatchOperation $operation)
+    {
+        if (array_key_exists($alias, $this->operations)) {
+            throw new \InvalidArgumentException(sprintf('Operation "%s" is already registered', $alias));
+        }
+        $this->operations[$alias] = $operation;
     }
 
     public function getOperationChoices()
@@ -42,14 +47,6 @@ class BatchOperator
         }
 
         return $choices;
-    }
-
-    public function registerBatchOperation($alias, BatchOperation $operation)
-    {
-        if (array_key_exists($alias, $this->operations)) {
-            throw new \InvalidArgumentException(sprintf('Operation "%s" is already registered', $alias));
-        }
-        $this->operations[$alias] = $operation;
     }
 
     public function setProductIds($productIds)
@@ -81,7 +78,7 @@ class BatchOperator
         $this->operationAlias = $operationAlias;
 
         if (!isset($this->operations[$operationAlias])) {
-            throw new \Exception;
+            throw new \InvalidArgumentException(sprintf('Operation "%s" is not registered', $operationAlias));
         }
 
         $this->operation = $this->operations[$operationAlias];
