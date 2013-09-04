@@ -26,6 +26,9 @@ parameters:
     oro_security.type.oro_acl_object_name.class:              Oro\Bundle\SecurityBundle\Form\Type\ObjectNameType
     oro_security.type.oro_acl_label.class:                    Oro\Bundle\SecurityBundle\Form\Type\ObjectLabelType
 
+    oro_security.security_metadata_provider.class:             Oro\Bundle\SecurityBundle\Entity\SecurityMetadataProvider
+    oro_security.security_metadata_provider.cache.class:       Doctrine\Common\Cache\FilesystemCache
+
 services:
     oro_security.acl.manager:
         class: %oro_security.acl.manager.class%
@@ -131,6 +134,7 @@ services:
         tags:
             - { name: oro_entity.orm.sql_filter, filter_name: ownershipFilter, enabled: true }
             - { name: kernel.event_listener, priority: -255, event: kernel.request, method: setUserParameter }
+    
     oro_security.form.type.collection_type:
         class:                        %oro_security.type.oro_acl_collection.class%
         tags:
@@ -150,3 +154,15 @@ services:
         class:                        %oro_security.type.oro_acl_label.class%
         tags:
             - { name: form.type, alias: oro_acl_label }
+            
+    oro_security.security_metadata_provider:
+        class: %oro_security.security_metadata_provider.class%
+        arguments:
+            - @oro_entity_config.provider.security
+            - @oro_security.security_metadata_provider.cache
+
+    oro_security.security_metadata_provider.cache:
+        public: false
+        class: %oro_security.security_metadata_provider.cache.class%
+        arguments:
+            - %kernel.cache_dir%/oro_acl_entities_list

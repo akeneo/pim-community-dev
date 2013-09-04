@@ -25,6 +25,10 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
  *          "owner_type"="BUSINESS_UNIT",
  *          "owner_field_name"="owner",
  *          "owner_column_name"="business_unit_owner_id"
+ *      },
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
  *      }
  *  }
  * )
