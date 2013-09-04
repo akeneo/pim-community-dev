@@ -1,5 +1,6 @@
 parameters:
     oro_wamp.publisher.class:     Oro\Bundle\SyncBundle\Wamp\TopicPublisher
+    oro_wamp.db_ping.class:       Oro\Bundle\SyncBundle\Wamp\DbPing
     oro_wamp.listener.class:      Oro\Bundle\SyncBundle\EventListener\OroWampEventListener
 
 services:
@@ -8,6 +9,11 @@ services:
         arguments:
             - %websocket_host%
             - %websocket_port%
+
+    oro_wamp.db_ping:
+        class:                    %oro_wamp.db_ping.class%
+        arguments:
+            - "@doctrine.dbal.default.wrapped_connection"
 
     kernel.listener.clank.client_event:
         class:                    %oro_wamp.listener.class%
