@@ -97,10 +97,9 @@ class MassActionDispatcher
      */
     protected function getDatagridQuery(DatagridInterface $datagrid, $inset = true, $values = array())
     {
-        $proxyQuery = $datagrid->getQuery();
-        $identifierFieldExpression = $this->getIdentifierExpression($datagrid, $proxyQuery);
-
+        $identifierFieldExpression = $this->getIdentifierExpression($datagrid);
         /** @var QueryBuilder $proxyQuery */
+        $proxyQuery = $datagrid->getQuery();
         if ($values) {
             $valueWhereCondition =
                 $inset
