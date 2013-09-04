@@ -50,20 +50,20 @@ class ProductAttributeHandler
      * @param Request              $request        Web request
      * @param ObjectManager        $manager        Storage manager
      * @param AttributeTypeManager $attTypeManager Attribute type manager
-     * @param PendingManager       $pm             The pending manager
+     * @param PendingManager       $pendingManager The pending manager
      */
     public function __construct(
         FormInterface $form,
         Request $request,
         ObjectManager $manager,
         AttributeTypeManager $attTypeManager,
-        PendingManager $pm
+        PendingManager $pendingManager
     ) {
         $this->form    = $form;
         $this->request = $request;
         $this->manager = $manager;
         $this->attTypeManager = $attTypeManager;
-        $this->pendingManager = $pm;
+        $this->pendingManager = $pendingManager;
     }
 
     /**
