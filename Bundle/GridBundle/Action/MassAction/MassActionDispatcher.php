@@ -97,9 +97,10 @@ class MassActionDispatcher
      */
     protected function getDatagridQuery(DatagridInterface $datagrid, $inset = true, $values = array())
     {
-        $identifierFieldExpression = $this->getIdentifierExpression($datagrid);
-        /** @var QueryBuilder $proxyQuery */
         $proxyQuery = $datagrid->getQuery();
+        $identifierFieldExpression = $this->getIdentifierExpression($datagrid, $proxyQuery);
+
+        /** @var QueryBuilder $proxyQuery */
         if ($values) {
             $valueWhereCondition =
                 $inset
@@ -151,19 +152,21 @@ class MassActionDispatcher
 
     /**
      * @param DatagridInterface $datagrid
+     * @param ProxyQueryInterface $query
      * @return string
      * @throws \LogicException
      */
-    protected function getIdentifierExpression(DatagridInterface $datagrid)
+    protected function getIdentifierExpression(DatagridInterface $datagrid, ProxyQueryInterface $query)
     {
         $identifierField = $datagrid->getIdentifierField();
         $fieldMapping = $identifierField->getFieldMapping();
 
-        return isset($fieldMapping['fieldExpression']) ?
-            $fieldMapping['fieldExpression'] :
-            $identifierField->getFieldName();
-    }
+        if (!empty($fieldMapping['fieldExpression'])) {
+            return $fieldMapping['fieldExpression'];
+        }
 
+        return sprintf('%s.%s', $query->getRootAlias(), $identifierField->getFieldName());
+    }
 
     /**
      * @param MassActionInterface $massAction
