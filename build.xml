@@ -178,7 +178,7 @@
         <exec executable="php" failonerror="true">
             <env key="DISPLAY" value=":0" />
             <arg value="-d zend_extension=${xdebug_path}/xdebug.so" />
-            <arg value="${basedir}/bin/behat-coverage" />
+            <arg value="${basedir}/app/Resources/jenkins/behat_coverage/behat-coverage" />
             <arg value="--profile=jenkins-coverage" />
             <arg value="--ansi" />
             <arg value="--tags=~skip" />
