@@ -133,9 +133,12 @@ Pim.tree.manage = function(elementId) {
             });
         })
         .bind('select_node.jstree', function (e, data) {
-            loadingMask.show();
             var id = data.rslt.obj.attr('id').replace('node_',''),
             url = Routing.generate('pim_catalog_categorytree_edit', { id: id });
+            if ('#url=' + url === Backbone.history.location.hash) {
+                return;
+            }
+            loadingMask.show();
             $.ajax({
                 async: true,
                 type: 'GET',
