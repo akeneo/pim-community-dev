@@ -33,12 +33,47 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
  */
 class CategoryTreeController extends AbstractDoctrineController
 {
+    /**
+     * @var GridRenderer
+     */
     private $gridRenderer;
+
+    /**
+     * @var DatagridWorkerInterface
+     */
     private $dataGridWorker;
+
+    /**
+     * @var CategoryManager
+     */
     private $categoryManager;
+
+    /**
+     * @var CategoryType
+     */
     private $categoryType;
+
+    /**
+     * @var PendingManager
+     */
     private $pendingManager;
-            
+
+    /**
+     * Constructor
+     *
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param RegistryInterface        $doctrine
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param GridRenderer             $gridRenderer
+     * @param DatagridWorkerInterface  $dataGridWorker
+     * @param CategoryManager          $categoryManager
+     * @param CategoryType             $categoryType
+     * @param PendingManager           $pendingManager
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,
@@ -60,7 +95,7 @@ class CategoryTreeController extends AbstractDoctrineController
         $this->categoryType = $categoryType;
         $this->pendingManager = $pendingManager;
     }
-    
+
     /**
      * List category trees. The select_node_id request parameter
      * allow to send back the tree where the node belongs with a selected
