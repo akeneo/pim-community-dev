@@ -24,11 +24,19 @@ class ChangeStatus implements BatchOperation
      */
     protected $enable = true;
 
+    /**
+     * @param FlexibleManager $manager
+     */
     public function __construct(FlexibleManager $manager)
     {
         $this->manager = $manager;
     }
 
+    /**
+     * @param boolean $enable
+     *
+     * @return ChangeStatus
+     */
     public function setEnable($enable)
     {
         $this->enable = $enable;
@@ -36,6 +44,9 @@ class ChangeStatus implements BatchOperation
         return $this;
     }
 
+    /**
+     * @return boolean
+     */
     public function getEnable()
     {
         return $this->enable;
@@ -57,5 +68,6 @@ class ChangeStatus implements BatchOperation
         foreach ($products as $product) {
             $product->setEnabled($this->enable);
         }
+        $this->manager->getStorageManager()->flush();
     }
 }
