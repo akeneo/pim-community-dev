@@ -27,10 +27,35 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
  */
 class ChannelController extends AbstractDoctrineController
 {
+    /**
+     * @var DatagridWorkerInterface
+     */
     private $datagridWorker;
+
+    /**
+     * @var Form
+     */
     private $channelForm;
+
+    /**
+     * @var ChannelHandler
+     */
     private $channelHandler;
-    
+
+    /**
+     * Constructor
+     *
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param RegistryInterface        $doctrine
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param DatagridWorkerInterface  $datagridWorker
+     * @param ChannelHandler           $channelHandler
+     * @param Form                     $channelForm
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,
@@ -48,7 +73,7 @@ class ChannelController extends AbstractDoctrineController
         $this->channelForm = $channelForm;
         $this->channelHandler = $channelHandler;
     }
-        
+
     /**
      * List channels
      *
