@@ -13,6 +13,7 @@ Feature: Delete a channel
       | FOO  | foo   | fr_FR, en_US | ipad_catalog   |
     And I am logged in as "admin"
 
+  @skip
   Scenario: Successfully delete a channel from the grid
     Given I am on the channels page
     And I should see channel FOO
@@ -21,7 +22,8 @@ Feature: Delete a channel
     Then I should see "Item was deleted"
     And I should not see channel FOO
 
-  Scenario: Successfully delete a channel 
+  @skip
+  Scenario: Successfully delete a channel
     Given I edit the "FOO" channel
     When I press the "Delete" button
     And I confirm the deletion
