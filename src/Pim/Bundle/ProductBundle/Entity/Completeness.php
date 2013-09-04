@@ -82,10 +82,10 @@ class Completeness
     protected $updated;
 
     /**
-     * @var \Pim\Bundle\ProductBundle\Entity\Product
+     * @var \Pim\Bundle\ProductBundle\Model\ProductInterface
      *
      * @ORM\ManyToOne(
-     *     targetEntity="Pim\Bundle\ProductBundle\Entity\Product",
+     *     targetEntity="Pim\Bundle\ProductBundle\Model\ProductInterface",
      *     inversedBy="completenesses"
      * )
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
