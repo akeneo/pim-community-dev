@@ -22,6 +22,13 @@ class AclExtensionSelector
     protected $extensions = array();
 
     /**
+     * @var array
+     * key = a string unique for each ObjectIdentity
+     * value = ACL extension
+     */
+    protected $localCache = array();
+
+    /**
      * Constructor
      *
      * @param ObjectIdAccessor $objectIdAccessor
@@ -44,8 +51,8 @@ class AclExtensionSelector
     /**
      * Gets ACL extension responsible for work with the given domain object
      *
-     * @param mixed $object A domain object, ObjectIdentity or descriptor (type:id)
-     * @throws \Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException
+     * @param mixed $object A domain object, ObjectIdentity or descriptor (id:type)
+     * @throws InvalidDomainObjectException
      * @return AclExtensionInterface
      */
     public function select($object)
@@ -58,7 +65,7 @@ class AclExtensionSelector
         if (is_string($object)) {
             $delim = strpos($object, ':');
             if ($delim) {
-                $type = trim(substr($object, $delim + 1));
+                $type = ltrim(substr($object, $delim + 1), ' ');
                 $id = strtolower(substr($object, 0, $delim));
             }
         } elseif (is_object($object)) {
@@ -72,8 +79,15 @@ class AclExtensionSelector
         }
 
         if ($type !== null && $id !== null) {
+            $cacheKey = $id . '!' . $type;
+            if (isset($this->localCache[$cacheKey])) {
+                return $this->localCache[$cacheKey];
+            }
+
             foreach ($this->extensions as $extension) {
                 if ($extension->supports($type, $id)) {
+                    $this->localCache[$cacheKey] = $extension;
+
                     return $extension;
                 }
             }

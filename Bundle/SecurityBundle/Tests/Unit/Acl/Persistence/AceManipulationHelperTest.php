@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Manager;
+namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Persistence;
 
 use Oro\Bundle\SecurityBundle\Acl\Extension\NullAclExtension;
-use Oro\Bundle\SecurityBundle\Acl\Manager\AceManipulationHelper;
-use Oro\Bundle\SecurityBundle\Acl\Manager\AclManager;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AceManipulationHelper;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 
 class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
 {
@@ -67,7 +67,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue(array($ace1, $ace2, $ace3)));
         } else {
             $this->acl->expects($this->once())
-                ->method('get' . $type . 'Aces')
+                ->method('get' . $type . 'FieldAces')
                 ->with($this->equalTo($field))
                 ->will($this->returnValue(array($ace1, $ace2, $ace3)));
         }
@@ -82,7 +82,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
                 );
         } else {
             $this->acl->expects($this->once())
-                ->method('update' . $type . 'Ace')
+                ->method('update' . $type . 'FieldAce')
                 ->with(
                     $this->equalTo(2),
                     $this->equalTo($field),
@@ -92,6 +92,8 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
         }
         $this->acl->expects($this->never())
             ->method('insert' . $type . 'Ace');
+        $this->acl->expects($this->never())
+            ->method('insert' . $type . 'FieldAce');
 
         $this->assertTrue(
             $this->manipulator->setPermission(
@@ -145,7 +147,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue(array($ace1, $ace2)));
         } else {
             $this->acl->expects($this->once())
-                ->method('get' . $type . 'Aces')
+                ->method('get' . $type . 'FieldAces')
                 ->with($this->equalTo($field))
                 ->will($this->returnValue(array($ace1, $ace2)));
         }
@@ -162,7 +164,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
                 );
         } else {
             $this->acl->expects($this->once())
-                ->method('insert' . $type . 'Ace')
+                ->method('insert' . $type . 'FieldAce')
                 ->with(
                     $this->equalTo($field),
                     $this->identicalTo($sid),
@@ -174,6 +176,8 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
         }
         $this->acl->expects($this->never())
             ->method('update' . $type . 'Ace');
+        $this->acl->expects($this->never())
+            ->method('update' . $type . 'FieldAce');
 
         $this->assertTrue(
             $this->manipulator->setPermission(
@@ -235,7 +239,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue(array($ace1, $ace2, $ace3)));
         } else {
             $this->acl->expects($this->once())
-                ->method('get' . $type . 'Aces')
+                ->method('get' . $type . 'FieldAces')
                 ->with($this->equalTo($field))
                 ->will($this->returnValue(array($ace1, $ace2, $ace3)));
         }
@@ -247,7 +251,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
                 );
         } else {
             $this->acl->expects($this->once())
-                ->method('delete' . $type . 'Ace')
+                ->method('delete' . $type . 'FieldAce')
                 ->with(
                     $this->equalTo(2),
                     $this->equalTo($field)
@@ -286,7 +290,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue(array($ace1, $ace2)));
         } else {
             $this->acl->expects($this->once())
-                ->method('get' . $type . 'Aces')
+                ->method('get' . $type . 'FieldAces')
                 ->with($this->equalTo($field))
                 ->will($this->returnValue(array($ace1, $ace2)));
         }
@@ -298,7 +302,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
                 );
         } else {
             $this->acl->expects($this->once())
-                ->method('delete' . $type . 'Ace')
+                ->method('delete' . $type . 'FieldAce')
                 ->with(
                     $this->equalTo(0),
                     $this->equalTo($field)
@@ -319,7 +323,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue(array()));
         } else {
             $this->acl->expects($this->once())
-                ->method('get' . $type . 'Aces')
+                ->method('get' . $type . 'FieldAces')
                 ->with($this->equalTo($field))
                 ->will($this->returnValue(array()));
         }
@@ -352,7 +356,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
                 );
         } else {
             $this->acl->expects($this->once())
-                ->method('insert' . $type . 'Ace')
+                ->method('insert' . $type . 'FieldAce')
                 ->with(
                     $this->equalTo($field),
                     $this->identicalTo($sid),
@@ -384,7 +388,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
                 );
         } else {
             $this->acl->expects($this->once())
-                ->method('update' . $type . 'Ace')
+                ->method('update' . $type . 'FieldAce')
                 ->with(
                     $this->equalTo($index),
                     $this->equalTo($field),
@@ -412,7 +416,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
                 );
         } else {
             $this->acl->expects($this->once())
-                ->method('delete' . $type . 'Ace')
+                ->method('delete' . $type . 'FieldAce')
                 ->with(
                     $this->equalTo($index),
                     $this->equalTo($field)
@@ -427,8 +431,8 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
         return array(
             array(AclManager::CLASS_ACE, null),
             array(AclManager::OBJECT_ACE, null),
-            array(AclManager::CLASS_FIELD_ACE, 'SomeField'),
-            array(AclManager::OBJECT_FIELD_ACE, 'SomeField'),
+            array(AclManager::CLASS_ACE, 'SomeField'),
+            array(AclManager::OBJECT_ACE, 'SomeField'),
         );
     }
 

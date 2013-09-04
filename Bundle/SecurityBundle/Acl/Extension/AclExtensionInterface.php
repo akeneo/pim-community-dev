@@ -19,7 +19,8 @@ interface AclExtensionInterface
     public function supports($type, $id);
 
     /**
-     * Gets root ACL identifier
+     * Gets root ACL identifier.
+     * All characters in the identifier must be lowercase.
      *
      * @return string
      */
@@ -121,19 +122,33 @@ interface AclExtensionInterface
     public function getAccessLevel($mask);
 
     /**
-     * Gets permissions encoded in the given mask
+     * Gets all permissions supported by this ACL extension
+     * or permissions encoded in the given mask if $mask argument is not null.
+     * Also you can use $setOnly argument to specify whether you need a list of
+     * all permissions which can be encoded in the given mask or only a list of
+     * permissions are set in the given mask.
      *
-     * @param int $mask
+     * @param int|null $mask The bitmask
+     * @param bool $setOnly Determines whether all permissions can be encoded in the given mask should be returned
+     *                      or only permissions are set in the given mask.
      * @return string[]
      */
-    public function getPermissions($mask);
+    public function getPermissions($mask = null, $setOnly = false);
 
     /**
-     * Gets all permissions supported by this ACL extension
+     * Gets all permissions allowed for a domain object represented by te given object identity.
+     *
+     * @param ObjectIdentity $oid
+     * @return string[]
+     */
+    public function getAllowedPermissions(ObjectIdentity $oid);
+
+    /**
+     * Gets all types of domain objects or resources supported by this ACL extension.
      *
      * @return string[]
      */
-    public function getAllPermissions();
+    public function getClasses();
 
     /**
      * Determines whether the access to the given domain object is granted

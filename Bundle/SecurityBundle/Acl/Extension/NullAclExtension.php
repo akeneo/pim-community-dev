@@ -3,6 +3,7 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
@@ -119,7 +120,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getPermissions($mask)
+    public function getPermissions($mask = null, $setOnly = false)
     {
         return array();
     }
@@ -127,7 +128,15 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllPermissions()
+    public function getAllowedPermissions(ObjectIdentity $oid)
+    {
+        return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClasses()
     {
         return array();
     }

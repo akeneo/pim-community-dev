@@ -1,13 +1,13 @@
 <?php
 
-namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Manager;
+namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Persistence;
 
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
-use Oro\Bundle\SecurityBundle\Acl\Manager\AclManager;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-use Oro\Bundle\SecurityBundle\Acl\Manager\Batch\BatchItem;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\Batch\BatchItem;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 
@@ -55,7 +55,7 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->aceProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Manager\AceManipulationHelper')
+        $this->aceProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Persistence\AceManipulationHelper')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -329,7 +329,7 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
                 $this->identicalTo($acl),
                 $this->identicalTo($this->extension),
                 $this->equalTo(true),
-                $this->equalTo(AclManager::OBJECT_FIELD_ACE),
+                $this->equalTo(AclManager::OBJECT_ACE),
                 $this->equalTo($field),
                 $this->identicalTo($sid),
                 $this->equalTo($granting),
@@ -363,7 +363,7 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
                 $this->identicalTo($acl),
                 $this->identicalTo($this->extension),
                 $this->equalTo(true),
-                $this->equalTo(AclManager::CLASS_FIELD_ACE),
+                $this->equalTo(AclManager::CLASS_ACE),
                 $this->equalTo($field),
                 $this->identicalTo($sid),
                 $this->equalTo($granting),
@@ -493,7 +493,7 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
             ->method('deletePermission')
             ->with(
                 $this->identicalTo($acl),
-                $this->equalTo(AclManager::OBJECT_FIELD_ACE),
+                $this->equalTo(AclManager::OBJECT_ACE),
                 $this->equalTo($field),
                 $this->identicalTo($sid),
                 $this->equalTo($granting),
@@ -522,7 +522,7 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
             ->method('deletePermission')
             ->with(
                 $this->identicalTo($acl),
-                $this->equalTo(AclManager::CLASS_FIELD_ACE),
+                $this->equalTo(AclManager::CLASS_ACE),
                 $this->equalTo($field),
                 $this->identicalTo($sid),
                 $this->equalTo($granting),
@@ -628,7 +628,7 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
             ->method('deleteAllPermissions')
             ->with(
                 $this->identicalTo($acl),
-                $this->equalTo(AclManager::OBJECT_FIELD_ACE),
+                $this->equalTo(AclManager::OBJECT_ACE),
                 $this->equalTo($field),
                 $this->identicalTo($sid)
             );
@@ -651,7 +651,7 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
             ->method('deleteAllPermissions')
             ->with(
                 $this->identicalTo($acl),
-                $this->equalTo(AclManager::CLASS_FIELD_ACE),
+                $this->equalTo(AclManager::CLASS_ACE),
                 $this->equalTo($field),
                 $this->identicalTo($sid)
             )

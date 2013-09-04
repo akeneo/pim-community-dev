@@ -75,14 +75,14 @@ abstract class AbstractAclExtension implements AclExtensionInterface
         if (!$delim) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Incorrect descriptor: %s. Expected IdentifierType:Name.',
+                    'Incorrect descriptor: %s. Expected "id:type".',
                     $descriptor
                 )
             );
         }
 
         $id = strtolower(substr($descriptor, 0, $delim));
-        $type = trim(substr($descriptor, $delim + 1));
+        $type = ltrim(substr($descriptor, $delim + 1), ' ');
     }
 
     /**

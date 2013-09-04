@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\SecurityBundle\Acl\Manager\Batch;
+namespace Oro\Bundle\SecurityBundle\Acl\Persistence\Batch;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface as SID;

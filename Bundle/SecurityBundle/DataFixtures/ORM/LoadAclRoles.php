@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Oro\Bundle\SecurityBundle\Acl\Manager\AclManager;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 
 class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {

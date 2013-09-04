@@ -15,9 +15,14 @@ final class AccessLevel
     public static $allAccessLevelNames = array('BASIC', 'LOCAL', 'DEEP', 'GLOBAL', 'SYSTEM');
 
     /**
-     * Undefined access level.
+     * Unknown access level.
      */
-    const UNDEFINED = 0;
+    const UNKNOWN = -1;
+
+    /**
+     * Deny access.
+     */
+    const NONE_LEVEL = 0;
 
     /**
      * This access level gives a user access to own records and objects that are shared with the user.

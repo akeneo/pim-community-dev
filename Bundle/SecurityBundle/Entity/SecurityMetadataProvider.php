@@ -35,7 +35,7 @@ class SecurityMetadataProvider
      * Get entities lists marked with acl config
      *
      * @param null $type
-     * @return array
+     * @return array|SecurityMetadata[]
      */
     public function getEntityList($type = null)
     {
