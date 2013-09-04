@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ProductBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -271,11 +271,11 @@ class Completeness
     /**
      * Setter product
      *
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return \Pim\Bundle\ProductBundle\Entity\Completeness
      */
-    public function setProduct(Product $product)
+    public function setProduct(ProductInterface $product)
     {
         $this->product = $product;
 

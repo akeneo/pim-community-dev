@@ -8,7 +8,7 @@ use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
-use Pim\Bundle\ProductBundle\Entity\Product;
+use Pim\Bundle\ProductBundle\Model\ProductInterface;
 use Pim\Bundle\ProductBundle\Manager\ProductManager;
 use Pim\Bundle\ProductBundle\Manager\ChannelManager;
 use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
@@ -239,7 +239,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      *
      * @return FormInterface
      */
-    private function createAndSubmitForm(Product $product, array $item)
+    private function createAndSubmitForm(ProductInterface $product, array $item)
     {
         $form = $this->formFactory->create(
             'pim_product',
