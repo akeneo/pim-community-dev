@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
+use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
