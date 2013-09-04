@@ -31,6 +31,6 @@ class BatchProductType extends AbstractType
 
     public function getName()
     {
-        return '';
+        return 'batch';
     }
 }

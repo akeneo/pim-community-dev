@@ -1,0 +1,5 @@
+pim_catalog_batch_operation_configure:
+    path: /configure
+    defaults: { _controller: PimCatalogBundle:BatchOperation:configure }
+    requirements:
+        _method: GET

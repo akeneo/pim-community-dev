@@ -1,0 +1,12 @@
+{% extends 'PimCatalogBundle::layout.html.twig' %}
+
+{% block content %}
+    {% if batchProduct.operation is null %}
+        <form action="{{ path('pim_catalog_batch_operation_configure') }}" method="GET" class="form-horizontal">
+    {% else %}
+        <form action="#" method="POST" class="form-horizontal">
+    {% endif %}
+            {{ form_widget(form) }}
+            <input type="submit" value="Continue &rarr;" class="btn">
+        </form>
+{% endblock %}
