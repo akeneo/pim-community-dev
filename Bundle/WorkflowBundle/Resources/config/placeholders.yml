@@ -1,9 +1,9 @@
 placeholders:
     navButtons_before:
-        label: Header Logo
+        label: Entity Workflow Buttons
         items:
-            workflow_buttons:
+            workflow_buttons_entity:
                 order: 100
 items:
-   workflow_buttons:
-        template: OroWorkflowBundle:Widget:buttons.html.twig
+   workflow_buttons_entity:
+        template: OroWorkflowBundle:Widget:entityButtons.html.twig

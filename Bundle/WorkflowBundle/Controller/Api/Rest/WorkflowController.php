@@ -36,7 +36,7 @@ class WorkflowController extends FOSRestController
      * - HTTP_NOT_FOUND (404) response: array('message' => errorMessageString)
      * - HTTP_INTERNAL_SERVER_ERROR (500) response: array('message' => errorMessageString)
      *
-     * @Rest\Get("/start/{workflowName}/{transitionName}")
+     * @Rest\Get("/start/{workflowName}/{transitionName}", defaults={"_format"="json"})
      * @ApiDoc(description="Start workflow for entity from transition", resource=true)
      * @AclAncestor("oro_workflow")
      *
@@ -112,7 +112,11 @@ class WorkflowController extends FOSRestController
      * - HTTP_NOT_FOUND (404) response: array('message' => errorMessageString)
      * - HTTP_INTERNAL_SERVER_ERROR (500) response: array('message' => errorMessageString)
      *
-     * @Rest\Get("/transit/{workflowItemId}/{transitionName}", requirements={"workflowItemId"="\d+"})
+     * @Rest\Get(
+     *      "/transit/{workflowItemId}/{transitionName}",
+     *      requirements={"workflowItemId"="\d+"},
+     *      defaults={"_format"="json"}
+     * )
      * @ParamConverter("workflowItem", options={"id"="workflowItemId"})
      * @ApiDoc(description="Perform transition for workflow item", resource=true)
      * @AclAncestor("oro_workflow")
@@ -149,7 +153,7 @@ class WorkflowController extends FOSRestController
      * Returns
      * - HTTP_OK (200) response: array('workflowItem' => array('id' => int, 'result' => array(...), ...))
      *
-     * @Rest\Get("/get/{workflowItemId}", requirements={"workflowItemId"="\d+"})
+     * @Rest\Get("/get/{workflowItemId}", requirements={"workflowItemId"="\d+"}, defaults={"_format"="json"})
      * @ParamConverter("workflowItem", options={"id"="workflowItemId"})
      * @ApiDoc(description="Get workflow item", resource=true)
      * @AclAncestor("oro_workflow")
