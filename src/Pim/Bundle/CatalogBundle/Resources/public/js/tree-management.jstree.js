@@ -12,10 +12,10 @@ Pim.tree.manage = function(elementId) {
     assetsPath       = $el.attr('data-assets-path'),
     listtreeUrl      = $el.attr('data-listtree-url'),
     childrenUrl      = $el.attr('data-children-url'),
-    createUrl        = $el.attr('data-create-url'),
     editUrl          = $el.attr('data-edit-url'),
     moveUrl          = $el.attr('data-move-url'),
     editLabel        = $el.attr('data-edit-label'),
+    preventFirst     = selectedNode > 0,
     loadingMask      = new Oro.LoadingMask();
 
     loadingMask.render().$el.appendTo($('#container'));
@@ -36,14 +36,6 @@ Pim.tree.manage = function(elementId) {
         ],
         contextmenu: {
             items: {
-                'edit': {
-                    'label': editLabel,
-                    'action': function (obj) {
-                        var id = obj.attr('id').replace('node_', '');
-                        var url = editUrl.replace('0', id);
-                        Pim.navigate(url);
-                    }
-                },
                 'ccp': false,
                 'rename': false,
                 'remove': false
@@ -135,14 +127,15 @@ Pim.tree.manage = function(elementId) {
         .bind('select_node.jstree', function (e, data) {
             var id = data.rslt.obj.attr('id').replace('node_',''),
             url = Routing.generate('pim_catalog_categorytree_edit', { id: id });
-            if ('#url=' + url === Backbone.history.location.hash) {
+            if ('#url=' + url === Backbone.history.location.hash || preventFirst) {
+                preventFirst = false;
                 return;
             }
             loadingMask.show();
             $.ajax({
                 async: true,
                 type: 'GET',
-                url: url,
+                url: url + '?content=form',
                 success: function (data) {
                     if (data) {
                         $('#category-form').html(data);
@@ -162,13 +155,30 @@ Pim.tree.manage = function(elementId) {
             }
         })
         .bind('create.jstree', function (e, data) {
+            $.jstree._focused().lock();
             var id = data.rslt.parent.attr('id').replace('node_', ''),
-            url = id ? createUrl + '/' + id : createUrl,
+            url = Routing.generate('pim_catalog_categorytree_create', { parent: id }),
             position = data.rslt.position,
             title = data.rslt.name;
 
             url = url + '?' + 'title=' + title + '&position=' + position;
-            Pim.navigate(url);
+            loadingMask.show();
+            $.ajax({
+                async: true,
+                type: 'GET',
+                url: url + '&content=form',
+                success: function (data) {
+                    if (data) {
+                        $('#category-form').html(data);
+                        Backbone.history.navigate('url=' + url, {trigger: false});
+                        loadingMask.hide();
+                    }
+                },
+                error: function(jqXHR) {
+                    Oro.BackboneError.Dispatch(null, jqXHR);
+                    loadingMask.hide();
+                }
+            });
         });
     };
 

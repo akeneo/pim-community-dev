@@ -30,6 +30,8 @@
                 ~ 'All sub-categories will be deleted !'|trans ~ '<br />'
                 ~ 'All products contained in all categories will not be removed but they will no more be classified in these categories !'|trans
             ) }}
+        {% elseif parentId %}
+            {{ elements.backLink(path('pim_catalog_categorytree_edit', { id: parentId }), 'Back to parent') }}
         {% endif %}
         {{ elements.submitBtn() }}
     {% endset %}

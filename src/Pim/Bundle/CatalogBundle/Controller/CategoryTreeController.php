@@ -159,7 +159,6 @@ class CategoryTreeController extends Controller
      * @param Request $request
      * @param integer $parent
      *
-     * @Template("PimCatalogBundle:CategoryTree:edit.html.twig")
      * @return array
      */
     public function createAction(Request $request, $parent = null)
@@ -198,8 +197,11 @@ class CategoryTreeController extends Controller
             }
         }
 
-        return array(
-            'form' => $form->createView(),
+        return $this->render(
+            sprintf('PimCatalogBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
+            array(
+                'form' => $form->createView(),
+            )
         );
     }
 
@@ -248,7 +250,7 @@ class CategoryTreeController extends Controller
         }
 
         return $this->render(
-            sprintf('PimCatalogBundle:CategoryTree:%s.html.twig', $request->isXmlHttpRequest() ? 'form' : 'edit'),
+            sprintf('PimCatalogBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
             array(
                 'form'     => $form->createView(),
                 'datagrid' => $datagrid->createView(),
