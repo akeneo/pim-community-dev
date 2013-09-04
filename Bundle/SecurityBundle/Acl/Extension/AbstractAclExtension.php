@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
+use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
@@ -31,7 +32,31 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function decideIsGranting($aceMask, $object, TokenInterface $securityToken)
+    public function prepareRootAceMask($aceMask, $object)
+    {
+        return $aceMask;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getServiceBits($mask)
+    {
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeServiceBits($mask)
+    {
+        return $mask;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function decideIsGranting($triggeredMask, $object, TokenInterface $securityToken)
     {
         return true;
     }
@@ -50,14 +75,14 @@ abstract class AbstractAclExtension implements AclExtensionInterface
         if (!$delim) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Incorrect descriptor: %s. Expected IdentifierType:Name.',
+                    'Incorrect descriptor: %s. Expected "id:type".',
                     $descriptor
                 )
             );
         }
 
-        $type = strtolower(substr($descriptor, 0, $delim));
-        $id = trim(substr($descriptor, $delim + 1));
+        $id = strtolower(substr($descriptor, 0, $delim));
+        $type = ltrim(substr($descriptor, $delim + 1), ' ');
     }
 
     /**
@@ -75,7 +100,7 @@ abstract class AbstractAclExtension implements AclExtensionInterface
             : (string)$object;
         $msg = sprintf(
             'Invalid ACL mask "%s" for %s.',
-            $this->createMaskBuilder()->getPatternFor($mask),
+            $this->getMaskPattern($mask),
             $objectDescription
         );
         if (!empty($errorDescription)) {

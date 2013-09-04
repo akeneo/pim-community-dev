@@ -163,29 +163,6 @@ class BusinessUnit
     }
 
     /**
-     * Set parent
-     *
-     * @param BusinessUnit $parent
-     * @return BusinessUnit
-     */
-    public function setParent(BusinessUnit $parent)
-    {
-        $this->parent = $parent;
-    
-        return $this;
-    }
-
-    /**
-     * Get parent
-     *
-     * @return BusinessUnit
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
-
-    /**
      * Set organization
      *
      * @param Organization $organization

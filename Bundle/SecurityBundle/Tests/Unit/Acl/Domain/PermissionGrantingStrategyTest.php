@@ -123,7 +123,7 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
         $this->context->setObject($obj);
         $masks = $this->getMasks('VIEW', $obj);
 
-        $aceMask = $this->getMaskBuilder($obj)
+        $aceMask = $this->getMaskBuilder('VIEW', $obj)
             ->add('VIEW_GLOBAL')
             ->get();
 
@@ -249,7 +249,7 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
             array('all', 1 << 0 | 1 << 1, 1 << 0, true),
             array('all', 1 << 0 | 1 << 1, 1 << 2, false),
             array('all', 1 << 0 | 1 << 10, 1 << 0 | 1 << 10, true),
-            array('all', 1 << 0 | 1 << 1, 1 << 0 | 1 << 1 || 1 << 2, false),
+            array('all', 1 << 0 | 1 << 1, 1 << 0 | 1 << 1 | 1 << 2, false),
             array('any', 1 << 0 | 1 << 1, 1 << 0, true),
             array('any', 1 << 0 | 1 << 1, 1 << 0 | 1 << 2, true),
             array('any', 1 << 0 | 1 << 1, 1 << 2, false),
@@ -307,11 +307,12 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $permission
      * @param mixed $object
      * @return MaskBuilder
      */
-    private function getMaskBuilder($object)
+    private function getMaskBuilder($permission, $object)
     {
-        return $this->selector->select($object)->createMaskBuilder();
+        return $this->selector->select($object)->getMaskBuilder($permission);
     }
 }

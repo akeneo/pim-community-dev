@@ -10,7 +10,7 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 class ExtendManager
 {
     const STATE_NEW     = 'New';
-    const STATE_UPDATED = 'Updated';
+    const STATE_UPDATED = 'Requires update';
     const STATE_ACTIVE  = 'Active';
     const STATE_DELETED = 'Deleted';
 

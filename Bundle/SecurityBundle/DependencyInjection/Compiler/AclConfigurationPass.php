@@ -110,14 +110,27 @@ class AclConfigurationPass implements CompilerPassInterface
             $priority = 0;
             foreach ($attributes as $attr) {
                 if (isset($attr['priority'])) {
-                    $priority = (int)isset($attr['priority']);
+                    $priority = (int)$attr['priority'];
                     break;
                 }
             }
-            $extensions[$priority] = $id;
-        }
-        ksort($extensions);
 
-        return $extensions;
+            $extensions[] = array('id' => $id, 'priority' => $priority);
+        }
+        usort(
+            $extensions,
+            function ($a, $b) {
+                return $a['priority'] == $b['priority']
+                    ? 0
+                    : ($a['priority'] < $b['priority']) ? -1 : 1;
+            }
+        );
+
+        return array_map(
+            function ($el) {
+                return $el['id'];
+            },
+            $extensions
+        );
     }
 }

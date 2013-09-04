@@ -1,9 +1,7 @@
 $(function() {
-    var statusDaemon = $('#status-daemon'),
-        img = statusDaemon.closest('div').find('img');
-
     $(document).on('click', '#run-daemon, #stop-daemon', function (e) {
-        var el = $(this);
+        var el = $(this),
+            img = $('#status-daemon').closest('div').find('img');
 
         img.show();
 
@@ -42,12 +40,15 @@ $(function() {
     });
 
     setInterval(function () {
+        var statusBtn = $('#status-daemon'),
+            img = statusBtn.closest('div').find('img');
+
         img.show();
 
-        $.get(statusDaemon.attr('href'), function (data) {
+        $.get(statusBtn.attr('href'), function (data) {
             data = parseInt(data);
 
-            statusDaemon
+            statusBtn
               .closest('div').find('span:first').removeClass(data > 0 ? 'label-important' : 'label-success').addClass(data > 0 ? 'label-success' : 'label-important').text(data > 0 ? _.__('Running') : _.__('Not running')).end()
               .closest('div').find('span:last').text(data > 0 ? data : _.__('N/A')).end();
 

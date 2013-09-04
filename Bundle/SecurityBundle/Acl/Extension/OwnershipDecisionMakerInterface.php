@@ -35,21 +35,19 @@ interface OwnershipDecisionMakerInterface
     public function isUser($domainObject);
 
     /**
-     * Determines whether the given domain object is in the same organization as the given user
-     * Furthermore, this method returns true if the the given domain object is the organization
-     * the the given user belongs to.
+     * Determines whether the given domain object is associated with
+     * an any organization of the given user
      *
      * @param object $user
      * @param object $domainObject
      * @return bool
      * @throws InvalidDomainObjectException
      */
-    public function isBelongToOrganization($user, $domainObject);
+    public function isAssociatedWithOrganization($user, $domainObject);
 
     /**
-     * Determines whether the given domain object is in the same business unit as the given user
-     * Furthermore, this method returns true if the the given domain object is the business unit
-     * the the given user belongs to.
+     * Determines whether the given domain object is associated with
+     * an any business unit of the given user
      *
      * @param object $user
      * @param object $domainObject
@@ -57,16 +55,15 @@ interface OwnershipDecisionMakerInterface
      * @return bool
      * @throws InvalidDomainObjectException
      */
-    public function isBelongToBusinessUnit($user, $domainObject, $deep = false);
+    public function isAssociatedWithBusinessUnit($user, $domainObject, $deep = false);
 
     /**
-     * Determines whether the given domain object is belong to the given user.
-     * Furthermore, this method returns true if the the given domain object and user are equal as well.
+     * Determines whether the given domain object is associated with the given user
      *
      * @param object $user
      * @param object $domainObject
      * @return bool
      * @throws InvalidDomainObjectException
      */
-    public function isBelongToUser($user, $domainObject);
+    public function isAssociatedWithUser($user, $domainObject);
 }

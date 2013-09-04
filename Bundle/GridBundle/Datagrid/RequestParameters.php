@@ -25,7 +25,7 @@ class RequestParameters implements ParametersInterface
     /**
      * @var array
      */
-    static protected $usedParameterTypes = array(
+    protected static $usedParameterTypes = array(
         self::FILTER_PARAMETERS,
         self::PAGER_PARAMETERS,
         self::SORT_PARAMETERS,
@@ -34,7 +34,7 @@ class RequestParameters implements ParametersInterface
 
     /**
      * @param ContainerInterface $container
-     * @param string $rootParameterName
+     * @param string             $rootParameterName
      */
     public function __construct(ContainerInterface $container, $rootParameterName)
     {
@@ -45,19 +45,20 @@ class RequestParameters implements ParametersInterface
     /**
      * Get parameter value from parameters container
      *
-     * @param string $type
-     * @param mixed $default
+     * @param  string $type
+     * @param  mixed  $default
      * @return mixed
      */
     public function get($type, $default = array())
     {
         $rootParameter = $this->getRootParameterValue();
+
         return isset($rootParameter[$type]) ? $rootParameter[$type] : $default;
     }
 
     /**
-     * @param string $type
-     * @param mixed $value
+     * @param  string $type
+     * @param  mixed  $value
      * @return void
      */
     public function set($type, $value)
@@ -90,6 +91,7 @@ class RequestParameters implements ParametersInterface
         if (!$this->request) {
             $this->request = clone $this->container->get('request');
         }
+
         return $this->request;
     }
 
@@ -124,6 +126,7 @@ class RequestParameters implements ParametersInterface
     public function getScope()
     {
         $rootValue = $this->getRootParameterValue();
+
         return isset($rootValue[self::SCOPE_PARAMETER]) ? $rootValue[self::SCOPE_PARAMETER] : null;
     }
 }

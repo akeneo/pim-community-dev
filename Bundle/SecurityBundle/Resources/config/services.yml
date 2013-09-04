@@ -1,4 +1,10 @@
 parameters:
+    # replace the default ACL provider with an extended version of the provider
+    security.acl.dbal.provider.class:                          Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider
+
+    oro_security.acl.manager.class:                            Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager
+    oro_security.acl.ace_provider.class:                       Oro\Bundle\SecurityBundle\Acl\Persistence\AceManipulationHelper
+    oro_security.acl.privilege_repository.class:               Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository
     oro_security.acl.extension_selector.class:                 Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector
     oro_security.acl.extension.entity.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension
     oro_security.acl.extension.action.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension
@@ -12,6 +18,8 @@ parameters:
 
     oro_security.owner.tree.class:                             Oro\Bundle\SecurityBundle\Owner\OwnerTree
     oro_security.owner.decision_maker.class:                   Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker
+    oro_security.orm.ownership_sql_filter.class:               Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilter
+    oro_security.orm.ownership_sql_filter_builder.class:       Oro\Bundle\SecurityBundle\ORM\OwnershipSqlFilterBuilder
 
     oro_security.type.oro_acl_entity_row.class:               Oro\Bundle\SecurityBundle\Form\Type\EntityRowType
     oro_security.type.oro_acl_collection.class:               Oro\Bundle\SecurityBundle\Form\Type\CollectionType
@@ -19,6 +27,20 @@ parameters:
     oro_security.type.oro_acl_label.class:                    Oro\Bundle\SecurityBundle\Form\Type\ObjectLabelType
 
 services:
+    oro_security.acl.manager:
+        class: %oro_security.acl.manager.class%
+        scope: prototype
+        arguments:
+            - @oro_security.acl.object_identity_factory
+            - @oro_security.acl.extension_selector
+            - @?security.acl.dbal.provider
+            - @oro_security.acl.ace_provider
+            - %oro_security.acl.privilege_repository.class%
+
+    oro_security.acl.ace_provider:
+        public: false
+        class: %oro_security.acl.ace_provider.class%
+
     oro_security.acl.extension_selector:
         public: false
         class: %oro_security.acl.extension_selector.class%
@@ -87,9 +109,28 @@ services:
             - @oro_security.owner.tree
             - @oro_entity.orm.entity_class_accessor
             - @oro_security.acl.object_id_accessor
-            - @oro_entity.orm.entity_owner_accessor
+            - @oro_entity.owner.entity_owner_accessor
             - @oro_entity.owner.ownership_metadata_provider
 
+    oro_security.orm.ownership_sql_filter_builder:
+        public: true
+        class: %oro_security.orm.ownership_sql_filter_builder.class%
+        arguments:
+            - @oro_entity_config.link.security_context
+            - @oro_security.acl.object_id_accessor
+            - @oro_entity.owner.ownership_metadata_provider
+            - @oro_security.owner.tree
+            - @?security.acl.voter.basic_permissions
+
+    oro_security.orm.ownership_sql_filter:
+        class: %oro_security.orm.ownership_sql_filter.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+        calls:
+            - [setBuilder, ["@oro_security.orm.ownership_sql_filter_builder"]]
+        tags:
+            - { name: oro_entity.orm.sql_filter, filter_name: ownershipFilter, enabled: true }
+            - { name: kernel.event_listener, priority: -255, event: kernel.request, method: setUserParameter }
     oro_security.form.type.collection_type:
         class:                        %oro_security.type.oro_acl_collection.class%
         tags:

@@ -7,29 +7,6 @@ use Oro\Bundle\SecurityBundle\Acl\Extension\EntityMaskBuilder;
 class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \InvalidArgumentException
-     * @dataProvider constructorWithNonIntegerProvider
-     */
-    public function testConstructorWithNonInteger($invalidMask)
-    {
-        new EntityMaskBuilder($invalidMask);
-    }
-
-    public function testConstructorWithoutArguments()
-    {
-        $builder = new EntityMaskBuilder();
-
-        $this->assertEquals(0, $builder->get());
-    }
-
-    public function testConstructor()
-    {
-        $builder = new EntityMaskBuilder(123456);
-
-        $this->assertEquals(123456, $builder->get());
-    }
-
-    /**
      * @dataProvider maskConstantProvider
      */
     public function testMaskConstant($mask)
@@ -101,7 +78,6 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetPatternWithUndefinedMask()
     {
-        $builder = new EntityMaskBuilder((integer)2147483648);
         $delim = strpos(EntityMaskBuilder::PATTERN_ALL_OFF, ' ');
         $expected =
             substr(EntityMaskBuilder::PATTERN_ALL_OFF, 0, $delim + 1)
@@ -111,7 +87,7 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
                 $delim + 2,
                 strlen(EntityMaskBuilder::PATTERN_ALL_OFF) - $delim - 2
             );
-        $this->assertEquals($expected, $builder->getPattern());
+        $this->assertEquals($expected, EntityMaskBuilder::getPatternFor((integer)2147483648));
     }
 
     public function testReset()
@@ -135,16 +111,6 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
             $expectedMask,
             $groupMask,
             'Actual: ' . EntityMaskBuilder::getPatternFor($groupMask)
-        );
-    }
-
-    public static function constructorWithNonIntegerProvider()
-    {
-        return array(
-            array(234.463),
-            array('asdgasdf'),
-            array(array()),
-            array(new \stdClass()),
         );
     }
 
@@ -280,6 +246,9 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public static function groupProvider()
     {
         return array(
@@ -327,13 +296,6 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
                 | EntityMaskBuilder::MASK_DELETE_SYSTEM
                 | EntityMaskBuilder::MASK_ASSIGN_SYSTEM
                 | EntityMaskBuilder::MASK_SHARE_SYSTEM
-            ),
-            'GROUP_CRUD_GLOBAL' => array(
-                EntityMaskBuilder::GROUP_CRUD_GLOBAL,
-                EntityMaskBuilder::MASK_VIEW_GLOBAL
-                | EntityMaskBuilder::MASK_CREATE_GLOBAL
-                | EntityMaskBuilder::MASK_EDIT_GLOBAL
-                | EntityMaskBuilder::MASK_DELETE_GLOBAL
             ),
             'GROUP_CRUD_SYSTEM' => array(
                 EntityMaskBuilder::GROUP_CRUD_SYSTEM,

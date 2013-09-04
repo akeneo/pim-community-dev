@@ -24,15 +24,15 @@ class OwnershipMetadataProviderStub extends OwnershipMetadataProvider
         );
     }
 
-    public function getMetadata($entityName)
+    public function getMetadata($className)
     {
-        return isset($this->metadata[$entityName])
-            ? $this->metadata[$entityName]
+        return isset($this->metadata[$className])
+            ? $this->metadata[$className]
             : new OwnershipMetadata();
     }
 
-    public function setMetadata($entityName, OwnershipMetadata $metadata)
+    public function setMetadata($className, OwnershipMetadata $metadata)
     {
-        $this->metadata[$entityName] = $metadata;
+        $this->metadata[$className] = $metadata;
     }
 }

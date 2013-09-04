@@ -53,7 +53,7 @@
 
 {% block oro_email_widget %}
     <div class="email-holder {% if form.email.vars.errors|length > 0 %} validation-error{% endif %}">
-        <div class="input-append">
+        <div class="input-append collection-element-primary">
             {{ form_widget(form.email) }}
             <label class="add-on" title="{{ 'Primary'|trans }}">
                 {{ form_widget(form.primary) }}
@@ -66,13 +66,13 @@
 
 {% block oro_phone_widget %}
     <div class="email-holder {% if form.phone.vars.errors|length > 0 %} validation-error{% endif %}">
-        <div class="input-append">
+        <div class="input-append collection-element-primary">
             {{ form_widget(form.phone) }}
-            {{ form_errors(form.phone) }}
             <label class="add-on" title="{{ 'Primary'|trans }}">
                 {{ form_widget(form.primary) }}
             </label>
         </div>
+        {{ form_errors(form.phone) }}
     </div>
     {{ form_rest(form) }}
 {%  endblock %}
