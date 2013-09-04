@@ -43,7 +43,7 @@ class RoleController extends Controller
         $aclRoleHandler = $this->get('oro_user.form.handler.acl_role');
         $aclRoleHandler->createForm($entity);
 
-        if ($this->$aclRoleHandler->process()) {
+        if ($aclRoleHandler->process($entity)) {
 
             $this->get('session')->getFlashBag()->add('success', 'Role successfully saved');
 
@@ -67,26 +67,26 @@ class RoleController extends Controller
 
 
         /****************************************/
-        $permissionList = array(
+        /*$permissionList = array(
             'VIEW',
             'CREATE',
             'EDIT',
             'DELETE'
         );
-        $form = $this->createForm(new NewRoleType($permissionList), $entity);
+        $form = $this->createForm(new NewRoleType($permissionList), $entity);*/
 
 
 
         /** @var $entityField \Oro\Bundle\SecurityBundle\Form\Type\CollectionType */
-        $entityCollection = $form->get('entities');
+        /*$entityCollection = $form->get('entities');
 
         $entityCollection->setData($dataArray);
-
+*/
 
         /**
          * @todo: work with form must be in form handler
          */
-        if ($this->getRequest()->isMethod('POST')) {
+        /*if ($this->getRequest()->isMethod('POST')) {
             $request = $this->getRequest();
             $form->handleRequest($request);
 
@@ -110,7 +110,7 @@ class RoleController extends Controller
         return array(
             'entity' => $entity,
             'form' => $form->createView()
-        );
+        );*/
     }
 
     /**

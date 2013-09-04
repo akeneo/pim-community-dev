@@ -16,6 +16,7 @@ parameters:
     oro_user.form.handler.role.class:           Oro\Bundle\UserBundle\Form\Handler\RoleHandler
     oro_user.form.handler.group.class:          Oro\Bundle\UserBundle\Form\Handler\GroupHandler
     oro_user.form.handler.status.class:         Oro\Bundle\UserBundle\Form\Handler\StatusHandler
+    oro_user.form.handler.acl_role.class:       Oro\Bundle\UserBundle\Form\Handler\AclRoleHandler
 
 services:
     oro_user.form.user:
@@ -182,3 +183,7 @@ services:
         scope:                        request
         arguments:                    ["@oro_user.form.status", "@request", "@doctrine.orm.entity_manager", "@oro_user.manager"]
 
+    oro_user.form.handler.acl_role:
+        class:                        %oro_user.form.handler.acl_role.class%
+        scope:                        request
+        arguments:                    ["@form.factory", "@request", "@doctrine.orm.entity_manager", "@oro_security.acl.manager"]

@@ -6,14 +6,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
-class CollectionType extends AbstractType
+class PrivilegeCollectionType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['fields_config'] = $options['options']['fields_config'];
+        $view->vars['privileges_config'] = $options['options']['privileges_config'];
     }
 
     /**
@@ -24,6 +24,9 @@ class CollectionType extends AbstractType
         return 'oro_acl_collection';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
         return 'collection';
