@@ -302,30 +302,15 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     public function removeAction(Category $category)
     {
-        $productCount = $this->categoryManager->getEntityRepository()->countProductsLinked($category, false);
-        $childrenCount = $this->categoryManager->getEntityRepository()->countChildren($category);
+        $parent = $category->getParent();
+        $params = ($parent !== null) ? array('node' => $parent->getId()) : array();
 
-        if ((int) $childrenCount > 0) {
-            $message = sprintf(
-                'This category can not be deleted because it contains %s child categories',
-                $childrenCount
-            );
-        } elseif ((int) $productCount > 0) {
-            $message = sprintf('This category can not be deleted because it contains %s products', $productCount);
-        } else {
-            $this->categoryManager->remove($category);
-            $this->categoryManager->getStorageManager()->flush();
+        $this->categoryManager->remove($category);
+        $this->categoryManager->getStorageManager()->flush();
 
-            $this->addFlash('success', 'Category successfully removed');
-            $parent = $category->getParent();
-            $params = ($parent !== null) ? array('node' => $parent->getId()) : array();
+        $this->addFlash('success', 'Category successfully removed');
 
-            return $this->redirectToRoute('pim_catalog_categorytree_create', $params);
-        }
-
-        $this->addFlash('error', $message);
-
-        return $this->redirectToRoute('pim_catalog_categorytree_edit', array('id' => $category->getId()));
+        return $this->redirectToRoute('pim_catalog_categorytree_create', $params);
     }
 
     /**

@@ -8,7 +8,6 @@ use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
-use Oro\Bundle\GridBundle\Property\FieldProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -41,17 +40,7 @@ class AttributeDatagridManager extends DatagridManager
      */
     protected function getProperties()
     {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                'required'    => true,
-            )
-        );
-
         return array(
-            new FieldProperty($fieldId),
             new UrlProperty('edit_link', $this->router, 'pim_catalog_productattribute_edit', array('id')),
             new UrlProperty('delete_link', $this->router, 'pim_catalog_productattribute_remove', array('id')),
         );

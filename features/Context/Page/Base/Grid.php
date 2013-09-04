@@ -168,11 +168,27 @@ class Grid extends Index
     /**
      * Get column headers
      *
+     * @param boolean $withHidden
+     *
      * @return \Behat\Mink\Element\Element
      */
-    protected function getColumnHeaders()
+    protected function getColumnHeaders($withHidden = false)
     {
-        return $this->getElement('Grid')->findAll('css', 'thead th');
+        $headers = $this->getElement('Grid')->findAll('css', 'thead th');
+
+        if ($withHidden) {
+            return $headers;
+        }
+
+        $visibleHeaders = array();
+        foreach ($headers as $header) {
+            $style = $header->getAttribute('style');
+            if (!$style || !preg_match('/display: ?none;/', $style)) {
+                $visibleHeaders[] = $header;
+            }
+        }
+
+        return $visibleHeaders;
     }
 
     /**
@@ -248,6 +264,7 @@ class Grid extends Index
                 sprintf('Column %s is not sortable', $columnName)
             );
         }
+
         return $this->getColumn($columnName)->find('css', 'a');
     }
 

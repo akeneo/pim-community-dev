@@ -31,14 +31,6 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, VersionableInterface
 {
     /**
-     * @var integer $version
-     *
-     * @ORM\Column(name="version", type="integer")
-     * @ORM\Version
-     */
-    protected $version;
-
-    /**
      * @var Category $parent
      *
      * @Gedmo\TreeParent
@@ -117,6 +109,14 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      * )
      */
     protected $translations;
+
+    /**
+     * @var integer $version
+     *
+     * @ORM\Column(name="version", type="integer")
+     * @ORM\Version
+     */
+    protected $version;
 
     /**
      * Constructor

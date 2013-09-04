@@ -13,7 +13,7 @@ services:
         class: "%pim_catalog.datagrid.manager.productattribute.class%"
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: attributes
+              datagrid_name: productattributes
               entity_hint: attributes
               route_name: pim_catalog_productattribute_index
         calls:
@@ -36,7 +36,7 @@ services:
         class: Pim\Bundle\CatalogBundle\Datagrid\AuditDatagridManager
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: attributes
+              datagrid_name: catalog_history
               entity_hint: attributes
               route_name: current
 
