@@ -22,42 +22,42 @@ class ConfigField
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=60)
      */
-    private $type;
+    protected $type;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="position", type="integer")
      */
-    private $position;
+    protected $position;
 
     /**
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=255)
      */
-    private $code;
+    protected $code;
 
     /**
      * @var array
      *
      * @ORM\Column(name="scope", type="array")
      */
-    private $scope;
+    protected $scope;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
+    protected $name;
 
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\ConfigBundle\Entity;
 
+use JMS\Serializer\Annotation\Exclude;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(
  *  name="oro_config_value",
- *  uniqueConstraints={@ORM\UniqueConstraint(name="UQ_ENTITY", columns={"field", "scope"})}
+ *  uniqueConstraints={@ORM\UniqueConstraint(name="UQ_ENTITY", columns={"field_id", "scope", "config_id"})}
  * )
  * @ORM\Entity(repositoryClass="Oro\Bundle\ConfigBundle\Entity\Repository\ConfigValueRepository")
  */
@@ -22,28 +23,43 @@ class ConfigValue
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
-     * @var integer
+     * @var ConfigField
      *
-     * @ORM\Column(name="field", type="integer")
+     * @ORM\ManyToOne(targetEntity="ConfigField")
+     * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
      */
-    private $field;
+    protected $field;
 
     /**
      * @var string
      *
      * @ORM\Column(name="scope", type="string", length=50)
      */
-    private $scope;
+    protected $scope;
+
+    /**
+     * @var Config[]
+     *
+     * @ORM\ManyToOne(targetEntity="Config", inversedBy="values")
+     * @ORM\JoinColumn(name="config_id", referencedColumnName="id")
+     * @Exclude
+     */
+    protected $config;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="value", type="text")
+     * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $value;
+    protected $section;
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $value;
 
 
     /**
@@ -72,7 +88,7 @@ class ConfigValue
     /**
      * Get field
      *
-     * @return integer
+     * @return ConfigField
      */
     public function getField()
     {
@@ -103,21 +119,37 @@ class ConfigValue
     }
 
     /**
-     * Set value
+     * Set config
      *
-     * @param string $value
-     * @return ConfigValue
+     * @param string $config
+     * @return Config
      */
-    public function setValue($value)
+    public function setConfig($config)
     {
-        $this->value = $value;
+        $this->config = $config;
 
         return $this;
     }
 
     /**
-     * Get value
+     * Get config
      *
+     * @return string
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * @param string $value
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
+
+    /**
      * @return string
      */
     public function getValue()

@@ -39,7 +39,8 @@ class Config
     /**
      * @var array
      *
-     * @ORM\Column(name="settings", type="json_array")
+     * @ORM\OneToMany(targetEntity="ConfigValue", mappedBy="config",
+     *      cascade={"persist", "remove"}, orphanRemoval=true)
      */
     protected $values;
 
