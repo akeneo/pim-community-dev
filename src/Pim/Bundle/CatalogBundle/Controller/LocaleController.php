@@ -27,10 +27,35 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  */
 class LocaleController extends AbstractDoctrineController
 {
+    /**
+     * @var DatagridWorkerInterface
+     */
     private $datagridWorker;
+
+    /**
+     * @var Form
+     */
     private $localeForm;
+
+    /**
+     * @var LocaleHandler
+     */
     private $localeHandler;
-    
+
+    /**
+     * Constructor
+     *
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param RegistryInterface        $doctrine
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param DatagridWorkerInterface  $datagridWorker
+     * @param LocaleHandler            $localeHandler
+     * @param Form                     $localeForm
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,
@@ -48,7 +73,7 @@ class LocaleController extends AbstractDoctrineController
         $this->localeForm = $localeForm;
         $this->localeHandler = $localeHandler;
     }
-    
+
     /**
      * List locales
      *
