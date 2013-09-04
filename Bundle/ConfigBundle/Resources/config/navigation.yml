@@ -2,7 +2,7 @@ oro_menu_config:
     items:
         system_configuraion:
             label: 'Configuration'
-            route: 'oro_config_configuration_index'
+            route: 'oro_config_configuration_system'
 
     tree:
         application_menu:

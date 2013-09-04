@@ -142,9 +142,10 @@ class ProcessorDecorator
         $node = $builder->root(self::GROUPS_NODE)
             ->prototype('array')
                 ->children()
-                    ->scalarNode('label')->isRequired()->end()
+                    ->scalarNode('title')->isRequired()->end()
                     ->scalarNode('icon')->end()
-                    ->integerNode('position')->end()
+                    ->scalarNode('description')->end()
+                    ->integerNode('priority')->end()
                 ->end()
             ->end();
 
@@ -171,7 +172,7 @@ class ProcessorDecorator
                         ->prototype('scalar')->end()
                     ->end()
                     ->scalarNode('acl_resource')->end()
-                    ->integerNode('position')->end()
+                    ->integerNode('priority')->end()
                 ->end()
             ->end();
 
@@ -194,7 +195,7 @@ class ProcessorDecorator
                                 ->prototype('variable')->end()
                             ->end()
                         ->end()
-                        ->integerNode('position')->end()
+                        ->integerNode('priority')->end()
                     ->end()
                 ->end()
             ->end();

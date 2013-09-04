@@ -37,7 +37,7 @@ class SystemConfigurationPass implements CompilerPassInterface
             foreach ($taggedServices as $id => $attributes) {
                 $container
                     ->getDefinition($id)
-                    ->addArgument($config);
+                    ->replaceArgument(0, $config);
             }
         }
     }

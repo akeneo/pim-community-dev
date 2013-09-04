@@ -1,5 +1,6 @@
 {#
     Displays title and search form
+    @TODO move search form to separated macro
 #}
 {% macro renderTitleAndSearch(pageTitle, buttons) %}
     <div class="container-fluid search-header clearfix">
@@ -19,41 +20,47 @@
                 {% endif %}
             </div>
         </h1>
-
     </div>
 {% endmacro %}
 
 {#
     Render page scrollable data
     params:
-        data      - array of horizontal tabs
-        activeTab - active tab name
+        data        - array of horizontal tabs
+        activeTab   - active tab name
+        activeVTab  - active vertical tab name
 #}
-{%  macro renderScrollData(data, activeTab = '') %}
+{%  macro renderScrollData(data, activeTab = false, activeVTab = false) %}
     {% import _self as __ %}
     <div class="tabbable system-configuration-container">
         <div class="container-fluid">
             <ul class="nav nav-tabs">
-                {% if data.formData is iterable %}
-                    {% for tab in data.formData %}
-                        {% if (activeTab != '' and activeTab == tab.name) or (activeTab == '' and loop.first) %}
-                            {% set tab = tab|merge({ isActive: true }) %}
+                {% if data is iterable %}
+                    {% for tab in data %}
+                        {% set tab = tab|merge({
+                                isActive: activeTab and activeTab == tab.name,
+                                url: path('oro_config_configuration_system', {activeGroup: tab.name})
+                            })
+                        %}
+
+                        {% if (tab.isActive) %}
+                            {% set activeTab = tab %}
                         {% endif %}
-                        {{ __.renderTabNavItem(tab) }}
+                        {{ __.renderTabNavItem(tab, true) }}
                     {% endfor %}
                 {% endif %}
             </ul>
         </div>
         <div class="scrollable-container">
-            <div class="tab-content container-fluid">
-                {% if data.formData is iterable %}
-                    {% for tab in data.formData %}
-                        {% if (activeTab != '' and activeTab == tab.name) or (activeTab == '' and loop.first) %}
-                            {% set tab = tab|merge({ isActive: true }) %}
+            <div class="container-fluid">
+                <div class="usser-row">
+                    <div class="row-fluid row-fluid-divider tab-content">
+                        {% if activeVTab %}
+                            {{ __.renderVerticalSubmenu(activeTab, activeVTab) }}
+                            {{ __.renderTab(activeVTab) }}
                         {% endif %}
-                        {{ __.renderHorizontalTabContent(tab, data.current) }}
-                    {% endfor %}
-                {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -64,62 +71,44 @@
     params:
         data.isActive    - Tab is active
         data.name        - Tab name
-        data.label       - Tab label
+        data.title       - Tab title
         data.icon        - Tab icon
+        data.url         - Tab view url
 #}
 {% macro renderTabNavItem(data) %}
-    <li {% if data.isActive is defined and data.isActive %}class="active"{% endif %}>
-        <a href="#{{ data.name }}" data-toggle="tab">
+    <li {% if data.isActive %}class="active"{% endif %}>
+        <a href="{% if data.isActive %}javascript:void(0);{% else %}{{ data.url }}{% endif %}">
             {% if data.icon is defined and data.icon != '' %}<i class="icon {{ data.icon }}"></i>{% endif %}
-            {{ data.label|trans }}
+            {{ data.title|trans }}
         </a>
     </li>
-{% endmacro %}
-
-{#
-    Renders horizontal tab content
-    params:
-        data.isActive    - Tab is active
-        data.name        - Tab name
-        data.current     - Current open tab data content(raw html)
-#}
-{% macro renderHorizontalTabContent(data, current) %}
-    {% import _self as __ %}
-    <div class="tab-pane usser-row{% if data.isActive is defined and data.isActive %} active{% endif %}" id="{{ data.name }}">
-        <div class="row-fluid row-fluid-divider">
-            {{ __.renderVerticalSubmenu(data) }}
-
-            {% if current is defined %}
-                {{ __.renderCurrentTab(current) }}
-            {% endif %}
-        </div>
-    </div>
 {% endmacro %}
 
 {#
     Renders submenu
     params:
         data.children             - Submenu groups
-        data.children[].label     - Group label
+        data.children[].title     - Group title
         data.children[].children  - Vertical menu items
 #}
-{% macro renderVerticalSubmenu(data, activeTab = '') %}
+{% macro renderVerticalSubmenu(data, activeVTab= '') %}
     {% import _self as __ %}
     <div class="span2 system-configuration-sidebar">
         {% if data.children is defined and data.children is iterable %}
             {% for group in data.children %}
                 <dl>
                     <dt>
-                        <h4>{{ group.label|trans }}</h4>
+                        <h4>{{ group.title|trans }}</h4>
                     </dt>
                     <dd>
                         {% if group.children is defined and group.children is iterable %}
                             <ul class="nav nav-pills nav-stacked">
                                 {% for tab in group.children %}
-                                    {% if (activeTab != '' and activeTab == tab.name) or (activeTab == '' and loop.first) %}
-                                        {% set tab = tab|merge({ isActive: true }) %}
-                                        {% set activeTab = tab.name %}
-                                    {% endif %}
+                                    {% set tab = tab|merge({
+                                            isActive: activeVTab != '' and activeVTab == tab.name,
+                                            url: path('oro_config_configuration_system', {activeGroup: data.name, activeSubGroup: tab.name })
+                                        })
+                                    %}
                                     {{ __.renderTabNavItem(tab) }}
                                 {% endfor %}
                             </ul>
@@ -132,64 +121,32 @@
 {% endmacro %}
 
 {#
-    Renders inner tab content
-    params:
-        data.label       - tab title
-        data.description - tab description
-        data.children    - fieldsets array
+    Renders tab content by name
 #}
-{% macro renderCurrentTab(data) %}
-    {% import _self as __ %}
-    <div class="span10 form-container">
-        <h2 class="oro-subtitle">{{ data.label|trans }}</h2>
-        {% if data.description is defined %}
-            <p>{{ data.description }}</p>
-        {% endif %}
-
-        {% if data.children is defined and data.children is iterable %}
-            {% for fieldset in data.children %}
-                {{ __.renderFiedset(fieldset) }}
-            {% endfor %}
-        {% endif %}
-    </div>
+{% macro renderTab(name) %}
+    {{ render(path('oro_config_configuration_rendergroup', {groupName: name})) }}
 {% endmacro %}
 
 {#
     Renders fieldset
     params:
-        data.label       - fieldset label
+        data.title       - fieldset label
         data.description - fieldset description
-        data.children    - fields array
+        data.data        - fields data
 #}
 {% macro renderFiedset(data) %}
     {% import _self as __ %}
     <fieldset class="form-horizontal">
         <h5 class="usser-fiedset">
-            <span>{{ data.label|trans }}</span>
+            <span>{{ data.title|trans }}</span>
         </h5>
 
         {% if data.description is defined %}
             <p>{{ data.description }}</p>
         {% endif %}
 
-        {% if data.children is defined and data.children is iterable %}
-            {% for field in data.children %}
-                {{ __.renderField(field) }}
-            {% endfor %}
-        {% endif %}
+        {% for dataBlock in data.data %}
+            {{ dataBlock|raw }}
+        {% endfor %}
     </fieldset>
-{% endmacro %}
-
-{#
-    Render field
-    params:
-        field - raw html|formView object
-#}
-{% macro renderField(field) %}
-    {# determine that this is formView or not #}
-    {% if field.vars is defined %}
-        {{ form_row(field) }}
-    {% else %}
-        {{ field|raw }}
-    {% endif %}
 {% endmacro %}

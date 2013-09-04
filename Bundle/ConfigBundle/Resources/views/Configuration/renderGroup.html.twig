@@ -1,0 +1,46 @@
+{% import 'OroConfigBundle::macros.html.twig' as configUI %}
+
+{% block content_data %}
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': form_data_blocks(form),
+        'hiddenData': form_rest(form)
+    }%}
+
+    {{ dump(data.dataBlocks) }}
+    {% set data = oro_form_process(data, form) %}
+
+    <div class="span10 form-container">
+        {{ JSFV(form) }}
+        <form id="{{ form.vars.name }}" action="{{ formAction }}" {{ form_enctype(form) }}
+              method="post" data-collect="true" class="scrollable-substructure">
+            {% if data.formErrors is defined and data.formErrors | length%}
+                <div class="customer-info-actions container-fluid well-small alert-wrap">
+                    <div class="alert alert-error">
+                        <button class="close" type="button" data-dismiss="alert" data-target=".alert-wrap">×</button>
+                        {{ data.formErrors|raw }}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% for scrollBlock in data.dataBlocks %}
+                <div class="clear">
+                    <h2 class="oro-subtitle">{{ scrollBlock.title|trans }}</h2>
+
+                    {% if scrollBlock.description is defined %}
+                        <p>{{ scrollBlock.description }}</p>
+                    {% endif %}
+
+                    {% for subblock in scrollBlock.subblocks %}
+                        {{ configUI.renderFiedset(subblock) }}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <div class="hide">
+                {% if data.hiddenData is defined %}
+                    {{ data.hiddenData|raw }}
+                {% endif %}
+            </div>
+        </form>
+    </div>
+{% endblock content_data %}

@@ -28,25 +28,25 @@ This means that group could be rendered as fieldset or tab or like part of accor
 oro_system_configuration:
     groups:
         platform: #unique name
-            label: 'Platform' # label is required
+            title: 'Platform' # title is required
             icon:  icon-hdd
-            position: 30      # sort order
+            priority: 30      # sort order
 ```
 
 Groups definitions will be replaced recursive from configs that will parse after original definition.
-So way to override existed group label is just to redefine group with the same name and `label` value
+So way to override existed group title is just to redefine group with the same name and `title` value
 ```
 oro_system_configuration:
     groups:
         platform:
-            label: 'New label' # overridden label
+            title: 'New title' # overridden title
 ```
 #### Fields
 Field declaration have 2 required properties `type` and `scopes`.
 `type` - refers to form type of which field should be created
 `scopes` - what config scopes representations should show field
 `acl_resource` - determines acl resource to check permissions to change config field value(optional)
-`position` - sort order for displaying(optional)
+`priority` - sort order for displaying(optional)
 
 Also `options` available property here, it's just a proxy to form type definition
 
@@ -62,19 +62,19 @@ oro_system_configuration:
                # also here can be added field tooltips
             scopes: [ global ]
             acl_resource: 'acl_resource_name'
-            position: 20
+            priority: 20
 ```
 #### Tree
 Configuration form tree makes definition of nested form elements.
 Tree name should be unique to prevent merge of content from another trees.
 All nested elements of the group should be placed under "children" node.
-Sort order can be set with "position" property
+Sort order can be set with "priority" property
 ```
 oro_system_configuration:
     tree:
         tree_name:
             group1:
-                position: 20
+                priority: 20
                 children:
                     some_group2:
                         children:
