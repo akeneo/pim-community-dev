@@ -19,6 +19,9 @@ parameters:
     oro_security.orm.ownership_sql_filter.class:               Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilter
     oro_security.orm.ownership_sql_filter_builder.class:       Oro\Bundle\SecurityBundle\ORM\OwnershipSqlFilterBuilder
 
+    oro_security.security_metadata_provider.class:             Oro\Bundle\SecurityBundle\Entity\SecurityMetadataProvider
+    oro_security.security_metadata_provider.cache.class:       Doctrine\Common\Cache\FilesystemCache
+
 services:
     oro_security.acl.manager:
         class: %oro_security.acl.manager.class%
@@ -118,3 +121,15 @@ services:
         tags:
             - { name: oro_entity.orm.sql_filter, filter_name: ownershipFilter, enabled: true }
             - { name: kernel.event_listener, priority: -255, event: kernel.request, method: setUserParameter }
+
+    oro_security.security_metadata_provider:
+        class: %oro_security.security_metadata_provider.class%
+        arguments:
+            - @oro_entity_config.provider.security
+            - @oro_security.security_metadata_provider.cache
+
+    oro_security.security_metadata_provider.cache:
+        public: false
+        class: %oro_security.security_metadata_provider.cache.class%
+        arguments:
+            - %kernel.cache_dir%/oro_acl_entities_list
