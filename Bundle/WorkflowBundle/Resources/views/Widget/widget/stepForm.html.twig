@@ -46,7 +46,7 @@
         }
     </style>
 
-    <div class="step-form-header">
+    <div class="step-form-header" style="display: none;">
         <ul class="inline">
             {% for step in steps %}
                 <li class="step{% if step.name == currentStep.name %} current{% endif %}">
@@ -96,7 +96,7 @@
 
     <script type="text/javascript">
         $('#{{ elementId }}').on('widgetize', function(e, widget) {
-            widget.setTitle(widget.$el.find('.step-form-header'))
+            widget.setTitle(widget.$el.find('.step-form-header').show());
         });
     </script>
 </div>

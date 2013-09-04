@@ -126,7 +126,12 @@ class WidgetController extends Controller
         /** @var WorkflowManager $workflowManager */
         $workflowManager = $this->get('oro_workflow.manager');
         $workflow = $workflowManager->getWorkflow($workflowItem);
-        $transitions = $workflow->getAllowedTransitions($workflowItem);
+
+        $currentStep = $workflow->getStep($workflowItem->getCurrentStepName());
+        $transitions = array();
+        foreach ($currentStep->getAllowedTransitions() as $transitionName) {
+            $transitions[] = $workflow->getTransition($transitionName);
+        }
 
         return array(
             'workflow' => $workflow,

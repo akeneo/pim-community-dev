@@ -6,6 +6,7 @@
         {{ workflowMacros.renderTransitionButton(
             workflow,
             transition,
+            workflow.isTransitionAllowed(workflowItem, transition),
             path(
                 'oro_workflow_api_rest_workflow_transit',
                 {

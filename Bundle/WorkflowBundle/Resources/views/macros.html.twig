@@ -1,8 +1,9 @@
-{% macro renderTransitionButton(workflow, transition, url, redirectToWorkflow) %}
+{% macro renderTransitionButton(workflow, transition, enabled, url, redirectToWorkflow) %}
     <a href="{{ url }}"
-       data-redirect-to-workflow="{{ redirectToWorkflow }}"
-       class="btn icons-holder-text no-hash {% if transition.options.frontend is defined and transition.options.frontend.class is defined %}{{ transition.options.frontend.class }}{% endif %}"
-       id="transition-{{ workflow.name }}-{{ transition.name }}">
+        data-enabled="{{ enabled }}"
+        data-redirect-to-workflow="{{ redirectToWorkflow }}"
+        class="btn icons-holder-text no-hash {% if not enabled %}disabled {% endif %}{% if transition.options.frontend is defined and transition.options.frontend.class is defined %}{{ transition.options.frontend.class }}{% endif %}"
+        id="transition-{{ workflow.name }}-{{ transition.name }}">
         {% if transition.options.frontend is defined and transition.options.frontend.icon is defined %}
             <i class="{{ transition.options.frontend.icon }} hide-text">{{ transition.label }}</i>
         {% endif %}
@@ -17,9 +18,11 @@
             {% for data in workflowData %}
                 {% for transition in data.transitions %}
                 container.on('click', '#transition-{{ data.workflow.name }}-{{ transition.name }}', function(e) {
-                    e.preventDefault();
                     var element = this;
-                    $.getJSON(this.href)
+                    var enabled = $(element).data('enabled');
+                    if (enabled) {
+                        e.preventDefault();
+                        $.getJSON(this.href)
                         .done(function(response) {
                             var workflowItemId = null;
                             if (response.workflowItem && response.workflowItem.id) {
@@ -48,6 +51,7 @@
                         .fail(function(jqxhr, textStatus, error) {
                             Oro.NotificationFlashMessage('error', _.__('Could not perform transition'));
                         });
+                    }
                     return false;
                 });
                 {% endfor %}
