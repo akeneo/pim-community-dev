@@ -38,21 +38,86 @@ use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
  */
 class ProductController extends AbstractDoctrineController
 {
+    /**
+     * @var string
+     */
     const CATEGORY_PREFIX = "category_node_";
+
+    /**
+     * @var string
+     */
     const TREE_APPLY_PREFIX = "apply_on_tree_";
-    
+
+    /**
+     * @var unknown_type
+     */
     private $gridRenderer;
+
+    /**
+     * @var unknown_type
+     */
     private $datagridWorker;
+
+    /**
+     * @var unknown_type
+     */
     private $productCreateHandler;
+
+    /**
+     * @var unknown_type
+     */
     private $productCreateForm;
+
+    /**
+     * @var unknown_type
+     */
     private $completenessCalculator;
+
+    /**
+     * @var unknown_type
+     */
     private $productManager;
+
+    /**
+     * @var unknown_type
+     */
     private $categoryManager;
+
+    /**
+     * @var unknown_type
+     */
     private $localeManager;
+
+    /**
+     * @var unknown_type
+     */
     private $pendingManager;
+
+    /**
+     * @var unknown_type
+     */
     private $auditManager;
 
-
+    /**
+     * Constructor
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param RegistryInterface        $doctrine
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param GridRenderer             $gridRenderer
+     * @param DatagridWorkerInterface  $datagridWorker
+     * @param ProductCreateHandler     $productCreateHandler
+     * @param Form                     $productCreateForm
+     * @param CompletenessCalculator   $completenessCalculator
+     * @param ProductManager           $productManager
+     * @param CategoryManager          $categoryManager
+     * @param LocaleManager            $localeManager
+     * @param PendingManager           $pendingManager
+     * @param AuditManager             $auditManager
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,
@@ -83,7 +148,7 @@ class ProductController extends AbstractDoctrineController
         $this->localeManager = $localeManager;
         $this->pendingManager = $pendingManager;
         $this->auditManager = $auditManager;
-        
+
         $this->productManager->setLocale($this->getDataLocale());
     }
     /**
@@ -470,7 +535,7 @@ class ProductController extends AbstractDoctrineController
 
         return $product;
     }
-    
+
     /**
      * Get the AvailbleProductAttributes form
      *
