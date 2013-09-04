@@ -35,7 +35,7 @@ class ConfigurationController extends Controller
         }
 
         return array(
-            'data'           => $provider->getTreeData(SystemConfigurationFormProvider::TREE_NAME),
+            'data'           => $provider->getTree(),
             'form'           => $form ? $form->createView() : $form,
             'activeGroup'    => $activeGroup,
             'activeSubGroup' => $activeSubGroup,

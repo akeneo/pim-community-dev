@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\ConfigBundle\Provider;
 
-use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
 use Oro\Bundle\ConfigBundle\Utils\TreeUtils;
+use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
 
 abstract class FormProvider implements ProviderInterface
 {
@@ -12,48 +12,58 @@ abstract class FormProvider implements ProviderInterface
     /** @var array */
     protected $config;
 
+    /** @var array */
+    protected $processedTrees = array();
+
+    /** @var array */
+    protected $processedSubTrees = array();
+
     public function __construct($config)
     {
         $this->config = $config;
     }
 
     /**
-     * @param string $treeName
-     * @param string $subtreeRootName
-     * @return array|null
-     * @throws \Exception
+     * {@inheritdoc}
      */
-    public function getSubtreeData($treeName, $subtreeRootName)
+    public function getSubtree($subtreeRootName)
     {
-        $treeData = $this->getTreeData($treeName);
+        if (!isset($this->processedSubTrees[$subtreeRootName])) {
+            $treeData = $this->getTree();
+            $subtree = TreeUtils::findNodeByName($treeData, $subtreeRootName);
 
-        $subtree = TreeUtils::findNodeByName($treeData, $subtreeRootName);
+            if ($subtree === null) {
+                throw new \Exception(sprintf('Subtree "%s" not found', $subtreeRootName));
+            }
 
-        if ($subtree === null) {
-            throw new \Exception(sprintf('Subtree "%s" not found', $subtreeRootName));
+            $this->processedSubTrees[$subtreeRootName] = $subtree;
         }
 
-        return $subtree;
+        return $this->processedSubTrees[$subtreeRootName];
     }
 
     /**
      * @param string $treeName
-     * @param int $correctFieldsLevel Default value is correct level for system configuration tree
+     * @param int $correctFieldsLevel
      * @throws \Exception
      * @return array
      */
-    public function getTreeData($treeName, $correctFieldsLevel = 5)
+    protected function getTreeData($treeName, $correctFieldsLevel)
     {
-        if (isset($this->config[ProcessorDecorator::TREE_ROOT][$treeName])) {
-            $data = $this->buildGroupNode(
-                $this->config[ProcessorDecorator::TREE_ROOT][$treeName],
-                $correctFieldsLevel
-            );
-        } else {
-            throw new \Exception(sprintf('Tree "%s" does not defined', $treeName));
+        if (!isset($this->processedTrees[$treeName])) {
+            if (isset($this->config[ProcessorDecorator::TREE_ROOT][$treeName])) {
+                $data = $this->buildGroupNode(
+                    $this->config[ProcessorDecorator::TREE_ROOT][$treeName],
+                    $correctFieldsLevel
+                );
+            } else {
+                throw new \Exception(sprintf('Tree "%s" does not defined', $treeName));
+            }
+
+            $this->processedTrees[$treeName] = $data;
         }
 
-        return $data;
+        return $this->processedTrees[$treeName];
     }
 
     /**
@@ -77,7 +87,7 @@ abstract class FormProvider implements ProviderInterface
                     throw new \Exception(sprintf('Group "%s" does not defined', $name));
                 }
 
-                $nodes[$name] = array_merge($group, $nodes[$name], array('name' => $name, 'priority' => 0));
+                $nodes[$name] = array_merge(array('name' => $name, 'priority' => 0), $group, $nodes[$name]);
                 $nodes[$name]['children'] = $this->buildGroupNode($node['children'], $correctFieldsLevel, $level);
             } else {
                 if ($level !== $correctFieldsLevel) {
@@ -89,7 +99,7 @@ abstract class FormProvider implements ProviderInterface
             }
         }
 
-        TreeUtils::sortNodesByPriority($nodes);
+        $nodes = TreeUtils::sortNodesByPriority($nodes);
 
         return $nodes;
     }
@@ -110,7 +120,7 @@ abstract class FormProvider implements ProviderInterface
             throw new \Exception(sprintf('Field "%s" does not defined', $node));
         }
 
-        $field = array_merge($field, array('name' => $node, 'priority' => 0));
+        $field = array_merge(array('name' => $node, 'priority' => 0), $field);
 
         return $field;
     }

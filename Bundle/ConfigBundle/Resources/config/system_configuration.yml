@@ -23,6 +23,9 @@ oro_system_configuration:
         locale_options:
             title: 'Locale options'
 
+        sales:
+            title: 'Sales'
+
     fields:
         date_format:
             type: text
@@ -30,14 +33,14 @@ oro_system_configuration:
                label: 'Date format'
                required: true
                constraints:
-                  - NotBlank:         ~
+                  - NotBlank: ~
 
             scopes: [ global ]
             priority: 10
 
     tree:
         system_configuration:
-            general_setup:
+            sales:
                 children: []
                 priority: 20
             platform:

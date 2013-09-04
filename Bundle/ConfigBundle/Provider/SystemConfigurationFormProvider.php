@@ -7,11 +7,8 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class SystemConfigurationFormProvider extends FormProvider
 {
-    const CORRECT_FIELDS_NESTING_LEVEL = 5;
-    const CORRECT_TAB_NESTING_LEVEL    = 2;
-
     const TREE_NAME                    = 'system_configuration';
-    const GROUP_NAME_FIELD             = '__activeGroup';
+    const CORRECT_FIELDS_NESTING_LEVEL = 5;
 
     /** @var FormFactoryInterface */
     protected $factory;
@@ -24,14 +21,11 @@ class SystemConfigurationFormProvider extends FormProvider
     }
 
     /**
-     * Builds form and prepares view blocks
-     *
-     * @param string $activeGroup
-     * @return \Symfony\Component\Form\Form
+     * {@inheritdoc}
      */
     public function getForm($activeGroup)
     {
-        $block = $this->getSubtreeData(self::TREE_NAME, $activeGroup);
+        $block = $this->getSubtree($activeGroup);
 
         $toAdd = array();
         $blockConfig = array($activeGroup => $this->retrieveConfigFromDefinition($block));
@@ -78,32 +72,39 @@ class SystemConfigurationFormProvider extends FormProvider
             $builder->add($field['name'], $field['type'], $field['options']);
         }
 
-        $builder->add(self::GROUP_NAME_FIELD, 'hidden');
-
         return $builder->getForm();
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getTree()
+    {
+        return $this->getTreeData(self::TREE_NAME, self::CORRECT_FIELDS_NESTING_LEVEL);
+    }
+
+    /**
+     * Lookup for first available groups if they are not specified yet
+     *
+     * @param string $activeGroup
+     * @param string $activeSubGroup
+     * @return array
+     */
     public function chooseActiveGroups($activeGroup, $activeSubGroup)
     {
-        $tree = $this->getTreeData(self::TREE_NAME);
+        $tree = $this->getTree();
 
         if ($activeGroup === null) {
-            $firstGroup  = current($tree);
-            if ($firstGroup !== false) {
-                $activeGroup = $firstGroup['name'];
-            }
+            $activeGroup = TreeUtils::getFirstNodeName($tree);
         }
 
         // we can find active subgroup only in case if group is specified
-        if ($activeSubGroup === null && $activeGroup !== null) {
+        if ($activeSubGroup === null && $activeGroup) {
             $subtree = TreeUtils::findNodeByName($tree, $activeGroup);
 
-            $subGroups = TreeUtils::getByNestingLevel($subtree['children'], 1);
-            if (!empty($subGroups)) {
-                $firstGroup  = current($subGroups);
-                if ($firstGroup !== false) {
-                    $activeSubGroup = $firstGroup['name'];
-                }
+            if (!empty($subtree)) {
+                $subGroups      = TreeUtils::getByNestingLevel($subtree['children'], 1);
+                $activeSubGroup = TreeUtils::getFirstNodeName($subGroups);
             }
         }
 

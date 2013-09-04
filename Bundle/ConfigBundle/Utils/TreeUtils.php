@@ -63,5 +63,25 @@ final class TreeUtils
                 return ($a['priority'] < $b['priority']) ? -1 : 1;
             }
         );
+
+        return $nodes;
+    }
+
+    /**
+     * Returns first node name if nodes is not empty
+     *
+     * @param array $nodes
+     * @return null|string
+     */
+    public static function getFirstNodeName(array $nodes)
+    {
+        if (!empty($nodes)) {
+            $firstNode  = current($nodes);
+            if ($firstNode !== false) {
+                return $firstNode['name'];
+            }
+        }
+
+        return null;
     }
 }
