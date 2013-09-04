@@ -99,10 +99,10 @@ class FamilyNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Create a attribute
+     * Create a family
      * @param array $data
      *
-     * @return attribute
+     * @return Family
      */
     protected function createFamily(array $data)
     {

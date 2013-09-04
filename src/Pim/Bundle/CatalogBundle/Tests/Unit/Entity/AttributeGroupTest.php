@@ -35,7 +35,6 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
     {
         // assert instance and implementation
         $this->assertEntity($this->group);
-        $this->assertInstanceOf('\Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface', $this->group);
         $this->assertInstanceOf('\Pim\Bundle\TranslationBundle\Entity\TranslatableInterface', $this->group);
 
         // assert object properties
@@ -221,6 +220,15 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
     public function testSetLocale()
     {
         $this->group->setLocale('en_US');
+    }
+
+    /**
+     * Test related method
+     * Only test if getVersion return a value or null. Setter is not accessible.
+     */
+    public function testGetVersion()
+    {
+        $this->assertNull($this->group->getVersion());
     }
 
     /**
