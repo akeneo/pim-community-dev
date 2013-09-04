@@ -68,8 +68,10 @@ class UserPreferencesListenerTest extends WebTestCase
 
         $this->entityManager->remove($channel2);
         $this->entityManager->flush();
+        $this->entityManager->clear();
 
         $user = $this->userManager->findUserByUsername($prefix);
+        $channel1 = $this->entityManager->getRepository('PimCatalogBundle:Channel')->find($channel1->getId());
         $this->assertNotEquals(
                 $removedOption->getOptionValue()->getValue(),
                 $user->getCatalogscope()->getData()->getOptionValue()->getValue());
@@ -77,5 +79,6 @@ class UserPreferencesListenerTest extends WebTestCase
         $this->entityManager->remove($channel1);
         $this->entityManager->remove($user);
         $this->entityManager->flush();
+
     }
 }
