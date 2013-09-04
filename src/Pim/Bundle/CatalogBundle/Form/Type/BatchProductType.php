@@ -21,10 +21,8 @@ class BatchProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('products', 'entity', array(
-                'class'     => 'Pim\\Bundle\\CatalogBundle\\Entity\\Product',
-                'multiple'  => true,
-                'read_only' => true,
+            ->add('productIds', 'hidden', array(
+                'multiple' => true,
             ))
             ->add('operationAlias', 'choice', array(
                 'choices' => BatchProduct::getOperationChoices(),

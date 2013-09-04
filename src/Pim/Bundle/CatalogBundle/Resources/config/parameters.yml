@@ -48,6 +48,7 @@ parameters:
     pim_catalog.manager.locale.class:        Pim\Bundle\CatalogBundle\Manager\LocaleManager
     pim_catalog.form.handler.locale.class:   Pim\Bundle\CatalogBundle\Form\Handler\LocaleHandler
     pim_catalog.form.type.locale.class:      Pim\Bundle\CatalogBundle\Form\Type\LocaleType
+    pim_catalog.hidden_type_extension.class: Pim\Bundle\CatalogBundle\Form\Extension\HiddenTypeExtension
 
     pim_catalog.manager.channel.class:       Pim\Bundle\CatalogBundle\Manager\ChannelManager
     pim_catalog.form.handler.channel.class:  Pim\Bundle\CatalogBundle\Form\Handler\ChannelHandler

@@ -18,7 +18,7 @@ class BatchProduct
 {
     const OPERATION_CHANGE_STATUS = 'change_status';
 
-    protected $products;
+    protected $productIds = array();
 
     protected $operation;
 
@@ -28,7 +28,6 @@ class BatchProduct
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
         $this->operations = array(
             self::OPERATION_CHANGE_STATUS => new ChangeStatus()
         );
@@ -41,28 +40,16 @@ class BatchProduct
         );
     }
 
-    public function setProducts($products)
+    public function setProductIds($productIds)
     {
-        if (!$products instanceof Collection) {
-            $products = new ArrayCollection($products);
-        }
-        $this->products = $products;
+        $this->productIds = $productIds;
 
         return $this;
     }
 
-    public function getProducts()
-    {
-        return $this->products;
-    }
-
     public function getProductIds()
     {
-        return $this->products->map(
-            function ($product) {
-                return $product->getId();
-            }
-        )->toArray();
+        return $this->productIds;
     }
 
     public function setOperation($operation)

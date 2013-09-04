@@ -89,3 +89,8 @@ services:
         tags:
             - { name: form.type, alias: pim_catalog_batch_product }
 
+    # Extension
+    pim_catalog.hidden_type_extension:
+        class: %pim_catalog.hidden_type_extension.class%
+        tags:
+            - { name: form.type_extension, alias: hidden }

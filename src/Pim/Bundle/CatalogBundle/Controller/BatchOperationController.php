@@ -28,8 +28,7 @@ class BatchOperationController extends Controller
             if (!$productIds || !is_array($productIds)) {
                 return $this->redirectToRoute('pim_catalog_product_index');
             }
-            $products = $this->getProductManager()->getFlexibleRepository()->findByIds($productIds);
-            $batchProduct->setProducts($products);
+            $batchProduct->setProductIds($productIds);
         }
 
         $form = $this->createForm(new BatchProductType, $batchProduct);
@@ -66,8 +65,7 @@ class BatchOperationController extends Controller
             if (!$productIds || !is_array($productIds)) {
                 return $this->redirectToRoute('pim_catalog_product_index');
             }
-            $products = $this->getProductManager()->getFlexibleRepository()->findByIds($productIds);
-            $batchProduct->setProducts($products);
+            $batchProduct->setProductIds($productIds);
         }
 
         $form = $this->createForm(new BatchProductType, $batchProduct);
