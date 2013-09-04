@@ -32,7 +32,7 @@ class ProductAttributeController extends Controller
      *      id="pim_catalog_attribute_index",
      *      name="View attribute list",
      *      description="View attribute list",
-     *      parent="pim_catalog_locale"
+     *      parent="pim_catalog_attribute"
      * )
      * @return template
      */
@@ -59,7 +59,7 @@ class ProductAttributeController extends Controller
      *      id="pim_catalog_attribute_create",
      *      name="Create an attribute",
      *      description="Create an attribute",
-     *      parent="pim_catalog_locale"
+     *      parent="pim_catalog_attribute"
      * )
      * @return array
      */
@@ -93,7 +93,7 @@ class ProductAttributeController extends Controller
      *      id="pim_catalog_attribute_edit",
      *      name="Edit an attribute",
      *      description="Edit an attribute",
-     *      parent="pim_catalog_locale"
+     *      parent="pim_catalog_attribute"
      * )
      * @return array
      */
@@ -180,7 +180,12 @@ class ProductAttributeController extends Controller
      * Edit ProductAttribute sort order
      *
      * @param Request $request
-     *
+     * @Acl(
+     *      id="pim_catalog_attribute_sort",
+     *      name="Sort attribute options",
+     *      description="Sort attribute options",
+     *      parent="pim_catalog_attribute"
+     * )
      * @return Response
      */
     public function sortAction(Request $request)
