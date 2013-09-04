@@ -3,6 +3,7 @@ parameters:
     oro_config.twig_extension.class:                                             Oro\Bundle\ConfigBundle\Twig\ConfigExtension
     oro_config.provider.system_configuration.form_provider.class:                Oro\Bundle\ConfigBundle\Provider\SystemConfigurationFormProvider
     oro_config.type.form.class:                                                  Oro\Bundle\ConfigBundle\Form\Type\FormType
+    oro_config.form.handler.config.class:                                        Oro\Bundle\ConfigBundle\Form\Handler\ConfigHandler
 
 services:
     oro_config.user:
@@ -31,3 +32,9 @@ services:
         class:                        %oro_config.type.form.class%
         tags:
             - { name: form.type, alias: oro_config_form_type }
+
+    oro_config.form.handler.config:
+        class: %oro_config.form.handler.config.class%
+        arguments:
+            - @request
+            - @doctrine.orm.entity_manager
