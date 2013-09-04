@@ -32,8 +32,8 @@ class BusinessUnitController extends Controller
      * @Template("OroOrganizationBundle:BusinessUnit:update.html.twig")
      * @Acl(
      *      id="oro_business_unit_create",
-     *      name="Create business_unit",
-     *      description="Create new business_unit",
+     *      name="Create business unit",
+     *      description="Create new business unit",
      *      parent="oro_business_unit"
      * )
      */
@@ -67,8 +67,8 @@ class BusinessUnitController extends Controller
      * @Template
      * @Acl(
      *      id="oro_business_unit_update",
-     *      name="Edit business_unit",
-     *      description="Edit business_unit",
+     *      name="Edit business unit",
+     *      description="Edit business unit",
      *      parent="oro_business_unit"
      * )
      */
@@ -103,8 +103,8 @@ class BusinessUnitController extends Controller
      * )
      * @Acl(
      *      id="oro_business_unit_list",
-     *      name="View business_unit list",
-     *      description="List of business_units",
+     *      name="View business units list",
+     *      description="List of business units",
      *      parent="oro_business_unit"
      * )
      * @Template()

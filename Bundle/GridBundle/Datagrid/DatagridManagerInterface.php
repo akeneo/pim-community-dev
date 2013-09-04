@@ -2,10 +2,11 @@
 
 namespace Oro\Bundle\GridBundle\Datagrid;
 
+use Doctrine\ORM\EntityManager;
+
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 use Oro\Bundle\GridBundle\Builder\DatagridBuilderInterface;
 use Oro\Bundle\GridBundle\Builder\ListBuilderInterface;
@@ -17,27 +18,59 @@ interface DatagridManagerInterface
     /**
      * Set unique name
      *
-     * @param string $name
+     * @param  string $name
      * @return void
      */
     public function setName($name);
 
     /**
+     * Set entity manager
+     *
+     * @param  EntityManager $entityManager
+     * @return void
+     */
+    public function setEntityManager(EntityManager $entityManager);
+
+    /**
+     * Set entity name
+     *
+     * @param  string $entityName
+     * @return void
+     */
+    public function setEntityName($entityName);
+
+    /**
+     * Set query entity alias
+     *
+     * @param  string $queryEntityAlias
+     * @return void
+     */
+    public function setQueryEntityAlias($queryEntityAlias);
+
+    /**
      * Set entity hint
      *
-     * @param string $entityHint
+     * @param  string $entityHint
      * @return void
      */
     public function setEntityHint($entityHint);
 
     /**
-     * @param DatagridBuilderInterface $datagridBuilder
+     * Pass identifier field name from configuration
+     *
+     * @param  string $identifier
+     * @return void
+     */
+    public function setIdentifierField($identifier);
+
+    /**
+     * @param  DatagridBuilderInterface $datagridBuilder
      * @return void
      */
     public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder);
 
     /**
-     * @param ListBuilderInterface $listBuilder
+     * @param  ListBuilderInterface $listBuilder
      * @return void
      */
     public function setListBuilder(ListBuilderInterface $listBuilder);
@@ -48,43 +81,43 @@ interface DatagridManagerInterface
     public function getDatagrid();
 
     /**
-     * @param QueryFactoryInterface $queryManager
+     * @param  QueryFactoryInterface $queryManager
      * @return void
      */
     public function setQueryFactory(QueryFactoryInterface $queryManager);
 
     /**
-     * @param TranslatorInterface $translator
+     * @param  TranslatorInterface $translator
      * @return void
      */
     public function setTranslator(TranslatorInterface $translator);
 
     /**
-     * @param string $translationDomain
+     * @param  string $translationDomain
      * @return void
      */
     public function setTranslationDomain($translationDomain);
 
     /**
-     * @param ValidatorInterface $validator
+     * @param  ValidatorInterface $validator
      * @return void
      */
     public function setValidator(ValidatorInterface $validator);
 
     /**
-     * @param Router $router
+     * @param  Router $router
      * @return void
      */
     public function setRouter(Router $router);
 
     /**
-     * @param RouteGeneratorInterface $routeGenerator
+     * @param  RouteGeneratorInterface $routeGenerator
      * @return void
      */
     public function setRouteGenerator(RouteGeneratorInterface $routeGenerator);
 
     /**
-     * @param ParametersInterface $parameters
+     * @param  ParametersInterface $parameters
      * @return void
      */
     public function setParameters(ParametersInterface $parameters);

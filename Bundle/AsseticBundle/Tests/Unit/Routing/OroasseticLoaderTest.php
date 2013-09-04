@@ -46,10 +46,7 @@ class AsseticLoaderTest extends \PHPUnit_Framework_TestCase
             '"/\.[^.]+\.twig$/"'
         );
 
-        $resource = new CoalescingDirectoryResource(array(
-            $dir,
-            $dir,
-        ));
+        $resource = new CoalescingDirectoryResource(array($dir, $dir));
 
         $this->am->am->expects($this->any())
             ->method('getResources')

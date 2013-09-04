@@ -3,12 +3,11 @@ oro_email:
     type:         annotation
     prefix:       /email
 
-
-oro_email_api:
-    resource: Oro\Bundle\EmailBundle\Controller\Api\Rest\EmailTemplateController
+oro_email_bundle_api:
+    resource:     "@OroEmailBundle/Resources/config/routing_api.yml"
     type: rest
-    prefix: api/rest/{version}/
+    prefix:       api/rest/{version}
     requirements:
-        version: latest|v1
+        version:  latest|v1
     defaults:
-        version: latest
+        version:  latest

@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\AddressBundle\Entity;
 
-use JMS\Serializer\Annotation\Exclude;
-
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -57,7 +55,6 @@ class Country implements Translatable
      *     cascade={"ALL"},
      *     fetch="EXTRA_LAZY"
      * )
-     * @Exclude
      */
     protected $regions;
 

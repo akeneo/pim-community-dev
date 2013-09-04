@@ -29,23 +29,6 @@ class RoleDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                'label'       => 'ID',
-                'field_name'  => 'id',
-                'filter_type' => FilterInterface::TYPE_NUMBER,
-                'required'    => false,
-                'sortable'    => false,
-                'filterable'  => false,
-                'show_filter' => false,
-                'show_column' => false,
-            )
-        );
-        $fieldsCollection->add($fieldId);
-
         $fieldRole = new FieldDescription();
         $fieldRole->setName('role');
         $fieldRole->setOptions(

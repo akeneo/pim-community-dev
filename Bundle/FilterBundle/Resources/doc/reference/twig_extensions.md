@@ -33,7 +33,7 @@ This equals to next code:
 
 ```
 <script type="text/javascript">
-    var nameFilter = Oro.createInstanceFromConstructor(Oro.Filter.ChoiceFilter.extend({
+    var nameFilter = new (Oro.Filter.ChoiceFilter.extend({
         'name':    'name',
         'label':   'Name',
         'enabled': true,

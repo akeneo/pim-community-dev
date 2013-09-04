@@ -12,7 +12,7 @@ services:
             - name: oro_grid.datagrid.manager
               datagrid_name: users
               entity_name: Oro\Bundle\UserBundle\Entity\User
-              entity_hint: users
+              entity_hint: user
               flexible: true
               route_name: oro_user_index
 
@@ -20,37 +20,37 @@ services:
         class: %oro_user.role_datagrid_manager.class%
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: roles
+              datagrid_name: user_roles
               entity_name: Oro\Bundle\UserBundle\Entity\Role
-              entity_hint: roles
+              entity_hint: role
               route_name: oro_user_role_index
 
     oro_user.group_datagrid_manager:
         class: %oro_user.group_datagrid_manager.class%
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: groups
+              datagrid_name: user_groups
               entity_name: Oro\Bundle\UserBundle\Entity\Group
               query_entity_alias: user_group
-              entity_hint: groups
+              entity_hint: group
               route_name: oro_user_group_index
 
     oro_user.role_user_datagrid_manager:
         class: %oro_user.role_user_datagrid_manager.class%
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: roleusers
+              datagrid_name: user_roleusers
               entity_name: Oro\Bundle\UserBundle\Entity\User
               query_entity_alias: user
-              entity_hint: users
+              entity_hint: user
               route_name: oro_user_role_user_grid
 
     oro_user.group_user_datagrid_manager:
         class: %oro_user.group_user_datagrid_manager.class%
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: groupusers
+              datagrid_name: user_groupusers
               entity_name: Oro\Bundle\UserBundle\Entity\User
               query_entity_alias: user
-              entity_hint: users
+              entity_hint: user
               route_name: oro_user_group_user_grid

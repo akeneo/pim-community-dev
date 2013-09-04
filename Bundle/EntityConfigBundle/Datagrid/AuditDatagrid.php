@@ -11,7 +11,7 @@ use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Property\FixedProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
 abstract class AuditDatagrid extends DatagridManager
@@ -46,23 +46,6 @@ abstract class AuditDatagrid extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_INTEGER,
-                'label'       => 'Commit Id',
-                'field_name'  => 'id',
-                'filter_type' => FilterInterface::TYPE_NUMBER,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => false,
-                'show_filter' => false,
-                'show_column' => false,
-            )
-        );
-        $fieldsCollection->add($fieldId);
-
         $fieldAuthor = new FieldDescription();
         $fieldAuthor->setName('author');
         $fieldAuthor->setOptions(

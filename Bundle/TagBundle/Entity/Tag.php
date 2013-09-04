@@ -4,15 +4,23 @@ namespace Oro\Bundle\TagBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
  * Tag
  *
  * @ORM\Table(name="oro_tag_tag")
  * @ORM\HasLifecycleCallbacks
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Oro\Bundle\TagBundle\Entity\Repository\TagRepository")
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Tag", "plural_label"="Tags"},
+ *      "ownership"={"owner_type"="USER"}
+ *  }
+ * )
  */
 class Tag implements ContainAuthorInterface, ContainUpdaterInterface
 {
@@ -46,7 +54,7 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     protected $updated;
 
     /**
-     * @ORM\OneToMany(targetEntity="Tagging", mappedBy="tag", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Tagging", mappedBy="tag", fetch="LAZY")
      */
     protected $tagging;
 
@@ -65,6 +73,13 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     protected $updatedBy;
 
     /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $owner;
+
+    /**
      * Constructor
      *
      * @param string $name Tag's name
@@ -72,6 +87,7 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     public function __construct($name = null)
     {
         $this->setName($name);
+        $this->tagging = new ArrayCollection();
 
         $this->setCreatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
         $this->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
@@ -219,5 +235,24 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     public function doUpdate()
     {
         $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * @return User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param User $owningUser
+     * @return Tag
+     */
+    public function setOwner($owningUser)
+    {
+        $this->owner = $owningUser;
+
+        return $this;
     }
 }

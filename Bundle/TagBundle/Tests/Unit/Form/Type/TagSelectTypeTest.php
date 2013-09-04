@@ -12,18 +12,38 @@ class TagSelectTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected $type;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $transformer;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $subscriber;
+
+    public function setUp()
+    {
+        $this->transformer = $this->getMockBuilder('Oro\Bundle\TagBundle\Form\Transformer\TagTransformer')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->subscriber = $this->getMockBuilder('Oro\Bundle\TagBundle\Form\EventSubscriber\TagSubscriber')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->type = new TagSelectType($this->subscriber, $this->transformer);
+    }
+
+    public function tearDown()
+    {
+        unset($this->transformer);
+        unset($this->subscriber);
+        unset($this->type);
+    }
+
     public function testSetDefaultOptions()
     {
-        $manager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $tagManager = $this->getMockBuilder('Oro\Bundle\TagBundle\Entity\TagManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->type = new TagSelectType($manager, $tagManager);
-
 
         $resolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolverInterface');
         $resolver->expects($this->once())
@@ -35,35 +55,37 @@ class TagSelectTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildForm()
     {
-        $meta = $this->getMockBuilder('\Doctrine\ORM\Mapping\ClassMetadata')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $meta->expects($this->once())
-            ->method('getSingleIdentifierFieldName')
-            ->will($this->returnValue('id'));
-
-        $manager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $manager->expects($this->once())
-            ->method('getClassMetadata')
-            ->with('Oro\Bundle\TagBundle\Entity\Tag')
-            ->will($this->returnValue($meta));
-
-        $tagManager = $this->getMockBuilder('Oro\Bundle\TagBundle\Entity\TagManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->type = new TagSelectType($manager, $tagManager);
-
         $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
             ->disableOriginalConstructor()
             ->getMock();
         $builder->expects($this->once())
-            ->method('addModelTransformer')
+            ->method('addEventSubscriber')
+            ->with($this->subscriber)
+            ->will($this->returnSelf());
+
+        $builder->expects($this->at(1))
+            ->method('add')
+            ->with('autocomplete', 'oro_tag_autocomplete')
+            ->will($this->returnSelf());
+
+        $builder->expects($this->any())
+            ->method('add')
+            ->will($this->returnSelf());
+
+        $builder->expects($this->any())
+            ->method('create')
+            ->will($this->returnSelf());
+
+        $builder->expects($this->exactly(2))
+            ->method('addViewTransformer')
+            ->with($this->transformer)
             ->will($this->returnSelf());
 
         $this->type->buildForm($builder, array());
+    }
+
+    public function testGetName()
+    {
+        $this->assertEquals('oro_tag_select', $this->type->getName());
     }
 }

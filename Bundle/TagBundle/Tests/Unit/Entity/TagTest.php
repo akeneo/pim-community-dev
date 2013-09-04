@@ -2,7 +2,10 @@
 
 namespace Oro\Bundle\TagBundle\Tests\Unit\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\TagBundle\Entity\Tag;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class TagTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,6 +17,8 @@ class TagTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->tag = new Tag();
+
+        $this->assertEquals(null, $this->tag->getId());
     }
 
     public function testSetGetNameMethods()
@@ -59,5 +64,22 @@ class TagTest extends \PHPUnit_Framework_TestCase
         $this->tag->doUpdate();
         $this->assertInstanceOf('\DateTime', $this->tag->getUpdatedAt());
         $this->assertNotEquals($oldUpdatedTime, $this->tag->getUpdatedAt());
+    }
+
+    public function testGetTagging()
+    {
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->tag->getTagging());
+    }
+
+    public function testOwners()
+    {
+        $entity = $this->tag;
+        $user = new User();
+
+        $this->assertEmpty($entity->getOwner());
+
+        $entity->setOwner($user);
+
+        $this->assertEquals($user, $entity->getOwner());
     }
 }

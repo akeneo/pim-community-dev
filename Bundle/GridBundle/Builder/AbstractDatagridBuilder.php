@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\GridBundle\Builder;
 
+use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -16,6 +17,8 @@ use Oro\Bundle\GridBundle\Filter\FilterFactoryInterface;
 use Oro\Bundle\GridBundle\Sorter\SorterFactoryInterface;
 use Oro\Bundle\GridBundle\Action\ActionFactoryInterface;
 use Oro\Bundle\GridBundle\Datagrid\PagerInterface;
+use Oro\Bundle\UserBundle\Acl\ManagerInterface;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 
 abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
 {
@@ -45,6 +48,11 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
     protected $actionFactory;
 
     /**
+     * @var ManagerInterface
+     */
+    protected $aclManager;
+
+    /**
      * @var string
      */
     protected $className;
@@ -52,6 +60,7 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
     /**
      * @param FormFactoryInterface $formFactory
      * @param EventDispatcherInterface $eventDispatcher
+     * @param ManagerInterface $aclManager
      * @param FilterFactoryInterface $filterFactory
      * @param SorterFactoryInterface $sorterFactory
      * @param ActionFactoryInterface $actionFactory
@@ -60,6 +69,7 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
     public function __construct(
         FormFactoryInterface $formFactory,
         EventDispatcherInterface $eventDispatcher,
+        ManagerInterface $aclManager,
         FilterFactoryInterface $filterFactory,
         SorterFactoryInterface $sorterFactory,
         ActionFactoryInterface $actionFactory,
@@ -67,6 +77,7 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
     ) {
         $this->formFactory     = $formFactory;
         $this->eventDispatcher = $eventDispatcher;
+        $this->aclManager      = $aclManager;
         $this->filterFactory   = $filterFactory;
         $this->sorterFactory   = $sorterFactory;
         $this->actionFactory   = $actionFactory;
@@ -89,6 +100,21 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
         );
         $filter->setOption('data_type', $fieldDescription->getType());
         $datagrid->addFilter($filter);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addSelectedRowFilter(DatagridInterface $datagrid, array $options)
+    {
+        $filter = $this->filterFactory->create(
+            self::SELECTED_ROW_FILTER_NAME,
+            FilterInterface::TYPE_SELECT_ROW,
+            $options
+        );
+        $filter->setOption('data_type', FieldDescriptionInterface::TYPE_INTEGER);
+        // filter must be first in list
+        $datagrid->addFilter($filter, true);
     }
 
     /**
@@ -115,8 +141,21 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
             isset($parameters['options']) ? $parameters['options'] : array()
         );
 
-        if ($action->isGranted()) {
+        $aclResource = $action->getAclResource();
+        if (!$aclResource || $this->aclManager->isResourceGranted($aclResource)) {
             $datagrid->addRowAction($action);
+        }
+    }
+
+    /**
+     * @param DatagridInterface $datagrid
+     * @param MassActionInterface $massAction
+     */
+    public function addMassAction(DatagridInterface $datagrid, MassActionInterface $massAction)
+    {
+        $aclResource = $massAction->getAclResource();
+        if (!$aclResource || $this->aclManager->isResourceGranted($aclResource)) {
+            $datagrid->addMassAction($massAction);
         }
     }
 
@@ -138,7 +177,6 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
      * @param RouteGeneratorInterface $routeGenerator
      * @param ParametersInterface $parameters
      * @param string $name
-     * @param string $entityHint
      *
      * @return DatagridInterface
      */
@@ -147,8 +185,7 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
         FieldDescriptionCollection $fieldCollection,
         RouteGeneratorInterface $routeGenerator,
         ParametersInterface $parameters,
-        $name,
-        $entityHint = null
+        $name
     ) {
         $formBuilder = $this->formFactory->createNamedBuilder(
             $this->getFormName($name),
@@ -165,9 +202,7 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
             $formBuilder,
             $routeGenerator,
             $parameters,
-            $this->eventDispatcher,
-            $name,
-            $entityHint
+            $this->eventDispatcher
         );
     }
 

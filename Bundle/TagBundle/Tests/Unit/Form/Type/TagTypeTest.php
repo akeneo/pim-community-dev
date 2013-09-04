@@ -17,6 +17,11 @@ class TagTypeTest extends \PHPUnit_Framework_TestCase
         $this->type = new TagType();
     }
 
+    public function tearDown()
+    {
+        unset($this->type);
+    }
+
     public function testSetDefaultOptions()
     {
         $resolver = $this->getMock('Symfony\Component\OptionsResolver\OptionsResolverInterface');

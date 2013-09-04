@@ -3,6 +3,7 @@
 // @codingStandardsIgnoreStart
 class TestListener implements \PHPUnit_Framework_TestListener
 {
+    // @codingStandardsIgnoreEnd
     private $directory;
 
 
@@ -63,8 +64,11 @@ class TestListener implements \PHPUnit_Framework_TestListener
 
     public function startTestSuite(\PHPUnit_Framework_TestSuite $suite)
     {
-        if ($suite instanceof PHPUnit_Extensions_SeleniumTestSuite) {
-           $this->runPhantom();
+        $groups = $suite->getGroups();
+        if ($suite instanceof PHPUnit_Extensions_SeleniumTestSuite ||
+            in_array('selenium', $groups)
+        ) {
+            $this->runPhantom();
         }
     }
 
@@ -80,15 +84,17 @@ class TestListener implements \PHPUnit_Framework_TestListener
                 if (PHP_OS == 'WINNT') {
                     pclose(popen("start /b " . PHPUNIT_TESTSUITE_BROWSER_PATH_WINNT . " --webdriver=" . PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT, "r"));
                 } else {
-                    shell_exec("nohup " . PHPUNIT_TESTSUITE_BROWSER_PATH_LINUX . " --webdriver=" . PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT .
-                        " > /dev/null 2> /dev/null &");
+                    shell_exec(
+                        "nohup " . PHPUNIT_TESTSUITE_BROWSER_PATH_LINUX . " --webdriver=" . PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT .
+                        " > /dev/null 2> /dev/null &"
+                    );
                 }
             }
             $this->waitServerRun(5, PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST, PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PORT);
         }
     }
 
-    private function waitServerRun($timeOut = 5, $url = 'localhost', $port  = '4444')
+    private function waitServerRun($timeOut = 5, $url = 'localhost', $port = '4444')
     {
         $running = false;
         $i = 0;

@@ -6,16 +6,39 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\AbstractQuery;
 
-use Sonata\DoctrineORMAdminBundle\Datagrid\ProxyQuery as BaseProxyQuery;
-
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * TODO: This class should be refactored  (BAP-969).
  */
-class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
+class ProxyQuery implements ProxyQueryInterface
 {
+    /**
+     * @var QueryBuilder
+     */
+    protected $queryBuilder;
+
+    /**
+     * @var string
+     */
+    protected $sortBy;
+
+    /**
+     * @var string
+     */
+    protected $sortOrder;
+
+    /**
+     * @var string
+     */
+    protected $parameterUniqueId;
+
+    /**
+     * @var string
+     */
+    protected $entityJoinAliases;
+
     /**
      * @var string
      */
@@ -25,11 +48,6 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
      * @var string
      */
     protected $rootAlias;
-
-    /**
-     * @var QueryBuilder
-     */
-    protected $queryBuilder;
 
     /**
      * @var array
@@ -47,6 +65,16 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     protected $queryHints = array();
 
     /**
+     * @param mixed $queryBuilder
+     */
+    public function __construct($queryBuilder)
+    {
+        $this->queryBuilder      = $queryBuilder;
+        $this->uniqueParameterId = 0;
+        $this->entityJoinAliases = array();
+    }
+
+    /**
      * Get query builder
      *
      * @return QueryBuilder
@@ -57,24 +85,23 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     }
 
     /**
-     * Get records total count
+     * Get the total number of records
      *
      * @return int
      */
     public function getTotalCount()
     {
-        $qb = clone $this->getResultIdsQueryBuilder();
-        $qb->setFirstResult(null);
-        $qb->setMaxResults(null);
-        $qb->resetDQLPart('orderBy');
+        $query = $this->getCountQueryBuilder()
+            ->setFirstResult(null)
+            ->setMaxResults(null)
+            ->resetDQLPart('orderBy')
+            ->getQuery();
 
-        $query = $qb->getQuery();
         $this->applyQueryHints($query);
 
         $countCalculator = new CountCalculator();
-        $totalCount = $countCalculator->getCount($query);
 
-        return $totalCount;
+        return $countCalculator->getCount($query);
     }
 
     /**
@@ -83,7 +110,9 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     public function execute(array $params = array(), $hydrationMode = null)
     {
         $query = $this->getResultQueryBuilder()->getQuery();
+
         $this->applyQueryHints($query);
+
         return $query->execute($params, $hydrationMode);
     }
 
@@ -96,54 +125,26 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     {
         $qb = clone $this->getQueryBuilder();
 
-        $this->applyWhere($qb);
         $this->applyOrderByParameters($qb);
 
         return $qb;
     }
 
     /**
-     * Apply where part on query builder
+     * Get query builder for result count query
      *
-     * @param QueryBuilder $qb
      * @return QueryBuilder
      */
-    protected function applyWhere(QueryBuilder $qb)
+    protected function getCountQueryBuilder()
     {
-        $idx = $this->getResultIds();
-        if (count($idx) > 0) {
-            $qb->where(sprintf('%s IN (%s)', $this->getIdFieldFQN(), implode(',', $idx)));
-            $qb->resetDQLPart('having');
-            $qb->setMaxResults(null);
-            $qb->setFirstResult(null);
-            // Since DQL has been changed, some parameters potentially are not used anymore.
-            $this->fixUnusedParameters($qb);
-        }
-    }
-
-    /**
-     * Removes unused parameters from query builder
-     *
-     * @param QueryBuilder $qb
-     */
-    protected function fixUnusedParameters(QueryBuilder $qb)
-    {
-        $dql = $qb->getDQL();
-        $usedParameters = array();
-        /** @var $parameter \Doctrine\ORM\Query\Parameter */
-        foreach ($qb->getParameters() as $parameter) {
-            if ($this->dqlContainsParameter($dql, $parameter->getName())) {
-                $usedParameters[$parameter->getName()] = $parameter->getValue();
-            }
-        }
-        $qb->setParameters($usedParameters);
+        return clone $this->getResultQueryBuilder();
     }
 
     /**
      * Returns TRUE if $dql contains usage of parameter with $parameterName
      *
-     * @param string $dql
-     * @param string $parameterName
+     * @param  string $dql
+     * @param  string $parameterName
      * @return bool
      */
     protected function dqlContainsParameter($dql, $parameterName)
@@ -153,13 +154,14 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
         } else {
             $pattern = sprintf('/\:%s[^\w]/', preg_quote($parameterName));
         }
-        return (bool)preg_match($pattern, $dql . ' ');
+
+        return (bool) preg_match($pattern, $dql . ' ');
     }
 
     /**
      * Apply order by part
      *
-     * @param QueryBuilder $queryBuilder
+     * @param  QueryBuilder $queryBuilder
      * @return QueryBuilder
      */
     protected function applyOrderByParameters(QueryBuilder $queryBuilder)
@@ -173,7 +175,7 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
      * Apply sorting
      *
      * @param QueryBuilder $queryBuilder
-     * @param array $sortOrder
+     * @param array        $sortOrder
      */
     protected function applySortOrderParameters(QueryBuilder $queryBuilder, array $sortOrder)
     {
@@ -186,8 +188,8 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     /**
      * Checks if select DQL part already has select expression with name
      *
-     * @param QueryBuilder $queryBuilder
-     * @param string $name
+     * @param  QueryBuilder $queryBuilder
+     * @param  string       $name
      * @return bool
      */
     protected function hasSelectItem(QueryBuilder $queryBuilder, $name)
@@ -204,70 +206,15 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
                 }
             }
         }
+
         return false;
-    }
-
-    /**
-     * Fetches ids of objects that query builder targets
-     *
-     * @return array
-     */
-    protected function getResultIds()
-    {
-        $idx = array();
-
-        $query = $this->getResultIdsQueryBuilder()->getQuery();
-        $this->applyQueryHints($query);
-        $results = $query->execute(array(), Query::HYDRATE_ARRAY);
-
-        $connection = $this->getQueryBuilder()->getEntityManager()->getConnection();
-        foreach ($results as $id) {
-            $idx[] = $connection->quote($id[$this->getIdFieldName()]);
-        }
-
-        return $idx;
-    }
-
-    /**
-     * Creates query builder that selects only id's of result objects
-     *
-     * @return QueryBuilder
-     */
-    protected function getResultIdsQueryBuilder()
-    {
-        $qb = clone $this->getQueryBuilder();
-
-        // Apply orderBy before change select, because it can contain some expressions from select as aliases
-        $this->applyOrderByParameters($qb);
-
-        $selectExpressions = array('DISTINCT ' . $this->getIdFieldFQN());
-        // We must leave expressions used in having
-        $selectExpressions = array_merge($selectExpressions, $this->selectWhitelist);
-        $qb->select($selectExpressions);
-
-        // adding of sort by parameters to select
-        // TODO move this logic to addOrderBy method after removing of flexible entity
-        /** @var $orderExpression Query\Expr\OrderBy */
-        foreach ($qb->getDQLPart('orderBy') as $orderExpression) {
-            foreach ($orderExpression->getParts() as $orderString) {
-                $orderField = trim(str_ireplace(array(' asc', ' desc'), '', $orderString));
-                if (!$this->hasSelectItem($qb, $orderField)) {
-                    $qb->addSelect($orderField);
-                }
-            }
-        }
-
-        // Since DQL has been changed, some parameters potentially are not used anymore.
-        $this->fixUnusedParameters($qb);
-
-        return $qb;
     }
 
     /**
      * Check whether provided expression already in select clause
      *
-     * @param QueryBuilder $qb
-     * @param string $selectString
+     * @param  QueryBuilder $qb
+     * @param  string       $selectString
      * @return bool
      */
     protected function isInSelectExpression(QueryBuilder $qb, $selectString)
@@ -278,6 +225,7 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
                 return true;
             }
         }
+
         return false;
     }
 
@@ -339,6 +287,7 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
         if (!$this->rootAlias) {
             $this->rootAlias = current($this->getQueryBuilder()->getRootAliases());
         }
+
         return $this->rootAlias;
     }
 
@@ -379,8 +328,8 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     /**
      * Get fields fully qualified name
      *
-     * @param string $fieldName
-     * @param string|null $parentAlias
+     * @param  string      $fieldName
+     * @param  string|null $parentAlias
      * @return string
      */
     protected function getFieldFQN($fieldName, $parentAlias = null)
@@ -388,14 +337,15 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
         if (strpos($fieldName, '.') === false) { // add the current alias
             $fieldName = ($parentAlias ? : $this->getRootAlias()) . '.' . $fieldName;
         }
+
         return $fieldName;
     }
 
     /**
      * Proxy of QueryBuilder::addSelect with flag that specified whether add select to internal whitelist
      *
-     * @param string $select
-     * @param bool $addToWhitelist
+     * @param  string     $select
+     * @param  bool       $addToWhitelist
      * @return ProxyQuery
      */
     public function addSelect($select = null, $addToWhitelist = false)
@@ -434,8 +384,8 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     /**
      * Set query parameter
      *
-     * @param string $name
-     * @param mixed $value
+     * @param  string     $name
+     * @param  mixed      $value
      * @return ProxyQuery
      */
     public function setParameter($name, $value)
@@ -448,8 +398,8 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     /**
      * Sets a query hint
      *
-     * @param string $name
-     * @param mixed $value
+     * @param  string     $name
+     * @param  mixed      $value
      * @return ProxyQuery
      */
     public function setQueryHint($name, $value)
@@ -460,6 +410,16 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
     }
 
     /**
+     * Get a list of query hints
+     *
+     * @return array
+     */
+    public function getQueryHints()
+    {
+        return $this->queryHints;
+    }
+
+    /**
      * @param AbstractQuery $query
      */
     protected function applyQueryHints(AbstractQuery $query)
@@ -467,5 +427,121 @@ class ProxyQuery extends BaseProxyQuery implements ProxyQueryInterface
         foreach ($this->queryHints as $name => $value) {
             $query->setHint($name, $value);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __call($name, $args)
+    {
+        return call_user_func_array(array($this->queryBuilder, $name), $args);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __get($name)
+    {
+        return $this->queryBuilder->$name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSortBy($parentAssociationMappings, $fieldMapping)
+    {
+        $alias        = $this->entityJoin($parentAssociationMappings);
+        $this->sortBy = $alias . '.' . $fieldMapping['fieldName'];
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSortBy()
+    {
+        return $this->sortBy;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSingleScalarResult()
+    {
+        /** @var Query $query */
+        $query = $this->queryBuilder->getQuery();
+
+        return $query->getSingleScalarResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __clone()
+    {
+        $this->queryBuilder = clone $this->queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFirstResult($firstResult)
+    {
+        $this->queryBuilder->setFirstResult($firstResult);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFirstResult()
+    {
+        return $this->queryBuilder->getFirstResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMaxResults($maxResults)
+    {
+        $this->queryBuilder->setMaxResults($maxResults);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMaxResults()
+    {
+        return $this->queryBuilder->getMaxResults();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUniqueParameterId()
+    {
+        return $this->uniqueParameterId++;
     }
 }

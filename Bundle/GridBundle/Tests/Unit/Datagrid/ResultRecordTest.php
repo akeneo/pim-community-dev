@@ -12,11 +12,18 @@ class ResultRecordTest extends \PHPUnit_Framework_TestCase
      * @param mixed $data
      * @param string $propertyName
      * @param mixed $expectedValue
+     * @param mixed $expectedRootEntity
      */
-    public function testGetValue($data, $propertyName, $expectedValue)
+    public function testGetValue($data, $propertyName, $expectedValue, $expectedRootEntity)
     {
         $object = new ResultRecord($data);
         $this->assertEquals($expectedValue, $object->getValue($propertyName));
+
+        if ($expectedRootEntity === null) {
+            $this->assertNull($object->getRootEntity());
+        } else {
+            $this->assertInstanceOf($expectedRootEntity, $object->getRootEntity());
+        }
     }
 
     /**
@@ -28,37 +35,44 @@ class ResultRecordTest extends \PHPUnit_Framework_TestCase
             'read array property' => array(
                 'data' => array('foo' => 'bar'),
                 'foo',
-                'bar'
+                'bar',
+                null
             ),
             'read array null property' => array(
                 'data' => array('foo' => null),
                 'foo',
+                null,
                 null
             ),
             'call get method' => array(
                 'data' => new StubEntity('value'),
                 'privateProperty',
-                'value'
+                'value',
+                'Oro\Bundle\GridBundle\Tests\Unit\Datagrid\Stub\StubEntity'
             ),
             'get property value' => array(
                 'data' => new StubEntity(null, 'value'),
                 'publicProperty',
-                'value'
+                'value',
+                'Oro\Bundle\GridBundle\Tests\Unit\Datagrid\Stub\StubEntity'
             ),
             'call is method' => array(
                 'data' => new StubEntity(null, null, true),
                 'booleanProperty',
-                true
+                true,
+                'Oro\Bundle\GridBundle\Tests\Unit\Datagrid\Stub\StubEntity'
             ),
             'get array property from mixed data' => array(
                 'data' => array(new StubEntity(), 'foo' => 'bar'),
                 'foo',
-                'bar'
+                'bar',
+                'Oro\Bundle\GridBundle\Tests\Unit\Datagrid\Stub\StubEntity'
             ),
             'call object get method from mixed data' => array(
                 'data' => array(new StubEntity('value'), 'privateProperty' => 'foo'),
                 'privateProperty',
-                'value'
+                'value',
+                'Oro\Bundle\GridBundle\Tests\Unit\Datagrid\Stub\StubEntity'
             ),
         );
     }

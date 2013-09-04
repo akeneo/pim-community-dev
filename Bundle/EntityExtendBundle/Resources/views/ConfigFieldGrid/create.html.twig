@@ -8,7 +8,7 @@
 
 {% block navButtons %}
     {{ UI.button({'path' : path('oro_entityconfig_view', {'id':entity_id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
-    {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
+    {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Continue'}) }}
 {% endblock navButtons %}
 
 {% block pageHeader %}
@@ -30,23 +30,10 @@
 
 {% block content_data %}
     {% set id = 'configfield-create' %}
-    {% set dataBlocks = [
-        {
-            'title': 'Doctrine Type',
-            'class': 'active',
-            'subblocks': [{
-                'title': '',
-                'data': [
-                    form_row(form.code),
-                    form_row(form.type),
-                ]
-            }]
-        }
-    ] %}
 
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
-        'dataBlocks': dataBlocks,
+        'dataBlocks': form_data_blocks(form),
         'hiddenData': form_rest(form)
     } %}
 

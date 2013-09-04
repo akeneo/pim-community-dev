@@ -2,14 +2,23 @@
 
 namespace Oro\Bundle\AsseticBundle\Factory;
 
+use Symfony\Bundle\AsseticBundle\Factory\Resource\FileResource;
+
 use Assetic\Factory\Resource\IteratorResourceInterface;
 use Assetic\Asset\AssetInterface;
 use Assetic\Factory\LazyAssetManager;
+
+use Doctrine\Common\Cache\CacheProvider;
 
 use Oro\Bundle\AsseticBundle\Node\OroAsseticNode;
 
 class OroAssetManager
 {
+    /**
+     * @var CacheProvider
+     */
+    protected $cache;
+
     /**
      * @var LazyAssetManager
      */
@@ -20,23 +29,45 @@ class OroAssetManager
      */
     protected $twig;
 
+    /**
+     * @var array
+     */
     protected $assetGroups;
+
+    /**
+     * @var array
+     */
     protected $compiledGroups;
 
+    /**
+     * @var OroAsseticNode[]
+     */
     protected $assets;
-    protected $loaded;
-    protected $loading;
 
-
+    /**
+     * Constructor
+     *
+     * @param LazyAssetManager $am
+     * @param \Twig_Environment $twig
+     * @param array $assetGroups
+     * @param array $compiledGroups
+     */
     public function __construct(LazyAssetManager $am, \Twig_Environment $twig, $assetGroups, $compiledGroups)
     {
-        $this->loaded = false;
-        $this->loading = false;
         $this->am = $am;
-        $this->assets = array();
         $this->twig = $twig;
         $this->assetGroups = $assetGroups;
         $this->compiledGroups = $compiledGroups;
+    }
+
+    /**
+     * Set cache instance
+     *
+     * @param \Doctrine\Common\Cache\CacheProvider $cache
+     */
+    public function setCache(CacheProvider $cache)
+    {
+        $this->cache = $cache;
     }
 
     /**
@@ -56,11 +87,11 @@ class OroAssetManager
     }
 
     /**
-     * @return array
+     * @return OroAsseticNode[]
      */
     public function getAssets()
     {
-        $this->checkLoad();
+        $this->load();
 
         return $this->assets;
     }
@@ -71,7 +102,7 @@ class OroAssetManager
      */
     public function get($name)
     {
-        $this->checkLoad();
+        $this->load();
 
         return $this->assets[$name]->getUnCompressAsset();
     }
@@ -82,41 +113,62 @@ class OroAssetManager
      */
     public function has($name)
     {
-        $this->checkLoad();
+        $this->load();
 
         return isset($this->assets[$name]);
     }
 
     /**
-     * @return array
+     * Load assets
      */
     public function load()
     {
-        if ($this->loading) {
-            return;
+        if (null === $this->assets) {
+            $this->assets = $this->cache ? $this->loadAssetsFromCache() : $this->loadAssets();
         }
-        $this->loading = true;
+    }
 
-        $assets = array();
+    /**
+     * Load using cache
+     *
+     * @return OroAsseticNode[]
+     */
+    protected function loadAssetsFromCache()
+    {
+        $cacheKey = 'assets';
+        $assets = $this->cache->fetch($cacheKey);
+        if (false === $assets) {
+            $assets = $this->loadAssets();
+            $this->cache->save($cacheKey, serialize($assets));
+        } else {
+            $assets = unserialize($assets);
+        }
+        return $assets;
+    }
+
+    /**
+     * Analyze resources and collect nodes of OroAsseticNode
+     *
+     * @return OroAsseticNode[]
+     */
+    protected function loadAssets()
+    {
+        $result = array();
+
         foreach ($this->am->getResources() as $resources) {
-
             if (!$resources instanceof IteratorResourceInterface) {
                 $resources = array($resources);
             }
 
+            /**@var $resource FileResource */
             foreach ($resources as $resource) {
-                /**@var $resource \Symfony\Bundle\AsseticBundle\Factory\Resource\FileResource */
                 $tokens = $this->twig->tokenize($resource->getContent(), (string)$resource);
                 $nodes = $this->twig->parse($tokens);
-                $assets += $this->loadNode($nodes);
+                $result += $this->loadNode($nodes);
             }
         }
 
-        $this->assets = $assets;
-        $this->loaded = true;
-        $this->loading = false;
-
-        return $this->assets;
+        return $result;
     }
 
     /**
@@ -134,8 +186,6 @@ class OroAssetManager
      */
     public function hasFormula($name)
     {
-        $this->checkLoad();
-
         return true;
     }
 
@@ -145,19 +195,9 @@ class OroAssetManager
      */
     public function getFormula($name)
     {
-        $this->checkLoad();
+        $this->load();
 
         return array($this->assets[$name]->getAttribute('inputs'));
-    }
-
-    /**
-     * Check if assets was loaded
-     */
-    private function checkLoad()
-    {
-        if (!$this->loaded) {
-            $this->load();
-        }
     }
 
     /**

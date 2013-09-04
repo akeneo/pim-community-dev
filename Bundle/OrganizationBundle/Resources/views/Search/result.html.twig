@@ -1,0 +1,8 @@
+{% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
+
+{% set showImage = false %}
+
+{% set recordUrl = indexer_item.recordUrl %}
+{% set entity_output = oro_config_entity('Oro\\Bundle\\OrganizationBundle\\Entity\\BusinessUnit') %}
+{% set title = entity.name|default('N/A') %}
+{% set entityType = entity_output.name|trans({}, 'config') %}

@@ -17,11 +17,7 @@ class RestApiRolesTest extends WebTestCase
 
     public function setUp()
     {
-        if (!isset($this->client)) {
-            $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
-        } else {
-            $this->client->restart();
-        }
+        $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
     }
 
     /**
@@ -33,7 +29,8 @@ class RestApiRolesTest extends WebTestCase
         $request = array(
             "role" => array(
                 "role" => $roleName,
-                "label" => $roleName
+                "label" => $roleName,
+                "owner" => "1"
             )
         );
         $this->client->request('POST', $this->client->generate('oro_api_post_role'), $request);
@@ -49,7 +46,10 @@ class RestApiRolesTest extends WebTestCase
      */
     public function testApiGetRoleByName($request)
     {
-        $this->client->request('GET', $this->client->generate('oro_api_get_role_byname', array('name' => $request['role']['role'])));
+        $this->client->request(
+            'GET',
+            $this->client->generate('oro_api_get_role_byname', array('name' => $request['role']['role']))
+        );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
     }
