@@ -36,6 +36,7 @@ class Sync implements WampServerInterface
     {
         if (!true /* check if user has permission to be subscribed on */) {
             $topic->remove($conn);
+
             return;
         }
 
