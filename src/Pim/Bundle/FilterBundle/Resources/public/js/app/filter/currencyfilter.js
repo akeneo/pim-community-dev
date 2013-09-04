@@ -70,7 +70,7 @@ Pim.Filter.CurrencyFilter = Oro.Filter.NumberFilter.extend({
      */
     popupCriteriaTemplate: _.template(
         '<div class="currencyfilter">' +
-            '<div class="input-prepend">' +
+            '<div class="input-prepend input-append">' +
                 '<div class="btn-group">' +
                     '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
                         'Action' +
@@ -98,9 +98,8 @@ Pim.Filter.CurrencyFilter = Oro.Filter.NumberFilter.extend({
                     '</ul>' +
                     '<input class="name_input" type="hidden" name="currency_currency" id="<%= name %>" value=""/>' +
                 '</div>' +
-
-                '<button class="btn btn-primary filter-update" type="button">Update</button>' +
             '</div>' +
+            '<button class="btn btn-primary filter-update" type="button">Update</button>' +
         '</div>'
     ),
 
