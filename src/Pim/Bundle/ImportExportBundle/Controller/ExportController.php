@@ -64,7 +64,7 @@ class ExportController extends JobInstanceController
      */
     public function showAction($id)
     {
-        return parent::showAction($request);
+        return parent::showAction($id);
     }
 
     /**
