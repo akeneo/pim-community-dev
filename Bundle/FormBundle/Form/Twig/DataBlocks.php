@@ -156,6 +156,7 @@ class DataBlocks
             ? $this->accessor->getValue($blockConfig, '[title]')
             : ucfirst($code);
         $block->setTitle($title);
+        $block->setDescription($this->accessor->getValue($blockConfig, '[description]'));
 
         foreach ((array)$this->accessor->getValue($blockConfig, '[subblocks]') as $subCode => $subBlockConfig) {
             $block->addSubBlock($this->createSubBlock($subCode, (array)$subBlockConfig));
@@ -176,6 +177,7 @@ class DataBlocks
         $subBlock = new SubBlockConfig($code);
         $subBlock->setTitle($this->accessor->getValue($config, '[title]'));
         $subBlock->setPriority($this->accessor->getValue($config, '[priority]'));
+        $subBlock->setDescription($this->accessor->getValue($config, '[description]'));
 
         return $subBlock;
     }

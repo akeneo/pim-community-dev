@@ -22,6 +22,11 @@ class BlockConfig implements FormConfigInterface
     /**
      * @var string
      */
+    protected $description;
+
+    /**
+     * @var string
+     */
     protected $class;
 
     /**
@@ -97,6 +102,25 @@ class BlockConfig implements FormConfigInterface
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
@@ -195,11 +219,15 @@ class BlockConfig implements FormConfigInterface
     public function toArray()
     {
         return array(
-            'title'     => $this->title,
-            'class'     => $this->class,
-            'subblocks' => array_map(function (SubBlockConfig $config) {
-                return $config->toArray();
-            }, $this->subBlocks)
+            'title'       => $this->title,
+            'description' => $this->description,
+            'class'       => $this->class,
+            'subblocks'   => array_map(
+                function (SubBlockConfig $config) {
+                    return $config->toArray();
+                },
+                $this->subBlocks
+            )
         );
     }
 
