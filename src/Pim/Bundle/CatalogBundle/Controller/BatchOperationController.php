@@ -40,7 +40,7 @@ class BatchOperationController extends Controller
                 return $this->redirectToRoute(
                     'pim_catalog_batch_operation_configure',
                     array(
-                        'products' => $batchProduct->getProducts()->map(function ($product) { return $product->getId();})->toArray(),
+                        'products'       => $batchProduct->getProductIds(),
                         'operationAlias' => $batchProduct->getOperationAlias(),
                     )
                 );
@@ -48,7 +48,7 @@ class BatchOperationController extends Controller
         }
 
         return array(
-            'form' => $form->createView(),
+            'form'         => $form->createView(),
             'batchProduct' => $batchProduct,
         );
     }
@@ -80,8 +80,8 @@ class BatchOperationController extends Controller
         }
 
         return array(
-            'form' => $form->createView(),
-            'operationAlias' => $operationAlias,
+            'form'         => $form->createView(),
+            'batchProduct' => $batchProduct,
         );
     }
 }

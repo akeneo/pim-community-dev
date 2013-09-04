@@ -56,6 +56,15 @@ class BatchProduct
         return $this->products;
     }
 
+    public function getProductIds()
+    {
+        return $this->products->map(
+            function ($product) {
+                return $product->getId();
+            }
+        )->toArray();
+    }
+
     public function setOperation($operation)
     {
         $this->operation = $operation;
