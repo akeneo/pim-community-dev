@@ -681,7 +681,7 @@ table.ui-sortable, tbody.ui-sortable {
   .buffer-left {padding-left:20px;}
 }
 
-form .scopable {
+form .attribute-field.scopable {
   margin-bottom: 10px;
   .control-group {
     margin: 0;
@@ -738,19 +738,12 @@ form .scopable {
         }
       }
     }
-    ul.wysihtml5-toolbar {
-      width: 651px;
-      height: 37px;
-      padding-top: 4px;
-      border: 1px solid #ccc;
-      border-bottom: none;
-      border-top-left-radius: 3px;
-      border-top-right-radius: 3px;
-      .btn {height: 32px;}
-      > li {margin-bottom: 0px; }
-    }
     input, select, textarea {
       border-radius: 0;
+      &.select2-offscreen,
+      &.select2-focusser {
+        position: absolute;
+      }
     }
   }
   &.collapsed .controls {
@@ -759,6 +752,16 @@ form .scopable {
     }
     input, select, textarea {
       border-bottom-right-radius: 3px;
+    }
+  }
+  .input-append, .input-prepend {
+    font-size: 12px;
+  }
+  .upload-zone {
+    border-radius: 0;
+    margin: 0;
+    .remove-upload {
+      border-radius: 0;
     }
   }
 }
@@ -921,7 +924,7 @@ div.entity-updated {
   }
 }
 
-.scopablefield .input-prepend label, .currencyfield .input-prepend label { padding-right: 10px; border-right-width: 0px;}
+.scopablefield .input-prepend .control-label, .currencyfield .input-prepend .control-label { padding-right: 10px; border-right-width: 0px;}
 .currencyfield>.control-group .control-group:first-of-type .input-prepend { margin-left: 20px; }
 
 /* Product edit form - categories tab */

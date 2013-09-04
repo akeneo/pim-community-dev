@@ -95,6 +95,9 @@ function init() {
     // Instantiate sidebar
     $('.has-sidebar').sidebarize();
 
+    $('form div.scopable').scopableField();
+    $('form div.currency').currencyField();
+
     // Apply Select2
     Pim.initSelect2();
 
@@ -121,9 +124,6 @@ function init() {
             $(this).appendTo(target).attr('tabIndex', -1);
         }
     });
-
-    $('form div.scopable').scopableField();
-    $('form div.currency').currencyField();
 
     $('#attribute-buttons .dropdown-menu').click(function (e) {
         e.stopPropagation();
