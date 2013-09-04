@@ -11,6 +11,7 @@ class SystemConfigurationFormProvider extends FormProvider
     const CORRECT_TAB_NESTING_LEVEL    = 2;
 
     const TREE_NAME                    = 'system_configuration';
+    const GROUP_NAME_FIELD             = '__activeGroup';
 
     /** @var FormFactoryInterface */
     protected $factory;
@@ -74,9 +75,10 @@ class SystemConfigurationFormProvider extends FormProvider
             )
         );
         foreach ($toAdd as $field) {
-
             $builder->add($field['name'], $field['type'], $field['options']);
         }
+
+        $builder->add(self::GROUP_NAME_FIELD, 'hidden');
 
         return $builder->getForm();
     }

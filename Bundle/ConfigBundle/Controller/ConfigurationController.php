@@ -27,24 +27,18 @@ class ConfigurationController extends Controller
 
         list($activeGroup, $activeSubGroup) = $provider->chooseActiveGroups($activeGroup, $activeSubGroup);
 
+        $form = false;
+        if ($activeSubGroup !== null) {
+            $form = $provider->getForm($activeSubGroup);
+
+            // @TODO Save handler calls here
+        }
+
         return array(
             'data'           => $provider->getTreeData(SystemConfigurationFormProvider::TREE_NAME),
+            'form'           => $form ? $form->createView() : $form,
             'activeGroup'    => $activeGroup,
             'activeSubGroup' => $activeSubGroup,
-        );
-    }
-
-    /**
-     * @Route("/renderTab/{groupName}")
-     * @Template()
-     */
-    public function renderGroupAction($groupName)
-    {
-        $provider = $this->container->get('oro_config.provider.system_configuration.form_provider');
-
-        return array(
-            'form'       => $provider->getForm($groupName)->createView(),
-            'formAction' => $this->generateUrl('oro_config_configuration_rendergroup', array('groupName' => $groupName))
         );
     }
 }

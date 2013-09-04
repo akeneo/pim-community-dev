@@ -1,16 +1,10 @@
 {% extends bap.layout %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroConfigBundle::macros.html.twig' as configUI %}
 
 {% set pageTitle = 'Configuration' %}
 
 {% block content %}
-    {% set buttons = [
-            UI.saveAndStayButton(),
-        ]
-    %}
-
-    {{ configUI.renderTitleAndSearch(pageTitle is defined ? pageTitle : '', buttons) }}
-    {{ configUI.renderScrollData(data, activeGroup, activeSubGroup) }}
+    {{ configUI.renderTitleAndSearch(pageTitle is defined ? pageTitle : '', []) }}
+    {{ configUI.renderScrollData(data, form, activeGroup, activeSubGroup) }}
 {% endblock content %}
 

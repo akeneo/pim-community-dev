@@ -8,16 +8,16 @@
             <span class="pull-left">
                 {{ pageTitle|trans }}
             </span>
-            <form class="form-inline search-form configuration-search-form">
-                <input type="text" id="search" class="span2 search" name="search" value="Find an Option">
-                <button type="submit" class="btn btn-search btn-primary">{{ 'Find'|trans }}</button>
-            </form>
             <div class="pull-right">
                 {% if buttons is defined %}
                     {% for button in buttons %}
                         {{ button }}
                     {% endfor %}
                 {% endif %}
+                <form class="form-inline search-form configuration-search-form">
+                    <input type="text" id="search" class="span2 search" name="search" value="Find an Option">
+                    <button type="submit" class="btn btn-search btn-primary">{{ 'Find'|trans }}</button>
+                </form>
             </div>
         </h1>
     </div>
@@ -30,7 +30,7 @@
         activeTab   - active tab name
         activeVTab  - active vertical tab name
 #}
-{%  macro renderScrollData(data, activeTab = false, activeVTab = false) %}
+{%  macro renderScrollData(data, form, activeTab = false, activeVTab = false) %}
     {% import _self as __ %}
     <div class="tabbable system-configuration-container">
         <div class="container-fluid">
@@ -55,9 +55,9 @@
             <div class="container-fluid">
                 <div class="usser-row">
                     <div class="row-fluid row-fluid-divider tab-content">
-                        {% if activeVTab %}
+                        {% if activeVTab and form != false %}
                             {{ __.renderVerticalSubmenu(activeTab, activeVTab) }}
-                            {{ __.renderTab(activeVTab) }}
+                            {{ __.renderTab(form) }}
                         {% endif %}
                     </div>
                 </div>
@@ -123,29 +123,75 @@
 {#
     Renders tab content by name
 #}
-{% macro renderTab(name) %}
-    {{ render(path('oro_config_configuration_rendergroup', {groupName: name})) }}
+{% macro renderTab(form) %}
+    {% import _self as __ %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': form_data_blocks(form),
+        'hiddenData': form_rest(form)
+    }%}
+
+    {% set data = oro_form_process(data, form) %}
+
+    <div class="span10 form-container">
+        <div class="pull-right">
+            {{ UI.saveAndStayButton() }}
+        </div>
+        {{ JSFV(form) }}
+        <form id="{{ form.vars.name }}" {{ form_enctype(form) }}
+              method="post" data-collect="true" class="scrollable-substructure">
+            {% if data.formErrors is defined and data.formErrors | length%}
+                <div class="customer-info-actions container-fluid well-small alert-wrap">
+                    <div class="alert alert-error">
+                        <button class="close" type="button" data-dismiss="alert" data-target=".alert-wrap">×</button>
+                        {{ data.formErrors|raw }}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% for scrollBlock in data.dataBlocks %}
+                <div class="clear">
+                    <h2 class="oro-subtitle">{{ scrollBlock.title|trans }}</h2>
+
+                    {% if scrollBlock.description is defined %}
+                        <p>{{ scrollBlock.description }}</p>
+                    {% endif %}
+
+                    {% for subblock in scrollBlock.subblocks %}
+                        {{ __.renderFiedset(subblock) }}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <div class="hide">
+                {% if data.hiddenData is defined %}
+                    {{ data.hiddenData|raw }}
+                {% endif %}
+            </div>
+        </form>
+    </div>
 {% endmacro %}
 
 {#
     Renders fieldset
     params:
-        data.title       - fieldset label
-        data.description - fieldset description
-        data.data        - fields data
+        block.title       - fieldset label
+        block.description - fieldset description
+        block.data        - fields data
 #}
-{% macro renderFiedset(data) %}
+{% macro renderFiedset(block) %}
     {% import _self as __ %}
     <fieldset class="form-horizontal">
         <h5 class="usser-fiedset">
-            <span>{{ data.title|trans }}</span>
+            <span>{{ block.title|trans }}</span>
         </h5>
 
-        {% if data.description is defined %}
-            <p>{{ data.description }}</p>
+        {% if block.description is defined %}
+            <p>{{ block.description }}</p>
         {% endif %}
 
-        {% for dataBlock in data.data %}
+        {% for dataBlock in block.data %}
             {{ dataBlock|raw }}
         {% endfor %}
     </fieldset>
