@@ -1,0 +1,39 @@
+{% block oro_acl_label_widget %}
+    <strong>{{ value }}</strong>
+{% endblock %}
+
+{% block oro_acl_object_name_widget %}
+    {{ form_widget(form.oid) }}
+    {{ form_widget(form.name) }}
+{% endblock %}
+
+{% block oro_acl_collection_widget %}
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            {% for field in fields_config %}
+                <th>
+                    {{ field.label|trans }}
+                </th>
+            {% endfor %}
+        </tr>
+        {% for child in form.children %}
+            {{ form_widget(child) }}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block oro_acl_entity_row_widget %}
+     {% spaceless %}
+         <tr>
+             {% for field in fields_config|keys %}
+             <td>
+                {% if form.children[field] is defined %}
+                    {{ form_widget(form.children[field]) }}
+                {% endif %}
+             </td>
+             {% endfor %}
+         </tr>
+     {% endspaceless %}
+{% endblock %}

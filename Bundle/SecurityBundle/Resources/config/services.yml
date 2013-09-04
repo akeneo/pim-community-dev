@@ -21,6 +21,11 @@ parameters:
     oro_security.orm.ownership_sql_filter.class:               Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilter
     oro_security.orm.ownership_sql_filter_builder.class:       Oro\Bundle\SecurityBundle\ORM\OwnershipSqlFilterBuilder
 
+    oro_security.type.oro_acl_entity_row.class:               Oro\Bundle\SecurityBundle\Form\Type\EntityRowType
+    oro_security.type.oro_acl_collection.class:               Oro\Bundle\SecurityBundle\Form\Type\CollectionType
+    oro_security.type.oro_acl_object_name.class:              Oro\Bundle\SecurityBundle\Form\Type\ObjectNameType
+    oro_security.type.oro_acl_label.class:                    Oro\Bundle\SecurityBundle\Form\Type\ObjectLabelType
+
 services:
     oro_security.acl.manager:
         class: %oro_security.acl.manager.class%
@@ -126,3 +131,22 @@ services:
         tags:
             - { name: oro_entity.orm.sql_filter, filter_name: ownershipFilter, enabled: true }
             - { name: kernel.event_listener, priority: -255, event: kernel.request, method: setUserParameter }
+    oro_security.form.type.collection_type:
+        class:                        %oro_security.type.oro_acl_collection.class%
+        tags:
+            - { name: form.type, alias: oro_acl_collection }
+
+    oro_security.form.type.ownership_type:
+        class:                        %oro_security.type.oro_acl_entity_row.class%
+        tags:
+            - { name: form.type, alias: oro_acl_entity_row }
+
+    oro_security.form.type.object_name_type:
+        class:                        %oro_security.type.oro_acl_object_name.class%
+        tags:
+            - { name: form.type, alias: oro_acl_object_name }
+
+    oro_security.form.type.object_label_type:
+        class:                        %oro_security.type.oro_acl_label.class%
+        tags:
+            - { name: form.type, alias: oro_acl_label }

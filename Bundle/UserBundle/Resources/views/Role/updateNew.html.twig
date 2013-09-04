@@ -1,0 +1,84 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+
+{% set title = form.vars.value.id ? 'Update Role'|trans : 'New Role'|trans %}
+{% oro_title_set({params : { "%role%": form.vars.value.label } }) %}
+
+{% set formAction = form.vars.value.id ? path('oro_user_new_role_update', { 'id': form.vars.value.id}) : path('oro_user_new_role_create') %}
+
+{% block navButtons %}
+    {#
+        {% if form.vars.value.id and resource_granted('oro_user_role_remove') %}
+            {{ UI.deleteButton({
+                    'dataUrl': path('oro_api_delete_role', {'id': form.vars.value.id}),
+                    'dataRedirect': path('oro_user_role_index'),
+                    'aCss': 'no-hash remove-button',
+                    'dataId': form.vars.value.id,
+                    'id': 'btn-remove-role',
+                    'dataMessage': 'Are you sure you want to delete this role?',
+                    'title': 'Delete Role',
+                    'label': 'Delete'
+                })
+            }}
+            {{ UI.buttonSeparator() }}
+        {% endif %}
+    #}
+    {{ UI.button({'path' : path('oro_user_role_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+    {{ UI.saveAndStayButton() }}
+    {{ UI.saveAndCloseButton() }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if form.vars.value.id %}
+        {% set breadcrumbs = {
+            'entity':      form.vars.value,
+            'indexPath':   path('oro_user_role_index'),
+            'indexLabel': 'Roles',
+            'entityTitle': form.vars.value.label
+        }
+        %}
+        {{ parent() }}
+    {% else %}
+        {% include 'OroUIBundle::page_title_block.html.twig' %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'role-profile' %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General',
+            'class': 'active',
+            'subblocks': [
+                {
+                    'title': '',
+                    'data': [
+                        form_row(form.role),
+                        form_row(form.label)
+                    ]
+                }
+            ]
+        },
+        {
+            'title': 'Entities',
+            'subblocks': [
+                {
+                    'title': '',
+                    'useSpan': false,
+                    'data': [
+                        form_widget(form.entities)
+                    ]
+                }
+            ]
+        }
+    ]
+    %}
+
+    {% set data =
+        {
+            'formErrors': form_errors(form)? form_errors(form) : null,
+            'dataBlocks': dataBlocks,
+        }
+    %}
+    {{ parent() }}
+{% endblock content_data %}
