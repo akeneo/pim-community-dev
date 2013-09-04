@@ -9,8 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
-use Pim\Bundle\CatalogBundle\Form\Type\BatchProductType;
-use Pim\Bundle\CatalogBundle\Model\BatchProduct;
 
 /**
  * Product Controller
