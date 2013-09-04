@@ -152,11 +152,10 @@ class MassActionDispatcher
 
     /**
      * @param DatagridInterface $datagrid
-     * @param ProxyQueryInterface $query
      * @return string
      * @throws \LogicException
      */
-    protected function getIdentifierExpression(DatagridInterface $datagrid, ProxyQueryInterface $query)
+    protected function getIdentifierExpression(DatagridInterface $datagrid)
     {
         $identifierField = $datagrid->getIdentifierField();
         $fieldMapping = $identifierField->getFieldMapping();
@@ -165,7 +164,7 @@ class MassActionDispatcher
             return $fieldMapping['fieldExpression'];
         }
 
-        return sprintf('%s.%s', $query->getRootAlias(), $identifierField->getFieldName());
+        return sprintf('%s.%s', $datagrid->getQuery()->getRootAlias(), $identifierField->getFieldName());
     }
 
     /**
