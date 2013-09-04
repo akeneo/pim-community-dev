@@ -36,6 +36,6 @@ class CategoryReader extends ORMCursorReader
                 ->getQuery();
         }
 
-        return parent::read();
+        return parent::read($stepExecution);
     }
 }
