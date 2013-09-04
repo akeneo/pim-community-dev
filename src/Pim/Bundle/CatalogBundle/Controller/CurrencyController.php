@@ -23,7 +23,23 @@ use Pim\Bundle\CatalogBundle\Entity\Currency;
  */
 class CurrencyController extends AbstractDoctrineController
 {
+    /**
+     * @var DatagridWorkerInterface
+     */
     private $datagridWorker;
+
+    /**
+     * Constructor
+     *
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param RegistryInterface        $doctrine
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param DatagridWorkerInterface  $datagridWorker
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,
