@@ -4,8 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\BatchProduct;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\BatchProduct\AddSelectedOperationSubscriber;
+use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperator;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  *
@@ -25,13 +26,28 @@ class BatchProductType extends AbstractType
                 'multiple' => true,
             ))
             ->add('operationAlias', 'choice', array(
-                'choices' => BatchProduct::getOperationChoices(),
+                'choices'  => $options['operations'],
                 'expanded' => true,
                 'multiple' => false,
             ))
             ->addEventSubscriber(new AddSelectedOperationSubscriber());
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(
+            array(
+                'operations' => array(),
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'batch';

@@ -59,3 +59,6 @@ parameters:
 
     pim_catalog.calculator.completeness.class:       Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator
     pim_catalog.calculator.batch_completeness.class: Pim\Bundle\CatalogBundle\Calculator\BatchCompletenessCalculator
+
+    pim_catalog.batch_operation.operator.class:      Pim\Bundle\CatalogBundle\BatchOperation\BatchOperator
+    pim_catalog.batch_operation.change_status.class: Pim\Bundle\CatalogBundle\BatchOperation\ChangeStatus

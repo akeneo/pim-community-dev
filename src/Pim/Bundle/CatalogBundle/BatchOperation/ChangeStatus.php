@@ -17,11 +17,6 @@ class ChangeStatus implements BatchOperation
 {
     protected $enable = true;
 
-    public function getFormType()
-    {
-        return new ChangeStatusType();
-    }
-
     public function setEnable($enable)
     {
         $this->enable = $enable;
@@ -34,7 +29,18 @@ class ChangeStatus implements BatchOperation
         return $this->enable;
     }
 
-    public function perform(Collection $products)
+    /**
+     * {@inheritdoc}
+     */
+    public function getFormType()
+    {
+        return new ChangeStatusType();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function perform(array $products)
     {
         foreach ($products as $product) {
             $product->setEnabled($this->enable);
