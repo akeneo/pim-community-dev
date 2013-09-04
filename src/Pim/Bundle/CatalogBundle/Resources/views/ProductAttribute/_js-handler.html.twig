@@ -22,25 +22,18 @@ $(function() {
     function initializeForm() {
         $('#'+formName+' .switch:not(.has-switch)').bootstrapSwitch();
         $('#'+formName+' a.validation-tooltip').tooltip();
-        $('#'+formName+' select').select2();
-        $('#'+formName+' input.multiselect').each(function() {
-            $el = $(this);
-            var value = $el.val() ? $el.val().split(',') : [];
-            tags = $el.attr('data-tags') ? $el.attr('data-tags').split(',') : [];
-            value = _.map(value, $.trim);
-            tags = _.map(tags, $.trim);
-            tags = _.union(tags, value).sort();
-            $el.select2({ tags: tags, tokenSeparators: [',', ' '] });
-        });
+
+        Pim.initSelect2();
+
         initializeOptions();
-        $('#'+formName+'_attributeType').select2().on('change', function() {
+        $('#'+formName+'_attributeType').on('change', function() {
             updateForm();
         });
 
         // Enable/disable scope and translatable fields according to unique field value
         $('#'+formName+'_unique').closest('.has-switch').on('switch-change', function (e, data) {
             if (data.value) {
-                $('#'+formName+'_scopable').select2('val', 0).select2('disable');
+                $('#'+formName+'_scopable').select2('val', '').select2('disable');
                 $('#'+formName+'_translatable').closest('.has-switch').bootstrapSwitch('setState', false);
                 $('#'+formName+'_translatable').closest('.has-switch').bootstrapSwitch('setActive', false);
             } else {
@@ -71,9 +64,13 @@ $(function() {
             }
         });
 
-        $('#'+formName+'_metricFamily').select2({ data: Pim.measures.getMetricTypes() }).change(function() {
-            $('#'+formName+'_defaultMetricUnit').select2({
-                data: Pim.measures.getMetricUnits($(this).select2('val'))
+        $('#'+formName+'_metricFamily').select2({
+            data: Pim.measures.getMetricTypes(),
+            placeholder: '{{ "Choose a family"|trans }}'
+        }).change(function() {
+            $('#'+formName+'_defaultMetricUnit').select2('val', '').select2({
+                data: Pim.measures.getMetricUnits($(this).select2('val')),
+                placeholder: '{{ "Choose a unit"|trans }}'
             });
         }).trigger('change');
 

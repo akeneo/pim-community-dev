@@ -91,11 +91,11 @@ class FlatProductNormalizer implements NormalizerInterface
             $data = $data->getCode();
         } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
             $result = array();
-            foreach ($data as $key => $val) {
-                if ($val instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
-                    $result[] = $val->getCode();
+            foreach ($data as $item) {
+                if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
+                    $result[] = $item->getCode();
                 } else {
-                    $result[] = (string) $val;
+                    $result[] = (string) $item;
                 }
             }
             $data = join(self::ITEM_SEPARATOR, $result);

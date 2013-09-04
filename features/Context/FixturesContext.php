@@ -88,12 +88,20 @@ class FixturesContext extends RawMinkContext
      */
     public function resetAcl()
     {
-        $root        = $this->createAcl('root', null, array(User::ROLE_DEFAULT, 'ROLE_SUPER_ADMIN'));
-        $oroSecurity = $this->createAcl('oro_security', $root, array('IS_AUTHENTICATED_ANONYMOUSLY'));
+        $root = $this->createAcl('root', null, array(User::ROLE_DEFAULT, 'ROLE_SUPER_ADMIN'));
 
+        $oroSecurity = $this->createAcl('oro_security', $root, array('IS_AUTHENTICATED_ANONYMOUSLY'));
         $this->createAcl('oro_login', $oroSecurity);
         $this->createAcl('oro_login_check', $oroSecurity);
         $this->createAcl('oro_logout', $oroSecurity);
+
+        $acl = $this->createAcl(
+            'template_controller',
+            $root,
+            array(),
+            'Symfony\Bundle\FrameworkBundle\Controller\TemplateController',
+            'templateAction'
+        );
     }
 
     /**
@@ -1095,11 +1103,13 @@ class FixturesContext extends RawMinkContext
      */
     private function createUser($username, $password = null, $apiKey = null)
     {
-        $password = $password ?: $username . 'pass';
-        $apiKey   = $apiKey ?: $username . '_api_key';
-        $email    = $username.'@example.com';
-        $locale   = 'en_US';
-        $scope    = 'ecommerce';
+        $password     = $password ?: $username . 'pass';
+        $apiKey       = $apiKey ?: $username . '_api_key';
+        $email        = $username.'@example.com';
+        $locale       = 'en_US';
+        $localeOption = null;
+        $scope        = 'ecommerce';
+        $scopeOption  = null;
 
         $user = new User();
         $user->setUsername($username);
@@ -1111,22 +1121,40 @@ class FixturesContext extends RawMinkContext
 
         $manager = $this->getContainer()->get('oro_user.manager.flexible');
 
-        $localeAttribute = $manager->createAttribute('oro_flexibleentity_text');
+        $localeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
         $localeAttribute->setCode('cataloglocale')->setLabel('cataloglocale');
+        foreach ($this->locales as $localeCode) {
+            $option = $manager->createAttributeOption();
+            $optionValue = $manager->createAttributeOptionValue()->setValue($localeCode);
+            $option->addOptionValue($optionValue);
+            $localeAttribute->addOption($option);
+            if ($locale == $localeCode) {
+                $localeOption = $option;
+            }
+        }
         $this->persist($localeAttribute);
 
         $localeValue = $manager->createFlexibleValue();
         $localeValue->setAttribute($localeAttribute);
-        $localeValue->setData($locale);
+        $localeValue->setOption($localeOption);
         $user->addValue($localeValue);
 
-        $scopeAttribute = $manager->createAttribute('oro_flexibleentity_text');
+        $scopeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
         $scopeAttribute->setCode('catalogscope')->setLabel('catalogscope');
+        foreach (array_keys($this->channels) as $scopeCode) {
+            $option = $manager->createAttributeOption();
+            $optionValue = $manager->createAttributeOptionValue()->setValue($scopeCode);
+            $option->addOptionValue($optionValue);
+            $scopeAttribute->addOption($option);
+            if ($scope == $scopeCode) {
+                $scopeOption = $option;
+            }
+        }
         $this->persist($scopeAttribute);
 
         $scopeValue = $manager->createFlexibleValue();
         $scopeValue->setAttribute($scopeAttribute);
-        $scopeValue->setData($scope);
+        $scopeValue->setOption($scopeOption);
         $user->addValue($scopeValue);
 
         $this->getUserManager()->updateUser($user);

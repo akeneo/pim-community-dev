@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "0f565ecf3b731090f539c4dc5ae0293f",
+    "hash": "16aa822fd4ea5c6bf18e7ae54693fd1c",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -1623,12 +1623,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/genemu/GenemuFormBundle.git",
-                "reference": "b97b827f83234316aada59776af7fb7693c6d7a3"
+                "reference": "9a68d6811fd80d1fe908af014687562301329d6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/genemu/GenemuFormBundle/zipball/b97b827f83234316aada59776af7fb7693c6d7a3",
-                "reference": "b97b827f83234316aada59776af7fb7693c6d7a3",
+                "url": "https://api.github.com/repos/genemu/GenemuFormBundle/zipball/9a68d6811fd80d1fe908af014687562301329d6e",
+                "reference": "9a68d6811fd80d1fe908af014687562301329d6e",
                 "shasum": ""
             },
             "require": {
@@ -1685,7 +1685,7 @@
                 "extra form",
                 "form"
             ],
-            "time": "2013-08-07 14:53:04"
+            "time": "2013-09-03 21:48:06"
         },
         {
             "name": "imagine/imagine",
@@ -2010,12 +2010,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSJobQueueBundle.git",
-                "reference": "e59b89ace6bc59ee59e0144ca2919dc0e477285f"
+                "reference": "d6ed46d47295bb2d547624eed2ce1fb79005c2a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSJobQueueBundle/zipball/e59b89ace6bc59ee59e0144ca2919dc0e477285f",
-                "reference": "e59b89ace6bc59ee59e0144ca2919dc0e477285f",
+                "url": "https://api.github.com/repos/schmittjoh/JMSJobQueueBundle/zipball/d6ed46d47295bb2d547624eed2ce1fb79005c2a5",
+                "reference": "d6ed46d47295bb2d547624eed2ce1fb79005c2a5",
                 "shasum": ""
             },
             "require": {
@@ -2073,7 +2073,7 @@
                 "job",
                 "queue"
             ],
-            "time": "2013-08-08 14:09:14"
+            "time": "2013-09-03 14:25:21"
         },
         {
             "name": "jms/metadata",
@@ -3034,12 +3034,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "1471b6d380a02a057adae81ade3d88dbb9c3558b"
+                "reference": "2a81f39058b904b197fdfbf80586bb479f380504"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/1471b6d380a02a057adae81ade3d88dbb9c3558b",
-                "reference": "1471b6d380a02a057adae81ade3d88dbb9c3558b",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/2a81f39058b904b197fdfbf80586bb479f380504",
+                "reference": "2a81f39058b904b197fdfbf80586bb479f380504",
                 "shasum": ""
             },
             "require": {
@@ -3102,7 +3102,7 @@
                 "source": "https://github.com/laboro/platform/tree/maintenance/pim_alpha5",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-08-16 16:53:37"
+            "time": "2013-09-04 10:55:25"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -3723,12 +3723,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "51014bf930dffefbb8f2382475353d12c4bb03c3"
+                "reference": "eb9571e2b082c042cc0b7e46b001cf1d84b8b73a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/51014bf930dffefbb8f2382475353d12c4bb03c3",
-                "reference": "51014bf930dffefbb8f2382475353d12c4bb03c3",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/eb9571e2b082c042cc0b7e46b001cf1d84b8b73a",
+                "reference": "eb9571e2b082c042cc0b7e46b001cf1d84b8b73a",
                 "shasum": ""
             },
             "require": {
@@ -3823,7 +3823,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-09-03 10:21:15"
+            "time": "2013-09-04 06:17:01"
         },
         {
             "name": "twig/extensions",
@@ -3878,12 +3878,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "ffec8ba902d643b51b9a3e240bdc7a0ec0c44836"
+                "reference": "b5516cadf6042c11b0d54cdad4f6c5fb25d2ec40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/ffec8ba902d643b51b9a3e240bdc7a0ec0c44836",
-                "reference": "ffec8ba902d643b51b9a3e240bdc7a0ec0c44836",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/b5516cadf6042c11b0d54cdad4f6c5fb25d2ec40",
+                "reference": "b5516cadf6042c11b0d54cdad4f6c5fb25d2ec40",
                 "shasum": ""
             },
             "require": {
@@ -3919,7 +3919,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-09-02 13:50:59"
+            "time": "2013-09-04 06:20:08"
         },
         {
             "name": "willdurand/expose-translation-bundle",

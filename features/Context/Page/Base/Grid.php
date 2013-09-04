@@ -276,18 +276,29 @@ class Grid extends Index
      */
     protected function getRowCell($row, $position)
     {
-        $cell = $row->findAll('css', 'td');
-        if (!isset($cell[$position])) {
+        $cells = $row->findAll('css', 'td');
+
+        $visibleCells = array();
+        foreach ($cells as $cell) {
+            $style = $cell->getAttribute('style');
+            if (!$style || !preg_match('/display: ?none;/', $style)) {
+                $visibleCells[] = $cell;
+            }
+        }
+
+        $cells = $visibleCells;
+
+        if (!isset($cells[$position])) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Trying to access cell %d of a row which has %d cell(s).',
                     $position,
-                    count($cell)
+                    count($cells)
                 )
             );
         }
 
-        return $cell[$position];
+        return $cells[$position];
     }
 
     /**
