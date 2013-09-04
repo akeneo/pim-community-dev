@@ -27,9 +27,29 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
  */
 class AttributeGroupController extends AbstractDoctrineController
 {
+    /**
+     * @var AttributeGroupHandler
+     */
     private $attributeGroupHandler;
+
+    /**
+     * @var Form
+     */
     private $attributeGroupForm;
-    
+
+    /**
+     * constructor
+     *
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param RegistryInterface        $doctrine
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param AttributeGroupHandler    $attributeGroupHandler
+     * @param Form                     $attributeGroupForm
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,
@@ -158,7 +178,7 @@ class AttributeGroupController extends AbstractDoctrineController
             array('attributes' => $attributes)
         );
     }
-    
+
     /**
      * Add attributes to a group
      *
