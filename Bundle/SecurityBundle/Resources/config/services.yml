@@ -2,7 +2,9 @@ parameters:
     # replace the default ACL provider with an extended version of the provider
     security.acl.dbal.provider.class:                          Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider
 
-    oro_security.acl.manager.class:                            Oro\Bundle\SecurityBundle\Acl\Manager\AclManager
+    oro_security.acl.manager.class:                            Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager
+    oro_security.acl.ace_provider.class:                       Oro\Bundle\SecurityBundle\Acl\Persistence\AceManipulationHelper
+    oro_security.acl.privilege_repository.class:               Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository
     oro_security.acl.extension_selector.class:                 Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector
     oro_security.acl.extension.entity.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension
     oro_security.acl.extension.action.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension
@@ -27,6 +29,12 @@ services:
             - @oro_security.acl.object_identity_factory
             - @oro_security.acl.extension_selector
             - @?security.acl.dbal.provider
+            - @oro_security.acl.ace_provider
+            - %oro_security.acl.privilege_repository.class%
+
+    oro_security.acl.ace_provider:
+        public: false
+        class: %oro_security.acl.ace_provider.class%
 
     oro_security.acl.extension_selector:
         public: false

@@ -1,9 +1,10 @@
 <?php
 
-namespace Oro\Bundle\SecurityBundle\Acl\Manager;
+namespace Oro\Bundle\SecurityBundle\Acl\Persistence;
 
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
+use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -12,13 +13,12 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity as OID;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface as ACL;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
-use Symfony\Component\Security\Acl\Model\EntryInterface;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
-use Oro\Bundle\SecurityBundle\Acl\Manager\Batch\BatchItem;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\Batch\BatchItem;
 use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
 
 /**
@@ -28,8 +28,6 @@ class AclManager
 {
     const CLASS_ACE = 'Class';
     const OBJECT_ACE = 'Object';
-    const CLASS_FIELD_ACE = 'ClassField';
-    const OBJECT_FIELD_ACE = 'ObjectField';
 
     /**
      * @var ObjectIdentityFactory
@@ -52,6 +50,11 @@ class AclManager
     protected $aceProvider;
 
     /**
+     * @var string
+     */
+    protected $privilegeRepositoryClass;
+
+    /**
      * This array contains all requested ACLs and flags indicate which changes are queued
      * key = a string unique for each OID
      * value = BatchItem
@@ -67,12 +70,14 @@ class AclManager
      * @param AclExtensionSelector $extensionSelector
      * @param MutableAclProvider $aclProvider
      * @param AceManipulationHelper $aceProvider
+     * @param string|null $privilegeRepositoryClass
      */
     public function __construct(
         ObjectIdentityFactory $objectIdentityFactory,
         AclExtensionSelector $extensionSelector,
         MutableAclProvider $aclProvider = null,
-        AceManipulationHelper $aceProvider = null
+        AceManipulationHelper $aceProvider = null,
+        $privilegeRepositoryClass = null
     ) {
         $this->objectIdentityFactory = $objectIdentityFactory;
         $this->extensionSelector = $extensionSelector;
@@ -80,6 +85,9 @@ class AclManager
         $this->aceProvider = $aceProvider !== null
             ? $aceProvider
             : new AceManipulationHelper();
+        $this->privilegeRepositoryClass = $privilegeRepositoryClass !== null
+            ? $privilegeRepositoryClass
+            : 'Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository';
     }
 
     /**
@@ -90,6 +98,16 @@ class AclManager
     public function isAclEnabled()
     {
         return $this->aclProvider !== null;
+    }
+
+    /**
+     * Gets ACL extension selector
+     *
+     * @return AclExtensionSelector
+     */
+    public function getExtensionSelector()
+    {
+        return $this->extensionSelector;
     }
 
     /**
@@ -131,6 +149,26 @@ class AclManager
         return $this->extensionSelector
             ->select($oid)
             ->getMaskBuilder($permission);
+    }
+
+    /**
+     * Gets a repository for ACL privileges
+     *
+     * @return AclPrivilegeRepository
+     */
+    public function getPrivilegeRepository()
+    {
+        return new $this->privilegeRepositoryClass($this);
+    }
+
+    /**
+     * Gets a provider responsible for manipulation of ACEs
+     *
+     * @return AceManipulationHelper
+     */
+    public function getAceProvider()
+    {
+        return $this->aceProvider;
     }
 
     /**
@@ -273,6 +311,27 @@ class AclManager
     public function getRootOid($rootId)
     {
         return $this->objectIdentityFactory->root($rootId);
+    }
+
+    /**
+     * Gets the ACLs that belong to the given object identities
+     *
+     * @param SID $sid
+     * @param OID[] $oids
+     * @return \SplObjectStorage
+     * @throws NotAllAclsFoundException when we cannot find an ACL for all identities
+     */
+    public function findAcls(SID $sid, array $oids)
+    {
+        try {
+            return $this->aclProvider->findAcls($oids, array($sid));
+        } catch (AclNotFoundException $ex) {
+            $partialResultException = new NotAllAclsFoundException(
+                'The provider could not find ACLs for all object identities.'
+            );
+            $partialResultException->setPartialResult(new \SplObjectStorage());
+            throw $partialResultException;
+        }
     }
 
     /**
@@ -462,72 +521,6 @@ class AclManager
     }
 
     /**
-     * Gets all class-based ACEs associated with given ACL
-     *
-     * @param OID $oid
-     * @return EntryInterface[]
-     */
-    protected function getClassAces(OID $oid)
-    {
-        return $this->doGetAces($oid, self::CLASS_ACE, null);
-    }
-
-    /**
-     * Gets all class-field-based ACEs associated with given ACL
-     *
-     * @param OID $oid
-     * @param string $field
-     * @return EntryInterface[]
-     */
-    protected function getClassFieldAces(OID $oid, $field)
-    {
-        return $this->doGetAces($oid, self::CLASS_FIELD_ACE, $field);
-    }
-
-    /**
-     * Gets all object-based ACEs associated with given ACL
-     *
-     * @param OID $oid
-     * @return EntryInterface[]
-     */
-    protected function getObjectAces(OID $oid)
-    {
-        return $this->doGetAces($oid, self::OBJECT_ACE, null);
-    }
-
-    /**
-     * Gets all object-field-based ACEs associated with given ACL
-     *
-     * @param OID $oid
-     * @param string $field
-     * @return EntryInterface[]
-     */
-    protected function getObjectFieldAces(OID $oid, $field)
-    {
-        return $this->doGetAces($oid, self::OBJECT_FIELD_ACE, $field);
-    }
-
-    /**
-     * Gets all ACEs associated with given ACL
-     *
-     * @param OID $oid
-     * @param string $type The ACE type. Can be one of self::*_ACE constants
-     * @param string|null $field The name of a field.
-     *                           Set to null for class-based or object-based ACE
-     *                           Set to not null class-field-based or object-field-based ACE
-     * @return EntryInterface[]
-     */
-    protected function doGetAces(OID $oid, $type, $field)
-    {
-        $acl = $this->getAcl($oid);
-        if (!$acl) {
-            return array();
-        }
-
-        return $this->aceProvider->getAces($acl, $type, $field);
-    }
-
-    /**
      * Updates or creates class-based ACE with the given attributes.
      *
      * @param SID $sid
@@ -579,7 +572,7 @@ class AclManager
      */
     protected function setClassFieldPermission(SID $sid, OID $oid, $field, $mask, $granting = true, $strategy = null)
     {
-        $this->doSetPermission($sid, $oid, true, self::CLASS_FIELD_ACE, $field, $mask, $granting, $strategy);
+        $this->doSetPermission($sid, $oid, true, self::CLASS_ACE, $field, $mask, $granting, $strategy);
     }
 
     /**
@@ -598,7 +591,7 @@ class AclManager
      */
     protected function setObjectFieldPermission(SID $sid, OID $oid, $field, $mask, $granting = true, $strategy = null)
     {
-        $this->doSetPermission($sid, $oid, true, self::OBJECT_FIELD_ACE, $field, $mask, $granting, $strategy);
+        $this->doSetPermission($sid, $oid, true, self::OBJECT_ACE, $field, $mask, $granting, $strategy);
     }
 
     /**
@@ -690,7 +683,7 @@ class AclManager
      */
     protected function deleteClassFieldPermission(SID $sid, OID $oid, $field, $mask, $granting = true, $strategy = null)
     {
-        $this->doDeletePermission($sid, $oid, self::CLASS_FIELD_ACE, $field, $mask, $granting, $strategy);
+        $this->doDeletePermission($sid, $oid, self::CLASS_ACE, $field, $mask, $granting, $strategy);
     }
 
     /**
@@ -712,7 +705,7 @@ class AclManager
         $granting = true,
         $strategy = null
     ) {
-        $this->doDeletePermission($sid, $oid, self::OBJECT_FIELD_ACE, $field, $mask, $granting, $strategy);
+        $this->doDeletePermission($sid, $oid, self::OBJECT_ACE, $field, $mask, $granting, $strategy);
     }
 
     /**
@@ -786,7 +779,7 @@ class AclManager
      */
     protected function deleteAllClassFieldPermissions(SID $sid, OID $oid, $field)
     {
-        $this->doDeleteAllPermissions($sid, $oid, self::CLASS_FIELD_ACE, $field);
+        $this->doDeleteAllPermissions($sid, $oid, self::CLASS_ACE, $field);
     }
 
     /**
@@ -799,7 +792,7 @@ class AclManager
      */
     protected function deleteAllObjectFieldPermissions(SID $sid, OID $oid, $field)
     {
-        $this->doDeleteAllPermissions($sid, $oid, self::OBJECT_FIELD_ACE, $field);
+        $this->doDeleteAllPermissions($sid, $oid, self::OBJECT_ACE, $field);
     }
 
     /**

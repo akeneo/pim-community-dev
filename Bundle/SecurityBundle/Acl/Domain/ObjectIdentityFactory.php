@@ -43,6 +43,8 @@ class ObjectIdentityFactory
             $oidOrRootId = $this->extensionSelector
                 ->select($oidOrRootId)
                 ->getRootId();
+        } else {
+            $oidOrRootId = strtolower($oidOrRootId);
         }
 
         return new ObjectIdentity($oidOrRootId, static::ROOT_IDENTITY_TYPE);

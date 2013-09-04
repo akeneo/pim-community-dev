@@ -264,7 +264,7 @@ class EntityAclExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             array('VIEW', 'CREATE', 'EDIT', 'DELETE', 'ASSIGN', 'SHARE'),
-            $this->extension->getAllPermissions()
+            $this->extension->getPermissions()
         );
     }
 

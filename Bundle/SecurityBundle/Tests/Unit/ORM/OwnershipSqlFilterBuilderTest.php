@@ -187,9 +187,9 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
     public static function buildFilterConstraintProvider()
     {
         return array(
-            array('', false, AccessLevel::UNDEFINED, null, self::TEST_ENTITY, '', ''),
-            array('', false, AccessLevel::UNDEFINED, null, self::TEST_ENTITY, 't', ''),
-            array('', true, AccessLevel::UNDEFINED, null, '\stdClass', '', ''),
+            array('', false, AccessLevel::NONE_LEVEL, null, self::TEST_ENTITY, '', ''),
+            array('', false, AccessLevel::NONE_LEVEL, null, self::TEST_ENTITY, 't', ''),
+            array('', true, AccessLevel::NONE_LEVEL, null, '\stdClass', '', ''),
             array('user4', true, AccessLevel::SYSTEM_LEVEL, null, self::TEST_ENTITY, '', ''),
             array('user4', true, AccessLevel::SYSTEM_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', ''),
             array('user4', true, AccessLevel::SYSTEM_LEVEL, 'BUSINESS_UNIT', self::TEST_ENTITY, '', ''),

@@ -95,16 +95,18 @@ class ActionAclExtension extends AbstractAclExtension
      */
     public function getAccessLevel($mask)
     {
-        return AccessLevel::SYSTEM_LEVEL;
+        return $mask === 0
+            ? AccessLevel::NONE_LEVEL
+            : AccessLevel::SYSTEM_LEVEL;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getPermissions($mask)
+    public function getPermissions($mask = null, $setOnly = false)
     {
         $result = array();
-        if ($mask !== 0) {
+        if ($mask === null || $setOnly || $mask !== 0) {
             $result[] = 'EXECUTE';
         }
 
@@ -114,8 +116,20 @@ class ActionAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getAllPermissions()
+    public function getAllowedPermissions(ObjectIdentity $oid)
     {
         return array('EXECUTE');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClasses()
+    {
+        // @todo it is temporary
+        return array(
+            'Mass Delete',
+            'Execute Job',
+        );
     }
 }

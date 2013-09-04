@@ -8,8 +8,9 @@ class AccessLevelTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstantValues()
     {
-        $this->assertEquals(0, AccessLevel::UNDEFINED);
-        $this->assertGreaterThan(AccessLevel::UNDEFINED, AccessLevel::BASIC_LEVEL);
+        $this->assertEquals(-1, AccessLevel::UNKNOWN);
+        $this->assertEquals(0, AccessLevel::NONE_LEVEL);
+        $this->assertGreaterThan(AccessLevel::NONE_LEVEL, AccessLevel::BASIC_LEVEL);
         $this->assertGreaterThan(AccessLevel::BASIC_LEVEL, AccessLevel::LOCAL_LEVEL);
         $this->assertGreaterThan(AccessLevel::LOCAL_LEVEL, AccessLevel::DEEP_LEVEL);
         $this->assertGreaterThan(AccessLevel::DEEP_LEVEL, AccessLevel::GLOBAL_LEVEL);
@@ -18,7 +19,7 @@ class AccessLevelTest extends \PHPUnit_Framework_TestCase
 
     public function testGetConst()
     {
-        $this->assertEquals(AccessLevel::UNDEFINED, AccessLevel::getConst('UNDEFINED'));
+        $this->assertEquals(AccessLevel::NONE_LEVEL, AccessLevel::getConst('NONE_LEVEL'));
         $this->assertEquals(AccessLevel::BASIC_LEVEL, AccessLevel::getConst('BASIC_LEVEL'));
         $this->assertEquals(AccessLevel::LOCAL_LEVEL, AccessLevel::getConst('LOCAL_LEVEL'));
         $this->assertEquals(AccessLevel::DEEP_LEVEL, AccessLevel::getConst('DEEP_LEVEL'));

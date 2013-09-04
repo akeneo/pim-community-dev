@@ -1,8 +1,9 @@
 <?php
 
-namespace Oro\Bundle\SecurityBundle\Acl\Manager;
+namespace Oro\Bundle\SecurityBundle\Acl\Persistence;
 
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
+use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface as SID;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface as ACL;
 use Symfony\Component\Security\Acl\Model\EntryInterface;
@@ -127,19 +128,19 @@ class AceManipulationHelper
     /**
      * Gets all ACEs associated with the given ACL
      *
-     * @param ACL $acl
+     * @param AclInterface $acl
      * @param string $type The ACE type. Can be one of AclManager::*_ACE constants
      * @param string|null $field The name of a field.
      *                           Set to null for class-based or object-based ACE
      *                           Set to not null class-field-based or object-field-based ACE
      * @return EntryInterface[]
      */
-    public function getAces(ACL $acl, $type, $field)
+    public function getAces(AclInterface $acl, $type, $field)
     {
         if ($field === null) {
             return $acl->{"get{$type}Aces"}();
         } else {
-            return $acl->{"get{$type}Aces"}($field);
+            return $acl->{"get{$type}FieldAces"}($field);
         }
     }
 
@@ -164,7 +165,7 @@ class AceManipulationHelper
         if ($field === null) {
             $acl->{"insert{$type}Ace"}($sid, $mask, $index, $granting, $strategy);
         } else {
-            $acl->{"insert{$type}Ace"}($field, $sid, $mask, $index, $granting, $strategy);
+            $acl->{"insert{$type}FieldAce"}($field, $sid, $mask, $index, $granting, $strategy);
         }
     }
 
@@ -185,7 +186,7 @@ class AceManipulationHelper
         if ($field === null) {
             $acl->{"update{$type}Ace"}($index, $mask, $strategy);
         } else {
-            $acl->{"update{$type}Ace"}($index, $field, $mask, $strategy);
+            $acl->{"update{$type}FieldAce"}($index, $field, $mask, $strategy);
         }
     }
 
@@ -204,7 +205,7 @@ class AceManipulationHelper
         if ($field === null) {
             $acl->{"delete{$type}Ace"}($index);
         } else {
-            $acl->{"delete{$type}Ace"}($index, $field);
+            $acl->{"delete{$type}FieldAce"}($index, $field);
         }
     }
 }
