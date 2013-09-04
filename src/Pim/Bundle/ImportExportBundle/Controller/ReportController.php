@@ -26,12 +26,6 @@ class ReportController extends Controller
     /**
      * List the reports
      *
-     * @Acl(
-     *      id="pim_importexport_report_index",
-     *      name="View import/export report list",
-     *      description="View import/export report list",
-     *      parent="pim_importexport_report"
-     * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
@@ -68,7 +62,7 @@ class ReportController extends Controller
      * List the export reports
      *
      * @Acl(
-     *      id="pim_importexport_report_export_index",
+     *      id="pim_importexport_report_import",
      *      name="View the list of export reports",
      *      description="View the list of export reports",
      *      parent="pim_importexport_report"
@@ -86,7 +80,7 @@ class ReportController extends Controller
      * List the import reports
      *
      * @Acl(
-     *      id="pim_importexport_report_export_index",
+     *      id="pim_importexport_report_export",
      *      name="View the list of import reports",
      *      description="View the list of import reports",
      *      parent="pim_importexport_report"
