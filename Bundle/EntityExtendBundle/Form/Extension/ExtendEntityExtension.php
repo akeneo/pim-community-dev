@@ -33,23 +33,29 @@ class ExtendEntityExtension extends AbstractTypeExtension
     {
         $xm = $this->extendManager;
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($xm) {
-            $data = $event->getData();
-            //TODO::check empty data end data_class
-            if (is_object($data) && $xm->isExtend($data)) {
-                $event->setData($xm->createProxyObject($data));
-            }
-        });
-
-        $builder->addEventListener(FormEvents::POST_BIND, function (FormEvent $event) use ($xm) {
-            $data = $event->getForm()->getConfig()->getData();
-
-            if (is_object($data) && $xm->isExtend($data)) {
-                if ($event->getData() instanceof ExtendProxyInterface) {
-                    $event->getData()->__proxy__cloneToEntity($data);
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($xm) {
+                $data = $event->getData();
+                //TODO::check empty data end data_class
+                if (is_object($data) && $xm->isExtend($data)) {
+                    $event->setData($xm->createProxyObject($data));
                 }
             }
-        });
+        );
+
+        $builder->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) use ($xm) {
+                $data = $event->getForm()->getConfig()->getData();
+
+                if (is_object($data) && $xm->isExtend($data)) {
+                    if ($event->getData() instanceof ExtendProxyInterface) {
+                        $event->getData()->__proxy__cloneToEntity($data);
+                    }
+                }
+            }
+        );
     }
 
     /**

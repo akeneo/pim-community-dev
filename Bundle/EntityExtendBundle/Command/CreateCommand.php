@@ -102,6 +102,12 @@ class CreateCommand extends ContainerAwareCommand
                 $entityConfig->set('owner', ExtendManager::OWNER_CUSTOM);
             }
             $entityConfig->set('is_extend', true);
+
+            $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName($entityName);
+            $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName($entityName);
+
+            $entityConfig->set('extend_class', $extendClass);
+            $entityConfig->set('proxy_class', $proxyClass);
         }
 
         foreach ($entityOptions['fields'] as $fieldName => $fieldConfig) {

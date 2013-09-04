@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Tools\Generator;
 
+use Doctrine\Common\Util\Inflector;
 use Symfony\Component\Yaml\Yaml;
 
 use CG\Core\DefaultGeneratorStrategy;
@@ -267,6 +268,7 @@ class Generator
 
                     $yml[$extendClass]['fields'][$fieldName]['code'] = $fieldName;
                     $yml[$extendClass]['fields'][$fieldName]['type'] = $fieldId->getFieldType();
+                    $yml[$extendClass]['fields'][$fieldName]['nullable']  = true;
 
                     $fieldConfig = $this->configProvider->getConfigById($fieldId);
 
@@ -276,7 +278,9 @@ class Generator
                     );
                     $yml[$extendClass]['fields'][$fieldName]['scale']     = $fieldConfig->get('scale');
 
-                    if ($fieldConfig->get('is_indexable')) {
+                    if ($fieldConfig->get('is_indexable')
+                        && $fieldConfig->get('state') != ExtendManager::STATE_DELETED
+                    ) {
                         $yml[$extendClass]['indexes'][$fieldName . '_index']['columns'] = array($fieldName);
                     }
                 }
@@ -354,13 +358,13 @@ class Generator
                         ->setProperty(PhpProperty::create($fieldName)->setVisibility('protected'))
                         ->setMethod(
                             $this->generateClassMethod(
-                                'get' . ucfirst($fieldName),
+                                'get' . ucfirst(Inflector::camelize($fieldName)),
                                 'return $this->' . $fieldName . ';'
                             )
                         )
                         ->setMethod(
                             $this->generateClassMethod(
-                                'set' . ucfirst($fieldName),
+                                'set' . ucfirst(Inflector::camelize($fieldName)),
                                 '$this->' . $fieldName . ' = $value; return $this;',
                                 array('value')
                             )

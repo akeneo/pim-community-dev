@@ -4,12 +4,13 @@ namespace Oro\Bundle\EntityBundle\Datagrid;
 
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ORM\EntityProxyQuery;
+use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
-use Oro\Bundle\GridBundle\Property\UrlProperty;
+use Oro\Bundle\GridBundle\Property\CallbackProperty;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
@@ -31,6 +32,9 @@ class CustomEntityDatagrid extends DatagridManager
     /** @var array fields to be shown on grid */
     protected $queryFields = array();
 
+    /** @var  integer parent entity id */
+    protected $parentId;
+
     public function __construct(ConfigManager $configManager)
     {
         $this->configManager = $configManager;
@@ -40,6 +44,11 @@ class CustomEntityDatagrid extends DatagridManager
     {
         $this->entityClass = $className;
         $this->extendClass = $extendClass;
+    }
+
+    public function setParent($parentId)
+    {
+        $this->parentId = $parentId;
     }
 
     /**
@@ -56,10 +65,20 @@ class CustomEntityDatagrid extends DatagridManager
     protected function getProperties()
     {
         return array(
-            new UrlProperty('view_link', $this->router, 'oro_entity_view', array('id')),
-            new UrlProperty('update_link', $this->router, 'oro_entity_update', array('id')),
-            new UrlProperty('delete_link', $this->router, 'oro_entity_delete', array('id')),
+            new CallbackProperty('view_link', $this->getLinkProperty('oro_entity_view')),
+            new CallbackProperty('update_link', $this->getLinkProperty('oro_entity_update')),
+            new CallbackProperty('delete_link', $this->getLinkProperty('oro_entity_delete')),
         );
+    }
+
+    protected function getLinkProperty($route)
+    {
+        $router   = $this->router;
+        $parentId = $this->parentId;
+
+        return function (ResultRecord $record) use ($router, $parentId, $route) {
+            return $router->generate($route, array('entity_id' => $parentId, 'id' => $record->getValue('id')));
+        };
     }
 
     /**
@@ -129,6 +148,8 @@ class CustomEntityDatagrid extends DatagridManager
         foreach ($extendConfigs as $extendConfig) {
             if ($extendConfig->get('owner') == ExtendManager::OWNER_CUSTOM
                 && $extendConfig->get('state') == ExtendManager::STATE_ACTIVE
+                && !$extendConfig->get('is_deleted')
+
             ) {
                 /** @var FieldConfigIdInterface $fieldConfig */
                 $fieldConfig = $extendConfig->getId();
@@ -140,23 +161,16 @@ class CustomEntityDatagrid extends DatagridManager
                     $fieldConfig->getFieldName()
                 );
 
-                /**
-                 * TODO
-                 *  - retrive LABEL from config
-                 *  - field type
-                 *  - filter type
-                 *  - sortable    ?
-                 *  - filterable  ?
-                 *  - requred     ?
-                 *  - show_filter ?
-                 *  - fields priority
-                 */
-
                 if ($datagridConfig->is('is_visible')) {
+                    /** @var ConfigProvider $entityConfigProvider */
+                    $entityConfigProvider = $this->configManager->getProvider('entity');
+                    $entityConfig         = $entityConfigProvider->getConfig(
+                        $this->entityClass,
+                        $fieldConfig->getFieldName()
+                    );
 
-                    $label = $fieldConfig->getFieldName();
-
-                    $code  = $fieldConfig->getFieldName();
+                    $label               = $entityConfig->get('label');
+                    $code                = $fieldConfig->getFieldName();
                     $this->queryFields[] = $code;
 
                     $fieldObject = new FieldDescription();
@@ -171,24 +185,14 @@ class CustomEntityDatagrid extends DatagridManager
                             'sortable'    => true,
                             'filterable'  => true,
                             'show_filter' => true,
-                            //'choices'     => $this->getObjectName(),
-                            //'multiple'    => true,
-                            //'expression' => 'ce.' . 'test_string',
                         )
                     );
-
-                    /*if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
-                        $fields[$item['options']['priority']] = $fieldObject;
-                    } else {
-                        $fields[] = $fieldObject;
-                    }*/
 
                     $fields[] = $fieldObject;
                 }
             }
         }
 
-        //ksort($fields);
         foreach ($fields as $field) {
             $fieldsCollection->add($field);
         }
@@ -203,25 +207,14 @@ class CustomEntityDatagrid extends DatagridManager
         $query = $this->queryFactory->createQuery();
 
         $queryBuilder = $query->getQueryBuilder();
-
-        $queryBuilder
-            ->resetDQLPart('from')
-            ->from($this->extendClass, 'ce');
+        $queryBuilder->resetDQLPart('from')->from($this->extendClass, 'ce');
 
         foreach ($this->queryFields as $field) {
-            $query->addSelect('ce.' . $field . ' as ' . $field, true);
+            $query->addSelect('ce.' . $field . ' as ' . $field, false);
         }
 
         $this->prepareQuery($query);
 
-
         return $query;
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    /*protected function prepareQuery(ProxyQueryInterface $query)
-    {
-    }*/
 }

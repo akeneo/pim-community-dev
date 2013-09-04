@@ -4,16 +4,15 @@
 {% set gridId = 'custom_entity' %}
 
 {% block content %}
-    {% set pageTitle = 'Custom Entity index page.... (to be customized)' %}
-    {% set buttons = [] %}
-    {#{% for button in buttonConfig %}#}
-        {#{% set buttons = buttons|merge([UI.addButton({#}
-            {#'path': path(button.route, button.args|default({})),#}
-            {#'title': button.title|default(button.name),#}
-            {#'label': button.name,#}
-            {#'aClass': button.aClass|default('')#}
-        {#})]) %}#}
-    {#{% endfor %}#}
+    {% set pageTitle = 'Entities' %}
+
+    {% set buttons = [
+        UI.addButton({
+            'path': path('oro_entity_update', {'entity_id': entity_id}),
+            'title': 'Create '~label,
+            'label': 'Create '~label,
+        })
+    ] %}
 
     {{ parent() }}
 {% endblock %}

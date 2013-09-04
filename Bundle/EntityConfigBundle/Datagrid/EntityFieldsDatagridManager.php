@@ -331,11 +331,10 @@ class EntityFieldsDatagridManager extends DatagridManager
         $query->where('cf.mode <> :mode');
         $query->setParameter('mode', ConfigModelManager::MODE_HIDDEN);
         $query->innerJoin('cf.entity', 'ce', 'WITH', 'ce.id=' . $this->entityId);
-        $query->addSelect('ce.id as entity_id', true);
+        $query->addSelect('ce.id as entity_id', false);
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getPropertyConfig()->getItems(PropertyConfigContainer::TYPE_FIELD) as $code => $item) {
-                //$code  = $provider->getScope() . $code;
                 $alias = 'cfv_' . $code;
 
                 if (isset($item['grid']['query'])) {
@@ -349,7 +348,7 @@ class EntityFieldsDatagridManager extends DatagridManager
                     'WITH',
                     $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'"
                 );
-                $query->addSelect($alias . '.value as ' . $code, true);
+                $query->addSelect($alias . '.value as ' . $code. '', false);
             }
         }
 

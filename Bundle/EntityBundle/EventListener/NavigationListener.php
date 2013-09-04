@@ -5,6 +5,7 @@ namespace Oro\Bundle\EntityBundle\EventListener;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\NavigationBundle\Event\ConfigureMenuEvent;
 
 class NavigationListener
@@ -49,26 +50,34 @@ class NavigationListener
             $entities = $this->em->getRepository(EntityConfigModel::ENTITY_NAME)->findAll();
             if ($entities) {
                 foreach ($entities as $entity) {
-                    if (!$this->entityExtendProvider->getConfig($entity->getClassName())->is('is_extend')) {
-                        continue;
-                    }
 
-                    $config = $this->entityConfigProvider->getConfig($entity->getClassname());
-                    $childs[$config->get('label')] = array(
-                        'label'   => $config->get('label'),
-                        'options' => array(
-                            'label'           => $config->get('label') . '<i class="' . $config->get(
-                                'icon'
-                            ) . ' hide-text pull-right"></i>',
-                            'route'           => 'oro_entity_index',
-                            'routeParameters' => array(
-                                'id' => str_replace('\\', '_', $entity->getId())
-                            ),
-                            'extras'          => array(
-                                'safe_label' => true,
-                            ),
+                    $extendConfig = $this->entityExtendProvider->getConfig($entity->getClassName());
+                    if ($extendConfig->is('is_extend')
+                        && $extendConfig->get('owner') == ExtendManager::OWNER_CUSTOM
+                        && in_array(
+                            $extendConfig->get('state'),
+                            array(ExtendManager::STATE_ACTIVE, ExtendManager::STATE_UPDATED)
                         )
-                    );
+                    ) {
+                        $config = $this->entityConfigProvider->getConfig($entity->getClassname());
+
+                        $childs[$config->get('label')] = array(
+                            'label'   => $config->get('label'),
+                            'options' => array(
+                                'label'           => $config->get('label') . '<i class="' . $config->get(
+                                    'icon'
+                                ) . ' hide-text pull-right"></i>',
+                                'route'           => 'oro_entity_index',
+                                'routeParameters' => array(
+                                    'id' => str_replace('\\', '_', $entity->getId())
+                                ),
+                                'extras'          => array(
+                                    'safe_label' => true,
+                                    'routes' => array('oro_entity_*')
+                                ),
+                            )
+                        );
+                    }
                 }
 
                 sort($childs);

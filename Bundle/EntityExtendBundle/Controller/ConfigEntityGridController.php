@@ -143,6 +143,9 @@ class ConfigEntityGridController extends Controller
         /** @var ConfigManager $configManager */
         $configManager = $this->get('oro_entity_config.config_manager');
 
+        /** @var ExtendManager $extendManager */
+        $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
+
         $className = '';
         if ($request->getMethod() == 'POST') {
             $className = $request->request->get('oro_entity_config_type[model][className]', null, true);
@@ -153,6 +156,12 @@ class ConfigEntityGridController extends Controller
         $extendConfig->set('owner', ExtendManager::OWNER_CUSTOM);
         $extendConfig->set('state', ExtendManager::STATE_NEW);
         $extendConfig->set('is_extend', true);
+
+        $extendClass = $extendManager->getClassGenerator()->generateExtendClassName($className);
+        $proxyClass  = $extendManager->getClassGenerator()->generateProxyClassName($className);
+
+        $extendConfig->set('extend_class', $extendClass);
+        $extendConfig->set('proxy_class', $proxyClass);
 
         $configManager->persist($extendConfig);
 

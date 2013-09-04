@@ -10,7 +10,7 @@ services:
             - name:                             oro_grid.datagrid.manager
               datagrid_name:                    custom_entity
               entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel
-              entity_hint:                      custom_entity
+              entity_hint:                      entity
               route_name:                       oro_entity_index
               query_entity_alias:               ce
 
