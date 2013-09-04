@@ -30,13 +30,47 @@ use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
  */
 class FamilyController extends AbstractDoctrineController
 {
+    /**
+     * @var GridRenderer
+     */
     private $gridRenderer;
+
+    /**
+     * @var DatagridWorkerInterface
+     */
     private $dataGridWorker;
+
+    /**
+     * @var ChannelManager
+     */
     private $channelManager;
+
+    /**
+     * @var ProductManager
+     */
     private $productManager;
+
+    /**
+     * @var PendingManager
+     */
     private $pendingManager;
 
-
+    /**
+     * Constructor
+     *
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param RegistryInterface        $doctrine
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param GridRenderer             $gridRenderer
+     * @param DatagridWorkerInterface  $dataGridWorker
+     * @param ChannelManager           $channelManager
+     * @param ProductManager           $productManager
+     * @param PendingManager           $pendingManager
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,
@@ -58,7 +92,7 @@ class FamilyController extends AbstractDoctrineController
         $this->productManager = $productManager;
         $this->pendingManager = $pendingManager;
     }
-    
+
     /**
      * Create a family
      *
@@ -108,7 +142,11 @@ class FamilyController extends AbstractDoctrineController
     public function editAction(Request $request, $id)
     {
         $family   = $this->findOr404('PimCatalogBundle:Family', $id);
-        $datagrid = $this->dataGridWorker->getDataAuditDatagrid($family, 'pim_catalog_family_edit', array('id' => $family->getId()));
+        $datagrid = $this->dataGridWorker->getDataAuditDatagrid(
+            $family,
+            'pim_catalog_family_edit',
+            array('id' => $family->getId())
+        );
         $datagridView = $datagrid->createView();
 
         if ('json' === $request->getRequestFormat()) {
@@ -225,7 +263,7 @@ class FamilyController extends AbstractDoctrineController
 
         return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
     }
-    
+
     /**
      * Get the AvailbleProductAttributes form
      *
