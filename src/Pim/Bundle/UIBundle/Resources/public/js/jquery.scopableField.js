@@ -11,15 +11,12 @@
 
     function showTitle($el, opts) {
         var $originalLabel = $el.find('label').first(),
-        title = opts.title || $originalLabel.html(),
-        $title = $('<label>').addClass($originalLabel.attr('class')).html(title);
-
-        $el.find('>label').remove();
-        $el.prepend($title);
+        title = opts.title || $originalLabel.html();
+        $('<label>').addClass($originalLabel.attr('class')).html(title).prependTo($el);
     }
 
     function getFields($el) {
-        return $el.find('>.control-group');
+        return $el.find('[data-field]');
     }
 
     function prepareFields($el) {
@@ -27,7 +24,7 @@
         getFields($el).each(function() {
             var $field = $(this),
             $label = $field.find('label').first(),
-            scope = $field.find('>:first-child').data('scope');
+            scope = $field.find('[data-scope]').attr('data-scope');
 
             $fields.push(
                 {'field': $field, 'label': $label, 'scope': scope }
@@ -43,8 +40,8 @@
         var $fields = prepareFields($el);
 
         for (var i = 0; i < $fields.length; i++) {
-            var $field = $fields[i].field;
-            var scope = $fields[i].scope;
+            var $field = $fields[i].field,
+            scope = $fields[i].scope;
 
             if (i !== 0 && scope === opts.defaultScope) {
                 $field.insertBefore($fields[0].field);
@@ -70,7 +67,7 @@
     }
 
     function bindEvents($el, opts) {
-        getFields($el).first().off('click', 'label span').on('click', 'label span', function() {
+        getFields($el).first().off('click', 'label span.field-toggle').on('click', 'label span.field-toggle', function() {
             toggleOpen($el, opts);
         });
     }
@@ -80,8 +77,8 @@
 
         var $fields = getFields($el);
 
-        $fields.find('label span').remove();
-        var $icon = $('<span>').html($('<i>').addClass(icon));
+        $fields.find('label span.field-toggle').remove();
+        var $icon = $('<span>', {'class': 'field-toggle'}).html($('<i>').addClass(icon));
         $fields.first().find('label.control-label').prepend($icon);
     }
 
