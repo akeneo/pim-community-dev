@@ -19,6 +19,7 @@ services:
         class:                    %oro_wamp.listener.class%
         arguments:
             - "@session.handler.pdo"
+            - "@security.context"
             - %session.storage.options%
         tags:
             - { name: kernel.event_listener, event: clank.client.connected, method: onClientConnect }
