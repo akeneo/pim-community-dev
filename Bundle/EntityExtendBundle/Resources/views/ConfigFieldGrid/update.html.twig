@@ -1,0 +1,41 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
+
+{% set title = 'Add Field ' %}
+{% oro_title_set({params : {"%username%": 'User' }}) %}
+
+{% set formAction = path('oro_entityextend_field_create', {id: entity_id}) %}
+
+{% block navButtons %}
+    {{ UI.button({'path' : path('oro_entityconfig_view', {'id':entity_id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+    {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      'entity',
+        'indexPath':   path('oro_entityconfig_index'),
+        'indexLabel': 'Entities',
+        'entityTitle': 'New Field',
+        'additional': [
+            {
+                'indexPath'  : path('oro_entityconfig_view', {id: entity_id}),
+                'indexLabel' : entity_config.get('label')|default('N/A')
+            },
+        ]
+    } %}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'configfield-create' %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': form_data_blocks(form),
+        'hiddenData': form_rest(form)
+    } %}
+
+    {{ parent() }}
+{% endblock content_data %}

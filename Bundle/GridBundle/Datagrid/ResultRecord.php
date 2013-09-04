@@ -35,7 +35,7 @@ class ResultRecord implements ResultRecordInterface
     /**
      * Get value of property by name
      *
-     * @param string $name
+     * @param  string          $name
      * @return mixed
      * @throws \LogicException When cannot get value
      */
@@ -70,7 +70,7 @@ class ResultRecord implements ResultRecordInterface
      * Camelize a string
      *
      * @static
-     * @param string $property
+     * @param  string $property
      * @return string
      */
     private static function camelize($property)

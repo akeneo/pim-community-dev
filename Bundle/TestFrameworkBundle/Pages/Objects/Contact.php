@@ -31,6 +31,7 @@ class Contact extends AbstractEntity implements Entity
         $this->assignedto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_assignedTo']/a");
         $this->reportsto = $this->byXpath("//div[@id='s2id_orocrm_contact_form_reportsTo']/a");
         $this->addressCollection = $this->byId('orocrm_contact_form_addresses_collection');
+        $this->owner = $this->byXpath("//div[@id='s2id_orocrm_contact_form_owner']/a");
 
         return $this;
     }
@@ -57,6 +58,27 @@ class Contact extends AbstractEntity implements Entity
     public function getLastName()
     {
         return $this->lastname->value();
+    }
+
+    public function setOwner($owner)
+    {
+        $this->owner->click();
+        $this->waitForAjax();
+        $this->byXpath("//div[@id='select2-drop']/div/input")->value($owner);
+        $this->waitForAjax();
+        $this->assertElementPresent(
+            "//div[@id='select2-drop']//div[contains(., '{$owner}')]",
+            "Owner autocoplete doesn't return search value"
+        );
+        $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$owner}')]")->click();
+
+        return $this;
+
+    }
+
+    public function getOwner()
+    {
+        return;
     }
 
     public function setEmail($email)

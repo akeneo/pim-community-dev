@@ -51,21 +51,10 @@ class BusinessUnitType extends AbstractType
                 )
             )
             ->add(
-                'parent',
-                'entity',
-                array(
-                    'label'    => 'Parent Unit',
-                    'class'    => 'OroOrganizationBundle:BusinessUnit',
-                    'property' => 'name',
-                    'required' => false,
-                    'multiple' => false,
-                )
-            )
-            ->add(
                 'organization',
                 'entity',
                 array(
-                    'label'    => 'Organization',
+                    'label'    => 'Parent',
                     'class'    => 'OroOrganizationBundle:Organization',
                     'property' => 'name',
                     'required' => true,

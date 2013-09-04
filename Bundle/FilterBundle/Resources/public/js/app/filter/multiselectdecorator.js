@@ -63,7 +63,10 @@ _.extend(Oro.Filter.MultiSelectDecorator.prototype, {
         }
 
         // destroy DOM garbage after change page via hash-navigation
-        Oro.Events.once('hash_navigation_request:start', _.bind(this.element.multiselect, this.element, 'destroy'));
+        Oro.Events.once('hash_navigation_request:start', function() {
+            this.multiselect("destroy");
+            this.element.hide();
+        }, this);
     },
 
     /**

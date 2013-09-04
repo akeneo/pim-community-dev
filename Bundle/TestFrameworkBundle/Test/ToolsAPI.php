@@ -117,10 +117,12 @@ class ToolsAPI
             $response->getContent()
         );
 
-        \PHPUnit_Framework_TestCase::assertTrue(
-            $response->headers->contains('Content-Type', $contentType),
-            $response->headers
-        );
+        if ($contentType !== '') {
+            \PHPUnit_Framework_TestCase::assertTrue(
+                $response->headers->contains('Content-Type', $contentType),
+                $response->headers
+            );
+        }
     }
 
     /**
@@ -164,6 +166,15 @@ class ToolsAPI
         self::$random = $random;
 
         return $random;
+    }
+
+    /**
+     * @param int $length
+     * @return string
+     */
+    public static function generateRandomString($length = 10)
+    {
+        return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
     }
 
     /**

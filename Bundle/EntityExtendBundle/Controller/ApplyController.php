@@ -2,23 +2,26 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Process\Process;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
 
+use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
 use Oro\Bundle\EntityExtendBundle\Tools\Schema;
-use Symfony\Component\Process\Process;
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 /**
  * EntityExtendBundle controller.
- * @Route("/oro_entityextend")
+ * @Route("/entity/extend")
  * @Acl(
  *      id="oro_entityextend",
  *      name="Entity extend manipulation",
@@ -44,15 +47,16 @@ class ApplyController extends Controller
      */
     public function applyAction($id)
     {
-        /** @var ConfigEntity $entity */
-        $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
+        /** @var EntityConfigModel $entity */
+        $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
 
         /** @var ConfigProvider $entityConfigProvider */
-        $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
+        $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
 
         /** @var ConfigProvider $extendConfigProvider */
-        $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
-        $extendConfig = $extendConfigProvider->getConfig($entity->getClassName());
+        $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
+        $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
+        $extendFieldConfigs   = $extendConfigProvider->getConfigs($entity->getClassName());
 
         /** @var Schema $schemaTools */
         $schemaTools = $this->get('oro_entity_extend.tools.schema');
@@ -62,43 +66,43 @@ class ApplyController extends Controller
          */
         $validation = array();
 
-        $fields = $extendConfig->getFields();
-        foreach ($fields as $code => $field) {
-
-            //$isSystem = $schemaTools->checkFieldIsSystem($field);
-            $isSystem = $field->get('owner') == 'System' ? true : false;
+        /** @var Config $fieldConfig */
+        foreach ($extendFieldConfigs as $fieldConfig) {
+            $isSystem = $fieldConfig->get('owner') == 'System' ? true : false;
             if ($isSystem) {
                 continue;
             }
 
-            if (in_array($field->get('state'), array('New', 'Updated', 'To be deleted'))) {
-                if ($field->get('state') == 'New') {
+            if (in_array($fieldConfig->get('state'), array('New', 'Requires update', 'To be deleted'))) {
+                if ($fieldConfig->get('state') == 'New') {
                     $isValid = true;
                 } else {
-                    $isValid = $schemaTools->checkFieldCanDelete($field);
+                    $isValid = $schemaTools->checkFieldCanDelete($fieldConfig->getId());
                 }
 
                 if ($isValid) {
                     $validation['success'][] = sprintf(
                         "Field '%s(%s)' is valid. State -> %s",
-                        $code,
-                        $field->get('owner'),
-                        $field->get('state')
+                        $fieldConfig->getId()->getFieldName(),
+                        $fieldConfig->get('owner'),
+                        $fieldConfig->get('state')
                     );
                 } else {
                     $validation['error'][] = sprintf(
                         "Warning. Field '%s(%s)' has data.",
-                        $code,
-                        $field->get('owner')
+                        $fieldConfig->getId()->getFieldName(),
+                        $fieldConfig->get('owner')
                     );
                 }
             }
         }
 
+        $entityConfig = $entityConfigProvider->getConfig($entity->getClassName());
+
         return array(
             'validations'   => $validation,
             'entity'        => $entity,
-            'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
+            'entity_config' => $entityConfig,
             'entity_extend' => $extendConfig,
         );
     }
@@ -120,17 +124,23 @@ class ApplyController extends Controller
      */
     public function updateAction($id)
     {
-        /** @var ConfigEntity $entity */
-        $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
-        $env = $this->get('kernel')->getEnvironment();
+        /** @var EntityConfigModel $entity */
+        $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
+        $env    = $this->get('kernel')->getEnvironment();
 
         $commands = array(
-            'backup'       => new Process('php ../app/console oro:entity-extend:backup '. str_replace('\\', '\\\\', $entity->getClassName()). ' --env '.$env),
-            'generator'    => new Process('php ../app/console oro:entity-extend:generate'. ' --env '.$env),
-            'cacheClear'   => new Process('php ../app/console cache:clear --no-warmup'. ' --env '.$env),
-            'schemaUpdate' => new Process('php ../app/console doctrine:schema:update --force'. ' --env '.$env),
-            'searchIndex'  => new Process('php ../app/console oro:search:create-index --env '.$env),
-            'cacheWarmup'  => new Process('php ../app/console cache:warmup'. ' --env '.$env),
+            'backup'       => new Process(
+                'php ../app/console oro:entity-extend:backup ' . str_replace(
+                    '\\',
+                    '\\\\',
+                    $entity->getClassName()
+                ) . ' --env ' . $env
+            ),
+            'update'       => new Process('php ../app/console oro:entity-extend:update' . ' --env ' . $env),
+            'cacheClear'   => new Process('php ../app/console cache:clear --no-warmup' . ' --env ' . $env),
+            'schemaUpdate' => new Process('php ../app/console doctrine:schema:update --force' . ' --env ' . $env),
+            'searchIndex'  => new Process('php ../app/console oro:search:create-index --env ' . $env),
+            'cacheWarmup'  => new Process('php ../app/console cache:warmup' . ' --env ' . $env),
         );
 
         foreach ($commands as $command) {
@@ -143,20 +153,37 @@ class ApplyController extends Controller
         }
 
         /** @var ConfigProvider $extendConfigProvider */
-        $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
-        $extendConfig = $extendConfigProvider->getConfig($entity->getClassName());
+        $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
+        $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
+        $extendFieldConfigs   = $extendConfigProvider->getConfigs($entity->getClassName());
+        $entityState          = $extendConfig->get('state');
 
-        $extendConfig->set('state', 'Active');
-
-        foreach ($extendConfig->getFields() as $field) {
-            if ($field->get('owner') != 'System') {
-                $field->set('state', 'Active');
+        foreach ($extendFieldConfigs as $fieldConfig) {
+            if ($fieldConfig->get('owner') != ExtendManager::OWNER_SYSTEM
+                && $fieldConfig->get('state') != ExtendManager::STATE_DELETED
+            ) {
+                $fieldConfig->set('state', ExtendManager::STATE_ACTIVE);
             }
+
+            if ($fieldConfig->get('state') == ExtendManager::STATE_DELETED) {
+                $fieldConfig->set('is_deleted', true);
+            }
+
+            $extendConfigProvider->persist($fieldConfig);
+        }
+
+        $extendConfigProvider->flush();
+
+        $extendConfig->set('state', $entityState);
+        if ($extendConfig->get('state') == ExtendManager::STATE_DELETED) {
+            $extendConfig->set('is_deleted', true);
+        } else {
+            $extendConfig->set('state', ExtendManager::STATE_ACTIVE);
         }
 
         $extendConfigProvider->persist($extendConfig);
         $extendConfigProvider->flush();
 
-        return $this->redirect($this->generateUrl('oro_entityconfig_view', array('id' => $id)));
+        return $this->redirect($this->generateUrl('oro_entityconfig_index'));
     }
 }

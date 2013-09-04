@@ -2,19 +2,21 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
+
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Datagrid\AuditDatagridManager;
 use Oro\Bundle\EntityConfigBundle\Datagrid\AuditFieldDatagridManager;
 
 /**
  * EntityBundle controller.
- * @Route("/oro_entityconfig")
+ * @Route("/entity/config")
  * @Acl(
  *      id="oro_entityconfig",
  *      name="Entity config manipulation",
@@ -27,9 +29,10 @@ class AuditController extends Controller
      * @Route(
      *      "/audit/{entity}/{id}/{_format}",
      *      name="oro_entityconfig_audit",
-     *      requirements={"entity"="[a-zA-Z_]+", "id"="\d+"},
+     *      requirements={"entity"="[a-zA-Z0-9_]+", "id"="\d+"},
      *      defaults={"entity"="entity", "id"=0, "_format" = "html"}
      * )
+     * @Template
      * @Acl(
      *      id="oro_entityconfig_audit",
      *      name="View entity history",
@@ -56,20 +59,24 @@ class AuditController extends Controller
             )
         );
 
-        $view = $datagridManager->getDatagrid()->createView();
+        $datagridView = $datagridManager->getDatagrid()->createView();
+        if ('json' == $this->getRequest()->getRequestFormat()) {
+            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
+        }
 
-        return 'json' == $this->getRequest()->getRequestFormat()
-            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
-            : $this->render('OroEntityConfigBundle:Audit:audit.html.twig', array('datagrid' => $view));
+        return array(
+            'datagrid' => $datagridView,
+        );
     }
 
     /**
      * @Route(
      *      "/audit_field/{entity}/{id}/{_format}",
      *      name="oro_entityconfig_audit_field",
-     *      requirements={"entity"="[a-zA-Z_]+", "id"="\d+"},
+     *      requirements={"entity"="[a-zA-Z0-9_]+", "id"="\d+"},
      *      defaults={"entity"="entity", "id"=0, "_format" = "html"}
      * )
+     * @Template("OroEntityConfigBundle:Audit:audit.html.twig")
      * @Acl(
      *      id="oro_entityconfig_audit_field",
      *      name="View entity's field history",
@@ -83,16 +90,16 @@ class AuditController extends Controller
      */
     public function auditFieldAction($entity, $id)
     {
-        /** @var ConfigField $fieldName */
+        /** @var FieldConfigModel $fieldName */
         $fieldName = $this->getDoctrine()
-            ->getRepository('OroEntityConfigBundle:ConfigField')
+            ->getRepository(FieldConfigModel::ENTITY_NAME)
             ->findOneBy(array('id' => $id));
 
         /** @var $datagridManager AuditFieldDatagridManager */
         $datagridManager = $this->get('oro_entity_config.audit_field_datagrid.manager');
 
         $datagridManager->entityClass   = str_replace('_', '\\', $entity);
-        $datagridManager->fieldName     = $fieldName->getCode();
+        $datagridManager->fieldName     = $fieldName->getFieldName();
 
         $datagridManager->getRouteGenerator()->setRouteParameters(
             array(
@@ -101,10 +108,13 @@ class AuditController extends Controller
             )
         );
 
-        $view = $datagridManager->getDatagrid()->createView();
+        $datagridView = $datagridManager->getDatagrid()->createView();
+        if ('json' == $this->getRequest()->getRequestFormat()) {
+            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
+        }
 
-        return 'json' == $this->getRequest()->getRequestFormat()
-            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
-            : $this->render('OroEntityConfigBundle:Audit:audit.html.twig', array('datagrid' => $view));
+        return array(
+            'datagrid' => $datagridView,
+        );
     }
 }

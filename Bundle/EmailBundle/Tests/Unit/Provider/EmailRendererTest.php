@@ -92,6 +92,12 @@ class EmailRendererTest extends \PHPUnit_Framework_TestCase
     public function testConfigureSandboxNotCached()
     {
         $entityClass = 'Oro\Bundle\UserBundle\Entity\User';
+
+        $configIdMock = $this->getMockForAbstractClass('Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface');
+        $configIdMock
+            ->expects($this->once())->method('getClassName')
+            ->will($this->returnValue($entityClass));
+
         $configuredData = array(
             $entityClass => array(
                 'getsomecode'
@@ -109,18 +115,15 @@ class EmailRendererTest extends \PHPUnit_Framework_TestCase
             ->method('save')
             ->with($this->cacheKey, serialize($configuredData));
 
-        $configurableEntities = array($entityClass);
+        $configurableEntities = array($configIdMock);
         $this->configProvider
             ->expects($this->once())
-            ->method('getAllConfigurableEntityNames')
+            ->method('getIds')
             ->will($this->returnValue($configurableEntities));
 
         $fieldsCollection = new ArrayCollection();
 
-        $config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\EntityConfig')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $config->expects($this->once())->method('getFields')
+        $this->configProvider->expects($this->once())->method('filter')
             ->will(
                 $this->returnCallback(
                     function ($callback) use ($fieldsCollection) {
@@ -129,26 +132,28 @@ class EmailRendererTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $this->configProvider
-            ->expects($this->once())
-            ->method('getConfig')
-            ->with($entityClass)
-            ->will($this->returnValue($config));
+        $field1Id = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $field1Id->expects($this->once())
+            ->method('getFieldName')
+            ->will($this->returnValue('someCode'));
 
-        $field1 = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\FieldConfig')
+        $field1 = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface')
             ->disableOriginalConstructor()
-            ->getMock();
-        $field2 = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\FieldConfig')
+            ->getMockForAbstractClass();
+
+        $field2 = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMockForAbstractClass();
 
         $field1->expects($this->once())
             ->method('is')
             ->with('available_in_template')
             ->will($this->returnValue(true));
         $field1->expects($this->once())
-            ->method('getCode')
-            ->will($this->returnValue('someCode'));
+            ->method('getId')
+            ->will($this->returnValue($field1Id));
 
         $field2->expects($this->once())
             ->method('is')

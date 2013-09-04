@@ -21,7 +21,7 @@ class ControllersTest extends WebTestCase
         'birthday' => '07/01/2013',
         'enabled' => 1,
         'roles' => 'Superadmin',
-        'groups' => 'Marketing',
+        'groups' => 'Sales',
         'company' => 'company',
         'gender' => 'Male'
     );
@@ -50,9 +50,10 @@ class ControllersTest extends WebTestCase
         $form['oro_user_user_form[lastName]'] = $this->userData['lastName'];
         $form['oro_user_user_form[birthday]'] = $this->userData['birthday'];
         $form['oro_user_user_form[email]'] = $this->userData['email'];
-        $form['oro_user_user_form[groups][1]'] = 3;
+        $form['oro_user_user_form[groups][1]'] = 2;
         $form['oro_user_user_form[rolesCollection][2]'] = 4;
         $form['oro_user_user_form[values][company][varchar]'] = $this->userData['company'];
+        $form['oro_user_user_form[owner]'] = 1;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
