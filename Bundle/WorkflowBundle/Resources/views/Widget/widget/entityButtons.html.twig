@@ -3,6 +3,11 @@
 {% set blockId = 'entity-transitions-container-' ~ random() %}
 <div class="widget-content btn-group" id="{{ blockId }}">
     {% for data in new_workflows_data %}
+        {% set redirectToWorkflow = false %}
+        {% if data.workflow.type == 'wizard' %}
+            {% set redirectToWorkflow = true %}
+        {% endif %}
+
         {% for transition in data.transitions %}
             {{ workflowMacros.renderTransitionButton(
                 data.workflow,
@@ -15,12 +20,13 @@
                         entityId: entity_id,
                         transitionName: transition.name
                     }
-                )
+                ),
+                redirectToWorkflow
             ) }}
         {% endfor %}
     {% endfor %}
 
-    {% for data in exisiting_workflows_data %}
+    {% for data in exisiting_workflows_data if data.workflow.type == 'entity' %}
         {% for transition in data.transitions %}
             {{ workflowMacros.renderTransitionButton(
                 data.workflow,
