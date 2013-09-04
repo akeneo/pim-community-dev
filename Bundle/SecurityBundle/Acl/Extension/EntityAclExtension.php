@@ -311,14 +311,19 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getAccessLevel($mask)
+    public function getAccessLevel($mask, $permission = null)
     {
         if (0 === $this->removeServiceBits($mask)) {
             return AccessLevel::NONE_LEVEL;
         }
 
-        $result = AccessLevel::UNKNOWN;
         $identity = $this->getServiceBits($mask);
+        if ($permission !== null) {
+            $permissionMask = $this->getMaskBuilderConst($identity, 'GROUP_' . $permission);
+            $mask = $mask & $permissionMask;
+        }
+
+        $result = AccessLevel::UNKNOWN;
         foreach (AccessLevel::$allAccessLevelNames as $accessLevel) {
             if (0 !== ($mask & $this->getMaskBuilderConst($identity, 'GROUP_' . $accessLevel))) {
                 $result = AccessLevel::getConst($accessLevel . '_LEVEL');

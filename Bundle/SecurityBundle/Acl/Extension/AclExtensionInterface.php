@@ -114,12 +114,17 @@ interface AclExtensionInterface
     public function removeServiceBits($mask);
 
     /**
-     * Gets the access level by the given mask
+     * Gets the access level for one permission encoded in the given mask.
+     * If $permission argument is null the $mask argument must contains a bitmask for one and only one permission only;
+     * otherwise, the result of this method is not predicted.
+     * If $mask argument contains a bitmask for several permissions you must specify a permission
+     * for which the access level you need to check.
      *
      * @param int $mask
+     * @param string $permission
      * @return int Can be one of AccessLevel::*_LEVEL constants
      */
-    public function getAccessLevel($mask);
+    public function getAccessLevel($mask, $permission = null);
 
     /**
      * Gets all permissions supported by this ACL extension
