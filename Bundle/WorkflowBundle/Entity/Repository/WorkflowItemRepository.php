@@ -14,17 +14,18 @@ class WorkflowItemRepository extends EntityRepository
      * @param string $entityClass
      * @param string|array $entityIdentifier
      * @param string|null $workflowName
+     * @param string|null $workflowType
      * @return array
      */
-    public function findByEntityMetadata($entityClass, $entityIdentifier, $workflowName = null)
+    public function findByEntityMetadata($entityClass, $entityIdentifier, $workflowName = null, $workflowType = null)
     {
         $entityIdentifierString = WorkflowBindEntity::convertIdentifiersToString($entityIdentifier);
 
         $qb = $this->getEntityManager()
             ->createQueryBuilder()
             ->select('wi')
-            ->from('OroWorkflowBundle:WorkflowBindEntity', 'wbe')
-            ->innerJoin('OroWorkflowBundle:WorkflowItem', 'wi', 'WITH', 'wi = wbe.workflowItem')
+            ->from('OroWorkflowBundle:WorkflowItem', 'wi')
+            ->innerJoin('wi.bindEntities', 'wbe')
             ->where('wbe.entityClass = :entityClass')
             ->andWhere('wbe.entityId = :entityId')
             ->setParameter('entityClass', $entityClass)
@@ -33,6 +34,12 @@ class WorkflowItemRepository extends EntityRepository
         if ($workflowName) {
             $qb->andWhere('wi.workflowName = :workflowName')
                 ->setParameter('workflowName', $workflowName);
+        }
+
+        if ($workflowType) {
+            $qb->innerJoin('wi.definition', 'wd')
+                ->andWhere('wd.type = :workflowType')
+                ->setParameter('workflowType', $workflowType);
         }
 
         return $qb->getQuery()->getResult();

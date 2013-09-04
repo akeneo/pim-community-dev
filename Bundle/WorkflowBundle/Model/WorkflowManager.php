@@ -176,9 +176,10 @@ class WorkflowManager
      *
      * @param object $entity
      * @param string|null $workflowName
+     * @param string|null $workflowType
      * @return WorkflowItem[]
      */
-    public function getWorkflowItemsByEntity($entity, $workflowName = null)
+    public function getWorkflowItemsByEntity($entity, $workflowName = null, $workflowType = null)
     {
         $entityClass = $this->doctrineHelper->getEntityClass($entity);
         $entityIdentifier = $this->doctrineHelper->getEntityIdentifier($entity);
@@ -186,7 +187,12 @@ class WorkflowManager
         /** @var WorkflowItemRepository $workflowItemsRepository */
         $workflowItemsRepository = $this->registry->getRepository('OroWorkflowBundle:WorkflowItem');
 
-        return $workflowItemsRepository->findByEntityMetadata($entityClass, $entityIdentifier, $workflowName);
+        return $workflowItemsRepository->findByEntityMetadata(
+            $entityClass,
+            $entityIdentifier,
+            $workflowName,
+            $workflowType
+        );
     }
 
     /**

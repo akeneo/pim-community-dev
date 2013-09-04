@@ -148,10 +148,11 @@ class WidgetController extends Controller
     public function workflowItemsAction($entityClass, $entityId)
     {
         $entity = $this->getEntityReference($entityClass, $entityId);
+        $workflowType = $this->getRequest()->get('workflowType', Workflow::TYPE_WIZARD);
 
         /** @var WorkflowManager $workflowManager */
         $workflowManager = $this->get('oro_workflow.manager');
-        $workflowItems = $workflowManager->getWorkflowItemsByEntity($entity);
+        $workflowItems = $workflowManager->getWorkflowItemsByEntity($entity, null, $workflowType);
 
         $workflowItemsData = array();
         /** @var WorkflowItem $workflowItem */
