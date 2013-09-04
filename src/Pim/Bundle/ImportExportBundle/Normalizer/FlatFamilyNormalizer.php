@@ -28,7 +28,7 @@ class FlatFamilyNormalizer extends FamilyNormalizer
      *
      * @param Family $family
      *
-     * @return array
+     * @return string
      */
     protected function normalizeLabel(Family $family)
     {
@@ -46,7 +46,7 @@ class FlatFamilyNormalizer extends FamilyNormalizer
      *
      * @param Family $family
      *
-     * @return array
+     * @return string
      */
     protected function normalizeAttributes(Family $family)
     {
@@ -60,7 +60,7 @@ class FlatFamilyNormalizer extends FamilyNormalizer
      *
      * @param Family $family
      *
-     * @return array
+     * @return string
      */
     protected function normalizeRequirements(Family $family)
     {
