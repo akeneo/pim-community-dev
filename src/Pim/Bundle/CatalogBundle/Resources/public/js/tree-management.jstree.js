@@ -129,6 +129,17 @@ Pim.tree.manage = function(elementId) {
                 });
             });
         })
+        .bind('select_node.jstree', function (e, data) {
+            var id = data.rslt.obj.attr('id').replace('node_','');
+            $.ajax({
+                async: false,
+                type: 'GET',
+                url: Routing.generate('pim_catalog_categorytree_edit', { id: id }),
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+        })
         .bind('loaded.jstree', function(event, data) {
             if (event.namespace == 'jstree') {
                 data.inst.get_tree_select().select2({ width: '100%' });
