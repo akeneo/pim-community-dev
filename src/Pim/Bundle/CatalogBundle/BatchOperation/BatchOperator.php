@@ -15,21 +15,47 @@ use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperation;
  */
 class BatchOperator
 {
+    /**
+     * @var array $productIds
+     */
     protected $productIds = array();
 
+    /**
+     * @var BatchOperation $operation
+     */
     protected $operation;
 
+    /**
+     * @var string $operationAlias
+     */
     protected $operationAlias;
 
+    /**
+     * @var FlexibleManager $manager
+     */
     protected $manager;
 
+    /**
+     * @var BatchOperation[] $operations
+     */
     protected $operations = array();
 
+    /**
+     * @param FlexibleManager $manager
+     */
     public function __construct(FlexibleManager $manager)
     {
         $this->manager = $manager;
     }
 
+    /**
+     * Register a batch operation into the operator
+     *
+     * @param string         $alias
+     * @param BatchOperation $operation
+     *
+     * @throw \InvalidArgumentException
+     */
     public function registerBatchOperation($alias, BatchOperation $operation)
     {
         if (array_key_exists($alias, $this->operations)) {
