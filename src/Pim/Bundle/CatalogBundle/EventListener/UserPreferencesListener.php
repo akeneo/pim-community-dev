@@ -63,6 +63,11 @@ class UserPreferencesListener implements EventSubscriber
         }
     }
 
+    /**
+     * Before remove
+     *
+     * @param LifecycleEventArgs $args
+     */
     public function preRemove(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
@@ -107,7 +112,7 @@ class UserPreferencesListener implements EventSubscriber
             $userManager->getStorageManager()->persist($attribute);
         }
     }
-    
+
     /**
      * Remove a value as user attribute option for removed locale or removed scope (=channel)
      *
@@ -120,7 +125,7 @@ class UserPreferencesListener implements EventSubscriber
         $flexRepository = $userManager->getFlexibleRepository();
         $attribute = $flexRepository->findAttributeByCode($attributeCode);
         $storageManager = $userManager->getStorageManager();
-        
+
         if ($attribute) {
             foreach ($attribute->getOptions() as $option) {
                 if ($value == $option->getOptionValue()->getValue()) {
@@ -135,7 +140,7 @@ class UserPreferencesListener implements EventSubscriber
             if (!isset($defaultOption)) {
                 throw new \LogicException(sprintf('Tried to delete last %s attribute option', $attributeCode));
             }
-            
+
             $usersQB = $flexRepository->findByWithAttributesQB(array($attributeCode));
             $flexRepository->applyFilterByAttribute($usersQB, $attributeCode, array($removedOption->getOptionValue()->getId()), 'IN');
             $users = $usersQB->getQuery()->getResult();
@@ -144,9 +149,9 @@ class UserPreferencesListener implements EventSubscriber
                 $value->setData($defaultOption);
                 $storageManager->persist($value);
             }
-            
+
             $attribute->removeOption($removedOption);
-            
+
             $storageManager->persist($attribute);
         }
     }
