@@ -1,0 +1,53 @@
+{% set blockId = 'workflow-items-container-' ~ random() %}
+<div class="widget-content workflow-items" id="{{ blockId }}">
+    <style type="text/css">
+        .widget-content.workflow-items {
+            margin: 20px 15px;
+        }
+    </style>
+    {% if workflows_items_data|length %}
+        <table class="table-hover table table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>{% trans %}Workflow Name{% endtrans %}</th>
+                    <th>{% trans %}Current Step{% endtrans %}</th>
+                    <th>{% trans %}Status{% endtrans %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in workflows_items_data %}
+                    {% set enabled = data.workflow.enabled %}
+                    {% set closed = data.workflowItem.closed %}
+                    {% set show_link = enabled and not closed %}
+                    <tr>
+                        <td>
+                            {% if show_link %}
+                                <a href="{{ path('oro_workflow_step_edit', { id : data.workflowItem.id }) }}">{{ data.workflow.label }}</a>
+                            {% else %}
+                                {{ data.workflow.label }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if show_link %}
+                                <a href="{{ path('oro_workflow_step_edit', { id : data.workflowItem.id }) }}">{{ data.currentStep.label }}</a>
+                            {% else %}
+                                {{ data.currentStep.label }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if not enabled %}
+                                {% trans %}Disabled{% endtrans %}
+                            {% elseif closed %}
+                                {% trans %}Closed{% endtrans %}
+                            {% else %}
+                                {% trans %}Active{% endtrans %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>{% trans %}No workflow items are available{% endtrans %}</p>
+    {% endif %}
+</div>

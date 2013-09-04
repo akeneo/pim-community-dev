@@ -1,6 +1,6 @@
 parameters:
     oro_workflow.context_accessor.class: Oro\Bundle\WorkflowBundle\Model\ContextAccessor
-    oro_workflow.metadata_manager.class: Oro\Bundle\WorkflowBundle\Model\MetadataManager
+    oro_workflow.doctrine_helper.class: Oro\Bundle\WorkflowBundle\Model\DoctrineHelper
     oro_workflow.registry.class: Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry
     oro_workflow.manager.class: Oro\Bundle\WorkflowBundle\Model\WorkflowManager
     oro_workflow.workflow_result.class: Oro\Bundle\WorkflowBundle\Model\WorkflowResult
@@ -9,8 +9,8 @@ services:
     oro_workflow.context_accessor:
         class: %oro_workflow.context_accessor.class%
 
-    oro_workflow.metadata_manager:
-        class: %oro_workflow.metadata_manager.class%
+    oro_workflow.doctrine_helper:
+        class: %oro_workflow.doctrine_helper.class%
         arguments:
             - @doctrine
 
@@ -25,4 +25,4 @@ services:
         arguments:
             - @doctrine
             - @oro_workflow.registry
-            - @oro_workflow.metadata_manager
+            - @oro_workflow.doctrine_helper

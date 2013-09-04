@@ -29,7 +29,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $metadataManager;
+    protected $doctrineHelper;
 
     /**
      * @var EntityAttributeNormalizer
@@ -45,7 +45,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->metadataManager = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\MetadataManager')
+        $this->doctrineHelper = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\DoctrineHelper')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -59,7 +59,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->normalizer = new EntityAttributeNormalizer($this->registry, $this->metadataManager);
+        $this->normalizer = new EntityAttributeNormalizer($this->registry, $this->doctrineHelper);
     }
 
     /**
@@ -141,7 +141,7 @@ class EntityAttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(get_class($attributeValue)));
 
         $expectedId = array('id' => 123);
-        $this->metadataManager->expects($this->once())
+        $this->doctrineHelper->expects($this->once())
             ->method('getEntityIdentifier')
             ->with($attributeValue)
             ->will($this->returnValue($expectedId));

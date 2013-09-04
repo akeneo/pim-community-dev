@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity;
-use Oro\Bundle\WorkflowBundle\Model\MetadataManager;
+use Oro\Bundle\WorkflowBundle\Model\DoctrineHelper;
 
 /**
  * Runs binding of workflow items with entities
@@ -17,18 +17,18 @@ class EntityBinder
     protected $workflowRegistry;
 
     /**
-     * @var MetadataManager
+     * @var DoctrineHelper
      */
-    protected $metadataManager;
+    protected $doctrineHelper;
 
     /**
      * @param WorkflowRegistry $workflowRegistry
-     * @param MetadataManager $metadataManager
+     * @param DoctrineHelper $doctrineHelper
      */
-    public function __construct(WorkflowRegistry $workflowRegistry, MetadataManager $metadataManager)
+    public function __construct(WorkflowRegistry $workflowRegistry, DoctrineHelper $doctrineHelper)
     {
         $this->workflowRegistry  = $workflowRegistry;
-        $this->metadataManager = $metadataManager;
+        $this->doctrineHelper = $doctrineHelper;
     }
 
     /**
@@ -69,8 +69,8 @@ class EntityBinder
     protected function bindEntity(WorkflowItem $workflowItem, $entity)
     {
         $bindEntity = new WorkflowBindEntity();
-        $bindEntity->setEntityClass($this->metadataManager->getEntityClass($entity));
-        $bindEntity->setEntityId($this->metadataManager->getEntityIdentifier($entity));
+        $bindEntity->setEntityClass($this->doctrineHelper->getEntityClass($entity));
+        $bindEntity->setEntityId($this->doctrineHelper->getEntityIdentifier($entity));
 
         if (!$workflowItem->hasBindEntity($bindEntity)) {
             $workflowItem->addBindEntity($bindEntity);

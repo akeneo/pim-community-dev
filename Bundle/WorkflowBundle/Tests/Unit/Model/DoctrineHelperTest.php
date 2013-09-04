@@ -4,11 +4,11 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
 use Doctrine\Common\Persistence\Proxy;
 
-use Oro\Bundle\WorkflowBundle\Model\MetadataManager;
+use Oro\Bundle\WorkflowBundle\Model\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Stub\ItemStub;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Stub\__CG__\ItemStubProxy;
 
-class MetadataManagerTest extends \PHPUnit_Framework_TestCase
+class DoctrineHelperTest extends \PHPUnit_Framework_TestCase
 {
     const TEST_IDENTIFIER = 42;
 
@@ -18,9 +18,9 @@ class MetadataManagerTest extends \PHPUnit_Framework_TestCase
     protected $registry;
 
     /**
-     * @var MetadataManager
+     * @var DoctrineHelper
      */
-    protected $metadataManager;
+    protected $doctrineHelper;
 
     protected function setUp()
     {
@@ -28,13 +28,13 @@ class MetadataManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
 
-        $this->metadataManager = new MetadataManager($this->registry);
+        $this->doctrineHelper = new DoctrineHelper($this->registry);
     }
 
     protected function tearDown()
     {
         unset($this->registry);
-        unset($this->metadataManager);
+        unset($this->doctrineHelper);
     }
 
     /**
@@ -44,7 +44,7 @@ class MetadataManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetEntityClass($entity, $expectedClass)
     {
-        $this->assertEquals($expectedClass, $this->metadataManager->getEntityClass($entity));
+        $this->assertEquals($expectedClass, $this->doctrineHelper->getEntityClass($entity));
     }
 
     /**
@@ -99,20 +99,24 @@ class MetadataManagerTest extends \PHPUnit_Framework_TestCase
             ->with($class)
             ->will($this->returnValue($entityManager));
 
-        $this->assertEquals(self::TEST_IDENTIFIER, $this->metadataManager->getEntityIdentifier($entity));
+        $this->assertEquals(self::TEST_IDENTIFIER, $this->doctrineHelper->getEntityIdentifier($entity));
     }
 
-    /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException
-     * @expectedExceptionMessage Entity class "ItemStubProxy" is not manageable.
-     */
     public function testGetEntityIdentifierNotManageableEntity()
     {
-        $this->registry->expects($this->any())
+        $entity = $this->getMock('FooEntity');
+
+        $this->setExpectedException(
+            'Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException',
+            sprintf('Entity class "%s" is not manageable', get_class($entity))
+        );
+
+        $this->registry->expects($this->once())
             ->method('getManagerForClass')
+            ->with(get_class($entity))
             ->will($this->returnValue(null));
 
-        $this->metadataManager->getEntityIdentifier(new ItemStubProxy());
+        $this->doctrineHelper->getEntityIdentifier($entity);
     }
 
     /**
@@ -145,16 +149,16 @@ class MetadataManagerTest extends \PHPUnit_Framework_TestCase
                 ->getMock();
             $this->registry->expects($this->once())
                 ->method('getManagerForClass')
-                ->with($this->metadataManager->getEntityClass($entity))
+                ->with($this->doctrineHelper->getEntityClass($entity))
                 ->will($this->returnValue($entityManager));
         } else {
             $this->registry->expects($this->once())
                 ->method('getManagerForClass')
-                ->with($this->metadataManager->getEntityClass($entity))
+                ->with($this->doctrineHelper->getEntityClass($entity))
                 ->will($this->returnValue(null));
         }
 
-        $this->assertEquals($manageable, $this->metadataManager->isManageableEntity($entity));
+        $this->assertEquals($manageable, $this->doctrineHelper->isManageableEntity($entity));
     }
 
     /**
@@ -171,6 +175,32 @@ class MetadataManagerTest extends \PHPUnit_Framework_TestCase
                 'entity'     => new \DateTime('now'),
                 'manageable' => false
             ),
+        );
+    }
+
+    public function testGetEntityReference()
+    {
+        $expectedResult = $this->getMock('MockEntityReference');
+        $entityClass = 'MockEntity';
+        $entityId = 100;
+
+        $entityManager = $this->getMockBuilder('Doctrine\Orm\EntityManager')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getReference'))
+            ->getMock();
+
+        $this->registry->expects($this->any())
+            ->method('getManagerForClass')
+            ->with($entityClass)
+            ->will($this->returnValue($entityManager));
+
+        $entityManager->expects($this->once())->method('getReference')
+            ->with($entityClass, $entityId)
+            ->will($this->returnValue($expectedResult));
+
+        $this->assertEquals(
+            $expectedResult,
+            $this->doctrineHelper->getEntityReference($entityClass, $entityId)
         );
     }
 }

@@ -5,24 +5,24 @@ namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
-use Oro\Bundle\WorkflowBundle\Model\MetadataManager;
+use Oro\Bundle\WorkflowBundle\Model\DoctrineHelper;
 
 class EqualTo extends AbstractComparison
 {
     /**
-     * @var MetadataManager
+     * @var DoctrineHelper
      */
-    protected $metadataManager;
+    protected $doctrineHelper;
 
     /**
-     * @param MetadataManager $metadataManager
+     * @param DoctrineHelper $doctrineHelper
      * @param ContextAccessor $contextAccessor
      */
-    public function __construct(ContextAccessor $contextAccessor, MetadataManager $metadataManager)
+    public function __construct(ContextAccessor $contextAccessor, DoctrineHelper $doctrineHelper)
     {
         parent::__construct($contextAccessor);
 
-        $this->metadataManager = $metadataManager;
+        $this->doctrineHelper = $doctrineHelper;
     }
 
     /**
@@ -35,15 +35,15 @@ class EqualTo extends AbstractComparison
     protected function doCompare($left, $right)
     {
         if (is_object($left) && is_object($right)) {
-            $leftClass = $this->metadataManager->getEntityClass($left);
-            $rightClass = $this->metadataManager->getEntityClass($right);
+            $leftClass = $this->doctrineHelper->getEntityClass($left);
+            $rightClass = $this->doctrineHelper->getEntityClass($right);
 
             if ($leftClass == $rightClass
-                && $this->metadataManager->isManageableEntity($left)
-                && $this->metadataManager->isManageableEntity($right)
+                && $this->doctrineHelper->isManageableEntity($left)
+                && $this->doctrineHelper->isManageableEntity($right)
             ) {
-                $leftIdentifier = $this->metadataManager->getEntityIdentifier($left);
-                $rightIdentifier = $this->metadataManager->getEntityIdentifier($right);
+                $leftIdentifier = $this->doctrineHelper->getEntityIdentifier($left);
+                $rightIdentifier = $this->doctrineHelper->getEntityIdentifier($right);
 
                 return $leftIdentifier == $rightIdentifier;
             }

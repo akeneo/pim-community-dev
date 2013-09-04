@@ -5,10 +5,11 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Proxy;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException;
 
-class MetadataManager
+class DoctrineHelper
 {
     /**
      * @param ManagerRegistry $registry
@@ -34,18 +35,13 @@ class MetadataManager
      */
     public function getEntityIdentifier($entity)
     {
-        $entityClass = $this->getEntityClass($entity);
-        if (!$this->isManageableEntity($entity)) {
-            throw new NotManageableEntityException($entityClass);
-        }
-
         if ($entity instanceof Proxy && !$entity->__isInitialized()) {
             $identifierProperty = new \ReflectionProperty(get_class($entity), '_identifier');
             $identifierProperty->setAccessible(true);
             $identifier = $identifierProperty->getValue($entity);
         } else {
-            $entityManager = $this->registry->getManagerForClass($entityClass);
-            $metadata = $entityManager->getClassMetadata($entityClass);
+            $entityManager = $this->getEntityManager($entity);
+            $metadata = $entityManager->getClassMetadata(get_class($entity));
             $identifier = $metadata->getIdentifierValues($entity);
         }
 
@@ -62,5 +58,37 @@ class MetadataManager
         $entityManager = $this->registry->getManagerForClass($entityClass);
 
         return !empty($entityManager);
+    }
+
+    /**
+     * @param string $entityOrClass
+     * @return EntityManager
+     * @throws NotManageableEntityException
+     */
+    protected function getEntityManager($entityOrClass)
+    {
+        if (is_object($entityOrClass)) {
+            $entityClass = $this->getEntityClass($entityOrClass);
+        } else {
+            $entityClass = $entityOrClass;
+        }
+        $entityManager = $this->registry->getManagerForClass($entityClass);
+        if (!$entityManager) {
+            throw new NotManageableEntityException($entityClass);
+        }
+
+        return $entityManager;
+    }
+
+    /**
+     * @param string $entityClass
+     * @param mixed $entityId
+     * @return mixed
+     * @throws NotManageableEntityException
+     */
+    public function getEntityReference($entityClass, $entityId)
+    {
+        $entityManager = $this->getEntityManager($entityClass);
+        return $entityManager->getReference($entityClass, $entityId);
     }
 }

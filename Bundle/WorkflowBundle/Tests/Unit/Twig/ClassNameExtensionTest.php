@@ -18,22 +18,22 @@ class ClassNameExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $metadataManager;
+    protected $doctrineHelper;
 
     protected function setUp()
     {
-        $this->metadataManager = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\MetadataManager')
+        $this->doctrineHelper = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\DoctrineHelper')
             ->disableOriginalConstructor()
             ->setMethods(array('getEntityClass'))
             ->getMock();
 
-        $this->twigExtension = new ClassNameExtension($this->metadataManager);
+        $this->twigExtension = new ClassNameExtension($this->doctrineHelper);
     }
 
     protected function tearDown()
     {
         unset($this->twigExtension);
-        unset($this->metadataManager);
+        unset($this->doctrineHelper);
     }
 
     public function testGetFunctions()
@@ -56,12 +56,12 @@ class ClassNameExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetClassName($expectedClass, $object)
     {
         if (is_object($object)) {
-            $this->metadataManager->expects($this->once())
+            $this->doctrineHelper->expects($this->once())
                 ->method('getEntityClass')
                 ->with($object)
                 ->will($this->returnValue(self::TEST_CLASS));
         } else {
-            $this->metadataManager->expects($this->never())
+            $this->doctrineHelper->expects($this->never())
                 ->method('getEntityClass');
         }
 

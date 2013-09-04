@@ -6,7 +6,7 @@ services:
     oro_workflow.twig.extension.class_name:
         class: %oro_workflow.twig.extension.class_name.class%
         arguments:
-            - @oro_workflow.metadata_manager
+            - @oro_workflow.doctrine_helper
         tags:
             - { name: twig.extension }
 

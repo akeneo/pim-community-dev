@@ -5,22 +5,22 @@ namespace Oro\Bundle\WorkflowBundle\Serializer\Handler;
 use JMS\Serializer\JsonSerializationVisitor;
 use JMS\Serializer\Context;
 
-use Oro\Bundle\WorkflowBundle\Model\MetadataManager;
+use Oro\Bundle\WorkflowBundle\Model\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowResult;
 
 class WorkflowResultHandler
 {
     /**
-     * @var MetadataManager $metadataManager
+     * @var DoctrineHelper $doctrineHelper
      */
-    protected $metadataManager;
+    protected $doctrineHelper;
 
     /**
-     * @param MetadataManager $metadataManager
+     * @param DoctrineHelper $doctrineHelper
      */
-    public function __construct(MetadataManager $metadataManager)
+    public function __construct(DoctrineHelper $doctrineHelper)
     {
-        $this->metadataManager = $metadataManager;
+        $this->doctrineHelper = $doctrineHelper;
     }
 
     /**
@@ -51,8 +51,8 @@ class WorkflowResultHandler
     {
         $result = array();
         foreach ($values as $key => $value) {
-            if (is_object($value) && $this->metadataManager->isManageableEntity($value)) {
-                $result[$key] = $this->metadataManager->getEntityIdentifier($value);
+            if (is_object($value) && $this->doctrineHelper->isManageableEntity($value)) {
+                $result[$key] = $this->doctrineHelper->getEntityIdentifier($value);
             } elseif (is_array($value) || $value instanceof \Traversable) {
                 $result[$key] = $this->convertToPlainArray($value);
             } else {

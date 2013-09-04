@@ -2,23 +2,23 @@
 
 namespace Oro\Bundle\WorkflowBundle\Twig;
 
-use Oro\Bundle\WorkflowBundle\Model\MetadataManager;
+use Oro\Bundle\WorkflowBundle\Model\DoctrineHelper;
 
 class ClassNameExtension extends \Twig_Extension
 {
     const NAME = 'oro_class_name';
 
     /**
-     * @var MetadataManager
+     * @var DoctrineHelper
      */
-    protected $metadataManager;
+    protected $doctrineHelper;
 
     /**
-     * @param MetadataManager $metadataManager
+     * @param DoctrineHelper $doctrineHelper
      */
-    public function __construct(MetadataManager $metadataManager)
+    public function __construct(DoctrineHelper $doctrineHelper)
     {
-        $this->metadataManager = $metadataManager;
+        $this->doctrineHelper = $doctrineHelper;
     }
 
     /**
@@ -43,7 +43,7 @@ class ClassNameExtension extends \Twig_Extension
             return null;
         }
 
-        return $this->metadataManager->getEntityClass($object);
+        return $this->doctrineHelper->getEntityClass($object);
     }
 
     /**

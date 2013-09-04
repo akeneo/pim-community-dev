@@ -9,14 +9,14 @@ use Symfony\Component\PropertyAccess\PropertyPath;
 
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
 use Oro\Bundle\WorkflowBundle\Model\Condition;
-use Oro\Bundle\WorkflowBundle\Model\MetadataManager;
+use Oro\Bundle\WorkflowBundle\Model\DoctrineHelper;
 
 class EqualToTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var MetadataManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $metadataManager;
+    protected $doctrineHelper;
 
     /**
      * @var Condition\EqualTo
@@ -25,8 +25,8 @@ class EqualToTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->metadataManager = $this->getMockMetadataManager();
-        $this->condition = new Condition\EqualTo(new ContextAccessor(), $this->metadataManager);
+        $this->doctrineHelper = $this->getMockDoctrineHelper();
+        $this->condition = new Condition\EqualTo(new ContextAccessor(), $this->doctrineHelper);
     }
 
     /**
@@ -50,14 +50,14 @@ class EqualToTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getMockMetadataManager()
+    protected function getMockDoctrineHelper()
     {
-        if (!$this->metadataManager) {
-            $this->metadataManager = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\MetadataManager')
+        if (!$this->doctrineHelper) {
+            $this->doctrineHelper = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\DoctrineHelper')
                 ->disableOriginalConstructor()
                 ->getMock();
         }
-        return $this->metadataManager;
+        return $this->doctrineHelper;
     }
 
     /**
@@ -72,13 +72,13 @@ class EqualToTest extends \PHPUnit_Framework_TestCase
             'scalars_equal' => array(
                 'options' => $options,
                 'context' => array('foo' => 'value', 'bar' => 'value'),
-                'expectedCalls' => array('metadataManager' => array()),
+                'expectedCalls' => array('doctrineHelper' => array()),
                 'expectedResult' => true
             ),
             'scalars_not_equal' => array(
                 'options' => $options,
                 'context' => array('foo' => 'fooValue', 'bar' => 'barValue'),
-                'expectedCalls' => array('metadataManager' => array()),
+                'expectedCalls' => array('doctrineHelper' => array()),
                 'expectedResult' => false
             ),
             'objects_equal' => array(
@@ -88,7 +88,7 @@ class EqualToTest extends \PHPUnit_Framework_TestCase
                     'bar' => $right = $this->createMockObject(),
                 ),
                 'expectedCalls' => array(
-                    'metadataManager' => array(
+                    'doctrineHelper' => array(
                         array('getEntityClass', array($left), '\stdClass'),
                         array('getEntityClass', array($right), '\stdClass'),
                     ),
@@ -102,7 +102,7 @@ class EqualToTest extends \PHPUnit_Framework_TestCase
                     'bar' => $right = $this->createMockObject(array('foo' => 'baz')),
                 ),
                 'expectedCalls' => array(
-                    'metadataManager' => array(
+                    'doctrineHelper' => array(
                         array('getEntityClass', array($left), '\stdClass'),
                         array('getEntityClass', array($right), '\stdClass'),
                         array('isManageableEntity', array($left), false),
@@ -117,7 +117,7 @@ class EqualToTest extends \PHPUnit_Framework_TestCase
                     'bar' => $right = $this->createMockObject(),
                 ),
                 'expectedCalls' => array(
-                    'metadataManager' => array(
+                    'doctrineHelper' => array(
                         array('getEntityClass', array($left), '\stdClass'),
                         array('getEntityClass', array($right), '\stdClass'),
                         array('isManageableEntity', array($left), true),
@@ -133,7 +133,7 @@ class EqualToTest extends \PHPUnit_Framework_TestCase
                     'bar' => $right = $this->createMockObject(),
                 ),
                 'expectedCalls' => array(
-                    'metadataManager' => array(
+                    'doctrineHelper' => array(
                         array('getEntityClass', array($left), '\stdClass'),
                         array('getEntityClass', array($right), '\stdClass'),
                         array('isManageableEntity', array($left), true),
@@ -150,7 +150,7 @@ class EqualToTest extends \PHPUnit_Framework_TestCase
                     'foo' => $left = $this->createMockObject(), 'bar' => $right = $this->createMockObject(),
                 ),
                 'expectedCalls' => array(
-                    'metadataManager' => array(
+                    'doctrineHelper' => array(
                         array('getEntityClass', array($left), '\stdClass'),
                         array('getEntityClass', array($right), '\stdClass'),
                         array('isManageableEntity', array($left), true),

@@ -12,7 +12,7 @@ class WorkflowResultHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $metadataManager;
+    protected $doctrineHelper;
 
     /**
      * @var WorkflowResultHandler
@@ -21,23 +21,23 @@ class WorkflowResultHandlerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->metadataManager = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\MetadataManager')
+        $this->doctrineHelper = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\DoctrineHelper')
             ->disableOriginalConstructor()
             ->setMethods(array('isManageableEntity', 'getEntityIdentifier'))
             ->getMock();
-        $this->handler = new WorkflowResultHandler($this->metadataManager);
+        $this->handler = new WorkflowResultHandler($this->doctrineHelper);
     }
 
     /**
      * @dataProvider workflowResultToJsonDataProvider
      *
      * @param WorkflowResult $result
-     * @param array $metadataManagerExpectedCalls
+     * @param array $doctrineHelperExpectedCalls
      * @param mixed $expectedResult
      */
     public function testWorkflowResultToJson(
         WorkflowResult $result,
-        array $metadataManagerExpectedCalls,
+        array $doctrineHelperExpectedCalls,
         $expectedResult
     ) {
         $visitor = $this->getMockBuilder('JMS\Serializer\JsonSerializationVisitor')
@@ -47,13 +47,13 @@ class WorkflowResultHandlerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()->getMock();
         $context->expects($this->never())->method($this->anything());
 
-        if (!$metadataManagerExpectedCalls) {
-            $this->metadataManager->expects($this->never())->method($this->anything());
+        if (!$doctrineHelperExpectedCalls) {
+            $this->doctrineHelper->expects($this->never())->method($this->anything());
         } else {
             $index = 0;
-            foreach ($metadataManagerExpectedCalls as $expectedCall) {
+            foreach ($doctrineHelperExpectedCalls as $expectedCall) {
                 list($method, $arguments, $stub) = array_values($expectedCall);
-                $mock = $this->metadataManager->expects($this->at($index++))->method($method);
+                $mock = $this->doctrineHelper->expects($this->at($index++))->method($method);
                 $mock = call_user_func_array(array($mock, 'with'), $arguments);
                 $mock->will($stub);
             }
@@ -91,7 +91,7 @@ class WorkflowResultHandlerTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                'metadataManagerExpectedCalls' => array(
+                'doctrineHelperExpectedCalls' => array(
                     array(
                         'method' => 'isManageableEntity',
                         'with' => array($this->isInstanceOf('Doctrine\Common\Collections\ArrayCollection')),
@@ -112,7 +112,7 @@ class WorkflowResultHandlerTest extends \PHPUnit_Framework_TestCase
                         'foo' => $object,
                     )
                 ),
-                'metadataManagerExpectedCalls' => array(
+                'doctrineHelperExpectedCalls' => array(
                     array(
                         'method' => 'isManageableEntity',
                         'with' => array($object),
@@ -131,7 +131,7 @@ class WorkflowResultHandlerTest extends \PHPUnit_Framework_TestCase
                         'foo' => $entity
                     )
                 ),
-                'metadataManagerExpectedCalls' => array(
+                'doctrineHelperExpectedCalls' => array(
                     array(
                         'method' => 'isManageableEntity',
                         'with' => array($entity),

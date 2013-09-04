@@ -18,7 +18,7 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $metadataManager;
+    protected $doctrineHelper;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -46,7 +46,7 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('getWorkflow'))
             ->disableOriginalConstructor()
             ->getMock();
-        $this->metadataManager = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\MetadataManager')
+        $this->doctrineHelper = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\DoctrineHelper')
             ->disableOriginalConstructor()
             ->getMock();
         $this->workflowItem = $this->getMock('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem');
@@ -57,7 +57,7 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
             array(new StepManager(), new AttributeManager(), new TransitionManager())
         );
 
-        $this->binder = new EntityBinder($this->workflowRegistry, $this->metadataManager);
+        $this->binder = new EntityBinder($this->workflowRegistry, $this->doctrineHelper);
     }
 
     public function testBindEntitiesNotModified()
@@ -115,16 +115,16 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
         $this->workflowData->expects($this->once())->method('getValues')->with($bindAttributeNames)
             ->will($this->returnValue(array('foo' => $fooEntity, 'bar' => $barEntity)));
 
-        $this->metadataManager->expects($this->at(0))->method('getEntityClass')
+        $this->doctrineHelper->expects($this->at(0))->method('getEntityClass')
             ->with($fooEntity)
             ->will($this->returnValue(get_class($fooEntity)));
-        $this->metadataManager->expects($this->at(1))->method('getEntityIdentifier')
+        $this->doctrineHelper->expects($this->at(1))->method('getEntityIdentifier')
             ->with($fooEntity)
             ->will($this->returnValue($fooIds));
-        $this->metadataManager->expects($this->at(2))->method('getEntityClass')
+        $this->doctrineHelper->expects($this->at(2))->method('getEntityClass')
             ->with($barEntity)
             ->will($this->returnValue(get_class($barEntity)));
-        $this->metadataManager->expects($this->at(3))->method('getEntityIdentifier')
+        $this->doctrineHelper->expects($this->at(3))->method('getEntityIdentifier')
             ->with($barEntity)
             ->will($this->returnValue($barIds));
 

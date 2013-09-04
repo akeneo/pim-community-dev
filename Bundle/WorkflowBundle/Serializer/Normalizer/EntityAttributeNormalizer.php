@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Oro\Bundle\WorkflowBundle\Exception\SerializerException;
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
-use Oro\Bundle\WorkflowBundle\Model\MetadataManager;
+use Oro\Bundle\WorkflowBundle\Model\DoctrineHelper;
 
 class EntityAttributeNormalizer implements AttributeNormalizer
 {
@@ -18,18 +18,18 @@ class EntityAttributeNormalizer implements AttributeNormalizer
     protected $registry;
 
     /**
-     * @var MetadataManager
+     * @var DoctrineHelper
      */
-    protected $metadataManager;
+    protected $doctrineHelper;
 
     /**
      * @param ManagerRegistry $registry
-     * @param MetadataManager $metadataManager
+     * @param DoctrineHelper $doctrineHelper
      */
-    public function __construct(ManagerRegistry $registry, MetadataManager $metadataManager)
+    public function __construct(ManagerRegistry $registry, DoctrineHelper $doctrineHelper)
     {
         $this->registry = $registry;
-        $this->metadataManager = $metadataManager;
+        $this->doctrineHelper = $doctrineHelper;
     }
 
     /**
@@ -43,7 +43,7 @@ class EntityAttributeNormalizer implements AttributeNormalizer
 
         $this->validateAttributeValue($workflow, $attribute, $attributeValue);
 
-        return $this->metadataManager->getEntityIdentifier($attributeValue);
+        return $this->doctrineHelper->getEntityIdentifier($attributeValue);
     }
 
     /**

@@ -36,7 +36,7 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $metadataManager;
+    protected $doctrineHelper;
 
     protected function setUp()
     {
@@ -50,7 +50,7 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('getWorkflow', 'getWorkflowsByEntityClass'))
             ->getMock();
 
-        $this->metadataManager = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\MetadataManager')
+        $this->doctrineHelper = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\DoctrineHelper')
             ->disableOriginalConstructor()
             ->setMethods(array('getEntityIdentifier'))
             ->getMock();
@@ -58,7 +58,7 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
         $this->workflowManager = new WorkflowManager(
             $this->registry,
             $this->workflowRegistry,
-            $this->metadataManager
+            $this->doctrineHelper
         );
     }
 
@@ -66,7 +66,7 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
     {
         unset($this->registry);
         unset($this->workflowRegistry);
-        unset($this->metadataManager);
+        unset($this->doctrineHelper);
         unset($this->workflowManager);
     }
 
@@ -275,7 +275,7 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
         $entityClass = get_class($entity);
         $entityId = 1;
 
-        $this->metadataManager->expects($this->any())
+        $this->doctrineHelper->expects($this->any())
             ->method('getEntityIdentifier')
             ->with($entity)
             ->will($this->returnValue($entityId));
@@ -358,7 +358,7 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
         $entityClass = get_class($entity);
         $entityId = 1;
 
-        $this->metadataManager->expects($this->any())
+        $this->doctrineHelper->expects($this->any())
             ->method('getEntityIdentifier')
             ->with($entity)
             ->will($this->returnValue($entityId));
