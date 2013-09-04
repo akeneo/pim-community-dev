@@ -7,16 +7,10 @@ Pim.tree.manage = function(elementId) {
     if (!$el || !$el.length || !_.isObject($el)) {
         throw new Error('Unable to instantiate tree on this element');
     }
-    var selectedNode = $el.attr('data-node-id') || -1,
-    noTreeMessage    = $el.attr('data-no-tree-message'),
-    assetsPath       = $el.attr('data-assets-path'),
-    listtreeUrl      = $el.attr('data-listtree-url'),
-    childrenUrl      = $el.attr('data-children-url'),
-    editUrl          = $el.attr('data-edit-url'),
-    moveUrl          = $el.attr('data-move-url'),
-    editLabel        = $el.attr('data-edit-label'),
-    preventFirst     = selectedNode > 0,
-    loadingMask      = new Oro.LoadingMask();
+    var assetsPath = $el.attr('data-assets-path'),
+    selectedNode   = $el.attr('data-node-id') || -1,
+    preventFirst   = selectedNode > 0,
+    loadingMask    = new Oro.LoadingMask();
 
     loadingMask.render().$el.appendTo($('#container'));
 
@@ -43,12 +37,11 @@ Pim.tree.manage = function(elementId) {
         },
         'tree_selector': {
             'ajax': {
-                'url': listtreeUrl,
-                'parameters': {'select_node_id': selectedNode}
+                'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'select_node_id': selectedNode })
             },
             'auto_open_root': true,
             'node_label_field': 'title',
-            'no_tree_message': noTreeMessage,
+            'no_tree_message': _.__('jstree.no_tree'),
             'preselect_node_id': selectedNode
         },
         'themes': {
@@ -59,7 +52,7 @@ Pim.tree.manage = function(elementId) {
         },
         'json_data': {
             'ajax': {
-                'url': childrenUrl,
+                'url': Routing.generate('pim_catalog_categorytree_children', { '_format': 'json' }),
                 'data': function (node) {
                     // the result is fed to the AJAX request `data` option
                     var id = null;
@@ -101,7 +94,7 @@ Pim.tree.manage = function(elementId) {
                 $.ajax({
                     async: false,
                     type: 'POST',
-                    url: moveUrl,
+                    url: Routing.generate('pim_catalog_categorytree_movenode'),
                     data: {
                         'id': $(this).attr('id').replace('node_',''),
                         'parent': data.rslt.cr === -1 ? 1 : data.rslt.np.attr('id').replace('node_',''),

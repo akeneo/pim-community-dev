@@ -2,17 +2,7 @@
 
 {% block content %}
     <div id="category-tree-container" class="row-fluid">
-        <div id="tree"
-            data-tree="manage"
-            data-assets-path="{{ asset('bundles/pimcatalog/') }}"
-            data-edit-url="{{ path('pim_catalog_categorytree_edit', { id: 0 }) }}"
-            data-move-url="{{ path('pim_catalog_categorytree_movenode') }}"
-            data-listtree-url="{{ path('pim_catalog_categorytree_listtree', { '_format': 'json' }) }}"
-            data-no-tree-message="{{ 'No tree available'|trans }}"
-            data-edit-label="{{ 'Edit'|trans }}"
-            data-children-url="{{ path('pim_catalog_categorytree_children', { '_format': 'json' }) }}"
-            {% if form.vars.value.id %}data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %}data-node-id="{{ form.vars.value.parent.id }}"{% endif %}
-        ></div>
+        <div id="tree" data-tree="manage" data-assets-path="{{ asset('bundles/pimcatalog/') }}"{% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %}></div>
 
         <div id="category-form">
             {% include 'PimCatalogBundle:CategoryTree:form.html.twig' with {'form': form} %}
