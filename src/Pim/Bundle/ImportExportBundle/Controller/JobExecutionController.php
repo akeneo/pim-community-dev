@@ -18,24 +18,41 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 
 /**
- * Report controller
+ * Job execution controller
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Acl(
- *      id="pim_importexport_report",
- *      name="Report manipulation",
- *      description="Report manipulation",
- *      parent="pim_importexport"
- * )
  */
-class ReportController extends AbstractDoctrineController
+class JobExecutionController extends AbstractDoctrineController
 {
+    /**
+     * @var DatagridWorkerInterface
+     */
     private $dataGridWorker;
+
+    /**
+     * @var BatchLogHandler
+     */
     private $batchLogHandler;
 
+    /**
+     * @var string
+     */
+    private $jobType;
+
+    /**
+     * Constructor
+     * @param Request $request
+     * @param EngineInterface $templating
+     * @param RouterInterface $router
+     * @param SecurityContextInterface $securityContext
+     * @param FormFactoryInterface $formFactory
+     * @param ValidatorInterface $validator
+     * @param RegistryInterface $doctrine
+     * @param DatagridWorkerInterface $dataGridWorker
+     * @param BatchLogHandler $batchLogHandler
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,
@@ -45,12 +62,14 @@ class ReportController extends AbstractDoctrineController
         ValidatorInterface $validator,
         RegistryInterface $doctrine,
         DatagridWorkerInterface $dataGridWorker,
-        BatchLogHandler $batchLogHandler
+        BatchLogHandler $batchLogHandler,
+        $jobType
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
 
         $this->dataGridWorker  = $dataGridWorker;
         $this->batchLogHandler = $batchLogHandler;
+        $this->jobType         = $jobType;
     }
     /**
      * List the reports
@@ -59,20 +78,29 @@ class ReportController extends AbstractDoctrineController
      */
     public function indexAction()
     {
-        $gridManager = $this->dataGridWorker->getDatagridManager('report', 'pim_import_export');
+        $gridManager = $this->dataGridWorker->getDatagridManager($this->getJobType().'_report', 'pim_import_export');
 
         return $this->renderDatagrid($gridManager);
     }
 
     /**
+     * Show a report
+     *
+     * @param integer $id
+     *
+     * @return template
+     */
+    public function showAction($id)
+    {
+        $jobExecution = $this->findOr404('PimBatchBundle:JobExecution', $id);
+        $view = sprintf('PimImportExportBundle:%s:show.html.twig', ucfirst($this->getJobType()).'Report');
+
+        return $this->render($view, array('execution' => $jobExecution));
+    }
+
+    /**
      * Download the log file of the job execution
      *
-     * @Acl(
-     *      id="pim_importexport_report_download",
-     *      name="Download an import/export log",
-     *      description="Download import/export log",
-     *      parent="pim_importexport_report"
-     * )
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function downloadLogFileAction($id)
@@ -83,42 +111,6 @@ class ReportController extends AbstractDoctrineController
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
 
         return $response;
-    }
-
-    /**
-     * List the export reports
-     *
-     * @Acl(
-     *      id="pim_importexport_report_import",
-     *      name="View the list of export reports",
-     *      description="View the list of export reports",
-     *      parent="pim_importexport_report"
-     * )
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function exportAction()
-    {
-        $gridManager = $this->dataGridWorker->getDatagridManager('export_report', 'pim_import_export');
-
-        return $this->renderDatagrid($gridManager);
-    }
-
-    /**
-     * List the import reports
-     *
-     * @Acl(
-     *      id="pim_importexport_report_export",
-     *      name="View the list of import reports",
-     *      description="View the list of import reports",
-     *      parent="pim_importexport_report"
-     * )
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function importAction()
-    {
-        $gridManager = $this->dataGridWorker->getDatagridManager('import_report', 'pim_import_export');
-
-        return $this->renderDatagrid($gridManager);
     }
 
     /**
@@ -135,9 +127,19 @@ class ReportController extends AbstractDoctrineController
         if ('json' == $this->getRequest()->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
         } else {
-            $view = 'PimImportExportBundle:Report:index.html.twig';
+            $view = sprintf('PimImportExportBundle:%s:index.html.twig', ucfirst($this->getJobType()).'Report');
         }
 
         return $this->render($view, array('datagrid' => $datagridView));
+    }
+
+    /**
+     * Return the job type of the controller
+     *
+     * @return string
+     */
+    protected function getJobType()
+    {
+        return $this->jobType;
     }
 }
