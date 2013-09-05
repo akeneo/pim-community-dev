@@ -10,34 +10,42 @@ class AssignValue extends AbstractPostAction
     /**
      * @var array
      */
-    protected $options;
+    protected $assigns = array();
 
     /**
      * {@inheritdoc}
      */
     protected function executeAction($context)
     {
-        $this->contextAccessor->setValue($context, $this->getAttribute(), $this->getValue());
+        foreach ($this->assigns as $assignOptions) {
+            $this->contextAccessor->setValue(
+                $context,
+                $this->getAttribute($assignOptions),
+                $this->getValue($assignOptions)
+            );
+        }
     }
 
     /**
      * Get target.
      *
+     * @param array $options
      * @return mixed
      */
-    protected function getAttribute()
+    protected function getAttribute(array $options)
     {
-        return array_key_exists('attribute', $this->options) ? $this->options['attribute'] : $this->options[0];
+        return array_key_exists('attribute', $options) ? $options['attribute'] : $options[0];
     }
 
     /**
      * Get value.
      *
+     * @param array $options
      * @return mixed
      */
-    protected function getValue()
+    protected function getValue(array $options)
     {
-        return array_key_exists('value', $this->options) ? $this->options['value'] : $this->options[1];
+        return array_key_exists('value', $options) ? $options['value'] : $options[1];
     }
 
     /**
@@ -45,11 +53,26 @@ class AssignValue extends AbstractPostAction
      */
     public function initialize(array $options)
     {
+        if ($this->isMassAssign($options)) {
+            foreach ($options as $assignOptions) {
+                $this->addAssign($assignOptions);
+            }
+        } else {
+            $this->addAssign($options);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param array $options
+     * @throws InvalidParameterException
+     */
+    protected function addAssign(array $options)
+    {
         if (count($options) != 2) {
             throw new InvalidParameterException('Attribute and value parameters are required.');
         }
-
-        $this->options = $options;
 
         if (!isset($options['attribute']) && !isset($options[0])) {
             throw new InvalidParameterException('Attribute must be defined.');
@@ -57,10 +80,29 @@ class AssignValue extends AbstractPostAction
         if (!array_key_exists('value', $options) && !array_key_exists(1, $options)) {
             throw new InvalidParameterException('Value must be defined.');
         }
-        if (!($this->getAttribute() instanceof PropertyPath)) {
+        if (!($this->getAttribute($options) instanceof PropertyPath)) {
             throw new InvalidParameterException('Attribute must be valid property definition.');
         }
 
-        return $this;
+        $this->assigns[] = $options;
+    }
+
+    /**
+     * @param array $options
+     * @return bool
+     */
+    protected function isMassAssign(array $options)
+    {
+        if (empty($options)) {
+            return false;
+        }
+
+        foreach ($options as $element) {
+            if (!is_array($element)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

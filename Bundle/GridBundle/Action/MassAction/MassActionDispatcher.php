@@ -159,11 +159,12 @@ class MassActionDispatcher
         $identifierField = $datagrid->getIdentifierField();
         $fieldMapping = $identifierField->getFieldMapping();
 
-        return isset($fieldMapping['fieldExpression']) ?
-            $fieldMapping['fieldExpression'] :
-            $identifierField->getFieldName();
-    }
+        if (!empty($fieldMapping['fieldExpression'])) {
+            return $fieldMapping['fieldExpression'];
+        }
 
+        return sprintf('%s.%s', $datagrid->getQuery()->getRootAlias(), $identifierField->getFieldName());
+    }
 
     /**
      * @param MassActionInterface $massAction

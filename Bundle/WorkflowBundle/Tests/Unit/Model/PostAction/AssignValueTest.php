@@ -94,12 +94,19 @@ class AssignValueTest extends \PHPUnit_Framework_TestCase
             'Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface',
             $this->postAction->initialize($options)
         );
-        $this->assertAttributeEquals($options, 'options', $this->postAction);
+
+        if (is_array(current($options))) {
+            $expectedAssigns = array_values($options);
+        } else {
+            $expectedAssigns[] = $options;
+        }
+
+        $this->assertAttributeEquals($expectedAssigns, 'assigns', $this->postAction);
     }
 
     public function optionsDataProvider()
     {
-        return array(
+        $assigns = array(
             'numeric arguments' => array(
                 'options' => array($this->getPropertyPath(), 'value')
             ),
@@ -113,6 +120,11 @@ class AssignValueTest extends \PHPUnit_Framework_TestCase
                 'options' => array('attribute' => $this->getPropertyPath(), 'value' => null)
             ),
         );
+
+        // unite all single assigns to one mass assign
+        $assigns['mass assign'] = $assigns;
+
+        return $assigns;
     }
 
     /**
@@ -123,11 +135,23 @@ class AssignValueTest extends \PHPUnit_Framework_TestCase
     {
         $context = array();
         $optionsData = array_values($options);
-        $attribute = $optionsData[0];
-        $value = $optionsData[1];
-        $this->contextAccessor->expects($this->once())
-            ->method('setValue')
-            ->with($context, $attribute, $value);
+        if (is_array(current($optionsData))) {
+            for ($i = 0; $i < count($optionsData); $i++) {
+                $assignData = array_values($optionsData[$i]);
+                $attribute = $assignData[0];
+                $value = $assignData[1];
+                $this->contextAccessor->expects($this->at($i))
+                    ->method('setValue')
+                    ->with($context, $attribute, $value);
+            }
+        } else {
+            $attribute = $optionsData[0];
+            $value = $optionsData[1];
+            $this->contextAccessor->expects($this->once())
+                ->method('setValue')
+                ->with($context, $attribute, $value);
+        }
+
         $this->postAction->initialize($options);
         $this->postAction->execute($context);
     }
