@@ -114,7 +114,7 @@ class OroWorkflowStep extends AbstractType
         }
 
         // updates form options
-        if (isset($attributeOptions['options'])) {
+        if (!isset($attributeOptions['options'])) {
             $attributeOptions['options'] = array();
         }
 
