@@ -2,10 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Oro\Bundle\GridBundle\Datagrid\Datagrid;
-
-use Symfony\Component\Serializer\Serializer;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
