@@ -21,6 +21,7 @@ class Generator
 {
     const ENTITY = 'Extend\\Entity\\';
     const PROXY  = 'Extend\\Proxy\\';
+    const PREFIX = 'field_';
 
     /**
      * @var string
@@ -264,7 +265,7 @@ class Generator
         if ($fieldIds = $this->configProvider->getIds($entityName)) {
             foreach ($fieldIds as $fieldId) {
                 if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
-                    $fieldName = $fieldId->getFieldName();
+                    $fieldName = self::PREFIX . $fieldId->getFieldName();
 
                     $yml[$extendClass]['fields'][$fieldName]['code'] = $fieldName;
                     $yml[$extendClass]['fields'][$fieldName]['type'] = $fieldId->getFieldType();
@@ -316,7 +317,6 @@ class Generator
     {
         $this->writer = new Writer();
 
-        //$class = PhpClass::create($this->generateClassName($entityName))
         $class = PhpClass::create($entityName)
             ->setName($className)
             ->setInterfaceNames(array('Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface'))
@@ -353,7 +353,7 @@ class Generator
         if ($fieldIds = $this->configProvider->getIds($entityName)) {
             foreach ($fieldIds as $fieldId) {
                 if ($this->configProvider->getConfigById($fieldId)->is('is_extend')) {
-                    $fieldName = $fieldId->getFieldName();
+                    $fieldName = self::PREFIX . $fieldId->getFieldName();
                     $class
                         ->setProperty(PhpProperty::create($fieldName)->setVisibility('protected'))
                         ->setMethod(

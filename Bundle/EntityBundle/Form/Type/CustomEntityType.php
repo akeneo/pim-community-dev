@@ -3,13 +3,15 @@
 namespace Oro\Bundle\EntityBundle\Form\Type;
 
 use Doctrine\Common\Util\Inflector;
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+
+use Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator;
 
 class CustomEntityType extends AbstractType
 {
@@ -20,9 +22,9 @@ class CustomEntityType extends AbstractType
 
     protected $typeMap = array(
         'string'   => 'text',
-        'integer'  => 'number',
-        'smallint' => 'number',
-        'bigint'   => 'number',
+        'integer'  => 'integer',
+        'smallint' => 'integer',
+        'bigint'   => 'integer',
         'boolean'  => 'choice',
         'decimal'  => 'number',
         'date'     => 'date',
@@ -82,7 +84,7 @@ class CustomEntityType extends AbstractType
                 }
 
                 $builder->add(
-                    Inflector::camelize($fieldConfigId->getFieldName()),
+                    Inflector::camelize(Generator::PREFIX .$fieldConfigId->getFieldName()),
                     $this->typeMap[$fieldConfigId->getFieldType()],
                     $options
                 );
