@@ -62,24 +62,55 @@ class ConfigManager
     public function save($newSettings, $scopeEntity = null)
     {
         $remove = array();
+        $flatSettings = $this->getFlatSettings();
 
-        // new values
+        // new settings
+        $new = array_diff($newSettings, $flatSettings);
 
-        // reverted to default scope values
-
+        $updated = array();
         foreach ($this->settings as $section => $settings) {
-            // fallback to global setting - remove scoped value
             foreach ($settings as $key => $value) {
-                if (!isset($newSettings[$section][$key]) && $scopeEntity) {
-                    $remove[] = array($section, $key, $scopeEntity->getId());
+                // removed/reverted to default values
+                // fallback to global setting - remove scoped value
+                if (!empty($newSettings[$section][$key]['is_default']) && $scopeEntity) {
+                    $remove[] = array($section, $key, get_class($scopeEntity), $scopeEntity->getId());
+                }
+
+                // updated
+                if (!empty($newSettings[$section][$key]) && $newSettings[$section][$key] != $value) {
+                    $updated[] = array(
+                        $section,
+                        $key,
+                        get_class($scopeEntity),
+                        $scopeEntity->getId(),
+                        $newSettings[$section][$key]
+                    );
                 }
             }
         }
 
         return;
 
+
+
         $this->om->persist($config);
         $this->om->flush();
+    }
+
+    /**
+     * @return array
+     */
+    public function getFlatSettings()
+    {
+        $settings = array();
+
+        foreach ($this->settings as $section => $settings) {
+            foreach ($settings as $key => $value) {
+                $settings[$section.':'.$key] = $value;
+            }
+        }
+
+        return $settings;
     }
 
     /**

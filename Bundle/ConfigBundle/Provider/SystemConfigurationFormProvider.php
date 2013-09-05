@@ -69,7 +69,7 @@ class SystemConfigurationFormProvider extends FormProvider
             )
         );
         foreach ($toAdd as $field) {
-            $builder->add($field['name'], $field['type'], $field['options']);
+            $builder->add(str_replace('.', ':', $field['name']), $field['type'], $field['options']);
         }
 
         return $builder->getForm();

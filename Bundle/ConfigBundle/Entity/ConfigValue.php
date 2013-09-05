@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(
  *  name="oro_config_value",
- *  uniqueConstraints={@ORM\UniqueConstraint(name="UQ_ENTITY", columns={"field_id", "scope", "config_id"})}
+ *  uniqueConstraints={@ORM\UniqueConstraint(name="UQ_ENTITY", columns={"key", "section", "config_id"})}
  * )
  * @ORM\Entity(repositoryClass="Oro\Bundle\ConfigBundle\Entity\Repository\ConfigValueRepository")
  */
@@ -28,9 +28,9 @@ class ConfigValue
     /**
      * @var string
      *
-     * @ORM\Column(name="key", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
      */
-    protected $key;
+    protected $name;
 
     /**
      * @var Config[]
@@ -65,19 +65,19 @@ class ConfigValue
     }
 
     /**
-     * @param string $key
+     * @param string $name
      */
-    public function setKey($key)
+    public function setName($name)
     {
-        $this->key = $key;
+        $this->name = $name;
     }
 
     /**
      * @return string
      */
-    public function getKey()
+    public function getName()
     {
-        return $this->key;
+        return $this->name;
     }
 
     /**
