@@ -2,7 +2,7 @@ pim_catalog_product_index:
     path: /.{_format}
     defaults: { _controller: pim_catalog.controller.product:indexAction, _format: html }
     requirements:
-        _format: html|json
+        _format: html|json|csv
 
 pim_catalog_product_create:
     path: /create/{dataLocale}
