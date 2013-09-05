@@ -75,6 +75,10 @@
             background-color: #eeeeee;
             cursor: pointer;
         }
+
+        .step-info {
+            padding: 0 20px;
+        }
     </style>
 
     {% block workflow_header %}
@@ -82,23 +86,6 @@
         <div class="row">
             <div class="pull-right">
                 <div class="pull-left">
-                    {% block workflow_actions %}
-                    <div class="btn-group icons-holder">
-                        <a title="Duplicate" class="btn icons-holder-text " href="#">
-                            <i class="icon-copy  hide-text">Duplicate</i>
-                            Duplicate
-                        </a>
-                        <a title="Share" class="btn icons-holder-text " href="#">
-                            <i class="icon-share  hide-text">Share</i>
-                            Share
-                        </a>
-                        <a title="Delete" class="btn icons-holder-text " href="#">
-                            <i class="icon-remove  hide-text">Delete</i>
-                            Delete
-                        </a>
-                    </div>
-                    {% endblock workflow_actions %}
-
                     {% block workflow_transitions %}
                         {{ oro_widget_render({
                             'widgetType': 'buttons',
@@ -106,6 +93,23 @@
                             'alias': 'workflow_transitions'
                         }) }}
                     {% endblock workflow_transitions %}
+
+                    {% block workflow_actions %}
+                        <div class="btn-group icons-holder pull-left">
+                            <a title="Duplicate" class="btn icons-holder-text " href="#">
+                                <i class="icon-copy  hide-text">Duplicate</i>
+                                Duplicate
+                            </a>
+                            <a title="Share" class="btn icons-holder-text " href="#">
+                                <i class="icon-share  hide-text">Share</i>
+                                Share
+                            </a>
+                            <a title="Delete" class="btn icons-holder-text " href="#">
+                                <i class="icon-remove  hide-text">Delete</i>
+                                Delete
+                            </a>
+                        </div>
+                    {% endblock workflow_actions %}
                 </div>
             </div>
             <div class="span9">
@@ -143,6 +147,11 @@
             </script>
         </div>
     {% endblock step_form %}
+
+    <div class="step-info">
+        {% block step_info %}
+        {% endblock step_info %}
+    </div>
 
     {% block workflow_data %}
         <div class="workflow-data row-fluid dark-bg">

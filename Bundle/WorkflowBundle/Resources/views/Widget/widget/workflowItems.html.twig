@@ -21,7 +21,7 @@
                 {% for data in workflows_items_data %}
                     {% set enabled = data.workflow.enabled %}
                     {% set closed = data.workflowItem.closed %}
-                    {% set show_link = enabled and not closed %}
+                    {% set show_link = enabled %}
                     <tr>
                         <td>
                             {% if show_link %}

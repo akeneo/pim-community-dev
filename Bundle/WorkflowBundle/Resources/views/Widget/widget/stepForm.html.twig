@@ -14,6 +14,10 @@
 
         }
 
+        .step-form-header li.display span {
+            text-decoration: underline;
+        }
+
         .step-form-header li {
             font-size: 15px;
 
@@ -49,16 +53,26 @@
     <div class="step-form-header" style="display: none;">
         <ul class="inline">
             {% for step in steps %}
-                <li class="step{% if step.name == currentStep.name %} current{% endif %}">
-                    {{ step.label|trans }}
+                <li class="step
+                    {% if step.name == currentStep.name %} current{% endif %}
+                    {% if step.name == displayStep.name %} display{% endif %}
+                    "
+                >
+                    {% if step.name != displayStep.name %}
+                        <a href="{{ path('oro_workflow_widget_step_form', { workflowItemId: workflowItem.id, stepName: step.name }) }}">
+                            <span>{{ step.label|trans }}</span>
+                        </a>
+                    {% else %}
+                        <span>{{ step.label|trans }}</span>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
     </div>
 
-    {% if workflowItem.closed %}
+    {% if workflowItem.closed and currentStep.name == displayStep.name %}
         <h1>{{ 'Workflow closed'|trans }}</h1>
-    {% else %}
+    {% endif %}
     {% if saved %}
         <script type="text/javascript">
             Oro.widget.Manager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }})
@@ -86,16 +100,25 @@
             {% endfor %}
         </div>
 
-        {% if currentStep.formOptions.attribute_fields is defined and currentStep.formOptions.attribute_fields|length %}
-        <div class="widget-actions">
-            <button type="submit" class="btn btn-success btn-small">{{ 'Save'|trans }}</button>
-        </div>
+        {% if displayStep.formOptions.attribute_fields is defined
+            and displayStep.formOptions.attribute_fields|length
+            and displayStep.name == currentStep.name
+            and not workflowItem.closed
+        %}
+            <div class="widget-actions">
+                <button type="submit" class="btn btn-success btn-small">{{ 'Save'|trans }}</button>
+            </div>
         {% endif %}
     </form>
-    {% endif %}
 
     <script type="text/javascript">
         $('#{{ elementId }}').on('widgetize', function(e, widget) {
+            widget.$el.find('.step-form-header a').on('click', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                widget.setUrl(this.href);
+                widget.loadContent();
+            })
             widget.setTitle(widget.$el.find('.step-form-header').show());
         });
     </script>
