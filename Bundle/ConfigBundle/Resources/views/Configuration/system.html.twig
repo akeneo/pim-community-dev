@@ -6,5 +6,12 @@
 {% block content %}
     {{ configUI.renderTitleAndSearch(pageTitle is defined ? pageTitle : '', []) }}
     {{ configUI.renderScrollData(data, form, activeGroup, activeSubGroup) }}
-{% endblock content %}
 
+    <script type="text/javascript">
+        !function () {
+            "use strict";
+
+            new Oro.Config.FormState();
+        }();
+    </script>
+{% endblock content %}
