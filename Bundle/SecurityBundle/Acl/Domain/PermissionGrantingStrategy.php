@@ -236,10 +236,10 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
         $extension = $this->context->getAclExtension();
         $aceMask = $ace->getMask();
         if ($acl->getObjectIdentity()->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
-            if ($acl->getObjectIdentity()->getIdentifier() !== $extension->getRootId()) {
+            if ($acl->getObjectIdentity()->getIdentifier() !== $extension->getExtensionKey()) {
                 return false;
             }
-            $aceMask = $extension->prepareRootAceMask($aceMask, $this->context->getObject());
+            $aceMask = $extension->adaptRootMask($aceMask, $this->context->getObject());
         }
         if ($extension->getServiceBits($requiredMask) !== $extension->getServiceBits($aceMask)) {
             return false;

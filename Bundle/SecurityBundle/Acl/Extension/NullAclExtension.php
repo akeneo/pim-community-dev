@@ -24,7 +24,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getRootId()
+    public function getExtensionKey()
     {
         throw new \LogicException('Not supported by NullAclExtension.');
     }
@@ -88,9 +88,9 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function prepareRootAceMask($aceMask, $object)
+    public function adaptRootMask($rootMask, $object)
     {
-        return $aceMask;
+        return $rootMask;
     }
 
     /**

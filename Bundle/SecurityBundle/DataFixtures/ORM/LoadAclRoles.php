@@ -47,7 +47,7 @@ class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, C
         $sid = $manager->getSid($this->getReference('admin_role'));
 
         foreach ($manager->getAllExtensions() as $extension) {
-            $rootOid = $manager->getRootOid($extension->getRootId());
+            $rootOid = $manager->getRootOid($extension->getExtensionKey());
             foreach ($extension->getAllMaskBuilders() as $maskBuilder) {
                 $fullAccessMask = $maskBuilder->hasConst('GROUP_SYSTEM')
                     ? $maskBuilder->getConst('GROUP_SYSTEM')
@@ -62,7 +62,7 @@ class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, C
         $sid = $manager->getSid($this->getReference('administrator_role'));
 
         foreach ($manager->getAllExtensions() as $extension) {
-            $rootOid = $manager->getRootOid($extension->getRootId());
+            $rootOid = $manager->getRootOid($extension->getExtensionKey());
             foreach ($extension->getAllMaskBuilders() as $maskBuilder) {
                 if ($maskBuilder->hasConst('GROUP_GLOBAL')) {
                     if ($maskBuilder->hasConst('MASK_VIEW_SYSTEM')) {
@@ -89,7 +89,7 @@ class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, C
         $sid = $manager->getSid($this->getReference('user_role'));
 
         foreach ($manager->getAllExtensions() as $extension) {
-            $rootOid = $manager->getRootOid($extension->getRootId());
+            $rootOid = $manager->getRootOid($extension->getExtensionKey());
             foreach ($extension->getAllMaskBuilders() as $maskBuilder) {
                 if ($maskBuilder->hasConst('GROUP_BASIC')) {
                     if ($maskBuilder->hasConst('MASK_VIEW_SYSTEM')) {

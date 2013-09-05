@@ -25,17 +25,17 @@ class ActionAclExtension extends AbstractAclExtension
      */
     public function supports($type, $id)
     {
-        if ($type === ObjectIdentityFactory::ROOT_IDENTITY_TYPE && $id === $this->getRootId()) {
+        if ($type === ObjectIdentityFactory::ROOT_IDENTITY_TYPE && $id === $this->getExtensionKey()) {
             return true;
         }
 
-        return $id === $this->getRootId();
+        return $id === $this->getExtensionKey();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getRootId()
+    public function getExtensionKey()
     {
         return 'action';
     }

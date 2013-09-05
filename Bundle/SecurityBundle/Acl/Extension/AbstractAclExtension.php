@@ -32,9 +32,9 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function prepareRootAceMask($aceMask, $object)
+    public function adaptRootMask($rootMask, $object)
     {
-        return $aceMask;
+        return $rootMask;
     }
 
     /**
@@ -75,7 +75,7 @@ abstract class AbstractAclExtension implements AclExtensionInterface
         if (!$delim) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Incorrect descriptor: %s. Expected "id:type".',
+                    'Incorrect descriptor: %s. Expected "ExtensionKey:Class".',
                     $descriptor
                 )
             );

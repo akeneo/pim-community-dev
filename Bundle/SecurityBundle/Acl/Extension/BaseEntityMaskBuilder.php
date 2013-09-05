@@ -28,6 +28,16 @@ abstract class BaseEntityMaskBuilder extends MaskBuilder
      */
     public function __construct()
     {
-        parent::__construct($this->getConst('IDENTITY'));
+        parent::__construct();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function reset()
+    {
+        $this->mask = $this->getConst('IDENTITY');
+
+        return $this;
     }
 }

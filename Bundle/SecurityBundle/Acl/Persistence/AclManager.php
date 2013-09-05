@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Persistence;
 
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
@@ -20,6 +21,7 @@ use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\Batch\BatchItem;
 use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
+use Symfony\Component\Security\Acl\Model\EntryInterface;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -177,6 +179,8 @@ class AclManager
      */
     public function flush()
     {
+        $this->validateAclEnabled();
+
         $transactionStarted = false;
         try {
             foreach ($this->items as $item) {
@@ -270,6 +274,8 @@ class AclManager
      */
     public function updateSid(SID $sid, $oldName)
     {
+        $this->validateAclEnabled();
+
         $this->aclProvider->updateSecurityIdentity($sid, $oldName);
     }
 
@@ -280,11 +286,15 @@ class AclManager
      */
     public function deleteSid(SID $sid)
     {
+        $this->validateAclEnabled();
+
         $this->aclProvider->deleteSecurityIdentity($sid);
     }
 
     /**
      * Constructs an ObjectIdentity for the given domain object or based on the given descriptor
+     *
+     * The descriptor is a string in the following format: "ExtensionKey:Class"
      *
      * Examples:
      *     getOid($object)
@@ -305,12 +315,12 @@ class AclManager
      * Constructs an ObjectIdentity is used for grant default permissions
      * if more appropriate permissions are not specified
      *
-     * @param string $rootId The root identifier returned by AclExtensionInterface::getRootId
+     * @param string $extensionKey The ACL extension key
      * @return OID
      */
-    public function getRootOid($rootId)
+    public function getRootOid($extensionKey)
     {
-        return $this->objectIdentityFactory->root($rootId);
+        return $this->objectIdentityFactory->root($extensionKey);
     }
 
     /**
@@ -323,6 +333,8 @@ class AclManager
      */
     public function findAcls(SID $sid, array $oids)
     {
+        $this->validateAclEnabled();
+
         try {
             return $this->aclProvider->findAcls($oids, array($sid));
         } catch (AclNotFoundException $ex) {
@@ -341,6 +353,8 @@ class AclManager
      */
     public function deleteAcl(OID $oid)
     {
+        $this->validateAclEnabled();
+
         $key = $this->getKey($oid);
         if (!isset($this->items[$key])) {
             $this->items[$key] = new BatchItem($oid, BatchItem::STATE_DELETE);
@@ -368,11 +382,13 @@ class AclManager
      */
     public function setPermission(SID $sid, OID $oid, $mask, $granting = true, $strategy = null)
     {
+        $this->validateAclEnabled();
+
         if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
             $this->setObjectPermission($sid, $oid, $mask, $granting, $strategy);
         } else {
             $extension = $this->extensionSelector->select($oid);
-            if ($oid->getIdentifier() === $extension->getRootId()) {
+            if ($oid->getIdentifier() === $extension->getExtensionKey()) {
                 $this->setClassPermission($sid, $oid, $mask, $granting, $strategy);
             } else {
                 $this->setObjectPermission($sid, $oid, $mask, $granting, $strategy);
@@ -400,12 +416,14 @@ class AclManager
      */
     public function setFieldPermission(SID $sid, OID $oid, $field, $mask, $granting = true, $strategy = null)
     {
+        $this->validateAclEnabled();
+
         if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
             throw new \InvalidArgumentException('Not supported for root ACL.');
         }
 
         $extension = $this->extensionSelector->select($oid);
-        if ($oid->getIdentifier() === $extension->getRootId()) {
+        if ($oid->getIdentifier() === $extension->getExtensionKey()) {
             $this->setClassFieldPermission($sid, $oid, $field, $mask, $granting, $strategy);
         } else {
             $this->setObjectFieldPermission($sid, $oid, $field, $mask, $granting, $strategy);
@@ -428,11 +446,13 @@ class AclManager
      */
     public function deletePermission(SID $sid, OID $oid, $mask, $granting = true, $strategy = null)
     {
+        $this->validateAclEnabled();
+
         if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
             $this->deleteObjectPermission($sid, $oid, $mask, $granting, $strategy);
         } else {
             $extension = $this->extensionSelector->select($oid);
-            if ($oid->getIdentifier() === $extension->getRootId()) {
+            if ($oid->getIdentifier() === $extension->getExtensionKey()) {
                 $this->deleteClassPermission($sid, $oid, $mask, $granting, $strategy);
             } else {
                 $this->deleteObjectPermission($sid, $oid, $mask, $granting, $strategy);
@@ -457,12 +477,14 @@ class AclManager
      */
     public function deleteFieldPermission(SID $sid, OID $oid, $field, $mask, $granting = true, $strategy = null)
     {
+        $this->validateAclEnabled();
+
         if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
             throw new \InvalidArgumentException('Not supported for root ACL.');
         }
 
         $extension = $this->extensionSelector->select($oid);
-        if ($oid->getIdentifier() === $extension->getRootId()) {
+        if ($oid->getIdentifier() === $extension->getExtensionKey()) {
             $this->deleteClassFieldPermission($sid, $oid, $field, $mask, $granting, $strategy);
         } else {
             $this->deleteObjectFieldPermission($sid, $oid, $field, $mask, $granting, $strategy);
@@ -482,11 +504,13 @@ class AclManager
      */
     public function deleteAllPermissions(SID $sid, OID $oid)
     {
+        $this->validateAclEnabled();
+
         if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
             $this->deleteAllObjectPermissions($sid, $oid);
         } else {
             $extension = $this->extensionSelector->select($oid);
-            if ($oid->getIdentifier() === $extension->getRootId()) {
+            if ($oid->getIdentifier() === $extension->getExtensionKey()) {
                 $this->deleteAllClassPermissions($sid, $oid);
             } else {
                 $this->deleteAllObjectPermissions($sid, $oid);
@@ -508,16 +532,65 @@ class AclManager
      */
     public function deleteAllFieldPermissions(SID $sid, OID $oid, $field)
     {
+        $this->validateAclEnabled();
+
         if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
             throw new \InvalidArgumentException('Not supported for root ACL.');
         }
 
         $extension = $this->extensionSelector->select($oid);
-        if ($oid->getIdentifier() === $extension->getRootId()) {
+        if ($oid->getIdentifier() === $extension->getExtensionKey()) {
             $this->deleteAllClassFieldPermissions($sid, $oid, $field);
         } else {
             $this->deleteAllObjectFieldPermissions($sid, $oid, $field);
         }
+    }
+
+    /**
+     * Gets all object-based or class-based ACEs associated with given ACL and the given security identity
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @return EntryInterface[]
+     */
+    public function getAces(SID $sid, OID $oid)
+    {
+        $this->validateAclEnabled();
+
+        if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+            return $this->doGetAces($sid, $oid, self::OBJECT_ACE, null);
+        }
+        $extension = $this->extensionSelector->select($oid);
+        if ($oid->getIdentifier() === $extension->getExtensionKey()) {
+            return $this->doGetAces($sid, $oid, self::CLASS_ACE, null);
+        }
+
+        return $this->doGetAces($sid, $oid, self::OBJECT_ACE, null);
+    }
+
+    /**
+     * Gets all object-field-based or class-field-based ACEs associated with given ACL and the given security identity
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param string $field
+     * @return EntryInterface[]
+     * @throws \InvalidArgumentException
+     */
+    public function getFieldAces(SID $sid, OID $oid, $field)
+    {
+        $this->validateAclEnabled();
+
+        if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+            throw new \InvalidArgumentException('Not supported for root ACL.');
+        }
+
+        $extension = $this->extensionSelector->select($oid);
+        if ($oid->getIdentifier() === $extension->getExtensionKey()) {
+            return $this->doGetAces($sid, $oid, self::CLASS_ACE, $field);
+        }
+
+        return $this->doGetAces($sid, $oid, self::OBJECT_ACE, $field);
     }
 
     /**
@@ -822,6 +895,33 @@ class AclManager
     }
 
     /**
+     * Gets all ACEs associated with given ACL and the given security identity
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param string $type The ACE type. Can be one of self::*_ACE constants
+     * @param string|null $field The name of a field.
+     *                           Set to null for class-based or object-based ACE
+     *                           Set to not null class-field-based or object-field-based ACE
+     * @return EntryInterface[]
+     */
+    protected function doGetAces(SID $sid, OID $oid, $type, $field)
+    {
+        $acl = $this->getAcl($oid);
+        if (!$acl) {
+            return array();
+        }
+
+        return array_filter(
+            $this->aceProvider->getAces($acl, $type, $field),
+            function ($ace) use (&$sid) {
+                /** @var EntryInterface $ace */
+                return $sid->equals($ace->getSecurityIdentity());
+            }
+        );
+    }
+
+    /**
      * Gets an ACL for the given ObjectIdentity.
      * If an ACL does not exist $createAclIfNotExist sets to true a new ACL will be created.
      *
@@ -866,5 +966,19 @@ class AclManager
     protected function getKey(OID $oid)
     {
         return $oid->getType() . '!' . $oid->getIdentifier();
+    }
+
+    /**
+     * Checks whether ACL is enabled and if not raise InvalidConfigurationException.
+     *
+     * @throws InvalidConfigurationException
+     */
+    protected function validateAclEnabled()
+    {
+        if ($this->aclProvider === null) {
+            throw new InvalidConfigurationException(
+                'Seems that ACL is not enabled. Please check "security/acl" parameter in "app/config/security.yml"'
+            );
+        }
     }
 }

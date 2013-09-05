@@ -42,7 +42,7 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
                 ->getMock();
 
         $this->extension = $this->getMock('Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface');
-        $this->extension->expects($this->any())->method('getRootId')->will($this->returnValue('entity'));
+        $this->extension->expects($this->any())->method('getExtensionKey')->will($this->returnValue('entity'));
         $this->extension->expects($this->any())->method('getServiceBits')->will($this->returnValue(0));
         $this->extensionSelector = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector')
             ->disableOriginalConstructor()

@@ -32,26 +32,29 @@ class ObjectIdentityFactory
      * Constructs an ObjectIdentity is used for grant default permissions
      * if more appropriate permissions are not specified
      *
-     * @param ObjectIdentity|string $oidOrRootId Can be ObjectIdentity or string:
+     * @param ObjectIdentity|string $oidOrExtensionKey Can be ObjectIdentity or string:
      *              ObjectIdentity: The object identity the root identity should be constructed for
-     *              string: The root identifier returned by AclExtensionInterface::getRootId
+     *              string: The ACL extension key
      * @return ObjectIdentity
      */
-    public function root($oidOrRootId)
+    public function root($oidOrExtensionKey)
     {
-        if ($oidOrRootId instanceof ObjectIdentity) {
-            $oidOrRootId = $this->extensionSelector
-                ->select($oidOrRootId)
-                ->getRootId();
+        if ($oidOrExtensionKey instanceof ObjectIdentity) {
+            $oidOrExtensionKey = $this->extensionSelector
+                ->select($oidOrExtensionKey)
+                ->getExtensionKey();
         } else {
-            $oidOrRootId = strtolower($oidOrRootId);
+            $oidOrExtensionKey = strtolower($oidOrExtensionKey);
         }
 
-        return new ObjectIdentity($oidOrRootId, static::ROOT_IDENTITY_TYPE);
+        return new ObjectIdentity($oidOrExtensionKey, static::ROOT_IDENTITY_TYPE);
     }
 
     /**
-     * Constructs an ObjectIdentity for the given domain object or based on the given descriptor
+     * Constructs an ObjectIdentity for the given domain object or based on the given descriptor.
+     *
+     * The descriptor is a string in the following format: "ExtensionKey:Class"
+     *
      * Examples:
      *     get($object)
      *     get('Entity:AcmeBundle\SomeClass')

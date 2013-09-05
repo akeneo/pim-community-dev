@@ -322,9 +322,9 @@ class EntityAclExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider prepareRootAceMaskProvider
+     * @dataProvider adaptRootMaskProvider
      */
-    public function testPrepareRootAceMask($object, $ownerType, $aceMask, $expectedMask)
+    public function testAdaptRootMask($object, $ownerType, $aceMask, $expectedMask)
     {
         if ($ownerType !== null) {
             $this->metadataProvider->setMetadata(
@@ -333,7 +333,7 @@ class EntityAclExtensionTest extends \PHPUnit_Framework_TestCase
             );
         }
 
-        $resultMask = $this->extension->prepareRootAceMask($aceMask, $object);
+        $resultMask = $this->extension->adaptRootMask($aceMask, $object);
         $this->assertEquals(
             $expectedMask,
             $resultMask,
@@ -419,7 +419,7 @@ class EntityAclExtensionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public static function prepareRootAceMaskProvider()
+    public static function adaptRootMaskProvider()
     {
         return array(
             array(
