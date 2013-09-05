@@ -436,7 +436,7 @@ class ProductController extends AbstractDoctrineController
      * )
      * @return RedirectResponse
      *
-     * @throws CreateNotFoundException
+     * @throws NotFoundHttpException
      */
     public function removeProductAttributeAction($productId, $attributeId)
     {
