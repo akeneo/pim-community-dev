@@ -29,21 +29,26 @@ class WidgetController extends Controller
      */
     public function stepFormAction(WorkflowItem $workflowItem)
     {
+        //$showStepName = $this->getRequest()->get('stepName', 'closed');
+        $showStepName = $this->getRequest()->get('stepName', $workflowItem->getCurrentStepName());
+
         /** @var WorkflowManager $workflowManager */
         $workflowManager = $this->get('oro_workflow.manager');
         $workflow = $workflowManager->getWorkflow($workflowItem);
         $workflowData = $workflowItem->getData();
+        $displayStep = $workflow->getStep($showStepName);
+        if (!$displayStep) {
+            throw new BadRequestHttpException(sprintf('There is no step "%s"', $showStepName));
+        }
         $currentStep = $workflow->getStep($workflowItem->getCurrentStepName());
         if (!$currentStep) {
-            throw new \LogicException(
-                sprintf('There is no step "%s"', $workflowItem->getCurrentStepName())
-            );
+            throw new BadRequestHttpException(sprintf('There is no step "%s"', $workflowItem->getCurrentStepName()));
         }
 
         $stepForm = $this->createForm(
-            $currentStep->getFormType(),
+            $displayStep->getFormType(),
             $workflowData,
-            array('workflow' => $workflow, 'step' => $currentStep)
+            array('stepName' => $showStepName, 'workflowItem' => $workflowItem)
         );
 
         $saved = false;
@@ -62,6 +67,7 @@ class WidgetController extends Controller
             'saved' => $saved,
             'workflow' => $workflow,
             'steps' => $workflow->getOrderedSteps(),
+            'displayStep' => $displayStep,
             'currentStep' => $currentStep,
             'form' => $stepForm->createView(),
             'workflowItem' => $workflowItem,

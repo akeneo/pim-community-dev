@@ -145,6 +145,10 @@ Oro.widget.Abstract = Backbone.View.extend({
         return this.actions;
     },
 
+    setUrl: function(url) {
+        this.options.url = url;
+    },
+
     removeAction: function(key, section) {
         var self = this;
         var remove = function(actions, key) {
