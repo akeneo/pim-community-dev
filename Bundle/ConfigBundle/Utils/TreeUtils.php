@@ -18,7 +18,10 @@ final class TreeUtils
             if (isset($node['name']) && $node['name'] === $nodeName) {
                 return $node;
             } elseif (!empty($node['children'])) {
-                return static::findNodeByName($node['children'], $nodeName);
+                $node = static::findNodeByName($node['children'], $nodeName);
+                if ($node !== null) {
+                    return $node;
+                }
             }
         }
 
@@ -60,7 +63,7 @@ final class TreeUtils
         usort(
             $nodes,
             function ($a, $b) {
-                return ($a['priority'] < $b['priority']) ? -1 : 1;
+                return ($a['priority'] > $b['priority']) ? -1 : 1;
             }
         );
 

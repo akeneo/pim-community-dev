@@ -2,8 +2,9 @@
 
 namespace Oro\Bundle\ConfigBundle\Entity;
 
-use JMS\Serializer\Annotation\Exclude;
 use Doctrine\ORM\Mapping as ORM;
+
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * ConfigValue

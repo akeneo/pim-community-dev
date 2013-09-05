@@ -68,7 +68,7 @@ class SystemConfigurationFormProvider extends FormProvider
         );
         foreach ($toAdd as $field) {
             $field['name'] = str_replace(
-                ConfigManager::SECTION_VIEW_SEPARATOR,
+                ConfigManager::SECTION_MODEL_SEPARATOR,
                 ConfigManager::SECTION_VIEW_SEPARATOR,
                 $field['name']
             );
@@ -79,7 +79,7 @@ class SystemConfigurationFormProvider extends FormProvider
                 array_merge(
                     array('target_field' => $field),
                     $field['block_options'],
-                    array_intersect_key($field['options'], array_flip(array('label')))
+                    array_intersect_key($field['options'], array_flip(array('label', 'required')))
                 )
             );
         }
@@ -116,7 +116,9 @@ class SystemConfigurationFormProvider extends FormProvider
 
             if (!empty($subtree)) {
                 $subGroups      = TreeUtils::getByNestingLevel($subtree['children'], 1);
-                $activeSubGroup = TreeUtils::getFirstNodeName($subGroups);
+                if (!empty($subGroups)) {
+                    $activeSubGroup = TreeUtils::getFirstNodeName($subGroups);
+                }
             }
         }
 

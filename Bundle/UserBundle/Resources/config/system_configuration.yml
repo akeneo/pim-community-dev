@@ -1,0 +1,48 @@
+oro_system_configuration:
+    groups:
+        user_output:
+            title: 'User output format'
+            description: 'Those setting related to output format of user entity'
+
+        some_group:
+            priority: 30
+            title: 'Some group'
+
+    fields:
+        oro_user.name_format:
+            type: choice
+            options:
+               label: 'Name format'
+               required: true
+               constraints:
+                  - NotBlank: ~
+               choices:
+                  - '%%first%% %%last%%'
+                  - '%%last%% %%first%%'
+               empty_data: ''
+
+            scopes: [ global ]
+            priority: 10
+        some_field:
+            type: text
+            scopes: [ global ]
+            options:
+                required: false
+
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            application_information:
+                                children:
+                                    user_output:
+                                        priority: 20
+                                        children:
+                                            - oro_user.name_format
+                                    some_group:
+                                        priority: 10
+                                        children:
+                                            - some_field
+

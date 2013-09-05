@@ -12,13 +12,13 @@ oro_system_configuration:
 
         application_information:
             title: 'Application information'
-            priority: 10
+            priority: 20
 
         localization:
             title: 'Localization'
             icon:  icon-time
             description: 'Some additional information about possible localization setup and real need of localization settings (help block)'
-            priority: 20
+            priority: 10
 
         locale_options:
             title: 'Locale options'
@@ -42,9 +42,9 @@ oro_system_configuration:
         system_configuration:
             sales:
                 children: []
-                priority: 20
-            platform:
                 priority: 10
+            platform:
+                priority: 20
                 children:
                     general_setup:
                         priority: 10
