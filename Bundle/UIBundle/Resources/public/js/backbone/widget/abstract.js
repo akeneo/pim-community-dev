@@ -172,7 +172,7 @@ Oro.widget.Abstract = Backbone.View.extend({
 
     hasAction: function(key, section) {
         if (section !== undefined) {
-            return this.actions[section].hasOwnProperty(key);
+            return this.actions.hasOwnProperty(section) && this.actions[section].hasOwnProperty(key);
         } else {
             var hasAction = false;
             _.each(this.actions, function(actions) {

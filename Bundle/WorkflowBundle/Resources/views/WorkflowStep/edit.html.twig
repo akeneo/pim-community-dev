@@ -74,16 +74,12 @@
             top: -0.6em;
         }
 
-        /** Accordion stub */
-        .accordion-toogler {
-            line-height: 26px;
-            border-bottom: 1px solid #d0d0d0;
-            background-color: #eeeeee;
-            cursor: pointer;
-        }
-
-        .step-info {
-            padding: 0 20px;
+        .workflow-data .box-type1 .title .widget-actions-container {
+            background: #FBFBFB;
+            display: inline-block;
+            line-height: 24px;
+            position: relative;
+            top: -0.8em;
         }
     </style>
 
@@ -101,20 +97,6 @@
                     {% endblock workflow_transitions %}
 
                     {% block workflow_actions %}
-                        <div class="btn-group icons-holder pull-left">
-                            <a title="Duplicate" class="btn icons-holder-text " href="#">
-                                <i class="icon-copy  hide-text">Duplicate</i>
-                                Duplicate
-                            </a>
-                            <a title="Share" class="btn icons-holder-text " href="#">
-                                <i class="icon-share  hide-text">Share</i>
-                                Share
-                            </a>
-                            <a title="Delete" class="btn icons-holder-text " href="#">
-                                <i class="icon-remove  hide-text">Delete</i>
-                                Delete
-                            </a>
-                        </div>
                     {% endblock workflow_actions %}
                 </div>
             </div>
@@ -154,11 +136,6 @@
         </div>
     {% endblock step_form %}
 
-    <div class="step-info">
-        {% block step_info %}
-        {% endblock step_info %}
-    </div>
-
     {% block workflow_data %}
         <div class="workflow-data row-fluid dark-bg">
             <div class="span6 no-margin">
@@ -170,45 +147,8 @@
 
             <div class="span6 no-margin">
                     {% block workflow_toolbox %}
-                        <div class="accordion-toogler"><i class="icon icon-chevron-right"></i> Activities</div>
-                        <div class="accordion-toogler"><i class="icon icon-chevron-down"></i> Notes</div>
-
-                        <div id="notes-content">
-                            <div class="container-fluid" style="padding-top: 20px;">
-
-                                <div class="clearfix">
-                                    <form method="post" action="" style="width: 80%">
-                                        <fieldset>
-                                            <div class="control-group">
-                                                <label for="notes" style="font-weight: bold;">Summary:</label>
-                                                <div class="control">
-                                                    <textarea rows="3" style="width: 100%" id="notes" name="notes"></textarea>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-
-                                        <div class="pull-right">
-                                            <button type="submit" class="btn">Save</button>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <p class="muted">2 days ago</p>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur suscipit,
-                                    quam eget convallis congue, mauris nibh dignissim sem, et consectetur turpis
-                                    metus non mauris. Nulla gravida sem a massa euismod, ut rhoncus nulla
-                                    sollicitudin. Mauris urna enim, euismod sed arcu a, luctus varius nibh.
-                                </p>
-                                <hr/>
-
-                                <p class="muted">2 days ago</p>
-                                <p>
-                                    Nulla viverra quam vitae mauris viverra, vel dictum dolor ultricies.
-                                    Sed pulvinar augue malesuada mattis tincidunt. Aenean condimentum consectetur
-                                    lacinia. Ut eget sapien rhoncus, lacinia nulla vitae, tincidunt arcu.
-                                </p>
-                            </div>
+                        <div style="line-height: 200px;vertical-align: middle;text-align: center;">
+                            More exciting things are coming soon here...
                         </div>
                     {% endblock workflow_toolbox %}
             </div>
