@@ -68,6 +68,7 @@ Oro.widget.Abstract = Backbone.View.extend({
      * Move form actions to widget actions
      */
     _adoptWidgetActions: function() {
+        this.actions['adopted'] = {};
         var adoptedActionsContainer = this._getAdoptedActionsContainer();
         if (adoptedActionsContainer.length > 0) {
             var self = this;
@@ -87,7 +88,6 @@ Oro.widget.Abstract = Backbone.View.extend({
                 });
             }
 
-            self.actions['adopted'] = {};
             _.each(actions, function(action, idx) {
                 var $action = $(action);
                 var actionId = $action.data('action-name') ? $action.data('action-name') : 'adopted_action_' + idx;
@@ -205,14 +205,16 @@ Oro.widget.Abstract = Backbone.View.extend({
         this._clearActionsContainer();
         var container = this.getActionsElement();
 
-        _.each(this.actions, function(actions, section) {
-            var sectionContainer = $('<div id="' + section + '"/>');
-            _.each(actions, function(action) {
-                self._initActionEvents(action);
-                sectionContainer.append(action);
+        if (container) {
+            _.each(this.actions, function(actions, section) {
+                var sectionContainer = $('<div id="' + section + '"/>');
+                _.each(actions, function(action) {
+                    self._initActionEvents(action);
+                    sectionContainer.append(action);
+                });
+                container.append(sectionContainer);
             });
-            container.append(sectionContainer);
-        });
+        }
     },
 
     _initActionEvents: function(action) {
