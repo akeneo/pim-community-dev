@@ -22,13 +22,6 @@ class BatchOperatorType extends AbstractType
     {
         $builder
             ->add(
-                'productIds',
-                'hidden',
-                array(
-                    'multiple' => true,
-                )
-            )
-            ->add(
                 'operationAlias',
                 'choice',
                 array(

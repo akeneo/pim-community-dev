@@ -26,7 +26,7 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testPreSetDataWithOperation()
     {
         $form      = $this->getFormMock();
-        $operation = $this->getBatchOperationMock('foo_type');
+        $operation = $this->getBatchOperationMock('foo_type', array('foo' => 'bar'));
         $data      = $this->getBatchOperatorMock($operation);
 
         $event = $this->getFormEventMock($form, $data);
@@ -38,7 +38,7 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $form->expects($this->once())
             ->method('add')
-            ->with('operation', 'foo_type');
+            ->with('operation', 'foo_type', array('foo' => 'bar'));
 
 
         $this->subscriber->preSetData($event);
@@ -119,13 +119,17 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
         return $operator;
     }
 
-    protected function getBatchOperationMock($formType)
+    protected function getBatchOperationMock($formType, array $formOptions)
     {
         $operation = $this->getMock('Pim\Bundle\CatalogBundle\BatchOperation\BatchOperation');
 
         $operation->expects($this->any())
             ->method('getFormType')
             ->will($this->returnValue($formType));
+
+        $operation->expects($this->any())
+            ->method('getFormOptions')
+            ->will($this->returnValue($formOptions));
 
         return $operation;
     }

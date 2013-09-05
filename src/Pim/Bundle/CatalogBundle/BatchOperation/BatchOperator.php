@@ -2,8 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\BatchOperation;
 
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperation;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * A batch operation operator
@@ -16,11 +15,6 @@ use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperation;
 class BatchOperator
 {
     /**
-     * @var array $productIds
-     */
-    protected $productIds = array();
-
-    /**
      * @var BatchOperation $operation
      */
     protected $operation;
@@ -31,7 +25,7 @@ class BatchOperator
     protected $operationAlias;
 
     /**
-     * @var FlexibleManager $manager
+     * @var ProductManager $manager
      */
     protected $manager;
 
@@ -41,9 +35,9 @@ class BatchOperator
     protected $operations = array();
 
     /**
-     * @param FlexibleManager $manager
+     * @param ProductManager $manager
      */
-    public function __construct(FlexibleManager $manager)
+    public function __construct(ProductManager $manager)
     {
         $this->manager = $manager;
     }
@@ -78,30 +72,6 @@ class BatchOperator
         }
 
         return $choices;
-    }
-
-    /**
-     * Set the product ids
-     *
-     * @param array $productIds
-     *
-     * @return BatchOperator
-     */
-    public function setProductIds(array $productIds)
-    {
-        $this->productIds = $productIds;
-
-        return $this;
-    }
-
-    /**
-     * Get the product ids
-     *
-     * @return array
-     */
-    public function getProductIds()
-    {
-        return $this->productIds;
     }
 
     /**
@@ -163,20 +133,29 @@ class BatchOperator
     /**
      * Delegate the batch operation execution to the chosen operation adapter
      */
-    public function performOperation()
+    public function performOperation($productIds)
     {
         if ($this->operation) {
-            $this->operation->perform($this->getProducts());
+            $this->operation->perform($this->getProducts($productIds));
+        }
+    }
+
+    public function initializeOperation($productIds)
+    {
+        if ($this->operation) {
+            $this->operation->initialize($this->getProducts($productIds));
         }
     }
 
     /**
      * Get the product matching the stored product ids
      *
-     * @return Product[]
+     * @param integer[] $productIds
+     *
+     * @return ProductInterface[]
      */
-    private function getProducts()
+    private function getProducts(array $productIds)
     {
-        return $this->manager->getFlexibleRepository()->findByIds($this->productIds);
+         return $this->manager->findByIds($productIds);
     }
 }

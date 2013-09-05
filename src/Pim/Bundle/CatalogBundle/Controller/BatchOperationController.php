@@ -43,12 +43,9 @@ class BatchOperationController extends AbstractController
      */
     public function chooseAction(Request $request)
     {
-        if ($request->isMethod('GET')) {
-            $productIds = $request->query->get('products');
-            if (!$productIds || !is_array($productIds)) {
-                return $this->redirectToRoute('pim_catalog_product_index');
-            }
-            $this->batchOperator->setProductIds($productIds);
+        $productIds = $request->query->get('products');
+        if (!$productIds || !is_array($productIds)) {
+            return $this->redirectToRoute('pim_catalog_product_index');
         }
 
         $form = $this->getBatchOperatorForm();
@@ -59,7 +56,7 @@ class BatchOperationController extends AbstractController
                 return $this->redirectToRoute(
                     'pim_catalog_batch_operation_configure',
                     array(
-                        'products'       => $this->batchOperator->getProductIds(),
+                        'products'       => $productIds,
                         'operationAlias' => $this->batchOperator->getOperationAlias(),
                     )
                 );
@@ -67,7 +64,8 @@ class BatchOperationController extends AbstractController
         }
 
         return array(
-            'form' => $form->createView(),
+            'form'       => $form->createView(),
+            'productIds' => $productIds,
         );
     }
 
@@ -78,25 +76,24 @@ class BatchOperationController extends AbstractController
     {
         $this->batchOperator->setOperationAlias($operationAlias);
 
-        if ($request->isMethod('GET')) {
-            $productIds = $request->query->get('products');
-            if (!$productIds || !is_array($productIds)) {
-                return $this->redirectToRoute('pim_catalog_product_index');
-            }
-            $this->batchOperator->setProductIds($productIds);
+        $productIds = $request->query->get('products');
+        if (!$productIds || !is_array($productIds)) {
+            return $this->redirectToRoute('pim_catalog_product_index');
         }
+        $this->batchOperator->initializeOperation($productIds);
 
         $form = $this->getBatchOperatorForm();
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
-                $this->batchOperator->performOperation();
+                $this->batchOperator->performOperation($productIds);
             }
         }
 
         return array(
             'form'          => $form->createView(),
             'batchOperator' => $this->batchOperator,
+            'productIds'    => $productIds,
         );
     }
 

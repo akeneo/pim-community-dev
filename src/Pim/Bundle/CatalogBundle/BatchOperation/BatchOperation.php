@@ -12,16 +12,30 @@ namespace Pim\Bundle\CatalogBundle\BatchOperation;
 interface BatchOperation
 {
     /**
-     * Get the form type to use in order to configure the application
+     * Get the form type to use in order to configure the operation
      *
      * @return string|FormTypeInterface
      */
     public function getFormType();
 
     /**
+     * Get the form options to configure the operation
+     *
+     * @return array
+     */
+    public function getFormOptions();
+
+    /**
+     * Initialize the operation with the products
+     *
+     * @param ProductInterface[]
+     */
+    public function initialize(array $products);
+
+    /**
      * Perform an operation on a set of products
      *
-     * @param Product[]
+     * @param ProductInterface[]
      */
     public function perform(array $products);
 }

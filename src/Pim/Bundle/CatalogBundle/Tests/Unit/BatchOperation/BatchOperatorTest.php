@@ -11,15 +11,11 @@ use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperator;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BatchOperationTest extends \PHPUnit_Framework_TestCase
+class BatchOperatorTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->operator = new BatchOperator(
-            $this->getFlexibleManagerMock(
-                $this->getFlexibleRepositoryMock()
-            )
-        );
+        $this->operator = new BatchOperator($this->getFlexibleManagerMock());
     }
 
     public function testRegisterBatchOperation()
@@ -79,25 +75,24 @@ class BatchOperationTest extends \PHPUnit_Framework_TestCase
         $operation = $this->getBatchOperationMock();
         $this->operator->registerBatchOperation('foo', $operation);
         $this->operator->setOperationAlias('foo');
-        $this->operator->setProductIds(array(1, 2, 3));
 
         $operation->expects($this->once())
             ->method('perform')
             ->with(array(1, 2, 3));
 
-        $this->operator->performOperation();
+        $this->operator->performOperation(array(1, 2, 3));
     }
 
-    protected function getFlexibleManagerMock($repository)
+    protected function getFlexibleManagerMock()
     {
         $manager = $this
-            ->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
             ->disableOriginalConstructor()
             ->getMock();
 
         $manager->expects($this->any())
-            ->method('getFlexibleRepository')
-            ->will($this->returnValue($repository));
+            ->method('findByIds')
+            ->will($this->returnArgument(0));
 
         return $manager;
     }
@@ -105,19 +100,5 @@ class BatchOperationTest extends \PHPUnit_Framework_TestCase
     protected function getBatchOperationMock()
     {
         return $this->getMock('Pim\Bundle\CatalogBundle\BatchOperation\BatchOperation');
-    }
-
-    protected function getFlexibleRepositoryMock()
-    {
-        $repository = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $repository->expects($this->any())
-            ->method('findByIds')
-            ->will($this->returnArgument(0));
-
-        return $repository;
     }
 }
