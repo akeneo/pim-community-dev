@@ -7,7 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use Oro\Bundle\NavigationBundle\Annotation\TitleTemplate;
 use Oro\Bundle\ConfigBundle\Provider\SystemConfigurationFormProvider;
 
 class ConfigurationController extends Controller
@@ -19,7 +18,6 @@ class ConfigurationController extends Controller
      *      defaults={"activeGroup" = null, "activeSubGroup" = null}
      * )
      * @Template()
-     * @TitleTemplate("System configuration")
      */
     public function systemAction($activeGroup = null, $activeSubGroup = null)
     {

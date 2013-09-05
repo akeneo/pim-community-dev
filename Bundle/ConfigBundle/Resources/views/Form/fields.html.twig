@@ -1,7 +1,11 @@
 {% block oro_config_form_field_type_widget %}
     {% set additionalOptions = {disabled: form.use_parent_scope_value.vars.data == true} %}
+    {% set valueContainerId = form.value.vars.id ~ '_container' %}
 
-    {{ form_widget(form.value, additionalOptions) }}
+    <div id="{{ valueContainerId }}" class="controls control-subgroup{% if form.value.vars.errors|length > 0 %} validation-error{% endif %}">
+        {{ form_widget(form.value, additionalOptions) }}
+        {{ form_errors(form.value) }}
+    </div>
 
     <div class="form-inline">
         <label class="checkbox inline control-label">
@@ -12,16 +16,16 @@
 
     <script type="text/javascript">
         !function() {
+            "use strict";
+
             $(function() {
                 var checkboxEl = $('#{{ form.use_parent_scope_value.vars.id }}');
-                var valueEl    = $('#{{ form.value.vars.id }}');
+                var valueEls   = $('#{{ valueContainerId }}').find(':input');
 
-                checkboxEl.change(
-                    function() {
-                        var value = $(this).is(':checked');
-                        valueEl.prop('disabled', value);
-                    }
-                );
+                checkboxEl.change(function() {
+                    var value = $(this).is(':checked');
+                    valueEls.prop('disabled', value);
+                });
             });
         }();
     </script>

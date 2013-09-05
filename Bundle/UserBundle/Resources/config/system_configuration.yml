@@ -17,18 +17,9 @@ oro_system_configuration:
                constraints:
                   - NotBlank: ~
                choices:
-                  - '%%first%% %%last%%'
-                  - '%%last%% %%first%%'
-               empty_data: ''
-
-            scopes: [ global ]
-            priority: 10
-        some_field:
-            type: text
-            scopes: [ global ]
-            options:
-                required: false
-
+                  '%%first%% %%last%%': '%%first%% %%last%%'
+                  '%%last%% %%first%%': '%%last%% %%first%%'
+            priority: 20
     tree:
         system_configuration:
             platform:
@@ -41,8 +32,4 @@ oro_system_configuration:
                                         priority: 20
                                         children:
                                             - oro_user.name_format
-                                    some_group:
-                                        priority: 10
-                                        children:
-                                            - some_field
 

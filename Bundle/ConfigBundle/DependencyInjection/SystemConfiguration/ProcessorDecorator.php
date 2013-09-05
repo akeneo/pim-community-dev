@@ -9,7 +9,6 @@ use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 class ProcessorDecorator
 {
     const ROOT                 = 'oro_system_configuration';
-    const SCOPES_ROOT          = 'scopes';
     const GROUPS_NODE          = 'groups';
     const FIELDS_ROOT          = 'fields';
     const TREE_ROOT            = 'tree';
@@ -43,13 +42,6 @@ class ProcessorDecorator
         if (!empty($newData[self::ROOT])) {
             foreach ((array)$newData[self::ROOT] as $nodeName => $node) {
                 switch ($nodeName) {
-                    // merge scopes node
-                    case self::SCOPES_ROOT:
-                        $source[self::ROOT][$nodeName] = array_merge(
-                            $source[self::ROOT][$nodeName],
-                            $node
-                        );
-                        break;
                     // merge recursive all nodes in tree
                     case self::TREE_ROOT:
                         $source[self::ROOT][$nodeName] = array_merge_recursive(
@@ -79,7 +71,7 @@ class ProcessorDecorator
     {
         $result = array(
             self::ROOT => array_fill_keys(
-                array(self::SCOPES_ROOT, self::GROUPS_NODE, self::FIELDS_ROOT, self::TREE_ROOT),
+                array(self::GROUPS_NODE, self::FIELDS_ROOT, self::TREE_ROOT),
                 array()
             )
         );
@@ -107,29 +99,12 @@ class ProcessorDecorator
         $tree = new TreeBuilder();
 
         $tree->root(self::ROOT)->children()
-                ->append($this->getScopesNode())
                 ->append($this->getGroupsNode())
                 ->append($this->getFieldsNode())
                 ->append($this->getTreeNode())
             ->end();
 
         return $tree;
-    }
-
-    /**
-     * @return NodeDefinition
-     */
-    protected function getScopesNode()
-    {
-        $builder = new TreeBuilder();
-
-        $node = $builder->root(self::SCOPES_ROOT)
-                ->isRequired()
-                ->requiresAtLeastOneElement()
-                ->prototype('scalar')
-            ->end();
-
-        return $node;
     }
 
     /**
@@ -165,11 +140,6 @@ class ProcessorDecorator
                     ->scalarNode('type')->isRequired()->end()
                     ->arrayNode('options')
                         ->prototype('variable')->end()
-                    ->end()
-                    ->arrayNode('scopes')
-                        ->isRequired()
-                        ->requiresAtLeastOneElement()
-                        ->prototype('scalar')->end()
                     ->end()
                     ->scalarNode('acl_resource')->end()
                     ->integerNode('priority')->end()

@@ -16,7 +16,6 @@
                 {% endif %}
                 <form class="form-inline search-form configuration-search-form">
                     <input type="text" id="search" class="span2 search" name="search" value="Find an Option">
-                    <button type="submit" class="btn btn-search btn-primary">{{ 'Find'|trans }}</button>
                 </form>
             </div>
         </h1>
@@ -26,13 +25,14 @@
 {#
     Render page scrollable data
     params:
-        data        - array of horizontal tabs
+        data        - tree of current configuration
+        form        - form view of active group
         activeTab   - active tab name
         activeVTab  - active vertical tab name
 #}
 {%  macro renderScrollData(data, form, activeTab = false, activeVTab = false) %}
     {% import _self as __ %}
-    <div class="tabbable system-configuration-container">
+    <div class="system-configuration-container">
         <div class="container-fluid">
             <ul class="nav nav-tabs">
                 {% if data is iterable %}
@@ -43,10 +43,10 @@
                             })
                         %}
 
-                        {% if (tab.isActive) %}
+                        {% if tab.isActive %}
                             {% set activeTab = tab %}
                         {% endif %}
-                        {{ __.renderTabNavItem(tab, true) }}
+                        {{ __.renderTabNavItem(tab) }}
                     {% endfor %}
                 {% endif %}
             </ul>
@@ -54,7 +54,7 @@
         <div class="scrollable-container">
             <div class="container-fluid">
                 <div class="usser-row">
-                    <div class="row-fluid row-fluid-divider tab-content">
+                    <div class="row-fluid row-fluid-divider">
                         {% if activeVTab and form != false %}
                             {{ __.renderVerticalSubmenu(activeTab, activeVTab) }}
                             {{ __.renderTab(form, path('oro_config_configuration_system', {activeGroup: activeTab.name, activeSubGroup: activeVTab})) }}
@@ -90,8 +90,9 @@
         data.children             - Submenu groups
         data.children[].title     - Group title
         data.children[].children  - Vertical menu items
+        activeVTab                - Active vertical tab name
 #}
-{% macro renderVerticalSubmenu(data, activeVTab= '') %}
+{% macro renderVerticalSubmenu(data, activeVTab = false) %}
     {% import _self as __ %}
     <div class="span2 system-configuration-sidebar">
         {% if data.children is defined and data.children is iterable %}
@@ -105,7 +106,7 @@
                             <ul class="nav nav-pills nav-stacked">
                                 {% for tab in group.children %}
                                     {% set tab = tab|merge({
-                                            isActive: activeVTab != '' and activeVTab == tab.name,
+                                            isActive: activeVTab and activeVTab == tab.name,
                                             url: path('oro_config_configuration_system', {activeGroup: data.name, activeSubGroup: tab.name })
                                         })
                                     %}
@@ -121,14 +122,17 @@
 {% endmacro %}
 
 {#
-    Renders tab content by name
+    Renders tab form
+    params:
+        form        - form view for active tab tree configuration
+        formAction  - current url for submitting form
 #}
 {% macro renderTab(form, formAction) %}
     {% import _self as __ %}
     {% import 'OroUIBundle::macros.html.twig' as UI %}
 
     {% set data = {
-        'formErrors': form_errors(form)? form_errors(form) : null,
+        'formErrors': form_errors(form),
         'dataBlocks': form_data_blocks(form),
         'hiddenData': form_rest(form)
     }%}
@@ -153,10 +157,10 @@
             {% endif %}
 
             {% for scrollBlock in data.dataBlocks %}
-                <div class="clear">
+                <div class="clearfix">
                     <h2 class="oro-subtitle">{{ scrollBlock.title|trans }}</h2>
 
-                    {% if scrollBlock.description is defined %}
+                    {% if scrollBlock.description is defined and scrollBlock.description != '' %}
                         <p>{{ scrollBlock.description }}</p>
                     {% endif %}
 
@@ -166,9 +170,7 @@
                 </div>
             {% endfor %}
             <div class="hide">
-                {% if data.hiddenData is defined %}
-                    {{ data.hiddenData|raw }}
-                {% endif %}
+                {{ data.hiddenData|raw }}
             </div>
         </form>
     </div>
@@ -178,7 +180,7 @@
     Renders fieldset
     params:
         block.title       - fieldset label
-        block.description - fieldset description
+        block.description - fieldset description (optional)
         block.data        - fields data
 #}
 {% macro renderFiedset(block) %}
@@ -188,8 +190,10 @@
             <span>{{ block.title|trans }}</span>
         </h5>
 
-        {% if block.description is defined %}
-            <p>{{ block.description }}</p>
+        {% if block.description is defined and block.description != '' %}
+            <div class="container-fluid">
+                <p>{{ block.description }}</p>
+            </div>
         {% endif %}
 
         {% for dataBlock in block.data %}

@@ -1,7 +1,4 @@
 oro_system_configuration:
-    scopes:
-       - global
-
     groups:
         platform:
             title: 'Platform'
@@ -35,7 +32,6 @@ oro_system_configuration:
                constraints:
                   - NotBlank: ~
 
-            scopes: [ global ]
             priority: 10
 
     tree:
