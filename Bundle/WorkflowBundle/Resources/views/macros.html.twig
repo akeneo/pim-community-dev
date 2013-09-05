@@ -1,14 +1,15 @@
 {% macro renderTransitionButton(workflow, transition, enabled, url, redirectToWorkflow) %}
-    <a href="{{ url }}"
-        data-enabled="{{ enabled }}"
+    <button type="button"
+        {% if not enabled %}disabled="disabled"{% endif %}
+        data-href="{{ url }}"
         data-redirect-to-workflow="{{ redirectToWorkflow }}"
-        class="btn icons-holder-text no-hash {% if not enabled %}disabled {% endif %}{% if transition.options.frontend is defined and transition.options.frontend.class is defined %}{{ transition.options.frontend.class }}{% endif %}"
+        class="btn icons-holder-text no-hash {% if transition.options.frontend is defined and transition.options.frontend.class is defined %}{{ transition.options.frontend.class }}{% endif %}"
         id="transition-{{ workflow.name }}-{{ transition.name }}">
         {% if transition.options.frontend is defined and transition.options.frontend.icon is defined %}
-            <i class="{{ transition.options.frontend.icon }} hide-text">{{ transition.label }}</i>
+            <i class="{{ transition.options.frontend.icon }} hide-text">{{ transition.label|trans }}</i>
         {% endif %}
-        {{ transition.label }}
-    </a>
+        {{ transition.label|trans }}
+    </button>
 {% endmacro %}
 
 {% macro renderTransitionsJs(workflowData, blockId) %}
@@ -18,40 +19,61 @@
             {% for data in workflowData %}
                 {% for transition in data.transitions %}
                 container.on('click', '#transition-{{ data.workflow.name }}-{{ transition.name }}', function(e) {
-                    var element = this;
-                    var enabled = $(element).data('enabled');
-                    if (enabled) {
-                        e.preventDefault();
-                        $.getJSON(this.href)
+                    var element = $(this);
+                    e.preventDefault();
+                    $.getJSON($(this).data('href'))
                         .done(function(response) {
-                            var workflowItemId = null;
-                            if (response.workflowItem && response.workflowItem.id) {
-                                workflowItemId = response.workflowItem.id;
-                            }
-                            var needRedirect = $(element).data('redirect-to-workflow');
-                            if (needRedirect && workflowItemId) {
-                                var redirectUrl = Routing.generate(
-                                    'oro_workflow_step_edit',
-                                    { id: workflowItemId }
-                                );
-
+                            var doRedirect = function(redirectUrl) {
                                 if (Oro.hashNavigationEnabled()) {
                                     Oro.hashNavigationInstance.setLocation(redirectUrl);
                                 } else {
                                     window.location.href = redirectUrl;
                                 }
-                            } else {
+                            };
+                            var doReload = function() {
                                 if (Oro.hashNavigationEnabled()) {
                                     Oro.hashNavigationInstance.loadPage();
                                 } else {
                                     window.location.reload();
                                 }
-                            }
+                            };
+
+                            /** Handle redirectUrl result parameter for RedirectPostAction */
+                            element.one('transitions_success', function(e, response) {
+                                if (response.workflowItem
+                                        && response.workflowItem.result
+                                        && response.workflowItem.result.redirectUrl
+                                ) {
+                                    e.stopImmediatePropagation();
+                                    doRedirect(response.workflowItem.result.redirectUrl);
+                                }
+                            });
+                            /** Handle redirect-to-workflow element data parameter */
+                            element.one('transitions_success', function(e, response) {
+                                var workflowItemId = null;
+                                if (response.workflowItem && response.workflowItem.id) {
+                                    workflowItemId = response.workflowItem.id;
+                                }
+                                var needRedirect = element.data('redirect-to-workflow');
+                                if (needRedirect && workflowItemId) {
+                                    e.stopImmediatePropagation();
+                                    var redirectUrl = Routing.generate(
+                                        'oro_workflow_step_edit',
+                                        {id: workflowItemId}
+                                    );
+                                    doRedirect(redirectUrl);
+                                }
+                            });
+                            /** By default reload page */
+                            element.one('transitions_success', doReload);
+                            element.trigger('transitions_success', [response]);
                         })
                         .fail(function(jqxhr, textStatus, error) {
-                            Oro.NotificationFlashMessage('error', _.__('Could not perform transition'));
+                            element.one('transitions_failure', function() {
+                                Oro.NotificationFlashMessage('error', _.__('Could not perform transition'));
+                            });
+                            element.trigger('transitions_failure', [jqxhr, textStatus, error]);
                         });
-                    }
                     return false;
                 });
                 {% endfor %}
