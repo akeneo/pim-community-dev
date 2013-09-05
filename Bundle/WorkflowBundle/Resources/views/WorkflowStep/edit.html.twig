@@ -75,6 +75,10 @@
             background-color: #eeeeee;
             cursor: pointer;
         }
+
+        .step-info {
+            padding: 0 20px;
+        }
     </style>
 
     {% block workflow_header %}
@@ -143,6 +147,11 @@
             </script>
         </div>
     {% endblock step_form %}
+
+    <div class="step-info">
+        {% block step_info %}
+        {% endblock step_info %}
+    </div>
 
     {% block workflow_data %}
         <div class="workflow-data row-fluid dark-bg">
