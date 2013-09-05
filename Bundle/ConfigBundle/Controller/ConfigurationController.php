@@ -23,7 +23,7 @@ class ConfigurationController extends Controller
      */
     public function systemAction($activeGroup = null, $activeSubGroup = null)
     {
-        $provider = $this->container->get('oro_config.provider.system_configuration.form_provider');
+        $provider = $this->get('oro_config.provider.system_configuration.form_provider');
 
         list($activeGroup, $activeSubGroup) = $provider->chooseActiveGroups($activeGroup, $activeSubGroup);
 
@@ -31,7 +31,12 @@ class ConfigurationController extends Controller
         if ($activeSubGroup !== null) {
             $form = $provider->getForm($activeSubGroup);
 
-            // @TODO Save handler calls here
+            if ($this->get('oro_config.form.handler.config')->process($form)) {
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('oro.config.controller.config.saved.message')
+                );
+            }
         }
 
         return array(
