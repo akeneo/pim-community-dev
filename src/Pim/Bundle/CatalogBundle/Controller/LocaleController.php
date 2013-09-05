@@ -12,6 +12,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
@@ -23,6 +24,13 @@ use Pim\Bundle\CatalogBundle\Form\Handler\LocaleHandler;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Acl(
+ *      id="pim_catalog_locale",
+ *      name="Locale manipulation",
+ *      description="Locale manipulation",
+ *      parent="pim_catalog"
+ * )
  */
 class LocaleController extends AbstractDoctrineController
 {
@@ -48,9 +56,9 @@ class LocaleController extends AbstractDoctrineController
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
      * @param SecurityContextInterface $securityContext
-     * @param RegistryInterface        $doctrine
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param RegistryInterface        $doctrine
      * @param DatagridWorkerInterface  $datagridWorker
      * @param LocaleHandler            $localeHandler
      * @param Form                     $localeForm
@@ -60,24 +68,30 @@ class LocaleController extends AbstractDoctrineController
         EngineInterface $templating,
         RouterInterface $router,
         SecurityContextInterface $securityContext,
-        RegistryInterface $doctrine,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         DatagridWorkerInterface $datagridWorker,
         LocaleHandler $localeHandler,
         Form $localeForm
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
+        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+
         $this->datagridWorker = $datagridWorker;
-        $this->localeForm = $localeForm;
-        $this->localeHandler = $localeHandler;
+        $this->localeForm     = $localeForm;
+        $this->localeHandler  = $localeHandler;
     }
 
     /**
      * List locales
      *
      * @param Request $request
-     *
+     * @Acl(
+     *      id="pim_catalog_locale_index",
+     *      name="View locale list",
+     *      description="View locale list",
+     *      parent="pim_catalog_locale"
+     * )
      * @return Response
      */
     public function indexAction(Request $request)
@@ -102,6 +116,12 @@ class LocaleController extends AbstractDoctrineController
      * @param Locale $locale
      *
      * @Template
+     * @Acl(
+     *      id="pim_catalog_locale_edit",
+     *      name="Edit a locale",
+     *      description="Edit a locale",
+     *      parent="pim_catalog_locale"
+     * )
      * @return array
      */
     public function editAction(Locale $locale)
@@ -124,7 +144,12 @@ class LocaleController extends AbstractDoctrineController
      *
      * @param Request $request
      * @param Locale  $locale
-     *
+     * @Acl(
+     *      id="pim_catalog_locale_disable",
+     *      name="Disable a locale",
+     *      description="Disable a locale",
+     *      parent="pim_catalog_locale"
+     * )
      * @return Response
      */
     public function disableAction(Request $request, Locale $locale)
@@ -145,7 +170,12 @@ class LocaleController extends AbstractDoctrineController
      *
      * @param Request $request
      * @param Locale  $locale
-     *
+     * @Acl(
+     *      id="pim_catalog_locale_enable",
+     *      name="Enable a locale",
+     *      description="Enable a locale",
+     *      parent="pim_catalog_locale"
+     * )
      * @return Response
      */
     public function enableAction(Request $request, Locale $locale)

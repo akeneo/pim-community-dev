@@ -26,10 +26,9 @@ parameters:
     pim_catalog.manager.category.class:                Pim\Bundle\CatalogBundle\Manager\CategoryManager
     pim_catalog.form.type.category.class:              Pim\Bundle\CatalogBundle\Form\Type\CategoryType
 
-    pim_catalog.event_listener.user_context.class:           Pim\Bundle\CatalogBundle\EventListener\UserContextListener
-
-    pim_catalog.form.subscriber.add_attribute_type.class:   Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
-    pim_catalog.form.transform_imported_product_data_subscriber.class: Pim\Bundle\CatalogBundle\Form\Subscriber\TransformImportedProductDataSubscriber
+    pim_catalog.event_listener.user_context.class:                      Pim\Bundle\CatalogBundle\EventListener\UserContextListener
+    pim_catalog.form.subscriber.add_attribute_type.class:               Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
+    pim_catalog.form.transform_imported_product_data_subscriber.class:  Pim\Bundle\CatalogBundle\Form\Subscriber\TransformImportedProductDataSubscriber
 
     pim_catalog.manager.attribute_type.class:          Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager
     pim_catalog.manager.media.class:                   Pim\Bundle\CatalogBundle\Manager\MediaManager
@@ -49,6 +48,7 @@ parameters:
     pim_catalog.manager.locale.class:        Pim\Bundle\CatalogBundle\Manager\LocaleManager
     pim_catalog.form.handler.locale.class:   Pim\Bundle\CatalogBundle\Form\Handler\LocaleHandler
     pim_catalog.form.type.locale.class:      Pim\Bundle\CatalogBundle\Form\Type\LocaleType
+    pim_catalog.hidden_type_extension.class: Pim\Bundle\CatalogBundle\Form\Extension\HiddenTypeExtension
 
     pim_catalog.manager.channel.class:       Pim\Bundle\CatalogBundle\Manager\ChannelManager
     pim_catalog.form.handler.channel.class:  Pim\Bundle\CatalogBundle\Form\Handler\ChannelHandler
@@ -59,3 +59,6 @@ parameters:
 
     pim_catalog.calculator.completeness.class:       Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator
     pim_catalog.calculator.batch_completeness.class: Pim\Bundle\CatalogBundle\Calculator\BatchCompletenessCalculator
+
+    pim_catalog.batch_operation.operator.class:      Pim\Bundle\CatalogBundle\BatchOperation\BatchOperator
+    pim_catalog.batch_operation.change_status.class: Pim\Bundle\CatalogBundle\BatchOperation\ChangeStatus

@@ -1,17 +1,18 @@
 var Pim = Pim || {};
 Pim.tree = Pim.tree || {};
 
-Pim.tree.associate = function(elementId) {
-    var $el = $('#'+elementId);
+Pim.tree.associate = function (elementId) {
+    'use strict';
+    var $el = $('#' + elementId);
     if (!$el || !$el.length || !_.isObject($el)) {
         throw new Error('Unable to instantiate tree on this element');
     }
-    var self     = this,
-    currentTree  = -1,
-    id           = $el.attr('data-id'),
-    assetsPath   = $el.attr('data-assets-path'),
-    selectedTree = $el.attr('data-selected-tree'),
-    dataLocale   = $el.attr('data-datalocale');
+    var self         = this,
+        currentTree  = -1,
+        id           = $el.attr('data-id'),
+        assetsPath   = $el.attr('data-assets-path'),
+        selectedTree = $el.attr('data-selected-tree'),
+        dataLocale   = $el.attr('data-datalocale');
 
     this.config = {
         'core': {
@@ -19,11 +20,11 @@ Pim.tree.associate = function(elementId) {
             'html_titles': true
         },
         'plugins': [
-             'themes',
-             'json_data',
-             'ui',
-             'types',
-             'checkbox'
+            'themes',
+            'json_data',
+            'ui',
+            'types',
+            'checkbox'
         ],
         'checkbox': {
             'two_state': true,
@@ -42,9 +43,9 @@ Pim.tree.associate = function(elementId) {
         'json_data': {
             'ajax': {
                 'url': function (node) {
-                    var treeHasProduct = $('#tree-link-'+currentTree).hasClass('tree-has-product');
+                    var treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
 
-                    if ( (!node || (node == -1)) && treeHasProduct )  {
+                    if ((!node || (node === -1)) && treeHasProduct) {
                         // First load of the tree: get the checked categories
                         return Routing.generate('pim_catalog_product_listcategories', { 'id': id, 'category_id': currentTree, '_format': 'json', 'dataLocale': dataLocale });
                     }
@@ -52,12 +53,11 @@ Pim.tree.associate = function(elementId) {
                     return Routing.generate('pim_catalog_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale });
                 },
                 'data': function (node) {
-                    var data = {};
+                    var data           = {},
+                        treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
 
-                    var treeHasProduct = $('#tree-link-'+currentTree).hasClass('tree-has-product');
-
-                    if (node && node != -1) {
-                        data.id = node.attr('id').replace('node_','');
+                    if (node && node !== -1) {
+                        data.id = node.attr('id').replace('node_', '');
                     } else {
                         if (!treeHasProduct) {
                             data.id = currentTree;
@@ -85,7 +85,7 @@ Pim.tree.associate = function(elementId) {
         }
     };
 
-    this.switchTree = function(treeId) {
+    this.switchTree = function (treeId) {
         currentTree = treeId;
         var $tree = $('#tree-' + treeId);
 
@@ -93,7 +93,7 @@ Pim.tree.associate = function(elementId) {
         $('#trees-list').find('li').removeClass('active');
         $('#tree-link-' + treeId).parent().addClass('active');
 
-        $('.tree[data-tree-id='+treeId+']').show();
+        $('.tree[data-tree-id=' + treeId + ']').show();
         $tree.show();
 
         // If empty, load the associated jstree
@@ -102,20 +102,19 @@ Pim.tree.associate = function(elementId) {
         }
     };
 
-    this.initTree = function(treeId) {
+    this.initTree = function (treeId) {
         var $tree = $('#tree-' + treeId);
-        var applyOnTree = $('#apply-on-tree-' + treeId);
-        applyOnTree.val(1);
+        $('#apply-on-tree-' + treeId).val(1);
         $tree.jstree(self.config);
     };
 
-    this.bindEvents = function() {
-        $('#trees-list a').on('click', function() {
-            self.switchTree(this.id.replace('tree-link-',''));
+    this.bindEvents = function () {
+        $('#trees-list a').on('click', function () {
+            self.switchTree(this.id.replace('tree-link-', ''));
         });
     };
 
-    this.init = function() {
+    this.init = function () {
         self.switchTree(selectedTree);
         self.bindEvents();
     };

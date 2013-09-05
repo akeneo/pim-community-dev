@@ -38,6 +38,7 @@
                 </span>
                 <ul class="dropdown-menu">
                     {% for locale in locales %}
+                        {% if resource_granted('pim_catalog_locale_' ~ locale.code) %}
                         <li class="{{ locale.code == dataLocale ? 'activeLocale' : '' }}">
                             <a href="{{ path('pim_catalog_product_edit', {id: form.vars.value.id, dataLocale: locale.code}) }}" title="{{ localeLabel(locale.code) }}">
                                 {% if locale == dataLocale %}
@@ -49,6 +50,7 @@
                                 <span class="title">{{ product.label(locale.code) }}</span>
                             </a>
                         </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>

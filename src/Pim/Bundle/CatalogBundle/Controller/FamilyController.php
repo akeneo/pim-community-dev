@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\GridBundle\Renderer\GridRenderer;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
@@ -26,6 +27,13 @@ use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Acl(
+ *      id="pim_catalog_family",
+ *      name="Family manipulation",
+ *      description="Family manipulation",
+ *      parent="pim_catalog"
+ * )
  */
 class FamilyController extends AbstractDoctrineController
 {
@@ -61,9 +69,9 @@ class FamilyController extends AbstractDoctrineController
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
      * @param SecurityContextInterface $securityContext
-     * @param RegistryInterface        $doctrine
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param RegistryInterface        $doctrine
      * @param GridRenderer             $gridRenderer
      * @param DatagridWorkerInterface  $dataGridWorker
      * @param ChannelManager           $channelManager
@@ -75,17 +83,18 @@ class FamilyController extends AbstractDoctrineController
         EngineInterface $templating,
         RouterInterface $router,
         SecurityContextInterface $securityContext,
-        RegistryInterface $doctrine,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $dataGridWorker,
         ChannelManager $channelManager,
         ProductManager $productManager,
         PendingManager $pendingManager
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
-        $this->gridRenderer = $gridRenderer;
+        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+
+        $this->gridRenderer   = $gridRenderer;
         $this->dataGridWorker = $dataGridWorker;
         $this->channelManager = $channelManager;
         $this->productManager = $productManager;
@@ -98,6 +107,12 @@ class FamilyController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
+     * @Acl(
+     *      id="pim_catalog_family_create",
+     *      name="Create a family",
+     *      description="Create a family",
+     *      parent="pim_catalog_family"
+     * )
      * @return array
      */
     public function createAction(Request $request)
@@ -136,6 +151,12 @@ class FamilyController extends AbstractDoctrineController
      * @param integer $id
      *
      * @Template
+     * @Acl(
+     *      id="pim_catalog_family_edit",
+     *      name="Edit a family",
+     *      description="Edit a family",
+     *      parent="pim_catalog_family"
+     * )
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -193,7 +214,12 @@ class FamilyController extends AbstractDoctrineController
      * Remove a family
      *
      * @param Family $entity
-     *
+     * @Acl(
+     *      id="pim_catalog_family_remove",
+     *      name="Remove a family",
+     *      description="Remove a family",
+     *      parent="pim_catalog_family"
+     * )
      * @return array
      */
     public function removeAction(Family $entity)
@@ -211,7 +237,12 @@ class FamilyController extends AbstractDoctrineController
      *
      * @param Request $request The request object
      * @param integer $id      The family id to which add attributes
-     *
+     * @Acl(
+     *      id="pim_catalog_family_add_attribute",
+     *      name="Add attribute to a family",
+     *      description="Add attribute to a family",
+     *      parent="pim_catalog_family"
+     * )
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addProductAttributesAction(Request $request, $id)
@@ -239,7 +270,12 @@ class FamilyController extends AbstractDoctrineController
      *
      * @param integer $familyId
      * @param integer $attributeId
-     *
+     * @Acl(
+     *      id="pim_catalog_family_remove_atribute",
+     *      name="Remove attribute from a family",
+     *      description="Remove attribute from a family",
+     *      parent="pim_catalog_family"
+     * )
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeProductAttributeAction($familyId, $attributeId)

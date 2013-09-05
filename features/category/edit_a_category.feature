@@ -20,10 +20,9 @@ Feature: Edit a category
     And I should see "Category successfully updated"
 
   @javascript
-  Scenario: Go to category edit page from the category tree right click menu
+  Scenario: Go to category edit page from the category tree
     Given I am on the categories page
-    And I right click on the "Computers" category
-    And I click on "Edit" in the right click menu
+    And I click on the "Computers" category
     Then I should be on the category "computers" edit page
 
   @javascript

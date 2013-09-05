@@ -15,6 +15,7 @@ use Pim\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 
 /**
  * Report controller
@@ -22,25 +23,33 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Acl(
+ *      id="pim_importexport_report",
+ *      name="Report manipulation",
+ *      description="Report manipulation",
+ *      parent="pim_importexport"
+ * )
  */
 class ReportController extends AbstractDoctrineController
 {
     private $dataGridWorker;
     private $batchLogHandler;
-    
+
     public function __construct(
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
         SecurityContextInterface $securityContext,
-        RegistryInterface $doctrine,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         DatagridWorkerInterface $dataGridWorker,
         BatchLogHandler $batchLogHandler
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
-        $this->dataGridWorker = $dataGridWorker;
+        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+
+        $this->dataGridWorker  = $dataGridWorker;
         $this->batchLogHandler = $batchLogHandler;
     }
     /**
@@ -58,12 +67,17 @@ class ReportController extends AbstractDoctrineController
     /**
      * Download the log file of the job execution
      *
+     * @Acl(
+     *      id="pim_importexport_report_download",
+     *      name="Download an import/export log",
+     *      description="Download import/export log",
+     *      parent="pim_importexport_report"
+     * )
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function downloadLogFileAction($id)
     {
         $jobExecution = $this->findOr404('PimBatchBundle:JobExecution', $id);
-
 
         $response = new BinaryFileResponse($this->batchLogHandler->getRealPath($jobExecution->getLogFile()));
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
@@ -74,6 +88,12 @@ class ReportController extends AbstractDoctrineController
     /**
      * List the export reports
      *
+     * @Acl(
+     *      id="pim_importexport_report_import",
+     *      name="View the list of export reports",
+     *      description="View the list of export reports",
+     *      parent="pim_importexport_report"
+     * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function exportAction()
@@ -86,6 +106,12 @@ class ReportController extends AbstractDoctrineController
     /**
      * List the import reports
      *
+     * @Acl(
+     *      id="pim_importexport_report_export",
+     *      name="View the list of import reports",
+     *      description="View the list of import reports",
+     *      parent="pim_importexport_report"
+     * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function importAction()

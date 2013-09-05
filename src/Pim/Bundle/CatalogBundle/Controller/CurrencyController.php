@@ -9,6 +9,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
@@ -19,6 +20,13 @@ use Pim\Bundle\CatalogBundle\Entity\Currency;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Acl(
+ *      id="pim_catalog_currency",
+ *      name="Currency manipulation",
+ *      description="Currency manipulation",
+ *      parent="pim_catalog"
+ * )
  */
 class CurrencyController extends AbstractDoctrineController
 {
@@ -34,9 +42,9 @@ class CurrencyController extends AbstractDoctrineController
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
      * @param SecurityContextInterface $securityContext
-     * @param RegistryInterface        $doctrine
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param RegistryInterface        $doctrine
      * @param DatagridWorkerInterface  $datagridWorker
      */
     public function __construct(
@@ -44,23 +52,30 @@ class CurrencyController extends AbstractDoctrineController
         EngineInterface $templating,
         RouterInterface $router,
         SecurityContextInterface $securityContext,
-        RegistryInterface $doctrine,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         DatagridWorkerInterface $datagridWorker
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
+        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+
         $this->datagridWorker = $datagridWorker;
     }
     /**
      * List currencies
      *
      * @param Request $request
-     *
+     * @Acl(
+     *      id="pim_catalog_currency_index",
+     *      name="View currency list",
+     *      description="View currency list",
+     *      parent="pim_catalog_currency"
+     * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
     {
+        /** @var $queryBuilder QueryBuilder */
         $queryBuilder = $this->getManager()->createQueryBuilder();
         $queryBuilder
             ->select('c')
@@ -78,7 +93,12 @@ class CurrencyController extends AbstractDoctrineController
      * Activate/Desactivate a currency
      *
      * @param Currency $currency
-     *
+     * @Acl(
+     *      id="pim_catalog_currency_toggle",
+     *      name="Change currency status",
+     *      description="Change currency status",
+     *      parent="pim_catalog_currency"
+     * )
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function toggleAction(Currency $currency)
