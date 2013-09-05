@@ -80,10 +80,13 @@ class UserPreferencesListenerTest extends WebTestCase
             $removedOption->getOptionValue()->getValue(),
             $user->getCatalogscope()->getData()->getOptionValue()->getValue()
         );
-
         $this->entityManager->remove($channel1);
         $this->entityManager->remove($user);
         $this->entityManager->flush();
 
+        $attribute = $this->userManager->getFlexibleRepository()->findAttributeByCode('catalogscope');
+        foreach ($attribute->getOptions() as $option) {
+            $this->assertNotEquals($prefix . 'channel2', $option->getOptionValue()->getValue());
+        }
     }
 }

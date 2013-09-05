@@ -16,9 +16,10 @@
 {% endspaceless %}
 {% endmacro %}
 
-{% macro backLink(url) %}
+{% macro backLink(url, title) %}
 {% spaceless %}
-    <a class="btn icons-holder back-link" href="{{ url }}" title="{{ 'Back to grid'|trans }}"><i class="fa-icon-chevron-left"></i></a>
+    {% set title = title ? title : 'Back to grid' %}
+    <a class="btn icons-holder back-link" href="{{ url }}" title="{{ title|trans }}"><i class="fa-icon-chevron-left"></i></a>
 {% endspaceless %}
 {% endmacro %}
 

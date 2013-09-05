@@ -7,15 +7,12 @@ Pim.tree.manage = function(elementId) {
     if (!$el || !$el.length || !_.isObject($el)) {
         throw new Error('Unable to instantiate tree on this element');
     }
-    var selectedNode = $el.attr('data-node-id') || -1,
-    noTreeMessage    = $el.attr('data-no-tree-message'),
-    assetsPath       = $el.attr('data-assets-path'),
-    listtreeUrl      = $el.attr('data-listtree-url'),
-    childrenUrl      = $el.attr('data-children-url'),
-    createUrl        = $el.attr('data-create-url'),
-    editUrl          = $el.attr('data-edit-url'),
-    moveUrl          = $el.attr('data-move-url'),
-    editLabel        = $el.attr('data-edit-label');
+    var assetsPath = $el.attr('data-assets-path'),
+    selectedNode   = $el.attr('data-node-id') || -1,
+    preventFirst   = selectedNode > 0,
+    loadingMask    = new Oro.LoadingMask();
+
+    loadingMask.render().$el.appendTo($('#container'));
 
     this.config = {
         'core': {
@@ -33,14 +30,6 @@ Pim.tree.manage = function(elementId) {
         ],
         contextmenu: {
             items: {
-                'edit': {
-                    'label': editLabel,
-                    'action': function (obj) {
-                        var id = obj.attr('id').replace('node_', '');
-                        var url = editUrl.replace('0', id);
-                        Pim.navigate(url);
-                    }
-                },
                 'ccp': false,
                 'rename': false,
                 'remove': false
@@ -48,12 +37,11 @@ Pim.tree.manage = function(elementId) {
         },
         'tree_selector': {
             'ajax': {
-                'url': listtreeUrl,
-                'parameters': {'select_node_id': selectedNode}
+                'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'select_node_id': selectedNode })
             },
             'auto_open_root': true,
             'node_label_field': 'title',
-            'no_tree_message': noTreeMessage,
+            'no_tree_message': _.__('jstree.no_tree'),
             'preselect_node_id': selectedNode
         },
         'themes': {
@@ -64,7 +52,7 @@ Pim.tree.manage = function(elementId) {
         },
         'json_data': {
             'ajax': {
-                'url': childrenUrl,
+                'url': Routing.generate('pim_catalog_categorytree_children', { '_format': 'json' }),
                 'data': function (node) {
                     // the result is fed to the AJAX request `data` option
                     var id = null;
@@ -106,7 +94,7 @@ Pim.tree.manage = function(elementId) {
                 $.ajax({
                     async: false,
                     type: 'POST',
-                    url: moveUrl,
+                    url: Routing.generate('pim_catalog_categorytree_movenode'),
                     data: {
                         'id': $(this).attr('id').replace('node_',''),
                         'parent': data.rslt.cr === -1 ? 1 : data.rslt.np.attr('id').replace('node_',''),
@@ -129,19 +117,61 @@ Pim.tree.manage = function(elementId) {
                 });
             });
         })
+        .bind('select_node.jstree', function (e, data) {
+            var id = data.rslt.obj.attr('id').replace('node_',''),
+            url = Routing.generate('pim_catalog_categorytree_edit', { id: id });
+            if ('#url=' + url === Backbone.history.location.hash || preventFirst) {
+                preventFirst = false;
+                return;
+            }
+            loadingMask.show();
+            $.ajax({
+                async: true,
+                type: 'GET',
+                url: url + '?content=form',
+                success: function (data) {
+                    if (data) {
+                        $('#category-form').html(data);
+                        Backbone.history.navigate('url=' + url, {trigger: false});
+                        loadingMask.hide();
+                    }
+                },
+                error: function(jqXHR) {
+                    Oro.BackboneError.Dispatch(null, jqXHR);
+                    loadingMask.hide();
+                }
+            });
+        })
         .bind('loaded.jstree', function(event, data) {
             if (event.namespace == 'jstree') {
                 data.inst.get_tree_select().select2({ width: '100%' });
             }
         })
         .bind('create.jstree', function (e, data) {
+            $.jstree._focused().lock();
             var id = data.rslt.parent.attr('id').replace('node_', ''),
-            url = id ? createUrl + '/' + id : createUrl,
+            url = Routing.generate('pim_catalog_categorytree_create', { parent: id }),
             position = data.rslt.position,
             title = data.rslt.name;
 
             url = url + '?' + 'title=' + title + '&position=' + position;
-            Pim.navigate(url);
+            loadingMask.show();
+            $.ajax({
+                async: true,
+                type: 'GET',
+                url: url + '&content=form',
+                success: function (data) {
+                    if (data) {
+                        $('#category-form').html(data);
+                        Backbone.history.navigate('url=' + url, {trigger: false});
+                        loadingMask.hide();
+                    }
+                },
+                error: function(jqXHR) {
+                    Oro.BackboneError.Dispatch(null, jqXHR);
+                    loadingMask.hide();
+                }
+            });
         });
     };
 

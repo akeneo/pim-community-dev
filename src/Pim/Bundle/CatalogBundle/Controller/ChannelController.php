@@ -2,9 +2,20 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\CatalogBundle\Form\Handler\ChannelHandler;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
@@ -14,8 +25,55 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelController extends Controller
+class ChannelController extends AbstractDoctrineController
 {
+    /**
+     * @var DatagridWorkerInterface
+     */
+    private $datagridWorker;
+
+    /**
+     * @var Form
+     */
+    private $channelForm;
+
+    /**
+     * @var ChannelHandler
+     */
+    private $channelHandler;
+
+    /**
+     * Constructor
+     *
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param RegistryInterface        $doctrine
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param DatagridWorkerInterface  $datagridWorker
+     * @param ChannelHandler           $channelHandler
+     * @param Form                     $channelForm
+     */
+    public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
+        SecurityContextInterface $securityContext,
+        RegistryInterface $doctrine,
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator,
+        DatagridWorkerInterface $datagridWorker,
+        ChannelHandler $channelHandler,
+        Form $channelForm
+    ) {
+        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
+        $this->datagridWorker = $datagridWorker;
+        $this->channelForm = $channelForm;
+        $this->channelHandler = $channelHandler;
+    }
+
     /**
      * List channels
      *
@@ -26,19 +84,12 @@ class ChannelController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /** @var $queryBuilder QueryBuilder */
         $queryBuilder = $this->getManager()->createQueryBuilder();
         $queryBuilder
             ->select('c')
             ->from('PimCatalogBundle:Channel', 'c');
 
-        /** @var $queryFactory QueryFactory */
-        $queryFactory = $this->get('pim_catalog.datagrid.manager.channel.default_query_factory');
-        $queryFactory->setQueryBuilder($queryBuilder);
-
-        /** @var $datagridManager LocaleDatagridManager */
-        $datagridManager = $this->get('pim_catalog.datagrid.manager.channel');
-        $datagrid = $datagridManager->getDatagrid();
+        $datagrid = $this->datagridWorker->getDatagrid('channel', $queryBuilder);
 
         $view = ('json' === $request->getRequestFormat()) ?
             'OroGridBundle:Datagrid:list.json.php' : 'PimCatalogBundle:Channel:index.html.twig';
@@ -69,7 +120,7 @@ class ChannelController extends Controller
      */
     public function editAction(Channel $channel)
     {
-        if ($this->get('pim_catalog.form.handler.channel')->process($channel)) {
+        if ($this->channelHandler->process($channel)) {
             $this->addFlash('success', 'Channel successfully saved');
 
             return $this->redirect(
@@ -78,7 +129,7 @@ class ChannelController extends Controller
         }
 
         return array(
-            'form' => $this->get('pim_catalog.form.channel')->createView()
+            'form' => $this->channelForm->createView()
         );
     }
 
@@ -92,7 +143,8 @@ class ChannelController extends Controller
      */
     public function removeAction(Request $request, Channel $channel)
     {
-        $this->remove($channel);
+        $this->getManager()->remove($channel);
+        $this->getManager()->flush();
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);

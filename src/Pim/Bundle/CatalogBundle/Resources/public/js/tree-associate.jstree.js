@@ -6,12 +6,12 @@ Pim.tree.associate = function(elementId) {
     if (!$el || !$el.length || !_.isObject($el)) {
         throw new Error('Unable to instantiate tree on this element');
     }
-    var currentTree = -1,
-    assetsPath = $el.attr('data-assets-path'),
-    checkedCategoriesUrl = $el.attr('data-checked-categories-url'),
-    childrenUrl = $el.attr('data-children-url'),
+    var self     = this,
+    currentTree  = -1,
+    id           = $el.attr('data-id'),
+    assetsPath   = $el.attr('data-assets-path'),
     selectedTree = $el.attr('data-selected-tree'),
-    self = this;
+    dataLocale   = $el.attr('data-datalocale');
 
     this.config = {
         'core': {
@@ -46,10 +46,10 @@ Pim.tree.associate = function(elementId) {
 
                     if ( (!node || (node == -1)) && treeHasProduct )  {
                         // First load of the tree: get the checked categories
-                        return checkedCategoriesUrl.replace('parent/1', 'parent/' + currentTree);
+                        return Routing.generate('pim_catalog_product_listcategories', { 'id': id, 'category_id': currentTree, '_format': 'json', 'dataLocale': dataLocale });
                     }
 
-                    return childrenUrl;
+                    return Routing.generate('pim_catalog_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale });
                 },
                 'data': function (node) {
                     var data = {};

@@ -35,19 +35,15 @@ class ProductValueConverter
                     case 'prices':
                         $value = $this->convertPricesValue($value);
                         break;
-
                     case 'date':
                         $value = $this->convertDateValue($value);
                         break;
-
                     case 'option':
                         $value = $this->convertOptionValue($value);
                         break;
-
                     case 'options':
                         $value = $this->convertOptionsValue($value);
                         break;
-
                     default:
                         $value = $this->convertValue($attribute->getBackendType(), $value);
                 }
