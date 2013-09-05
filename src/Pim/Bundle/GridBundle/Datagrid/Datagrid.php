@@ -35,4 +35,34 @@ class Datagrid extends OroDatagrid
 
         return $this;
     }
+
+    /**
+     * Serialize datagrid results in a specific format and with a specific context
+     * @param string $format
+     * @param array $context
+     */
+    public function exportData($format, array $context = array())
+    {
+        return $this->serializer->serialize(
+            $this->getResultsWithoutPaging(),
+            $format,
+            $context
+        );
+    }
+
+    /**
+     * Get query result without pagination
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getResultsWithoutPaging()
+    {
+        $this->pagerApplied = true;
+        $this->applyParameters();
+
+        // allow to get all the columns
+        $this->query->select($this->query->getRootAlias());
+
+        return $this->getQuery()->execute();
+    }
 }
