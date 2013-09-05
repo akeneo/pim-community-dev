@@ -129,6 +129,7 @@ class ReportDatagridManager extends DatagridManager
     {
         return array(
             new UrlProperty('download_link', $this->router, 'pim_importexport_report_download', array('id')),
+            new UrlProperty('show_link', $this->router, 'pim_importexport_report_show', array('id')),
         );
     }
 
@@ -137,10 +138,22 @@ class ReportDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
+        $clickAction = array(
+            'name'         => 'rowClick',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'pim_importexport_report_show',
+            'options'      => array(
+                'label'         => $this->translate('Show'),
+                'link'          => 'show_link',
+                'backUrl'       => true,
+                'runOnRowClick' => true
+            )
+        );
+
         $downloadLogAction = array(
             'name'         => 'download',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_importexport_report_download',
             'options'      => array(
                 'label'   => $this->translate('download'),
                 'icon'    => 'download',
@@ -149,7 +162,7 @@ class ReportDatagridManager extends DatagridManager
             )
         );
 
-        return array($downloadLogAction);
+        return array($clickAction, $downloadLogAction);
     }
     /**
      * Create status field
