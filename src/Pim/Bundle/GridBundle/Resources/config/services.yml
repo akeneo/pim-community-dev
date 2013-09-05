@@ -13,3 +13,4 @@ services:
             - @oro_grid.sorter.factory
             - @oro_grid.action.factory
             - %pim_grid.datagrid.class%
+            - @pim_serializer
