@@ -80,11 +80,12 @@ class CustomEntityType extends AbstractType
                 );
 
                 if ($fieldConfigId->getFieldType() == 'boolean') {
-                    $options['choices'] = array('No', 'Yes');
+                    $options['empty_value'] = false;
+                    $options['choices']     = array('No', 'Yes');
                 }
 
                 $builder->add(
-                    Inflector::camelize(Generator::PREFIX .$fieldConfigId->getFieldName()),
+                    Inflector::camelize(Generator::PREFIX . $fieldConfigId->getFieldName()),
                     $this->typeMap[$fieldConfigId->getFieldType()],
                     $options
                 );

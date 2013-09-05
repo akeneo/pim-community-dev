@@ -86,7 +86,7 @@ class ProxyObjectFactory
 
     /**
      * @param $entity
-     * @return null|\Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface
+     * @return null|ExtendProxyInterface
      */
     protected function initProxyObject($entity)
     {

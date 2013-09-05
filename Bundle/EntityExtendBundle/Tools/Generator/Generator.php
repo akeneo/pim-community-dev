@@ -281,6 +281,7 @@ class Generator
 
                     if ($fieldConfig->get('is_indexable')
                         && $fieldConfig->get('state') != ExtendManager::STATE_DELETED
+                        && !in_array($fieldConfig->getId()->getFieldType(), array('text'))
                     ) {
                         $yml[$extendClass]['indexes'][$fieldName . '_index']['columns'] = array($fieldName);
                     }

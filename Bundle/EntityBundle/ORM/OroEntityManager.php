@@ -4,10 +4,15 @@ namespace Oro\Bundle\EntityBundle\ORM;
 
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Connection;
+
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
+
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Oro\Bundle\EntityBundle\ORM\Query\FilterCollection;
+
+use Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class OroEntityManager extends EntityManager
@@ -41,6 +46,7 @@ class OroEntityManager extends EntityManager
         } else {
             throw new \InvalidArgumentException("Invalid argument: " . $conn);
         }
+
         return new OroEntityManager($conn, $config, $conn->getEventManager());
     }
 
@@ -61,6 +67,71 @@ class OroEntityManager extends EntityManager
     public function getExtendManager()
     {
         return $this->extendManager;
+    }
+
+    /**
+     * @param $entity
+     * @return bool
+     */
+    public function isExtendEntity($entity)
+    {
+        return $this->extendManager->isExtend($entity);
+    }
+
+    /**
+     * Get Proxy object for some entity
+     *  param can be some entity object or array with include entity name and criteria
+     *        array(
+     *              'SomeBundle:Entity',
+     *              1
+     *          )
+     *        or
+     *        array(
+     *              'SomeBundle:Entity',
+     *              array(
+     *                  'name' => 'someNname'
+     *              )
+     *          )
+     *
+     * @param object|array $entity
+     * @return ExtendProxyInterface
+     */
+    public function getExtendEntity($entity)
+    {
+        return $this->extendManager->loadExtendEntity($entity);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function persist($entity)
+    {
+        if ($entity instanceof ExtendProxyInterface) {
+            parent::persist($entity->__proxy__getExtend());
+        }
+
+        parent::persist($entity);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove($entity)
+    {
+        if ($entity instanceof ExtendProxyInterface) {
+            parent::remove($entity->__proxy__getExtend());
+        }
+
+        parent::remove($entity);
+    }
+
+
+    /**
+     * @throws \Exception
+     */
+    public function getExtendRepository()
+    {
+        throw new \Exception("OroEntityManager::getExtendRepository is not implemented");
     }
 
     /**

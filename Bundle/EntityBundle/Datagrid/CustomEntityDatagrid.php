@@ -36,6 +36,34 @@ class CustomEntityDatagrid extends DatagridManager
     /** @var  integer parent entity id */
     protected $parentId;
 
+    protected $filterMap = array(
+        'string'   => 'oro_grid_orm_string',
+        'integer'  => 'oro_grid_orm_number',
+        'smallint' => 'oro_grid_orm_number',
+        'bigint'   => 'oro_grid_orm_number',
+        'boolean'  => 'oro_grid_orm_boolean',
+        'decimal'  => 'oro_grid_orm_number',
+        'date'     => 'oro_grid_orm_date_range',
+        'time'     => 'oro_grid_orm_datetime_range',
+        'datetime' => 'oro_grid_orm_datetime_range',
+        'text'     => 'oro_grid_orm_string',
+        'float'    => 'oro_grid_orm_number',
+    );
+
+    protected $typeMap = array(
+        'string'   => 'text',
+        'integer'  => 'integer',
+        'smallint' => 'integer',
+        'bigint'   => 'integer',
+        'boolean'  => 'boolean',
+        'decimal'  => 'decimal',
+        'date'     => 'date',
+        'time'     => 'datetime',
+        'datetime' => 'datetime',
+        'text'     => 'text',
+        'float'    => 'decimal',
+    );
+
     public function __construct(ConfigManager $configManager)
     {
         $this->configManager = $configManager;
@@ -176,12 +204,13 @@ class CustomEntityDatagrid extends DatagridManager
 
                     $fieldObject = new FieldDescription();
                     $fieldObject->setName($code);
+
                     $fieldObject->setOptions(
                         array(
                             'type'        => FieldDescriptionInterface::TYPE_TEXT,
                             'label'       => $label,
                             'field_name'  => $code,
-                            'filter_type' => FilterInterface::TYPE_STRING,
+                            'filter_type' => $this->filterMap[$fieldConfig->getFieldType()],
                             'required'    => false,
                             'sortable'    => true,
                             'filterable'  => true,

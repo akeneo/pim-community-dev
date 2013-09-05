@@ -22,7 +22,7 @@ class ConfigModelValue
 
     /**
      * @var EntityConfigModel
-     * @ORM\ManyToOne(targetEntity="EntityConfigModel", inversedBy="values")
+     * @ORM\ManyToOne(targetEntity="EntityConfigModel", inversedBy="values", cascade={"persist"})
      * @ORM\JoinColumns({
      * @ORM\JoinColumn(name="entity_id", referencedColumnName="id")
      * })
@@ -31,7 +31,7 @@ class ConfigModelValue
 
     /**
      * @var FieldConfigModel
-     * @ORM\ManyToOne(targetEntity="FieldConfigModel", inversedBy="values")
+     * @ORM\ManyToOne(targetEntity="FieldConfigModel", inversedBy="values", cascade={"persist"})
      * @ORM\JoinColumns({
      * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
      * })
@@ -73,6 +73,7 @@ class ConfigModelValue
 
     /**
      * Get id
+     *
      * @return integer
      */
     public function getId()
@@ -82,6 +83,7 @@ class ConfigModelValue
 
     /**
      * Set code
+     *
      * @param string $code
      * @return ConfigModelValue
      */
@@ -94,6 +96,7 @@ class ConfigModelValue
 
     /**
      * Get code
+     *
      * @return string
      */
     public function getCode()
@@ -122,6 +125,7 @@ class ConfigModelValue
 
     /**
      * Set data
+     *
      * @param string $value
      * @return ConfigModelValue
      */
@@ -134,6 +138,7 @@ class ConfigModelValue
 
     /**
      * Get data
+     *
      * @return string
      */
     public function getValue()

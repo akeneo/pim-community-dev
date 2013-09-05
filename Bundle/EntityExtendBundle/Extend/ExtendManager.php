@@ -103,14 +103,14 @@ class ExtendManager
     }
 
     /**
-     * @param $entityName
-     * @return bool|string
+     * @param $className
+     * @return bool
      */
-    public function isExtend($entityName)
+    public function isExtend($className)
     {
-        if ($entityName
-            && $this->configProvider->isConfigurable($entityName)
-            && $this->configProvider->getConfig($entityName)->is('is_extend')
+        if ($className
+            && $this->configProvider->isConfigurable($className)
+            && $this->configProvider->getConfig($className)->is('is_extend')
         ) {
             return true;
         }
@@ -138,35 +138,35 @@ class ExtendManager
 
     /**
      * @param $entity
+     * @throws \InvalidArgumentException
+     * @return ExtendProxyInterface
      */
-    public function loadExtend($entity)
+    public function loadExtendEntity($entity)
     {
+        if (!is_object($entity)) {
+            if (!is_array($entity)
+                || count($entity) != 2
+                || !is_string($entity[0])
+            ) {
+                throw new \InvalidArgumentException('Invalid argument "\$entity"');
+            }
+
+            $repo = $this->getEntityManager()->getRepository($entity[0]);
+            if (is_array($entity[1])) {
+                $entity = $repo->findOneBy($entity[1]);
+            } else {
+                $entity = $repo->find($entity[1]);
+            }
+        }
+
         $proxy = $this->getProxyFactory()->getProxyObject($entity);
         $this->getProxyFactory()->initExtendObject($proxy);
+
+        return $proxy;
     }
 
-    public function persist($entity)
+    public function loadCustomEntity()
     {
-        if ($this->isExtend($entity)) {
-            $proxy = $this->getProxyFactory()->getProxyObject($entity);
-            $proxy->__proxy__createFromEntity($entity);
 
-            $this->getEntityManager()->detach($entity);
-            $this->getEntityManager()->persist($proxy);
-            $this->getEntityManager()->persist($proxy->__proxy__getExtend());
-        }
-
-        if ($entity instanceof ExtendProxyInterface) {
-            $this->getEntityManager()->persist($entity->__proxy__getExtend());
-        }
-    }
-
-    /**
-     * @param $entity
-     */
-    public function remove($entity)
-    {
-        $extend = $this->getProxyFactory()->getProxyObject($entity);
-        $this->getEntityManager()->remove($extend);
     }
 }

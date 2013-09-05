@@ -12,5 +12,7 @@ interface ExtendProxyInterface
 
     public function __proxy__createFromEntity($entity);
 
+    public function __proxy__cloneToEntity($entity);
+
     public function __proxy__toArray();
 }

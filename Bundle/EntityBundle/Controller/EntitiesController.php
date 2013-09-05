@@ -2,14 +2,11 @@
 
 namespace Oro\Bundle\EntityBundle\Controller;
 
-use Doctrine\ORM\EntityRepository;
-use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\EntityManager;
 
 use FOS\Rest\Util\Codes;
 
@@ -17,7 +14,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
+
+use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Oro\Bundle\EntityBundle\Datagrid\CustomEntityDatagrid;
+
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
@@ -53,6 +53,10 @@ class EntitiesController extends Controller
         $em = $this->getDoctrine()->getManager();
         /** @var EntityConfigModel $entity */
         $entity = $em->getRepository(EntityConfigModel::ENTITY_NAME)->find($request->get('id'));
+
+        if (!$entity) {
+            throw  $this->createNotFoundException();
+        }
 
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
