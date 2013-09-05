@@ -10,8 +10,6 @@ use Symfony\Component\Form\AbstractType;
 use Oro\Bundle\SecurityBundle\Form\Type\PrivilegeCollectionType;
 use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeType;
 
-use Oro\Bundle\UserBundle\Form\Handler\AclRoleHandler;
-
 class AclRoleType extends AbstractType
 {
     /**
@@ -46,26 +44,19 @@ class AclRoleType extends AbstractType
                 'required' => false,
             )
         );
-        $builder->add(AclRoleHandler::ENTITY_FIELD_NAME, new PrivilegeCollectionType(), array(
-            'type' => new AclPrivilegeType(),
-            'allow_add' => true,
-            'prototype' => false,
-            'allow_delete' => false,
-            'mapped' => false,
-            'options' => array(
-                'privileges_config' => $this->privilegeConfig[AclRoleHandler::ENTITY_FIELD_NAME],
-            )
-        ));
-        $builder->add(AclRoleHandler::ACTION_FIELD_NAME, new PrivilegeCollectionType(), array(
-            'type' => new AclPrivilegeType(),
-            'allow_add' => true,
-            'prototype' => false,
-            'allow_delete' => false,
-            'mapped' => false,
-            'options' => array(
-                'privileges_config' => $this->privilegeConfig[AclRoleHandler::ACTION_FIELD_NAME],
-            )
-        ));
+
+        foreach ($this->privilegeConfig as $fieldName => $config) {
+            $builder->add($fieldName, new PrivilegeCollectionType(), array(
+                'type' => new AclPrivilegeType(),
+                'allow_add' => false,
+                'prototype' => false,
+                'allow_delete' => false,
+                'mapped' => false,
+                'options' => array(
+                    'privileges_config' => $config,
+                )
+            ));
+        }
     }
 
     /**
@@ -85,6 +76,6 @@ class AclRoleType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_testtype';
+        return 'oro_acl_role';
     }
 }

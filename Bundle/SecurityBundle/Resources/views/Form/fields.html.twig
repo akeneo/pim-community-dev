@@ -12,9 +12,9 @@
         <tbody>
         <tr>
             <th>
-                {% trans %}Entity{% endtrans %}
+                &nbsp;
             </th>
-            {% for field in privileges_config %}
+            {% for field in privileges_config['permissions'] %}
                 <th>
                     {{ field|trans }}
                 </th>
@@ -44,13 +44,14 @@
 {% endblock %}
 
 {% block oro_acl_permission_collection_widget %}
-    {% for field in privileges_config %}
-        <th>
+    {% for field in privileges_config['permissions'] %}
+        <td>
             {% for permission in form %}
                 {% if permission.vars.value.name == field %}
                     {{ form_widget(permission) }}
                 {% endif %}
             {% endfor %}
-        </th>
+            &nbsp;
+        </td>
     {% endfor %}
 {% endblock %}

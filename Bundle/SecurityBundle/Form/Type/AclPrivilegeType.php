@@ -28,7 +28,9 @@ class AclPrivilegeType extends AbstractType
                 'allow_add' => true,
                 'prototype' => false,
                 'allow_delete' => false,
-                'privileges_config' => $options['privileges_config'],
+                'options' => array(
+                    'privileges_config' => $options['privileges_config']
+                ),
             )
         );
     }
