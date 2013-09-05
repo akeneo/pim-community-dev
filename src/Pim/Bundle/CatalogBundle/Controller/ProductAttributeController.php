@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Form;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
@@ -28,6 +29,13 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Acl(
+ *      id="pim_catalog_attribute",
+ *      name="Attribute manipulation",
+ *      description="Attribute manipulation",
+ *      parent="pim_catalog"
+ * )
  */
 class ProductAttributeController extends AbstractDoctrineController
 {
@@ -120,7 +128,12 @@ class ProductAttributeController extends AbstractDoctrineController
     /**
      * List product attributes
      * @param Request $request
-     *
+     * @Acl(
+     *      id="pim_catalog_attribute_index",
+     *      name="View attribute list",
+     *      description="View attribute list",
+     *      parent="pim_catalog_attribute"
+     * )
      * @return template
      */
     public function indexAction(Request $request)
@@ -140,6 +153,12 @@ class ProductAttributeController extends AbstractDoctrineController
      * Create attribute
      *
      * @Template("PimCatalogBundle:ProductAttribute:form.html.twig")
+     * @Acl(
+     *      id="pim_catalog_attribute_create",
+     *      name="Create an attribute",
+     *      description="Create an attribute",
+     *      parent="pim_catalog_attribute"
+     * )
      * @return array
      */
     public function createAction()
@@ -167,6 +186,12 @@ class ProductAttributeController extends AbstractDoctrineController
      * @param ProductAttribute $attribute
      *
      * @Template("PimCatalogBundle:ProductAttribute:form.html.twig")
+     * @Acl(
+     *      id="pim_catalog_attribute_edit",
+     *      name="Edit an attribute",
+     *      description="Edit an attribute",
+     *      parent="pim_catalog_attribute"
+     * )
      * @return array
      */
     public function editAction(Request $request, ProductAttribute $attribute)
@@ -247,7 +272,12 @@ class ProductAttributeController extends AbstractDoctrineController
      * Edit ProductAttribute sort order
      *
      * @param Request $request
-     *
+     * @Acl(
+     *      id="pim_catalog_attribute_sort",
+     *      name="Sort attribute options",
+     *      description="Sort attribute options",
+     *      parent="pim_catalog_attribute"
+     * )
      * @return Response
      */
     public function sortAction(Request $request)

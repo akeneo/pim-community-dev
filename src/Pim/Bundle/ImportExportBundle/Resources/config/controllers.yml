@@ -1,27 +1,26 @@
 parameters:
-    pim_import_export.controller.job_instance.class: Pim\Bundle\ImportExportBundle\Controller\JobInstanceController
+    pim_import_export.controller.import.class: Pim\Bundle\ImportExportBundle\Controller\ImportController
+    pim_import_export.controller.export.class: Pim\Bundle\ImportExportBundle\Controller\ExportController
     pim_import_export.controller.report.class: Pim\Bundle\ImportExportBundle\Controller\ReportController
-    
+
 services:
-    pim_import_export.controller.job_instance:
-        abstract: true
+
+    pim_import_export.controller.export:
         parent: pim_catalog.controller.abstract_doctrine
+        scope: request
+        class: '%pim_import_export.controller.export.class%'
         arguments:
             - '@pim_catalog.datagrid.worker'
             - '@pim_batch.connectors'
-            
-    pim_import_export.controller.export:
-        parent: pim_import_export.controller.job_instance
-        scope: request
-        class: '%pim_import_export.controller.job_instance.class%'
-        arguments:
             - export
         
     pim_import_export.controller.import:
-        parent: pim_import_export.controller.job_instance
+        parent: pim_catalog.controller.abstract_doctrine
         scope: request
-        class: '%pim_import_export.controller.job_instance.class%'
+        class: '%pim_import_export.controller.import.class%'
         arguments:
+            - '@pim_catalog.datagrid.worker'
+            - '@pim_batch.connectors'
             - import
             
     pim_import_export.controller.report:

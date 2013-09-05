@@ -1,0 +1,338 @@
+pim_catalog:
+    name: PIM Catalog
+    description: General node for catalog management
+    parent: root
+
+pim_catalog_locales:
+    name: Access to locales
+    description: General node for locales manipulation
+    parent: pim_catalog
+
+pim_catalog_locale_af_ZA:
+    name: af_ZA
+    description: Access to data related to locale af_ZA
+    parent: pim_catalog_locales
+pim_catalog_locale_ar_DZ:
+    name: ar_DZ
+    description: Access to data related to locale ar_DZ
+    parent: pim_catalog_locales
+pim_catalog_locale_ar_EG:
+    name: ar_EG
+    description: Access to data related to locale ar_EG
+    parent: pim_catalog_locales
+pim_catalog_locale_ar_KW:
+    name: ar_KW
+    description: Access to data related to locale ar_KW
+    parent: pim_catalog_locales
+pim_catalog_locale_ar_MA:
+    name: ar_MA
+    description: Access to data related to locale ar_MA
+    parent: pim_catalog_locales
+pim_catalog_locale_ar_SA:
+    name: ar_SA
+    description: Access to data related to locale ar_SA
+    parent: pim_catalog_locales
+pim_catalog_locale_az_AZ:
+    name: az_AZ
+    description: Access to data related to locale az_AZ
+    parent: pim_catalog_locales
+pim_catalog_locale_be_BY:
+    name: be_BY
+    description: Access to data related to locale be_BY
+    parent: pim_catalog_locales
+pim_catalog_locale_bg_BG:
+    name: bg_BG
+    description: Access to data related to locale bg_BG
+    parent: pim_catalog_locales
+pim_catalog_locale_bn_BD:
+    name: bn_BD
+    description: Access to data related to locale bn_BD
+    parent: pim_catalog_locales
+pim_catalog_locale_bs_BA:
+    name: bs_BA
+    description: Access to data related to locale bs_BA
+    parent: pim_catalog_locales
+pim_catalog_locale_ca_ES:
+    name: ca_ES
+    description: Access to data related to locale ca_ES
+    parent: pim_catalog_locales
+pim_catalog_locale_cs_CZ:
+    name: cs_CZ
+    description: Access to data related to locale cs_CZ
+    parent: pim_catalog_locales
+pim_catalog_locale_cy_GB:
+    name: cy_GB
+    description: Access to data related to locale cy_GB
+    parent: pim_catalog_locales
+pim_catalog_locale_da_DK:
+    name: da_DK
+    description: Access to data related to locale da_DK
+    parent: pim_catalog_locales
+pim_catalog_locale_de_AT:
+    name: de_AT
+    description: Access to data related to locale de_AT
+    parent: pim_catalog_locales
+pim_catalog_locale_de_CH:
+    name: de_CH
+    description: Access to data related to locale de_CH
+    parent: pim_catalog_locales
+pim_catalog_locale_de_DE:
+    name: de_DE
+    description: Access to data related to locale de_DE
+    parent: pim_catalog_locales
+pim_catalog_locale_el_GR:
+    name: el_GR
+    description: Access to data related to locale el_GR
+    parent: pim_catalog_locales
+pim_catalog_locale_en_AU:
+    name: en_AU
+    description: Access to data related to locale en_AU
+    parent: pim_catalog_locales
+pim_catalog_locale_en_CA:
+    name: en_CA
+    description: Access to data related to locale en_CA
+    parent: pim_catalog_locales
+pim_catalog_locale_en_GB:
+    name: en_GB
+    description: Access to data related to locale en_GB
+    parent: pim_catalog_locales
+pim_catalog_locale_en_NZ:
+    name: en_NZ
+    description: Access to data related to locale en_NZ
+    parent: pim_catalog_locales
+pim_catalog_locale_en_US:
+    name: en_US
+    description: Access to data related to locale en_US
+    parent: pim_catalog_locales
+pim_catalog_locale_es_AR:
+    name: es_AR
+    description: Access to data related to locale es_AR
+    parent: pim_catalog_locales
+pim_catalog_locale_es_CO:
+    name: es_CO
+    description: Access to data related to locale es_CO
+    parent: pim_catalog_locales
+pim_catalog_locale_es_PA:
+    name: es_PA
+    description: Access to data related to locale es_PA
+    parent: pim_catalog_locales
+pim_catalog_locale_gl_ES:
+    name: gl_ES
+    description: Access to data related to locale gl_ES
+    parent: pim_catalog_locales
+pim_catalog_locale_es_CR:
+    name: es_CR
+    description: Access to data related to locale es_CR
+    parent: pim_catalog_locales
+pim_catalog_locale_es_ES:
+    name: es_ES
+    description: Access to data related to locale es_ES
+    parent: pim_catalog_locales
+pim_catalog_locale_es_MX:
+    name: es_MX
+    description: Access to data related to locale es_MX
+    parent: pim_catalog_locales
+pim_catalog_locale_es_EU:
+    name: es_EU
+    description: Access to data related to locale es_EU
+    parent: pim_catalog_locales
+pim_catalog_locale_es_PE:
+    name: es_PE
+    description: Access to data related to locale es_PE
+    parent: pim_catalog_locales
+pim_catalog_locale_et_EE:
+    name: et_EE
+    description: Access to data related to locale et_EE
+    parent: pim_catalog_locales
+pim_catalog_locale_fa_IR:
+    name: fa_IR
+    description: Access to data related to locale fa_IR
+    parent: pim_catalog_locales
+pim_catalog_locale_fi_FI:
+    name: fi_FI
+    description: Access to data related to locale fi_FI
+    parent: pim_catalog_locales
+pim_catalog_locale_fil_PH:
+    name: fil_PH
+    description: Access to data related to locale fil_PH
+    parent: pim_catalog_locales
+pim_catalog_locale_fr_CA:
+    name: fr_CA
+    description: Access to data related to locale fr_CA
+    parent: pim_catalog_locales
+pim_catalog_locale_fr_FR:
+    name: fr_FR
+    description: Access to data related to locale fr_FR
+    parent: pim_catalog_locales
+pim_catalog_locale_gu_IN:
+    name: gu_IN
+    description: Access to data related to locale gu_IN
+    parent: pim_catalog_locales
+pim_catalog_locale_he_IL:
+    name: he_IL
+    description: Access to data related to locale he_IL
+    parent: pim_catalog_locales
+pim_catalog_locale_hi_IN:
+    name: hi_IN
+    description: Access to data related to locale hi_IN
+    parent: pim_catalog_locales
+pim_catalog_locale_hr_HR:
+    name: hr_HR
+    description: Access to data related to locale hr_HR
+    parent: pim_catalog_locales
+pim_catalog_locale_hu_HU:
+    name: hu_HU
+    description: Access to data related to locale hu_HU
+    parent: pim_catalog_locales
+pim_catalog_locale_id_ID:
+    name: id_ID
+    description: Access to data related to locale id_ID
+    parent: pim_catalog_locales
+pim_catalog_locale_is_IS:
+    name: is_IS
+    description: Access to data related to locale is_IS
+    parent: pim_catalog_locales
+pim_catalog_locale_it_CH:
+    name: it_CH
+    description: Access to data related to locale it_CH
+    parent: pim_catalog_locales
+pim_catalog_locale_it_IT:
+    name: it_IT
+    description: Access to data related to locale it_IT
+    parent: pim_catalog_locales
+pim_catalog_locale_ja_JP:
+    name: ja_JP
+    description: Access to data related to locale ja_JP
+    parent: pim_catalog_locales
+pim_catalog_locale_ka_GE:
+    name: ka_GE
+    description: Access to data related to locale ka_GE
+    parent: pim_catalog_locales
+pim_catalog_locale_km_KH:
+    name: km_KH
+    description: Access to data related to locale km_KH
+    parent: pim_catalog_locales
+pim_catalog_locale_ko_KR:
+    name: ko_KR
+    description: Access to data related to locale ko_KR
+    parent: pim_catalog_locales
+pim_catalog_locale_lo_LA:
+    name: lo_LA
+    description: Access to data related to locale lo_LA
+    parent: pim_catalog_locales
+pim_catalog_locale_lt_LT:
+    name: lt_LT
+    description: Access to data related to locale lt_LT
+    parent: pim_catalog_locales
+pim_catalog_locale_lv_LV:
+    name: lv_LV
+    description: Access to data related to locale lv_LV
+    parent: pim_catalog_locales
+pim_catalog_locale_mk_MK:
+    name: mk_MK
+    description: Access to data related to locale mk_MK
+    parent: pim_catalog_locales
+pim_catalog_locale_mn_MN:
+    name: mn_MN
+    description: Access to data related to locale mn_MN
+    parent: pim_catalog_locales
+pim_catalog_locale_ms_MY:
+    name: ms_MY
+    description: Access to data related to locale ms_MY
+    parent: pim_catalog_locales
+pim_catalog_locale_nl_NL:
+    name: nl_NL
+    description: Access to data related to locale nl_NL
+    parent: pim_catalog_locales
+pim_catalog_locale_nb_NO:
+    name: nb_NO
+    description: Access to data related to locale nb_NO
+    parent: pim_catalog_locales
+pim_catalog_locale_nn_NO:
+    name: nn_NO
+    description: Access to data related to locale nn_NO
+    parent: pim_catalog_locales
+pim_catalog_locale_pl_PL:
+    name: pl_PL
+    description: Access to data related to locale pl_PL
+    parent: pim_catalog_locales
+pim_catalog_locale_pt_BR:
+    name: pt_BR
+    description: Access to data related to locale pt_BR
+    parent: pim_catalog_locales
+pim_catalog_locale_pt_PT:
+    name: pt_PT
+    description: Access to data related to locale pt_PT
+    parent: pim_catalog_locales
+pim_catalog_locale_ro_RO:
+    name: ro_RO
+    description: Access to data related to locale ro_RO
+    parent: pim_catalog_locales
+pim_catalog_locale_ru_RU:
+    name: ru_RU
+    description: Access to data related to locale ru_RU
+    parent: pim_catalog_locales
+pim_catalog_locale_sk_SK:
+    name: sk_SK
+    description: Access to data related to locale sk_SK
+    parent: pim_catalog_locales
+pim_catalog_locale_sl_SI:
+    name: sl_SI
+    description: Access to data related to locale sl_SI
+    parent: pim_catalog_locales
+pim_catalog_locale_sq_AL:
+    name: sq_AL
+    description: Access to data related to locale sq_AL
+    parent: pim_catalog_locales
+pim_catalog_locale_sr_RS:
+    name: sr_RS
+    description: Access to data related to locale sr_RS
+    parent: pim_catalog_locales
+pim_catalog_locale_sv_SE:
+    name: sv_SE
+    description: Access to data related to locale sv_SE
+    parent: pim_catalog_locales
+pim_catalog_locale_sw_KE:
+    name: sw_KE
+    description: Access to data related to locale sw_KE
+    parent: pim_catalog_locales
+pim_catalog_locale_th_TH:
+    name: th_TH
+    description: Access to data related to locale th_TH
+    parent: pim_catalog_locales
+pim_catalog_locale_tr_TR:
+    name: tr_TR
+    description: Access to data related to locale tr_TR
+    parent: pim_catalog_locales
+pim_catalog_locale_uk_UA:
+    name: uk_UA
+    description: Access to data related to locale uk_UA
+    parent: pim_catalog_locales
+pim_catalog_locale_vi_VN:
+    name: vi_VN
+    description: Access to data related to locale vi_VN
+    parent: pim_catalog_locales
+pim_catalog_locale_zh_CN:
+    name: zh_CN
+    description: Access to data related to locale zh_CN
+    parent: pim_catalog_locales
+pim_catalog_locale_zh_HK:
+    name: zh_HK
+    description: Access to data related to locale zh_HK
+    parent: pim_catalog_locales
+pim_catalog_locale_zh_TW:
+    name: zh_TW
+    description: Access to data related to locale zh_TW
+    parent: pim_catalog_locales
+pim_catalog_locale_es_CL:
+    name: es_CL
+    description: Access to data related to locale es_CL
+    parent: pim_catalog_locales
+pim_catalog_locale_es_VE:
+    name: es_VE
+    description: Access to data related to locale es_VE
+    parent: pim_catalog_locales
+pim_catalog_locale_en_IE:
+    name: en_IE
+    description: Access to data related to locale en_IE
+    parent: pim_catalog_locales
