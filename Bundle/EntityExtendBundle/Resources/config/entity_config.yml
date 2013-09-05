@@ -74,18 +74,10 @@ oro_entity_config:
                             operator:       '!='
                             value:          true
 
-                extend_class:
-                    options:
-                        internal:           true
-
                 unique_key:
                     options:
                         internal:           true
                         serializable:       true
-
-                proxy_class:
-                    options:
-                        internal:           true
 
         field:
             grid_action:

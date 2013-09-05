@@ -48,7 +48,6 @@ class ConfigModelManager
         return $this->proxyEm->getService();
     }
 
-
     /**
      * @return bool
      */

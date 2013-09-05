@@ -2,7 +2,8 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Extend;
 
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
+use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
+
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface;
 use Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
@@ -38,13 +39,12 @@ class ExtendManager
     protected $generator;
 
     /**
-     * @var ServiceLink
+     * @var OroEntityManager
      */
-    protected $lazyEm;
+    protected $em;
 
-    public function __construct(ServiceLink $lazyEm, ConfigProvider $configProvider, Generator $generator)
+    public function __construct(ConfigProvider $configProvider, Generator $generator)
     {
-        $this->lazyEm         = $lazyEm;
         $this->configProvider = $configProvider;
         $this->generator      = $generator;
         $this->proxyFactory   = new ProxyObjectFactory($this);
@@ -60,11 +60,22 @@ class ExtendManager
     }
 
     /**
-     * @return \Doctrine\ORM\EntityManager
+     * @param OroEntityManager $em
+     * @return $this
+     */
+    public function setEntityManager($em)
+    {
+        $this->em = $em;
+
+        return $this;
+    }
+
+    /**
+     * @return OroEntityManager
      */
     public function getEntityManager()
     {
-        return $this->lazyEm->getService();
+        return $this->em;
     }
 
     /**
@@ -113,7 +124,7 @@ class ExtendManager
      */
     public function getExtendClass($entityName)
     {
-        return $this->configProvider->getConfig($entityName)->get('extend_class');
+        return $this->generator->generateExtendClassName($entityName);
     }
 
     /**
@@ -122,7 +133,7 @@ class ExtendManager
      */
     public function getProxyClass($entityName)
     {
-        return $this->configProvider->getConfig($entityName)->get('proxy_class');
+        return $this->generator->generateProxyClassName($entityName);
     }
 
     /**

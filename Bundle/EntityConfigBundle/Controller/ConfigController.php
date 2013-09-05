@@ -32,6 +32,7 @@ use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
  */
 class ConfigController extends Controller
 {
+
     /**
      * Lists all Flexible entities.
      * @Route("/", name="oro_entityconfig_index")

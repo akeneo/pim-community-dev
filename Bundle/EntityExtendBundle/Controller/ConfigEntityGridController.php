@@ -157,12 +157,6 @@ class ConfigEntityGridController extends Controller
         $extendConfig->set('state', ExtendManager::STATE_NEW);
         $extendConfig->set('is_extend', true);
 
-        $extendClass = $extendManager->getClassGenerator()->generateExtendClassName($className);
-        $proxyClass  = $extendManager->getClassGenerator()->generateProxyClassName($className);
-
-        $extendConfig->set('extend_class', $extendClass);
-        $extendConfig->set('proxy_class', $proxyClass);
-
         $configManager->persist($extendConfig);
 
         $form = $this->createForm(
