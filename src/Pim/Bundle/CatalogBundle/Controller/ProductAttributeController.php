@@ -86,9 +86,9 @@ class ProductAttributeController extends AbstractDoctrineController
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
      * @param SecurityContextInterface $securityContext
-     * @param RegistryInterface        $doctrine
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param RegistryInterface        $doctrine
      * @param GridRenderer             $gridRenderer
      * @param DatagridWorkerInterface  $datagridWorker
      * @param ProductAttributeHandler  $attributeHandler
@@ -103,9 +103,9 @@ class ProductAttributeController extends AbstractDoctrineController
         EngineInterface $templating,
         RouterInterface $router,
         SecurityContextInterface $securityContext,
-        RegistryInterface $doctrine,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $datagridWorker,
         ProductAttributeHandler $attributeHandler,

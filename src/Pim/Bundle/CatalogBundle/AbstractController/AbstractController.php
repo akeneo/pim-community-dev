@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Base abstract controller
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -23,19 +23,23 @@ abstract class AbstractController
     private $templating;
     private $router;
     private $securityContext;
-    
+
     public function __construct(
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator
     ) {
         $this->request = $request;
         $this->templating = $templating;
         $this->router = $router;
         $this->securityContext = $securityContext;
+        $this->formFactory = $formFactory;
+        $this->validator = $validator;
     }
-    
+
     /**
      * Returns the request service.
      *
@@ -45,10 +49,10 @@ abstract class AbstractController
     {
         return $this->request;
     }
-    
+
     /**
      * Returns the templating service
-     * 
+     *
      * @return EngineInterface
      */
     protected function getTemplating()
@@ -58,7 +62,7 @@ abstract class AbstractController
 
     /**
      * Returns the router service
-     * 
+     *
      * @return RouterInterface
      */
     protected function getRouter()
@@ -68,12 +72,32 @@ abstract class AbstractController
 
     /**
      * Returns the security cotnext service
-     * 
+     *
      * @return SecurityContextInterface
      */
     protected function getSecurityContext()
     {
         return $this->securityContext;
+    }
+
+    /**
+     * Returns the validator service.
+     *
+     * @return ValidatorInterface
+     */
+    protected function getValidator()
+    {
+        return $this->validator;
+    }
+
+    /**
+     * Returns the form factory service.
+     *
+     * @return FormFactoryInterface
+     */
+    protected function getFormFactory()
+    {
+        return $this->formFactory;
     }
 
     /**
@@ -91,7 +115,7 @@ abstract class AbstractController
     {
         return $this->router->generate($route, $parameters, $referenceType);
     }
-    
+
     /**
      * Returns a RedirectResponse to the given URL.
      *
@@ -104,7 +128,7 @@ abstract class AbstractController
     {
         return new RedirectResponse($url, $status);
     }
-    
+
     /**
      * Returns a rendered view.
      *
@@ -117,7 +141,7 @@ abstract class AbstractController
     {
         return $this->templating->render($view, $parameters);
     }
-    
+
     /**
      * Renders a view.
      *
@@ -131,7 +155,7 @@ abstract class AbstractController
     {
         return $this->templating->renderResponse($view, $parameters, $response);
     }
-    
+
     /**
      * Get a user from the Security Context
      *
@@ -151,7 +175,7 @@ abstract class AbstractController
 
         return $user;
     }
-    
+
     /**
      * Add flash message
      *
@@ -164,7 +188,7 @@ abstract class AbstractController
     {
         $this->request->getSession()->getFlashBag()->add($type, $message);
     }
-    
+
     /**
      * Create a redirection to a given route
      *
@@ -178,7 +202,7 @@ abstract class AbstractController
     {
         return $this->redirect($this->generateUrl($route, $parameters), $status);
     }
-    
+
     /**
      * Returns a NotFoundHttpException.
      *
@@ -194,5 +218,32 @@ abstract class AbstractController
     public function createNotFoundException($message = 'Not Found', \Exception $previous = null)
     {
         return new NotFoundHttpException($message, $previous);
+    }
+
+    /**
+     * Creates and returns a Form instance from the type of the form.
+     *
+     * @param string|FormTypeInterface $type    The built type of the form
+     * @param mixed                    $data    The initial data for the form
+     * @param array                    $options Options for the form
+     *
+     * @return Form
+     */
+    public function createForm($type, $data = null, array $options = array())
+    {
+        return $this->formFactory->create($type, $data, $options);
+    }
+
+    /**
+     * Creates and returns a form builder instance
+     *
+     * @param mixed $data    The initial data for the form
+     * @param array $options Options for the form
+     *
+     * @return FormBuilder
+     */
+    public function createFormBuilder($data = null, array $options = array())
+    {
+        return $this->formFactory->createBuilder('form', $data, $options);
     }
 }

@@ -35,15 +35,15 @@ class ReportController extends AbstractDoctrineController
 {
     private $dataGridWorker;
     private $batchLogHandler;
-    
+
     public function __construct(
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
         SecurityContextInterface $securityContext,
-        RegistryInterface $doctrine,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         DatagridWorkerInterface $dataGridWorker,
         BatchLogHandler $batchLogHandler
     ) {

@@ -34,15 +34,15 @@ class JobInstanceController extends AbstractDoctrineController
     private $datagridWorker;
     private $connectorRegistry;
     private $jobType;
-    
+
     public function __construct(
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
         SecurityContextInterface $securityContext,
-        RegistryInterface $doctrine,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         DatagridWorkerInterface $datagridWorker,
         ConnectorRegistry $connectorRegistry,
         $jobType

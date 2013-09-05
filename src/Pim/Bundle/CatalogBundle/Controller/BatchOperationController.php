@@ -6,6 +6,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperator;
 use Pim\Bundle\CatalogBundle\Form\Type\BatchOperatorType;
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Batch operation controller
@@ -14,8 +18,22 @@ use Pim\Bundle\CatalogBundle\Form\Type\BatchOperatorType;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BatchOperationController extends Controller
+class BatchOperationController extends AbstractController
 {
+    protected $batchOperator;
+
+    public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
+        SecurityContextInterface $securityContext,
+        BatchOperator $batchOperator
+    ) {
+        parent::__construct($request, $templating, $router, $securityContext);
+
+        $this->batchOperator = $batchOperator;
+    }
+
     /**
      * @Template
      */
@@ -83,7 +101,7 @@ class BatchOperationController extends Controller
 
     private function getBatchOperator()
     {
-        return $this->get('pim_catalog.batch_operation.operator');
+        return $this->batchOperator;
     }
 
     private function getBatchOperatorForm(BatchOperator $batchOperator)

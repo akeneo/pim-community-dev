@@ -69,9 +69,9 @@ class FamilyController extends AbstractDoctrineController
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
      * @param SecurityContextInterface $securityContext
-     * @param RegistryInterface        $doctrine
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param RegistryInterface        $doctrine
      * @param GridRenderer             $gridRenderer
      * @param DatagridWorkerInterface  $dataGridWorker
      * @param ChannelManager           $channelManager
@@ -83,9 +83,9 @@ class FamilyController extends AbstractDoctrineController
         EngineInterface $templating,
         RouterInterface $router,
         SecurityContextInterface $securityContext,
-        RegistryInterface $doctrine,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $dataGridWorker,
         ChannelManager $channelManager,

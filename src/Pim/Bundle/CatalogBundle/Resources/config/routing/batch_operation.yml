@@ -1,11 +1,11 @@
 pim_catalog_batch_operation_choose:
     path: /choose
-    defaults: { _controller: PimCatalogBundle:BatchOperation:choose }
+    defaults: { _controller: pim_catalog.controller.batch_operation:chooseAction }
     requirements:
         _method: GET|POST
 
 pim_catalog_batch_operation_configure:
     path: /{operationAlias}/configure
-    defaults: { _controller: PimCatalogBundle:BatchOperation:configure }
+    defaults: { _controller: pim_catalog.controller.batch_operation:configureAction }
     requirements:
         _method: GET|POST
