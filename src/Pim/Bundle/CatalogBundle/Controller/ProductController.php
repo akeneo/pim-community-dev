@@ -37,8 +37,24 @@ class ProductController extends Controller
         $gridManager->setFilterCategoryId($request->get('categoryId', 0));
         $datagrid = $gridManager->getDatagrid();
 
-        $view =  ('json' === $request->getRequestFormat()) ?
-            'OroGridBundle:Datagrid:list.json.php' : 'PimCatalogBundle:Product:index.html.twig';
+        switch ($request->getRequestFormat()) {
+            case 'json':
+                $view = 'OroGridBundle:Datagrid:list.json.php';
+                break;
+            case 'csv':
+                // TODO : Get query used in datagrid
+
+                $productSerializer = $this->get('pim_serializer');
+                $csv = $productSerializer->serialize($products, 'csv', array('withHeader' => true, 'heterogeneous' => true));
+
+                die;
+                $view = 'PimCatalogBundle:Product:index.csv.php';
+                break;
+            case 'html':
+            default:
+                $view = 'PimCatalogBundle:Product:index.html.twig';
+                break;
+        }
 
         $params = array(
             'datagrid'   => $datagrid->createView(),
