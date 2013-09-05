@@ -181,6 +181,7 @@ class ProductController extends AbstractDoctrineController
                     'Content-Type' => 'text/csv',
                     'Content-Disposition' => 'inline; filename=quick_export_products.csv'
                 );
+
                 return $this->returnResponse($csv, 200, $headers);
 
                 break;
@@ -201,58 +202,17 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
+     * Return a response
      *
      * @param string $content
      * @param integer $status
      * @param array $headers
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function returnResponse($content, $status = 200, $headers = array())
     {
         return new Response($content, 200, $headers);
-    }
-
-    /**
-     * Export selected products in CSV file
-     * Get the products from the datagrid parameters removing the paging
-     *
-     * @param Datagrid $datagrid
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function exportCSV(Datagrid $datagrid)
-    {
-        $datagrid->applyParameters();
-        /** @var \Doctrine\ORM\QueryBuilder $qb */
-        $qb = $datagrid->getQuery();
-        $qb
-            ->select(current($qb->getRootAliases()))
-            ->setFirstResult(null)
-            ->setMaxResults(null);
-
-        $products = $datagrid->getQuery()->execute();
-
-        $csv = $this->transformProductsToCsvContent($products);
-
-        $headers = array(
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'inline; filename=quick_export_products.csv'
-        );
-
-        return new Response($csv, 200, $headers);
-    }
-
-    /**
-     * Transform products collection to CSV content
-     * @param Product[] $products
-     * @return string
-     */
-    protected function transformProductsToCsvContent($products)
-    {
-        return $this->serializer->serialize(
-            $products,
-            'csv',
-            array('withHeader' => true, 'heterogeneous' => true)
-        );
     }
 
     /**
