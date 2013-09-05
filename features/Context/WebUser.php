@@ -38,6 +38,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'imports'    => 'Import index',
         'locales'    => 'Locale index',
         'products'   => 'Product index',
+        'users'      => 'User index',
         'categories' => 'Category tree creation',
     );
 
