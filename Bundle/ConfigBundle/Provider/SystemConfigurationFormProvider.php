@@ -68,7 +68,7 @@ class SystemConfigurationFormProvider extends FormProvider
         );
         foreach ($toAdd as $field) {
             $field['name'] = str_replace(
-                ConfigManager::SECTION_VIEW_SEPARATOR,
+                ConfigManager::SECTION_MODEL_SEPARATOR,
                 ConfigManager::SECTION_VIEW_SEPARATOR,
                 $field['name']
             );

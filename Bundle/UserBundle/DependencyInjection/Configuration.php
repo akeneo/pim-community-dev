@@ -43,15 +43,24 @@ class Configuration implements ConfigurationInterface
             ->end();
 
         // just to illustrate settings usage
-        SettingsBuilder::append($root, array(
-            'greeting'    => array(
-                'value'   => true,
-                'type'    => 'boolean',
-            ),
-            'name_format' => array(
-                'value'   => '%%first%% %%last%%',
-            ),
-        ));
+        SettingsBuilder::append(
+            $root,
+            array(
+                'greeting'    => array(
+                    'value'   => true,
+                    'type'    => 'boolean',
+                ),
+                'name_format' => array(
+                    'value'   => '%%first%% %%last%%',
+                ),
+                'phone_format' => array(
+                    'value'   => '(xxx) xxx-xx-xx',
+                ),
+                'date_format' => array(
+                    'value'   => 'mm/dd/yy',
+                ),
+            )
+        );
 
         return $builder;
     }

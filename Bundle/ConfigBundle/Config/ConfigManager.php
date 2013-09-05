@@ -2,9 +2,12 @@
 
 namespace Oro\Bundle\ConfigBundle\Config;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\PersistentCollection;
 use Oro\Bundle\ConfigBundle\Entity\Config;
+use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
+use Symfony\Component\Form\FormInterface;
 
 class ConfigManager
 {
@@ -77,7 +80,7 @@ class ConfigManager
             foreach ($settings as $key => $value) {
                 // removed/reverted to default values
                 // fallback to global setting - remove scoped value
-                $newKey = $section.'____'.$key;
+                $newKey = $section.self::SECTION_VIEW_SEPARATOR.$key;
                 if (!empty($newSettings[$newKey]['use_parent_scope_value'])) {
                     $remove[] = array($section, $key);
                 }
@@ -107,12 +110,33 @@ class ConfigManager
         }
 
         /** @var PersistentCollection $values */
-        $values = $config->getValues();
-        foreach ($new as $newItemKey => $newItemValue) {
-            //$values->
-        }
+        $valuesCollection = $config->getValues();
 
-        return;
+        foreach ($new as $newItemKey => $newItemValue) {
+            $newItemKey = explode(self::SECTION_VIEW_SEPARATOR, $newItemKey);
+            $section = $newItemKey[0];
+            $newKey = $newItemKey[1];
+
+            $value = $valuesCollection->filter(
+                function (ConfigValue $item) use ($newKey, $section) {
+                    return $item->getName() == $newKey && $item->getSection() == $section;
+                }
+            );
+
+            if ($value instanceof ArrayCollection && $value->isEmpty()) {
+                $value = new ConfigValue();
+                $value->setConfig($config)
+                    ->setName($newKey)
+                    ->setSection($section)
+                    ->setValue($newItemValue);
+            } else {
+                $value = $value->get(0);
+                $value->setValue($newItemValue)
+                    ->setSection($section);
+            }
+
+            $valuesCollection->add($value);
+        }
 
         $this->om->persist($config);
         $this->om->flush();
@@ -184,5 +208,20 @@ class ConfigManager
         // TODO: get settings by section from db
 
         return empty($mergedSettings[$section]) ? $mergedSettings : $mergedSettings[$section];
+    }
+
+    /**
+     * @param FormInterface $form
+     * @return array
+     */
+    public function getSettingsByForm(FormInterface $form)
+    {
+        $settings = array();
+        foreach ($form as $child) {
+            $key = str_replace(self::SECTION_VIEW_SEPARATOR, self::SECTION_MODEL_SEPARATOR, $child->getName());
+            $settings[$child->getName()] = array('value' => $this->get($key));
+        }
+
+        return $settings;
     }
 }

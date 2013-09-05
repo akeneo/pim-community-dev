@@ -38,6 +38,9 @@ class ConfigHandler
      */
     public function process(FormInterface $form)
     {
+        $settingsData = $this->manager->getSettingsByForm($form);
+        $form->setData($settingsData);
+
         if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
             $form->submit($this->request);
 
