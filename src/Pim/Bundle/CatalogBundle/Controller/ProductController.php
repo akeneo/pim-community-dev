@@ -179,7 +179,7 @@ class ProductController extends AbstractDoctrineController
      *      description="View product list",
      *      parent="pim_catalog_product"
      * )
-     * @return template
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -408,7 +408,7 @@ class ProductController extends AbstractDoctrineController
      *      description="Remove a product",
      *      parent="pim_catalog_product"
      * )
-     * @return Response
+     * @return Response|RedirectResponse
      */
     public function removeAction(Request $request, $id)
     {
@@ -434,7 +434,9 @@ class ProductController extends AbstractDoctrineController
      *      description="Remove a product's attribute",
      *      parent="pim_catalog_product"
      * )
-     * @return array
+     * @return RedirectResponse
+     *
+     * @throws CreateNotFoundException
      */
     public function removeProductAttributeAction($productId, $attributeId)
     {
