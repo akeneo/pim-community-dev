@@ -43,7 +43,7 @@
     {{ elements.page_header(title, buttons, subtitle) }}
 
     <div class="row-fluid has-sidebar">
-        <div id="tree" data-tree="view" data-assets-path="{{ asset('bundles/pimcatalog/') }}" data-list-tree-url="{{ path('pim_catalog_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale }) }}" data-children-url="{{ path('pim_catalog_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale }) }}" data-all-title="{{ 'All products' | trans }}" data-unclassified-title="{{ 'Unclassified products' | trans }}"></div>
+        <div id="tree" data-tree="view" data-assets-path="{{ asset('bundles/pimcatalog/') }}" data-datalocale="{{ dataLocale }}"></div>
         <div id="product-grid"></div>
     </div>
 

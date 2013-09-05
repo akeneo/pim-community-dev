@@ -6,12 +6,9 @@ Pim.tree.view = function(elementId) {
     if (!$el || !$el.length || !_.isObject($el)) {
         throw new Error('Unable to instantiate tree on this element');
     }
-    var assetsPath = $el.attr('data-assets-path'),
-    listTreeUrl = $el.attr('data-list-tree-url'),
-    childrenUrl = $el.attr('data-children-url'),
-    unclassifiedNodeTitle = $el.attr('data-unclassified-title'),
-    allTitle = $el.attr('data-all-title'),
-    self = this;
+    var self   = this,
+    assetsPath = $el.attr('data-assets-path'),
+    dataLocale = $el.attr('data-datalocale');
 
     this.config = {
         'core': {
@@ -27,7 +24,7 @@ Pim.tree.view = function(elementId) {
         ],
         'tree_selector': {
             'ajax': {
-                'url': listTreeUrl
+                'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale })
             },
             'auto_open_root': true,
             'node_label_field': 'title'
@@ -40,7 +37,7 @@ Pim.tree.view = function(elementId) {
         },
         'json_data': {
             'ajax': {
-                'url': childrenUrl,
+                'url': Routing.generate('pim_catalog_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale }),
                 'data': function (node) {
                     // the result is fed to the AJAX request `data` option
                     var id = (node && node != -1) ? node.attr('id').replace('node_','') : -1;
@@ -106,13 +103,13 @@ Pim.tree.view = function(elementId) {
             $(document).one('ajaxStop', function() {
                 $el.jstree('create', -1, 'last', {
                     'attr': { 'class': 'jstree-unclassified', 'id': 'node_' },
-                    'data': { 'title': allTitle }
+                    'data': { 'title': _.__('jstree.all') }
                 }, null, true);
                 $el.jstree('select_node', '#node_');
 
                 $el.jstree('create', '#node_' + root_node_id, 'last', {
                     'attr': { 'class': 'jstree-unclassified', 'id': 'node_0' },
-                    'data': { 'title': unclassifiedNodeTitle }
+                    'data': { 'title': _.__('jstree.unclassified') }
                 }, null, true);
             });
         })
