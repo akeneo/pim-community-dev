@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
+use Symfony\Component\Serializer\Serializer;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -134,7 +136,8 @@ class ProductController extends AbstractDoctrineController
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
         PendingManager $pendingManager,
-        AuditManager $auditManager
+        AuditManager $auditManager,
+        Serializer $serializer
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
         $this->gridRenderer = $gridRenderer;
@@ -147,6 +150,7 @@ class ProductController extends AbstractDoctrineController
         $this->localeManager = $localeManager;
         $this->pendingManager = $pendingManager;
         $this->auditManager = $auditManager;
+        $this->serializer             = $serializer;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -170,14 +174,26 @@ class ProductController extends AbstractDoctrineController
                 $view = 'OroGridBundle:Datagrid:list.json.php';
                 break;
             case 'csv':
-                // TODO : Get query used in datagrid
-                $products = array();
+                $datagrid->applyFilters(); // TODO applyParameters
+                $qb = $datagrid->getQuery();
+                $qb->select($qb->getRootAlias());
+                $products = $datagrid->getQuery()->execute();
 
-                $productSerializer = $this->get('pim_serializer');
-                $csv = $productSerializer->serialize($products, 'csv', array('withHeader' => true, 'heterogeneous' => true));
+                $csv = $this->serializer->serialize(
+                    $products,
+                    'csv',
+                    array('withHeader' => true, 'heterogeneous' => true)
+                );
 
-                die;
-                $view = 'PimCatalogBundle:Product:index.csv.php';
+                return new Response(
+                    $csv,
+                    200,
+                    array(
+                        'Content-Type' => 'text/csv',
+                        'Content-Disposition' => 'inline; filename=POUICPOUIC.csv'
+                    )
+                );
+
                 break;
             case 'html':
             default:
