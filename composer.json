@@ -14,7 +14,7 @@
     "require": {
         "php": ">=5.3.3",
         "oro/platform": "dev-maintenance/pim_alpha5",
-        "akeneo/demo-bundle": "dev-master",
+        "akeneo/DemoBundle": "dev-master",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0"
     },
