@@ -11,7 +11,7 @@ _.extend(Oro.Config.FormState.prototype, {
     FORM_SELECTOR:          '.system-configuration-container form:first',
     CONFIRMATION_MESSAGE:   _.__('You have unsaved changes, are you sure that you want to leave?'),
 
-    data:         null,
+    data: null,
 
 
     initialize: function() {
