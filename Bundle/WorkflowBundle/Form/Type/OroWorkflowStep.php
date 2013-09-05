@@ -3,7 +3,6 @@
 namespace Oro\Bundle\WorkflowBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -142,11 +141,12 @@ class OroWorkflowStep extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('workflowItem', 'stepName'));
+        $resolver->setRequired(array('workflowItem'));
 
         $resolver->setDefaults(
             array(
                 'data_class' => 'Oro\Bundle\WorkflowBundle\Model\WorkflowData',
+                'stepName' => null
             )
         );
 
@@ -167,6 +167,11 @@ class OroWorkflowStep extends AbstractType
                 'stepName' => function (Options $options, $stepName) use ($workflowRegistry) {
                     /** @var WorkflowItem $workflowItem */
                     $workflowItem = $options['workflowItem'];
+
+                    if (!$stepName) {
+                        $stepName = $workflowItem->getCurrentStepName();
+                    }
+
                     $workflow = $workflowRegistry->getWorkflow($workflowItem->getWorkflowName());
                     if (!$workflow->getStep($stepName)) {
                         throw new UnknownStepException($stepName);

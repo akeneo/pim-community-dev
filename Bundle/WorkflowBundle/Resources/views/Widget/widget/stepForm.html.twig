@@ -55,10 +55,10 @@
                 >
                     {% if step.name != displayStep.name %}
                         <a href="{{ path('oro_workflow_widget_step_form', { workflowItemId: workflowItem.id, stepName: step.name }) }}">
-                            <span>{{ step.label|trans }}</span>
+                            {{ step.label|trans }}
                         </a>
                     {% else %}
-                        <span>{{ step.label|trans }}</span>
+                        {{ step.label|trans }}
                     {% endif %}
                 </li>
             {% endfor %}
