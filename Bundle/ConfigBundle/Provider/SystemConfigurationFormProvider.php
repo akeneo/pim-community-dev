@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\ConfigBundle\Provider;
 
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\ConfigBundle\Utils\TreeUtils;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -66,8 +67,14 @@ class SystemConfigurationFormProvider extends FormProvider
             )
         );
         foreach ($toAdd as $field) {
+            $field['name'] = str_replace(
+                ConfigManager::SECTION_VIEW_SEPARATOR,
+                ConfigManager::SECTION_VIEW_SEPARATOR,
+                $field['name']
+            );
+
             $builder->add(
-                str_replace('.', '____', $field['name']),
+                $field['name'],
                 'oro_config_form_field_type',
                 array_merge(
                     array('target_field' => $field),

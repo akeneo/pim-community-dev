@@ -6,6 +6,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class ConfigManager
 {
+    const SECTION_VIEW_SEPARATOR  = '___';
+    const SECTION_MODEL_SEPARATOR = '.';
+
     /**
      * @var ObjectManager
      */
@@ -38,7 +41,7 @@ class ConfigManager
      */
     public function get($name, $scopeEntity = null)
     {
-        $name = explode('.', $name);
+        $name = explode(self::SECTION_MODEL_SEPARATOR, $name);
 
         if ($scopeEntity) {
             $settings = $this->getMergedSettings(get_class($scopeEntity), $scopeEntity->getId());
@@ -106,7 +109,7 @@ class ConfigManager
 
         foreach ($this->settings as $section => $settings) {
             foreach ($settings as $key => $value) {
-                $settings[$section.':'.$key] = $value;
+                $settings[$section . self::SECTION_VIEW_SEPARATOR . $key] = $value;
             }
         }
 
