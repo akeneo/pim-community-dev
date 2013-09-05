@@ -9,9 +9,9 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperator;
 use Pim\Bundle\CatalogBundle\Form\Type\BatchOperatorType;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
+use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperator;
 
 /**
  * Batch operation controller
@@ -43,17 +43,15 @@ class BatchOperationController extends AbstractController
      */
     public function chooseAction(Request $request)
     {
-        $batchOperator = $this->getBatchOperator();
-
         if ($request->isMethod('GET')) {
             $productIds = $request->query->get('products');
             if (!$productIds || !is_array($productIds)) {
                 return $this->redirectToRoute('pim_catalog_product_index');
             }
-            $batchOperator->setProductIds($productIds);
+            $this->batchOperator->setProductIds($productIds);
         }
 
-        $form = $this->getBatchOperatorForm($batchOperator);
+        $form = $this->getBatchOperatorForm();
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -61,8 +59,8 @@ class BatchOperationController extends AbstractController
                 return $this->redirectToRoute(
                     'pim_catalog_batch_operation_configure',
                     array(
-                        'products'       => $batchOperator->getProductIds(),
-                        'operationAlias' => $batchOperator->getOperationAlias(),
+                        'products'       => $this->batchOperator->getProductIds(),
+                        'operationAlias' => $this->batchOperator->getOperationAlias(),
                     )
                 );
             }
@@ -78,42 +76,36 @@ class BatchOperationController extends AbstractController
      */
     public function configureAction(Request $request, $operationAlias)
     {
-        $batchOperator = $this->getBatchOperator();
-        $batchOperator->setOperationAlias($operationAlias);
+        $this->batchOperator->setOperationAlias($operationAlias);
 
         if ($request->isMethod('GET')) {
             $productIds = $request->query->get('products');
             if (!$productIds || !is_array($productIds)) {
                 return $this->redirectToRoute('pim_catalog_product_index');
             }
-            $batchOperator->setProductIds($productIds);
+            $this->batchOperator->setProductIds($productIds);
         }
 
-        $form = $this->getBatchOperatorForm($batchOperator);
+        $form = $this->getBatchOperatorForm();
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
-                $batchOperator->performOperation();
+                $this->batchOperator->performOperation();
             }
         }
 
         return array(
             'form'          => $form->createView(),
-            'batchOperator' => $batchOperator,
+            'batchOperator' => $this->batchOperator,
         );
     }
 
-    private function getBatchOperator()
-    {
-        return $this->batchOperator;
-    }
-
-    private function getBatchOperatorForm(BatchOperator $batchOperator)
+    private function getBatchOperatorForm()
     {
         return $this->createForm(
             new BatchOperatorType(),
-            $batchOperator,
-            array('operations' => $batchOperator->getOperationChoices())
+            $this->batchOperator,
+            array('operations' => $this->batchOperator->getOperationChoices())
         );
     }
 }
