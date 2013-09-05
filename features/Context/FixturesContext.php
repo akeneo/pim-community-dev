@@ -102,6 +102,10 @@ class FixturesContext extends RawMinkContext
             'Symfony\Bundle\FrameworkBundle\Controller\TemplateController',
             'templateAction'
         );
+
+        $this->getContainer()->get('oro_user.acl_manager')->synchronizeAclResources();
+        $role = $this->getRoleOrCreate('ROLE_SUPER_ADMIN');
+        $this->getContainer()->get('oro_user.acl_manager')->saveRoleAcl($role);
     }
 
     /**
@@ -1171,10 +1175,12 @@ class FixturesContext extends RawMinkContext
      * @param string $name
      * @param Acl    $parent
      * @param array  $roles
+     * @param string $class
+     * @param string $method
      *
      * @return Acl
      */
-    private function createAcl($name, $parent = null, array $roles = array())
+    private function createAcl($name, $parent = null, array $roles = array(), $class = null, $method = null)
     {
         $acl = new Acl();
         $acl->setId($name);
@@ -1182,6 +1188,12 @@ class FixturesContext extends RawMinkContext
         $acl->setDescription($this->camelize($name));
         if ($parent) {
             $acl->setParent($parent);
+        }
+        if ($class) {
+            $acl->setClass($class);
+        }
+        if ($method) {
+            $acl->setMethod($method);
         }
         foreach ($roles as $role) {
             $acl->addAccessRole($this->getRoleOrCreate($role));
