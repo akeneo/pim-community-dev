@@ -89,7 +89,7 @@ class AclPrivilege
     }
 
     /**
-     * @return AclPermission[]
+     * @return AclPermission[]|ArrayCollection
      */
     public function getPermissions()
     {
@@ -110,7 +110,7 @@ class AclPrivilege
      */
     public function addPermission(AclPermission $permission)
     {
-        $this->permissions->add($permission);
+        $this->permissions->set($permission->getName(), $permission);
 
         return $this;
     }
