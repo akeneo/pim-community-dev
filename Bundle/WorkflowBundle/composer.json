@@ -17,7 +17,8 @@
         "friendsofsymfony/rest-bundle": "0.12.*",
         "nelmio/api-doc-bundle": "dev-master",
         "sensio/framework-extra-bundle": "2.3.*",
-        "oro/user-bundle": "@dev"
+        "oro/user-bundle": "@dev",
+        "oro/ui-bundle": "@dev"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\WorkflowBundle": "" }
