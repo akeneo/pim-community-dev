@@ -132,3 +132,12 @@ services:
             - @pim_catalog.manager.product
         tags:
             - { name: pim_catalog.batch_operation, alias: change-status }
+
+    pim_catalog.batch_operation.edit_common_attributes:
+        public: false
+        class: %pim_catalog.batch_operation.edit_common_attributes.class%
+        arguments:
+            - @pim_catalog.manager.product
+            - @pim_catalog.manager.locale
+        tags:
+            - { name: pim_catalog.batch_operation, alias: edit-common-attributes }
