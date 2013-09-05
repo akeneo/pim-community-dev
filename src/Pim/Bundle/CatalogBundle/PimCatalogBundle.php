@@ -22,7 +22,9 @@ class PimCatalogBundle extends Bundle
     {
         parent::build($container);
 
-        $container->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass);
-        $container->addCompilerPass(new Compiler\SetImportedProductDataTransformerPass);
+        $container
+            ->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass())
+            ->addCompilerPass(new Compiler\SetImportedProductDataTransformerPass())
+            ->addCompilerPass(new Compiler\RegisterBatchOperationsPass());
     }
 }

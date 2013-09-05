@@ -56,9 +56,9 @@ class ChannelController extends AbstractDoctrineController
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
      * @param SecurityContextInterface $securityContext
-     * @param RegistryInterface        $doctrine
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param RegistryInterface        $doctrine
      * @param DatagridWorkerInterface  $datagridWorker
      * @param ChannelHandler           $channelHandler
      * @param Form                     $channelForm
@@ -68,16 +68,17 @@ class ChannelController extends AbstractDoctrineController
         EngineInterface $templating,
         RouterInterface $router,
         SecurityContextInterface $securityContext,
-        RegistryInterface $doctrine,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         DatagridWorkerInterface $datagridWorker,
         ChannelHandler $channelHandler,
         Form $channelForm
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
+        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+
         $this->datagridWorker = $datagridWorker;
-        $this->channelForm = $channelForm;
+        $this->channelForm    = $channelForm;
         $this->channelHandler = $channelHandler;
     }
 
