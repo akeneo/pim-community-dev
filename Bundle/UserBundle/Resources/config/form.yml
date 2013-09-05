@@ -186,7 +186,7 @@ services:
     oro_user.form.handler.acl_role:
         class:                        %oro_user.form.handler.acl_role.class%
         scope:                        prototype
-        arguments:                    ["@form.factory"]
+        arguments:                    ["@form.factory", %oro_user.privileges%]
         calls:
                     - [setAclManager, ["@oro_security.acl.manager"]]
                     - [setEntityManager, ["@doctrine.orm.entity_manager"]]

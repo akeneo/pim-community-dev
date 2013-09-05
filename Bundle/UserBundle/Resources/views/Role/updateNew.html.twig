@@ -58,33 +58,26 @@
                     ]
                 }
             ]
-        },
-        {
-            'title': 'Entities',
-            'subblocks': [
-                {
-                    'title': '',
-                    'useSpan': false,
-                    'data': [
-                        form_widget(form.entity)
-                    ]
-                }
-            ]
-        },
-        {
-            'title': 'Actions',
-            'subblocks': [
-                {
-                    'title': '',
-                    'useSpan': false,
-                    'data': [
-                        form_widget(form.action)
-                    ]
-                }
-            ]
-        }
-    ]
+        }]
     %}
+
+    {% for privilegeBlock, privilegeConfig in  privilegesConfig %}
+        {% set dataBlocks = dataBlocks|merge(
+            [{
+                'title': privilegeConfig.label,
+                'subblocks': [
+                    {
+                        'title': '',
+                        'useSpan': false,
+                        'data': [
+                            form_widget(form.children[privilegeBlock])
+                        ]
+                    }
+                ]
+            }]
+            )
+        %}
+    {% endfor %}
 
     {% set data =
         {

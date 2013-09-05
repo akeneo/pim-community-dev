@@ -14,17 +14,7 @@ class PermissionCollectionType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['privileges_config'] = $options['privileges_config'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'privileges_config' => array(),
-        ));
+        $view->vars['privileges_config'] = $options['options']['privileges_config'];
     }
 
     /**
@@ -35,6 +25,9 @@ class PermissionCollectionType extends AbstractType
         return 'oro_acl_permission_collection';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
         return 'collection';

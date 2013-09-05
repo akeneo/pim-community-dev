@@ -8,14 +8,14 @@
 {% endblock %}
 
 {% block oro_acl_collection_widget %}
-    {% if privileges_config | length > 1 %}
+    {% if privileges_config.view_type == 'grid' %}
         <table class="table table-striped">
             <tbody>
             <tr>
                 <th>
-                    {% trans %}Entity{% endtrans %}
+                    &nbsp;
                 </th>
-                {% for field in privileges_config %}
+                {% for field in privileges_config['permissions'] %}
                     <th>
                         {{ field|trans }}
                     </th>
@@ -52,13 +52,14 @@
 {% endblock %}
 
 {% block oro_acl_permission_collection_widget %}
-    {% for field in privileges_config %}
+    {% for field in privileges_config['permissions'] %}
         <td>
             {% for permission in form %}
                 {% if permission.vars.value.name == field %}
                     {{ form_widget(permission) }}
                 {% endif %}
             {% endfor %}
+            &nbsp;
         </td>
     {% endfor %}
 {% endblock %}

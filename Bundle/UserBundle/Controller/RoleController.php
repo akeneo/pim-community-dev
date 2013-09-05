@@ -13,8 +13,6 @@ use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 use Oro\Bundle\UserBundle\Datagrid\RoleUserDatagridManager;
 
-use Oro\Bundle\UserBundle\Form\Type\NewRoleType;
-
 /**
  * @Route("/role")
  * @Acl(
@@ -26,7 +24,7 @@ use Oro\Bundle\UserBundle\Form\Type\NewRoleType;
 class RoleController extends Controller
 {
     /**
-     * @Route("/create", name="oro_user_new_role_create")
+     * @Route("/acl-create", name="oro_user_new_role_create")
      * @Template("OroUserBundle:Role:updateNew.html.twig")
      */
     public function createNewAction()
@@ -35,7 +33,7 @@ class RoleController extends Controller
     }
 
     /**
-     * @Route("/update-new/{id}", name="oro_user_new_role_update", requirements={"id"="\d+"}, defaults={"id"=0})
+     * @Route("/acl-update/{id}", name="oro_user_new_role_update", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
      */
     public function updateNewAction(Role $entity)
@@ -60,57 +58,8 @@ class RoleController extends Controller
 
         return array(
             'form'     => $aclRoleHandler->createView(),
+            'privilegesConfig' => $this->container->getParameter('oro_user.privileges'),
         );
-
-
-
-
-
-        /****************************************/
-        /*$permissionList = array(
-            'VIEW',
-            'CREATE',
-            'EDIT',
-            'DELETE'
-        );
-        $form = $this->createForm(new NewRoleType($permissionList), $entity);*/
-
-
-
-        /** @var $entityField \Oro\Bundle\SecurityBundle\Form\Type\CollectionType */
-        /*$entityCollection = $form->get('entities');
-
-        $entityCollection->setData($dataArray);
-*/
-
-        /**
-         * @todo: work with form must be in form handler
-         */
-        /*if ($this->getRequest()->isMethod('POST')) {
-            $request = $this->getRequest();
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $this->getAclManager()->saveNewRoleAcl($entity, $form);
-
-                $this->get('session')->getFlashBag()->add('success', 'Role successfully saved');
-
-                return $this->get('oro_ui.router')->actionRedirect(
-                    array(
-                        'route' => 'oro_user_new_role_update',
-                        'parameters' => array('id' => $entity->getId()),
-                    ),
-                    array(
-                        'route' => 'oro_user_role_index',
-                    )
-                );
-            }
-        }
-
-        return array(
-            'entity' => $entity,
-            'form' => $form->createView()
-        );*/
     }
 
     /**

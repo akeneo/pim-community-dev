@@ -11,12 +11,10 @@ use Oro\Bundle\UserBundle\Form\Type\AclRoleType;
 use Oro\Bundle\UserBundle\Entity\Role;
 
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
 
 class AclRoleHandler
 {
-    const ENTITY_FIELD_NAME = 'entity';
-    const ACTION_FIELD_NAME = 'action';
-
     /**
      * @var Request
      */
@@ -43,11 +41,18 @@ class AclRoleHandler
     protected $aclManager;
 
     /**
-     * @param FormFactory $formFactory
+     * @var array
      */
-    public function __construct(FormFactory $formFactory)
+    protected $privilegeConfig;
+
+    /**
+     * @param FormFactory $formFactory
+     * @param array $privilegeConfig
+     */
+    public function __construct(FormFactory $formFactory, array $privilegeConfig)
     {
         $this->formFactory = $formFactory;
+        $this->privilegeConfig = $privilegeConfig;
     }
 
     /**
@@ -82,12 +87,14 @@ class AclRoleHandler
      */
     public function createForm(Role $role)
     {
+        foreach ($this->privilegeConfig as $configName => $config) {
+            $this->privilegeConfig[$configName]['permissions'] = $this->aclManager
+                ->getPrivilegeRepository()->getPermissionNames($config['types']);
+        }
+
         $this->form = $this->formFactory->create(
             new ACLRoleType(
-                array(
-                    self::ENTITY_FIELD_NAME => $this->aclManager->getPrivilegeRepository()->getPermissionNames('entity'),
-                    self::ACTION_FIELD_NAME => $this->aclManager->getPrivilegeRepository()->getPermissionNames('action')
-                )
+                $this->privilegeConfig
             ),
             $role
         );
@@ -138,14 +145,26 @@ class AclRoleHandler
     {
         /** @var ArrayCollection $privileges */
         $privileges = $this->aclManager->getPrivilegeRepository()->getPrivileges($this->aclManager->getSid($role));
-        foreach($privileges as $privilege) {
-            foreach ($privilege->getPermissions() as $permission)
-            {
-                $permission->setAccessLevel((bool)$permission->getAccessLevel());
+
+        foreach ($this->privilegeConfig as $fieldName => $config) {
+            $sortedPrivileges = $this->filterPrivileges($privileges, $config['types']);
+            if ($config['fix_values'] || !$config['show_default']) {
+                foreach ($sortedPrivileges as $sortedPrivilege) {
+                    if (!$config['show_default']
+                        && $sortedPrivilege->getIdentity()->getName() == AclPrivilegeRepository::ROOT_PRIVILEGE_NAME) {
+                        $sortedPrivileges->removeElement($sortedPrivilege);
+                        continue;
+                    }
+                    if ($config['fix_values']) {
+                        foreach ($sortedPrivilege->getPermissions() as $permission) {
+                            $permission->setAccessLevel((bool)$permission->getAccessLevel());
+                        }
+                    }
+                }
             }
+
+            $this->form->get($fieldName)->setData($sortedPrivileges);
         }
-        $this->form->get(self::ACTION_FIELD_NAME)->setData($this->filterPrivileges($privileges, self::ACTION_FIELD_NAME));
-        $this->form->get(self::ENTITY_FIELD_NAME)->setData($this->filterPrivileges($privileges, self::ENTITY_FIELD_NAME));
     }
 
     /**
@@ -153,34 +172,31 @@ class AclRoleHandler
      */
     protected function processPrivileges(Role $role)
     {
-        $entities = $this->form->get(self::ENTITY_FIELD_NAME)->getData();
-        $this->fxPrivilegeValue($entities, 5);
-
-        $actions = $this->form->get(self::ACTION_FIELD_NAME)->getData();
-        $this->fxPrivilegeValue($actions, 1);
-
+        $formPrivileges = array();
+        foreach ($this->privilegeConfig as $fieldName => $config) {
+            $privileges = $this->form->get($fieldName)->getData();
+            if ($config['fix_values']) {
+                $this->fxPrivilegeValue($privileges, $config['default_value']);
+            }
+            $formPrivileges = array_merge($formPrivileges, $privileges);
+        }
 
         $this->aclManager->getPrivilegeRepository()->savePrivileges(
             $this->aclManager->getSid($role),
-            new ArrayCollection(
-                array_merge(
-                    $this->form->get(self::ENTITY_FIELD_NAME)->getData(),
-                    $this->form->get(self::ACTION_FIELD_NAME)->getData()
-                )
-            )
+            new ArrayCollection($formPrivileges)
         );
     }
 
     /**
      * @param ArrayCollection $privileges
-     * @param $rootId
+     * @param array $rootIds
      * @return ArrayCollection
      */
-    protected function filterPrivileges(ArrayCollection $privileges, $rootId)
+    protected function filterPrivileges(ArrayCollection $privileges, array $rootIds)
     {
         return $privileges->filter(
-            function($entry) use ($rootId){
-                return ($entry->getRootId() == $rootId);
+            function ($entry) use ($rootIds) {
+                return in_array($entry->getRootId(), $rootIds);
             }
         );
     }
@@ -191,9 +207,8 @@ class AclRoleHandler
      */
     protected function fxPrivilegeValue($privileges, $value)
     {
-        foreach($privileges as $privilege) {
-            foreach ($privilege->getPermissions() as $permission)
-            {
+        foreach ($privileges as $privilege) {
+            foreach ($privilege->getPermissions() as $permission) {
                 $permission->setAccessLevel($permission->getAccessLevel() ? $value : 0);
             }
         }
