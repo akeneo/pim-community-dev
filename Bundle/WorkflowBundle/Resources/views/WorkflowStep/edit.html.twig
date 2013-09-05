@@ -1,5 +1,11 @@
 {% extends bap.layout %}
 {% import 'OroUIBundle::macros.html.twig' as macros %}
+{% oro_title_set({
+    params : {
+        '%workflow%': workflow.label,
+        '%step%': currentStep.label
+    }
+}) %}
 
 {# TODO: Move this to OroUIBundle::macros.html.twig #}
 {% macro renderRow(label, value) %}
