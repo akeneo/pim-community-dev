@@ -27,7 +27,7 @@ class Config
      *
      * @ORM\Column(name="entity", type="string", length=255)
      */
-    protected $entity;
+    protected $scopedEntity;
 
     /**
      * @var int

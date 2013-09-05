@@ -26,19 +26,11 @@ class ConfigValue
     protected $id;
 
     /**
-     * @var ConfigField
-     *
-     * @ORM\ManyToOne(targetEntity="ConfigField")
-     * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
-     */
-    protected $field;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="scope", type="string", length=50)
+     * @ORM\Column(name="key", type="string", length=255)
      */
-    protected $scope;
+    protected $key;
 
     /**
      * @var Config[]
@@ -73,49 +65,19 @@ class ConfigValue
     }
 
     /**
-     * Set field
-     *
-     * @param integer $field
-     * @return ConfigValue
+     * @param string $key
      */
-    public function setField($field)
+    public function setKey($key)
     {
-        $this->field = $field;
-
-        return $this;
+        $this->key = $key;
     }
 
     /**
-     * Get field
-     *
-     * @return ConfigField
-     */
-    public function getField()
-    {
-        return $this->field;
-    }
-
-    /**
-     * Set scope
-     *
-     * @param string $scope
-     * @return ConfigValue
-     */
-    public function setScope($scope)
-    {
-        $this->scope = $scope;
-
-        return $this;
-    }
-
-    /**
-     * Get scope
-     *
      * @return string
      */
-    public function getScope()
+    public function getKey()
     {
-        return $this->scope;
+        return $this->key;
     }
 
     /**

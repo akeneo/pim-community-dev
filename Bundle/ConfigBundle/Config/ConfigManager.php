@@ -63,6 +63,10 @@ class ConfigManager
     {
         $remove = array();
 
+        // new values
+
+        // reverted to default scope values
+
         foreach ($this->settings as $section => $settings) {
             // fallback to global setting - remove scoped value
             foreach ($settings as $key => $value) {
@@ -71,6 +75,11 @@ class ConfigManager
                 }
             }
         }
+
+        return;
+
+        $this->om->persist($config);
+        $this->om->flush();
     }
 
     /**

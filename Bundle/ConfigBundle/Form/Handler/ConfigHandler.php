@@ -4,6 +4,7 @@ namespace Oro\Bundle\ConfigBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,15 +16,15 @@ class ConfigHandler
     protected $request;
 
     /**
-     * @var ObjectManager
+     * @var ConfigManager
      */
     protected $manager;
 
     /**
      * @param Request $request
-     * @param ObjectManager $manager
+     * @param ConfigManager $manager
      */
-    public function __construct(Request $request, ObjectManager $manager)
+    public function __construct(Request $request, ConfigManager $manager)
     {
         $this->request = $request;
         $this->manager = $manager;
@@ -37,15 +38,11 @@ class ConfigHandler
      */
     public function process(FormInterface $form)
     {
-        $form->setData($entity);
-
         if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
             $form->submit($this->request);
 
             if ($form->isValid()) {
-                $this->manager->persist($entity);
-                $this->manager->flush();
-
+                $this->manager->save($form->getData());
                 return true;
             }
         }
