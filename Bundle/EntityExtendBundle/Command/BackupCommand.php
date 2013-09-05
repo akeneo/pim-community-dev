@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Command;
 
-use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Symfony\Component\Console\Input\InputInterface;
@@ -10,7 +9,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
+use Oro\Bundle\EntityExtendBundle\Databases\MySQLDatabase;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class BackupCommand extends ContainerAwareCommand
 {
@@ -29,7 +30,7 @@ class BackupCommand extends ContainerAwareCommand
     protected $filePath;
 
     /** @var  string Entity class name */
-    protected $entity;
+    protected $className;
 
     /**
      * Console command configuration
@@ -45,37 +46,36 @@ class BackupCommand extends ContainerAwareCommand
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
+        /** @var ParameterBag $parameters */
         $parameters = $this->getContainer()->getParameterBag();
 
-        $this->basePath = $input->getArgument('path') ?: $parameters->get('oro_entity_extend.backup');
-        $this->entity   = $input->getArgument('entity');
+        $this->basePath  = $input->getArgument('path') ? : $parameters->get('oro_entity_extend.backup');
+        $this->className = $input->getArgument('entity');
 
-        if (!$this->entity) {
+        if (!$this->className) {
             return;
         }
 
-        $dbms      = $parameters->get('database_driver');
-        $database  = $parameters->get('database_name');
-        $user      = $parameters->get('database_user');
-        $password  = $parameters->get('database_password');
-        $host      = $parameters->get('database_host');
+        $dbms     = $parameters->get('database_driver');
+        $database = $parameters->get('database_name');
+        $user     = $parameters->get('database_user');
+        $password = $parameters->get('database_password');
+        $host     = $parameters->get('database_host');
 
-        $tables    = array();
+        $tables = array();
         //$tables    = array('oro_config_entity', 'oro_config_field');
 
-        /** @var ConfigProvider $extendConfigProvider */
-        $extendConfigProvider = $this->getContainer()->get('oro_entity_config.provider.extend');
-
-        /** @var EntityManager $em */
+        /** @var OroEntityManager $em */
         $em = $this->getContainer()->get('doctrine')->getManager('default');
 
+
         $tables[] = $em
-            ->getClassMetadata($extendConfigProvider->getConfig($this->entity)->get('extend_class'))
+            ->getClassMetadata($em->getExtendManager()->getExtendClass($this->className))
             ->getTableName();
 
         switch ($dbms) {
             case 'pdo_mysql':
-                $this->database = new \Oro\Bundle\EntityExtendBundle\Databases\MySQLDatabase(
+                $this->database = new MySQLDatabase(
                     $database,
                     $user,
                     $password,

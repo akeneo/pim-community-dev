@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\EntityBundle\Controller;
 
+use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,12 +49,10 @@ class EntitiesController extends Controller
      */
     public function indexAction(Request $request)
     {
+        /** @var OroEntityManager $em */
+        $em = $this->getDoctrine()->getManager();
         /** @var EntityConfigModel $entity */
-        $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($request->get('id'));
-
-        /** @var ConfigProvider $extendConfigProvider */
-        $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
-        $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
+        $entity = $em->getRepository(EntityConfigModel::ENTITY_NAME)->find($request->get('id'));
 
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
@@ -63,9 +63,9 @@ class EntitiesController extends Controller
 
         $className = $entity->getClassName();
 
-        $datagridManager->setCustomEntityClass($className, $extendConfig->get('extend_class'));
+        $datagridManager->setCustomEntityClass($className, $em->getExtendManager()->getExtendClass($className));
         $datagridManager->setParent($entity->getId());
-        $datagridManager->setEntityName($extendConfig->get('extend_class'));
+        $datagridManager->setEntityName($em->getExtendManager()->getExtendClass($className));
         $datagridManager->getRouteGenerator()->setRouteParameters(array('id' => $request->get('id')));
 
         $view = $datagridManager->getDatagrid()->createView();
@@ -119,26 +119,19 @@ class EntitiesController extends Controller
      */
     public function updateAction(Request $request, $entity_id, $id)
     {
+        /** @var OroEntityManager $em */
+        $em = $this->getDoctrine()->getManager();
         /** @var EntityConfigModel $entity */
-        $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($entity_id);
-
-        /** @var ConfigProvider $extendConfigProvider */
-        $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
-        $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
+        $entity = $em->getRepository(EntityConfigModel::ENTITY_NAME)->find($entity_id);
 
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
         $entityConfig         = $entityConfigProvider->getConfig($entity->getClassName());
 
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManagerForClass($extendConfig->get('extend_class'));
+        $extendEntityName       = $em->getExtendManager()->getExtendClass($entity->getClassName());
+        $extendEntityRepository = $em->getRepository($extendEntityName);
 
-        $class = $extendConfig->get('extend_class');
-        if (!$id) {
-            $record = new $class;
-        } else {
-            $record = $em->find($class, $id);
-        }
+        $record = !$id ? new $extendEntityName : $extendEntityRepository->find($id);
 
         $form = $this->createForm(
             'custom_entity_type',
@@ -159,16 +152,17 @@ class EntitiesController extends Controller
                 $id = $record->getId();
 
                 $this->get('session')->getFlashBag()->add('success', 'Entity successfully saved');
+
                 return $this->get('oro_ui.router')->actionRedirect(
                     array(
                         'route'      => 'oro_entity_update',
                         'parameters' => array(
                             'entity_id' => $entity_id,
-                            'id' => $id
+                            'id'        => $id
                         ),
                     ),
                     array(
-                        'route' => 'oro_entity_index',
+                        'route'      => 'oro_entity_index',
                         'parameters' => array(
                             'id' => $entity_id,
                         )
@@ -178,10 +172,10 @@ class EntitiesController extends Controller
         }
 
         return array(
-            'record' => $record,
-            'entity_id' => $entity_id,
+            'record'        => $record,
+            'entity_id'     => $entity_id,
             'entity_config' => $entityConfig,
-            'form' => $form->createView(),
+            'form'          => $form->createView(),
         );
     }
 
@@ -201,18 +195,15 @@ class EntitiesController extends Controller
      */
     public function deleteAction(Request $request)
     {
+        /** @var OroEntityManager $em */
+        $em = $this->getDoctrine()->getManager();
         /** @var EntityConfigModel $entity */
-        $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($request->get('entity_id'));
+        $entity = $em->getRepository(EntityConfigModel::ENTITY_NAME)->find($request->get('entity_id'));
 
-        /** @var ConfigProvider $extendConfigProvider */
-        $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
-        $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
+        $extendEntityName       = $em->getExtendManager()->getExtendClass($entity->getClassName());
+        $extendEntityRepository = $em->getRepository($extendEntityName);
 
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManagerForClass($extendConfig->get('extend_class'));
-
-        $record = $em->find($extendConfig->get('extend_class'), $request->get('id'));
-
+        $record = $extendEntityRepository->find($request->get('id'));
         if (!$record) {
             return new JsonResponse('', Codes::HTTP_FORBIDDEN);
         }

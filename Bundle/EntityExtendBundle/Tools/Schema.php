@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
 
+use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
@@ -28,15 +29,14 @@ class Schema
     protected $extendManager;
 
     /**
-     * @param EntityManager $em
-     * @param               $backend
-     * @param ExtendManager $extendManager
+     * @param OroEntityManager $em
+     * @param string        $backend
      */
-    public function __construct(EntityManager $em, $backend, ExtendManager $extendManager)
+    public function __construct(OroEntityManager $em, $backend)
     {
         $this->em            = $em;
         $this->backend       = $backend;
-        $this->extendManager = $extendManager;
+        $this->extendManager = $em->getExtendManager();
     }
 
     /**
