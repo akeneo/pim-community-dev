@@ -3,6 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperator;
+use Pim\Bundle\CatalogBundle\Form\Type\BatchOperatorType;
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
