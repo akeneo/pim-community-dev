@@ -43,3 +43,9 @@ pim_catalog_product_listcategories:
         id: \d+
         category_id: \d+
         _format: json
+
+pim_catalog_product_configure_batch_operation:
+    path: /batch
+    defaults: { _controller: PimCatalogBundle:Product:configureBatchOperation }
+    requirements:
+        _method: GET

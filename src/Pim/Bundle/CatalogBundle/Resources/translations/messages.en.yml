@@ -211,3 +211,6 @@
 'Edit channel': 'Edit channel'
 'Remove': 'Remove'
 'Channels': 'Channels'
+
+# Batch operations
+pim_catalog.batch_operation.change-status.label: 'Change status (Enable/Disable)'

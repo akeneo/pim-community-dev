@@ -74,4 +74,14 @@ class ProductRepository extends FlexibleEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findByIds(array $ids)
+    {
+        $qb = $this->findByWithAttributesQB();
+        $qb->andWhere(
+            $qb->expr()->in('Entity.id', $ids)
+        );
+
+        return $qb->getQuery()->execute();
+    }
 }
