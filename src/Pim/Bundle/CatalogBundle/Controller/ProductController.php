@@ -43,6 +43,7 @@ class ProductController extends Controller
                 break;
             case 'csv':
                 // TODO : Get query used in datagrid
+                $products = array();
 
                 $productSerializer = $this->get('pim_serializer');
                 $csv = $productSerializer->serialize($products, 'csv', array('withHeader' => true, 'heterogeneous' => true));
