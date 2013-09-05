@@ -13,6 +13,8 @@ interface BatchOperation
 {
     /**
      * Get the form type to use in order to configure the application
+     *
+     * @return string|FormTypeInterface
      */
     public function getFormType();
 
