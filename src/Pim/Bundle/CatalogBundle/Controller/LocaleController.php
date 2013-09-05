@@ -56,9 +56,9 @@ class LocaleController extends AbstractDoctrineController
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
      * @param SecurityContextInterface $securityContext
-     * @param RegistryInterface        $doctrine
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param RegistryInterface        $doctrine
      * @param DatagridWorkerInterface  $datagridWorker
      * @param LocaleHandler            $localeHandler
      * @param Form                     $localeForm
@@ -68,17 +68,18 @@ class LocaleController extends AbstractDoctrineController
         EngineInterface $templating,
         RouterInterface $router,
         SecurityContextInterface $securityContext,
-        RegistryInterface $doctrine,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         DatagridWorkerInterface $datagridWorker,
         LocaleHandler $localeHandler,
         Form $localeForm
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
+        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+
         $this->datagridWorker = $datagridWorker;
-        $this->localeForm = $localeForm;
-        $this->localeHandler = $localeHandler;
+        $this->localeForm     = $localeForm;
+        $this->localeHandler  = $localeHandler;
     }
 
     /**
