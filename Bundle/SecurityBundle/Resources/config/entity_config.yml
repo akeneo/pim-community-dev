@@ -2,5 +2,7 @@ oro_entity_config:
     security:
         entity:
             items:
-                type: ~
+                type:
+                    options:
+                        default_value: 'ACL'
                 group_name: ~

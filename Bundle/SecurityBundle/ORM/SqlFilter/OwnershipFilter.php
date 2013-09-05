@@ -14,6 +14,9 @@ class OwnershipFilter extends SQLFilter
      */
     protected $builder;
 
+    /**
+     * {@inheritdoc}
+     */
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
         return ''; //TODO: Removed after new acl implemented
