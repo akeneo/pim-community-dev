@@ -1,3 +1,6 @@
+js:
+    'config':
+      - '@OroConfigBundle/Resources/public/js/form-state.js'
 css:
     'config':
       - '@OroConfigBundle/Resources/public/css/style.css'

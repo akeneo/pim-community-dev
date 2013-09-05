@@ -1004,7 +1004,11 @@ Oro.Navigation = Backbone.Router.extend({
                 link = $(target).attr('data-url');
             }
             if (link) {
-                this.setLocation(link);
+                var event = {stoppedProcess: false, hashNavigationInstance: this, link: link};
+                Oro.Events.trigger("hash_navigation_click", event);
+                if (event.stoppedProcess === false) {
+                    this.setLocation(link);
+                }
             }
             return false;
         }, this));
