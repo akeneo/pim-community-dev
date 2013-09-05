@@ -3,6 +3,8 @@
 namespace Oro\Bundle\ConfigBundle\Config;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\PersistentCollection;
+use Oro\Bundle\ConfigBundle\Entity\Config;
 
 class ConfigManager
 {
@@ -65,55 +67,79 @@ class ConfigManager
     public function save($newSettings, $scopeEntity = null)
     {
         $remove = array();
-        $flatSettings = $this->getFlatSettings();
+        $flatSettings = $this->getFlatSettings($this->settings);
 
         // new settings
-        $new = array_diff($newSettings, $flatSettings);
+        $new = array_diff($this->getFlatSettings($newSettings, true), $flatSettings);
 
         $updated = array();
         foreach ($this->settings as $section => $settings) {
             foreach ($settings as $key => $value) {
                 // removed/reverted to default values
                 // fallback to global setting - remove scoped value
-                if (!empty($newSettings[$section][$key]['is_default']) && $scopeEntity) {
-                    $remove[] = array($section, $key, get_class($scopeEntity), $scopeEntity->getId());
+                $newKey = $section.'____'.$key;
+                if (!empty($newSettings[$newKey]['use_parent_scope_value'])) {
+                    $remove[] = array($section, $key);
                 }
 
                 // updated
-                if (!empty($newSettings[$section][$key]) && $newSettings[$section][$key] != $value) {
+                if (!empty($newSettings[$newKey]) && $newSettings[$newKey] != $value) {
                     $updated[] = array(
                         $section,
                         $key,
-                        get_class($scopeEntity),
-                        $scopeEntity->getId(),
-                        $newSettings[$section][$key]
+                        $newSettings[$newKey]
                     );
                 }
             }
         }
 
+        // find scope config
+        $scopedId = $scopeEntity ? $scopeEntity->getId() : null;
+        $config = $this->om
+            ->getRepository('Oro\Bundle\ConfigBundle\Entity\Config')
+            ->findOneBy(array('scopedEntity' => $scopeEntity, 'recordId' => $scopedId));
+
+        if (!$config) {
+            $config = new Config();
+            $config
+                ->setEntity($scopeEntity)
+                ->setRecordId($scopedId);
+        }
+
+        /** @var PersistentCollection $values */
+        $values = $config->getValues();
+        foreach ($new as $newItemKey => $newItemValue) {
+            //$values->
+        }
+
         return;
-
-
 
         $this->om->persist($config);
         $this->om->flush();
     }
 
     /**
+     * @param $settingsArray
+     * @param bool $sectionsMerged
      * @return array
      */
-    public function getFlatSettings()
+    public function getFlatSettings($settingsArray, $sectionsMerged = false)
     {
-        $settings = array();
+        $_settings = array();
 
-        foreach ($this->settings as $section => $settings) {
-            foreach ($settings as $key => $value) {
-                $settings[$section . self::SECTION_VIEW_SEPARATOR . $key] = $value;
+        if ($sectionsMerged) {
+            foreach ($settingsArray as $key => $value) {
+                $_settings[$key] = $value['value'];
+            }
+        } else {
+            foreach ($settingsArray as $section => $settings) {
+                foreach ($settings as $key => $value) {
+                    $_settings[$section . self::SECTION_VIEW_SEPARATOR . $key] = $value['value'];
+                }
             }
         }
 
-        return $settings;
+        return $_settings;
     }
 
     /**
