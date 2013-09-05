@@ -21,14 +21,22 @@ class BatchOperatorType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('productIds', 'hidden', array(
-                'multiple' => true,
-            ))
-            ->add('operationAlias', 'choice', array(
-                'choices'  => $options['operations'],
-                'expanded' => true,
-                'multiple' => false,
-            ))
+            ->add(
+                'productIds',
+                'hidden',
+                array(
+                    'multiple' => true,
+                )
+            )
+            ->add(
+                'operationAlias',
+                'choice',
+                array(
+                    'choices'  => $options['operations'],
+                    'expanded' => true,
+                    'multiple' => false,
+                )
+            )
             ->addEventSubscriber(new AddSelectedOperationSubscriber());
     }
 
