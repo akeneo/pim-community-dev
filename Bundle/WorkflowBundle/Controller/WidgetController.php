@@ -88,26 +88,26 @@ class WidgetController extends Controller
         $workflowManager = $this->get('oro_workflow.manager');
         $existingWorkflowItems = $workflowManager->getWorkflowItemsByEntity($entity, $workflowName);
         $newWorkflows = $workflowManager->getApplicableWorkflows($entity, $existingWorkflowItems, $workflowName);
-        $startData = array();
+
+        $transitionsData = array();
         foreach ($newWorkflows as $workflow) {
             $transitions = $workflowManager->getAllowedStartTransitions($workflow, $entity);
-            if ($transitions) {
-                $startData[] = array(
+            foreach ($transitions as $transition) {
+                $transitionsData[] = array(
                     'workflow' => $workflowManager->getWorkflow($workflow),
-                    'transitions' => $transitions,
+                    'transition' => $transition,
                 );
             }
         }
 
-        $existingData = array();
         /** @var WorkflowItem $workflowItem */
         foreach ($existingWorkflowItems as $workflowItem) {
             $transitions = $workflowManager->getAllowedTransitions($workflowItem);
-            if ($transitions) {
-                $existingData[] = array(
+            foreach ($transitions as $transition) {
+                $transitionsData[] = array(
                     'workflow' => $workflowManager->getWorkflow($workflowItem),
                     'workflowItem' => $workflowItem,
-                    'transitions' => $transitions,
+                    'transition' => $transition,
                 );
             }
         }
@@ -115,8 +115,7 @@ class WidgetController extends Controller
         return array(
             'entity_class' => $entityClass,
             'entity_id' => $entityId,
-            'new_workflows_data' => $startData,
-            'exisiting_workflows_data' => $existingData
+            'transitionsData' => $transitionsData
         );
     }
 
@@ -134,15 +133,17 @@ class WidgetController extends Controller
         $workflow = $workflowManager->getWorkflow($workflowItem);
 
         $currentStep = $workflow->getStep($workflowItem->getCurrentStepName());
-        $transitions = array();
+        $transitionsData = array();
         foreach ($currentStep->getAllowedTransitions() as $transitionName) {
-            $transitions[] = $workflow->getTransition($transitionName);
+            $transitionsData[] = array(
+                'workflow' => $workflowManager->getWorkflow($workflowItem),
+                'workflowItem' => $workflowItem,
+                'transition' => $workflow->getTransition($transitionName),
+            );
         }
 
         return array(
-            'workflow' => $workflow,
-            'workflowItem' => $workflowItem,
-            'transitions' => $transitions,
+            'transitionsData' => $transitionsData,
         );
     }
 

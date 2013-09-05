@@ -3,26 +3,20 @@
 {% set blockId = 'wizard-transitions-container-' ~ random() %}
 <div class="widget-content" id="{{ blockId }}">
     <div class="btn-group">
-        {% for transition in transitions %}
+        {% for data in transitionsData %}
             {{ workflowMacros.renderTransitionButton(
-                workflow,
-                transition,
-                workflow.isTransitionAllowed(workflowItem, transition),
+                data.workflow,
+                data.transition,
+                data.workflow.isTransitionAllowed(data.workflowItem, data.transition),
                 path(
                     'oro_workflow_api_rest_workflow_transit',
                     {
-                        workflowItemId: workflowItem.id,
-                        transitionName: transition.name
+                        workflowItemId: data.workflowItem.id,
+                        transitionName: data.transition.name
                     }
                 )
             ) }}
         {% endfor %}
     </div>
-    {% set workflowData = [
-        {
-        'workflow': workflow,
-        'transitions' : transitions
-        }
-    ] %}
-    {{ workflowMacros.renderTransitionsJs(workflowData, blockId) }}
+    {{ workflowMacros.renderTransitionsJs(transitionsData, blockId) }}
 </div>

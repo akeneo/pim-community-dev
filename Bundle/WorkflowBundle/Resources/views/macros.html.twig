@@ -12,13 +12,12 @@
     </button>
 {% endmacro %}
 
-{% macro renderTransitionsJs(workflowData, blockId) %}
+{% macro renderTransitionsJs(transitionsData, blockId) %}
     <script type="text/javascript">
         $(function() {
             var container = $('#{{ blockId }}');
-            {% for data in workflowData %}
-                {% for transition in data.transitions %}
-                container.on('click', '#transition-{{ data.workflow.name }}-{{ transition.name }}', function(e) {
+            {% for data in transitionsData %}
+                container.on('click', '#transition-{{ data.workflow.name }}-{{ data.transition.name }}', function(e) {
                     var element = $(this);
                     e.preventDefault();
                     $.getJSON($(this).data('href'))
@@ -76,7 +75,6 @@
                         });
                     return false;
                 });
-                {% endfor %}
             {% endfor %}
         });
     </script>

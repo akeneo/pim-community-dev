@@ -2,49 +2,54 @@
 
 {% set blockId = 'entity-transitions-container-' ~ random() %}
 <div class="widget-content" id="{{ blockId }}">
+    {# Show buttons for entity workflows #}
     <div class="btn-group">
-        {% for data in new_workflows_data %}
-            {% set redirectToWorkflow = false %}
-            {% if data.workflow.type == 'wizard' %}
-                {% set redirectToWorkflow = true %}
+        {% for data in transitionsData if data.workflow.type == 'entity' %}
+            {# Show button for start or transit entity workflow #}
+            {% if data.workflowItem is defined %}
+                {# Existing workflow #}
+                {% set url = path(
+                    'oro_workflow_api_rest_workflow_transit',
+                    {
+                        workflowItemId: data.workflowItem.id,
+                        transitionName: data.transition.name
+                    }
+                ) %}
+            {% else %}
+                {# New workflow #}
+                {% set url = path(
+                    'oro_workflow_api_rest_workflow_start',
+                    {
+                        workflowName: data.workflow.name,
+                        entityClass: entity_class,
+                        entityId: entity_id,
+                        transitionName: data.transition.name
+                    }
+                ) %}
             {% endif %}
-
-            {% for transition in data.transitions %}
-                {{ workflowMacros.renderTransitionButton(
-                    data.workflow,
-                    transition,
-                    true,
-                    path(
-                        'oro_workflow_api_rest_workflow_start',
-                        {
-                            workflowName: data.workflow.name,
-                            entityClass: entity_class,
-                            entityId: entity_id,
-                            transitionName: transition.name
-                        }
-                    ),
-                    redirectToWorkflow
-                ) }}
-            {% endfor %}
-        {% endfor %}
-
-        {% for data in exisiting_workflows_data if data.workflow.type == 'entity' %}
-            {% for transition in data.transitions %}
-                {{ workflowMacros.renderTransitionButton(
-                    data.workflow,
-                    transition,
-                    true,
-                    path(
-                        'oro_workflow_api_rest_workflow_transit',
-                        {
-                            workflowItemId: data.workflowItem.id,
-                            transitionName: transition.name
-                        }
-                    )
-                ) }}
-            {% endfor %}
+            {{ workflowMacros.renderTransitionButton(data.workflow, data.transition, true, url, false) }}
         {% endfor %}
     </div>
-    {% set workflowData = new_workflows_data|merge(exisiting_workflows_data) %}
-    {{ workflowMacros.renderTransitionsJs(workflowData, blockId) }}
+
+    {# Show buttons that for start new wizard workflows #}
+    <div class="btn-group">
+        {% for data in transitionsData if data.workflow.type == 'wizard' and data.workflowItem is not defined  %}
+            {{ workflowMacros.renderTransitionButton(
+                data.workflow,
+                data.transition,
+                true,
+                path(
+                    'oro_workflow_api_rest_workflow_start',
+                    {
+                        workflowName: data.workflow.name,
+                        entityClass: entity_class,
+                        entityId: entity_id,
+                        transitionName: data.transition.name
+                    }
+                ),
+                true
+            ) }}
+        {% endfor %}
+    </div>
+    {{ workflowMacros.renderTransitionsJs(transitionsData, blockId) }}
 </div>
