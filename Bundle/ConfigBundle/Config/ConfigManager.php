@@ -48,11 +48,13 @@ class ConfigManager
     {
         $name = explode(self::SECTION_MODEL_SEPARATOR, $name);
 
-        if ($scopeEntity) {
-            $settings = $this->getMergedSettings(get_class($scopeEntity), $scopeEntity->getId());
-        } else {
-            $settings = $this->settings;
-        }
+        //if ($scopeEntity) {
+            $scopeEntityName = $scopeEntity ? get_class($scopeEntity) : null;
+            $scopeEntityId = $scopeEntity ? $scopeEntity->getId() : null;
+            $settings = $this->getMergedSettings($scopeEntityName, $scopeEntityId);
+//        } else {
+//            $settings = $this->settings;
+//        }
 
         if (!isset($settings[$name[0]])) {
             return null;
@@ -130,7 +132,7 @@ class ConfigManager
                     ->setSection($section)
                     ->setValue($newItemValue);
             } else {
-                $value = $value->get(0);
+                $value = $value->first();
                 $value->setValue($newItemValue)
                     ->setSection($section);
             }
@@ -187,8 +189,8 @@ class ConfigManager
     {
         $scope = $this->om->getRepository('OroConfigBundle:Config')->findOneBy(
             array(
-                'entity'   => $entity,
-                'recordId' => (int) $recordId,
+                'scopedEntity'   => $entity,
+                'recordId' => $recordId,
             )
         );
 
@@ -197,11 +199,9 @@ class ConfigManager
         }
 
         $mergedSettings = $this->settings;
-        foreach ($scope->getSettings() as $section => $settings) {
-            foreach ($settings as $name => $value) {
-                if (isset($this->settings[$section][$name])) {
-                    $mergedSettings[$section][$name]['value'] = $value;
-                }
+        foreach ($scope->getValues() as $value) {
+            if (isset($this->settings[$value->getSection()][$value->getName()])) {
+                $mergedSettings[$value->getSection()][$value->getName()]['value'] = $value->getValue();
             }
         }
 
@@ -220,6 +220,9 @@ class ConfigManager
         foreach ($form as $child) {
             $key = str_replace(self::SECTION_VIEW_SEPARATOR, self::SECTION_MODEL_SEPARATOR, $child->getName());
             $settings[$child->getName()] = array('value' => $this->get($key));
+//            if ($default = $child->get('use_parent_scope_value')) {
+//                $default->
+//            }
         }
 
         return $settings;
