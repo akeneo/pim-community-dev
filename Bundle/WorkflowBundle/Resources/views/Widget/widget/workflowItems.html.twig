@@ -1,3 +1,5 @@
+{% import 'OroUIBundle::macros.html.twig' as macros %}
+
 {% set blockId = 'workflow-items-container-' ~ random() %}
 <div class="widget-content workflow-items" id="{{ blockId }}">
     <style type="text/css">
@@ -11,6 +13,7 @@
                 <tr>
                     <th>{% trans %}Workflow Name{% endtrans %}</th>
                     <th>{% trans %}Current Step{% endtrans %}</th>
+                    <th>{% trans %}Start Date{% endtrans %}</th>
                     <th>{% trans %}Status{% endtrans %}</th>
                 </tr>
             </thead>
@@ -35,12 +38,15 @@
                             {% endif %}
                         </td>
                         <td>
+                            {{ macros.date(data.workflowItem.createdAt) }}
+                        </td>
+                        <td>
                             {% if not enabled %}
-                                {% trans %}Disabled{% endtrans %}
+                                <span class="label">{% trans %}Disabled{% endtrans %}</span>
                             {% elseif closed %}
-                                {% trans %}Closed{% endtrans %}
+                                <span class="label label-inverse">{% trans %}Closed{% endtrans %}</span>
                             {% else %}
-                                {% trans %}Active{% endtrans %}
+                                <span class="label label-success">{% trans %}Active{% endtrans %}</span>
                             {% endif %}
                         </td>
                     </tr>
