@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class EntityManagerCompiler implements CompilerPassInterface
+class EntityManagerPass implements CompilerPassInterface
 {
 
     const EXTEND_MANAGER_SERVICE_KEY = 'oro_entity_extend.extend.extend_manager';
