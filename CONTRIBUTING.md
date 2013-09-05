@@ -14,8 +14,8 @@ Fixes the following jira:
 
 PR with Platform upgrade:
 ```
-[] Check configuration
-[] Check routing
+[ ] Check configuration
+[ ] Check routing
 ```
 
 *Use http://cs.sensiolabs.org/
