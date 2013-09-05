@@ -16,7 +16,7 @@
             {% if form.vars.value.id %}
                 {{ elements.deleteLink(path('pim_catalog_channel_remove', { id: form.vars.value.id }), 'Are you sure you want to delete this channel?') }}
             {% endif %}
-            {{ elements.submitBtn }}
+            {{ elements.submitBtn() }}
         {% endset %}
 
         {{ elements.page_header(title, buttons, subtitle) }}
