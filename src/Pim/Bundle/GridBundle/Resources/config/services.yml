@@ -1,0 +1,15 @@
+parameters:
+    pim_grid.datagrid.class:         Pim\Bundle\GridBundle\Datagrid\Datagrid
+    pim_grid.builder.datagrid.class: Pim\Bundle\GridBundle\Builder\ORM\DatagridBuilder
+
+services:
+    pim_grid.builder.datagrid:
+        class:     %pim_grid.builder.datagrid.class%
+        arguments:
+            - @form.factory
+            - @event_dispatcher
+            - @oro_user.acl_manager
+            - @oro_grid.filter.factory
+            - @oro_grid.sorter.factory
+            - @oro_grid.action.factory
+            - %pim_grid.datagrid.class%
