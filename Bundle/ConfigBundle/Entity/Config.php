@@ -109,17 +109,4 @@ class Config
     {
         return $this->values;
     }
-
-    /**
-     * Pass an associative array of settings => values and re-set settings with new ones.
-     *
-     * @param array $values Array of setting => value pairs
-     * @return Config
-     */
-    public function setValues(array $values)
-    {
-        $this->values = $values;
-
-        return $this;
-    }
 }

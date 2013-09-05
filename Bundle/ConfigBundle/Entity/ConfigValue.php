@@ -38,7 +38,6 @@ class ConfigValue
      *
      * @ORM\ManyToOne(targetEntity="Config", inversedBy="values")
      * @ORM\JoinColumn(name="config_id", referencedColumnName="id")
-     * @Exclude
      */
     protected $config;
 
@@ -66,10 +65,13 @@ class ConfigValue
 
     /**
      * @param string $name
+     * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -105,10 +107,13 @@ class ConfigValue
 
     /**
      * @param string $value
+     * @return $this
      */
     public function setValue($value)
     {
         $this->value = $value;
+
+        return $this;
     }
 
     /**
@@ -117,5 +122,24 @@ class ConfigValue
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * @param string $section
+     * @return $this
+     */
+    public function setSection($section)
+    {
+        $this->section = $section;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSection()
+    {
+        return $this->section;
     }
 }

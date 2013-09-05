@@ -45,7 +45,9 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append(
             $root,
             array(
-                'name_format' => array('value'   => '%%first%% %%last%%'),
+                'name_format'  => array('value' => '%%first%% %%last%%'),
+                'phone_format' => array('value' => '(xxx) xxx-xx-xx'),
+                'date_format'  => array('value' => 'mm/dd/yy')
             )
         );
 
