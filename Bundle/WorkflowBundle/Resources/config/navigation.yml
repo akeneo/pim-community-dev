@@ -1,2 +1,2 @@
 oro_titles:
-    oro_workflow_step_edit: %%workflow%% (%%step%%)
+    oro_workflow_step_edit: %%workflow%% - %%step%%
