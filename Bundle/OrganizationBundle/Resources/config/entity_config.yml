@@ -3,6 +3,8 @@ oro_entity_config:
         entity:
             items:
                 owner_type:
+                    constraints:
+                        - NotBlank:         ~
                     grid:
                         type:               options
                         label:              'Ownership Type'
@@ -18,5 +20,3 @@ oro_entity_config:
                             block:          other
                             required:       true
                             label:          'Ownership Type'
-                            constraints:
-                                - NotBlank: ~
