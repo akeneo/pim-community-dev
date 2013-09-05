@@ -33,9 +33,28 @@ use Oro\Bundle\UserBundle\Annotation\Acl;
  */
 class ReportController extends AbstractDoctrineController
 {
+    /**
+     * @var DatagridWorkerInterface
+     */
     private $dataGridWorker;
+
+    /**
+     * @var BatchLogHandler
+     */
     private $batchLogHandler;
 
+    /**
+     * Constructor
+     * @param Request $request
+     * @param EngineInterface $templating
+     * @param RouterInterface $router
+     * @param SecurityContextInterface $securityContext
+     * @param FormFactoryInterface $formFactory
+     * @param ValidatorInterface $validator
+     * @param RegistryInterface $doctrine
+     * @param DatagridWorkerInterface $dataGridWorker
+     * @param BatchLogHandler $batchLogHandler
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,
@@ -62,6 +81,27 @@ class ReportController extends AbstractDoctrineController
         $gridManager = $this->dataGridWorker->getDatagridManager('report', 'pim_import_export');
 
         return $this->renderDatagrid($gridManager);
+    }
+
+    /**
+     * Show a report
+     *
+     * @param integer $id
+     *
+     * @Acl(
+     *      id="pim_importexport_report_show",
+     *      name="View the job execution details",
+     *      description="View the job execution details",
+     *      parent="pim_importexport_report"
+     * )
+     *
+     * @return template
+     */
+    public function showAction($id)
+    {
+        $jobExecution = $this->findOr404('PimBatchBundle:JobExecution', $id);
+
+        return $this->render('PimImportExportBundle:Report:show.html.twig', array('execution' => $jobExecution));
     }
 
     /**
