@@ -11,7 +11,7 @@
 
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_locale_index')) }}
-            {{ elements.submitBtn }}
+            {{ elements.submitBtn() }}
         {% endset %}
 
         {{ elements.page_header(title, buttons, subtitle) }}

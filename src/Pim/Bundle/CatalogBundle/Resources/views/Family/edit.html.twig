@@ -16,7 +16,7 @@
         {% if form.vars.value.id %}
             {{ elements.deleteLink(path('pim_catalog_family_remove', {'id': family.id}), 'Are you sure you want to remove the family %family%?'|trans({'%family%': family.label})) }}
         {% endif %}
-        {{ elements.submitBtn }}
+        {{ elements.submitBtn() }}
     {% endset %}
 
     {% set right %}

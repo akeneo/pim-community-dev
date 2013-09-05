@@ -234,7 +234,6 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $parent
      *
-     * @Template("PimCatalogBundle:CategoryTree:edit.html.twig")
      * @return array
      */
     public function createAction(Request $request, $parent = null)
@@ -272,8 +271,11 @@ class CategoryTreeController extends AbstractDoctrineController
             }
         }
 
-        return array(
-            'form' => $form->createView(),
+        return $this->render(
+            sprintf('PimCatalogBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
+            array(
+                'form' => $form->createView(),
+            )
         );
     }
 
@@ -283,7 +285,6 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param Request  $request
      * @param Category $category
      *
-     * @Template
      * @return array
      */
     public function editAction(Request $request, Category $category)
@@ -321,9 +322,12 @@ class CategoryTreeController extends AbstractDoctrineController
             }
         }
 
-        return array(
-            'form' => $form->createView(),
-            'datagrid' => $datagrid->createView(),
+        return $this->render(
+            sprintf('PimCatalogBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
+            array(
+                'form'     => $form->createView(),
+                'datagrid' => $datagrid->createView(),
+            )
         );
     }
 
