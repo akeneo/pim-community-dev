@@ -128,18 +128,22 @@ class WidgetController extends Controller
      */
     public function wizardButtonsAction(WorkflowItem $workflowItem)
     {
-        /** @var WorkflowManager $workflowManager */
-        $workflowManager = $this->get('oro_workflow.manager');
-        $workflow = $workflowManager->getWorkflow($workflowItem);
-
-        $currentStep = $workflow->getStep($workflowItem->getCurrentStepName());
         $transitionsData = array();
-        foreach ($currentStep->getAllowedTransitions() as $transitionName) {
-            $transitionsData[] = array(
-                'workflow' => $workflowManager->getWorkflow($workflowItem),
-                'workflowItem' => $workflowItem,
-                'transition' => $workflow->getTransition($transitionName),
-            );
+
+        if (!$workflowItem->isClosed()) {
+            /** @var WorkflowManager $workflowManager */
+            $workflowManager = $this->get('oro_workflow.manager');
+            $workflow = $workflowManager->getWorkflow($workflowItem);
+
+            $currentStep = $workflow->getStep($workflowItem->getCurrentStepName());
+
+            foreach ($currentStep->getAllowedTransitions() as $transitionName) {
+                $transitionsData[] = array(
+                    'workflow' => $workflowManager->getWorkflow($workflowItem),
+                    'workflowItem' => $workflowItem,
+                    'transition' => $workflow->getTransition($transitionName),
+                );
+            }
         }
 
         return array(

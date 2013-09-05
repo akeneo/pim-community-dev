@@ -26,7 +26,6 @@ use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
  *  )
  * @ORM\Entity(repositoryClass="Oro\Bundle\WorkflowBundle\Entity\Repository\WorkflowItemRepository")
  * @ORM\HasLifecycleCallbacks()
- * @Oro\Loggable
  * @Serializer\ExclusionPolicy("all")
  */
 class WorkflowItem
