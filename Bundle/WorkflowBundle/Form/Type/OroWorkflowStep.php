@@ -126,7 +126,7 @@ class OroWorkflowStep extends AbstractType
         }
 
         // disable field if current step of workflow item
-        if ($step->getName() !== $workflowItem->getCurrentStepName()) {
+        if ($step->getName() !== $workflowItem->getCurrentStepName() || $workflowItem->isClosed()) {
             $attributeOptions['options']['disabled'] = true;
         }
 
