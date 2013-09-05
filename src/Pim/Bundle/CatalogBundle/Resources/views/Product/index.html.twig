@@ -10,7 +10,9 @@
 {% block content %}
 
     {% set buttons %}
-        {{ elements.createBtn('New product', null, 'create-product', { 'data-form': 'dialog', 'data-form-url': path('pim_catalog_product_create') }) }}
+        {% if resource_granted('pim_catalog_product_create') %}
+            {{ elements.createBtn('New product', null, 'create-product', { 'data-form': 'dialog', 'data-form-url': path('pim_catalog_product_create') }) }}
+        {% endif %}
     {% endset %}
 
     {% set subtitle %}
@@ -21,6 +23,7 @@
             </span>
             <ul class="dropdown-menu">
                 {% for locale in locales %}
+                    {% if resource_granted('pim_catalog_locale_' ~ locale.code) %}
                     <li class="{{ locale.code == dataLocale ? 'activeLocale' : '' }}">
                         <a href="{{ path('pim_catalog_product_index', { 'dataLocale': locale.code }) }}" title="{{ locale.code }}">
                             {% if locale.code == dataLocale %}
@@ -31,6 +34,7 @@
                             {{ locale.code|flag }}
                         </a>
                     </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>

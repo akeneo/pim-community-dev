@@ -109,4 +109,5 @@ services:
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.pending'
             - '@pim_versioning.manager.audit'
+            - '@oro_user.acl_manager'
             
