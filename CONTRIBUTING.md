@@ -14,8 +14,12 @@ Fixes the following jira:
 
 PR with Platform upgrade:
 ```
-[ ] Check configuration
-[ ] Check routing
+App
+[] Check configuration
+[] Check routing
+
+FilterBundle
+[] Check filter changes between pim-layout.js.twig and layout.js.twig
 ```
 
 *Use http://cs.sensiolabs.org/
