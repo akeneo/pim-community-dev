@@ -25,5 +25,6 @@ class PimGridExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ .'/../Resources/config'));
         $loader->load('orm_filter_types.yml');
+        $loader->load('services.yml');
     }
 }
