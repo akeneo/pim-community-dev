@@ -4,6 +4,7 @@ parameters:
     pim_catalog.datagrid.manager.channel_datagrid.class:  Pim\Bundle\CatalogBundle\Datagrid\ChannelDatagridManager
     pim_catalog.datagrid.manager.currency_datagrid.class: Pim\Bundle\CatalogBundle\Datagrid\CurrencyDatagridManager
     pim_catalog.datagrid.manager.locale_datagrid.class:   Pim\Bundle\CatalogBundle\Datagrid\LocaleDatagridManager
+    pim_catalog.datagrid.worker.class:                    Pim\Bundle\CatalogBundle\Datagrid\DatagridWorker
 
 
 services:
@@ -16,7 +17,7 @@ services:
               entity_hint: attributes
               route_name: pim_catalog_productattribute_index
         calls:
-            - [ setProductManager, [@pim_catalog.manager.product] ]
+            - [ setProductManager, ['@pim_catalog.manager.product'] ]
 
     # Product grid manager
     pim_catalog.datagrid.manager.product:
@@ -29,7 +30,7 @@ services:
               flexible: true
               route_name: pim_catalog_product_index
         calls:
-            - [ setCategoryManager, [@pim_catalog.manager.category] ]
+            - [ setCategoryManager, ['@pim_catalog.manager.category'] ]
 
     pim_catalog.datagrid.manager.history:
         class: Pim\Bundle\CatalogBundle\Datagrid\AuditDatagridManager
@@ -47,7 +48,7 @@ services:
               entity_hint: channels
               route_name: pim_catalog_channel_index
         calls:
-            - [ setCategoryManager, [@pim_catalog.manager.category] ]
+            - [ setCategoryManager, ['@pim_catalog.manager.category'] ]
 
     pim_catalog.datagrid.manager.currency:
         class: %pim_catalog.datagrid.manager.currency_datagrid.class%
@@ -64,3 +65,8 @@ services:
               datagrid_name: locales
               entity_hint: locales
               route_name: pim_catalog_locale_index
+              
+    pim_catalog.datagrid.worker:
+        class: %pim_catalog.datagrid.worker.class%
+        arguments:
+            - '@service_container'

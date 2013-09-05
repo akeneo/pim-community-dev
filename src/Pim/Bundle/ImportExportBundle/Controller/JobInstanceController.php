@@ -2,10 +2,20 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Validator\ValidatorInterface;
+use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\BatchBundle\Connector\ConnectorRegistry;
+
+use Pim\Bundle\CatalogBundle\Form\Type\UploadType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Pim\Bundle\CatalogBundle\Controller\Controller;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 use Pim\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\BatchBundle\Entity\JobExecution;
@@ -19,8 +29,29 @@ use Pim\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobInstanceController extends Controller
+class JobInstanceController extends AbstractDoctrineController
 {
+    private $datagridWorker;
+    private $connectorRegistry;
+    private $jobType;
+    
+    public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
+        SecurityContextInterface $securityContext,
+        RegistryInterface $doctrine,
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator,
+        DatagridWorkerInterface $datagridWorker,
+        ConnectorRegistry $connectorRegistry,
+        $jobType
+    ) {
+        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
+        $this->datagridWorker = $datagridWorker;
+        $this->connectorRegistry = $connectorRegistry;
+        $this->jobType = $jobType;
+    }
     /**
      * List the jobs instances
      *
@@ -43,7 +74,7 @@ class JobInstanceController extends Controller
             $view,
             array(
                 'datagrid' => $datagridView,
-                'connectors' => $this->getConnectorRegistry()->getJobs($this->getJobType())
+                'connectors' => $this->connectorRegistry->getJobs($this->getJobType())
             )
         );
     }
@@ -59,10 +90,9 @@ class JobInstanceController extends Controller
     {
         $connector = $request->query->get('connector');
         $alias     = $request->query->get('alias');
-        $registry  = $this->getConnectorRegistry();
 
         $jobInstance = new JobInstance($connector, $this->getJobType(), $alias);
-        if (!$job = $registry->getJob($jobInstance)) {
+        if (!$job = $this->connectorRegistry->getJob($jobInstance)) {
             $this->addFlash(
                 'error',
                 sprintf('Failed to create an %s with an unknown job definition.', $this->getJobType())
@@ -77,7 +107,8 @@ class JobInstanceController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->persist($jobInstance);
+                $this->getManager()->persist($jobInstance);
+                $this->getManager()->flush();
 
                 $this->addFlash(
                     'success',
@@ -162,7 +193,8 @@ class JobInstanceController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->persist($jobInstance);
+                $this->getManager()->persist($jobInstance);
+                $this->getManager()->flush();
 
                 $this->addFlash(
                     'success',
@@ -199,7 +231,8 @@ class JobInstanceController extends Controller
             return $this->redirectToIndexView();
         }
 
-        $this->remove($jobInstance);
+        $this->getManager()->remove($jobInstance);
+        $this->getManager()->flush();
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -307,7 +340,7 @@ class JobInstanceController extends Controller
             );
         }
 
-        $job = $this->getConnectorRegistry()->getJob($jobInstance);
+        $job = $this->connectorRegistry->getJob($jobInstance);
 
         if (!$job) {
             throw $this->createNotFoundException(
@@ -329,21 +362,13 @@ class JobInstanceController extends Controller
     }
 
     /**
-     * @return \Pim\Bundle\BatchBundle\Connector\ConnectorRegistry
-     */
-    protected function getConnectorRegistry()
-    {
-        return $this->get('pim_batch.connectors');
-    }
-
-    /**
      * Return the job type of the controller
      *
      * @return string
      */
     protected function getJobType()
     {
-        return null;
+        return $this->jobType;
     }
 
     /**
@@ -375,9 +400,7 @@ class JobInstanceController extends Controller
      */
     protected function getDatagridManager()
     {
-        $managerAlias = sprintf('pim_import_export.datagrid.manager.%s', $this->getJobType());
-
-        return $this->get($managerAlias);
+        return $this->datagridWorker->getDatagridManager($this->getJobType(), 'pim_import_export');
     }
 
     /**
@@ -387,8 +410,6 @@ class JobInstanceController extends Controller
      */
     protected function createUploadForm()
     {
-        return $this->createFormBuilder()
-            ->add('file', 'oro_media')
-            ->getForm();
+        return $this->createForm(new UploadType());
     }
 }

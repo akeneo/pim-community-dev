@@ -3,10 +3,20 @@
 namespace Pim\Bundle\CatalogBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\CatalogBundle\Form\Handler\AttributeGroupHandler;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
+use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
  * AttributeGroup controller
@@ -15,8 +25,46 @@ use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeGroupController extends Controller
+class AttributeGroupController extends AbstractDoctrineController
 {
+    /**
+     * @var AttributeGroupHandler
+     */
+    private $attributeGroupHandler;
+
+    /**
+     * @var Form
+     */
+    private $attributeGroupForm;
+
+    /**
+     * constructor
+     *
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param RegistryInterface        $doctrine
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param AttributeGroupHandler    $attributeGroupHandler
+     * @param Form                     $attributeGroupForm
+     */
+    public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
+        SecurityContextInterface $securityContext,
+        RegistryInterface $doctrine,
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator,
+        AttributeGroupHandler $attributeGroupHandler,
+        Form $attributeGroupForm
+    ) {
+        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
+        $this->attributeGroupHandler = $attributeGroupHandler;
+        $this->attributeGroupForm = $attributeGroupForm;
+    }
     /**
      * Create attribute group
      *
@@ -42,7 +90,7 @@ class AttributeGroupController extends Controller
     {
         $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToNameOrderedBySortOrder();
 
-        if ($this->get('pim_catalog.form.handler.attribute_group')->process($group)) {
+        if ($this->attributeGroupHandler->process($group)) {
             $this->addFlash('success', 'Attribute group successfully saved');
 
             return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
@@ -51,7 +99,7 @@ class AttributeGroupController extends Controller
         return array(
             'groups'         => $groups,
             'group'          => $group,
-            'form'           => $this->get('pim_catalog.form.attribute_group')->createView(),
+            'form'           => $this->attributeGroupForm->createView(),
             'attributesForm' => $this->getAvailableProductAttributesForm($this->getGroupedAttributes())->createView()
         );
     }
@@ -76,10 +124,10 @@ class AttributeGroupController extends Controller
                 $group = $this->getRepository('PimCatalogBundle:AttributeGroup')->find((int) $id);
                 if ($group) {
                     $group->setSortOrder((int) $sort);
-                    $this->persist($group, false);
+                    $this->getManager()->persist($group);
                 }
             }
-            $this->flush();
+            $this->getManager()->flush();
 
             return new Response(1);
         }
@@ -97,7 +145,8 @@ class AttributeGroupController extends Controller
      */
     public function removeAction(Request $request, AttributeGroup $group)
     {
-        $this->remove($group);
+        $this->getManager()->remove($group);
+        $this->getManager()->flush();
 
         $this->addFlash('success', 'Attribute group successfully removed');
 
@@ -109,6 +158,25 @@ class AttributeGroupController extends Controller
         }
 
         return $this->redirectToRoute('pim_catalog_attributegroup_create');
+    }
+
+    /**
+     * Get the AvailbleProductAttributes form
+     *
+     * @param array                      $attributes          The product attributes
+     * @param AvailableProductAttributes $availableAttributes The available attributes container
+     *
+     * @return Form
+     */
+    protected function getAvailableProductAttributesForm(
+        array $attributes = array(),
+        AvailableProductAttributes $availableAttributes = null
+    ) {
+        return $this->createForm(
+            new AvailableProductAttributesType,
+            $availableAttributes ?: new AvailableProductAttributes,
+            array('attributes' => $attributes)
+        );
     }
 
     /**
@@ -135,7 +203,7 @@ class AttributeGroupController extends Controller
             $group->addAttribute($attribute);
         }
 
-        $this->flush();
+        $this->getManager()->flush();
 
         return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
     }
@@ -160,7 +228,7 @@ class AttributeGroupController extends Controller
         }
 
         $group->removeAttribute($attribute);
-        $this->flush();
+        $this->getManager()->flush();
 
         $this->addFlash('success', 'Attribute group successfully updated.');
 
