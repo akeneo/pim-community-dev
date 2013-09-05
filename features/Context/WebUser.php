@@ -1187,15 +1187,21 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $right
      * @param string $category
      *
-     * @Given /^I right click on the "([^"]*)" category$/
+     * @Given /^I (right )?click on the "([^"]*)" category$/
      */
-    public function iRightClickOnTheCategory($category)
+    public function iClickOnTheCategory($right, $category)
     {
         $category = $this->getCurrentPage()->findCategoryInTree($category);
 
-        $category->rightClick();
+        if ($right) {
+            $category->rightClick();
+        } else {
+            $category->click();
+            $this->wait();
+        }
     }
 
     /**
