@@ -39,6 +39,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'locales'    => 'Locale index',
         'products'   => 'Product index',
         'categories' => 'Category tree creation',
+        'home'       => 'Base index',
     );
 
     /* -------------------- Page-related methods -------------------- */
@@ -145,6 +146,29 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheCategoryNodeCreationPage($code)
     {
         $this->openPage('Category node creation', array('id' => $this->getCategory($code)->getId()));
+    }
+
+    /**
+     * @param TableNode $pages
+     *
+     * @Then /^I should be able visit the following pages without errors$/
+     */
+    public function iVisitTheFollowingPages(TableNode $pages)
+    {
+        foreach ($pages->getHash() as $data) {
+            $url = $this->getSession()->evaluateScript(sprintf('return Routing.generate("%s");', $data['page']));
+            $this->getSession()->executeScript(sprintf('Pim.navigate("%s");', $url));
+            $this->wait();
+
+            $currentUrl = $this->getSession()->getCurrentUrl();
+            $currentUrl = explode('#url=', $currentUrl);
+            $currentUrl = end($currentUrl);
+
+            assertEquals($url, $currentUrl, sprintf('Error ocurred on page "%s"', $data['page']));
+
+            $loadedCorrectly = (bool) $this->getSession()->evaluateScript('return $(\'img[alt="Akeneo"]\').length;');
+            assertTrue($loadedCorrectly, sprintf('Javascript error ocurred on page "%s"', $data['page']));
+        }
     }
 
     /**
