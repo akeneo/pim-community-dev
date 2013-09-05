@@ -245,15 +245,6 @@ class JobInstanceController extends AbstractDoctrineController
     }
 
     /**
-     * View report for a job
-     *
-     * @param integer $id
-     */
-    public function reportAction($id)
-    {
-    }
-
-    /**
      * Launch a job
      *
      * @param Request $request
