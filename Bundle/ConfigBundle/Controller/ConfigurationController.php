@@ -41,7 +41,7 @@ class ConfigurationController extends Controller
 
         return array(
             'data'           => $provider->getTree(),
-            'form'           => $form ? $form->createView() : $form,
+            'form'           => $form ? $form->createView() : null,
             'activeGroup'    => $activeGroup,
             'activeSubGroup' => $activeSubGroup,
         );

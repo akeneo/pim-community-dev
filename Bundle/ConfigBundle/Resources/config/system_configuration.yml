@@ -27,7 +27,7 @@ oro_system_configuration:
             title: 'Sales'
 
     fields:
-        date_format:
+        oro_user.date_format:
             type: text
             options:
                label: 'Date format'
@@ -55,4 +55,4 @@ oro_system_configuration:
                                 children:
                                     locale_options:
                                         children:
-                                            - date_format
+                                            - oro_user.date_format

@@ -67,11 +67,12 @@ class SystemConfigurationFormProvider extends FormProvider
         );
         foreach ($toAdd as $field) {
             $builder->add(
-                $field['name'],
+                str_replace('.', '____', $field['name']),
                 'oro_config_form_field_type',
                 array_merge(
                     array('target_field' => $field),
-                    $field['block_options']
+                    $field['block_options'],
+                    array_intersect_key($field['options'], array_flip(array('label')))
                 )
             );
         }

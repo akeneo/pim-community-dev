@@ -61,7 +61,7 @@ class Config
      */
     public function getEntity()
     {
-        return $this->entity;
+        return $this->scopedEntity;
     }
 
     /**
@@ -72,7 +72,7 @@ class Config
      */
     public function setEntity($entity)
     {
-        $this->entity = $entity;
+        $this->scopedEntity = $entity;
 
         return $this;
     }
