@@ -86,9 +86,9 @@ class ProductAttributeController extends AbstractDoctrineController
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
      * @param SecurityContextInterface $securityContext
-     * @param RegistryInterface        $doctrine
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param RegistryInterface        $doctrine
      * @param GridRenderer             $gridRenderer
      * @param DatagridWorkerInterface  $datagridWorker
      * @param ProductAttributeHandler  $attributeHandler
@@ -103,9 +103,9 @@ class ProductAttributeController extends AbstractDoctrineController
         EngineInterface $templating,
         RouterInterface $router,
         SecurityContextInterface $securityContext,
-        RegistryInterface $doctrine,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $datagridWorker,
         ProductAttributeHandler $attributeHandler,
@@ -115,15 +115,16 @@ class ProductAttributeController extends AbstractDoctrineController
         AuditManager $auditManager,
         $measuresConfig
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
-        $this->gridRenderer = $gridRenderer;
-        $this->datagridWorker = $datagridWorker;
+        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+
+        $this->gridRenderer     = $gridRenderer;
+        $this->datagridWorker   = $datagridWorker;
         $this->attributeHandler = $attributeHandler;
-        $this->attributeForm = $attributeForm;
-        $this->productManager = $productManager;
-        $this->localeManager = $localeManager;
-        $this->auditManager = $auditManager;
-        $this->measuresConfig = $measuresConfig;
+        $this->attributeForm    = $attributeForm;
+        $this->productManager   = $productManager;
+        $this->localeManager    = $localeManager;
+        $this->auditManager     = $auditManager;
+        $this->measuresConfig   = $measuresConfig;
     }
     /**
      * List product attributes

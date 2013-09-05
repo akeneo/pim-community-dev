@@ -35,20 +35,21 @@ class ReportController extends AbstractDoctrineController
 {
     private $dataGridWorker;
     private $batchLogHandler;
-    
+
     public function __construct(
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
         SecurityContextInterface $securityContext,
-        RegistryInterface $doctrine,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         DatagridWorkerInterface $dataGridWorker,
         BatchLogHandler $batchLogHandler
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
-        $this->dataGridWorker = $dataGridWorker;
+        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+
+        $this->dataGridWorker  = $dataGridWorker;
         $this->batchLogHandler = $batchLogHandler;
     }
     /**
@@ -77,7 +78,6 @@ class ReportController extends AbstractDoctrineController
     public function downloadLogFileAction($id)
     {
         $jobExecution = $this->findOr404('PimBatchBundle:JobExecution', $id);
-
 
         $response = new BinaryFileResponse($this->batchLogHandler->getRealPath($jobExecution->getLogFile()));
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);

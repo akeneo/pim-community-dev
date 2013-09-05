@@ -34,23 +34,24 @@ class JobInstanceController extends AbstractDoctrineController
     private $datagridWorker;
     private $connectorRegistry;
     private $jobType;
-    
+
     public function __construct(
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
         SecurityContextInterface $securityContext,
-        RegistryInterface $doctrine,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         DatagridWorkerInterface $datagridWorker,
         ConnectorRegistry $connectorRegistry,
         $jobType
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
-        $this->datagridWorker = $datagridWorker;
+        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+
+        $this->datagridWorker    = $datagridWorker;
         $this->connectorRegistry = $connectorRegistry;
-        $this->jobType = $jobType;
+        $this->jobType           = $jobType;
     }
     /**
      * List the jobs instances

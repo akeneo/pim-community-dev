@@ -118,9 +118,9 @@ class ProductController extends AbstractDoctrineController
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
      * @param SecurityContextInterface $securityContext
-     * @param RegistryInterface        $doctrine
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param RegistryInterface        $doctrine
      * @param GridRenderer             $gridRenderer
      * @param DatagridWorkerInterface  $datagridWorker
      * @param ProductCreateHandler     $productCreateHandler
@@ -138,9 +138,9 @@ class ProductController extends AbstractDoctrineController
         EngineInterface $templating,
         RouterInterface $router,
         SecurityContextInterface $securityContext,
-        RegistryInterface $doctrine,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $datagridWorker,
         ProductCreateHandler $productCreateHandler,
@@ -153,18 +153,19 @@ class ProductController extends AbstractDoctrineController
         AuditManager $auditManager,
         AclManager $aclManager
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
-        $this->gridRenderer = $gridRenderer;
-        $this->datagridWorker = $datagridWorker;
-        $this->productCreateHandler = $productCreateHandler;
-        $this->productCreateForm = $productCreateForm;
+        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+
+        $this->gridRenderer           = $gridRenderer;
+        $this->datagridWorker         = $datagridWorker;
+        $this->productCreateHandler   = $productCreateHandler;
+        $this->productCreateForm      = $productCreateForm;
         $this->completenessCalculator = $completenessCalculator;
-        $this->productManager = $productManager;
-        $this->categoryManager = $categoryManager;
-        $this->localeManager = $localeManager;
-        $this->pendingManager = $pendingManager;
-        $this->auditManager = $auditManager;
-        $this->aclManager = $aclManager;
+        $this->productManager         = $productManager;
+        $this->categoryManager        = $categoryManager;
+        $this->localeManager          = $localeManager;
+        $this->pendingManager         = $pendingManager;
+        $this->auditManager           = $auditManager;
+        $this->aclManager             = $aclManager;
 
         $this->productManager->setLocale($this->getDataLocale());
     }

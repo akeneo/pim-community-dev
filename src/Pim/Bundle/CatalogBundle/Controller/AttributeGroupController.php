@@ -52,9 +52,9 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
      * @param SecurityContextInterface $securityContext
-     * @param RegistryInterface        $doctrine
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param RegistryInterface        $doctrine
      * @param AttributeGroupHandler    $attributeGroupHandler
      * @param Form                     $attributeGroupForm
      */
@@ -63,15 +63,16 @@ class AttributeGroupController extends AbstractDoctrineController
         EngineInterface $templating,
         RouterInterface $router,
         SecurityContextInterface $securityContext,
-        RegistryInterface $doctrine,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         AttributeGroupHandler $attributeGroupHandler,
         Form $attributeGroupForm
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
+        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+
         $this->attributeGroupHandler = $attributeGroupHandler;
-        $this->attributeGroupForm = $attributeGroupForm;
+        $this->attributeGroupForm    = $attributeGroupForm;
     }
     /**
      * Create attribute group
