@@ -127,9 +127,9 @@ class ReportDatagridManager extends DatagridManager
      */
     protected function getProperties()
     {
-        return array(
-            new UrlProperty('show_link', $this->router, 'pim_importexport_report_show', array('id')),
-        );
+        $showLink = sprintf('pim_importexport_%s_report_show', $this->jobType);
+
+        return array(new UrlProperty('show_link', $this->router, $showLink, array('id')));
     }
 
     /**
@@ -137,10 +137,12 @@ class ReportDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
+        $acl = sprintf('pim_importexport_%s_report_show', $this->jobType);
+
         $clickAction = array(
             'name'         => 'rowClick',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'pim_importexport_report_show',
+            'acl_resource' => $acl,
             'options'      => array(
                 'label'         => $this->translate('Show'),
                 'link'          => 'show_link',
@@ -152,7 +154,7 @@ class ReportDatagridManager extends DatagridManager
         $showAction = array(
             'name'         => 'download',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'pim_importexport_report_show',
+            'acl_resource' => $acl,
             'options'      => array(
                 'label'   => $this->translate('download'),
                 'icon'    => 'download',
