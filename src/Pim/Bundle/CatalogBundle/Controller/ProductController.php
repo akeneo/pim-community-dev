@@ -138,8 +138,7 @@ class ProductController extends AbstractDoctrineController
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
         PendingManager $pendingManager,
-        AuditManager $auditManager,
-        Serializer $serializer
+        AuditManager $auditManager
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $doctrine, $formFactory, $validator);
         $this->gridRenderer = $gridRenderer;
@@ -152,7 +151,6 @@ class ProductController extends AbstractDoctrineController
         $this->localeManager = $localeManager;
         $this->pendingManager = $pendingManager;
         $this->auditManager = $auditManager;
-        $this->serializer             = $serializer;
 
         $this->productManager->setLocale($this->getDataLocale());
     }

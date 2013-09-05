@@ -16,7 +16,7 @@ services:
             - '@templating'
             - '@router'
             - '@security.context'
-            
+
     pim_catalog.controller.abstract_doctrine:
         abstract: true
         parent: pim_catalog.controller.abstract
@@ -24,7 +24,7 @@ services:
             - '@doctrine'
             - '@form.factory'
             - '@validator'
-        
+
     pim_catalog.controller.attribute_group:
         scope: request
         class: '%pim_catalog.controller.attribute_group.class%'
@@ -32,7 +32,7 @@ services:
         arguments:
             - '@pim_catalog.form.handler.attribute_group'
             - '@pim_catalog.form.attribute_group'
-            
+
     pim_catalog.controller.category_tree:
         scope: request
         class: '%pim_catalog.controller.category_tree.class%'
@@ -43,7 +43,7 @@ services:
             - '@pim_catalog.manager.category'
             - '@pim_catalog.form.type.category'
             - '@pim_versioning.manager.pending'
-            
+
     pim_catalog.controller.channel:
         scope: request
         class: '%pim_catalog.controller.channel.class%'
@@ -52,14 +52,14 @@ services:
             - '@pim_catalog.datagrid.worker'
             - '@pim_catalog.form.handler.channel'
             - '@pim_catalog.form.channel'
-            
+
     pim_catalog.controller.currency:
         scope: request
         class: '%pim_catalog.controller.currency.class%'
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
             - '@pim_catalog.datagrid.worker'
-            
+
     pim_catalog.controller.family:
         scope: request
         class: '%pim_catalog.controller.family.class%'
@@ -70,7 +70,7 @@ services:
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.product'
             - '@pim_versioning.manager.pending'
-            
+
     pim_catalog.controller.locale:
         scope: request
         class: '%pim_catalog.controller.locale.class%'
@@ -79,7 +79,7 @@ services:
             - '@pim_catalog.datagrid.worker'
             - '@pim_catalog.form.handler.locale'
             - '@pim_catalog.form.locale'
-            
+
     pim_catalog.controller.product_attribute:
         scope: request
         class: '%pim_catalog.controller.product_attribute.class%'
@@ -93,7 +93,7 @@ services:
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.audit'
             - '%oro_measure.measures_config%'
-            
+
     pim_catalog.controller.product:
         scope: request
         class: '%pim_catalog.controller.product.class%'
@@ -109,5 +109,3 @@ services:
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.pending'
             - '@pim_versioning.manager.audit'
-            - '@pim_serializer'
-            
