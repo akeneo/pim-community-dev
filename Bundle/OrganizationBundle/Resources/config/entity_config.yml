@@ -18,4 +18,5 @@ oro_entity_config:
                             block:          other
                             required:       true
                             label:          'Ownership Type'
-
+                            constraints:
+                                - NotBlank: ~

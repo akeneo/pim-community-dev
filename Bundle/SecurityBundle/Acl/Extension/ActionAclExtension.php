@@ -130,6 +130,8 @@ class ActionAclExtension extends AbstractAclExtension
         return array(
             'Mass Delete',
             'Execute Job',
+            'Change Owner',
+            'Import/Export',
         );
     }
 }

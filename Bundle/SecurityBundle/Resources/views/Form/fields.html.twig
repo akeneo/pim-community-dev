@@ -8,23 +8,31 @@
 {% endblock %}
 
 {% block oro_acl_collection_widget %}
-    <table class="table table-striped">
-        <tbody>
-        <tr>
-            <th>
-                {% trans %}Entity{% endtrans %}
-            </th>
-            {% for field in privileges_config %}
+    {% if privileges_config | length > 1 %}
+        <table class="table table-striped">
+            <tbody>
+            <tr>
                 <th>
-                    {{ field|trans }}
+                    {% trans %}Entity{% endtrans %}
                 </th>
+                {% for field in privileges_config %}
+                    <th>
+                        {{ field|trans }}
+                    </th>
+                {% endfor %}
+            </tr>
+            {% for child in form %}
+                {{ form_widget(child) }}
             {% endfor %}
-        </tr>
+            </tbody>
+        </table>
+    {% else %}
         {% for child in form %}
-            {{ form_widget(child) }}
+            <div class="security-row">
+                {{ form_widget(child) }}
+            </div>
         {% endfor %}
-        </tbody>
-    </table>
+    {% endif %}
 {% endblock %}
 
 {% block oro_acl_privilege_widget %}
@@ -45,12 +53,12 @@
 
 {% block oro_acl_permission_collection_widget %}
     {% for field in privileges_config %}
-        <th>
+        <td>
             {% for permission in form %}
                 {% if permission.vars.value.name == field %}
                     {{ form_widget(permission) }}
                 {% endif %}
             {% endfor %}
-        </th>
+        </td>
     {% endfor %}
 {% endblock %}
