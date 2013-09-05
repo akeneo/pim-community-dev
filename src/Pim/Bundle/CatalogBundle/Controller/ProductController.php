@@ -179,7 +179,7 @@ class ProductController extends AbstractDoctrineController
      *      description="View product list",
      *      parent="pim_catalog_product"
      * )
-     * @return template
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -189,8 +189,25 @@ class ProductController extends AbstractDoctrineController
         $gridManager->setFilterCategoryId($request->get('categoryId', 0));
         $datagrid = $gridManager->getDatagrid();
 
-        $view =  ('json' === $request->getRequestFormat()) ?
-            'OroGridBundle:Datagrid:list.json.php' : 'PimCatalogBundle:Product:index.html.twig';
+        switch ($request->getRequestFormat()) {
+            case 'json':
+                $view = 'OroGridBundle:Datagrid:list.json.php';
+                break;
+            case 'csv':
+                $csv = $datagrid->exportData('csv', array('withHeader' => true, 'heterogeneous' => true));
+                $headers = array(
+                    'Content-Type' => 'text/csv',
+                    'Content-Disposition' => 'inline; filename=quick_export_products.csv'
+                );
+
+                return $this->returnResponse($csv, 200, $headers);
+
+                break;
+            case 'html':
+            default:
+                $view = 'PimCatalogBundle:Product:index.html.twig';
+                break;
+        }
 
         $params = array(
             'datagrid'   => $datagrid->createView(),
@@ -200,6 +217,20 @@ class ProductController extends AbstractDoctrineController
         );
 
         return $this->render($view, $params);
+    }
+
+    /**
+     * Return a response
+     *
+     * @param string $content
+     * @param integer $status
+     * @param array $headers
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function returnResponse($content, $status = 200, $headers = array())
+    {
+        return new Response($content, 200, $headers);
     }
 
     /**
@@ -377,7 +408,7 @@ class ProductController extends AbstractDoctrineController
      *      description="Remove a product",
      *      parent="pim_catalog_product"
      * )
-     * @return Response
+     * @return Response|RedirectResponse
      */
     public function removeAction(Request $request, $id)
     {
@@ -403,7 +434,9 @@ class ProductController extends AbstractDoctrineController
      *      description="Remove a product's attribute",
      *      parent="pim_catalog_product"
      * )
-     * @return array
+     * @return RedirectResponse
+     *
+     * @throws NotFoundHttpException
      */
     public function removeProductAttributeAction($productId, $attributeId)
     {
