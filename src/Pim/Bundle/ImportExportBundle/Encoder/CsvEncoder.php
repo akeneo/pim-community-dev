@@ -13,9 +13,19 @@ use Symfony\Component\Serializer\Encoder\EncoderInterface;
  */
 class CsvEncoder implements EncoderInterface
 {
+    /**
+     * @staticvar string
+     */
     const FORMAT = 'csv';
 
+    /**
+     * @var boolean
+     */
     protected $firstExecution = true;
+
+    /**
+     * @var boolean
+     */
     protected $hasHeader      = false;
 
     /**
@@ -136,7 +146,7 @@ class CsvEncoder implements EncoderInterface
         foreach (array_keys($data) as $key) {
             if (!is_string($key)) {
                 throw new \InvalidArgumentException(
-                    'Expecting string keys.'
+                    sprintf('Expecting keys of type "string" but got "%s".', gettype($key))
                 );
             }
         }
