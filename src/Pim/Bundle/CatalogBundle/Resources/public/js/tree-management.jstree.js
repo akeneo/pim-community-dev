@@ -1,16 +1,16 @@
 var Pim = Pim || {};
 Pim.tree = Pim.tree || {};
 
-Pim.tree.manage = function(elementId) {
+Pim.tree.manage = function (elementId) {
     'use strict';
-    var $el = $('#'+elementId);
+    var $el = $('#' + elementId);
     if (!$el || !$el.length || !_.isObject($el)) {
         throw new Error('Unable to instantiate tree on this element');
     }
-    var assetsPath = $el.attr('data-assets-path'),
-    selectedNode   = $el.attr('data-node-id') || -1,
-    preventFirst   = selectedNode > 0,
-    loadingMask    = new Oro.LoadingMask();
+    var assetsPath   = $el.attr('data-assets-path'),
+        selectedNode = $el.attr('data-node-id') || -1,
+        preventFirst = selectedNode > 0,
+        loadingMask  = new Oro.LoadingMask();
 
     loadingMask.render().$el.appendTo($('#container'));
 
@@ -19,14 +19,14 @@ Pim.tree.manage = function(elementId) {
             'animation': 200
         },
         'plugins': [
-             'tree_selector',
-             'themes',
-             'json_data',
-             'ui',
-             'crrm',
-             'types',
-             'dnd',
-             'contextmenu'
+            'tree_selector',
+            'themes',
+            'json_data',
+            'ui',
+            'crrm',
+            'types',
+            'dnd',
+            'contextmenu'
         ],
         contextmenu: {
             items: {
@@ -57,9 +57,9 @@ Pim.tree.manage = function(elementId) {
                     // the result is fed to the AJAX request `data` option
                     var id = null;
 
-                    if (node && node != -1) {
-                        id = node.attr('id').replace('node_','');
-                    } else{
+                    if (node && node !== -1) {
+                        id = node.attr('id').replace('node_', '');
+                    } else {
                         id = -1;
                     }
                     return {
@@ -86,9 +86,8 @@ Pim.tree.manage = function(elementId) {
         }
     };
 
-    this.init = function() {
-        $el.jstree(this.config)
-        .bind('move_node.jstree', function (e, data) {
+    this.init = function () {
+        $el.jstree(this.config).bind('move_node.jstree', function (e, data) {
             var this_jstree = $.jstree._focused();
             data.rslt.o.each(function (i) {
                 $.ajax({
@@ -96,30 +95,28 @@ Pim.tree.manage = function(elementId) {
                     type: 'POST',
                     url: Routing.generate('pim_catalog_categorytree_movenode'),
                     data: {
-                        'id': $(this).attr('id').replace('node_',''),
-                        'parent': data.rslt.cr === -1 ? 1 : data.rslt.np.attr('id').replace('node_',''),
-                        'prev_sibling': this_jstree._get_prev(this, true) ? this_jstree._get_prev(this, true).attr('id').replace('node_','') : null,
+                        'id': $(this).attr('id').replace('node_', ''),
+                        'parent': data.rslt.cr === -1 ? 1 : data.rslt.np.attr('id').replace('node_', ''),
+                        'prev_sibling': this_jstree._get_prev(this, true) ? this_jstree._get_prev(this, true).attr('id').replace('node_', '') : null,
                         'position': data.rslt.cp + i,
                         'code': data.rslt.name,
                         'copy': data.rslt.cy ? 1 : 0
                     },
                     success: function (r) {
-                        if(!r.status) {
+                        if (!r.status) {
                             this_jstree.rollback(data.rlbk);
-                        }
-                        else {
+                        } else {
                             $(data.rslt.oc).attr('id', r.id);
-                            if(data.rslt.cy && $(data.rslt.oc).children('UL').length) {
+                            if (data.rslt.cy && $(data.rslt.oc).children('UL').length) {
                                 data.inst.refresh(data.inst._get_parent(data.rslt.oc));
                             }
                         }
                     }
                 });
             });
-        })
-        .bind('select_node.jstree', function (e, data) {
-            var id = data.rslt.obj.attr('id').replace('node_',''),
-            url = Routing.generate('pim_catalog_categorytree_edit', { id: id });
+        }).bind('select_node.jstree', function (e, data) {
+            var id  = data.rslt.obj.attr('id').replace('node_', ''),
+                url = Routing.generate('pim_catalog_categorytree_edit', { id: id });
             if ('#url=' + url === Backbone.history.location.hash || preventFirst) {
                 preventFirst = false;
                 return;
@@ -136,25 +133,23 @@ Pim.tree.manage = function(elementId) {
                         loadingMask.hide();
                     }
                 },
-                error: function(jqXHR) {
+                error: function (jqXHR) {
                     Oro.BackboneError.Dispatch(null, jqXHR);
                     loadingMask.hide();
                 }
             });
-        })
-        .bind('loaded.jstree', function(event, data) {
-            if (event.namespace == 'jstree') {
+        }).bind('loaded.jstree', function (event, data) {
+            if (event.namespace === 'jstree') {
                 data.inst.get_tree_select().select2({ width: '100%' });
             }
-        })
-        .bind('create.jstree', function (e, data) {
+        }).bind('create.jstree', function (e, data) {
             $.jstree._focused().lock();
-            var id = data.rslt.parent.attr('id').replace('node_', ''),
-            url = Routing.generate('pim_catalog_categorytree_create', { parent: id }),
-            position = data.rslt.position,
-            title = data.rslt.name;
+            var id       = data.rslt.parent.attr('id').replace('node_', ''),
+                url      = Routing.generate('pim_catalog_categorytree_create', { parent: id }),
+                position = data.rslt.position,
+                title    = data.rslt.name;
 
-            url = url + '?' + 'title=' + title + '&position=' + position;
+            url = url + '?title=' + title + '&position=' + position;
             loadingMask.show();
             $.ajax({
                 async: true,
@@ -167,7 +162,7 @@ Pim.tree.manage = function(elementId) {
                         loadingMask.hide();
                     }
                 },
-                error: function(jqXHR) {
+                error: function (jqXHR) {
                     Oro.BackboneError.Dispatch(null, jqXHR);
                     loadingMask.hide();
                 }

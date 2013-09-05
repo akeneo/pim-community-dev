@@ -1,26 +1,27 @@
 var Pim = Pim || {};
 Pim.tree = Pim.tree || {};
 
-Pim.tree.view = function(elementId) {
-    var $el = $('#'+elementId);
+Pim.tree.view = function (elementId) {
+    'use strict';
+    var $el = $('#' + elementId);
     if (!$el || !$el.length || !_.isObject($el)) {
         throw new Error('Unable to instantiate tree on this element');
     }
-    var self   = this,
-    assetsPath = $el.attr('data-assets-path'),
-    dataLocale = $el.attr('data-datalocale');
+    var self       = this,
+        assetsPath = $el.attr('data-assets-path'),
+        dataLocale = $el.attr('data-datalocale');
 
     this.config = {
         'core': {
             'animation': 200
         },
         'plugins': [
-             'tree_selector',
-             'themes',
-             'json_data',
-             'ui',
-             'crrm',
-             'types'
+            'tree_selector',
+            'themes',
+            'json_data',
+            'ui',
+            'crrm',
+            'types'
         ],
         'tree_selector': {
             'ajax': {
@@ -40,7 +41,7 @@ Pim.tree.view = function(elementId) {
                 'url': Routing.generate('pim_catalog_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale }),
                 'data': function (node) {
                     // the result is fed to the AJAX request `data` option
-                    var id = (node && node != -1) ? node.attr('id').replace('node_','') : -1;
+                    var id = (node && node !== -1) ? node.attr('id').replace('node_', '') : -1;
                     return {
                         'id': id,
                         'with_products_count': 'true'
@@ -66,13 +67,11 @@ Pim.tree.view = function(elementId) {
 
     function updateGrid(treeId, nodeId) {
         var treePattern = /(&treeId=(\d+))/,
-        nodePattern = /(&categoryId=(\d+))/;
-
-        var datagrid = Oro.Registry.getElement('datagrid', 'products');
-        var url = datagrid.collection.url;
-
-        var treeString = nodeId === '' ? '' : '&treeId=' + treeId;
-        var nodeString = nodeId === '' ? '' : '&categoryId=' + nodeId;
+            nodePattern = /(&categoryId=(\d+))/,
+            datagrid    = Oro.Registry.getElement('datagrid', 'products'),
+            url         = datagrid.collection.url,
+            treeString = nodeId === '' ? '' : '&treeId=' + treeId,
+            nodeString = nodeId === '' ? '' : '&categoryId=' + nodeId;
 
         if (url.match(treePattern)) {
             url = url.replace(treePattern, treeString);
@@ -92,15 +91,13 @@ Pim.tree.view = function(elementId) {
         }
     }
 
-    this.init = function() {
-        $el.jstree(self.config)
-        .on('trees_loaded.jstree', function (event, tree_select_id) {
-            if (event.namespace == 'jstree') {
-                $('#'+tree_select_id).select2({ width: '100%' });
+    this.init = function () {
+        $el.jstree(self.config).on('trees_loaded.jstree', function (event, tree_select_id) {
+            if (event.namespace === 'jstree') {
+                $('#' + tree_select_id).select2({ width: '100%' });
             }
-        })
-        .on('after_tree_loaded.jstree', function (event, root_node_id) {
-            $(document).one('ajaxStop', function() {
+        }).on('after_tree_loaded.jstree', function (e, root_node_id) {
+            $(document).one('ajaxStop', function () {
                 $el.jstree('create', -1, 'last', {
                     'attr': { 'class': 'jstree-unclassified', 'id': 'node_' },
                     'data': { 'title': _.__('jstree.all') }
@@ -112,10 +109,9 @@ Pim.tree.view = function(elementId) {
                     'data': { 'title': _.__('jstree.unclassified') }
                 }, null, true);
             });
-        })
-        .on('select_node.jstree', function (event, data) {
-            var nodeId = $.jstree._focused().get_selected().attr('id').replace('node_', '');
-            var treeId = $('#tree li').first().attr('id').replace('node_', '');
+        }).on('select_node.jstree', function () {
+            var nodeId = $.jstree._focused().get_selected().attr('id').replace('node_', ''),
+                treeId = $('#tree li').first().attr('id').replace('node_', '');
             updateGrid(treeId, nodeId);
         });
     };
