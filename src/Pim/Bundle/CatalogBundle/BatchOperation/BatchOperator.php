@@ -64,6 +64,11 @@ class BatchOperator
         $this->operations[$alias] = $operation;
     }
 
+    /**
+     * Get the operation choices to present in the batch operator form
+     *
+     * @return array
+     */
     public function getOperationChoices()
     {
         $choices = array();
@@ -75,30 +80,63 @@ class BatchOperator
         return $choices;
     }
 
-    public function setProductIds($productIds)
+    /**
+     * Set the product ids
+     *
+     * @param array $productIds
+     *
+     * @return BatchOperator
+     */
+    public function setProductIds(array $productIds)
     {
         $this->productIds = $productIds;
 
         return $this;
     }
 
+    /**
+     * Get the product ids
+     *
+     * @return array
+     */
     public function getProductIds()
     {
         return $this->productIds;
     }
 
-    public function setOperation($operation)
+    /**
+     * Set the batch operation
+     *
+     * @param BatchOperation $operation
+     *
+     * @return BatchOperator
+     */
+    public function setOperation(BatchOperation $operation)
     {
         $this->operation = $operation;
 
         return $this;
     }
 
+    /**
+     * Get the batch operation
+     *
+     * @return BatchOperation
+     */
     public function getOperation()
     {
         return $this->operation;
     }
 
+    /**
+     * Set the batch operation alias
+     * (Also set the batch operation if the alias is registered
+     *
+     * @param string $operationAlias
+     *
+     * @throw InvalidArgumentException when the alias is not registered
+     * @return BatchOperation
+     */
     public function setOperationAlias($operationAlias)
     {
         $this->operationAlias = $operationAlias;
@@ -112,6 +150,11 @@ class BatchOperator
         return $this;
     }
 
+    /**
+     * Get the operation alias
+     *
+     * @return string
+     */
     public function getOperationAlias()
     {
         return $this->operationAlias;
