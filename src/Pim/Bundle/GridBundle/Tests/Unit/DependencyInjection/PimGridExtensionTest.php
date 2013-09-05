@@ -45,17 +45,18 @@ class PimGridExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoad()
     {
-        $expectedFilters = array(
+        $expectedServices = array(
             'pim_grid.orm.filter.type.currency',
             'pim_grid.orm.filter.type.scope',
-            'pim_grid.orm.filter.type.completeness'
+            'pim_grid.orm.filter.type.completeness',
+            'pim_grid.builder.datagrid'
         );
 
         $this->extension->load($this->configs, $this->containerBuilder);
 
-        $this->assertCount(count($expectedFilters)+1, $this->containerBuilder->getServiceIds());
-        foreach ($expectedFilters as $expectedFilter) {
-            $this->assertContains($expectedFilter, $this->containerBuilder->getServiceIds());
+        $this->assertCount(count($expectedServices)+1, $this->containerBuilder->getServiceIds());
+        foreach ($expectedServices as $expectedService) {
+            $this->assertContains($expectedService, $this->containerBuilder->getServiceIds());
         }
     }
 }
