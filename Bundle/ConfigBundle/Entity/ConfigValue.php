@@ -53,7 +53,6 @@ class ConfigValue
      */
     protected $value;
 
-
     /**
      * Get id
      *

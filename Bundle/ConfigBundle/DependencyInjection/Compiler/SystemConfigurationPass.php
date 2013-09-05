@@ -2,11 +2,11 @@
 
 namespace Oro\Bundle\ConfigBundle\DependencyInjection\Compiler;
 
-use Oro\Bundle\ConfigBundle\Provider\FormProvider;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
+use Oro\Bundle\ConfigBundle\Provider\FormProvider;
 use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
 
 class SystemConfigurationPass implements CompilerPassInterface

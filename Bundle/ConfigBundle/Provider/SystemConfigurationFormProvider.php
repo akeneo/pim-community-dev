@@ -39,13 +39,10 @@ class SystemConfigurationFormProvider extends FormProvider
 
                 if (!empty($subblock['children'])) {
                     foreach ($subblock['children'] as $field) {
-                        $options = !empty($field['options']) ? $field['options'] : array();
-                        $field['options'] = array_merge(
-                            $options,
-                            array(
-                                'block'    => $block['name'],
-                                'subblock' => $subblock['name']
-                            )
+                        $field['options'] = !empty($field['options']) ? $field['options'] : array();
+                        $field['block_options'] = array(
+                            'block'    => $block['name'],
+                            'subblock' => $subblock['name']
                         );
 
                         if (isset($field['options']['constraints'])) {
@@ -69,7 +66,14 @@ class SystemConfigurationFormProvider extends FormProvider
             )
         );
         foreach ($toAdd as $field) {
-            $builder->add($field['name'], $field['type'], $field['options']);
+            $builder->add(
+                $field['name'],
+                'oro_config_form_field_type',
+                array_merge(
+                    array('target_field' => $field),
+                    $field['block_options']
+                )
+            );
         }
 
         return $builder->getForm();
