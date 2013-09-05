@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
+use Oro\Bundle\GridBundle\Datagrid\Datagrid;
+
 use Symfony\Component\Serializer\Serializer;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -174,25 +176,7 @@ class ProductController extends AbstractDoctrineController
                 $view = 'OroGridBundle:Datagrid:list.json.php';
                 break;
             case 'csv':
-                $datagrid->applyFilters(); // TODO applyParameters
-                $qb = $datagrid->getQuery();
-                $qb->select($qb->getRootAlias());
-                $products = $datagrid->getQuery()->execute();
-
-                $csv = $this->serializer->serialize(
-                    $products,
-                    'csv',
-                    array('withHeader' => true, 'heterogeneous' => true)
-                );
-
-                return new Response(
-                    $csv,
-                    200,
-                    array(
-                        'Content-Type' => 'text/csv',
-                        'Content-Disposition' => 'inline; filename=POUICPOUIC.csv'
-                    )
-                );
+                return $this->exportCSV($datagrid);
 
                 break;
             case 'html':
@@ -209,6 +193,49 @@ class ProductController extends AbstractDoctrineController
         );
 
         return $this->render($view, $params);
+    }
+
+    /**
+     * Export selected products in CSV file
+     * Get the products from the datagrid parameters removing the paging
+     *
+     * @param Datagrid $datagrid
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function exportCSV(Datagrid $datagrid)
+    {
+        $datagrid->applyParameters();
+        /** @var \Doctrine\ORM\QueryBuilder $qb */
+        $qb = $datagrid->getQuery();
+        $qb
+            ->select(current($qb->getRootAliases()))
+            ->setFirstResult(null)
+            ->setMaxResults(null);
+
+        $products = $datagrid->getQuery()->execute();
+
+        $csv = $this->transformProductsToCsvContent($products);
+
+        $headers = array(
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'inline; filename=quick_export_products.csv'
+        );
+
+        return new Response($csv, 200, $headers);
+    }
+
+    /**
+     * Transform products collection to CSV content
+     * @param Product[] $products
+     * @return string
+     */
+    protected function transformProductsToCsvContent($products)
+    {
+        return $this->serializer->serialize(
+            $products,
+            'csv',
+            array('withHeader' => true, 'heterogeneous' => true)
+        );
     }
 
     /**
