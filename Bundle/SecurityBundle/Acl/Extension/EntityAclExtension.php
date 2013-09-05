@@ -3,6 +3,7 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Metadata\EntitySecurityMetadataProvider;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
@@ -42,6 +43,11 @@ class EntityAclExtension extends AbstractAclExtension
     protected $metadataProvider;
 
     /**
+     * @var EntitySecurityMetadataProvider
+     */
+    protected $entityMetadataProvider;
+
+    /**
      * @var OwnershipDecisionMakerInterface
      */
     protected $decisionMaker;
@@ -68,6 +74,7 @@ class EntityAclExtension extends AbstractAclExtension
      * @param EntityClassAccessor $entityClassAccessor
      * @param ObjectIdAccessor $objectIdAccessor
      * @param EntityClassResolver $entityClassResolver
+     * @param EntitySecurityMetadataProvider $entityMetadataProvider
      * @param OwnershipMetadataProvider $metadataProvider
      * @param OwnershipDecisionMakerInterface $decisionMaker
      */
@@ -75,12 +82,14 @@ class EntityAclExtension extends AbstractAclExtension
         EntityClassAccessor $entityClassAccessor,
         ObjectIdAccessor $objectIdAccessor,
         EntityClassResolver $entityClassResolver,
+        EntitySecurityMetadataProvider $entityMetadataProvider,
         OwnershipMetadataProvider $metadataProvider,
         OwnershipDecisionMakerInterface $decisionMaker
     ) {
         $this->entityClassAccessor = $entityClassAccessor;
         $this->objectIdAccessor = $objectIdAccessor;
         $this->entityClassResolver = $entityClassResolver;
+        $this->entityMetadataProvider = $entityMetadataProvider;
         $this->metadataProvider = $metadataProvider;
         $this->decisionMaker = $decisionMaker;
 
@@ -155,14 +164,7 @@ class EntityAclExtension extends AbstractAclExtension
             $type = $this->entityClassAccessor->getClass($type);
         }
 
-        // @TODO Add check for service entities (not annotated as ACL)
-
-        $delim = strrpos($type, '\\');
-        if ($delim && $this->entityClassResolver->isKnownEntityClassNamespace(substr($type, 0, $delim))) {
-            return true;
-        }
-
-        return false;
+        return $this->entityMetadataProvider->isProtectedEntity($type);
     }
 
     /**
@@ -386,11 +388,7 @@ class EntityAclExtension extends AbstractAclExtension
      */
     public function getClasses()
     {
-        // @todo it is temporary
-        return array(
-            'Oro\Bundle\UserBundle\Entity\User',
-            'Oro\Bundle\UserBundle\Entity\Role',
-        );
+        return $this->entityMetadataProvider->getEntities();
     }
 
     /**

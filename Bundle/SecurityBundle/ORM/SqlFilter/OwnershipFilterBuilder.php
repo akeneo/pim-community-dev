@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\SecurityBundle\ORM;
+namespace Oro\Bundle\SecurityBundle\ORM\SqlFilter;
 
+use Oro\Bundle\SecurityBundle\Metadata\EntitySecurityMetadataProvider;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
 use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
@@ -13,7 +13,10 @@ use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 
-class OwnershipSqlFilterBuilder
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
+class OwnershipFilterBuilder
 {
     /**
      * @var ServiceLink
@@ -36,6 +39,11 @@ class OwnershipSqlFilterBuilder
     protected $metadataProvider;
 
     /**
+     * @var EntitySecurityMetadataProvider
+     */
+    protected $entityMetadataProvider;
+
+    /**
      * @var OwnerTree
      */
     protected $tree;
@@ -45,6 +53,7 @@ class OwnershipSqlFilterBuilder
      *
      * @param ServiceLink $securityContextLink
      * @param ObjectIdAccessor $objectIdAccessor
+     * @param EntitySecurityMetadataProvider $entityMetadataProvider
      * @param OwnershipMetadataProvider $metadataProvider
      * @param OwnerTree $tree
      * @param AclVoter $aclVoter
@@ -52,6 +61,7 @@ class OwnershipSqlFilterBuilder
     public function __construct(
         ServiceLink $securityContextLink,
         ObjectIdAccessor $objectIdAccessor,
+        EntitySecurityMetadataProvider $entityMetadataProvider,
         OwnershipMetadataProvider $metadataProvider,
         OwnerTree $tree,
         AclVoter $aclVoter = null
@@ -59,6 +69,7 @@ class OwnershipSqlFilterBuilder
         $this->securityContextLink = $securityContextLink;
         $this->aclVoter = $aclVoter;
         $this->objectIdAccessor = $objectIdAccessor;
+        $this->entityMetadataProvider = $entityMetadataProvider;
         $this->metadataProvider = $metadataProvider;
         $this->tree = $tree;
     }
@@ -69,95 +80,121 @@ class OwnershipSqlFilterBuilder
      * @param string $targetEntityClassName
      * @param string $targetTableAlias
      * @return string The constraint SQL if there is available, empty string otherwise
-     *
-     * The cyclomatic complexity warning is suppressed by performance reasons
-     * (to avoid unnecessary cloning od arrays)
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function buildFilterConstraint($targetEntityClassName, $targetTableAlias)
     {
-        if ($this->aclVoter === null || !$this->getUserId()) {
+        if ($this->aclVoter === null
+            || !$this->getUserId()
+            || !$this->entityMetadataProvider->isProtectedEntity($targetEntityClassName)
+        ) {
             return '';
         }
-        $constraint = null;
-
-        // @TODO Add check for service entities (not annotated as ACL)
 
         $observer = new OneShotIsGrantedObserver();
         $this->aclVoter->addOneShotIsGrantedObserver($observer);
         $isGranted = $this->getSecurityContext()->isGranted('VIEW', 'entity:' . $targetEntityClassName);
 
-        $metadata = $this->metadataProvider->getMetadata($targetEntityClassName);
+        $constraint = null;
+
         if ($isGranted) {
-            $accessLevel = $observer->getAccessLevel();
-            if (AccessLevel::SYSTEM_LEVEL === $accessLevel) {
-                $constraint = '';
-            } elseif (!$metadata->hasOwner()) {
-                if (AccessLevel::GLOBAL_LEVEL === $accessLevel) {
-                    if ($this->metadataProvider->getOrganizationClass() === $targetEntityClassName) {
-                        $orgIds = $this->tree->getUserOrganizationIds($this->getUserId());
-                        $constraint = $this->getCondition($orgIds, $metadata, $targetTableAlias, 'id');
-                    } else {
-                        $constraint = '';
-                    }
-                } else {
-                    $constraint = '';
-                }
-            } else {
-                if (AccessLevel::BASIC_LEVEL === $accessLevel) {
-                    if ($this->metadataProvider->getUserClass() === $targetEntityClassName) {
-                        $constraint = $this->getCondition($this->getUserId(), $metadata, $targetTableAlias, 'id');
-                    } elseif ($metadata->isUserOwned()) {
-                        $constraint = $this->getCondition($this->getUserId(), $metadata, $targetTableAlias);
-                    }
-                } elseif (AccessLevel::LOCAL_LEVEL === $accessLevel) {
-                    if ($this->metadataProvider->getBusinessUnitClass() === $targetEntityClassName) {
-                        $buIds = $this->tree->getUserBusinessUnitIds($this->getUserId());
-                        $constraint = $this->getCondition($buIds, $metadata, $targetTableAlias, 'id');
-                    } elseif ($metadata->isBusinessUnitOwned()) {
-                        $buIds = $this->tree->getUserBusinessUnitIds($this->getUserId());
-                        $constraint = $this->getCondition($buIds, $metadata, $targetTableAlias);
-                    } elseif ($metadata->isUserOwned()) {
-                        $userIds = array();
-                        $this->fillBusinessUnitUserIds($this->getUserId(), $userIds);
-                        $constraint = $this->getCondition($userIds, $metadata, $targetTableAlias);
-                    }
-                } elseif (AccessLevel::DEEP_LEVEL === $accessLevel) {
-                    if ($this->metadataProvider->getBusinessUnitClass() === $targetEntityClassName) {
-                        $buIds = array();
-                        $this->fillSubordinateBusinessUnitIds($this->getUserId(), $buIds);
-                        $constraint = $this->getCondition($buIds, $metadata, $targetTableAlias, 'id');
-                    } elseif ($metadata->isBusinessUnitOwned()) {
-                        $buIds = array();
-                        $this->fillSubordinateBusinessUnitIds($this->getUserId(), $buIds);
-                        $constraint = $this->getCondition($buIds, $metadata, $targetTableAlias);
-                    } elseif ($metadata->isUserOwned()) {
-                        $userIds = array();
-                        $this->fillSubordinateBusinessUnitUserIds($this->getUserId(), $userIds);
-                        $constraint = $this->getCondition($userIds, $metadata, $targetTableAlias);
-                    }
-                } elseif (AccessLevel::GLOBAL_LEVEL === $accessLevel) {
-                    if ($metadata->isOrganizationOwned()) {
-                        $orgIds = $this->tree->getUserOrganizationIds($this->getUserId());
-                        $constraint = $this->getCondition($orgIds, $metadata, $targetTableAlias);
-                    } elseif ($metadata->isBusinessUnitOwned()) {
-                        $buIds = array();
-                        $this->fillOrganizationBusinessUnitIds($this->getUserId(), $buIds);
-                        $constraint = $this->getCondition($buIds, $metadata, $targetTableAlias);
-                    } elseif ($metadata->isUserOwned()) {
-                        $userIds = array();
-                        $this->fillOrganizationUserIds($this->getUserId(), $userIds);
-                        $constraint = $this->getCondition($userIds, $metadata, $targetTableAlias);
-                    }
-                }
-            }
+            $constraint = $this->buildConstraintIfAccessIsGranted(
+                $targetEntityClassName,
+                $targetTableAlias,
+                $observer->getAccessLevel(),
+                $this->metadataProvider->getMetadata($targetEntityClassName)
+            );
         }
 
         if ($constraint === null) {
             // "deny access" SQL condition
             $constraint = empty($targetTableAlias)
                 ? '1 = 0'
-                : sprintf('\'%s\' = \'\'', $targetTableAlias); //added to see all tables aliases with denied permissions
+                // added to see all tables aliases with denied permissions
+                : sprintf('\'%s\' = \'\'', $targetTableAlias);
+        }
+
+        return $constraint;
+    }
+
+    /**
+     * @param string $targetEntityClassName
+     * @param string $targetTableAlias
+     * @param int $accessLevel
+     * @param OwnershipMetadata $metadata
+     * @return string|null
+     *
+     * The cyclomatic complexity warning is suppressed by performance reasons
+     * (to avoid unnecessary cloning od arrays)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
+    protected function buildConstraintIfAccessIsGranted(
+        $targetEntityClassName,
+        $targetTableAlias,
+        $accessLevel,
+        OwnershipMetadata $metadata
+    ) {
+        $constraint = null;
+
+        if (AccessLevel::SYSTEM_LEVEL === $accessLevel) {
+            $constraint = '';
+        } elseif (!$metadata->hasOwner()) {
+            if (AccessLevel::GLOBAL_LEVEL === $accessLevel) {
+                if ($this->metadataProvider->getOrganizationClass() === $targetEntityClassName) {
+                    $orgIds = $this->tree->getUserOrganizationIds($this->getUserId());
+                    $constraint = $this->getCondition($orgIds, $metadata, $targetTableAlias, 'id');
+                } else {
+                    $constraint = '';
+                }
+            } else {
+                $constraint = '';
+            }
+        } else {
+            if (AccessLevel::BASIC_LEVEL === $accessLevel) {
+                if ($this->metadataProvider->getUserClass() === $targetEntityClassName) {
+                    $constraint = $this->getCondition($this->getUserId(), $metadata, $targetTableAlias, 'id');
+                } elseif ($metadata->isUserOwned()) {
+                    $constraint = $this->getCondition($this->getUserId(), $metadata, $targetTableAlias);
+                }
+            } elseif (AccessLevel::LOCAL_LEVEL === $accessLevel) {
+                if ($this->metadataProvider->getBusinessUnitClass() === $targetEntityClassName) {
+                    $buIds = $this->tree->getUserBusinessUnitIds($this->getUserId());
+                    $constraint = $this->getCondition($buIds, $metadata, $targetTableAlias, 'id');
+                } elseif ($metadata->isBusinessUnitOwned()) {
+                    $buIds = $this->tree->getUserBusinessUnitIds($this->getUserId());
+                    $constraint = $this->getCondition($buIds, $metadata, $targetTableAlias);
+                } elseif ($metadata->isUserOwned()) {
+                    $userIds = array();
+                    $this->fillBusinessUnitUserIds($this->getUserId(), $userIds);
+                    $constraint = $this->getCondition($userIds, $metadata, $targetTableAlias);
+                }
+            } elseif (AccessLevel::DEEP_LEVEL === $accessLevel) {
+                if ($this->metadataProvider->getBusinessUnitClass() === $targetEntityClassName) {
+                    $buIds = array();
+                    $this->fillSubordinateBusinessUnitIds($this->getUserId(), $buIds);
+                    $constraint = $this->getCondition($buIds, $metadata, $targetTableAlias, 'id');
+                } elseif ($metadata->isBusinessUnitOwned()) {
+                    $buIds = array();
+                    $this->fillSubordinateBusinessUnitIds($this->getUserId(), $buIds);
+                    $constraint = $this->getCondition($buIds, $metadata, $targetTableAlias);
+                } elseif ($metadata->isUserOwned()) {
+                    $userIds = array();
+                    $this->fillSubordinateBusinessUnitUserIds($this->getUserId(), $userIds);
+                    $constraint = $this->getCondition($userIds, $metadata, $targetTableAlias);
+                }
+            } elseif (AccessLevel::GLOBAL_LEVEL === $accessLevel) {
+                if ($metadata->isOrganizationOwned()) {
+                    $orgIds = $this->tree->getUserOrganizationIds($this->getUserId());
+                    $constraint = $this->getCondition($orgIds, $metadata, $targetTableAlias);
+                } elseif ($metadata->isBusinessUnitOwned()) {
+                    $buIds = array();
+                    $this->fillOrganizationBusinessUnitIds($this->getUserId(), $buIds);
+                    $constraint = $this->getCondition($buIds, $metadata, $targetTableAlias);
+                } elseif ($metadata->isUserOwned()) {
+                    $userIds = array();
+                    $this->fillOrganizationUserIds($this->getUserId(), $userIds);
+                    $constraint = $this->getCondition($userIds, $metadata, $targetTableAlias);
+                }
+            }
         }
 
         return $constraint;
@@ -281,7 +318,7 @@ class OwnershipSqlFilterBuilder
     {
         $result = null;
         if (!empty($idOrIds)) {
-            $idOrIds = (array) $idOrIds;
+            $idOrIds = (array)$idOrIds;
             if (count($idOrIds) > 1) {
                 $result = sprintf(
                     '%s IN (%s)',

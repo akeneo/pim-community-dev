@@ -25,7 +25,7 @@ class OwnershipFilterTest extends \PHPUnit_Framework_TestCase
 
     public function testSetBuilderAndUserParameter()
     {
-        $builder = $this->getMockBuilder('Oro\Bundle\SecurityBundle\ORM\OwnershipSqlFilterBuilder')
+        $builder = $this->getMockBuilder('Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilterBuilder')
             ->disableOriginalConstructor()
             ->getMock();
         $builder->expects($this->once())->method('getUserId')->will($this->returnValue(1));

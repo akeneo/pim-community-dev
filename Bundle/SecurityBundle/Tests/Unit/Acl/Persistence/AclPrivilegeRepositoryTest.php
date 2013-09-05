@@ -148,6 +148,14 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
             'Acme\Class1',
             'Acme\Class2',
         );
+        $class1 = $this->getMock('Oro\Bundle\SecurityBundle\Acl\Extension\AclClassInfo');
+        $class1->expects($this->once())->method('getClassName')->will($this->returnValue($classes[0]));
+        $class1->expects($this->once())->method('getGroup')->will($this->returnValue('SomeGroup'));
+        $class1->expects($this->once())->method('getLabel')->will($this->returnValue('Class 1'));
+        $class2 = $this->getMock('Oro\Bundle\SecurityBundle\Acl\Extension\AclClassInfo');
+        $class2->expects($this->once())->method('getClassName')->will($this->returnValue($classes[1]));
+        $class2->expects($this->once())->method('getGroup')->will($this->returnValue('SomeGroup'));
+        $class2->expects($this->once())->method('getLabel')->will($this->returnValue('Class 2'));
 
         $rootOid = new ObjectIdentity($extensionKey, ObjectIdentityFactory::ROOT_IDENTITY_TYPE);
         $rootAcl = $this->getMock('Symfony\Component\Security\Acl\Model\AclInterface');
@@ -156,7 +164,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $oid1Acl = $this->getMock('Symfony\Component\Security\Acl\Model\AclInterface');
         $oid2 = new ObjectIdentity($extensionKey, $classes[1]);
 
-        $oidsWithRoot = array($rootOid, $oid1, $oid2);
+        $oidsWithRoot = array($rootOid, $oid2, $oid1);
 
         $aclsSrc = array(
             array('oid' => $rootOid, 'acl' => $rootAcl),
@@ -191,7 +199,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($extensionKey));
         $this->extension->expects($this->once())
             ->method('getClasses')
-            ->will($this->returnValue($classes));
+            ->will($this->returnValue(array($class2, $class1)));
         $this->extension->expects($this->any())
             ->method('getAllowedPermissions')
             ->will(
@@ -290,12 +298,21 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(count($classes) + 1, $result);
         $this->assertEquals('test:(root)', $result[0]->getIdentity()->getId());
-        $this->assertEquals('test:Acme\Class2', $result[1]->getIdentity()->getId());
-        $this->assertEquals('test:Acme\Class1', $result[2]->getIdentity()->getId());
+        $this->assertEquals(AclPrivilegeRepository::ROOT_PRIVILEGE_NAME, $result[0]->getIdentity()->getName());
+        $this->assertEquals('', $result[0]->getGroup());
+        $this->assertEquals($extensionKey, $result[0]->getExtensionKey());
+        $this->assertEquals('test:Acme\Class1', $result[1]->getIdentity()->getId());
+        $this->assertEquals('Class 1', $result[1]->getIdentity()->getName());
+        $this->assertEquals('SomeGroup', $result[1]->getGroup());
+        $this->assertEquals($extensionKey, $result[1]->getExtensionKey());
+        $this->assertEquals('test:Acme\Class2', $result[2]->getIdentity()->getId());
+        $this->assertEquals('Class 2', $result[2]->getIdentity()->getName());
+        $this->assertEquals('SomeGroup', $result[2]->getGroup());
+        $this->assertEquals($extensionKey, $result[2]->getExtensionKey());
 
         $this->assertEquals(3, $result[0]->getPermissionCount());
-        $this->assertEquals(2, $result[1]->getPermissionCount());
-        $this->assertEquals(3, $result[2]->getPermissionCount());
+        $this->assertEquals(3, $result[1]->getPermissionCount());
+        $this->assertEquals(2, $result[2]->getPermissionCount());
 
         $p = $result[0]->getPermissions();
         $this->assertEquals(AccessLevel::GLOBAL_LEVEL, $p['VIEW']->getAccessLevel());
@@ -303,14 +320,14 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(AccessLevel::LOCAL_LEVEL, $p['EDIT']->getAccessLevel());
 
         $p = $result[1]->getPermissions();
-        $this->assertEquals(AccessLevel::SYSTEM_LEVEL, $p['VIEW']->getAccessLevel());
-        $this->assertEquals(AccessLevel::SYSTEM_LEVEL, $p['CREATE']->getAccessLevel());
-        $this->assertFalse($p->containsKey('EDIT'));
-
-        $p = $result[2]->getPermissions();
         $this->assertEquals(AccessLevel::BASIC_LEVEL, $p['VIEW']->getAccessLevel());
         $this->assertEquals(AccessLevel::BASIC_LEVEL, $p['CREATE']->getAccessLevel());
         $this->assertEquals(AccessLevel::NONE_LEVEL, $p['EDIT']->getAccessLevel());
+
+        $p = $result[2]->getPermissions();
+        $this->assertEquals(AccessLevel::SYSTEM_LEVEL, $p['VIEW']->getAccessLevel());
+        $this->assertEquals(AccessLevel::SYSTEM_LEVEL, $p['CREATE']->getAccessLevel());
+        $this->assertFalse($p->containsKey('EDIT'));
     }
 
     private function initSavePrivileges($extensionKey, $rootOid)

@@ -16,7 +16,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use Oro\Bundle\SecurityBundle\Model\AclPermission;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclClassInfo;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class AclPrivilegeRepository
 {
     const ROOT_PRIVILEGE_NAME = '(default)';
@@ -83,9 +87,12 @@ class AclPrivilegeRepository
             // fill a list of object identities;
             // the root object identity is added to the top of the list (for performance reasons)
             /** @var OID[] $oids */
+            $classes = array();
             $oids = array();
             foreach ($extension->getClasses() as $class) {
-                $oids[] = new OID($extensionKey, $class);
+                $className = $class->getClassName();
+                $oids[] = new OID($extensionKey, $className);
+                $classes[$className] = $class;
             }
             $rootOid = $this->manager->getRootOid($extensionKey);
             array_unshift($oids, $rootOid);
@@ -98,10 +105,16 @@ class AclPrivilegeRepository
             foreach ($oids as $oid) {
                 if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
                     $name = self::ROOT_PRIVILEGE_NAME;
+                    $group = '';
                 } else {
-                    $name = '?';
+                    /** @var AclClassInfo $class */
+                    $class = $classes[$oid->getType()];
+                    $name = $class->getLabel();
+                    if (empty($name)) {
+                        $name = substr($class->getClassName(), strpos($class->getClassName(), '\\'));
+                    }
+                    $group = $class->getGroup();
                 }
-                $group = '?';
 
                 $privilege = new AclPrivilege();
                 $privilege

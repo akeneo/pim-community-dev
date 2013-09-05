@@ -175,7 +175,7 @@ interface AclExtensionInterface
     /**
      * Gets all types of domain objects or resources supported by this ACL extension.
      *
-     * @return string[]
+     * @return AclClassInfo[]
      */
     public function getClasses();
 
