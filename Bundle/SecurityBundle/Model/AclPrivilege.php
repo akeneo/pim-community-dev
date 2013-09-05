@@ -116,6 +116,17 @@ class AclPrivilege
     }
 
     /**
+     * @param AclPermission $permission
+     * @return $this
+     */
+    public function removePermission(AclPermission $permission)
+    {
+        $this->permissions->removeElement($permission);
+
+        return $this;
+    }
+
+    /**
      * @param string $name
      * @return bool
      */
