@@ -2,22 +2,24 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
-use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
-
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Oro\Bundle\GridBundle\Property\FieldProperty;
+
+use Oro\Bundle\GridBundle\Action\ActionInterface;
+use Oro\Bundle\GridBundle\Action\MassAction\Ajax\DeleteMassAction;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Oro\Bundle\GridBundle\Action\ActionInterface;
+use Oro\Bundle\GridBundle\Property\FieldProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-use Pim\Bundle\GridBundle\Filter\FilterInterface;
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
+
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\GridBundle\Filter\FilterInterface;
 
 /**
  * Grid manager
@@ -404,6 +406,22 @@ class ProductDatagridManager extends FlexibleDatagridManager
             $editCategoriesAction,
             $deleteAction
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMassActions()
+    {
+        $deleteMassActions = new DeleteMassAction(
+            array(
+                'name'  => 'delete',
+                'label' => 'Delete',
+                'icon'  => 'trash'
+            )
+        );
+
+        return array($deleteMassActions);
     }
 
     /**
