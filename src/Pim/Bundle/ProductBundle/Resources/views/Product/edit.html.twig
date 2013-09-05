@@ -76,7 +76,7 @@
             <div class="row-fluid tab-content">
                 {{ elements.form_errors(form) }}
 
-                {% include 'PimProductBundle:Product:_tab-panes.html.twig' with { 'product': product, 'channels': channels, 'forn': form } %}
+                {% include 'PimProductBundle:Product:_tab-panes.html.twig' %}
 
                 {{ form_row(form.id) }}
                 {{ form_row(form._token) }}
