@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Action\MassAction\Ajax\DeleteMassAction;
+
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
@@ -404,6 +406,22 @@ class ProductDatagridManager extends FlexibleDatagridManager
             $editCategoriesAction,
             $deleteAction
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMassActions()
+    {
+        $deleteMassActions = new DeleteMassAction(
+            array(
+                'name'  => 'delete',
+                'label' => 'Delete',
+                'icon'  => 'trash'
+            )
+        );
+
+        return array($deleteMassActions);
     }
 
     /**
