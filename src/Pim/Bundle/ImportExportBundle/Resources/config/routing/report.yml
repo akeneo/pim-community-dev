@@ -21,3 +21,9 @@ pim_importexport_report_download:
     defaults: { _controller: pim_import_export.controller.report:downloadLogFileAction }
     requirements:
         id: \d+
+
+pim_importexport_report_show:
+    path: extract/report/{id}/show
+    defaults: { _controller: pim_import_export.controller.report:showAction }
+    requirements:
+        id: \d+
