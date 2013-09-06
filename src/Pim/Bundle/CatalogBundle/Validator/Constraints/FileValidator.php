@@ -43,7 +43,7 @@ class FileValidator extends BaseFileValidator
                 $extension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
             }
 
-            if (!in_array($extension, $constraint->allowedExtensions)) {
+            if (!in_array(strtolower($extension), $constraint->allowedExtensions)) {
                 $this->context->addViolation(
                     $constraint->extensionsMessage,
                     array('{{ extensions }}' => join(', ', $constraint->allowedExtensions))
