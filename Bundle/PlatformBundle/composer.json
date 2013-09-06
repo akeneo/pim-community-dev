@@ -1,19 +1,19 @@
 {
-    "name": "oro/sync-bundle",
+    "name": "oro/platform-bundle",
     "type": "symfony-bundle",
-    "description": "BAP Sync Bundle",
+    "description": "Main BAP Bundle",
     "keywords": ["BAP"],
-    "homepage": "https://github.com/laboro/SyncBundle",
+    "homepage": "https://github.com/laboro/PlatformBundle",
     "license": "MIT",
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.3.*",
-        "jdare/clank-bundle": "dev-master"
+        "lexik/maintenance-bundle": "dev-master"
     },
     "autoload": {
-        "psr-0": { "Oro\\Bundle\\SyncBundle": "" }
+        "psr-0": { "Oro\\Bundle\\PlatformBundle": "" }
     },
-    "target-dir": "Oro/Bundle/SyncBundle",
+    "target-dir": "Oro/Bundle/PlatformBundle",
     "minimum-stability": "dev",
     "extra": {
         "branch-alias": {

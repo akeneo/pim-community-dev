@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\SyncBundle\EventListener;
 
 use Symfony\Component\HttpFoundation\Session\Session;

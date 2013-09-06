@@ -1,88 +1,31 @@
 <?php
+
 namespace Oro\Bundle\SyncBundle\EventListener;
 
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Oro\Bundle\SyncBundle\Wamp\TopicPublisher;
 
-use Ratchet\Session\Serialize\PhpHandler;
-use Ratchet\Session\Storage\VirtualSessionStorage;
-
-use JDare\ClankBundle\Event\ClientEvent;
-
-class OroWampEventListener
+class OroMaintenanceEventListener
 {
     /**
-     * @var SecurityContextInterface
+     * @var TopicPublisher
      */
-    protected $security;
+    protected $publisher;
 
     /**
-     * @var \SessionHandlerInterface
+     * @param TopicPublisher $publisher
      */
-    protected $handler;
-
-    /**
-     * Session options
-     *
-     * @var array
-     */
-    protected $options;
-
-    /**
-     * @param \SessionHandlerInterface $handler
-     */
-    public function __construct(\SessionHandlerInterface $handler, SecurityContextInterface $security, array $options = array())
+    public function __construct(TopicPublisher $publisher)
     {
-        $this->handler  = $handler;
-        $this->security = $security;
-        $this->options  = $options;
+        $this->publisher = $publisher;
     }
 
-    /**
-     * Called whenever a client connects.
-     * This will add $security property for a connection representing security context for a logged user (if any).
-     *
-     * @param ClientEvent $event
-     */
-    public function onClientConnect(ClientEvent $event)
+    public function onModeOn()
     {
-        /*
-         * $conn has following properties:
-         *  - resourceId
-         *  - remoteAddress
-         *  - WebSocket
-         *  - Session
-         *  - WAMP
-         *
-         * New $security property added (instance of SecurityContextInterface)
-         */
-        $conn = $event->getConnection();
-        $name = isset($this->options['name']) ? $this->options['name'] : ini_get('session.name');
+        $this->publisher->send('oro/maintenance', array('isOn' => true, 'msg' => 'Maintenance mode is ON'));
+    }
 
-        // can't use security context application/server wide, it should be unique per connection
-        $conn->security = clone $this->security;
-
-        if ($id = $conn->WebSocket->request->getCookie($name)) {
-            $storage = new VirtualSessionStorage($this->handler, $id, new PhpHandler());
-
-            $storage->setOptions($this->options);
-
-            $conn->Session = new Session($storage);
-
-            $conn->Session->start();
-
-            foreach ($conn->Session->all() as $key => $val) {
-                if (preg_match('/security_(.+)$/', $key)) {
-                    $token = unserialize($val);
-
-                    if ($token instanceof TokenInterface) {
-                        $conn->security->setToken($token);
-
-                        return;
-                    }
-                }
-            }
-        }
+    public function onModeOff()
+    {
+        $this->publisher->send('oro/maintenance', array('isOn' => false, 'msg' => 'Maintenance mode is OFF'));
     }
 }
