@@ -42,19 +42,22 @@ class ConfigManager
      *
      * @param  string $name Setting name, for example "oro_user.level"
      * @param null|object $scopeEntity that may represent user, group, etc
+     * @param bool $default
      * @return mixed
      */
-    public function get($name, $scopeEntity = null)
+    public function get($name, $scopeEntity = null, $default = false)
     {
         $name = explode(self::SECTION_MODEL_SEPARATOR, $name);
 
-        //if ($scopeEntity) {
-            $scopeEntityName = $scopeEntity ? get_class($scopeEntity) : null;
-            $scopeEntityId = $scopeEntity ? $scopeEntity->getId() : null;
+
+        $scopeEntityName = $scopeEntity ? get_class($scopeEntity) : null;
+        $scopeEntityId = $scopeEntity ? $scopeEntity->getId() : null;
+
+        if ($default) {
+            $settings = $this->settings;
+        } else {
             $settings = $this->getMergedSettings($scopeEntityName, $scopeEntityId);
-//        } else {
-//            $settings = $this->settings;
-//        }
+        }
 
         if (!isset($settings[$name[0]])) {
             return null;
@@ -75,9 +78,8 @@ class ConfigManager
         $flatSettings = $this->getFlatSettings($this->settings);
 
         // new settings
-        $new = array_diff($this->getFlatSettings($newSettings, true), $flatSettings);
+        $updated = array_diff($this->getFlatSettings($newSettings, true), $flatSettings);
 
-        $updated = array();
         foreach ($this->settings as $section => $settings) {
             foreach ($settings as $key => $value) {
                 // removed/reverted to default values
@@ -89,11 +91,7 @@ class ConfigManager
 
                 // updated
                 if (!empty($newSettings[$newKey]) && $newSettings[$newKey] != $value) {
-                    $updated[] = array(
-                        $section,
-                        $key,
-                        $newSettings[$newKey]
-                    );
+                    $updated[$section.self::SECTION_VIEW_SEPARATOR.$key] = $newSettings[$newKey];
                 }
             }
         }
@@ -114,10 +112,11 @@ class ConfigManager
         /** @var PersistentCollection $values */
         $valuesCollection = $config->getValues();
 
-        foreach ($new as $newItemKey => $newItemValue) {
+        foreach ($updated as $newItemKey => $newItemValue) {
             $newItemKey = explode(self::SECTION_VIEW_SEPARATOR, $newItemKey);
             $section = $newItemKey[0];
             $newKey = $newItemKey[1];
+            $newItemValue = is_array($newItemValue) ? $newItemValue['value'] : $newItemValue;
 
             $value = $valuesCollection->filter(
                 function (ConfigValue $item) use ($newKey, $section) {
@@ -212,19 +211,39 @@ class ConfigManager
 
     /**
      * @param FormInterface $form
+     * @param bool $default
      * @return array
      */
-    public function getSettingsByForm(FormInterface $form)
+    public function getSettingsByForm(FormInterface $form, $default = false)
     {
         $settings = array();
         foreach ($form as $child) {
             $key = str_replace(self::SECTION_VIEW_SEPARATOR, self::SECTION_MODEL_SEPARATOR, $child->getName());
-            $settings[$child->getName()] = array('value' => $this->get($key));
+            $settings[$child->getName()] = array('value' => $this->get($key, null, $default));
 //            if ($default = $child->get('use_parent_scope_value')) {
 //                $default->
 //            }
         }
 
         return $settings;
+    }
+
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function restoreDefaultOnSubmit($data)
+    {
+        foreach ($data as $key => $val) {
+            if (!empty($val['use_parent_scope_value'])) {
+                $data[$key]['value'] = $this->get(
+                    str_replace(self::SECTION_VIEW_SEPARATOR, self::SECTION_MODEL_SEPARATOR, $key),
+                    null,
+                    true
+                );
+            }
+        }
+
+        return $data;
     }
 }

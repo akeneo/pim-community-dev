@@ -31,6 +31,8 @@ services:
 
     oro_config.type.form:
         class:                        %oro_config.type.form.class%
+        arguments:
+            - @oro_config.user
         tags:
             - { name: form.type, alias: oro_config_form_type }
 
