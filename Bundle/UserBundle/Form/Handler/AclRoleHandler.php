@@ -196,7 +196,7 @@ class AclRoleHandler
     {
         return $privileges->filter(
             function ($entry) use ($rootIds) {
-                return in_array($entry->getRootId(), $rootIds);
+                return in_array($entry->getExtensionKey(), $rootIds);
             }
         );
     }

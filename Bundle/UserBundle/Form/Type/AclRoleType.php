@@ -48,7 +48,7 @@ class AclRoleType extends AbstractType
         foreach ($this->privilegeConfig as $fieldName => $config) {
             $builder->add($fieldName, new PrivilegeCollectionType(), array(
                 'type' => new AclPrivilegeType(),
-                'allow_add' => false,
+                'allow_add' => true,
                 'prototype' => false,
                 'allow_delete' => false,
                 'mapped' => false,
