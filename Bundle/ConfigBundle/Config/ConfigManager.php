@@ -80,13 +80,18 @@ class ConfigManager
 
         // new settings
         $updated = array_diff($this->getFlatSettings($newSettings, true), $flatSettings);
+//        foreach ($newSettings as $key => $value) {
+//            if (isset($value['use_parent_scope_value']) && !$value['use_parent_scope_value']) {
+//                $updated[$key] = $value;
+//            }
+//        }
 
         foreach ($this->settings as $section => $settings) {
             foreach ($settings as $key => $value) {
                 // removed/reverted to default values
                 // fallback to global setting - remove scoped value
                 $newKey = $section.self::SECTION_VIEW_SEPARATOR.$key;
-                if (!empty($newSettings[$newKey]['use_parent_scope_value'])) {
+                if (isset($newSettings[$newKey]['use_parent_scope_value']) && $newSettings[$newKey]['use_parent_scope_value']) {
                     $remove[] = array($section, $key);
                 }
 
@@ -112,6 +117,20 @@ class ConfigManager
 
         /** @var PersistentCollection $values */
         $valuesCollection = $config->getValues();
+
+        foreach ($remove as $item) {
+            $builder = $this->om->createQueryBuilder();
+            $builder
+                ->delete('OroConfigBundle:ConfigValue', 'cv')
+                ->where('cv.config = :configId')
+                ->andWhere('cv.name = :name')
+                ->andWhere('cv.section = :section')
+                ->setParameter('configId', $config->getId())
+                ->setParameter('section', $item[0])
+                ->setParameter('name', $item[1]);
+            $builder->getQuery()->getResult();
+        }
+
 
         foreach ($updated as $newItemKey => $newItemValue) {
             $newItemKey = explode(self::SECTION_VIEW_SEPARATOR, $newItemKey);
