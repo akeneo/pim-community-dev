@@ -6,6 +6,8 @@ use Doctrine\Common\Util\Inflector;
 use Doctrine\Common\Collections\ArrayCollection;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\Acl;
@@ -52,6 +54,15 @@ class FixturesContext extends RawMinkContext
         'image'      => 'pim_catalog_image',
         'file'       => 'pim_catalog_file',
     );
+
+    /**
+     * @BeforeScenario
+     */
+    public function resetBusinessUnit()
+    {
+        $organization = $this->createOrganization();
+        $this->createBusinessUnit($organization);
+    }
 
     /**
      * @BeforeScenario
@@ -917,6 +928,37 @@ class FixturesContext extends RawMinkContext
     public function getCurrency($code)
     {
         return $this->getEntityOrException('PimCatalogBundle:Currency', array('code' => $code));
+    }
+
+    /**
+     * @return Organization
+     */
+    private function createOrganization()
+    {
+        $organization = new Organization();
+
+        $organization
+            ->setName('default')
+            ->setCurrency('USD')
+            ->setPrecision('000 000.00');
+
+        $this->persist($organization);
+
+        return $organization;
+    }
+
+    /**
+     * @param string $organization
+     */
+    private function createBusinessUnit(Organization $organization)
+    {
+        $businessUnit = new BusinessUnit();
+
+        $businessUnit
+            ->setName('Main')
+            ->setOrganization($organization);
+
+        $this->persist($businessUnit);
     }
 
     /**
