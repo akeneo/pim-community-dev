@@ -64,6 +64,12 @@ class SearchDatagridBuilderTest extends \PHPUnit_Framework_TestCase
             '',
             false
         );
+        $aclManager = $this->getMockForAbstractClass(
+            'Oro\Bundle\UserBundle\Acl\ManagerInterface',
+            array(),
+            '',
+            false
+        );
         $filterFactory = $this->getMockForAbstractClass(
             'Oro\Bundle\GridBundle\Filter\FilterFactoryInterface',
             array(),
@@ -86,6 +92,7 @@ class SearchDatagridBuilderTest extends \PHPUnit_Framework_TestCase
         return new SearchDatagridBuilder(
             $formFactory,
             $eventDispatcher,
+            $aclManager,
             $filterFactory,
             $sorterFactory,
             $actionFactory,

@@ -1,4 +1,5 @@
-table.grid thead th {
+table.grid thead th > a,
+table.grid thead th > span {
     text-transform: uppercase;
 }
 

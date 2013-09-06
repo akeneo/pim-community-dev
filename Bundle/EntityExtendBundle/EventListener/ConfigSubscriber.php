@@ -2,15 +2,14 @@
 
 namespace Oro\Bundle\EntityExtendBundle\EventListener;
 
-use Metadata\MetadataFactory;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
-use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
+use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
-use Oro\Bundle\EntityExtendBundle\Metadata\ExtendClassMetadata;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class ConfigSubscriber implements EventSubscriberInterface
@@ -21,20 +20,11 @@ class ConfigSubscriber implements EventSubscriberInterface
     protected $extendManager;
 
     /**
-     * @var MetadataFactory
+     * @param ExtendManager $extendManager
      */
-    protected $metadataFactory;
-
-    protected $postFlushConfig = array();
-
-    /**
-     * @param ExtendManager   $extendManager
-     * @param MetadataFactory $metadataFactory
-     */
-    public function __construct(ExtendManager $extendManager, MetadataFactory $metadataFactory)
+    public function __construct(ExtendManager $extendManager)
     {
-        $this->extendManager   = $extendManager;
-        $this->metadataFactory = $metadataFactory;
+        $this->extendManager = $extendManager;
     }
 
     /**
@@ -43,31 +33,29 @@ class ConfigSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Events::NEW_ENTITY     => 'newEntityConfig',
-            Events::PERSIST_CONFIG => 'persistConfig',
+            Events::NEW_ENTITY_CONFIG_MODEL => 'newConfigModel',
+            Events::PRE_PERSIST_CONFIG      => 'persistConfig',
         );
     }
 
     /**
-     * @param NewEntityEvent $event
+     * @param NewEntityConfigModelEvent $event
      */
-    public function newEntityConfig(NewEntityEvent $event)
+    public function newConfigModel(NewEntityConfigModelEvent $event)
     {
-        /** @var ExtendClassMetadata $metadata */
-        $metadata = $this->metadataFactory->getMetadataForClass($event->getClassName());
-        if ($metadata && $metadata->isExtend) {
-            $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName($event->getClassName());
-            $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName($event->getClassName());
-
-            $this->extendManager->getConfigProvider()->createEntityConfig(
-                $event->getClassName(),
-                $values = array(
-                    'is_extend'    => true,
-                    'extend_class' => $extendClass,
-                    'proxy_class'  => $proxyClass,
-                    'owner'        => 'System',
-                )
+        $config = $this->extendManager->getConfigProvider()->getConfig($event->getClassName());
+        if ($config->get('is_extend')) {
+            $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName(
+                $event->getClassName()
             );
+            $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName(
+                $event->getClassName()
+            );
+
+            $config->set('extend_class', $extendClass);
+            $config->set('proxy_class', $proxyClass);
+
+            $this->extendManager->getConfigProvider()->persist($config);
         }
     }
 
@@ -76,19 +64,34 @@ class ConfigSubscriber implements EventSubscriberInterface
      */
     public function persistConfig(PersistConfigEvent $event)
     {
-        $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
         $change = $event->getConfigManager()->getConfigChangeSet($event->getConfig());
 
-        if ($event->getConfig()->getScope() == 'extend'
-            && $event->getConfig()->is('is_extend')
-            && count(array_intersect_key(array_flip(array('length', 'precision', 'scale')), $change))
-            && $event->getConfig()->get('state') != ExtendManager::STATE_NEW
-        ) {
-            $entityConfig = $event->getConfigManager()->getProvider($event->getConfig()->getScope())->getConfig($event->getConfig()->getClassName());
-            $event->getConfig()->set('state', ExtendManager::STATE_UPDATED);
-            $entityConfig->set('state', ExtendManager::STATE_UPDATED);
+        $scope     = $event->getConfig()->getId()->getScope();
+        $className = $event->getConfig()->getId()->getClassName();
 
-            $event->getConfigManager()->persist($entityConfig);
+        if ($scope == 'extend'
+            && $event->getConfig()->getId() instanceof FieldConfigIdInterface
+            && $event->getConfig()->is('is_extend')
+            && count(array_intersect_key(array_flip(array('length', 'precision', 'scale', 'state')), $change))
+        ) {
+            $entityConfig = $event->getConfigManager()
+                ->getProvider($scope)
+                ->getConfig($className);
+
+            if ($event->getConfig()->get('state') != ExtendManager::STATE_NEW
+                && $event->getConfig()->get('state') != ExtendManager::STATE_DELETED
+                && !isset($change['state'])
+            ) {
+                $event->getConfig()->set('state', ExtendManager::STATE_UPDATED);
+
+                $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
+            }
+
+            if ($entityConfig->get('state') != ExtendManager::STATE_NEW) {
+                $entityConfig->set('state', ExtendManager::STATE_UPDATED);
+
+                $event->getConfigManager()->persist($entityConfig);
+            }
         }
     }
 }

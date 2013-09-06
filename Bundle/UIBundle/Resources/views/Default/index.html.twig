@@ -97,6 +97,7 @@
                     {% block left_panel %}
                         {% placeholder left_panel %}
                     {% endblock left_panel %}
+                    {% block before_content %}
                     <div class="container-fluid breadcrumb-pin">
                         <div id="breadcrumb">
                             {% block breadcrumb %}
@@ -105,6 +106,7 @@
                         </div>
                         {% placeholder pin_button %}
                     </div>
+                    {% endblock before_content %}
                     <div id="flash-messages">
                         {% block messages %}
                             <div class="flash-messages-frame">

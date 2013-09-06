@@ -62,8 +62,7 @@ class EmailTemplateType extends AbstractType
                     'html' => 'oro.email.datagrid.emailtemplate.filter.type.html',
                     'txt'  => 'oro.email.datagrid.emailtemplate.filter.type.txt'
                 ),
-                'required'           => true,
-                'translation_domain' => 'datagrid'
+                'required'           => true
             )
         );
 

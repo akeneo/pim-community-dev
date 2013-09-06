@@ -1,0 +1,176 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'JMSJobQueueBundle:Job:macros.html.twig' as macros %}
+{% use 'OroCronBundle:Job:sidebar.html.twig' %}
+
+{% oro_title_set({ params: { '%command%': job.command, '%id%': job.id } }) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        entity:      job,
+        indexPath:   path('oro_cron_job_index'),
+        indexLabel:  'Jobs',
+        entityTitle: 'Job "' ~ job.command ~ '"'
+    }
+    %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}{% endblock stats %}
+
+{% block content_data %}
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span2">
+            {{ block('sidebar') }}
+        </div>
+        <div class="span10">
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th width="20%">{{ 'oro.cron.header.command'|trans }}</th>
+                <td>{{ macros.command(job) }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'oro.cron.header.state'|trans }}</th>
+                <td>{{ macros.state(job) }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'oro.cron.header.created'|trans }}</th>
+                <td>{{ macros.ago(job.createdAt) }}</td>
+            </tr>
+
+            {% if job.isRetryJob() %}
+            <tr>
+                <th>{{ 'oro.cron.view.original'|trans }}</th>
+                <td><a href="{{ path('oro_cron_job_view', { id: job.originalJob.id }) }}">#{{ job.originalJob.id }}</a> {{ macros.state(job.originalJob) }}</td>
+            </tr>
+            {% endif %}
+
+            {% if relatedEntities|length > 0 %}
+            <tr>
+                <th>{{ 'oro.cron.view.related'|trans }}</th>
+                <td>
+                    {%- for entity in relatedEntities %}
+                        {%- if entity.raw is jms_job_queue_linkable -%}
+                        <a href="{{ jms_job_queue_path(entity.raw) }}">{{ entity.raw|jms_job_queue_linkname }}</a>
+                        {%- else -%}
+                        {{ entity.class }} ({{ entity.id }})
+                        {%- endif -%}
+
+                        {% if not loop.last %}, {% endif -%}
+                    {% endfor -%}
+                </td>
+            </tr>
+            {% endif %}
+
+            {% if job.dependencies|length > 0 %}
+            <tr>
+                <th>{{ 'oro.cron.view.deps'|trans }}</th>
+                <td>
+                    {%- for dep in job.dependencies -%}
+                    <a href="{{ path('oro_cron_job_view', { id: dep.id }) }}" title="{{ dep.command }}{% for arg in dep.args %} {{ arg }}{% endfor %} (ID {{ dep.id }})">{{ dep.command }}</a> {{ macros.state(dep) }}
+                        {%- if not loop.last %}, {% endif -%}
+                    {%- endfor -%}
+                </td>
+            </tr>
+            {% endif %}
+
+            {% if dependencies|length > 0 %}
+            <tr>
+                <th>{{ 'oro.cron.view.in_deps'|trans }}</th>
+                <td>
+                    {%- for dep in dependencies -%}
+                    <a href="{{ path('oro_cron_job_view', { id: dep.id }) }}" title="{{ dep.command }}{% for arg in dep.args %} {{ arg }}{% endfor %} (ID {{ dep.id }})">{{ dep.command }}</a> {{ macros.state(dep) }}
+                    {%- endfor -%}
+                </td>
+            </tr>
+            {% endif %}
+        </table>
+
+        {% if job.retryJobs|length > 0 %}
+        <h3>{{ 'oro.cron.header.retry'|trans }}</h3>
+
+        <table class="table table-bordered table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th>{{ 'oro.cron.header.id'|trans }}</th>
+                    <th>{{ 'oro.cron.header.created'|trans }}</th>
+                    <th>{{ 'oro.cron.header.state'|trans }}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for retryJob in job.retryJobs %}
+                <tr>
+                    <td><a href="{{ path('oro_cron_job_view', { id: retryJob.id }) }}">{{ retryJob.id }}</a></td>
+                    <td>{{ macros.ago(retryJob.createdAt) }}</td>
+                    <td>{{ macros.state(retryJob) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        {% if job.output is not empty %}
+        <h3>{{ 'oro.cron.header.output'|trans }}</h3>
+        <pre style="max-height:300px; overflow:auto;">{{ job.output }}</pre>
+        {% endif %}
+
+        {% if job.errorOutput is not empty %}
+        <h3>{{ 'oro.cron.header.error'|trans }}</h3>
+        <pre style="max-height:300px; overflow:auto;">{{ job.errorOutput }}</pre>
+        {% endif %}
+
+        {% if job.stackTrace is not empty %}
+        <h3>{{ 'oro.cron.header.trace'|trans }}</h3>
+            {% for position, ex in job.stackTrace.toarray %}
+            <div class="stack-trace">
+                <h4>
+                    {{ ex.class|abbr_class }}: <small>{{ ex.message|nl2br|format_file_from_text }}</small>&nbsp;
+                    {% spaceless %}
+                    <a href="javascript: void(0);">
+                        <img alt="-" src="{{ asset('bundles/framework/images/blue_picto_less.gif') }}" />
+                        <img alt="+" src="{{ asset('bundles/framework/images/blue_picto_more.gif') }}" class="hide" />
+                    </a>
+                    {% endspaceless %}
+                </h4>
+                <ol class="traces hide">
+                    {%- for i, trace in ex.trace %}
+                    <li>
+                        {% if trace.function %}
+                        <strong>
+                            <abbr title="{{ trace.class }}">{{ trace.short_class }}</abbr>
+                            {{ trace.type ~ trace.function }}
+                        </strong>
+                        ({{ trace.args|format_args }})
+                        {% endif %}
+
+                        {% if trace.file is defined and trace.file and trace.line is defined and trace.line %}
+                            {{ trace.function ? '<br />' : '' }}
+                            {{ trace.file|format_file(trace.line) }}&nbsp;
+                            <a href="javascript: void(0);">
+                                <img alt="-" src="{{ asset('bundles/framework/images/blue_picto_less.gif') }}"{% if 0 != i %} class="hide"{% endif %} />
+                                <img alt="+" src="{{ asset('bundles/framework/images/blue_picto_more.gif') }}"{% if 0 == i %} class="hide"{% endif %} />
+                            </a>
+                            <div class="trace{% if 0 != i %} hide{% endif %}">
+                                {{ trace.file|file_excerpt(trace.line) }}
+                            </div>
+                        {% endif %}
+                    </li>
+                    {% endfor -%}
+                </ol>
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if statistics is not empty %}
+        <h3>{{ 'oro.cron.header.statistics'|trans }}</h3>
+        <div id="statistics" style="width:900px; height:300px;"></div>
+        <script type="text/javascript">
+            Oro.Job = Oro.Job || {};
+            Oro.Job.statistics = {{ statistics|json_encode|raw }};
+        </script>
+        {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -35,7 +35,7 @@ class ResultRecord implements ResultRecordInterface
     /**
      * Get value of property by name
      *
-     * @param string $name
+     * @param  string          $name
      * @return mixed
      * @throws \LogicException When cannot get value
      */
@@ -70,7 +70,7 @@ class ResultRecord implements ResultRecordInterface
      * Camelize a string
      *
      * @static
-     * @param string $property
+     * @param  string $property
      * @return string
      */
     private static function camelize($property)
@@ -80,5 +80,19 @@ class ResultRecord implements ResultRecordInterface
             array("strtoupper('\\2')", "'_'.strtoupper('\\1')"),
             $property
         );
+    }
+
+    /**
+     * Gets root entity from result record
+     *
+     * @return object|null
+     */
+    public function getRootEntity()
+    {
+        if (array_key_exists(0, $this->valueContainers) && is_object($this->valueContainers[0])) {
+            return $this->valueContainers[0];
+        }
+
+        return null;
     }
 }

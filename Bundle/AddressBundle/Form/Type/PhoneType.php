@@ -24,7 +24,7 @@ class PhoneType extends AbstractType
             )
             ->add(
                 'primary',
-                'checkbox',
+                'radio',
                 array(
                     'label' => 'Primary',
                     'required' => false

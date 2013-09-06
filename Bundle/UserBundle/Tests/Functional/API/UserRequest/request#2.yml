@@ -10,5 +10,6 @@ request:
     rolesCollection: [1]
     groups: ~
     values: ~
+    owner: 1
 response:
     return: true

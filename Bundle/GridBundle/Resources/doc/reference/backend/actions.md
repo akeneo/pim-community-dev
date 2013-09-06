@@ -105,3 +105,82 @@ class UserDatagridManager extends FlexibleDatagridManager
     // other methods
 }
 ```
+
+#### Control actions on record level
+To manage(show/hide) some actions by condition(dependent on row) developer should to add ActionConfigurationProperty to datagrid.
+This property needs closure as required param that will return array of actions that have to be shown/hidden.
+Key of this should be action name and true/false  value (show/hide respectively)
+
+#### Example
+
+``` php
+    protected function getProperties()
+    {
+        return array(
+            //... Some properties ...
+            new ActionConfigurationProperty(
+                function (ResultRecordInterface $record) {
+                    if ($record->getValue('someField') == true) {
+                        // do not render delete action if row field someField equals true
+                        return array('delete' => false);
+                    }
+                }
+            )
+        );
+    }
+```
+
+### Mass actions
+
+#### Class Description
+* ** MassAction / Ajax / AjaxMassAction ** - ajax action implementation (confirmation enabled by default)
+* ** MassAction / Ajax / DeleteMassAction ** - ajax delete action implementation
+* ** MassAction /Redirect / RedirectMassAction ** - redirects to route with checked rows ids (GET method)
+* ** MassAction / Widget / WidgetMassAction ** - basic widget mass action implementation open specifed widget with checked rows ids (GET method)
+* ** MassAction / Widget / WindowMassAction ** - open window widget with specific url and with checked rows ids (GET method)
+
+
+#### Examples
+
+``` php
+    /**
+     * {@inheritDoc}
+     */
+    protected function getMassActions()
+    {
+        $deleteMassAction = new DeleteMassAction(
+            array(
+                'name'         => 'delete',
+                'acl_resource' => 'oro_user_user_delete',
+                'label'        => $this->translate('orocrm.contact.datagrid.delete'),
+                'icon'         => 'trash',
+            )
+        );
+
+        $redirectMassAction = new RedirectMassAction(
+            array(
+                'name'             => 'redirect',
+                'acl_resource'     => 'oro_user_user_delete',
+                'label'            => 'Redirect',
+                'route'            => 'oro_user_view',
+                'route_parameters' => array('id' => 1)
+            )
+        );
+
+        $windowMassAction = new WindowMassAction(
+            array(
+                'name'             => 'window',
+                'label'            => 'Window',
+                'acl_resource'     => 'oro_user_user_delete',
+                'route'            => 'oro_user_view',
+                'route_parameters' => array('id' => 1),
+            )
+        );
+
+        return array($deleteMassAction, $redirectMassAction, $windowMassAction);
+    }
+```
+
+** NOTE: **  _All ajax massaction performed via OroGridBundle:MassActionController using specified handlers (ref: DeleteMassAction).
+ Developer should specify 'handler' options contains service id that should
+ handle current mass action and implements MassActionHandlerInterface_
