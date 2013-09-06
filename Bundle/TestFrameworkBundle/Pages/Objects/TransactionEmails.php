@@ -19,7 +19,7 @@ class TransactionEmails extends PageFilteredGrid
      */
     public function add()
     {
-        $this->test->byXPath("//div[@class = 'container-fluid']//a[contains(., 'Create notification rule')]")->click();
+        $this->test->byXPath("//a[@title='Create notification rule')]")->click();
         //due to bug BAP-965
         sleep(1);
         $this->waitPageToLoad();

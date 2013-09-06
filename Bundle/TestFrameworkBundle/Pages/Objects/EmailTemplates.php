@@ -19,7 +19,7 @@ class EmailTemplates extends PageFilteredGrid
      */
     public function add()
     {
-        $this->test->byXPath("//div[@class = 'container-fluid']//a[contains(., 'Create template')]")->click();
+        $this->test->byXPath("//a[@title='Create template')]")->click();
         //due to bug BAP-965
         sleep(1);
         $this->waitPageToLoad();
