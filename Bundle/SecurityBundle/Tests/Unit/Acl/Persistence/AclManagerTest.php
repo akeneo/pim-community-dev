@@ -191,6 +191,30 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(BatchItem::STATE_DELETE, current($items)->getState());
     }
 
+    public function testSetPermissionForNewAclIfGetAcesCalledBefore()
+    {
+        $sid = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $oid = new ObjectIdentity('entity', 'Acme\Test');
+        $granting = true;
+        $mask = 123;
+        $strategy = 'any';
+
+        $this->aclProvider->expects($this->once())
+            ->method('findAcl')
+            ->with($this->identicalTo($oid))
+            ->will($this->throwException(new AclNotFoundException()));
+        $this->extension->expects($this->once())
+            ->method('validateMask')
+            ->with($this->equalTo($mask), $this->identicalTo($oid));
+        $this->aceProvider->expects($this->never())
+            ->method('getAces');
+        $this->aceProvider->expects($this->never())
+            ->method('setPermission');
+
+        $this->manager->getAces($sid, $oid);
+        $this->manager->setPermission($sid, $oid, $mask, $granting, $strategy);
+    }
+
     public function testSetPermissionForRootOid()
     {
         $sid = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');

@@ -937,7 +937,13 @@ class AclManager
     {
         $key = $this->getKey($oid);
         if (isset($this->items[$key])) {
-            return $this->items[$key]->getAcl();
+            $item = $this->items[$key];
+            // make sure that a new ACL has a correct state
+            if ($ifNotExist === true && $item->getAcl() === null && $item->getState() === BatchItem::STATE_NONE) {
+                $item->setState(BatchItem::STATE_CREATE);
+            }
+
+            return $item->getAcl();
         }
 
         $acl = null;
