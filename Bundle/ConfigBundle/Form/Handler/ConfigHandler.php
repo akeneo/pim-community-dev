@@ -43,7 +43,6 @@ class ConfigHandler
 
         if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
             $form->submit($this->request);
-
             if ($form->isValid()) {
                 $this->manager->save($form->getData());
                 return true;
