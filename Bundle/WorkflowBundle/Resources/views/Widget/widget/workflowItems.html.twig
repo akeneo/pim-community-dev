@@ -29,7 +29,7 @@
                     <th>{% trans %}Start Date{% endtrans %}</th>
                     <th>{% trans %}Status{% endtrans %}</th>
                     {% if allow_delete %}
-                        <th></th>
+                        <th>{% trans %}Actions{% endtrans %}</th>
                     {% endif %}
                 </tr>
             </thead>
@@ -66,7 +66,7 @@
                             {% endif %}
                         </td>
                         {% if allow_delete %}
-                            <td>
+                            <td style="width: 90px;">
                                 {{ UI.deleteButton({
                                     'dataUrl': path('oro_api_workflow_delete', { workflowItemId: data.workflowItem.id }),
                                     'aCss': 'no-hash remove-button btn-mini',
