@@ -13,11 +13,17 @@ class AclPermissionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('accessLevel', $options['privileges_config']['field_type'], array(
+        $builder->add(
+            'accessLevel',
+            $options['privileges_config']['field_type'],
+            array(
                 'required' => false,
             )
         );
-        $builder->add('name', 'hidden', array(
+        $builder->add(
+            'name',
+            'hidden',
+            array(
                 'required' => false,
             )
         );
@@ -36,9 +42,11 @@ class AclPermissionType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Oro\Bundle\SecurityBundle\Model\AclPermission',
-            'privileges_config' => array()
-        ));
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'Oro\Bundle\SecurityBundle\Model\AclPermission',
+                'privileges_config' => array()
+            )
+        );
     }
 }
