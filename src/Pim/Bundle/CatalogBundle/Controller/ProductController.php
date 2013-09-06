@@ -230,7 +230,7 @@ class ProductController extends AbstractDoctrineController
      */
     protected function returnResponse($content, $status = 200, $headers = array())
     {
-        return new Response($content, 200, $headers);
+        return new Response($content, $status, $headers);
     }
 
     /**
