@@ -5,8 +5,10 @@ namespace Oro\Bundle\ConfigBundle\Config;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\PersistentCollection;
+
 use Oro\Bundle\ConfigBundle\Entity\Config;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
+
 use Symfony\Component\Form\FormInterface;
 
 class ConfigManager
@@ -81,6 +83,8 @@ class ConfigManager
     public function save($newSettings, $scopeEntity = null)
     {
         $remove = array();
+        $repository = $this->om->getRepository('OroConfigBundle:ConfigValue');
+
         $flatSettings = $this->getFlatSettings($this->settings);
 
         // new settings
@@ -95,8 +99,9 @@ class ConfigManager
             foreach ($settings as $key => $value) {
                 // removed/reverted to default values
                 // fallback to global setting - remove scoped value
-                $newKey = $section.self::SECTION_VIEW_SEPARATOR.$key;
-                if (isset($newSettings[$newKey]['use_parent_scope_value']) && $newSettings[$newKey]['use_parent_scope_value']) {
+                $newKey = $section . self::SECTION_VIEW_SEPARATOR . $key;
+                if (isset($newSettings[$newKey]['use_parent_scope_value']) &&
+                    $newSettings[$newKey]['use_parent_scope_value']) {
                     $remove[] = array($section, $key);
                 }
 
@@ -115,8 +120,7 @@ class ConfigManager
 
         if (!$config) {
             $config = new Config();
-            $config
-                ->setEntity($scopeEntity)
+            $config->setEntity($scopeEntity)
                 ->setRecordId($scopedId);
         }
 
@@ -124,16 +128,7 @@ class ConfigManager
         $valuesCollection = $config->getValues();
 
         foreach ($remove as $item) {
-            $builder = $this->om->createQueryBuilder();
-            $builder
-                ->delete('OroConfigBundle:ConfigValue', 'cv')
-                ->where('cv.config = :configId')
-                ->andWhere('cv.name = :name')
-                ->andWhere('cv.section = :section')
-                ->setParameter('configId', $config->getId())
-                ->setParameter('section', $item[0])
-                ->setParameter('name', $item[1]);
-            $builder->getQuery()->getResult();
+            $repository->removeValues($config->getId(), $item[0], $item[1]);
         }
 
 
@@ -264,24 +259,5 @@ class ConfigManager
         }
 
         return $settings;
-    }
-
-    /**
-     * @param $data
-     * @return mixed
-     */
-    public function restoreDefaultOnSubmit($data)
-    {
-        foreach ($data as $key => $val) {
-            if (!empty($val['use_parent_scope_value'])) {
-                $data[$key]['value'] = $this->get(
-                    str_replace(self::SECTION_VIEW_SEPARATOR, self::SECTION_MODEL_SEPARATOR, $key),
-                    null,
-                    true
-                );
-            }
-        }
-
-        return $data;
     }
 }

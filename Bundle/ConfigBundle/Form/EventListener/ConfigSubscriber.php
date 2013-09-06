@@ -35,17 +35,25 @@ class ConfigSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * Preset default values if default checkbox set
+     *
      * @param FormEvent $event
      */
     public function preSubmit(FormEvent $event)
     {
-        $form = $event->getForm();
+        //$form = $event->getForm();
+        $data = $event->getData();
 
-//        if (!empty($val['use_parent_scope_value'])) {
-//
-//        }
+        foreach ($data as $key => $val) {
+            if (!empty($val['use_parent_scope_value'])) {
+                $data[$key]['value'] = $this->configManager->get(
+                    str_replace(ConfigManager::SECTION_VIEW_SEPARATOR, ConfigManager::SECTION_MODEL_SEPARATOR, $key),
+                    null,
+                    true
+                );
+            }
+        }
 
-        $settingsData = $this->configManager->restoreDefaultOnSubmit($event->getData());
-        $event->setData($settingsData);
+        $event->setData($data);
     }
 }
