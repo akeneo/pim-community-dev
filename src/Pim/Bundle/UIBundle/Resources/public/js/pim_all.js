@@ -97,7 +97,17 @@ function init() {
     // Instantiate sidebar
     $('.has-sidebar').sidebarize();
 
-    $('form div.scopable').scopableField();
+    $('.remove-attribute').each(function () {
+        var target = $(this).parent().find('.icons-container').first();
+        if (target.length) {
+            $(this).appendTo(target).attr('tabIndex', -1);
+        }
+    });
+
+    _.each($('form div.scopable'), function(field) {
+        new Pim.View.Scopable({ el: $(field) });
+    });
+
     $('form div.currency').currencyField();
 
     // Apply Select2
@@ -120,24 +130,17 @@ function init() {
         $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('fa-icon-collapse-alt fa-icon-expand-alt');
     });
 
-    $('.remove-attribute').each(function () {
-        var target = $(this).parent().find('.icons-container').first();
-        if (target.length) {
-            $(this).appendTo(target).attr('tabIndex', -1);
-        }
-    });
-
     $('#attribute-buttons .dropdown-menu').click(function (e) {
         e.stopPropagation();
     });
 
     $('#default_channel').change(function () {
-        $('.scopable').scopableField({ defaultScope: $(this).val() });
+        Oro.Events.trigger('scopablefield:changescope', $(this).val());
     });
 
     $('.dropdown-menu.channel a').click(function (e) {
         e.preventDefault();
-        $('.scopable').scopableField($(this).data('action'));
+        Oro.Events.trigger('scopablefield:' + $(this).data('action'));
     });
 
     // Add form update listener
