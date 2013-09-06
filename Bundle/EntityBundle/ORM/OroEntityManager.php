@@ -89,7 +89,7 @@ class OroEntityManager extends EntityManager
      *        array(
      *              'SomeBundle:Entity',
      *              array(
-     *                  'name' => 'someNname'
+     *                  'name' => 'someName'
      *              )
      *          )
      *
