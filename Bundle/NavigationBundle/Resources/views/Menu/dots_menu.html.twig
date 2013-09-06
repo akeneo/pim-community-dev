@@ -6,7 +6,7 @@
         <div class="clearfix">
             <div class="pin-bar clearfix">
                 <div class="pin-menus dropdown dropdown-close-prevent">
-                    <span class="oro-dropdown-toggle hide-text">...</span>
+                    <i class="icon-ellipsis-horizontal oro-dropdown-toggle"></i>
                     <div class="dropdown-menu pull-right">
                         <div class="tabbable tabs-left">
                             {{ block('navbar_tabs') }}
@@ -14,7 +14,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="list-bar"></div>
+                <div class="list-bar">
+                  <ul>&nbsp;</ul>
+                </div>
             </div>
         </div>
 
@@ -24,12 +26,12 @@
                 function trueWidthPinBar(){
                     jQuery('div.list-bar li').each(function(){
                         var _tempWidth = "auto";
-                        jQuery(this).find('div.pin-holder div').width(_tempWidth);
+                        //jQuery(this).find('div.pin-holder div').width(_tempWidth);
                     });
                     var _sizeStart = jQuery(window).width() -30 - 55;
                     var _sizeEnd = jQuery('div.list-bar').width();
                     if(_sizeStart < _sizeEnd){
-                        var _qty = jQuery('div.list-bar li').size();
+                        var _qty = jQuery('div.list-bar ul li').size();
                         var _sizePaddings = (23 + 15) * _qty;
                         var _mainPadding = jQuery('#main').innerWidth() - jQuery('#main').width();
                         if(jQuery(window).width() < 980){
@@ -39,7 +41,7 @@
                         }
                         var _tempWidth = _size / _qty;
                         _tempWidth = _tempWidth < 40 ? 40 : _tempWidth;
-                        jQuery('div.list-bar li').each(function(){
+                        jQuery('div.list-bar ul li').each(function(){
                             jQuery(this).find('div.pin-holder div').width(_tempWidth);
                             jQuery(this).find('div.pin-holder div').addClass('pin-frame');
                         });

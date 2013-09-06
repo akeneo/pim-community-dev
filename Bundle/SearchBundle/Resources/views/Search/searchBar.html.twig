@@ -1,36 +1,38 @@
-<div class="dropdown dropdown-search">
-    <span class="oro-dropdown-toggle" title="{% trans %}Search{% endtrans %}">{% trans %}Search{% endtrans %}</span>
-    <div class="dropdown-menu">
-        <form method="get" action="{{ path('oro_search_results') }}" style="margin: 0" autocomplete="off" id="top-search-form" class="search-form">
-            <div class="title">{% trans %}Search{% endtrans %}</div>
-            <div id="search-div" class="input-append input-prepend pull-left header-search">
-                <div class="btn-group">
-                    <button data-toggle="dropdown" class="btn dropdown-toggle" id="search-bar-button">
-                        <span class="search-bar-type">{% trans %}All{% endtrans %}</span>
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" id="search-bar-dropdown">
-                        <li data-alias="">
-                            <a href="javascript: void(0);">{% trans %}All{% endtrans %}</a>
-                        </li>
-                        {% set searchEntities = [] %}
-                        {% for entity in entities %}
-                            {% set searchEntities = searchEntities|merge({(entity.alias) : oro_config_entity(entity.class).name|trans({}, 'config')}) %}
-                        {% endfor %}
-                        {% for alias,name in searchEntities|sort %}
-                            <li data-alias="{{ alias }}">
-                                <a href="javascript: void(0);">{{ name }}</a>
+<div class="dropdown header-dropdown-search header-utility-dropdown">
+    <a href="javascript:void(0);" class="dropdown-toggle oro-dropdown-toggle" title="{% trans %}Search{% endtrans %}"><i class="icon-search"></i></a>
+    <ul class="dropdown-menu">
+        <li class="nav-header nav-header-title">{% trans %}Search{% endtrans %}</li>
+        <li class="dark">
+            <form method="get" action="{{ path('oro_search_results') }}" style="margin: 0" autocomplete="off" id="top-search-form" class="search-form">
+                <div id="search-div" class="input-append input-prepend pull-left header-search">
+                    <div class="btn-group">
+                        <button data-toggle="dropdown" class="btn dropdown-toggle" id="search-bar-button">
+                            <span class="search-bar-type">{% trans %}All{% endtrans %}</span>
+                            <span class="icon-caret-down"></span>
+                        </button>
+                        <ul class="dropdown-menu" id="search-bar-dropdown">
+                            <li data-alias="">
+                                <a href="javascript: void(0);">{% trans %}All{% endtrans %}</a>
                             </li>
-                        {% endfor %}
-                    </ul>
+                            {% set searchEntities = [] %}
+                            {% for entity in entities %}
+                                {% set searchEntities = searchEntities|merge({(entity.alias) : oro_config_entity(entity.class).name|trans({}, 'config')}) %}
+                            {% endfor %}
+                            {% for alias,name in searchEntities|sort %}
+                                <li data-alias="{{ alias }}">
+                                    <a href="javascript: void(0);">{{ name }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="header-search-frame">
+                        <input type="hidden" name="from" id="search-bar-from" value=""/>
+                        <input type="text" id="search-bar-search" class="span2 search" placeholder="" name="search" value=""/>
+                        <button type="submit" class="btn btn-search btn-primary">{% trans %}Go{% endtrans %}</button>
+                        <div class="custom-dropdown" id="search-dropdown"></div>
+                    </div>
                 </div>
-                <div class="header-search-frame">
-                    <input type="hidden" name="from" id="search-bar-from" value=""/>
-                    <input type="text" id="search-bar-search" class="span2 search" placeholder="" name="search" value=""/>
-                    <button type="submit" class="btn btn-search btn-primary">{% trans %}Go{% endtrans %}</button>
-                    <div class="custom-dropdown" id="search-dropdown"></div>
-                </div>
-            </div>
-        </form>
-    </div>
+            </form>
+        </li>
+    </ul>
 </div>

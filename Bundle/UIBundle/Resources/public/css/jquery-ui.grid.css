@@ -241,7 +241,7 @@
 /* Component containers
 ----------------------------------*/
 .ui-datepicker .ui-widget {
-    font-family: Verdana,Arial,sans-serif;
+    font-family: 'Helvetica Neue',Helvetica,sans-serif;
     font-size: 1.1em;
 }
 .ui-datepicker .ui-widget .ui-widget {
@@ -251,7 +251,7 @@
 .ui-datepicker .ui-widget select,
 .ui-datepicker .ui-widget textarea,
 .ui-datepicker .ui-widget button {
-    font-family: Verdana,Arial,sans-serif;
+    font-family: 'Helvetica Neue',Helvetica,sans-serif;
     font-size: 1em;
 }
 .ui-widget-content,
