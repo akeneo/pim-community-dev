@@ -22,10 +22,11 @@ class EditCommonAttributesType extends AbstractType
     {
         $builder
             ->add(
-                'values',
+                'product',
                 'collection',
                 array(
-                    'type' => 'pim_product_value'
+                    'property_path' => 'product.values',
+                    'type'          => 'pim_product_value'
                 )
             )
             ->add(

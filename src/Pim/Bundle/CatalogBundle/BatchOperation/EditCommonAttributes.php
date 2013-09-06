@@ -6,9 +6,13 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Form\Type\BatchOperation\EditCommonAttributesType;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Product;
 
 /**
- * Edit common values of given products
+ * Edit common product of given products
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -16,7 +20,7 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
  */
 class EditCommonAttributes extends AbstractBatchOperation
 {
-    protected $values;
+    protected $product;
 
     protected $locale;
 
@@ -26,24 +30,24 @@ class EditCommonAttributes extends AbstractBatchOperation
 
     public function __construct(FlexibleManager $productManager, LocaleManager $localeManager)
     {
-        $this->values         = new ArrayCollection();
         $this->productManager = $productManager;
         $this->localeManager  = $localeManager;
+        $this->product        = $this->initializeProduct();
     }
 
-    public function setValues(Collection $values)
+    public function setProduct(Product $product)
     {
-        $this->values = $values;
+        $this->product = $product;
 
         return $this;
     }
 
-    public function getValues()
+    public function getProduct()
     {
-        return $this->values;
+        return $this->product;
     }
 
-    public function setLocale($locale)
+    public function setLocale(Locale $locale)
     {
         $this->locale = $locale;
 
@@ -52,7 +56,13 @@ class EditCommonAttributes extends AbstractBatchOperation
 
     public function getLocale()
     {
-        return $this->locale;
+        if ($this->locale instanceof Locale) {
+            return $this->locale;
+        }
+
+        return $this->localeManager->getLocaleByCode(
+            $this->productManager->getLocale()
+        );
     }
 
     /**
@@ -86,11 +96,10 @@ class EditCommonAttributes extends AbstractBatchOperation
             }
         }
 
-        foreach ($attributes as $attribute) {
-            $value = $this->productManager->createFlexibleValue();
-            $value->setAttribute($attribute);
-
-            $this->values[$attribute->getCode()] = $value;
+        foreach ($availableAttributes as $attribute) {
+            if (in_array($attribute->getCode(), $displayedAttributes)) {
+                $this->addValuesToProduct($attribute);
+            }
         }
     }
 
@@ -100,12 +109,48 @@ class EditCommonAttributes extends AbstractBatchOperation
     public function perform(array $products, array $parameters)
     {
         foreach ($products as $product) {
-            foreach ($this->values as $value) {
+            foreach ($this->product as $value) {
                 $product
                     ->getValue($value->getAttribute()->getCode(), $this->locale)
                     ->setData($value->getData());
             }
         }
         $this->productManager->getStorageManager()->flush();
+    }
+
+    private function addValuesToProduct(ProductAttribute $attribute)
+    {
+        $locale = $this->getLocale();
+        if ($attribute->getScopable()) {
+            foreach ($locale->getChannels() as $channel) {
+                $this->product->addValue($this->createValue($attribute, $locale, $channel));
+            }
+        } else {
+            $this->product->addValue($this->createValue($attribute, $locale));
+        }
+    }
+
+    private function createValue(ProductAttribute $attribute, Locale $locale, Channel $channel = null)
+    {
+        $value = $this->productManager->createFlexibleValue();
+        $value->setAttribute($attribute);
+
+        if ($attribute->getTranslatable()) {
+            $value->setLocale($locale);
+        }
+
+        if ($channel && $attribute->getScopable()) {
+            $value->setScope($channel->getCode());
+        }
+
+        return $value;
+    }
+
+    private function initializeProduct()
+    {
+        $product = $this->productManager->createFlexible();
+        $product->removeValue($product->getIdentifier());
+
+        return $product;
     }
 }
