@@ -199,8 +199,8 @@
             // thus implementation is done just to check functionality.
             // For future render method will depend on options or will be empty
             this.$el.empty().append('<div class="btn-group">\
-                <button type="button" class="btn btn-default" data-select-all>All</button>\
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">\
+                <button type="button" class="btn btn-default btn-small" data-select-all>All</button>\
+                <button type="button" class="btn btn-default btn-small dropdown-toggle" data-toggle="dropdown">\
                     <span class="caret"></span>\
                 </button>\
                 <ul class="dropdown-menu">\

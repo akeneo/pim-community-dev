@@ -1,11 +1,9 @@
 <script type="text/html" id="template-addressbook-item">
-    <div class="clearfix">
-        <div class="title-item"><%= label %></div>
-        <div class="map-actions">
-            <button class="btn" title="<%= _.__('Edit') %>"><i class="icon-edit hide-text"><%= _.__('Edit') %></i></button>
-            <% if (!primary) { %><button class="btn" title="<%= _.__('Remove') %>"><i class="icon-remove hide-text"><%= _.__('Remove') %></i></button><% } %>
-        </div>
+    <div class="map-actions">
+        <button class="btn" title="<%= _.__('Edit') %>"><i class="icon-pencil hide-text"><%= _.__('Edit') %></i></button>
+        <% if (!primary) { %><button class="btn" title="<%= _.__('Remove') %>"><i class="icon-remove hide-text"><%= _.__('Remove') %></i></button><% } %>
     </div>
+    <div class="title-item"><%= label %></div>
     <ul class="inline">
         <% if(primary) { %> <li><span class="label label-info"><%= _.__('Primary') %></span></li> <% } %>
         <% _.each(types, function(type) { %>
