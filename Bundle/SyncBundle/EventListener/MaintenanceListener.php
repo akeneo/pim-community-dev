@@ -4,7 +4,7 @@ namespace Oro\Bundle\SyncBundle\EventListener;
 
 use Oro\Bundle\SyncBundle\Wamp\TopicPublisher;
 
-class OroMaintenanceEventListener
+class MaintenanceListener
 {
     /**
      * @var TopicPublisher

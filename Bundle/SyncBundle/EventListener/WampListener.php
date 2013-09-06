@@ -11,7 +11,7 @@ use Ratchet\Session\Storage\VirtualSessionStorage;
 
 use JDare\ClankBundle\Event\ClientEvent;
 
-class OroWampEventListener
+class WampListener
 {
     /**
      * @var SecurityContextInterface

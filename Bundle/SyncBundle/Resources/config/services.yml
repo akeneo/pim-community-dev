@@ -1,8 +1,8 @@
 parameters:
     oro_wamp.publisher.class:             Oro\Bundle\SyncBundle\Wamp\TopicPublisher
     oro_wamp.db_ping.class:               Oro\Bundle\SyncBundle\Wamp\DbPing
-    oro_wamp.listener.clank.class:        Oro\Bundle\SyncBundle\EventListener\OroWampEventListener
-    oro_wamp.listener.maintenance.class:  Oro\Bundle\SyncBundle\EventListener\OroMaintenanceEventListener
+    oro_wamp.listener.clank.class:        Oro\Bundle\SyncBundle\EventListener\WampListener
+    oro_wamp.listener.maintenance.class:  Oro\Bundle\SyncBundle\EventListener\MaintenanceListener
 
 services:
     oro_wamp.publisher:
