@@ -3,6 +3,7 @@ parameters:
     security.acl.dbal.provider.class:                          Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider
 
     oro_security.acl.manager.class:                            Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager
+    oro_security.acl.cache.class:                              Oro\Bundle\SecurityBundle\Acl\Cache\FilesystemCache
     oro_security.acl.ace_provider.class:                       Oro\Bundle\SecurityBundle\Acl\Persistence\AceManipulationHelper
     oro_security.acl.privilege_repository.class:               Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository
     oro_security.acl.extension_selector.class:                 Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector
@@ -40,6 +41,12 @@ services:
             - @?security.acl.dbal.provider
             - @oro_security.acl.ace_provider
             - %oro_security.acl.privilege_repository.class%
+
+    security.acl.cache.doctrine.cache_impl:
+        public: false
+        class: %oro_security.acl.cache.class%
+        arguments:
+            - %kernel.cache_dir%/oro_security_acl
 
     oro_security.acl.ace_provider:
         public: false

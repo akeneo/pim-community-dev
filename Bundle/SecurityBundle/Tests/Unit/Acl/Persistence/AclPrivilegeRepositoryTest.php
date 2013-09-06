@@ -16,6 +16,9 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
 use Symfony\Component\Security\Acl\Model\EntryInterface;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
 {
     /** @var AclPrivilegeRepository */
@@ -274,7 +277,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
             ->will(
                 $this->returnCallback(
                     function () use (&$aclsSrc) {
-                        return self::getAcls($aclsSrc);
+                        return AclPrivilegeRepositoryTest::getAcls($aclsSrc);
                     }
                 )
             );
@@ -386,7 +389,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
 
                         foreach ($expectations as $expectedOid => $expectedMasks) {
                             if ($expectedOid === $oid->getIdentifier() . ':' . $oid->getType()) {
-                                $expectedMask = self::getMask($expectedMasks);
+                                $expectedMask = AclPrivilegeRepositoryTest::getMask($expectedMasks);
                                 $triggeredExpectationsForSetPermission[$expectedOid] =
                                     isset($triggeredExpectationsForSetPermission[$expectedOid])
                                         ? $triggeredExpectationsForSetPermission[$expectedOid] + 1
@@ -442,7 +445,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
 
                         foreach ($expectations as $expectedOid => $expectedMasks) {
                             if ($expectedOid === $oid->getIdentifier() . ':' . $oid->getType()) {
-                                $expectedMask = self::getMask($expectedMasks);
+                                $expectedMask = AclPrivilegeRepositoryTest::getMask($expectedMasks);
                                 $triggeredExpectationsForDeletePermission[$expectedOid] =
                                     isset($triggeredExpectationsForDeletePermission[$expectedOid])
                                         ? $triggeredExpectationsForDeletePermission[$expectedOid] + 1
@@ -516,7 +519,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $rootOid = new ObjectIdentity($extensionKey, ObjectIdentityFactory::ROOT_IDENTITY_TYPE);
 
         $privileges = new ArrayCollection();
-        $privileges[] = self::getPrivilege(
+        $privileges[] = AclPrivilegeRepositoryTest::getPrivilege(
             'test:Acme\Class1',
             array(
                 'VIEW' => AccessLevel::SYSTEM_LEVEL,
@@ -550,7 +553,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $rootOid = new ObjectIdentity($extensionKey, ObjectIdentityFactory::ROOT_IDENTITY_TYPE);
 
         $privileges = new ArrayCollection();
-        $privileges[] = self::getPrivilege(
+        $privileges[] = AclPrivilegeRepositoryTest::getPrivilege(
             'test:(root)',
             array(
                 'VIEW' => AccessLevel::SYSTEM_LEVEL,
@@ -558,7 +561,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
                 'EDIT' => AccessLevel::NONE_LEVEL,
             )
         );
-        $privileges[] = self::getPrivilege(
+        $privileges[] = AclPrivilegeRepositoryTest::getPrivilege(
             'test:Acme\Class1',
             array(
                 'VIEW' => AccessLevel::SYSTEM_LEVEL,
@@ -566,7 +569,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
                 'EDIT' => AccessLevel::NONE_LEVEL,
             )
         );
-        $privileges[] = self::getPrivilege(
+        $privileges[] = AclPrivilegeRepositoryTest::getPrivilege(
             'test:Acme\Class2',
             array(
                 'VIEW' => AccessLevel::SYSTEM_LEVEL,
@@ -599,10 +602,10 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $extensionKey = 'test';
         $rootOid = new ObjectIdentity($extensionKey, ObjectIdentityFactory::ROOT_IDENTITY_TYPE);
 
-        $class3Ace = $this->getAce(self::getMask(array('VIEW_BASIC', 'CREATE_BASIC')));
+        $class3Ace = $this->getAce(AclPrivilegeRepositoryTest::getMask(array('VIEW_BASIC', 'CREATE_BASIC')));
 
         $privileges = new ArrayCollection();
-        $privileges[] = self::getPrivilege(
+        $privileges[] = AclPrivilegeRepositoryTest::getPrivilege(
             'test:(root)',
             array(
                 'VIEW' => AccessLevel::SYSTEM_LEVEL,
@@ -610,7 +613,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
                 'EDIT' => AccessLevel::NONE_LEVEL,
             )
         );
-        $privileges[] = self::getPrivilege(
+        $privileges[] = AclPrivilegeRepositoryTest::getPrivilege(
             'test:Acme\Class1', // no changes because permissions = root
             array(
                 'VIEW' => AccessLevel::SYSTEM_LEVEL,
@@ -618,7 +621,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
                 'EDIT' => AccessLevel::NONE_LEVEL,
             )
         );
-        $privileges[] = self::getPrivilege(
+        $privileges[] = AclPrivilegeRepositoryTest::getPrivilege(
             'test:Acme\Class2', // new
             array(
                 'VIEW' => AccessLevel::SYSTEM_LEVEL,
@@ -626,7 +629,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
                 'EDIT' => AccessLevel::NONE_LEVEL,
             )
         );
-        $privileges[] = self::getPrivilege(
+        $privileges[] = AclPrivilegeRepositoryTest::getPrivilege(
             'test:Acme\Class3', // existing and should be deleted because permissions = root
             array(
                 'VIEW' => AccessLevel::SYSTEM_LEVEL,
