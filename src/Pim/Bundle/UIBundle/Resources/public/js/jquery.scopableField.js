@@ -32,7 +32,7 @@ Pim.View.ScopableField = Backbone.View.extend({
         '</div>'
     ),
 
-    initialize: function() {
+    initialize: function () {
         var field = {};
 
         if (this.$el.find('.upload-zone').length) {
@@ -81,7 +81,7 @@ Pim.View.Scopable = Backbone.View.extend({
         '<label class="control-label"><%= label %></label>'
     ),
 
-    initialize: function() {
+    initialize: function () {
         this.fieldViews = [];
         this.fields     = [];
         this.expanded   = true;
@@ -89,9 +89,9 @@ Pim.View.Scopable = Backbone.View.extend({
 
         this._reindexFields();
 
-        _.each(this.fields, function(field) {
+        _.each(this.fields, function (field) {
             this._addField(field);
-        },this);
+        }, this);
 
         this.label = this.$el.find('.control-label').first().html();
 
@@ -109,7 +109,7 @@ Pim.View.Scopable = Backbone.View.extend({
             this._expand();
         }, this);
 
-        this.$el.closest('form').on('validate', function() {
+        this.$el.closest('form').on('validate', function () {
             if (this.$el.find('.validation-tooltip:hidden').length) {
                 this._expand();
             }
@@ -126,7 +126,7 @@ Pim.View.Scopable = Backbone.View.extend({
                 })
             );
 
-            _.each(this.fieldViews, function(fieldView) {
+            _.each(this.fieldViews, function (fieldView) {
                 fieldView.render().$el.appendTo(this.$el);
             }, this);
 
@@ -136,20 +136,20 @@ Pim.View.Scopable = Backbone.View.extend({
         return this;
     },
 
-    _addField: function(field) {
+    _addField: function (field) {
         this.fieldViews.push(new Pim.View.ScopableField({ el: field }));
 
         return this;
     },
 
-    _expand: function() {
+    _expand: function () {
         if (!this.expanded) {
             this.expanded = true;
 
             this._reindexFields();
 
             var first = true;
-            _.each(this.fields, function(field) {
+            _.each(this.fields, function (field) {
                 this._showField(field, first);
                 first = false;
             }, this);
@@ -160,14 +160,14 @@ Pim.View.Scopable = Backbone.View.extend({
         return this;
     },
 
-    _collapse: function() {
+    _collapse: function () {
         if (this.expanded) {
             this.expanded = false;
 
             this._reindexFields();
 
             var first = true;
-            _.each(this.fields, function(field) {
+            _.each(this.fields, function (field) {
                 if (first) {
                     this._showField(field, first);
                     first = false;
@@ -182,11 +182,11 @@ Pim.View.Scopable = Backbone.View.extend({
         return this;
     },
 
-    _toggle: function() {
+    _toggle: function () {
         return this.expanded ? this._collapse() : this._expand();
     },
 
-    _changeDefault: function(scope) {
+    _changeDefault: function (scope) {
         _.each(this.fields, function (field) {
             if ($(field).data('scope') === scope) {
                 this._setFieldFirst(field);
@@ -199,11 +199,11 @@ Pim.View.Scopable = Backbone.View.extend({
         return this;
     },
 
-    _reindexFields: function() {
+    _reindexFields: function () {
         this.fields = this.$el.find('[data-scope]');
     },
 
-    _setFieldFirst: function(field) {
+    _setFieldFirst: function (field) {
         var $field = $(field);
         $field.insertAfter(this.$el.find('>label'));
         $field.find('.field-toggle').removeClass('hide');
@@ -215,14 +215,14 @@ Pim.View.Scopable = Backbone.View.extend({
         }
     },
 
-    _showField: function(field, first) {
+    _showField: function (field, first) {
         if (first) {
             this._setFieldFirst(field);
         }
         $(field).show();
     },
 
-    _hideField: function(field) {
+    _hideField: function (field) {
         $(field).hide().find('.field-toggle').addClass('hide');
     },
 
