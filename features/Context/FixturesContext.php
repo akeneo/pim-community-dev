@@ -58,15 +58,6 @@ class FixturesContext extends RawMinkContext
     /**
      * @BeforeScenario
      */
-    public function resetBusinessUnit()
-    {
-        $organization = $this->createOrganization();
-        $this->createBusinessUnit($organization);
-    }
-
-    /**
-     * @BeforeScenario
-     */
     public function resetCurrentLocale()
     {
         foreach ($this->locales as $locale) {
@@ -948,14 +939,15 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $organization
+     * @param string       $name
+     * @param Organization $organization
      */
-    private function createBusinessUnit(Organization $organization)
+    private function createBusinessUnit($name, Organization $organization)
     {
         $businessUnit = new BusinessUnit();
 
         $businessUnit
-            ->setName('Main')
+            ->setName($name)
             ->setOrganization($organization);
 
         $this->persist($businessUnit);
@@ -1008,6 +1000,25 @@ class FixturesContext extends RawMinkContext
         }
 
         return $role;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return BusinessUnit
+     */
+    private function getBusinessUnitOrCreate($name)
+    {
+        try {
+            $bu = $this->getEntityOrException('OroOrganizationBundle:BusinessUnit', array('name' => $name));
+
+        } catch (\InvalidArgumentException $e) {
+
+            $organization = $this->createOrganization();
+            $bu = $this->createBusinessUnit($name, $organization);
+        }
+
+        return $bu;
     }
 
     /**
@@ -1163,6 +1174,11 @@ class FixturesContext extends RawMinkContext
         $user->setLastname('Doe');
         $user->setPlainPassword($password);
         $user->setEmail($email);
+        /*
+        $businessUnit = $this->getBusinessUnitOrCreate('Main');
+        $user->setOwner($businessUnit);
+        $user->addBusinessUnit($businessUnit);
+        */
 
         $user->addRole($this->getRoleOrCreate(User::ROLE_DEFAULT));
         $user->addRole($this->getRoleOrCreate(User::ROLE_ANONYMOUS));
