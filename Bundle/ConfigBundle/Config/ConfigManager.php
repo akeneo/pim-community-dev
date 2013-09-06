@@ -131,7 +131,6 @@ class ConfigManager
             $repository->removeValues($config->getId(), $item[0], $item[1]);
         }
 
-
         foreach ($updated as $newItemKey => $newItemValue) {
             $newItemKey = explode(self::SECTION_VIEW_SEPARATOR, $newItemKey);
             $section = $newItemKey[0];
@@ -243,11 +242,11 @@ class ConfigManager
     public function getSettingsByForm(FormInterface $form)
     {
         $settings = array();
-        foreach ($this->getMergedSettings(null, null) as $section => $_settings) {
-            foreach ($_settings as $key => $value) {
-                $settings[$section.self::SECTION_VIEW_SEPARATOR.$key] = $value;
-            }
-        }
+//        foreach ($this->getMergedSettings(null, null) as $section => $_settings) {
+//            foreach ($_settings as $key => $value) {
+//                $settings[$section.self::SECTION_VIEW_SEPARATOR.$key] = $value;
+//            }
+//        }
 
         foreach ($form as $child) {
             $key = str_replace(self::SECTION_VIEW_SEPARATOR, self::SECTION_MODEL_SEPARATOR, $child->getName());

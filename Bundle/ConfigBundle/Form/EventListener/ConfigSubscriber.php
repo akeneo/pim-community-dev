@@ -41,7 +41,6 @@ class ConfigSubscriber implements EventSubscriberInterface
      */
     public function preSubmit(FormEvent $event)
     {
-        //$form = $event->getForm();
         $data = $event->getData();
 
         foreach ($data as $key => $val) {
