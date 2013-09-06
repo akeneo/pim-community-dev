@@ -87,11 +87,8 @@ class WorkflowItem
      *
      * @var WorkflowDefinition
      *
-     * @ORM\ManyToOne(
-     *  targetEntity="WorkflowDefinition",
-     *  inversedBy="workflowItems"
-     * )
-     * @ORM\JoinColumn(name="workflow_name", referencedColumnName="name")
+     * @ORM\ManyToOne(targetEntity="WorkflowDefinition")
+     * @ORM\JoinColumn(name="workflow_name", referencedColumnName="name", onDelete="CASCADE")
      */
     protected $definition;
 

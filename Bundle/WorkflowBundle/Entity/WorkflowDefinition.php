@@ -75,15 +75,6 @@ class WorkflowDefinition
     protected $workflowDefinitionEntities;
 
     /**
-     * Related Workflow Items
-     *
-     * @var Collection
-     *
-     * @ORM\OneToMany(targetEntity="WorkflowItem", mappedBy="definition", cascade={"remove"})
-     */
-    protected $workflowItems;
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -91,7 +82,6 @@ class WorkflowDefinition
         $this->enabled = false;
         $this->configuration = array();
         $this->workflowDefinitionEntities = new ArrayCollection();
-        $this->workflowItems = new ArrayCollection();
     }
 
     /**
@@ -271,6 +261,7 @@ class WorkflowDefinition
     public function import(WorkflowDefinition $definition)
     {
         $this->setName($definition->getName())
+            ->setType($definition->getType())
             ->setLabel($definition->getLabel())
             ->setEnabled($definition->isEnabled())
             ->setConfiguration($definition->getConfiguration())
