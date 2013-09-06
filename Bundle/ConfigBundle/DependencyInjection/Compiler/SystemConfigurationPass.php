@@ -31,7 +31,7 @@ class SystemConfigurationPass implements CompilerPassInterface
         }
 
         $taggedServices = $container->findTaggedServiceIds(FormProvider::TAG_NAME);
-        if (!empty($config) && $taggedServices) {
+        if ($taggedServices) {
             $config = $processor->process($config);
 
             foreach ($taggedServices as $id => $attributes) {

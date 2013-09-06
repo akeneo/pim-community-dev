@@ -7,48 +7,11 @@ oro_system_configuration:
         general_setup:
             title: 'General setup'
 
-        application_information:
-            title: 'Application information'
-            priority: 20
-
-        localization:
-            title: 'Localization'
-            icon:  icon-time
-            description: 'Some additional information about possible localization setup and real need of localization settings (help block)'
-            priority: 10
-
-        locale_options:
-            title: 'Locale options'
-
-        sales:
-            title: 'Sales'
-
-    fields:
-        oro_user.date_format:
-            type: text
-            options:
-               label: 'Date format'
-               required: true
-               constraints:
-                  - NotBlank: ~
-
-            priority: 10
-
     tree:
         system_configuration:
-            sales:
-                children: []
-                priority: 10
             platform:
-                priority: 20
+                priority: 255
                 children:
                     general_setup:
-                        priority: 10
-                        children:
-                            application_information:
-                                children: []
-                            localization:
-                                children:
-                                    locale_options:
-                                        children:
-                                            - oro_user.date_format
+                        priority: 255
+                        children: []

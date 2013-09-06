@@ -36,23 +36,6 @@ class ProcessorDecoratorTest extends \PHPUnit_Framework_TestCase
     public function mergeDataProvider()
     {
         return array(
-            'merge levels test' =>array(
-                array(
-                    ProcessorDecorator::ROOT => array(
-                        ProcessorDecorator::SCOPES_ROOT => array('someLevel')
-                    )
-                ),
-                array(
-                    ProcessorDecorator::ROOT => array(
-                        ProcessorDecorator::SCOPES_ROOT => array('someNewLevel')
-                    )
-                ),
-                array(
-                    ProcessorDecorator::ROOT => array(
-                        ProcessorDecorator::SCOPES_ROOT => array('someLevel', 'someNewLevel')
-                    )
-                ),
-            ),
             'merge tree test' =>array(
                 array(
                     ProcessorDecorator::ROOT => array(

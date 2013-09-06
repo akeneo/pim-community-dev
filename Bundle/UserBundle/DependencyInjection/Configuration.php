@@ -45,9 +45,16 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append(
             $root,
             array(
-                'name_format'  => array('value' => '%%first%% %%last%%'),
-                'phone_format' => array('value' => '(xxx) xxx-xx-xx'),
-                'date_format'  => array('value' => 'mm/dd/yy')
+                'phone_format'        => array('value' => '(xxx) xxx-xx-xx'),
+                'date_format'         => array('value' => 'MM/dd/yy'),
+                'time_format'         => array('value' => 'H:mm'),
+                'locale'              => array('value' => 'en_US'),
+                'timezone'            => array('value' => 'America/New_York'),
+                'default_currency'    => array('value' => 'USD'),
+                'decimal_symbol'      => array('value' => '.'),
+                'thousands_separator' => array('value' => ','),
+                'number_of_decimals'  => array('value' => 2),
+                'name_format'         => array('value' => '%%first%% %%last%%'),
             )
         );
 
