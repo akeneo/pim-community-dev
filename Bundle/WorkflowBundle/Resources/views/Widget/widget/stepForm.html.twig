@@ -9,7 +9,7 @@
 {% set elementId = 'step-form-' ~ random() %}
 <div class="container-fluid form-container widget-content" id="{{ elementId }}">
     <style type="text/css">
-        .step-form-header li.current {
+        .step-form-header li.display {
             font-weight: bold;
         }
 
@@ -26,6 +26,7 @@
 
         .step-form-header li:first-child:before {
             content: "...";
+            font-weight: normal;
             font-size: 24px;
             color: #c8c8c8;
             top: -2px;
@@ -53,11 +54,19 @@
                     "
                 >
                     {% if step.name != displayStep.name %}
-                        <a href="{{ path('oro_workflow_widget_step_form', { workflowItemId: workflowItem.id, stepName: step.name }) }}">
-                            {{ step.label|trans }}
+                        <a href="{{ path('oro_workflow_widget_step_form', { workflowItemId: workflowItem.id, stepName: step.name }) }}"
+                            class="no-hash">
+                            {% block step_label %}
+                                {% if step.name == currentStep.name %}
+                                    <i class="icon icon-chevron-right"></i>
+                                {% else %}
+                                    <i class="icon icon-eye-close"></i>
+                                {% endif %}
+                                {{ step.label|trans }}
+                            {% endblock %}
                         </a>
                     {% else %}
-                        {{ step.label|trans }}
+                        {{ block('step_label') }}
                     {% endif %}
                 </li>
             {% endfor %}
