@@ -1,7 +1,7 @@
 /* global define */
-define(['underscore', 'backbone', 'oro/translator', 'oro/mediator', 'oro/messenger', 'oro/widget-manager',
+define(['underscore', 'backbone', 'oro/translator', 'oro/mediator', 'oro/messenger', 'oro/dialog-widget',
     'oro/mapservice/googlemaps', 'oro/address/view', 'oro/address/collection'],
-function(_, Backbone, __, mediator, messenger, widgetManager,
+function(_, Backbone, __, mediator, messenger, dialogWidget,
      Googlemaps, AddressView, AddressCollection) {
     'use strict';
 
@@ -110,7 +110,7 @@ function(_, Backbone, __, mediator, messenger, widgetManager,
 
         _openAddressEditForm: function(title, url) {
             if (!this.addressEditDialog) {
-                this.addressEditDialog = widgetManager.createWidget('dialog', {
+                this.addressEditDialog = new dialogWidget({
                     'url': url,
                     'title': title,
                     'stateEnabled': false,

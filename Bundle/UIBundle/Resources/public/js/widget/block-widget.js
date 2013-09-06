@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'backbone', 'oro/abstract-widget', 'oro/widget-manager'],
-function(_, Backbone, AbstractWidget, WidgetManager) {
+define(['underscore', 'backbone', 'oro/abstract-widget'],
+function(_, Backbone, AbstractWidget) {
     'use strict';
 
     /**
@@ -8,7 +8,7 @@ function(_, Backbone, AbstractWidget, WidgetManager) {
      * @class   oro.BlockWidget
      * @extends oro.AbstractWidget
      */
-    var widget = AbstractWidget.extend({
+    return AbstractWidget.extend({
         options: _.extend({}, AbstractWidget.prototype.options, {
             type: 'block',
             titleContainer: '.widget-title',
@@ -77,8 +77,4 @@ function(_, Backbone, AbstractWidget, WidgetManager) {
             this.widgetContentContainer.append(this.$el);
         }
     });
-
-    WidgetManager.registerWidgetContainer('block', widget);
-
-    return widget;
 });

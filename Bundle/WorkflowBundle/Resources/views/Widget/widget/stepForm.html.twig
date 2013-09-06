@@ -6,8 +6,7 @@
     </fieldset>
 {% endmacro %}
 
-{% set elementId = 'step-form-' ~ random() %}
-<div class="container-fluid form-container widget-content" id="{{ elementId }}">
+<div class="container-fluid form-container widget-content">
     <style type="text/css">
         .step-form-header li.display {
             font-weight: bold;
@@ -75,8 +74,13 @@
 
     {% if saved %}
         <script type="text/javascript">
-            Oro.widget.Manager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }})
-                .trigger('formSave');
+            require(['oro/widget-manager'],
+            function(widgetManager){
+                var widget = widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }});
+                if (widget) {
+                    widget.trigger('formSave');
+                }
+            });
         </script>
     {% endif %}
 
@@ -110,14 +114,17 @@
     {% endif %}
 
     <script type="text/javascript">
-        $('#{{ elementId }}').on('widgetize', function(e, widget) {
-            widget.$el.find('.step-form-header a').on('click', function(e) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                widget.setUrl(this.href);
-                widget.loadContent();
+        require(['oro/widget-manager'],
+        function(widgetManager){
+            widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget){
+                widget.$el.find('.step-form-header a').on('click', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    widget.setUrl(this.href);
+                    widget.loadContent();
+                });
+                widget.setTitle(widget.$el.find('.step-form-header').show());
             });
-            widget.setTitle(widget.$el.find('.step-form-header').show());
         });
     </script>
 </div>

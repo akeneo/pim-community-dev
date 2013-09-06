@@ -1,10 +1,12 @@
 <div id="{{ elementId }}">{% render options.url %}</div>
 
 <script type="text/javascript">
-    require(['jquery', 'oro/widget-manager'],
-    function($, widgetManager){
+    require(['jquery', 'oro/widget-manager', 'oro/{{ widgetType ~ '-widget' }}'],
+    function($, widgetManager, widget){
         $(function(){
-            widgetManager.createWidget({{ widgetType|json_encode|raw }}, {{ options|json_encode|raw }}).render();
+            var widgetInstance = new widget({{ options|json_encode|raw }});
+            widgetInstance.render();
+            widgetManager.addWidgetInstance(widgetInstance);
         })
     });
 </script>

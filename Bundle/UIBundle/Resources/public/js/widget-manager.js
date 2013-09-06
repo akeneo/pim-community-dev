@@ -8,36 +8,32 @@ function(mediator) {
      * @name   oro.widgetManager
      */
     var widgetManager = {
-        types: {},
         widgets: {},
         aliases: {},
 
-        isSupportedType: function(type) {
-            return this.types.hasOwnProperty(type);
-        },
-
-        registerWidgetContainer: function(type, initializer) {
-            this.types[type] = initializer;
-        },
-
-        createWidget: function(type, options) {
-            var widget = new this.types[type](options);
+        addWidgetInstance: function(widget) {
             this.widgets[widget.getWid()] = widget;
+            mediator.trigger('widget_registration:wid:' + widget.getWid(), widget);
             if (widget.getAlias()) {
                 this.aliases[widget.getAlias()] = widget.getWid();
+                mediator.trigger('widget_registration:' + widget.getAlias(), widget);
             }
-            return widget;
         },
 
-        getWidgetInstance: function(wid) {
-            return this.widgets[wid];
+        getWidgetInstance: function(wid, callback) {
+            if (this.widgets.hasOwnProperty(wid)) {
+                callback(this.widgets[wid]);
+            } else {
+                mediator.once('widget_registration:wid:' + wid, callback);
+            }
         },
 
-        getWidgetInstanceByAlias: function(alias) {
+        getWidgetInstanceByAlias: function(alias, callback) {
             if (this.aliases.hasOwnProperty(alias)) {
-                return this.getWidgetInstance(this.aliases[alias]);
+                this.getWidgetInstance(this.aliases[alias], callback);
+            } else {
+                mediator.once('widget_registration:' + alias, callback);
             }
-            return null;
         },
 
         removeWidget: function(wid) {
@@ -48,5 +44,6 @@ function(mediator) {
     mediator.on('widget_remove', function(wid) {
         widgetManager.removeWidget(wid);
     });
+
     return widgetManager;
 });

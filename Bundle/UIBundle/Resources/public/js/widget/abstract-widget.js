@@ -63,7 +63,7 @@ function($, _, Backbone, mediator) {
         },
 
         getAlias: function() {
-            return this.options.alias;
+            return this.$el.data('alias') || this.options.alias;
         },
 
         _getUniqueIdentifier: function() {
@@ -312,7 +312,6 @@ function($, _, Backbone, mediator) {
         show: function() {
             this.setWidToElement(this.$el);
             this._renderActions();
-            this.$el.trigger('widgetize', this);
             this.trigger('widgetRender', this.$el, this);
         },
 

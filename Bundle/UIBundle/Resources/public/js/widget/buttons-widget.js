@@ -1,14 +1,14 @@
 /* global define */
-define(['underscore', 'backbone', 'oro/abstract-widget', 'oro/widget-manager'],
-function(_, Backbone, AbstractWidget, WidgetManager) {
+define(['underscore', 'backbone', 'oro/abstract-widget'],
+function(_, Backbone, AbstractWidget) {
     'use strict';
 
     /**
-     * @export  oro/block-widget
-     * @class   oro.BlockWidget
+     * @export  oro/buttons-widget
+     * @class   oro.ButtonsWidget
      * @extends oro.AbstractWidget
      */
-    var widget = AbstractWidget.extend({
+    return AbstractWidget.extend({
         options: _.extend(
             _.extend({}, AbstractWidget.prototype.options),
             {
@@ -58,8 +58,4 @@ function(_, Backbone, AbstractWidget, WidgetManager) {
             this.setElement(this.widget);
         }
     });
-
-    WidgetManager.registerWidgetContainer('buttons', widget);
-
-    return widget;
 });
