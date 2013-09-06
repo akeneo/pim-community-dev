@@ -1,0 +1,3 @@
+js:
+    'grids':
+        - '@PimGridBundle/Resources/public/js/app/datagrid/action/quickexportcollectionaction.js'
