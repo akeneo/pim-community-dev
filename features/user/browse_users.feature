@@ -1,8 +1,8 @@
 @javascript
-Feature: Browse channels
-  In order to list the existing channels for the catalog
-  As a user
-  I need to be able to see channels
+Feature: Browse users
+  In order to manage the users and rights
+  As Peter
+  I need to be able to see users
 
   Background:
     Given I am logged in as "admin"
