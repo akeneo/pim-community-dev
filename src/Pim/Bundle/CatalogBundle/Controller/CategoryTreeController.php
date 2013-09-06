@@ -194,7 +194,7 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         $selectNodeId      = $request->get('select_node_id');
-        $withProductsCount = $request->get('with_products_count', false);
+        $withProductsCount = (boolean) $request->get('with_products_count', false);
         $includeParent     = $request->get('include_parent', false);
 
         $selectNode = null;
