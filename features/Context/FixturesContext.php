@@ -1117,6 +1117,8 @@ class FixturesContext extends RawMinkContext
 
         $user = new User();
         $user->setUsername($username);
+        $user->setFirstname('John');
+        $user->setLastname('Doe');
         $user->setPlainPassword($password);
         $user->setEmail($email);
 
