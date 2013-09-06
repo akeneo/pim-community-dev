@@ -16,7 +16,7 @@ class Tags extends PageFilteredGrid
 
     public function add($new = true)
     {
-        $this->test->byXPath("//a[@title='Create tag')]")->click();
+        $this->test->byXPath("//a[@title='Create tag']")->click();
         //due to bug BAP-965
         sleep(1);
         $this->waitPageToLoad();

@@ -16,7 +16,7 @@ class Contacts extends PageFilteredGrid
 
     public function add()
     {
-        $this->test->byXPath("//a[@title='Create contact')]")->click();
+        $this->test->byXPath("//a[@title='Create contact']")->click();
         //due to bug BAP-965
         sleep(1);
         $this->waitPageToLoad();
