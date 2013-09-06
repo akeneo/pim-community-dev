@@ -10,12 +10,12 @@ class SettingsBuilder
     /**
      *
      * @param ArrayNodeDefinition $root     Config root node
-     * @param array               $settings
+     * @param array $settings
      */
     public static function append(ArrayNodeDefinition $root, $settings)
     {
         $builder = new TreeBuilder();
-        $node = $builder
+        $node    = $builder
             ->root('settings')
             ->addDefaultsIfNotSet()
             ->children();
@@ -26,7 +26,7 @@ class SettingsBuilder
                 ->addDefaultsIfNotSet()
                 ->children();
 
-            $type  = isset($setting['type']) && in_array($setting['type'], array('scalar', 'boolean', 'array'))
+            $type = isset($setting['type']) && in_array($setting['type'], array('scalar', 'boolean', 'array'))
                 ? $setting['type']
                 : 'scalar';
 
@@ -36,7 +36,7 @@ class SettingsBuilder
 
                     break;
                 case 'boolean':
-                    $child->booleanNode('value')->defaultValue((bool) $setting['value']);
+                    $child->booleanNode('value')->defaultValue((bool)$setting['value']);
 
                     break;
                 case 'array':

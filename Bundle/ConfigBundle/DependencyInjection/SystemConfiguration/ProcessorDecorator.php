@@ -8,10 +8,10 @@ use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 class ProcessorDecorator
 {
-    const ROOT                 = 'oro_system_configuration';
-    const GROUPS_NODE          = 'groups';
-    const FIELDS_ROOT          = 'fields';
-    const TREE_ROOT            = 'tree';
+    const ROOT        = 'oro_system_configuration';
+    const GROUPS_NODE = 'groups';
+    const FIELDS_ROOT = 'fields';
+    const TREE_ROOT   = 'tree';
 
     /** @var Processor */
     protected $processor;

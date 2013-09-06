@@ -1,6 +1,5 @@
 {#
     Displays title and search form
-    @TODO move search form to separated macro
 #}
 {% macro renderTitleAndSearch(pageTitle, buttons) %}
     <div class="container-fluid search-header clearfix">
@@ -14,9 +13,11 @@
                         {{ button }}
                     {% endfor %}
                 {% endif %}
-                <form class="form-inline search-form configuration-search-form">
-                    <input type="text" id="search" class="span2 search" name="search" value="Find an Option">
-                </form>
+                {#
+                    <form class="form-inline search-form configuration-search-form">
+                        <input type="text" id="search" class="span2 search" name="search" value="Find an Option">
+                    </form>
+                #}
             </div>
         </h1>
     </div>
