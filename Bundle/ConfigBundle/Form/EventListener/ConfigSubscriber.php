@@ -47,9 +47,5 @@ class ConfigSubscriber implements EventSubscriberInterface
 
         $settingsData = $this->configManager->restoreDefaultOnSubmit($event->getData());
         $event->setData($settingsData);
-
-//        foreach ($event->getForm() as $child) {
-//            $child->setData($settingsData[$child->getName()]);
-//        }
     }
 }

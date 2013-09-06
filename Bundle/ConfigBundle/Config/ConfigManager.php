@@ -214,12 +214,15 @@ class ConfigManager
      * @param bool $default
      * @return array
      */
-    public function getSettingsByForm(FormInterface $form, $default = false)
+    public function getSettingsByForm(FormInterface $form)
     {
         $settings = array();
         foreach ($form as $child) {
             $key = str_replace(self::SECTION_VIEW_SEPARATOR, self::SECTION_MODEL_SEPARATOR, $child->getName());
-            $settings[$child->getName()] = array('value' => $this->get($key, null, $default));
+            $settings[$child->getName()] = array(
+                'value' => $this->get($key, null, false),
+                'use_parent_scope_value' => false,
+            );
 //            if ($default = $child->get('use_parent_scope_value')) {
 //                $default->
 //            }
