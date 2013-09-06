@@ -23,7 +23,7 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
     {
         $this->waitUntil(
             function ($testCase) {
-                $status = $testCase->execute(array('script' => "return 'complete' == document['readyState']", 'args' => array()));
+                $status = $testCase->execute(array('script' => "return !!document['page-rendered']", 'args' => array()));
                 if ($status) {
                     return true;
                 } else {
@@ -167,6 +167,7 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
         $this->assertEquals('Dashboard', $this->title());
 
         $this->url(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_TESTS_URL);
+        $this->waitPageToLoad();
         $this->assertEquals('Dashboard', $this->title());
     }
 }

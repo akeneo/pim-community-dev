@@ -199,73 +199,76 @@
         <div style="padding-top: 100em;">(demo dialogExtend features with page scroll)</div>
     </footer>
     <script>
-        $(function(){
-            var dialogWidget;
-            // preview icon
-            $("#config-icon select")
-                    .change(function(){
-                        var icon = "<span class='ui-icon "+$(this).val()+"'></span>";
-                        $(this).parents(".wrapper").find("ins").html(icon);
-                    })
-                    .trigger("change");
+        require(['jquery', 'jquery-ui'],
+        function($) {
+            $(function(){
+                var dialogWidget;
+                // preview icon
+                $("#config-icon select")
+                        .change(function(){
+                            var icon = "<span class='ui-icon "+$(this).val()+"'></span>";
+                            $(this).parents(".wrapper").find("ins").html(icon);
+                        })
+                        .trigger("change");
 
 
-            // click to open dialog
-            $("#my-button").click(function(){
-                //dialog options
-                var dialogOptions = {
-                    appendTo: $('#main-content'),
-                    "title" : "dialog@" + new Date().getTime(),
-                    "width" : 400,
-                    "height" : 300,
-                    "modal" : $("#is-modal").is(":checked"),
-                    "resizable" : $("#is-resizable").is(":checked"),
-                    "close" : function(){ $(this).remove(); }
-                };
-                if ( $("#button-cancel").is(":checked") ) {
-                    dialogOptions.buttons = { "Cancel" : function(){ $(this).dialog("close"); } };
-                }
-                // dialog-extend options
-                var dialogExtendOptions = {
-                    "allowClose" : $("#button-close").is(":checked"),
-                    "allowMaximize" : $("#button-maximize").is(":checked"),
-                    "allowMinimize" : $("#button-minimize").is(":checked"),
-                    "dblclick" : $("#my-form [name=dblclick]:checked").val() || false,
-                    "titlebar" : $("#my-form [name=titlebar]:checked").val() || false
-                };
-                $("#my-form [name=icon]").each(function(){
-                    if ( $(this).find("option:selected").html() != "(default)" ) {
-                        dialogExtendOptions.icons = dialogExtendOptions.icons || {};
-                        dialogExtendOptions.icons[$(this).attr("rel")] = $(this).val();
+                // click to open dialog
+                $("#my-button").click(function(){
+                    //dialog options
+                    var dialogOptions = {
+                        appendTo: $('#main-content'),
+                        "title" : "dialog@" + new Date().getTime(),
+                        "width" : 400,
+                        "height" : 300,
+                        "modal" : $("#is-modal").is(":checked"),
+                        "resizable" : $("#is-resizable").is(":checked"),
+                        "close" : function(){ $(this).remove(); }
+                    };
+                    if ( $("#button-cancel").is(":checked") ) {
+                        dialogOptions.buttons = { "Cancel" : function(){ $(this).dialog("close"); } };
+                    }
+                    // dialog-extend options
+                    var dialogExtendOptions = {
+                        "allowClose" : $("#button-close").is(":checked"),
+                        "allowMaximize" : $("#button-maximize").is(":checked"),
+                        "allowMinimize" : $("#button-minimize").is(":checked"),
+                        "dblclick" : $("#my-form [name=dblclick]:checked").val() || false,
+                        "titlebar" : $("#my-form [name=titlebar]:checked").val() || false
+                    };
+                    $("#my-form [name=icon]").each(function(){
+                        if ( $(this).find("option:selected").html() != "(default)" ) {
+                            dialogExtendOptions.icons = dialogExtendOptions.icons || {};
+                            dialogExtendOptions.icons[$(this).attr("rel")] = $(this).val();
+                        }
+                    });
+                    $("#my-form [name=event]").each(function(){
+                        if ( $(this).is(":checked") ) {
+                            dialogExtendOptions.events = dialogExtendOptions.events || {};
+                            dialogExtendOptions.events[$(this).attr("rel")] = function(evt, dlg) {
+                                $(dlg).prepend(evt.type+"."+evt.handleObj.namespace+"@"+new Date().getTime()+"<br />");
+                            };
+                        }
+                    });
+                    // open dialog
+                    dialogWidget = $("<div>Dialog content</div>").dialog($.extend(dialogOptions, dialogExtendOptions));
+                });
+
+                // click to invoke method
+                $("#config-method button").click(function() {
+                    var command = $(this).text();
+                    if (!dialogWidget) {
+                        $("#my-button").click();
+                    }
+                    if ( dialogWidget.length ) {
+                        if ( command == 'state' ) {
+                            alert( dialogWidget.dialog(command) );
+                        } else {
+                            dialogWidget.dialog(command);
+                        }
                     }
                 });
-                $("#my-form [name=event]").each(function(){
-                    if ( $(this).is(":checked") ) {
-                        dialogExtendOptions.events = dialogExtendOptions.events || {};
-                        dialogExtendOptions.events[$(this).attr("rel")] = function(evt, dlg) {
-                            $(dlg).prepend(evt.type+"."+evt.handleObj.namespace+"@"+new Date().getTime()+"<br />");
-                        };
-                    }
-                });
-                // open dialog
-                dialogWidget = $("<div>Dialog content</div>").dialog($.extend(dialogOptions, dialogExtendOptions));
-            });
 
-            // click to invoke method
-            $("#config-method button").click(function() {
-                var command = $(this).text();
-                if (!dialogWidget) {
-                    $("#my-button").click();
-                }
-                if ( dialogWidget.length ) {
-                    if ( command == 'state' ) {
-                        alert( dialogWidget.dialog(command) );
-                    } else {
-                        dialogWidget.dialog(command);
-                    }
-                }
             });
-
         });
     </script>
 {% endblock content %}
