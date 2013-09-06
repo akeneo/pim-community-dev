@@ -7,12 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Form\Type\BatchOperation\EditCommonAttributesType;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Product;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
- * Edit common product of given products
+ * Edit common attributes of given products
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -20,7 +19,7 @@ use Pim\Bundle\CatalogBundle\Entity\Product;
  */
 class EditCommonAttributes extends AbstractBatchOperation
 {
-    protected $product;
+    protected $values;
 
     protected $locale;
 
@@ -32,19 +31,19 @@ class EditCommonAttributes extends AbstractBatchOperation
     {
         $this->productManager = $productManager;
         $this->localeManager  = $localeManager;
-        $this->product        = $this->initializeProduct();
+        $this->values         = new ArrayCollection;
     }
 
-    public function setProduct(Product $product)
+    public function setValues(Collection $values)
     {
-        $this->product = $product;
+        $this->values = $values;
 
         return $this;
     }
 
-    public function getProduct()
+    public function getValues()
     {
-        return $this->product;
+        return $this->values;
     }
 
     public function setLocale(Locale $locale)
@@ -98,7 +97,7 @@ class EditCommonAttributes extends AbstractBatchOperation
 
         foreach ($availableAttributes as $attribute) {
             if (in_array($attribute->getCode(), $displayedAttributes)) {
-                $this->addValuesToProduct($attribute);
+                $this->addValues($attribute);
             }
         }
     }
@@ -118,15 +117,16 @@ class EditCommonAttributes extends AbstractBatchOperation
         $this->productManager->getStorageManager()->flush();
     }
 
-    private function addValuesToProduct(ProductAttribute $attribute)
+    private function addValues(ProductAttribute $attribute)
     {
         $locale = $this->getLocale();
         if ($attribute->getScopable()) {
             foreach ($locale->getChannels() as $channel) {
-                $this->product->addValue($this->createValue($attribute, $locale, $channel));
+                $key = $attribute->getCode().'_'.$channel->getCode();
+                $this->values[$key] = $this->createValue($attribute, $locale, $channel);
             }
         } else {
-            $this->product->addValue($this->createValue($attribute, $locale));
+            $this->values[$attribute->getCode()] = $this->createValue($attribute, $locale);
         }
     }
 
@@ -144,13 +144,5 @@ class EditCommonAttributes extends AbstractBatchOperation
         }
 
         return $value;
-    }
-
-    private function initializeProduct()
-    {
-        $product = $this->productManager->createFlexible();
-        $product->removeValue($product->getIdentifier());
-
-        return $product;
     }
 }
