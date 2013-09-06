@@ -4,9 +4,7 @@
 {% macro renderTitleAndSearch(pageTitle, buttons) %}
     <div class="container-fluid search-header clearfix">
         <h1>
-            <span class="pull-left">
-                {{ pageTitle|trans }}
-            </span>
+            {{ pageTitle|trans }}
             <div class="pull-right">
                 {% if buttons is defined %}
                     {% for button in buttons %}
@@ -159,7 +157,7 @@
 
             {% for scrollBlock in data.dataBlocks %}
                 <div class="clearfix">
-                    <h2 class="oro-subtitle">{{ scrollBlock.title|trans }}</h2>
+                    <h4 class="scrollspy-title">{{ scrollBlock.title|trans }}</h4>
 
                     {% if scrollBlock.description is defined and scrollBlock.description != '' %}
                         <p>{{ scrollBlock.description }}</p>

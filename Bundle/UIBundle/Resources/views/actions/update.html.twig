@@ -25,7 +25,7 @@
                     </div>
                     <div class="span9">
                         {% block pageHeader %}
-                            <div class="customer-info {% if (breadcrumbs.hasAvatar is not defined) %}customer-simple{% endif %} well-small">
+                            <div class="clearfix customer-info {% if (breadcrumbs.hasAvatar is not defined) %}customer-simple{% endif %} well-small">
                                 {% if (breadcrumbs.hasAvatar is defined and breadcrumbs.hasAvatar) %}
                                     <div class="visual">
                                         <img src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-usser.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>

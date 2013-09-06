@@ -5,7 +5,7 @@
     <div id="{{ valueContainerId }}" class="controls control-subgroup{% if form.value.vars.errors|length > 0 %} validation-error{% endif %}">
         {{ form_widget(form.value, additionalOptions) }}
         {% if form.value.vars.tooltip is defined and form.value.vars.tooltip != '' %}
-            <a class="icon icon-info-sign info-tooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="{{ form.value.vars.tooltip|trans }}">
+            <a class="icon icon-info info-tooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="{{ form.value.vars.tooltip|trans }}">
                 data-original-title
             </a>
         {% endif %}
@@ -20,26 +20,30 @@
     </div>
 
     <script type="text/javascript">
-        !function() {
-            "use strict";
+        /* jshint browser:true, devel:true */
+        /* global require */
+        require(['jquery', 'underscore'],
+            function($, _) {
+                'use strict';
 
-            $(function() {
-                var checkboxEl = $('#{{ form.use_parent_scope_value.vars.id }}');
-                var valueEls   = $('#{{ valueContainerId }}').find(':input');
+                $(function() {
+                    var checkboxEl = $('#{{ form.use_parent_scope_value.vars.id }}');
+                    var valueEls   = $('#{{ valueContainerId }}').find(':input');
 
-                checkboxEl.change(function() {
-                    var value = $(this).is(':checked');
-                    valueEls.each(function(i, el) {
-                        $(el)
-                            .prop('disabled', value)
-                            .data('disabled', value);
+                    checkboxEl.change(function() {
+                        var value = $(this).is(':checked');
+                        valueEls.each(function(i, el) {
+                            $(el)
+                                .prop('disabled', value)
+                                .data('disabled', value);
 
-                        if (!_.isUndefined($.uniform) && _.contains($.uniform.elements, el)) {
-                            $(el).uniform('update');
-                        }
+                            if (!_.isUndefined($.uniform) && _.contains($.uniform.elements, el)) {
+                                $(el).uniform('update');
+                            }
+                        });
                     });
                 });
-            });
-        }();
+            }
+        );
     </script>
 {% endblock %}

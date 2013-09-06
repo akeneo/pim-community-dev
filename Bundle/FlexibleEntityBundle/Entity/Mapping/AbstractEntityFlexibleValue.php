@@ -504,6 +504,39 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     }
 
     /**
+     * Check if value is related to attribute and match locale and scope if it's localizable, scopable
+     *
+     * @param string $attribute
+     * @param string $locale
+     * @param string $scope
+     */
+    public function isMatching($attribute, $locale, $scope)
+    {
+        $isLocalizable = $this->getAttribute()->getTranslatable();
+        $isScopable    = $this->getAttribute()->getScopable();
+        $isLocalized   = $this->getLocale() == $locale;
+        $isScoped      = $this->getScope() == $scope;
+
+        if ($this->getAttribute()->getCode() == $attribute) {
+            if ($isLocalizable and $isLocalized) {
+                if ($isScopable and $isScoped) {
+                    return true;
+                } elseif (!$isScopable) {
+                    return true;
+                }
+            } elseif (!$isLocalizable) {
+                if ($isScopable and $isScoped) {
+                    return true;
+                } else if (!$isScopable) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function __toString()
