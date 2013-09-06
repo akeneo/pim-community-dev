@@ -1,53 +1,22 @@
 <?php
 
-namespace Oro\Bundle\CronBundle\DependencyInjection;
+namespace Oro\Bundle\PlatformBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Yaml\Parser;
 
 class OroCronExtensionTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var ContainerBuilder
-     */
-    protected $configuration;
-
-    public function testLoadWithDefaults()
-    {
-        $this->createEmptyConfiguration();
-
-        $this->assertParameter(5, 'oro_cron.max_jobs');
-    }
-
     public function testLoad()
     {
-        $this->createFullConfiguration();
+        $configuration = new ContainerBuilder();
 
-        $this->assertParameter(10, 'oro_cron.max_jobs');
-    }
-
-    protected function createEmptyConfiguration()
-    {
-        $this->configuration = new ContainerBuilder();
-
-        $loader = new OroCronExtension();
+        $loader = new OroPlatformExtension();
         $config = $this->getEmptyConfig();
 
-        $loader->load(array($config), $this->configuration);
+        $loader->load(array($config), $configuration);
 
-        $this->assertTrue($this->configuration instanceof ContainerBuilder);
-    }
-
-    protected function createFullConfiguration()
-    {
-        $this->configuration = new ContainerBuilder();
-
-        $loader = new OroCronExtension();
-        $config = $this->getFullConfig();
-
-        $loader->load(array($config), $this->configuration);
-
-        $this->assertTrue($this->configuration instanceof ContainerBuilder);
+        $this->assertTrue($configuration instanceof ContainerBuilder);
     }
 
     /**
@@ -59,29 +28,5 @@ class OroCronExtensionTest extends \PHPUnit_Framework_TestCase
         $parser = new Parser();
 
         return $parser->parse($yaml);
-    }
-
-    protected function getFullConfig()
-    {
-        $yaml = <<<EOF
-max_concurrent_jobs: 10
-EOF;
-        $parser = new Parser();
-
-        return  $parser->parse($yaml);
-    }
-
-    /**
-     * @param mixed  $value
-     * @param string $key
-     */
-    protected function assertParameter($value, $key)
-    {
-        $this->assertEquals($value, $this->configuration->getParameter($key), sprintf('%s parameter is correct', $key));
-    }
-
-    protected function tearDown()
-    {
-        unset($this->configuration);
     }
 }
