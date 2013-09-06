@@ -6,6 +6,19 @@
 {% endblock %}
 
 {% block head_style %}
+    {% stylesheets
+        'bundles/pimui/css/pim.less'
+        'bundles/pimui/css/bootstrap-datetimepicker.min.css'
+        'bundles/pimui/css/slimbox2.css'
+        'bundles/pimui/css/font-awesome/font-awesome.min.css'
+        'bundles/pimui/css/flags.css'
+
+        debug=false
+        filter='cssrewrite,lessphp'
+        output='css/pim_all.css'
+    %}
+    <link rel="stylesheet" media="all" href="{{ asset_url }}" />
+    {% endstylesheets %}
     {{ parent() }}
     {{ block('head_style_component') }}
 {% endblock %}
