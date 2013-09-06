@@ -4,6 +4,11 @@
 
     <div id="{{ valueContainerId }}" class="controls control-subgroup{% if form.value.vars.errors|length > 0 %} validation-error{% endif %}">
         {{ form_widget(form.value, additionalOptions) }}
+        {% if form.value.vars.tooltip is defined and form.value.vars.tooltip != '' %}
+            <a class="icon icon-info-sign info-tooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="{{ form.value.vars.tooltip|trans }}">
+                data-original-title
+            </a>
+        {% endif %}
         {{ form_errors(form.value) }}
     </div>
 
