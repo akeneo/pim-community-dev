@@ -338,10 +338,14 @@ class AclManager
         try {
             return $this->aclProvider->findAcls($oids, array($sid));
         } catch (AclNotFoundException $ex) {
-            $partialResultException = new NotAllAclsFoundException(
-                'The provider could not find ACLs for all object identities.'
-            );
-            $partialResultException->setPartialResult(new \SplObjectStorage());
+            if ($ex instanceof NotAllAclsFoundException) {
+                $partialResultException = $ex;
+            } else {
+                $partialResultException = new NotAllAclsFoundException(
+                    'The provider could not find ACLs for all object identities.'
+                );
+                $partialResultException->setPartialResult(new \SplObjectStorage());
+            }
             throw $partialResultException;
         }
     }

@@ -127,7 +127,7 @@ class AclPrivilegeRepository
                     ->setGroup($group)
                     ->setExtensionKey($extensionKey);
 
-                $this->addPermissions($privilege, $oid, $acls, $extension, $rootAcl);
+                $this->addPermissions($sid, $privilege, $oid, $acls, $extension, $rootAcl);
 
                 $privileges->add($privilege);
             }
@@ -491,6 +491,7 @@ class AclPrivilegeRepository
     /**
      * Adds permissions to the given $privilege.
      *
+     * @param SID $sid
      * @param AclPrivilege $privilege
      * @param OID $oid
      * @param \SplObjectStorage $acls
@@ -498,6 +499,7 @@ class AclPrivilegeRepository
      * @param AclInterface $rootAcl
      */
     protected function addPermissions(
+        SID $sid,
         AclPrivilege $privilege,
         OID $oid,
         \SplObjectStorage $acls,
@@ -507,7 +509,7 @@ class AclPrivilegeRepository
         $allowedPermissions = $extension->getAllowedPermissions($oid);
         $acl = $this->findAclByOid($acls, $oid);
         if ($rootAcl !== null) {
-            $this->addAclPermissions(null, $privilege, $allowedPermissions, $extension, $rootAcl, $acl);
+            $this->addAclPermissions($sid, null, $privilege, $allowedPermissions, $extension, $rootAcl, $acl);
         }
 
         foreach ($allowedPermissions as $permission) {
@@ -521,6 +523,7 @@ class AclPrivilegeRepository
      * Adds permissions to the given $privilege based on the given ACL.
      * The $permissions argument is used to filter privileges for the given permissions only.
      *
+     * @param SID $sid
      * @param string|null $field The name of a field.
      *                           Set to null to work with class-based and object-based ACEs
      *                           Set to not null to work with class-field-based and object-field-based ACEs
@@ -531,6 +534,7 @@ class AclPrivilegeRepository
      * @param AclInterface $acl
      */
     protected function addAclPermissions(
+        SID $sid,
         $field,
         AclPrivilege $privilege,
         array $permissions,
@@ -543,7 +547,7 @@ class AclPrivilegeRepository
             $this->addAcesPermissions(
                 $privilege,
                 $permissions,
-                $this->manager->getAceProvider()->getAces($acl, AclManager::OBJECT_ACE, $field),
+                $this->getAces($sid, $acl, AclManager::OBJECT_ACE, $field),
                 $extension
             );
             // check class ACEs if object ACEs were not contains all requested privileges
@@ -551,7 +555,7 @@ class AclPrivilegeRepository
                 $this->addAcesPermissions(
                     $privilege,
                     $permissions,
-                    $this->manager->getAceProvider()->getAces($acl, AclManager::CLASS_ACE, $field),
+                    $this->getAces($sid, $acl, AclManager::CLASS_ACE, $field),
                     $extension
                 );
             }
@@ -559,7 +563,7 @@ class AclPrivilegeRepository
             if ($privilege->getPermissionCount() < count($permissions) && $acl->isEntriesInheriting()) {
                 $parentAcl = $acl->getParentAcl();
                 if ($parentAcl !== null) {
-                    $this->addAclPermissions($field, $privilege, $permissions, $extension, $rootAcl, $parentAcl);
+                    $this->addAclPermissions($sid, $field, $privilege, $permissions, $extension, $rootAcl, $parentAcl);
                 }
             }
         }
@@ -568,11 +572,33 @@ class AclPrivilegeRepository
             $this->addAcesPermissions(
                 $privilege,
                 $permissions,
-                $this->manager->getAceProvider()->getAces($rootAcl, AclManager::OBJECT_ACE, $field),
+                $this->getAces($sid, $rootAcl, AclManager::OBJECT_ACE, $field),
                 $extension,
                 true
             );
         }
+    }
+
+    /**
+     * Gets all ACEs associated with given ACL and the given security identity
+     *
+     * @param SID $sid
+     * @param AclInterface $acl
+     * @param string $type The ACE type. Can be one of AclManager::*_ACE constants
+     * @param string|null $field The name of a field.
+     *                           Set to null for class-based or object-based ACE
+     *                           Set to not null class-field-based or object-field-based ACE
+     * @return EntryInterface[]
+     */
+    protected function getAces(SID $sid, AclInterface $acl, $type, $field)
+    {
+        return array_filter(
+            $this->manager->getAceProvider()->getAces($acl, $type, $field),
+            function ($ace) use (&$sid) {
+                /** @var EntryInterface $ace */
+                return $sid->equals($ace->getSecurityIdentity());
+            }
+        );
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Extension;
 
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension;
 use Oro\Bundle\SecurityBundle\Acl\Extension\EntityMaskBuilder;
@@ -342,6 +343,55 @@ class EntityAclExtensionTest extends \PHPUnit_Framework_TestCase
                 $this->extension->getMaskPattern($aceMask),
                 $this->extension->getMaskPattern($expectedMask),
                 $this->extension->getMaskPattern($resultMask)
+            )
+        );
+    }
+
+    public function testGetAccessLevel()
+    {
+        $this->assertEquals(
+            AccessLevel::NONE_LEVEL,
+            $this->extension->getAccessLevel(EntityMaskBuilder::GROUP_NONE)
+        );
+        $this->assertEquals(
+            AccessLevel::SYSTEM_LEVEL,
+            $this->extension->getAccessLevel(EntityMaskBuilder::MASK_VIEW_SYSTEM)
+        );
+        $this->assertEquals(
+            AccessLevel::GLOBAL_LEVEL,
+            $this->extension->getAccessLevel(EntityMaskBuilder::MASK_VIEW_GLOBAL)
+        );
+        $this->assertEquals(
+            AccessLevel::DEEP_LEVEL,
+            $this->extension->getAccessLevel(EntityMaskBuilder::MASK_VIEW_DEEP)
+        );
+        $this->assertEquals(
+            AccessLevel::LOCAL_LEVEL,
+            $this->extension->getAccessLevel(EntityMaskBuilder::MASK_VIEW_LOCAL)
+        );
+        $this->assertEquals(
+            AccessLevel::BASIC_LEVEL,
+            $this->extension->getAccessLevel(EntityMaskBuilder::MASK_VIEW_BASIC)
+        );
+        $this->assertEquals(
+            AccessLevel::SYSTEM_LEVEL,
+            $this->extension->getAccessLevel(
+                EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_EDIT_BASIC,
+                'VIEW'
+            )
+        );
+        $this->assertEquals(
+            AccessLevel::BASIC_LEVEL,
+            $this->extension->getAccessLevel(
+                EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_EDIT_BASIC,
+                'EDIT'
+            )
+        );
+        $this->assertEquals(
+            AccessLevel::NONE_LEVEL,
+            $this->extension->getAccessLevel(
+                EntityMaskBuilder::MASK_VIEW_SYSTEM | EntityMaskBuilder::MASK_EDIT_BASIC,
+                'CREATE'
             )
         );
     }

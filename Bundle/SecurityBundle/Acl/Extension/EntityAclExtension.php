@@ -325,7 +325,7 @@ class EntityAclExtension extends AbstractAclExtension
             $mask = $mask & $permissionMask;
         }
 
-        $result = AccessLevel::UNKNOWN;
+        $result = AccessLevel::NONE_LEVEL;
         foreach (AccessLevel::$allAccessLevelNames as $accessLevel) {
             if (0 !== ($mask & $this->getMaskBuilderConst($identity, 'GROUP_' . $accessLevel))) {
                 $result = AccessLevel::getConst($accessLevel . '_LEVEL');

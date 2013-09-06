@@ -143,6 +143,9 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetPrivileges()
     {
+        $sid = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
+        $sid->expects($this->any())->method('equals')->will($this->returnValue(true));
+
         $extensionKey = 'test';
         $classes = array(
             'Acme\Class1',
@@ -177,22 +180,20 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $allowedPermissions[(string)$oid1] = array('VIEW', 'CREATE', 'EDIT');
         $allowedPermissions[(string)$oid2] = array('VIEW', 'CREATE');
 
-        $rootAce = $this->getAce('root');
+        $rootAce = $this->getAce('root', $sid);
         $rootAcl->expects($this->any())
             ->method('getObjectAces')
             ->will($this->returnValue(array($rootAce)));
         $rootAcl->expects($this->never())
             ->method('getClassAces');
 
-        $oid1Ace = $this->getAce('oid1');
+        $oid1Ace = $this->getAce('oid1', $sid);
         $oid1Acl->expects($this->any())
             ->method('getClassAces')
             ->will($this->returnValue(array($oid1Ace)));
         $oid1Acl->expects($this->once())
             ->method('getObjectAces')
             ->will($this->returnValue(array()));
-
-        $sid = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
 
         $this->extension->expects($this->once())
             ->method('getExtensionKey')
@@ -693,11 +694,14 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         return $privilege;
     }
 
-    private function getAce($mask)
+    private function getAce($mask, $sid = null)
     {
         $ace = $this->getMock('Symfony\Component\Security\Acl\Model\EntryInterface');
         $ace->expects($this->any())->method('isGranting')->will($this->returnValue(true));
         $ace->expects($this->any())->method('getMask')->will($this->returnValue($mask));
+        if ($sid !== null) {
+            $ace->expects($this->any())->method('getSecurityIdentity')->will($this->returnValue($sid));
+        }
 
         return $ace;
     }
