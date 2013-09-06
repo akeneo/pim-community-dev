@@ -97,6 +97,13 @@ function init() {
     // Instantiate sidebar
     $('.has-sidebar').sidebarize();
 
+    $('.remove-attribute').each(function () {
+        var target = $(this).parent().find('.icons-container').first();
+        if (target.length) {
+            $(this).appendTo(target).attr('tabIndex', -1);
+        }
+    });
+
     _.each($('form div.scopable'), function(field) {
         new Pim.View.Scopable({ el: $(field) });
     });
@@ -121,13 +128,6 @@ function init() {
     // Toogle accordion icon
     $('.accordion').on('show hide', function (e) {
         $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('fa-icon-collapse-alt fa-icon-expand-alt');
-    });
-
-    $('.remove-attribute').each(function () {
-        var target = $(this).parent().find('.icons-container').first();
-        if (target.length) {
-            $(this).appendTo(target).attr('tabIndex', -1);
-        }
     });
 
     $('#attribute-buttons .dropdown-menu').click(function (e) {
