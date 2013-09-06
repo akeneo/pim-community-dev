@@ -22,6 +22,6 @@ final class ActionMaskBuilder extends MaskBuilder
      */
     public function __construct()
     {
-        parent::__construct(0);
+        parent::__construct();
     }
 }

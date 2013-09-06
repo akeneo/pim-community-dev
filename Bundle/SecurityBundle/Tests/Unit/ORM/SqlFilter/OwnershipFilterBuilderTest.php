@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\SecurityBundle\Tests\Unit\ORM;
+namespace Oro\Bundle\SecurityBundle\Tests\Unit\ORM\SqlFilter;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
-use Oro\Bundle\SecurityBundle\ORM\OwnershipSqlFilterBuilder;
+use Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilterBuilder;
 use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProviderStub;
@@ -12,7 +12,7 @@ use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Oro\Bundle\SecurityBundle\Acl\Domain\OneShotIsGrantedObserver;
 
-class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
+class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
 {
     const BUSINESS_UNIT = 'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\BusinessUnit';
     const ORGANIZATION = 'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization';
@@ -20,7 +20,7 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
     const TEST_ENTITY = 'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity';
 
     /**
-     * @var OwnershipSqlFilterBuilder
+     * @var OwnershipFilterBuilder
      */
     private $builder;
 
@@ -40,6 +40,14 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $this->tree = new OwnerTree();
 
+        $entityMetadataProvider =
+            $this->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\EntitySecurityMetadataProvider')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $entityMetadataProvider->expects($this->any())
+            ->method('isProtectedEntity')
+            ->will($this->returnValue(true));
+
         $this->metadataProvider = new OwnershipMetadataProviderStub($this);
         $this->metadataProvider->setMetadata(
             $this->metadataProvider->getOrganizationClass(),
@@ -55,18 +63,20 @@ class OwnershipSqlFilterBuilderTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
-        $this->securityContextLink = $this->getMockBuilder(
-            'Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink'
-        )->disableOriginalConstructor()->getMock();
-        $this->securityContextLink->expects($this->any())->method('getService')
+        $securityContextLink =
+            $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $securityContextLink->expects($this->any())->method('getService')
             ->will($this->returnValue($this->securityContext));
         $this->aclVoter = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->builder = new OwnershipSqlFilterBuilder(
-            $this->securityContextLink,
+        $this->builder = new OwnershipFilterBuilder(
+            $securityContextLink,
             new ObjectIdAccessor(),
+            $entityMetadataProvider,
             $this->metadataProvider,
             $this->tree,
             $this->aclVoter

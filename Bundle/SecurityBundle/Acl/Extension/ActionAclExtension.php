@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
+use Oro\Bundle\SecurityBundle\Metadata\ActionMetadataProvider;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
@@ -9,10 +10,17 @@ use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 class ActionAclExtension extends AbstractAclExtension
 {
     /**
+     * @var ActionMetadataProvider
+     */
+    protected $actionMetadataProvider;
+
+    /**
      * Constructor
      */
-    public function __construct()
+    public function __construct(ActionMetadataProvider $actionMetadataProvider)
     {
+        $this->actionMetadataProvider = $actionMetadataProvider;
+
         $this->map = array(
             'EXECUTE' => array(
                 ActionMaskBuilder::MASK_EXECUTE,
@@ -25,17 +33,17 @@ class ActionAclExtension extends AbstractAclExtension
      */
     public function supports($type, $id)
     {
-        if ($type === ObjectIdentityFactory::ROOT_IDENTITY_TYPE && $id === $this->getRootId()) {
+        if ($type === ObjectIdentityFactory::ROOT_IDENTITY_TYPE && $id === $this->getExtensionKey()) {
             return true;
         }
 
-        return $id === $this->getRootId();
+        return $id === $this->getExtensionKey();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getRootId()
+    public function getExtensionKey()
     {
         return 'action';
     }
@@ -126,12 +134,6 @@ class ActionAclExtension extends AbstractAclExtension
      */
     public function getClasses()
     {
-        // @todo it is temporary
-        return array(
-            'Mass Delete',
-            'Execute Job',
-            'Change Owner',
-            'Import/Export',
-        );
+        return $this->actionMetadataProvider->getActions();
     }
 }

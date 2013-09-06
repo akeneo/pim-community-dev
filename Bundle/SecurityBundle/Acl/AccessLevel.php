@@ -56,10 +56,25 @@ final class AccessLevel
      * Gets constant value by its name
      *
      * @param string $name
-     * @return mixed
+     * @return int
      */
     public static function getConst($name)
     {
         return constant('self::' . $name);
+    }
+
+    /**
+     * Gets the name of an access level by the given value of the constant
+     *
+     * @param int $value
+     * @return string|null
+     */
+    public static function getAccessLevelName($value)
+    {
+        if ($value > self::NONE_LEVEL) {
+            return self::$allAccessLevelNames[$value - 1];
+        }
+
+        return null;
     }
 }

@@ -61,17 +61,10 @@ abstract class MaskBuilder
 
     /**
      * Constructor
-     *
-     * @param integer $mask
-     * @throws \InvalidArgumentException
      */
-    protected function __construct($mask)
+    protected function __construct()
     {
-        if (!is_int($mask)) {
-            throw new \InvalidArgumentException('$mask must be an integer.');
-        }
-
-        $this->mask = $mask;
+        $this->reset();
     }
 
     /**
@@ -93,7 +86,11 @@ abstract class MaskBuilder
      */
     public function add($mask)
     {
-        if (is_string($mask) && defined($name = 'static::MASK_' . strtoupper($mask))) {
+        if (is_string($mask)) {
+            $name = 'static::MASK_' . strtoupper($mask);
+            if (!defined($name)) {
+                throw new \InvalidArgumentException(sprintf('Undefined mask: %s.', $mask));
+            }
             $mask = constant($name);
         } elseif (!is_int($mask)) {
             throw new \InvalidArgumentException('$mask must be a string or an integer.');

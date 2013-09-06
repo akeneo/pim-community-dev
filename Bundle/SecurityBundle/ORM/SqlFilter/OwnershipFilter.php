@@ -1,19 +1,22 @@
 <?php
+
 namespace Oro\Bundle\SecurityBundle\ORM\SqlFilter;
 
-use Oro\Bundle\SecurityBundle\ORM\OwnershipSqlFilterBuilder;
+use Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilterBuilder;
 use Doctrine\Common\Util\ClassUtils;
-
 use Doctrine\ORM\Mapping\ClassMetaData;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 
 class OwnershipFilter extends SQLFilter
 {
     /**
-     * @var OwnershipSqlFilterBuilder
+     * @var OwnershipFilterBuilder
      */
     protected $builder;
 
+    /**
+     * {@inheritdoc}
+     */
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
         return ''; //TODO: Removed after new acl implemented
@@ -25,9 +28,9 @@ class OwnershipFilter extends SQLFilter
     }
 
     /**
-     * @param OwnershipSqlFilterBuilder $builder
+     * @param OwnershipFilterBuilder $builder
      */
-    public function setBuilder(OwnershipSqlFilterBuilder $builder)
+    public function setBuilder(OwnershipFilterBuilder $builder)
     {
         $this->builder = $builder;
     }

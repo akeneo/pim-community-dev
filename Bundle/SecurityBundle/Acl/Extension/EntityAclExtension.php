@@ -3,6 +3,7 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Metadata\EntitySecurityMetadataProvider;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
@@ -42,6 +43,11 @@ class EntityAclExtension extends AbstractAclExtension
     protected $metadataProvider;
 
     /**
+     * @var EntitySecurityMetadataProvider
+     */
+    protected $entityMetadataProvider;
+
+    /**
      * @var OwnershipDecisionMakerInterface
      */
     protected $decisionMaker;
@@ -68,6 +74,7 @@ class EntityAclExtension extends AbstractAclExtension
      * @param EntityClassAccessor $entityClassAccessor
      * @param ObjectIdAccessor $objectIdAccessor
      * @param EntityClassResolver $entityClassResolver
+     * @param EntitySecurityMetadataProvider $entityMetadataProvider
      * @param OwnershipMetadataProvider $metadataProvider
      * @param OwnershipDecisionMakerInterface $decisionMaker
      */
@@ -75,12 +82,14 @@ class EntityAclExtension extends AbstractAclExtension
         EntityClassAccessor $entityClassAccessor,
         ObjectIdAccessor $objectIdAccessor,
         EntityClassResolver $entityClassResolver,
+        EntitySecurityMetadataProvider $entityMetadataProvider,
         OwnershipMetadataProvider $metadataProvider,
         OwnershipDecisionMakerInterface $decisionMaker
     ) {
         $this->entityClassAccessor = $entityClassAccessor;
         $this->objectIdAccessor = $objectIdAccessor;
         $this->entityClassResolver = $entityClassResolver;
+        $this->entityMetadataProvider = $entityMetadataProvider;
         $this->metadataProvider = $metadataProvider;
         $this->decisionMaker = $decisionMaker;
 
@@ -145,30 +154,23 @@ class EntityAclExtension extends AbstractAclExtension
      */
     public function supports($type, $id)
     {
-        if ($type === ObjectIdentityFactory::ROOT_IDENTITY_TYPE && $id === $this->getRootId()) {
+        if ($type === ObjectIdentityFactory::ROOT_IDENTITY_TYPE && $id === $this->getExtensionKey()) {
             return true;
         }
 
-        if ($id === $this->getRootId()) {
+        if ($id === $this->getExtensionKey()) {
             $type = $this->entityClassResolver->getEntityClass($this->entityClassAccessor->getClass($type));
         } else {
             $type = $this->entityClassAccessor->getClass($type);
         }
 
-        // @TODO Add check for service entities (not annotated as ACL)
-
-        $delim = strrpos($type, '\\');
-        if ($delim && $this->entityClassResolver->isKnownEntityClassNamespace(substr($type, 0, $delim))) {
-            return true;
-        }
-
-        return false;
+        return $this->entityMetadataProvider->isProtectedEntity($type);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getRootId()
+    public function getExtensionKey()
     {
         return 'entity';
     }
@@ -256,40 +258,40 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function prepareRootAceMask($aceMask, $object)
+    public function adaptRootMask($rootMask, $object)
     {
-        $permissions = $this->getPermissions($aceMask, true);
+        $permissions = $this->getPermissions($rootMask, true);
         if (!empty($permissions)) {
             $metadata = $this->getMetadata($object);
-            $identity = $this->getServiceBits($aceMask);
+            $identity = $this->getServiceBits($rootMask);
             foreach ($permissions as $permission) {
                 $permissionMask = $this->getMaskBuilderConst($identity, 'GROUP_' . $permission);
-                $mask = $aceMask & $permissionMask;
+                $mask = $rootMask & $permissionMask;
                 $accessLevel = $this->getAccessLevel($mask);
                 if (!$metadata->hasOwner()) {
                     if ($identity === EntityMaskBuilder::IDENTITY
                         && ($permission === 'ASSIGN' || $permission === 'SHARE')
                     ) {
-                        $aceMask &= ~$this->removeServiceBits($mask);
+                        $rootMask &= ~$this->removeServiceBits($mask);
                     } elseif ($accessLevel < AccessLevel::SYSTEM_LEVEL) {
-                        $aceMask &= ~$this->removeServiceBits($mask);
-                        $aceMask |= $this->getMaskBuilderConst($identity, 'MASK_' . $permission . '_SYSTEM');
+                        $rootMask &= ~$this->removeServiceBits($mask);
+                        $rootMask |= $this->getMaskBuilderConst($identity, 'MASK_' . $permission . '_SYSTEM');
                     }
                 } elseif ($metadata->isOrganizationOwned()) {
                     if ($accessLevel < AccessLevel::GLOBAL_LEVEL) {
-                        $aceMask &= ~$this->removeServiceBits($mask);
-                        $aceMask |= $this->getMaskBuilderConst($identity, 'MASK_' . $permission . '_GLOBAL');
+                        $rootMask &= ~$this->removeServiceBits($mask);
+                        $rootMask |= $this->getMaskBuilderConst($identity, 'MASK_' . $permission . '_GLOBAL');
                     }
                 } elseif ($metadata->isBusinessUnitOwned()) {
                     if ($accessLevel < AccessLevel::LOCAL_LEVEL) {
-                        $aceMask &= ~$this->removeServiceBits($mask);
-                        $aceMask |= $this->getMaskBuilderConst($identity, 'MASK_' . $permission . '_LOCAL');
+                        $rootMask &= ~$this->removeServiceBits($mask);
+                        $rootMask |= $this->getMaskBuilderConst($identity, 'MASK_' . $permission . '_LOCAL');
                     }
                 }
             }
         }
 
-        return $aceMask;
+        return $rootMask;
     }
 
     /**
@@ -386,11 +388,7 @@ class EntityAclExtension extends AbstractAclExtension
      */
     public function getClasses()
     {
-        // @todo it is temporary
-        return array(
-            'Oro\Bundle\UserBundle\Entity\User',
-            'Oro\Bundle\UserBundle\Entity\Role',
-        );
+        return $this->entityMetadataProvider->getEntities();
     }
 
     /**
@@ -450,7 +448,7 @@ class EntityAclExtension extends AbstractAclExtension
         $type = $id = null;
         $this->parseDescriptor($descriptor, $type, $id);
 
-        if ($id === $this->getRootId()) {
+        if ($id === $this->getExtensionKey()) {
             return new ObjectIdentity(
                 $id,
                 $this->entityClassResolver->getEntityClass($this->entityClassAccessor->getClass($type))

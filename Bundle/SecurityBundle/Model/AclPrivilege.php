@@ -19,7 +19,7 @@ class AclPrivilege
     /**
      * @var string
      */
-    private $rootId;
+    private $extensionKey;
 
     /**
      * @var ArrayCollection
@@ -72,18 +72,18 @@ class AclPrivilege
     /**
      * @return string
      */
-    public function getRootId()
+    public function getExtensionKey()
     {
-        return $this->rootId;
+        return $this->extensionKey;
     }
 
     /**
-     * @param string $rootId
+     * @param string $extensionKey
      * @return AclPrivilege
      */
-    public function setRootId($rootId)
+    public function setExtensionKey($extensionKey)
     {
-        $this->rootId = $rootId;
+        $this->extensionKey = $extensionKey;
 
         return $this;
     }

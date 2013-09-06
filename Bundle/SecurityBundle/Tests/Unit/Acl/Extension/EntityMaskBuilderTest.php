@@ -32,7 +32,7 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($mask, $builder->get());
 
         $builder->remove($maskName);
-        $this->assertEquals(0, $mask = $builder->get());
+        $this->assertEquals(EntityMaskBuilder::IDENTITY, $mask = $builder->get());
     }
 
     public function testGetPattern()
@@ -93,13 +93,13 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
     public function testReset()
     {
         $builder = new EntityMaskBuilder();
-        $this->assertEquals(0, $builder->get());
+        $this->assertEquals(EntityMaskBuilder::IDENTITY, $builder->get());
 
         $builder->add('view_basic');
         $this->assertTrue($builder->get() > 0);
 
         $builder->reset();
-        $this->assertEquals(0, $builder->get());
+        $this->assertEquals(EntityMaskBuilder::IDENTITY, $builder->get());
     }
 
     /**

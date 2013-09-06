@@ -6,7 +6,7 @@ parameters:
 
     oro_entity.owner.entity_owner_accessor.class:              Oro\Bundle\EntityBundle\Owner\EntityOwnerAccessor
     oro_entity.owner.ownership_metadata_provider.class:        Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider
-    oro_entity.owner.ownership_metadata_provider.cache_impl.class: Doctrine\Common\Cache\FilesystemCache
+    oro_entity.owner.ownership_metadata_provider.cache.class:  Doctrine\Common\Cache\FilesystemCache
 
 services:
     oro_entity.owner.entity_owner_accessor:
@@ -21,10 +21,10 @@ services:
             - %oro_entity.entity.owners%
             - @oro_entity_config.provider.ownership
             - @oro_entity.orm.entity_class_resolver
-            - @oro_entity.owner.ownership_metadata_provider.cache_impl
+            - @oro_entity.owner.ownership_metadata_provider.cache
 
-    oro_entity.owner.ownership_metadata_provider.cache_impl:
+    oro_entity.owner.ownership_metadata_provider.cache:
         public: false
-        class: %oro_entity.owner.ownership_metadata_provider.cache_impl.class%
+        class: %oro_entity.owner.ownership_metadata_provider.cache.class%
         arguments:
             - %kernel.cache_dir%/oro_ownership_metadata

@@ -7,24 +7,29 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
 
+/**
+ * A contract all ACL extensions must implement.
+ */
 interface AclExtensionInterface
 {
     /**
-     * Checks if the ACL extension supports the given object.
+     * Checks if the ACL extension supports an object of the given type and with the given id.
      *
      * @param string $type A type of an object to test
      * @param mixed $id An id of an object to test
-     * @return bool true if this ACL extension can process the object
+     * @return bool true if this class is valid ACL extension for the given object; otherwise, false
      */
     public function supports($type, $id);
 
     /**
-     * Gets root ACL identifier.
-     * All characters in the identifier must be lowercase.
+     * Gets a string which is identifies this ACL extension.
+     * The key must correspond the following criteria:
+     *     - each ACL extension must have an unique key
+     *     - all characters in the key must be lowercase.
      *
      * @return string
      */
-    public function getRootId();
+    public function getExtensionKey();
 
     /**
      * Checks if the given bitmask is valid for the given object.
@@ -48,7 +53,12 @@ interface AclExtensionInterface
 
     /**
      * Gets the new instance of the mask builder which can be used to build permission bitmask
-     * supported this ACL extension
+     * supported this ACL extension.
+     *
+     * As one ACL extension may support several bitmasks (and as result it gives us an ability to
+     * associate several ACEs with the same domain object) we need should use correct implementation
+     * of the mask builder for each type of a bitmask. To find correct mask builder we can use one of
+     * a permission name the required mask builder supports.
      *
      * @param string $permission
      * @return MaskBuilder
@@ -57,6 +67,10 @@ interface AclExtensionInterface
 
     /**
      * Gets all mask builders supported this ACL extension
+     *
+     * As one ACL extension may support several bitmasks (and as result it gives us an ability to
+     * associate several ACEs with the same domain object) we need a separate implementation of the builder
+     * for each type of a bitmask.
      *
      * @return MaskBuilder[]
      */
@@ -89,16 +103,22 @@ interface AclExtensionInterface
     public function hasMasks($permission);
 
     /**
-     * Check the given ACE mask of the root ACL and remove redundant for the given object bits from it
+     * Adapts the given mask to use with the given object.
+     * As the root mask is more general and cannot take in account a specific of each domain object
+     * it should be adapted before it can be applied to a particular domain object.
      *
-     * @param int $aceMask
+     * @param int $rootMask
      * @param mixed $object
      * @return int The ACE mask without redundant bits
      */
-    public function prepareRootAceMask($aceMask, $object);
+    public function adaptRootMask($rootMask, $object);
 
     /**
      * Remove all bits except service ones from the given mask
+     *
+     * As one ACL extension may support several bitmasks (and as result it gives us an ability to
+     * associate several ACEs with the same domain object) we need a way to differentiate them.
+     * It is an aim of service bits in a bitmask.
      *
      * @param int $mask
      * @return int The mask without service bits
@@ -107,6 +127,10 @@ interface AclExtensionInterface
 
     /**
      * Remove service bits from the given mask
+     *
+     * As one ACL extension may support several bitmasks (and as result it gives us an ability to
+     * associate several ACEs with the same domain object) we need a way to differentiate them.
+     * It is an aim of service bits in a bitmask.
      *
      * @param int $mask
      * @return int The mask without service bits
@@ -151,7 +175,7 @@ interface AclExtensionInterface
     /**
      * Gets all types of domain objects or resources supported by this ACL extension.
      *
-     * @return string[]
+     * @return AclClassInfo[]
      */
     public function getClasses();
 

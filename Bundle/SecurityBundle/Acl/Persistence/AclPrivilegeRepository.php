@@ -3,6 +3,7 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Persistence;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface as SID;
@@ -15,7 +16,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use Oro\Bundle\SecurityBundle\Model\AclPermission;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclClassInfo;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class AclPrivilegeRepository
 {
     const ROOT_PRIVILEGE_NAME = '(default)';
@@ -38,25 +43,25 @@ class AclPrivilegeRepository
     /**
      * Gets a list of all permission names supported by ACL extension which is responsible
      * to process domain objects of the given type(s).
-     * In case when $rootIdOrIds argument contains several identifiers this method returns
+     * In case when $extensionKeyOrKeys argument contains several keys this method returns
      * unique combination of all permission names supported by the requested ACL extensions.
      * For example if one ACL extension supports VIEW, CREATE and EDIT permissions
      * and another ACL extension supports VIEW and DELETE permissions,
      * the result will be: VIEW, CREATE, EDIT, DELETE
      *
-     * @param string|string[] $rootIdOrIds The root identifier(s) returned by AclExtensionInterface::getRootId
+     * @param string|string[] $extensionKeyOrKeys The ACL extension key(s)
      * @return string[]
      */
-    public function getPermissionNames($rootIdOrIds)
+    public function getPermissionNames($extensionKeyOrKeys)
     {
-        if (is_string($rootIdOrIds)) {
-            return $this->manager->getExtensionSelector()->select($this->manager->getRootOid($rootIdOrIds))
+        if (is_string($extensionKeyOrKeys)) {
+            return $this->manager->getExtensionSelector()->select($this->manager->getRootOid($extensionKeyOrKeys))
                 ->getPermissions();
         }
 
         $result = array();
-        foreach ($rootIdOrIds as $rootId) {
-            $extension = $this->manager->getExtensionSelector()->select($this->manager->getRootOid($rootId));
+        foreach ($extensionKeyOrKeys as $extensionKey) {
+            $extension = $this->manager->getExtensionSelector()->select($this->manager->getRootOid($extensionKey));
             foreach ($extension->getPermissions() as $permission) {
                 if (!in_array($permission, $result)) {
                     $result[] = $permission;
@@ -77,16 +82,19 @@ class AclPrivilegeRepository
     {
         $privileges = new ArrayCollection();
         foreach ($this->manager->getAllExtensions() as $extension) {
-            $rootId = $extension->getRootId();
+            $extensionKey = $extension->getExtensionKey();
 
             // fill a list of object identities;
             // the root object identity is added to the top of the list (for performance reasons)
             /** @var OID[] $oids */
+            $classes = array();
             $oids = array();
             foreach ($extension->getClasses() as $class) {
-                $oids[] = new OID($rootId, $class);
+                $className = $class->getClassName();
+                $oids[] = new OID($extensionKey, $className);
+                $classes[$className] = $class;
             }
-            $rootOid = $this->manager->getRootOid($rootId);
+            $rootOid = $this->manager->getRootOid($extensionKey);
             array_unshift($oids, $rootOid);
 
             // load ACLs for all object identities
@@ -97,10 +105,16 @@ class AclPrivilegeRepository
             foreach ($oids as $oid) {
                 if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
                     $name = self::ROOT_PRIVILEGE_NAME;
+                    $group = '';
                 } else {
-                    $name = '?';
+                    /** @var AclClassInfo $class */
+                    $class = $classes[$oid->getType()];
+                    $name = $class->getLabel();
+                    if (empty($name)) {
+                        $name = substr($class->getClassName(), strpos($class->getClassName(), '\\'));
+                    }
+                    $group = $class->getGroup();
                 }
-                $group = '?';
 
                 $privilege = new AclPrivilege();
                 $privilege
@@ -111,7 +125,7 @@ class AclPrivilegeRepository
                         )
                     )
                     ->setGroup($group)
-                    ->setRootId($rootId);
+                    ->setExtensionKey($extensionKey);
 
                 $this->addPermissions($privilege, $oid, $acls, $extension, $rootAcl);
 
@@ -129,10 +143,274 @@ class AclPrivilegeRepository
      *
      * @param SID $sid
      * @param ArrayCollection|AclPrivilege[] $privileges
+     * @throws \RuntimeException
      */
     public function savePrivileges(SID $sid, ArrayCollection $privileges)
     {
+        /**
+         * @var $rootKeys
+         * key = ExtensionKey
+         * value = a key in $privilege collection
+         */
+        $rootKeys = array();
+        // find all root privileges
+        foreach ($privileges as $key => $privilege) {
+            $identity = $privilege->getIdentity()->getId();
+            if (strpos($identity, ObjectIdentityFactory::ROOT_IDENTITY_TYPE)) {
+                $extensionKey = substr($identity, 0, strpos($identity, ':'));
+                $rootKeys[$extensionKey] = $key;
+            }
+        }
 
+        /**
+         * @var $context
+         * key = ExtensionKey
+         * value = array
+         *      'extension' => extension
+         *      'maskBuilders' => array
+         *              key = permission name
+         *              value = MaskBuilder (the same instance for all permissions supported by the builder)
+         *      'rootMasks' => array of integer
+         */
+        // init the context
+        $context = array();
+        $this->initSaveContext($context, $rootKeys, $sid, $privileges);
+
+        // set permissions for all root objects and remove all root privileges from $privileges collection
+        foreach ($context as $extensionKey => $contextItem) {
+            /** @var AclExtensionInterface $extension */
+            $extension = $contextItem['extension'];
+            if (isset($rootKeys[$extensionKey])) {
+                $privilegeKey = $rootKeys[$extensionKey];
+                $privilege = $privileges[$privilegeKey];
+                unset($privileges[$privilegeKey]);
+                $identity = $privilege->getIdentity()->getId();
+                $oid = $extension->getObjectIdentity($identity);
+            } else {
+                $oid = $this->manager->getRootOid($extensionKey);
+            }
+            $rootMasks = $context[$extensionKey]['rootMasks'];
+            foreach ($rootMasks as $mask) {
+                $this->manager->setPermission($sid, $oid, $mask);
+            }
+        }
+
+        // set permissions for other objects
+        foreach ($privileges as $privilege) {
+            $identity = $privilege->getIdentity()->getId();
+            $extensionKey = substr($identity, 0, strpos($identity, ':'));
+            /** @var AclExtensionInterface $extension */
+            $extension = $context[$extensionKey]['extension'];
+            $oid = $extension->getObjectIdentity($identity);
+            $maskBuilders = $context[$extensionKey]['maskBuilders'];
+            $masks = $this->getPermissionMasks($privilege->getPermissions(), $extension, $maskBuilders);
+            $rootMasks = $context[$extensionKey]['rootMasks'];
+            foreach ($this->manager->getAces($sid, $oid) as $ace) {
+                if (!$ace->isGranting()) {
+                    // denying ACE is not supported
+                    continue;
+                }
+                $mask = $this->updateExistingPermissions($sid, $oid, $ace->getMask(), $masks, $rootMasks, $extension);
+                // as we have already processed $mask, remove it from $masks collection
+                if ($mask !== false) {
+                    $this->removeMask($masks, $mask);
+                }
+            }
+            // check if we have new masks so far, and process them if any
+            foreach ($masks as $mask) {
+                $rootMask = $this->findSimilarMask($rootMasks, $mask, $extension);
+                if ($rootMask === false || $mask !== $extension->adaptRootMask($rootMask, $oid)) {
+                    $this->manager->setPermission($sid, $oid, $mask);
+                }
+            }
+        }
+
+        $this->manager->flush();
+    }
+
+    /**
+     * Prepares the context is used in savePrivileges method
+     *
+     * @param array $context
+     * @param array $rootKeys
+     * @param SID $sid
+     * @param ArrayCollection|AclPrivilege[] $privileges
+     */
+    protected function initSaveContext(array &$context, array $rootKeys, SID $sid, ArrayCollection $privileges)
+    {
+        foreach ($this->manager->getAllExtensions() as $extension) {
+            $extensionKey = $extension->getExtensionKey();
+            /** @var MaskBuilder[] $maskBuilders */
+            $maskBuilders = array();
+            $this->prepareMaskBuilders($maskBuilders, $extension);
+            $context[$extensionKey] = array(
+                'extension' => $extension,
+                'maskBuilders' => $maskBuilders
+            );
+            if (isset($rootKeys[$extensionKey])) {
+                $privilege = $privileges[$rootKeys[$extensionKey]];
+                $rootMasks = $this->getPermissionMasks($privilege->getPermissions(), $extension, $maskBuilders);
+            } else {
+                $rootMasks = array();
+                $oid = $this->manager->getRootOid($extension->getExtensionKey());
+                foreach ($this->manager->getAces($sid, $oid) as $ace) {
+                    if (!$ace->isGranting()) {
+                        // denying ACE is not supported
+                        continue;
+                    }
+                    $rootMasks[] = $ace->getMask();
+                }
+                // add missing masks
+                foreach ($extension->getAllMaskBuilders() as $maskBuilder) {
+                    $emptyMask = $maskBuilder->get();
+                    $maskAlreadyExist = false;
+                    foreach ($rootMasks as $rootMask) {
+                        if ($extension->getServiceBits($emptyMask) === $extension->getServiceBits($rootMask)) {
+                            $maskAlreadyExist = true;
+                            break;
+                        }
+                    }
+                    if (!$maskAlreadyExist) {
+                        $rootMasks[] = $emptyMask;
+                    }
+                }
+            }
+            $context[$extensionKey]['rootMasks'] = $rootMasks;
+        }
+    }
+
+    /**
+     * Fills an associative array is used to find correct mask builder by the a permission name
+     *
+     * @param MaskBuilder[] $maskBuilders [output]
+     * @param AclExtensionInterface $extension
+     */
+    protected function prepareMaskBuilders(array &$maskBuilders, AclExtensionInterface $extension)
+    {
+        foreach ($extension->getPermissions() as $permission) {
+            $maskBuilder = $extension->getMaskBuilder($permission);
+            foreach ($maskBuilders as $mb) {
+                if ($mb->get() === $maskBuilder->get()) {
+                    $maskBuilder = $mb;
+                    break;
+                }
+            }
+            $maskBuilders[$permission] = $maskBuilder;
+        }
+    }
+
+    /**
+     * Makes necessary modifications for existing ACE
+     *
+     * @param SID $sid
+     * @param OID $oid
+     * @param int $existingMask
+     * @param int[] $masks [input/output]
+     * @param int[] $rootMasks
+     * @param AclExtensionInterface $extension
+     * @return bool|int The mask if it was processed, otherwise, false
+     */
+    protected function updateExistingPermissions(
+        SID $sid,
+        OID $oid,
+        $existingMask,
+        $masks,
+        $rootMasks,
+        AclExtensionInterface $extension
+    ) {
+        $mask = $this->findSimilarMask($masks, $existingMask, $extension);
+        $rootMask = $this->findSimilarMask($rootMasks, $existingMask, $extension);
+        if ($mask === false && $rootMask === false) {
+            // keep existing ACE as is, because both $mask and $rootMask were not found
+        } elseif ($rootMask === false) {
+            // if $rootMask was not found, just update existing ACE using $mask
+            $this->manager->setPermission($sid, $oid, $mask);
+        } elseif ($mask === false) {
+            // if $mask was not found, use $rootMask to check
+            // whether existing ACE need to be removed or keep as is
+            if ($existingMask === $extension->adaptRootMask($rootMask, $oid)) {
+                // remove existing ACE because it provides the same permissions as the root ACE
+                $this->manager->deletePermission($sid, $oid, $existingMask);
+            }
+        } else {
+            // both $mask and $rootMask were found
+            if ($mask === $extension->adaptRootMask($rootMask, $oid)) {
+                // remove existing ACE, if $mask provides the same permissions as $rootMask
+                $this->manager->deletePermission($sid, $oid, $existingMask);
+            } else {
+                // update existing ACE using $mask, if permissions provide by $mask and $rootMask are different
+                $this->manager->setPermission($sid, $oid, $mask);
+            }
+        }
+
+        return $mask;
+    }
+
+    /**
+     * Finds a mask from $masks array with the same "service bits" as in $needleMask
+     *
+     * @param int[] $masks
+     * @param int $needleMask
+     * @param AclExtensionInterface $extension
+     * @return int|bool The found mask, or false if a mask was not found in $masks
+     */
+    protected function findSimilarMask(array $masks, $needleMask, AclExtensionInterface $extension)
+    {
+        foreach ($masks as $mask) {
+            if ($extension->getServiceBits($needleMask) === $extension->getServiceBits($mask)) {
+                return $mask;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Removes $needleMask mask from $masks array
+     *
+     * @param int[] $masks [input/output]
+     * @param int $needleMask
+     */
+    protected function removeMask(array &$masks, $needleMask)
+    {
+        $keyToRemove = null;
+        foreach ($masks as $key => $mask) {
+            if ($mask === $needleMask) {
+                $keyToRemove = $key;
+                break;
+            }
+        }
+        if ($keyToRemove !== null) {
+            unset($masks[$keyToRemove]);
+        }
+    }
+
+    /**
+     * Gets a list of masks from permissions given in $permissions argument
+     *
+     * @param ArrayCollection|AclPermission[] $permissions
+     * @param AclExtensionInterface $extension
+     * @param MaskBuilder[] $maskBuilders
+     * @return int[]
+     */
+    protected function getPermissionMasks($permissions, AclExtensionInterface $extension, array $maskBuilders)
+    {
+        $masks = array();
+
+        foreach ($maskBuilders as $maskBuilder) {
+            $maskBuilder->reset();
+        }
+
+        foreach ($permissions as $permission) {
+            $maskBuilder = $maskBuilders[$permission->getName()];
+            $accessLevelName = AccessLevel::getAccessLevelName($permission->getAccessLevel());
+            if ($accessLevelName !== null) {
+                $maskBuilder->add($permission->getName() . '_' . $accessLevelName);
+            }
+            $masks[$extension->getServiceBits($maskBuilder->get())] = $maskBuilder->get();
+        }
+
+        return array_values($masks);
     }
 
     /**
@@ -155,7 +433,7 @@ class AclPrivilegeRepository
      * Sorts the given privileges by name in alphabetical order.
      * The root privilege is moved at the top of the list.
      *
-     * @param ArrayCollection|AclPrivilege[] $privileges
+     * @param ArrayCollection|AclPrivilege[] $privileges [input/output]
      */
     protected function sortPrivileges(ArrayCollection &$privileges)
     {
@@ -220,10 +498,8 @@ class AclPrivilegeRepository
     ) {
         $allowedPermissions = $extension->getAllowedPermissions($oid);
         $acl = $this->findAclByOid($acls, $oid);
-        if ($acl !== null) {
-            $this->addAclPermissions(null, $privilege, $allowedPermissions, $extension, $acl, $rootAcl);
-        } elseif ($rootAcl !== null) {
-            $this->addAclPermissions(null, $privilege, $allowedPermissions, $extension, $rootAcl);
+        if ($rootAcl !== null) {
+            $this->addAclPermissions(null, $privilege, $allowedPermissions, $extension, $rootAcl, $acl);
         }
 
         foreach ($allowedPermissions as $permission) {
@@ -243,43 +519,51 @@ class AclPrivilegeRepository
      * @param AclPrivilege $privilege
      * @param string[] $permissions
      * @param AclExtensionInterface $extension
-     * @param AclInterface $acl
      * @param AclInterface $rootAcl
+     * @param AclInterface $acl
      */
     protected function addAclPermissions(
         $field,
         AclPrivilege $privilege,
         array $permissions,
         AclExtensionInterface $extension,
-        AclInterface $acl,
-        AclInterface $rootAcl = null
+        AclInterface $rootAcl,
+        AclInterface $acl = null
     ) {
-        // check object ACEs
-        $this->addAcesPermissions(
-            $privilege,
-            $permissions,
-            $this->manager->getAceProvider()->getAces($acl, AclManager::OBJECT_ACE, $field),
-            $extension
-        );
-        // check class ACEs if object ACEs were not contains all requested privileges
+        if ($acl !== null) {
+            // check object ACEs
+            $this->addAcesPermissions(
+                $privilege,
+                $permissions,
+                $this->manager->getAceProvider()->getAces($acl, AclManager::OBJECT_ACE, $field),
+                $extension
+            );
+            // check class ACEs if object ACEs were not contains all requested privileges
+            if ($privilege->getPermissionCount() < count($permissions)) {
+                $this->addAcesPermissions(
+                    $privilege,
+                    $permissions,
+                    $this->manager->getAceProvider()->getAces($acl, AclManager::CLASS_ACE, $field),
+                    $extension
+                );
+            }
+            // check parent ACEs if object and class ACEs were not contains all requested privileges
+            if ($privilege->getPermissionCount() < count($permissions) && $acl->isEntriesInheriting()) {
+                $parentAcl = $acl->getParentAcl();
+                if ($parentAcl !== null) {
+                    $this->addAclPermissions($field, $privilege, $permissions, $extension, $rootAcl, $parentAcl);
+                }
+            }
+        }
+        // if so far not all requested privileges are found get them from the root ACL
         if ($privilege->getPermissionCount() < count($permissions)) {
             $this->addAcesPermissions(
                 $privilege,
                 $permissions,
-                $this->manager->getAceProvider()->getAces($acl, AclManager::CLASS_ACE, $field),
-                $extension
+                $this->manager->getAceProvider()->getAces($rootAcl, AclManager::OBJECT_ACE, $field),
+                $extension,
+                true
             );
-        }
-        // check parent ACEs if object and class ACEs were not contains all requested privileges
-        if ($privilege->getPermissionCount() < count($permissions) && $acl->isEntriesInheriting()) {
-            $parentAcl = $acl->getParentAcl();
-            if ($parentAcl !== null) {
-                $this->addAclPermissions($field, $privilege, $permissions, $extension, $parentAcl, $rootAcl);
-            }
-        }
-        // if so far not all requested privileges are found get them from the root ACL
-        if ($privilege->getPermissionCount() < count($permissions) && $rootAcl !== null) {
-            $this->addAclPermissions($field, $privilege, $permissions, $extension, $rootAcl);
         }
     }
 
@@ -291,29 +575,31 @@ class AclPrivilegeRepository
      * @param string[] $permissions
      * @param EntryInterface[] $aces
      * @param AclExtensionInterface $extension
+     * @param bool $itIsRootAcl
      */
     protected function addAcesPermissions(
         AclPrivilege $privilege,
         array $permissions,
         array $aces,
-        AclExtensionInterface $extension
+        AclExtensionInterface $extension,
+        $itIsRootAcl = false
     ) {
         if (empty($aces)) {
             return;
         }
         foreach ($aces as $ace) {
             if (!$ace->isGranting()) {
-                // @todo denying ACE is not supported yet
+                // denying ACE is not supported
                 continue;
             }
             $mask = $ace->getMask();
+            if ($itIsRootAcl) {
+                $mask = $extension->adaptRootMask($mask, $privilege->getIdentity()->getId());
+            }
             foreach ($extension->getPermissions($mask) as $permission) {
                 if (!$privilege->hasPermission($permission) && in_array($permission, $permissions)) {
                     $privilege->addPermission(
-                        new AclPermission(
-                            $permission,
-                            $extension->getAccessLevel($mask, $permission)
-                        )
+                        new AclPermission($permission, $extension->getAccessLevel($mask, $permission))
                     );
                 }
             }
