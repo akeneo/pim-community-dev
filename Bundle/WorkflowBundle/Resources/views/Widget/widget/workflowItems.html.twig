@@ -1,13 +1,26 @@
 {% import 'OroUIBundle::macros.html.twig' as macros %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 
-{% set blockId = 'workflow-items-container-' ~ random() %}
-<div class="widget-content workflow-items" id="{{ blockId }}">
+{% set elementId = 'workflow-items-container-' ~ random() %}
+<div class="widget-content workflow-items" id="{{ elementId }}">
     <style type="text/css">
         .widget-content.workflow-items {
             margin: 20px 15px;
         }
+        .widget-content.workflow-items .dropdown-menu {
+            padding: 5px 0 0;
+            min-width: 100px;
+        }
+        .widget-content.workflow-items .dropdown-menu>li {
+            margin: 0;
+        }
+        .widget-content.workflow-items .btn-mini {
+            height: 20px;
+            line-height: 20px;
+        }
     </style>
     {% if workflows_items_data|length %}
+        {% set allow_delete = resource_granted('oro_workflow_workflow_item_delete') %}
         <table class="table-hover table table-bordered table-condensed">
             <thead>
                 <tr>
@@ -15,6 +28,9 @@
                     <th>{% trans %}Current Step{% endtrans %}</th>
                     <th>{% trans %}Start Date{% endtrans %}</th>
                     <th>{% trans %}Status{% endtrans %}</th>
+                    {% if allow_delete %}
+                        <th></th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -49,11 +65,41 @@
                                 <span class="label label-success">{% trans %}Active{% endtrans %}</span>
                             {% endif %}
                         </td>
+                        {% if allow_delete %}
+                            <td>
+                                {{ UI.deleteButton({
+                                    'dataUrl': path('oro_api_workflow_delete', { workflowItemId: data.workflowItem.id }),
+                                    'aCss': 'no-hash remove-button btn-mini',
+                                    'dataId': data.workflowItem.id,
+                                    'id': 'btn-remove-workflow-item',
+                                    'dataMessage': 'Are you sure you want to delete this workflow item?'|trans,
+                                    'title': 'Delete workflow item'|trans,
+                                    'label': 'Delete'|trans
+                                }) }}
+                            </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-    {% else %}
-        <p>{% trans %}No workflow items are available{% endtrans %}</p>
     {% endif %}
+    <p class="no-workflow-items-text" {% if workflows_items_data|length %}style="display: none;"{% endif %}>
+        {% trans %}No workflow items are available{% endtrans %}
+    </p>
+    <script type="text/javascript">
+        $('#{{ elementId }}').on('widgetize', function(e, widget) {
+            var wiTable = widget.$el.find('table');
+            var noItemsText = widget.$el.find('.no-workflow-items-text');
+            $('.remove-button', wiTable).on('removesuccess', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                $(this).closest('tr').remove();
+                if (!$('tbody tr', wiTable).length) {
+                    wiTable.hide();
+                    noItemsText.show();
+                }
+                widget.trigger('workflowItemRemoved');
+            });
+        });
+    </script>
 </div>

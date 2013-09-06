@@ -89,7 +89,7 @@ class WorkflowItem
      *
      * @ORM\ManyToOne(
      *  targetEntity="WorkflowDefinition",
-     *  cascade={"persist", "remove"}
+     *  inversedBy="workflowItems"
      * )
      * @ORM\JoinColumn(name="workflow_name", referencedColumnName="name")
      */

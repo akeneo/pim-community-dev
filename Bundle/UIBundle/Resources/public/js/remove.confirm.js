@@ -7,10 +7,13 @@ $(function() {
                 url: el.data('url'),
                 type: 'DELETE',
                 success: function (data) {
-                    if (Oro.hashNavigationEnabled()) {
-                        Oro.hashNavigationInstance.setLocation(el.data('redirect'))
-                    } else {
-                        window.location.href = el.data('redirect');
+                    el.trigger('removesuccess');
+                    if (el.data('redirect')) {
+                        if (Oro.hashNavigationEnabled()) {
+                            Oro.hashNavigationInstance.setLocation(el.data('redirect'))
+                        } else {
+                            window.location.href = el.data('redirect');
+                        }
                     }
                 }
             });

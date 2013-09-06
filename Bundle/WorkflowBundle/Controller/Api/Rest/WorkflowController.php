@@ -14,6 +14,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\Rest\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowNotFoundException;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
@@ -113,7 +114,7 @@ class WorkflowController extends FOSRestController
      * - HTTP_INTERNAL_SERVER_ERROR (500) response: array('message' => errorMessageString)
      *
      * @Rest\Get(
-     *      "/transit/{workflowItemId}/{transitionName}",
+     *      "/{workflowItemId}/transit/{transitionName}",
      *      requirements={"workflowItemId"="\d+"},
      *      defaults={"_format"="json"}
      * )
@@ -153,7 +154,7 @@ class WorkflowController extends FOSRestController
      * Returns
      * - HTTP_OK (200) response: array('workflowItem' => array('id' => int, 'result' => array(...), ...))
      *
-     * @Rest\Get("/get/{workflowItemId}", requirements={"workflowItemId"="\d+"}, defaults={"_format"="json"})
+     * @Rest\Get("/{workflowItemId}", requirements={"workflowItemId"="\d+"}, defaults={"_format"="json"})
      * @ParamConverter("workflowItem", options={"id"="workflowItemId"})
      * @ApiDoc(description="Get workflow item", resource=true)
      * @AclAncestor("oro_workflow")
@@ -171,6 +172,33 @@ class WorkflowController extends FOSRestController
                 Codes::HTTP_OK
             )
         );
+    }
+
+    /**
+     * Delete workflow item
+     *
+     * Returns
+     * - HTTP_NO_CONTENT (204)
+     *
+     * @Rest\Delete("/{workflowItemId}", requirements={"workflowItemId"="\d+"}, defaults={"_format"="json"})
+     * @ParamConverter("workflowItem", options={"id"="workflowItemId"})
+     * @ApiDoc(description="Delete workflow item", resource=true)
+     * @Acl(
+     *      id="oro_workflow_workflow_item_delete",
+     *      name="Delete workflow item",
+     *      description="Delete workflow item",
+     *      parent="oro_workflow"
+     * )
+     *
+     * @param WorkflowItem $workflowItem
+     * @return Response
+     */
+    public function deleteAction(WorkflowItem $workflowItem)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($workflowItem);
+        $em->flush();
+        return $this->handleView($this->view(null, Codes::HTTP_NO_CONTENT));
     }
 
     /**
