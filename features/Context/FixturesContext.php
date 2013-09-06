@@ -706,7 +706,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return User
      */
-    private function getUser($username)
+    public function getUser($username)
     {
         return $this->getEntityOrException('OroUserBundle:User', array('username' => $username));
     }

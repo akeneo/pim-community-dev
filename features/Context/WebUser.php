@@ -1684,6 +1684,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $username
+     *
+     * @return User
+     */
+    private function getUser($username)
+    {
+        return $this->getFixturesContext()->getUser($username);
+    }
+
+    /**
      * @param string $sku
      *
      * @return Product
