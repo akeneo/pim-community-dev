@@ -18,12 +18,18 @@ class AclPrivilegeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('identity', new AclPrivilegeIdentityType(), array(
+        $builder->add(
+            'identity',
+            new AclPrivilegeIdentityType(),
+            array(
                 'required' => false,
             )
         );
 
-        $builder->add('permissions', new PermissionCollectionType(), array(
+        $builder->add(
+            'permissions',
+            new PermissionCollectionType(),
+            array(
                 'type' => new AclPermissionType(),
                 'allow_add' => true,
                 'prototype' => false,
@@ -48,10 +54,12 @@ class AclPrivilegeType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'privileges_config' => array(),
-            'data_class' => 'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
-        ));
+        $resolver->setDefaults(
+            array(
+                'privileges_config' => array(),
+                'data_class' => 'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
+            )
+        );
     }
 
     /**
