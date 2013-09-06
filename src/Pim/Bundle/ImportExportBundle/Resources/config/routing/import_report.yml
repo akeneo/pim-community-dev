@@ -1,0 +1,17 @@
+pim_importexport_import_report_index:
+    path: extract/import_report/.{_format}
+    defaults: { _controller: pim_import_export.controller.import_report:indexAction, _format: html }
+    requirements:
+        _format: html|json
+
+pim_importexport_import_report_download:
+    path: extract/import_report/{id}/download
+    defaults: { _controller: pim_import_export.controller.import_report:downloadLogFileAction }
+    requirements:
+        id: \d+
+
+pim_importexport_import_report_show:
+    path: extract/import_report/{id}/show
+    defaults: { _controller: pim_import_export.controller.import_report:showAction }
+    requirements:
+        id: \d+

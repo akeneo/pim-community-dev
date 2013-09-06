@@ -6,5 +6,8 @@ import:
     resource: "@PimImportExportBundle/Resources/config/routing/import.yml"
     prefix: /extract/import
 
-report:
-    resource: "@PimImportExportBundle/Resources/config/routing/report.yml"
+import_report:
+    resource: "@PimImportExportBundle/Resources/config/routing/import_report.yml"
+
+export_report:
+    resource: "@PimImportExportBundle/Resources/config/routing/export_report.yml"

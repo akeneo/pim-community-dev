@@ -43,6 +43,16 @@ abstract class AbstractController
      */
     private $securityContext;
 
+    /**
+     * Constructor
+     *
+     * @param Request $request
+     * @param EngineInterface $templating
+     * @param RouterInterface $router
+     * @param SecurityContextInterface $securityContext
+     * @param FormFactoryInterface $formFactory
+     * @param ValidatorInterface $validator
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,
