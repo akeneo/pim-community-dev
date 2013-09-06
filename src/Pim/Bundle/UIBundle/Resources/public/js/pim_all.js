@@ -135,12 +135,12 @@ function init() {
     });
 
     $('#default_channel').change(function () {
-        $('.scopable').scopableField({ defaultScope: $(this).val() });
+        Oro.Events.trigger('scopablefield:changescope', $(this).val());
     });
 
     $('.dropdown-menu.channel a').click(function (e) {
         e.preventDefault();
-        $('.scopable').scopableField($(this).data('action'));
+        Oro.Events.trigger('scopablefield:' + $(this).data('action'));
     });
 
     // Add form update listener
