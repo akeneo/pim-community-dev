@@ -153,6 +153,8 @@ Pim.View.Scopable = Backbone.View.extend({
                 this._showField(field, first);
                 first = false;
             }, this);
+
+            this.$el.removeClass('collapsed').addClass('expanded');
         }
 
         return this;
@@ -173,6 +175,8 @@ Pim.View.Scopable = Backbone.View.extend({
                     this._hideField(field);
                 }
             }, this);
+
+            this.$el.removeClass('expanded').addClass('collapsed');
         }
 
         return this;
