@@ -1,8 +1,7 @@
 {% import 'OroUIBundle::macros.html.twig' as macros %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 
-{% set elementId = 'workflow-items-container-' ~ random() %}
-<div class="widget-content workflow-items" id="{{ elementId }}">
+<div class="widget-content workflow-items">
     <style type="text/css">
         .widget-content.workflow-items {
             margin: 20px 15px;
@@ -87,18 +86,21 @@
         {% trans %}No workflow items are available{% endtrans %}
     </p>
     <script type="text/javascript">
-        $('#{{ elementId }}').on('widgetize', function(e, widget) {
-            var wiTable = widget.$el.find('table');
-            var noItemsText = widget.$el.find('.no-workflow-items-text');
-            $('.remove-button', wiTable).on('removesuccess', function(e) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                $(this).closest('tr').remove();
-                if (!$('tbody tr', wiTable).length) {
-                    wiTable.hide();
-                    noItemsText.show();
-                }
-                widget.trigger('workflowItemRemoved');
+        require(['jquery', 'oro/widget-manager'],
+        function($, widgetManager){
+            widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget){
+                var wiTable = widget.$el.find('table');
+                var noItemsText = widget.$el.find('.no-workflow-items-text');
+                $('.remove-button', wiTable).on('removesuccess', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    $(this).closest('tr').remove();
+                    if (!$('tbody tr', wiTable).length) {
+                        wiTable.hide();
+                        noItemsText.show();
+                    }
+                    widget.trigger('workflowItemRemoved');
+                });
             });
         });
     </script>

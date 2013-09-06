@@ -119,12 +119,16 @@
                 'alias': 'workflow_step_form'
             }) }}
             <script type="text/javascript">
-                $(function() {
-                    Oro.widget.Manager.getWidgetInstanceByAlias('workflow_step_form')
-                        .on('formSave', function() {
-                            Oro.NotificationFlashMessage('success', _.__('Step information saved'));
-                            Oro.widget.Manager.getWidgetInstanceByAlias('workflow_transitions').loadContent();
+                require(['oro/widget-manager', 'oro/messenger'],
+                function(widgetManager, messenger){
+                    widgetManager.getWidgetInstanceByAlias('workflow_step_form', function(widget){
+                        widget.on('formSave', function() {
+                            messenger.notificationFlashMessage('success', {{ 'Step information saved'|trans|json_encode|raw }});
+                            widgetManager.getWidgetInstanceByAlias('workflow_transitions', function(transitionsWidget){
+                                transitionsWidget.loadContent();
+                            });
                         });
+                    });
                 });
             </script>
         </div>

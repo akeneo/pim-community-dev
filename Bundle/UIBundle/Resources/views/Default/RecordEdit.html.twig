@@ -73,14 +73,17 @@
                 </div>
             </div>
             <script>
-                $(function () {
-                    $('#myTab a:last').tab('show');
-                    $('#myTab a').click(function (e) {
-                        e.preventDefault();
-                        $(this).tab('show');
-                    })
-                    $('a.popup-me').popover();
-                })
+                require(['jquery'],
+                function($){
+                    $(function () {
+                        $('#myTab a:last').tab('show');
+                        $('#myTab a').click(function (e) {
+                            e.preventDefault();
+                            $(this).tab('show');
+                        });
+                        $('a.popup-me').popover();
+                    });
+                });
             </script>
             <div class="navigation clearfix navbar-extra navbar-extra-right">
                 <div class="top-action-box">
