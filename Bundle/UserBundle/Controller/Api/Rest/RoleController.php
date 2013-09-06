@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Controller\Api\Rest;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use FOS\Rest\Util\Codes;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Routing\ClassResourceInterface;
@@ -314,5 +315,18 @@ class RoleController extends RestController implements ClassResourceInterface
     public function getFormHandler()
     {
         return $this->get('oro_user.form.handler.role.api');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function handleDelete($entity, ObjectManager $em)
+    {
+        parent::handleDelete($entity, $em);
+        /** @var \Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager $aclManager */
+        $aclManager = $this->get('oro_security.acl.manager');
+        if ($aclManager->isAclEnabled()) {
+            $aclManager->deleteSid($aclManager->getSid($entity));
+        }
     }
 }
