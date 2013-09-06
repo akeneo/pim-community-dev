@@ -9,7 +9,9 @@
             {% block head_style %}
                 <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
                 <link rel="stylesheet" media="all" href="{{ asset('bundles/oroui/css/jquery-ui.grid.css') }}" />
+                <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
                 {% placeholder head_style %}
+                <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
             {% endblock %}
 
             {% block script %}
@@ -53,14 +55,16 @@
     </head>
     <body class="{% block bodyClass %}{% endblock %}">
     {% placeholder after_body_start %}
-    <div id="progressbar" style="display:block;margin-top:200px;margin-right:auto;margin-left:auto;text-align:center;">
-        <h3>{% trans %}Loading Application{% endtrans %}</h3>
-        <img src="{{ asset('bundles/oroui/img/progressbar.gif') }}" alt="{% trans %}Loading...{% endtrans %}" />
+    <div id="progressbar">
+        <h3>{% trans %}Loading ...{% endtrans %}</h3>
+        <div class="progress progress-striped active">
+            <div class="bar" style="width: 90%;"></div>
+        </div>
     </div>
     <div id="page" style="display:none;">
         <div id="top-page">
             {% block header %}
-                <header class="navbar">
+                <header class="navbar" id="oroplatform-header">
                     {% placeholder before_navigation %}
                     <div class="navbar-inner">
                         <div class="container">

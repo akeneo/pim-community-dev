@@ -110,7 +110,7 @@ function(_, Backbone, __, mediator, messenger, widgetManager,
                     'dialogOptions': {
                         'modal': true,
                         'resizable': false,
-                        'width': 400,
+                        'width': 475,
                         'autoResize':true,
                         'close': _.bind(function() {
                             delete this.addressEditDialog;

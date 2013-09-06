@@ -12,7 +12,7 @@ function($, _, TagView) {
         /** @property */
         tagsOverlayTemplate: _.template(
             '<div class="controls">' +
-                '<div class="well well-small span6">' +
+                '<div class="well well-small">' +
                     '<div id="tags-holder"></div>' +
                 '</div>' +
             '</div>'
