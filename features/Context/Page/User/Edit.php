@@ -17,5 +17,4 @@ class Edit extends Form
      * @var string $path
      */
     protected $path = '/user/update/{id}';
-
 }
