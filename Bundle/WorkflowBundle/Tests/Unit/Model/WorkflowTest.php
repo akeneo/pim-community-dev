@@ -69,6 +69,25 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $workflow->getSteps());
     }
 
+    public function testGetOrderedSteps()
+    {
+        $stepOne = new Step();
+        $stepOne->setOrder(1);
+        $stepTwo = new Step();
+        $stepTwo->setOrder(2);
+        $stepThree = new Step();
+        $stepThree->setOrder(3);
+        $steps = new ArrayCollection(array($stepTwo, $stepOne, $stepThree));
+
+        $workflow = $this->createWorkflow();
+        $workflow->setSteps($steps);
+        $ordered = $workflow->getOrderedSteps();
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $ordered);
+        $this->assertSame($stepOne, $ordered->get(0), 'Steps are not in correct order');
+        $this->assertSame($stepTwo, $ordered->get(1), 'Steps are not in correct order');
+        $this->assertSame($stepThree, $ordered->get(2), 'Steps are not in correct order');
+    }
+
     public function testSetSteps()
     {
         $stepOne = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Step')
