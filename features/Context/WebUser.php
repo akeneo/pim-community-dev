@@ -38,6 +38,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'imports'    => 'Import index',
         'locales'    => 'Locale index',
         'products'   => 'Product index',
+        'users'      => 'User index',
         'categories' => 'Category tree creation',
         'home'       => 'Base index',
     );
@@ -846,6 +847,36 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iSelectCurrency($currency)
     {
         $this->getPage('Channel creation')->selectCurrency($currency);
+    }
+
+    /**
+     * @param string $status
+     *
+     * @Given /^I select the status "([^"]*)"$/
+     */
+    public function iSelectStatus($status)
+    {
+        $this->getPage('User creation')->selectStatus($status);
+    }
+
+    /**
+     * @param string $owner
+     *
+     * @Given /^I select the owner "([^"]*)"$/
+     */
+    public function iSelectOwner($owner)
+    {
+        $this->getPage('User creation')->selectOwner($owner);
+    }
+
+    /**
+     * @param string $role
+     *
+     * @Given /^I select the role "([^"]*)"$/
+     */
+    public function iSelectRole($role)
+    {
+        $this->getPage('User creation')->selectRole($role);
     }
 
     /**
@@ -1680,6 +1711,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             return $this->getMainContext()->wait($time, $condition);
         } catch (UnsupportedDriverActionException $e) {
         }
+    }
+
+    /**
+     * @param string $username
+     *
+     * @return User
+     */
+    private function getUser($username)
+    {
+        return $this->getFixturesContext()->getUser($username);
     }
 
     /**
