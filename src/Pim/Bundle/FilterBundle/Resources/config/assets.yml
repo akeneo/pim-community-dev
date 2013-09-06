@@ -1,4 +1,4 @@
-js:
-  pim_filter:
-    - '@PimFilterBundle/Resources/public/js/app/filter/currencyfilter.js'
-    - '@PimFilterBundle/Resources/public/js/app/filter/scopefilter.js'
+# js:
+  # pim_filter:
+    # - '@PimFilterBundle/Resources/public/js/app/filter/currencyfilter.js'
+    # - '@PimFilterBundle/Resources/public/js/app/filter/scopefilter.js'
