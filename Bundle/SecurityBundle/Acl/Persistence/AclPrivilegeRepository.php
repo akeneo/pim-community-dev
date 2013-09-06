@@ -144,6 +144,8 @@ class AclPrivilegeRepository
      * @param SID $sid
      * @param ArrayCollection|AclPrivilege[] $privileges
      * @throws \RuntimeException
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function savePrivileges(SID $sid, ArrayCollection $privileges)
     {
@@ -405,7 +407,13 @@ class AclPrivilegeRepository
             $maskBuilder = $maskBuilders[$permission->getName()];
             $accessLevelName = AccessLevel::getAccessLevelName($permission->getAccessLevel());
             if ($accessLevelName !== null) {
-                $maskBuilder->add($permission->getName() . '_' . $accessLevelName);
+                $maskName = 'MASK_' . $permission->getName() . '_' . $accessLevelName;
+                // check if a mask builder supports access levels
+                if (!$maskBuilder->hasConst($maskName)) {
+                    // remove access level name from the mask name if a mask builder do not support access levels
+                    $maskName = 'MASK_' . $permission->getName();
+                }
+                $maskBuilder->add($maskBuilder->getConst($maskName));
             }
             $masks[$extension->getServiceBits($maskBuilder->get())] = $maskBuilder->get();
         }
