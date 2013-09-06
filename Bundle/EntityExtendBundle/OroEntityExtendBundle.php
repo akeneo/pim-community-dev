@@ -7,12 +7,15 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 
+use Oro\Bundle\EntityExtendBundle\DependencyInjection\Compiler\EntityManagerPass;
 use Oro\Bundle\EntityExtendBundle\Exception\RuntimeException;
 
 class OroEntityExtendBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
+        $container->addCompilerPass(new EntityManagerPass());
+
         $entityCacheDir = $container->getParameter('kernel.root_dir') . '/entities/Extend/Entity';
         if (!is_dir($entityCacheDir)) {
             if (false === @mkdir($entityCacheDir, 0777, true)) {

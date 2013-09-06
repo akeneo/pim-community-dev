@@ -39,6 +39,7 @@ class CreateCommand extends ContainerAwareCommand
 
     /**
      * Runs command
+     *
      * @param  InputInterface  $input
      * @param  OutputInterface $output
      * @throws \InvalidArgumentException
@@ -67,7 +68,7 @@ class CreateCommand extends ContainerAwareCommand
                 //fix state "Update" for existing class.
                 foreach ($config as $entityName => $entityOptions) {
                     $entityConfigProvider = $this->extendManager->getConfigProvider();
-                    $entityConfig = $entityConfigProvider->getConfig($entityName);
+                    $entityConfig         = $entityConfigProvider->getConfig($entityName);
                     $entityConfig->set('state', ExtendManager::STATE_ACTIVE);
 
                     $this->configManager->persist($entityConfig);

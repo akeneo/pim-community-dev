@@ -122,21 +122,39 @@ oro_entity_config:
     datagrid:
         field:
             items:
-                is_searchable:
+                is_visible:
                     options:
-                        default_value:      false
-                    grid:
-                        type:               boolean
-                        label:              'Grid'
-                        filter_type:        oro_grid_orm_boolean
-                        required:           true
-                        sortable:           true
-                        filterable:         false
-                        show_filter:        false
+                        default_value:      true
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+
                     form:
                         type:               choice
                         options:
                             choices:        ['No', 'Yes']
                             empty_value:    false
                             block:          other
-                            label:          'Grid'
+                            label:          'Show on grid'
+
+    form:
+        field:
+            items:
+                is_enabled:
+                    options:
+                        default_value:      true
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          other
+                            label:          'Show on form'

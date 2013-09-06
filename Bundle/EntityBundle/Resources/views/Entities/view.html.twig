@@ -1,0 +1,96 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% set gridId = 'fields-grid' %}
+
+{#{% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}#}
+
+{#{% set entityClass = entity.classname|replace('\\', '_') %}#}
+{#{% set audit_title = entity_config.get('label')|default(entity_name) %}#}
+{#{% set audit_path = 'oro_entityconfig_audit' %}#}
+
+{% block navButtons %}
+    {#{{ UI.button({'path' : path('oro_entityconfig_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Back', 'label' : 'Back'}) }}#}
+    {#{% if resource_granted('oro_user_user_update') %}#}
+        {#{{ UI.button({'path' : path('oro_entityconfig_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}#}
+    {#{% endif %}#}
+
+    {#{% for button in button_config %}#}
+        {#{{ UI.button({#}
+        {#'path'   : button.void is defined ? [ 'javascript:void(0);//', path(button.route, button.args|default({})) ]|join : path(button.route, button.args|default({})),#}
+        {#'iClass' : button.iClass|default(''),#}
+        {#'aClass' : button.aClass|default(''),#}
+        {#'title'  : button.title|default(button.name),#}
+        {#'label'  : button.name#}
+        {#}) }}#}
+    {#{% endfor %}#}
+{% endblock navButtons %}
+
+{% block head_script %}
+    {{ parent() }}
+
+    {#{% placeholder prepare_grid with {'datagrid': entity_fields, 'selector': '#' ~ gridId, 'parameters': ''} %}#}
+{% endblock %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {} %}
+    {#{% set breadcrumbs = {#}
+        {#'entity':      entity,#}
+        {#'indexPath':   path('oro_entityconfig_index'),#}
+        {#'indexLabel': 'Entities',#}
+        {#'entityTitle': entity_config.get('label')|default(entity_name),#}
+    {#}%}#}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}
+    {#<li>{{ 'Created'|trans }}: {{ UI.Time(entity.created) }}</li>#}
+    {#<li>{{ 'Updated'|trans }}: {{ UI.Time(entity.updated) }}</li>#}
+    {#{% if link %}#}
+        {#<li>{{ ['<a href="', link, '">', 'Number of records'|trans, ': ', entity_count|default(0) , '</a>']|join|raw }}</li>#}
+    {#{% else %}#}
+        {#<li>{{ ['<span>', 'Number of records'|trans, ': ', entity_count|default(0) , '</span>']|join|raw }}</li>#}
+    {#{% endif %}#}
+{% endblock stats%}
+
+{% block content_data %}
+    {#{% set id = 'entityconfig-view' %}#}
+
+    {#{% set unique_keys = [] %}#}
+    {#{% for key in unique_key.keys|default %}#}
+        {#{% set unique_keys = unique_keys|merge([UI.attibuteRow(key.name, key.key|join(', '))])%}#}
+    {#{% endfor %}#}
+
+    {#{% set general_fields = [#}
+        {#UI.attibuteRow('Name', entity_name),#}
+        {#UI.renderAttribute('Icon', ['<div class="clearfix-oro"><p class="control-label"><i class="',entity_config.get('icon'),' hide-text"></i> (',entity_config.get('icon'),')</p></div>']|join),#}
+        {#UI.attibuteRow('Label', entity_config.get('label')),#}
+        {#UI.attibuteRow('Plural Label', entity_config.get('plural_label')),#}
+        {#UI.attibuteRow('Type', entity_extend.get('owner')),#}
+        {#UI.attibuteRow('Description', entity_config.get('description')),#}
+        {#UI.attibuteRow('Ownership Type', entity_ownership.get('owner_type')),#}
+        {#UI.attibuteRow('Module', module_name),#}
+    {#]%}#}
+
+    {#{% set data = { 'dataBlocks': [#}
+        {#{#}
+            {#'title': 'General',#}
+            {#'class': 'active',#}
+            {#'subblocks': [#}
+                {#{'title': 'General Information', 'data': general_fields},#}
+                {#{'title': 'Unique Keys', 'data': unique_keys}#}
+            {#]#}
+        {#},#}
+        {#{#}
+            {#'title': 'Fields',#}
+            {#'subblocks': [#}
+                {#{#}
+                    {#'title': '',#}
+                    {#'useSpan': false,#}
+                    {#'data': [UI.gridBlock(gridId)]#}
+                {#}#}
+            {#]#}
+        {#}#}
+    {#]} %}#}
+
+    {#{{ parent() }}#}
+{% endblock content_data %}

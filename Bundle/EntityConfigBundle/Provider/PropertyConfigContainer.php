@@ -28,7 +28,7 @@ class PropertyConfigContainer
     protected $container;
 
     /**
-     * @param $config
+     * @param                    $config
      * @param ContainerInterface $container
      */
     public function __construct($config, ContainerInterface $container)
@@ -121,7 +121,7 @@ class PropertyConfigContainer
         $result = array();
         foreach ($this->getItems($type) as $code => $item) {
             if (isset($item['options']['serializable'])) {
-                $result[$code] = (bool)$item['options']['serializable'];
+                $result[$code] = (bool) $item['options']['serializable'];
             }
         }
 
@@ -137,7 +137,7 @@ class PropertyConfigContainer
     {
         $type = $this->getConfigType($type);
 
-        return (boolean)$this->getFormItems($type, $fieldType);
+        return (boolean) $this->getFormItems($type, $fieldType);
     }
 
     /**
@@ -285,16 +285,19 @@ class PropertyConfigContainer
     }
 
     /**
+     * @param string $type
      * @return array
      */
-    public function getFieldLayoutActions()
+    public function getRequireJsModules($type = self::TYPE_ENTITY)
     {
-        $fieldLayoutActions = array();
-        if (isset($this->config['field']) && isset($this->config['field']['layout_action'])) {
-            $fieldLayoutActions = $this->config['field']['layout_action'];
+        $type = $this->getConfigType($type);
+
+        $result = array();
+        if (isset($this->config[$type]) && isset($this->config[$type]['require_js'])) {
+            $result = $this->config[$type]['require_js'];
         }
 
-        return $fieldLayoutActions;
+        return $result;
     }
 
     /**

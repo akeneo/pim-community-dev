@@ -1,0 +1,18 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set gridId = 'custom_entity' %}
+
+{% block content %}
+    {% set pageTitle = 'Entities' %}
+
+    {% set buttons = [
+        UI.addButton({
+            'path': path('oro_entity_update', {'entity_id': entity_id}),
+            'title': 'Create '~label,
+            'label': 'Create '~label,
+        })
+    ] %}
+
+    {{ parent() }}
+{% endblock %}

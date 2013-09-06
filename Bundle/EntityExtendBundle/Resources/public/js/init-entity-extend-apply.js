@@ -19,7 +19,7 @@ function($, _, __, Modal) {
 
                     confirmUpdate.$content.parent().find('a.cancel').hide();
                     confirmUpdate.$content.parent().find('a.close').hide();
-                    confirmUpdate.$content.parent().find('a.btn-danger').replaceWith(progressbar);
+                    confirmUpdate.$content.parent().find('a.btn-primary').replaceWith(progressbar);
 
                     $('#confirmUpdateLoading').show();
                     window.location.href = url;

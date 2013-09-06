@@ -157,7 +157,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testUserOwnerBuildFormGranted()
     {
-        $this->mockConfigs(array('is_granted' => true, 'owner_type' => OwnershipType::OWNERSHIP_TYPE_USER));
+        $this->mockConfigs(array('is_granted' => true, 'owner_type' => OwnershipType::OWNER_TYPE_USER));
         $this->builder->expects($this->once())->method('add')->with(
             $this->fieldName,
             'oro_user_select',
@@ -175,7 +175,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testUserOwnerBuildFormNotGranted()
     {
-        $this->mockConfigs(array('is_granted' => false, 'owner_type' => OwnershipType::OWNERSHIP_TYPE_USER));
+        $this->mockConfigs(array('is_granted' => false, 'owner_type' => OwnershipType::OWNER_TYPE_USER));
         $this->builder->expects($this->never())->method('add');
         $this->extension->buildForm($this->builder, array());
     }
@@ -185,7 +185,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testBusinessUnitOwnerBuildFormGranted()
     {
-        $this->mockConfigs(array('is_granted' => true, 'owner_type' => OwnershipType::OWNERSHIP_TYPE_BUSINESS_UNIT));
+        $this->mockConfigs(array('is_granted' => true, 'owner_type' => OwnershipType::OWNER_TYPE_BUSINESS_UNIT));
         $businessUnits = array(
             1 => "Root",
             2 => "&nbsp;&nbsp;&nbsp;Child"
@@ -210,7 +210,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testBusinessUnitOwnerBuildFormNotGranted()
     {
-        $this->mockConfigs(array('is_granted' => false, 'owner_type' => OwnershipType::OWNERSHIP_TYPE_BUSINESS_UNIT));
+        $this->mockConfigs(array('is_granted' => false, 'owner_type' => OwnershipType::OWNER_TYPE_BUSINESS_UNIT));
         $this->builder->expects($this->once())->method('add')->with(
             $this->fieldName,
             'entity',
@@ -231,7 +231,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testOrganizationOwnerBuildFormGranted()
     {
-        $this->mockConfigs(array('is_granted' => true, 'owner_type' => OwnershipType::OWNERSHIP_TYPE_ORGANIZATION));
+        $this->mockConfigs(array('is_granted' => true, 'owner_type' => OwnershipType::OWNER_TYPE_ORGANIZATION));
         $this->builder->expects($this->once())->method('add')->with(
             $this->fieldName,
             'entity',
@@ -251,7 +251,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testOrganizationOwnerBuildFormNotGranted()
     {
-        $this->mockConfigs(array('is_granted' => false, 'owner_type' => OwnershipType::OWNERSHIP_TYPE_ORGANIZATION));
+        $this->mockConfigs(array('is_granted' => false, 'owner_type' => OwnershipType::OWNER_TYPE_ORGANIZATION));
         $this->builder->expects($this->once())->method('add')->with(
             $this->fieldName,
             'entity',
@@ -269,7 +269,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testEventListener()
     {
-        $this->mockConfigs(array('is_granted' => false, 'owner_type' => OwnershipType::OWNERSHIP_TYPE_ORGANIZATION));
+        $this->mockConfigs(array('is_granted' => false, 'owner_type' => OwnershipType::OWNER_TYPE_ORGANIZATION));
         $this->builder->expects($this->once())->method('addEventListener')->will(
             $this->returnCallback(array($this, 'eventCallback'))
         );

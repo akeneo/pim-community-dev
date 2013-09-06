@@ -48,7 +48,6 @@ class ConfigModelManager
         return $this->proxyEm->getService();
     }
 
-
     /**
      * @return bool
      */
@@ -90,9 +89,7 @@ class ConfigModelManager
             $result = $entity;
         }
 
-        if ($result) {
-            $this->localCache->set($cacheKey, $result);
-        }
+        $this->localCache->set($cacheKey, $result);
 
         return $result;
     }
