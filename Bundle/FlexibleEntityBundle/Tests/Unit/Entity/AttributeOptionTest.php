@@ -220,20 +220,4 @@ class AttributeOptionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::$attOptValueFr, $attOptValue->getValue());
         $this->assertEquals(self::$attOptValueFr, $attOpt->__toString());
     }
-
-    /**
-     * Test related getter/setter method
-     */
-    public function testDefaultValue()
-    {
-        $attOpt = new AttributeOption();
-
-        // assert default value is null
-        $this->assertNull($attOpt->getDefaultValue());
-
-        // assert get/set
-        $obj = $attOpt->setDefaultValue(self::$defaultValue);
-        $this->assertInstanceOf(self::$attOptClass, $obj);
-        $this->assertEquals(self::$defaultValue, $attOpt->getDefaultValue());
-    }
 }

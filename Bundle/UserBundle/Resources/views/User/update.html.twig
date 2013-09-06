@@ -8,16 +8,19 @@
 {% set formAction = form.vars.value.id ? path('oro_user_update', { id: form.vars.value.id}) : path('oro_user_create') %}
 {% block head_script %}
     <script type="text/javascript">
-        $(function() {
-            $('#business_units_tree').jstree({
-                "checkbox": {
-                    real_checkboxes: true,
-                    real_checkboxes_names: function (n) {
-                        return ['businessUnits[' + n.data('id') + ']', 1]
+        require(['jquery', 'jquery.jstree', 'jstree/jquery.hotkeys'],
+        function($){
+            $(function() {
+                $('#business_units_tree').jstree({
+                    "checkbox": {
+                        real_checkboxes: true,
+                        real_checkboxes_names: function (n) {
+                            return ['businessUnits[' + n.data('id') + ']', 1]
+                        },
+                        two_state: true
                     },
-                    two_state: true
-                },
-                "plugins": ["themes", "html_data", "ui", "checkbox", "hotkeys"]
+                    "plugins": ["themes", "html_data", "ui", "checkbox", "hotkeys"]
+                });
             });
         });
     </script>
@@ -66,6 +69,7 @@
 {% endblock stats %}
 
 {% block content_data %}
+<div class="user-profile-cols">
     {% set id = 'user-profile' %}
 
     {% set dataBlocks = [{
@@ -164,4 +168,5 @@
         }
     %}
     {{ parent() }}
+    </div>
 {% endblock content_data %}

@@ -5,7 +5,7 @@
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
 {% endblock %}
 {% block content %}
-     <div class="container-fluid">
+     <div class="container-fluid page-title">
         <h1>{{ (pageTitle is defined ? pageTitle : '')|trans }}
             {% if buttons is defined %}
                 {% for button in buttons %}
