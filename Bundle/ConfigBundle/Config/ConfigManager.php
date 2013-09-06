@@ -27,6 +27,11 @@ class ConfigManager
     protected $settings;
 
     /**
+     * @var mixed array with Config entities
+     */
+    protected $cache;
+
+    /**
      *
      * @param ObjectManager $om
      * @param array         $settings
@@ -206,12 +211,17 @@ class ConfigManager
      */
     protected function getMergedSettings($entity, $recordId, $section = null)
     {
-        $scope = $this->om->getRepository('OroConfigBundle:Config')->findOneBy(
-            array(
-                'scopedEntity'   => $entity,
-                'recordId' => $recordId,
-            )
-        );
+        if (isset($this->cache[$entity][$recordId])) {
+            $scope = $this->cache[$entity][$recordId];
+        } else {
+            $scope = $this->om->getRepository('OroConfigBundle:Config')->findOneBy(
+                array(
+                    'scopedEntity' => $entity,
+                    'recordId'     => $recordId,
+                )
+            );
+            $this->cache[$entity][$recordId] = $scope;
+        }
 
         if (!$scope) {
             return $this->settings;
