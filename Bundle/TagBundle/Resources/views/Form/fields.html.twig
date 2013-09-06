@@ -29,15 +29,17 @@
             {% endif %}
             <div id="tags-overlay"></div>
             <script type="text/javascript">
-                $(function () {
-                    new Oro.Tags.TagsUpdateView({
-                        autocompleteFieldId: '#{{ form.autocomplete.vars.id }}'
-                        , fieldId: '#{{ form.all.vars.id }}'
-                        , ownFieldId: '#{{ form.owner.vars.id }}'
-                        {% if resource_granted('oro_tag_assign_unassign') %}, unassign: true{% endif %}
-                        {% if resource_granted('oro_tag_unassign_global') %}, unassignGlobal: true{% endif %}
+                require(['jquery', 'oro/tag/update-view'],
+                function($, TagUpdateView) {
+                    $(function() {
+                        new TagUpdateView({
+                            autocompleteFieldId: '#{{ form.autocomplete.vars.id }}'
+                            , fieldId: '#{{ form.all.vars.id }}'
+                            , ownFieldId: '#{{ form.owner.vars.id }}'
+                            {% if resource_granted('oro_tag_assign_unassign') %}, unassign: true{% endif %}
+                            {% if resource_granted('oro_tag_unassign_global') %}, unassignGlobal: true{% endif %}
+                        });
                     });
-
                 });
             </script>
         </div>

@@ -4,8 +4,8 @@ oro_menu_config:
             template: 'OroNavigationBundle:Menu:application_menu.html.twig'
             currentClass: 'active'
             ancestorClass: 'active'
-            rootClass: 'nav nav-multilevel'
             allow_safe_labels: true
+            rootClass: 'nav nav-multilevel oroplatform-menu'
         dots_menu:
             template: 'OroNavigationBundle:Menu:dots_menu.html.twig'
         shortcuts:
