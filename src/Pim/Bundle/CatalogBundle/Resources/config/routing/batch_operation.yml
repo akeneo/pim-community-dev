@@ -9,3 +9,9 @@ pim_catalog_batch_operation_configure:
     defaults: { _controller: pim_catalog.controller.batch_operation:configureAction }
     requirements:
         _method: GET|POST
+
+pim_catalog_batch_operation_perform:
+    path: /{operationAlias}/perform
+    defaults: { _controller: pim_catalog.controller.batch_operation:performAction }
+    requirements:
+        _method: POST

@@ -30,9 +30,10 @@ class EditCommonAttributesType extends AbstractType
             )
             ->add(
                 'locale',
-                'choice',
+                'entity',
                 array(
-                    'choices' => $options['locales']
+                    'choices' => $options['locales'],
+                    'class'   => 'Pim\\Bundle\\CatalogBundle\\Entity\\Locale',
                 )
             );
 

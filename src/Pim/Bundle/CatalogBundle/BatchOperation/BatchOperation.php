@@ -28,14 +28,16 @@ interface BatchOperation
     /**
      * Initialize the operation with the products
      *
-     * @param ProductInterface[]
+     * @param ProductInterface[] $products
+     * @param array              $parameters
      */
-    public function initialize(array $products);
+    public function initialize(array $products, array $parameters);
 
     /**
      * Perform an operation on a set of products
      *
-     * @param ProductInterface[]
+     * @param ProductInterface[] $products
+     * @param array              $parameters
      */
-    public function perform(array $products);
+    public function perform(array $products, array $parameters);
 }

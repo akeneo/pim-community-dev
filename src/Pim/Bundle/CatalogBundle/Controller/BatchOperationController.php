@@ -76,25 +76,39 @@ class BatchOperationController extends AbstractController
     {
         $this->batchOperator->setOperationAlias($operationAlias);
 
-        $productIds = $request->query->get('products');
-        if (!$productIds || !is_array($productIds)) {
-            return $this->redirectToRoute('pim_catalog_product_index');
-        }
-        $this->batchOperator->initializeOperation($productIds);
-
+        $parameters = $request->query->all();
+        $this->batchOperator->initializeOperation($parameters);
         $form = $this->getBatchOperatorForm();
         if ($request->isMethod('POST')) {
             $form->bind($request);
-            if ($form->isValid()) {
-                $this->batchOperator->performOperation($productIds);
-            }
         }
 
         return array(
             'form'          => $form->createView(),
             'batchOperator' => $this->batchOperator,
-            'productIds'    => $productIds,
+            'parameters'    => $parameters,
         );
+    }
+
+    public function performAction(Request $request, $operationAlias)
+    {
+        $this->batchOperator->setOperationAlias($operationAlias);
+
+        $productIds = $request->query->get('products');
+        if (!$productIds || !is_array($productIds)) {
+            return $this->redirectToRoute('pim_catalog_product_index');
+        }
+
+        $form = $this->getBatchOperatorForm();
+        $form->bind($request);
+        $this->batchOperator->initializeOperation($productIds);
+
+        if ($form->isValid()) {
+            $this->batchOperator->performOperation($productIds);
+            $this->addFlash('success', sprintf('pim_catalog.batch_operation.%s.success_flash', $operationAlias));
+
+            return $this->redirectToRoute('pim_catalog_product_index');
+        }
     }
 
     private function getBatchOperatorForm()

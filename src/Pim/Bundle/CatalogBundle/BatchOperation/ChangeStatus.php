@@ -63,7 +63,7 @@ class ChangeStatus extends AbstractBatchOperation
     /**
      * {@inheritdoc}
      */
-    public function perform(array $products)
+    public function perform(array $products, array $parameters)
     {
         foreach ($products as $product) {
             $product->setEnabled($this->enable);

@@ -67,20 +67,21 @@ class EditCommonAttributes extends AbstractBatchOperation
     {
         $locales = $this->localeManager->getActiveLocales();
 
-        return array('locales' => array_combine($locales, $locales));
+        return array('locales' => $locales);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $products)
+    public function initialize(array $products, array $parameters)
     {
-        $attributes = $this->productManager->getAttributeRepository()->findAll();
+        $displayedAttributes = $this->getParameter('attributes', $parameters, array());
+        $availableAttributes = $this->productManager->getAttributeRepository()->findByCode($displayedAttributes);
 
         foreach ($products as $product) {
-            foreach ($attributes as $key => $attribute) {
+            foreach ($availableAttributes as $key => $attribute) {
                 if ($attribute->getUnique() || false === $product->getValue($attribute->getCode())) {
-                    unset($attributes[$key]);
+                    unset($availableAttributes[$key]);
                 }
             }
         }
@@ -96,7 +97,7 @@ class EditCommonAttributes extends AbstractBatchOperation
     /**
      * {@inheritdoc}
      */
-    public function perform(array $products)
+    public function perform(array $products, array $parameters)
     {
         foreach ($products as $product) {
             foreach ($this->values as $value) {

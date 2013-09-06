@@ -22,7 +22,26 @@ abstract class AbstractBatchOperation implements BatchOperation
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $products)
+    public function initialize(array $products, array $parameters)
     {
+    }
+
+    /**
+     * Get a parameter
+     *
+     * @param string $key
+     * @param array $parameters
+     *
+     * @throw InvalidArgumentException
+     *
+     * @return mixed
+     */
+    protected function getParameter($key, array $parameters, $default = null)
+    {
+        if (!array_key_exists($key, $parameters)) {
+            return $default;
+        }
+
+        return $parameters[$key];
     }
 }

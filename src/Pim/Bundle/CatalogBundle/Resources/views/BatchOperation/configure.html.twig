@@ -1,9 +1,10 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
 {% block content %}
-    <form action="{{ path('pim_catalog_batch_operation_configure', {'operationAlias': batchOperator.operationAlias, 'products': productIds }) }}" method="POST" class="form-horizontal">
+    {% set parameters = parameters|merge({'operationAlias': batchOperator.operationAlias}) %}
+    <form action="{{ path('pim_catalog_batch_operation_configure', parameters) }}" method="POST" class="form-horizontal">
         {{ form_widget(form) }}
-        <a href="{{ path('pim_catalog_batch_operation_choose', {'products': productIds}) }}" class="btn">Cancel</a>
+        <a href="{{ path('pim_catalog_batch_operation_choose', {'products': parameters.products}) }}" class="btn">Cancel</a>
         <input type="submit" value="Continue &rarr;" class="btn">
     </form>
 {% endblock %}
