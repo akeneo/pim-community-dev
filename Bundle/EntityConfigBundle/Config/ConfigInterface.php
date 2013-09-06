@@ -2,50 +2,45 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Config;
 
+use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
+
 interface ConfigInterface extends \Serializable
 {
     /**
-     * @return string
+     * @return ConfigIdInterface
      */
-    public function getClassName();
+    public function getId();
 
     /**
-     * @return string
-     */
-    public function getScope();
-
-    /**
-     * @param       $code
-     * @param  bool $strict
-     * @return string
+     * @param  string $code
+     * @param  bool   $strict
+     * @return mixed
      */
     public function get($code, $strict = false);
 
     /**
-     * @param $code
-     * @param $value
-     * @return string
+     * @param string $code
+     * @param mixed  $value
      */
     public function set($code, $value);
 
     /**
-     * @param $code
+     * @param string $code
      * @return bool
      */
     public function has($code);
 
     /**
-     * @param $code
+     * @param string $code
      * @return bool
      */
     public function is($code);
 
     /**
-     * @param  array $exclude
-     * @param  array $include
+     * @param callable $filter
      * @return array
      */
-    public function getValues(array $exclude = array(), array $include = array());
+    public function all(\Closure $filter = null);
 
     /**
      * @param $values

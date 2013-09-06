@@ -81,8 +81,8 @@ class IterableResult implements IterableResultInterface, \Countable
     private $current = null;
 
     /**
-     * @param ProxyQuery $query
-     * @param int $pageSize
+     * @param  ProxyQuery                $query
+     * @param  int                       $pageSize
      * @throws \InvalidArgumentException If page size is not greater than 0
      */
     public function __construct(
@@ -98,7 +98,7 @@ class IterableResult implements IterableResultInterface, \Countable
      */
     public function setBufferSize($pageSize)
     {
-        $this->pageSize = (int)$pageSize;
+        $this->pageSize = (int) $pageSize;
         if ($this->pageSize <= 0) {
             throw new \InvalidArgumentException('$pageSize must be greater than 0');
         }
@@ -142,6 +142,7 @@ class IterableResult implements IterableResultInterface, \Countable
         $totalPages = ceil($this->count() / $this->pageSize);
         if (!$totalPages || $totalPages <= $this->page + 1) {
             unset($this->rows);
+
             return false;
         }
 
@@ -203,6 +204,7 @@ class IterableResult implements IterableResultInterface, \Countable
             }
             $this->totalCount = $countCalculator->getCount($countQuery);
         }
+
         return $this->totalCount;
     }
 }

@@ -85,6 +85,34 @@ class StringFilterTest extends FilterTestCase
                     array('setParameter', array(self::TEST_NAME . '_p1', '%test%'), null)
                 )
             ),
+            'starts_with' => array(
+                'data' => array('value' => 'test', 'type' => TextFilterType::TYPE_STARTS_WITH),
+                'expectProxyQueryCalls' => array(
+                    array('getUniqueParameterId', array(), 'p1'),
+                    array('andWhere',
+                        array(
+                            $this->getExpressionFactory()->like(
+                                self::TEST_ALIAS . '.' . self::TEST_FIELD,
+                                ':' . self::TEST_NAME . '_p1'
+                            )
+                        ), null),
+                    array('setParameter', array(self::TEST_NAME . '_p1', 'test%'), null)
+                )
+            ),
+            'ends_with' => array(
+                'data' => array('value' => 'test', 'type' => TextFilterType::TYPE_ENDS_WITH),
+                'expectProxyQueryCalls' => array(
+                    array('getUniqueParameterId', array(), 'p1'),
+                    array('andWhere',
+                        array(
+                            $this->getExpressionFactory()->like(
+                                self::TEST_ALIAS . '.' . self::TEST_FIELD,
+                                ':' . self::TEST_NAME . '_p1'
+                            )
+                        ), null),
+                    array('setParameter', array(self::TEST_NAME . '_p1', '%test'), null)
+                )
+            ),
             'equals_having' => array(
                 'data' => array('value' => 'test', 'type' => TextFilterType::TYPE_EQUAL),
                 'expectProxyQueryCalls' => array(
@@ -115,6 +143,37 @@ class StringFilterTest extends FilterTestCase
                 'form_type' => TextFilterType::NAME
             ),
             $this->model->getDefaultOptions()
+        );
+    }
+
+    /**
+     * @dataProvider formatDataProvider
+     *
+     * @param $comparisonType
+     * @param $expected
+     */
+    public function testGetFormatByComparisonType($comparisonType, $expected)
+    {
+        // call set options in order to merge default options
+        $this->model->setOptions(array());
+
+        $this->assertEquals(
+            $expected,
+            $this->model->getFormatByComparisonType($comparisonType)
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function formatDataProvider()
+    {
+        return array(
+            array(TextFilterType::TYPE_CONTAINS, '%%%s%%'),
+            array(TextFilterType::TYPE_NOT_CONTAINS, '%%%s%%'),
+            array(TextFilterType::TYPE_EQUAL, '%%%s%%'),
+            array(TextFilterType::TYPE_STARTS_WITH, '%s%%'),
+            array(TextFilterType::TYPE_ENDS_WITH, '%%%s'),
         );
     }
 }

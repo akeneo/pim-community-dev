@@ -61,6 +61,12 @@ _.extend(Oro.Filter.MultiSelectDecorator.prototype, {
                 autoReset: true
             });
         }
+
+        // destroy DOM garbage after change page via hash-navigation
+        Oro.Events.once('hash_navigation_request:start', function() {
+            this.multiselect("destroy");
+            this.element.hide();
+        }, this);
     },
 
     /**

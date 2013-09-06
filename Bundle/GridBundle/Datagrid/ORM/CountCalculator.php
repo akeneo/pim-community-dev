@@ -10,7 +10,7 @@ use Doctrine\ORM\Query\QueryException;
 class CountCalculator
 {
     /**
-     * @param Query $query
+     * @param  Query $query
      * @return int
      */
     public function getCount(Query $query)
@@ -27,12 +27,12 @@ class CountCalculator
         );
         $result = $statement->fetchColumn();
 
-        return $result ? (int)$result : 0;
+        return $result ? (int) $result : 0;
     }
 
     /**
-     * @param Query $query
-     * @param array $paramMappings
+     * @param  Query                              $query
+     * @param  array                              $paramMappings
      * @return array
      * @throws \Doctrine\ORM\Query\QueryException
      */

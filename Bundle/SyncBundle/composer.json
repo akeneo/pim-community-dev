@@ -7,9 +7,8 @@
     "license": "MIT",
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "2.1.*",
-        "cboden/Ratchet": "master",
-        "react/zmq": "dev-master"
+        "symfony/symfony": "2.3.*",
+        "jdare/clank-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\SyncBundle": "" }

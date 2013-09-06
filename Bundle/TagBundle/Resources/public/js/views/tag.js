@@ -21,7 +21,7 @@ Oro.Tags.TagView =  Backbone.View.extend({
                 '</li>' +
             '<%}) %>' +
             '<% if (models.length == 0) { %>' +
-                _.__('There are no tags yet') +
+                _.__('Not tagged') +
             '<%} %>' +
         '</ul>'
     ),

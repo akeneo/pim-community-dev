@@ -61,7 +61,7 @@ class EmailTemplateHandler
             // deny to modify system templates
             if ($entity->getIsSystem()) {
                 $message = $this->translator->trans(
-                    'oro_email.validators.emailtemplate.attempt_save_system_template',
+                    'oro.email.handler.attempt_save_system_template',
                     array(),
                     'validators'
                 );

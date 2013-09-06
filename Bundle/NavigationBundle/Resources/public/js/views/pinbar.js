@@ -53,7 +53,7 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
             this
         );
 
-        this.$minimizeButton.click(_.bind(this.minimizePage, this));
+        this.$minimizeButton.click(_.bind(this.changePageState, this));
 
         this.registerTab();
         this.cleanup();
@@ -119,6 +119,20 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
     },
 
     /**
+     * Handle minimize/maximize page.
+     *
+     * @param e
+     */
+    changePageState: function(e) {
+        var item = this.getItemForCurrentPage(true);
+        if (item.length) {
+            this.closePage(item);
+        } else {
+            this.minimizePage(e);
+        }
+    },
+
+    /**
      * Handle minimize page.
      *
      * @param e
@@ -159,14 +173,15 @@ navigation.pinbar.MainView = navigation.MainViewAbstract.extend({
     },
 
     /**
-     * Handle click on page close button
+     * Handle pinbar close
+     *
+     * @param item
      */
-    closePage: function()
+    closePage: function(item)
     {
-        var pinnedItem = this.getItemForCurrentPage(true);
-        if (pinnedItem.length) {
-            _.each(pinnedItem, function(item) {item.destroy({wait: true});});
-        }
+        _.each(item, function(item) {
+            item.set('remove', true);
+        });
     },
 
     /**

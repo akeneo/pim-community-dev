@@ -1,9 +1,9 @@
-placeholders:
-    scripts_before:
-        items:
-            sync_js:
-                order: 310
-
-items:
-    sync_js:
-        template: OroSyncBundle:InlineJS:sync_js.html.twig
+#placeholders:
+#    scripts_before:
+#        items:
+#            sync_js:
+#                order: 310
+#
+#items:
+#    sync_js:
+#        template: OroSyncBundle:InlineJS:sync_js.html.twig

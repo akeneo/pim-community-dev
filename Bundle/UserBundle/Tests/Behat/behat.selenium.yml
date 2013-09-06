@@ -1,0 +1,7 @@
+# behat.selenium.yml
+default:
+  context:
+    class: SeleniumContext
+  paths:
+    features:   'src\Oro\src\Oro\Bundle\UserBundle\Tests\Behat\features'
+    bootstrap:  'src\Oro\src\Oro\Bundle\UserBundle\Tests\Behat\features\bootstrap'
