@@ -43,9 +43,10 @@ class ConfigManager
      * @param  string $name Setting name, for example "oro_user.level"
      * @param null|object $scopeEntity that may represent user, group, etc
      * @param bool $default
+     * @param bool $full
      * @return mixed
      */
-    public function get($name, $scopeEntity = null, $default = false)
+    public function get($name, $scopeEntity = null, $default = false, $full = false)
     {
         $name = explode(self::SECTION_MODEL_SEPARATOR, $name);
 
@@ -66,7 +67,7 @@ class ConfigManager
         $setting = $settings[$name[0]];
         $setting = isset($setting[$name[1]]) ? $setting[$name[1]] : null;
 
-        return is_array($setting) ? $setting['value'] : $setting;
+        return is_array($setting) && !$full ? $setting['value'] : $setting;
     }
 
     /**
@@ -90,7 +91,7 @@ class ConfigManager
                 }
 
                 // updated
-                if (!empty($newSettings[$newKey]) && $newSettings[$newKey] != $value) {
+                if (!empty($newSettings[$newKey]) && $newSettings[$newKey]['value'] != $value['value']) {
                     $updated[$section.self::SECTION_VIEW_SEPARATOR.$key] = $newSettings[$newKey];
                 }
             }
@@ -200,32 +201,37 @@ class ConfigManager
         $mergedSettings = $this->settings;
         foreach ($scope->getValues() as $value) {
             if (isset($this->settings[$value->getSection()][$value->getName()])) {
-                $mergedSettings[$value->getSection()][$value->getName()]['value'] = $value->getValue();
+                $mergedSettings[$value->getSection()][$value->getName()] = array(
+                    'value' => $value->getValue(),
+                    'scope' => $scope->getEntity(),
+                    'use_parent_scope_value' => false
+                );
             }
         }
-
-        // TODO: get settings by section from db
 
         return empty($mergedSettings[$section]) ? $mergedSettings : $mergedSettings[$section];
     }
 
     /**
      * @param FormInterface $form
-     * @param bool $default
      * @return array
      */
     public function getSettingsByForm(FormInterface $form)
     {
         $settings = array();
+        foreach ($this->getMergedSettings(null, null) as $section => $_settings) {
+            foreach ($_settings as $key => $value) {
+                $settings[$section.self::SECTION_VIEW_SEPARATOR.$key] = $value;
+            }
+        }
+
         foreach ($form as $child) {
             $key = str_replace(self::SECTION_VIEW_SEPARATOR, self::SECTION_MODEL_SEPARATOR, $child->getName());
-            $settings[$child->getName()] = array(
-                'value' => $this->get($key, null, false),
-                'use_parent_scope_value' => false,
-            );
-//            if ($default = $child->get('use_parent_scope_value')) {
-//                $default->
-//            }
+            $settings[$child->getName()] = $this->get($key, null, false, true);
+            $settings[$child->getName()]['use_parent_scope_value'] =
+                !isset($settings[$child->getName()]['use_parent_scope_value'])  ?
+                true : $settings[$child->getName()]['use_parent_scope_value'];
+
         }
 
         return $settings;
