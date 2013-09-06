@@ -24,7 +24,15 @@
 
                 checkboxEl.change(function() {
                     var value = $(this).is(':checked');
-                    valueEls.prop('disabled', value);
+                    valueEls.each(function(i, el) {
+                        $(el)
+                            .prop('disabled', value)
+                            .data('disabled', value);
+
+                        if (!_.isUndefined($.uniform) && _.contains($.uniform.elements, el)) {
+                            $(el).uniform('update');
+                        }
+                    });
                 });
             });
         }();

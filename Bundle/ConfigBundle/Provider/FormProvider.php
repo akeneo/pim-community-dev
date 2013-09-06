@@ -2,7 +2,10 @@
 
 namespace Oro\Bundle\ConfigBundle\Provider;
 
+use Symfony\Component\Form\FormBuilderInterface;
+
 use Oro\Bundle\ConfigBundle\Utils\TreeUtils;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
 
 abstract class FormProvider implements ProviderInterface
@@ -169,4 +172,32 @@ abstract class FormProvider implements ProviderInterface
 
         return $values;
     }
+
+    protected function addFieldToForm(FormBuilderInterface $form, $fieldDefinition)
+    {
+        if (isset($fieldDefinition['acl_resource']) && !$this->checkIsGranted($fieldDefinition['acl_resource'])) {
+            // field is not allowed to be shown, do nothing
+            return;
+        }
+
+        $fieldDefinition['name'] = str_replace(
+            ConfigManager::SECTION_MODEL_SEPARATOR,
+            ConfigManager::SECTION_VIEW_SEPARATOR,
+            $fieldDefinition['name']
+        );
+
+        $form->add(
+            $fieldDefinition['name'],
+            'oro_config_form_field_type',
+            $fieldDefinition['options']
+        );
+    }
+
+    /**
+     * Check ACL resource
+     *
+     * @param string $resourceName
+     * @return mixed
+     */
+    abstract public function checkIsGranted($resourceName);
 }

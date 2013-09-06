@@ -2,9 +2,10 @@
 
 namespace Oro\Bundle\ConfigBundle\Provider;
 
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use Oro\Bundle\ConfigBundle\Utils\TreeUtils;
 use Symfony\Component\Form\FormFactoryInterface;
+
+use Oro\Bundle\UserBundle\Acl\Manager;
+use Oro\Bundle\ConfigBundle\Utils\TreeUtils;
 
 class SystemConfigurationFormProvider extends FormProvider
 {
@@ -14,11 +15,15 @@ class SystemConfigurationFormProvider extends FormProvider
     /** @var FormFactoryInterface */
     protected $factory;
 
-    public function __construct($config, FormFactoryInterface $factory)
+    /** @var Manager */
+    protected $aclManager;
+
+    public function __construct($config, FormFactoryInterface $factory, Manager $aclManager)
     {
         parent::__construct($config);
 
-        $this->factory = $factory;
+        $this->factory    = $factory;
+        $this->aclManager = $aclManager;
     }
 
     /**
@@ -28,19 +33,19 @@ class SystemConfigurationFormProvider extends FormProvider
     {
         $block = $this->getSubtree($activeGroup);
 
-        $toAdd = array();
+        $toAdd       = array();
         $blockConfig = array($activeGroup => $this->retrieveConfigFromDefinition($block));
 
         if (!empty($block['children'])) {
             $subBlocksConfig = array();
 
             foreach ($block['children'] as $subblock) {
-                $subBlockName = $subblock['name'];
+                $subBlockName                   = $subblock['name'];
                 $subBlocksConfig[$subBlockName] = $this->retrieveConfigFromDefinition($subblock);
 
                 if (!empty($subblock['children'])) {
                     foreach ($subblock['children'] as $field) {
-                        $field['options'] = !empty($field['options']) ? $field['options'] : array();
+                        $field['options']       = !empty($field['options']) ? $field['options'] : array();
                         $field['block_options'] = array(
                             'block'    => $block['name'],
                             'subblock' => $subblock['name']
@@ -67,24 +72,26 @@ class SystemConfigurationFormProvider extends FormProvider
             )
         );
         foreach ($toAdd as $field) {
-            $field['name'] = str_replace(
-                ConfigManager::SECTION_MODEL_SEPARATOR,
-                ConfigManager::SECTION_VIEW_SEPARATOR,
-                $field['name']
+            $field['options'] = array_merge(
+                array('target_field' => $field),
+                $field['block_options'],
+                array_intersect_key($field['options'], array_flip(array('label', 'required')))
             );
-
-            $builder->add(
-                $field['name'],
-                'oro_config_form_field_type',
-                array_merge(
-                    array('target_field' => $field),
-                    $field['block_options'],
-                    array_intersect_key($field['options'], array_flip(array('label', 'required')))
-                )
-            );
+            $this->addFieldToForm($builder, $field);
         }
 
         return $builder->getForm();
+    }
+
+    /**
+     * Check ACL resource
+     *
+     * @param string $resourceName
+     * @return bool
+     */
+    public function checkIsGranted($resourceName)
+    {
+        return $this->aclManager->isResourceGranted($resourceName);
     }
 
     /**
@@ -115,7 +122,7 @@ class SystemConfigurationFormProvider extends FormProvider
             $subtree = TreeUtils::findNodeByName($tree, $activeGroup);
 
             if (!empty($subtree)) {
-                $subGroups      = TreeUtils::getByNestingLevel($subtree['children'], 1);
+                $subGroups = TreeUtils::getByNestingLevel($subtree['children'], 1);
                 if (!empty($subGroups)) {
                     $activeSubGroup = TreeUtils::getFirstNodeName($subGroups);
                 }

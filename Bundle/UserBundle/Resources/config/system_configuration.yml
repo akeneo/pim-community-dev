@@ -10,7 +10,7 @@ oro_system_configuration:
         number_formats:
             title: 'Nubmer formats'
 
-        localization_other:
+        others:
             title: 'Others'
             priority: -255
 
@@ -81,7 +81,7 @@ oro_system_configuration:
                 required: true
                 constraints:
                     - NotBlank: ~
-                    - Length: 1
+                    - Length:   1
 
         oro_user.thousands_separator:
             type: text
@@ -99,10 +99,10 @@ oro_system_configuration:
                 required: true
                 constraints:
                     - NotBlank: ~
-                    - Length: 1
-                    - Regex:            "/^[0-9]{1}$/"
+                    - Length:   1
+                    - Regex:    "/^[0-9]{1}$/"
                     - Range:
-                        min:            0
+                        min:    0
 
         oro_user.name_format:
             type: text
@@ -135,6 +135,6 @@ oro_system_configuration:
                                             - oro_user.decimal_symbol
                                             - oro_user.thousands_separator
                                             - oro_user.number_of_decimals
-                                    localization_other:
+                                    others:
                                         children:
                                             - oro_user.name_format

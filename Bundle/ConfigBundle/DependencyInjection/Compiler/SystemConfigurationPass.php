@@ -11,14 +11,14 @@ use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDec
 
 class SystemConfigurationPass implements CompilerPassInterface
 {
-    const CONFIG_FILE_NAME  = 'system_configuration.yml';
+    const CONFIG_FILE_NAME = 'system_configuration.yml';
 
     /**
      * {@inheritDoc}
      */
     public function process(ContainerBuilder $container)
     {
-        $config = array();
+        $config    = array();
         $processor = new ProcessorDecorator();
 
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
