@@ -31,6 +31,7 @@ services:
               route_name: pim_catalog_product_index
         calls:
             - [ setCategoryManager, ['@pim_catalog.manager.category'] ]
+            - [ setDatagridBuilder, ['@pim_grid.builder.datagrid'] ]
 
     pim_catalog.datagrid.manager.history:
         class: Pim\Bundle\CatalogBundle\Datagrid\AuditDatagridManager

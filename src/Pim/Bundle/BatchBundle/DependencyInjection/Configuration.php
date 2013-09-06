@@ -21,7 +21,7 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
 
-        $root = $treeBuilder->root('pim_batch');
+        $treeBuilder->root('pim_batch');
 
         return $treeBuilder;
     }

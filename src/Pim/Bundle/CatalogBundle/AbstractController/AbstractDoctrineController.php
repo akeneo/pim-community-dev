@@ -22,8 +22,22 @@ use Symfony\Component\Form\FormTypeInterface;
  */
 abstract class AbstractDoctrineController extends AbstractController
 {
+    /**
+     * @var RegistryInterface
+     */
     private $doctrine;
 
+    /**
+     * Constructor
+     *
+     * @param Request $request
+     * @param EngineInterface $templating
+     * @param RouterInterface $router
+     * @param SecurityContextInterface $securityContext
+     * @param FormFactoryInterface $formFactory
+     * @param ValidatorInterface $validator
+     * @param RegistryInterface $doctrine
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,
@@ -47,7 +61,6 @@ abstract class AbstractDoctrineController extends AbstractController
     {
         return $this->doctrine;
     }
-
 
     /**
      * Returns the Doctrine manager
@@ -76,7 +89,7 @@ abstract class AbstractDoctrineController extends AbstractController
      * @param integer $id
      *
      * @throws NotFoundHttpException
-     * @return mixed
+     * @return object
      */
     protected function findOr404($className, $id)
     {

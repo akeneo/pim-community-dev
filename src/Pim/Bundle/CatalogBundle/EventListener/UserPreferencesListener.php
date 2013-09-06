@@ -22,15 +22,20 @@ class UserPreferencesListener implements EventSubscriber
      * @var ContainerInterface $container
      */
     protected $container;
+
     /**
      * @var EntityManager $manager
      */
     protected $manager;
+
     /**
      * @var UnitOfWork $uow
      */
     protected $uow;
-    
+
+    /**
+     * @var array
+     */
     private $metadata=array();
 
     /**
@@ -76,7 +81,7 @@ class UserPreferencesListener implements EventSubscriber
 
     /**
      * Before insert
-     * 
+     *
      * @param object $entity
      */
     protected function prePersist($entity)
@@ -117,6 +122,11 @@ class UserPreferencesListener implements EventSubscriber
         }
     }
 
+    /**
+     * Get the metadata of an entity
+     * @param object $entity
+     * @return array
+     */
     protected function getMetadata($entity)
     {
         $className = get_class($entity);
@@ -128,7 +138,6 @@ class UserPreferencesListener implements EventSubscriber
 
     protected function computeChangeset($entity)
     {
-
         $this->uow->persist($entity);
         $this->uow->computeChangeSet($this->getMetadata($entity), $entity);
     }
@@ -163,7 +172,6 @@ class UserPreferencesListener implements EventSubscriber
         $userManager = $this->container->get('oro_user.manager');
         $flexRepository = $userManager->getFlexibleRepository();
         $attribute = $flexRepository->findAttributeByCode($attributeCode);
-        $storageManager = $userManager->getStorageManager();
 
         if ($attribute) {
             foreach ($attribute->getOptions() as $option) {

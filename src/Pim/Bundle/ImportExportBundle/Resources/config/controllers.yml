@@ -1,7 +1,8 @@
 parameters:
-    pim_import_export.controller.import.class: Pim\Bundle\ImportExportBundle\Controller\ImportController
-    pim_import_export.controller.export.class: Pim\Bundle\ImportExportBundle\Controller\ExportController
-    pim_import_export.controller.report.class: Pim\Bundle\ImportExportBundle\Controller\ReportController
+    pim_import_export.controller.import.class:        Pim\Bundle\ImportExportBundle\Controller\ImportController
+    pim_import_export.controller.export.class:        Pim\Bundle\ImportExportBundle\Controller\ExportController
+    pim_import_export.controller.import_report.class: Pim\Bundle\ImportExportBundle\Controller\ImportReportController
+    pim_import_export.controller.export_report.class: Pim\Bundle\ImportExportBundle\Controller\ExportReportController
 
 services:
 
@@ -23,10 +24,20 @@ services:
             - '@pim_batch.connectors'
             - import
             
-    pim_import_export.controller.report:
+    pim_import_export.controller.export_report:
         parent: pim_catalog.controller.abstract_doctrine
         scope: request
-        class: '%pim_import_export.controller.report.class%'
+        class: '%pim_import_export.controller.export_report.class%'
         arguments:
             - '@pim_catalog.datagrid.worker'
             - '@pim_batch.logger.batch_log_handler'
+            - export
+
+    pim_import_export.controller.import_report:
+        parent: pim_catalog.controller.abstract_doctrine
+        scope: request
+        class: '%pim_import_export.controller.import_report.class%'
+        arguments:
+            - '@pim_catalog.datagrid.worker'
+            - '@pim_batch.logger.batch_log_handler'
+            - import

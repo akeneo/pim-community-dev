@@ -12,6 +12,11 @@ namespace Context\Page\Base;
 class Index extends Base
 {
     /**
+     * @var string
+     */
+    protected $path = '/';
+
+    /**
      * {@inheritdoc}
      */
     public function __construct($session, $pageFactory, $parameters = array())
