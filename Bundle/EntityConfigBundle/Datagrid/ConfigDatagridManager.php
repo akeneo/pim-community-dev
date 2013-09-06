@@ -92,7 +92,7 @@ class ConfigDatagridManager extends DatagridManager
             }
 
             if ($provider->getPropertyConfig()->getUpdateActionFilter()) {
-                $filters['update']   = $provider->getPropertyConfig()->getUpdateActionFilter();
+                $filters['update'] = $provider->getPropertyConfig()->getUpdateActionFilter();
             }
         }
 
@@ -107,7 +107,7 @@ class ConfigDatagridManager extends DatagridManager
                             $actions
                         );
 
-                        $actions['update']   = false;
+                        $actions['update'] = false;
                     } else {
                         foreach ($filters as $action => $filter) {
                             foreach ($filter as $key => $value) {
@@ -138,6 +138,22 @@ class ConfigDatagridManager extends DatagridManager
         }
 
         return $properties;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRequireJsModules()
+    {
+        $modules = array();
+        foreach ($this->configManager->getProviders() as $provider) {
+            $modules = array_merge(
+                $modules,
+                $provider->getPropertyConfig()->getRequireJsModules()
+            );
+        }
+
+        return $modules;
     }
 
     /**
@@ -186,7 +202,7 @@ class ConfigDatagridManager extends DatagridManager
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getPropertyConfig()->getItems() as $code => $item) {
                 if (isset($item['grid'])) {
-                    $item['grid']        = $provider->getPropertyConfig()->initConfig($item['grid']);
+                    $item['grid'] = $provider->getPropertyConfig()->initConfig($item['grid']);
 
                     $fieldObjectProvider = new FieldDescription();
                     $fieldObjectProvider->setName($code);

@@ -94,6 +94,22 @@ class EntityFieldsDatagridManager extends DatagridManager
     }
 
     /**
+     * @return array
+     */
+    public function getRequireJsModules()
+    {
+        $modules = array();
+        foreach ($this->configManager->getProviders() as $provider) {
+            $modules = array_merge(
+                $modules,
+                $provider->getPropertyConfig(PropertyConfigContainer::TYPE_FIELD)->getRequireJsModules()
+            );
+        }
+
+        return $modules;
+    }
+
+    /**
      * {@inheritDoc}
      */
     protected function getProperties()
@@ -348,7 +364,7 @@ class EntityFieldsDatagridManager extends DatagridManager
                     'WITH',
                     $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'"
                 );
-                $query->addSelect($alias . '.value as ' . $code. '', false);
+                $query->addSelect($alias . '.value as ' . $code . '', false);
             }
         }
 
