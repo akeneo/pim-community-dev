@@ -6,8 +6,6 @@ use Doctrine\Common\Util\Inflector;
 use Doctrine\Common\Collections\ArrayCollection;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\TableNode;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\Acl;
@@ -922,38 +920,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return Organization
-     */
-    private function createOrganization()
-    {
-        $organization = new Organization();
-
-        $organization
-            ->setName('default')
-            ->setCurrency('USD')
-            ->setPrecision('000 000.00');
-
-        $this->persist($organization);
-
-        return $organization;
-    }
-
-    /**
-     * @param string       $name
-     * @param Organization $organization
-     */
-    private function createBusinessUnit($name, Organization $organization)
-    {
-        $businessUnit = new BusinessUnit();
-
-        $businessUnit
-            ->setName($name)
-            ->setOrganization($organization);
-
-        $this->persist($businessUnit);
-    }
-
-    /**
      * @param string $code
      *
      * @return Locale
@@ -1000,25 +966,6 @@ class FixturesContext extends RawMinkContext
         }
 
         return $role;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return BusinessUnit
-     */
-    private function getBusinessUnitOrCreate($name)
-    {
-        try {
-            $bu = $this->getEntityOrException('OroOrganizationBundle:BusinessUnit', array('name' => $name));
-
-        } catch (\InvalidArgumentException $e) {
-
-            $organization = $this->createOrganization();
-            $bu = $this->createBusinessUnit($name, $organization);
-        }
-
-        return $bu;
     }
 
     /**
@@ -1174,11 +1121,6 @@ class FixturesContext extends RawMinkContext
         $user->setLastname('Doe');
         $user->setPlainPassword($password);
         $user->setEmail($email);
-        /*
-        $businessUnit = $this->getBusinessUnitOrCreate('Main');
-        $user->setOwner($businessUnit);
-        $user->addBusinessUnit($businessUnit);
-        */
 
         $user->addRole($this->getRoleOrCreate(User::ROLE_DEFAULT));
         $user->addRole($this->getRoleOrCreate(User::ROLE_ANONYMOUS));

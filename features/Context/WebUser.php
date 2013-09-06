@@ -850,6 +850,36 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $status
+     *
+     * @Given /^I select the status "([^"]*)"$/
+     */
+    public function iSelectStatus($status)
+    {
+        $this->getPage('User creation')->selectStatus($status);
+    }
+
+    /**
+     * @param string $owner
+     *
+     * @Given /^I select the owner "([^"]*)"$/
+     */
+    public function iSelectOwner($owner)
+    {
+        $this->getPage('User creation')->selectOwner($owner);
+    }
+
+    /**
+     * @param string $role
+     *
+     * @Given /^I select the role "([^"]*)"$/
+     */
+    public function iSelectRole($role)
+    {
+        $this->getPage('User creation')->selectRole($role);
+    }
+
+    /**
      * @param string $fields
      *
      * @Then /^I should see the (.*) fields?$/
