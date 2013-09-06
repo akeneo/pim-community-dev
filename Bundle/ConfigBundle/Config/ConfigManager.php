@@ -80,11 +80,11 @@ class ConfigManager
 
         // new settings
         $updated = array_diff($this->getFlatSettings($newSettings, true), $flatSettings);
-//        foreach ($newSettings as $key => $value) {
-//            if (isset($value['use_parent_scope_value']) && !$value['use_parent_scope_value']) {
-//                $updated[$key] = $value;
-//            }
-//        }
+        foreach ($newSettings as $key => $value) {
+            if (isset($value['use_parent_scope_value']) && $value['use_parent_scope_value'] === false) {
+                $updated[$key] = $value;
+            }
+        }
 
         foreach ($this->settings as $section => $settings) {
             foreach ($settings as $key => $value) {
