@@ -11,10 +11,11 @@
     {{ configUI.renderScrollData(data, form, activeGroup, activeSubGroup) }}
 
     <script type="text/javascript">
-        !function () {
-            "use strict";
-
-            new Oro.Config.FormState();
-        }();
+        /* jshint browser:true, devel:true */
+        /* global require */
+        require(['oro/form/state'], function(formState) {
+            'use strict';
+            new formState();
+        });
     </script>
 {% endblock content %}
