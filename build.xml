@@ -11,7 +11,10 @@
 
     <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat"/>
 
+    <target name="build-behat-pr" depends="prepare,composer,vendors,setupdb,dumpassets,behat-pr"/>
+
     <target name="build-behat-coverage" depends="prepare,composer,vendors,setupdb,dumpassets,behat-coverage"/>
+
 
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
@@ -34,6 +37,8 @@
         <mkdir dir="${basedir}/app/build/coverage"/>
         <mkdir dir="${basedir}/app/build/logs"/>
         <mkdir dir="${basedir}/app/build/logs/behat"/>
+        <mkdir dir="${basedir}/app/build/logs/behat-pr"/>
+        <mkdir dir="${basedir}/app/build/logs/behat-coverage"/>
         <mkdir dir="${basedir}/app/build/pdepend"/>
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
@@ -164,6 +169,16 @@
         <exec executable="bin/behat" failonerror="true">
             <env key="DISPLAY" value=":0" />
             <arg value="--profile=jenkins" />
+            <arg value="--ansi" />
+            <arg value="--tags=~skip" />
+            <arg value="-fprogress" />
+        </exec>
+    </target>
+
+    <target name="behat-pr" description="Run acceptance tests with Behat for the pull request">
+        <exec executable="bin/behat" failonerror="true">
+            <env key="DISPLAY" value=":0" />
+            <arg value="--profile=jenkins-pr" />
             <arg value="--ansi" />
             <arg value="--tags=~skip" />
             <arg value="-fprogress" />
