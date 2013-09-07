@@ -33,9 +33,13 @@ class SearchRegistryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetSearchHandler()
+    public function testGetAndHasSearchHandler()
     {
         $this->searchRegistry->addSearchHandler('test', $this->searchHandler);
+
+        $this->assertTrue($this->searchRegistry->hasSearchHandler('test'));
+        $this->assertFalse($this->searchRegistry->hasSearchHandler('testNotExists'));
+
         $this->assertSame($this->searchHandler, $this->searchRegistry->getSearchHandler('test'));
     }
 

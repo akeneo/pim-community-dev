@@ -14,7 +14,7 @@ class DataBlockExtensionTest extends \PHPUnit_Framework_TestCase
 
     private $manager;
 
-    private $options = array('block' => 1, 'subblock' => 1, 'block_config' => 1);
+    private $options = array('block' => 1, 'subblock' => 1, 'block_config' => 1, 'tooltip' => 1);
 
     public function setUp()
     {
@@ -54,5 +54,6 @@ class DataBlockExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->options['block'], $formView->vars['block']);
         $this->assertEquals($this->options['subblock'], $formView->vars['subblock']);
         $this->assertEquals($this->options['block_config'], $formView->vars['block_config']);
+        $this->assertEquals($this->options['tooltip'], $formView->vars['tooltip']);
     }
 }
