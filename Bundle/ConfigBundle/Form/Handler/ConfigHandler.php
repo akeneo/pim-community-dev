@@ -21,7 +21,7 @@ class ConfigHandler
     protected $manager;
 
     /**
-     * @param Request $request
+     * @param Request       $request
      * @param ConfigManager $manager
      */
     public function __construct(Request $request, ConfigManager $manager)
@@ -34,6 +34,7 @@ class ConfigHandler
      * Process form
      *
      * @param FormInterface $form
+     *
      * @return bool True on successful processing, false otherwise
      */
     public function process(FormInterface $form)
@@ -45,6 +46,7 @@ class ConfigHandler
             $form->submit($this->request);
             if ($form->isValid()) {
                 $this->manager->save($form->getData());
+
                 return true;
             }
         }

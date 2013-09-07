@@ -106,6 +106,11 @@ class GroupNodeDefinition extends AbstractNodeDefinition implements \Countable, 
         );
     }
 
+    /**
+     * Returns needed definition values to view
+     *
+     * @return array
+     */
     public function toViewData()
     {
         return array_intersect_key($this->definition, array_flip(array('title', 'priority', 'description', 'icon')));

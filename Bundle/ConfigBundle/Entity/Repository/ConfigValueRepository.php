@@ -3,6 +3,7 @@
 namespace Oro\Bundle\ConfigBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 /**
@@ -16,8 +17,6 @@ class ConfigValueRepository extends EntityRepository
      *
      * @param integer $configId
      * @param $removed
-     * @internal param string $section
-     * @internal param string $name
      * @return array
      */
     public function removeValues($configId, $removed)

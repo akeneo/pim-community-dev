@@ -74,7 +74,6 @@ class FieldNodeDefinition extends AbstractNodeDefinition
      */
     public function toFormFieldOptions()
     {
-        $a =1;
         return array_merge(
             array(
                 'target_field' => $this

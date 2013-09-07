@@ -2,6 +2,7 @@ parameters:
     oro_config.user.class:                                                       Oro\Bundle\ConfigBundle\Config\UserConfigManager
     oro_config.twig_extension.class:                                             Oro\Bundle\ConfigBundle\Twig\ConfigExtension
     oro_config.provider.system_configuration.form_provider.class:                Oro\Bundle\ConfigBundle\Provider\SystemConfigurationFormProvider
+    oro_config.form.config_subscriber.class:                                     Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber
     oro_config.type.form.class:                                                  Oro\Bundle\ConfigBundle\Form\Type\FormType
     oro_config.type.form_field.class:                                            Oro\Bundle\ConfigBundle\Form\Type\FormFieldType
     oro_config.form.handler.config.class:                                        Oro\Bundle\ConfigBundle\Form\Handler\ConfigHandler
@@ -30,10 +31,15 @@ services:
         tags:
             -  { name: oro_config.configuration_form_provider }
 
+    oro_config.form.config_subscriber:
+        class: %oro_config.form.config_subscriber.class%
+        arguments:
+          - @oro_config.user
+
     oro_config.type.form:
         class:                        %oro_config.type.form.class%
         arguments:
-            - @oro_config.user
+            - @oro_config.form.config_subscriber
         tags:
             - { name: form.type, alias: oro_config_form_type }
 

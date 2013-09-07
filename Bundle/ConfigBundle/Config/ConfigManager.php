@@ -2,14 +2,11 @@
 
 namespace Oro\Bundle\ConfigBundle\Config;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\PersistentCollection;
+use Symfony\Component\Form\FormInterface;
 
 use Oro\Bundle\ConfigBundle\Entity\Config;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
-
-use Symfony\Component\Form\FormInterface;
 
 class ConfigManager
 {
@@ -86,6 +83,7 @@ class ConfigManager
     public function save($newSettings, $scopeEntity = null)
     {
         $repository = $this->om->getRepository('OroConfigBundle:ConfigValue');
+        /** @var Config $config */
         $config = $this->om
             ->getRepository('OroConfigBundle:Config')
             ->getByEntity($scopeEntity);
@@ -100,6 +98,7 @@ class ConfigManager
             $newItemKey = explode(self::SECTION_VIEW_SEPARATOR, $newItemKey);
             $newItemValue = is_array($newItemValue) ? $newItemValue['value'] : $newItemValue;
 
+            /** @var ConfigValue $value */
             $value = $config->getOrCreateValue($newItemKey[0], $newItemKey[1]);
             $value->setValue($newItemValue);
 
@@ -164,6 +163,7 @@ class ConfigManager
 
     /**
      * @param FormInterface $form
+     *
      * @return array
      */
     public function getSettingsByForm(FormInterface $form)
@@ -171,11 +171,16 @@ class ConfigManager
         $settings = array();
 
         foreach ($form as $child) {
-            $key = str_replace(self::SECTION_VIEW_SEPARATOR, self::SECTION_MODEL_SEPARATOR, $child->getName());
+            $key = str_replace(
+                    self::SECTION_VIEW_SEPARATOR,
+                    self::SECTION_MODEL_SEPARATOR,
+                    $child->getName()
+                );
             $settings[$child->getName()] = $this->get($key, false, true);
+
             $settings[$child->getName()]['use_parent_scope_value'] =
-                !isset($settings[$child->getName()]['use_parent_scope_value'])  ?
-                true : $settings[$child->getName()]['use_parent_scope_value'];
+                !isset($settings[$child->getName()]['use_parent_scope_value']) ?
+                    true : $settings[$child->getName()]['use_parent_scope_value'];
 
         }
 

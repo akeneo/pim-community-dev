@@ -21,6 +21,7 @@ class ProcessorDecoratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider mergeDataProvider
+     *
      * @param array $startData
      * @param array $newData
      * @param array $expectedResult
@@ -36,7 +37,7 @@ class ProcessorDecoratorTest extends \PHPUnit_Framework_TestCase
     public function mergeDataProvider()
     {
         return array(
-            'merge tree test' =>array(
+            'merge tree test'   => array(
                 array(
                     ProcessorDecorator::ROOT => array(
                         ProcessorDecorator::TREE_ROOT => array('group1' => array('group2' => array('field'))),
@@ -53,7 +54,7 @@ class ProcessorDecoratorTest extends \PHPUnit_Framework_TestCase
                     )
                 ),
             ),
-            'merge fields test' =>array(
+            'merge fields test' => array(
                 array(
                     ProcessorDecorator::ROOT => array(
                         ProcessorDecorator::FIELDS_ROOT => array(
@@ -68,9 +69,9 @@ class ProcessorDecoratorTest extends \PHPUnit_Framework_TestCase
                     ProcessorDecorator::ROOT => array(
                         ProcessorDecorator::FIELDS_ROOT => array(
                             'someFieldName' => array(
-                                'label'   => 'overrideLabel',
+                                'label' => 'overrideLabel',
                             ),
-                            'newField' => array(
+                            'newField'      => array(
                                 'label'   => 'testLabel2',
                                 'options' => array()
                             )
@@ -84,7 +85,7 @@ class ProcessorDecoratorTest extends \PHPUnit_Framework_TestCase
                                 'label'   => 'overrideLabel',
                                 'options' => array()
                             ),
-                            'newField' => array(
+                            'newField'      => array(
                                 'label'   => 'testLabel2',
                                 'options' => array()
                             )

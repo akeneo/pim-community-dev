@@ -18,6 +18,7 @@ class ProcessorDecorator
 
     /**
      * @param array $data
+     *
      * @return array
      */
     public function process(array $data)
@@ -32,6 +33,7 @@ class ProcessorDecorator
      *
      * @param array $source
      * @param array $newData
+     *
      * @return array
      */
     public function merge($source, $newData)
@@ -98,7 +100,8 @@ class ProcessorDecorator
     {
         $tree = new TreeBuilder();
 
-        $tree->root(self::ROOT)->children()
+        $tree->root(self::ROOT)
+            ->children()
                 ->append($this->getGroupsNode())
                 ->append($this->getFieldsNode())
                 ->append($this->getTreeNode())
@@ -139,7 +142,7 @@ class ProcessorDecorator
                 ->children()
                     ->scalarNode('type')->isRequired()->end()
                     ->arrayNode('options')
-                        ->prototype('variable')->end()
+                            ->prototype('variable')->end()
                     ->end()
                     ->scalarNode('acl_resource')->end()
                     ->integerNode('priority')->end()
