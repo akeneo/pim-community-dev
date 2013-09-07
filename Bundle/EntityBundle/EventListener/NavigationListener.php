@@ -3,8 +3,10 @@
 namespace Oro\Bundle\EntityBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
+
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\NavigationBundle\Event\ConfigureMenuEvent;
 
@@ -22,7 +24,7 @@ class NavigationListener
     protected $entityExtendProvider = null;
 
     /**
-     * @param EntityManager $entityManager
+     * @param EntityManager  $entityManager
      * @param ConfigProvider $entityConfigProvider
      * @param ConfigProvider $entityExtendProvider
      */
@@ -41,8 +43,8 @@ class NavigationListener
      */
     public function onNavigationConfigure(ConfigureMenuEvent $event)
     {
-        $menu   = $event->getMenu();
-        $childs = array();
+        $menu     = $event->getMenu();
+        $children = array();
 
         $entitiesMenuItem = $menu->getChild('system_tab')->getChild('entities_list');
         if ($entitiesMenuItem) {
@@ -61,7 +63,7 @@ class NavigationListener
                     ) {
                         $config = $this->entityConfigProvider->getConfig($entity->getClassname());
 
-                        $childs[$config->get('label')] = array(
+                        $children[$config->get('label')] = array(
                             'label'   => $config->get('label'),
                             'options' => array(
                                 'label'           => $config->get('label') . '<i class="' . $config->get(
@@ -73,15 +75,15 @@ class NavigationListener
                                 ),
                                 'extras'          => array(
                                     'safe_label' => true,
-                                    'routes' => array('oro_entity_*')
+                                    'routes'     => array('oro_entity_*')
                                 ),
                             )
                         );
                     }
                 }
 
-                sort($childs);
-                foreach ($childs as $child) {
+                sort($children);
+                foreach ($children as $child) {
                     $entitiesMenuItem->addChild($child['label'], $child['options']);
                 }
             }
