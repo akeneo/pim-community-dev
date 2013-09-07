@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\ConfigBundle\Tests\Unit\DependencyInjection\Compiler;
 
+use Oro\Bundle\ConfigBundle\Provider\FormProvider;
 use Oro\Bundle\ConfigBundle\DependencyInjection\Compiler\SystemConfigurationPass;
 
 class SystemConfigurationPassTest extends \PHPUnit_Framework_TestCase
@@ -30,13 +31,23 @@ class SystemConfigurationPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcess(array $bundles, $expectedSet)
     {
-        /**
-         * @TODO FIX
-         */
-        $this->markTestSkipped('FIX ERRORS');
         $this->container->expects($this->once())->method('getParameter')->with('kernel.bundles')
             ->will($this->returnValue($bundles));
-        $this->container->expects($expectedSet ? $this->once() : $this->never())->method('setParameter');
+        if ($expectedSet) {
+            $taggedServices = array('some.service.id' => 'some arguments');
+
+            $this->container->expects($this->once())->method('findTaggedServiceIds')->with(FormProvider::TAG_NAME)
+                ->will($this->returnValue($taggedServices));
+
+            $definitionMock = $this->getMockBuilder('Symfony\Component\DependencyInjection\Definition')
+                ->disableOriginalConstructor()->getMock();
+            $this->container->expects($this->exactly(count($taggedServices)))->method('getDefinition')
+                ->will($this->returnValue($definitionMock));
+
+            $definitionMock->expects($this->exactly(count($taggedServices)))->method('replaceArgument')
+                ->with($this->equalTo(0));
+        }
+
         $this->compiler->process($this->container);
     }
 
