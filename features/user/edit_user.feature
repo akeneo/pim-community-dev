@@ -7,12 +7,12 @@ Feature: Edit a user
   Background:
     Given I am logged in as "admin"
 
+  @skip
   Scenario: Successfully edit a user
     Given I edit the "admin" user
     Then I should see "Doe, John"
-    Then I fill in the following information:
+    When I fill in the following information:
       | Last name | Smith |
-    When I save the user
+    And I save the user
     Then I should see "Smith, John"
     And I should see "User successfully saved"
-
