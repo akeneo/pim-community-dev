@@ -46,7 +46,8 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
 
-        $this->object = new ConfigManager($this->om, $this->settings);
+        $this->object = $this->getMock('Oro\Bundle\ConfigBundle\Config\ConfigManager');
+            new ConfigManager($this->om, $this->settings);
     }
 
     public function testGet()

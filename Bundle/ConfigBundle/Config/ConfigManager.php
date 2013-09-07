@@ -29,9 +29,9 @@ class ConfigManager
     protected $settings;
 
     /**
-     * @var mixed array with Config entities
+     * @var array
      */
-    protected $cache;
+    protected $storedSettings = array();
 
     /**
      *
@@ -48,33 +48,36 @@ class ConfigManager
      * Get setting value
      *
      * @param  string $name Setting name, for example "oro_user.level"
-     * @param null|object $scopeEntity that may represent user, group, etc
      * @param bool $default
      * @param bool $full
      * @return mixed
      */
-    public function get($name, $scopeEntity = null, $default = false, $full = false)
+    public function get($name, $default = false, $full = false)
     {
+        $entity = $this->getScopedEntity();
+        $entityId = $this->getScopeId();
+
         $name = explode(self::SECTION_MODEL_SEPARATOR, $name);
+        $section = $name[0];
+        $key = $name[1];
 
-
-        $scopeEntityName = $scopeEntity ? get_class($scopeEntity) : null;
-        $scopeEntityId = $scopeEntity ? $scopeEntity->getId() : null;
+        $this->loadStoredSettings($entity, $entityId);
 
         if ($default) {
             $settings = $this->settings;
-        } else {
-            $settings = $this->getMergedSettings($scopeEntityName, $scopeEntityId);
+        } elseif (isset($this->storedSettings[$entity][$entityId][$section][$key])) {
+            $settings = $this->storedSettings[$entity][$entityId];
+        } elseif (isset($this->settings[$section][$key])) {
+            $settings = $this->settings;
         }
 
-        if (!isset($settings[$name[0]])) {
+        if (empty($settings[$section][$key])) {
             return null;
+        } else {
+            $setting = $settings[$section][$key];
+
+            return is_array($setting) && !$full ? $setting['value'] : $setting;
         }
-
-        $setting = $settings[$name[0]];
-        $setting = isset($setting[$name[1]]) ? $setting[$name[1]] : null;
-
-        return is_array($setting) && !$full ? $setting['value'] : $setting;
     }
 
     /**
@@ -82,80 +85,25 @@ class ConfigManager
      */
     public function save($newSettings, $scopeEntity = null)
     {
-        $remove = array();
         $repository = $this->om->getRepository('OroConfigBundle:ConfigValue');
-
-        $flatSettings = $this->getFlatSettings($this->settings);
-
-        // new settings
-        $updated = array_diff($this->getFlatSettings($newSettings, true), $flatSettings);
-        foreach ($newSettings as $key => $value) {
-            if (isset($value['use_parent_scope_value']) && $value['use_parent_scope_value'] === false) {
-                $updated[$key] = $value;
-            }
-        }
-
-        foreach ($this->settings as $section => $settings) {
-            foreach ($settings as $key => $value) {
-                // removed/reverted to default values
-                // fallback to global setting - remove scoped value
-                $newKey = $section . self::SECTION_VIEW_SEPARATOR . $key;
-                if (isset($newSettings[$newKey]['use_parent_scope_value']) &&
-                    $newSettings[$newKey]['use_parent_scope_value']) {
-                    $remove[] = array($section, $key);
-                }
-
-                // updated
-                if (!empty($newSettings[$newKey]) && $newSettings[$newKey]['value'] != $value['value']) {
-                    $updated[$section.self::SECTION_VIEW_SEPARATOR.$key] = $newSettings[$newKey];
-                }
-            }
-        }
-
-        // find scope config
-        $scopedId = $scopeEntity ? $scopeEntity->getId() : null;
         $config = $this->om
-            ->getRepository('Oro\Bundle\ConfigBundle\Entity\Config')
-            ->findOneBy(array('scopedEntity' => $scopeEntity, 'recordId' => $scopedId));
+            ->getRepository('OroConfigBundle:Config')
+            ->getByEntity($scopeEntity);
 
-        if (!$config) {
-            $config = new Config();
-            $config->setEntity($scopeEntity)
-                ->setRecordId($scopedId);
-        }
+        list ($updated, $removed) = $this->getChanged($newSettings);
 
-        /** @var PersistentCollection $values */
-        $valuesCollection = $config->getValues();
-
-        foreach ($remove as $item) {
-            $repository->removeValues($config->getId(), $item[0], $item[1]);
+        if (!empty($removed)) {
+            $repository->removeValues($config->getId(), $removed);
         }
 
         foreach ($updated as $newItemKey => $newItemValue) {
             $newItemKey = explode(self::SECTION_VIEW_SEPARATOR, $newItemKey);
-            $section = $newItemKey[0];
-            $newKey = $newItemKey[1];
             $newItemValue = is_array($newItemValue) ? $newItemValue['value'] : $newItemValue;
 
-            $value = $valuesCollection->filter(
-                function (ConfigValue $item) use ($newKey, $section) {
-                    return $item->getName() == $newKey && $item->getSection() == $section;
-                }
-            );
+            $value = $config->getOrCreateValue($newItemKey[0], $newItemKey[1]);
+            $value->setValue($newItemValue);
 
-            if ($value instanceof ArrayCollection && $value->isEmpty()) {
-                $value = new ConfigValue();
-                $value->setConfig($config)
-                    ->setName($newKey)
-                    ->setSection($section)
-                    ->setValue($newItemValue);
-            } else {
-                $value = $value->first();
-                $value->setValue($newItemValue)
-                    ->setSection($section);
-            }
-
-            $valuesCollection->add($value);
+            $config->getValues()->add($value);
         }
 
         $this->om->persist($config);
@@ -163,76 +111,55 @@ class ConfigManager
     }
 
     /**
-     * @param $settingsArray
-     * @param bool $sectionsMerged
+     * @param $newSettings
      * @return array
      */
-    public function getFlatSettings($settingsArray, $sectionsMerged = false)
+    public function getChanged($newSettings)
     {
-        $_settings = array();
+        // find new and updated
+        $updated = array();
+        $removed = array();
+        foreach ($newSettings as $key => $value) {
+            $currentValue = $this->get(str_replace(self::SECTION_VIEW_SEPARATOR, self::SECTION_MODEL_SEPARATOR, $key), false, true);
 
-        if ($sectionsMerged) {
-            foreach ($settingsArray as $key => $value) {
-                $_settings[$key] = $value['value'];
+            // save only if setting exists and there's no default checkbox checked
+            if (!is_null($currentValue) && empty($value['use_parent_scope_value'])) {
+                $updated[$key] = $value;
             }
-        } else {
-            foreach ($settingsArray as $section => $settings) {
-                foreach ($settings as $key => $value) {
-                    $_settings[$section . self::SECTION_VIEW_SEPARATOR . $key] = $value['value'];
-                }
+
+            if (isset($currentValue['use_parent_scope_value']) && $currentValue['use_parent_scope_value'] == false) {
+                $key = explode(self::SECTION_VIEW_SEPARATOR, $key);
+                $removed[] = array($key[0], $key[1]);
             }
         }
 
-        return $_settings;
+        return array($updated, $removed);
     }
 
     /**
-     * Merge current settings with entity scoped settings
-     *
-     * @param string $entity   Entity name
-     * @param int    $recordId Entity id
-     */
-    protected function mergeSettings($entity, $recordId)
-    {
-        $this->settings = $this->getMergedSettings($entity, $recordId);
-    }
-
-    /**
-     * @param string $entity Entity name
-     * @param int $recordId
-     * @param null|string $section section name, if specified - only this one processed
+     * @param $entity
+     * @param $entityId
+     * @param null $section
      * @return array
      */
-    protected function getMergedSettings($entity, $recordId, $section = null)
+    protected function loadStoredSettings($entity, $entityId, $section = null)
     {
-        if (isset($this->cache[$entity][$recordId])) {
-            $scope = $this->cache[$entity][$recordId];
-        } else {
-            $scope = $this->om->getRepository('OroConfigBundle:Config')->findOneBy(
-                array(
-                    'scopedEntity' => $entity,
-                    'recordId'     => $recordId,
-                )
-            );
-            $this->cache[$entity][$recordId] = $scope;
+        if ($section && !empty($this->storedSettings[$entity][$entityId][$section])) {
+            return $this->storedSettings[$entity][$entityId][$section];
         }
 
-        if (!$scope) {
-            return $this->settings;
+        if (!empty($this->storedSettings[$entity][$entityId])) {
+            return $this->storedSettings[$entity][$entityId];
         }
 
-        $mergedSettings = $this->settings;
-        foreach ($scope->getValues() as $value) {
-            if (isset($this->settings[$value->getSection()][$value->getName()])) {
-                $mergedSettings[$value->getSection()][$value->getName()] = array(
-                    'value' => $value->getValue(),
-                    'scope' => $scope->getEntity(),
-                    'use_parent_scope_value' => false
-                );
-            }
-        }
+        $settings = $this->om
+            ->getRepository('OroConfigBundle:Config')
+            ->loadSettings($entity, $entityId, $section);
 
-        return empty($mergedSettings[$section]) ? $mergedSettings : $mergedSettings[$section];
+        if (empty($this->storedSettings[$entity][$entityId])) {
+            $this->storedSettings[$entity][$entityId] = array();
+        }
+        $this->storedSettings[$entity][$entityId] = array_merge($this->storedSettings[$entity][$entityId], $settings);
     }
 
     /**
@@ -245,7 +172,7 @@ class ConfigManager
 
         foreach ($form as $child) {
             $key = str_replace(self::SECTION_VIEW_SEPARATOR, self::SECTION_MODEL_SEPARATOR, $child->getName());
-            $settings[$child->getName()] = $this->get($key, null, false, true);
+            $settings[$child->getName()] = $this->get($key, false, true);
             $settings[$child->getName()]['use_parent_scope_value'] =
                 !isset($settings[$child->getName()]['use_parent_scope_value'])  ?
                 true : $settings[$child->getName()]['use_parent_scope_value'];
@@ -253,5 +180,21 @@ class ConfigManager
         }
 
         return $settings;
+    }
+
+    /**
+     * @return null
+     */
+    public function getScopedEntity()
+    {
+        return null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getScopeId()
+    {
+        return null;
     }
 }

@@ -142,4 +142,9 @@ class ConfigValue
     {
         return $this->section;
     }
+
+    public function __toString()
+    {
+        return $this->getValue();
+    }
 }
