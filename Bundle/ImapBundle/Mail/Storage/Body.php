@@ -59,7 +59,6 @@ class Body
                 return $this->extractContent($this->part);
             }
         } else {
-            $i = 0;
             foreach ($this->part as $part) {
                 $contentTypeHeader = $this->getPartContentType($part);
                 if ($contentTypeHeader !== null) {
@@ -72,10 +71,12 @@ class Body
             }
         }
 
-        throw new Exception\InvalidBodyFormatException(sprintf(
-            'A messages does not have %s content.',
-            $format === Body::FORMAT_TEXT ? 'TEXT' : 'HTML'
-        ));
+        throw new Exception\InvalidBodyFormatException(
+            sprintf(
+                'A messages does not have %s content.',
+                $format === Body::FORMAT_TEXT ? 'TEXT' : 'HTML'
+            )
+        );
     }
 
     /**
@@ -111,10 +112,11 @@ class Body
                     break;
             }
         } else {
+            $contentTransferEncoding = 'BINARY';
             $content = $part->getContent();
         }
 
-        return new Content($content, $contentType, $encoding);
+        return new Content($content, $contentType, $contentTransferEncoding, $encoding);
     }
 
     /**

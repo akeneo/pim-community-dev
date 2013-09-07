@@ -7,6 +7,7 @@ class Imap extends \Zend\Mail\Storage\Imap
     const RFC822_HEADER = 'RFC822.HEADER';
     const FLAGS = 'FLAGS';
     const UID = 'UID';
+    const INTERNALDATE = 'INTERNALDATE';
 
     /**
      * UIDVALIDITY of currently selected folder
@@ -43,7 +44,12 @@ class Imap extends \Zend\Mail\Storage\Imap
 
         parent::__construct($params);
         $this->messageClass = 'Oro\Bundle\ImapBundle\Mail\Storage\Message';
-        $this->getMessageItems = array(self::FLAGS, self::RFC822_HEADER, self::UID);
+        $this->getMessageItems = array(
+            self::FLAGS,
+            self::RFC822_HEADER,
+            self::UID,
+            self::INTERNALDATE
+        );
     }
 
     /**
@@ -80,12 +86,14 @@ class Imap extends \Zend\Mail\Storage\Imap
         }
 
         /** @var \Zend\Mail\Storage\Message $message */
-        $message = new $this->messageClass(array(
-            'handler' => $this,
-            'id' => $id,
-            'headers' => $header,
-            'flags' => $flags
-        ));
+        $message = new $this->messageClass(
+            array(
+                'handler' => $this,
+                'id' => $id,
+                'headers' => $header,
+                'flags' => $flags
+            )
+        );
 
         $headers = $message->getHeaders();
         $this->setExtHeaders($headers, $data);
@@ -154,6 +162,7 @@ class Imap extends \Zend\Mail\Storage\Imap
      */
     protected function setExtHeaders(&$headers, array $data)
     {
-        $headers->addHeaderLine('UID', $data['UID']);
+        $headers->addHeaderLine(self::UID, $data[self::UID]);
+        $headers->addHeaderLine('InternalDate', $data[self::INTERNALDATE]);
     }
 }

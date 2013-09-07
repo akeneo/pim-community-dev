@@ -65,5 +65,5 @@ Usage
         ->get();
 
     // Request an IMAP server for find emails
-    $emails = $ewsConnector->findItems('INBOX', $query);
+    $emails = $imapConnector->findItems('INBOX', $query);
 ```

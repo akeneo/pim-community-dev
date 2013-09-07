@@ -132,6 +132,21 @@ class ImapConnector
     }
 
     /**
+     * Gets UIDVALIDITY of currently selected folder
+     *
+     * @return int
+     * @throws \LogicException
+     */
+    public function getUidValidity()
+    {
+        if ($this->imap === null) {
+            throw new \LogicException('Cannot get UIDVALIDITY due the connector is in disconnected state.');
+        }
+
+        return $this->imap->getUidValidity();
+    }
+
+    /**
      * Makes sure that there is active connection to IMAP server
      */
     protected function ensureConnected()

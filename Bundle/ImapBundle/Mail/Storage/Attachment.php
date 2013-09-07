@@ -96,9 +96,10 @@ class Attachment
                     break;
             }
         } else {
+            $contentTransferEncoding = 'BINARY';
             $content = $this->part->getContent();
         }
 
-        return new Content($content, $contentType, $encoding);
+        return new Content($content, $contentType, $contentTransferEncoding, $encoding);
     }
 }

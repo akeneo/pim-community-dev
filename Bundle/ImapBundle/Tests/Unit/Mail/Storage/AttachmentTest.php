@@ -212,26 +212,68 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
     public static function getContentProvider()
     {
         return array(
-            '7bit' => array('7Bit', 'SomeContentType', 'SomeCharset', 'A value', new Content('A value', 'SomeContentType', 'SomeCharset')),
-            '8bit' => array('8Bit', 'SomeContentType', 'SomeCharset', 'A value', new Content('A value', 'SomeContentType', 'SomeCharset')),
-            'binary' => array('Binary', 'SomeContentType', 'SomeCharset', 'A value', new Content('A value', 'SomeContentType', 'SomeCharset')),
-            'base64' => array('Base64', 'SomeContentType', 'SomeCharset', base64_encode('A value'), new Content('A value', 'SomeContentType', 'SomeCharset')),
+            '7bit' => array(
+                '7Bit',
+                'SomeContentType',
+                'SomeCharset',
+                'A value',
+                new Content('A value', 'SomeContentType', '7Bit', 'SomeCharset')
+            ),
+            '8bit' => array(
+                '8Bit',
+                'SomeContentType',
+                'SomeCharset',
+                'A value',
+                new Content('A value', 'SomeContentType', '8Bit', 'SomeCharset')
+            ),
+            'binary' => array(
+                'Binary',
+                'SomeContentType',
+                'SomeCharset',
+                'A value',
+                new Content('A value', 'SomeContentType', 'Binary', 'SomeCharset')
+            ),
+            'base64' => array(
+                'Base64',
+                'SomeContentType',
+                'SomeCharset',
+                base64_encode('A value'),
+                new Content('A value', 'SomeContentType', 'Base64', 'SomeCharset')
+            ),
             'quoted-printable' => array(
                 'Quoted-Printable',
                 'SomeContentType',
                 'SomeCharset',
                 quoted_printable_encode('A value='), // = symbol is added to test the 'quoted printable' decoding
-                new Content('A value=', 'SomeContentType', 'SomeCharset')
+                new Content('A value=', 'SomeContentType', 'Quoted-Printable', 'SomeCharset')
             ),
-            'Unknown' => array('Unknown', 'SomeContentType', 'SomeCharset', 'A value', new Content('A value', 'SomeContentType', 'SomeCharset')),
-            'no charset' => array('8Bit', 'SomeContentType', null, 'A value', new Content('A value', 'SomeContentType', 'ASCII')),
-            'no Content-Type' => array('8Bit', null, null, 'A value', new Content('A value', 'text/plain', 'ASCII')),
+            'Unknown' => array(
+                'Unknown',
+                'SomeContentType',
+                'SomeCharset',
+                'A value',
+                new Content('A value', 'SomeContentType', 'Unknown', 'SomeCharset')
+            ),
+            'no charset' => array(
+                '8Bit',
+                'SomeContentType',
+                null,
+                'A value',
+                new Content('A value', 'SomeContentType', '8Bit', 'ASCII')
+            ),
+            'no Content-Type' => array(
+                '8Bit',
+                null,
+                null,
+                'A value',
+                new Content('A value', 'text/plain', '8Bit', 'ASCII')
+            ),
             'no Content-Transfer-Encoding' => array(
                 null,
                 'SomeContentType',
                 'SomeCharset',
                 'A value',
-                new Content('A value', 'SomeContentType', 'SomeCharset')
+                new Content('A value', 'SomeContentType', 'BINARY', 'SomeCharset')
             ),
         );
     }
