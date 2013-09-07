@@ -31,7 +31,15 @@
 #}
 {%  macro renderScrollData(data, form, activeTab = false, activeVTab = false) %}
     {% import _self as __ %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
     <div class="system-configuration-container">
+        {% if activeVTab and form != false %}
+            {# @TODO move back to renderTab macro, when styles will be ready #}
+            <div class="pull-absolute-right">
+                {{ UI.saveAndStayButton() }}
+            </div>
+        {% endif %}
         <div class="container-fluid">
             <ul class="nav nav-tabs">
                 {% if data is iterable %}
@@ -128,7 +136,6 @@
 #}
 {% macro renderTab(form, formAction) %}
     {% import _self as __ %}
-    {% import 'OroUIBundle::macros.html.twig' as UI %}
 
     {% set data = {
         'formErrors': form_errors(form),
@@ -143,7 +150,6 @@
         <form id="{{ form.vars.name }}" {{ form_enctype(form) }} action="{{ formAction }}"
               method="post" data-collect="true" class="scrollable-substructure">
             <div class="pull-right">
-                {{ UI.saveAndStayButton() }}
                 <input type="hidden" name="input_action" value="" data-form-id="{{ form.vars.name }}"/>
             </div>
             {% if data.formErrors is defined and data.formErrors | length%}

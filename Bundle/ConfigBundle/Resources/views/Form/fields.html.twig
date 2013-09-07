@@ -5,18 +5,18 @@
     <div id="{{ valueContainerId }}" class="controls control-subgroup{% if form.value.vars.errors|length > 0 %} validation-error{% endif %}">
         {{ form_widget(form.value, additionalOptions) }}
         {% if form.value.vars.tooltip is defined and form.value.vars.tooltip != '' %}
-            <a class="icon icon-info info-tooltip" data-html="true" data-placement="top" data-toggle="tooltip" data-original-title="{{ form.value.vars.tooltip|trans }}">
+            <i class="icon-info-sign info-tooltip" data-html="true" data-placement="top" data-toogle="tooltip" data-original-title="{{ form.value.vars.tooltip|trans }}">
                 data-original-title
-            </a>
+            </i>
         {% endif %}
         {{ form_errors(form.value) }}
     </div>
 
-    <div class="form-inline">
-        <label class="checkbox inline control-label">
+    <div class="horizontal">
+        <div class="oro-clearfix">
             {{ form_widget(form.use_parent_scope_value) }}
-            {{ form.use_parent_scope_value.vars.label|trans }}
-        </label>
+            {{ form_label(form.use_parent_scope_value) }}
+        </div>
     </div>
 
     <script type="text/javascript">
@@ -32,7 +32,7 @@
 
                     checkboxEl.change(function() {
                         var value = $(this).is(':checked');
-                        valueEls.each(function(i, el) {
+                        valueEls.each(function (i, el) {
                             $(el)
                                 .prop('disabled', value)
                                 .data('disabled', value);

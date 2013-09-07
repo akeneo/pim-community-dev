@@ -2,6 +2,10 @@
     padding-top: 10px;
 }
 
+.system-configuration-container .scrollspy-title{
+    margin-left: -18px;
+}
+
 .system-configuration-container .nav.nav-tabs > .active > a,
 .system-configuration-container .nav.nav-tabs > .active > a:hover,
 .system-configuration-container .nav.nav-tabs > .active > a:focus {

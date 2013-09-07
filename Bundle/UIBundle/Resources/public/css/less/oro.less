@@ -3881,12 +3881,22 @@ select:focus:invalid:focus {
   }
 }
 
-.info-tooltip{
-  font-size: 0;
-  line-height: 0;
-  display: inline-block;
-  margin: 0 0 0 10px;
-  vertical-align: middle;
+.info-tooltip {
+  font-size:0;
+  text-indent:-9999em;
+  &:before {
+    display: inline-block;
+    margin-left:8px;
+    font:normal 18px/1em 'FontAwesome';
+    font-style: normal;
+    text-decoration: inherit;
+    -webkit-font-smoothing: antialiased;
+    content: "\f06a";
+    color: #0000ff;
+    text-decoration: inherit;
+    text-indent:0;
+    speak: none;
+  }
 }
 
 .validation-error .validation-tooltip {
@@ -4737,6 +4747,10 @@ disabled look for disabled choices in the results dropdown
       }
     }
   }
+}
+.pull-absolute-right {
+  position: absolute;
+  right: 20px;
 }
 #orocrm_contact_address_form { min-width:400px; }
 .well-small-bottom {
