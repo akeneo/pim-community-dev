@@ -1,7 +1,7 @@
 @javascript
 Feature: Filter products
   In order to filter products in the catalog
-  As an user
+  As a user
   I need to be able to filter products in the catalog
 
   Background:
