@@ -35,7 +35,7 @@ abstract class FormProvider implements ProviderInterface
     {
         if (!isset($this->processedSubTrees[$subtreeRootName])) {
             $treeData = $this->getTree();
-            $subtree = TreeUtils::findNodeByName($treeData, $subtreeRootName);
+            $subtree  = TreeUtils::findNodeByName($treeData, $subtreeRootName);
 
             if ($subtree === null) {
                 throw new \Exception(sprintf('Subtree "%s" not found', $subtreeRootName));
@@ -49,7 +49,8 @@ abstract class FormProvider implements ProviderInterface
 
     /**
      * @param string $treeName
-     * @param int $correctFieldsLevel
+     * @param int    $correctFieldsLevel
+     *
      * @throws \Exception
      * @return GroupNodeDefinition
      */
@@ -60,9 +61,9 @@ abstract class FormProvider implements ProviderInterface
                 throw new \Exception(sprintf('Tree "%s" does not defined', $treeName));
             }
 
-            $definition = $this->config[ProcessorDecorator::TREE_ROOT][$treeName];
-            $data = $this->buildGroupNode($definition, $correctFieldsLevel);
-            $tree = new GroupNodeDefinition($treeName, $definition, $data);
+            $definition                             = $this->config[ProcessorDecorator::TREE_ROOT][$treeName];
+            $data                                   = $this->buildGroupNode($definition, $correctFieldsLevel);
+            $tree                                   = new GroupNodeDefinition($treeName, $definition, $data);
             $this->processedTrees[$tree->getName()] = $tree;
         }
 
@@ -75,6 +76,7 @@ abstract class FormProvider implements ProviderInterface
      * @param array $nodes
      * @param int   $correctFieldsLevel fields should be placed on the same levels that comes from view
      * @param int   $level              current level
+     *
      * @throws \Exception
      * @return array
      */
@@ -110,6 +112,7 @@ abstract class FormProvider implements ProviderInterface
      * Builds field data by name
      *
      * @param string $node field node name
+     *
      * @return FieldNodeDefinition
      * @throws \Exception
      */
@@ -143,6 +146,7 @@ abstract class FormProvider implements ProviderInterface
      * Check ACL resource
      *
      * @param string $resourceName
+     *
      * @return mixed
      */
     abstract protected function checkIsGranted($resourceName);

@@ -65,6 +65,7 @@ class ConfigValue
 
     /**
      * @param string $name
+     *
      * @return $this
      */
     public function setName($name)
@@ -86,6 +87,7 @@ class ConfigValue
      * Set config
      *
      * @param string $config
+     *
      * @return Config
      */
     public function setConfig($config)
@@ -107,6 +109,7 @@ class ConfigValue
 
     /**
      * @param string $value
+     *
      * @return $this
      */
     public function setValue($value)
@@ -126,6 +129,7 @@ class ConfigValue
 
     /**
      * @param string $section
+     *
      * @return $this
      */
     public function setSection($section)

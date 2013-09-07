@@ -16,7 +16,7 @@ class Configuration implements ConfigurationInterface
         $builder->root('oro_config')
             ->children()
                 ->arrayNode('entity_output')
-                    ->prototype('array')
+                ->prototype('array')
                     ->children()
                         ->scalarNode('icon_class')->end()
                         ->scalarNode('name')->end()

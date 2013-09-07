@@ -1,30 +1,30 @@
 /* global define */
 define(['underscore', 'backbone', 'oro/mediator', 'oro/translator'],
-    function(_, Backbone, mediator, __) {
+    function (_, Backbone, mediator, __) {
         'use strict';
 
         var $ = Backbone.$;
 
-        var formState = function() {
+        var formState = function () {
             this.initialize.apply(this, arguments);
         };
 
         _.extend(formState.prototype, {
-            UNLOAD_EVENT:           'beforeunload.configFormState',
-            LOAD_EVENT:             'ready.configFormState',
-            FORM_SELECTOR:          '.system-configuration-container form:first',
-            CONFIRMATION_MESSAGE:   __('You have unsaved changes, are you sure that you want to leave?'),
+            UNLOAD_EVENT: 'beforeunload.configFormState',
+            LOAD_EVENT: 'ready.configFormState',
+            FORM_SELECTOR: '.system-configuration-container form:first',
+            CONFIRMATION_MESSAGE: __('You have unsaved changes, are you sure that you want to leave?'),
 
             data: null,
 
 
-            initialize: function() {
+            initialize: function () {
                 mediator.once('hash_navigation_request:start', this._onDestroyHandler, this);
 
                 $(window).on(this.LOAD_EVENT, _.bind(this._collectHandler, this));
                 this._collectHandler();
 
-                $(window).on(this.UNLOAD_EVENT, _.bind(function() {
+                $(window).on(this.UNLOAD_EVENT, _.bind(function () {
                     if (this.isChanged()) {
                         return this.CONFIRMATION_MESSAGE;
                     }
@@ -37,7 +37,7 @@ define(['underscore', 'backbone', 'oro/mediator', 'oro/translator'],
              *
              * @returns {boolean}
              */
-            isChanged: function() {
+            isChanged: function () {
                 if (!_.isNull(this.data)) {
                     return this.data != this.getState();
                 }
@@ -50,15 +50,15 @@ define(['underscore', 'backbone', 'oro/mediator', 'oro/translator'],
              *
              * @returns {*}
              */
-            getState: function() {
+            getState: function () {
                 var form = $(this.FORM_SELECTOR);
 
                 if (form.length) {
                     return JSON.stringify(
                         _.reject(
                             $(this.FORM_SELECTOR).serializeArray(),
-                            function(el) {
-                                return el.name =='input_action';
+                            function (el) {
+                                return el.name == 'input_action';
                             }
                         )
                     );
@@ -73,7 +73,7 @@ define(['underscore', 'backbone', 'oro/mediator', 'oro/translator'],
              * @param event
              * @private
              */
-            _confirmHashChange: function(event) {
+            _confirmHashChange: function (event) {
                 if (this.isChanged()) {
                     event.stoppedProcess = !confirm(this.CONFIRMATION_MESSAGE);
                 }
@@ -84,7 +84,7 @@ define(['underscore', 'backbone', 'oro/mediator', 'oro/translator'],
              *
              * @private
              */
-            _collectHandler: function() {
+            _collectHandler: function () {
                 this.data = this.getState();
             },
 
@@ -93,7 +93,7 @@ define(['underscore', 'backbone', 'oro/mediator', 'oro/translator'],
              *
              * @private
              */
-            _onDestroyHandler: function() {
+            _onDestroyHandler: function () {
                 if (_.isNull(this.data)) {
                     // data was not collected disable listener
                     mediator.off('hash_navigation_request:complete', this._collectHandler, this);

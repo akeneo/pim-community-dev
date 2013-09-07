@@ -25,7 +25,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
                 'value' => true,
                 'type'  => 'boolean',
             ),
-            'level' => array(
+            'level'    => array(
                 'value' => 20,
                 'type'  => 'scalar',
             )
@@ -40,6 +40,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        $this->markTestSkipped('');
         if (!interface_exists('Doctrine\Common\Persistence\ObjectManager')) {
             $this->markTestSkipped('Doctrine Common has to be installed for this test to run.');
         }

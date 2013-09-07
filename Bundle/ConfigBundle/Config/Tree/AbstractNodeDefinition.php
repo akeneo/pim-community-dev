@@ -12,22 +12,13 @@ abstract class AbstractNodeDefinition
 
     public function __construct($name, array $definition)
     {
-        $this->name = $name;
+        $this->name       = $name;
         $this->definition = $this->prepareDefinition($definition);
     }
 
     /**
-     * @param string $name
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
+     * Getter for name
+     *
      * @return string
      */
     public function getName()
@@ -39,6 +30,7 @@ abstract class AbstractNodeDefinition
      * Set node priority
      *
      * @param int $priority
+     *
      * @return $this
      *
      */
@@ -63,6 +55,7 @@ abstract class AbstractNodeDefinition
      * Prepare definition, set default values
      *
      * @param array $definition
+     *
      * @return array
      */
     protected function prepareDefinition(array $definition)

@@ -12,7 +12,7 @@ class SettingsBuilderTest extends \PHPUnit_Framework_TestCase
 
         $root
             ->children()
-                ->scalarNode('foo')->end()
+            ->scalarNode('foo')->end()
             ->end();
 
         SettingsBuilder::append(
@@ -38,7 +38,7 @@ class SettingsBuilderTest extends \PHPUnit_Framework_TestCase
 
         $root
             ->children()
-                ->scalarNode('foo')->end()
+            ->scalarNode('foo')->end()
             ->end();
 
         SettingsBuilder::append(
@@ -63,7 +63,7 @@ class SettingsBuilderTest extends \PHPUnit_Framework_TestCase
 
         $root
             ->children()
-                ->scalarNode('foo')->end()
+            ->scalarNode('foo')->end()
             ->end();
 
         SettingsBuilder::append(

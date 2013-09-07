@@ -2,28 +2,29 @@
 
 namespace Oro\Bundle\ConfigBundle\Form\Type;
 
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+use Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber;
+
 class FormType extends AbstractType
 {
-    /** @var  ConfigManager */
-    protected $manager;
+    /** @var  ConfigSubscriber */
+    protected $subscriber;
 
-    public function __construct(ConfigManager $manager)
+    public function __construct(ConfigSubscriber $subscriber)
     {
-        $this->manager = $manager;
+        $this->subscriber = $subscriber;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
-        $builder->addEventSubscriber(new ConfigSubscriber($this->manager));
+        $builder->addEventSubscriber($this->subscriber);
     }
-
 
     /**
      * {@inheritdoc}

@@ -75,6 +75,7 @@ class Config
      * Set entity
      *
      * @param  string $entity
+     *
      * @return Config
      */
     public function setEntity($entity)
@@ -98,6 +99,7 @@ class Config
      * Set record id
      *
      * @param  integer $recordId
+     *
      * @return Config
      */
     public function setRecordId($recordId)

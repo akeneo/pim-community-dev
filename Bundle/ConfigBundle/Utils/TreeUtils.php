@@ -43,16 +43,15 @@ class TreeUtils
     {
         /** @var $childNode GroupNodeDefinition */
         foreach ($node as $childNode) {
-            if (!$childNode->isEmpty()) {
-                if ($neededLevel === $childNode->getLevel()) {
-                    return $childNode;
-                } else {
-                    $node = static::getByNestingLevel($childNode, $neededLevel);
-                    if ($node !== null) {
-                        return $node;
-                    }
+            if ($neededLevel === $childNode->getLevel()) {
+                return $childNode;
+            } else {
+                $node = static::getByNestingLevel($childNode, $neededLevel);
+                if ($node !== null) {
+                    return $node;
                 }
             }
+            echo $childNode->getName();
         }
 
         return null;
@@ -69,9 +68,8 @@ class TreeUtils
     {
         if (!$node->isEmpty()) {
             $firstNode = $node->first();
-            if ($firstNode !== false) {
-                return $firstNode->getName();
-            }
+
+            return $firstNode->getName();
         }
 
         return null;

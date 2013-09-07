@@ -29,7 +29,7 @@
         activeTab   - active tab name
         activeVTab  - active vertical tab name
 #}
-{%  macro renderScrollData(data, form, activeTab = false, activeVTab = false) %}
+{% macro renderScrollData(data, form, activeTab = false, activeVTab = false) %}
     {% import _self as __ %}
     {% import 'OroUIBundle::macros.html.twig' as UI %}
 
@@ -45,8 +45,8 @@
                 {% if data is iterable %}
                     {% for tab in data %}
                         {% set tabData = {
-                                isActive: activeTab and activeTab == tab.name,
-                                url: path('oro_config_configuration_system', {activeGroup: tab.name})
+                            isActive: activeTab and activeTab == tab.name,
+                            url: path('oro_config_configuration_system', {activeGroup: tab.name})
                             }|merge(tab.toViewData)
                         %}
 
@@ -113,8 +113,8 @@
                         <ul class="nav nav-pills nav-stacked">
                             {% for tab in group %}
                                 {% set tabData = {
-                                        isActive: activeVTab and activeVTab == tab.name,
-                                        url: path('oro_config_configuration_system', {activeGroup: data.name, activeSubGroup: tab.name })
+                                    isActive: activeVTab and activeVTab == tab.name,
+                                    url: path('oro_config_configuration_system', {activeGroup: data.name, activeSubGroup: tab.name })
                                     }|merge(tab.toViewData)
                                 %}
                                 {{ __.renderTabNavItem(tabData) }}
@@ -140,18 +140,18 @@
         'formErrors': form_errors(form),
         'dataBlocks': form_data_blocks(form),
         'hiddenData': form_rest(form)
-    }%}
+    } %}
 
     {% set data = oro_form_process(data, form) %}
 
     <div class="span10 form-container">
         {{ JSFV(form) }}
-        <form id="{{ form.vars.name }}" {{ form_enctype(form) }} action="{{ formAction }}"
-              method="post" data-collect="true" class="scrollable-substructure">
+        <form id="{{ form.vars.name }}" {{ form_enctype(form) }} action="{{ formAction }}" method="post"
+              data-collect="true" class="scrollable-substructure">
             <div class="pull-right">
                 <input type="hidden" name="input_action" value="" data-form-id="{{ form.vars.name }}"/>
             </div>
-            {% if data.formErrors is defined and data.formErrors | length%}
+            {% if data.formErrors is defined and data.formErrors | length %}
                 <div class="customer-info-actions container-fluid well-small alert-wrap">
                     <div class="alert alert-error">
                         <button class="close" type="button" data-dismiss="alert" data-target=".alert-wrap">×</button>

@@ -37,7 +37,7 @@ class FormFieldType extends AbstractType
         $builder->add('use_parent_scope_value', 'checkbox', $useParentOptions);
 
         if ($options['target_field'] instanceof FieldNodeDefinition) {
-            $filedOptions =  $options['target_field']->getOptions();
+            $filedOptions = $options['target_field']->getOptions();
             unset($filedOptions['block']);
             unset($filedOptions['subblock']);
             $options['target_field'] = array(
