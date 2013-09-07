@@ -242,11 +242,6 @@ class ConfigManager
     public function getSettingsByForm(FormInterface $form)
     {
         $settings = array();
-//        foreach ($this->getMergedSettings(null, null) as $section => $_settings) {
-//            foreach ($_settings as $key => $value) {
-//                $settings[$section.self::SECTION_VIEW_SEPARATOR.$key] = $value;
-//            }
-//        }
 
         foreach ($form as $child) {
             $key = str_replace(self::SECTION_VIEW_SEPARATOR, self::SECTION_MODEL_SEPARATOR, $child->getName());
