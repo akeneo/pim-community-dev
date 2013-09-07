@@ -1,0 +1,156 @@
+<?php
+
+namespace Oro\Bundle\ConfigBundle\Config\Tree;
+
+class FieldNodeDefinition extends AbstractNodeDefinition
+{
+    /**
+     * Return field type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->definition['type'];
+    }
+
+    /**
+     * Return acl resource name if defined
+     *
+     * @return bool|string
+     */
+    public function getAclResource()
+    {
+        if (!empty($this->definition['acl_resource'])) {
+            return $this->definition['acl_resource'];
+        }
+
+        return false;
+    }
+
+    /**
+     * Get field options
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->definition['options'];
+    }
+
+    /**
+     * Set field options
+     *
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function setOptions(array $options)
+    {
+        $this->definition['options'] = $options;
+
+        return $this;
+    }
+
+    /**
+     * Replace field option by name
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function replaceOption($name, $value)
+    {
+        $this->definition['options'][$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Returns options in specific format for config form field
+     *
+     * @return array
+     */
+    public function toFormFieldOptions()
+    {
+        $a =1;
+        return array_merge(
+            array(
+                'target_field' => $this
+            ),
+            array_intersect_key($this->getOptions(), array_flip(array('label', 'required', 'block', 'subblock')))
+        );
+    }
+
+    /**
+     * Prepare definition, set default values
+     *
+     * @param array $definition
+     *
+     * @return array
+     */
+    protected function prepareDefinition(array $definition)
+    {
+        if (!isset($definition['priority'])) {
+            $definition['priority'] = 0;
+        }
+
+        if (!isset($definition['options'])) {
+            $definition['options'] = array();
+        }
+
+        if (isset($definition['options']['constraints'])) {
+            $definition['options']['constraints'] = $this->parseValidator($definition['options']['constraints']);
+        }
+
+        return $definition;
+    }
+
+    /**
+     * @param $name
+     * @param $options
+     *
+     * @return mixed
+     */
+    protected function newConstraint($name, $options)
+    {
+        if (strpos($name, '\\') !== false && class_exists($name)) {
+            $className = (string)$name;
+        } else {
+            $className = 'Symfony\\Component\\Validator\\Constraints\\' . $name;
+        }
+
+        return new $className($options);
+    }
+
+    /**
+     * @param array $nodes
+     *
+     * @return array
+     */
+    protected function parseValidator(array $nodes)
+    {
+        $values = array();
+
+        foreach ($nodes as $name => $childNodes) {
+            if (is_numeric($name) && is_array($childNodes) && count($childNodes) == 1) {
+                $options = current($childNodes);
+
+                if (is_array($options)) {
+                    $options = $this->parseValidator($options);
+                }
+
+                $values[] = $this->newConstraint(key($childNodes), $options);
+            } else {
+                if (is_array($childNodes)) {
+                    $childNodes = $this->parseValidator($childNodes);
+                }
+
+                $values[$name] = $childNodes;
+            }
+        }
+
+        return $values;
+    }
+}

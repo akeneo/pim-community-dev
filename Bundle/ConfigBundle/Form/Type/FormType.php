@@ -21,7 +21,6 @@ class FormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
-
         $builder->addEventSubscriber(new ConfigSubscriber($this->manager));
     }
 

@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Oro\Bundle\ConfigBundle\Config\Tree\FieldNodeDefinition;
+
 class FormFieldType extends AbstractType
 {
     /**
@@ -17,7 +19,7 @@ class FormFieldType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'target_field' => array(
+                'target_field'       => array(
                     'type'    => 'text',
                     'options' => array()
                 ),
@@ -31,19 +33,19 @@ class FormFieldType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add(
-            'use_parent_scope_value',
-            'checkbox',
-            array(
-                'required' => false,
-                'label'    => 'Default'
-            )
-        );
-        $builder->add(
-            'value',
-            $options['target_field']['type'],
-            $options['target_field']['options']
-        );
+        $useParentOptions = array('required' => false, 'label' => 'Default');
+        $builder->add('use_parent_scope_value', 'checkbox', $useParentOptions);
+
+        if ($options['target_field'] instanceof FieldNodeDefinition) {
+            $filedOptions =  $options['target_field']->getOptions();
+            unset($filedOptions['block']);
+            unset($filedOptions['subblock']);
+            $options['target_field'] = array(
+                'type'    => $options['target_field']->getType(),
+                'options' => $filedOptions
+            );
+        }
+        $builder->add('value', $options['target_field']['type'], $options['target_field']['options']);
     }
 
     /**

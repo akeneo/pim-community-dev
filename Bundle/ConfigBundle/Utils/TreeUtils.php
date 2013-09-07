@@ -2,86 +2,75 @@
 
 namespace Oro\Bundle\ConfigBundle\Utils;
 
-final class TreeUtils
+use Oro\Bundle\ConfigBundle\Config\Tree\GroupNodeDefinition;
+
+class TreeUtils
 {
     /**
      * Finds node by name in tree
      * called recursively
      *
-     * @param array $nodes
+     * @param        array  GroupNodeDefinition $node
      * @param string $nodeName
-     * @return null|array
+     *
+     * @return null|GroupNodeDefinition
      */
-    public static function findNodeByName($nodes, $nodeName)
+    public static function findNodeByName(GroupNodeDefinition $node, $nodeName)
     {
-        foreach ($nodes as $node) {
-            if (isset($node['name']) && $node['name'] === $nodeName) {
-                return $node;
-            } elseif (!empty($node['children'])) {
-                $node = static::findNodeByName($node['children'], $nodeName);
-                if ($node !== null) {
-                    return $node;
-                }
+        $resultNode = null;
+        /** @var $childNode GroupNodeDefinition */
+        foreach ($node as $childNode) {
+            if ($childNode->getName() === $nodeName) {
+                return $childNode;
+            } elseif (!$childNode->isEmpty()) {
+                $resultNode = static::findNodeByName($childNode, $nodeName);
             }
         }
 
-        return null;
+        return $resultNode;
     }
 
     /**
      * Pick nodes for needed level
      * called recursively
      *
-     * @param array $nodes
-     * @param int $neededLevel
-     * @param int $currentLevel
-     * @return null
+     * @param GroupNodeDefinition $node
+     * @param int                 $neededLevel
+     *
+     * @return null|GroupNodeDefinition
      */
-    public static function getByNestingLevel($nodes, $neededLevel, $currentLevel = 0)
+    public static function getByNestingLevel(GroupNodeDefinition $node, $neededLevel)
     {
-        $currentLevel++;
-        foreach ($nodes as $node) {
-            if (!empty($node['children'])) {
-                if ($neededLevel === $currentLevel) {
-                    return $node['children'];
+        /** @var $childNode GroupNodeDefinition */
+        foreach ($node as $childNode) {
+            if (!$childNode->isEmpty()) {
+                if ($neededLevel === $childNode->getLevel()) {
+                    return $childNode;
                 } else {
-                    return static::getByNestingLevel($node['children'], $neededLevel, $currentLevel);
+                    $node = static::getByNestingLevel($childNode, $neededLevel);
+                    if ($node !== null) {
+                        return $node;
+                    }
                 }
             }
         }
+
         return null;
-    }
-
-    /**
-     * Provides userfunc sort by 'priority' property
-     *
-     * @param array $nodes
-     * @return array
-     */
-    public static function sortNodesByPriority($nodes)
-    {
-        usort(
-            $nodes,
-            function ($a, $b) {
-                return ($a['priority'] > $b['priority']) ? -1 : 1;
-            }
-        );
-
-        return $nodes;
     }
 
     /**
      * Returns first node name if nodes is not empty
      *
-     * @param array $nodes
+     * @param GroupNodeDefinition $node
+     *
      * @return null|string
      */
-    public static function getFirstNodeName(array $nodes)
+    public static function getFirstNodeName(GroupNodeDefinition $node)
     {
-        if (!empty($nodes)) {
-            $firstNode  = current($nodes);
+        if (!$node->isEmpty()) {
+            $firstNode = $node->first();
             if ($firstNode !== false) {
-                return $firstNode['name'];
+                return $firstNode->getName();
             }
         }
 

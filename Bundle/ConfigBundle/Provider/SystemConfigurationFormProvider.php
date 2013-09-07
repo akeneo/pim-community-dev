@@ -6,6 +6,8 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 use Oro\Bundle\UserBundle\Acl\Manager;
 use Oro\Bundle\ConfigBundle\Utils\TreeUtils;
+use Oro\Bundle\ConfigBundle\Config\Tree\FieldNodeDefinition;
+use Oro\Bundle\ConfigBundle\Config\Tree\GroupNodeDefinition;
 
 class SystemConfigurationFormProvider extends FormProvider
 {
@@ -29,85 +31,51 @@ class SystemConfigurationFormProvider extends FormProvider
     /**
      * {@inheritdoc}
      */
-    public function getForm($activeGroup)
-    {
-        $block = $this->getSubtree($activeGroup);
-
-        $toAdd       = array();
-        $blockConfig = array($activeGroup => $this->retrieveConfigFromDefinition($block));
-
-        if (!empty($block['children'])) {
-            $subBlocksConfig = array();
-
-            foreach ($block['children'] as $subblock) {
-                $subBlockName                   = $subblock['name'];
-                $subBlocksConfig[$subBlockName] = $this->retrieveConfigFromDefinition($subblock);
-
-                if (!empty($subblock['children'])) {
-                    foreach ($subblock['children'] as $field) {
-                        $field['options']       = !empty($field['options']) ? $field['options'] : array();
-                        $field['block_options'] = array(
-                            'block'    => $block['name'],
-                            'subblock' => $subblock['name']
-                        );
-
-                        if (isset($field['options']['constraints'])) {
-                            $field['options']['constraints'] = $this->parseValidator($field['options']['constraints']);
-                        }
-
-                        $toAdd[] = $field;
-                    }
-                }
-            }
-
-            $blockConfig[$activeGroup]['subblocks'] = $subBlocksConfig;
-        }
-
-        $builder = $this->factory->createNamedBuilder(
-            $activeGroup,
-            'oro_config_form_type',
-            null,
-            array(
-                'block_config' => $blockConfig
-            )
-        );
-        foreach ($toAdd as $field) {
-            $field['options'] = array_merge(
-                array('target_field' => $field),
-                $field['block_options'],
-                array_intersect_key($field['options'], array_flip(array('label', 'required')))
-            );
-            $this->addFieldToForm($builder, $field);
-        }
-
-        return $builder->getForm();
-    }
-
-    /**
-     * Check ACL resource
-     *
-     * @param string $resourceName
-     * @return bool
-     */
-    public function checkIsGranted($resourceName)
-    {
-        return $this->aclManager->isResourceGranted($resourceName);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTree()
     {
         return $this->getTreeData(self::TREE_NAME, self::CORRECT_FIELDS_NESTING_LEVEL);
     }
 
     /**
-     * Lookup for first available groups if they are not specified yet
-     *
-     * @param string $activeGroup
-     * @param string $activeSubGroup
-     * @return array
+     * {@inheritdoc}
+     */
+    public function getForm($group)
+    {
+        $block = $this->getSubtree($group);
+
+        $toAdd = array();
+        $bc    = $block->toBlockConfig();
+
+        if (!$block->isEmpty()) {
+            $sbc = array();
+
+            /** @var $subblock GroupNodeDefinition */
+            foreach ($block as $subblock) {
+                $sbc += $subblock->toBlockConfig();
+                if (!$subblock->isEmpty()) {
+                    /** @var $field FieldNodeDefinition */
+                    foreach ($subblock as $field) {
+                        $field->replaceOption('block', $block->getName())
+                            ->replaceOption('subblock', $subblock->getName());
+
+                        $toAdd[] = $field;
+                    }
+                }
+            }
+
+            $bc[$block->getName()]['subblocks'] = $sbc;
+        }
+
+        $fb = $this->factory->createNamedBuilder($group, 'oro_config_form_type', null, array('block_config' => $bc));
+        foreach ($toAdd as $field) {
+            $this->addFieldToForm($fb, $field);
+        }
+
+        return $fb->getForm();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function chooseActiveGroups($activeGroup, $activeSubGroup)
     {
@@ -121,9 +89,10 @@ class SystemConfigurationFormProvider extends FormProvider
         if ($activeSubGroup === null && $activeGroup) {
             $subtree = TreeUtils::findNodeByName($tree, $activeGroup);
 
-            if (!empty($subtree)) {
-                $subGroups = TreeUtils::getByNestingLevel($subtree['children'], 1);
-                if (!empty($subGroups)) {
+            if ($subtree instanceof GroupNodeDefinition) {
+                $subGroups = TreeUtils::getByNestingLevel($subtree, 2);
+
+                if ($subGroups instanceof GroupNodeDefinition) {
                     $activeSubGroup = TreeUtils::getFirstNodeName($subGroups);
                 }
             }
@@ -133,13 +102,14 @@ class SystemConfigurationFormProvider extends FormProvider
     }
 
     /**
-     * Retrieve block config from group node definition
+     * Check ACL resource
      *
-     * @param array $definition
-     * @return array
+     * @param string $resourceName
+     *
+     * @return bool
      */
-    protected function retrieveConfigFromDefinition(array $definition)
+    protected function checkIsGranted($resourceName)
     {
-        return array_intersect_key($definition, array_flip(array('title', 'priority', 'description')));
+        return $this->aclManager->isResourceGranted($resourceName);
     }
 }

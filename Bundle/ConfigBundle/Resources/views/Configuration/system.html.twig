@@ -1,5 +1,5 @@
 {% extends bap.layout %}
-{% if form != null %}
+{% if form %}
     {% form_theme form with ['OroConfigBundle:Form:fields.html.twig'] %}
 {% endif %}
 {% import 'OroConfigBundle::macros.html.twig' as configUI %}
@@ -7,7 +7,7 @@
 {% set pageTitle = 'Configuration' %}
 
 {% block content %}
-    {{ configUI.renderTitleAndSearch(pageTitle is defined ? pageTitle : '', []) }}
+    {{ configUI.renderTitleAndSearch(pageTitle, []) }}
     {{ configUI.renderScrollData(data, form, activeGroup, activeSubGroup) }}
 
     <script type="text/javascript">

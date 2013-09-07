@@ -25,6 +25,7 @@ class ConfigurationController extends Controller
 
         list($activeGroup, $activeSubGroup) = $provider->chooseActiveGroups($activeGroup, $activeSubGroup);
 
+        $tree = $provider->getTree();
         $form = false;
         if ($activeSubGroup !== null) {
             $form = $provider->getForm($activeSubGroup);
@@ -38,7 +39,7 @@ class ConfigurationController extends Controller
         }
 
         return array(
-            'data'           => $provider->getTree(),
+            'data'           => $tree,
             'form'           => $form ? $form->createView() : null,
             'activeGroup'    => $activeGroup,
             'activeSubGroup' => $activeSubGroup,

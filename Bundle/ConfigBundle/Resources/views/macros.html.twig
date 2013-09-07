@@ -44,16 +44,16 @@
             <ul class="nav nav-tabs">
                 {% if data is iterable %}
                     {% for tab in data %}
-                        {% set tab = tab|merge({
+                        {% set tabData = {
                                 isActive: activeTab and activeTab == tab.name,
                                 url: path('oro_config_configuration_system', {activeGroup: tab.name})
-                            })
+                            }|merge(tab.toViewData)
                         %}
 
-                        {% if tab.isActive %}
+                        {% if tabData.isActive %}
                             {% set activeTab = tab %}
                         {% endif %}
-                        {{ __.renderTabNavItem(tab) }}
+                        {{ __.renderTabNavItem(tabData) }}
                     {% endfor %}
                 {% endif %}
             </ul>
@@ -102,29 +102,28 @@
 {% macro renderVerticalSubmenu(data, activeVTab = false) %}
     {% import _self as __ %}
     <div class="span2 system-configuration-sidebar">
-        {% if data.children is defined and data.children is iterable %}
-            {% for group in data.children %}
-                <dl>
-                    <dt>
-                        <h4>{{ group.title|trans }}</h4>
-                    </dt>
-                    <dd>
-                        {% if group.children is defined and group.children is iterable %}
-                            <ul class="nav nav-pills nav-stacked">
-                                {% for tab in group.children %}
-                                    {% set tab = tab|merge({
-                                            isActive: activeVTab and activeVTab == tab.name,
-                                            url: path('oro_config_configuration_system', {activeGroup: data.name, activeSubGroup: tab.name })
-                                        })
-                                    %}
-                                    {{ __.renderTabNavItem(tab) }}
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </dd>
-                </dl>
-            {% endfor %}
-        {% endif %}
+        {% for group in data %}
+            {% set groupData = group.toViewData %}
+            <dl>
+                <dt>
+                    <h4>{{ groupData.title|trans }}</h4>
+                </dt>
+                <dd>
+                    {% if group.count %}
+                        <ul class="nav nav-pills nav-stacked">
+                            {% for tab in group %}
+                                {% set tabData = {
+                                        isActive: activeVTab and activeVTab == tab.name,
+                                        url: path('oro_config_configuration_system', {activeGroup: data.name, activeSubGroup: tab.name })
+                                    }|merge(tab.toViewData)
+                                %}
+                                {{ __.renderTabNavItem(tabData) }}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </dd>
+            </dl>
+        {% endfor %}
     </div>
 {% endmacro %}
 

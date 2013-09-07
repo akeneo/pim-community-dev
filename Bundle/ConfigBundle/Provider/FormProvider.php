@@ -6,6 +6,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Oro\Bundle\ConfigBundle\Utils\TreeUtils;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\ConfigBundle\Config\Tree\FieldNodeDefinition;
+use Oro\Bundle\ConfigBundle\Config\Tree\GroupNodeDefinition;
 use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
 
 abstract class FormProvider implements ProviderInterface
@@ -49,21 +51,19 @@ abstract class FormProvider implements ProviderInterface
      * @param string $treeName
      * @param int $correctFieldsLevel
      * @throws \Exception
-     * @return array
+     * @return GroupNodeDefinition
      */
     protected function getTreeData($treeName, $correctFieldsLevel)
     {
         if (!isset($this->processedTrees[$treeName])) {
-            if (isset($this->config[ProcessorDecorator::TREE_ROOT][$treeName])) {
-                $data = $this->buildGroupNode(
-                    $this->config[ProcessorDecorator::TREE_ROOT][$treeName],
-                    $correctFieldsLevel
-                );
-            } else {
+            if (!isset($this->config[ProcessorDecorator::TREE_ROOT][$treeName])) {
                 throw new \Exception(sprintf('Tree "%s" does not defined', $treeName));
             }
 
-            $this->processedTrees[$treeName] = $data;
+            $definition = $this->config[ProcessorDecorator::TREE_ROOT][$treeName];
+            $data = $this->buildGroupNode($definition, $correctFieldsLevel);
+            $tree = new GroupNodeDefinition($treeName, $definition, $data);
+            $this->processedTrees[$tree->getName()] = $tree;
         }
 
         return $this->processedTrees[$treeName];
@@ -73,25 +73,26 @@ abstract class FormProvider implements ProviderInterface
      * Builds group node, called recursively
      *
      * @param array $nodes
-     * @param int $correctFieldsLevel fields should be placed on the same levels that comes from view
-     * @param int $level current level
+     * @param int   $correctFieldsLevel fields should be placed on the same levels that comes from view
+     * @param int   $level              current level
      * @throws \Exception
-     * @return mixed
+     * @return array
      */
     protected function buildGroupNode($nodes, $correctFieldsLevel, $level = 0)
     {
         $level++;
         foreach ($nodes as $name => $node) {
             if (is_array($node) && isset($node['children'])) {
-                $group = isset($this->config[ProcessorDecorator::GROUPS_NODE][$name])
-                    ? $this->config[ProcessorDecorator::GROUPS_NODE][$name] : false;
-
-                if ($group === false) {
+                if (!isset($this->config[ProcessorDecorator::GROUPS_NODE][$name])) {
                     throw new \Exception(sprintf('Group "%s" does not defined', $name));
                 }
 
-                $nodes[$name] = array_merge(array('name' => $name, 'priority' => 0), $group, $nodes[$name]);
-                $nodes[$name]['children'] = $this->buildGroupNode($node['children'], $correctFieldsLevel, $level);
+                $group = $this->config[ProcessorDecorator::GROUPS_NODE][$name];
+                $data  = $this->buildGroupNode($node['children'], $correctFieldsLevel, $level);
+                $node  = new GroupNodeDefinition($name, array_merge($group, $nodes[$name]), $data);
+                $node->setLevel($level);
+
+                $nodes[$node->getName()] = $node;
             } else {
                 if ($level !== $correctFieldsLevel) {
                     throw new \Exception(
@@ -102,8 +103,6 @@ abstract class FormProvider implements ProviderInterface
             }
         }
 
-        $nodes = TreeUtils::sortNodesByPriority($nodes);
-
         return $nodes;
     }
 
@@ -111,86 +110,33 @@ abstract class FormProvider implements ProviderInterface
      * Builds field data by name
      *
      * @param string $node field node name
-     * @return array
+     * @return FieldNodeDefinition
      * @throws \Exception
      */
     protected function buildFieldNode($node)
     {
-        $field = isset($this->config[ProcessorDecorator::FIELDS_ROOT][$node])
-            ? $this->config[ProcessorDecorator::FIELDS_ROOT][$node] : false;
-
-        if ($field === false) {
+        if (!isset($this->config[ProcessorDecorator::FIELDS_ROOT][$node])) {
             throw new \Exception(sprintf('Field "%s" does not defined', $node));
         }
 
-        $field = array_merge(array('name' => $node, 'priority' => 0), $field);
-
-        return $field;
+        return new FieldNodeDefinition($node, $this->config[ProcessorDecorator::FIELDS_ROOT][$node]);
     }
 
-    /**
-     * @param $name
-     * @param $options
-     * @return mixed
-     */
-    protected function newConstraint($name, $options)
+
+    protected function addFieldToForm(FormBuilderInterface $form, FieldNodeDefinition $fieldDefinition)
     {
-        if (strpos($name, '\\') !== false && class_exists($name)) {
-            $className = (string) $name;
-        } else {
-            $className = 'Symfony\\Component\\Validator\\Constraints\\' . $name;
-        }
-
-        return new $className($options);
-    }
-
-    /**
-     * @param array $nodes
-     * @return array
-     */
-    protected function parseValidator(array $nodes)
-    {
-        $values = array();
-
-        foreach ($nodes as $name => $childNodes) {
-            if (is_numeric($name) && is_array($childNodes) && count($childNodes) == 1) {
-                $options = current($childNodes);
-
-                if (is_array($options)) {
-                    $options = $this->parseValidator($options);
-                }
-
-                $values[] = $this->newConstraint(key($childNodes), $options);
-            } else {
-                if (is_array($childNodes)) {
-                    $childNodes = $this->parseValidator($childNodes);
-                }
-
-                $values[$name] = $childNodes;
-            }
-        }
-
-        return $values;
-    }
-
-    protected function addFieldToForm(FormBuilderInterface $form, $fieldDefinition)
-    {
-        if (isset($fieldDefinition['acl_resource']) && !$this->checkIsGranted($fieldDefinition['acl_resource'])) {
+        if ($fieldDefinition->getAclResource() && !$this->checkIsGranted($fieldDefinition->getAclResource())) {
             // field is not allowed to be shown, do nothing
             return;
         }
 
-        $fieldDefinition['name'] = str_replace(
+        $name = str_replace(
             ConfigManager::SECTION_MODEL_SEPARATOR,
             ConfigManager::SECTION_VIEW_SEPARATOR,
-            $fieldDefinition['name']
+            $fieldDefinition->getName()
         );
 
-        $form->add(
-            $fieldDefinition['name'],
-            'oro_config_form_field_type',
-            $fieldDefinition['options']
-        );
+        $form->add($name, 'oro_config_form_field_type', $fieldDefinition->toFormFieldOptions());
     }
 
     /**
@@ -199,5 +145,5 @@ abstract class FormProvider implements ProviderInterface
      * @param string $resourceName
      * @return mixed
      */
-    abstract public function checkIsGranted($resourceName);
+    abstract protected function checkIsGranted($resourceName);
 }
