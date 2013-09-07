@@ -11,7 +11,7 @@ use Doctrine\ORM\PersistentCollection;
  *  name="oro_config",
  *  uniqueConstraints={@ORM\UniqueConstraint(name="UQ_ENTITY", columns={"entity", "record_id"})}
  * )
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Oro\Bundle\ConfigBundle\Entity\Repository\ConfigRepository")
  */
 class Config
 {
@@ -117,5 +117,25 @@ class Config
     public function getValues()
     {
         return $this->values;
+    }
+
+    public function getOrCreateValue($section, $key)
+    {
+        $value = $this->getValues()->filter(
+            function (ConfigValue $item) use ($key, $section) {
+                return $item->getName() == $key && $item->getSection() == $section;
+            }
+        );
+
+        if ($value instanceof ArrayCollection && $value->isEmpty()) {
+            $value = new ConfigValue();
+            $value->setConfig($this)
+                ->setName($key)
+                ->setSection($section);
+        } else {
+            $value = $value->first();
+        }
+
+        return $value;
     }
 }

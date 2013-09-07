@@ -47,7 +47,6 @@ class ConfigSubscriber implements EventSubscriberInterface
             if (!empty($val['use_parent_scope_value'])) {
                 $data[$key]['value'] = $this->configManager->get(
                     str_replace(ConfigManager::SECTION_VIEW_SEPARATOR, ConfigManager::SECTION_MODEL_SEPARATOR, $key),
-                    null,
                     true
                 );
             }

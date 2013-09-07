@@ -24,10 +24,10 @@ class UserConfigManager extends ConfigManager
         if ($token = $this->security->getToken()) {
             if (is_object($user = $token->getUser())) {
                 foreach ($user->getGroups() as $group) {
-                    $this->mergeSettings(get_class($group), $group->getId());
+                    $this->loadStoredSettings(get_class($group), $group->getId());
                 }
 
-                $this->mergeSettings(get_class($user), $user->getId());
+                $this->loadStoredSettings(get_class($user), $user->getId());
             }
         }
     }
