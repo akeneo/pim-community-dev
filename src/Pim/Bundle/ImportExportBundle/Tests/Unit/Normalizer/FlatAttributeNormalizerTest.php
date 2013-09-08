@@ -22,7 +22,6 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
 
     private $optionalProperties = array(
         'default_value',
-        'value_creation_allowed',
         'max_characters',
         'validation_rule',
         'validation_regexp',
@@ -102,7 +101,6 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                     'options'                => 'en:Green,fr:Vert|en:Red,fr:Rouge',
                     'useable_as_grid_column' => '1',
                     'useable_as_grid_filter' => '0',
-                    'value_creation_allowed' => '1',
                 )
             ),
             array(
