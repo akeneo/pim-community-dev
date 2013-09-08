@@ -88,7 +88,7 @@
 
     $.fn.currencyField = function(options) {
         var opts;
-        if (typeof(options) === 'string' && options !== '') {
+        if (typeof options === 'string' && options !== '') {
             opts = $.fn.currencyField.defaults;
 
             if (options === 'collapse') {

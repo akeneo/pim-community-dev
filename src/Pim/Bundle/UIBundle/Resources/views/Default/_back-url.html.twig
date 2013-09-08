@@ -2,7 +2,7 @@
 $(function() {
     'use strict';
 
-    if (typeof(Storage)!=="undefined") {
+    if (typeof Storage !== 'undefined') {
         $.urlParam = function(name) {
             var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
             if (results==null){
