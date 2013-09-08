@@ -65,7 +65,7 @@ Pim.tree.manage = function (elementId) {
                     return {
                         'id': id,
                         'select_node_id': selectedNode,
-                        'with_products_count': 'true'
+                        'with_products_count': 1
                     };
                 }
             }
