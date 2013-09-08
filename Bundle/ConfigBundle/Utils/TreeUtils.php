@@ -24,6 +24,10 @@ class TreeUtils
                 return $childNode;
             } elseif ($childNode instanceof GroupNodeDefinition && !$childNode->isEmpty()) {
                 $resultNode = static::findNodeByName($childNode, $nodeName);
+
+                if ($resultNode) {
+                    return $resultNode;
+                }
             }
         }
 
