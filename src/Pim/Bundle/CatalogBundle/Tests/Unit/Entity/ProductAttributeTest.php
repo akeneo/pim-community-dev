@@ -333,20 +333,6 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test is/setter for ValueCreationAllowed property
-     *
-     * TODO : Test with the both values
-     */
-    public function testIsSetValueCreationAllowed()
-    {
-        $this->assertNull($this->attribute->isValueCreationAllowed());
-
-        // Change value and assert new
-        $this->assertEntity($this->attribute->setValueCreationAllowed(true));
-        $this->assertTrue($this->attribute->isValueCreationAllowed());
-    }
-
-    /**
      * Test getter/setter for dateType property
      */
     public function testGetSetDateType()

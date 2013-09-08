@@ -41,10 +41,6 @@ class OptionSimpleSelectType extends AbstractAttributeType
     {
         $properties = array(
             array(
-                'name'      => 'valueCreationAllowed',
-                'fieldType' => 'checkbox'
-            ),
-            array(
                 'name'      => 'searchable',
                 'fieldType' => 'checkbox'
             ),

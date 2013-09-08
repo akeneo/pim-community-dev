@@ -71,8 +71,6 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
             - Type: bool
         wysiwygEnabled:
             - Type: bool
-        valueCreationAllowed:
-            - Type: bool
         decimalsAllowed:
             - Type: bool
         negativeAllowed:
