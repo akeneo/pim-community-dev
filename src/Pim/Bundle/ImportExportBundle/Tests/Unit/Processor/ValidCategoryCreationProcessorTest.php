@@ -38,7 +38,7 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for checkCircularRefs
+     * Test getter/setter for circularRefsChecked
      */
     public function testGetSetLocaleDelimiter()
     {
@@ -49,14 +49,14 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for checkCircularRefs
+     * Test getter/setter for circularRefsChecked
      */
-    public function testGetSetCheckCircularRefs()
+    public function testGetIsCircularRefsChecked()
     {
-        $this->assertEquals(true, $this->processor->getCheckCircularRefs());
+        $this->assertEquals(true, $this->processor->isCircularRefsChecked());
         $checkRefs = false;
-        $this->processor->setCheckCircularRefs($checkRefs);
-        $this->assertEquals($checkRefs, $this->processor->getCheckCircularRefs());
+        $this->processor->setCircularRefsChecked($checkRefs);
+        $this->assertEquals($checkRefs, $this->processor->isCircularRefsChecked());
     }
 
     /**
@@ -65,9 +65,9 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
     public function testGetConfigurationFields()
     {
         $configurationFields = array(
-            'titleDelimiter' => array(),
-            'localeDelimiter' => array(),
-            'checkCircularRefs' => array(
+            'titleDelimiter'      => array(),
+            'localeDelimiter'     => array(),
+            'circularRefsChecked' => array(
                 'type' => 'checkbox',
             ),
         );
