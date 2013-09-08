@@ -4,6 +4,7 @@ namespace Oro\Bundle\ConfigBundle\Config;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
+use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
 use Oro\Bundle\ConfigBundle\Form\Type\FormFieldType;
 use Oro\Bundle\ConfigBundle\Provider\SystemConfigurationFormProvider;
 use Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension;
@@ -139,6 +140,66 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('some_field', $settings);
         $this->assertCount(2, $settings);
         $this->assertEquals($testSetting['value'], $settings['some_field']['value']);
+    }
+
+    /**
+     * Test saving settings
+     */
+    public function testSave()
+    {
+        $settings = array(
+            'oro_user___level' => array(
+                'value' => 50,
+            ),
+            'oro_user___greeting' => array(
+                'new value',
+            ),
+        );
+
+        $object = $this->getMock(
+            'Oro\Bundle\ConfigBundle\Config\ConfigManager',
+            array('getChanged'),
+            array($this->om, $this->settings)
+        );
+
+        $changes = array(
+            $settings, array()
+        );
+
+        $configMock = $this->getMock('Oro\Bundle\ConfigBundle\Entity\Config');
+        $configMock->expects($this->once())
+            ->method('getChanged')
+            ->with($this->equalTo($settings))
+            ->will($this->returnValue($changes));
+        $configMock->expects($this->once())
+            ->method('getOrCreateValue')
+            ->will($this->returnValue(new ConfigValue()));
+
+        $valueRepository = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Entity\Repository\ConfigValueRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $repository = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Entity\Repository\ConfigRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $repository->expects($this->once())
+            ->method('getByEntity')
+            ->with('app', 0)
+            ->will($this->returnValue($configMock));
+
+        $this->om
+            ->expects($this->at(0))
+            ->method('getRepository')
+            ->will($this->returnValue($valueRepository));
+
+        $this->om
+            ->expects($this->at(1))
+            ->method('getRepository')
+            ->will($this->returnValue($repository));
+
+
+        $object->save($settings);
     }
 
     /**
