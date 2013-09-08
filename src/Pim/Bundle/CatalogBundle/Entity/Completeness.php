@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -82,10 +82,10 @@ class Completeness
     protected $updated;
 
     /**
-     * @var \Pim\Bundle\CatalogBundle\Entity\Product
+     * @var \Pim\Bundle\CatalogBundle\Model\ProductInterface
      *
      * @ORM\ManyToOne(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Product",
+     *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
      *     inversedBy="completenesses"
      * )
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
@@ -271,11 +271,11 @@ class Completeness
     /**
      * Setter product
      *
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return Completeness
      */
-    public function setProduct(Product $product)
+    public function setProduct(ProductInterface $product)
     {
         $this->product = $product;
 
