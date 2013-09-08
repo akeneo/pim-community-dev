@@ -6,7 +6,13 @@
         {% endif %}
     {% endset %}
 
-    {{ elements.accordion({ 'General Properties': generalProperties, 'Node values': form_row(form.title) }) }}
+    {% set nodeValues %}
+        {{ form_row(form.title) }}
+        {{ form_rest(form) }}
+    {% endset %}
+
+    {{ elements.accordion({ 'General Properties': generalProperties, 'Node values': nodeValues }) }}   
+
 </div>
 
 {% if form.vars.value.id %}

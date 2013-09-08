@@ -73,12 +73,12 @@
         {{ elements.page_header(title, buttons, subtitle, left, right) }}
 
         <div class="layout-content">
-            {% include 'PimProductBundle:Product:_navbar.html.twig' %}
+            {% include 'PimCatalogBundle:Product:_navbar.html.twig' %}
 
             <div class="row-fluid tab-content">
                 {{ elements.form_errors(form) }}
 
-                {% include 'PimProductBundle:Product:_tab-panes.html.twig' %}
+                {% include 'PimCatalogBundle:Product:_tab-panes.html.twig' %}
 
                 {{ form_row(form.id) }}
                 {{ form_row(form._token) }}
