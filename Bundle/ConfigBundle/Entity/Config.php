@@ -127,7 +127,7 @@ class Config
             }
         );
 
-        if ($value instanceof ArrayCollection && $value->isEmpty()) {
+        if ($value->first() === false) {
             $value = new ConfigValue();
             $value->setConfig($this)
                 ->setName($key)

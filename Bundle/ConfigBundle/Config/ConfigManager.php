@@ -3,6 +3,7 @@
 namespace Oro\Bundle\ConfigBundle\Config;
 
 use Doctrine\Common\Persistence\ObjectManager;
+
 use Symfony\Component\Form\FormInterface;
 
 use Oro\Bundle\ConfigBundle\Entity\Config;
@@ -51,14 +52,13 @@ class ConfigManager
      */
     public function get($name, $default = false, $full = false)
     {
-        $entity = $this->getScopedEntity();
+        $entity = $this->getScopedEntityName();
         $entityId = $this->getScopeId();
+        $this->loadStoredSettings($entity, $entityId);
 
         $name = explode(self::SECTION_MODEL_SEPARATOR, $name);
         $section = $name[0];
         $key = $name[1];
-
-        $this->loadStoredSettings($entity, $entityId);
 
         if ($default) {
             $settings = $this->settings;
@@ -80,13 +80,13 @@ class ConfigManager
     /**
      * Save settings with fallback to global scope (default)
      */
-    public function save($newSettings, $scopeEntity = null)
+    public function save($newSettings)
     {
         $repository = $this->om->getRepository('OroConfigBundle:ConfigValue');
         /** @var Config $config */
         $config = $this->om
             ->getRepository('OroConfigBundle:Config')
-            ->getByEntity($scopeEntity);
+            ->getByEntity($this->getScopedEntityName(), $this->getScopeId());
 
         list ($updated, $removed) = $this->getChanged($newSettings);
 
@@ -119,15 +119,28 @@ class ConfigManager
         $updated = array();
         $removed = array();
         foreach ($newSettings as $key => $value) {
-            $currentValue = $this->get(str_replace(self::SECTION_VIEW_SEPARATOR, self::SECTION_MODEL_SEPARATOR, $key), false, true);
+            $currentValue = $this->get(
+                str_replace(
+                    self::SECTION_VIEW_SEPARATOR,
+                    self::SECTION_MODEL_SEPARATOR,
+                    $key
+                ),
+                false,
+                true
+            );
 
             // save only if setting exists and there's no default checkbox checked
-            if (!is_null($currentValue) && empty($value['use_parent_scope_value'])) {
+            if (!is_null($currentValue)
+                && empty($value['use_parent_scope_value']))
+            {
                 $updated[$key] = $value;
             }
 
-            $valueDefined = isset($currentValue['use_parent_scope_value']) && $currentValue['use_parent_scope_value'] == false;
-            $valueStillDefined = isset($value['use_parent_scope_value']) && $value['use_parent_scope_value'] == false;
+            $valueDefined = isset($currentValue['use_parent_scope_value'])
+                && $currentValue['use_parent_scope_value'] == false;
+            $valueStillDefined = isset($value['use_parent_scope_value'])
+                && $value['use_parent_scope_value'] == false;
+
             if ($valueDefined && !$valueStillDefined) {
                 $key = explode(self::SECTION_VIEW_SEPARATOR, $key);
                 $removed[] = array($key[0], $key[1]);
@@ -141,26 +154,19 @@ class ConfigManager
      * @param $entity
      * @param $entityId
      * @param null $section
-     * @return array
+     * @return bool
      */
     protected function loadStoredSettings($entity, $entityId, $section = null)
     {
-        if ($section && !empty($this->storedSettings[$entity][$entityId][$section])) {
-            return $this->storedSettings[$entity][$entityId][$section];
-        }
-
         if (!empty($this->storedSettings[$entity][$entityId])) {
-            return $this->storedSettings[$entity][$entityId];
+            return false;
         }
 
-        $settings = $this->om
+        $this->storedSettings[$entity][$entityId] = $this->om
             ->getRepository('OroConfigBundle:Config')
             ->loadSettings($entity, $entityId, $section);
 
-        if (empty($this->storedSettings[$entity][$entityId])) {
-            $this->storedSettings[$entity][$entityId] = array();
-        }
-        $this->storedSettings[$entity][$entityId] = array_merge($this->storedSettings[$entity][$entityId], $settings);
+        return true;
     }
 
     /**
@@ -192,9 +198,9 @@ class ConfigManager
     /**
      * @return null
      */
-    public function getScopedEntity()
+    public function getScopedEntityName()
     {
-        return null;
+        return 'app';
     }
 
     /**
@@ -202,6 +208,6 @@ class ConfigManager
      */
     public function getScopeId()
     {
-        return null;
+        return 0;
     }
 }
