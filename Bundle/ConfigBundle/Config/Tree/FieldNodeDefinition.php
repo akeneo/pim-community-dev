@@ -91,10 +91,6 @@ class FieldNodeDefinition extends AbstractNodeDefinition
      */
     protected function prepareDefinition(array $definition)
     {
-        if (!isset($definition['priority'])) {
-            $definition['priority'] = 0;
-        }
-
         if (!isset($definition['options'])) {
             $definition['options'] = array();
         }
@@ -103,7 +99,7 @@ class FieldNodeDefinition extends AbstractNodeDefinition
             $definition['options']['constraints'] = $this->parseValidator($definition['options']['constraints']);
         }
 
-        return $definition;
+        return parent::prepareDefinition($definition);
     }
 
     /**
@@ -132,6 +128,7 @@ class FieldNodeDefinition extends AbstractNodeDefinition
     {
         $values = array();
 
+
         foreach ($nodes as $name => $childNodes) {
             if (is_numeric($name) && is_array($childNodes) && count($childNodes) == 1) {
                 $options = current($childNodes);
@@ -142,10 +139,6 @@ class FieldNodeDefinition extends AbstractNodeDefinition
 
                 $values[] = $this->newConstraint(key($childNodes), $options);
             } else {
-                if (is_array($childNodes)) {
-                    $childNodes = $this->parseValidator($childNodes);
-                }
-
                 $values[$name] = $childNodes;
             }
         }

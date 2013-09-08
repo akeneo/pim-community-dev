@@ -20,6 +20,12 @@ oro_system_configuration:
         fourth_group:
           title: 'Fourth group'
 
+        another_branch_first:
+          title: 'Another branch first group'
+
+        another_branch_second:
+          title: 'Another branch second group'
+
 
     tree:
         system_configuration:
@@ -27,6 +33,8 @@ oro_system_configuration:
                 children:
                     second_group:
                         children:
+                            # HORIZONTAL TAB DEFINITION
+                            # WILL BE USED FOR FORM CONFIGURING IN TEST
                             third_group:
                                 priority: 254
                                 children:
@@ -34,3 +42,7 @@ oro_system_configuration:
                                         children:
                                             - some_field
                                             - some_another_field
+                            another_branch_first:
+                                children:
+                                    another_branch_second:
+                                        children: []

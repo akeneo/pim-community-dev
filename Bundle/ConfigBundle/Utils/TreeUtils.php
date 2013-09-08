@@ -22,8 +22,12 @@ class TreeUtils
         foreach ($node as $childNode) {
             if ($childNode->getName() === $nodeName) {
                 return $childNode;
-            } elseif (!$childNode->isEmpty()) {
+            } elseif ($childNode instanceof GroupNodeDefinition && !$childNode->isEmpty()) {
                 $resultNode = static::findNodeByName($childNode, $nodeName);
+
+                if ($resultNode) {
+                    return $resultNode;
+                }
             }
         }
 
@@ -51,7 +55,6 @@ class TreeUtils
                     return $node;
                 }
             }
-            echo $childNode->getName();
         }
 
         return null;

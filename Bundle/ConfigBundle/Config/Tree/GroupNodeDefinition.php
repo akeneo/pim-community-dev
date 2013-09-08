@@ -73,6 +73,8 @@ class GroupNodeDefinition extends AbstractNodeDefinition implements \Countable, 
      */
     public function first()
     {
+        $this->resort();
+
         return reset($this->children);
     }
 

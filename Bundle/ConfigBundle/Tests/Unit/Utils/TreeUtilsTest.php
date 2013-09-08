@@ -12,7 +12,7 @@ class TreeUtilsTest extends \PHPUnit_Framework_TestCase
      *
      * @return GroupNodeDefinition
      */
-    public static function getTestGroup()
+    protected static function getTestGroup()
     {
         $node1 = new GroupNodeDefinition('node1', array(), array());
         $node1->setLevel(1);
