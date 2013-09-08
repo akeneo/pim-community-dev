@@ -10,7 +10,7 @@ use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
  * Context of the website
@@ -38,7 +38,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'imports'    => 'Import index',
         'locales'    => 'Locale index',
         'products'   => 'Product index',
+        'users'      => 'User index',
         'categories' => 'Category tree creation',
+        'home'       => 'Base index',
     );
 
     /* -------------------- Page-related methods -------------------- */
@@ -148,6 +150,29 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param TableNode $pages
+     *
+     * @Then /^I should be able visit the following pages without errors$/
+     */
+    public function iVisitTheFollowingPages(TableNode $pages)
+    {
+        foreach ($pages->getHash() as $data) {
+            $url = $this->getSession()->evaluateScript(sprintf('return Routing.generate("%s");', $data['page']));
+            $this->getSession()->executeScript(sprintf('Pim.navigate("%s");', $url));
+            $this->wait();
+
+            $currentUrl = $this->getSession()->getCurrentUrl();
+            $currentUrl = explode('#url=', $currentUrl);
+            $currentUrl = end($currentUrl);
+
+            assertEquals($url, $currentUrl, sprintf('Error ocurred on page "%s"', $data['page']));
+
+            $loadedCorrectly = (bool) $this->getSession()->evaluateScript('return $(\'img[alt="Akeneo"]\').length;');
+            assertTrue($loadedCorrectly, sprintf('Javascript error ocurred on page "%s"', $data['page']));
+        }
+    }
+
+    /**
      * @param string $category
      *
      * @Given /^I expand the "([^"]*)" category$/
@@ -171,18 +196,20 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $not
      * @param string $child
      * @param string $parent
      *
-     * @Then /^I should see the "([^"]*)" category under the "([^"]*)" category$/
+     * @Then /^I should (not )?see the "([^"]*)" category under the "([^"]*)" category$/
      */
-    public function iShouldSeeTheCategoryUnderTheCategory($child, $parent)
+    public function iShouldSeeTheCategoryUnderTheCategory($not, $child, $parent)
     {
-        $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
+        $not = ($not !== '') ? true : false;
 
+        $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
         $childNode = $parentNode->getParent()->find('css', sprintf('li a:contains(%s)', $child));
 
-        if (!$childNode) {
+        if (($not && $childNode) || (!$not && !$childNode)) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting to see category "%s" under the category "%s", not found',
@@ -251,22 +278,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $not
-     * @param string $currencies
-     *
-     * @return Step\Then
-     *
-     * @Then /^I should (not )?see currency (.*)$/
-     * @Then /^I should (not )?see currencies (.*)$/
-     */
-    public function iShouldSeeCurrencies($not, $currencies)
-    {
-        return new Step\Then(
-            sprintf('I should %ssee entities %s', $not, $currencies)
-        );
-    }
-
-    /**
      * @param string $currencies
      *
      * @When /^I activate the (.*) currency$/
@@ -286,20 +297,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->getPage('Currency index')->deactivateCurrencies($this->listToArray($currencies));
         $this->wait();
-    }
-
-    /**
-     * @param string $currencies
-     *
-     * @return Step\Then
-     *
-     * @Then /^I should see sorted currencies (.*)$/
-     */
-    public function iShouldSeeSortedCurrencies($currencies)
-    {
-        return new Step\Then(
-            sprintf('I should see sorted entities %s', $currencies)
-        );
     }
 
     /**
@@ -346,35 +343,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 }
             }
         }
-    }
-
-    /**
-     * @param string $not
-     * @param string $locales
-     *
-     * @return Step\Then
-     *
-     * @Then /^I should (not )?see locales? (.*)$/
-     */
-    public function iShouldSeeLocales($not, $locales)
-    {
-        return new Step\Then(
-            sprintf('I should %ssee entities %s', $not, $locales)
-        );
-    }
-
-    /**
-     * @param string $locales
-     *
-     * @return Step\Then
-     *
-     * @Then /^I should see sorted locales (.*)$/
-     */
-    public function iShouldSeeSortedLocales($locales)
-    {
-        return new Step\Then(
-            sprintf('I should see sorted entities %s', $locales)
-        );
     }
 
     /**
@@ -630,7 +598,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $language
      *
      * @return void
+     *
      * @When /^I change the (?P<field>\w+) to "([^"]*)"$/
+     * @When /^I change the "(?P<field>[^"]*)" to "([^"]*)"$/
      * @When /^I change the (?P<language>\w+) (?P<field>\w+) to "(?P<value>[^"]*)"$/
      * @When /^I change the (?P<field>\w+) to an invalid value$/
      */
@@ -880,6 +850,36 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $status
+     *
+     * @Given /^I select the status "([^"]*)"$/
+     */
+    public function iSelectStatus($status)
+    {
+        $this->getPage('User creation')->selectStatus($status);
+    }
+
+    /**
+     * @param string $owner
+     *
+     * @Given /^I select the owner "([^"]*)"$/
+     */
+    public function iSelectOwner($owner)
+    {
+        $this->getPage('User creation')->selectOwner($owner);
+    }
+
+    /**
+     * @param string $role
+     *
+     * @Given /^I select the role "([^"]*)"$/
+     */
+    public function iSelectRole($role)
+    {
+        $this->getPage('User creation')->selectRole($role);
+    }
+
+    /**
      * @param string $fields
      *
      * @Then /^I should see the (.*) fields?$/
@@ -1073,64 +1073,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $not
-     * @param string $channels
-     *
-     * @return Step\Then
-     *
-     * @Then /^I should (not )?see channels? (.*)$/
-     */
-    public function iShouldSeeChannels($not, $channels)
-    {
-        return new Step\Then(
-            sprintf('I should %ssee entities %s', $not, $channels)
-        );
-    }
-
-    /**
-     * @param string $channels
-     *
-     * @return Step\Then
-     *
-     * @Then /^I should see sorted channels (.*)$/
-     */
-    public function iShouldSeeSortedChannels($channels)
-    {
-        return new Step\Then(
-            sprintf('I should see sorted entities %s', $channels)
-        );
-    }
-
-    /**
-     * @param string $not
-     * @param string $attributes
-     *
-     * @return Step\Then
-     *
-     * @Then /^I should (not )?see attributes? ((?!in group).)*$/
-     */
-    public function iShouldSeeAttributes($not, $attributes)
-    {
-        return new Step\Then(
-            sprintf('I should %ssee entities %s', $not, $attributes)
-        );
-    }
-
-    /**
-     * @param string $attributes
-     *
-     * @return Step\Then
-     *
-     * @Then /^I should see sorted attributes (.*)$/
-     */
-    public function iShouldSeeSortedAttributes($attributes)
-    {
-        return new Step\Then(
-            sprintf('I should see sorted entities %s', $attributes)
-        );
-    }
-
-    /**
      * @param string $channel
      * @param string $not
      * @param string $category
@@ -1223,21 +1165,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $not
-     * @param string $products
-     *
-     * @return Step\Then
-     *
-     * @Then /^I should (not )?see products? ((?!with data).)*$/
-     */
-    public function iShouldSeeProducts($not, $products)
-    {
-        return new Step\Then(
-            sprintf('I should %ssee entities %s', $not, $products)
-        );
-    }
-
-    /**
      * @param string $product
      * @param string $data
      *
@@ -1315,15 +1242,21 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $right
      * @param string $category
      *
-     * @Given /^I right click on the "([^"]*)" category$/
+     * @Given /^I (right )?click on the "([^"]*)" category$/
      */
-    public function iRightClickOnTheCategory($category)
+    public function iClickOnTheCategory($right, $category)
     {
         $category = $this->getCurrentPage()->findCategoryInTree($category);
 
-        $category->rightClick();
+        if ($right) {
+            $category->rightClick();
+        } else {
+            $category->click();
+            $this->wait();
+        }
     }
 
     /**
@@ -1376,41 +1309,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getPage('Import index')->clickImportCreationLink($importTitle);
         $this->wait();
         $this->currentPage = 'Import creation';
-    }
-
-    /**
-     * @param string $profiles
-     *
-     * @return Step\Then
-     *
-     * @Then /^I should see sorted (?:import|export) profiles? (.*)$/
-     */
-    public function iShouldSeeSortedProfiles($profiles)
-    {
-        return new Step\Then(
-            sprintf('I should see sorted entities %s', $profiles)
-        );
-    }
-
-    /**
-     * @param string $not
-     * @param string $profiles
-     *
-     * @return Step\Then
-     *
-     * @Then /^I should (not )?see (?:import|export) profiles? (.*)$/
-     */
-    public function iShouldSeeProfiles($not, $profiles)
-    {
-        if ($not) {
-            return new Step\Then(
-                sprintf('I should not see entities %s', $profiles)
-            );
-        } else {
-            return new Step\Then(
-                sprintf('I should see entities %s', $profiles)
-            );
-        }
     }
 
     /**
@@ -1493,22 +1391,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->openPage('Export show', array('id' => $this->getJobInstance($code)->getId()));
         $this->wait();
-    }
-
-    /**
-     * @param string $jobCode
-     *
-     * @return Step\Given
-     * @When /^I delete the "([^"]*)" job$/
-     */
-    public function iDeleteTheJob($jobCode)
-    {
-        return new Step\Given(
-            sprintf(
-                'I click on the "Delete" action of the row which contains "%s"',
-                $jobCode
-            )
-        );
     }
 
     /**
@@ -1832,6 +1714,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $username
+     *
+     * @return User
+     */
+    private function getUser($username)
+    {
+        return $this->getFixturesContext()->getUser($username);
+    }
+
+    /**
      * @param string $sku
      *
      * @return Product
@@ -1883,7 +1775,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @param string $code
-     * @return \Pim\Bundle\ProductBundle\Entity\Channel
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
      */
     private function getChannel($code)
     {

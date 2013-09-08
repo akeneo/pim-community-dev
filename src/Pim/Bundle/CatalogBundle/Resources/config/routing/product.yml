@@ -1,0 +1,51 @@
+pim_catalog_product_index:
+    path: /.{_format}
+    defaults: { _controller: pim_catalog.controller.product:indexAction, _format: html }
+    requirements:
+        _format: html|json|csv
+
+pim_catalog_product_create:
+    path: /create/{dataLocale}
+    defaults: { _controller: pim_catalog.controller.product:createAction, dataLocale: null }
+
+pim_catalog_product_edit:
+    path: /{id}/edit
+    defaults: { _controller: pim_catalog.controller.product:editAction }
+    requirements:
+        id: \d+
+
+pim_catalog_product_addproductattributes:
+    path: /{id}/attributes
+    defaults: { _controller: pim_catalog.controller.product:addProductAttributesAction }
+    requirements:
+        id: \d+
+    methods: [POST]
+
+pim_catalog_product_removeproductattribute:
+    path: /{productId}/attribute/{attributeId}/remove
+    defaults: { _controller: pim_catalog.controller.product:removeProductAttributeAction }
+    requirements:
+        productId: \d+
+        attributeId: \d+
+    methods: [DELETE]
+
+pim_catalog_product_remove:
+    path: /{id}/remove
+    defaults: { _controller: pim_catalog.controller.product:removeAction }
+    requirements:
+        id: \d+
+    methods: [DELETE]
+
+pim_catalog_product_listcategories:
+    path: /list-categories/product/{id}/parent/{category_id}.{_format}
+    defaults: { _controller: pim_catalog.controller.product:listCategoriesAction }
+    requirements:
+        id: \d+
+        category_id: \d+
+        _format: json
+
+pim_catalog_product_configure_batch_operation:
+    path: /batch
+    defaults: { _controller: PimCatalogBundle:Product:configureBatchOperation }
+    requirements:
+        _method: GET

@@ -31,11 +31,11 @@ class AttributeReader extends ORMCursorReader
     {
         if (!$this->query) {
             $this->query = $this->em
-                ->getRepository('PimProductBundle:ProductAttribute')
+                ->getRepository('PimCatalogBundle:ProductAttribute')
                 ->createQueryBuilder('c')
                 ->getQuery();
         }
 
-        return parent::read();
+        return parent::read($stepExecution);
     }
 }

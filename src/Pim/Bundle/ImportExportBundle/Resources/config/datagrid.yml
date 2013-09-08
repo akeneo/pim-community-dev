@@ -10,7 +10,7 @@ services:
         class: %pim_import_export.datagrid.manager.job_instance.class%
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: jobs
+              datagrid_name: exports
               entity_name: %pim_import_export.entity.job_instance.class%
               query_entity_alias: job
               entity_hint: jobs
@@ -23,7 +23,7 @@ services:
         class: %pim_import_export.datagrid.manager.job_instance.class%
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: jobs
+              datagrid_name: imports
               entity_name: %pim_import_export.entity.job_instance.class%
               query_entity_alias: job
               entity_hint: jobs
@@ -32,25 +32,15 @@ services:
             - [ setJobType, ['import'] ]
             - [ setConnectorRegistry, [@pim_batch.connectors] ]
 
-    pim_import_export.datagrid.manager.report:
-        class: %pim_import_export.datagrid.manager.report.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: job_reports
-              entity_name: %pim_import_export.entity.job_execution.class%
-              query_entity_alias: job_report
-              entity_hint: job_reports
-              route_name: pim_importexport_report_index
-
     pim_import_export.datagrid.manager.export_report:
         class: %pim_import_export.datagrid.manager.report.class%
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: job_reports
+              datagrid_name: export_reports
               entity_name: %pim_import_export.entity.job_execution.class%
               query_entity_alias: job_report
               entity_hint: job_reports
-              route_name: pim_importexport_report_export
+              route_name: pim_importexport_export_report_index
         calls:
             - [ setJobType, ['export'] ]
 
@@ -58,10 +48,10 @@ services:
         class: %pim_import_export.datagrid.manager.report.class%
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: job_reports
+              datagrid_name: import_reports
               entity_name: %pim_import_export.entity.job_execution.class%
               query_entity_alias: job_report
               entity_hint: job_reports
-              route_name: pim_importexport_report_import
+              route_name: pim_importexport_import_report_index
         calls:
             - [ setJobType, ['import'] ]

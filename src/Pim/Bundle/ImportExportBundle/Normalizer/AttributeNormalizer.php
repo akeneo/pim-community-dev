@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
  * A normalizer to transform a ProductAttribute entity into array
@@ -52,7 +52,6 @@ class AttributeNormalizer implements NormalizerInterface
             'code'                    => $attribute->getCode(),
             'label'                   => $this->normalizeLabel($attribute),
             'available_locales'       => $this->normalizeAvailableLocales($attribute),
-            'description'             => $attribute->getDescription(),
             'group'                   => $attribute->getVirtualGroup()->getCode(),
             'sort_order'              => $attribute->getSortOrder(),
             'required'                => $attribute->getRequired(),

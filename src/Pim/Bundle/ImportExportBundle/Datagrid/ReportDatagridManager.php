@@ -8,7 +8,6 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
-use Oro\Bundle\GridBundle\Property\FieldProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
@@ -128,19 +127,9 @@ class ReportDatagridManager extends DatagridManager
      */
     protected function getProperties()
     {
-        $fieldId = new FieldDescription();
-        $fieldId->setName('id');
-        $fieldId->setOptions(
-            array(
-                'type'     => FieldDescriptionInterface::TYPE_INTEGER,
-                'required' => true,
-            )
-        );
+        $showLink = sprintf('pim_importexport_%s_report_show', $this->jobType);
 
-        return array(
-            new FieldProperty($fieldId),
-            new UrlProperty('download_link', $this->router, 'pim_importexport_report_download', array('id')),
-        );
+        return array(new UrlProperty('show_link', $this->router, $showLink, array('id')));
     }
 
     /**
@@ -148,19 +137,33 @@ class ReportDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-        $downloadLogFileAction = array(
+        $acl = sprintf('pim_importexport_%s_report_show', $this->jobType);
+
+        $clickAction = array(
+            'name'         => 'rowClick',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => $acl,
+            'options'      => array(
+                'label'         => $this->translate('Show'),
+                'link'          => 'show_link',
+                'backUrl'       => true,
+                'runOnRowClick' => true
+            )
+        );
+
+        $showAction = array(
             'name'         => 'download',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => $acl,
             'options'      => array(
                 'label'   => $this->translate('download'),
                 'icon'    => 'download',
-                'link'    => 'download_link',
+                'link'    => 'show_link',
                 'backUrl' => true
             )
         );
 
-        return array($downloadLogFileAction);
+        return array($clickAction, $showAction);
     }
     /**
      * Create status field

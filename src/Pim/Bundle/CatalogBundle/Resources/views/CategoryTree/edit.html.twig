@@ -1,0 +1,13 @@
+{% extends 'PimCatalogBundle::layout.html.twig' %}
+
+{% block content %}
+    <div id="category-tree-container" class="row-fluid">
+        <div id="tree" data-tree="manage" data-assets-path="{{ asset('bundles/pimcatalog/') }}"{% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %}></div>
+
+        <div id="category-form">
+            {% include 'PimCatalogBundle:CategoryTree:form.html.twig' with {'form': form} %}
+        </div>
+    </div>
+
+    {% include 'PimCatalogBundle:CategoryTree:_js-handler.html.twig' %}
+{% endblock %}

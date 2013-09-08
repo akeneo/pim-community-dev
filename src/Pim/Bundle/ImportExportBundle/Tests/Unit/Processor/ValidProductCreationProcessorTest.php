@@ -130,7 +130,7 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
     protected function getProductManagerMock()
     {
         return $this
-            ->getMockBuilder('Pim\Bundle\ProductBundle\Manager\ProductManager')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -138,7 +138,7 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
     protected function getChannelManagerMock()
     {
         return $this
-            ->getMockBuilder('Pim\Bundle\ProductBundle\Manager\ChannelManager')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -161,7 +161,7 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
 
     protected function getAttributeMock($code, $backendType, $scopable = false)
     {
-        $attribute = $this->getMock('Pim\Bundle\ProductBundle\Entity\ProductAttribute');
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
 
         $attribute->expects($this->any())
             ->method('getCode')
@@ -180,12 +180,12 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
 
     protected function getProductMock()
     {
-        return $this->getMock('Pim\Bundle\ProductBundle\Entity\Product');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
     }
 
     protected function getCategoryMock($id)
     {
-        $category = $this->getMock('Pim\Bundle\ProductBundle\Entity\Category');
+        $category = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Category');
 
         $category->expects($this->any())
             ->method('getId')
@@ -196,7 +196,7 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
 
     protected function getFamilyMock($id)
     {
-        $family = $this->getMock('Pim\Bundle\ProductBundle\Entity\Family');
+        $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family');
 
         $family->expects($this->any())
             ->method('getId')

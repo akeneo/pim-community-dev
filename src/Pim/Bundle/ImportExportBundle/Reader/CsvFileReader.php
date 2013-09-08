@@ -35,7 +35,7 @@ class CsvFileReader extends CsvReader
 
         $data = array();
 
-        while ($row = parent::read()) {
+        while ($row = parent::read($stepExecution)) {
             $data[] = $row;
         }
 

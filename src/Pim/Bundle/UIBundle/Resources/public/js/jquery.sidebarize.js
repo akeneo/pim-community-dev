@@ -9,14 +9,14 @@
     'use strict';
 
     function getState(key) {
-        if (typeof(Storage) !== 'undefined') {
+        if (Storage !== 'undefined') {
             return sessionStorage[key] || null;
         }
         return null;
     }
 
     function saveState(key, value) {
-        if (typeof(Storage) !== 'undefined') {
+        if (Storage !== 'undefined') {
             sessionStorage[key] = value;
         }
     }
@@ -69,10 +69,9 @@
     }
 
     function prepare($element, opts) {
-        var $sidebar = $element.children().first();
-        var $content = $element.children().last();
-
-        var sidebarWidth = parseInt(getState(opts.widthStorageKey), 10) || opts.sidebarWidth;
+        var $sidebar     = $element.children().first(),
+            $content     = $element.children().last(),
+            sidebarWidth = parseInt(getState(opts.widthStorageKey), 10) || opts.sidebarWidth;
 
         $element.addClass('sidebarized').css('position', 'relative');
 
@@ -148,19 +147,10 @@
 
             prepare($element, opts);
 
-            function startSplit() {
-                if ($('>.separator', $element).hasClass('collapsed')) {
-                    return;
-                }
-                $element.children().css('-webkit-user-select', 'none');
-
-                $(document).on('mousemove', doSplit).on('mouseup', endSplit);
-            }
-
             function doSplit(e) {
-                var windowWidth = $(window).width();
-                var maxWidth = opts.maxSidebarWidth || windowWidth - opts.separatorWidth;
-                var position = e.pageX;
+                var windowWidth = $(window).width(),
+                    maxWidth    = opts.maxSidebarWidth || windowWidth - opts.separatorWidth,
+                    position    = e.pageX;
 
                 position = Math.min(Math.max(position, opts.minSidebarWidth), maxWidth);
 
@@ -174,6 +164,15 @@
 
                 $element.children().css('-webkit-user-select', 'text');
                 saveState(opts.widthStorageKey, parseInt($('>.sidebar', $element).width(), 10));
+            }
+
+            function startSplit() {
+                if ($('>.separator', $element).hasClass('collapsed')) {
+                    return;
+                }
+                $element.children().css('-webkit-user-select', 'none');
+
+                $(document).on('mousemove', doSplit).on('mouseup', endSplit);
             }
 
             $('>.separator', $element).on('mousedown', startSplit);

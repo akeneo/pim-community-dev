@@ -91,7 +91,7 @@ class Grid extends Index
         $rowElement = $this->getRow($element);
         $rowElement->find('css', 'a.dropdown-toggle')->click();
 
-        $action = $rowElement->find('css', sprintf('a.action[title=%s]', $actionName));
+        $action = $rowElement->find('css', sprintf('a.action[title="%s"]', $actionName));
 
         if (!$action) {
             throw new \InvalidArgumentException(
@@ -168,11 +168,27 @@ class Grid extends Index
     /**
      * Get column headers
      *
+     * @param boolean $withHidden
+     *
      * @return \Behat\Mink\Element\Element
      */
-    protected function getColumnHeaders()
+    protected function getColumnHeaders($withHidden = false)
     {
-        return $this->getElement('Grid')->findAll('css', 'thead th');
+        $headers = $this->getElement('Grid')->findAll('css', 'thead th');
+
+        if ($withHidden) {
+            return $headers;
+        }
+
+        $visibleHeaders = array();
+        foreach ($headers as $header) {
+            $style = $header->getAttribute('style');
+            if (!$style || !preg_match('/display: ?none;/', $style)) {
+                $visibleHeaders[] = $header;
+            }
+        }
+
+        return $visibleHeaders;
     }
 
     /**
@@ -248,6 +264,7 @@ class Grid extends Index
                 sprintf('Column %s is not sortable', $columnName)
             );
         }
+
         return $this->getColumn($columnName)->find('css', 'a');
     }
 
@@ -259,18 +276,29 @@ class Grid extends Index
      */
     protected function getRowCell($row, $position)
     {
-        $cell = $row->findAll('css', 'td');
-        if (!isset($cell[$position])) {
+        $cells = $row->findAll('css', 'td');
+
+        $visibleCells = array();
+        foreach ($cells as $cell) {
+            $style = $cell->getAttribute('style');
+            if (!$style || !preg_match('/display: ?none;/', $style)) {
+                $visibleCells[] = $cell;
+            }
+        }
+
+        $cells = $visibleCells;
+
+        if (!isset($cells[$position])) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Trying to access cell %d of a row which has %d cell(s).',
                     $position,
-                    count($cell)
+                    count($cells)
                 )
             );
         }
 
-        return $cell[$position];
+        return $cells[$position];
     }
 
     /**

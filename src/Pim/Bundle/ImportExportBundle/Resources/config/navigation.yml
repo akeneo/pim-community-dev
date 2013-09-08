@@ -9,12 +9,12 @@ oro_menu_config:
             route: 'pim_importexport_export_index'
 
         pim_report_import:
-            label: 'Reports'
-            route: 'pim_importexport_report_import'
+            label: 'Import reports'
+            route: 'pim_importexport_import_report_index'
 
         pim_report_export:
-            label: 'Reports'
-            route: 'pim_importexport_report_export'
+            label: 'Export reports'
+            route: 'pim_importexport_export_report_index'
 
     tree:
         application_menu:

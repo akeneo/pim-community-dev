@@ -5,166 +5,228 @@
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+var Pim = Pim || {};
+Pim.View = Pim.View || {};
 
-(function ($) {
-    'use strict';
+Pim.View.ScopableField = Backbone.View.extend({
+    field:    null,
+    rendered: false,
 
-    function showTitle(el, opts) {
-        var $originalLabel = $(el).find('label').first();
-        var title = opts.title || $originalLabel.html();
-        var $title = $('<label>').addClass($originalLabel.attr('class')).html(title);
-        $(el).find('>label').remove();
-        $(el).prepend($title);
-    }
+    template: _.template(
+        '<%= field.hiddenInput %>' +
+        '<div class="control-group">' +
+            '<div class="controls input-prepend">' +
+                '<label class="control-label add-on" for="<%= field.id %>" style="height: <%= field.height - 10 %>px;">' +
+                    '<span class="field-toggle">' +
+                        '<i class="fa-icon-caret-down"></i>' +
+                    '</span>' +
+                    '<%= field.scope %>' +
+                '</label>' +
+                '<div class="scopable-input" style="display: inline-block; height: <%= field.height %>px;">' +
+                    '<%= field.input %>' +
+                    '<div class="icons-container">' +
+                        '<%= field.icons %>' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+        '</div>'
+    ),
 
-    function getFields(el) {
-        return $(el).find('>.control-group');
-    }
+    initialize: function () {
+        var field = {};
 
-    function prepareFields(el) {
-        var $fields = [];
-        getFields(el).each(function() {
-            var $label = $(this).find('label').first();
-            var scope = $(this).find('>:first-child').data('scope');
+        if (this.$el.find('.upload-zone').length) {
+            field.id = null;
+            field.input = this.$el.find('.upload-zone').get(0).outerHTML;
+        } else if (this.$el.find('.control-label')) {
+            field.id = this.$el.find('.control-label').attr('for');
+            field.input = $('#' + field.id).get(0).outerHTML;
+        }
 
-            $fields.push(
-                {'field': $(this), 'label': $label, 'scope': scope }
+        field.scope       = this.$el.data('scope');
+        field.hiddenInput = this.$el.find('input[type="hidden"]').get(0).outerHTML;
+        field.icons       = this.$el.find('.icons-container').html();
+        field.height      = this.$el.actual('height');
+
+        this.field = field;
+    },
+
+    render: function () {
+        if (!this.rendered) {
+            this.rendered = true;
+            this.$el.empty();
+            this.$el.append(
+                this.template({
+                    field: this.field
+                })
             );
-        });
-        return $fields;
-    }
 
-    function sortFields(el, opts) {
-        if (!opts.defaultScope) {
-            return;
+            this.$el.find('[data-toggle="tooltip"]').tooltip();
         }
-        var $fields = prepareFields(el);
 
-        for (var i = 0; i < $fields.length; i++) {
-            var $field = $fields[i].field;
-            var scope = $fields[i].scope;
+        return this;
+    }
+});
 
-            if (i !== 0 && scope === opts.defaultScope) {
-                $field.insertBefore($fields[0].field);
+Pim.View.Scopable = Backbone.View.extend({
+    label:        null,
+    fieldViews:   [],
+    fields:       [],
+    expanded:     true,
+    rendered:     false,
+    expandIcon:   'fa-icon-caret-right',
+    collapseIcon: 'fa-icon-caret-down',
 
-                break;
+    template: _.template(
+        '<label class="control-label"><%= label %></label>'
+    ),
+
+    initialize: function () {
+        this.fieldViews = [];
+        this.fields     = [];
+        this.expanded   = true;
+        this.rendered   = false;
+
+        this._reindexFields();
+
+        _.each(this.fields, function (field) {
+            this._addField(field);
+        }, this);
+
+        this.label = this.$el.find('.control-label').first().html();
+
+        this.render();
+
+        Oro.Events.on('scopablefield:changescope', function (scope) {
+            this._changeDefault(scope);
+        }, this);
+
+        Oro.Events.on('scopablefield:collapse', function () {
+            this._collapse();
+        }, this);
+
+        Oro.Events.on('scopablefield:expand', function () {
+            this._expand();
+        }, this);
+
+        this.$el.closest('form').on('validate', function () {
+            if (this.$el.find('.validation-tooltip:hidden').length) {
+                this._expand();
             }
-        }
-    }
+        }, this);
+    },
 
-    function prepareLabels(el) {
-        var $fields = prepareFields(el);
+    render: function () {
+        if (!this.rendered) {
+            this.rendered = true;
+            this.$el.empty();
+            this.$el.append(
+                this.template({
+                    label: this.label
+                })
+            );
 
-        for (var i = 0; i < $fields.length; i++) {
-            var $field = $fields[i].field;
-            var $label = $fields[i].label;
-            var scope = $fields[i].scope;
+            _.each(this.fieldViews, function (fieldView) {
+                fieldView.render().$el.appendTo(this.$el);
+            }, this);
 
-            $label.html(scope).addClass('add-on').height($field.children().first().actual('height') - 10);
-
-            var $controls = $field.find('.controls').first();
-            $controls.addClass('input-prepend').prepend($label);
-        }
-    }
-
-    function bindEvents(el, opts) {
-        getFields(el).first().off('click', 'label span').on('click', 'label span', function() {
-            toggleOpen(el, opts);
-        });
-    }
-
-    function prepareToggle(el, icon) {
-        $(el).toggleClass('expanded collapsed');
-
-        var $fields = getFields(el);
-
-        $fields.find('label span').remove();
-        var $icon = $('<span>').html($('<i>').addClass(icon));
-        $fields.first().find('label.control-label').prepend($icon);
-    }
-
-    function expand(el, opts) {
-        prepareToggle(el, opts.collapseIcon);
-
-        getFields(el).show();
-    }
-
-    function collapse(el, opts) {
-        if ($(el).find('.validation-error').length) {
-            return;
-        }
-        prepareToggle(el, opts.expandIcon);
-
-        getFields(el).hide().first().show();
-    }
-
-    function toggleOpen(el, opts) {
-        if ($(el).hasClass('collapsed')) {
-            expand(el, opts);
-        } else {
-            collapse(el, opts);
-        }
-    }
-
-    $.fn.scopableField = function(options) {
-        var opts;
-        if (typeof(options) === 'string' && options !== '') {
-            opts = $.fn.scopableField.defaults;
-
-            if (options === 'collapse') {
-                return this.each(function() {
-                    if (getFields(this, opts).length > 1) {
-                        collapse(this, opts);
-                    }
-                });
-            } else if (options === 'expand') {
-                return this.each(function() {
-                    if (getFields(this, opts).length > 1) {
-                        expand(this, opts);
-                    }
-                });
-            } else {
-                return this;
-            }
-        } else {
-            opts = $.extend({}, $.fn.scopableField.defaults, options);
+            this._collapse();
         }
 
-        return this.each(function() {
-            var el = this;
-            if (!$(el).hasClass('scopablefield')) {
-                showTitle(el, opts);
-            }
+        return this;
+    },
 
-            if (getFields(el, opts).length < 2) {
-                prepareLabels(el);
-            } else {
-                sortFields(el, opts);
-                prepareLabels(el);
-                bindEvents(el, opts);
-                if (!$(el).hasClass('scopablefield') || opts.toggleOnUpdate === true) {
-                    toggleOpen(el, opts);
+    _addField: function (field) {
+        this.fieldViews.push(new Pim.View.ScopableField({ el: field }));
+
+        return this;
+    },
+
+    _expand: function () {
+        if (!this.expanded) {
+            this.expanded = true;
+
+            this._reindexFields();
+
+            var first = true;
+            _.each(this.fields, function (field) {
+                this._showField(field, first);
+                first = false;
+            }, this);
+
+            this.$el.removeClass('collapsed').addClass('expanded');
+        }
+
+        return this;
+    },
+
+    _collapse: function () {
+        if (this.expanded) {
+            this.expanded = false;
+
+            this._reindexFields();
+
+            var first = true;
+            _.each(this.fields, function (field) {
+                if (first) {
+                    this._showField(field, first);
+                    first = false;
                 } else {
-                    collapse(el, opts);
+                    this._hideField(field);
                 }
+            }, this);
 
-                $(el).closest('form').on('validate', function() {
-                    if ($(el).find('.validation-error:hidden').length) {
-                        expand(el, opts);
-                    }
-                });
+            this.$el.removeClass('expanded').addClass('collapsed');
+        }
+
+        return this;
+    },
+
+    _toggle: function () {
+        return this.expanded ? this._collapse() : this._expand();
+    },
+
+    _changeDefault: function (scope) {
+        _.each(this.fields, function (field) {
+            if ($(field).data('scope') === scope) {
+                this._setFieldFirst(field);
             }
+        }, this);
 
-            $(el).addClass('scopablefield');
-        });
-    };
+        this._toggle();
+        this._toggle();
 
-    $.fn.scopableField.defaults = {
-        toggleOnUpdate: false,
-        defaultScope: null,
-        title: null,
-        expandIcon: 'fa-icon-caret-right',
-        collapseIcon: 'fa-icon-caret-down'
-    };
+        return this;
+    },
 
-}(jQuery));
+    _reindexFields: function () {
+        this.fields = this.$el.find('[data-scope]');
+    },
+
+    _setFieldFirst: function (field) {
+        var $field = $(field);
+        $field.insertAfter(this.$el.find('>label'));
+        $field.find('.field-toggle').removeClass('hide');
+
+        if (this.expanded) {
+            $field.find('.field-toggle i').removeClass(this.expandIcon).addClass(this.collapseIcon);
+        } else {
+            $field.find('.field-toggle i').removeClass(this.collapseIcon).addClass(this.expandIcon);
+        }
+    },
+
+    _showField: function (field, first) {
+        if (first) {
+            this._setFieldFirst(field);
+        }
+        $(field).show();
+    },
+
+    _hideField: function (field) {
+        $(field).hide().find('.field-toggle').addClass('hide');
+    },
+
+    events: {
+        'click label span.field-toggle' : '_toggle'
+    }
+});

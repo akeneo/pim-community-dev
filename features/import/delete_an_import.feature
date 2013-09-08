@@ -7,10 +7,10 @@ Feature: Delete import
 
   Background:
     Given the following jobs:
-      | connector | alias            | code                  | label                       | type   |
-      | Akeneo    | product_export   | acme_product_export   | Product export for foo      | export |
-      | Akeneo    | product_import   | acme_product_import   | Product import for Acme.com | import |
-      | Akeneo    | attribute_import | acme_attribute_import | Attribute import            | import |
+      | connector            | alias            | code                  | label                       | type   |
+      | Akeneo CSV Connector | product_export   | acme_product_export   | Product export for foo      | export |
+      | Akeneo CSV Connector | product_import   | acme_product_import   | Product import for Acme.com | import |
+      | Akeneo CSV Connector | attribute_import | acme_attribute_import | Attribute import            | import |
     Given I am logged in as "admin"
 
   Scenario: Successfully delete an import job

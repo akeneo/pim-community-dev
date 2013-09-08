@@ -41,7 +41,7 @@ class ItemStep extends AbstractStep
     /**
      * Set the batch size
      *
-     * @param int $batchSize
+     * @param integer $batchSize
      *
      * @return $this
      */
@@ -62,6 +62,11 @@ class ItemStep extends AbstractStep
         $this->reader = $reader;
     }
 
+    /**
+     * Get reader
+     *
+     * @return ItemReaderInterface|null
+     */
     public function getReader()
     {
         return $this->reader;
@@ -76,6 +81,10 @@ class ItemStep extends AbstractStep
         $this->writer = $writer;
     }
 
+    /**
+     * Get writer
+     * @return ItemWriterInterface|null
+     */
     public function getWriter()
     {
         return $this->writer;
@@ -90,6 +99,10 @@ class ItemStep extends AbstractStep
         $this->processor = $processor;
     }
 
+    /**
+     * Get processor
+     * @return ItemProcessorInterface|null
+     */
     public function getProcessor()
     {
         return $this->processor;

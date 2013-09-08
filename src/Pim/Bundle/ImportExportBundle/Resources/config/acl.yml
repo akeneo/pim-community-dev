@@ -1,0 +1,4 @@
+pim_importexport:
+    name: PIM Import Export
+    description: General node for imports and exports
+    parent: root

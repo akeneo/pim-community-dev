@@ -34,6 +34,10 @@ a {
 
 header {
   #gradient .vertical(@color-header_top, @color-header_bottom);
+  .dropdown-menu li.active>a:hover {
+    background: #F5F5F5;
+    color: #444;
+  }
 }
 
 .navbar .small-divider {
@@ -622,13 +626,128 @@ table.ui-sortable, tbody.ui-sortable {
       line-height: 30px;
     }
   }
-  .attribute-field .input-large {width: 350px;}
-  .attribute-field.currencyfield .input-large {width: 288px;}
-  .attribute-field .datepicker.input-large {width: 200px;}
-  .attribute-field.scopablefield textarea.input-large { width: 523px; }
   .select2-container { max-width: 365px;}
   .select2-container { width: 365px!important; } /* important statement come from bap */
 }
+
+.attribute-field {
+  .input-large {
+    width: 350px;
+  }
+  .datepicker.input-large {
+    width: 200px;
+  }
+}
+
+.currencyfield {
+  &>.control-group .control-group:first-of-type .input-prepend {
+    margin-left: 20px;
+  }
+  .input-large {
+    width: 288px;
+  }
+  .input-prepend .control-label {
+    padding-right: 10px;
+    border-right-width: 0px;
+  }
+}
+
+.attribute-field.scopable {
+  margin-bottom: 10px;
+  >div {
+    &:first-of-type .controls {
+      .control-label.add-on {
+        background-color: @backgroundColor-white;
+        font-weight: bold;
+        border-top-left-radius: 3px;
+      }
+      input, select, textarea {
+        border-top-right-radius: 3px;
+      }
+      &:first-child {
+        margin-left: 20px;
+      }
+    }
+    &:last-of-type .controls {
+      .control-label.add-on {
+        border-bottom-left-radius: 3px;
+      }
+      input, select, textarea {
+        border-bottom-right-radius: 3px;
+      }
+    }
+    &:not(:first-of-type) {
+      &>.control-group {
+        .control-label.add-on, input, select, textarea {
+          border-top: 0;
+        }
+      }
+    }
+  }
+  label.control-label.add-on {
+    border-right-width: 0px;
+    font-weight: normal;
+    background-color: #fbfbfb;
+    padding-right: 10px;
+    padding-top: 4px;
+    width: 100px;
+    margin-bottom: 0;
+    border-radius: 0;
+    float: left;
+    text-align: right;
+    span.field-toggle {
+      position: relative;
+      float: left;
+      left: -5px;
+      top: -4px;
+      padding: 4px 5px;
+      height: 100%;
+      i {
+        padding-left: 3px;
+        font-size: 16px;
+        line-height: 18px;
+      }
+    }
+  }
+  .control-group {
+    margin: 0;
+  }
+  textarea.input-large {
+    width: 523px;
+  }
+  div.controls {
+    input, select, textarea {
+      border-radius: 0;
+      &.select2-offscreen,
+      &.select2-focusser {
+        position: absolute;
+      }
+    }
+    .validation-tooltip {
+      display: inline-block;
+    }
+  }
+  &.collapsed .controls {
+   .control-label {
+      border-bottom-left-radius: 3px;
+    }
+    input, select, textarea {
+      border-top-right-radius: 3px;
+      border-bottom-right-radius: 3px;
+    }
+  }
+  .input-append, .input-prepend {
+    font-size: 12px;
+  }
+  .upload-zone {
+    border-radius: 0;
+    margin: 0;
+    .remove-upload {
+      border-radius: 0;
+    }
+  }
+}
+
 .navbar-extra {padding: 10px 7px 10px 12px;}
 .navbar-content {
   line-height: 18px;
@@ -679,88 +798,6 @@ table.ui-sortable, tbody.ui-sortable {
   .buffer-right {padding-right:20px;}
   .buffer-bottom {padding-bottom:20px;}
   .buffer-left {padding-left:20px;}
-}
-
-form .scopable {
-  margin-bottom: 10px;
-  .control-group {
-    margin: 0;
-  }
-  &>.control-group {
-    &:first-of-type {
-      .control-label {
-        background-color: @backgroundColor-white;
-        font-weight: bold;
-        border-top-left-radius: 3px;
-      }
-      input, select, textarea {
-        border-top-right-radius: 3px;
-      }
-      .controls:first-child {
-        margin-left: 20px;
-      }
-    }
-    &:last-of-type {
-      .control-label {
-        border-bottom-left-radius: 3px;
-      }
-      input, select, textarea {
-        border-bottom-right-radius: 3px;
-      }
-    }
-    &:not(:first-of-type) {
-      .control-label, input, select, textarea {
-        border-top: 0;
-      }
-    }
-  }
-  div.controls {
-    .control-label {
-      font-weight: normal;
-      background-color: #fbfbfb;
-      padding-top: 4px;
-      width: 100px;
-      margin-bottom: 0;
-      border-radius: 0;
-      float: left;
-      text-align: right;
-      span {
-        position: relative;
-        float: left;
-        left: -5px;
-        top: -4px;
-        padding: 4px 5px;
-        height: 100%;
-        i {
-          padding-left: 3px;
-          font-size: 16px;
-          line-height: 18px;
-        }
-      }
-    }
-    ul.wysihtml5-toolbar {
-      width: 651px;
-      height: 37px;
-      padding-top: 4px;
-      border: 1px solid #ccc;
-      border-bottom: none;
-      border-top-left-radius: 3px;
-      border-top-right-radius: 3px;
-      .btn {height: 32px;}
-      > li {margin-bottom: 0px; }
-    }
-    input, select, textarea {
-      border-radius: 0;
-    }
-  }
-  &.collapsed .controls {
-   .control-label {
-      border-bottom-left-radius: 3px;
-    }
-    input, select, textarea {
-      border-bottom-right-radius: 3px;
-    }
-  }
 }
 
 form .currency {
@@ -894,7 +931,7 @@ div.dropdown-menu.channel {
       &:hover, &:active, &:focus {
         background-color: #f1f1f1;
         background-image: none;
-      };
+      }
       span.code {
           color: @textColor + #444;
           float: left;
@@ -921,14 +958,11 @@ div.entity-updated {
   }
 }
 
-.scopablefield .input-prepend label, .currencyfield .input-prepend label { padding-right: 10px; border-right-width: 0px;}
-.currencyfield>.control-group .control-group:first-of-type .input-prepend { margin-left: 20px; }
-
 /* Product edit form - categories tab */
 
 #categories .nav-list li a i { min-width: 19px; display: inline-block; margin-left: 3px; margin-right: 2px; }
-i.icon-tick { background: url("../../pimproduct/images/tick.png") 0px 0px no-repeat !important;}
-i.icon-tick-off { background: url("../../pimproduct/images/tick-off.png") 0px 0px no-repeat !important;}
+i.icon-tick { background: url("../../pimcatalog/images/tick.png") 0px 0px no-repeat !important;}
+i.icon-tick-off { background: url("../../pimcatalog/images/tick-off.png") 0px 0px no-repeat !important;}
 
 /* Import upload file form */
 
@@ -1013,7 +1047,7 @@ button.pimmultiselect {
 .table-hover tbody tr:hover > td {background-color: @color-purple_hover; }
 table.grid { margin-bottom: 0; }
 .grid-container { overflow: visible; }
-#pim_product_product_create {
+#pim_catalog_product_create {
   label {
     text-align: left;
     width: 200px;
@@ -1052,11 +1086,16 @@ table.grid { margin-bottom: 0; }
     margin-bottom: 10px;
 }
 
-.dropdown-menu{
-  li > a:hover,
-  li > a:focus{
-    background: @color-purple_dark;
-    color: #ffffff;
+.dropdown-menu li {
+  > a,
+  &.active > a {
+    &:hover, &:focus, &:active {
+      background: @color-purple_dark;
+      color: #ffffff;
+    }
+  }
+  &.active > a {
+    background: @textColor + #777;
   }
 }
 

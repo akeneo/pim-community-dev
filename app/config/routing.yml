@@ -1,11 +1,11 @@
 oro_default:
     pattern:  /
     defaults:
-        template:    PimProductBundle:Dashboard:index.html.twig
+        template:    PimCatalogBundle:Dashboard:index.html.twig
         _controller: FrameworkBundle:Template:template
 
 pim_product:
-    resource: "@PimProductBundle/Resources/config/routing.yml"
+    resource: "@PimCatalogBundle/Resources/config/routing.yml"
 
 pim_importexport:
     resource: "@PimImportExportBundle/Resources/config/routing.yml"
@@ -21,6 +21,9 @@ oro_form:
 oro_notification:
     resource: "@OroNotificationBundle/Resources/config/routing.yml"
     prefix:   /
+
+oro_grid:
+    resource: "@OroGridBundle/Resources/config/routing.yml"
 
 oro_user:
     resource: "@OroUserBundle/Resources/config/routing.yml"

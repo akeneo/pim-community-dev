@@ -1,0 +1,40 @@
+api:
+    resource: "@PimCatalogBundle/Controller/Api/ProductController.php"
+    type:         rest
+    prefix:       api/rest/{scope}/
+
+attributegroup:
+    resource: "@PimCatalogBundle/Resources/config/routing/attributegroup.yml"
+    prefix: /configuration/attribute-group
+
+channel:
+    resource: "@PimCatalogBundle/Resources/config/routing/channel.yml"
+    prefix: /configuration/channel
+
+currency:
+    resource: "@PimCatalogBundle/Resources/config/routing/currency.yml"
+    prefix: /configuration/currency
+
+family:
+    resource: "@PimCatalogBundle/Resources/config/routing/family.yml"
+    prefix: /configuration/family
+
+locale:
+    resource: "@PimCatalogBundle/Resources/config/routing/locale.yml"
+    prefix: /configuration/locale
+
+productattribute:
+    resource: "@PimCatalogBundle/Resources/config/routing/productattribute.yml"
+    prefix: /configuration/attribute
+
+categorytree:
+    resource: "@PimCatalogBundle/Resources/config/routing/categorytree.yml"
+    prefix: /enrich/category-tree
+
+product:
+    resource: "@PimCatalogBundle/Resources/config/routing/product.yml"
+    prefix: /enrich/product
+
+batch_operation:
+    resource: "@PimCatalogBundle/Resources/config/routing/batch_operation.yml"
+    prefix: /enrich/batch-operation

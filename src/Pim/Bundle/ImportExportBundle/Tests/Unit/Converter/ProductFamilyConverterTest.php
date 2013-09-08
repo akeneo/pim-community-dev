@@ -19,7 +19,7 @@ class ProductFamilyConverterTest extends \PHPUnit_Framework_TestCase
         $this->repository = $this->getRepositoryMock();
         $em->expects($this->any())
             ->method('getRepository')
-            ->with('PimProductBundle:Family')
+            ->with('PimCatalogBundle:Family')
             ->will($this->returnValue($this->repository));
 
         $this->converter = new ProductFamilyConverter($em);
@@ -70,7 +70,7 @@ class ProductFamilyConverterTest extends \PHPUnit_Framework_TestCase
 
     protected function getFamilyMock($id)
     {
-        $family = $this->getMock('Pim\Bundle\ProductBundle\Entity\Family');
+        $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family');
 
         $family->expects($this->any())
             ->method('getId')

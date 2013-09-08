@@ -1,0 +1,58 @@
+<div class="tab-groups">
+    <ul class="nav nav-list">
+        {% for group in product.orderedGroups %}
+        <li class="tab{% if loop.index == 1 %} active{% endif %}">
+            <a href="#tabs-{{group.id}}" data-toggle="tab">{{ group.name }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="tab-content">
+    <div id="attribute-buttons">
+        <div class="btn-group">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
+                <i class="fa-icon-eye-open"></i>
+                <span class="caret"></span>
+            </a>
+            <div class="dropdown-menu channel pull-right">
+                <h5>{{ 'Scope'|trans }}</h5>
+                <div>
+                    <span id="channel-controls">
+                        <label for="default_channel">{{ 'Default channel'|trans }}</label>
+                        <select id="default_channel">
+                            {% for channel in channels %}
+                                <option value="{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </span>
+                    <a href="javascript:void(0);" data-action="expand">{{ 'Expand all channels'|trans }}</a>
+                    <a href="javascript:void(0);" data-action="collapse">{{ 'Collapse all channels'|trans }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for groupId, groupView in form.vars.groups %}
+    <div id="tabs-{{ groupId }}" class="tab-pane">
+        <h3>{{ groupView.name }}</h3>
+        {% for attributeId, attributeView in groupView.attributes %}
+            <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
+            {% if attributeView.values is defined %}
+                {% for scope, subvalue in attributeView.values %}
+                    <div class="control-group" data-field="{{ attributeView.code }}">
+                        {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                    <div class="control-group" data-field="{{ attributeView.code }}">
+                        {{ form_widget(attributeView.value) }}
+                    </div>
+            {% endif %}
+            {% if attributeView.isRemovable %}
+                <i class="fa-icon-remove remove-attribute" data-toggle="tooltip" data-placement="right" data-url="{{ path('pim_catalog_product_removeproductattribute', { 'productId': product.id, 'attributeId': attributeId, 'dataLocale': dataLocale }) }}" data-original-title="{{ 'Remove this attribute'|trans }}" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attributeView.label}) }}"></i>
+            {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>

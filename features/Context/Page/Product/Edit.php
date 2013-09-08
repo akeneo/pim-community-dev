@@ -4,7 +4,7 @@ namespace Context\Page\Product;
 
 use Context\Page\Base\Form;
 use Behat\Mink\Exception\ElementNotFoundException;
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
  * Product edit page
@@ -50,6 +50,10 @@ class Edit extends Form
     public function findLocaleLink($locale, $content = null)
     {
         $link = $this->getElement('Locales dropdown')->findLink($locale);
+
+        if (!$link) {
+            throw new ElementNotFoundException(sprintf('Locale %s link not found', $locale));
+        }
 
         if ($content) {
             if (strpos($link->getText(), $content) === false) {

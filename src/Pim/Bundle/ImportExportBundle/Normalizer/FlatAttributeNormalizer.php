@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
  * A normalizer to transform a ProductAttribute entity into a flat array

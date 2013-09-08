@@ -43,6 +43,13 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     private $categories = array();
     private $attributes = array();
 
+    /**
+     * Constructor
+     *
+     * @param FormFactoryInterface $formFactory
+     * @param ProductManager       $productManager
+     * @param ChannelManager       $channelManager
+     */
     public function __construct(
         FormFactoryInterface $formFactory,
         ProductManager $productManager,
@@ -56,7 +63,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     /**
      * Set wether or not the created product should be activated or not
      *
-     * @param bool $enabled
+     * @param boolean $enabled
      */
     public function setEnabled($enabled)
     {
@@ -94,9 +101,9 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     }
 
     /**
-     * Set the categories column
+     * Set the family column
      *
-     * @param string $categoriesColumn
+     * @param string $familyColumn
      */
     public function setFamilyColumn($familyColumn)
     {
@@ -193,9 +200,8 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     }
 
     /**
-     * Create a product using the initialized attributes
+     * Find or create a product
      *
-     * @param array $attributes
      * @param array $item
      *
      * @return Product
@@ -234,8 +240,8 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     /**
      * Create and submit the product form
      *
-     * @param Product     the product to which bind the data
-     * @param array $item the processed item
+     * @param Product $product the product to which bind the data
+     * @param array   $item    the processed item
      *
      * @return FormInterface
      */

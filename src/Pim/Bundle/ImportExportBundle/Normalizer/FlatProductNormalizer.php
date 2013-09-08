@@ -3,8 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\ProductBundle\Model\ProductInterface;
-use Pim\Bundle\ProductBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -87,15 +87,15 @@ class FlatProductNormalizer implements NormalizerInterface
 
         if ($data instanceof \DateTime) {
             $data = $data->format('r');
-        } elseif ($data instanceof \Pim\Bundle\ProductBundle\Entity\AttributeOption) {
+        } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
             $data = $data->getCode();
         } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
             $result = array();
-            foreach ($data as $key => $val) {
-                if ($val instanceof \Pim\Bundle\ProductBundle\Entity\AttributeOption) {
-                    $result[] = $val->getCode();
+            foreach ($data as $item) {
+                if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
+                    $result[] = $item->getCode();
                 } else {
-                    $result[] = (string) $val;
+                    $result[] = (string) $item;
                 }
             }
             $data = join(self::ITEM_SEPARATOR, $result);

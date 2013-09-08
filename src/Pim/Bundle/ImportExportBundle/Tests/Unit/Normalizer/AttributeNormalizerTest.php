@@ -3,11 +3,11 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\AttributeNormalizer;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
-use Pim\Bundle\ProductBundle\Entity\AttributeGroup;
-use Pim\Bundle\ProductBundle\Entity\AttributeOption;
-use Pim\Bundle\ProductBundle\Entity\AttributeOptionValue;
-use Pim\Bundle\ProductBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 
 /**
  * Test class for AttributeNormalizer
@@ -21,7 +21,6 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     private $normalizer;
 
     private $optionalProperties = array(
-        'description',
         'default_value',
         'value_creation_allowed',
         'max_characters',
@@ -57,8 +56,8 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\ProductBundle\Entity\ProductAttribute', 'json',  true),
-            array('Pim\Bundle\ProductBundle\Entity\ProductAttribute', 'csv', false),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'csv', false),
             array('stdClass',                                         'json',  false),
             array('stdClass',                                         'csv', false),
         );
@@ -91,7 +90,6 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
                     'type'                   => 'multiselect',
                     'code'                   => 'color',
                     'label'                  => array('en' => 'Color', 'fr' => 'Couleur'),
-                    'description'            => 'Color of the product',
                     'group'                  => 'general',
                     'sort_order'             => '5',
                     'required'               => '0',
@@ -115,7 +113,6 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
                     'type'                   => 'text',
                     'code'                   => 'description',
                     'label'                  => array('en' => 'Description', 'fr' => 'Description'),
-                    'description'            => 'A desccription of the product',
                     'group'                  => 'info',
                     'sort_order'             => '1',
                     'required'               => '1',
@@ -163,12 +160,12 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
      * Create a attribute
      * @param array $data
      *
-     * @return attribute
+     * @return ProductAttribute
      */
     private function createAttribute(array $data)
     {
         $attribute = new ProductAttribute();
-        $attribute->setAttributeType(sprintf('pim_product_%s', strtolower($data['type'])));
+        $attribute->setAttributeType(sprintf('pim_catalog_%s', strtolower($data['type'])));
 
         foreach ($data['label'] as $locale => $label) {
             $translation = $attribute->getTranslation($locale);

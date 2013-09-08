@@ -29,13 +29,13 @@ default:
 jenkins:
     context:
         parameters:
-            base_url: http://behat-pim.ci/app_behat.php/
+            base_url: http://pim-behat.ci/app_behat.php/
     extensions:
         Behat\MinkExtension\Extension:
             default_session: symfony2
             show_cmd: chromium-browser %s
             selenium2: ~
-            base_url: http://behat-pim.ci/app_behat.php/
+            base_url: http://pim-behat.ci/app_behat.php/
             files_path: 'features/Context/fixtures/'
         Behat\Symfony2Extension\Extension:
             kernel:
@@ -45,5 +45,49 @@ jenkins:
         name: pretty,pretty
         parameters:
             output_path: null,app/build/logs/behat/pretty.out
+    filters:
+        tags: ~@select2-regression
+
+jenkins-pr:
+    context:
+        parameters:
+            base_url: http://pim-pr-behat.ci/app_behat.php/
+    extensions:
+        Behat\MinkExtension\Extension:
+            default_session: symfony2
+            show_cmd: chromium-browser %s
+            selenium2: ~
+            base_url: http://pim-pr-behat.ci/app_behat.php/
+            files_path: 'features/Context/fixtures/'
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat
+        SensioLabs\Behat\PageObjectExtension\Extension: ~
+    formatter:
+        name: pretty,pretty
+        parameters:
+            output_path: null,app/build/logs/behat-pr/pretty.out
+    filters:
+        tags: ~@select2-regression
+
+jenkins-coverage:
+    context:
+        parameters:
+            base_url: http://pim-behat-coverage.ci/app_behat.php/
+    extensions:
+        Behat\MinkExtension\Extension:
+            default_session: symfony2
+            show_cmd: chromium-browser %s
+            selenium2: ~
+            base_url: http://pim-behat-coverage.ci/app_behat.php/
+            files_path: 'features/Context/fixtures/'
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat
+        SensioLabs\Behat\PageObjectExtension\Extension: ~
+    formatter:
+        name: pretty,pretty
+        parameters:
+            output_path: null,app/build/logs/behat-coverage/pretty.out
     filters:
         tags: ~@select2-regression

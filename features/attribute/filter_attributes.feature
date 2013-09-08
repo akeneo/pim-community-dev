@@ -12,11 +12,11 @@ Feature: Filter attributes
       | Marketing |
     And the following attributes:
       | code        | label       | type                   | scopable | localizable | group     |
-      | sku         | Sku         | pim_product_identifier | no       | no          | General   |
-      | name        | Name        | pim_product_text       | no       | yes         | General   |
-      | short_descr | Short descr | pim_product_textarea   | yes      | yes         | Marketing |
-      | long_descr  | Long descr  | pim_product_textarea   | yes      | yes         | Marketing |
-      | count       | Count       | pim_product_number     | no       | no          | General   |
+      | sku         | Sku         | pim_catalog_identifier | no       | no          | General   |
+      | name        | Name        | pim_catalog_text       | no       | yes         | General   |
+      | short_descr | Short descr | pim_catalog_textarea   | yes      | yes         | Marketing |
+      | long_descr  | Long descr  | pim_catalog_textarea   | yes      | yes         | Marketing |
+      | count       | Count       | pim_catalog_number     | no       | no          | General   |
     And I am logged in as "admin"
 
   Scenario: Successfully display filters
@@ -32,6 +32,7 @@ Feature: Filter attributes
     And I should see attributes short_descr, long_descr and count
     And I should not see attributes sku and name
 
+  @skip
   Scenario: Successfully filter by label
     Given I am on the attributes page
     When I filter by "Label" with value "descr"

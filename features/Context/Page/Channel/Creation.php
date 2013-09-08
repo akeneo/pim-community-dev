@@ -25,8 +25,8 @@ class Creation extends Form
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Locales' => array('css' => '#pim_product_channel_form_locales'),
-                'Currencies' => array('css' => '#pim_product_channel_form_currencies'),
+                'Locales'    => array('css' => '#pim_catalog_channel_form_locales'),
+                'Currencies' => array('css' => '#pim_catalog_channel_form_currencies'),
             )
         );
     }

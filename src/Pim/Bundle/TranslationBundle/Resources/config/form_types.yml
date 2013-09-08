@@ -3,6 +3,6 @@ services:
         class: %pim_translation.form.type.translatable_field.class%
         arguments:
             - @validator
-            - @pim_product.manager.locale
+            - @pim_catalog.manager.locale
         tags:
             - { name: form.type, alias: pim_translatable_field }

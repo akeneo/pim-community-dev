@@ -24,7 +24,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     protected $logger;
 
     /**
-     * @var int $readerWarningCount
+     * @var integer $readerWarningCount
      */
     private $readerWarningCount = 0;
 

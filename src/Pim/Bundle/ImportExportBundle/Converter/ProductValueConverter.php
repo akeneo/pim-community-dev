@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Converter;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\ProductBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
  * Convert a basic representation of a value into a complex one bindable on a product form
@@ -35,19 +35,15 @@ class ProductValueConverter
                     case 'prices':
                         $value = $this->convertPricesValue($value);
                         break;
-
                     case 'date':
                         $value = $this->convertDateValue($value);
                         break;
-
                     case 'option':
                         $value = $this->convertOptionValue($value);
                         break;
-
                     case 'options':
                         $value = $this->convertOptionsValue($value);
                         break;
-
                     default:
                         $value = $this->convertValue($attribute->getBackendType(), $value);
                 }
@@ -167,14 +163,14 @@ class ProductValueConverter
         }
 
         return $this->entityManager
-            ->getRepository('PimProductBundle:ProductAttribute')
+            ->getRepository('PimCatalogBundle:ProductAttribute')
             ->findOneBy(array('code' => $code));
     }
 
     public function getOption($code)
     {
         return $this->entityManager
-            ->getRepository('PimProductBundle:AttributeOption')
+            ->getRepository('PimCatalogBundle:AttributeOption')
             ->findOneBy(array('code' => $code));
     }
 
