@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\ConfigBundle\Config;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
@@ -151,8 +152,11 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
             'oro_user___level' => array(
                 'value' => 50,
             ),
+        );
+
+        $removed = array(
             'oro_user___greeting' => array(
-                'new value',
+                'value' => 'new value',
             ),
         );
 
@@ -163,17 +167,21 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
         );
 
         $changes = array(
-            $settings, array()
+            $settings, $removed
         );
 
-        $configMock = $this->getMock('Oro\Bundle\ConfigBundle\Entity\Config');
-        $configMock->expects($this->once())
+        $object->expects($this->once())
             ->method('getChanged')
             ->with($this->equalTo($settings))
             ->will($this->returnValue($changes));
+
+        $configMock = $this->getMock('Oro\Bundle\ConfigBundle\Entity\Config');
         $configMock->expects($this->once())
             ->method('getOrCreateValue')
             ->will($this->returnValue(new ConfigValue()));
+        $configMock->expects($this->once())
+            ->method('getValues')
+            ->will($this->returnValue(new ArrayCollection()));
 
         $valueRepository = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Entity\Repository\ConfigValueRepository')
             ->disableOriginalConstructor()
@@ -198,8 +206,43 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getRepository')
             ->will($this->returnValue($repository));
 
+        $this->om
+            ->expects($this->once())
+            ->method('persist');
+        $this->om
+            ->expects($this->once())
+            ->method('flush');
 
         $object->save($settings);
+    }
+
+    /**
+     * Test getChanged
+     */
+    public function testGetChanged()
+    {
+        $settings = array(
+            'oro_user___level' => array(
+                'value' => 50,
+            ),
+        );
+
+        $object = $this->getMock(
+            'Oro\Bundle\ConfigBundle\Config\ConfigManager',
+            array('get'),
+            array($this->om, $this->settings)
+        );
+
+        $currentValue = array(
+            'value' => 20,
+            'use_parent_scope_value' => false,
+        );
+        $object->expects($this->once())
+            ->method('get')
+            ->with('oro_user.level')
+            ->will($this->returnValue($currentValue));
+
+        $object->getChanged($settings);
     }
 
     /**
