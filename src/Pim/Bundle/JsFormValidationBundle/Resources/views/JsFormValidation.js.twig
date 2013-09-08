@@ -22,7 +22,7 @@ var jsfv = new function () {
     }
 
     function isNotDefined(value) {
-        return (typeof(value) == 'undefined' || null === value || '' === value);
+        return (typeof value === 'undefined' || null === value || '' === value);
     }
 
     function showErrorsOnGroups() {
@@ -196,7 +196,7 @@ var jsfv = new function () {
         },
 {% endblock %}
         onEvent: function (field, eventType, handler) {
-            if (typeof(field) == 'string') {
+            if (typeof field === 'string') {
                 field = jsfv.id(field);
             }
 {% block onEvent %}
@@ -204,7 +204,7 @@ var jsfv = new function () {
 {% endblock %}
         },
         onFirstEvent: function (field, eventType, handler) {
-            if (typeof(field) == 'string') {
+            if (typeof field === 'string') {
                 field = jsfv.id(field);
             }
 {% block onFirstEvent %}

@@ -30,7 +30,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(';', $this->reader->getDelimiter());
         $this->assertEquals('"', $this->reader->getEnclosure());
         $this->assertEquals('\\', $this->reader->getEscape());
-        $this->assertEquals(false, $this->reader->getAllowUpload());
+        $this->assertEquals(false, $this->reader->isUploadAllowed());
     }
 
     /**
@@ -61,6 +61,9 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->reader->read($stepExecution));
     }
 
+    /**
+     * Test related method
+     */
     public function testInvalidCsvRead()
     {
         $this->reader->setFilePath(__DIR__ . '/../../fixtures/invalid_import.csv');
@@ -79,6 +82,10 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->reader->read($stepExecution));
     }
 
+    /**
+     * Test related method
+     * @return StepExecution
+     */
     private function getStepExecutionMock()
     {
         return $this

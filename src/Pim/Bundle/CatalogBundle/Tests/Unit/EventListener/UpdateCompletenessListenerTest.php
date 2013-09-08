@@ -2,12 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\EventListener;
 
-use Doctrine\ORM\Event\OnFlushEventArgs;
 use Pim\Bundle\CatalogBundle\EventListener\UpdateCompletenessListener;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 
 /**
  * Test related class

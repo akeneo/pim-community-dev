@@ -173,6 +173,7 @@ class ProductController extends AbstractDoctrineController
      * List product attributes
      *
      * @param Request $request the request
+     *
      * @Acl(
      *      id="pim_catalog_product_index",
      *      name="View product list",
@@ -222,9 +223,9 @@ class ProductController extends AbstractDoctrineController
     /**
      * Return a response
      *
-     * @param string $content
+     * @param string  $content
      * @param integer $status
-     * @param array $headers
+     * @param array   $headers
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -368,6 +369,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @param Request $request The request object
      * @param integer $id      The product id to which add attributes
+     *
      * @Acl(
      *      id="pim_catalog_product_add_attribute",
      *      name="Add an attribute to a product",
@@ -402,6 +404,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @param Request $request
      * @param integer $id
+     *
      * @Acl(
      *      id="pim_catalog_product_remove",
      *      name="Remove a product",
@@ -428,6 +431,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @param integer $productId
      * @param integer $attributeId
+     *
      * @Acl(
      *      id="pim_catalog_product_remove_attribute",
      *      name="Remove a product's attribute",

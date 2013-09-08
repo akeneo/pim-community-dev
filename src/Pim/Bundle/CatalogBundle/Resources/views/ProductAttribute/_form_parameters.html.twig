@@ -39,12 +39,9 @@
         </div>
     {% endif %}
 
-    {% set optionalFields = ['dateType', 'dateMin', 'dateMax',
-    'negativeAllowed', 'decimalsAllowed', 'numberMin', 'numberMax',
-    'valueCreationAllowed', 'maxCharacters', 'wysiwygEnabled',
-    'metricFamily', 'defaultMetricUnit', 'allowedFileSources',
-    'maxFileSize', 'allowedExtensions', 'validationRule',
-    'validationRegexp', 'defaultValue', 'sortOrder'] %}
+    {% set optionalFields = ['dateType', 'dateMin', 'dateMax', 'negativeAllowed', 'decimalsAllowed', 'numberMin',
+    'numberMax', 'maxCharacters', 'wysiwygEnabled', 'metricFamily', 'defaultMetricUnit', 'allowedFileSources',
+    'maxFileSize', 'allowedExtensions', 'validationRule', 'validationRegexp', 'defaultValue', 'sortOrder'] %}
 
     {% for field in optionalFields %}
         {% if form[field] is defined %}

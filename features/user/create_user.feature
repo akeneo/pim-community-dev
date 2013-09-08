@@ -1,14 +1,14 @@
 @javascript
-Feature: Edit an user
+Feature: Edit a user
   In order to manage the users and rights
   As Peter
-  I need to be able to create an user
+  I need to be able to create a user
 
   Background:
     Given I am logged in as "admin"
 
   @skip
-  Scenario: Successfully create an user
+  Scenario: Successfully create a user
     Given I am on the user creation page
     Then I fill in the following information:
       | Username          | julia             |

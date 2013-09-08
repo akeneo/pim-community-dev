@@ -11,7 +11,6 @@ use Doctrine\ORM\Event\PostFlushEventArgs;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\PendingCompleteness;
 
@@ -53,7 +52,7 @@ class UpdateCompletenessListener implements EventSubscriber
     }
 
     /**
-     * @param LifecycleEventArgs $event
+     * @param LifecycleEventArgs $args
      */
     public function postPersist(LifecycleEventArgs $args)
     {
@@ -64,7 +63,7 @@ class UpdateCompletenessListener implements EventSubscriber
     }
 
     /**
-     * @param LifecycleEventArgs $event
+     * @param LifecycleEventArgs $args
      */
     public function postUpdate(LifecycleEventArgs $args)
     {
@@ -125,7 +124,7 @@ class UpdateCompletenessListener implements EventSubscriber
     /**
      * Check if a attribute requirement has been changed on a family
      *
-     * @param object $entity
+     * @param AttributeRequirement $requirement
      */
     protected function updateRequirement(AttributeRequirement $requirement)
     {
