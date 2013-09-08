@@ -195,7 +195,7 @@ class SystemConfigurationFormProviderTest extends FormIntegrationTestCase
         return $provider;
     }
 
-    protected function getExtensions()
+    public function getExtensions()
     {
         $subscriber    = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber')
             ->setMethods(array('__construct'))

@@ -3,6 +3,13 @@
 namespace Oro\Bundle\ConfigBundle\Config;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
+use Oro\Bundle\ConfigBundle\Form\Type\FormFieldType;
+use Oro\Bundle\ConfigBundle\Provider\SystemConfigurationFormProvider;
+use Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension;
+use Symfony\Component\Form\Forms;
+use Symfony\Component\Form\PreloadedExtension;
+use Symfony\Component\Yaml\Yaml;
 
 class ConfigManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,6 +45,18 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
         ),
     );
 
+    /**
+     * @var array
+     */
+    protected $loadedSettings = array(
+        'oro_user' => array(
+            'level'    => array(
+                'value' => 2000,
+                'type'  => 'scalar',
+            )
+        ),
+    );
+
     protected function setUp()
     {
         if (!interface_exists('Doctrine\Common\Persistence\ObjectManager')) {
@@ -45,23 +64,127 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+        $this->object = new ConfigManager($this->om, $this->settings);
+    }
 
-        $this->object = $this->getMock(
+    /**
+     * Test get loaded settings
+     */
+    public function testGetLoaded()
+    {
+        $loadedSettings = $this->loadedSettings;
+
+        $repository = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Entity\Repository\ConfigRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $repository->expects($this->once())
+            ->method('loadSettings')
+            ->with('app', 0, null)
+            ->will($this->returnValue($loadedSettings));
+
+        $this->om
+            ->expects($this->once())
+            ->method('getRepository')
+            ->will($this->returnValue($repository));
+
+        $object = $this->object;
+
+        $this->assertEquals($this->loadedSettings['oro_user']['level']['value'], $object->get('oro_user.level'));
+        $this->assertEquals($this->settings['oro_user']['greeting']['value'], $object->get('oro_user.greeting'));
+
+        $this->assertNull($object->get('oro_test.nosetting'));
+        $this->assertNull($object->get('noservice.nosetting'));
+    }
+
+    /**
+     * Test default settings condition
+     */
+    public function testGetDefaultSettings()
+    {
+        $object = $this->getMock(
             'Oro\Bundle\ConfigBundle\Config\ConfigManager',
             array('loadStoredSettings'),
             array($this->om, $this->settings)
         );
-        //new ConfigManager($this->om, $this->settings);
+
+        $this->assertEquals($this->settings['oro_user']['greeting']['value'], $object->get('oro_user.greeting', true));
+        $this->assertEquals($this->settings['oro_user']['level']['value'], $object->get('oro_user.level', true));
+        $this->assertEquals($this->settings['oro_test']['anysetting']['value'], $object->get('oro_test.anysetting', true));
     }
 
-    public function testGet()
+    /**
+     * Test form pre-fill
+     */
+    public function testGetSettingsByForm()
     {
-        $object = $this->object;
+        $object = $this->getMock(
+            'Oro\Bundle\ConfigBundle\Config\ConfigManager',
+            array('get'),
+            array($this->om, $this->settings)
+        );
 
-        $this->assertEquals($this->settings['oro_user']['greeting']['value'], $object->get('oro_user.greeting'));
-        $this->assertEquals($this->settings['oro_user']['level']['value'], $object->get('oro_user.level'));
-        $this->assertEquals($this->settings['oro_test']['anysetting']['value'], $object->get('oro_test.anysetting'));
-        $this->assertNull($object->get('oro_test.nosetting'));
-        $this->assertNull($object->get('noservice.nosetting'));
+        $testSetting = array(
+            'value' => 'test',
+        );
+
+        $object->expects($this->at(0))
+            ->method('get')
+            ->with('some_field')
+            ->will($this->returnValue($testSetting));
+
+        $provider = $this->getProviderWithConfigLoaded(__DIR__ . '/../Fixtures/Provider/good_definition.yml');
+        $form = $provider->getForm('third_group');
+
+        $settings = $object->getSettingsByForm($form);
+        $this->assertArrayHasKey('some_field', $settings);
+        $this->assertCount(2, $settings);
+        $this->assertEquals($testSetting['value'], $settings['some_field']['value']);
+    }
+
+    /**
+     * @param string $configPath
+     *
+     * @return SystemConfigurationFormProvider
+     */
+    protected function getProviderWithConfigLoaded($configPath)
+    {
+        $config = Yaml::parse(file_get_contents($configPath));
+
+        $processor = new ProcessorDecorator();
+        $config = $processor->process($config);
+
+        $factory = Forms::createFormFactoryBuilder()
+            ->addExtensions($this->getExtensions())
+            ->addTypeExtension(
+                new DataBlockExtension()
+            )
+            ->getFormFactory();
+
+        $aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\Manager')
+            ->disableOriginalConstructor()->getMock();
+
+        $provider = new SystemConfigurationFormProvider($config, $factory, $aclManager);
+
+        return $provider;
+    }
+
+    public function getExtensions()
+    {
+        $subscriber    = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber')
+            ->setMethods(array('__construct'))
+            ->disableOriginalConstructor()->getMock();
+
+        $formType      = new \Oro\Bundle\ConfigBundle\Form\Type\FormType($subscriber);
+        $formFieldType = new FormFieldType();
+
+        return array(
+            new PreloadedExtension(
+                array(
+                    $formType->getName()      => $formType,
+                    $formFieldType->getName() => $formFieldType
+                ),
+                array()
+            ),
+        );
     }
 }
