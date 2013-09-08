@@ -40,15 +40,18 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->markTestSkipped('');
         if (!interface_exists('Doctrine\Common\Persistence\ObjectManager')) {
             $this->markTestSkipped('Doctrine Common has to be installed for this test to run.');
         }
 
         $this->om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
 
-        $this->object = $this->getMock('Oro\Bundle\ConfigBundle\Config\ConfigManager');
-            new ConfigManager($this->om, $this->settings);
+        $this->object = $this->getMock(
+            'Oro\Bundle\ConfigBundle\Config\ConfigManager',
+            array('loadStoredSettings'),
+            array($this->om, $this->settings)
+        );
+        //new ConfigManager($this->om, $this->settings);
     }
 
     public function testGet()

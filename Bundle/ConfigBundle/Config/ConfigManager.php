@@ -126,7 +126,9 @@ class ConfigManager
                 $updated[$key] = $value;
             }
 
-            if (isset($currentValue['use_parent_scope_value']) && $currentValue['use_parent_scope_value'] == false) {
+            $valueDefined = isset($currentValue['use_parent_scope_value']) && $currentValue['use_parent_scope_value'] == false;
+            $valueStillDefined = isset($value['use_parent_scope_value']) && $value['use_parent_scope_value'] == false;
+            if ($valueDefined && !$valueStillDefined) {
                 $key = explode(self::SECTION_VIEW_SEPARATOR, $key);
                 $removed[] = array($key[0], $key[1]);
             }
