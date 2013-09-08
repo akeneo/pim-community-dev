@@ -156,7 +156,7 @@ class ConfigManager
      * @param null $section
      * @return bool
      */
-    protected function loadStoredSettings($entity, $entityId, $section = null)
+    public function loadStoredSettings($entity, $entityId, $section = null)
     {
         if (!empty($this->storedSettings[$entity][$entityId])) {
             return false;

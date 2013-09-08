@@ -23,7 +23,7 @@ class ConfigValueRepository extends EntityRepository
     {
         $builder = $this->getEntityManager()->createQueryBuilder();
 
-        $builder->getEntityManager()->beginTransaction();
+        $this->getEntityManager()->beginTransaction();
         foreach ($removed as $item) {
             $builder->delete('OroConfigBundle:ConfigValue', 'cv')
                 ->where('cv.config = :configId')
@@ -34,6 +34,6 @@ class ConfigValueRepository extends EntityRepository
                 ->setParameter('name', $item[1]);
             $builder->getQuery()->execute();
         }
-        $builder->getEntityManager()->commit();
+        $this->getEntityManager()->commit();
     }
 }

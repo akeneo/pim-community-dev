@@ -119,6 +119,17 @@ class Config
         return $this->values;
     }
 
+    /**
+     * @param $values
+     * @return $this
+     */
+    public function setValues($values)
+    {
+        $this->values = $values;
+
+        return $this;
+    }
+
     public function getOrCreateValue($section, $key)
     {
         $value = $this->getValues()->filter(

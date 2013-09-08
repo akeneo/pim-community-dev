@@ -19,10 +19,6 @@ class OroConfigExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testCompilerPass()
     {
-        /**
-         * @TODO FIX
-         */
-        $this->markTestSkipped('FIX ERRORS');
         $container = $this->getContainer();
 
         $this->assertTrue($container->hasDefinition('oro_config.user'));

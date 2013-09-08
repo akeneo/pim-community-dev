@@ -21,12 +21,10 @@ class ConfigHandler
     protected $manager;
 
     /**
-     * @param Request       $request
      * @param ConfigManager $manager
      */
-    public function __construct(Request $request, ConfigManager $manager)
+    public function __construct(ConfigManager $manager)
     {
-        $this->request = $request;
         $this->manager = $manager;
     }
 
@@ -35,15 +33,16 @@ class ConfigHandler
      *
      * @param FormInterface $form
      *
+     * @param Request $request
      * @return bool True on successful processing, false otherwise
      */
-    public function process(FormInterface $form)
+    public function process(FormInterface $form, Request $request)
     {
         $settingsData = $this->manager->getSettingsByForm($form);
         $form->setData($settingsData);
 
         if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
-            $form->submit($this->request);
+            $form->submit($request);
             if ($form->isValid()) {
                 $this->manager->save($form->getData());
 

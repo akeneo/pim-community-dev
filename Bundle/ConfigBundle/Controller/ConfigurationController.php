@@ -30,7 +30,7 @@ class ConfigurationController extends Controller
         if ($activeSubGroup !== null) {
             $form = $provider->getForm($activeSubGroup);
 
-            if ($this->get('oro_config.form.handler.config')->process($form)) {
+            if ($this->get('oro_config.form.handler.config')->process($form, $this->getRequest())) {
                 $this->get('session')->getFlashBag()->add(
                     'success',
                     $this->get('translator')->trans('oro.config.controller.config.saved.message')
