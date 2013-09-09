@@ -118,9 +118,12 @@ class EditCommonAttributes extends AbstractBatchOperation
     public function perform(array $products, array $parameters)
     {
         foreach ($products as $product) {
-            foreach ($this->product as $value) {
+            foreach ($this->values as $value) {
                 $product
-                    ->getValue($value->getAttribute()->getCode(), $this->locale)
+                    ->getValue(
+                        $value->getAttribute()->getCode(),
+                        $this->getLocale()->getCode()
+                    )
                     ->setData($value->getData());
             }
         }

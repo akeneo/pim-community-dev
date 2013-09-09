@@ -98,16 +98,22 @@ class BatchOperationController extends AbstractController
         $this->batchOperator->setOperationAlias($operationAlias);
 
         $parameters = $request->query->all();
+
+        //first time is to set diplayed attributes and locale
         $this->batchOperator->initializeOperation($parameters);
         $form = $this->getBatchOperatorForm();
         $form->bind($request);
 
-        if ($form->isValid()) {
-            $this->batchOperator->performOperation($productIds);
-            $this->addFlash('success', sprintf('pim_catalog.batch_operation.%s.success_flash', $operationAlias));
+        //second time is to set values
+        $this->batchOperator->initializeOperation($parameters);
+        $form = $this->getBatchOperatorForm();
+        $form->bind($request);
 
-            return $this->redirectToRoute('pim_catalog_product_index');
-        }
+        $this->batchOperator->performOperation($parameters);
+
+        $this->addFlash('success', sprintf('pim_catalog.batch_operation.%s.success_flash', $operationAlias));
+
+        return $this->redirectToRoute('pim_catalog_product_index');
     }
 
     private function getBatchOperatorForm()
