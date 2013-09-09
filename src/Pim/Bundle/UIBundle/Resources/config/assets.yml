@@ -9,7 +9,7 @@
     # - '@PimUIBundle/Resources/public/js/pim-ajax.js'
     # - '@PimUIBundle/Resources/public/js/jquery.scopableField.js'
     # - '@PimUIBundle/Resources/public/js/jquery.currencyField.js'
-    # - '@PimUIBundle/Resources/public/js/pim_popinForm.js'
+    # - '@PimUIBundle/Resources/public/js/pim-popinform.js'
     # - '@OroUIBundle/Resources/public/lib/jstree/jquery.cookie.js'
     # - '@OroUIBundle/Resources/public/lib/backbone.bootstrap-modal.js'
     # - '@OroUIBundle/Resources/public/lib/jstree/jquery.hotkeys.js'
