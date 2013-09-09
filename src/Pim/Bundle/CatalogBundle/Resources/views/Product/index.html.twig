@@ -24,7 +24,7 @@
 
 <a id="quick-export"
     class="btn btn-primary pull-right no-hash"
-    href="javascript:exportCSV();"
+    href="{{ path('pim_catalog_product_index', { '_format': 'csv'}) }}"
     target="_blank"
     title="{{ 'Quick export'|trans }}">{{ 'Quick export'|trans }}</a>
 
