@@ -39,8 +39,6 @@ class PermissionCollectionTypeTest extends \PHPUnit_Framework_TestCase
             )
         );
         $this->formType->buildView($view, $form, $options);
-        //TODO: Remove this code after sharing is implemented.
-        array_pop($privileges_config);
         $this->assertAttributeContains($privileges_config, 'vars', $view);
     }
 }

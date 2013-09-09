@@ -16,7 +16,9 @@ class PermissionCollectionType extends AbstractType
     {
         $view->vars['privileges_config'] = $options['options']['privileges_config'];
         //TODO: Removing 'SHARE' from config. Remove this code after sharing is implemented.
-        array_pop($view->vars['privileges_config']['permissions']);
+        if (in_array('SHARE', $view->vars['privileges_config']['permissions'])) {
+            array_pop($view->vars['privileges_config']['permissions']);
+        }
     }
 
     /**
