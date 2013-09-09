@@ -6,11 +6,15 @@
 
     <script type="text/javascript">
         require(
-            ['jquery', 'pim/tree/associate'],
-            function($, TreeAssociate){
+            ['jquery', 'underscore', 'pim/tree/associate', 'pim/scopable'],
+            function($, _, TreeAssociate, Scopable){
                 'use strict';
                 $(function() {
                     new TreeAssociate('#trees');
+
+                    _.each($('form div.scopable'), function(field) {
+                        new Scopable({ el: $(field) });
+                    });
                 });
             }
         );

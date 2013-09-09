@@ -78,10 +78,6 @@ function init() {
         }
     });
 
-    _.each($('form div.scopable'), function(field) {
-        new Pim.View.Scopable({ el: $(field) });
-    });
-
     $('form div.currency').currencyField();
 
     // Apply Select2
