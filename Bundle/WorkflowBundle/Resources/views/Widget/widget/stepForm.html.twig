@@ -76,10 +76,9 @@
         <script type="text/javascript">
             require(['oro/widget-manager'],
             function(widgetManager){
-                var widget = widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }});
-                if (widget) {
+                widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
                     widget.trigger('formSave');
-                }
+                });
             });
         </script>
     {% endif %}
