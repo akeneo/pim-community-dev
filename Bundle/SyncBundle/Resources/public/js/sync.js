@@ -129,5 +129,14 @@ function ($, _, Backbone, __, messenger) {
         service.connect();
     };
 
+    /**
+     * Fetches sync service
+     *
+     * @returns {oro.sync.Wamp}
+     */
+    sync.getService = function() {
+        return service;
+    };
+
     return sync;
 });
