@@ -676,7 +676,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->validateExpectationsForDeletePermission();
     }
 
-    private static function getMask(array $masks, MaskBuilder $maskBuilder = null)
+    public static function getMask(array $masks, MaskBuilder $maskBuilder = null)
     {
         if ($maskBuilder === null) {
             $maskBuilder = new EntityMaskBuilder();
@@ -694,7 +694,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
      * @param array $permissions
      * @return AclPrivilege
      */
-    private static function getPrivilege($id, array $permissions)
+    public static function getPrivilege($id, array $permissions)
     {
         $privilege = new AclPrivilege();
         $privilege->setIdentity(new AclPrivilegeIdentity($id));
@@ -705,7 +705,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         return $privilege;
     }
 
-    private function getAce($mask, $sid = null)
+    public function getAce($mask, $sid = null)
     {
         $ace = $this->getMock('Symfony\Component\Security\Acl\Model\EntryInterface');
         $ace->expects($this->any())->method('isGranting')->will($this->returnValue(true));
@@ -722,7 +722,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
      * @return \SplObjectStorage
      * @throws NotAllAclsFoundException
      */
-    private static function getAcls(array $src)
+    public static function getAcls(array $src)
     {
         $isPartial = false;
         $acls = new \SplObjectStorage();
