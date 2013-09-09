@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\BatchProduct\AddSelectedOperationSubscriber;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\BatchOperation\AddSelectedOperationSubscriber;
 
 /**
  *
