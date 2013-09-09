@@ -122,7 +122,8 @@ class EditCommonAttributes extends AbstractBatchOperation
                 $product
                     ->getValue(
                         $value->getAttribute()->getCode(),
-                        $this->getLocale()->getCode()
+                        $this->getLocale()->getCode(),
+                        $value->getScope()
                     )
                     ->setData($value->getData());
             }
