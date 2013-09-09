@@ -121,7 +121,7 @@
             <label class="upload-zone image{% if empty %} empty{% endif %}">
                 <div class="upload-info">
                     {% if not empty %}
-                        <a class="no-hash upload-preview" href="{{ asset(form.vars.value.filePath)|imagine_filter('image_preview') }}" title="{{ form.vars.value.originalFilename }}" rel="lightbox">
+                        <a class="no-hash upload-preview" href="{{ asset(form.vars.value.filePath)|imagine_filter('image_preview') }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
                             <img src="{{ asset(form.vars.value.filePath)|imagine_filter('thumbnail_small') }}">
                         </a>
                     {% else %}

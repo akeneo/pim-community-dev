@@ -2,6 +2,9 @@
 
 {% block head_script %}
     {{ parent() }}
+    <script type="text/javascript">
+        require(['pim/init']);
+    </script>
     {{ block('head_script_component') }}
 {% endblock %}
 
