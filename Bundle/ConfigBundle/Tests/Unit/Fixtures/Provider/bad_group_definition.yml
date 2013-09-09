@@ -1,0 +1,30 @@
+oro_system_configuration:
+    fields:
+        some_field:
+            type: text
+            options: []
+
+        some_another_field:
+            type: choice
+
+    groups:
+        first_group:
+            title: 'First group'
+
+        second_group:
+          title: 'Second group'
+
+        third_group:
+          title: 'Third group'
+
+    tree:
+        system_configuration:
+            first_group:
+                children:
+                    NOT_EXITED_GROUP:
+                        children:
+                            second_group:
+                                priority: 254
+                                children:
+                                    third_group:
+                                        children: []

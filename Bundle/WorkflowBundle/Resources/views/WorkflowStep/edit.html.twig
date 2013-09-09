@@ -111,8 +111,9 @@
     </div>
     {% endblock %}
 
+    <div class="scrollable-container">
     {% block step_form %}
-        <div class="container-fluid step-form">
+        <div class="container-fluid step-form ">
             {{ oro_widget_render({
                 'widgetType': 'block',
                 'url': path('oro_workflow_widget_step_form', {workflowItemId: workflowItem.id}),
@@ -152,4 +153,5 @@
             </div>
         </div>
     {% endblock workflow_data %}
+    </div>
 {% endblock content %}

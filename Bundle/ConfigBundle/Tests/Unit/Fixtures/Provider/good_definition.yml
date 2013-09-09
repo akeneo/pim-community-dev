@@ -1,0 +1,48 @@
+oro_system_configuration:
+    fields:
+        some_field:
+            type: text
+            options: []
+
+        some_another_field:
+            type: choice
+
+    groups:
+        first_group:
+            title: 'First group'
+
+        second_group:
+          title: 'Second group'
+
+        third_group:
+          title: 'Third group'
+
+        fourth_group:
+          title: 'Fourth group'
+
+        another_branch_first:
+          title: 'Another branch first group'
+
+        another_branch_second:
+          title: 'Another branch second group'
+
+
+    tree:
+        system_configuration:
+            first_group:
+                children:
+                    second_group:
+                        children:
+                            # HORIZONTAL TAB DEFINITION
+                            # WILL BE USED FOR FORM CONFIGURING IN TEST
+                            third_group:
+                                priority: 254
+                                children:
+                                    fourth_group:
+                                        children:
+                                            - some_field
+                                            - some_another_field
+                            another_branch_first:
+                                children:
+                                    another_branch_second:
+                                        children: []

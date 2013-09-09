@@ -1044,7 +1044,11 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                     link = $(target).attr('data-url');
                 }
                 if (link) {
-                    this.setLocation(link);
+                    var event = {stoppedProcess: false, hashNavigationInstance: this, link: link};
+                    mediator.trigger("hash_navigation_click", event);
+                    if (event.stoppedProcess === false) {
+                        this.setLocation(link);
+                    }
                 }
                 return false;
             }, this));

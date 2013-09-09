@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\SyncBundle\EventListener;
 
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -10,7 +11,7 @@ use Ratchet\Session\Storage\VirtualSessionStorage;
 
 use JDare\ClankBundle\Event\ClientEvent;
 
-class OroWampEventListener
+class WampListener
 {
     /**
      * @var SecurityContextInterface
