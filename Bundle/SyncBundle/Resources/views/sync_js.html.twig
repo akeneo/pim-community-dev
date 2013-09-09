@@ -7,8 +7,8 @@
             e.preventDefault();
         });
         sync(new Wamp({
-            host: '127.0.0.1',
-            port: 8080
+            host: {{ ws.host == '*' ? app.request.headers.get('host') : ws.host }},
+            port: {{ ws.port }}
         }));
         /*mediator.on('datagrid_collection_set_after', function(obj) {
             sync.keepRelevant(obj.collection);
