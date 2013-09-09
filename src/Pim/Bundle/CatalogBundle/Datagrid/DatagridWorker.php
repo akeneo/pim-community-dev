@@ -5,6 +5,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\QueryBuilder;
 
 /**
+ * Shortcut methods used to manage datagrids
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -12,12 +13,21 @@ use Doctrine\ORM\QueryBuilder;
  */
 class DatagridWorker implements DatagridWorkerInterface
 {
+    /**
+     * @var ContainerInterface $container
+     */
     private $container;
+
+    /**
+     * Constructor
+     *
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -48,9 +58,10 @@ class DatagridWorker implements DatagridWorkerInterface
             $queryFactory = $this->getQueryFactory($name, $namespace);
             $queryFactory->setQueryBuilder($queryBuilder);
         }
+
         return $this->getDatagridManager($name, $namespace)->getDatagrid();
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -58,7 +69,15 @@ class DatagridWorker implements DatagridWorkerInterface
     {
         return $this->container->get(sprintf('%s.datagrid.manager.%s', $namespace, $name));
     }
-    
+
+    /**
+     * Gets the query factory for the given type
+     *
+     * @param string $name
+     * @param string $namespace
+     *
+     * @return QueryFactoryInterface
+     */
     private function getQueryFactory($name, $namespace = 'pim_catalog')
     {
         return $this->container->get(sprintf('%s.datagrid.manager.%s.default_query_factory', $namespace, $name));

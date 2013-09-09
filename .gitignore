@@ -19,5 +19,4 @@ app/phpunit.xml
 web/uploads/*
 web/uploads_test/*
 web/log
-app/entities/Extend/Cache/
 uploads_test/

@@ -64,6 +64,11 @@ class UserPreferencesListener implements EventSubscriber
         );
     }
 
+    /**
+     * On flush
+     *
+     * @param OnFlushEventArgs $args
+     */
     public function onFlush(OnFlushEventArgs $args)
     {
         $this->manager = $args->getEntityManager();
@@ -125,6 +130,7 @@ class UserPreferencesListener implements EventSubscriber
     /**
      * Get the metadata of an entity
      * @param object $entity
+     *
      * @return array
      */
     protected function getMetadata($entity)
@@ -133,9 +139,14 @@ class UserPreferencesListener implements EventSubscriber
         if (!isset($this->metadata[$className])) {
             $this->metadata[$className] = $this->manager->getClassMetadata($className);
         }
+
         return $this->metadata[$className];
     }
 
+    /**
+     * Compute changeset
+     * @param object $entity
+     */
     protected function computeChangeset($entity)
     {
         $this->uow->persist($entity);

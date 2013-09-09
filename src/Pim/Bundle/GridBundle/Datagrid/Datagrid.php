@@ -3,8 +3,6 @@
 namespace Pim\Bundle\GridBundle\Datagrid;
 
 use Symfony\Component\Serializer\Serializer;
-
-use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\Datagrid as OroDatagrid;
 
 /**
@@ -39,7 +37,9 @@ class Datagrid extends OroDatagrid
     /**
      * Serialize datagrid results in a specific format and with a specific context
      * @param string $format
-     * @param array $context
+     * @param array  $context
+     *
+     * @return string
      */
     public function exportData($format, array $context = array())
     {

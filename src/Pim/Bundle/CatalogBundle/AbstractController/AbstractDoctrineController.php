@@ -11,7 +11,6 @@ use Symfony\Component\Validator\ValidatorInterface;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * Base abstract controller for managing entities
@@ -30,13 +29,13 @@ abstract class AbstractDoctrineController extends AbstractController
     /**
      * Constructor
      *
-     * @param Request $request
-     * @param EngineInterface $templating
-     * @param RouterInterface $router
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
      * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface $formFactory
-     * @param ValidatorInterface $validator
-     * @param RegistryInterface $doctrine
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param RegistryInterface        $doctrine
      */
     public function __construct(
         Request $request,
@@ -73,7 +72,7 @@ abstract class AbstractDoctrineController extends AbstractController
     }
 
     /**
-     * @param string $repository
+     * @param string $className
      *
      * @return ObjectRepository
      */
