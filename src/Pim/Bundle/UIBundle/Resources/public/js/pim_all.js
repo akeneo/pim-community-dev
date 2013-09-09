@@ -1,10 +1,3 @@
-var Pim = Pim || {};
-
-Pim.navigate = function (route) {
-    'use strict';
-    Oro.hashNavigationInstance.setLocation(route);
-};
-
 function init() {
     'use strict';
     // Place code that we need to run on every page load here
@@ -28,8 +21,6 @@ function init() {
             $(this).appendTo(target).attr('tabIndex', -1);
         }
     });
-
-    $('form div.currency').currencyField();
 
     // Apply Select2
     Pim.initSelect2();
