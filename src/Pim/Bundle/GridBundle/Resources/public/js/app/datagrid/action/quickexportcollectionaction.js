@@ -2,10 +2,20 @@ var Pim = Pim || {};
 Pim.Datagrid = Pim.Datagrid || {};
 Pim.Datagrid.Action = Pim.Datagrid.Action || {};
 
+/**
+ * Quick export collection
+ * 
+ * @author  Romain Monceau <romain@akeneo.com>
+ * @class   Pim.Datagrid.Action.QuickExportCollectionAction
+ * @extends Oro.Datagrid.Action.AbstractAction
+ */
 Pim.Datagrid.Action.QuickExportCollectionAction = Oro.Datagrid.Action.AbstractAction.extend({
 
     /** @property Backbone.Collection */
     collection: undefined,
+    
+    /** @property boolean */
+    useDirectLauncherLink: true,
 
     /**
      * Initialize action
@@ -21,14 +31,14 @@ Pim.Datagrid.Action.QuickExportCollectionAction = Oro.Datagrid.Action.AbstractAc
             throw new TypeError("'datagrid' is required");
         }
         this.collection = options.datagrid.collection;
-
+        
         Oro.Datagrid.Action.AbstractAction.prototype.initialize.apply(this, arguments);
     },
-
+    
     /**
-     * Execute refresh collection
+     * Get link
      */
-    execute: function() {
-        this.collection.fetch();
+    getLink: function() {
+        return document.location.href;
     }
 });
