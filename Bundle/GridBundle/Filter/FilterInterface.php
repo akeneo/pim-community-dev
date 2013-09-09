@@ -12,6 +12,7 @@ interface FilterInterface
     const TYPE_DATE              = 'oro_grid_orm_date_range';
     const TYPE_DATETIME          = 'oro_grid_orm_datetime_range';
     const TYPE_NUMBER            = 'oro_grid_orm_number';
+    const TYPE_PERCENT           = 'oro_grid_orm_percent';
     const TYPE_STRING            = 'oro_grid_orm_string';
     const TYPE_CHOICE            = 'oro_grid_orm_choice';
     const TYPE_BOOLEAN           = 'oro_grid_orm_boolean';
