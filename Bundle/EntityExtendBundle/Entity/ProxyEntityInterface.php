@@ -4,7 +4,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Entity;
 
-interface ExtendProxyInterface
+interface ProxyEntityInterface
 {
     public function __proxy__setExtend($extend);
 

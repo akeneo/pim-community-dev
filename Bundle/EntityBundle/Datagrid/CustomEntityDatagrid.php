@@ -44,7 +44,6 @@ class CustomEntityDatagrid extends DatagridManager
         'boolean'  => 'oro_grid_orm_boolean',
         'decimal'  => 'oro_grid_orm_number',
         'date'     => 'oro_grid_orm_date_range',
-        'time'     => 'oro_grid_orm_datetime_range',
         'datetime' => 'oro_grid_orm_datetime_range',
         'text'     => 'oro_grid_orm_string',
         'float'    => 'oro_grid_orm_number',

@@ -2,9 +2,11 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Extend;
 
+use Metadata\MetadataFactory;
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 
-use Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ProxyEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Metadata\ExtendClassMetadata;
 use Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
@@ -22,6 +24,11 @@ class ExtendManager
      * @var ProxyObjectFactory
      */
     protected $proxyFactory;
+
+    /**
+     * @var MetadataFactory
+     */
+    protected $metadataFactory;
 
     /**
      * @var ExtendFactory
@@ -43,12 +50,13 @@ class ExtendManager
      */
     protected $em;
 
-    public function __construct(ConfigProvider $configProvider, Generator $generator)
+    public function __construct(ConfigProvider $configProvider, MetadataFactory $metadataFactory, Generator $generator)
     {
-        $this->configProvider = $configProvider;
-        $this->generator      = $generator;
-        $this->proxyFactory   = new ProxyObjectFactory($this);
-        $this->extendFactory  = new ExtendFactory($this);
+        $this->configProvider  = $configProvider;
+        $this->metadataFactory = $metadataFactory;
+        $this->generator       = $generator;
+        $this->proxyFactory    = new ProxyObjectFactory($this);
+        $this->extendFactory   = new ExtendFactory($this);
     }
 
     /**
@@ -108,38 +116,41 @@ class ExtendManager
      */
     public function isExtend($className)
     {
-        if ($className
-            && $this->configProvider->isConfigurable($className)
-            && $this->configProvider->getConfig($className)->is('is_extend')
-        ) {
-            return true;
+        /** @var ExtendClassMetadata $metadata */
+        $metadata = $this->metadataFactory->getMetadataForClass($className);
+
+        return $metadata->isExtend;
+    }
+
+    /**
+     * @param $className
+     * @return null|string
+     */
+    public function getExtendClass($className)
+    {
+        return $this->generator->generateExtendClassName($className);
+    }
+
+    /**
+     * @param $className
+     * @return null|string
+     */
+    public function getProxyClass($className)
+    {
+        return $this->generator->generateProxyClassName($className);
+    }
+
+    public function newExtendEntity($className)
+    {
+        if ($this->isCustomEntity($className)) {
+            $className = $this->getExtendClass($className);
         }
-
-        return false;
-    }
-
-    /**
-     * @param $entityName
-     * @return null|string
-     */
-    public function getExtendClass($entityName)
-    {
-        return $this->generator->generateExtendClassName($entityName);
-    }
-
-    /**
-     * @param $entityName
-     * @return null|string
-     */
-    public function getProxyClass($entityName)
-    {
-        return $this->generator->generateProxyClassName($entityName);
     }
 
     /**
      * @param $entity
      * @throws \InvalidArgumentException
-     * @return ExtendProxyInterface
+     * @return ProxyEntityInterface
      */
     public function loadExtendEntity($entity)
     {
@@ -151,11 +162,18 @@ class ExtendManager
                 throw new \InvalidArgumentException('Invalid argument "\$entity"');
             }
 
-            $repo = $this->getEntityManager()->getRepository($entity[0]);
-            if (is_array($entity[1])) {
-                $entity = $repo->findOneBy($entity[1]);
+            list($className, $criteria) = $entity;
+
+            if ($this->isCustomEntity($className)) {
+                $className = $this->getExtendClass($className);
+            }
+
+            $repo = $this->getEntityManager()->getRepository($className);
+
+            if (is_array($criteria)) {
+                $entity = $repo->findOneBy($criteria);
             } else {
-                $entity = $repo->find($entity[1]);
+                $entity = $repo->find($criteria);
             }
         }
 
@@ -165,8 +183,12 @@ class ExtendManager
         return $proxy;
     }
 
-    public function loadCustomEntity()
+    /**
+     * @param $className
+     * @return bool
+     */
+    protected function isCustomEntity($className)
     {
-
+        return $this->getConfigProvider()->getConfig($className)->is('owner', 'Custom');
     }
 }

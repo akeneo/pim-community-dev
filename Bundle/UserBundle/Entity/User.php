@@ -28,6 +28,7 @@ use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityExtendBundle\Metadata\Annotation\Extend;
 
 use DateTime;
 
@@ -45,7 +46,6 @@ use DateTime;
  *      routeName="oro_user_index",
  *      defaultValues={
  *          "entity"={"icon"="icon-user", "label"="User", "plural_label"="Users"},
- *          "extend"={"is_extend"=true},
  *          "ownership"={
  *              "owner_type"="BUSINESS_UNIT",
  *              "owner_field_name"="owner",
@@ -53,6 +53,7 @@ use DateTime;
  *          },
  *      }
  * )
+ * @Extend
  */
 class User extends AbstractEntityFlexible implements
     AdvancedUserInterface,

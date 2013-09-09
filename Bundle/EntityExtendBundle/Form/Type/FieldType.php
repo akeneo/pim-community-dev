@@ -17,7 +17,6 @@ class FieldType extends AbstractType
         'boolean',
         'decimal',
         'date',
-        'time',
         'datetime',
         'text',
         'float',

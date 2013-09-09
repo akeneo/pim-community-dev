@@ -404,7 +404,7 @@ class Generator
             $class->setParentClassName($entityName);
         }
 
-        $class->setInterfaceNames(array('Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface'))
+        $class->setInterfaceNames(array('Oro\Bundle\EntityExtendBundle\Entity\ProxyEntityInterface'))
             ->setProperty(PhpProperty::create('__proxy__extend')->setVisibility('protected'))
             ->setMethod(
                 $this->generateClassMethod(

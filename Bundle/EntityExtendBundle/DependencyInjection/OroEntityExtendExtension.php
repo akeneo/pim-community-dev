@@ -25,10 +25,30 @@ class OroEntityExtendExtension extends Extension
         $config        = $this->processConfiguration($configuration, $configs);
 
         $this->configBackend($container, $config);
+        $this->configCache($container, $config);
+
 
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
         $loader      = new Loader\YamlFileLoader($container, $fileLocator);
         $loader->load('services.yml');
+        $loader->load('metadata.yml');
+    }
+
+    protected function configCache(ContainerBuilder $container, $config)
+    {
+        $cacheDir = $container->getParameterBag()->resolveValue($config['cache_dir']);
+
+        $annotationCacheDir = $cacheDir . '/annotation';
+        if (!is_dir($annotationCacheDir)) {
+            if (false === @mkdir($annotationCacheDir, 0777, true)) {
+                throw new RuntimeException(sprintf(
+                    'Could not create annotation cache directory "%s".',
+                    $annotationCacheDir
+                ));
+            }
+        }
+        $container->setParameter('oro_entity_extend.cache_dir.annotation', $annotationCacheDir);
+
     }
 
     protected function configBackend(ContainerBuilder $container, $config)

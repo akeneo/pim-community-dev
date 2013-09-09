@@ -35,6 +35,7 @@ class ConfigSubscriber implements EventSubscriberInterface
     {
         return array(
             Events::PRE_PERSIST_CONFIG => 'persistConfig',
+            Events::PRE_PERSIST_CONFIG => 'persistConfig',
         );
     }
 

@@ -5,7 +5,9 @@
 
 {% block content %}
     {% if require_js|length %}
-        <script type="text/javascript">require(['{{ require_js|join(',') }}'])</script>
+        <script type="text/javascript">
+            require(['{{ require_js|join(',') }}'])
+        </script>
     {% endif %}
     {% set pageTitle = 'Entities' %}
 

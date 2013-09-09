@@ -27,9 +27,8 @@ class CustomEntityType extends AbstractType
         'bigint'   => 'integer',
         'boolean'  => 'choice',
         'decimal'  => 'number',
-        'date'     => 'date',
-        'time'     => 'time',
-        'datetime' => 'datetime',
+        'date'     => 'oro_date',
+        'datetime' => 'oro_datetime',
         'text'     => 'textarea',
         'float'    => 'number',
     );

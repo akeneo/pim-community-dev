@@ -12,7 +12,7 @@ use Doctrine\ORM\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Oro\Bundle\EntityBundle\ORM\Query\FilterCollection;
 
-use Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ProxyEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class OroEntityManager extends EntityManager
@@ -57,6 +57,7 @@ class OroEntityManager extends EntityManager
     public function setExtendManager($extendManager)
     {
         $this->extendManager = $extendManager;
+        $this->extendManager->setEntityManager($this);
 
         return $this;
     }
@@ -94,7 +95,7 @@ class OroEntityManager extends EntityManager
      *          )
      *
      * @param object|array $entity
-     * @return ExtendProxyInterface
+     * @return ProxyEntityInterface
      */
     public function getExtendEntity($entity)
     {
@@ -106,7 +107,7 @@ class OroEntityManager extends EntityManager
      */
     public function persist($entity)
     {
-        if ($entity instanceof ExtendProxyInterface) {
+        if ($entity instanceof ProxyEntityInterface) {
             parent::persist($entity->__proxy__getExtend());
         }
 
@@ -118,7 +119,7 @@ class OroEntityManager extends EntityManager
      */
     public function remove($entity)
     {
-        if ($entity instanceof ExtendProxyInterface) {
+        if ($entity instanceof ProxyEntityInterface) {
             parent::remove($entity->__proxy__getExtend());
         }
 

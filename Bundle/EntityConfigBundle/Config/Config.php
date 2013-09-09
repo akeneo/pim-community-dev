@@ -78,11 +78,12 @@ class Config implements ConfigInterface
 
     /**
      * @param string $code
+     * @param bool   $value
      * @return bool
      */
-    public function is($code)
+    public function is($code, $value = true)
     {
-        return (bool) $this->get($code);
+        return $this->get($code) === null ? false : $this->get($code) == $value;
     }
 
     /**

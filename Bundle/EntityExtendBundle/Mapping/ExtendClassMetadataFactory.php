@@ -8,10 +8,12 @@ class ExtendClassMetadataFactory extends ClassMetadataFactory
 {
     public function getMetadataFor($className)
     {
-        if (is_subclass_of($className, 'Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface')) {
+        if (is_subclass_of($className, 'Oro\Bundle\EntityExtendBundle\Entity\ProxyEntityInterface')) {
             $className = get_parent_class($className);
         }
 
-        return parent::getMetadataFor($className);
+        $metadata = parent::getMetadataFor($className);
+
+        return $metadata;
     }
 }

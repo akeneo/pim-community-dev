@@ -3,12 +3,12 @@
 namespace Oro\Bundle\EntityExtendBundle\Extend;
 
 use Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface;
-use Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ProxyEntityInterface;
 
 class ProxyObjectFactory
 {
     /**
-     * @var ExtendProxyInterface[]
+     * @var ProxyEntityInterface[]
      */
     protected $proxyObjects = array();
 
@@ -27,7 +27,7 @@ class ProxyObjectFactory
 
     /**
      * @param $entity
-     * @return ExtendProxyInterface
+     * @return ProxyEntityInterface
      */
     public function getProxyObject($entity)
     {
@@ -61,7 +61,7 @@ class ProxyObjectFactory
      * @param $entity
      * @return null|ExtendEntityInterface
      */
-    public function initExtendObject(ExtendProxyInterface $entity)
+    public function initExtendObject(ProxyEntityInterface $entity)
     {
         $entityClass = get_parent_class($entity);
         $extendClass = $this->extendManager->getExtendClass($entityClass);
@@ -86,11 +86,11 @@ class ProxyObjectFactory
 
     /**
      * @param $entity
-     * @return null|ExtendProxyInterface
+     * @return null|ProxyEntityInterface
      */
     protected function initProxyObject($entity)
     {
-        if (!$entity instanceof ExtendProxyInterface) {
+        if (!$entity instanceof ProxyEntityInterface) {
             $proxyClass = $this->extendManager->getProxyClass($entity);
             $proxy      = new $proxyClass();
             $proxy->__proxy__createFromEntity($entity);

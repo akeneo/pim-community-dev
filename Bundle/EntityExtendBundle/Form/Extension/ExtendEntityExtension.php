@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Form\Extension;
 
-use Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface;
+use Oro\Bundle\EntityExtendBundle\Entity\ProxyEntityInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -50,7 +50,7 @@ class ExtendEntityExtension extends AbstractTypeExtension
                 $data = $event->getForm()->getConfig()->getData();
 
                 if (is_object($data) && $xm->isExtend($data)) {
-                    if ($event->getData() instanceof ExtendProxyInterface) {
+                    if ($event->getData() instanceof ProxyEntityInterface) {
                         $event->getData()->__proxy__cloneToEntity($data);
                     }
                 }

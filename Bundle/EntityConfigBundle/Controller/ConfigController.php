@@ -58,7 +58,7 @@ class ConfigController extends Controller
             array(
                 'buttonConfig' => $datagridManager->getLayoutActions(),
                 'require_js'   => $datagridManager->getRequireJsModules(),
-                'datagrid'     => $datagrid->createView()
+                'datagrid'     => $datagrid->createView(),
             )
         );
     }
