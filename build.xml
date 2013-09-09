@@ -240,6 +240,26 @@
           <arg value="-n" />
         </exec>
         <exec executable="app/console">
+          <arg value="doctrine:schema:create" />
+          <arg value="-n" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="oro:acl:load" />
+          <arg value="-n" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="oro:entity-config:update" />
+          <arg value="-n" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="oro:entity-extend:create" />
+          <arg value="-n" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="cache:clear" />
+          <arg value="-n" />
+        </exec>
+        <exec executable="app/console">
           <arg value="doctrine:schema:update" />
           <arg value="-n" />
           <arg value="--complete" />
