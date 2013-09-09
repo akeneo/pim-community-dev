@@ -12,7 +12,7 @@ export DISPLAY=:0
 
 for FEATURE in $FEATURES; do
     echo "Executing feature $FEATURE"
-    php -d zend_extension=$PHP_EXTENSION_DIR/xdebug.so $BEHAT_COVERAGE $FEATURE --profile=jenkins-coverage --ansi --tags=~skip --fprogress
+    php -d zend_extension=$PHP_EXTENSION_DIR/xdebug.so $BEHAT_COVERAGE $FEATURE --profile=jenkins-coverage --ansi --tags=~skip -fprogress
     if [ $? -ne 0 ]; then
         RESULT="KO"
     fi
