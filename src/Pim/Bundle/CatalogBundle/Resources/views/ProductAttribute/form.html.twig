@@ -59,11 +59,7 @@
 
 {% block head_script_component %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('bundles/pimui/js/bootstrap-datetimepicker.min.js') }}"></script>
-    <script type="text/javascript">
-        {% include 'PimUIBundle::measures.html.twig' with measures %}
-        {% include 'PimCatalogBundle:ProductAttribute:_js-handler.html.twig' %}
-    </script>
+    {% include 'PimCatalogBundle:ProductAttribute:_js-handler.html.twig' with measures %}
     {% if form.vars.value.id %}
         {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
     {% endif %}

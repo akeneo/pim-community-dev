@@ -5,29 +5,6 @@ Pim.navigate = function (route) {
     Oro.hashNavigationInstance.setLocation(route);
 };
 
-Pim.initSelect2 = function () {
-    'use strict';
-    $('form input.multiselect').each(function () {
-        var $el   = $(this),
-            value = _.map(_.compact($el.val().split(',')), $.trim),
-            tags  = _.map(_.compact($el.attr('data-tags').split(',')), $.trim);
-        tags = _.union(tags, value).sort();
-        $el.select2({ tags: tags, tokenSeparators: [',', ' '] });
-    });
-
-    $('select').each(function () {
-        var $el    = $(this),
-            $empty = $el.children('[value=""]');
-        if ($empty.length && $empty.html()) {
-            $el.attr('data-placeholder', $empty.html());
-            $empty.html('');
-        }
-    });
-
-    $('form select[data-placeholder]').select2({ allowClear: true });
-    $('form select:not(.select2-offscreen)').select2();
-};
-
 // Listener for form update events (used in product edit form)
 Pim.updateListener = function ($form) {
     'use strict';
