@@ -73,13 +73,13 @@ jenkins-pr:
 jenkins-coverage:
     context:
         parameters:
-            base_url: http://pim-behat-coverage.ci/app_behat.php/
+            base_url: http://pim-behat-coverage.ci:90/app_behat.php/
     extensions:
         Behat\MinkExtension\Extension:
             default_session: symfony2
             show_cmd: chromium-browser %s
             selenium2: ~
-            base_url: http://pim-behat-coverage.ci/app_behat.php/
+            base_url: http://pim-behat-coverage.ci:90/app_behat.php/
             files_path: 'features/Context/fixtures/'
         Behat\Symfony2Extension\Extension:
             kernel:
