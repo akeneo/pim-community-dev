@@ -256,11 +256,14 @@ function($, __, app, mediator, layout, Navigation, Modal) {
                     url: el.data('url'),
                     type: 'DELETE',
                     success: function (data) {
-                        var navigation = Navigation.getInstance();
-                        if (navigation) {
-                            navigation.setLocation(el.data('redirect'));
-                        } else {
-                            window.location.href = el.data('redirect');
+                        el.trigger('removesuccess');
+                        if (el.data('redirect')) {
+                            var navigation = Navigation.getInstance();
+                            if (navigation) {
+                                navigation.setLocation(el.data('redirect'));
+                            } else {
+                                window.location.href = el.data('redirect');
+                            }
                         }
                     }
                 });
