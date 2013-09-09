@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\UserBundle\Datagrid;
 
-use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 use Oro\Bundle\GridBundle\Datagrid\Views\View;
+use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 
 class GroupDatagridViewsList extends AbstractViewsList
 {
@@ -14,6 +14,8 @@ class GroupDatagridViewsList extends AbstractViewsList
      */
     protected function getViewsList()
     {
-        return array();
+        return array(
+            new View('test')
+        );
     }
 }

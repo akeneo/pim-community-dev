@@ -29,6 +29,8 @@ services:
 
     oro_user.group_datagrid_views_list:
         class:  %oro_user.group_datagrid_views_list.class%
+        arguments:
+            - @translator
 
     oro_user.group_datagrid_manager:
         class: %oro_user.group_datagrid_manager.class%

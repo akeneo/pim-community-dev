@@ -4,7 +4,6 @@ namespace Oro\Bundle\GridBundle\Datagrid;
 
 use Doctrine\ORM\EntityManager;
 
-use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Router;
@@ -19,6 +18,7 @@ use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
+use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 
 /**
