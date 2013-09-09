@@ -1,17 +1,17 @@
 {% macro renderAvailableVariablesWidget(entityName, dependentFieldId) %}
     <script type="text/javascript">
-        $(function() {
-            'use strict';
-
-            var availableVariables = {{ render(path('oro_api_get_emailtemplate_available_variables', { 'entityName': entityName }))}};
-
-            new Oro.Email.VariablesUpdater.View({
-                el:         $('#oro-email-available-variables'),
-                template:   $('#available-variables-lists-template'),
-                target:     $('#{{ dependentFieldId }}'),
-                model:      new Oro.Email.VariablesUpdater.Variable(availableVariables)
+        require(['jquery', 'oro/email/variable/view', 'oro/email/variable/model'],
+        function($, View, Model){
+            $(function() {
+                'use strict';
+                new View({
+                    el:       $('#oro-email-available-variables'),
+                    template: $('#available-variables-lists-template'),
+                    target:   $('#{{ dependentFieldId }}'),
+                    model:    new Model({{ render(path('oro_api_get_emailtemplate_available_variables', { 'entityName': entityName }))}})
+                });
             });
-        })
+        });
     </script>
 
     <script type="text/template" id="available-variables-lists-template">
@@ -37,78 +37,80 @@
         <% } %>
     </script>
 
-    <div class="well well-small span5" id="oro-email-available-variables"></div>
+    <div class="well well-small" id="oro-email-available-variables"></div>
 {% endmacro %}
 
 {% macro renderPreviewDialog(formName, title) %}
     <script type="text/javascript">
-        $(function () {
-            var showEmailPreviewDialog = function (el) {
-                var iframeId = 'preview-frame';
-                var iframe = $('<iframe />',
-                        {
-                            name: iframeId,
-                            id: iframeId,
-                            class: "scrollable-container",
-                            frameborder: 0,
-                            marginwidth: 0,
-                            marginheight: 0,
-                            allowfullscreen: true,
-                            width: '100%',
-                            height: '99%'
-                        });
-
-                var form = $('#{{ formName }}');
-                var formAction = form.attr('action');
-
-                form.bindFirst('submit', function(e) {
-                    if (!$(this).data('preview')) {
-                        return;
-                    }
-
-                    var confirmModal = new Oro.BootstrapModal({
-                        title: _.__('Preview'),
-                        content: '<div class="loading-content">Loading...</div>',
-                        okText: _.__('Ok'),
-                        className: 'modal oro-modal-normal',
-                        template: _.template('<% if (title) { %>' +
-                            '<div class="modal-header">' +
-                                '<% if (allowCancel) { %>' +
-                                '<a class="close">×</a>' +
-                                '<% } %>' +
-                                '<h3><%- title %></h3>' +
-                            '</div>' +
-                            '<% } %>' +
-                            '<div class="modal-body"><%= content %></div>'
-                        )
+        require(['jquery', 'underscore', 'oro/translator', 'oro/modal', 'jquery.bind-first'],
+        function($, _, __, Modal){
+            $(function () {
+                var showEmailPreviewDialog = function(el) {
+                    var iframeId = 'preview-frame';
+                    var iframe = $('<iframe />', {
+                        name: iframeId,
+                        id: iframeId,
+                        class: "scrollable-container",
+                        frameborder: 0,
+                        marginwidth: 0,
+                        marginheight: 0,
+                        allowfullscreen: true,
+                        width: '100%',
+                        height: '99%'
                     });
-                    confirmModal.open();
-                    confirmModal.$content.append(iframe)
-                    $('.modal-body .loading-content').show();
 
-                    form.attr('target', iframeId);
-                    form.attr('action', $(el).attr('href'));
+                    var form = $('#{{ formName }}');
+                    var formAction = form.attr('action');
 
-                    // prevent hash navigation form processing
-                    e.stopImmediatePropagation();
+                    form.bindFirst('submit', function(e) {
+                        if (!$(this).data('preview')) {
+                            return;
+                        }
+
+                        var confirmModal = new Modal({
+                            title: __('Preview'),
+                            content: '<div class="loading-content">Loading...</div>',
+                            okText: __('Ok'),
+                            className: 'modal oro-modal-normal',
+                            template: _.template('<% if (title) { %>' +
+                                '<div class="modal-header">' +
+                                    '<% if (allowCancel) { %>' +
+                                    '<a class="close">×</a>' +
+                                    '<% } %>' +
+                                    '<h3><%- title %></h3>' +
+                                '</div>' +
+                                '<% } %>' +
+                                '<div class="modal-body"><%= content %></div>'
+                            )
+                        });
+                        confirmModal.open();
+                        confirmModal.$content.append(iframe);
+                        $('.modal-body .loading-content').show();
+
+                        form.attr('target', iframeId);
+                        form.attr('action', $(el).attr('href'));
+
+                        // prevent hash navigation form processing
+                        e.stopImmediatePropagation();
+                    });
+                    form.data('preview', true);
+
+                    iframe.load(function() {
+                        $(this).show();
+                        form.attr('action', formAction);
+                        form.removeAttr('target');
+                        form.data('preview', false);
+
+                        $('.modal-body .loading-content').hide();
+                    });
+
+                    form.submit();
+                };
+
+                $('.dialog-form-renderer').click(function (e) {
+                    showEmailPreviewDialog(this);
+                    e.preventDefault();
                 });
-                form.data('preview', true);
-
-                iframe.load(function() {
-                    $(this).show();
-                    form.attr('action', formAction);
-                    form.removeAttr('target');
-                    form.data('preview', false);
-
-                    $('.modal-body .loading-content').hide();
-                });
-
-                form.submit();
-            };
-
-            $('.dialog-form-renderer').click(function (e) {
-                showEmailPreviewDialog(this);
-                e.preventDefault();
             });
         });
     </script>

@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\FormBundle\Form\Extension;
 
-use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class DataBlockExtension extends AbstractTypeExtension
@@ -14,17 +14,20 @@ class DataBlockExtension extends AbstractTypeExtension
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setOptional(array(
-            'block',
-            'subblock',
-            'block_config'
-        ));
+        $resolver->setOptional(
+            array(
+                'block',
+                'subblock',
+                'block_config',
+                'tooltip'
+            )
+        );
     }
 
     /**
-     * @param FormView      $view
+     * @param FormView $view
      * @param FormInterface $form
-     * @param array         $options
+     * @param array $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
@@ -38,6 +41,10 @@ class DataBlockExtension extends AbstractTypeExtension
 
         if (isset($options['block_config'])) {
             $view->vars['block_config'] = $options['block_config'];
+        }
+
+        if (isset($options['tooltip'])) {
+            $view->vars['tooltip'] = $options['tooltip'];
         }
     }
 

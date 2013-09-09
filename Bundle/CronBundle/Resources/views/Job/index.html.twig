@@ -3,6 +3,9 @@
 {% use 'OroCronBundle:Job:sidebar.html.twig' %}
 
 {% block page_container %}
+<script type="text/javascript">
+    require(['oro/init-job']);
+</script>
 <div class="container-fluid">
     <h1>{{ 'oro.cron.header.jobs'|trans }}</h1>
     <div class="row-fluid">
