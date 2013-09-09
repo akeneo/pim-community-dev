@@ -37,6 +37,7 @@ class ConfigExtension extends \Twig_Extension
 
     /**
      * @param  string $name Setting name in "{bundle}.{setting}" format
+     *
      * @return mixed
      */
     public function getUserValue($name)
@@ -52,6 +53,7 @@ class ConfigExtension extends \Twig_Extension
      *  "description" - entity description
      *
      * @param  string $class FQCN of the entity
+     *
      * @return array
      */
     public function getEntityOutput($class)

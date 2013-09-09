@@ -12,7 +12,9 @@
         "oro/user-bundle": "dev-master"
     },
     "autoload": {
-        "psr-0": { "Oro\\Bundle\\ConfigBundle": "" }
+        "psr-0": {
+            "Oro\\Bundle\\ConfigBundle": ""
+        }
     },
     "target-dir": "Oro/Bundle/ConfigBundle",
     "minimum-stability": "dev",
