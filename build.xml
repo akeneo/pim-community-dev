@@ -15,7 +15,6 @@
 
     <target name="build-behat-coverage" depends="prepare,composer,vendors,setupdb,dumpassets,behat-coverage"/>
 
-
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
     <target name="clean" description="Cleanup build artifacts">
@@ -247,6 +246,26 @@
         </exec>
         <exec executable="app/console">
           <arg value="doctrine:database:create" />
+          <arg value="-n" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="doctrine:schema:create" />
+          <arg value="-n" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="oro:acl:load" />
+          <arg value="-n" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="oro:entity-config:update" />
+          <arg value="-n" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="oro:entity-extend:create" />
+          <arg value="-n" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="cache:clear" />
           <arg value="-n" />
         </exec>
         <exec executable="app/console">
