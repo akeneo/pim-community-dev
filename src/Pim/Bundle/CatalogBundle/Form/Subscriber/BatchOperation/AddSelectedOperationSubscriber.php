@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Form\Subscriber\BatchProduct;
+namespace Pim\Bundle\CatalogBundle\Form\Subscriber\BatchOperation;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;

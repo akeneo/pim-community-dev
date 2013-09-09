@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\Subscriber;
+namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\Subscriber\BatchOperation;
 
-use Pim\Bundle\CatalogBundle\Form\Subscriber\BatchProduct\AddSelectedOperationSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\BatchOperation\AddSelectedOperationSubscriber;
 
 /**
  * Test related class
@@ -32,7 +32,7 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
-    public function testPreSetDataWithOperation()
+    public function testPostSetDataWithOperation()
     {
         $form      = $this->getFormMock();
         $operation = $this->getBatchOperationMock('foo_type', array('foo' => 'bar'));
@@ -50,13 +50,13 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
             ->with('operation', 'foo_type', array('foo' => 'bar'));
 
 
-        $this->subscriber->preSetData($event);
+        $this->subscriber->postSetData($event);
     }
 
     /**
      * Test related method
      */
-    public function testPreSetDataWithoutOperation()
+    public function testPostSetDataWithoutOperation()
     {
         $form = $this->getFormMock();
         $data = $this->getBatchOperatorMock(null);
@@ -70,13 +70,13 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
         $form->expects($this->never())
             ->method('add');
 
-        $this->subscriber->preSetData($event);
+        $this->subscriber->postSetData($event);
     }
 
     /**
      * Test related method
      */
-    public function testPreSetDataWithoutData()
+    public function testPostSetDataWithoutData()
     {
         $form = $this->getFormMock();
 
@@ -89,7 +89,7 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
         $form->expects($this->never())
             ->method('add');
 
-        $this->subscriber->preSetData($event);
+        $this->subscriber->postSetData($event);
     }
 
     /**

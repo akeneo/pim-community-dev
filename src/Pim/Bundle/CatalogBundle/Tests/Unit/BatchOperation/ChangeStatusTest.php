@@ -43,7 +43,7 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
 
         $this->operation->setEnable(false);
 
-        $this->operation->perform(array($foo, $bar));
+        $this->operation->perform(array($foo, $bar), array());
     }
 
     protected function getFlexibleManagerMock($objectManager)

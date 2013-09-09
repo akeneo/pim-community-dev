@@ -80,7 +80,20 @@ class BatchOperatorTest extends \PHPUnit_Framework_TestCase
             ->method('perform')
             ->with(array(1, 2, 3));
 
-        $this->operator->performOperation(array(1, 2, 3));
+        $this->operator->performOperation(array('products' => array(1, 2, 3)));
+    }
+
+    public function testInitializeOperation()
+    {
+        $operation = $this->getBatchOperationMock();
+        $this->operator->registerBatchOperation('foo', $operation);
+        $this->operator->setOperationAlias('foo');
+
+        $operation->expects($this->once())
+            ->method('initialize')
+            ->with(array(1, 2, 3));
+
+        $this->operator->initializeOperation(array('products' => array(1, 2, 3)));
     }
 
     protected function getFlexibleManagerMock()
