@@ -47,6 +47,7 @@ abstract class AbstractViewsList
      * Find and returns view object by name
      *
      * @param string $name
+     *
      * @return View|bool
      */
     public function getViewByName($name)
@@ -81,6 +82,7 @@ abstract class AbstractViewsList
      * Validates input array
      *
      * @param array $list
+     *
      * @throws \InvalidArgumentException
      */
     protected function validate(array $list)

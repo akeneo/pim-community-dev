@@ -8,12 +8,12 @@ class View
     protected $name;
 
     /** @var array */
-    protected $filtersData = array();
+    protected $filtersData;
 
     /** @var array */
-    protected $sortersData = array();
+    protected $sortersData;
 
-    public function __construct($name, $filtersData = array(), $sortersData = array())
+    public function __construct($name, array $filtersData = array(), array $sortersData = array())
     {
         $this->name        = $name;
         $this->filtersData = $filtersData;
@@ -32,10 +32,14 @@ class View
 
     /**
      * @param array $sortersData
+     *
+     * @return $this
      */
     public function setSortersData(array $sortersData)
     {
         $this->sortersData = $sortersData;
+
+        return $this;
     }
 
     /**
@@ -48,10 +52,14 @@ class View
 
     /**
      * @param array $filtersData
+     *
+     * @return $this
      */
     public function setFiltersData(array $filtersData)
     {
         $this->filtersData = $filtersData;
+
+        return $this;
     }
 
     /**
