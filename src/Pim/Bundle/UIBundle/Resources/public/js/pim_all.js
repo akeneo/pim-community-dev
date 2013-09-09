@@ -148,23 +148,6 @@ function init() {
         Pim.updateListener($(this));
     });
 
-    // Instantiate the tree
-    $('[data-tree]').each(function () {
-        switch ($(this).attr('data-tree')) {
-        case 'associate':
-            Pim.tree.associate($(this).attr('id'));
-            break;
-        case 'view':
-            Pim.tree.view($(this).attr('id'));
-            break;
-        case 'manage':
-            Pim.tree.manage($(this).attr('id'));
-            break;
-        default:
-            break;
-        }
-    });
-
     // Instantiate dialogForm
     $('[data-form="dialog"]').each(function () {
         $(this).dialogForm();

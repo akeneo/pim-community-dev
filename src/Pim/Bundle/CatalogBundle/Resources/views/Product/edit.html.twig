@@ -3,6 +3,16 @@
 {% block head_script %}
     {{ parent() }}
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
+
+    <script type="text/javascript">
+        require(['jquery', 'pim/tree/associate'],
+        function($, TreeAssociate){
+            $(function() {
+                'use strict';
+                new TreeAssociate('#trees');
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block page_container %}
