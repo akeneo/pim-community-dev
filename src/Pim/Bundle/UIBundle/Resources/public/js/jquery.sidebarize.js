@@ -203,8 +203,8 @@
         separatorWidth: 9,
         collapsedSeparatorWidth: 22,
         controlsHeight: 25,
-        collapseIcon: 'fa-icon-chevron-left',
-        expandIcon: 'fa-icon-chevron-right',
+        collapseIcon: 'icon-chevron-left',
+        expandIcon: 'icon-chevron-right',
         resizeCursor: 'e-resize',
         controlsCss: {
             'border': '1px solid #ddd',

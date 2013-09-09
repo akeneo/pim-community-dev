@@ -43,7 +43,7 @@ require(
 
             // Toogle accordion icon
             $('.accordion').on('show hide', function (e) {
-                $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('fa-icon-collapse-alt fa-icon-expand-alt');
+                $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-collapse-alt icon-expand-alt');
             });
 
             $('#attribute-buttons .dropdown-menu').click(function (e) {
@@ -111,7 +111,7 @@ require(
             }
 
             var $localizableIcon = $('<i>', {
-                'class': 'fa-icon-globe',
+                'class': 'icon-globe',
                 'attr': {
                     'data-original-title': __('Localized value'),
                     'data-toggle': 'tooltip',
@@ -133,7 +133,7 @@ require(
                     $preview        = $info.find('.upload-preview');
 
                 if ($preview.prop('tagName').toLowerCase() !== 'i') {
-                    var iconClass = $zone.hasClass('image') ? 'fa-icon-camera-retro' : 'fa-icon-file';
+                    var iconClass = $zone.hasClass('image') ? 'icon-camera-retro' : 'icon-file';
                     $preview.replaceWith($('<i>', { 'class': iconClass + ' upload-preview'}));
                     $preview = $info.find('.upload-preview');
                 }

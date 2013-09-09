@@ -69,7 +69,7 @@
 
                     $('.group').click(function() {
                         $(this).parent().find('tr:not(.group)').toggle();
-                        $(this).find('i').toggleClass('fa-icon-expand-alt fa-icon-collapse-alt');
+                        $(this).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
                     });
 
                     $('.attribute-requirement:not(.identifier) i').each(function() {
@@ -80,8 +80,8 @@
                             $(this).attr('data-original-title', $(this).parent().data('not-required-title'));
                         }
                     }).click(function() {
-                        $(this).toggleClass('fa-icon-ok required');
-                        $(this).toggleClass('fa-icon-circle non-required');
+                        $(this).toggleClass('icon-ok required');
+                        $(this).toggleClass('icon-circle non-required');
 
                         var $input = $(this).siblings('input[type="checkbox"]');
                         if ($input.attr('checked')) {

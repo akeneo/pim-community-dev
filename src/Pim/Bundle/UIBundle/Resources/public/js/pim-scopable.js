@@ -20,7 +20,7 @@ define(
                     '<div class="controls input-prepend">' +
                         '<label class="control-label add-on" for="<%= field.id %>" style="height: <%= field.height - 10 %>px;">' +
                             '<span class="field-toggle">' +
-                                '<i class="fa-icon-caret-down"></i>' +
+                                '<i class="icon-caret-down"></i>' +
                             '</span>' +
                             '<%= field.scope %>' +
                         '</label>' +
@@ -76,8 +76,8 @@ define(
             fields:       [],
             expanded:     true,
             rendered:     false,
-            expandIcon:   'fa-icon-caret-right',
-            collapseIcon: 'fa-icon-caret-down',
+            expandIcon:   'icon-caret-right',
+            collapseIcon: 'icon-caret-down',
 
             template: _.template(
                 '<label class="control-label"><%= label %></label>'

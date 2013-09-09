@@ -9,7 +9,7 @@
     {% set text = text ? text : 'Save' %}
     <button type="submit" class="btn btn-primary" title="{{ text|trans }}">
         {% if icon %}
-            <i class="fa-icon-{{ icon }}"></i>
+            <i class="icon-{{ icon }}"></i>
         {% endif %}
         {{ text|trans }}
     </button>
@@ -19,7 +19,7 @@
 {% macro backLink(url, title) %}
 {% spaceless %}
     {% set title = title ? title : 'Back to grid' %}
-    <a class="btn icons-holder back-link" href="{{ url }}" title="{{ title|trans }}"><i class="fa-icon-chevron-left"></i></a>
+    <a class="btn icons-holder back-link" href="{{ url }}" title="{{ title|trans }}"><i class="icon-chevron-left"></i></a>
 {% endspaceless %}
 {% endmacro %}
 
@@ -28,7 +28,7 @@
     {% set message = message ? message : 'Are you sure you want to delete this item?' %}
     {% set title = title ? title : 'Delete confirmation' %}
     <a class="btn icons-holder-text no-hash" href="javascript:void(0);" title="{{ 'Delete'|trans }}" data-dialog="confirm" data-title="{{ title|trans }}" data-message="{{ message|trans }}" data-url="{{ url }}" data-method="DELETE">
-        <i class="fa-icon-trash"></i>
+        <i class="icon-trash"></i>
         {{ 'Delete'|trans }}
     </a>
 {% endspaceless %}
@@ -39,7 +39,7 @@
     {% set title = opts.title is defined ? opts.title : text %}
     {% set icon = opts.icon is defined ? opts.icon : null %}
     <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="btn {{ opts.class is defined ? opts.class|join(' ') }}{% if text and icon %} icons-holder-text{% elseif icon %} icons-holder{% endif %}" href="{{ url ? url : 'javascript:void(0);' }}"{% if title %} title="{{ title|trans }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
-        {% if icon %}<i class="fa-icon-{{ icon }}"></i>{% endif %}
+        {% if icon %}<i class="icon-{{ icon }}"></i>{% endif %}
         {{ text|trans }}
     </a>
 {% endspaceless %}
@@ -105,7 +105,7 @@
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" href="#collapse-{{ counter }}-{{ loop.index }}">
-                        <i class="fa-icon-collapse-alt"></i>
+                        <i class="icon-collapse-alt"></i>
                         {{ title|trans }}
                     </a>
                 </div>
