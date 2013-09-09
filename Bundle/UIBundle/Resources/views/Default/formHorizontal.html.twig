@@ -55,14 +55,17 @@
         </div>
     </div>
     <script>
-        $(function () {
-            $('#myTab a:last').tab('show');
-            $('#myTab a').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-            })
-            $('a.popup-me').popover();
-        })
+        require(['jquery', 'jquery-ui', 'bootstrap'],
+        function($) {
+            $(function () {
+                $('#myTab a:last').tab('show');
+                $('#myTab a').click(function (e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                });
+                $('a.popup-me').popover();
+            });
+        });
     </script>
 
     {# horizontal example #}

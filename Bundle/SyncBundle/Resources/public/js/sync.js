@@ -1,13 +1,6 @@
 /* jshint browser:true */
-(function (factory) {
-    'use strict';
-    /* global define, jQuery, _, Backbone, Oro */
-    if (typeof define === 'function' && define.amd) {
-        define(['jQuery', '_', 'Backbone', 'Oro', 'OroNotificationMessage'], factory);
-    } else {
-        factory(jQuery, _, Backbone, Oro, Oro.NotificationMessage);
-    }
-}(function ($, _, Backbone, Oro, message) {
+define(['jquery', '_', 'backbone', 'oro/translator', 'oro/messenger'],
+function ($, _, Backbone, __, messenger) {
     'use strict';
     var service,
 
@@ -28,12 +21,13 @@
             }
             service = serv;
             var onConnectionEstablished = function(){
-                message('success', ['sync.connection.established'], {flash: true});
+                messenger.notificationFlashMessage('success', __('sync.connection.established'));
             };
             service.on('connection_lost', function(data){
                 data = data || {};
                 var attempt = data.retries || 0;
-                message('error', ['sync.connection.lost', data, attempt], {flash: Boolean(attempt)});
+                messenger.notificationMessage('error',
+                    __('sync.connection.lost', data, attempt), {flash: Boolean(attempt)});
                 service.off('connection_established', onConnectionEstablished)
                     .once('connection_established', onConnectionEstablished);
             });
@@ -133,4 +127,4 @@
     };
 
     return Oro.Synchronizer;
-}));
+});

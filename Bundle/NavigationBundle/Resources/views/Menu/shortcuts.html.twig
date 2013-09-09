@@ -3,18 +3,21 @@
 {% block list %}
     {% if item.hasChildren and options.depth is not sameas(0) and item.displayChildren %}
         <script type="text/javascript">
-            $(function() {
-                new navigation.shortcut.MainView({
-                    el: '.shortcuts .input-large',
-                    source: {{ options.source|json_encode|raw }}
+            require(['jquery', 'oro/navigation/shortcuts/view'],
+            function($, ShortcutsView) {
+                $(function() {
+                    /** @type {oro.navigation.shortcuts.View} */
+                    new ShortcutsView({
+                        el: '.shortcuts .input-large',
+                        source: {{ options.source|json_encode|raw }}
+                    });
                 });
             });
         </script>
-            <div class="dropdown">
-                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" title="{% trans %}Shortcuts{% endtrans %}">{% trans %}Shortcuts{% endtrans %}</a>
+            <div class="dropdown header-dropdown-shortcut header-utility-dropdown">
+                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" title="{% trans %}Shortcuts{% endtrans %}"><i class="icon-share-sign"></i></a>
                 <ul class="dropdown-menu">
                     <li class="nav-header nav-header-title">{% trans %}Shortcuts{% endtrans %}</li>
-                    <li class="divider"></li>
                     <li class="dark">
                         <form class="form-inline">
                             <input type="text" placeholder="Enter shortcut action" class="input-large">
@@ -26,7 +29,6 @@
                             </div>
                         </form>
                     </li>
-                    <li class="divider"></li>
                     <div class="nav-header">{% trans %}Most Used Actions{% endtrans %}</div>
                     {{ block('children') }}
                 </ul>

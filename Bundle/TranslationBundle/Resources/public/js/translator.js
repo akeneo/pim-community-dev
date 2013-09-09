@@ -1,23 +1,22 @@
-/* jshint browser:true, devel:true */
-(function (factory) {
-    'use strict';
-    /* global define, _, Translator */
-    if (typeof define === 'function' && define.amd) {
-        define(['JSON', '_', 'Translator'], factory);
-    } else {
-        factory(JSON, _, Translator);
-    }
-}(function (JSON, _, Translator) {
+/* jshint devel:true */
+/* global define */
+define(['underscore', 'translator', 'json'],
+function(_, Translator) {
     "use strict";
+
     var dict = {},
         debug = false,
         add = Translator.add,
         get = Translator.get,
         fromJSON = Translator.fromJSON;
 
+    Translator.placeHolderPrefix = '{{ ';
+    Translator.placeHolderSuffix = ' }}';
+
     /**
      * Adds a translation to Translator object and stores
      * translation id in protected dictionary
+     *
      * @param {string} id
      */
     Translator.add = function (id) {
@@ -28,6 +27,7 @@
     /**
      * Fetches translation by its id,
      * but before checks if the id was registered in dictionary
+     *
      * @param {string} id
      * @returns {string}
      */
@@ -39,6 +39,7 @@
     /**
      * Parses JSON data in store translations inside,
      * also turns on debug mode if in data was such directive
+     *
      * @param {Object} data
      * @returns {Object} Translator
      */
@@ -53,6 +54,7 @@
     /**
      * Checks if translation for passed id exist, if it's debug mode
      * and there's no translation - output error message in console
+     *
      * @param {string} id
      */
     function checkTranslation(id) {
@@ -77,4 +79,12 @@
          */
         __: _.bind(Translator.get, Translator)
     });
-}));
+
+    /**
+     * Shortcut for Translator.get() method call
+     *
+     * @export oro/translator
+     * @returns {string}
+     */
+    return _.__;
+});

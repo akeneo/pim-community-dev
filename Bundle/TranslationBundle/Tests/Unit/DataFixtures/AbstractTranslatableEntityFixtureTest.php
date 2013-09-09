@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\TranslationBundle\DataFixtures;
+namespace Oro\Bundle\TranslationBundle\Tests\Unit\DataFixtures;
 
 use Oro\Bundle\TranslationBundle\DataFixtures\AbstractTranslatableEntityFixture;
 
