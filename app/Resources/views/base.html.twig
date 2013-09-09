@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block head_style %}
+    {{ parent() }}
     {% stylesheets
         'bundles/pimui/css/pim.less'
 
@@ -18,7 +19,6 @@
     %}
     <link rel="stylesheet" media="all" href="{{ asset_url }}" />
     {% endstylesheets %}
-    {{ parent() }}
     {{ block('head_style_component') }}
 {% endblock %}
 
