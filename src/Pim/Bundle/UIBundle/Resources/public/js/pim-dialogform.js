@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'oro/navigation', 'jquery.select2'],
-    function ($, _, Navigation) {
+    ['jquery', 'oro/navigation', 'jquery.select2'],
+    function ($, Navigation) {
         'use strict';
 
         return function (elementId) {
