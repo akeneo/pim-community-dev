@@ -1,12 +1,11 @@
 <?php
 
-namespace Oro\Bundle\ConfigBundle\Config;
+namespace Oro\Bundle\ConfigBundle\Tests\Unit\Config;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
-
 use Doctrine\Common\Persistence\ObjectRepository;
 
-use Oro\Bundle\ConfigBundle\Entity\Config;
+use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
