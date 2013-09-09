@@ -22,11 +22,11 @@
 
     {% set subtitle %}
 
-<a id="quick-export"
-    class="btn btn-primary pull-right no-hash"
-    href="{{ path('pim_catalog_product_index', { '_format': 'csv'}) }}"
-    target="_blank"
-    title="{{ 'Quick export'|trans }}">{{ 'Quick export'|trans }}</a>
+        <a id="quick-export"
+            class="btn btn-primary pull-right no-hash"
+            href="{{ path('pim_catalog_product_index', { '_format': 'csv'}) }}"
+            target="_blank"
+            title="{{ 'Quick export'|trans }}">{{ 'Quick export'|trans }}</a>
 
         <div id="locale-switcher" class="btn-group sub-title">
             <span class="product-name dropdown-toggle" data-toggle="dropdown">
@@ -59,15 +59,16 @@
         <div id="product-grid"></div>
     </div>
 
-<script type="text/javascript">
-$(function() {
-    Oro.Events.on('grid_load:complete', function() {
-        var url = "{{ path('pim_catalog_product_index', { '_format': 'csv'}) }}";
-        url = url.concat('#url=');
-        var newUrl = document.location.href.replace(/(.*)#url=\//, url);
-        $('#quick-export').attr('href', newUrl);
+    <script type="text/javascript">
+    $(function() {
+        var datagrid = Oro.Registry.getElement('datagrid');
+        console.log(datagrid);
+        Oro.Events.on('grid_load:complete', function() {
+            var url = "{{ path('pim_catalog_product_index', { '_format': 'csv'}) }}".concat('#url=');
+            var newUrl = document.location.href.replace(/(.*)#url=\//, url);
+            $('#quick-export').attr('href', newUrl);
+        });
     });
-});
-</script>
+    </script>
 
 {% endblock %}
