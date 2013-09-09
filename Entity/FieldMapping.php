@@ -47,7 +47,7 @@ class FieldMapping extends FieldMappingModel
     /**
      * @var ItemMapping
      *
-     * @ORM\ManytoOne(targetEntity="ItemMapping", inversedBy="fields")
+     * @ORM\ManyToOne(targetEntity="ItemMapping", inversedBy="fields")
      */
     protected $item;
 
