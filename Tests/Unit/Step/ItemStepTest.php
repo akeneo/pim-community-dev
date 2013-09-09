@@ -231,4 +231,3 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Oro\Bundle\BatchBundle\Step\ItemStep', $entity);
     }
 }
-

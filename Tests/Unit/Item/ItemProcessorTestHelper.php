@@ -9,9 +9,6 @@ use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
  * Test helpers class needed as there is no way to create a mock from
  * phpUnit that extends and implements as the same time
  */
-abstract class ItemProcessorTestHelper
-    extends AbstractConfigurableStepElement
-    implements ItemProcessorInterface
+abstract class ItemProcessorTestHelper extends AbstractConfigurableStepElement implements ItemProcessorInterface
 {
 }
-
