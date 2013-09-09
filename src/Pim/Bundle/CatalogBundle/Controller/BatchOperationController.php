@@ -86,10 +86,13 @@ class BatchOperationController extends AbstractController
             $form = $this->getBatchOperatorForm();
         }
 
-        return array(
-            'form'          => $form->createView(),
-            'batchOperator' => $this->batchOperator,
-            'parameters'    => $parameters,
+        return $this->render(
+            sprintf('PimCatalogBundle:BatchOperation:configure/%s.html.twig', $operationAlias),
+            array(
+                'form'          => $form->createView(),
+                'batchOperator' => $this->batchOperator,
+                'parameters'    => $parameters,
+            )
         );
     }
 
