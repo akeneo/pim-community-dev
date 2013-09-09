@@ -1,6 +1,5 @@
 parameters:
     oro_platform.maintenance.class:           Oro\Bundle\PlatformBundle\Maintenance\Mode
-    oro_platform.listener.maintenance.class:  Oro\Bundle\PlatformBundle\EventListener\MaintenanceListener
 
 services:
     oro_platform.maintenance:
@@ -8,10 +7,3 @@ services:
         arguments:
             - "@lexik_maintenance.driver.factory"
             - "@event_dispatcher"
-
-    kernel.listener.console_maintenance.event:
-        class:                                %oro_platform.listener.maintenance.class%
-        arguments:
-            - "@oro_platform.maintenance"
-        tags:
-            - { name: kernel.event_listener, event: console.command, method: onCommandExecute }
