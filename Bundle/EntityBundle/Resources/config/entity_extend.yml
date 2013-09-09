@@ -1,5 +1,5 @@
 TestClassExtend:
-    owner:                          System
+    is_extend:                      true
     configs:
         entity:
             label:                  TestClassExtend
@@ -19,6 +19,20 @@ TestClassExtend:
         testReadonlyField:
             mode:                   readonly
             type:                   string
+
+TestClassExtend2:
+    is_extend:                      false
+    configs:
+        entity:
+            label:                  TestClassExtend2
+    fields:
+        testStringField2:
+            type:                   string
+            configs:
+                entity:
+                    label:          testStringField2
+            options:
+                length:             200
 
 Oro\Bundle\UserBundle\Entity\User:
     fields:

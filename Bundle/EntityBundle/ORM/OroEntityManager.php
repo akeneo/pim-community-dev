@@ -57,7 +57,6 @@ class OroEntityManager extends EntityManager
     public function setExtendManager($extendManager)
     {
         $this->extendManager = $extendManager;
-        $this->extendManager->setEntityManager($this);
 
         return $this;
     }
@@ -77,62 +76,6 @@ class OroEntityManager extends EntityManager
     public function isExtendEntity($entity)
     {
         return $this->extendManager->isExtend($entity);
-    }
-
-    /**
-     * Get Proxy object for some entity
-     *  param can be some entity object or array with include entity name and criteria
-     *        array(
-     *              'SomeBundle:Entity',
-     *              1
-     *          )
-     *        or
-     *        array(
-     *              'SomeBundle:Entity',
-     *              array(
-     *                  'name' => 'someName'
-     *              )
-     *          )
-     *
-     * @param object|array $entity
-     * @return ProxyEntityInterface
-     */
-    public function getExtendEntity($entity)
-    {
-        return $this->extendManager->loadExtendEntity($entity);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function persist($entity)
-    {
-        if ($entity instanceof ProxyEntityInterface) {
-            parent::persist($entity->__proxy__getExtend());
-        }
-
-        parent::persist($entity);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($entity)
-    {
-        if ($entity instanceof ProxyEntityInterface) {
-            parent::remove($entity->__proxy__getExtend());
-        }
-
-        parent::remove($entity);
-    }
-
-
-    /**
-     * @throws \Exception
-     */
-    public function getExtendRepository()
-    {
-        throw new \Exception("OroEntityManager::getExtendRepository is not implemented");
     }
 
     /**

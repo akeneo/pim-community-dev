@@ -2,13 +2,11 @@
 
 namespace Oro\Bundle\EntityExtendBundle\EventListener;
 
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
-use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
-
+use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
@@ -35,7 +33,6 @@ class ConfigSubscriber implements EventSubscriberInterface
     {
         return array(
             Events::PRE_PERSIST_CONFIG => 'persistConfig',
-            Events::PRE_PERSIST_CONFIG => 'persistConfig',
         );
     }
 
@@ -51,7 +48,7 @@ class ConfigSubscriber implements EventSubscriberInterface
 
         if ($scope == 'extend'
             && $event->getConfig()->getId() instanceof FieldConfigIdInterface
-            && $event->getConfig()->is('is_extend')
+            && $event->getConfig()->is('owner', ExtendManager::OWNER_CUSTOM)
             && count(array_intersect_key(array_flip(array('length', 'precision', 'scale', 'state')), $change))
         ) {
             $entityConfig = $event->getConfigManager()

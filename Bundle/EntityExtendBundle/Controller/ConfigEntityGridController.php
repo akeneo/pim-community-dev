@@ -143,12 +143,13 @@ class ConfigEntityGridController extends Controller
         /** @var ConfigManager $configManager */
         $configManager = $this->get('oro_entity_config.config_manager');
 
-        /** @var ExtendManager $extendManager */
-        $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
-
         $className = '';
         if ($request->getMethod() == 'POST') {
-            $className = $request->request->get('oro_entity_config_type[model][className]', null, true);
+            $className = 'Extend\\Entity\\' . $request->request->get(
+                'oro_entity_config_type[model][className]',
+                null,
+                true
+            );
         }
 
         $entityModel  = $configManager->createConfigEntityModel($className);

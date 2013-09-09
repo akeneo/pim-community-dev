@@ -3,11 +3,10 @@
 namespace Oro\Bundle\EntityExtendBundle\Extend;
 
 use Metadata\MetadataFactory;
-use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 
-use Oro\Bundle\EntityExtendBundle\Entity\ProxyEntityInterface;
 use Oro\Bundle\EntityExtendBundle\Metadata\ExtendClassMetadata;
-use Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator;
+
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class ExtendManager
@@ -21,42 +20,19 @@ class ExtendManager
     const OWNER_CUSTOM = 'Custom';
 
     /**
-     * @var ProxyObjectFactory
-     */
-    protected $proxyFactory;
-
-    /**
      * @var MetadataFactory
      */
     protected $metadataFactory;
-
-    /**
-     * @var ExtendFactory
-     */
-    protected $extendFactory;
 
     /**
      * @var ConfigProvider
      */
     protected $configProvider;
 
-    /**
-     * @var Generator
-     */
-    protected $generator;
-
-    /**
-     * @var OroEntityManager
-     */
-    protected $em;
-
-    public function __construct(ConfigProvider $configProvider, MetadataFactory $metadataFactory, Generator $generator)
+    public function __construct(ConfigProvider $configProvider, MetadataFactory $metadataFactory)
     {
         $this->configProvider  = $configProvider;
         $this->metadataFactory = $metadataFactory;
-        $this->generator       = $generator;
-        $this->proxyFactory    = new ProxyObjectFactory($this);
-        $this->extendFactory   = new ExtendFactory($this);
     }
 
     /**
@@ -68,127 +44,78 @@ class ExtendManager
     }
 
     /**
-     * @param OroEntityManager $em
-     * @return $this
-     */
-    public function setEntityManager($em)
-    {
-        $this->em = $em;
-
-        return $this;
-    }
-
-    /**
-     * @return OroEntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->em;
-    }
-
-    /**
-     * @return ProxyObjectFactory
-     */
-    public function getProxyFactory()
-    {
-        return $this->proxyFactory;
-    }
-
-    /**
-     * @return ExtendFactory
-     */
-    public function getExtendFactory()
-    {
-        return $this->extendFactory;
-    }
-
-    /**
-     * @return Generator
-     */
-    public function getClassGenerator()
-    {
-        return $this->generator;
-    }
-
-    /**
      * @param $className
      * @return bool
      */
     public function isExtend($className)
     {
-        /** @var ExtendClassMetadata $metadata */
-        $metadata = $this->metadataFactory->getMetadataForClass($className);
-
-        return $metadata->isExtend;
-    }
-
-    /**
-     * @param $className
-     * @return null|string
-     */
-    public function getExtendClass($className)
-    {
-        return $this->generator->generateExtendClassName($className);
-    }
-
-    /**
-     * @param $className
-     * @return null|string
-     */
-    public function getProxyClass($className)
-    {
-        return $this->generator->generateProxyClassName($className);
-    }
-
-    public function newExtendEntity($className)
-    {
-        if ($this->isCustomEntity($className)) {
-            $className = $this->getExtendClass($className);
+        if (class_exists($className)) {
+            /** @var ExtendClassMetadata $metadata */
+            $metadata = $this->metadataFactory->getMetadataForClass($className);
+            $isExtend = $metadata->isExtend;
+        } else {
+            $isExtend = $this->configProvider->getConfig($className)->is('is_extend');
         }
+
+        return $isExtend;
     }
 
     /**
-     * @param $entity
-     * @throws \InvalidArgumentException
-     * @return ProxyEntityInterface
+     * @param string $entityName
+     * @param string $fieldName
+     * @param string $fieldConfig
+     * @param string $owner
+     * @param string $mode
      */
-    public function loadExtendEntity($entity)
-    {
-        if (!is_object($entity)) {
-            if (!is_array($entity)
-                || count($entity) != 2
-                || !is_string($entity[0])
-            ) {
-                throw new \InvalidArgumentException('Invalid argument "\$entity"');
-            }
+    public function createField(
+        $entityName,
+        $fieldName,
+        $fieldConfig,
+        $owner = self::OWNER_CUSTOM,
+        $mode = ConfigModelManager::MODE_DEFAULT
+    ) {
+        $configManager = $this->configProvider->getConfigManager();
 
-            list($className, $criteria) = $entity;
+        $configManager->createConfigFieldModel($entityName, $fieldName, $fieldConfig['type'], $mode);
 
-            if ($this->isCustomEntity($className)) {
-                $className = $this->getExtendClass($className);
-            }
+        $extendFieldConfig = $this->configProvider->getConfig($entityName, $fieldName);
+        $extendFieldConfig->set('owner', $owner);
+        $extendFieldConfig->set('state', self::STATE_NEW);
+        $extendFieldConfig->set('extend', true);
 
-            $repo = $this->getEntityManager()->getRepository($className);
-
-            if (is_array($criteria)) {
-                $entity = $repo->findOneBy($criteria);
-            } else {
-                $entity = $repo->find($criteria);
+        if (isset($fieldConfig['options'])) {
+            foreach ($fieldConfig['options'] as $key => $value) {
+                $extendFieldConfig->set($key, $value);
             }
         }
 
-        $proxy = $this->getProxyFactory()->getProxyObject($entity);
-        $this->getProxyFactory()->initExtendObject($proxy);
-
-        return $proxy;
+        $configManager->persist($extendFieldConfig);
     }
 
     /**
-     * @param $className
-     * @return bool
+     * @param string $entityName
+     * @param bool   $isExtend
+     * @param string $owner
+     * @param string $mode
      */
-    protected function isCustomEntity($className)
-    {
-        return $this->getConfigProvider()->getConfig($className)->is('owner', 'Custom');
+    public function createEntity(
+        $entityName,
+        $isExtend = true,
+        $owner = self::OWNER_CUSTOM,
+        $mode = ConfigModelManager::MODE_DEFAULT
+    ) {
+        $configManager = $this->configProvider->getConfigManager();
+
+        $configManager->createConfigEntityModel($entityName, $mode);
+
+        $extendConfig = $this->configProvider->getConfig($entityName);
+        $extendConfig->set('owner', $owner);
+        $extendConfig->set('state', self::STATE_NEW);
+        $extendConfig->set('is_extend', $isExtend);
+
+        $configManager->persist($extendConfig);
+
+        $entityFieldConfig = $configManager->getProvider('entity')->getConfig($entityName, 'id');
+        $entityFieldConfig->set('label', 'Id');
     }
 }

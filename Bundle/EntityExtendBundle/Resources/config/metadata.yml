@@ -7,7 +7,7 @@ services:
     oro_entity_extend.metadata.metadata_factory:
         class:                                                  %oro_entity_extend.metadata.metadata_factory.class%
         arguments:                                              [@oro_entity_extend.metadata.annotation_driver]
-        public:                                                 false
+        #public:                                                 false
         calls:
             - [setCache, [@oro_entity_extend.metadata.cache.file_cache.annotation]]
 

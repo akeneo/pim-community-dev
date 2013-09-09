@@ -4,8 +4,12 @@ namespace Oro\Bundle\EntityExtendBundle\Command;
 
 use Doctrine\ORM\EntityManager;
 
+use Metadata\MetadataFactory;
+use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
+use Oro\Bundle\EntityExtendBundle\Metadata\ExtendClassMetadata;
+use Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Symfony\Component\Console\Input\InputInterface;
@@ -38,21 +42,17 @@ class UpdateCommand extends ContainerAwareCommand
     {
         $output->writeln($this->getDescription());
 
-        /** @var EntityManager $em */
+        /** @var OroEntityManager $em */
         $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
+        /** @var Generator $generator */
+        $generator = $this->getContainer()->get('oro_entity_extend.tools.generator');
 
-        /** @var ExtendManager $xm */
-        $xm = $this->getContainer()->get('oro_entity_extend.extend.extend_manager');
+        $generator->initBase();
 
         /** @var EntityConfigModel[] $configs */
         $configs = $em->getRepository(EntityConfigModel::ENTITY_NAME)->findAll();
         foreach ($configs as $config) {
-            if ($xm->isExtend($config->getClassName())) {
-                //var_dump($config->getClassName());
-                //$owner  = $xm->getConfigProvider()->getConfig($config->getClassName())->get('owner', true);
-                //$extend = ExtendManager::OWNER_CUSTOM != $owner;
-                //$xm->getClassGenerator()->checkEntityCache($config->getClassName(), true, $extend);
-            };
+            $generator->generate($config->getClassName());
         }
 
         $output->writeln('Done');

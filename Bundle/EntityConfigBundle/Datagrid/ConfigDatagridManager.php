@@ -176,7 +176,7 @@ class ConfigDatagridManager extends DatagridManager
             $options['name'][$value['className']]   = '';
             $options['module'][$value['className']] = '';
 
-            if (count($className) > 1) {
+            if (strpos($value['className'], 'Extend\\Entity') === false) {
                 foreach ($className as $index => $name) {
                     if (count($className) - 1 == $index) {
                         $options['name'][$value['className']] = $name;
@@ -185,7 +185,7 @@ class ConfigDatagridManager extends DatagridManager
                     }
                 }
             } else {
-                $options['name'][$value['className']]   = $value['className'];
+                $options['name'][$value['className']]   = str_replace('Extend\\Entity\\', '', $value['className']);
                 $options['module'][$value['className']] = 'System';
             }
         }

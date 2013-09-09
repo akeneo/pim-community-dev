@@ -70,7 +70,7 @@ class BackupCommand extends ContainerAwareCommand
 
 
         $tables[] = $em
-            ->getClassMetadata($em->getExtendManager()->getExtendClass($this->className))
+            ->getClassMetadata($this->className)
             ->getTableName();
 
         switch ($dbms) {

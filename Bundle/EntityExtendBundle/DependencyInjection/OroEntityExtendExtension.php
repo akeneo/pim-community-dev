@@ -4,7 +4,6 @@ namespace Oro\Bundle\EntityExtendBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -24,14 +23,12 @@ class OroEntityExtendExtension extends Extension
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
 
-        $this->configBackend($container, $config);
         $this->configCache($container, $config);
-
 
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
         $loader      = new Loader\YamlFileLoader($container, $fileLocator);
-        $loader->load('services.yml');
         $loader->load('metadata.yml');
+        $loader->load('services.yml');
     }
 
     protected function configCache(ContainerBuilder $container, $config)
@@ -49,17 +46,5 @@ class OroEntityExtendExtension extends Extension
         }
         $container->setParameter('oro_entity_extend.cache_dir.annotation', $annotationCacheDir);
 
-    }
-
-    protected function configBackend(ContainerBuilder $container, $config)
-    {
-        $backend = $container->getParameterBag()->resolveValue($config['backend']);
-        $path    = $container->getParameterBag()->resolveValue($config['backup']);
-
-        $container->setParameter('oro_entity_extend.backend', $backend);
-        $container->setParameter('oro_entity_extend.backup', $path);
-
-        // for DoctrineOrmMappingsPass end BackendCompilerPass. Detect with backend should be mapped and loaded
-        $container->setParameter('oro_entity_extend.backend.' . strtolower($backend), true);
     }
 }
