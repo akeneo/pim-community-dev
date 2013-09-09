@@ -2,7 +2,9 @@ parameters:
     oro_user.user_datagrid_manager.class: Oro\Bundle\UserBundle\Datagrid\UserDatagridManager
     oro_user.role_datagrid_manager.class: Oro\Bundle\UserBundle\Datagrid\RoleDatagridManager
     oro_user.group_datagrid_manager.class: Oro\Bundle\UserBundle\Datagrid\GroupDatagridManager
+    oro_user.group_datagrid_views_list.class: Oro\Bundle\UserBundle\Datagrid\GroupDatagridViewsList
     oro_user.role_user_datagrid_manager.class: Oro\Bundle\UserBundle\Datagrid\RoleUserDatagridManager
+    oro_user.group_user_datagrid_manager.class: Oro\Bundle\UserBundle\Datagrid\GroupUserDatagridManager
     oro_user.group_user_datagrid_manager.class: Oro\Bundle\UserBundle\Datagrid\GroupUserDatagridManager
 
 services:
@@ -25,6 +27,9 @@ services:
               entity_hint: role
               route_name: oro_user_role_index
 
+    oro_user.group_datagrid_views_list:
+        class:  %oro_user.group_datagrid_views_list.class%
+
     oro_user.group_datagrid_manager:
         class: %oro_user.group_datagrid_manager.class%
         tags:
@@ -34,6 +39,7 @@ services:
               query_entity_alias: user_group
               entity_hint: group
               route_name: oro_user_group_index
+              views_list: oro_user.group_datagrid_views_list
 
     oro_user.role_user_datagrid_manager:
         class: %oro_user.role_user_datagrid_manager.class%

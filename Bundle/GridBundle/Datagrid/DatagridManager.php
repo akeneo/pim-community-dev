@@ -4,6 +4,7 @@ namespace Oro\Bundle\GridBundle\Datagrid;
 
 use Doctrine\ORM\EntityManager;
 
+use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Router;
@@ -107,6 +108,11 @@ abstract class DatagridManager implements DatagridManagerInterface
     private $identifierField;
 
     /**
+     * @var AbstractViewsList|null
+     */
+    private $viewsList;
+
+    /**
      * @var array
      */
     protected $toolbarOptions = array();
@@ -173,6 +179,14 @@ abstract class DatagridManager implements DatagridManagerInterface
     public function setRouteGenerator(RouteGeneratorInterface $routeGenerator)
     {
         $this->routeGenerator = $routeGenerator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setViewsList(AbstractViewsList $list)
+    {
+        $this->viewsList = $list;
     }
 
     /**
@@ -628,6 +642,14 @@ abstract class DatagridManager implements DatagridManagerInterface
         }
 
         return $defaultPager;
+    }
+
+    /**
+     * @return null|AbstractViewsList
+     */
+    public function getViewsList()
+    {
+        return $this->viewsList;
     }
 
     /**
