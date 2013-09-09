@@ -352,6 +352,11 @@ abstract class DatagridManager implements DatagridManagerInterface
         $datagrid->setEntityName($this->entityName);
         $datagrid->setName($this->name);
         $datagrid->setEntityHint($this->entityHint);
+
+        $views = $this->getViewsList();
+        if ($views) {
+            $views->applyToDatagrid($datagrid);
+        }
     }
 
     /**

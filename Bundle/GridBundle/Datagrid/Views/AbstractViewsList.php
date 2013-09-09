@@ -3,8 +3,9 @@
 namespace Oro\Bundle\GridBundle\Datagrid\Views;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Symfony\Component\Translation\TranslatorInterface;
+
+use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 
 abstract class AbstractViewsList
 {
@@ -91,6 +92,25 @@ abstract class AbstractViewsList
             if (!$view instanceof View) {
                 throw new \InvalidArgumentException('List should contains only instances of View class');
             }
+        }
+    }
+
+    /**
+     * Apply view to datagrid
+     *
+     * @param Datagrid $datagrid
+     */
+    public function applyToDatagrid(Datagrid $datagrid)
+    {
+        $parameters = $datagrid->getParameters();
+
+        $filters = $parameters->get('_filter');
+        $sorters = $parameters->get('_sort_by');
+        $viewName = $parameters->get('_view');
+
+        if (!empty($view)) {
+            // find view by name
+            $view = $this->getViewByName($viewName);
         }
     }
 }
