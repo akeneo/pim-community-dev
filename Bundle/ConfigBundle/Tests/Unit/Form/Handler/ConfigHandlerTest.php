@@ -73,7 +73,7 @@ class ConfigHandlerTest extends \PHPUnit_Framework_TestCase
         $this->configManager->expects($this->once())
             ->method('save');
 
-        $this->handler->process($this->form, $this->request);
+        $this->assertTrue($this->handler->process($this->form, $this->request));
     }
 
     public function testBadRequest()
@@ -97,6 +97,37 @@ class ConfigHandlerTest extends \PHPUnit_Framework_TestCase
         $this->form->expects($this->never())
             ->method('isValid')
             ->will($this->returnValue(true));
+
+        $this->configManager->expects($this->never())
+            ->method('save');
+
+        $this->assertFalse($this->handler->process($this->form, $this->request));
+    }
+
+    public function testFormNotValid()
+    {
+        $settings = array();
+
+        $this->configManager->expects($this->once())
+            ->method('getSettingsByForm')
+            ->with($this->isInstanceOf('Symfony\Component\Form\Test\FormInterface'))
+            ->will($this->returnValue($settings));
+
+        $this->request->expects($this->once())
+            ->method('getMethod')
+            ->will($this->returnValue('POST'));
+
+        $this->form->expects($this->once())
+            ->method('setData')
+            ->with($settings);
+
+        $this->form->expects($this->once())
+            ->method('submit')
+            ->with($this->equalTo($this->request));
+
+        $this->form->expects($this->once())
+            ->method('isValid')
+            ->will($this->returnValue(false));
 
         $this->configManager->expects($this->never())
             ->method('save');
