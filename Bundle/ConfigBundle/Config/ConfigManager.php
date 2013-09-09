@@ -130,9 +130,7 @@ class ConfigManager
             );
 
             // save only if setting exists and there's no default checkbox checked
-            if (!is_null($currentValue)
-                && empty($value['use_parent_scope_value']))
-            {
+            if (!is_null($currentValue) && empty($value['use_parent_scope_value'])) {
                 $updated[$key] = $value;
             }
 
@@ -180,10 +178,10 @@ class ConfigManager
 
         foreach ($form as $child) {
             $key = str_replace(
-                    self::SECTION_VIEW_SEPARATOR,
-                    self::SECTION_MODEL_SEPARATOR,
-                    $child->getName()
-                );
+                self::SECTION_VIEW_SEPARATOR,
+                self::SECTION_MODEL_SEPARATOR,
+                $child->getName()
+            );
             $settings[$child->getName()] = $this->get($key, false, true);
 
             $settings[$child->getName()]['use_parent_scope_value'] =

@@ -27,7 +27,7 @@ class ConfigValueRepositoryTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('createQueryBuilder', 'beginTransaction', 'commit'))
             ->getMock();
 
-         $this->repository = new ConfigValueRepository(
+        $this->repository = new ConfigValueRepository(
             $this->om,
             new ClassMetadata('Oro\Bundle\ConfigBundle\Entity\Config\Value')
         );

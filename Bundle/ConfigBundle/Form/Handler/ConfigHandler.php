@@ -2,19 +2,13 @@
 
 namespace Oro\Bundle\ConfigBundle\Form\Handler;
 
-use Doctrine\Common\Persistence\ObjectManager;
-
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+
 class ConfigHandler
 {
-    /**
-     * @var Request
-     */
-    protected $request;
-
     /**
      * @var ConfigManager
      */
@@ -41,7 +35,7 @@ class ConfigHandler
         $settingsData = $this->manager->getSettingsByForm($form);
         $form->setData($settingsData);
 
-        if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
+        if (in_array($request->getMethod(), array('POST', 'PUT'))) {
             $form->submit($request);
             if ($form->isValid()) {
                 $this->manager->save($form->getData());

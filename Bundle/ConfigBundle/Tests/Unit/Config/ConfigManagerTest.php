@@ -111,7 +111,10 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($this->settings['oro_user']['greeting']['value'], $object->get('oro_user.greeting', true));
         $this->assertEquals($this->settings['oro_user']['level']['value'], $object->get('oro_user.level', true));
-        $this->assertEquals($this->settings['oro_test']['anysetting']['value'], $object->get('oro_test.anysetting', true));
+        $this->assertEquals(
+            $this->settings['oro_test']['anysetting']['value'],
+            $object->get('oro_test.anysetting', true)
+        );
     }
 
     /**
