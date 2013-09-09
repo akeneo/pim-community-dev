@@ -155,10 +155,6 @@ require(
                 }
             });
 
-            $('form').on('submit', function () {
-                $('input[type="file"]').removeAttr('disabled');
-            });
-
             $('.remove-upload').on('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -176,6 +172,12 @@ require(
         $(function () {
             $(document).on('uniformInit', function () {
                 $.uniform.restore();
+            });
+
+            $(document).on('mouseover', '.upload-zone:not(.empty)', function() {
+                $('input[type="file"]', $(this)).attr('disabled', 'disabled');
+            }).on('mouseout', '.upload-zone:not(.empty)', function() {
+                $('input[type="file"]', $(this)).removeAttr('disabled');
             });
 
             // DELETE request for delete buttons
