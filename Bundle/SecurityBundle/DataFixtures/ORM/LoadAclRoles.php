@@ -37,6 +37,7 @@ class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, C
         if ($manager->isAclEnabled()) {
             $this->loadSuperAdminRole($manager);
             $this->loadAdminRole($manager);
+            $this->loadManagerRole($manager);
             $this->loadUserRole($manager);
             $manager->flush();
         }
@@ -67,12 +68,43 @@ class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, C
                 if ($maskBuilder->hasConst('GROUP_GLOBAL')) {
                     if ($maskBuilder->hasConst('MASK_VIEW_SYSTEM')) {
                         $mask =
-                            $maskBuilder->getConst('MASK_VIEW_SYSTEM')
+                            $maskBuilder->getConst('MASK_VIEW_SYSTEM');
+                            /* @todo now only SYSTEM level is supported
                             | $maskBuilder->getConst('MASK_CREATE_GLOBAL')
                             | $maskBuilder->getConst('MASK_EDIT_GLOBAL')
                             | $maskBuilder->getConst('MASK_DELETE_GLOBAL')
                             | $maskBuilder->getConst('MASK_ASSIGN_GLOBAL')
                             | $maskBuilder->getConst('MASK_SHARE_GLOBAL');
+                            */
+                    } else {
+                        $mask = $maskBuilder->getConst('GROUP_GLOBAL');
+                    }
+                } else {
+                    $mask = $maskBuilder->getConst('GROUP_ALL');
+                }
+                $manager->setPermission($sid, $rootOid, $mask, true);
+            }
+        }
+    }
+
+    protected function loadManagerRole(AclManager $manager)
+    {
+        $sid = $manager->getSid($this->getReference('manager_role'));
+
+        foreach ($manager->getAllExtensions() as $extension) {
+            $rootOid = $manager->getRootOid($extension->getExtensionKey());
+            foreach ($extension->getAllMaskBuilders() as $maskBuilder) {
+                if ($maskBuilder->hasConst('GROUP_GLOBAL')) {
+                    if ($maskBuilder->hasConst('MASK_VIEW_SYSTEM')) {
+                        $mask =
+                            $maskBuilder->getConst('MASK_VIEW_SYSTEM');
+                        /* @todo now only SYSTEM level is supported
+                        | $maskBuilder->getConst('MASK_CREATE_GLOBAL')
+                        | $maskBuilder->getConst('MASK_EDIT_GLOBAL')
+                        | $maskBuilder->getConst('MASK_DELETE_GLOBAL')
+                        | $maskBuilder->getConst('MASK_ASSIGN_GLOBAL')
+                        | $maskBuilder->getConst('MASK_SHARE_GLOBAL');
+                         */
                     } else {
                         $mask = $maskBuilder->getConst('GROUP_GLOBAL');
                     }
@@ -94,12 +126,14 @@ class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, C
                 if ($maskBuilder->hasConst('GROUP_BASIC')) {
                     if ($maskBuilder->hasConst('MASK_VIEW_SYSTEM')) {
                         $mask =
-                            $maskBuilder->getConst('MASK_VIEW_SYSTEM')
+                            $maskBuilder->getConst('MASK_VIEW_SYSTEM');
+                            /* @todo now only SYSTEM level is supported
                             | $maskBuilder->getConst('MASK_CREATE_BASIC')
                             | $maskBuilder->getConst('MASK_EDIT_BASIC')
                             | $maskBuilder->getConst('MASK_DELETE_BASIC')
                             | $maskBuilder->getConst('MASK_ASSIGN_BASIC')
                             | $maskBuilder->getConst('MASK_SHARE_BASIC');
+                            */
                     } else {
                         $mask = $maskBuilder->getConst('GROUP_BASIC');
                     }
