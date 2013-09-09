@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'routing', 'oro/loading-mask', 'oro/error', 'jquery.jstree'],
+    ['jquery', 'underscore', 'backbone', 'routing', 'oro/loading-mask', 'oro/error', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector'],
     function ($, _, Backbone, Routing, LoadingMask, OroError) {
         'use strict';
 
