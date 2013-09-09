@@ -79,8 +79,11 @@ class BatchOperationController extends AbstractController
         $parameters = $request->query->all();
         $this->batchOperator->initializeOperation($parameters);
         $form = $this->getBatchOperatorForm();
+
         if ($request->isMethod('POST')) {
             $form->bind($request);
+            $this->batchOperator->initializeOperation($parameters);
+            $form = $this->getBatchOperatorForm();
         }
 
         return array(
@@ -94,14 +97,10 @@ class BatchOperationController extends AbstractController
     {
         $this->batchOperator->setOperationAlias($operationAlias);
 
-        $productIds = $request->query->get('products');
-        if (!$productIds || !is_array($productIds)) {
-            return $this->redirectToRoute('pim_catalog_product_index');
-        }
-
+        $parameters = $request->query->all();
+        $this->batchOperator->initializeOperation($parameters);
         $form = $this->getBatchOperatorForm();
         $form->bind($request);
-        $this->batchOperator->initializeOperation($productIds);
 
         if ($form->isValid()) {
             $this->batchOperator->performOperation($productIds);

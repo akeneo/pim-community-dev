@@ -34,9 +34,24 @@ class EditCommonAttributesType extends AbstractType
                 array(
                     'choices' => $options['locales'],
                     'class'   => 'Pim\\Bundle\\CatalogBundle\\Entity\\Locale',
+                    'attr'    => array(
+                        'class' => 'operation-param',
+                    )
+                )
+            )
+            ->add(
+                'attributesToDisplay',
+                'entity',
+                array(
+                    'class' => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                    'choices'  => $options['commonAttributes'],
+                    'required' => false,
+                    'multiple' => true,
+                    'attr'     => array(
+                        'class' => 'operation-param',
+                    )
                 )
             );
-
     }
 
     /**
@@ -47,8 +62,9 @@ class EditCommonAttributesType extends AbstractType
 
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\\Bundle\\CatalogBundle\\BatchOperation\\EditCommonAttributes',
-                'locales' => array(),
+                'data_class'       => 'Pim\\Bundle\\CatalogBundle\\BatchOperation\\EditCommonAttributes',
+                'locales'          => array(),
+                'commonAttributes' => array(),
             )
         );
     }

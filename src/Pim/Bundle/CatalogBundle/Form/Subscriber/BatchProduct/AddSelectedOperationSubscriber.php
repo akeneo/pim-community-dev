@@ -20,11 +20,11 @@ class AddSelectedOperationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            FormEvents::PRE_SET_DATA => 'preSetData'
+            FormEvents::POST_SET_DATA => 'postSetData'
         );
     }
 
-    public function preSetData(FormEvent $event)
+    public function postSetData(FormEvent $event)
     {
         $data = $event->getData();
         $form = $event->getForm();

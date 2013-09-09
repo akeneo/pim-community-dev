@@ -27,11 +27,16 @@ class EditCommonAttributes extends AbstractBatchOperation
 
     protected $localeManager;
 
+    public $commonAttributes = array();
+
+    public $attributesToDisplay;
+
     public function __construct(FlexibleManager $productManager, LocaleManager $localeManager)
     {
-        $this->productManager = $productManager;
-        $this->localeManager  = $localeManager;
-        $this->values         = new ArrayCollection;
+        $this->productManager      = $productManager;
+        $this->localeManager       = $localeManager;
+        $this->values              = new ArrayCollection();
+        $this->attributesToDisplay = new ArrayCollection();
     }
 
     public function setValues(Collection $values)
@@ -74,9 +79,10 @@ class EditCommonAttributes extends AbstractBatchOperation
 
     public function getFormOptions()
     {
-        $locales = $this->localeManager->getActiveLocales();
-
-        return array('locales' => $locales);
+        return array(
+            'locales'          => $this->localeManager->getActiveLocales(),
+            'commonAttributes' => $this->commonAttributes,
+        );
     }
 
     /**
@@ -84,19 +90,23 @@ class EditCommonAttributes extends AbstractBatchOperation
      */
     public function initialize(array $products, array $parameters)
     {
-        $displayedAttributes = $this->getParameter('attributes', $parameters, array());
-        $availableAttributes = $this->productManager->getAttributeRepository()->findByCode($displayedAttributes);
+        $this->commonAttributes = $this->productManager->getAttributeRepository()->findAll();
 
         foreach ($products as $product) {
-            foreach ($availableAttributes as $key => $attribute) {
+            foreach ($this->commonAttributes as $key => $attribute) {
                 if ($attribute->getUnique() || false === $product->getValue($attribute->getCode())) {
-                    unset($availableAttributes[$key]);
+                    /**
+                     * Attribute is not available for mass editing if:
+                     *   - it is unique
+                     *   - it isn't set on one of the selected products
+                     */
+                    unset($this->commonAttributes[$key]);
                 }
             }
         }
 
-        foreach ($availableAttributes as $attribute) {
-            if (in_array($attribute->getCode(), $displayedAttributes)) {
+        foreach ($this->commonAttributes as $key => $attribute) {
+            if ($this->attributesToDisplay->contains($attribute)) {
                 $this->addValues($attribute);
             }
         }
