@@ -2,16 +2,19 @@
 
 namespace Oro\Bundle\ConfigBundle\Config;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Form\Forms;
+use Symfony\Component\Form\PreloadedExtension;
+
 use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
 use Oro\Bundle\ConfigBundle\Form\Type\FormFieldType;
+use Oro\Bundle\ConfigBundle\Form\Type\FormType;
 use Oro\Bundle\ConfigBundle\Provider\SystemConfigurationFormProvider;
 use Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension;
-use Symfony\Component\Form\Forms;
-use Symfony\Component\Form\PreloadedExtension;
-use Symfony\Component\Yaml\Yaml;
 
 class ConfigManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -260,8 +263,25 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
         $processor = new ProcessorDecorator();
         $config = $processor->process($config);
 
+        $subscriber    = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber')
+            ->setMethods(array('__construct'))
+            ->disableOriginalConstructor()->getMock();
+
+        $formType      = new FormType($subscriber);
+        $formFieldType = new FormFieldType();
+
+        $extensions = array(
+            new PreloadedExtension(
+                array(
+                    $formType->getName()      => $formType,
+                    $formFieldType->getName() => $formFieldType
+                ),
+                array()
+            ),
+        );
+
         $factory = Forms::createFormFactoryBuilder()
-            ->addExtensions($this->getExtensions())
+            ->addExtensions($extensions)
             ->addTypeExtension(
                 new DataBlockExtension()
             )
@@ -273,25 +293,5 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
         $provider = new SystemConfigurationFormProvider($config, $factory, $aclManager);
 
         return $provider;
-    }
-
-    public function getExtensions()
-    {
-        $subscriber    = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber')
-            ->setMethods(array('__construct'))
-            ->disableOriginalConstructor()->getMock();
-
-        $formType      = new \Oro\Bundle\ConfigBundle\Form\Type\FormType($subscriber);
-        $formFieldType = new FormFieldType();
-
-        return array(
-            new PreloadedExtension(
-                array(
-                    $formType->getName()      => $formType,
-                    $formFieldType->getName() => $formFieldType
-                ),
-                array()
-            ),
-        );
     }
 }
