@@ -61,6 +61,28 @@ class AclRoleType extends AbstractType
                 )
             );
         }
+
+        $builder->add(
+            'appendUsers',
+            'oro_entity_identifier',
+            array(
+                'class'    => 'OroUserBundle:User',
+                'required' => false,
+                'mapped'   => false,
+                'multiple' => true,
+            )
+        );
+
+        $builder->add(
+            'removeUsers',
+            'oro_entity_identifier',
+            array(
+                'class'    => 'OroUserBundle:User',
+                'required' => false,
+                'mapped'   => false,
+                'multiple' => true,
+            )
+        );
     }
 
     /**
@@ -71,6 +93,7 @@ class AclRoleType extends AbstractType
         $resolver->setDefaults(
             array(
                 'data_class' => 'Oro\Bundle\UserBundle\Entity\Role',
+                'intention'  => 'role',
             )
         );
     }
@@ -80,6 +103,6 @@ class AclRoleType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_acl_role';
+        return 'oro_user_role';
     }
 }

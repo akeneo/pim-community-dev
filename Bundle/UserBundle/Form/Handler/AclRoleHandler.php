@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Form\Type\AclRoleType;
 use Oro\Bundle\UserBundle\Entity\Role;
 
@@ -114,8 +115,9 @@ class AclRoleHandler
             $this->form->submit($this->request);
 
             if ($this->form->isValid()) {
-                $this->manager->persist($role);
-                $this->manager->flush();
+                $appendUsers = $this->form->get('appendUsers')->getData();
+                $removeUsers = $this->form->get('removeUsers')->getData();
+                $this->onSuccess($role, $appendUsers, $removeUsers);
 
                 $this->processPrivileges($role);
 
@@ -211,6 +213,54 @@ class AclRoleHandler
             foreach ($privilege->getPermissions() as $permission) {
                 $permission->setAccessLevel($permission->getAccessLevel() ? $value : 0);
             }
+        }
+    }
+
+    /**
+     * "Success" form handler
+     *
+     * @param Role   $entity
+     * @param User[] $appendUsers
+     * @param User[] $removeUsers
+     */
+    protected function onSuccess(Role $entity, array $appendUsers, array $removeUsers)
+    {
+        $this->appendUsers($entity, $appendUsers);
+        $this->removeUsers($entity, $removeUsers);
+        $this->manager->persist($entity);
+        $this->manager->flush();
+        die;
+    }
+
+    /**
+     * Append users to role
+     *
+     * @param Role   $role
+     * @param User[] $users
+     */
+    protected function appendUsers(Role $role, array $users)
+    {
+        /** @var $user User */
+        foreach ($users as $user) {
+            var_dump($user->getId());
+
+            $user->addRole($role);
+            $this->manager->persist($user);
+        }
+    }
+
+    /**
+     * Remove users from role
+     *
+     * @param Role   $role
+     * @param User[] $users
+     */
+    protected function removeUsers(Role $role, array $users)
+    {
+        /** @var $user User */
+        foreach ($users as $user) {
+            $user->removeRole($role);
+            $this->manager->persist($user);
         }
     }
 }

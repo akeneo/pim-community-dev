@@ -1,0 +1,7 @@
+(default): Default permission on new entities
+VIEW: View
+CREATE: Create
+EDIT: Edit
+DELETE: Delete
+ASSIGN: Assign
+SHARE: Share

@@ -47,7 +47,7 @@ class RoleController extends Controller
 
             return $this->get('oro_ui.router')->actionRedirect(
                 array(
-                    'route' => 'oro_user_role_update',
+                    'route' => 'oro_user_new_role_update',
                     'parameters' => array('id' => $entity->getId()),
                 ),
                 array(
@@ -59,6 +59,7 @@ class RoleController extends Controller
         return array(
             'form'     => $aclRoleHandler->createView(),
             'privilegesConfig' => $this->container->getParameter('oro_user.privileges'),
+            'datagrid' => $this->getRoleUserDatagridManager($entity)->getDatagrid()->createView(),
         );
     }
 
