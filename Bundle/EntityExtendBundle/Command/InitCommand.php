@@ -43,37 +43,25 @@ class InitCommand extends ContainerAwareCommand
         /** @var OroEntityManager $em */
         $em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 
-        class_alias('Oro\Bundle\UserBundle\Entity\User', '\BaseUser');
-        //class_alias('Extend\Entity\Dynamic\Oro\Bundle\UserBundle\Entity\User', 'Oro\Bundle\UserBundle\Entity\User');
-
-
-
-        $user = new User();
-
-        $reflection  = new \ReflectionClass('Extend\Entity\Dynamic\Oro\Bundle\UserBundle\Entity\User');
-
-
-        var_dump($reflection);
-
         /** @var ClassMetadataInfo $metadata */
-//        foreach ($em->getMetadataFactory()->getAllMetadata() as $metadata) {
-//            $extendEntities = array();
-//            if ($em->getExtendManager()->isExtend($metadata->getName())) {
-//                $extendEntities[] = $metadata;
-//                var_dump($metadata->getName());
-//            }
-//
-//            if (count($extendEntities)) {
-//                $exporter = new YamlExporter();
-//                $exporter->setMetadata($extendEntities);
-//                $exporter->setExtension('.yml');
-//                $exporter->setOverwriteExistingFiles(true);
-//                $exporter->setOutputDir($this->getContainer()->getParameter('kernel.root_dir') . '/entities/Yaml/');
-//
-//                $exporter->export();
-//            }
-//        }
-//
+        foreach ($em->getMetadataFactory()->getAllMetadata() as $metadata) {
+            $extendEntities = array();
+            if ($em->getExtendManager()->isExtend($metadata->getName())) {
+                $extendEntities[] = $metadata;
+                var_dump($metadata->getName());
+            }
+
+            if (count($extendEntities)) {
+                $exporter = new YamlExporter();
+                $exporter->setMetadata($extendEntities);
+                $exporter->setExtension('.yml');
+                $exporter->setOverwriteExistingFiles(true);
+                $exporter->setOutputDir($this->getContainer()->getParameter('kernel.root_dir') . '/entities/Yaml/');
+
+                $exporter->export();
+            }
+        }
+
         $output->writeln('Done');
     }
 }
