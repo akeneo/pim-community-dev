@@ -15,13 +15,13 @@
 
     <target name="build-behat-coverage" depends="prepare,composer,vendors,setupdb,dumpassets,behat-coverage"/>
 
-
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/app/build/api"/>
         <delete dir="${basedir}/app/build/code-browser"/>
         <delete dir="${basedir}/app/build/coverage"/>
+        <delete dir="${basedir}/app/build/coverage-parts"/>
         <delete dir="${basedir}/app/build/logs"/>
         <delete dir="${basedir}/app/build/pdepend"/>
 
@@ -35,6 +35,7 @@
         <mkdir dir="${basedir}/app/build/api"/>
         <mkdir dir="${basedir}/app/build/code-browser"/>
         <mkdir dir="${basedir}/app/build/coverage"/>
+        <mkdir dir="${basedir}/app/build/coverage-parts"/>
         <mkdir dir="${basedir}/app/build/logs"/>
         <mkdir dir="${basedir}/app/build/logs/behat"/>
         <mkdir dir="${basedir}/app/build/logs/behat-pr"/>
@@ -186,18 +187,7 @@
     </target>
 
     <target name="behat-coverage" description="Run acceptance tests with Behat and produce coverage">
-        <exec executable="sh" outputproperty="xdebug_path">
-            <arg value="-c" />
-            <arg value="php -i | grep extension_dir | cut -d ' ' -f3"/>
-        </exec>
-        <exec executable="php" failonerror="true">
-            <env key="DISPLAY" value=":0" />
-            <arg value="-d zend_extension=${xdebug_path}/xdebug.so" />
-            <arg value="${basedir}/app/Resources/jenkins/behat_coverage/behat-coverage" />
-            <arg value="--profile=jenkins-coverage" />
-            <arg value="--ansi" />
-            <arg value="--tags=~skip" />
-            <arg value="-fprogress" />
+        <exec executable="${basedir}/app/Resources/jenkins/behat_coverage/run_behat_coverage.sh" failonerror="true">
         </exec>
     </target>
 
