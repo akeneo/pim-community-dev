@@ -1,7 +1,7 @@
 /* jshint devel:true*/
 /* global define, require */
-define(['jquery', 'underscore', 'backbone', 'oro/widget-manager'],
-function($, _, Backbone) {
+define(['jquery', 'underscore', 'backbone', 'oro/mediator'],
+function($, _, Backbone, mediator) {
     'use strict';
 
     /**
@@ -16,7 +16,13 @@ function($, _, Backbone) {
             url: false,
             elementFirst: true,
             title: '',
+            alias: null,
             wid: null
+        },
+
+        initialize: function(options) {
+            options = options || {};
+            this.initializeWidget(options);
         },
 
         setTitle: function(title) {
@@ -29,7 +35,7 @@ function($, _, Backbone) {
 
         remove: function() {
             // cause that's circular dependency
-            require('oro/widget-manager').removeWidget(this.getWid());
+            mediator.trigger('widget_remove', this.getWid());
             Backbone.View.prototype.remove.call(this);
         },
 
@@ -56,6 +62,10 @@ function($, _, Backbone) {
             return this._wid;
         },
 
+        getAlias: function() {
+            return this.$el.data('alias') || this.options.alias;
+        },
+
         _getUniqueIdentifier: function() {
             /*jslint bitwise:true */
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -69,6 +79,7 @@ function($, _, Backbone) {
          * Move form actions to widget actions
          */
         _adoptWidgetActions: function() {
+            this.actions['adopted'] = {};
             var adoptedActionsContainer = this._getAdoptedActionsContainer();
             if (adoptedActionsContainer.length > 0) {
                 var self = this;
@@ -88,7 +99,6 @@ function($, _, Backbone) {
                     });
                 }
 
-                self.actions.adopted = {};
                 _.each(actions, function(action, idx) {
                     var $action = $(action);
                     var actionId = $action.data('action-name') || 'adopted_action_' + idx;
@@ -143,6 +153,10 @@ function($, _, Backbone) {
             return this.actions;
         },
 
+        setUrl: function(url) {
+            this.options.url = url;
+        },
+
         removeAction: function(key, section) {
             var self = this,
                 remove = function(actions, key) {
@@ -166,7 +180,7 @@ function($, _, Backbone) {
 
         hasAction: function(key, section) {
             if (section !== undefined) {
-                return this.actions[section].hasOwnProperty(key);
+                return this.actions.hasOwnProperty(section) && this.actions[section].hasOwnProperty(key);
             } else {
                 var hasAction = false;
                 _.each(this.actions, function(actions) {
@@ -199,14 +213,16 @@ function($, _, Backbone) {
             this._clearActionsContainer();
             var container = this.getActionsElement();
 
-            _.each(this.actions, function(actions, section) {
-                var sectionContainer = $('<div id="' + section + '"/>');
-                _.each(actions, function(action) {
-                    self._initActionEvents(action);
-                    sectionContainer.append(action);
+            if (container) {
+                _.each(this.actions, function(actions, section) {
+                    var sectionContainer = $('<div id="' + section + '"/>');
+                    _.each(actions, function(action) {
+                        self._initActionEvents(action);
+                        sectionContainer.append(action);
+                    });
+                    container.append(sectionContainer);
                 });
-                container.append(sectionContainer);
-            });
+            }
         },
 
         _initActionEvents: function(action) {
@@ -228,7 +244,10 @@ function($, _, Backbone) {
         },
 
         _clearActionsContainer: function() {
-            this.getActionsElement().empty();
+            var actionsEl = this.getActionsElement();
+            if (actionsEl) {
+                actionsEl.empty();
+            }
         },
 
         /**
@@ -273,8 +292,9 @@ function($, _, Backbone) {
                 try {
                     this.trigger('contentLoad', content, this);
                     this.actionsEl = null;
-                    this.setElement($(content));
+                    this.setElement($(content).filter('.widget-content'));
                     this._show();
+                    Oro.Events.trigger('hash_navigation_request:complete');
                 } catch (error) {
                     // Remove state with unrestorable content
                     this.trigger('contentLoadError', this);
@@ -290,14 +310,13 @@ function($, _, Backbone) {
         },
 
         show: function() {
-            this.$el.attr('data-wid', this.getWid());
+            this.setWidToElement(this.$el);
             this._renderActions();
-            if (this.$el.hasClass('widget-content')) {
-                this.$el.trigger('widgetize', this);
-            } else {
-                this.$el.find('.widget-content').trigger('widgetize', this);
-            }
             this.trigger('widgetRender', this.$el, this);
+        },
+
+        setWidToElement: function(el) {
+            el.attr('data-wid', this.getWid());
         }
     });
 });

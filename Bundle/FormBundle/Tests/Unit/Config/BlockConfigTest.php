@@ -16,8 +16,9 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
     /** @var string form DataBlock code */
     private $blockCode = 'datagrid';
 
-    private $testCode  = 'testCode';
-    private $testTitle = 'testTitle';
+    private $testCode        = 'testCode';
+    private $testTitle       = 'testTitle';
+    private $testDescription = 'testDescription';
 
     private $testClass = 'Oro\Bundle\UserBundle\Entity\User';
 
@@ -44,14 +45,15 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
 
     private $testSubBlocksConfig = array(
         'common' => array(
-            'title'    => 'Common Setting',
-            'priority' => 3,
+            'title'       => 'Common Setting',
+            'priority'    => 3,
+            'description' => 'some description'
         ),
         'custom' => array(
             'title'    => 'Custom Setting',
             'priority' => 2,
         ),
-        'last' => array(
+        'last'   => array(
             'title'    => 'Last SubBlock',
             'priority' => 1,
         )
@@ -99,16 +101,22 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
         $this->blockConfig->setSubBlocks($this->testSubBlocks);
         $this->assertEquals($this->testSubBlocks, $this->blockConfig->getSubBlocks());
 
+        /** test setDescription */
+        $this->blockConfig->setDescription($this->testDescription);
+        $this->assertEquals($this->testDescription, $this->blockConfig->getDescription());
+
         /** test hasSubBlock */
         $this->assertFalse($this->blockConfig->hasSubBlock('testSubBlock'));
 
         /** test setSubBlock */
         $subblocks = array();
         foreach ($this->testSubBlocksConfig as $code => $data) {
+            $blockDescription = !empty($data['description']) ? $data['description'] : null;
             $subblocks[] = array(
-                'code'  => $code,
-                'title' => $data['title'],
-                'data'  => array('some_data')
+                'code'        => $code,
+                'title'       => $data['title'],
+                'data'        => array('some_data'),
+                'description' => $blockDescription
             );
             $subBlock = new SubBlockConfig($code);
 
@@ -125,6 +133,9 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
             $subBlock->setData(array('some_data'));
             $this->assertEquals(array('some_data'), $subBlock->getData());
 
+            $subBlock->setDescription($blockDescription);
+            $this->assertEquals($blockDescription, $subBlock->getDescription());
+
             /** test SubBlockConfig addSubBlock */
             $this->blockConfig->addSubBlock($subBlock);
             $this->assertEquals($subBlock, $this->blockConfig->getSubBlock($code));
@@ -137,9 +148,10 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array(
-                'title'     => $this->testTitle,
-                'class'     => $this->testClass,
-                'subblocks' => $subblocks
+                'title'       => $this->testTitle,
+                'class'       => $this->testClass,
+                'subblocks'   => $subblocks,
+                'description' => $this->testDescription
             ),
             $this->blockConfig->toArray()
         );
@@ -149,7 +161,8 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
     {
         /** test getSubBlock Exception */
         $this->setExpectedException(
-            '\PHPUnit_Framework_Error_Notice', 'Undefined index: testSubBlock'
+            '\PHPUnit_Framework_Error_Notice',
+            'Undefined index: testSubBlock'
         );
         $this->blockConfig->getSubBlock('testSubBlock');
     }

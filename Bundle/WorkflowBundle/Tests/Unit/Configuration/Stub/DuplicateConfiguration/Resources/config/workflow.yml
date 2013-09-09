@@ -1,0 +1,38 @@
+workflows:
+    first_workflow:
+        label: 'First Workflow'
+        enabled: true
+        start_step: first_step
+        steps:
+            first_step:
+                label: 'First Step'
+                template: My:Custom:template.html.twig
+                order: 1
+                is_final: true
+                allowed_transitions:
+                    - first_transition
+                form_type: oro_workflow_step
+                form_options:
+                    attribute_fields:
+                        first_attribute:
+                            form_type: text
+                            label: 'First Attribute'
+                            options:
+                                required: true
+        attributes:
+            first_attribute:
+                label: 'First Attribute'
+                type: object
+                options:
+                    class: DateTime
+        transitions:
+            first_transition:
+                label: 'First Transition'
+                step_to: first_step
+                transition_definition: first_transition_definition
+        transition_definitions:
+            first_transition_definition:
+                conditions:
+                    @true: ~
+                post_actions:
+                    - @custom_post_action: ~
