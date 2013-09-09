@@ -1,0 +1,26 @@
+parameters:
+    oro_workflow.prototype.workflow.class: Oro\Bundle\WorkflowBundle\Model\Workflow
+    oro_workflow.prototype.step_manager.class: Oro\Bundle\WorkflowBundle\Model\StepManager
+    oro_workflow.prototype.attribute_manager.class: Oro\Bundle\WorkflowBundle\Model\AttributeManager
+    oro_workflow.prototype.transition_manager.class: Oro\Bundle\WorkflowBundle\Model\TransitionManager
+
+services:
+    oro_workflow.prototype.step_manager:
+        class: %oro_workflow.prototype.step_manager.class%
+        scope: prototype
+
+    oro_workflow.prototype.attribute_manager:
+        class: %oro_workflow.prototype.attribute_manager.class%
+        scope: prototype
+
+    oro_workflow.prototype.transition_manager:
+        class: %oro_workflow.prototype.transition_manager.class%
+        scope: prototype
+
+    oro_workflow.prototype.workflow:
+        class: %oro_workflow.prototype.workflow.class%
+        scope: prototype
+        arguments:
+            - @oro_workflow.prototype.step_manager
+            - @oro_workflow.prototype.attribute_manager
+            - @oro_workflow.prototype.transition_manager

@@ -1,0 +1,104 @@
+parameters:
+    oro_workflow.condition_factory.class: Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory
+
+    oro_workflow.condition.andx.class: Oro\Bundle\WorkflowBundle\Model\Condition\Andx
+    oro_workflow.condition.orx.class: Oro\Bundle\WorkflowBundle\Model\Condition\Orx
+    oro_workflow.condition.not.class: Oro\Bundle\WorkflowBundle\Model\Condition\Not
+    oro_workflow.condition.true.class: Oro\Bundle\WorkflowBundle\Model\Condition\True
+    oro_workflow.condition.false.class: Oro\Bundle\WorkflowBundle\Model\Condition\False
+    oro_workflow.condition.equal_to.class: Oro\Bundle\WorkflowBundle\Model\Condition\EqualTo
+    oro_workflow.condition.not_equal_to.class: Oro\Bundle\WorkflowBundle\Model\Condition\NotEqualTo
+    oro_workflow.condition.blank.class: Oro\Bundle\WorkflowBundle\Model\Condition\Blank
+    oro_workflow.condition.not_blank.class: Oro\Bundle\WorkflowBundle\Model\Condition\NotBlank
+    oro_workflow.condition.greater_than.class: Oro\Bundle\WorkflowBundle\Model\Condition\GreaterThan
+    oro_workflow.condition.greater_than_or_equal.class: Oro\Bundle\WorkflowBundle\Model\Condition\GreaterThanOrEqual
+    oro_workflow.condition.less_than.class: Oro\Bundle\WorkflowBundle\Model\Condition\LessThan
+    oro_workflow.condition.less_than_or_equal.class: Oro\Bundle\WorkflowBundle\Model\Condition\LessThanOrEqual
+    oro_workflow.condition.configurable.class: Oro\Bundle\WorkflowBundle\Model\Condition\Configurable
+
+services:
+    oro_workflow.condition_factory:
+        class: %oro_workflow.condition_factory.class%
+        arguments:
+            - @service_container
+            - []
+
+    oro_workflow.condition.andx:
+        class: %oro_workflow.condition.andx.class%
+        tags:
+            - { name: oro_workflow.condition, alias: and }
+
+    oro_workflow.condition.orx:
+        class: %oro_workflow.condition.orx.class%
+        tags:
+            - { name: oro_workflow.condition, alias: or }
+
+    oro_workflow.condition.not:
+        class: %oro_workflow.condition.not.class%
+        tags:
+            - { name: oro_workflow.condition, alias: not }
+
+    oro_workflow.condition.true:
+        class: %oro_workflow.condition.true.class%
+        tags:
+            - { name: oro_workflow.condition, alias: "true" }
+
+    oro_workflow.condition.false:
+        class: %oro_workflow.condition.false.class%
+        tags:
+            - { name: oro_workflow.condition, alias: "false" }
+
+    oro_workflow.condition.equal_to:
+        class: %oro_workflow.condition.equal_to.class%
+        arguments: [@oro_workflow.context_accessor, @oro_workflow.doctrine_helper]
+        tags:
+            - { name: oro_workflow.condition, alias: eq|equal }
+
+    oro_workflow.condition.not_equal_to:
+        class: %oro_workflow.condition.not_equal_to.class%
+        arguments: [@oro_workflow.condition.equal_to]
+        tags:
+            - { name: oro_workflow.condition, alias: neq|not_equal }
+
+    oro_workflow.condition.blank:
+        class: %oro_workflow.condition.blank.class%
+        arguments: [@oro_workflow.context_accessor]
+        tags:
+            - { name: oro_workflow.condition, alias: blank|empty }
+
+    oro_workflow.condition.not_blank:
+        class: %oro_workflow.condition.not_blank.class%
+        arguments: [@oro_workflow.condition.blank]
+        tags:
+            - { name: oro_workflow.condition, alias: not_blank|not_empty }
+
+    oro_workflow.condition.greater_than:
+        class: %oro_workflow.condition.greater_than.class%
+        arguments: [@oro_workflow.context_accessor]
+        tags:
+            - { name: oro_workflow.condition, alias: gt|greater }
+
+    oro_workflow.condition.greater_than_or_equal:
+        class: %oro_workflow.condition.greater_than_or_equal.class%
+        arguments: [@oro_workflow.context_accessor]
+        tags:
+            - { name: oro_workflow.condition, alias: ge|gte|greater_or_equal }
+
+    oro_workflow.condition.less_than:
+        class: %oro_workflow.condition.less_than.class%
+        arguments: [@oro_workflow.context_accessor]
+        tags:
+            - { name: oro_workflow.condition, alias: lt|less }
+
+    oro_workflow.condition.less_than_or_equal:
+        class: %oro_workflow.condition.less_than_or_equal.class%
+        arguments: [@oro_workflow.context_accessor]
+        tags:
+            - { name: oro_workflow.condition, alias: le|lte|less_or_equal }
+
+    oro_workflow.condition.configurable:
+        class: %oro_workflow.condition.configurable.class%
+        arguments:
+            - @oro_workflow.condition_assembler
+        tags:
+            - { name: oro_workflow.condition, alias: configurable }

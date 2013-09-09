@@ -75,11 +75,7 @@ class ResultRecord implements ResultRecordInterface
      */
     private static function camelize($property)
     {
-        return preg_replace(
-            array('/(^|_| )+(.)/e', '/\.(.)/e'),
-            array("strtoupper('\\2')", "'_'.strtoupper('\\1')"),
-            $property
-        );
+        return str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
     }
 
     /**

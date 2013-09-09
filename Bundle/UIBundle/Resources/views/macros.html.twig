@@ -143,16 +143,18 @@
 {% macro deleteButton(parameters) %}
     <div class="pull-left btn-group icons-holder">
         <a href="javascript: void(0);" class="btn icons-holder-text {{ parameters.aCss is defined? parameters.aCss : '' }}"
-           {% if (parameters.id is defined) %}
+            {% if (parameters.id is defined) %}
                 id="{{ parameters.id }}"
-           {% endif %}
-           data-id="{{ parameters.dataId }}"
-           data-message="{{ parameters.dataMessage|trans }}"
-           data-url="{{ parameters.dataUrl  }}"
-           data-redirect="{{ parameters.dataRedirect  }}"
-           {% if (parameters.title is defined) %}
+            {% endif %}
+            data-id="{{ parameters.dataId }}"
+            data-message="{{ parameters.dataMessage|trans }}"
+            data-url="{{ parameters.dataUrl }}"
+            {% if parameters.dataRedirect is defined %}
+                data-redirect="{{ parameters.dataRedirect  }}"
+            {% endif %}
+            {% if (parameters.title is defined) %}
                 title="{{ parameters.title|trans }}"
-           {% endif %}
+            {% endif %}
            >
            <i class="icon-trash hide-text">{{ parameters.label|trans }}</i>{{ parameters.label|trans }}
         </a>
