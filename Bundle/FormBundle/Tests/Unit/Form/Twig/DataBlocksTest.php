@@ -37,8 +37,10 @@ class DataBlocksTest extends \PHPUnit_Framework_TestCase
                     'code'  => 'text_3__subblock',
                     'title' => null,
                     'data'  => array(null),
+                    'description' => null
                 ),
             ),
+            'description' => null
         ),
         'first'  => array(
             'title'     => 'First Block',
@@ -48,13 +50,16 @@ class DataBlocksTest extends \PHPUnit_Framework_TestCase
                     'code'  => 'first',
                     'title' => null,
                     'data'  => array(null),
+                    'description' => null
                 ),
                 'second' => array(
                     'code'  => 'second',
                     'title' => 'Second SubBlock',
                     'data'  => array(null),
+                    'description' => null
                 ),
             ),
+            'description' => 'some desc'
         ),
         'third'  => array(
             'title'     => 'Third',
@@ -64,13 +69,16 @@ class DataBlocksTest extends \PHPUnit_Framework_TestCase
                     'code'  => 'text_4__subblock',
                     'title' => null,
                     'data'  => array(null),
+                    'description' => null
                 ),
                 'first' => array(
                     'code'  => 'first',
                     'title' => null,
                     'data'  => array(null),
+                    'description' => null
                 ),
             ),
+            'description' => null
         ),
     );
 
@@ -115,6 +123,7 @@ class DataBlocksTest extends \PHPUnit_Framework_TestCase
                               'title' => 'Second SubBlock'
                           ),
                       ),
+                      'description' => 'some desc'
                   ),
                   'second' => array(
                       'priority' => 2,

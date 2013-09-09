@@ -16,7 +16,7 @@ class BusinessUnits extends PageFilteredGrid
 
     public function add()
     {
-        $this->test->byXPath("//div[@class = 'container-fluid']//a[contains(., 'Create business unit')]")->click();
+        $this->test->byXPath("//a[@title='Create business unit']")->click();
         //due to bug BAP-965
         sleep(1);
         $this->waitPageToLoad();

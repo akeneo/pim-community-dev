@@ -17,15 +17,17 @@
     {{ form_widget(form) }}
 
     <script type="text/javascript">
-        $(function() {
-            var regions = new Oro.RegionUpdater.Collection();
-
-            var regionView = new Oro.RegionUpdater.View({
-                el: $('{{ country_field }}'),
-                target: $('#{{ id }}'),
-                simpleEl: $('{{ state_text_field }}'),
-                collection: regions,
-                showSelect: {{ (choices is not empty)|json_encode }}
+        require(['jquery', 'oro/region/view', 'oro/region/collection'],
+        function($, RegionView, RegionCollection){
+            $(function() {
+                /** @type oro.region.View */
+                new RegionView({
+                    el: $('{{ country_field }}'),
+                    target: $('#{{ id }}'),
+                    simpleEl: $('{{ state_text_field }}'),
+                    collection: new RegionCollection(),
+                    showSelect: {{ (choices is not empty)|json_encode }}
+                });
             });
         });
     </script>
@@ -142,14 +144,16 @@
     {% set has_types = form.vars.prototype.types is defined %}
     {% if has_primary or has_types or show_form_when_empty %}
         <script type="text/javascript">
-            $(function() {
-                var container = $('#{{ id }}_collection');
+            require(['jquery'],
+            function($){
+                $(function() {
+                    var container = $('#{{ id }}_collection');
 
-                /**
-                 * Allow only 1 primary checkbox to be checked.
-                 * This logic convert checkbox logic to logic used in radiobutton
-                 */
                 {% if has_primary %}
+                    /**
+                     * Allow only 1 primary checkbox to be checked.
+                     * This logic convert checkbox logic to logic used in radiobutton
+                     */
                     container.on('click', '[name$="[primary]"]', function() {
                         container.find('[name$="[primary]"]').each(function (idx, el) {
                             el.checked = false;
@@ -158,10 +162,10 @@
                     });
                 {% endif %}
 
-                /**
-                 * Allow only 1 item with selected type
-                 */
                 {% if has_types %}
+                    /**
+                     * Allow only 1 item with selected type
+                     */
                     container.on('click', '[name$="[types][]"]', function() {
                         if (this.checked) {
                             container.find('[name$="[types][]"][value="' + this.value + '"]').each(function (idx, el) {
@@ -171,6 +175,7 @@
                         }
                     });
                 {% endif %}
+                });
             });
         </script>
     {% endif %}

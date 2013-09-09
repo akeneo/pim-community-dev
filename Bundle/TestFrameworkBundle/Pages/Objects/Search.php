@@ -13,7 +13,7 @@ class Search extends Page
     public function __construct($testCase)
     {
         parent::__construct($testCase);
-        $this->pane = $this->byXPath('//span[@title="Search"]');
+        $this->pane = $this->byXPath('//a[@title="Search"]');
         $this->simpleSearch = $this->byId('search-bar-search');
         $this->searchButton = $this->byXPath("//form[@id='top-search-form']//div/button[contains(.,'Go')]");
     }

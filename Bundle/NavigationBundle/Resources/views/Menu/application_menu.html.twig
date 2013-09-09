@@ -15,5 +15,5 @@
         {'class': oro_menu.add_attribute_values(linkAttributes, 'class', ['dropdown-toggle']), 'data-toggle': 'dropdown'})
         %}
     {% endif %}
-    <a href="{{ item.uri }}"{{ oro_menu.attributes(linkAttributes) }}>{{ block('label') }}</a>
+    <a href="{{ item.uri }}"{{ oro_menu.attributes(linkAttributes) }}><span class="title">{{ block('label') }}</span></a>
 {% endblock %}

@@ -74,10 +74,13 @@ class FormConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($subblocks[0], $this->formConfig->getSubBlocks('testBlock', 'common'));
 
         /** test toArray() */
-        $this->assertEquals(array('testBlock' => array(
-                'title'     => 'Test Block',
-                'class'     => 'Oro\Bundle\UserBundle\Entity\User',
-                'subblocks' => $subblocksArray
+        $this->assertEquals(
+            array(
+                'testBlock' => array(
+                    'title'       => 'Test Block',
+                    'class'       => 'Oro\Bundle\UserBundle\Entity\User',
+                    'subblocks'   => $subblocksArray,
+                    'description' => null
             )),
             $this->formConfig->toArray()
         );
@@ -94,7 +97,8 @@ class FormConfigTest extends \PHPUnit_Framework_TestCase
     {
         /** test getSubBlock Exception */
         $this->setExpectedException(
-            '\PHPUnit_Framework_Error_Notice', 'Undefined index: testBlock'
+            '\PHPUnit_Framework_Error_Notice',
+            'Undefined index: testBlock'
         );
         $this->formConfig->getBlock('testBlock');
     }
