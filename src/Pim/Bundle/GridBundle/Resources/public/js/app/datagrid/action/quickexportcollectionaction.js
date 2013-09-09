@@ -12,20 +12,16 @@ Pim.Datagrid.Action.QuickExportCollectionAction = Oro.Datagrid.Action.NavigateAc
         }
         this.collection = options.datagrid.collection;
 
-        this.on('preExecute', _.bind(this._preExecuteSubscriber, this));
         this.launcherOptions = _.extend({
             link: this.getLink(),
-            runAction: false
+            runAction: true
         }, this.launcherOptions);
 
         Oro.Datagrid.Action.AbstractAction.prototype.initialize.apply(this, arguments);
     },
-
-    /**
-     * Execute refresh collection
-     */
+    
     execute: function() {
-        this.collection.fetch();
+        window.open(this.getLink());
     },
     
     getLink: function() {
