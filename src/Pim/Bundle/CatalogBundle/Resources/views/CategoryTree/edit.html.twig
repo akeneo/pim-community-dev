@@ -3,15 +3,15 @@
 {% block head_script %}
     {{ parent() }}
     <script type="text/javascript">
-        require(['jquery', 'pim/tree/manage', 'jquery.sidebarize'],
-        function($, TreeManage){
+        require(['jquery', 'pim/tree/manage', 'oro/navigation', 'jquery.sidebarize'],
+        function($, TreeManage, Navigation){
             $(function() {
                 'use strict';
 
                 var createBtn = $('<button>', { id: 'tree-create' }).html(
                     $('<i>', { 'class': 'icon-plus-sign' })
                 ).on('click', function() {
-                    // Pim.navigate('{{ path("pim_catalog_categorytree_create") }}');
+                    Navigation.getInstance().setLocation('{{ path("pim_catalog_categorytree_create") }}');
                 });
 
                 // Instantiate sidebar
