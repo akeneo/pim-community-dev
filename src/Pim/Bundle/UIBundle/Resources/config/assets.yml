@@ -4,7 +4,7 @@
     # - '@PimUIBundle/Resources/public/js/pim_all.js'
     # - '@PimUIBundle/Resources/public/js/jquery.sidebarize.js'
     # - '@PimUIBundle/Resources/public/js/slimbox2.js'
-    # - '@PimUIBundle/Resources/public/js/jquery.dialogForm.js'
+    # - '@PimUIBundle/Resources/public/js/pim-dialogForm.js'
     # - '@PimUIBundle/Resources/public/js/pim-dialog.js'
     # - '@PimUIBundle/Resources/public/js/pim-ajax.js'
     # - '@PimUIBundle/Resources/public/js/jquery.scopableField.js'

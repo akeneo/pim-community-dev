@@ -148,16 +148,6 @@ function init() {
         Pim.updateListener($(this));
     });
 
-    // Instantiate dialogForm
-    $('[data-form="dialog"]').each(function () {
-        $(this).dialogForm();
-    });
-
-    // Instantiate popin form
-    $('[data-form="popin"]').each(function () {
-        Pim.popinForm($(this).attr('id'));
-    });
-
     // Clean up multiselect plugin generated content that is appended to body
     $('body>.ui-multiselect-menu').appendTo($('#container'));
 

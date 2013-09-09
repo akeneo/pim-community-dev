@@ -7,7 +7,7 @@
         });
     });
 </script>
-<form id="{{ form.vars.id }}" name="{{ form.vars.name }}" class="hide" data-form="popin" data-title="{{ 'Add attributes'|trans }}" data-empty-text="{{ 'There are no more attributes to add'|trans }}" data-placeholder="{{ 'Search'|trans }}" data-target="#attribute-buttons" data-save-button="{{ 'Add'|trans }}" method="POST" action="{{ action }}">
+<form id="{{ form.vars.id }}" name="{{ form.vars.name }}" class="hide" data-title="{{ 'Add attributes'|trans }}" data-empty-text="{{ 'There are no more attributes to add'|trans }}" data-placeholder="{{ 'Search'|trans }}" data-target="#attribute-buttons" data-save-button="{{ 'Add'|trans }}" method="POST" action="{{ action }}">
     {{ form_widget(form.attributes) }}
     {{ form_widget(form._token) }}
 </form>
