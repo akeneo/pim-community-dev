@@ -47,6 +47,7 @@ define(
 
             Backbone.Router.prototype.on('route', function () {
                 $('a[href^="/"]:not(".no-hash")').off('click', linkClicked);
+                $(window).off('beforeunload');
             });
         };
     }
