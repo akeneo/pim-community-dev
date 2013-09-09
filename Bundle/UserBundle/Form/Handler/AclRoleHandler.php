@@ -229,7 +229,6 @@ class AclRoleHandler
         $this->removeUsers($entity, $removeUsers);
         $this->manager->persist($entity);
         $this->manager->flush();
-        die;
     }
 
     /**
@@ -242,8 +241,6 @@ class AclRoleHandler
     {
         /** @var $user User */
         foreach ($users as $user) {
-            var_dump($user->getId());
-
             $user->addRole($role);
             $this->manager->persist($user);
         }

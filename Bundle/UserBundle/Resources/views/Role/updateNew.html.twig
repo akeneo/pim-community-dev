@@ -9,11 +9,11 @@
     {{ parent() }}
 
     {% set listenerParameters = {
-    'columnName': 'has_role',
-    'selectors': {
-    'included': '#roleAppendUsers',
-    'excluded': '#roleRemoveUsers'
-    }
+        'columnName': 'has_role',
+        'selectors': {
+            'included': '#roleAppendUsers',
+            'excluded': '#roleRemoveUsers'
+        }
     } %}
 
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId, 'parameters': listenerParameters} %}
@@ -99,7 +99,9 @@
                         'title': '',
                         'useSpan': false,
                         'data': [
-                            form_widget(form.children[privilegeBlock])
+                            form_widget(form.children[privilegeBlock]),
+                            form_widget(form.appendUsers, {'id': 'roleAppendUsers'}),
+                            form_widget(form.removeUsers, {'id': 'roleRemoveUsers'})
                         ]
                     }
                 ]
