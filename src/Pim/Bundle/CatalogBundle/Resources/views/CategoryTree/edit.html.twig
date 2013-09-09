@@ -3,22 +3,23 @@
 {% block head_script %}
     {{ parent() }}
     <script type="text/javascript">
-        require(['jquery', 'pim/tree/manage', 'oro/navigation', 'jquery.sidebarize'],
-        function($, TreeManage, Navigation){
-            $(function() {
+        require(
+            ['jquery', 'pim/tree/manage', 'oro/navigation', 'jquery.sidebarize'],
+            function($, TreeManage, Navigation){
                 'use strict';
+                $(function() {
+                    var createBtn = $('<button>', { id: 'tree-create' }).html(
+                        $('<i>', { 'class': 'icon-plus-sign' })
+                    ).on('click', function() {
+                        Navigation.getInstance().setLocation('{{ path("pim_catalog_categorytree_create") }}');
+                    });
 
-                var createBtn = $('<button>', { id: 'tree-create' }).html(
-                    $('<i>', { 'class': 'icon-plus-sign' })
-                ).on('click', function() {
-                    Navigation.getInstance().setLocation('{{ path("pim_catalog_categorytree_create") }}');
+                    // Instantiate sidebar
+                    $('#category-tree-container').sidebarize({ buttons: [ createBtn ] });
+                    new TreeManage('#tree');
                 });
-
-                // Instantiate sidebar
-                $('#category-tree-container').sidebarize({ buttons: [ createBtn ] });
-                new TreeManage('#tree');
-            });
-        });
+            }
+        );
     </script>
 {% endblock %}
 

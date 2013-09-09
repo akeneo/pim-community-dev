@@ -5,13 +5,15 @@
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
 
     <script type="text/javascript">
-        require(['jquery', 'pim/tree/associate'],
-        function($, TreeAssociate){
-            $(function() {
+        require(
+            ['jquery', 'pim/tree/associate'],
+            function($, TreeAssociate){
                 'use strict';
-                new TreeAssociate('#trees');
-            });
-        });
+                $(function() {
+                    new TreeAssociate('#trees');
+                });
+            }
+        );
     </script>
 {% endblock %}
 
