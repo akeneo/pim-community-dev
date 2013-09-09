@@ -243,8 +243,10 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
         $this->jobExecution->setJobInstance($jobInstance);
         $this->jobExecution->setEndTime($endTime);
 
-        $expectedOutput = 'startTime=2013-02-01T12:34:56+01:00, endTime=2013-03-04T21:43:05+01:00, '.
-            'updatedTime=2013-02-03T23:45:01+01:00, status=5, exitStatus=[FAILED] Test description, '.
+        $timezone = $startTime->format('P');
+
+        $expectedOutput = 'startTime=2013-02-01T12:34:56'.$timezone.', endTime=2013-03-04T21:43:05'.$timezone.', '.
+            'updatedTime=2013-02-03T23:45:01'.$timezone.', status=5, exitStatus=[FAILED] Test description, '.
             'exitDescription=[Test description], job=[job instance code]';
 
         $this->assertEquals($expectedOutput, (string) $this->jobExecution);
