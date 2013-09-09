@@ -25,20 +25,17 @@ Pim.Datagrid.Action.QuickExportCollectionAction = Oro.Datagrid.Action.NavigateAc
      * Execute refresh collection
      */
     execute: function() {
-        window.location.href = this.getLink();
+        this.collection.fetch();
     },
     
     getLink: function() {
         var data = {};
-        
         data = this.collection.processQueryParams(data, this.collection.state);
         data = this.collection.processFiltersParams(data, this.collection.state);
         data = Oro.packToQueryString(data);
         
         var baseUrl = Routing.generate('pim_catalog_product_index', {'_format': 'csv'});
         var url = baseUrl.concat('?'+data);
-        console.log('----> ');
-        console.log(url);
         
         return url;
     }
