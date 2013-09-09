@@ -1,6 +1,6 @@
 <script type="text/javascript">
 require(
-    ['jquery', 'underscore', 'pim/initselect2', 'jquery.select2', 'bootstrap.datetimepicker', 'bootstrap.bootstrapswitch'],
+    ['jquery', 'underscore', 'pim/initselect2', 'jquery.select2', 'bootstrap.bootstrapswitch'],
     function ($, _, initSelect2) {
         'use strict';
         $(function() {
@@ -79,27 +79,6 @@ require(
                         placeholder: '{{ "Choose a unit"|trans }}'
                     });
                 }).trigger('change');
-
-                $('.picker-datetime').datetimepicker();
-                $('.picker-date').datetimepicker({ pickTime: false });
-                $('.picker-time').datetimepicker({ pickDate: false });
-
-                $('.picker-date, .picker-datetime').on('changeDate', function(e) {
-                    var val = e.date ? e.date.toISOString() : '';
-                    $(this).parent().children('input').val(val);
-                });
-
-                $('.picker-time').on('changeDate', function(e) {
-                    var val = '';
-                    if (e.localDate) {
-                        var h = e.localDate.getHours();
-                        var m = e.localDate.getMinutes();
-                        h = (h > 9) ? h : '0' + h;
-                        m = (m > 9) ? m : '0' + m;
-                        val = h + ':' + m;
-                    }
-                    $(this).parent().children('input').val(val);
-                });
             }
 
             initializeForm();
