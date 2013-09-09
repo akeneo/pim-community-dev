@@ -16,7 +16,7 @@
     # - '@OroUIBundle/Resources/public/lib/jstree/jquery.jstree.js'
     # - '@PimCatalogBundle/Resources/public/js/tree-associate.jstree.js'
     # - '@PimCatalogBundle/Resources/public/js/tree-view.jstree.js'
-    # - '@PimCatalogBundle/Resources/public/js/tree-management.jstree.js'
+    # - '@PimCatalogBundle/Resources/public/js/tree-manage.jstree.js'
 css:
   pim_ui:
     - 'bundles/pimui/css/pim.less'

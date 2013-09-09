@@ -10,14 +10,13 @@
 {% if form.vars.value.id %}
     {% set title = title ~ ' - ' ~ form.vars.value.title %}
 {% endif %}
-
 {% endspaceless %}
-{{ JSFV(form) }}
 
 {% if form.vars.value.id %}
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
 {% endif %}
 
+{{ JSFV(form) }}
 <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
     path('pim_catalog_categorytree_edit', { id: form.vars.value.id }) :
     path('pim_catalog_categorytree_create', { parent: parentId }) }}" method="POST" {{ form_enctype(form) }}>
