@@ -1,5 +1,5 @@
 @javascript
-Feature: Edit a user
+Feature: Create a user
   In order to manage the users and rights
   As Peter
   I need to be able to create a user
