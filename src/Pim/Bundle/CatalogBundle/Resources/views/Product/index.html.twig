@@ -11,7 +11,7 @@
             $(function() {
                 'use strict';
                 $('.has-sidebar').sidebarize();
-                new TreeView('tree');
+                new TreeView('#tree');
             });
         });
     </script>
@@ -53,7 +53,7 @@
     {{ elements.page_header(title, buttons, subtitle) }}
 
     <div class="row-fluid has-sidebar">
-        <div id="tree" data-tree="view" data-assets-path="{{ asset('bundles/pimcatalog/') }}" data-datalocale="{{ dataLocale }}"></div>
+        <div id="tree" data-assets-path="{{ asset('bundles/pimcatalog/') }}" data-datalocale="{{ dataLocale }}"></div>
         <div id="product-grid"></div>
     </div>
 

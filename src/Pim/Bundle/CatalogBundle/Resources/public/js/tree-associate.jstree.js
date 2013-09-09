@@ -4,7 +4,7 @@ define(
         'use strict';
 
         return function (elementId) {
-            var $el = $('#' + elementId);
+            var $el = $(elementId);
             if (!$el || !$el.length || !_.isObject($el)) {
                 throw new Error('Unable to instantiate tree on this element');
             }
