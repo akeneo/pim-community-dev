@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\UserBundle\Annotation\Acl;
-use Pim\Bundle\BatchBundle\Entity\JobExecution;
 
 /**
  * Export report controller

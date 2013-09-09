@@ -16,8 +16,8 @@ Feature: Display available field options
       | Metric        | Default value, Min number, Max number, Allow decimals, Allow negative values, Metric family, Default metric unit, Searchable |
       | Price         | Min number, Max number, Allow decimals, Allow negative values, Searchable                                                    |
       | Number        | Default value, Min number, Max number, Allow decimals, Allow negative values, Searchable                                     |
-      | Multi select  | Allow automatic value creation, Searchable                                                                                   |
-      | Simple select | Allow automatic value creation, Searchable                                                                                   |
+      | Multi select  | Searchable                                                                                                                   |
+      | Simple select | Searchable                                                                                                                   |
       | Text Area     | Default value, Max characters, WYSIWYG enabled, Searchable                                                                   |
       | Text          | Default value, Max characters, Validation rule, Searchable                                                                   |
 

@@ -48,7 +48,7 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
      * @Assert\Type(type="bool")
      * @Assert\True(groups={"UploadExecution"})
      */
-    protected $allowUpload = false;
+    protected $uploadAllowed = false;
 
     /**
      * @var SplFileObject
@@ -170,25 +170,25 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
     }
 
     /**
-     * Set the allowUpload property
-     * @param boolean $allowUpload
+     * Set the uploadAllowed property
+     * @param boolean $uploadAllowed
      *
      * @return CsvReader
      */
-    public function setAllowUpload($allowUpload)
+    public function setUploadAllowed($uploadAllowed)
     {
-        $this->allowUpload = $allowUpload;
+        $this->uploadAllowed = $uploadAllowed;
 
         return $this;
     }
 
     /**
-     * Get the allowUpload property
-     * @return boolean $allowUpload
+     * Get the uploadAllowed property
+     * @return boolean $uploadAllowed
      */
-    public function getAllowUpload()
+    public function isUploadAllowed()
     {
-        return $this->allowUpload;
+        return $this->uploadAllowed;
     }
 
     /**
@@ -243,13 +243,13 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
     public function getConfigurationFields()
     {
         return array(
-            'filePath'    => array(),
-            'allowUpload' => array(
+            'filePath'      => array(),
+            'uploadAllowed' => array(
                 'type' => 'checkbox',
             ),
-            'delimiter'   => array(),
-            'enclosure'   => array(),
-            'escape'      => array(),
+            'delimiter'     => array(),
+            'enclosure'     => array(),
+            'escape'        => array(),
         );
     }
 }

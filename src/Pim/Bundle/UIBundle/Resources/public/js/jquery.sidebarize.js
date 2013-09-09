@@ -9,14 +9,14 @@
     'use strict';
 
     function getState(key) {
-        if (Storage !== 'undefined') {
+        if (typeof Storage !== 'undefined') {
             return sessionStorage[key] || null;
         }
         return null;
     }
 
     function saveState(key, value) {
-        if (Storage !== 'undefined') {
+        if (typeof Storage !== 'undefined') {
             sessionStorage[key] = value;
         }
     }

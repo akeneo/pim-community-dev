@@ -228,7 +228,7 @@ function init() {
         }
     }
 
-    if (Storage !== 'undefined') {
+    if (typeof Storage !== 'undefined') {
         restoreFormState();
 
         $('form.form-horizontal').on('submit', saveFormState);

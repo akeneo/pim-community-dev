@@ -13,16 +13,25 @@ use Pim\Bundle\CatalogBundle\Form\Subscriber\BatchProduct\AddSelectedOperationSu
  */
 class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->subscriber = new AddSelectedOperationSubscriber();
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfEventSubscriber()
     {
         $this->assertInstanceOf('Symfony\Component\EventDispatcher\EventSubscriberInterface', $this->subscriber);
     }
 
+    /**
+     * Test related method
+     */
     public function testPreSetDataWithOperation()
     {
         $form      = $this->getFormMock();
@@ -40,10 +49,12 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
             ->method('add')
             ->with('operation', 'foo_type');
 
-
         $this->subscriber->preSetData($event);
     }
 
+    /**
+     * Test related method
+     */
     public function testPreSetDataWithoutOperation()
     {
         $form = $this->getFormMock();
@@ -58,10 +69,12 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
         $form->expects($this->never())
             ->method('add');
 
-
         $this->subscriber->preSetData($event);
     }
 
+    /**
+     * Test related method
+     */
     public function testPreSetDataWithoutData()
     {
         $form = $this->getFormMock();
@@ -75,10 +88,16 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
         $form->expects($this->never())
             ->method('add');
 
-
         $this->subscriber->preSetData($event);
     }
 
+    /**
+     * Test related method
+     * @param mixed $form
+     * @param mixed $data
+     *
+     * @return FormEvent
+     */
     protected function getFormEventMock($form, $data)
     {
         $event = $this
@@ -97,6 +116,10 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
         return $event;
     }
 
+    /**
+     * Test related method
+     * @return Form
+     */
     protected function getFormMock()
     {
         return $this
@@ -105,6 +128,12 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * Test related method
+     * @param mixed $operation
+     *
+     * @return BatchOperator
+     */
     protected function getBatchOperatorMock($operation)
     {
         $operator = $this
@@ -119,6 +148,12 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
         return $operator;
     }
 
+    /**
+     * Test related method
+     * @param mixed $formType
+     *
+     * @return BatchOperation
+     */
     protected function getBatchOperationMock($formType)
     {
         $operation = $this->getMock('Pim\Bundle\CatalogBundle\BatchOperation\BatchOperation');

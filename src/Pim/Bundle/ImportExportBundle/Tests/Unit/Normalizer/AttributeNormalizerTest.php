@@ -22,7 +22,6 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
 
     private $optionalProperties = array(
         'default_value',
-        'value_creation_allowed',
         'max_characters',
         'validation_rule',
         'validation_regexp',
@@ -105,7 +104,6 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
                     ),
                     'useable_as_grid_column' => '1',
                     'useable_as_grid_filter' => '0',
-                    'value_creation_allowed' => '1',
                 )
             ),
             array(

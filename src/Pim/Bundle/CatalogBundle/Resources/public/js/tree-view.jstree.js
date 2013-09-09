@@ -44,7 +44,7 @@ Pim.tree.view = function (elementId) {
                     var id = (node && node !== -1) ? node.attr('id').replace('node_', '') : -1;
                     return {
                         'id': id,
-                        'with_products_count': 'true'
+                        'with_products_count': 1
                     };
                 }
             }

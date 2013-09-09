@@ -15,7 +15,6 @@ use Pim\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Oro\Bundle\UserBundle\Annotation\Acl;
 
 /**
  * Job execution controller
@@ -43,15 +42,16 @@ class JobExecutionController extends AbstractDoctrineController
 
     /**
      * Constructor
-     * @param Request $request
-     * @param EngineInterface $templating
-     * @param RouterInterface $router
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
      * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface $formFactory
-     * @param ValidatorInterface $validator
-     * @param RegistryInterface $doctrine
-     * @param DatagridWorkerInterface $dataGridWorker
-     * @param BatchLogHandler $batchLogHandler
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param RegistryInterface        $doctrine
+     * @param DatagridWorkerInterface  $dataGridWorker
+     * @param BatchLogHandler          $batchLogHandler
+     * @param string                   $jobType
      */
     public function __construct(
         Request $request,
@@ -100,6 +100,8 @@ class JobExecutionController extends AbstractDoctrineController
 
     /**
      * Download the log file of the job execution
+     *
+     * @param integer $id
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */

@@ -53,7 +53,7 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      *
      * @var boolean
      */
-    protected $checkCircularRefs = true;
+    protected $circularRefsChecked = true;
 
     /**
      * Property for storing data during execution
@@ -122,23 +122,23 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     }
 
     /**
-     * Set checkCircularRefs
+     * Set circularRefsChecked
      *
-     * @param boolean $checkCircularRefs
+     * @param boolean $circularRefsChecked
      */
-    public function setCheckCircularRefs($checkCircularRefs)
+    public function setCircularRefsChecked($circularRefsChecked)
     {
-        $this->checkCircularRefs = $checkCircularRefs;
+        $this->circularRefsChecked = $circularRefsChecked;
     }
 
     /**
-     * Get checkCircularRefs
+     * Is circularRefsChecked
      *
      * @return boolean
      */
-    public function getCheckCircularRefs()
+    public function isCircularRefsChecked()
     {
-        return $this->checkCircularRefs;
+        return $this->circularRefsChecked;
     }
 
     /**
@@ -147,9 +147,9 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     public function getConfigurationFields()
     {
         return array(
-            'titleDelimiter' => array(),
-            'localeDelimiter' => array(),
-            'checkCircularRefs' => array(
+            'titleDelimiter'      => array(),
+            'localeDelimiter'     => array(),
+            'circularRefsChecked' => array(
                 'type' => 'checkbox',
             ),
         );
@@ -185,7 +185,7 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
             }
         }
 
-        if ($this->checkCircularRefs === true) {
+        if ($this->circularRefsChecked === true) {
             $this->checkCircularReferences();
         }
 
