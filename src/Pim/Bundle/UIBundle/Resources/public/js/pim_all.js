@@ -94,9 +94,6 @@ function init() {
         $('#add-filter-select').multiselect('refresh');
     });
 
-    // Instantiate sidebar
-    $('.has-sidebar').sidebarize();
-
     $('.remove-attribute').each(function () {
         var target = $(this).parent().find('.icons-container').first();
         if (target.length) {
