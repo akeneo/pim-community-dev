@@ -79,7 +79,7 @@ var jsfv = new function () {
 {% endblock %}
 
     function checkError(field, checkFunction, parameters, value) {
-        if (!$("#" + field).length) {
+        if (!$("#" + field).length || $("#" + field).is(':disabled')) {
             return true;
         }
         field = jsfv.id(field);

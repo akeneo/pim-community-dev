@@ -14,7 +14,7 @@ function(_, Backbone, AbstractWidget) {
             titleContainer: '.widget-title',
             actionsContainer: '.widget-actions-container',
             contentContainer: '.row-fluid',
-            contentClasses: ['box-content'],
+            contentClasses: [],
             template: _.template('<div class="box-type1">' +
                 '<div class="title">' +
                     '<div class="pull-right widget-actions-container"></div>' +
