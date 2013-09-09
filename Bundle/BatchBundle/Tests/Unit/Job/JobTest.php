@@ -344,7 +344,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
     private function getReaderMock(array $configuration, array $fields = array())
     {
         $reader = $this
-            ->getMockBuilder('Oro\Bundle\ImportExportBundle\Reader\ProductReader')
+            ->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -362,7 +362,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
     private function getProcessorMock(array $configuration, array $fields = array())
     {
         $processor = $this
-            ->getMockBuilder('Oro\Bundle\ImportExportBundle\Processor\CsvSerializerProcessor')
+            ->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -379,7 +379,9 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
     private function getWriterMock(array $configuration, array $fields = array())
     {
-        $writer = $this->getMock('Oro\Bundle\ImportExportBundle\Writer\FileWriter');
+        $writer = $this
+            ->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper')
+            ->getMock();
 
         $writer->expects($this->any())
             ->method('getConfiguration')
