@@ -18,8 +18,7 @@
     # - '@PimCatalogBundle/Resources/public/js/tree-manage.jstree.js'
 css:
   pim_ui:
-    - 'bundles/pimui/css/pim.less'
+    # - 'bundles/pimui/css/pim.less'
     - 'bundles/pimui/css/bootstrap-datetimepicker.min.css'
     - 'bundles/pimui/css/slimbox2.css'
-    - 'bundles/pimui/css/font-awesome/font-awesome.min.css'
     - 'bundles/pimui/css/flags.less'
