@@ -1,14 +1,19 @@
-oro_default:
-    pattern:  /
-    defaults:
-        template:    PimCatalogBundle:Dashboard:index.html.twig
-        _controller: FrameworkBundle:Template:template
+# PIM
 
 pim_product:
     resource: "@PimCatalogBundle/Resources/config/routing.yml"
 
 pim_importexport:
     resource: "@PimImportExportBundle/Resources/config/routing.yml"
+
+# Oro platform
+
+oro_default:
+    pattern:  /
+    defaults:
+        template:    PimCatalogBundle:Dashboard:index.html.twig
+        _controller: FrameworkBundle:Template:template
+
 
 oro_ui:
     resource: "@OroUIBundle/Resources/config/routing.yml"
@@ -62,6 +67,26 @@ oro_organization:
     resource: "@OroOrganizationBundle/Resources/config/routing.yml"
     prefix:   /
 
+oro_translation_bundle:
+    resource: "@OroTranslationBundle/Resources/config/routing.yml"
+    prefix:   /
+
+oro_assets:
+    resource: .
+    type: oro_assetic
+
+oro_entity_config:
+    resource: "@OroEntityConfigBundle/Resources/config/routing.yml"
+
+oro_entity_extend:
+    resource: "@OroEntityExtendBundle/Resources/config/routing.yml"
+
+oro_cron:
+    resource: "@OroCronBundle/Resources/config/routing.yml"
+    prefix:   /cron
+
+# other third party
+
 nelmio_api_doc:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc
@@ -73,18 +98,6 @@ _imagine:
     resource: .
     type:     imagine
 
-oro_translation_bundle:
-    resource: "@OroTranslationBundle/Resources/config/routing.yml"
-
 _apy_jsformvalidation:
     resource: "@APYJsFormValidationBundle/Resources/config/routing/routing.yml"
 
-oro_assets:
-    resource: .
-    type: oro_assetic
-
-oro_entity_config:
-    resource: "@OroEntityConfigBundle/Resources/config/routing.yml"
-
-oro_entity_extend:
-    resource: "@OroEntityExtendBundle/Resources/config/routing.yml"
