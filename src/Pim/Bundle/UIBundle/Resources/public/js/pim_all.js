@@ -5,55 +5,6 @@ Pim.navigate = function (route) {
     Oro.hashNavigationInstance.setLocation(route);
 };
 
-// Listener for form update events (used in product edit form)
-Pim.updateListener = function ($form) {
-    'use strict';
-    this.updated = false;
-    var message     = $form.attr('data-updated-message'),
-        title       = $form.attr('data-updated-title'),
-        self        = this,
-        formUpdated = function () {
-            self.updated = true;
-            $('#updated').show();
-
-            $form.off('change', formUpdated);
-            $form.find('ins.jstree-checkbox').off('click', formUpdated);
-
-            $form.find('button[type="submit"]').on('click', function () {
-                self.updated = false;
-            });
-
-            $(window).on('beforeunload', function () {
-                if (self.updated) {
-                    return message;
-                }
-            });
-        },
-        linkClicked = function (e) {
-            e.stopImmediatePropagation();
-            e.preventDefault();
-            var url      = $(this).attr('href'),
-                doAction = function () {
-                    Pim.navigate(url);
-                };
-            if (!self.updated) {
-                doAction();
-            } else {
-                PimDialog.confirm(message, title, doAction);
-            }
-            return false;
-        };
-
-    $form.on('change', formUpdated);
-    $form.find('ins.jstree-checkbox').on('click', formUpdated);
-
-    $('a[href^="/"]:not(".no-hash")').off('click').on('click', linkClicked);
-
-    Backbone.Router.prototype.on('route', function () {
-        $('a[href^="/"]:not(".no-hash")').off('click', linkClicked);
-    });
-};
-
 function init() {
     'use strict';
     // Place code that we need to run on every page load here
@@ -111,11 +62,6 @@ function init() {
     $('.dropdown-menu.channel a').click(function (e) {
         e.preventDefault();
         Oro.Events.trigger('scopablefield:' + $(this).data('action'));
-    });
-
-    // Add form update listener
-    $('form[data-updated-message]').each(function () {
-        Pim.updateListener($(this));
     });
 
     // Clean up multiselect plugin generated content that is appended to body
