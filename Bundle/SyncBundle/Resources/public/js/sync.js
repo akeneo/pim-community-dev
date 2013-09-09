@@ -1,5 +1,5 @@
 /* jshint browser:true */
-define(['jquery', '_', 'backbone', 'oro/translator', 'oro/messenger'],
+define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/messenger'],
 function ($, _, Backbone, __, messenger) {
     'use strict';
     var service,
@@ -14,8 +14,11 @@ function ($, _, Backbone, __, messenger) {
          * @returns Oro.Synchronizer
          *
          * @var {Function} sync protected shortcut for Oro.Synchronizer
+         *
+         * @export oro/sync
+         * @name   oro.sync
          */
-        sync = Oro.Synchronizer = function (serv) {
+        sync = function (serv) {
             if (!(_.isObject(serv) && _.isFunction(serv.subscribe) && _.isFunction(serv.unsubscribe))) {
                 throw new Error('Synchronization service does not fit requirements');
             }
@@ -89,7 +92,7 @@ function ($, _, Backbone, __, messenger) {
      * Establish connection with server and updates a provided object instantly
      *
      * @param {Backbone.Collection|Backbone.Model} obj
-     * @returns {Oro.Synchronizer}
+     * @returns {oro.sync}
      */
     sync.keepRelevant = function (obj) {
         checkService();
@@ -106,7 +109,7 @@ function ($, _, Backbone, __, messenger) {
      * Drops instant update connection for provided object
      *
      * @param {Backbone.Collection|Backbone.Model} obj
-     * @returns {Oro.Synchronizer}
+     * @returns {oro.sync}
      */
     sync.stopTracking = function (obj) {
         checkService();
@@ -126,5 +129,5 @@ function ($, _, Backbone, __, messenger) {
         service.connect();
     };
 
-    return Oro.Synchronizer;
+    return sync;
 });

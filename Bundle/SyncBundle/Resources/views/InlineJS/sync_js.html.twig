@@ -1,20 +1,20 @@
 <script type="text/javascript">
-    $(document).on('click.action.data-api', '[data-action=sync-connect]', function (e) {
-        Oro.Synchronizer.reconnect();
-        $(e.target).closest('.alert').alert('close');
-        e.preventDefault();
-    });
-    /*Oro.Synchronizer(new Oro.Synchronizer.Ajax({
-        url: '/sync_ap.php'
-    }));*/
-    Oro.Synchronizer(new Oro.Synchronizer.Wamp({
-        host: '127.0.0.1',
-        port: 8000
-    }));
-    Oro.Events.on('datagrid_collection_set_after', function(obj) {
-        Oro.Synchronizer.keepRelevant(obj.collection);
-        Oro.Events.once('hash_navigation_request:start', function() {
-            Oro.Synchronizer.stopTracking(obj.collection);
+    require(['jquery', 'oro/mediator', 'oro/sync', 'oro/sync/wamp' ],
+    function($, mediator, sync, Wamp){
+        $(document).on('click.action.data-api', '[data-action=sync-connect]', function (e) {
+            sync.reconnect();
+            $(e.target).closest('.alert').alert('close');
+            e.preventDefault();
         });
+        sync(new Wamp({
+            host: '127.0.0.1',
+            port: 8080
+        }));
+        /*mediator.on('datagrid_collection_set_after', function(obj) {
+            sync.keepRelevant(obj.collection);
+            mediator.once('hash_navigation_request:start', function() {
+                sync.stopTracking(obj.collection);
+            });
+        });*/
     });
 </script>

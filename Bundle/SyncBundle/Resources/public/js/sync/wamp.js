@@ -1,13 +1,6 @@
 /* jshint browser:true */
-(function (factory) {
-    'use strict';
-    /* global define, jQuery, _, Backbone, ab, Oro */
-    if (typeof define === 'function' && define.amd) {
-        define(['jQuery', '_', 'Backbone', 'ab', 'OroSynchronizer'], factory);
-    } else {
-        factory(jQuery, _, Backbone, ab, Oro.Synchronizer);
-    }
-}(function ($, _, Backbone, ab, Synchronizer) {
+define(['jquery', 'underscore', 'backbone', 'autobahn'],
+function ($, _, Backbone, ab) {
     'use strict';
     var defaultOptions = {
             port: 80,
@@ -59,34 +52,37 @@
         onHangup = function(code, msg, details) {
             this.trigger('connection_lost', _.extend({code: code}, details || {}));
             this.session = null;
+        },
+
+        /**
+         * Synchronizer service build over WAMP (autobahn.js implementation)
+         *
+         * @constructor
+         * @param {Object} options to configure service
+         * @param {string} options.host is required
+         * @param {number=} options.port default is 80
+         * @param {number=} options.retryDelay time before next reconnection attempt, default is 5000 (5s)
+         * @param {number=} options.maxRetries quantity of attempts before stop reconnection, default is 10
+         * @param {boolean=} options.skipSubprotocolCheck, default is false
+         * @param {boolean=} options.skipSubprotocolAnnounce, default is false
+         * @param {boolean=} options.debug, default is false
+         *
+         * @export  oro/sync/wamp
+         * @class   oro.sync.Wamp
+         */
+        Wamp = function (options) {
+            this.options = _.extend({}, defaultOptions, options);
+            if (!this.options.host) {
+                throw new Error('host option is required');
+            }
+            this.channels = {};
+            if (this.options.debug) {
+                ab.debug(true, true, true);
+            }
+            this.connect();
         };
 
-    /**
-     * Synchronizer service build over WAMP (autobahn.js implementation)
-     *
-     * @constructor
-     * @param {Object} options to configure service
-     * @param {string} options.host is required
-     * @param {number=} options.port default is 80
-     * @param {number=} options.retryDelay time before next reconnection attempt, default is 5000 (5s)
-     * @param {number=} options.maxRetries quantity of attempts before stop reconnection, default is 10
-     * @param {boolean=} options.skipSubprotocolCheck, default is false
-     * @param {boolean=} options.skipSubprotocolAnnounce, default is false
-     * @param {boolean=} options.debug, default is false
-     */
-    Synchronizer.Wamp = function (options) {
-        this.options = _.extend({}, defaultOptions, options);
-        if (!this.options.host) {
-            throw new Error('host option is required');
-        }
-        this.channels = {};
-        if (this.options.debug) {
-            ab.debug(true, true, true);
-        }
-        this.connect();
-    };
-
-    Synchronizer.Wamp.prototype = {
+    Wamp.prototype = {
         /**
          * Initiate connection process
          */
@@ -141,7 +137,7 @@
         }
     };
 
-    _.extend(Synchronizer.Wamp.prototype, Backbone.Events);
+    _.extend(Wamp.prototype, Backbone.Events);
 
-    return Synchronizer.Wamp;
-}));
+    return Wamp;
+});
