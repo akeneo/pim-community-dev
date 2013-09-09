@@ -7,7 +7,6 @@ Feature: Edit a user
   Background:
     Given I am logged in as "admin"
 
-  @skip
   Scenario: Successfully create a user
     Given I am on the user creation page
     Then I fill in the following information:
