@@ -3034,12 +3034,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "0b974cb7e9ea7bb65a2eeb2838faba7c3ae58266"
+                "reference": "36667c0e8c2cf6c6b507cae3d6780a5adee5e54b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/0b974cb7e9ea7bb65a2eeb2838faba7c3ae58266",
-                "reference": "0b974cb7e9ea7bb65a2eeb2838faba7c3ae58266",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/36667c0e8c2cf6c6b507cae3d6780a5adee5e54b",
+                "reference": "36667c0e8c2cf6c6b507cae3d6780a5adee5e54b",
                 "shasum": ""
             },
             "require": {
@@ -3099,10 +3099,10 @@
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/laboro/platform.git",
             "support": {
-                "source": "https://github.com/laboro/platform/tree/master",
+                "source": "https://github.com/laboro/platform/tree/feature/BAP-161/grid-views",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-09-09 09:49:12"
+            "time": "2013-09-09 14:14:18"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -3723,12 +3723,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "a010ed47216bae4532dcc7c868e128382a58e656"
+                "reference": "a672bba5cbe2e077534c4a676baaa8fceeaea70a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/a010ed47216bae4532dcc7c868e128382a58e656",
-                "reference": "a010ed47216bae4532dcc7c868e128382a58e656",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/a672bba5cbe2e077534c4a676baaa8fceeaea70a",
+                "reference": "a672bba5cbe2e077534c4a676baaa8fceeaea70a",
                 "shasum": ""
             },
             "require": {
@@ -3823,7 +3823,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-09-08 16:12:21"
+            "time": "2013-09-09 12:26:34"
         },
         {
             "name": "twig/extensions",
