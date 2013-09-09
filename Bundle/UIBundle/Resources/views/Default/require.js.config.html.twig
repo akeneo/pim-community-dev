@@ -86,6 +86,23 @@ var require = {
         'routing': {
             exports: 'window.Routing'
         },
+        'cryptojs/enc-base64': {
+            deps: ['cryptojs/core']
+        },
+        'cryptojs/hmac': {
+            deps: ['cryptojs/core']
+        },
+        'cryptojs/sha256': {
+            deps: ['cryptojs/core']
+        },
+        'cryptojs/pbkdf2': {
+            deps: ['cryptojs/core']
+        },
+        'autobahn': {
+            deps: ['when', 'cryptojs/core', 'cryptojs/enc-base64',
+                'cryptojs/hmac', 'cryptojs/sha256', 'cryptojs/pbkdf2'],
+            exports: 'ab'
+        },
         'oro/translations': {
             deps: ['oro/translator', 'translator'],
             init: function(__) {
@@ -123,6 +140,13 @@ var require = {
         'url': 'oronavigation/lib/url.min',
         'translator': 'bazingaexposetranslation/js/translator.min',
         'routing': 'fosjsrouting/js/router',
+        'cryptojs/core': 'orosync/lib/cryptojs/core-min',
+        'cryptojs/enc-base64': 'orosync/lib/cryptojs/enc-base64-min',
+        'cryptojs/hmac': 'orosync/lib/cryptojs/hmac-min',
+        'cryptojs/sha256': 'orosync/lib/cryptojs/sha256-min',
+        'cryptojs/pbkdf2': 'orosync/lib/cryptojs/pbkdf2-min',
+        'when': 'orosync/lib/when',
+        'autobahn': 'orosync/lib/autobahn',
 
         'oro/address-book': 'oroaddress/js/address-book',
         'oro/address/collection': 'oroaddress/js/address/collection',
@@ -175,9 +199,11 @@ var require = {
         'oro/datagrid/select-cell': 'orogrid/js/datagrid/cell/select-cell',
         'oro/datagrid/select-row-cell': 'orogrid/js/datagrid/cell/select-row-cell',
         'oro/datagrid/string-cell': 'orogrid/js/datagrid/cell/string-cell',
+        'oro/datagrid/percent-cell': 'orogrid/js/datagrid/cell/percent-cell',
         'oro/datagrid/filter-list': 'orogrid/js/datagrid/filter-list',
         'oro/datagrid/cell-formatter': 'orogrid/js/datagrid/formatter/cell-formatter',
         'oro/datagrid/moment-formatter': 'orogrid/js/datagrid/formatter/moment-formatter',
+        'oro/datagrid/percent-formatter': 'orogrid/js/datagrid/formatter/percent-formatter',
         'oro/datagrid/grid': 'orogrid/js/datagrid/grid',
         'oro/datagrid/header-cell': 'orogrid/js/datagrid/header-cell/header-cell',
         'oro/datagrid/select-all-header-cell': 'orogrid/js/datagrid/header-cell/select-all-header-cell',
@@ -207,6 +233,9 @@ var require = {
         'oro/navigation/pinbar/view': 'oronavigation/js/navigation/pinbar/view',
         'oro/navigation/shortcuts/view': 'oronavigation/js/navigation/shortcuts/view',
         'oro/init-search-bar': 'orosearch/js/init-search-bar',
+        'oro/sync': 'orosync/js/sync',
+        'oro/sync/wamp': 'orosync/js/sync/wamp',
+        'oro/when-setup': 'orosync/js/when-setup',
         'oro/tag/collection': 'orotag/js/tag/collection',
         'oro/tag/model': 'orotag/js/tag/model',
         'oro/tag/update-view': 'orotag/js/tag/update-view',
@@ -225,10 +254,12 @@ var require = {
         'oro/widget-manager': 'oroui/js/widget-manager',
         'oro/abstract-widget': 'oroui/js/widget/abstract-widget',
         'oro/block-widget': 'oroui/js/widget/block-widget',
+        'oro/buttons-widget': 'oroui/js/widget/buttons-widget',
         'oro/init-user': 'orouser/js/init-user',
         'oro/dialog-widget': 'orowindows/js/dialog-widget',
         'oro/dialog/state/collections': 'orowindows/js/dialog/state/collections',
-        'oro/dialog/state/model': 'orowindows/js/dialog/state/model'
+        'oro/dialog/state/model': 'orowindows/js/dialog/state/model',
+        'oro/form/state': 'oroconfig/js/form/state'
     },
     map: {
         'backbone/pageable-collection': {
@@ -236,10 +267,14 @@ var require = {
         },
         '*': {
             'jquery': 'oro/jquery-setup',
+            'when': 'oro/when-setup',
             'oro/translator': 'oro/translations'
         },
         'oro/jquery-setup': {
             'jquery': 'jquery'
+        },
+        'oro/when-setup': {
+            'when': 'when'
         },
         'oro/translations': {
             'oro/translator': 'oro/translator'

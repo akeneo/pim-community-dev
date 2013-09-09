@@ -1,7 +1,7 @@
 /* global define */
-define(['underscore', 'backbone', 'oro/translator', 'oro/mediator', 'oro/messenger', 'oro/widget-manager',
+define(['underscore', 'backbone', 'oro/translator', 'oro/mediator', 'oro/messenger', 'oro/dialog-widget',
     'oro/mapservice/googlemaps', 'oro/address/view', 'oro/address/collection'],
-function(_, Backbone, __, mediator, messenger, widgetManager,
+function(_, Backbone, __, mediator, messenger, dialogWidget,
      Googlemaps, AddressView, AddressCollection) {
     'use strict';
 
@@ -62,9 +62,13 @@ function(_, Backbone, __, mediator, messenger, widgetManager,
                 if (primaryAddress.length) {
                     primaryAddress[0].set('active', true);
                 } else if (this.getCollection().length) {
-                    this.getCollection().at(0).set('active', true);
+                    this._activateFirstAddress();
                 }
             }
+        },
+
+        _activateFirstAddress: function() {
+            this.getCollection().at(0).set('active', true);
         },
 
         addAll: function(items) {
@@ -72,7 +76,11 @@ function(_, Backbone, __, mediator, messenger, widgetManager,
             items.each(function(item) {
                 this.addAddress(item);
             }, this);
-            this._activatePreviousAddress();
+            if (items.length == 1) {
+                this._activateFirstAddress();
+            } else {
+                this._activatePreviousAddress();
+            }
         },
 
         _activatePreviousAddress: function() {
@@ -102,7 +110,7 @@ function(_, Backbone, __, mediator, messenger, widgetManager,
 
         _openAddressEditForm: function(title, url) {
             if (!this.addressEditDialog) {
-                this.addressEditDialog = widgetManager.createWidget('dialog', {
+                this.addressEditDialog = new dialogWidget({
                     'url': url,
                     'title': title,
                     'stateEnabled': false,
