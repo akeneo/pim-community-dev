@@ -527,7 +527,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
             } elseif (!$isLocalizable) {
                 if ($isScopable and $isScoped) {
                     return true;
-                } else if (!$isScopable) {
+                } elseif (!$isScopable) {
                     return true;
                 }
             }

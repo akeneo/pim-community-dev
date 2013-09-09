@@ -67,7 +67,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
          * @property
          */
         selectors: {
-            links:          'a:not([href^=#],[href^=javascript],[href^=mailto],[href^=skype]),span[data-url]',
+            links:          'a:not([href^=#],[href^=javascript],[href^=mailto],[href^=skype],[href^=ftp],[href^=callto],[href^=tel]),span[data-url]',
             scrollLinks:    'a[href^=#]',
             forms:          'form',
             content:        '#content',
@@ -1044,7 +1044,11 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                     link = $(target).attr('data-url');
                 }
                 if (link) {
-                    this.setLocation(link);
+                    var event = {stoppedProcess: false, hashNavigationInstance: this, link: link};
+                    mediator.trigger("hash_navigation_click", event);
+                    if (event.stoppedProcess === false) {
+                        this.setLocation(link);
+                    }
                 }
                 return false;
             }, this));

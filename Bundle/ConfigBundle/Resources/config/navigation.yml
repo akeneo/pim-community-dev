@@ -1,0 +1,15 @@
+oro_menu_config:
+    items:
+        system_configuraion:
+            label: 'Configuration'
+            route: 'oro_config_configuration_system'
+
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        system_configuraion: ~
+
+oro_titles:
+    oro_config_configuration_system: "System configuration"

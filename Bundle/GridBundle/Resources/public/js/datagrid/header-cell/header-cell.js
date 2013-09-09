@@ -1,6 +1,6 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'backgrid'],
-function ($, _, Backbone, Backgrid) {
+define(['jquery', 'underscore', 'backbone', 'backgrid', 'oro/pageable-collection'],
+function ($, _, Backbone, Backgrid, PageableCollection) {
     "use strict";
 
     /**
@@ -100,7 +100,7 @@ function ($, _, Backbone, Backgrid) {
                         if (leftVal === rightVal) {
                             return 0;
                         }
-                        else if (leftVal.toLowerCase() > rightVal.toLowerCase()) { return -1; }
+                        else if (leftVal > rightVal) { return -1; }
                         return 1;
                     });
                 }
@@ -114,7 +114,7 @@ function ($, _, Backbone, Backgrid) {
                         if (leftVal === rightVal) {
                             return 0;
                         }
-                        else if (leftVal.toLowerCase() < rightVal.toLowerCase()) { return -1; }
+                        else if (leftVal < rightVal) { return -1; }
                         return 1;
                     });
                 }
@@ -132,7 +132,7 @@ function ($, _, Backbone, Backgrid) {
 
             var collection = this.collection;
 
-            if (Backbone.PageableCollection && collection instanceof Backbone.PageableCollection) {
+            if (collection instanceof PageableCollection) {
                 var order;
                 if (direction === "ascending") order = -1;
                 else if (direction === "descending") order = 1;

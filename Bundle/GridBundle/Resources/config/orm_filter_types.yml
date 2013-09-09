@@ -17,6 +17,12 @@ services:
         tags:
             - { name: oro_grid.filter.type, alias: oro_grid_orm_number }
 
+    oro_grid.orm.filter.type.percent:
+        class:     Oro\Bundle\GridBundle\Filter\ORM\PercentFilter
+        arguments: ["@translator"]
+        tags:
+            - { name: oro_grid.filter.type, alias: oro_grid_orm_percent }
+
     oro_grid.orm.filter.type.string:
         class:     Oro\Bundle\GridBundle\Filter\ORM\StringFilter
         arguments: ["@translator"]
