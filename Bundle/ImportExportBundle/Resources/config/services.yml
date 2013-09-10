@@ -1,14 +1,3 @@
 parameters:
-    oro_importexport.value_converter.registry.class: Oro\Bundle\ImportExportBundle\ValueConverter\ValueConverterRegistry
-    oro_importexport.item_converter.registry.class:  Oro\Bundle\ImportExportBundle\ItemConverter\ItemConverterRegistry
 
 services:
-    oro_importexport.value_converter.registry:
-        class: %oro_importexport.value_converter.registry.class%
-        arguments:
-            - {}
-
-    oro_importexport.item_converter.registry:
-        class: %oro_importexport.item_converter.registry.class%
-        arguments:
-            - {}

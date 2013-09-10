@@ -6,9 +6,7 @@
     "license": "MIT",
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": ">=2.1",
-        "oro/flexible-entity-bundle": "dev-master",
-        "ddeboer/data-import": "dev-master"
+        "symfony/symfony": ">=2.1"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\ImportExportBundle": "" }

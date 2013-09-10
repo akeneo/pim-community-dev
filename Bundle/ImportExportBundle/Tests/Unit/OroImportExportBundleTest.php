@@ -4,7 +4,7 @@ namespace Oro\Bundle\ImportExportBundle\Tests\Unit;
 
 use Oro\Bundle\ImportExportBundle\OroImportExportBundle;
 
-class OroGridBundleTest extends \PHPUnit_Framework_TestCase
+class OroImportExportBundleTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var OroImportExportBundle
