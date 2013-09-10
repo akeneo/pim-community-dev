@@ -1,5 +1,6 @@
 require(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'pim/dialog', 'pim/initselect2', 'bootstrap', 'jquery-ui', 'bootstrap.bootstrapswitch', 'jquery.slimbox'],
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'pim/dialog', 'pim/initselect2', 'bootstrap',
+        'jquery-ui', 'bootstrap.bootstrapswitch', 'bootstrap.tooltip', 'jquery.slimbox'],
     function ($, __, mediator, Navigation, Dialog, initSelect2) {
         'use strict';
 
@@ -31,6 +32,9 @@ require(
 
             // Apply bootstrapSwitch
             $('.switch:not(.has-switch)').bootstrapSwitch();
+
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip();
 
             // Destroy Select2 where it's not necessary
             $('#default_channel').select2('destroy');
