@@ -51,6 +51,12 @@
 {% endblock stats%}
 
 {% block content_data %}
+    {% if require_js|length %}
+        <script type="text/javascript">
+            require(['{{ require_js|join(',') }}'])
+        </script>
+    {% endif %}
+
     {% set id = 'entityconfig-view' %}
     {% set unique_keys = [] %}
     {% for key in unique_key.keys|default %}
