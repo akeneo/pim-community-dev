@@ -66,7 +66,7 @@ class StepElementConfigurationType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Oro\\Bundle\\ImportExportBundle\\AbstractConfigurableStepElement',
+                'data_class' => 'Oro\\Bundle\\BatchBundle\\Item\\AbstractConfigurableStepElement',
             )
         );
     }
