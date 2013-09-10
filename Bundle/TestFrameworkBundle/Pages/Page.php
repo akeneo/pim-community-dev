@@ -72,6 +72,18 @@ class Page
     {
         $this->test->waitUntil(
             function ($testCase) {
+                $status = $testCase->execute(array('script' => "return 'complete' == document['readyState']", 'args' => array()));
+                if ($status) {
+                    return true;
+                } else {
+                    return null;
+                }
+            },
+            intval(MAX_EXECUTION_TIME)
+        );
+
+        $this->test->waitUntil(
+            function ($testCase) {
                 $status = $testCase->execute(array('script' => "return !!document['page-rendered']", 'args' => array()));
                 if ($status) {
                     return true;

@@ -23,7 +23,23 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
     {
         $this->waitUntil(
             function ($testCase) {
-                $status = $testCase->execute(array('script' => "return !!document['page-rendered']", 'args' => array()));
+                $status = $testCase->execute(
+                    array('script' => "return 'complete' == document['readyState']", 'args' => array())
+                );
+                if ($status) {
+                    return true;
+                } else {
+                    return null;
+                }
+            },
+            intval(MAX_EXECUTION_TIME)
+        );
+
+        $this->waitUntil(
+            function ($testCase) {
+                $status = $testCase->execute(
+                    array('script' => "return !!document['page-rendered']", 'args' => array())
+                );
                 if ($status) {
                     return true;
                 } else {
