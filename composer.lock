@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "c5d95a3ba81cac181f863531362f2e84",
+    "hash": "1465e8b850641d2c876ffaaa0c6c414d",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -3464,16 +3464,16 @@
         },
         {
             "name": "oro/platform",
-            "version": "dev-pim-require-js-upgrade",
+            "version": "dev-maintenance/pim_alpha5",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "14279566dedfd4d5bf5f5395a339780b8910c6ee"
+                "reference": "dbdc1d06d191558e015bddc9ed8345b3f16f6011"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/14279566dedfd4d5bf5f5395a339780b8910c6ee",
-                "reference": "14279566dedfd4d5bf5f5395a339780b8910c6ee",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/dbdc1d06d191558e015bddc9ed8345b3f16f6011",
+                "reference": "dbdc1d06d191558e015bddc9ed8345b3f16f6011",
                 "shasum": ""
             },
             "require": {
@@ -3536,10 +3536,10 @@
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/laboro/platform.git",
             "support": {
-                "source": "https://github.com/laboro/platform/tree/master",
+                "source": "https://github.com/laboro/platform/tree/maintenance/pim_alpha5",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-09-10 10:36:36"
+            "time": "2013-09-10 10:56:03"
         },
         {
             "name": "phpcollection/phpcollection",
