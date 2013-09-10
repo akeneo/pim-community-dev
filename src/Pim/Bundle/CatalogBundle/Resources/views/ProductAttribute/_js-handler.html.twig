@@ -1,6 +1,6 @@
 <script type="text/javascript">
 require(
-    ['jquery', 'underscore', 'pim/initselect2', 'jquery.select2', 'bootstrap.bootstrapswitch'],
+    ['jquery', 'underscore', 'pim/initselect2', 'jquery.select2', 'bootstrap.bootstrapswitch', 'bootstrap.tooltip'],
     function ($, _, initSelect2) {
         'use strict';
         $(function() {
@@ -27,7 +27,7 @@ require(
 
             function initializeForm() {
                 $('#'+formName+' .switch:not(.has-switch)').bootstrapSwitch();
-                $('#'+formName+' a.validation-tooltip').tooltip();
+                $('[data-toggle="tooltip"]').tooltip();
 
                 initSelect2();
 
