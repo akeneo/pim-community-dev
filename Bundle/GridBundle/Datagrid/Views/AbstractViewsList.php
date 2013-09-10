@@ -111,8 +111,8 @@ abstract class AbstractViewsList
     {
         $parameters = $datagrid->getParameters();
 
-        $filters = $parameters->get(ParametersInterface::FILTER_PARAMETERS);
-        $sorters = $parameters->get(ParametersInterface::SORT_PARAMETERS);
+        //$filters = $parameters->get(ParametersInterface::FILTER_PARAMETERS);
+        //$sorters = $parameters->get(ParametersInterface::SORT_PARAMETERS);
         $viewName = $parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
 
         // test
@@ -124,11 +124,11 @@ abstract class AbstractViewsList
             return false;
         }
 
-        $parameters->set('_filters', $view->getFiltersData());
+        $parameters->set(ParametersInterface::FILTER_PARAMETERS, $view->getFiltersData());
         $viewSorters = $view->getSortersData();
         if (empty($viewSorters)) {
             $viewSorters = $defaultGridParameters[ParametersInterface::SORT_PARAMETERS];
         }
-        $parameters->set('_sort_by', $viewSorters);
+        $parameters->set(ParametersInterface::SORT_PARAMETERS, $viewSorters);
     }
 }
