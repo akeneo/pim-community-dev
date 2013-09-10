@@ -99,7 +99,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
             if (this.state.sorters && options.state) {
                 _.each(options.state.sorters, function(direction, field) {
-                    this.setSorting(field, direction, {'reset': false});
+                    this.setSorting(field, direction);
                 }, this);
             }
         },
@@ -347,7 +347,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
             var fullCollection = this.fullCollection, links = this.links;
 
-        if (mode != "server") {
+            if (mode != "server") {
 
                 var self = this;
                 var success = options.success;
@@ -466,24 +466,22 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @return {*}
          */
         setSorting: function (sortKey, order, options) {
-
             var state = this.state;
 
-            if (!options || !_.has(options, 'reset') || options.reset) {
-                state.sorters = {};
+            state.sorters = state.sorters || {};
+
+            // there is always must be at least one sorted column
+            if (_.keys(state.sorters).length <= 1 && !order) {
+                order = "-1";  // default order is ASC
             }
+
             state.sorters[sortKey] = order;
 
-            // multiple sorting, last sorting has lowest priority
-            //
-            // to enable uncomment this block, remove block that works with sorters several string higher
-            // and remove reset option usage in initialize method
-            /*
+            // multiple sorting, last sorting has the lowest priority
             delete state.sorters[sortKey];
             if (order) {
-            state.sorters[sortKey] = order;
+                state.sorters[sortKey] = order;
             }
-            */
 
             var fullCollection = this.fullCollection;
 
@@ -493,7 +491,8 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
             var mode = this.mode;
             options = _.extend({side: mode == "client" ? mode : "server", full: true},
-                options);
+                options
+            );
 
             var comparator = this._makeComparator(sortKey, order);
 
