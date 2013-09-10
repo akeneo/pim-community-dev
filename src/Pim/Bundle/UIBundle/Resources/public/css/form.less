@@ -55,6 +55,22 @@ form.form-signin {
 
 /* Basic Form *******************************************************************************************************/
 
+// Form navbar
+#form-navbar li {
+  &.active a, a {
+    color: @textColor;
+    background-color: transparent;
+    border-bottom: 3px solid transparent;
+    padding-bottom: 4px;
+  }
+  &.active a {
+    border-bottom: 3px solid @textColor + #111;
+  }
+  &:not(.active) a.error {
+    border-bottom: 3px solid #da0000;
+  }
+}
+
 .icons-container {
   display: inline-block;
   vertical-align: middle;
@@ -71,10 +87,6 @@ form.form-signin {
 
 a.select2-choice {
   outline: none;
-}
-
-#form-navbar ul.nav li:not(.active) a.error {
-  border-bottom: 3px solid #da0000;
 }
 
 .form-row {
