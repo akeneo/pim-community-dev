@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Edit common attributes of given products
@@ -27,9 +28,9 @@ class EditCommonAttributes extends AbstractMassEditAction
 
     protected $localeManager;
 
-    public $commonAttributes = array();
+    protected $commonAttributes = array();
 
-    public $attributesToDisplay;
+    protected $attributesToDisplay;
 
     public function __construct(FlexibleManager $productManager, LocaleManager $localeManager)
     {
@@ -160,5 +161,29 @@ class EditCommonAttributes extends AbstractMassEditAction
         }
 
         return $value;
+    }
+
+    public function setCommonAttributes(array $commonAttributes)
+    {
+        $this->commonAttributes = $commonAttributes;
+
+        return $this;
+    }
+
+    public function getCommonAttributes()
+    {
+        return $this->commonAttributes;
+    }
+
+    public function setAttributesToDisplay(Collection $attributesToDisplay)
+    {
+        $this->attributesToDisplay = $attributesToDisplay;
+
+        return $this;
+    }
+
+    public function getAttributesToDisplay()
+    {
+        return $this->attributesToDisplay;
     }
 }
