@@ -30,18 +30,19 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private $password = null;
 
     private $pageMapping = array(
-        'attributes' => 'Attribute index',
-        'channels'   => 'Channel index',
-        'currencies' => 'Currency index',
-        'exports'    => 'Export index',
-        'families'   => 'Family index',
-        'imports'    => 'Import index',
-        'locales'    => 'Locale index',
-        'products'   => 'Product index',
-        'users'      => 'User index',
-        'roles'      => 'Role index',
-        'categories' => 'Category tree creation',
-        'home'       => 'Base index',
+        'attributes'  => 'Attribute index',
+        'channels'    => 'Channel index',
+        'currencies'  => 'Currency index',
+        'exports'     => 'Export index',
+        'families'    => 'Family index',
+        'imports'     => 'Import index',
+        'locales'     => 'Locale index',
+        'products'    => 'Product index',
+        'users'       => 'User index',
+        'user roles'  => 'UserRole index',
+        'user groups' => 'UserGroup index',
+        'categories'  => 'Category tree creation',
+        'home'        => 'Base index',
     );
 
     /* -------------------- Page-related methods -------------------- */
