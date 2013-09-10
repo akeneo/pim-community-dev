@@ -7,7 +7,7 @@ parameters:
     pim_catalog.controller.locale.class:            Pim\Bundle\CatalogBundle\Controller\LocaleController
     pim_catalog.controller.product_attribute.class: Pim\Bundle\CatalogBundle\Controller\ProductAttributeController
     pim_catalog.controller.product.class:           Pim\Bundle\CatalogBundle\Controller\ProductController
-    pim_catalog.controller.batch_operation.class:   Pim\Bundle\CatalogBundle\Controller\BatchOperationController
+    pim_catalog.controller.mass_edit_action.class:   Pim\Bundle\CatalogBundle\Controller\MassEditActionController
 
 services:
     pim_catalog.controller.abstract:
@@ -112,9 +112,9 @@ services:
             - @pim_versioning.manager.audit
             - @oro_user.acl_manager
 
-    pim_catalog.controller.batch_operation:
+    pim_catalog.controller.mass_edit_action:
         scope: request
-        class: %pim_catalog.controller.batch_operation.class%
+        class: %pim_catalog.controller.mass_edit_action.class%
         parent: pim_catalog.controller.abstract
         arguments:
-            - @pim_catalog.batch_operation.operator
+            - @pim_catalog.mass_edit_action.operator

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\BatchOperation;
+namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
@@ -12,10 +12,10 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BatchOperator
+class MassEditActionOperator
 {
     /**
-     * @var BatchOperation $operation
+     * @var MassEditAction $operation
      */
     protected $operation;
 
@@ -30,7 +30,7 @@ class BatchOperator
     protected $manager;
 
     /**
-     * @var BatchOperation[] $operations
+     * @var MassEditAction[] $operations
      */
     protected $operations = array();
 
@@ -46,11 +46,11 @@ class BatchOperator
      * Register a batch operation into the operator
      *
      * @param string         $alias
-     * @param BatchOperation $operation
+     * @param MassEditAction $operation
      *
      * @throw \InvalidArgumentException
      */
-    public function registerBatchOperation($alias, BatchOperation $operation)
+    public function registerMassEditAction($alias, MassEditAction $operation)
     {
         if (array_key_exists($alias, $this->operations)) {
             throw new \InvalidArgumentException(sprintf('Operation "%s" is already registered', $alias));
@@ -68,7 +68,7 @@ class BatchOperator
         $choices = array();
 
         foreach (array_keys($this->operations) as $alias) {
-            $choices[$alias] = sprintf('pim_catalog.batch_operation.%s.label', $alias);
+            $choices[$alias] = sprintf('pim_catalog.mass_edit_action.%s.label', $alias);
         }
 
         return $choices;
@@ -77,11 +77,11 @@ class BatchOperator
     /**
      * Set the batch operation
      *
-     * @param BatchOperation $operation
+     * @param MassEditAction $operation
      *
-     * @return BatchOperator
+     * @return MassEditActionOperator
      */
-    public function setOperation(BatchOperation $operation)
+    public function setOperation(MassEditAction $operation)
     {
         $this->operation = $operation;
 
@@ -91,7 +91,7 @@ class BatchOperator
     /**
      * Get the batch operation
      *
-     * @return BatchOperation
+     * @return MassEditAction
      */
     public function getOperation()
     {
@@ -105,7 +105,7 @@ class BatchOperator
      * @param string $operationAlias
      *
      * @throw InvalidArgumentException when the alias is not registered
-     * @return BatchOperation
+     * @return MassEditAction
      */
     public function setOperationAlias($operationAlias)
     {

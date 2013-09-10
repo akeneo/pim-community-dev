@@ -9,9 +9,9 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pim\Bundle\CatalogBundle\Form\Type\BatchOperatorType;
+use Pim\Bundle\CatalogBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
-use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperator;
+use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
 
 /**
  * Batch operation controller
@@ -20,7 +20,7 @@ use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperator;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BatchOperationController extends AbstractController
+class MassEditActionController extends AbstractController
 {
     protected $batchOperator;
 
@@ -31,7 +31,7 @@ class BatchOperationController extends AbstractController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
-        BatchOperator $batchOperator
+        MassEditActionOperator $batchOperator
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator);
 
@@ -53,13 +53,13 @@ class BatchOperationController extends AbstractController
             return $this->redirectToRoute('pim_catalog_product_index');
         }
 
-        $form = $this->getBatchOperatorForm();
+        $form = $this->getMassEditActionOperatorForm();
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
                 return $this->redirectToRoute(
-                    'pim_catalog_batch_operation_configure',
+                    'pim_catalog_mass_edit_action_configure',
                     array(
                         'products'       => $productIds,
                         'operationAlias' => $this->batchOperator->getOperationAlias(),
@@ -88,7 +88,7 @@ class BatchOperationController extends AbstractController
         } catch (\InvalidArgumentException $e) {
             return $this->redirectToRoute('pim_catalog_product_index');
         }
-        $form = $this->getBatchOperatorForm();
+        $form = $this->getMassEditActionOperatorForm();
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -97,11 +97,11 @@ class BatchOperationController extends AbstractController
             } catch (\InvalidArgumentException $e) {
                 return $this->redirectToRoute('pim_catalog_product_index');
             }
-            $form = $this->getBatchOperatorForm();
+            $form = $this->getMassEditActionOperatorForm();
         }
 
         return $this->render(
-            sprintf('PimCatalogBundle:BatchOperation:configure/%s.html.twig', $operationAlias),
+            sprintf('PimCatalogBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             array(
                 'form'          => $form->createView(),
                 'batchOperator' => $this->batchOperator,
@@ -123,7 +123,7 @@ class BatchOperationController extends AbstractController
         } catch (\InvalidArgumentException $e) {
             return $this->redirectToRoute('pim_catalog_product_index');
         }
-        $form = $this->getBatchOperatorForm();
+        $form = $this->getMassEditActionOperatorForm();
         $form->bind($request);
 
         //second time is to set values
@@ -132,20 +132,20 @@ class BatchOperationController extends AbstractController
         } catch (\InvalidArgumentException $e) {
             return $this->redirectToRoute('pim_catalog_product_index');
         }
-        $form = $this->getBatchOperatorForm();
+        $form = $this->getMassEditActionOperatorForm();
         $form->bind($request);
 
         $this->batchOperator->performOperation($parameters);
 
-        $this->addFlash('success', sprintf('pim_catalog.batch_operation.%s.success_flash', $operationAlias));
+        $this->addFlash('success', sprintf('pim_catalog.mass_edit_action.%s.success_flash', $operationAlias));
 
         return $this->redirectToRoute('pim_catalog_product_index');
     }
 
-    private function getBatchOperatorForm()
+    private function getMassEditActionOperatorForm()
     {
         return $this->createForm(
-            new BatchOperatorType(),
+            new MassEditActionOperatorType(),
             $this->batchOperator,
             array('operations' => $this->batchOperator->getOperationChoices())
         );

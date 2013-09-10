@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Tests\Unit\BatchOperation;
+namespace Pim\Bundle\CatalogBundle\Tests\Unit\MassEditAction;
 
-use Pim\Bundle\CatalogBundle\BatchOperation\ChangeStatus;
+use Pim\Bundle\CatalogBundle\MassEditAction\ChangeStatus;
 
 /**
  * Test related class
@@ -20,9 +20,9 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
         $this->operation     = new ChangeStatus($manager);
     }
 
-    public function testInstanceOfBatchOperation()
+    public function testInstanceOfMassEditAction()
     {
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\BatchOperation\BatchOperation', $this->operation);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\MassEditAction\MassEditAction', $this->operation);
     }
 
     public function testPerform()

@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\Subscriber\BatchOperation;
+namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\Subscriber\MassEditAction;
 
-use Pim\Bundle\CatalogBundle\Form\Subscriber\BatchOperation\AddSelectedOperationSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\MassEditAction\AddSelectedOperationSubscriber;
 
 /**
  * Test related class
@@ -35,8 +35,8 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testPostSetDataWithOperation()
     {
         $form      = $this->getFormMock();
-        $operation = $this->getBatchOperationMock('foo_type', array('foo' => 'bar'));
-        $data      = $this->getBatchOperatorMock($operation);
+        $operation = $this->getMassEditActionMock('foo_type', array('foo' => 'bar'));
+        $data      = $this->getMassEditActionOperatorMock($operation);
 
         $event = $this->getFormEventMock($form, $data);
 
@@ -59,7 +59,7 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testPostSetDataWithoutOperation()
     {
         $form = $this->getFormMock();
-        $data = $this->getBatchOperatorMock(null);
+        $data = $this->getMassEditActionOperatorMock(null);
 
         $event = $this->getFormEventMock($form, $data);
 
@@ -133,12 +133,12 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
      * Test related method
      * @param mixed $operation
      *
-     * @return BatchOperator
+     * @return MassEditActionOperator
      */
-    protected function getBatchOperatorMock($operation)
+    protected function getMassEditActionOperatorMock($operation)
     {
         $operator = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\BatchOperation\BatchOperator')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -153,11 +153,11 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
      * Test related method
      * @param mixed $formType
      *
-     * @return BatchOperation
+     * @return MassEditAction
      */
-    protected function getBatchOperationMock($formType, array $formOptions)
+    protected function getMassEditActionMock($formType, array $formOptions)
     {
-        $operation = $this->getMock('Pim\Bundle\CatalogBundle\BatchOperation\BatchOperation');
+        $operation = $this->getMock('Pim\Bundle\CatalogBundle\MassEditAction\MassEditAction');
 
         $operation->expects($this->any())
             ->method('getFormType')

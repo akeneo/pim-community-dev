@@ -425,7 +425,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             array(
                 'name'  => 'redirect',
                 'label' => 'Mass Edition',
-                'route' => 'pim_catalog_batch_operation_choose',
+                'route' => 'pim_catalog_mass_edit_action_choose',
             )
         );
 

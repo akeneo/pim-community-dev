@@ -212,7 +212,7 @@
 'Channels': 'Channels'
 
 # Batch operations
-pim_catalog.batch_operation:
+pim_catalog.mass_edit_action:
     change-status.label:          'Change status (Enable/Disable)'
     edit-common-attributes.label: 'Edit attributes'
     choose:

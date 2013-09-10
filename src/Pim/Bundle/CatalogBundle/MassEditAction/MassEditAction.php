@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\BatchOperation;
+namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 /**
  * Operation to execute on a set of products
@@ -9,7 +9,7 @@ namespace Pim\Bundle\CatalogBundle\BatchOperation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface BatchOperation
+interface MassEditAction
 {
     /**
      * Get the form type to use in order to configure the operation

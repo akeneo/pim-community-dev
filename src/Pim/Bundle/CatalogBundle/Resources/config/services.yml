@@ -124,25 +124,25 @@ services:
             - @doctrine.orm.entity_manager
 
     # Batch operation operator
-    pim_catalog.batch_operation.operator:
-        class: %pim_catalog.batch_operation.operator.class%
+    pim_catalog.mass_edit_action.operator:
+        class: %pim_catalog.mass_edit_action.operator.class%
         arguments:
             - @pim_catalog.manager.product
 
     # Batch operations
-    pim_catalog.batch_operation.change_status:
+    pim_catalog.mass_edit_action.change_status:
         public: false
-        class: %pim_catalog.batch_operation.change_status.class%
+        class: %pim_catalog.mass_edit_action.change_status.class%
         arguments:
             - @pim_catalog.manager.product
         tags:
-            - { name: pim_catalog.batch_operation, alias: change-status }
+            - { name: pim_catalog.mass_edit_action, alias: change-status }
 
-    pim_catalog.batch_operation.edit_common_attributes:
+    pim_catalog.mass_edit_action.edit_common_attributes:
         public: false
-        class: %pim_catalog.batch_operation.edit_common_attributes.class%
+        class: %pim_catalog.mass_edit_action.edit_common_attributes.class%
         arguments:
             - @pim_catalog.manager.product
             - @pim_catalog.manager.locale
         tags:
-            - { name: pim_catalog.batch_operation, alias: edit-common-attributes }
+            - { name: pim_catalog.mass_edit_action, alias: edit-common-attributes }

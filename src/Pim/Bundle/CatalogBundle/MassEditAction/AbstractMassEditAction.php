@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\BatchOperation;
+namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 /**
  * Class that Batch operations might extends for convenience purpose
@@ -9,7 +9,7 @@ namespace Pim\Bundle\CatalogBundle\BatchOperation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractBatchOperation implements BatchOperation
+abstract class AbstractMassEditAction implements MassEditAction
 {
     /**
      * {@inheritdoc}

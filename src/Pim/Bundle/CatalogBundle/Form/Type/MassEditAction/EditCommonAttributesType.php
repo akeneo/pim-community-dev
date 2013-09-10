@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Form\Type\BatchOperation;
+namespace Pim\Bundle\CatalogBundle\Form\Type\MassEditAction;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -64,7 +64,7 @@ class EditCommonAttributesType extends AbstractType
 
         $resolver->setDefaults(
             array(
-                'data_class'       => 'Pim\\Bundle\\CatalogBundle\\BatchOperation\\EditCommonAttributes',
+                'data_class'       => 'Pim\\Bundle\\CatalogBundle\\MassEditAction\\EditCommonAttributes',
                 'locales'          => array(),
                 'commonAttributes' => array(),
             )

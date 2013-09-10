@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\BatchOperation;
+namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
-use Pim\Bundle\CatalogBundle\Form\Type\BatchOperation\ChangeStatusType;
+use Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\ChangeStatusType;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
@@ -12,7 +12,7 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChangeStatus extends AbstractBatchOperation
+class ChangeStatus extends AbstractMassEditAction
 {
     /**
      * @var FlexibleManager $manager

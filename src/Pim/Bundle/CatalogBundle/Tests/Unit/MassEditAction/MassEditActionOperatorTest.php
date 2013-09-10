@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Tests\Unit\BatchOperation;
+namespace Pim\Bundle\CatalogBundle\Tests\Unit\MassEditAction;
 
-use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperator;
+use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
 
 /**
  * Test related class
@@ -11,17 +11,17 @@ use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperator;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BatchOperatorTest extends \PHPUnit_Framework_TestCase
+class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->operator = new BatchOperator($this->getFlexibleManagerMock());
+        $this->operator = new MassEditActionOperator($this->getFlexibleManagerMock());
     }
 
-    public function testRegisterBatchOperation()
+    public function testRegisterMassEditAction()
     {
-        $operation = $this->getBatchOperationMock();
-        $this->operator->registerBatchOperation('foo', $operation);
+        $operation = $this->getMassEditActionMock();
+        $this->operator->registerMassEditAction('foo', $operation);
 
         $this->assertAttributeEquals(array('foo' => $operation), 'operations', $this->operator);
     }
@@ -32,19 +32,19 @@ class BatchOperatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testPreventRegisteringTwoOperationsWithTheSameAlias()
     {
-        $this->operator->registerBatchOperation('foo', $this->getBatchOperationMock());
-        $this->operator->registerBatchOperation('foo', $this->getBatchOperationMock());
+        $this->operator->registerMassEditAction('foo', $this->getMassEditActionMock());
+        $this->operator->registerMassEditAction('foo', $this->getMassEditActionMock());
     }
 
     public function testGetOperationChoices()
     {
-        $this->operator->registerBatchOperation('foo', $this->getBatchOperationMock());
-        $this->operator->registerBatchOperation('bar', $this->getBatchOperationMock());
+        $this->operator->registerMassEditAction('foo', $this->getMassEditActionMock());
+        $this->operator->registerMassEditAction('bar', $this->getMassEditActionMock());
 
         $this->assertEquals(
             array(
-                'foo' => 'pim_catalog.batch_operation.foo.label',
-                'bar' => 'pim_catalog.batch_operation.bar.label',
+                'foo' => 'pim_catalog.mass_edit_action.foo.label',
+                'bar' => 'pim_catalog.mass_edit_action.bar.label',
             ),
             $this->operator->getOperationChoices()
         );
@@ -52,8 +52,8 @@ class BatchOperatorTest extends \PHPUnit_Framework_TestCase
 
     public function testSetOperationAlias()
     {
-        $operation = $this->getBatchOperationMock();
-        $this->operator->registerBatchOperation('foo', $operation);
+        $operation = $this->getMassEditActionMock();
+        $this->operator->registerMassEditAction('foo', $operation);
 
         $this->operator->setOperationAlias('foo');
 
@@ -72,8 +72,8 @@ class BatchOperatorTest extends \PHPUnit_Framework_TestCase
 
     public function testPerformOperation()
     {
-        $operation = $this->getBatchOperationMock();
-        $this->operator->registerBatchOperation('foo', $operation);
+        $operation = $this->getMassEditActionMock();
+        $this->operator->registerMassEditAction('foo', $operation);
         $this->operator->setOperationAlias('foo');
 
         $operation->expects($this->once())
@@ -85,8 +85,8 @@ class BatchOperatorTest extends \PHPUnit_Framework_TestCase
 
     public function testInitializeOperation()
     {
-        $operation = $this->getBatchOperationMock();
-        $this->operator->registerBatchOperation('foo', $operation);
+        $operation = $this->getMassEditActionMock();
+        $this->operator->registerMassEditAction('foo', $operation);
         $this->operator->setOperationAlias('foo');
 
         $operation->expects($this->once())
@@ -110,8 +110,8 @@ class BatchOperatorTest extends \PHPUnit_Framework_TestCase
         return $manager;
     }
 
-    protected function getBatchOperationMock()
+    protected function getMassEditActionMock()
     {
-        return $this->getMock('Pim\Bundle\CatalogBundle\BatchOperation\BatchOperation');
+        return $this->getMock('Pim\Bundle\CatalogBundle\MassEditAction\MassEditAction');
     }
 }

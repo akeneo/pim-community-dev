@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\BatchOperation;
+namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Form\Type\BatchOperation\EditCommonAttributesType;
+use Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\EditCommonAttributesType;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EditCommonAttributes extends AbstractBatchOperation
+class EditCommonAttributes extends AbstractMassEditAction
 {
     protected $values;
 

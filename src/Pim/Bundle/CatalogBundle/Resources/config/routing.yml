@@ -35,6 +35,6 @@ product:
     resource: "@PimCatalogBundle/Resources/config/routing/product.yml"
     prefix: /enrich/product
 
-batch_operation:
-    resource: "@PimCatalogBundle/Resources/config/routing/batch_operation.yml"
+mass_edit_action:
+    resource: "@PimCatalogBundle/Resources/config/routing/mass_edit_action.yml"
     prefix: /enrich/batch-operation
