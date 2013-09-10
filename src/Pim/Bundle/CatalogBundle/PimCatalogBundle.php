@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 
 /**
- * Pim Product Bundle
+ * Pim Catalog Bundle
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
