@@ -44,7 +44,8 @@ for FEATURE in $FEATURES; do
     if [ "$XDEBUG" == 'xdebug' ]; then
         php -d zend_extension=$PHP_EXTENSION_DIR/$XDEBUG_EXTENSION $BEHAT_CMD $FEATURE
     else
-        $BEHAT_CMD $FEATURE
+#        $BEHAT_CMD $FEATURE
+        $BEHAT_CMD $FEATURES_DIR/user/create_user.feature
     fi
 
     if [ $? -ne 0 ]; then
