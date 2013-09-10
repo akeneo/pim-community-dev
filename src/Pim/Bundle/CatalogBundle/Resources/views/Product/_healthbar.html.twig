@@ -19,7 +19,7 @@
     </div>
 
     {% if completeness.missingCount == 0 %}
-        <div class="center">{{ 'Completed' | trans }}</div>
+        <div class="center">{{ 'Complete' | trans }}</div>
     {% else %}
         {% set titleMissing = "Missing attributes :"|trans %}
         {% for attribute in completeness.missingAttributes %}
