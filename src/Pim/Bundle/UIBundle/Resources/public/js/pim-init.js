@@ -203,6 +203,8 @@ require(
 
                 return false;
             });
+
+            init();
         });
 
         mediator.bind("hash_navigation_request:complete", function () {
