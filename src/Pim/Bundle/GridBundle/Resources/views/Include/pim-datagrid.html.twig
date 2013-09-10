@@ -154,7 +154,13 @@
                     loadingHint: {{ 'oro_grid.label_loading_mask'|trans|json_encode|raw }}
                 })
             }, datagridOptions.grid);
+
+            /******************************/
+            /** Only change in this file **/
             var datagrid = new Pim.Datagrid.Grid(datagridParameters);
+            /** End of changes           **/
+            /******************************/
+
             $(datagridBodySelector).html(datagrid.render().$el);
             Oro.Registry.setElement('datagrid', {{ datagrid.name|json_encode|raw }}, datagrid);
 
