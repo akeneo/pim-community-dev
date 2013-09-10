@@ -1,9 +1,0 @@
-Oro\Bundle\DataFlowBundle\Entity\Connector:
-    properties:
-        description:
-            - NotNull: ~
-Oro\Bundle\DataFlowBundle\Entity\Job:
-    properties:
-        description:
-            - NotNull: ~
-            

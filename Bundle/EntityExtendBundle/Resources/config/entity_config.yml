@@ -1,6 +1,7 @@
 oro_entity_config:
     extend:
         entity:
+            require_js:                     ['oro/init-entity-extend-apply']
             grid_action:
                 -
                     name:                   'Remove'

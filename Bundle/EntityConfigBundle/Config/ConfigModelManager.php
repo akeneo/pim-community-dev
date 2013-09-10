@@ -90,9 +90,7 @@ class ConfigModelManager
             $result = $entity;
         }
 
-        if ($result) {
-            $this->localCache->set($cacheKey, $result);
-        }
+        $this->localCache->set($cacheKey, $result);
 
         return $result;
     }
