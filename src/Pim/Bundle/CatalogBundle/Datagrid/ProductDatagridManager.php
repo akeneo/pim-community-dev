@@ -318,7 +318,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $fieldCompleteness->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_HTML,
-                'label'       => $this->translate('Completed'),
+                'label'       => $this->translate('Complete'),
                 'field_name'  => 'completenesses',
                 'expression'  => 'pCompleteness',
                 'filter_type' => FilterInterface::TYPE_COMPLETENESS,
