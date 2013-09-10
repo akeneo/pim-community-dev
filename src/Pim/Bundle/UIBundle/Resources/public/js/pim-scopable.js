@@ -121,7 +121,7 @@ define(
             render: function () {
                 if (!this.rendered) {
                     this.rendered = true;
-                    this.$el.empty();
+                    this.$el.empty().addClass('control-group');
                     this.$el.append(
                         this.template({
                             label: this.label

@@ -174,6 +174,10 @@ require(
         }
 
         $(function () {
+            if ($.isPlainObject($.uniform)) {
+                $.uniform.restore();
+            }
+
             $(document).on('uniformInit', function () {
                 $.uniform.restore();
             });
