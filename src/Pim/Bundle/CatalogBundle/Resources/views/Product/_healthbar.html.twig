@@ -1,6 +1,6 @@
 <div class="progress-cell">
 {% if product.getFamily is null %}
-    {{ 'Impossible to calculate' | trans }}
+    {{ 'Waiting for calculation' | trans }}
 {% elseif completeness is null %}
     {{ 'Not yet calculated' | trans }}
 {% else %}
