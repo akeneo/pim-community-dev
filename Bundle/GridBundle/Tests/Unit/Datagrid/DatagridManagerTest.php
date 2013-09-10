@@ -164,6 +164,20 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals($parametersMock, 'parameters', $this->model);
     }
 
+    public function testSetViewsList()
+    {
+        $translator = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
+        $list       = $this->getMockForAbstractClass(
+            'Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList',
+            array($translator)
+        );
+
+        $this->assertAttributeEmpty('viewsList', $this->model);
+        $this->model->setViewsList($list);
+        $this->assertAttributeEquals($list, 'viewsList', $this->model);
+        $this->assertEquals($list, $this->model->getViewsList());
+    }
+
     public function testSetName()
     {
         $this->assertAttributeEmpty('name', $this->model);
