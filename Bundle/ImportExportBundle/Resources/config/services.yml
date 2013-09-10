@@ -1,3 +1,17 @@
 parameters:
+    oro_importexport.serializer.array_serialization_visitor.class: Oro\Bundle\ImportExportBundle\Serializer\ArraySerializationVisitor
+    oro_importexport.serializer.array_deserialization_visitor.class: Oro\Bundle\ImportExportBundle\Serializer\ArrayDeserializationVisitor
 
 services:
+    oro_importexport.serializer.array_serialization_visitor:
+        class: %oro_importexport.serializer.array_serialization_visitor.class%
+        arguments: [@jms_serializer.naming_strategy]
+        tags:
+            - { name: jms_serializer.serialization_visitor, format: array }
+
+    oro_importexport.serializer.array_deserialization_visitor:
+        class: %oro_importexport.serializer.array_serialization_visitor.class%
+        arguments: [@jms_serializer.naming_strategy, @jms_serializer.object_constructor]
+        tags:
+            - { name: jms_serializer.deserialization_visitor, format: array }
+
