@@ -5,7 +5,7 @@
     <form id="{{ form.vars.id }}" action="{{ path('pim_catalog_batch_operation_perform', parameters) }}" method="POST" class="form-horizontal">
         {% block form %}{{ form_widget(form) }}{% endblock %}
         <a href="{{ path('pim_catalog_batch_operation_choose', {'products': parameters.products}) }}" class="btn">Cancel</a>
-        <input type="submit" value="Continue &rarr;" class="btn">
+        <input type="submit" value="Next" class="btn btn-primary">
     </form>
 {% endblock %}
 

@@ -69,12 +69,13 @@ class BatchOperationController extends AbstractController
         );
     }
 
-    /**
-     * @Template
-     */
     public function configureAction(Request $request, $operationAlias)
     {
-        $this->batchOperator->setOperationAlias($operationAlias);
+        try {
+            $this->batchOperator->setOperationAlias($operationAlias);
+        } catch (\InvalidArgumentException $e) {
+            throw $this->createNotFoundException($e->getMessage(), $e);
+        }
 
         $parameters = $request->query->all();
         $this->batchOperator->initializeOperation($parameters);

@@ -131,27 +131,6 @@ class BatchOperator
     }
 
     /**
-     * Delegate the batch operation execution to the chosen operation adapter
-     *
-     * @param array $parameters
-     *
-     * @throw \InvalidArgumentException if $parameters is missing a "products" key
-     */
-    public function performOperation(array $parameters)
-    {
-        if ($this->operation) {
-            if (!array_key_exists('products', $parameters)) {
-                throw new \InvalidArgumentException('Missing mandatory parameter "products"');
-            }
-
-            $products = $this->getProducts($parameters['products']);
-            unset($parameters['products']);
-
-            $this->operation->perform($products, $parameters);
-        }
-    }
-
-    /**
      * Delegate the batch operation initialization to the chosen operation adapter
      *
      * @param array $parameters
@@ -169,6 +148,27 @@ class BatchOperator
             unset($parameters['products']);
 
             $this->operation->initialize($products, $parameters);
+        }
+    }
+
+    /**
+     * Delegate the batch operation execution to the chosen operation adapter
+     *
+     * @param array $parameters
+     *
+     * @throw \InvalidArgumentException if $parameters is missing a "products" key
+     */
+    public function performOperation(array $parameters)
+    {
+        if ($this->operation) {
+            if (!array_key_exists('products', $parameters)) {
+                throw new \InvalidArgumentException('Missing mandatory parameter "products"');
+            }
+
+            $products = $this->getProducts($parameters['products']);
+            unset($parameters['products']);
+
+            $this->operation->perform($products, $parameters);
         }
     }
 
