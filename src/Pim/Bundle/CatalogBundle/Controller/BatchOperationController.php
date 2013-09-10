@@ -78,12 +78,20 @@ class BatchOperationController extends AbstractController
         }
 
         $parameters = $request->query->all();
-        $this->batchOperator->initializeOperation($parameters);
+        try {
+            $this->batchOperator->initializeOperation($parameters);
+        } catch (\InvalidArgumentException $e) {
+            return $this->redirectToRoute('pim_catalog_product_index');
+        }
         $form = $this->getBatchOperatorForm();
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
-            $this->batchOperator->initializeOperation($parameters);
+            try {
+                $this->batchOperator->initializeOperation($parameters);
+            } catch (\InvalidArgumentException $e) {
+                return $this->redirectToRoute('pim_catalog_product_index');
+            }
             $form = $this->getBatchOperatorForm();
         }
 
@@ -103,13 +111,22 @@ class BatchOperationController extends AbstractController
 
         $parameters = $request->query->all();
 
-        //first time is to set diplayed attributes and locale
-        $this->batchOperator->initializeOperation($parameters);
+        // Hacky hack for the edit common attribute operation to work
+        // first time is to set diplayed attributes and locale
+        try {
+            $this->batchOperator->initializeOperation($parameters);
+        } catch (\InvalidArgumentException $e) {
+            return $this->redirectToRoute('pim_catalog_product_index');
+        }
         $form = $this->getBatchOperatorForm();
         $form->bind($request);
 
         //second time is to set values
-        $this->batchOperator->initializeOperation($parameters);
+        try {
+            $this->batchOperator->initializeOperation($parameters);
+        } catch (\InvalidArgumentException $e) {
+            return $this->redirectToRoute('pim_catalog_product_index');
+        }
         $form = $this->getBatchOperatorForm();
         $form->bind($request);
 

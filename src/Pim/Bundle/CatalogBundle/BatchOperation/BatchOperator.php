@@ -178,9 +178,16 @@ class BatchOperator
      * @param integer[] $productIds
      *
      * @return ProductInterface[]
+     *
+     * @throw InvalidArgumentException
      */
     private function getProducts(array $productIds)
     {
-         return $this->manager->findByIds($productIds);
+        $products = $this->manager->findByIds($productIds);
+        if (!$products) {
+            throw new \InvalidArgumentException('No product were selected');
+        }
+
+        return $products;
     }
 }
