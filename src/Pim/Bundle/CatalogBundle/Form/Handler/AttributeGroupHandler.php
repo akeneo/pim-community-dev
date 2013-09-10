@@ -48,8 +48,8 @@ class AttributeGroupHandler
         FormInterface $form,
         Request $request,
         ObjectManager $manager,
-        PendingManager $pendingManager)
-    {
+        PendingManager $pendingManager
+    ) {
         $this->form           = $form;
         $this->request        = $request;
         $this->manager        = $manager;
