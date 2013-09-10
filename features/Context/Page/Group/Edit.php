@@ -5,7 +5,7 @@ namespace Context\Page\Group;
 use Context\Page\Base\Form;
 
 /**
- * Attribute creation page
+ * Attribute group edit page
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

@@ -13,11 +13,13 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Form\Handler\AttributeGroupHandler;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 
 /**
  * AttributeGroup controller
@@ -35,6 +37,16 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
  */
 class AttributeGroupController extends AbstractDoctrineController
 {
+    /**
+     * @var GridRenderer
+     */
+    private $gridRenderer;
+
+    /**
+     * @var DatagridWorkerInterface
+     */
+    private $dataGridWorker;
+
     /**
      * @var AttributeGroupHandler
      */
@@ -55,6 +67,8 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param RegistryInterface        $doctrine
+     * @param GridRenderer             $gridRenderer
+     * @param DatagridWorkerInterface  $dataGridWorker
      * @param AttributeGroupHandler    $attributeGroupHandler
      * @param Form                     $attributeGroupForm
      */
@@ -66,18 +80,22 @@ class AttributeGroupController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         RegistryInterface $doctrine,
+        GridRenderer $gridRenderer,
+        DatagridWorkerInterface $dataGridWorker,
         AttributeGroupHandler $attributeGroupHandler,
         Form $attributeGroupForm
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
 
+        $this->gridRenderer          = $gridRenderer;
+        $this->dataGridWorker        = $dataGridWorker;
         $this->attributeGroupHandler = $attributeGroupHandler;
         $this->attributeGroupForm    = $attributeGroupForm;
     }
     /**
      * Create attribute group
      *
-     * @Template("PimCatalogBundle:AttributeGroup:edit.html.twig")
+     * @Template()
      * @Acl(
      *      id="pim_catalog_attribute_group_create",
      *      name="Create group",
@@ -89,8 +107,20 @@ class AttributeGroupController extends AbstractDoctrineController
     public function createAction()
     {
         $group = new AttributeGroup();
+        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToNameOrderedBySortOrder();
 
-        return $this->editAction($group);
+        if ($this->attributeGroupHandler->process($group)) {
+            $this->addFlash('success', 'Attribute group successfully created');
+
+            return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
+        }
+
+        return array(
+            'groups'         => $groups,
+            'group'          => $group,
+            'form'           => $this->attributeGroupForm->createView(),
+            'attributesForm' => $this->getAvailableProductAttributesForm($this->getGroupedAttributes())->createView(),
+        );
     }
 
     /**
@@ -111,6 +141,17 @@ class AttributeGroupController extends AbstractDoctrineController
     {
         $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToNameOrderedBySortOrder();
 
+        $datagrid = $this->dataGridWorker->getDataAuditDatagrid(
+            $group,
+            'pim_catalog_attributegroup_edit',
+            array('id' => $group->getId())
+        );
+        $datagridView = $datagrid->createView();
+
+        if ('json' === $this->getRequest()->getRequestFormat()) {
+            return $this->gridRenderer->renderResultsJsonResponse($datagridView);
+        }
+
         if ($this->attributeGroupHandler->process($group)) {
             $this->addFlash('success', 'Attribute group successfully saved');
 
@@ -121,7 +162,8 @@ class AttributeGroupController extends AbstractDoctrineController
             'groups'         => $groups,
             'group'          => $group,
             'form'           => $this->attributeGroupForm->createView(),
-            'attributesForm' => $this->getAvailableProductAttributesForm($this->getGroupedAttributes())->createView()
+            'attributesForm' => $this->getAvailableProductAttributesForm($this->getGroupedAttributes())->createView(),
+            'datagrid'       => $datagridView,
         );
     }
 
