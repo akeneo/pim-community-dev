@@ -373,7 +373,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translate('Edit categories'),
+                'label'   => $this->translate('Classify the product'),
                 'icon'    => 'folder-close',
                 'link'    => 'edit_categories_link',
                 'backUrl' => true
@@ -385,7 +385,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translate('Delete'),
+                'label'   => $this->translate('Delete the product'),
                 'icon'    => 'trash',
                 'link'    => 'delete_link'
             )
