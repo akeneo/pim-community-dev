@@ -3,27 +3,47 @@ Pim.Datagrid = Pim.Datagrid || {};
 Pim.Datagrid.Action = Pim.Datagrid.Action || {};
 
 /**
- * Quick export collection action extending NavigateAction
+ * Export collection action
  * 
  * @author  Romain Monceau <romain@akeneo.com>
  * @class   Pim.Datagrid.Action.QuickExportCollectionAction
- * @extends Oro.Datagrid.Action.NavigateAction
- * @see     Oro.Datagrid.Action.AbstractAction
+ * @extends Oro.Datagrid.Action.AbstractAction
  */
 Pim.Datagrid.Action.QuickExportCollectionAction = Oro.Datagrid.Action.AbstractAction.extend({
-
+    /**
+     * The base url of the action called
+     * 
+     * @property {String}
+     */
+    baseUrl: null,
+    
+    /**
+     * Define if the action must keep filters, sorters and pagination or not
+     * 
+     * @property {Boolean}
+     */
+    keepParameters: true,
+    
     /**
      * Initialize collection and launcher
      * 
      * @param {Object} options
      * @param {Backbone.Collection} options.collection Collection
+     * @param {String} options.baseUrl
+     * @throws {TypeError} If collection is undefined
      * @throws {TypeError} If collection is undefined
      */
     initialize: function(options) {
         options = options || {};
 
-        if (!options.datagrid) {
-            throw new TypeError("'datagrid' is required");
+        if (!options.baseUrl) {
+            throw new TypeError("'baseUrl' is required");
+        }
+        this.baseUrl = options.baseUrl;
+        this.keepParameters = (!options.keepParameters) ? true : options.keepParameters;
+        
+        if (!options.datagrid && !options.datagrid.collection) {
+            throw new TypeError("'datagrid' and 'collection' are required");
         }
         this.collection = options.datagrid.collection;
 
@@ -44,18 +64,20 @@ Pim.Datagrid.Action.QuickExportCollectionAction = Oro.Datagrid.Action.AbstractAc
     },
     
     /**
-     * Get the link of the file
+     * Get the link of the returned action
      * 
-     * @return string
+     * @return {String}
      */
     getLink: function() {
+        if (!this.keepParameters) {
+            return this.baseUrl;
+        }
+        
         var data = {};
         data = this.collection.processQueryParams(data, this.collection.state);
         data = this.collection.processFiltersParams(data, this.collection.state);
         data = Oro.packToQueryString(data);
         
-        var baseUrl = Routing.generate('pim_catalog_product_index', {'_format': 'csv'});
-        
-        return baseUrl.concat('?'+data);
+        return this.baseUrl.concat('?'+data);
     }
 });

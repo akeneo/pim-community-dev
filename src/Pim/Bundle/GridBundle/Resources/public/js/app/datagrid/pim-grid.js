@@ -24,7 +24,8 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
         addQuickExportAction: true,
         rowClickAction: undefined,
         rowActions: [],
-        massActions: []
+        massActions: [],
+        exportActions: []
     },
 
     /**
@@ -54,6 +55,7 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
         if (!this.quickExportAction) {
             this.quickExportAction = new Pim.Datagrid.Action.QuickExportCollectionAction({
                 datagrid: this,
+                baseUrl: Routing.generate('pim_catalog_product_index', {'_format': 'csv'}),
                 launcherOptions: {
                     label: 'Quick export',
                     className: 'btn no-hash',
