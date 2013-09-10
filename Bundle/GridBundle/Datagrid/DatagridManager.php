@@ -355,7 +355,7 @@ abstract class DatagridManager implements DatagridManagerInterface
 
         $views = $this->getViewsList();
         if ($views) {
-            $views->applyToDatagrid($datagrid);
+            $views->applyToDatagrid($datagrid, $this->getDefaultParameters());
         }
     }
 

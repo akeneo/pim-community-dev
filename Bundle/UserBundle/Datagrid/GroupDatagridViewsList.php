@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Datagrid;
 
+use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 use Oro\Bundle\GridBundle\Datagrid\Views\View;
 use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 
@@ -15,7 +16,15 @@ class GroupDatagridViewsList extends AbstractViewsList
     protected function getViewsList()
     {
         return array(
-            new View('test')
+            new View(
+                'testGroupView',
+                array(
+                    'name' => array(
+                        'value' => 'admin',
+                        'type' => TextFilterType::TYPE_CONTAINS,
+                    )
+                )
+            )
         );
     }
 }
