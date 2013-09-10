@@ -1,6 +1,5 @@
 #!/usr/bin/env php
 <?php
-
 /*
  * This file is part of the Behat.
  * (c) Konstantin Kudryashov <ever.zet@gmail.com>
@@ -31,5 +30,7 @@ if ((!$loader = includeIfExists(__DIR__.'/../../../../vendor/autoload.php')) && 
 $app = new Behat\Behat\Console\BehatApplication(BEHAT_VERSION);
 $app->setAutoExit(false);
 include(__DIR__.'/auto_prepend.php');
-$app->run();
+$exitCode = $app->run();
 include(__DIR__.'/auto_append.php');
+
+exit($exitcode);

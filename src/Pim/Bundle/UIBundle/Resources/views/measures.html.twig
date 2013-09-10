@@ -1,6 +1,4 @@
-var Pim = Pim || {};
-
-Pim.measures = {
+{
 {% autoescape false %}
     values: {{ measures.measures_config|json_encode() }},
 {% endautoescape %}
@@ -21,4 +19,4 @@ Pim.measures = {
         }
         return units;
     }
-};
+}

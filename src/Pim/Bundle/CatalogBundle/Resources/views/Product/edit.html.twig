@@ -3,6 +3,26 @@
 {% block head_script %}
     {{ parent() }}
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'underscore', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'jquery.currencyfield'],
+            function($, _, TreeAssociate, Scopable, FormUpdateListener){
+                'use strict';
+                $(function() {
+                    new TreeAssociate('#trees');
+
+                    _.each($('form div.scopable'), function(field) {
+                        new Scopable({ el: $(field) });
+                    });
+
+                    $('form div.currency').currencyField();
+
+                    new FormUpdateListener($('#{{ form.vars.id }}'));
+                });
+            }
+        );
+    </script>
 {% endblock %}
 
 {% block page_container %}

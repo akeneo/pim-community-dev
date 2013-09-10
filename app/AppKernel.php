@@ -79,6 +79,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\SearchBundle\PimSearchBundle(),
 
             // PIM bundles
+            new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
             new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
             new Pim\Bundle\UIBundle\PimUIBundle(),
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),

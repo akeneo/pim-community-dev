@@ -11,9 +11,8 @@ pim_importexport:
 oro_default:
     pattern:  /
     defaults:
-        template:    PimCatalogBundle:Dashboard:index.html.twig
+        template:    PimDashboardBundle:Dashboard:index.html.twig
         _controller: FrameworkBundle:Template:template
-
 
 oro_ui:
     resource: "@OroUIBundle/Resources/config/routing.yml"

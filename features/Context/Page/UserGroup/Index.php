@@ -1,11 +1,11 @@
 <?php
 
-namespace Context\Page\Role;
+namespace Context\Page\UserGroup;
 
 use Context\Page\Base\Grid;
 
 /**
- * User roles index page
+ * User group index page
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -16,5 +16,5 @@ class Index extends Grid
     /**
      * @var string
      */
-    protected $path = '/user/role';
+    protected $path = '/user/group';
 }

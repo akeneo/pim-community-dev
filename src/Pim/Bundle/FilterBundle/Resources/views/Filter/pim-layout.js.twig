@@ -32,12 +32,16 @@
     {{ parent() }}
 {% endblock %}
 
+{% block oro_type_entity_filter_js %}
+    {{ parent() }}
+{% endblock %}
+
 {% block oro_type_boolean_filter_js %}
     {{ parent() }}
 {% endblock %}
 
 {% block pim_type_scope_filter_js %}
-    new (Pim.Filter.ScopeFilter.extend({
+    new (ScopeFilter.extend({
         'name':    {{ formView.vars.name|json_encode|raw }},
         'label':   {{ formView.vars.label|json_encode|raw }},
         'enabled': {{ formView.vars.show_filter|json_encode|raw }},
@@ -46,12 +50,12 @@
 {% endblock %}
 
 {% block pim_type_currency_filter_js %}
-    new (Pim.Filter.CurrencyFilter.extend({
-        'name':       {{ formView.vars.name|json_encode|raw }},
-        'label':      {{ formView.vars.label|json_encode|raw }},
-        'enabled':    {{ formView.vars.show_filter|json_encode|raw }},
-        'choices':    {{ formView.children.type.vars.choices|oro_filter_choices|json_encode|raw }},
-        'currencies': {{ formView.children.currency.vars.choices|oro_filter_choices|json_encode|raw }},
+    new (CurrencyFilter.extend({
+        'name':             {{ formView.vars.name|json_encode|raw }},
+        'label':            {{ formView.vars.label|json_encode|raw }},
+        'enabled':          {{ formView.vars.show_filter|json_encode|raw }},
+        'choices':          {{ formView.children.type.vars.choices|oro_filter_choices|json_encode|raw }},
+        'currencies':       {{ formView.children.currency.vars.choices|oro_filter_choices|json_encode|raw }},
         'formatterOptions': {{ formView.vars.formatter_options|json_encode|raw }}
     }))
 {% endblock %}

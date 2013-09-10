@@ -187,7 +187,10 @@
     </target>
 
     <target name="behat-coverage" description="Run acceptance tests with Behat and produce coverage">
-        <exec executable="${basedir}/app/Resources/jenkins/behat_coverage/run_behat_coverage.sh" failonerror="true">
+        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <arg value="noxdebug" />
+            <!--<arg value="${basedir}/app/Resources/jenkins/behat-coverage - -profile=jenkins-coverage - -ansi - -tags=~skip -fprogress" />-->
+            <arg value="${basedir}/bin/behat --profile=jenkins-coverage --ansi" />
         </exec>
     </target>
 
