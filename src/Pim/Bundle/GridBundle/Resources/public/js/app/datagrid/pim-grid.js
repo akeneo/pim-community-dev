@@ -1,8 +1,15 @@
 var Pim = Pim || {};
 Pim.Datagrid = Pim.Datagrid || {};
 
+/**
+ * Pim grid class extending Oro Datagrid for quick export action
+ * 
+ * @author  Romain Monceau <romain@akeneo.com>
+ * @class   Pim.Datagrid.Grid
+ * @extends Oro.Datagrid.Grid
+ * @see     Backgrid.Grid
+ */
 Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
-
     /**
      * @property {Object} Default properties values
      */
@@ -25,14 +32,12 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
      *
      * @return {Array}
      * @private
-     * TODO : use extend ?!
      */
     _getToolbarMassActions: function() {
         var result = [];
         _.each(this.massActions, function(action) {
             result.push(this.createMassAction(action));
         }, this);
-        
         if (this.addQuickExportAction) {
             result.push(this.getQuickExportAction());
         }
