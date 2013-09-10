@@ -425,7 +425,7 @@ body .select2-container {
     clear: both;
     background: #323b45;
     position: relative;
-    z-index: 120;
+    z-index: 900;
     .divider-vertical {
       border:none;
       margin:9px 6px;
@@ -731,6 +731,9 @@ header {
           box-shadow: none !important;
           background: #fff;
           color: #444;
+        }
+        .header-search-focused #search-dropdown{
+          display: block;
         }
         #search-bar-button {
           width:85px;
