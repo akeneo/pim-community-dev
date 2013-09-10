@@ -45,7 +45,7 @@ class WebSocket
 
         $wsData = fread($this->socket, 2000);
 
-        return trim($wsData,"\x00\xff");
+        return trim($wsData, "\x00\xff");
     }
 
     /**
@@ -120,7 +120,7 @@ class WebSocket
         }
 
         if ($addNumbers === true) {
-            array_push($useChars, rand(0,9), rand(0,9), rand(0,9));
+            array_push($useChars, rand(0, 9), rand(0, 9), rand(0, 9));
         }
 
         shuffle($useChars);
