@@ -31,7 +31,7 @@ interface MassEditAction
      * @param ProductInterface[] $products
      * @param array              $parameters
      */
-    public function initialize(array $products, array $parameters);
+    public function initialize(array $products);
 
     /**
      * Perform an operation on a set of products
@@ -39,5 +39,5 @@ interface MassEditAction
      * @param ProductInterface[] $products
      * @param array              $parameters
      */
-    public function perform(array $products, array $parameters);
+    public function perform(array $products);
 }

@@ -88,7 +88,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $products, array $parameters)
+    public function initialize(array $products)
     {
         $this->commonAttributes = $this->productManager->getAttributeRepository()->findAll();
 
@@ -117,7 +117,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function perform(array $products, array $parameters)
+    public function perform(array $products)
     {
         foreach ($products as $product) {
             foreach ($this->values as $value) {

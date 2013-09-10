@@ -63,7 +63,7 @@ class ChangeStatus extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function perform(array $products, array $parameters)
+    public function perform(array $products)
     {
         foreach ($products as $product) {
             $product->setEnabled($this->enable);

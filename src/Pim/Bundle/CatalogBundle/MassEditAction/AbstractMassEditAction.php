@@ -22,7 +22,7 @@ abstract class AbstractMassEditAction implements MassEditAction
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $products, array $parameters)
+    public function initialize(array $products)
     {
     }
 
