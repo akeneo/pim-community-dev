@@ -31,6 +31,8 @@ services:
         class: %pim_catalog.controller.attribute_group.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
+            - @oro_grid.renderer
+            - @pim_catalog.datagrid.worker
             - @pim_catalog.form.handler.attribute_group
             - @pim_catalog.form.attribute_group
 
