@@ -519,7 +519,7 @@ class JobExecution
      *
      * @return string Date formatted
      */
-    public static function formatDate(\DateTime $date, $format = \DateTime::ATOM)
+    public static function formatDate(\DateTime $date = null, $format = \DateTime::ATOM)
     {
         $formattedDate = '';
 
