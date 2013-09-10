@@ -160,7 +160,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         foreach ($pages->getHash() as $data) {
             $url = $this->getSession()->evaluateScript(sprintf('return Routing.generate("%s");', $data['page']));
-            $this->getSession()->executeScript(sprintf('Pim.navigate("%s");', $url));
+            $this->getSession()->executeScript(
+                sprintf("require(['oro/navigation'], function(Nav) { Nav.getInstance().setLocation('%s'); } );", $url)
+            );
             $this->wait();
 
             $currentUrl = $this->getSession()->getCurrentUrl();
