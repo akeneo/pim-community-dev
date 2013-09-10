@@ -1,8 +1,8 @@
 /* global define */
 define(['underscore', 'backbone', 'oro/translator', 'oro/mediator', 'oro/messenger', 'oro/dialog-widget',
-    'oro/mapservice/googlemaps', 'oro/address/view', 'oro/address/collection'],
+    'oro/mapservice/googlemaps', 'oro/address/view', 'oro/address/collection', 'oro/widget-manager'],
 function(_, Backbone, __, mediator, messenger, dialogWidget,
-     Googlemaps, AddressView, AddressCollection) {
+     Googlemaps, AddressView, AddressCollection, widgetManager) {
     'use strict';
 
     var $ = Backbone.$;
@@ -139,6 +139,7 @@ function(_, Backbone, __, mediator, messenger, dialogWidget,
                     messenger.notificationFlashMessage('success', __('Address successfully saved'));
                     this.reloadAddresses();
                 }, this));
+                widgetManager.addWidgetInstance(this.addressEditDialog);
             }
         },
 
