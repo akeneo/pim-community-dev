@@ -1,13 +1,34 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
+{% block head_script %}
+    {{ parent() }}
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/tree/manage', 'oro/navigation', 'jquery.sidebarize'],
+            function($, TreeManage, Navigation){
+                'use strict';
+                $(function() {
+                    var createBtn = $('<button>', { id: 'tree-create' }).html(
+                        $('<i>', { 'class': 'icon-plus-sign' })
+                    ).on('click', function() {
+                        Navigation.getInstance().setLocation('{{ path("pim_catalog_categorytree_create") }}');
+                    });
+
+                    // Instantiate sidebar
+                    $('#category-tree-container').sidebarize({ buttons: [ createBtn ] });
+                    new TreeManage('#tree');
+                });
+            }
+        );
+    </script>
+{% endblock %}
+
 {% block content %}
     <div id="category-tree-container" class="row-fluid">
-        <div id="tree" data-tree="manage" data-assets-path="{{ asset('bundles/pimcatalog/') }}"{% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %}></div>
+        <div id="tree" data-assets-path="{{ asset('bundles/pimcatalog/') }}"{% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %}></div>
 
         <div id="category-form">
             {% include 'PimCatalogBundle:CategoryTree:form.html.twig' with {'form': form} %}
         </div>
     </div>
-
-    {% include 'PimCatalogBundle:CategoryTree:_js-handler.html.twig' %}
 {% endblock %}

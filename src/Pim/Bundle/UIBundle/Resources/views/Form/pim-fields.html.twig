@@ -39,7 +39,7 @@
         {% if type is not defined or type != 'hidden' %}
             <div class="icons-container">
                 {% if help is defined %}
-                    <i class="fa-icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="{{ help|trans }}"></i>
+                    <i class="icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="{{ help|trans }}"></i>
                 {% endif %}
                 {{ form_errors(form) }}
             </div>
@@ -85,15 +85,15 @@
                 <div class="upload-info">
                     {% if not empty %}
                         <a class="no-hash upload-preview" href="{{ asset(form.vars.value.filePath) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
-                            <i class="fa-icon-file upload-preview"></i>
+                            <i class="icon-file upload-preview"></i>
                         </a>
                     {% else %}
-                        <i class="fa-icon-file upload-preview empty"></i>
+                        <i class="icon-file upload-preview empty"></i>
                     {% endif %}
                     <span class="upload-filename" data-empty-title="{{ 'Drop a file or click here'|trans }}">{% if empty %}{{ 'Drop a file or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
                 </div>
                 <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}">
-                    <i class="fa-icon-trash"></i>
+                    <i class="icon-trash"></i>
                 </a>
                 {% if empty %}
                     {{ form_widget(form.file) }}
@@ -121,16 +121,16 @@
             <label class="upload-zone image{% if empty %} empty{% endif %}">
                 <div class="upload-info">
                     {% if not empty %}
-                        <a class="no-hash upload-preview" href="{{ asset(form.vars.value.filePath)|imagine_filter('image_preview') }}" title="{{ form.vars.value.originalFilename }}" rel="lightbox">
+                        <a class="no-hash upload-preview" href="{{ asset(form.vars.value.filePath)|imagine_filter('image_preview') }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
                             <img src="{{ asset(form.vars.value.filePath)|imagine_filter('thumbnail_small') }}">
                         </a>
                     {% else %}
-                        <i class="fa-icon-camera-retro upload-preview empty"></i>
+                        <i class="icon-camera-retro upload-preview empty"></i>
                     {% endif %}
                     <span class="upload-filename" data-empty-title="{{ 'Drop an image or click here'|trans }}">{% if empty %}{{ 'Drop an image or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
                 </div>
                 <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}">
-                    <i class="fa-icon-trash"></i>
+                    <i class="icon-trash"></i>
                 </a>
                 {% if empty %}
                     {{ form_widget(form.file) }}
@@ -217,9 +217,9 @@
     <div class="attribute-requirement" data-required-title="{{ 'Required'|trans }}" data-not-required-title="{{ 'Not required'|trans }}">
         <input type="checkbox" id="{{ form.required.vars.id }}" name="{{ form.required.vars.full_name }}" class="hide" {% if form.required.vars.checked %}checked="checked"{% endif %} />
         {% if form.required.vars.checked %}
-        <i class="fa-icon-ok required" data-toggle="tooltip" data-placement="right"></i>
+        <i class="icon-ok required" data-toggle="tooltip" data-placement="right"></i>
         {% else %}
-        <i class="fa-icon-circle non-required" data-toggle="tooltip" data-placement="right"></i>
+        <i class="icon-circle non-required" data-toggle="tooltip" data-placement="right"></i>
         {% endif %}
     </div>
 {% endblock pim_attribute_requirement_widget %}
