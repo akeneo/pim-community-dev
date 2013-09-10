@@ -30,7 +30,7 @@ oro_menu_config:
             label: 'Categories'
             route: 'pim_catalog_categorytree_create'
         pim_import_tab:
-            label: 'Extract'
+            label: 'Collect'
             uri: '#'
             extras:
                 position: 10
