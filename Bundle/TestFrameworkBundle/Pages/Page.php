@@ -164,6 +164,28 @@ class Page
     public function assertMessage($messageText, $message = '')
     {
         PHPUnit_Framework_Assert::assertTrue(
+            $this->isElementPresent(
+                "//div[contains(@class,'alert') and not(contains(@class, 'alert-empty')) and not(contains(@class, 'alert-error'))]"
+            ),
+            'Flash message is missing'
+        );
+        $actualResult = $this->byXPath(
+            "//div[contains(@class,'alert') and not(contains(@class, 'alert-empty')) and not(contains(@class, 'alert-error'))]/div"
+        )->text();
+
+        PHPUnit_Framework_Assert::assertEquals($messageText, $actualResult, $message
+        );
+        return $this;
+    }
+
+    /**
+     * @param $messageText
+     * @param string $message
+     * @return $this
+     */
+    public function assertErrorMessage($messageText, $message = '')
+    {
+        PHPUnit_Framework_Assert::assertTrue(
             $this->isElementPresent("//div[contains(@class,'alert') and not(contains(@class, 'alert-empty'))]"),
             'Flash message is missing'
         );
@@ -173,7 +195,6 @@ class Page
         );
         return $this;
     }
-
     /**
      * @param $xpath
      * @param string $message
