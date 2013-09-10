@@ -24,55 +24,6 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
     },
 
     /**
-     * Initialize grid
-     *
-     * @param {Object} options
-     * @param {Backbone.Collection} options.collection
-     * @param {Backbone.Collection|Array} options.columns
-     * @param {String} [options.noDataHint] Text which displayed when datagrid collection is empty
-     * @param {String} [options.rowClickActionClass] CSS class for row with click action
-     * @param {String} [options.rowClassName] CSS class for row
-     * @param {Object} [options.toolbarOptions] Options for toolbar
-     * @param {Boolean} [options.addResetAction] If TRUE reset action will be added in toolbar
-     * @param {Boolean} [options.addRefreshAction] If TRUE refresh action will be added in toolbar
-     * @param {Oro.Datagrid.Action.AbstractAction[]} [options.rowActions] Array of row actions prototypes
-     * @param {Oro.Datagrid.Action.AbstractAction[]} [options.massActions] Array of mass actions prototypes
-     * @param {Oro.Datagrid.Action.AbstractAction} [options.rowClickAction] Prototype for action that handles row click
-     * @throws {TypeError} If mandatory options are undefined
-     */
-    initialize: function(options) {
-        options = options || {};
-
-        // Check required options
-        if (!options.collection) {
-            throw new TypeError("'collection' is required")
-        }
-        this.collection = options.collection;
-
-        if (!options.columns) {
-            throw new TypeError("'columns' is required")
-        }
-
-        // Init properties values based on options and defaults
-        _.extend(this, this.defaults, options);
-
-        this._initRowActions();
-
-        if (this.rowClickAction) {
-            // This option property is used in Oro.Datagrid.Body
-            options.rowClassName = this.rowClickActionClass + ' ' + this.rowClassName;
-        }
-
-        options.columns.push(this._createActionsColumn());
-        options.columns.unshift(this._getMassActionsColumn());
-
-        this.loadingMask = this._createLoadingMask();
-        this.toolbar = this._createToolbar(_.extend(this.toolbarOptions, options.toolbarOptions));
-
-        Backgrid.Grid.prototype.initialize.apply(this, arguments);
-    },
-
-    /**
      * Creates instance of toolbar
      *
      * @param {Object} toolbarOptions
@@ -83,7 +34,8 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
         return new this.toolbar(_.extend({}, toolbarOptions, {
             collection: this.collection,
             actions: this._getToolbarActions(),
-            massActions: this._getToolbarMassActions()
+            massActions: this._getToolbarMassActions(),
+            //TODO : Add export actiosn
         }));
     },
 
@@ -92,9 +44,12 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
      *
      * @return {Array}
      * @private
+     * 
+     * TODO : Must be removed
      */
     _getToolbarActions: function() {
         var result = [];
+        //TODO : Call Oro.Datagrid.Grid
         if (this.addRefreshAction) {
             result.push(this.getRefreshAction());
         }
