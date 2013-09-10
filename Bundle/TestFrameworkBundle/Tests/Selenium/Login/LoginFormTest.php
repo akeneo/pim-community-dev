@@ -70,12 +70,14 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
     {
         $this->url('user/login');
         $this->waitPageToLoad();
+        $this->waitForAjax();
         $this->byId('prependedInput')->clear();
         $this->byId('prependedInput')->value(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN);
         $this->byId('prependedInput2')->clear();
         $this->byId('prependedInput2')->value(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS);
         $this->clickOnElement('_submit');
         $this->waitPageToLoad();
+        $this->waitForAjax();
         $this->assertEquals('Dashboard', $this->title());
 
         $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right']/li[@class='dropdown']/a")->click();
@@ -92,13 +94,14 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
     {
         $this->url('user/login');
         $this->waitPageToLoad();
+        $this->waitForAjax();
         $this->byId('prependedInput')->clear();
         $this->byId('prependedInput')->value($login);
         $this->byId('prependedInput2')->clear();
         $this->byId('prependedInput2')->value($password);
         $this->clickOnElement('_submit');
         $this->waitPageToLoad();
-
+        $this->waitForAjax();
         $actualResult = $this->byXPath("//div[contains(@class,'alert')]/div")->text();
 
         $this->assertEquals('Login', $this->title());
@@ -120,6 +123,7 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
     {
         $this->url('user/login');
         $this->waitPageToLoad();
+        $this->waitForAjax();
         $usernameAttribute = $this->byId('prependedInput')->attribute('required');
         $passwordAttribute = $this->byId('prependedInput2')->attribute('required');
 
@@ -132,14 +136,16 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
     {
         $this->url('user/login');
         $this->waitPageToLoad();
+        $this->waitForAjax();
         $this->byXPath("//*[@id='top-page']//fieldset//a[contains(.,'Forgot your password?')]")->click();
         $this->waitPageToLoad();
+        $this->waitForAjax();
         $this->assertEquals('Forgot Password', $this->title());
 
         $this->byId('prependedInput')->value('123test123');
         $this->byXPath("//button[contains(.,'Request')]")->click();
         $this->waitPageToLoad();
-
+        $this->waitForAjax();
         $messageActual = $this->byXPath("//*[@id='top-page']//div/div[contains(.,'The username or email address')]")->text();
         $messageExpect = "The username or email address \"123test123\" does not exist.";
         $this->assertEquals($messageExpect, $messageActual);
@@ -147,6 +153,7 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
         $this->byId('prependedInput')->value('admin@example.com');
         $this->byXPath("//button[contains(.,'Request')]")->click();
         $this->waitPageToLoad();
+        $this->waitForAjax();
         $messageActual = $this->byXPath("//*[@id='top-page']//h3[contains(.,'An email has been sent to')]")->text();
 
         $this->assertEquals('An email has been sent to ...@example.com. It contains a link you must click to reset your password.', $messageActual);
@@ -156,18 +163,22 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
     {
         $this->url('user/login');
         $this->waitPageToLoad();
+        $this->waitForAjax();
         $this->byId('prependedInput')->clear();
         $this->byId('prependedInput')->value(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN);
         $this->byId('prependedInput2')->clear();
         $this->byId('prependedInput2')->value(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS);
         $this->byId('remember_me')->click();
         $this->waitPageToLoad();
+        $this->waitForAjax();
         $this->clickOnElement('_submit');
         $this->waitPageToLoad();
+        $this->waitForAjax();
         $this->assertEquals('Dashboard', $this->title());
 
         $this->url(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_TESTS_URL);
         $this->waitPageToLoad();
+        $this->waitForAjax();
         $this->assertEquals('Dashboard', $this->title());
     }
 }
