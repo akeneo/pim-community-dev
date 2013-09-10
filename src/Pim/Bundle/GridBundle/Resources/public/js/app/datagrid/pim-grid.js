@@ -17,6 +17,7 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
         toolbarOptions: {},
         addResetAction: true,
         addRefreshAction: true,
+        addQuickExportAction: true,
         rowClickAction: undefined,
         rowActions: [],
         massActions: []
@@ -69,10 +70,6 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
         this.toolbar = this._createToolbar(_.extend(this.toolbarOptions, options.toolbarOptions));
 
         Backgrid.Grid.prototype.initialize.apply(this, arguments);
-
-        // Listen and proxy events
-        this._listenToCollectionEvents();
-        this._listenToBodyEvents();
     },
 
     /**
@@ -104,7 +101,7 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
         if (this.addResetAction) {
             result.push(this.getResetAction());
         }
-        if (this.addRefreshAction) {
+        if (this.addQuickExportAction) {
             result.push(this.getQuickExportAction());
         }
         return result;
