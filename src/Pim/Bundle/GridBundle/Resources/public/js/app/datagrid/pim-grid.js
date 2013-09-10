@@ -3,9 +3,6 @@ Pim.Datagrid = Pim.Datagrid || {};
 
 Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
 
-    /** @property {Oro.Datagrid.Toolbar} */
-    toolbar: Oro.Datagrid.Toolbar,
-
     /**
      * @property {Object} Default properties values
      */
@@ -24,41 +21,22 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
     },
 
     /**
-     * Creates instance of toolbar
-     *
-     * @param {Object} toolbarOptions
-     * @return {Oro.Datagrid.Toolbar}
-     * @private
-     */
-    _createToolbar: function(toolbarOptions) {
-        return new this.toolbar(_.extend({}, toolbarOptions, {
-            collection: this.collection,
-            actions: this._getToolbarActions(),
-            massActions: this._getToolbarMassActions(),
-            //TODO : Add export actiosn
-        }));
-    },
-
-    /**
-     * Get actions of toolbar
+     * Get mass actions of toolbar
      *
      * @return {Array}
      * @private
-     * 
-     * TODO : Must be removed
+     * TODO : use extend ?!
      */
-    _getToolbarActions: function() {
+    _getToolbarMassActions: function() {
         var result = [];
-        //TODO : Call Oro.Datagrid.Grid
-        if (this.addRefreshAction) {
-            result.push(this.getRefreshAction());
-        }
-        if (this.addResetAction) {
-            result.push(this.getResetAction());
-        }
+        _.each(this.massActions, function(action) {
+            result.push(this.createMassAction(action));
+        }, this);
+        
         if (this.addQuickExportAction) {
             result.push(this.getQuickExportAction());
         }
+
         return result;
     },
 
@@ -78,6 +56,7 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
                 }
             });
         }
+        
         return this.quickExportAction;
     }
 });
