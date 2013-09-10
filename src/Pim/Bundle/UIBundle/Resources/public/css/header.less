@@ -1,10 +1,43 @@
 /* Header ***********************************************************************************************************/
 
-header {
-  #gradient .vertical(@color-header_top, @color-header_bottom);
-  .dropdown-menu li.active>a:hover {
-    background: #F5F5F5;
-    color: #444;
+#oroplatform-header {
+  div.navbar-inner {
+    #gradient .vertical(@color-header_top, @color-header_bottom);
+    .logo {
+      &:before, &:after {
+        border: none;
+      }
+      a {
+        background-color: transparent;
+        padding: 0;
+        img {
+          height: 41px;
+        }
+      }
+    }
+    .nav.top-search {
+      .dropdown > .dropdown-toggle {
+        [class^='icon-'] {
+          text-shadow: 0 1px 1px @color-header_bottom;
+        }
+        &:hover [class^='icon-'] {
+          border: 1px solid darken(@color-header_bottom, 10%);
+          #gradient > .vertical(@color-header_top, darken(@color-header_bottom, 5%));
+        }
+      }
+      .dropdown > .dropdown-toggle:active > [class^=icon-],
+      .dropdown > .dropdown-toggle:focus > [class^=icon-],
+      .dropdown.open > .dropdown-toggle > [class^=icon-] {
+        border: 1px solid darken(@color-header_bottom, 22%);
+        #gradient > .vertical(@color-header_top, @color-header_bottom);
+      }
+    }
+  }
+  .oroplatform-menu>li.dropdown:not(:hover).active>a {
+    border: 1px solid darken(@color-header_bottom, 7%);
+    border-bottom-color: darken(@color-header_bottom, 20%);
+    background: @color-header_bottom;
+    #gradient > .vertical(@color-header_top, @color-header_bottom);
   }
 }
 
@@ -12,89 +45,35 @@ header {
   background: transparent;
 }
 
-.navbar-inner .shortcuts .dropdown>a, header .shortcuts .dropdown>a { margin: 1px 0px 0 0; outline: none; }
-
-.navbar-responsive-collapse .top-search .dropdown-search.open>span, .navbar-responsive-collapse .top-search .dropdown-search:hover>span {
-  background-position: 0 -343px;
-}
-
-/* Shortcut *********************************************************************************************************/
-
-header .shortcuts .dropdown > a {
-  .icon-shortcuts();
-  &:hover,
-  &:active,
-  &:focus {
-    .icon-shortcuts();
-  }
-}
-
-/* Logo *************************************************************************************************************/
-
-header {
-  border-bottom: 1px solid #e7e7e7;
-  .navbar-inner h1.logo {
-    margin: 0px;
-    padding: 0px;
-    &:after {
-      border: none;
-    }
-    a {
-      background: none;
-      padding: 0px;
-      margin-left: -30px;
-      img {
-        height: 41px;
-        margin-top: 0;
-        vertical-align: top;
-      }
-    }
-  }
-}
-
 /* Pin bar and menus ************************************************************************************************/
 
 .pin-bar {
   background-color: @color-purple_dark;
   background-image: none;
-  padding-bottom: 0;
   .list-bar {
     li.active{
       background-color: #6800A9;
     }
   }
-}
-
-.pin-menus {
-  border-left: none;
-  &:hover,
-  &.open {
-    background-color: lighten(@color-purple_dark, 10%);
-  }
-  .tabbable {
-    background-color: @color-grey_tab;
-    >ul.nav-tabs {
-      li {
-        a { background-color: @color-grey_tab; }
-        a:hover { background-color: @color-purple_hover; }
-      }
-      li.active {
-        a { background-color: @color-purple_hover;; }
+  .pin-menus {
+    .oro-dropdown-toggle {
+      &:hover {
+        #gradient > .vertical(@color-purple_dark, darken(@color-purple_dark, 10%));
       }
     }
-    .tab-content {border-left: 0px;}
+    .dropdown-menu .tabs-left.tabbable {
+      background-color: @color-grey_tab;
+      >ul.nav-tabs {
+        li a {
+          background-color: @color-grey_tab;
+          &:hover {
+            background-color: @color-purple_hover;
+          }
+        }
+        li.active a {
+          background-color: @color-purple_hover;
+        }
+      }
+    }
   }
-}
-
-/* nav bar **********************************************************************************************************/
-
-.navbar .nav > .active > a,
-.navbar .nav > .active > a:hover,
-.navbar .nav > .active > a:focus {
-  color: @textColor;
-  background-color: @backgroundColor-white;
-}
-
-.breadcrumb {
-  padding-top: 4px;
 }
