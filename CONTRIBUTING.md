@@ -20,6 +20,10 @@ App
 
 FilterBundle
 [] Check filter changes between pim-layout.js.twig and layout.js.twig
+
+GridBundle
+[] Update differences between grid.js and pim-grid.js
+[] Update differences between javascript.html.twig and pim-datagrid.html.twig
 ```
 
 *Use http://cs.sensiolabs.org/
