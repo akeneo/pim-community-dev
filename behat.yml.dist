@@ -86,6 +86,6 @@ jenkins-coverage:
                 env: behat
         SensioLabs\Behat\PageObjectExtension\Extension: ~
     formatter:
-        name: pretty,pretty
+        name: junit
         parameters:
-            output_path: null,app/build/logs/behat-coverage/pretty.out
+            output_path: app/build/logs/behat-coverage/
