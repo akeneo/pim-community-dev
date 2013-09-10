@@ -141,6 +141,22 @@ class ConfigDatagridManager extends DatagridManager
     }
 
     /**
+     * @return array
+     */
+    public function getRequireJsModules()
+    {
+        $modules = array();
+        foreach ($this->configManager->getProviders() as $provider) {
+            $modules = array_merge(
+                $modules,
+                $provider->getPropertyConfig()->getRequireJsModules()
+            );
+        }
+
+        return $modules;
+    }
+
+    /**
      * @param  string $scope
      * @return array
      */
