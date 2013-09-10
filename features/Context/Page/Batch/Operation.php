@@ -3,6 +3,8 @@
 namespace Context\Page\Batch;
 
 use Context\Page\Base\Wizard;
+use Behat\Mink\Exception\ElementNotFoundException;
+use Behat\Mink\Driver\BrowserKitDriver;
 
 /**
  * BatchOperation page
@@ -15,21 +17,39 @@ class Operation extends Wizard
 {
     protected $path = '/enrich/batch-operation/choose?{products}';
 
-    private $aliases = array(
-        'Change status (Enable/Disable)' => 'change-status'
+    private $steps = array(
+        'Change status (Enable/Disable)' => 'Batch ChangeStatus',
+        'Edit attributes'                => 'Batch EditCommonAttributes',
     );
 
     public function chooseOperation($operation)
     {
-        $value = $this->getAlias($operation);
-        $this->selectFieldOption('pim_catalog_batch_operation[operationAlias]', $value);
+        $choice = $this->findField($operation);
+
+        if (null === $choice) {
+            throw new ElementNotFoundException(
+                $this->getSession(),
+                'form field',
+                'id|name|label|value',
+                $operation
+            );
+        }
+
+        $driver = $this->getSession()->getDriver();
+        if ($driver instanceof BrowserKitDriver) {
+            $this->selectFieldOption('pim_catalog_batch_operation[operationAlias]', $choice->getAttribute('value'));
+        } else {
+            $driver->click($choice->getXpath());
+        }
+
+        $this->currentStep = $this->getStep($operation);
 
         return $this;
     }
 
-    private function getAlias($operation)
+    private function getStep($operation)
     {
-        if (!array_key_exists($operation, $this->aliases)) {
+        if (!array_key_exists($operation, $this->steps)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Unknown operation "%s" (available: "%s")',
@@ -39,6 +59,6 @@ class Operation extends Wizard
             );
         }
 
-        return $this->aliases[$operation];
+        return $this->steps[$operation];
     }
 }

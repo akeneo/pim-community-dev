@@ -47,6 +47,8 @@ class EditCommonAttributesType extends AbstractType
                     'choices'  => $options['commonAttributes'],
                     'required' => false,
                     'multiple' => true,
+                    'expanded' => false,
+                    'group_by' => 'virtualGroup.name',
                     'attr'     => array(
                         'class' => 'operation-param',
                     )

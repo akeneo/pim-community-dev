@@ -1657,10 +1657,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iChooseTheOperation($operation)
     {
-        $this
+        $this->currentPage = $this
             ->getPage('Batch Operation')
             ->chooseOperation($operation)
             ->next();
+
+        $this->wait();
     }
 
     /**

@@ -94,7 +94,9 @@ class EditCommonAttributes extends AbstractBatchOperation
 
         foreach ($products as $product) {
             foreach ($this->commonAttributes as $key => $attribute) {
-                if ($attribute->getUnique() || false === $product->getValue($attribute->getCode())) {
+                if ('pim_catalog_identifier' === $attribute->getAttributeType() ||
+                    $attribute->getUnique() ||
+                    false === $product->getValue($attribute->getCode())) {
                     /**
                      * Attribute is not available for mass editing if:
                      *   - it is unique
