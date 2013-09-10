@@ -9,10 +9,12 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
 /**
  * @outputBuffering enabled
  * @db_isolation
+ * @db_reindex
  */
 class RestSearchApiTest extends WebTestCase
 {
-    protected $client = null;
+    /** @var client */
+    protected $client;
     protected static $hasLoaded = false;
 
     public function setUp()
@@ -32,12 +34,13 @@ class RestSearchApiTest extends WebTestCase
      */
     public function testApi($request, $response)
     {
-        $requestUrl = '';
         foreach ($request as $key => $value) {
-            $requestUrl .= (is_null($request[$key])) ? '' :
-                (($requestUrl!=='') ? '&':'') . "{$key}=" . $value;
+            if (is_null($value)) {
+                unset($request[$key]);
+            }
         }
-        $this->client->request('GET', "http://localhost/api/rest/latest/search?search={$requestUrl}");
+
+        $this->client->request('GET', $this->client->generate('oro_api_get_search'), $request);
 
         $result = $this->client->getResponse();
 

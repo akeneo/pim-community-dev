@@ -1,0 +1,14 @@
+Oro\Bundle\EmailBundle\Entity\Email:
+    alias: oro_email
+    label: Emails
+    search_template: OroEmailBundle:Email:searchResult.html.twig
+    route:
+        name: oro_email_view
+        parameters:
+            id: id
+    title_fields: [subject]
+    fields:
+        -
+            name:                   subject
+            target_type:            text
+            target_fields:          [subject]

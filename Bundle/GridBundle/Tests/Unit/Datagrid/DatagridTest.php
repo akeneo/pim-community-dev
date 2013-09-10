@@ -50,7 +50,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $formOptions = array('disabled' => true);
         $filter = $this->createFilter($filterName, array($formType, $formOptions));
 
-        $formBuilder = $this->getMockForAbstractClass('Symfony\Component\Form\Tests\FormBuilderInterface');
+        $formBuilder = $this->getMockForAbstractClass('Symfony\Component\Form\Test\FormBuilderInterface');
         $datagrid = $this->createDatagrid(array('formBuilder' => $formBuilder));
 
         $this->assertAttributeEmpty('filters', $datagrid);
@@ -196,15 +196,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $arrayParameters = array('test');
         $parameters = $this->createParameters($arrayParameters);
         $datagrid = $this->createDatagrid(array('parameters' => $parameters));
-        $this->assertEquals($arrayParameters, $datagrid->getParameters());
-    }
-
-    public function testGetValues()
-    {
-        $arrayParameters = array('test');
-        $parameters = $this->createParameters($arrayParameters);
-        $datagrid = $this->createDatagrid(array('parameters' => $parameters));
-        $this->assertEquals($arrayParameters, $datagrid->getValues());
+        $this->assertEquals($parameters, $datagrid->getParameters());
     }
 
     public function testGetRouteGenerator()
@@ -214,18 +206,20 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($routeGenerator, $datagrid->getRouteGenerator());
     }
 
-    public function testGetName()
+    public function testName()
     {
-        $datagridName = 'datagrid';
-        $datagrid = $this->createDatagrid(array('name' => $datagridName));
-        $this->assertEquals($datagridName, $datagrid->getName());
+        $datagrid = $this->createDatagrid();
+        $this->assertNull($datagrid->getName());
+        $datagrid->setName('datagrid');
+        $this->assertEquals('datagrid', $datagrid->getName());
     }
 
-    public function testGetEntityHint()
+    public function testEntityHint()
     {
-        $entityHint = 'Entity Hint';
-        $datagrid = $this->createDatagrid(array('entityHint' => $entityHint));
-        $this->assertEquals($entityHint, $datagrid->getEntityHint());
+        $datagrid = $this->createDatagrid();
+        $this->assertNull($datagrid->getEntityHint());
+        $datagrid->setEntityHint('Entity Hint');
+        $this->assertEquals('Entity Hint', $datagrid->getEntityHint());
     }
 
     public function testAddRowAction()
@@ -250,13 +244,6 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals($expectedActions, $datagrid->getRowActions());
-    }
-
-    public function testSetValue()
-    {
-        // method is empty, do nothing
-        $datagrid = $this->createDatagrid();
-        $datagrid->setValue('name', '=', 'value');
     }
 
     public function testGetPager()
@@ -292,6 +279,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($pager, $datagrid->getPager());
         $this->assertEquals($page, $pager->getPage());
         $this->assertEquals($perPage, $pager->getMaxPerPage());
+        $this->assertAttributeEquals(true, 'pagerApplied', $datagrid);
     }
 
     public function testGetQuery()
@@ -313,15 +301,15 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testGetForm()
     {
-        $form = $this->getMockForAbstractClass('Symfony\Component\Form\Tests\FormInterface');
-        $formBuilder = $this->getMockForAbstractClass('Symfony\Component\Form\Tests\FormBuilderInterface');
+        $form = $this->getMockForAbstractClass('Symfony\Component\Form\Test\FormInterface');
+        $formBuilder = $this->getMockForAbstractClass('Symfony\Component\Form\Test\FormBuilderInterface');
         $filterParameters = array('filter' => 'value');
         $parameters = $this->createParameters(array(ParametersInterface::FILTER_PARAMETERS => $filterParameters));
 
         $datagrid = $this->createDatagrid(array('formBuilder' => $formBuilder, 'parameters' => $parameters));
 
         $formBuilder->expects($this->once())->method('getForm')->will($this->returnValue($form));
-        $form->expects($this->once())->method('bind')->with($filterParameters);
+        $form->expects($this->once())->method('submit')->with($filterParameters);
 
         $this->assertEquals($form, $datagrid->getForm());
         $this->assertEquals($form, $datagrid->getForm()); // check form created once
@@ -365,8 +353,8 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $query = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface');
         $pager = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\PagerInterface');
 
-        $form = $this->getMockForAbstractClass('Symfony\Component\Form\Tests\FormInterface');
-        $formBuilder = $this->getMockForAbstractClass('Symfony\Component\Form\Tests\FormBuilderInterface');
+        $form = $this->getMockForAbstractClass('Symfony\Component\Form\Test\FormInterface');
+        $formBuilder = $this->getMockForAbstractClass('Symfony\Component\Form\Test\FormBuilderInterface');
         $formBuilder->expects($this->once())->method('getForm')->will($this->returnValue($form));
 
         $eventDispatcher = $this->getMockForAbstractClass(
@@ -426,7 +414,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
             $filter = $this->createFilter($name);
             $datagrid->addFilter($filter);
 
-            $filterForm = $this->getMockForAbstractClass('Symfony\Component\Form\Tests\FormInterface');
+            $filterForm = $this->getMockForAbstractClass('Symfony\Component\Form\Test\FormInterface');
             $filterFormChildrenValueMap[] = array($name, $filterForm);
             $filterForm->expects($this->once())->method('isValid')->will($this->returnValue($data['expectIsValid']));
 
@@ -492,9 +480,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
             $arguments['formBuilder'],
             $arguments['routeGenerator'],
             $arguments['parameters'],
-            $arguments['eventDispatcher'],
-            $arguments['name'],
-            $arguments['entityHint']
+            $arguments['eventDispatcher']
         );
     }
 
@@ -504,7 +490,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
             'query'           => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface'),
             'columns'         => $this->getMock('Oro\Bundle\GridBundle\Field\FieldDescriptionCollection'),
             'pager'           => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\PagerInterface'),
-            'formBuilder'     => $this->getMockForAbstractClass('Symfony\Component\Form\Tests\FormBuilderInterface'),
+            'formBuilder'     => $this->getMockForAbstractClass('Symfony\Component\Form\Test\FormBuilderInterface'),
             'routeGenerator'  => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Route\RouteGeneratorInterface'),
             'parameters'      => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ParametersInterface'),
             'eventDispatcher' => $this->getMockForAbstractClass(
@@ -558,7 +544,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         }
 
         $result = $this->getMockBuilder('Oro\Bundle\GridBundle\Filter\FilterInterface')
-            ->setMethods(array('getName', 'isActive', 'getFormName', 'apply', 'getRenderSettings'))
+            ->setMethods(array('getName', 'isActive', 'apply', 'getRenderSettings'))
             ->getMockForAbstractClass();
 
         $result->expects($this->any())

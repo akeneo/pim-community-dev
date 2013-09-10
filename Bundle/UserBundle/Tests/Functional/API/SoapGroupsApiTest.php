@@ -15,12 +15,19 @@ class SoapGroupsApiTest extends WebTestCase
     /** Default value for role label */
     const DEFAULT_VALUE = 'GROUP_LABEL';
 
-    /** @var \SoapClient */
-    protected $client = null;
+    /** @var Client */
+    protected $client;
 
     public function setUp()
     {
         $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
+        $this->client->soap(
+            "http://localhost/api/soap",
+            array(
+                'location' => 'http://localhost/api/soap',
+                'soap_version' => SOAP_1_2
+            )
+        );
 
         $this->client->soap(
             "http://localhost/api/soap",
@@ -39,9 +46,9 @@ class SoapGroupsApiTest extends WebTestCase
      */
     public function testCreateGroup($request, $response)
     {
-        $result = $this->client->soapClient->createGroup($request);
-        $result = ToolsAPI::classToArray($result);
-        ToolsAPI::assertEqualsResponse($response, $result);
+        $id = $this->client->getSoap()->createGroup($request);
+        $this->assertInternalType('int', $id);
+        $this->assertGreaterThan(0, $id);
     }
 
     /**
@@ -53,7 +60,7 @@ class SoapGroupsApiTest extends WebTestCase
      */
     public function testUpdateGroup($request, $response)
     {
-        $groups = $this->client->soapClient->getGroups();
+        $groups = $this->client->getSoap()->getGroups();
         $groups = ToolsAPI::classToArray($groups);
         foreach ($groups['item'] as $group) {
             if ($group['name'] == $request['name']) {
@@ -62,10 +69,10 @@ class SoapGroupsApiTest extends WebTestCase
             }
         }
         $request['name'] .= '_Updated';
-        $result = $this->client->soapClient->updateGroup($groupId, $request);
+        $result = $this->client->getSoap()->updateGroup($groupId, $request);
         $result = ToolsAPI::classToArray($result);
         ToolsAPI::assertEqualsResponse($response, $result);
-        $group = $this->client->soapClient->getGroup($groupId);
+        $group = $this->client->getSoap()->getGroup($groupId);
         $group = ToolsAPI::classToArray($group);
         $this->assertEquals($request['name'], $group['name']);
     }
@@ -76,7 +83,7 @@ class SoapGroupsApiTest extends WebTestCase
     public function testGetGroups()
     {
         //get roles
-        $groups = $this->client->soapClient->getGroups();
+        $groups = $this->client->getSoap()->getGroups();
         $groups = ToolsAPI::classToArray($groups);
         $this->assertEquals(6, count($groups['item']));
     }
@@ -87,17 +94,17 @@ class SoapGroupsApiTest extends WebTestCase
     public function testDeleteGroups()
     {
         //get roles
-        $groups = $this->client->soapClient->getGroups();
+        $groups = $this->client->getSoap()->getGroups();
         $groups = ToolsAPI::classToArray($groups);
         $this->assertEquals(6, count($groups['item']));
         foreach ($groups['item'] as $k => $group) {
             if ($k > 1) {
                 //do not delete default groups
-                $result = $this->client->soapClient->deleteGroup($group['id']);
+                $result = $this->client->getSoap()->deleteGroup($group['id']);
                 $this->assertTrue($result);
             }
         }
-        $groups = $this->client->soapClient->getGroups();
+        $groups = $this->client->getSoap()->getGroups();
         $groups = ToolsAPI::classToArray($groups);
         $this->assertEquals(2, count($groups['item']));
     }

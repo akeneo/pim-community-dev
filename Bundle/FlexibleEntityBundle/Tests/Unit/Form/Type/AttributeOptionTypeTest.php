@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
@@ -6,11 +7,6 @@ use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType;
 
 /**
  * Test related class
- *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
- *
  */
 class AttributeOptionTypeTest extends TypeTestCase
 {

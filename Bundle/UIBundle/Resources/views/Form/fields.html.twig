@@ -58,12 +58,14 @@
 
 {% block choice_widget_collapsed %}
     <script type="text/javascript">
-        $(function() {
-            {# @todo Replace setTimeout in BAP-858 #}
-            setTimeout(function() {
-                $('#{{ id }}').filter('.error:not([multiple])').removeClass('error').closest('.selector').addClass('error');
-            }, 100);
-        })
+        require(['jquery'],
+        function($){
+            $(function() {
+                $('#{{ id }}').on('uniformInit', function () {
+                    $(this).filter('.error:not([multiple])').removeClass('error').closest('.selector').addClass('error');
+                });
+            });
+        });
     </script>
     {{ parent() }}
 {% endblock choice_widget_collapsed %}
@@ -71,12 +73,14 @@
 {% block form_widget_simple %}
     {% if type is defined and type == 'file' %}
         <script type="text/javascript">
-            $(function() {
-                {# @todo Replace setTimeout in BAP-858 #}
-                setTimeout(function() {
-                    $('#{{ id }}').filter('.error').removeClass('error').closest('.uploader').addClass('error');
-                }, 100);
-            })
+            require(['jquery'],
+            function($){
+                $(function() {
+                    $('#{{ id }}').on('uniformInit', function () {
+                        $(this).filter('.error').removeClass('error').closest('.uploader').addClass('error');
+                    });
+                });
+            });
         </script>
     {% endif %}
     {{ parent() }}
@@ -156,6 +160,22 @@
     {% endspaceless %}
 {% endblock choice_widget_expanded %}
 
+{% block choice_widget_options %}
+    {% spaceless %}
+        {% for group_label, choice in options %}
+            {% if choice is iterable %}
+                <optgroup label="{{ group_label|trans({}, translation_domain) }}">
+                    {% set options = choice %}
+                    {{ block('choice_widget_options') }}
+                </optgroup>
+            {% else %}
+                {% set label = choice.label|trans({}, translation_domain) %}
+                <option value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{% if (attr.is_safe is defined and attr.is_safe) %}{{ label|raw }}{% else %}{{ label }}{% endif %}</option>
+            {% endif %}
+        {% endfor %}
+    {% endspaceless %}
+{% endblock choice_widget_options %}
+
 {% block form_label %}
     {% spaceless %}
         {% if not compound %}
@@ -173,29 +193,31 @@
 {% endblock form_label %}
 
 {% block oro_flexibleentity_email_collection_widget %}
-    {% spaceless %}
-        {% from 'OroUIBundle::macros.html.twig' import collection_prototype as collection  %}
-        <div class="row-oro">
-            <div class="collection-fields-list" data-prototype="{{ collection(form.collection)|escape }}">
-                {% for field in form.collection.children %}
-                    {{ collection(field) }}
-                {% endfor %}
-            </div>
-            <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
-        </div>
-    {% endspaceless %}
+    {% set subform = form.collection %}
+    {{ block('collection_render') }}
 {%  endblock oro_flexibleentity_email_collection_widget %}
 
 {% block oro_flexibleentity_phone_collection_widget %}
+    {% set subform = form.collection %}
+    {{ block('collection_render') }}
+{%  endblock oro_flexibleentity_phone_collection_widget %}
+
+{% block collection_render %}
     {% spaceless %}
         {% from 'OroUIBundle::macros.html.twig' import collection_prototype as collection  %}
         <div class="row-oro">
-            <div class="collection-fields-list" data-prototype="{{ collection(form.collection)|escape }}">
-                {% for field in form.collection.children %}
+            <div class="collection-fields-list" data-prototype="{{ collection(subform)|escape }}">
+                {% for field in subform.children %}
                     {{ collection(field) }}
                 {% endfor %}
             </div>
             <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
         </div>
     {% endspaceless %}
-{%  endblock oro_flexibleentity_phone_collection_widget %}
+{% endblock %}
+
+{% block _oro_entity_config_config_field_type_widget %}
+    {% for field in form.children %}
+        {{ form_widget(field) }}
+    {% endfor %}
+{% endblock %}

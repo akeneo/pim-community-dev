@@ -16,27 +16,24 @@
     <ul class="extra-list"></ul>
     {% if item.hasChildren and options.depth is not sameas(0) and item.displayChildren %}
         {% set pinbarItems = [] %}
-        {% set historyItems = {} %}
         {% for pinbarItem in item.children %}
             {% if pinbarItem.extras.isAllowed %}
-                {% if pinbarItem.extras.maximized %}
-                    {% set historyItems = historyItems|merge({(pinbarItem.uri): pinbarItem.extras.maximized.format('U')}) %}
-                {% endif %}
                 {% set pinbarItems = pinbarItems|merge([{'id': pinbarItem.extras.id, 'title': pinbarItem.label|raw, 'title_rendered': oro_title_render(pinbarItem.label|raw),  'url': pinbarItem.uri, 'type': pinbarItem.extras.type}]) %}
             {% endif %}
         {% endfor %}
     {% endif %}
-    {% if historyItems is defined %}
-        {% set historyItems = historyItems|sort %}
-        {% set options = options|merge({'history': historyItems|keys}) %}
-    {% endif %}
     {% import _self as pinbar %}
     <script type="text/javascript">
-        $(function () {
-            new navigation.pinbar.MainView({{- pinbar.get_options(['maxPinbarItems', 'el', 'listBar', 'tabTitle', 'tabIcon', 'minimizeButton', 'closeButton', 'history', 'defaultUrl'], options) -}});
-            {% if pinbarItems is defined %}
-            navigation.pinbar.Items.reset({{ pinbarItems|json_encode|raw }});
-            {% endif %}
+        require(['jquery', 'oro/navigation/pinbar/view', 'oro/registry'],
+        function($, PinbarView, registry) {
+            $(function () {
+                /** @type {oro.navigation.pinbar.View} */
+                var pinbarView = new PinbarView({{- pinbar.get_options(['maxPinbarItems', 'el', 'listBar', 'tabTitle', 'tabIcon', 'minimizeButton', 'closeButton', 'defaultUrl'], options) -}});
+                registry.setElement('pinbar_view', pinbarView);
+                {% if pinbarItems is defined %}
+                pinbarView.resetCollection({{ pinbarItems|json_encode|raw }});
+                {% endif %}
+            });
         });
     </script>
 {% endblock %}

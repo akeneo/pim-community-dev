@@ -9,7 +9,7 @@ Flexible entity uses a flexible repository which already contains useful method 
 We can use classic findBy() method of repository to retrieve entity collection (native Symfony shortcurt to build doctrine query)
 
 ```php
-// get only entities, values and attributes are lazy loaded, you can use any criteria, order, limit 
+// get only entities, values and attributes are lazy loaded, you can use any criteria, order, limit
 $products = $this->container->get('product_manager')->getFlexibleRepository()->findBy(array());
 
 ```
@@ -27,17 +27,17 @@ $products = $productRepository->findByWithAttributes(array('name'));
 // filter on field and attribute values
 $products = $productRepository->findByWithAttributes(array(), array('sku' => 'sku-2'));
 $products = $productRepository->findByWithAttributes(array('description', 'size'), array('size' => 175));
-// use order 
+// use order
 $products = $productRepository->findByWithAttributes(
     array('name', 'description'), null, array('description' => 'desc', 'id' => 'asc')
 );
-// use limit 
+// use limit
 $products = $productRepository->findByWithAttributes(array('name', 'description'), null, null, 10, 0);
 // force locale to get french values
-$productManager->setLocale('fr_FR')->getFlexibleRepository()->findByWithAttributes(array('name', 'description'));
+$productManager->setLocale('fr')->getFlexibleRepository()->findByWithAttributes(array('name', 'description'));
 ```
 
-There is also a method to load a flexible entity and all values without lazy loading : 
+There is also a method to load a flexible entity and all values without lazy loading :
 
 ```php
 // to load one flexible entity with lazy loading, classic way
@@ -54,5 +54,5 @@ Query Builder
 
 You can use the method createFlexibleQueryBuilder to return the FlexibleQueryBuilder which already embed some logic to deal with flexible storage and querying (operator, locale, scope).
 
-As it returns a QueryBuilder you can get the query add some very custom clauses, add lock mode, change hydration mode, etc. 
+As it returns a QueryBuilder you can get the query add some very custom clauses, add lock mode, change hydration mode, etc.
 

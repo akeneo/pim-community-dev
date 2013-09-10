@@ -1,0 +1,189 @@
+{% macro renderAvailableVariablesWidget(entityName, dependentFieldId) %}
+    <script type="text/javascript">
+        require(['jquery', 'oro/email/variable/view', 'oro/email/variable/model'],
+        function($, View, Model){
+            $(function() {
+                'use strict';
+                new View({
+                    el:       $('#oro-email-available-variables'),
+                    template: $('#available-variables-lists-template'),
+                    target:   $('#{{ dependentFieldId }}'),
+                    model:    new Model({{ render(path('oro_api_get_emailtemplate_available_variables', { 'entityName': entityName }))}})
+                });
+            });
+        });
+    </script>
+
+    <script type="text/template" id="available-variables-lists-template">
+        <% if (userVars.length > 0) { %>
+        <div>
+            <h4>{{ 'Logged in user:'|trans }}</h4>
+            <ul class="nav nav-list">
+                <% _.each(userVars, function(variable, i) { %>
+                    <li><a href="javascript:void(0);">{% verbatim %}{{ user.<%= variable %> }}{% endverbatim %}</a></li>
+                <% }); %>
+            </ul>
+        </div>
+        <% } %>
+        <% if (entityVars.length > 0) { %>
+        <div>
+            <h4>{{ 'Related entity:'|trans }}</h4>
+            <ul class="nav nav-list">
+                <% _.each(entityVars, function(variable, i) { %>
+                    <li><a href="javascript:void(0);">{% verbatim %}{{ entity.<%= variable %> }}{% endverbatim %}</a></li>
+                <% }); %>
+            </ul>
+        </div>
+        <% } %>
+    </script>
+
+    <div class="well well-small" id="oro-email-available-variables"></div>
+{% endmacro %}
+
+{% macro renderPreviewDialog(formName, title) %}
+    <script type="text/javascript">
+        require(['jquery', 'underscore', 'oro/translator', 'oro/modal', 'jquery.bind-first'],
+        function($, _, __, Modal){
+            $(function () {
+                var showEmailPreviewDialog = function(el) {
+                    var iframeId = 'preview-frame';
+                    var iframe = $('<iframe />', {
+                        name: iframeId,
+                        id: iframeId,
+                        class: "scrollable-container",
+                        frameborder: 0,
+                        marginwidth: 0,
+                        marginheight: 0,
+                        allowfullscreen: true,
+                        width: '100%',
+                        height: '99%'
+                    });
+
+                    var form = $('#{{ formName }}');
+                    var formAction = form.attr('action');
+
+                    form.bindFirst('submit', function(e) {
+                        if (!$(this).data('preview')) {
+                            return;
+                        }
+
+                        var confirmModal = new Modal({
+                            title: __('Preview'),
+                            content: '<div class="loading-content">Loading...</div>',
+                            okText: __('Ok'),
+                            className: 'modal oro-modal-normal',
+                            template: _.template('<% if (title) { %>' +
+                                '<div class="modal-header">' +
+                                    '<% if (allowCancel) { %>' +
+                                    '<a class="close">×</a>' +
+                                    '<% } %>' +
+                                    '<h3><%- title %></h3>' +
+                                '</div>' +
+                                '<% } %>' +
+                                '<div class="modal-body"><%= content %></div>'
+                            )
+                        });
+                        confirmModal.open();
+                        confirmModal.$content.append(iframe);
+                        $('.modal-body .loading-content').show();
+
+                        form.attr('target', iframeId);
+                        form.attr('action', $(el).attr('href'));
+
+                        // prevent hash navigation form processing
+                        e.stopImmediatePropagation();
+                    });
+                    form.data('preview', true);
+
+                    iframe.load(function() {
+                        $(this).show();
+                        form.attr('action', formAction);
+                        form.removeAttr('target');
+                        form.data('preview', false);
+
+                        $('.modal-body .loading-content').hide();
+                    });
+
+                    form.submit();
+                };
+
+                $('.dialog-form-renderer').click(function (e) {
+                    showEmailPreviewDialog(this);
+                    e.preventDefault();
+                });
+            });
+        });
+    </script>
+{% endmacro %}
+
+{#
+    Render email address name, owner name or a link to owner view page can be rendered depends on given parameters
+    Parameters:
+        emailAddress - email address entity Oro\Bundle\EmailBundle\Entity\EmailAddress
+        emailAddressName - a string contains an email address. It is used if the email address has no owner
+        nameFormat - a format string used to render the owner full name
+        noLink - determines whether the rendering of a link to the owner view page is forbidden or not. Default value is false
+#}
+{% macro email_address(emailAddress, emailAddressName, nameFormat, noLink) -%}
+    {% macro email_address_text(emailAddress, nameFormat) -%}
+        {{ emailAddress.owner.fullname(nameFormat)|default('N/A')|raw }}
+    {%- endmacro -%}
+    {% macro email_address_link(emailAddress, nameFormat) -%}
+        {#- TODO: we need EntityConfig to get view url for an entity -#}
+        <a href="{{ path(emailAddress.owner.class|split('\\')|first|lower ~ '_' ~ emailAddress.owner.class|split('\\')|last|lower ~ '_view', {id:emailAddress.owner.id}) }}">{{ _self.email_address_text(emailAddress, nameFormat) }}</a>
+    {%- endmacro -%}
+    {% if emailAddress.owner is null -%}
+        {{ emailAddressName|raw }}
+    {%- else -%}
+        {% if noLink|default(false) -%}
+            {{ _self.email_address_text(emailAddress, nameFormat)|raw }}
+        {%- else -%}
+            {{ _self.email_address_link(emailAddress, nameFormat)|raw }}
+        {%- endif %}
+    {%- endif %}
+{%- endmacro %}
+
+{#
+    Render the given email recipients
+    Parameters:
+        recipients - an array of Oro\Bundle\EmailBundle\Entity\EmailRecipients
+        nameFormat - a format string used to render the owner full name
+        noLink - determines whether the rendering of a link to the owner view page is forbidden or not. Default value is false
+#}
+{% macro recipient_email_addresses(recipients, nameFormat, noLink) -%}
+    {% set addreses = {} -%}
+    {% for recipient in recipients -%}
+        {{ _self.email_address(recipient.emailAddress, recipient.name, nameFormat, noLink) }}
+        {%- if not loop.last %}; {% endif %}
+    {%- endfor %}
+{%- endmacro %}
+
+{#
+    Render the given email attachments
+    Parameters:
+        attachments - an array of Oro\Bundle\EmailBundle\Entity\EmailAttachment
+#}
+{% macro attachments(attachments) -%}
+    {% macro attachment_row_data(values) -%}
+        {%- for val in values -%}
+        <a class="no-hash" href="{{ path('oro_email_attachment', {id:val.id}) }}">
+            <span class="label label-info">{{ val.fileName }}</span>
+        </a>
+        {%- endfor -%}
+    {%- endmacro -%}
+    {{ _self.attachment_row_data(attachments)|raw }}
+{%- endmacro %}
+
+{#
+    Render email body
+    Parameters:
+        emailBody - email body entity Oro\Bundle\EmailBundle\Entity\EmailBody
+        cssClass - used to specify an additional CSS class for email body container HTML element
+#}
+{% macro body(emailBody, cssClass) -%}
+    {% if emailBody.bodyIsText -%}
+        <pre class="email-body{% if cssClass is defined %} {{ cssClass }}{% endif %}">{{ emailBody.content }}</pre>
+    {%- else -%}
+        <iframe class="email-body{% if cssClass is defined %} {{ cssClass }}{% endif %}" src="{{ path('oro_email_body', {id:emailBody.id}) }}"></iframe>
+    {%- endif %}
+{%- endmacro %}

@@ -2,14 +2,16 @@
 
 namespace Oro\Bundle\FormBundle\Form\DataTransformer;
 
+use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyPath;
+use Symfony\Component\Form\Exception\UnexpectedTypeException;
+
+use Oro\Bundle\FormBundle\Form\Exception\FormException;
+
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Mapping\MappingException;
-
-use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Util\PropertyPath;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Exception\FormException;
 
 /**
  * Transforms between entity and id
@@ -32,6 +34,11 @@ class EntityToIdTransformer implements DataTransformerInterface
     protected $property;
 
     /**
+     * @var PropertyPath
+     */
+    protected $propertyPath;
+
+    /**
      * @var callable
      */
     protected $queryBuilderCallback;
@@ -51,6 +58,7 @@ class EntityToIdTransformer implements DataTransformerInterface
             $property = $this->getIdPropertyPathFromEntityManager($em, $className);
         }
         $this->property = $property;
+        $this->propertyAccessor = PropertyAccess::getPropertyAccessor();
         $this->propertyPath = new PropertyPath($this->property);
         if (null !== $queryBuilderCallback && !is_callable($queryBuilderCallback)) {
             throw new UnexpectedTypeException($queryBuilderCallback, 'callable');
@@ -73,7 +81,7 @@ class EntityToIdTransformer implements DataTransformerInterface
             return $meta->getSingleIdentifierFieldName();
         } catch (MappingException $e) {
             throw new FormException(
-                "Cannot get id property path of entity. \"$this->className\" has composite primary key."
+                "Cannot get id property path of entity. \"$className\" has composite primary key."
             );
         }
     }
@@ -87,7 +95,11 @@ class EntityToIdTransformer implements DataTransformerInterface
             return null;
         }
 
-        return $this->propertyPath->getValue($value);
+        if (!is_object($value)) {
+            throw new UnexpectedTypeException($value, 'object');
+        }
+
+        return $this->propertyAccessor->getValue($value, $this->propertyPath);
     }
 
     /**

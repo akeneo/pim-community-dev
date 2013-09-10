@@ -10,9 +10,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
 /**
  * Test related class
  *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class AttributeOptionValueTest extends \PHPUnit_Framework_TestCase

@@ -17,7 +17,9 @@ class Groups extends PageFilteredGrid
 
     public function add()
     {
-        $this->test->byXPath("//a[contains(., 'Create group')]")->click();
+        $this->byXPath("//a[@title = 'Create group']")->click();
+        //due to bug BAP-965
+        sleep(1);
         $this->waitPageToLoad();
         $this->waitForAjax();
         return new Group($this->test);

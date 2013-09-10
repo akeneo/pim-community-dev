@@ -5,37 +5,36 @@ namespace Oro\Bundle\SearchBundle\Tests\Functional\API;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\TestFrameworkBundle\Test\Client;
 use Oro\Bundle\TestFrameworkBundle\Test\ToolsAPI;
-use Acme\Bundle\TestsBundle\Tests\Functional\SearchBundle\API\DataFixtures;
 
 /**
  * @outputBuffering enabled
  * @db_isolation
+ * @db_reindex
  */
 class SoapAdvancedSearchApiTest extends WebTestCase
 {
     /** Default value for offset and max_records */
     const DEFAULT_VALUE = 0;
-
-    protected $client = null;
+    /** @var Client */
+    protected $client;
 
     protected static $hasLoaded = false;
 
     public function setUp()
     {
         $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
-        if (!self::$hasLoaded) {
-            $this->client->appendFixtures(__DIR__ . DIRECTORY_SEPARATOR . 'DataFixtures');
-        }
-        self::$hasLoaded = true;
-
         $this->client->soap(
-            "http://localhost.com/api/soap",
+            "http://localhost/api/soap",
             array(
                 'location' => 'http://localhost/api/soap',
                 'soap_version' => SOAP_1_2
             )
         );
 
+        if (!self::$hasLoaded) {
+            $this->client->appendFixtures(__DIR__ . DIRECTORY_SEPARATOR . 'DataFixtures');
+        }
+        self::$hasLoaded = true;
     }
 
     /**
@@ -43,7 +42,7 @@ class SoapAdvancedSearchApiTest extends WebTestCase
      */
     public function testApi($request, $response)
     {
-        $result = $this->client->soapClient->advancedSearch($request['query']);
+        $result = $this->client->getSoap()->advancedSearch($request['query']);
         $result = ToolsAPI::classToArray($result);
         $this->assertEquals($response['count'], $result['count']);
     }

@@ -8,9 +8,6 @@ use Symfony\Component\DependencyInjection\Definition;
 /**
  * Test related class
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class AddManagerCompilerPassTest extends \PHPUnit_Framework_TestCase
@@ -34,7 +31,7 @@ class AddManagerCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->compiler = new AddManagerCompilerPass();
 
         $this->builder = new ContainerBuilder();
-        $defRegistry = new Definition('Oro\Bundle\DataFlowBundle\Manager\FlexibleManagerRegistry');
+        $defRegistry = new Definition('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry');
         $definitions = array('oro_flexibleentity.registry' => $defRegistry);
         $this->builder->setDefinitions($definitions);
     }

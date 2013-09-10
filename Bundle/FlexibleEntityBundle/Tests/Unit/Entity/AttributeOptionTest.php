@@ -8,9 +8,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue;
 /**
  * Test related class
  *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class AttributeOptionTest extends \PHPUnit_Framework_TestCase
@@ -222,21 +219,5 @@ class AttributeOptionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::$localeFr, $attOptValue->getLocale());
         $this->assertEquals(self::$attOptValueFr, $attOptValue->getValue());
         $this->assertEquals(self::$attOptValueFr, $attOpt->__toString());
-    }
-
-    /**
-     * Test related getter/setter method
-     */
-    public function testDefaultValue()
-    {
-        $attOpt = new AttributeOption();
-
-        // assert default value is null
-        $this->assertNull($attOpt->getDefaultValue());
-
-        // assert get/set
-        $obj = $attOpt->setDefaultValue(self::$defaultValue);
-        $this->assertInstanceOf(self::$attOptClass, $obj);
-        $this->assertEquals(self::$defaultValue, $attOpt->getDefaultValue());
     }
 }

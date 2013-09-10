@@ -3,39 +3,41 @@
 namespace Oro\Bundle\AddressBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\Type;
+use Doctrine\Common\Collections\ArrayCollection;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 
 use Oro\Bundle\AddressBundle\Entity\Country;
 
 /**
  * Region
  *
- * @ORM\Table("oro_dictionary_region")
- * @ORM\Entity
- * @Gedmo\TranslationEntity(class="Oro\Bundle\AddressBundle\Entity\RegionLocalized")
+ * @ORM\Table("oro_dictionary_region", indexes={
+ *      @ORM\Index(name="name_idx", columns={"name"})
+ * })
+ * @ORM\Entity(repositoryClass="Oro\Bundle\AddressBundle\Entity\Repository\RegionRepository")
+ * @Gedmo\TranslationEntity(class="Oro\Bundle\AddressBundle\Entity\RegionTranslation")
  */
-class Region
+class Region implements Translatable
 {
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="combined_code", type="string", length=16)
+     * @Soap\ComplexType("string", nillable=true)
      */
-    private $id;
+    protected $combinedCode;
 
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Country", inversedBy="regions",cascade={"persist"})
-     * @ORM\JoinColumn(name="country_id", referencedColumnName="iso2_code")
-     * @Type("string")
+     * @ORM\ManyToOne(targetEntity="Country", inversedBy="regions", cascade={"persist"})
+     * @ORM\JoinColumn(name="country_code", referencedColumnName="iso2_code")
      * @Soap\ComplexType("string", nillable=true)
      */
-    private $country;
+    protected $country;
 
     /**
      * @var string
@@ -43,7 +45,7 @@ class Region
      * @ORM\Column(name="code", type="string", length=32)
      * @Soap\ComplexType("string", nillable=true)
      */
-    private $code;
+    protected $code;
 
     /**
      * @var string
@@ -52,21 +54,29 @@ class Region
      * @Soap\ComplexType("string", nillable=true)
      * @Gedmo\Translatable
      */
-    private $name;
+    protected $name;
 
     /**
      * @Gedmo\Locale
      */
-    private $locale;
+    protected $locale;
+
+    /**
+     * @param string $combinedCode
+     */
+    public function __construct($combinedCode)
+    {
+        $this->combinedCode = $combinedCode;
+    }
 
     /**
      * Get id
      *
      * @return integer
      */
-    public function getId()
+    public function getCombinedCode()
     {
-        return $this->id;
+        return $this->combinedCode;
     }
 
     /**
@@ -142,9 +152,9 @@ class Region
      * Set locale
      *
      * @param string $locale
-     * @return $this
+     * @return Region
      */
-    public function setLocale($locale = 'en_US')
+    public function setLocale($locale)
     {
         $this->locale = $locale;
 
@@ -154,7 +164,7 @@ class Region
     /**
      * Returns locale code
      *
-     * @return mixed
+     * @return string
      */
     public function getLocale()
     {

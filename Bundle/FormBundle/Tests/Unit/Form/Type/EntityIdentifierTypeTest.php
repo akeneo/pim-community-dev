@@ -11,6 +11,7 @@ use Doctrine\ORM\AbstractQuery;
 
 use Symfony\Component\Form\Tests\FormIntegrationTestCase;
 
+use Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer;
 use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
 
 class EntityIdentifierTypeTest extends FormIntegrationTestCase
@@ -79,7 +80,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
 
         $form = $this->factory->create($this->getTestFormType(), null, $options);
 
-        $form->bind($bindData);
+        $form->submit($bindData);
 
         $this->assertTrue($form->isSynchronized());
         $this->assertEquals($formData, $form->getData());
@@ -98,6 +99,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
     {
         $self = $this;
         $entitiesId1234 = $this->createMockEntityList('id', array(1, 2, 3, 4));
+
         return array(
             'default' => array(
                 '1,2,3,4',
@@ -170,6 +172,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                     'queryBuilder' => function ($repository, array $ids) use ($self) {
                         $result = $repository->createQueryBuilder('o');
                         $result->where('o.id IN (:values)')->setParameter('values', $ids);
+
                         return $result;
                     }
                 ),
@@ -189,8 +192,8 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
 
     /**
      * @dataProvider createErrorsDataProvider
-     * @param array $options
-     * @param array $expectedCalls
+     * @param array  $options
+     * @param array  $expectedCalls
      * @param string $expectedException
      * @param string $expectedExceptionMessage
      */
@@ -223,7 +226,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                         array('getManagerForClass', array('TestClass'), null),
                     )
                 ),
-                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedException' => 'Oro\Bundle\FormBundle\Form\Exception\FormException',
                 'expectedExceptionMessage'
                     => 'Class "TestClass" is not a managed Doctrine entity. Did you forget to map it?'
             ),
@@ -234,7 +237,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                         array('getManager', array('custom_entity_manager'), null),
                     )
                 ),
-                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedException' => 'Oro\Bundle\FormBundle\Form\Exception\FormException',
                 'expectedExceptionMessage'
                     => 'Class "TestClass" is not a managed Doctrine entity. Did you forget to map it?'
             ),
@@ -243,7 +246,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                 'expectedCalls' => array(
                     'managerRegistry' => array()
                 ),
-                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedException' => 'Oro\Bundle\FormBundle\Form\Exception\FormException',
                 'expectedExceptionMessage'
                     => 'Option "em" should be a string or entity manager object, stdClass given'
             ),
@@ -254,7 +257,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                         array('getManagerForClass', array('TestClass'), array('self', 'getMockEntityManager')),
                     ),
                 ),
-                'expectedException' => 'Symfony\Component\Form\Exception\FormException',
+                'expectedException' => 'Oro\Bundle\FormBundle\Form\Exception\FormException',
                 'expectedExceptionMessage'
                     => 'Option "queryBuilder" should be a callable, string given'
             ),
@@ -272,7 +275,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
             },
             'values_delimiter' => ','
         );
-        $builder = $this->getMockBuilder('Symfony\Component\Form\Tests\FormBuilderInterface')
+        $builder = $this->getMockBuilder('Symfony\Component\Form\Test\FormBuilderInterface')
             ->setMethods(array('addViewTransformer', 'addEventSubscriber'))
             ->getMockForAbstractClass();
 
@@ -305,6 +308,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                             'queryBuilderCallback',
                             $transformer
                         );
+
                         return true;
                     }
                 )
@@ -332,6 +336,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
         foreach ($values as $value) {
             $result[] = $this->createMockEntity($property, $value);
         }
+
         return $result;
     }
 
@@ -347,6 +352,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
         $getter = 'get' . ucfirst($property);
         $result = $this->getMock('MockEntity', array($getter));
         $result->expects($this->any())->method($getter)->will($this->returnValue($value));
+
         return $result;
     }
 
@@ -417,6 +423,7 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
                     ->setMethods(array('transform', 'reverseTransform'))
                     ->getMockForAbstractClass();
         }
+
         return $this->entitiesToIdsTransformer;
     }
 }

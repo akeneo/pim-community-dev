@@ -4,7 +4,7 @@
 {% block page_container %}
     {% block content %}
         {{ JSFV(form) }}
-        <form id="{{ form.getName() }}" action="{{ formAction }}" {{ form_enctype(form) }}
+        <form id="{{ form.vars.name }}" action="{{ formAction }}" {{ form_enctype(form) }}
               method="post" data-collect="true" class="scrollable-substructure">
             <div class="navigation clearfix navbar-extra navbar-extra-right">
                 <div class="row">
@@ -12,14 +12,20 @@
                         <div class="pull-right">
                             {% block navButtons %}
                             {% endblock navButtons %}
+                            <input type="hidden" name="input_action" value="" data-form-id="{{ form.vars.name }}"/>
                         </div>
-                        {% if (entityClass is defined and form.vars.value.id) %}
-                            {% placeholder change_history_block with {'entity': entityClass, 'id': form.vars.value.id, 'title': form.vars.value } %}
-                        {% endif %}
+                        <div class="pull-right user-info-state">
+                            <ul class="inline-decorate">
+                            {% set audit_entity_id = audit_entity_id|default ? audit_entity_id : form.vars.value.id|default %}
+                            {% if (entityClass is defined and audit_entity_id) %}
+                                {% placeholder change_history_block with {'entity': entityClass, 'id': audit_entity_id, 'title': audit_title|default(form.vars.value), 'audit_path': audit_path|default('oro_dataaudit_history') } %}
+                            {% endif %}
+                            </ul>
+                        </div>
                     </div>
                     <div class="span9">
                         {% block pageHeader %}
-                            <div class="customer-info {% if (breadcrumbs.hasAvatar is not defined) %}customer-simple{% endif %} well-small">
+                            <div class="clearfix customer-info {% if (breadcrumbs.hasAvatar is not defined) %}customer-simple{% endif %} well-small">
                                 {% if (breadcrumbs.hasAvatar is defined and breadcrumbs.hasAvatar) %}
                                     <div class="visual">
                                         <img src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-usser.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
@@ -31,7 +37,13 @@
                                             <div class="pull-left">
                                                 <div class="sub-title"><a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a></div>
                                                 <span class="separator">/</span>
-                                                <h1 class="usser-name">{{ breadcrumbs.entityTitle }}</h1>
+                                                {% if breadcrumbs.additional is defined %}
+                                                    {% for breadcrumb in breadcrumbs.additional %}
+                                                    <div class="sub-title"><a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a></div>
+                                                    <span class="separator">/</span>
+                                                    {% endfor %}
+                                                {% endif %}
+                                                <h1 class="user-name">{{ breadcrumbs.entityTitle }}</h1>
                                             </div>
                                         {% endblock breadcrumbs %}
                                     </div>
@@ -53,7 +65,8 @@
             </div>
             <div class="layout-content">
                 {% block content_data %}
-                    {{ UI.scrollData(id, data, true) }}
+                    {% set data = oro_form_process(data, form) %}
+                    {{ UI.scrollData(id, data, form) }}
                 {% endblock content_data %}
             </div>
         </form>

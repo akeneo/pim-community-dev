@@ -1,0 +1,2 @@
+"sync.connection.lost": "]-Inf,0]Synchronizer can't connect to server,  <a href='#' data-action='sync-connect'>try reconnect</a>|{1}Synchronizer lost server connection, scheduled reconnection...|[2,Inf[Synchronizer lost server connection, scheduled <b>{{ retries }}</b> reconnection attempt..."
+"sync.connection.established": "Synchronizer has established connection"

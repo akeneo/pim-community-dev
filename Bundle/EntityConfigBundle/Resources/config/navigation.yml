@@ -1,0 +1,20 @@
+oro_menu_config:
+    items:
+        entities_list:
+            label: 'Entities'
+            route: 'oro_entityconfig_index'
+            extras:
+                routes: ['oro_entityconfig*', 'oro_entityextend*']
+
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        entities_list: ~
+
+oro_titles:
+    oro_entityconfig_index: ~
+    oro_entityconfig_view: %%entityName%%
+    oro_entityconfig_update: %%entityName%%
+    oro_entityconfig_field_update: %%entityName%%

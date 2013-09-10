@@ -1,0 +1,30 @@
+{% block _emailnotification_entityName_row %}
+    <script type="text/javascript">
+        require(['jquery', 'underscore'],
+        function($, _) {
+            $(function () {
+                'use strict';
+
+                var selectId = '#{{ id }}';
+                var ownerFieldId = '#{{ form.parent.children.recipientList.children.owner.vars.id }}';
+
+                $(selectId).change(function (e) {
+                    var $el = $(e.target);
+                    var value = $el.val();
+                    var config = $el.data('entities');
+
+                    if (config[value] === true) {
+                        $(ownerFieldId).parents('.control-group').removeClass('hide');
+                        $(ownerFieldId).removeAttr('disabled');
+                    } else {
+                        $(ownerFieldId).parents('.control-group').addClass('hide');
+                        $(ownerFieldId).attr('disabled', 'disabled');
+                    }
+                });
+
+                $(selectId).trigger('change');
+            });
+        });
+    </script>
+    {{ form_row(form) }}
+{% endblock %}

@@ -43,6 +43,12 @@ class EntityQueryFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::TEST_CLASS_NAME, $this->model->getClassName());
     }
 
+    public function testGetAlias()
+    {
+        $this->initializeEntityQueryFactory(array('alias' => self::TEST_ALIAS));
+        $this->assertEquals(self::TEST_ALIAS, $this->model->getAlias());
+    }
+
     public function testCreateQuery()
     {
         $queryBuilderMock = $this->getMock('Doctrine\ORM\QueryBuilder', array(), array(), '', false);
@@ -72,10 +78,10 @@ class EntityQueryFactoryTest extends \PHPUnit_Framework_TestCase
             false,
             true,
             true,
-            array('getEntityManagerForClass')
+            array('getManagerForClass')
         );
         $registryMock->expects($this->once())
-            ->method('getEntityManagerForClass')
+            ->method('getManagerForClass')
             ->with(self::TEST_CLASS_NAME)
             ->will($this->returnValue($entityManagerMock));
 

@@ -9,23 +9,21 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
 /**
  * @outputBuffering enabled
  * @db_isolation
+ * @db_reindex
  */
 class SoapSearchApiTest extends WebTestCase
 {
     /** Default value for offset and max_records */
     const DEFAULT_VALUE = 0;
 
-    protected $client = null;
+    /** @var Client */
+    protected $client;
 
     protected static $hasLoaded = false;
 
     public function setUp()
     {
         $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
-        if (!self::$hasLoaded) {
-            $this->client->appendFixtures(__DIR__ . DIRECTORY_SEPARATOR . 'DataFixtures');
-        }
-        self::$hasLoaded = true;
 
         $this->client->soap(
             "http://localhost/api/soap",
@@ -34,11 +32,11 @@ class SoapSearchApiTest extends WebTestCase
                 'soap_version' => SOAP_1_2
             )
         );
-    }
 
-    public static function tearDownAfterClass()
-    {
-        Client::rollbackTransaction();
+        if (!self::$hasLoaded) {
+            $this->client->appendFixtures(__DIR__ . DIRECTORY_SEPARATOR . 'DataFixtures');
+        }
+        self::$hasLoaded = true;
     }
 
     /**
@@ -58,7 +56,7 @@ class SoapSearchApiTest extends WebTestCase
         if (is_null($request['max_results'])) {
             $request['max_results'] = self::DEFAULT_VALUE;
         }
-        $result = $this->client->soapClient->search(
+        $result = $this->client->getSoap()->search(
             $request['search'],
             $request['offset'],
             $request['max_results']

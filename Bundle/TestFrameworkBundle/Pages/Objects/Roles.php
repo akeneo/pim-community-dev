@@ -17,7 +17,9 @@ class Roles extends PageFilteredGrid
 
     public function add()
     {
-        $this->test->byXPath("//a[contains(., 'Create role')]")->click();
+        $this->byXPath("//a[@title='Create role']")->click();
+        //due to bug BAP-965
+        sleep(1);
         $this->waitPageToLoad();
         $this->waitForAjax();
         return new Role($this->test);
@@ -26,6 +28,7 @@ class Roles extends PageFilteredGrid
     public function open($roleName = array())
     {
         $this->getEntity($roleName)->click();
+        sleep(1);
         $this->waitPageToLoad();
         $this->waitForAjax();
 

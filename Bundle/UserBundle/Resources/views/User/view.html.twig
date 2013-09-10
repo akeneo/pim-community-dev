@@ -1,4 +1,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroTagBundle::macros.html.twig' as _tag %}
+
 {% set format = oro_config_value('oro_user.name_format') %}
 {% oro_title_set({params : {"%username%": entity.fullname(format)|default('N/A') }}) %}
 {% set entityClass = 'Oro_Bundle_UserBundle_Entity_User' %}
@@ -15,7 +17,6 @@
 {% endmacro %}
 
 {% block navButtons %}
-    {{ UI.button({'path' : path('oro_user_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Back', 'label' : 'Back'}) }}
     {% if resource_granted('oro_user_user_update') %}
         {{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
     {% endif %}
@@ -50,9 +51,9 @@
     {{ parent() }}
     <div class="status-enabled pull-left">
         {% if entity.enabled %}
-            <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled"></i>{{ 'Active'|trans }}</div>
+            <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'Active'|trans }}</div>
         {% else %}
-            <div class="badge badge-enabled status-disabled"><i class="icon-status-disabled"></i>{{ 'Inactive'|trans }}</div>
+            <div class="badge badge-enabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'Inactive'|trans }}</div>
         {% endif %}
     </div>
 {% endblock breadcrumbs %}
@@ -64,12 +65,19 @@
 {% endblock stats %}
 
 {% block content_data %}
+  <div class="user-profile-cols">
     {% set attributes = {} %}
     {% for value in entity|getAttributes() %}
         {% set attributes = attributes | merge([UI.flexibleAttributeRow(value)]) %}
     {% endfor %}
 
     {% set id = 'user-profile' %}
+
+    {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'}, entity.emails|length ? {data: entity.emails, field:'email'} : {})] %}
+    {% if resource_granted('oro_tag_view_tag_cloud') %}
+        {% set dataSubBlocks = dataSubBlocks|merge([UI.renderAttribute('Tags', _tag.renderView(entity))]) %}
+    {% endif %}
+
     {% set data = {
         'dataBlocks':
             [
@@ -89,9 +97,7 @@
                         },
                         {
                             'title': 'Contact Information',
-                            'data': [
-                                UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'}, entity.emails|length ? {data: entity.emails, field:'email'} : {})
-                            ]
+                            'data': dataSubBlocks
                         }
                     ]
                 },
@@ -105,4 +111,5 @@
         }
     %}
     {{ parent() }}
+  </div>
 {% endblock content_data %}

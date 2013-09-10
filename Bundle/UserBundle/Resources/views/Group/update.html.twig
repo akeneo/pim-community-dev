@@ -1,7 +1,6 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
-{% set title = form.vars.value.id ? 'Update Group'|trans : 'Create Group'|trans %}
+{% set title = form.vars.value.id ? 'Update Group'|trans : 'New Group'|trans %}
 {% oro_title_set({params : { "%group%": form.vars.value.name } }) %}
 {% set gridId = 'users-grid' %}
 {% set formAction = form.vars.value.id ? path('oro_user_group_update', { 'id': form.vars.value.id}) : path('oro_user_group_create') %}
@@ -35,7 +34,8 @@
         {{ UI.buttonSeparator() }}
     {% endif %}
     {{ UI.button({'path' : path('oro_user_group_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
-    {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
+    {{ UI.saveAndStayButton() }}
+    {{ UI.saveAndCloseButton() }}
 {% endblock navButtons %}
 
 {% block pageHeader %}
@@ -44,8 +44,7 @@
             'entity':      form.vars.value,
             'indexPath':   path('oro_user_group_index'),
             'indexLabel': 'Groups',
-            'entityTitle': form.vars.value.name,
-            'hasAvatar':   false,
+            'entityTitle': form.vars.value.name
         }
         %}
         {{ parent() }}
@@ -93,7 +92,6 @@
         {
             'formErrors': form_errors(form)? form_errors(form) : null,
             'dataBlocks': dataBlocks,
-            'hiddenData': form_rest(form)
         }
     %}
     {{ parent() }}

@@ -1,0 +1,9 @@
+parameters:
+    oro_entity_config.type.config.class:                   Oro\Bundle\EntityConfigBundle\Form\Type\ConfigType
+
+services:
+    oro_entity_config.type.config:
+        class:                                                  %oro_entity_config.type.config.class%
+        arguments:                                              [@oro_entity_config.config_manager]
+        tags:
+            - { name: form.type, alias: oro_entity_config_type }

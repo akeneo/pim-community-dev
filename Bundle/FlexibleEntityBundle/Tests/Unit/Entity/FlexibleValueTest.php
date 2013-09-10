@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
@@ -16,11 +17,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Test related demo class, aims to cover abstract one
- *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
- *
  */
 class FlexibleValueTest extends \PHPUnit_Framework_TestCase
 {
@@ -70,7 +66,7 @@ class FlexibleValueTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetLocale()
     {
-        $code = 'fr_FR';
+        $code = 'fr';
         $this->value->setLocale($code);
         $this->assertEquals($this->value->getLocale(), $code);
     }

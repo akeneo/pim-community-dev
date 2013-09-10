@@ -1,0 +1,22 @@
+{% block oro_email_template_list_row %}
+    <script type="text/javascript">
+        require(['jquery', 'oro/email/template/view', 'oro/email/template/collection'],
+        function($, View, Collection) {
+            $(function () {
+                'use strict';
+                new View({
+                    el: $('#{{ form.parent.children[depends_on_parent_field].vars.id }}'),
+                    target: $('#{{ id }}'),
+                    collection: new Collection()
+                });
+            });
+        })
+    </script>
+    <script type="text/template" id="emailtemplate-chooser-template">
+        <% _.each(entities, function(entity, i) { %>
+        <option value="<%= entity.get('id') %>"><%= entity.get('name') %></option>
+        <% }); %>
+    </script>
+
+    {{ form_row(form) }}
+{% endblock %}

@@ -232,4 +232,9 @@ class Product
     {
         $this->id = $id;
     }
+
+    public function setRecordId($id)
+    {
+        $this->id = $id;
+    }
 }

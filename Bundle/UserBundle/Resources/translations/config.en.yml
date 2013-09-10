@@ -1,6 +1,6 @@
 entity:
     user:
-        name:           Profile
+        name:           User
         description:    Represent user profile
 
     role:

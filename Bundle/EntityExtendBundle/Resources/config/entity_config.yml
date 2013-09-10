@@ -1,0 +1,237 @@
+oro_entity_config:
+    extend:
+        entity:
+            grid_action:
+                -
+                    name:                   'Remove'
+                    route:                  'oro_entityextend_entity_remove'
+                    type:                   'ajax'
+                    icon:                   'trash'
+                    acl_resource:           'root'
+                    filter:                 { owner: 'Custom', state: ['New', 'Requires update', 'Active']}
+                    args:                   ['id']
+                -
+                    name:                   'Restore'
+                    route:                  'oro_entityextend_entity_unremove'
+                    type:                   'ajax'
+                    icon:                   'backward'
+                    acl_resource:           'root'
+                    filter:                 { owner: 'Custom', state: ['Deleted']}
+                    args:                   ['id']
+            layout_action:
+                -
+                    name:                   'Create Entity'
+                    route:                  'oro_entityextend_entity_create'
+            items:
+                owner:
+                    options:
+                        priority:           40
+                        internal:           true
+                        default_value:      'System'
+                    grid:
+                        type:               string
+                        label:              'Type'
+                        filter_type:        oro_grid_orm_string
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        true
+                    form:
+                        type:               text
+                        block:              entity
+                        options:
+                            read_only:      true
+                            required:       false
+                            label:          'Type'
+
+                is_extend:
+                    options:
+                        default_value:      false
+                        internal:           true
+
+                state:
+                    options:
+                        priority:           25
+                        default_value:      'Active'
+                        label:              'Schema status'
+                    grid:
+                        type:               string
+                        label:              'Schema status'
+                        filter_type:        oro_grid_orm_choice
+                        choices:            {system: '', new: 'New', active: 'Active', updated: 'Requires update', deleted: 'To be deleted'}
+                        required:           true
+                        sortable:           true
+                        filterable:         false
+                        show_filter:        false
+
+                is_deleted:
+                    options:
+                        default_value:      false
+                        internal:           true
+                    grid:
+                        show_column:        false
+                        query:
+                            operator:       '!='
+                            value:          true
+
+                extend_class:
+                    options:
+                        internal:           true
+
+                unique_key:
+                    options:
+                        internal:           true
+                        serializable:       true
+
+                proxy_class:
+                    options:
+                        internal:           true
+
+        field:
+            grid_action:
+                -
+                    name:                   'Remove'
+                    route:                  'oro_entityextend_field_remove'
+                    type:                   'ajax'
+                    icon:                   'trash'
+                    acl_resource:           'root'
+                    filter:                 { owner: 'Custom', state: ['New', 'Requires update', 'Active'] }
+                    args:                   ['id']
+                -
+                    name:                   'Resore'
+                    route:                  'oro_entityextend_field_unremove'
+                    type:                   'ajax'
+                    icon:                   'backward'
+                    acl_resource:           'root'
+                    filter:                 { owner: 'Custom', state: ['Deleted'] }
+                    args:                   ['id']
+            layout_action:
+                -
+                    name:                   'Manage unique keys'
+                    route:                  'oro_entityextend_entity_unique_key'
+                    entity_id:              true
+                -
+                    name:                   'Create field'
+                    route:                  'oro_entityextend_field_create'
+                    entity_id:              true
+                    filter:                 { is_extend: true }
+                -
+                    name:                   'Update schema'
+                    route:                  'oro_entityextend_update'
+                    entity_id:              true
+                    aClass:                 'btn-danger entity-extend-apply'
+                    void:                   true
+                    filter:                 { state: ['New', 'Requires update', 'Deleted'] }
+            items:
+                owner:
+                    options:
+                        priority:           20
+                        default_value:      'System'
+                        internal:           true
+                    grid:
+                        type:               string
+                        label:              'Type'
+                        filter_type:        oro_grid_orm_string
+                        required:           true
+                        sortable:           true
+                        filterable:         false
+                        show_filter:        false
+
+                constraint:
+                    options:
+                        internal:           true
+
+                state:
+                    options:
+                        priority:           25
+                        default_value:      'Active'
+                        label:              'Schema status'
+                    grid:
+                        type:               string
+                        label:              'Schema status'
+                        filter_type:        oro_grid_orm_choice
+                        choices:            { new: 'New', applied: 'Applied', updated: 'Requires update', deleted: 'To be deleted'}
+                        required:           true
+                        sortable:           true
+                        filterable:         false
+                        show_filter:        false
+
+                is_extend:
+                    options:
+                        priority:           40
+                        default_value:      false
+                        internal:           true
+
+                length:
+                    options:
+                        default_value:      255
+                        allowed_type:       [string]
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+                    constraints:
+                        - Regex:            "/^[0-9]*$/"
+                        - Range:
+                            min:            1
+                            max:            255
+                    form:
+                        type:               text
+                        options:
+                            required:       false
+                            label:          'Length'
+                            block:          entity
+                            subblock:       properties
+
+                precision:
+                    options:
+                        default_value:      2
+                        allowed_type:       [decimal]
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+                    constraints:
+                        - Regex:            "/^[0-9]*$/"
+                        - Range:
+                            min:            0
+                    form:
+                        type:               text
+                        options:
+                            required:       false
+                            label:          'Precision'
+                            block:          entity
+                            subblock:       properties
+
+                scale:
+                    options:
+                        default_value:      2
+                        allowed_type:       [decimal]
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+                    constraints:
+                        - Regex:            "/^[0-9]*$/"
+                        - Range:
+                            min:            0
+                    form:
+                        type:               text
+                        options:
+                            required:       false
+                            label:          'Scale'
+                            block:          entity
+                            subblock:       properties
+
+                is_deleted:
+                    options:
+                        default_value:      false
+                        internal:           true
+                    grid:
+                        show_column:        false
+                        query:
+                            operator:       '!='
+                            value:          true

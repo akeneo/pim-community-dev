@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
+use Oro\Bundle\FilterBundle\Tests\Unit\Fixtures\CustomFormExtension;
 use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\AbstractTypeTestCase;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
@@ -15,10 +16,11 @@ class TextFilterTypeTest extends AbstractTypeTestCase
 
     protected function setUp()
     {
-        parent::setUp();
         $translator = $this->createMockTranslator();
+        $this->formExtensions[] = new CustomFormExtension(array(new FilterType($translator)));
+
+        parent::setUp();
         $this->type = new TextFilterType($translator);
-        $this->factory->addType(new FilterType($translator));
     }
 
     /**
@@ -47,6 +49,8 @@ class TextFilterTypeTest extends AbstractTypeTestCase
                         TextFilterType::TYPE_CONTAINS => 'label_type_contains',
                         TextFilterType::TYPE_NOT_CONTAINS => 'label_type_not_contains',
                         TextFilterType::TYPE_EQUAL => 'label_type_equals',
+                        TextFilterType::TYPE_STARTS_WITH => 'label_type_start_with',
+                        TextFilterType::TYPE_ENDS_WITH => 'label_type_end_with',
                     )
                 )
             )

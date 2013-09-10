@@ -18,18 +18,21 @@ class PhoneCollectionTypeTest extends AttributeTypeTest
     {
         $factory = $this->getFormFactoryMock();
         $phone = $this->getFlexibleValueMock(array());
-        $value = $this->getFlexibleValueMock(array(
-            'data'        => $phone,
-            'backendType' => 'foo',
-        ));
+        $value = $this->getFlexibleValueMock(
+            array(
+                'data'        => $phone,
+                'backendType' => 'foo',
+            )
+        );
 
         $factory->expects($this->once())
             ->method('createNamed')
-            ->with('foo', 'text',$phone, array(
-                'constraints' => array('constraints'),
-                'label'       => null,
-                'required'    => null
-            ));
+            ->with(
+                'foo',
+                'text',
+                $phone,
+                $this->defaultCreateNamedOptions
+            );
 
         $this->target->buildValueFormType($factory, $value);
     }
@@ -46,9 +49,12 @@ class PhoneCollectionTypeTest extends AttributeTypeTest
 
     public function testBuildAttributeFormTypes()
     {
-        $this->assertEquals(array(), $this->target->buildAttributeFormTypes(
-            $this->getFormFactoryMock(),
-            $this->getAttributeMock(null, null)
-        ));
+        $this->assertEquals(
+            array(),
+            $this->target->buildAttributeFormTypes(
+                $this->getFormFactoryMock(),
+                $this->getAttributeMock(null, null)
+            )
+        );
     }
 }

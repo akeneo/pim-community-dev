@@ -4,3 +4,5 @@
 "Edit address": "Edit address"
 "Create address": "Create address"
 "Remove address": "Remove address"
+oro.address.form.choose_country: "Choose a country..."
+oro.address.form.choose_state: "Choose a state..."

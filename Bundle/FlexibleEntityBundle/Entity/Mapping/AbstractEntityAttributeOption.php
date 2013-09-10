@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -8,11 +9,6 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOptionValue;
 
 /**
  * Base Doctrine ORM entity attribute option
- *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT  MIT
- *
  */
 abstract class AbstractEntityAttributeOption extends AbstractAttributeOption
 {
@@ -41,13 +37,6 @@ abstract class AbstractEntityAttributeOption extends AbstractAttributeOption
      * @ORM\Column(name="sort_order", type="integer")
      */
     protected $sortOrder;
-
-    /**
-     * @var string $defaultValue
-     *
-     * @ORM\Column(name="default_value", type="string", length=255, nullable=true)
-     */
-    protected $defaultValue;
 
     /**
      * @var ArrayCollection $optionValues
@@ -122,30 +111,6 @@ abstract class AbstractEntityAttributeOption extends AbstractAttributeOption
         $value = $values->first();
 
         return $value;
-    }
-
-    /**
-     * Set defaultValue
-     *
-     * @param string $defaultValue
-     *
-     * @return AbstractAttributeOption
-     */
-    public function setDefaultValue($defaultValue)
-    {
-        $this->defaultValue = $defaultValue;
-
-        return $this;
-    }
-
-    /**
-     * Get defaultValue
-     *
-     * @return string
-     */
-    public function getDefaultValue()
-    {
-        return $this->defaultValue;
     }
 
     /**

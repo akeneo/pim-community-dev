@@ -2,7 +2,7 @@
 {% block content %}
     <div class="layout-content">
     <div class="clearfix"><div class="navbar application-menu">
-            <div class="cleearfix">
+            <div class="clearfix">
                 <div class="container">
                     <div class=" navbar-responsive-collapse">
                         <ul class="nav nav-tabs" id="myTab">
@@ -55,21 +55,24 @@
         </div>
     </div>
     <script>
-        $(function () {
-            $('#myTab a:last').tab('show');
-            $('#myTab a').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-            })
-            $('a.popup-me').popover();
-        })
+        require(['jquery', 'jquery-ui', 'bootstrap'],
+        function($) {
+            $(function () {
+                $('#myTab a:last').tab('show');
+                $('#myTab a').click(function (e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                });
+                $('a.popup-me').popover();
+            });
+        });
     </script>
     {# first demo#}
     <div class="container-fluid"><div class="navigation clearfix navbar-extra navbar-extra-right">
         <div class="row">
             <div class="pull-right"><div class="pull-right">
 
-                <div class="pull-left customer-info-top-actions">
+                <div class="pull-left customer-info-top-actions clearfix">
                     <div class="btn-group">
                         <button class="btn " type="submit"> Enabled</button>
                         <button class="btn disabled" type="submit"> Disabled</button>
@@ -82,7 +85,7 @@
                     </div>
                 </div>
             </div>
-            <div class="pull-right usser-info-state customer-info-top-actions">
+            <div class="pull-right user-info-state customer-info-top-actions">
                 <ul class="inline-decorate">
                     <li>
                         Change to:
@@ -110,7 +113,7 @@
                             <span class="separator">/</span>
                             <ul class="nav pull-left">
                                 <li class="dropdown">
-                                    <h1 data-toggle="dropdown" class="dropdown-toggle usser-name">Doe, John <b class="caret"></b></h1>
+                                    <h1 data-toggle="dropdown" class="dropdown-toggle user-name">Doe, John <b class="caret"></b></h1>
                                     <ul aria-labelledby="dropdownMenu" role="menu" class="dropdown-menu">
                                         <li class="first"><a href="{{ path('oro_default') }}"><span class="light">EN_US</span> <strong>Rosario Papadopoulos</strong></a></li>
                                         <li><a href="{{ path('oro_default') }}"><span class="light">ES_MX</span> <strong>Rosario Papadopoulos</strong></a></li>
@@ -161,7 +164,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="pull-right usser-info-state">
+                <div class="pull-right user-info-state">
                     <ul class="inline-decorate">
                         <li><a href="/">Revision 1.2</a></li>
                         <li><i class="icon-published"></i> Published</li>
@@ -178,7 +181,7 @@
                             <span class="separator">/</span>
                             <ul class="nav pull-left">
                                 <li class="dropdown">
-                                    <h1 data-toggle="dropdown" class="dropdown-toggle usser-name">Doe, John <b class="caret"></b></h1>
+                                    <h1 data-toggle="dropdown" class="dropdown-toggle user-name">Doe, John <b class="caret"></b></h1>
                                     <ul aria-labelledby="dropdownMenu" role="menu" class="dropdown-menu">
                                         <li class="first"><a href="/">Rosario Papadopoulos</a></li>
                                         <li><a href="/">Rosario Papadopoulos</a></li>
@@ -230,7 +233,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="pull-right usser-info-state">
+                    <div class="pull-right user-info-state">
                         <ul class="inline-decorate">
                             <li><a href="/">Revision 1.2</a></li>
                             <li><i class="icon-draft"></i> Draft</li>
@@ -247,7 +250,7 @@
                                 <span class="separator">/</span>
                                 <ul class="nav pull-left">
                                     <li class="dropdown">
-                                        <h1 data-toggle="dropdown" class="dropdown-toggle usser-name">Doe, John <b class="caret"></b></h1>
+                                        <h1 data-toggle="dropdown" class="dropdown-toggle user-name">Doe, John <b class="caret"></b></h1>
                                         <ul aria-labelledby="dropdownMenu" role="menu" class="dropdown-menu">
                                             <li class="first"><a href="/">Rosario Papadopoulos</a></li>
                                     <li><a href="/">Rosario Papadopoulos</a></li>
@@ -300,7 +303,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="pull-right usser-info-state">
+                    <div class="pull-right user-info-state">
                         <ul class="inline-decorate">
                             <li><a href="/">Revision 1.2</a></li>
                             <li><i class="icon-draft"></i> Draft</li>
@@ -317,7 +320,7 @@
                                 <span class="separator">/</span>
                                 <ul class="nav pull-left">
                                     <li class="dropdown">
-                                        <h1 data-toggle="dropdown" class="dropdown-toggle usser-name">Doe, John <b class="caret"></b></h1>
+                                        <h1 data-toggle="dropdown" class="dropdown-toggle user-name">Doe, John <b class="caret"></b></h1>
                                         <ul aria-labelledby="dropdownMenu" role="menu" class="dropdown-menu">
                                             <li class="first"><a href="/">Rosario Papadopoulos</a></li>
                                     <li><a href="/">Rosario Papadopoulos</a></li>

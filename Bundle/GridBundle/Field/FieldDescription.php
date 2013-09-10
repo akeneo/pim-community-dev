@@ -138,8 +138,8 @@ class FieldDescription implements FieldDescriptionInterface
         // set the field_name if provided
         if (isset($options['field_name'])) {
             $this->setFieldName($options['field_name']);
-            // TODO Cannot unset option because it is used by filter!
-            //unset($options['field_name']);
+        } else {
+            $options['field_name'] = $this->getFieldName();
         }
 
         // remove property value
@@ -149,23 +149,41 @@ class FieldDescription implements FieldDescriptionInterface
         }
 
         // set field_mapping
-        if (isset($options['field_mapping'])) {
-            $this->setFieldMapping($options['field_mapping']);
-        } else {
-            $fieldMapping = array(
-                'fieldName' => $this->getFieldName()
-            );
-            if (isset($options['entity_alias'])) {
-                $fieldMapping['entityAlias'] = $options['entity_alias'];
-            }
-            if (isset($options['expression'])) {
-                $fieldMapping['fieldExpression'] = $options['expression'];
-            }
-            $this->setFieldMapping($fieldMapping);
-            $options['field_mapping'] = $fieldMapping;
-        }
+        $options['field_mapping'] = $this->createFieldMapping($options);
+        $this->setFieldMapping($options['field_mapping']);
 
         $this->options = $options;
+    }
+
+    /**
+     * Creates field mapping options
+     *
+     * @param array $options
+     * @return array
+     */
+    protected function createFieldMapping(array $options)
+    {
+        $fieldMapping = array(
+            'fieldName' => $this->getFieldName(),
+        );
+        if (isset($options['entity_alias'])) {
+            $fieldMapping['entityAlias'] = $options['entity_alias'];
+        }
+        if (isset($options['expression'])) {
+            $fieldMapping['fieldExpression'] = $options['expression'];
+        } elseif (isset($options['entity_alias'])) {
+            $fieldMapping['fieldExpression'] = $options['entity_alias'] . '.' . $this->getFieldName();
+        }
+        if (isset($options['filter_by_where'])) {
+            $fieldMapping['filterByWhere'] = $options['filter_by_where'];
+        }
+        if (isset($options['filter_by_having'])) {
+            $fieldMapping['filterByHaving'] = $options['filter_by_having'];
+        }
+        if (isset($options['field_mapping'])) {
+            $fieldMapping = array_merge($fieldMapping, $options['field_mapping']);
+        }
+        return $fieldMapping;
     }
 
     /**

@@ -1,0 +1,41 @@
+parameters:
+    oro_dataaudit.metadata.metadata_factory.class:  Oro\Bundle\DataAuditBundle\Metadata\ExtendMetadataFactory
+    oro_dataaudit.metadata.annotation_driver.class: Oro\Bundle\DataAuditBundle\Metadata\Driver\AnnotationDriver
+
+    oro_dataaudit.listener.entity_subscriber.class: Oro\Bundle\DataAuditBundle\EventListener\EntitySubscriber
+    oro_dataaudit.listener.kernel_listener.class:   Oro\Bundle\DataAuditBundle\EventListener\KernelListener
+
+    oro_dataaudit.loggable.loggable_manager.class:  Oro\Bundle\DataAuditBundle\Loggable\LoggableManager
+
+    oro_dataaudit.loggable.entity.class:            Oro\Bundle\DataAuditBundle\Entity\Audit
+
+services:
+    oro_dataaudit.loggable.loggable_manager:
+        class:                                      %oro_dataaudit.loggable.loggable_manager.class%
+        arguments:
+            - %oro_dataaudit.loggable.entity.class%
+            - @oro_entity_config.provider.dataaudit
+
+    oro_dataaudit.metadata.metadata_factory:
+        class:                                      %oro_dataaudit.metadata.metadata_factory.class%
+        arguments:                                  [@oro_dataaudit.metadata.annotation_driver]
+        public:                                     false
+
+    oro_dataaudit.metadata.annotation_driver:
+        class:                                      %oro_dataaudit.metadata.annotation_driver.class%
+        arguments:                                  [@annotation_reader]
+        public:                                     false
+
+    oro_dataaudit.listener.entity_subscriber:
+        class:                                      %oro_dataaudit.listener.entity_subscriber.class%
+        arguments:
+            - @oro_dataaudit.loggable.loggable_manager
+            - @oro_dataaudit.metadata.metadata_factory
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
+    oro_dataaudit.listener.kernel_listener:
+        class:                                      %oro_dataaudit.listener.kernel_listener.class%
+        arguments:                                  [@oro_dataaudit.loggable.loggable_manager, @security.context]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request , method: onKernelRequest}

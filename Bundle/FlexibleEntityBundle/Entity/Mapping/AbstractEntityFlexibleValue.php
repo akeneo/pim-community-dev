@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
 use Symfony\Component\HttpFoundation\File\File;
@@ -10,11 +11,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Base Doctrine ORM entity attribute value
- *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT  MIT
- *
  */
 abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
 {
@@ -85,6 +81,14 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     protected $decimal;
 
     /**
+     * Store boolean value
+     * @var boolean $boolean
+     *
+     * @ORM\Column(name="value_boolean", type="boolean", nullable=true)
+     */
+    protected $boolean;
+
+    /**
      * Store text value
      * @var string $text
      *
@@ -150,6 +154,16 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     }
 
     /**
+     * Get entity
+     *
+     * @return AbstractFlexible $entity
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
+
+    /**
      * Set entity
      *
      * @param AbstractFlexible $entity
@@ -187,6 +201,24 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
         $name = 'get'.ucfirst($this->attribute->getBackendType());
 
         return $this->$name();
+    }
+
+    /**
+     * Add data
+     *
+     * @param mixed $data
+     *
+     * @return EntityAttributeValue
+     */
+    public function addData($data)
+    {
+        $backendType = $this->attribute->getBackendType();
+        if (substr($backendType, -1, 1) === 's') {
+            $backendType = substr($backendType, 0, strlen($backendType) - 1);
+        }
+        $name = 'add'.ucfirst($backendType);
+
+        return $this->$name($data);
     }
 
     /**
@@ -262,6 +294,30 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     }
 
     /**
+     * Get boolean data
+     *
+     * @return boolean
+     */
+    public function getBoolean()
+    {
+        return $this->boolean;
+    }
+
+    /**
+     * Set boolean data
+     *
+     * @param boolean $boolean
+     *
+     * @return EntityAttributeValue
+     */
+    public function setBoolean($boolean)
+    {
+        $this->boolean = $boolean;
+
+        return $this;
+    }
+
+    /**
      * Get text data
      *
      * @return string
@@ -304,7 +360,9 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      */
     public function setDate($date)
     {
-        $this->date = $date;
+        if ($this->date != $date) {
+            $this->date = $date;
+        }
 
         return $this;
     }
@@ -328,7 +386,9 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      */
     public function setDatetime($datetime)
     {
-        $this->datetime = $datetime;
+        if ($this->datetime != $datetime) {
+            $this->datetime = $datetime;
+        }
 
         return $this;
     }
@@ -340,7 +400,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      *
      * @return AbstractEntityFlexibleValue
      */
-    public function setOption(AbstractEntityAttributeOption $option)
+    public function setOption(AbstractEntityAttributeOption $option = null)
     {
         $this->option = $option;
 
@@ -419,9 +479,10 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      * Set collections data from value object
      *
      * @param AbstractEntityFlexibleValue $value
+     *
      * @return $this
      */
-    public function setCollections(AbstractEntityFlexibleValue $value)
+    public function setCollections(AbstractEntityFlexibleValue $value = null)
     {
         $this->collection = $value->getCollections();
 
@@ -432,6 +493,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      * Set collection attribute values
      *
      * @param Collection[] $collection
+     *
      * @return $this
      */
     public function setCollection($collection)
@@ -439,6 +501,39 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
         $this->collection = $collection;
 
         return $this;
+    }
+
+    /**
+     * Check if value is related to attribute and match locale and scope if it's localizable, scopable
+     *
+     * @param string $attribute
+     * @param string $locale
+     * @param string $scope
+     */
+    public function isMatching($attribute, $locale, $scope)
+    {
+        $isLocalizable = $this->getAttribute()->getTranslatable();
+        $isScopable    = $this->getAttribute()->getScopable();
+        $isLocalized   = $this->getLocale() == $locale;
+        $isScoped      = $this->getScope() == $scope;
+
+        if ($this->getAttribute()->getCode() == $attribute) {
+            if ($isLocalizable and $isLocalized) {
+                if ($isScopable and $isScoped) {
+                    return true;
+                } elseif (!$isScopable) {
+                    return true;
+                }
+            } elseif (!$isLocalizable) {
+                if ($isScopable and $isScoped) {
+                    return true;
+                } elseif (!$isScopable) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -465,6 +560,6 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
             return $data->__toString();
         }
 
-        return $data;
+        return (string) $data;
     }
 }

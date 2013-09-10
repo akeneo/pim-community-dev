@@ -1,0 +1,145 @@
+parameters:
+    oro_notification.send_from: example@example.com
+
+    # Entity classes
+    oro_notification.event_entity.class: Oro\Bundle\NotificationBundle\Entity\Event
+    oro_notification.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
+
+    # Event manager and event handler classes
+    oro_notification.manager.class: Oro\Bundle\NotificationBundle\Provider\NotificationManager
+    oro_notification.email_handler.class: Oro\Bundle\NotificationBundle\Event\Handler\EmailNotificationHandler
+
+    # Listener classes
+    oro_notification.doctrine_listener.class: Oro\Bundle\NotificationBundle\Provider\DoctrineListener
+
+    # Email notification form services
+    oro_notification.form.type.email_notification.class: Oro\Bundle\NotificationBundle\Form\Type\EmailNotificationType
+    oro_notification.form.type.recipient_list.class: Oro\Bundle\NotificationBundle\Form\Type\RecipientListType
+    oro_notification.form.handler.email_notification.class: Oro\Bundle\NotificationBundle\Form\Handler\EmailNotificationHandler
+
+    # Email notification API
+    oro_notification.email_notification.manager.api.class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    oro_notification.form.type.email_notification.api.class: Oro\Bundle\NotificationBundle\Form\Type\EmailNotificationApiType
+    oro_notification.form.handler.email_notification.api.class: Oro\Bundle\NotificationBundle\Form\Handler\EmailNotificationHandler
+
+    # Email notification services
+    oro_notification.mailer.transport.spool_db.class: Oro\Bundle\NotificationBundle\Provider\Mailer\DbSpool
+    oro_notification.mailer.transport.spool_entity.class: Oro\Bundle\NotificationBundle\Entity\SpoolItem
+
+    swiftmailer.mailer.db_spool_mailer.spool.enabled: true
+services:
+    # Email notification form services
+    oro_notification.form.email_notification:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments: ["emailnotification", "emailnotification", null]
+
+    oro_notification.form.type.email_notification:
+        class: %oro_notification.form.type.email_notification.class%
+        arguments:
+            - %oro_config.entities%
+            - @oro_email.form.subscriber.emailtemplate
+        tags:
+            - { name: form.type, alias: emailnotification }
+
+    oro_notification.form.type.recipient_list:
+        class: %oro_notification.form.type.recipient_list.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: form.type, alias: oro_notification_recipient_list }
+
+    oro_notification.form.handler.email_notification:
+        class: %oro_notification.form.handler.email_notification.class%
+        scope: request
+        arguments:
+            - @oro_notification.form.email_notification
+            - @request
+            - @doctrine.orm.entity_manager
+
+    # Email notification API
+    oro_notification.email_notification.manager.api:
+        class: %oro_notification.email_notification.manager.api.class%
+        arguments:
+            - %oro_notification.emailnotification.entity.class%
+            - @doctrine.orm.entity_manager
+
+    oro_notification.form.type.email_notification.api:
+        class: %oro_notification.form.type.email_notification.api.class%
+        arguments:
+            - %oro_config.entities%
+            - @oro_email.form.subscriber.emailtemplate
+        tags:
+            - { name: form.type, alias: emailnotification_api }
+
+    oro_notification.form.email_notification.api:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments: ["emailnotification_api", "emailnotification_api", null]
+
+    oro_notification.form.handler.email_notification.api:
+        class: %oro_notification.form.handler.email_notification.api.class%
+        scope: request
+        arguments:
+            - @oro_notification.form.email_notification.api
+            - @request
+            - @doctrine.orm.entity_manager
+
+    # Event listeners
+    oro_notification.docrine.event.listener:
+        class: %oro_notification.doctrine_listener.class%
+        calls:
+            - [ setEventDispatcher, [ @event_dispatcher ] ]
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postUpdate }
+            - { name: doctrine.event_listener, event: postRemove }
+
+    # notification services
+    oro_notification.manager:
+        class: %oro_notification.manager.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - %oro_notification.emailnotification.entity.class%
+
+    oro_notification.email_handler:
+        class: %oro_notification.email_handler.class%
+        arguments:
+            - @oro_email.email_renderer
+            - @swiftmailer.mailer.db_spool_mailer
+            - @doctrine.orm.entity_manager
+            - %oro_notification.send_from%
+            - @logger
+        calls:
+            - [ setEnv, ['prod'] ]
+            - [ setMessageLimit, [100] ]
+        tags:
+            - { name: notification.handler, alias: email_notification_handler }
+
+    # email notification Swift mailer with DB spool configured
+    oro_notification.mailer.spool_db:
+        class: %oro_notification.mailer.transport.spool_db.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - %oro_notification.mailer.transport.spool_entity.class%
+
+
+    oro_notification.mailer.transport.eventdispatcher:
+        parent: swiftmailer.transport.eventdispatcher.abstract
+
+    oro_notification.mailer.transport:
+        parent: swiftmailer.transport.spool.abstract
+        arguments:
+            - @oro_notification.mailer.transport.eventdispatcher
+            - @oro_notification.mailer.spool_db
+
+    # notification mailer instance
+    swiftmailer.mailer.db_spool_mailer:
+        class: %swiftmailer.class%
+        arguments:
+            - @oro_notification.mailer.transport
+
+    swiftmailer.mailer.db_spool_mailer.transport.real:
+        alias: swiftmailer.transport.real

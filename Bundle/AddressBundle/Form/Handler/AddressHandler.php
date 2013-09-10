@@ -2,12 +2,12 @@
 
 namespace Oro\Bundle\AddressBundle\Form\Handler;
 
-use Oro\Bundle\AddressBundle\Entity\AddressBase;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 
 class AddressHandler
 {
@@ -42,15 +42,15 @@ class AddressHandler
     /**
      * Process form
      *
-     * @param  AddressBase $entity
+     * @param AbstractAddress $entity
      * @return bool True on successful processing, false otherwise
      */
-    public function process(AddressBase $entity)
+    public function process(AbstractAddress $entity)
     {
         $this->form->setData($entity);
 
         if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
-            $this->form->bind($this->request);
+            $this->form->submit($this->request);
             if ($this->form->isValid()) {
                 $this->onSuccess($entity);
 
@@ -64,11 +64,11 @@ class AddressHandler
     /**
      * "Success" form handler
      *
-     * @param AddressBase $entity
+     * @param AbstractAddress $address
      */
-    protected function onSuccess(AddressBase $entity)
+    protected function onSuccess(AbstractAddress $address)
     {
-        $this->manager->persist($entity);
+        $this->manager->persist($address);
         $this->manager->flush();
     }
 }

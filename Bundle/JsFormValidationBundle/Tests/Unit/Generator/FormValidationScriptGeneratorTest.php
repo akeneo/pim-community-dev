@@ -2,12 +2,10 @@
 
 namespace Oro\Bundle\JsFormValidationBundle\Tests\Unit\Generator;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
 
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface;
+use Symfony\Component\Validator\MetadataFactoryInterface;
 
 use Oro\Bundle\JsFormValidationBundle\Generator\FormValidationScriptGenerator;
 
@@ -29,7 +27,7 @@ class FormValidationScriptGeneratorTest extends \PHPUnit_Framework_TestCase
     protected $container;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ClassMetadataFactoryInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|MetadataFactoryInterface
      */
     protected $metadataFactory;
 
@@ -46,7 +44,7 @@ class FormValidationScriptGeneratorTest extends \PHPUnit_Framework_TestCase
         $this->container->expects($this->once())
             ->method('get')->with('doctrine')->will($this->returnValue($managerRegistry));
 
-        $this->metadataFactory = $this->getMock('Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface');
+        $this->metadataFactory = $this->getMock('Symfony\Component\Validator\MetadataFactoryInterface');
         $this->generator = new FormValidationScriptGenerator($this->container, $this->metadataFactory);
     }
 
@@ -62,7 +60,7 @@ class FormValidationScriptGeneratorTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->metadataFactory->expects($this->once())
-            ->method('getClassMetadata')
+            ->method('getMetadataFor')
             ->will($this->returnValue($metadata));
 
         $this->assertSame($metadata, $this->generator->getClassMetadata($className));

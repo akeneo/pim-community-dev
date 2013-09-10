@@ -65,14 +65,17 @@
                 </div>
             </div>
             <script>
-                $(function () {
-                    $('#myTab a:last').tab('show');
-                    $('#myTab a').click(function (e) {
-                        e.preventDefault();
-                        $(this).tab('show');
-                    })
-                    $('a.popup-me').popover();
-                })
+                require(['jquery', 'jquery-ui', 'bootstrap'],
+                function($) {
+                    $(function () {
+                        $('#myTab a:last').tab('show');
+                        $('#myTab a').click(function (e) {
+                            e.preventDefault();
+                            $(this).tab('show');
+                        });
+                        $('a.popup-me').popover();
+                    });
+                });
             </script>
             <div class="navigation clearfix">
                 <div class="container-fluid">
@@ -406,7 +409,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -521,7 +524,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -636,7 +639,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -751,7 +754,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -866,7 +869,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -981,7 +984,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -1096,7 +1099,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -1211,7 +1214,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -1326,7 +1329,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -1441,7 +1444,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -1556,7 +1559,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -1671,7 +1674,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -1786,7 +1789,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -1901,7 +1904,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -2016,7 +2019,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -2131,7 +2134,7 @@
                                 </div>
                                 <div class="clearfix well-small">
                                     <div class="pull-left">
-                                        <span class="usser-name">Anna Griffin</span>
+                                        <span class="user-name">Anna Griffin</span>
                                         <span class="usser-state">Active</span>
                                     </div>
                                     <a class="more pull-right" href="#">View full details</a>
@@ -2206,64 +2209,67 @@
                 </div>
             </div>
             <script type="text/javascript">
-                jQuery(document).ready(function() {
-                    var _qtyTh = jQuery('table.grid thead th').size()
-                    jQuery('table.grid .grid-info td').attr('colspan', _qtyTh)
-                    jQuery('table.grid tbody tr:not(.grid-info)').each(function(){
-                        var _myRow = jQuery(this);
-                        jQuery(this).find('span.open-row').click(function(){
-                            jQuery(_myRow).toggleClass('open-tr');
-                            jQuery(_myRow).next().toggleClass('hide');
+                require(['jquery'],
+                function($) {
+                    $(document).ready(function() {
+                        var _qtyTh = $('table.grid thead th').size();
+                        $('table.grid .grid-info td').attr('colspan', _qtyTh);
+                        $('table.grid tbody tr:not(.grid-info)').each(function(){
+                            var _myRow = $(this);
+                            $(this).find('span.open-row').click(function(){
+                                $(_myRow).toggleClass('open-tr');
+                                $(_myRow).next().toggleClass('hide');
+                            });
                         });
-                    })
-                    jQuery('span.open-row-all').click(function(){
-                        if( jQuery(this).parent().hasClass("open-tr")){
-                            jQuery(this).parent().removeClass('open-tr');
-                            jQuery('table.grid tbody tr:not(.grid-info)').each(function(){
-                                var _myRow = jQuery(this);
-                                jQuery(_myRow).removeClass('open-tr');
-                                jQuery(_myRow).next().addClass('hide');
-                            });
-                        }else{
-                            jQuery(this).parent().addClass('open-tr');
-                            jQuery('table.grid tbody tr:not(.grid-info)').each(function(){
-                                var _myRow = jQuery(this);
-                                jQuery(_myRow).addClass('open-tr');
-                                jQuery(_myRow).next().removeClass('hide');
-                                console.log(jQuery(_myRow).next());
-                            });
-                        }
-                    });
-                    /* js for loader show */
-                    jQuery('#open-loading').click(function(){
-                        jQuery('#loading-wrapper , #loading-frame').css({
-                            'display' : 'block'
-                        })
-                    });
-                    jQuery('#loading-wrapper').click(function(){
-                        jQuery('#loading-wrapper , #loading-frame').css({
-                            'display' : 'none'
-                        })
-                    });
-                    /* js for loader show --end */
-                    /* select row */
-                    console.clear();
-                        jQuery('table.grid tbody td > input:checkbox').each(function(){
-                            if(jQuery(this).attr('checked')=='checked'){
-                                jQuery(this).parent().parent().addClass('selected-row');
+                        $('span.open-row-all').click(function(){
+                            if( $(this).parent().hasClass("open-tr")){
+                                $(this).parent().removeClass('open-tr');
+                                $('table.grid tbody tr:not(.grid-info)').each(function(){
+                                    var _myRow = $(this);
+                                    $(_myRow).removeClass('open-tr');
+                                    $(_myRow).next().addClass('hide');
+                                });
+                            }else{
+                                $(this).parent().addClass('open-tr');
+                                $('table.grid tbody tr:not(.grid-info)').each(function(){
+                                    var _myRow = $(this);
+                                    $(_myRow).addClass('open-tr');
+                                    $(_myRow).next().removeClass('hide');
+                                    console.log($(_myRow).next());
+                                });
                             }
-                            jQuery(this).click(function(){
-                                if(jQuery(this).attr('checked')=='checked'){
-                                    jQuery(this).parent().parent().addClass('selected-row');
+                        });
+                        /* js for loader show */
+                        $('#open-loading').click(function(){
+                            $('#loading-wrapper , #loading-frame').css({
+                                'display' : 'block'
+                            })
+                        });
+                        $('#loading-wrapper').click(function(){
+                            $('#loading-wrapper , #loading-frame').css({
+                                'display' : 'none'
+                            })
+                        });
+                        /* js for loader show --end */
+                        /* select row */
+                        console.clear();
+                        $('table.grid tbody td > input:checkbox').each(function(){
+                            if($(this).attr('checked')=='checked'){
+                                $(this).parent().parent().addClass('selected-row');
+                            }
+                            $(this).click(function(){
+                                if($(this).attr('checked')=='checked'){
+                                    $(this).parent().parent().addClass('selected-row');
                                 }else{
-                                    jQuery(this).parent().parent().removeClass('selected-row');
+                                    $(this).parent().parent().removeClass('selected-row');
                                 }
 
 
-                            //    jQuery(this).parent().parent().toggleClass('selected-row');
+                            //    $(this).parent().parent().toggleClass('selected-row');
                             });
                         });
-                    /* select row -- end*/
+                        /* select row -- end*/
+                    });
                 });
             </script>
         </div>

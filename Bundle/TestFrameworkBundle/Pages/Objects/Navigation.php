@@ -14,16 +14,15 @@ class Navigation extends Page
     public function __construct($testCase, $redirect = true)
     {
         parent::__construct($testCase, $redirect);
-        $this->tabs = $this->byXPath("//div[@class = 'navbar application-menu']//ul[@class = 'nav nav-tabs']");
-        $this->menu = $this->byXPath("//div[contains(@class, 'application-menu')]//div[@class = 'tab-content']/div[contains(@class, 'active')]/ul");
+        $this->tabs = $this->byId("main-menu");
 
         $this->pinbar = $this->byXPath("//div[contains(@class, 'pin-bar')]");
     }
 
     public function tab($tab)
     {
-        $this->tabs->element($this->using('xpath')->value("li/a[contains(., '{$tab}')]"))->click();
-        $this->menu = $this->byXPath("//div[contains(@class, 'application-menu')]//div[@class = 'tab-content']/div[contains(@class, 'active')]/ul");
+        $this->test->moveto($this->tabs->element($this->using('xpath')->value("ul/li/a[contains(., '{$tab}')]")));
+        $this->menu = $this->tabs->element($this->using('xpath')->value("ul/li[a[contains(., '{$tab}')]]/ul"));
         return $this;
     }
 

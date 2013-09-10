@@ -4,7 +4,13 @@ template_controller:
     parent: root
     class: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
     method: templateAction
+
+external_bundle_actions:
+    name: External bundle actions
+    description: General node for all external bundle actions
+    parent: root
+
 oro_user:
     name: User manipulation
-    description: User manipulation
+    description: General node for all manipulations with users
     parent: root

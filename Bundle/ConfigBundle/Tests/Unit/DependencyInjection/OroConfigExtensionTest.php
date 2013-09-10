@@ -17,11 +17,30 @@ class OroConfigExtensionTest extends \PHPUnit_Framework_TestCase
         $this->createEmptyConfiguration();
     }
 
-    public function testCompilerPass()
+    public function testLoad()
     {
-        $container = $this->getContainer();
+        $extension = new OroConfigExtension();
+        $configs = array();
 
-        $this->assertTrue($container->hasDefinition('oro_config.user'));
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+        $container->expects($this->any())
+            ->method('setParameter')
+            ->will(
+                $this->returnCallback(
+                    function ($name, $value) use (&$isCalled) {
+                        if ($name == 'oro_config' && is_array($value)) {
+                            $isCalled = true;
+                        }
+                    }
+                )
+            );
+
+        $container->expects($this->any())
+            ->method('getParameter')
+            ->with('kernel.bundles')
+            ->will($this->returnValue(array()));
+
+        $extension->load($configs, $container);
     }
 
     protected function createEmptyConfiguration()
@@ -67,8 +86,14 @@ class OroConfigExtensionTest extends \PHPUnit_Framework_TestCase
         $container->setParameter('kernel.bundles', array());
         $loader->load($config, $container);
 
-        $container->register('doctrine.orm.entity_manager', $this->getMockClass('Doctrine\Common\Persistence\ObjectManager'));
-        $container->register('security.context', $this->getMockClass('Symfony\Component\Security\Core\SecurityContextInterface'));
+        $container->register(
+            'doctrine.orm.entity_manager',
+            $this->getMockClass('Doctrine\Common\Persistence\ObjectManager')
+        );
+        $container->register(
+            'security.context',
+            $this->getMockClass('Symfony\Component\Security\Core\SecurityContextInterface')
+        );
         $container->compile();
 
         return $container;

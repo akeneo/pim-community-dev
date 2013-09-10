@@ -10,12 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Oro\Bundle\SearchBundle\Datagrid\SearchDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\DatagridView;
-use Oro\Bundle\SearchBundle\Provider\ResultProvider;
+use Oro\Bundle\SearchBundle\Provider\ResultStatisticsProvider;
 
 class SearchController extends Controller
 {
     /**
-     * @Route("advanced-search", name="oro_search_advanced")
+     * @Route("/advanced-search", name="oro_search_advanced")
      */
     public function ajaxAdvancedSearchAction()
     {
@@ -31,6 +31,7 @@ class SearchController extends Controller
     /**
      * Show search block
      *
+     * @Route("/search-bar", name="oro_search_bar")
      * @Template("OroSearchBundle:Search:searchBar.html.twig")
      */
     public function searchBarAction()
@@ -77,8 +78,8 @@ class SearchController extends Controller
 
         $datagridView = $this->getSearchResultsDatagridView($from, $string);
 
-        /** @var $resultProvider ResultProvider */
-        $resultProvider = $this->get('oro_search.result_provider');
+        /** @var $resultProvider ResultStatisticsProvider */
+        $resultProvider = $this->get('oro_search.provider.result_statistics_provider');
 
         return array(
             'from'           => $from,

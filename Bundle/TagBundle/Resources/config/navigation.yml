@@ -1,0 +1,28 @@
+oro_menu_config:
+    items:
+        oro_tag_list:
+            label: 'Tags'
+            route: 'oro_tag_index'
+            extras:
+                routes: ['oro_tag_*']
+                description: Tags list
+        shortcut_new_tag:
+            label: Create new tag
+            route: oro_tag_create
+            extras:
+                description: Create new tag
+    tree:
+        application_menu:
+            children:
+                system_tab:
+                    children:
+                        oro_tag_list: ~
+        shortcuts:
+            children:
+                shortcut_new_tag: ~
+
+oro_titles:
+    oro_tag_index:  ~
+    oro_tag_update: Edit "%%tag.name%%" Tag
+    oro_tag_create: Create Tag
+    oro_tag_search: Records tagged as "%%tag.name%%"

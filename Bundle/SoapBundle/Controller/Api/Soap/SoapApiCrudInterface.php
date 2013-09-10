@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\SoapBundle\Controller\Api\Soap;
 
-interface SoapApiCrudInterface
+interface SoapApiCrudInterface extends SoapApiReadInterface
 {
     /**
      * Create item.
@@ -12,21 +12,12 @@ interface SoapApiCrudInterface
     public function handleCreateRequest();
 
     /**
-     * Get paginated items list.
-     *
-     * @param int $page
-     * @param int $limit
-     * @return \Traversable
-     */
-    public function handleGetListRequest($page, $limit);
-
-    /**
-     * Get item by identifier.
+     * Delete item.
      *
      * @param mixed $id
-     * @return object
+     * @return bool
      */
-    public function handleGetRequest($id);
+    public function handleDeleteRequest($id);
 
     /**
      * Update item.
@@ -35,12 +26,4 @@ interface SoapApiCrudInterface
      * @return bool
      */
     public function handleUpdateRequest($id);
-
-    /**
-     * Delete item.
-     *
-     * @param mixed $id
-     * @return bool
-     */
-    public function handleDeleteRequest($id);
 }

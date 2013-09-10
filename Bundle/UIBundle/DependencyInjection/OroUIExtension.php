@@ -91,6 +91,8 @@ class OroUIExtension extends Extension
                         );
                     }
                 }
+            } else {
+                $placeholder['items'] = array();
             }
         }
 
@@ -145,7 +147,7 @@ class OroUIExtension extends Extension
     protected function changeOrders(array $placeholders)
     {
         foreach ($placeholders as $placeholderName => $placeholderData) {
-            if (isset($placeholders[$placeholderName]['items']) ) {
+            if (isset($placeholders[$placeholderName]['items'])) {
                 usort($placeholders[$placeholderName]['items'], array($this, "comparePlaceholderBlocks"));
             }
         }
@@ -163,8 +165,14 @@ class OroUIExtension extends Extension
      */
     protected function comparePlaceholderBlocks($a, $b)
     {
-        $aOrder = isset($a['order']) ? $a['order'] : 1;
-        $bOrder = isset($b['order']) ? $b['order'] : 1;
+        $aOrder = 1;
+        if (isset($a['order'])) {
+            $aOrder = $a['order'];
+        }
+        $bOrder = 1;
+        if (isset($b['order'])) {
+            $bOrder = $b['order'];
+        }
 
         if ($aOrder == $bOrder) {
 

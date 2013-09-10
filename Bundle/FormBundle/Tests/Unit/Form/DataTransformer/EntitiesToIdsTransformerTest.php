@@ -5,6 +5,7 @@ namespace Oro\Bundle\FormBundle\Tests\Unit\Form\Type;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
 
@@ -340,7 +341,7 @@ class EntitiesToIdsTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Form\Exception\FormException
+     * @expectedException \Oro\Bundle\FormBundle\Form\Exception\FormException
      * @expectedExceptionMessage Cannot get id property path of entity. "TestClass" has composite primary key.
      */
     public function testCreateFailsWhenCannotGetIdProperty()
@@ -349,7 +350,7 @@ class EntitiesToIdsTransformerTest extends \PHPUnit_Framework_TestCase
 
         $classMetadata = $this->getMockClassMetadata();
         $classMetadata->expects($this->once())->method('getSingleIdentifierFieldName')
-            ->will($this->throwException(new \Doctrine\ORM\Mapping\MappingException()));
+            ->will($this->throwException(new MappingException()));
 
         $em = $this->getMockEntityManager();
         $em->expects($this->once())->method('getClassMetadata')
@@ -408,6 +409,7 @@ class EntitiesToIdsTransformerTest extends \PHPUnit_Framework_TestCase
         foreach ($values as $value) {
             $result[] = $this->createMockEntity($property, $value);
         }
+
         return $result;
     }
 
@@ -423,6 +425,7 @@ class EntitiesToIdsTransformerTest extends \PHPUnit_Framework_TestCase
         $getter = 'get' . ucfirst($property);
         $result = $this->getMock('MockEntity', array($getter));
         $result->expects($this->any())->method($getter)->will($this->returnValue($value));
+
         return $result;
     }
 

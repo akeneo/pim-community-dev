@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\GridBundle\Tests\Unit\Filter\ORM\Flexible;
 
+use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
+
 use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOptionValue;
 
@@ -70,14 +72,17 @@ class FlexibleOptionsFilterTest extends FlexibleFilterTestCase
     {
         $this->initializeFlexibleFilter($this->model);
 
+        $attribute = new Attribute();
         $attributeRepository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
         $attributeRepository->expects($this->once())->method('findOneBy')
             ->with(array('entityType' => self::TEST_FLEXIBLE_NAME, 'code' => self::TEST_FIELD))
-            ->will($this->returnValue(self::TEST_ATTRIBUTE));
+            ->will($this->returnValue($attribute));
 
-        $optionsRepository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
-        $optionsRepository->expects($this->once())->method('findBy')
-            ->with(array('attribute' => self::TEST_ATTRIBUTE))
+        $optionsRepository = $this->getMockBuilder(
+            'Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository'
+        )->disableOriginalConstructor()->getMock();
+        $optionsRepository->expects($this->once())->method('findAllForAttributeWithValues')
+            ->with($attribute)
             ->will($this->returnValue($this->createFlexibleOptions($flexibleOptionsData)));
 
         $this->flexibleManager->expects($this->once())

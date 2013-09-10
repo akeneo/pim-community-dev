@@ -12,6 +12,8 @@ use Oro\Bundle\NavigationBundle\Entity\Title;
 use Oro\Bundle\NavigationBundle\Title\TitleReader\ConfigReader;
 use Oro\Bundle\NavigationBundle\Title\TitleReader\AnnotationsReader;
 use Oro\Bundle\NavigationBundle\Title\StoredTitle;
+use Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager;
+use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -70,18 +72,31 @@ class TitleService implements TitleServiceInterface
     /** @var array */
     protected $titles = null;
 
+    /**
+     * @var BreadcrumbManager
+     */
+    protected $breadcrumbManager;
+
+    /**
+     * @var UserConfigManager
+     */
+    protected $userConfigManager;
+
     public function __construct(
         AnnotationsReader $reader,
         ConfigReader $configReader,
         Translator $translator,
         ObjectManager $em,
-        Serializer $serializer
+        Serializer $serializer,
+        UserConfigManager $userConfigManager,
+        BreadcrumbManager $breadcrumbManager
     ) {
         $this->readers = array($reader, $configReader);
-
         $this->translator = $translator;
         $this->em = $em;
         $this->serializer = $serializer;
+        $this->userConfigManager = $userConfigManager;
+        $this->breadcrumbManager = $breadcrumbManager;
     }
 
     /**
@@ -112,9 +127,6 @@ class TitleService implements TitleServiceInterface
                 $prefix = '';
                 $suffix = '';
             }
-
-
-
         }
 
         if (is_null($title)) {
@@ -134,15 +146,7 @@ class TitleService implements TitleServiceInterface
 
         $translatedTemplate = $trans->trans($title, $params);
 
-        if (!is_null($suffix)) {
-            $suffix = $trans->trans($suffix, $params);
-        }
-
-        if (!is_null($prefix)) {
-            $prefix = $trans->trans($prefix, $params);
-        }
-
-        $translatedTemplate = $prefix . $translatedTemplate . $suffix;
+        $translatedTemplate = $trans->trans($prefix, $params) . $translatedTemplate . $trans->trans($suffix, $params);
 
         return $translatedTemplate;
     }
@@ -310,6 +314,10 @@ class TitleService implements TitleServiceInterface
 
             // update existing system titles
             if ($entity->getIsSystem()) {
+                $title = $this->createTile($route, $title);
+                if (!$title) {
+                    $title = '';
+                }
                 $entity->setTitle($title);
                 $this->em->persist($entity);
             }
@@ -319,15 +327,44 @@ class TitleService implements TitleServiceInterface
 
         // create title items for new routes
         foreach ($data as $route => $title) {
-            $entity = new Title();
-            $entity->setTitle($title instanceof Route ? '' : $title);
-            $entity->setRoute($route);
-            $entity->setIsSystem(true);
+            if ($title = $this->createTile($route, $title)) {
+                $entity = new Title();
+                $entity->setTitle($title);
+                $entity->setRoute($route);
+                $entity->setIsSystem(true);
 
-            $this->em->persist($entity);
+                $this->em->persist($entity);
+            }
         }
 
         $this->em->flush();
+    }
+
+    protected function createTile($route, $title)
+    {
+        if (!($title instanceof Route)) {
+            $titleData = array();
+
+            if ($title) {
+                $titleData[] = $title;
+            }
+
+            $breadcrumbLabels = $this->breadcrumbManager->getBreadcrumbLabels(
+                $this->userConfigManager->get('oro_navigation.breadcrumb_menu'),
+                $route
+            );
+            if (count($breadcrumbLabels)) {
+                $titleData = array_merge($titleData, $breadcrumbLabels);
+            }
+
+            if ($globalTitleSuffix = $this->userConfigManager->get('oro_navigation.title_suffix')) {
+                $titleData[] = $globalTitleSuffix;
+            }
+
+            return implode(' ' . $this->userConfigManager->get('oro_navigation.title_delimiter') . ' ', $titleData);
+        }
+
+        return false;
     }
 
     /**

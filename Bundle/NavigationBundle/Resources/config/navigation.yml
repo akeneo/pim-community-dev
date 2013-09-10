@@ -4,6 +4,7 @@ oro_menu_config:
             template: 'OroNavigationBundle:Menu:application_menu.html.twig'
             currentClass: 'active'
             ancestorClass: 'active'
+            rootClass: 'nav nav-multilevel oroplatform-menu'
         dots_menu:
             template: 'OroNavigationBundle:Menu:dots_menu.html.twig'
         shortcuts:
@@ -27,13 +28,6 @@ oro_menu_config:
             currentAsLink: false
 
     items:
-        home:
-            name: 'Home'
-            label: ''
-            extras:
-                icon: 'icon-home icon-white'
-                position: 1
-            route: 'oro_default'
         pinbar:
             label: 'Pinbar'
             extras:
@@ -60,8 +54,6 @@ oro_menu_config:
     tree:
         application_menu:
             type: application_menu
-            children:
-                home: ~
 
         dots_menu:
             type: dots_menu

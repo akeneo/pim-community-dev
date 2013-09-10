@@ -1,0 +1,79 @@
+
+{% block oro_tag_select_row %}
+    {% if resource_granted('oro_tag_view_tag_cloud') %}
+        {% if resource_granted('oro_tag_assign_unassign') %}
+            <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
+                {{ form_label(form, '' , { label_attr: label_attr|merge({ class: 'control-label' })}) }}
+
+                {% import 'OroTagBundle::macros.html.twig' as _tag %}
+
+                <div>
+                    <div class="controls">
+                        <div>
+                            {{ _tag.tagSortActions() }}
+                        </div>
+                    </div>
+                </div>
+                <div class="controls">
+                    {{ form_row(form.autocomplete) }}
+                </div>
+            </div>
+        {% endif %}
+
+        {{ form_row(form.all) }}
+        {{ form_row(form.owner) }}
+
+        <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
+            {% if not resource_granted('oro_tag_assign_unassign') %}
+                {{ form_label(form, '' , { label_attr: label_attr|merge({ class: 'control-label' })}) }}
+            {% endif %}
+            <div id="tags-overlay"></div>
+            <script type="text/javascript">
+                require(['jquery', 'oro/tag/update-view'],
+                function($, TagUpdateView) {
+                    $(function() {
+                        new TagUpdateView({
+                            autocompleteFieldId: '#{{ form.autocomplete.vars.id }}'
+                            , fieldId: '#{{ form.all.vars.id }}'
+                            , ownFieldId: '#{{ form.owner.vars.id }}'
+                            {% if resource_granted('oro_tag_assign_unassign') %}, unassign: true{% endif %}
+                            {% if resource_granted('oro_tag_unassign_global') %}, unassignGlobal: true{% endif %}
+                        });
+                    });
+                });
+            </script>
+        </div>
+    {% else %}
+        {{ form_row(form.all) }}
+        {{ form_row(form.owner) }}
+    {% endif %}
+{% endblock %}
+
+{% block oro_combobox_dataconfig_multi_autocomplete %}
+    {{ block('oro_combobox_dataconfig_autocomplete') }}
+    select2Config.createSearchChoice = function(term, data) {
+        if (
+            $(data).filter(function() {
+                return this.name.toLowerCase().localeCompare(term.toLowerCase()) === 0;
+            }).length === 0
+        ) {
+            {% if not resource_granted('oro_tag_create') %}
+                return null;
+            {% else %}
+                return {
+                    id: term,
+                    name: term
+                };
+            {% endif %}
+        }
+    }
+
+    {% if not resource_granted('oro_tag_create') %}
+        select2Config.placeholder = '{{ 'oro.tag.form.choose_tag'|trans }}';
+    {% endif %}
+{% endblock %}
+
+{% block oro_tag_autocomplete_row %}
+    {{ form_widget(form) }}
+    {{ form_javascript(form) }}
+{% endblock %}

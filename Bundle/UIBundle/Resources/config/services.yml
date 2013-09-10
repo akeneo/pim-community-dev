@@ -1,8 +1,20 @@
 parameters:
     oro_ui.twig.ceil.class:              Oro\Bundle\UIBundle\Twig\CeilExtension
     oro_ui.twig.extension.class:         Oro\Bundle\UIBundle\Twig\UiExtension
+    oro_ui.twig.md5.class:               Oro\Bundle\UIBundle\Twig\Md5Extension
+    oro_ui.router.class:                 Oro\Bundle\UIBundle\Route\Router
+    oro_ui.twig.widget.class:            Oro\Bundle\UIBundle\Twig\WidgetExtension
+    oro_ui.twig.date.class:              Oro\Bundle\UIBundle\Twig\DateExtension
+    oro_ui.twig.skype_button.class:      Oro\Bundle\UIBundle\Twig\SkypeButtonExtension
+    oro_ui.view.listener.class:          Oro\Bundle\UIBundle\EventListener\TemplateListener
+    oro_ui.twig.form.class:              Oro\Bundle\UIBundle\Twig\FormExtension
 
 services:
+    oro_ui.router:
+        class: %oro_ui.router.class%
+        scope: request
+        arguments: [@request, @router]
+
     oro_ui.twig.ceil_extension:
         class: %oro_ui.twig.ceil.class%
         tags:
@@ -13,3 +25,39 @@ services:
         arguments: [%oro_ui.placeholders%, %oro_ui.wrap_class%]
         tags:
             - { name: twig.extension }
+
+    oro_ui.twig.md5_extension:
+        class: %oro_ui.twig.md5.class%
+        tags:
+            - { name: twig.extension }
+
+    oro_ui.twig.form_extension:
+        class: %oro_ui.twig.form.class%
+        arguments:
+            - @event_dispatcher
+        tags:
+            - { name: twig.extension }
+
+    oro_ui.twig.widget_extension:
+        class: %oro_ui.twig.widget.class%
+        tags:
+            - { name: twig.extension }
+
+    oro_ui.twig.date_extension:
+        class: %oro_ui.twig.date.class%
+        arguments:
+            - @translator
+        tags:
+            - { name: twig.extension }
+
+    oro_ui.twig.skype_button_extension:
+        class: %oro_ui.twig.skype_button.class%
+        tags:
+            - { name: twig.extension }
+
+    oro_ui.view.listener:
+        class: %oro_ui.view.listener.class%
+        arguments:
+            - @service_container
+        tags:
+            - { name: kernel.event_listener, event: kernel.view, method: onKernelView }

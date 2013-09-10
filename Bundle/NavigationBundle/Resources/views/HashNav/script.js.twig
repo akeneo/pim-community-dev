@@ -1,10 +1,14 @@
 <script type="text/javascript">
-    $(function() {
-        if (Oro.hashNavigationEnabled()) {
-            new Oro.Navigation({baseUrl : '{{ app.request.getSchemeAndHttpHost() }}'});
+    require(['backbone', 'oro/navigation'],
+    function(Backbone, Navigation){
+        if (Navigation.isEnabled()) {
+            Navigation.setup({
+                baseUrl :  '{{ app.request.getSchemeAndHttpHost() }}',
+                headerId : '{{ oro_hash_navigation_header() }}'
+            });
             if (!Backbone.History.started) {
                 Backbone.history.start();
             }
         }
-    })
+    });
 </script>

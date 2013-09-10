@@ -1,0 +1,44 @@
+oro_entity_config:
+    dataaudit:
+        entity:
+            items:
+                auditable:
+                    options:
+                        priority:           60
+                        default_value:      true
+                    grid:
+                        type:               boolean
+                        label:              'Auditable'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        false
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          other
+                            label:          'Auditable'
+        field:
+            items:
+                auditable:
+                    options:
+                        priority:           60
+                        default_value:      true
+                    grid:
+                        type:               boolean
+                        label:              'Auditable'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         false
+                        show_filter:        false
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          other
+                            label:          'Auditable'

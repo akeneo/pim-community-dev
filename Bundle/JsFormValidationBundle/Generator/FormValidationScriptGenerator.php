@@ -3,7 +3,7 @@
 namespace Oro\Bundle\JsFormValidationBundle\Generator;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Validator\Mapping\ClassMetadataFactoryInterface;
+use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Validator\Constraint;
@@ -17,12 +17,12 @@ use APY\JsFormValidationBundle\Generator\FieldsConstraints;
 use APY\JsFormValidationBundle\Generator\FormValidationScriptGenerator as BaseFormValidationScriptGenerator;
 
 /**
- * @SuppressWarnings(PHPMD)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
 {
     /**
-     * @var ClassMetadataFactoryInterface
+     * @var MetadataFactoryInterface
      */
     protected $metadataFactory;
 
@@ -33,9 +33,9 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
 
     /**
      * @param ContainerInterface $container
-     * @param ClassMetadataFactoryInterface $metadataFactory
+     * @param MetadataFactoryInterface $metadataFactory
      */
-    public function __construct(ContainerInterface $container, ClassMetadataFactoryInterface $metadataFactory)
+    public function __construct(ContainerInterface $container, MetadataFactoryInterface $metadataFactory)
     {
         parent::__construct($container);
         $this->metadataFactory = $metadataFactory;
@@ -50,7 +50,7 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
     public function getClassMetadata($className)
     {
         if (!isset($this->classesMetadata[$className])) {
-            $this->classesMetadata[$className] = $this->metadataFactory->getClassMetadata($className);
+            $this->classesMetadata[$className] = $this->metadataFactory->getMetadataFor($className);
         }
 
         return $this->classesMetadata[$className];
@@ -89,6 +89,9 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
      * @param string $scriptFile
      * @throws \RuntimeException
      * @SuppressWarnings(PHPMD.ConstantNamingConventions)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function generateFile(FormView $formView, $scriptRealPath, $scriptFile)
     {
@@ -121,11 +124,13 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
 
             // Dispatch JsfvEvents::preProcess event
             $preProcessEvent = new PreProcessEvent($formView, $metadata);
+            // @codingStandardsIgnoreStart
             $dispatcher->dispatch(JsfvEvents::preProcess, $preProcessEvent);
+            // @codingStandardsIgnoreEnd
 
             if (!empty($metadata->constraints)) {
                 foreach ($metadata->constraints as $constraint) {
-                    $constraintName = end((explode(chr(92), get_class($constraint))));
+                    $constraintName = $this->getConstraintName($constraint);
                     if ($constraintName == 'UniqueEntity') {
                         if (is_array($constraint->fields)) {
                             //It has not been implemented yet
@@ -155,7 +160,7 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
                             /* @var $constraint \Symfony\Component\Validator\Validator */
                             $getterName = $getterMetadata->getName();
                             $jsHandlerCallback = $gettersLibraries->getKey($getterMetadata, '_');
-                            $constraintName = end((explode(chr(92), get_class($constraint))));
+                            $constraintName = $this->getConstraintName($constraint);
                             $constraintProperties = get_object_vars($constraint);
                             $exist = array_intersect($formValidationGroups, $constraintProperties['groups']);
                             if (!empty($exist)) {
@@ -260,7 +265,9 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
 
         // Dispatch JsfvEvents::postProcess event
         $postProcessEvent = new PostProcessEvent($formView, $fieldsConstraints);
+        // @codingStandardsIgnoreStart
         $dispatcher->dispatch(JsfvEvents::postProcess, $postProcessEvent);
+        // @codingStandardsIgnoreEnd
 
         // Retrieve validation mode from configuration
         $check_modes = array('submit' => false, 'blur' => false, 'change' => false);
@@ -334,15 +341,20 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
         FieldsConstraints $fieldsConstraints,
         Constraint $constraint
     ) {
-        $constraintName = end((explode(chr(92), get_class($constraint))));
+        $constraintName = $this->getConstraintName($constraint);
         $constraintProperties = get_object_vars($constraint);
 
         // Groups are no longer needed
         unset($constraintProperties['groups']);
 
         if (!$fieldsConstraints->hasLibrary($constraintName)) {
+            $templating = $this->container->get('templating');
             $library = "APYJsFormValidationBundle:Constraints:{$constraintName}Validator.js.twig";
-            $fieldsConstraints->addLibrary($constraintName, $library);
+            if ($templating->exists($library)) {
+                $fieldsConstraints->addLibrary($constraintName, $library);
+            } else {
+                return;
+            }
         }
 
         $constraintParameters = array();
@@ -396,5 +408,18 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
     protected function createFieldsConstraints()
     {
         return new FieldsConstraints();
+    }
+
+    /**
+     * Get constraint name by constraint.
+     *
+     * @param object $constraint
+     * @return string
+     */
+    protected function getConstraintName($constraint)
+    {
+        $className = get_class($constraint);
+        $classParts = explode(chr(92), $className);
+        return end($classParts);
     }
 }

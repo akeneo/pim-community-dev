@@ -1,31 +1,31 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Manager;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\Tests\OrmTestCase;
+
 use Symfony\Component\DependencyInjection\Container;
+
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Doctrine\Tests\OrmTestCase;
 
 /**
  * Test related class
- *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  */
-class FlexibleManagerRegistryTest extends OrmTestCase
+class FlexibleManagerRegistryTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
      * Registry
+     *
      * @var FlexibleManagerRegistry
      */
     protected $registry;
 
     /**
      * Manager
+     *
      * @var EntityManager
      */
     protected $entityManager;
@@ -50,17 +50,10 @@ class FlexibleManagerRegistryTest extends OrmTestCase
      */
     public function setUp()
     {
-        $this->container       = new Container();
         $this->registry        = new FlexibleManagerRegistry();
-        $this->entityManager   = $this->_getTestEntityManager();
-        $entityConfig          = array('entities_config' => array($this->entityFQCN => array()));
-        $this->flexibleManager =  new FlexibleManager(
-            $this->entityFQCN,
-            $entityConfig,
-            $this->entityManager,
-            new EventDispatcher(),
-            new AttributeTypeFactory($this->container)
-        );
+        $this->flexibleManager =  $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**
@@ -90,5 +83,14 @@ class FlexibleManagerRegistryTest extends OrmTestCase
     {
         $this->registry->addManager($this->managerId, $this->flexibleManager, $this->entityFQCN);
         $this->assertEquals($this->registry->getManager($this->entityFQCN), $this->flexibleManager);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Cannot get flexible manager for class "Oro\Bundle\FlexibleEntityBundle\Test\Entity\Demo".
+     */
+    public function testGetManagerFails()
+    {
+        $this->registry->getManager($this->entityFQCN);
     }
 }

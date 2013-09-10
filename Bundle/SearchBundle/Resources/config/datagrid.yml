@@ -27,6 +27,7 @@ services:
         arguments:
             - @form.factory
             - @event_dispatcher
+            - @oro_user.acl_manager
             - @oro_grid.filter.factory
             - @oro_grid.sorter.factory
             - @oro_grid.action.factory
@@ -35,8 +36,9 @@ services:
     oro_search.datagrid_results.entity_result_listener:
         class: %oro_search.datagrid_results.entity_result_listener.class%
         arguments:
-            - @doctrine
+            - @oro_search.formatter.result_formatter
             - %oro_search.datagrid_results.datagrid_name%
+            - @event_dispatcher
         tags:
             - name: kernel.event_listener
               event: oro_grid.datagrid.result

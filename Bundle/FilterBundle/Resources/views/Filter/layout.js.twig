@@ -1,5 +1,5 @@
 {% block oro_type_text_filter_js %}
-    Oro.createInstanceFromConstructor(Oro.Filter.ChoiceFilter.extend({
+    new (ChoiceFilter.extend({
         'name':    {{ formView.vars.name|json_encode|raw }},
         'label':   {{ formView.vars.label|json_encode|raw }},
         'enabled': {{ formView.vars.show_filter|json_encode|raw }},
@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block oro_type_number_filter_js %}
-    Oro.createInstanceFromConstructor(Oro.Filter.NumberFilter.extend({
+    new (NumberFilter.extend({
         'name':    {{ formView.vars.name|json_encode|raw }},
         'label':   {{ formView.vars.label|json_encode|raw }},
         'enabled': {{ formView.vars.show_filter|json_encode|raw }},
@@ -20,7 +20,7 @@
 {% block oro_type_date_range_filter_js %}
     {% set dateConstantPrefix = 'Oro\\Bundle\\FilterBundle\\Form\\Type\\Filter\\DateRangeFilterType::' %}
 
-    Oro.createInstanceFromConstructor(Oro.Filter.DateFilter.extend({
+    new (DateFilter.extend({
         'name':    {{ formView.vars.name|json_encode|raw }},
         'label':   {{ formView.vars.label|json_encode|raw }},
         'enabled': {{ formView.vars.show_filter|json_encode|raw }},
@@ -33,13 +33,40 @@
 {% block oro_type_datetime_range_filter_js %}
     {% set dateTimeConstantPrefix = 'Oro\\Bundle\\FilterBundle\\Form\\Type\\Filter\\DateTimeRangeFilterType::' %}
 
-    Oro.createInstanceFromConstructor(Oro.Filter.DateTimeFilter.extend({
+    new (DatetimeFilter.extend({
         'name':    {{ formView.vars.name|json_encode|raw }},
         'label':   {{ formView.vars.label|json_encode|raw }},
         'enabled': {{ formView.vars.show_filter|json_encode|raw }},
         'choices': {{ formView.children.type.vars.choices|oro_filter_choices|json_encode|raw }},
         'typeValues': {{ formView.vars.type_values|json_encode|raw }},
         'externalWidgetOptions': {{ formView.vars.widget_options|json_encode|raw }}
+    }))
+{% endblock %}
+
+{% block oro_type_select_filter_js %}
+    new (SelectFilter.extend({
+        'name':    {{ formView.vars.name|json_encode|raw }},
+        'label':   {{ formView.vars.label|json_encode|raw }},
+        'enabled': {{ formView.vars.show_filter|json_encode|raw }},
+        'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
+    }))
+{% endblock %}
+
+{% block oro_type_selectrow_filter_js %}
+    new (SelectRowFilter.extend({
+        'name':    {{ formView.vars.name|json_encode|raw }},
+        'label':   {{ formView.vars.label|json_encode|raw }},
+        'enabled': {{ formView.vars.show_filter|json_encode|raw }},
+        'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
+    }))
+{% endblock %}
+
+{% block oro_type_multiselect_filter_js %}
+    new (MultiselectFilter.extend({
+        'name':    {{ formView.vars.name|json_encode|raw }},
+        'label':   {{ formView.vars.label|json_encode|raw }},
+        'enabled': {{ formView.vars.show_filter|json_encode|raw }},
+        'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
     }))
 {% endblock %}
 
@@ -51,26 +78,12 @@
     {% endif %}
 {% endblock %}
 
-{% block oro_type_select_filter_js %}
-    Oro.createInstanceFromConstructor(Oro.Filter.SelectFilter.extend({
-        'name':    {{ formView.vars.name|json_encode|raw }},
-        'label':   {{ formView.vars.label|json_encode|raw }},
-        'enabled': {{ formView.vars.show_filter|json_encode|raw }},
-        'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
-    }))
-{% endblock %}
-
-{% block oro_type_multiselect_filter_js %}
-    Oro.createInstanceFromConstructor(Oro.Filter.MultiSelectFilter.extend({
-        'name':    {{ formView.vars.name|json_encode|raw }},
-        'label':   {{ formView.vars.label|json_encode|raw }},
-        'enabled': {{ formView.vars.show_filter|json_encode|raw }},
-        'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
-    }))
+{% block oro_type_entity_filter_js %}
+    {{ block('oro_type_choice_filter_js') }}
 {% endblock %}
 
 {% block oro_type_boolean_filter_js %}
-    Oro.createInstanceFromConstructor(Oro.Filter.SelectFilter.extend({
+    new (SelectFilter.extend({
         'name':    {{ formView.vars.name|json_encode|raw }},
         'label':   {{ formView.vars.label|json_encode|raw }},
         'enabled': {{ formView.vars.show_filter|json_encode|raw }},

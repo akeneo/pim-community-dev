@@ -1,0 +1,22 @@
+{
+    "name": "oro/tag-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Tag Bundle",
+    "keywords": ["BAP"],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*",
+        "oro/form-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\TagBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/TagBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

@@ -1,9 +1,11 @@
 parameters:
-    oro_search.index.class:           Oro\Bundle\SearchBundle\Engine\Indexer
-    oro_search.index_listener.class:  Oro\Bundle\SearchBundle\EventListener\IndexListener
-    oro_search.twig_extension.class:  Oro\Bundle\SearchBundle\Twig\OroSearchExtension
-    oro_search.mapper.class:          Oro\Bundle\SearchBundle\Engine\ObjectMapper
-    oro_search.result_provider.class: Oro\Bundle\SearchBundle\Provider\ResultProvider
+    oro_search.index.class:                               Oro\Bundle\SearchBundle\Engine\Indexer
+    oro_search.index_listener.class:                      Oro\Bundle\SearchBundle\EventListener\IndexListener
+    oro_search.twig_extension.class:                      Oro\Bundle\SearchBundle\Twig\OroSearchExtension
+    oro_search.mapper.class:                              Oro\Bundle\SearchBundle\Engine\ObjectMapper
+    oro_search.provider.result_statistics_provider.class: Oro\Bundle\SearchBundle\Provider\ResultStatisticsProvider
+    oro_search.formatter.result_formatter.class:          Oro\Bundle\SearchBundle\Formatter\ResultFormatter
+    oro_search.prepare_result_item.listener.class:        Oro\Bundle\SearchBundle\EventListener\PrepareResultItemListener
 
 services:
     oro_search.index:
@@ -14,9 +16,8 @@ services:
         class:                        %oro_search.index_listener.class%
         arguments:                    ["@service_container", %oro_search.realtime_update%, %oro_search.entities_config%]
         tags:
-            - { name: doctrine.event_listener, event: postPersist }
-            - { name: doctrine.event_listener, event: postUpdate }
-            - { name: doctrine.event_listener, event: preRemove }
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: postFlush }
 
     oro_search.twig.search_extension:
         class:                        %oro_search.twig_extension.class%
@@ -27,6 +28,19 @@ services:
         class:                        %oro_search.mapper.class%
         arguments:                    ["@service_container", %oro_search.entities_config%]
 
-    oro_search.result_provider:
-        class:                        %oro_search.result_provider.class%
+    oro_search.provider.result_statistics_provider:
+        class:                        %oro_search.provider.result_statistics_provider.class%
         arguments:                    ["@oro_search.index"]
+
+    oro_search.formatter.result_formatter:
+        class:                        %oro_search.formatter.result_formatter.class%
+        arguments:                    ["@doctrine.orm.entity_manager"]
+
+    oro_search.prepare_result_item.listener:
+        class:                        %oro_search.prepare_result_item.listener.class%
+        arguments:
+            - @router
+            - @oro_search.mapper
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: kernel.event_listener, event: oro_search.prepare_result_item, method: process }

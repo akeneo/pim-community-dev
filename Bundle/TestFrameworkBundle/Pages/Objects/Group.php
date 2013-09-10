@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\TestFrameworkBundle\Pages\Objects;
 
+use Oro\Bundle\TestFrameworkBundle\Pages\AbstractEntity;
 use Oro\Bundle\TestFrameworkBundle\Pages\Entity;
-use Oro\Bundle\TestFrameworkBundle\Pages\Page;
 
-class Group extends Page implements Entity
+class Group extends AbstractEntity implements Entity
 {
 
     protected $name;
@@ -17,6 +17,7 @@ class Group extends Page implements Entity
         parent::__construct($testCase, $redirect);
         $this->name = $this->byId('oro_user_group_form_name');
         $this->roles = $this->select($this->byId('oro_user_group_form_roles'));
+        $this->owner = $this->select($this->byId('oro_user_group_form_owner'));
     }
 
     public function setName($name)
@@ -30,6 +31,18 @@ class Group extends Page implements Entity
         return $this->name->value();
     }
 
+    public function setOwner($owner)
+    {
+        $this->owner->selectOptionByLabel($owner);
+
+        return $this;
+    }
+
+    public function getOwner()
+    {
+        return trim($this->owner->selectedLabel());
+    }
+
     public function setRoles($roles = array())
     {
         foreach ($roles as $role) {
@@ -37,20 +50,5 @@ class Group extends Page implements Entity
         }
 
         return $this;
-    }
-
-    public function save()
-    {
-        $this->byXPath("//button[contains(., 'Save')]")->click();
-        $this->waitPageToLoad();
-        $this->waitForAjax();
-        return new Groups($this->test, false);
-    }
-
-    public function close()
-    {
-        //$this->byXPath("//button[@class ='ui-dialog-titlebar-close']")->click();
-        //support return to groups page only
-        return new Groups($this->test, false);
     }
 }

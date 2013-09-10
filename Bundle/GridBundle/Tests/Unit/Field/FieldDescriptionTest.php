@@ -58,7 +58,7 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
 
     protected $testFieldMapping = array(
         'id'   => self::TEST_ID_FIELD,
-        'name' => self::TEST_FIELD_NAME
+        'fieldName' => self::TEST_FIELD_NAME
     );
 
     protected function setUp()
@@ -188,7 +188,9 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
         $expectedFieldMapping = array(
             'fieldName'       => self::TEST_FIELD_NAME,
             'entityAlias'     => self::TEST_ENTITY_ALIAS,
-            'fieldExpression' => self::TEST_EXPRESSION
+            'fieldExpression' => self::TEST_EXPRESSION,
+            'filterByWhere'   => true,
+            'filterByHaving'  => false,
         );
 
         return array(
@@ -196,8 +198,10 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
                 '$sourceOptions' => array_merge(
                     $this->testOptions,
                     array(
-                        'entity_alias' => self::TEST_ENTITY_ALIAS,
-                        'expression'   => self::TEST_EXPRESSION,
+                        'entity_alias'     => self::TEST_ENTITY_ALIAS,
+                        'expression'       => self::TEST_EXPRESSION,
+                        'filter_by_where'  => true,
+                        'filter_by_having' => false,
                     )
                 ),
                 '$expectedOptions' => array_merge(
@@ -206,7 +210,9 @@ class FieldDescriptionTest extends \PHPUnit_Framework_TestCase
                         'field_name'    => self::TEST_FIELD_NAME,
                         'entity_alias'  => self::TEST_ENTITY_ALIAS,
                         'expression'    => self::TEST_EXPRESSION,
-                        'field_mapping' => $expectedFieldMapping
+                        'field_mapping' => $expectedFieldMapping,
+                        'filter_by_where'  => true,
+                        'filter_by_having' => false,
                     )
                 ),
                 '$expectedFieldMappping' => $expectedFieldMapping

@@ -56,13 +56,19 @@ class RoleController extends Controller
     {
         $resources = $this->getRequest()->request->get('resource');
         if ($this->get('oro_user.form.handler.role')->process($entity)) {
-            if ($resources) {
-                $this->getAclManager()->saveRoleAcl($entity, $resources);
-            }
+            $this->getAclManager()->saveRoleAcl($entity, $resources);
 
             $this->get('session')->getFlashBag()->add('success', 'Role successfully saved');
 
-            return $this->redirect($this->generateUrl('oro_user_role_index'));
+            return $this->get('oro_ui.router')->actionRedirect(
+                array(
+                    'route' => 'oro_user_role_update',
+                    'parameters' => array('id' => $entity->getId()),
+                ),
+                array(
+                    'route' => 'oro_user_role_index',
+                )
+            );
         }
 
         return array(

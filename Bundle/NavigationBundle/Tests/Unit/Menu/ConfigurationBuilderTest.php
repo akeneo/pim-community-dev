@@ -31,16 +31,7 @@ class ConfigurationBuilderTest extends \PHPUnit_Framework_TestCase
         $this->container = new Container();
         $this->configurationBuilder = new ConfigurationBuilder();
 
-        /** @var $router RouterInterface */
-        $router = $this->getMockBuilder('Symfony\Component\Routing\RouterInterface')
-            ->getMock();
-        /** @var $aclManager Manager */
-        $aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\Manager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->factory = $this->getMockBuilder('Oro\Bundle\NavigationBundle\Menu\AclAwareMenuFactory')
-            ->setConstructorArgs(array($router, $aclManager))
+        $this->factory = $this->getMockBuilder('Knp\Menu\MenuFactory')
             ->setMethods(array('getRouteInfo', 'processRoute'))
             ->getMock();
 

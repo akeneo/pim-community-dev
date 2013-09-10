@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
+use Oro\Bundle\FilterBundle\Tests\Unit\Fixtures\CustomFormExtension;
 use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\AbstractTypeTestCase;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\DateRangeType;
@@ -16,11 +17,17 @@ class DateRangeFilterTypeTest extends AbstractTypeTestCase
 
     protected function setUp()
     {
-        parent::setUp();
         $translator = $this->createMockTranslator();
+
+        $types = array(
+            new DateRangeType($translator),
+            new FilterType($translator)
+        );
+
+        $this->formExtensions[] = new CustomFormExtension($types);
+
+        parent::setUp();
         $this->type = new DateRangeFilterType($translator);
-        $this->factory->addType(new DateRangeType($translator));
-        $this->factory->addType(new FilterType($translator));
     }
 
     /**
@@ -48,11 +55,15 @@ class DateRangeFilterTypeTest extends AbstractTypeTestCase
                     'operator_choices' => array(
                         DateRangeFilterType::TYPE_BETWEEN => 'label_date_type_between',
                         DateRangeFilterType::TYPE_NOT_BETWEEN => 'label_date_type_not_between',
+                        DateRangeFilterType::TYPE_MORE_THAN => 'label_date_type_more_than',
+                        DateRangeFilterType::TYPE_LESS_THAN => 'label_date_type_less_than',
                     ),
                     'widget_options' => array(),
                     'type_values' => array(
                         'between'    => DateRangeFilterType::TYPE_BETWEEN,
-                        'notBetween' => DateRangeFilterType::TYPE_NOT_BETWEEN
+                        'notBetween' => DateRangeFilterType::TYPE_NOT_BETWEEN,
+                        'moreThan'   => DateRangeFilterType::TYPE_MORE_THAN,
+                        'lessThan'   => DateRangeFilterType::TYPE_LESS_THAN
                     )
                 )
             )

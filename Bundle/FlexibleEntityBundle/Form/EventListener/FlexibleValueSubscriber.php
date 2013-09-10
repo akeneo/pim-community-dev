@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Form\EventListener;
 
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
@@ -12,11 +13,6 @@ use Symfony\Component\Form\FormInterface;
 
 /**
  * Add a relevant form for each flexible entity value
- *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
- *
  */
 class FlexibleValueSubscriber implements EventSubscriberInterface
 {
@@ -38,8 +34,8 @@ class FlexibleValueSubscriber implements EventSubscriberInterface
     /**
      * Constructor
      *
-     * @param FormFactoryInterface $factory         the form factory
-     * @param AttributeTypeFactory $attributeTypeFactory
+     * @param FormFactoryInterface    $factory
+     * @param AttributeTypeFactory    $attributeTypeFactory
      * @param FlexibleManagerRegistry $flexibleManagerRegistry
      */
     public function __construct(FormFactoryInterface $factory, AttributeTypeFactory $attributeTypeFactory, FlexibleManagerRegistry $flexibleManagerRegistry)

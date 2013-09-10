@@ -1,9 +1,11 @@
 parameters:
-    oro_form.type.date.class:              Oro\Bundle\FormBundle\Form\Type\OroDateType
-    oro_form.type.datetime.class:          Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
-    oro_form.type.combobox_local.class:    Oro\Bundle\FormBundle\Form\Type\OroComboboxLocalType
-    oro_form.type.entity_identifier.class: Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
-    oro_form.type.jqueryselect2_hidden.class: Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
+    oro_form.type.date.class:                       Oro\Bundle\FormBundle\Form\Type\OroDateType
+    oro_form.type.datetime.class:                   Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
+    oro_form.type.combobox_local.class:             Oro\Bundle\FormBundle\Form\Type\OroComboboxLocalType
+    oro_form.type.entity_identifier.class:          Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
+    oro_form.type.jqueryselect2_hidden.class:       Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
+    oro_form.extension.data_block.class:            Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension
+    oro_form.type.icon.class:                       Oro\Bundle\FormBundle\Form\Type\OroIconType
 
 services:
     # Form types
@@ -17,16 +19,26 @@ services:
         tags:
             - { name: form.type, alias: oro_datetime }
 
+    oro_form.type.icon:
+        class: %oro_form.type.icon.class%
+        tags:
+            - { name: form.type, alias: oro_icon_select }
+
     oro_form.type.entity_identifier:
         class: %oro_form.type.entity_identifier.class%
+        arguments: ["@doctrine"]
         tags:
             - { name: form.type, alias: oro_entity_identifier }
-        arguments: ["@doctrine"]
 
     oro_form.type.jqueryselect2_hidden:
         class: %oro_form.type.jqueryselect2_hidden.class%
         arguments:
             - @doctrine.orm.entity_manager
-            - @oro_form.autocomplete.configuration
+            - @oro_form.autocomplete.search_registry
         tags:
             - { name: form.type, alias: oro_jqueryselect2_hidden }
+
+    oro_form.extension.data_block:
+        class: %oro_form.extension.data_block.class%
+        tags:
+            - { name: form.type_extension, alias: form }

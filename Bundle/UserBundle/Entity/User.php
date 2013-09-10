@@ -2,12 +2,12 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
+use Oro\Bundle\TagBundle\Entity\Tag;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-use Gedmo\Mapping\Annotation as Gedmo;
-
 use Doctrine\ORM\Mapping as ORM;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -18,25 +18,44 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 
-use Oro\Bundle\DataAuditBundle\Entity\AuditableInterface;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
+use Oro\Bundle\TagBundle\Entity\Taggable;
 use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 use DateTime;
 
 /**
+ * @SuppressWarnings(PHPMD.TooManyMethods)
+ * @SuppressWarnings(PHPMD.ExcessivePublicCount)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ * @SuppressWarnings(PHPMD.TooManyFields)
  * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository")
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()
- * @Gedmo\Loggable(logEntryClass="Oro\Bundle\DataAuditBundle\Entity\Audit")
+ * @Oro\Loggable
+ * @Config(
+ *      routeName="oro_user_index",
+ *      defaultValues={
+ *          "entity"={"icon"="icon-user","label"="User", "plural_label"="Users"},
+ *          "ownership"={"owner_type"="BUSINESS_UNIT"},
+ *          "extend"={"is_extend"=true}
+ *      }
+ * )
  */
 class User extends AbstractEntityFlexible implements
     AdvancedUserInterface,
     \Serializable,
     EntityUploadedImageInterface,
-    AuditableInterface
+    Taggable,
+    EmailOwnerInterface
 {
     const ROLE_DEFAULT   = 'ROLE_USER';
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
@@ -56,7 +75,7 @@ class User extends AbstractEntityFlexible implements
      * @ORM\Column(type="string", length=255, unique=true)
      * @Soap\ComplexType("string")
      * @Type("string")
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $username;
 
@@ -66,7 +85,7 @@ class User extends AbstractEntityFlexible implements
      * @ORM\Column(type="string", length=255, unique=true)
      * @Soap\ComplexType("string")
      * @Type("string")
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $email;
 
@@ -78,7 +97,7 @@ class User extends AbstractEntityFlexible implements
      * @ORM\Column(name="firstname", type="string", length=100, nullable=true)
      * @Soap\ComplexType("string")
      * @Type("string")
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $firstName;
 
@@ -90,7 +109,7 @@ class User extends AbstractEntityFlexible implements
      * @ORM\Column(name="lastname", type="string", length=100, nullable=true)
      * @Soap\ComplexType("string")
      * @Type("string")
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $lastName;
 
@@ -98,9 +117,9 @@ class User extends AbstractEntityFlexible implements
      * @var DateTime
      *
      * @ORM\Column(name="birthday", type="datetime", nullable=true)
-     * @Soap\ComplexType("dateTime", nillable=true)
+     * @Soap\ComplexType("date", nillable=true)
      * @Type("dateTime")
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $birthday;
 
@@ -129,7 +148,7 @@ class User extends AbstractEntityFlexible implements
      * @ORM\Column(type="boolean")
      * @Soap\ComplexType("boolean")
      * @Type("boolean")
-     * @Gedmo\Versioned
+     * @Oro\Versioned
      */
     protected $enabled = true;
 
@@ -199,6 +218,14 @@ class User extends AbstractEntityFlexible implements
     protected $loginCount;
 
     /**
+     * @var BusinessUnit
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $owner;
+
+    /**
      * Set name formatting using "%first%" and "%last%" placeholders
      *
      * @var string
@@ -217,6 +244,7 @@ class User extends AbstractEntityFlexible implements
      * )
      * @Soap\ComplexType("int[]", nillable=true)
      * @Exclude
+     * @Oro\Versioned("getLabel")
      */
     protected $roles;
 
@@ -230,6 +258,7 @@ class User extends AbstractEntityFlexible implements
      * )
      * @Soap\ComplexType("int[]", nillable=true)
      * @Exclude
+     * @Oro\Versioned("getName")
      */
     protected $groups;
 
@@ -272,25 +301,34 @@ class User extends AbstractEntityFlexible implements
     protected $emails;
 
     /**
-     * Workaround to track "versioned" collections
+     * @var Tag[]
      *
-     * @var array
-     * @see AuditableInterface
-     *
-     * @ORM\Column(name="collections_audit", type="array", nullable=true)
-     * @Gedmo\Versioned
      */
-    protected $auditData;
+    protected $tags;
+
+    /**
+     * @var BusinessUnit[]
+     *
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit", inversedBy="users")
+     * @ORM\JoinTable(name="oro_user_business_unit",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
+     * @Exclude
+     * @Oro\Versioned("getName")
+     */
+    protected $businessUnits;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->salt     = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
-        $this->roles    = new ArrayCollection();
-        $this->groups    = new ArrayCollection();
-        $this->statuses = new ArrayCollection();
-        $this->emails   = new ArrayCollection();
+        $this->salt            = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        $this->roles           = new ArrayCollection();
+        $this->groups          = new ArrayCollection();
+        $this->statuses        = new ArrayCollection();
+        $this->emails          = new ArrayCollection();
+        $this->businessUnits   = new ArrayCollection();
     }
 
     /**
@@ -336,6 +374,26 @@ class User extends AbstractEntityFlexible implements
     public function eraseCredentials()
     {
         $this->plainPassword = null;
+    }
+
+    /**
+     * Get entity class name.
+     * TODO: This is a temporary solution for get 'view' route in twig. Will be removed after EntityConfigBundle is finished
+     * @return string
+     */
+    public function getClass()
+    {
+        return 'Oro\Bundle\UserBundle\Entity\User';
+    }
+
+    /**
+     * Get name of field contains the primary email address
+     *
+     * @return string
+     */
+    public function getPrimaryEmailField()
+    {
+        return 'email';
     }
 
     /**
@@ -398,6 +456,11 @@ class User extends AbstractEntityFlexible implements
             array($this->getFirstname(), $this->getLastname()),
             $format ? $format : $this->getNameFormat()
         );
+    }
+
+    public function getName()
+    {
+        return $this->getFullname();
     }
 
     /**
@@ -1123,23 +1186,96 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function setAuditData()
+    public function getTaggableId()
     {
-        $this->auditData = array(
-            'roles'  => implode(
-                ', ',
-                $this->getRolesCollection()->map(function ($item) {
-                    return $item->getLabel();
-                })->toArray()
-            ),
-            'groups' => implode(
-                ', ',
-                $this->getGroups()->map(function ($item) {
-                    return $item->getName();
-                })->toArray()
-            ),
-        );
+        return $this->getId();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTags()
+    {
+        $this->tags = $this->tags ?: new ArrayCollection();
+
+        return $this->tags;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getBusinessUnits()
+    {
+        $this->businessUnits = $this->businessUnits ?: new ArrayCollection();
+
+        return $this->businessUnits;
+    }
+
+    /**
+     * @param ArrayCollection $businessUnits
+     * @return User
+     */
+    public function setBusinessUnits($businessUnits)
+    {
+        $this->businessUnits = $businessUnits;
+
+        return $this;
+    }
+
+    /**
+     * @param  BusinessUnit $businessUnit
+     * @return User
+     */
+    public function addBusinessUnit(BusinessUnit $businessUnit)
+    {
+        if (!$this->getBusinessUnits()->contains($businessUnit)) {
+            $this->getBusinessUnits()->add($businessUnit);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param  BusinessUnit $businessUnit
+     * @return User
+     */
+    public function removeBusinessUnit(BusinessUnit $businessUnit)
+    {
+        if ($this->getBusinessUnits()->contains($businessUnit)) {
+            $this->getBusinessUnits()->removeElement($businessUnit);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return BusinessUnit
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param BusinessUnit $owningBusinessUnit
+     * @return User
+     */
+    public function setOwner($owningBusinessUnit)
+    {
+        $this->owner = $owningBusinessUnit;
+
+        return $this;
     }
 }

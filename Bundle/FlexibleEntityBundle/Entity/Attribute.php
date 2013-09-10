@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Entity;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
@@ -10,15 +11,11 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Base entity attribute
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
- *
  * @ORM\Table(
  *     name="oro_flexibleentity_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="searchunique_idx", columns={"code", "entity_type"})}
  * )
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository")
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("code")
  * @Gedmo\TranslationEntity(class="Oro\Bundle\FlexibleEntityBundle\Entity\AttributeTranslation")

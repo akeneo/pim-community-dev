@@ -65,4 +65,3 @@ class PlaceholderTokenParserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('placeholder', $resultNode->getNodeTag());
     }
 }
-

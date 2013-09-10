@@ -4,9 +4,12 @@ namespace Oro\Bundle\GridBundle\Tests\Unit\Filter\ORM;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Oro\Bundle\GridBundle\Filter\ORM\ChoiceFilter;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class ChoiceFilterTest extends FilterTestCase
 {
+    const TEST_DOMAIN = 'someDomain';
+
     /**
      * @var ChoiceFilter
      */
@@ -70,6 +73,10 @@ class ChoiceFilterTest extends FilterTestCase
                 'data' => array('value' => array()),
                 'expectProxyQueryCalls' => array()
             ),
+            'empty_collection_value' => array(
+                'data' => array('value' => new ArrayCollection()),
+                'expectProxyQueryCalls' => array()
+            ),
             'zero_value' => array(
                 'data' => array('value' => 0),
                 'expectProxyQueryCalls' => array(
@@ -78,9 +85,14 @@ class ChoiceFilterTest extends FilterTestCase
                         array(
                             $this->getExpressionFactory()->in(
                                 self::TEST_ALIAS . '.' . self::TEST_FIELD,
-                                array(0)
+                                ':' . self::TEST_NAME . '_choices'
                             )
                         ),
+                        null
+                    ),
+                    array(
+                        'setParameter',
+                        array(self::TEST_NAME . '_choices', array(0)),
                         null
                     )
                 )
@@ -89,30 +101,49 @@ class ChoiceFilterTest extends FilterTestCase
                 'data' => array('value' => 'test', 'type' => ChoiceFilterType::TYPE_CONTAINS),
                 'expectProxyQueryCalls' => array(
                     array(
-                        'andWhere',
+                        'andHaving',
                         array(
                             $this->getExpressionFactory()->in(
                                 self::TEST_ALIAS . '.' . self::TEST_FIELD,
-                                array('test')
+                                ':' . self::TEST_NAME . '_choices'
                             )
                         ),
                         null
+                    ),
+                    array(
+                        'setParameter',
+                        array(self::TEST_NAME . '_choices', array('test')),
+                        null
                     )
+                ),
+                array(
+                    'field_mapping' => array('filterByHaving' => true)
                 )
             ),
             'not_contains' => array(
-                'data' => array('value' => 'test', 'type' => ChoiceFilterType::TYPE_NOT_CONTAINS),
+                'data' => array(
+                    'value' => new ArrayCollection(array('test')),
+                    'type'  => ChoiceFilterType::TYPE_NOT_CONTAINS
+                ),
                 'expectProxyQueryCalls' => array(
                     array(
                         'andWhere',
                         array(
                             $this->getExpressionFactory()->notIn(
-                                self::TEST_ALIAS . '.' . self::TEST_FIELD,
-                                array('test')
+                                self::TEST_NAME,
+                                ':' . self::TEST_NAME . '_choices'
                             )
                         ),
                         null
+                    ),
+                    array(
+                        'setParameter',
+                        array(self::TEST_NAME . '_choices', array('test')),
+                        null
                     )
+                ),
+                array(
+                    'field_mapping' => array('fieldExpression' => self::TEST_NAME, 'filterByWhere' => true)
                 )
             ),
         );
@@ -154,14 +185,15 @@ class ChoiceFilterTest extends FilterTestCase
                 )
             ),
             'multiple select' => array(
-                array('choices' => $this->testChoices, 'multiple' => true),
+                array('choices' => $this->testChoices, 'multiple' => true, 'translation_domain' => self::TEST_DOMAIN),
                 array(ChoiceFilterType::NAME,
                     array(
                         'show_filter'   => false,
                         'field_options' => array(
                             'choices'  => $this->testChoices,
                             'multiple' => true
-                        )
+                        ),
+                        'translation_domain' => self::TEST_DOMAIN
                     )
                 )
             ),

@@ -10,7 +10,11 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 
+/**
+ * @SuppressWarnings(PHPMD.TooManyMethods)
+ */
 class UserTest extends \PHPUnit_Framework_TestCase
 {
     public function testUsername()
@@ -436,5 +440,35 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $user = new User();
         $user->preUpdate();
         $this->assertInstanceOf('\DateTime', $user->getUpdated());
+    }
+
+    public function testBusinessUnit()
+    {
+        $user  = new User;
+        $businessUnit = new BusinessUnit();
+
+        $user->setBusinessUnits(new ArrayCollection(array($businessUnit)));
+
+        $this->assertContains($businessUnit, $user->getBusinessUnits());
+
+        $user->removeBusinessUnit($businessUnit);
+
+        $this->assertNotContains($businessUnit, $user->getBusinessUnits());
+
+        $user->addBusinessUnit($businessUnit);
+
+        $this->assertContains($businessUnit, $user->getBusinessUnits());
+    }
+
+    public function testOwners()
+    {
+        $entity = new User();
+        $businessUnit = new BusinessUnit();
+
+        $this->assertEmpty($entity->getOwner());
+
+        $entity->setOwner($businessUnit);
+
+        $this->assertEquals($businessUnit, $entity->getOwner());
     }
 }

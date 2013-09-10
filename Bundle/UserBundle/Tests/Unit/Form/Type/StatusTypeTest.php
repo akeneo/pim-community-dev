@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\UserBundle\Tests\Unit\Type;
 
-use Symfony\Component\Form\Tests\FormIntegrationTestCase;
+use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
 use Oro\Bundle\UserBundle\Form\Type\StatusType;
 use Oro\Bundle\UserBundle\Entity\Status;
@@ -20,7 +20,7 @@ class StatusTypeTest extends FormIntegrationTestCase
         $status = new Status();
         $status->setStatus($formData['status']);
 
-        $form->bind($formData);
+        $form->submit($formData);
 
         $this->assertTrue($form->isSynchronized());
         $this->assertEquals($status, $form->getData());

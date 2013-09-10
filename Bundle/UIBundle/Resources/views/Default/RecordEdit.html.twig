@@ -73,14 +73,17 @@
                 </div>
             </div>
             <script>
-                $(function () {
-                    $('#myTab a:last').tab('show');
-                    $('#myTab a').click(function (e) {
-                        e.preventDefault();
-                        $(this).tab('show');
-                    })
-                    $('a.popup-me').popover();
-                })
+                require(['jquery'],
+                function($){
+                    $(function () {
+                        $('#myTab a:last').tab('show');
+                        $('#myTab a').click(function (e) {
+                            e.preventDefault();
+                            $(this).tab('show');
+                        });
+                        $('a.popup-me').popover();
+                    });
+                });
             </script>
             <div class="navigation clearfix navbar-extra navbar-extra-right">
                 <div class="top-action-box">
@@ -110,7 +113,7 @@
                            <div class="visual"><img src="{{ asset('bundles/oroui/img/info-usser.png') }}" alt="usser avatar"/></div>
                            <div class="customer-content">
                                <div class="sub-title">Customers</div>
-                               <h1 class="usser-name">Anna Griffin</h1>
+                               <h1 class="user-name">Anna Griffin</h1>
                                <ul class="inline">
                                    <li>Last logged in 3 days ago</li>
                                    <li>Lifetime Sales: $3004.92</li>

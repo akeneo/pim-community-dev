@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
@@ -8,10 +9,6 @@ use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 
 /**
  * Metric attribute type
- *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  */
 class MetricType extends AbstractAttributeType
 {
@@ -20,9 +17,10 @@ class MetricType extends AbstractAttributeType
     /**
      * Constructor
      *
-     * @param string         $backendType the backend type
-     * @param string         $formType    the form type
-     * @param MeasureManager $manager     The measure manager
+     * @param string                     $backendType       the backend type
+     * @param string                     $formType          the form type
+     * @param ConstraintGuesserInterface $constraintGuesser the form type
+     * @param MeasureManager             $manager           The measure manager
      */
     public function __construct($backendType, $formType, ConstraintGuesserInterface $constraintGuesser, MeasureManager $manager)
     {

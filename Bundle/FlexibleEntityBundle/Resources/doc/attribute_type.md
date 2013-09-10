@@ -52,6 +52,7 @@ Create an attribute of this type
 --------------------------------
 
 ```php
+// from the flexible manager
 $manager = $this->container->get('product_manager');
 $manager->createAttribute('oro_flexibleentity_text');
 // then attribute stored the alias of attribute type
@@ -61,6 +62,7 @@ Get an attribute type as service
 --------------------------------
 
 ```php
+// from the factory
 $factory = $this->container->get('oro_flexibleentity.attributetype.factory');
 $factory->get('oro_flexibleentity_text');
 ```

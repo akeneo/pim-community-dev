@@ -1,0 +1,8 @@
+css:
+  'css_group':
+      - 'first.css'
+      - 'second.css'
+js:
+  'js_group':
+      - 'first.js'
+      - 'second.js'

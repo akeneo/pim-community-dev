@@ -1,5 +1,4 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
 {% set title = form.vars.value.id ? 'Update Role'|trans : 'New Role'|trans %}
 {% oro_title_set({params : { "%role%": form.vars.value.label } }) %}
@@ -19,15 +18,18 @@
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId, 'parameters': listenerParameters} %}
 
     <script type="text/javascript">
-        $(function() {
-            $('#acl_tree').jstree({
-                "checkbox": {
-                    real_checkboxes: true,
-                    real_checkboxes_names: function (n) {
-                        return ['resource[' + n.data('id') + ']', 1]
-                    }
-                },
-                "plugins": ["themes", "html_data", "ui", "checkbox", "hotkeys"]
+        require(['jquery', 'jquery.jstree', 'jstree/jquery.hotkeys'],
+        function($){
+            $(function() {
+                $('#acl_tree').jstree({
+                    "checkbox": {
+                        real_checkboxes: true,
+                        real_checkboxes_names: function (n) {
+                            return ['resource[' + n.data('id') + ']', 1]
+                        }
+                    },
+                    "plugins": ["themes", "html_data", "ui", "checkbox", "hotkeys"]
+                });
             });
         });
     </script>
@@ -49,7 +51,8 @@
         {{ UI.buttonSeparator() }}
     {% endif %}
     {{ UI.button({'path' : path('oro_user_role_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
-    {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
+    {{ UI.saveAndStayButton() }}
+    {{ UI.saveAndCloseButton() }}
 {% endblock navButtons %}
 
 {% block pageHeader %}
@@ -58,8 +61,7 @@
             'entity':      form.vars.value,
             'indexPath':   path('oro_user_role_index'),
             'indexLabel': 'Roles',
-            'entityTitle': form.vars.value.label,
-            'hasAvatar':   false,
+            'entityTitle': form.vars.value.label
         }
         %}
         {{ parent() }}
@@ -127,7 +129,6 @@
         {
             'formErrors': form_errors(form)? form_errors(form) : null,
             'dataBlocks': dataBlocks,
-            'hiddenData': form_rest(form)
         }
     %}
     {{ parent() }}

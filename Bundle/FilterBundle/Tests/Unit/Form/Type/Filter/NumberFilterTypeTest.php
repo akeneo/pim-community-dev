@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
+use Oro\Bundle\FilterBundle\Tests\Unit\Fixtures\CustomFormExtension;
 use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\AbstractTypeTestCase;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
@@ -16,14 +17,15 @@ class NumberFilterTypeTest extends AbstractTypeTestCase
     /**
      * @var string
      */
-    protected $defaultLocale = 'en_US';
+    protected $defaultLocale = 'en';
 
     protected function setUp()
     {
-        parent::setUp();
         $translator = $this->createMockTranslator();
+        $this->formExtensions[] = new CustomFormExtension(array(new FilterType($translator)));
+
+        parent::setUp();
         $this->type = new NumberFilterType($translator);
-        $this->factory->addType(new FilterType($translator));
     }
 
     /**

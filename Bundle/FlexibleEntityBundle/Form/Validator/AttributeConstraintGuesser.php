@@ -7,17 +7,21 @@ use Symfony\Component\Validator\Constraints;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
- * @author    Gildas Quemener <gildas.quemener@gmail.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Attribute constraint guesser
  */
 class AttributeConstraintGuesser implements ConstraintGuesserInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function supportAttribute(AbstractAttribute $attribute)
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function guessConstraints(AbstractAttribute $attribute)
     {
         $constraints = array();
@@ -35,7 +39,12 @@ class AttributeConstraintGuesser implements ConstraintGuesserInterface
                 break;
         }
 
+        switch ($attribute->getAttributeType()) {
+            case 'oro_flexibleentity_email':
+                $constraints[] = new Constraints\Email();
+                break;
+        }
+
         return $constraints;
     }
 }
-

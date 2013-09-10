@@ -50,6 +50,8 @@
     width: 17em;
     padding: .2em .2em 0;
     display: none;
+    /** z-index is !important as datepicker element can not be clicked when behind it placed styled select with z-index 700**/
+    z-index: 800 !important;
 }
 .ui-datepicker .ui-datepicker-header {
     position: relative;
@@ -239,7 +241,7 @@
 /* Component containers
 ----------------------------------*/
 .ui-datepicker .ui-widget {
-    font-family: Verdana,Arial,sans-serif;
+    font-family: 'Helvetica Neue',Helvetica,sans-serif;
     font-size: 1.1em;
 }
 .ui-datepicker .ui-widget .ui-widget {
@@ -249,7 +251,7 @@
 .ui-datepicker .ui-widget select,
 .ui-datepicker .ui-widget textarea,
 .ui-datepicker .ui-widget button {
-    font-family: Verdana,Arial,sans-serif;
+    font-family: 'Helvetica Neue',Helvetica,sans-serif;
     font-size: 1em;
 }
 .ui-widget-content,

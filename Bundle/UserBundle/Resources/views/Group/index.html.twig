@@ -3,6 +3,9 @@
 {% set gridId = 'groups-grid' %}
 {% block content %}
     {% set pageTitle = 'Groups' %}
-    {% set buttons = [UI.addButton({'path' : path('oro_user_group_create'), 'title' : 'Create group', 'label' : 'Create group'})] %}
+    {% set buttons = [] %}
+    {% if resource_granted('oro_user_group_create') %}
+        {% set buttons = buttons|merge([UI.addButton({'path' : path('oro_user_group_create'), 'title' : 'Create group', 'label' : 'Create group'})]) %}
+    {% endif %}
     {{ parent() }}
 {% endblock %}

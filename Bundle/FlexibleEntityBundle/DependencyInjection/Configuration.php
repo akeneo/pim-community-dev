@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -6,10 +7,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Flexible entity configuration
- *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT  MIT
  */
 class Configuration implements ConfigurationInterface
 {
@@ -76,7 +73,7 @@ class Configuration implements ConfigurationInterface
 
                 // optional, default locale used for entity values
                 ->scalarNode('default_locale')
-                    ->defaultValue('en_US')
+                    ->defaultValue('en')
                 ->end()
 
                 // optional, default scope used for entity values

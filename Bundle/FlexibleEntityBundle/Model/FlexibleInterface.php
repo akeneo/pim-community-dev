@@ -1,13 +1,9 @@
 <?php
+
 namespace Oro\Bundle\FlexibleEntityBundle\Model;
 
 /**
  * Flexible entity interface, allow to define a flexible entity without extends abstract class
- *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
- *
  */
 interface FlexibleInterface
 {

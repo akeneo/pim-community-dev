@@ -1,0 +1,39 @@
+{% macro renderView(entity) %}
+    <div id="tags">
+        <div class="tag-view span6">
+            {% import _self as _ %}
+            {{ _.tagSortActions() }}
+
+            <div class="well well-small" id="tags-holder"></div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        require(['jquery', 'oro/tag/view'],
+        function($, TagView){
+            $(function() {
+                /** @type oro.tag.View */
+                var tagView = new TagView();
+                tagView.getCollection().reset({{ oro_tag_get_list(entity)|json_encode|raw }});
+            });
+        });
+    </script>
+{% endmacro %}
+
+{#
+    Render sort actions list
+#}
+{% macro tagSortActions() %}
+    <ul class="inline" id="tag-sort-actions">
+        <li>
+            <a href="javascript:void(0);" class="no-hash active">
+                {% trans %}All tags{% endtrans %}
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" data-type="owner" class="no-hash">
+                {% trans %}My tags{% endtrans %}
+            </a>
+        </li>
+    </ul>
+{% endmacro %}

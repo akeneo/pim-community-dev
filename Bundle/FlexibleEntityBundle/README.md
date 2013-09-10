@@ -4,7 +4,7 @@ Flexible entity
 Areas of responsibilities :
 - create a flexible entity with dynamic attribute management
 - create flexible and attribute forms by using basic form type
-- extend / customize your flexible for business needs
+- extend / customize your flexible entity for business needs
 
 Based on classic Doctrine 2 classes, entity, repository, entity manager
 
@@ -64,8 +64,7 @@ How to use ?
 Enhancement
 ===========
 
-- add new attributes when load an existing flexible
+- customize doctrine query cache for common queries as retrieve available attributes for a flexible entity
 - add a default is_unique behavior
-- deal with in, like, etc in queries 
 - default fallback (locale, scope) in queries
 - add a "multivalued" parameter to any attribute in order to have multiple values for the same attribute (manufacturer atttibute: several manufacturers, gallery attribute: several images, documentation attribute: several files)

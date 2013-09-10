@@ -1,6 +1,6 @@
 # common test case
 request:
-    query: "from TestsBundle:Item where decimal floatValue != 10.50"
+    query: "from oro_test_item where decimal floatValue != 10.50"
     offset: ~
     max_results: ~
 response:

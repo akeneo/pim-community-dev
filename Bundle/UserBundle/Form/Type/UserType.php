@@ -2,20 +2,19 @@
 
 namespace Oro\Bundle\UserBundle\Form\Type;
 
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\ORM\EntityRepository;
+
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
-use Oro\Bundle\DataAuditBundle\Form\EventListener\AuditableSubscriber;
 use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
 use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Form\Type\EmailType;
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 class UserType extends FlexibleType
 {
@@ -54,56 +53,11 @@ class UserType extends FlexibleType
         parent::addEntityFields($builder);
 
         // user fields
+        $builder->addEventSubscriber(
+            new UserSubscriber($builder->getFormFactory(), $this->aclManager, $this->security)
+        );
+        $this->setDefaultUserFields($builder);
         $builder
-            ->addEventSubscriber(new AuditableSubscriber())
-            ->addEventSubscriber(new UserSubscriber($builder->getFormFactory(), $this->aclManager, $this->security))
-            ->add(
-                'username',
-                'text',
-                array(
-                    'required'       => true,
-                )
-            )
-            ->add(
-                'email',
-                'email',
-                array(
-                    'label'          => 'E-mail',
-                    'required'       => true,
-                )
-            )
-            ->add(
-                'firstName',
-                'text',
-                array(
-                    'label'          => 'First name',
-                    'required'       => true,
-                )
-            )
-            ->add(
-                'lastName',
-                'text',
-                array(
-                    'label'          => 'Last name',
-                    'required'       => true,
-                )
-            )
-            ->add(
-                'birthday',
-                'oro_date',
-                array(
-                    'label'          => 'Date of birth',
-                    'required'       => false,
-                )
-            )
-            ->add(
-                'imageFile',
-                'file',
-                array(
-                    'label'          => 'Avatar',
-                    'required'       => false,
-                )
-            )
             ->add(
                 'rolesCollection',
                 'entity',
@@ -139,7 +93,7 @@ class UserType extends FlexibleType
                     'type'           => 'password',
                     'required'       => true,
                     'first_options'  => array('label' => 'Password'),
-                    'second_options' => array('label' => 'Password again'),
+                    'second_options' => array('label' => 'Re-enter password'),
                 )
             )
             ->add(
@@ -154,6 +108,10 @@ class UserType extends FlexibleType
                     'prototype_name' => 'tag__name__',
                     'label'          => ' '
                 )
+            )
+            ->add(
+                'tags',
+                'oro_tag_select'
             );
     }
 
@@ -161,6 +119,7 @@ class UserType extends FlexibleType
      * Add entity fields to form builder
      *
      * @param FormBuilderInterface $builder
+     * @param array $options
      */
     public function addDynamicAttributesFields(FormBuilderInterface $builder, array $options)
     {
@@ -217,5 +176,62 @@ class UserType extends FlexibleType
     public function getName()
     {
         return 'oro_user_user';
+    }
+
+    /**
+     * Set user fields
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function setDefaultUserFields(FormBuilderInterface $builder)
+    {
+        $builder
+            ->add(
+                'username',
+                'text',
+                array(
+                     'required'       => true,
+                )
+            )
+            ->add(
+                'email',
+                'email',
+                array(
+                     'label'          => 'E-mail',
+                     'required'       => true,
+                )
+            )
+            ->add(
+                'firstName',
+                'text',
+                array(
+                     'label'          => 'First name',
+                     'required'       => true,
+                )
+            )
+            ->add(
+                'lastName',
+                'text',
+                array(
+                     'label'          => 'Last name',
+                     'required'       => true,
+                )
+            )
+            ->add(
+                'birthday',
+                'oro_date',
+                array(
+                     'label'          => 'Date of birth',
+                     'required'       => false,
+                )
+            )
+            ->add(
+                'imageFile',
+                'file',
+                array(
+                     'label'          => 'Avatar',
+                     'required'       => false,
+                )
+            );
     }
 }

@@ -11,9 +11,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 /**
  * Test related class
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/MIT MIT
  *
  */
 class FlexibleEntityRepositoryTest extends AbstractFlexibleManagerTest
@@ -66,7 +63,7 @@ class FlexibleEntityRepositoryTest extends AbstractFlexibleManagerTest
      */
     public function testGetLocale()
     {
-        $code = 'fr_FR';
+        $code = 'fr';
         $this->repository->setLocale($code);
         $this->assertEquals($this->repository->getLocale(), $code);
     }
@@ -88,34 +85,5 @@ class FlexibleEntityRepositoryTest extends AbstractFlexibleManagerTest
     {
         $this->repository->setFlexibleConfig($this->flexibleConfig);
         $this->assertEquals($this->repository->getFlexibleConfig(), $this->flexibleConfig);
-    }
-
-    /**
-     * Test related method
-     */
-    public function testcreateQueryBuilder()
-    {
-        // with lazy loading
-        // TODO : related to grid
-        //$qb = $this->repository->createQueryBuilder('MyFlexible');
-        //$expectedSql = 'SELECT MyFlexible FROM Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible MyFlexible';
-        //$this->assertEquals($expectedSql, $qb->getQuery()->getDql());
-
-        // without lazy loading with all values
-        $qb = $this->repository->createFlexibleQueryBuilder('MyFlexible');
-        $expectedDql = 'SELECT MyFlexible, Value, Attribute, ValueOption, AttributeOptionValue'
-            .' FROM Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible MyFlexible'
-            .' LEFT JOIN MyFlexible.values Value LEFT JOIN Value.attribute Attribute'
-            .' LEFT JOIN Value.options ValueOption LEFT JOIN ValueOption.optionValues AttributeOptionValue';
-        $this->assertEquals($expectedDql, $qb->getQuery()->getDql());
-
-        // without lazy loading with only values related to attribute codes
-        $qb = $this->repository->createFlexibleQueryBuilder('MyFlexible', array('name'));
-        $expectedDql = 'SELECT MyFlexible, Value, Attribute, ValueOption, AttributeOptionValue'
-            .' FROM Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible MyFlexible'
-            .' LEFT JOIN MyFlexible.values Value LEFT JOIN Value.attribute Attribute'
-            .' LEFT JOIN Value.options ValueOption LEFT JOIN ValueOption.optionValues AttributeOptionValue'
-            ." WHERE Attribute.code IN('name') OR Attribute.code IS NULL";
-        $this->assertEquals($expectedDql, $qb->getQuery()->getDql());
     }
 }

@@ -1,6 +1,6 @@
 # common test case
 request:
-    query: "from TestsBundle:Item where stringValue !~ item5"
+    query: "from oro_test_item where stringValue !~ item5"
     offset: ~
     max_results: ~
 response:

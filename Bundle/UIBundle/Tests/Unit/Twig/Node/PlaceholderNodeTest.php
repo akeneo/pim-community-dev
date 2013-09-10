@@ -41,7 +41,7 @@ class PlaceholderNodeTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->line = array(12);
-        $this->variables = new \Twig_Node_Expression_Constant(array(), $this->line) ;
+        $this->variables = new \Twig_Node_Expression_Constant(array(), $this->line);
         $this->wrapClassName = 'test_class';
 
         $this->tag = 'test_tag';

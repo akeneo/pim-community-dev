@@ -5,6 +5,7 @@ namespace Oro\Bundle\SearchBundle\Engine;
 use Doctrine\ORM\EntityManager;
 
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use JMS\JobQueueBundle\Entity\Job;
@@ -36,12 +37,12 @@ class Orm extends AbstractEngine
      */
     protected $mapper;
 
-    public function __construct(EntityManager $em, ContainerInterface $container, ObjectMapper $mapper, $logQueries)
+    public function __construct(EntityManager $em, EventDispatcher $dispatcher, ContainerInterface $container, ObjectMapper $mapper, $logQueries)
     {
+        parent::__construct($em, $dispatcher, $logQueries);
+
         $this->container = $container;
-        $this->em = $em;
         $this->mapper = $mapper;
-        $this->logQueries = $logQueries;
     }
 
     /**
@@ -65,6 +66,8 @@ class Orm extends AbstractEngine
                 }
             }
         }
+
+        $this->em->flush();
 
         return $recordsCount;
     }
@@ -93,13 +96,9 @@ class Orm extends AbstractEngine
                 $this->em->remove($item);
             } else {
                 $item->setChanged(!$realtime);
-
                 $this->reindexJob();
-
                 $this->em->persist($item);
             }
-
-            $this->em->flush($item);
 
             return $id;
         }
@@ -113,47 +112,87 @@ class Orm extends AbstractEngine
      * @param object $entity   New/updated entity
      * @param bool   $realtime [optional] Perform immediate insert/update to
      *                              search attributes table(s). True by default.
-     * @return bool|int Index item id on success, false otherwise
+     * @param bool   $needToCompute
+     * @return Item Index item id on success, false otherwise
      */
-    public function save($entity, $realtime = true)
+    public function save($entity, $realtime = true, $needToCompute = false)
     {
         $data = $this->mapper->mapObject($entity);
-        $name = get_class($entity);
+        if (empty($data)) {
+            return null;
+        }
 
-        if (count($data)) {
+        $name = get_class($entity);
+        $entityMeta = $this->em->getClassMetadata(get_class($entity));
+        $identifierField = $entityMeta->getSingleIdentifierFieldName($entityMeta);
+        $id = $entityMeta->getReflectionProperty($identifierField)->getValue($entity);
+
+        $item = null;
+        if ($id) {
             $item = $this->getIndexRepo()->findOneBy(
                 array(
                     'entity'   => $name,
-                    'recordId' => $entity->getId()
+                    'recordId' => $id
                 )
             );
-
-            if (!$item) {
-                $item   = new Item();
-                $config = $this->mapper->getEntityConfig($name);
-                $alias  = $config ? $config['alias'] : $name;
-
-                $item->setEntity($name)
-                     ->setRecordId($entity->getId())
-                     ->setAlias($alias);
-            }
-
-            $item->setChanged(!$realtime);
-
-            if ($realtime) {
-                $item->setTitle($this->getEntityTitle($entity))
-                    ->saveItemData($data);
-            } else {
-                $this->reindexJob();
-            }
-
-            $this->em->persist($item);
-            $this->em->flush($item);
-
-            return $item->getId();
         }
 
-        return false;
+        if (!$item) {
+            $item   = new Item();
+            $config = $this->mapper->getEntityConfig($name);
+            $alias  = $config ? $config['alias'] : $name;
+
+            $item->setEntity($name)
+                 ->setRecordId($id)
+                 ->setAlias($alias);
+        }
+
+        $item->setChanged(!$realtime);
+
+        if ($realtime) {
+            $item->setTitle($this->getEntityTitle($entity))
+                ->saveItemData($data);
+        } else {
+            $this->reindexJob();
+        }
+
+        $this->em->persist($item);
+
+        if ($needToCompute) {
+            $this->computeSet($item);
+        }
+
+        return $item;
+    }
+
+    /**
+     * @return \Oro\Bundle\SearchBundle\Engine\ObjectMapper
+     */
+    public function getMapper()
+    {
+        return $this->mapper;
+    }
+
+    /**
+     * Get entity string
+     *
+     * @param object $entity
+     *
+     * @return string
+     */
+    public function getEntityTitle($entity)
+    {
+        if ($this->mapper->getEntityMapParameter(get_class($entity), 'title_fields')) {
+            $fields = $this->mapper->getEntityMapParameter(get_class($entity), 'title_fields');
+            $title = array();
+            foreach ($fields as $field) {
+                $title[] = $this->mapper->getFieldValue($entity, $field);
+            }
+        } else {
+            $title = array((string) $entity);
+        }
+
+        return implode(' ', $title);
     }
 
     /**
@@ -183,9 +222,7 @@ class Orm extends AbstractEngine
                     $item->getEntity(),
                     $item->getRecordId(),
                     $item->getTitle(),
-                    $this->getEntityUrl(
-                        $this->em->getRepository($item->getEntity())->find($item->getRecordId())
-                    ),
+                    null,
                     $item->getRecordText(),
                     $this->mapper->getEntityConfig($item->getEntity())
                 );
@@ -205,7 +242,8 @@ class Orm extends AbstractEngine
     {
         // check if reindex task has not been added earlier
         $command = 'oro:search:index';
-        $currJob = $this->em->createQuery("SELECT j FROM JMSJobQueueBundle:Job j WHERE j.command = :command AND j.state <> :state")
+        $currJob = $this->em
+            ->createQuery("SELECT j FROM JMSJobQueueBundle:Job j WHERE j.command = :command AND j.state <> :state")
             ->setParameter('command', $command)
             ->setParameter('state', Job::STATE_FINISHED)
             ->setMaxResults(1)
@@ -248,56 +286,6 @@ class Orm extends AbstractEngine
     }
 
     /**
-     * Get url for entity
-     *
-     * @param object $entity
-     *
-     * @return string
-     */
-    protected function getEntityUrl($entity)
-    {
-        if ($this->mapper->getEntityMapParameter(get_class($entity), 'route')) {
-            $routeParameters = $this->mapper->getEntityMapParameter(get_class($entity), 'route');
-            $routeData = array();
-            if (isset($routeParameters['parameters']) && count($routeParameters['parameters'])) {
-                foreach ($routeParameters['parameters'] as $parameter => $field) {
-                    $routeData[$parameter] = $this->mapper->getFieldValue($entity, $field);
-                }
-            }
-
-            return $this->container->get('router')->generate(
-                $routeParameters['name'],
-                $routeData,
-                true
-            );
-        }
-
-        return '';
-    }
-
-    /**
-     * Get entity string
-     *
-     * @param object $entity
-     *
-     * @return string
-     */
-    protected function getEntityTitle($entity)
-    {
-        if ($this->mapper->getEntityMapParameter(get_class($entity), 'title_fields')) {
-            $fields = $this->mapper->getEntityMapParameter(get_class($entity), 'title_fields');
-            $title = array();
-            foreach ($fields as $field) {
-                $title[] = $this->mapper->getFieldValue($entity, $field);
-            }
-        } else {
-            $title = array((string) $entity);
-        }
-
-        return implode(' ', $title);
-    }
-
-    /**
      * Truncate search tables
      */
     protected function clearSearchIndex()
@@ -332,5 +320,29 @@ class Orm extends AbstractEngine
         $cmd = $this->em->getClassMetadata($table);
         $q = $dbPlatform->getTruncateTableSql($cmd->getTableName());
         $connection->executeUpdate($q);
+    }
+
+    /**
+     * @param Item $item
+     */
+    protected function computeSet(Item $item)
+    {
+        $this->em->getUnitOfWork()->computeChangeSet($this->em->getClassMetadata(get_class($item)), $item);
+        $this->computeFields($item->getTextFields());
+        $this->computeFields($item->getIntegerFields());
+        $this->computeFields($item->getDatetimeFields());
+        $this->computeFields($item->getDecimalFields());
+    }
+
+    /**
+     * @param array $fields
+     */
+    protected function computeFields($fields)
+    {
+        if (count($fields)) {
+            foreach ($fields as $field) {
+                $this->em->getUnitOfWork()->computeChangeSet($this->em->getClassMetadata(get_class($field)), $field);
+            }
+        }
     }
 }

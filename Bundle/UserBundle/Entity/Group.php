@@ -11,9 +11,22 @@ use JMS\Serializer\Annotation\Exclude;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+
 /**
  * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\GroupRepository")
  * @ORM\Table(name="oro_access_group")
+ * @Config(
+ *      routeName="oro_user_group_index",
+ *      mode="readonly",
+ *      defaultValues={
+ *          "entity"= {"icon"="group","label"="Group","plural_label"="Groups" },
+ *          "extend"= {"is_extend"=true},
+ *          "ownership"={"owner_type"="BUSINESS_UNIT"}
+ *      }
+ * )
  */
 class Group
 {
@@ -43,6 +56,14 @@ class Group
      * @Exclude
      */
     protected $roles;
+
+    /**
+     * @var BusinessUnit
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $owner;
 
     /**
      * @param string $name [optional] Group name
@@ -93,7 +114,6 @@ class Group
 
     /**
      * Returns the group roles
-     *
      * @return Collection The roles
      */
     public function getRoles()
@@ -102,17 +122,16 @@ class Group
     }
 
     /**
-     * Pass a string, get the desired Role object or null
-     *
-     * @param  string    $roleName Role name
+     * Get role by string
+     * @param  string $roleName Role name
      * @return Role|null
      */
     public function getRole($roleName)
     {
-        /** @var $item Role */
-        foreach ($this->getRoles() as $item) {
-            if ($roleName == $item->getRole()) {
-                return $item;
+        /** @var $role Role */
+        foreach ($this->getRoles() as $role) {
+            if ($roleName == $role->getRole()) {
+                return $role;
             }
         }
 
@@ -120,7 +139,7 @@ class Group
     }
 
     /**
-     * @param  Role|string               $role
+     * @param  Role|string $role
      * @return boolean
      * @throws \InvalidArgumentException
      */
@@ -136,13 +155,12 @@ class Group
             );
         }
 
-        return (bool) $this->getRole($roleName);
+        return (bool)$this->getRole($roleName);
     }
 
     /**
      * Adds a Role to the Collection
-     *
-     * @param  Role  $role
+     * @param  Role $role
      * @return Group
      */
     public function addRole(Role $role)
@@ -156,8 +174,7 @@ class Group
 
     /**
      * Remove the Role object from collection
-     *
-     * @param  Role|string               $role
+     * @param  Role|string $role
      * @return Group
      * @throws \InvalidArgumentException
      */
@@ -181,8 +198,7 @@ class Group
 
     /**
      * Set new Roles collection
-     *
-     * @param  array|Collection          $roles
+     * @param  array|Collection $roles
      * @return Group
      * @throws \InvalidArgumentException
      */
@@ -201,6 +217,25 @@ class Group
                 '$roles must be an instance of Doctrine\Common\Collections\Collection or an array'
             );
         }
+
+        return $this;
+    }
+
+    /**
+     * @return BusinessUnit
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param BusinessUnit $owningBusinessUnit
+     * @return Group
+     */
+    public function setOwner($owningBusinessUnit)
+    {
+        $this->owner = $owningBusinessUnit;
 
         return $this;
     }

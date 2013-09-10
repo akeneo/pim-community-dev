@@ -1,4 +1,4 @@
-Oro\Bundle\AddressBundle\Entity\Address:
+Oro\Bundle\AddressBundle\Entity\AbstractAddress:
     properties:
         street:
             - NotBlank: ~
@@ -32,3 +32,15 @@ Oro\Bundle\AddressBundle\Entity\Address:
     constraints:
         - Callback:
             methods: [isStateValid]
+
+
+Oro\Bundle\AddressBundle\Entity\AbstractEmail:
+    properties:
+        email:
+            - NotBlank: ~
+            - Email: ~
+
+Oro\Bundle\AddressBundle\Entity\AbstractPhone:
+    properties:
+        phone:
+            - NotBlank: ~

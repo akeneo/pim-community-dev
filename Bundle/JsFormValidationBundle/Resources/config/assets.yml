@@ -1,2 +1,3 @@
 js:
-    - '@OroJsFormValidationBundle/Resources/public/js/jquery.bind-first-0.2.0.min.js'
+  'form_validation':
+      - '@OroJsFormValidationBundle/Resources/public/js/jquery.bind-first-0.2.1.js'

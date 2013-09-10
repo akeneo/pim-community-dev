@@ -18,23 +18,31 @@ class OptionSimpleRadioTypeTest extends AttributeTypeTest
     public function testBuildValueFormType()
     {
         $factory = $this->getFormFactoryMock();
-        $value = $this->getFlexibleValueMock(array(
-            'data'        => 'bar',
-            'backendType' => 'foo',
-        ));
+        $value = $this->getFlexibleValueMock(
+            array(
+                'data'        => 'bar',
+                'backendType' => 'foo',
+            )
+        );
 
         $factory->expects($this->once())
             ->method('createNamed')
-            ->with('foo', 'email', 'bar', array(
-                'constraints' => array('constraints'),
-                'label'       => null,
-                'required'    => null,
-                'empty_value' => false,
-                'class'       => 'OroFlexibleEntityBundle:AttributeOption',
-                'expanded'    => true,
-                'multiple'    => false,
-                'query_builder' => function () {},
-            ));
+            ->with(
+                'foo',
+                'email',
+                'bar',
+                array_merge(
+                    $this->defaultCreateNamedOptions,
+                    array(
+                        'empty_value' => false,
+                        'class'       => 'OroFlexibleEntityBundle:AttributeOption',
+                        'expanded'    => true,
+                        'multiple'    => false,
+                        'query_builder' => function () {
+                        },
+                    )
+                )
+            );
 
         $this->target->buildValueFormType($factory, $value);
     }
@@ -51,9 +59,12 @@ class OptionSimpleRadioTypeTest extends AttributeTypeTest
 
     public function testBuildAttributeFormTypes()
     {
-        $this->assertEquals(array(), $this->target->buildAttributeFormTypes(
-            $this->getFormFactoryMock(),
-            $this->getAttributeMock(null, null)
-        ));
+        $this->assertEquals(
+            array(),
+            $this->target->buildAttributeFormTypes(
+                $this->getFormFactoryMock(),
+                $this->getAttributeMock(null, null)
+            )
+        );
     }
 }

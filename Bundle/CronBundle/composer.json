@@ -1,0 +1,30 @@
+{
+    "name": "oro/cron-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Cron Bundle",
+    "keywords": ["BAP", "cron"],
+    "homepage": "https://github.com/laboro/CronBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.3.*",
+        "jms/job-queue-bundle": "dev-master",
+        "knplabs/knp-paginator-bundle": "dev-master",
+        "mtdowling/cron-expression": "1.0.*",
+        "oro/ui-bundle": "dev-master",
+        "oro/user-bundle": "dev-master",
+        "oro/navigation-bundle": "dev-master",
+        "oro/translation-bundle": "dev-master",
+        "oro/platform-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\CronBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/CronBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

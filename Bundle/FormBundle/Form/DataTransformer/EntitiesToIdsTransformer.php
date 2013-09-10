@@ -5,7 +5,6 @@ namespace Oro\Bundle\FormBundle\Form\DataTransformer;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Mapping\MappingException;
 
-use Symfony\Component\Form\Util\PropertyPath;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
@@ -23,13 +22,13 @@ class EntitiesToIdsTransformer extends EntityToIdTransformer
             return array();
         }
 
-        if (!is_array($value)) {
+        if (!is_array($value) && !$value instanceof \Traversable) {
             throw new UnexpectedTypeException($value, 'array');
         }
 
         $result = array();
         foreach ($value as $entity) {
-            $id = $this->propertyPath->getValue($entity);
+            $id = $this->propertyAccessor->getValue($entity, $this->propertyPath);
             $result[] = $id;
         }
 
@@ -41,7 +40,7 @@ class EntitiesToIdsTransformer extends EntityToIdTransformer
      */
     public function reverseTransform($value)
     {
-        if (!is_array($value)) {
+        if (!is_array($value) && !$value instanceof \Traversable) {
             throw new UnexpectedTypeException($value, 'array');
         }
 

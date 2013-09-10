@@ -1,0 +1,15 @@
+parameters:
+    translator.class: Oro\Bundle\TranslationBundle\Translation\Translator
+    oro_translation.controller.class: Oro\Bundle\TranslationBundle\Controller\Controller
+    oro_translation.extractor.php_code_extractor.class: Oro\Bundle\TranslationBundle\Extractor\PhpCodeExtractor
+
+services:
+    oro_translation.controller:
+        class: %oro_translation.controller.class%
+        arguments: [@translator, @templating, OroTranslationBundle:Translation:translation.js.twig, ""]
+
+    oro_translation.extractor.php_code_extractor:
+        class: %oro_translation.extractor.php_code_extractor.class%
+        arguments: [@service_container]
+        tags:
+            - { name: translation.extractor, alias: oro_translation_php_extractor }

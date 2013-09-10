@@ -36,6 +36,8 @@ Oro\Bundle\UserBundle\Entity\User:
                 max:        100
         birthday:
             - Date:         ~
+        imageFile:
+            - Image:        ~
 
 Oro\Bundle\UserBundle\Entity\Role:
     constraints:

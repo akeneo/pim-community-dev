@@ -15,13 +15,12 @@ class SoapRolesApiTest extends WebTestCase
     /** Default value for role label */
     const DEFAULT_VALUE = 'ROLE_LABEL';
 
-    /** @var \SoapClient */
-    protected $client = null;
+    /** @var Client */
+    protected $client;
 
     public function setUp()
     {
         $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
-
         $this->client->soap(
             "http://localhost/api/soap",
             array(
@@ -45,9 +44,9 @@ class SoapRolesApiTest extends WebTestCase
         if (is_null($request['label'])) {
             $request['label'] = self::DEFAULT_VALUE;
         }
-        $result =  $this->client->soapClient->createRole($request);
-        $result = ToolsAPI::classToArray($result);
-        ToolsAPI::assertEqualsResponse($response, $result);
+        $id = $this->client->getSoap()->createRole($request);
+        $this->assertInternalType('int', $id);
+        $this->assertGreaterThan(0, $id);
     }
 
     /**
@@ -67,12 +66,12 @@ class SoapRolesApiTest extends WebTestCase
         }
         $request['label'] .= '_Updated';
         //get role id
-        $roleId =  $this->client->soapClient->getRoleByName($request['role']);
+        $roleId =  $this->client->getSoap()->getRoleByName($request['role']);
         $roleId = ToolsAPI::classToArray($roleId);
-        $result =  $this->client->soapClient->updateRole($roleId['id'], $request);
+        $result =  $this->client->getSoap()->updateRole($roleId['id'], $request);
         $result = ToolsAPI::classToArray($result);
         ToolsAPI::assertEqualsResponse($response, $result);
-        $role =  $this->client->soapClient->getRole($roleId['id']);
+        $role =  $this->client->getSoap()->getRole($roleId['id']);
         $role = ToolsAPI::classToArray($role);
         $this->assertEquals($request['label'], $role['label']);
     }
@@ -84,7 +83,7 @@ class SoapRolesApiTest extends WebTestCase
     public function testGetRole()
     {
         //get roles
-        $roles =  $this->client->soapClient->getRoles();
+        $roles =  $this->client->getSoap()->getRoles();
         $roles = ToolsAPI::classToArray($roles);
         //filter roles
         $roles = array_filter(
@@ -106,10 +105,10 @@ class SoapRolesApiTest extends WebTestCase
     {
         //get roles
         foreach ($roles as $role) {
-            $result =  $this->client->soapClient->deleteRole($role['id']);
+            $result =  $this->client->getSoap()->deleteRole($role['id']);
             $this->assertTrue($result);
         }
-        $roles =  $this->client->soapClient->getRoles();
+        $roles =  $this->client->getSoap()->getRoles();
         $roles = ToolsAPI::classToArray($roles);
         if (!empty($roles)) {
             $roles = array_filter(

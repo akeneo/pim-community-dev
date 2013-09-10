@@ -2,6 +2,7 @@
 namespace Oro\Bundle\TestFrameworkBundle\Test;
 
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\HttpFoundation\Response;
 
 class ToolsAPI
 {
@@ -104,10 +105,11 @@ class ToolsAPI
     /**
      * Test API response status
      *
-     * @param string $response
+     * @param Response $response
      * @param int    $statusCode
+     * @param string $contentType
      */
-    public static function assertJsonResponse($response, $statusCode = 201)
+    public static function assertJsonResponse($response, $statusCode = 201, $contentType = 'application/json')
     {
         \PHPUnit_Framework_TestCase::assertEquals(
             $statusCode,
@@ -115,9 +117,12 @@ class ToolsAPI
             $response->getContent()
         );
 
-        \PHPUnit_Framework_TestCase::assertTrue(
-            $response->headers->contains('Content-Type', 'application/json')
-        );
+        if ($contentType !== '') {
+            \PHPUnit_Framework_TestCase::assertTrue(
+                $response->headers->contains('Content-Type', $contentType),
+                $response->headers
+            );
+        }
     }
 
     /**
@@ -161,6 +166,15 @@ class ToolsAPI
         self::$random = $random;
 
         return $random;
+    }
+
+    /**
+     * @param int $length
+     * @return string
+     */
+    public static function generateRandomString($length = 10)
+    {
+        return substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, $length);
     }
 
     /**

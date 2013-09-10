@@ -158,14 +158,6 @@ abstract class AbstractFlexibleFilter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormName()
-    {
-        return $this->parentFilter->getFormName();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getLabel()
     {
         return $this->parentFilter->getLabel();

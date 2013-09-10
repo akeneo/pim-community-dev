@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\GridBundle\Datagrid;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
@@ -38,6 +37,10 @@ abstract class FlexibleDatagridManager extends DatagridManager
         AbstractAttributeType::BACKEND_TYPE_DECIMAL => array(
             'field'  => FieldDescriptionInterface::TYPE_DECIMAL,
             'filter' => FilterInterface::TYPE_FLEXIBLE_NUMBER,
+        ),
+        AbstractAttributeType::BACKEND_TYPE_BOOLEAN => array(
+            'field'  => FieldDescriptionInterface::TYPE_BOOLEAN,
+            'filter' => FilterInterface::TYPE_FLEXIBLE_BOOLEAN,
         ),
         AbstractAttributeType::BACKEND_TYPE_INTEGER => array(
             'field'  => FieldDescriptionInterface::TYPE_INTEGER,
@@ -84,7 +87,7 @@ abstract class FlexibleDatagridManager extends DatagridManager
      * Traverse all flexible attributes and add them as fields to collection
      *
      * @param FieldDescriptionCollection $fieldsCollection
-     * @param array $options
+     * @param array                      $options
      */
     protected function configureFlexibleFields(
         FieldDescriptionCollection $fieldsCollection,
@@ -103,27 +106,29 @@ abstract class FlexibleDatagridManager extends DatagridManager
 
     /**
      * @param FieldDescriptionCollection $fieldsCollection
-     * @param string $attributeCode
-     * @param array $options
+     * @param string                     $attributeCode
+     * @param array                      $options
      */
     protected function configureFlexibleField(
         FieldDescriptionCollection $fieldsCollection,
         $attributeCode,
         array $options = array()
     ) {
-        $fieldsCollection->add(
-            $this->createFlexibleField(
-                $this->getFlexibleAttribute($attributeCode),
-                $options
-            )
-        );
+        if ($this->hasFlexibleAttribute($attributeCode)) {
+            $fieldsCollection->add(
+                $this->createFlexibleField(
+                    $this->getFlexibleAttribute($attributeCode),
+                    $options
+                )
+            );
+        }
     }
 
     /**
      * Create field by flexible attribute
      *
-     * @param AbstractAttribute $attribute
-     * @param array $options
+     * @param  AbstractAttribute         $attribute
+     * @param  array                     $options
      * @return FieldDescriptionInterface
      */
     protected function createFlexibleField(AbstractAttribute $attribute, array $options = array())
@@ -138,8 +143,8 @@ abstract class FlexibleDatagridManager extends DatagridManager
     /**
      * Get options for flexible field
      *
-     * @param AbstractAttribute $attribute
-     * @param array $options
+     * @param  AbstractAttribute $attribute
+     * @param  array             $options
      * @return array
      */
     protected function getFlexibleFieldOptions(AbstractAttribute $attribute, array $options = array())
@@ -191,7 +196,7 @@ abstract class FlexibleDatagridManager extends DatagridManager
     }
 
     /**
-     * @param $code
+     * @param  string            $code
      * @return AbstractAttribute
      * @throws \LogicException
      */
@@ -206,17 +211,28 @@ abstract class FlexibleDatagridManager extends DatagridManager
     }
 
     /**
+     * @param  string  $code
+     * @return boolean
+     */
+    protected function hasFlexibleAttribute($code)
+    {
+        $attributes = $this->getFlexibleAttributes();
+
+        return isset($attributes[$code]);
+    }
+
+    /**
      * @param $flexibleFieldType
      * @return string
      * @throws \LogicException
      */
     protected function convertFlexibleTypeToFieldType($flexibleFieldType)
     {
-        if (!isset(self::$typeMatches[$flexibleFieldType]['field'])) {
+        if (!isset(static::$typeMatches[$flexibleFieldType]['field'])) {
             throw new \LogicException('Unknown flexible backend field type.');
         }
 
-        return self::$typeMatches[$flexibleFieldType]['field'];
+        return static::$typeMatches[$flexibleFieldType]['field'];
     }
 
     /**
@@ -226,10 +242,10 @@ abstract class FlexibleDatagridManager extends DatagridManager
      */
     protected function convertFlexibleTypeToFilterType($flexibleFieldType)
     {
-        if (!isset(self::$typeMatches[$flexibleFieldType]['filter'])) {
+        if (!isset(static::$typeMatches[$flexibleFieldType]['filter'])) {
             throw new \LogicException('Unknown flexible backend filter type.');
         }
 
-        return self::$typeMatches[$flexibleFieldType]['filter'];
+        return static::$typeMatches[$flexibleFieldType]['filter'];
     }
 }

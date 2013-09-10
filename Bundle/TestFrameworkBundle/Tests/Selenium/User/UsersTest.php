@@ -32,11 +32,15 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
         $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit()
-            ->openUsers()
+            ->openNavigation()
+            ->tab('System')
+            ->menu('Users')
+            ->openUsers(false)
             ->add()
-            ->assertTitle('Create User')
+            ->assertTitle('Create User - Users - System')
             ->setUsername($username)
             ->enable()
+            ->setOwner('Main')
             ->setFirstpassword('123123q')
             ->setSecondpassword('123123q')
             ->setFirstname('First_'.$username)
@@ -46,7 +50,7 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->save()
             ->assertMessage('User successfully saved')
             ->close()
-            ->assertTitle('Users');
+            ->assertTitle('Users - System');
 
         return $username;
     }
@@ -64,16 +68,19 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
         $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit()
-            ->openUsers()
+            ->openNavigation()
+            ->tab('System')
+            ->menu('Users')
+            ->openUsers(false)
             ->filterBy('Username', $username)
             ->open(array($username))
             ->edit()
-            ->assertTitle('Last_' . $username . ', First_' . $username . ' - Users')
+            ->assertTitle('Last_' . $username . ', First_' . $username . ' - Users - System')
             ->setUsername($newUsername)
             ->setFirstname('First_' . $newUsername)
             ->setLastname('Last_' . $newUsername)
             ->save()
-            ->assertTitle('Users')
+            ->assertTitle('Users - System')
             ->assertMessage('User successfully saved')
             ->close();
 
@@ -95,7 +102,7 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->filterBy('Username', $username)
             ->open(array($username))
             ->delete()
-            ->assertTitle('Users')
+            ->assertTitle('Users - System')
             ->assertMessage('Item was deleted');
 
         $login->openUsers()->filterBy('Username', $username)->assertNoDataMessage('No users were found to match your search');

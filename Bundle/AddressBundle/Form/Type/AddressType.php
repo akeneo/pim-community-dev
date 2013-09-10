@@ -2,42 +2,37 @@
 
 namespace Oro\Bundle\AddressBundle\Form\Type;
 
-use Oro\Bundle\AddressBundle\Form\EventListener\BuildAddressFormListener;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
+use Symfony\Component\Form\AbstractType;
 
-class AddressType extends FlexibleType
+use Oro\Bundle\AddressBundle\Form\EventListener\AddressCountryAndRegionSubscriber;
+
+class AddressType extends AbstractType
 {
     /**
-     * @var BuildAddressFormListener
+     * @var AddressCountryAndRegionSubscriber
      */
-    private $eventListener;
+    private $countryAndRegionSubscriber;
 
     /**
-     * @param FlexibleManager $flexibleManager
-     * @param string $valueFormAlias
-     * @param BuildAddressFormListener $eventListener
+     * @param AddressCountryAndRegionSubscriber $eventListener
      */
-    public function __construct(FlexibleManager $flexibleManager, $valueFormAlias, BuildAddressFormListener $eventListener)
+    public function __construct(AddressCountryAndRegionSubscriber $eventListener)
     {
-        $this->eventListener = $eventListener;
-        parent::__construct($flexibleManager, $valueFormAlias);
+        $this->countryAndRegionSubscriber = $eventListener;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addEntityFields(FormBuilderInterface $builder)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // add default flexible fields
-        parent::addEntityFields($builder);
+        $builder->addEventSubscriber($this->countryAndRegionSubscriber);
 
-        $builder->addEventSubscriber($this->eventListener);
-
-        // address fields
         $builder
+            ->add('id', 'hidden')
+            ->add('label', 'text', array('required' => false, 'label' => 'Label'))
             ->add('firstName', 'text', array('required' => false, 'label' => 'First Name'))
             ->add('lastName', 'text', array('required' => false, 'label' => 'Last Name'))
             ->add('street', 'text', array('required' => true, 'label' => 'Street'))
@@ -56,9 +51,10 @@ class AddressType extends FlexibleType
     {
         $resolver->setDefaults(
             array(
-                'data_class'           => $this->flexibleClass,
+                'data_class'           => 'Oro\Bundle\AddressBundle\Entity\Address',
                 'intention'            => 'address',
                 'extra_fields_message' => 'This form should not contain extra fields: "{{ extra_fields }}"',
+                'single_form'          => true
             )
         );
     }

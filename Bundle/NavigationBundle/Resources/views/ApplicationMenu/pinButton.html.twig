@@ -1,14 +1,8 @@
 <div id="pin-button-div" {% if app.request.attributes.get('_route') == bap.start_route %}style="display: none"{% endif %}>
     <div class="navigation clearfix">
-        <div class="container-fluid">
-            <div class="top-action-box">
-                <div class="btn-group icons-holder icons-small">
-                    <button class="btn minimize-button" data-title="{{ oro_title_render_serialized() }}" title="{{ 'Minimize the window to the pinbar'|trans }}"><i class="icon-minimize hide-text">minimaze tab</i></button>
-                    {# <button class="btn maximize-button"><i class="icon-fullscreen hi1de-text">full screen</i></button> #}
-                    <button class="btn favorite-button" data-title="{{ oro_title_render_serialized() }}" title="{{ 'Add this page to favorites'|trans }}"><i class="icon-star hide-text">favorites</i></button>
-                    <button class="btn close-button" title="{{ 'Close page'|trans }}"><i class="icon-remove hide-text">Close</i></button>
-                </div>
-            </div>
+        <div class="top-action-box">
+            <button class="btn favorite-button" data-title="{{ oro_title_render_serialized() }}" title="{{ 'Add this page to favorites'|trans }}"><i class="icon-star hide-text">favorites</i></button>
+            <button class="btn minimize-button" data-title="{{ oro_title_render_serialized() }}" title="{{ 'Minimize the window to the pinbar'|trans }}"><i class="icon-pushpin hide-text">minimaze tab</i></button>
         </div>
     </div>
 </div>

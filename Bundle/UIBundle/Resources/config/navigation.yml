@@ -11,20 +11,9 @@ oro_menu_config:
         shortcuts:
             template: 'OroUIBundle:Menu:shortcuts.html.twig'
 
-    items:
-        home:
-            name: 'Home'
-            label: ''
-            extras:
-                icon: 'icon-home icon-white'
-                position: 1
-            route: 'oro_default'
-
     tree:
         application_menu:
             type: application_menu
-            children:
-                home: ~
 
         dots_menu:
             type: dots_menu
@@ -33,6 +22,7 @@ oro_menu_config:
             type: shortcuts
 
 oro_titles:
+    oro_default:                  Dashboard
     oro_ui_index:                 Dashboard
     oro_ui_1column:               Dashboard | One Column
     oro_ui_grid_without_bar_page: Dashboard | Grid
@@ -54,3 +44,4 @@ oro_titles:
     oro_ui_general_elements:      Dashboard | Elements
     oro_ui_dialog_styled:         Dashboard | Dialog
     oro_ui_record_edit:           Dashboard | Edit
+

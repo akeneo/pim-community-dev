@@ -4,7 +4,7 @@ namespace Oro\Bundle\DataAuditBundle\Datagrid;
 
 use Doctrine\ORM\Query;
 
-use Gedmo\Loggable\LoggableListener;
+use Oro\Bundle\DataAuditBundle\Loggable\LoggableManager;
 
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -35,6 +35,7 @@ class AuditDatagridManager extends DatagridManager
 
     /**
      * {@inheritDoc}
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
@@ -51,9 +52,9 @@ class AuditDatagridManager extends DatagridManager
                 'filterable'  => true,
                 'show_filter' => true,
                 'choices'     => array(
-                    LoggableListener::ACTION_UPDATE => 'Updated',
-                    LoggableListener::ACTION_CREATE => 'Created',
-                    LoggableListener::ACTION_REMOVE => 'Deleted',
+                    LoggableManager::ACTION_UPDATE => 'Updated',
+                    LoggableManager::ACTION_CREATE => 'Created',
+                    LoggableManager::ACTION_REMOVE => 'Deleted',
                 ),
                 'multiple' => true,
             )
@@ -151,15 +152,16 @@ class AuditDatagridManager extends DatagridManager
         $fieldAuthor->setName('author');
         $fieldAuthor->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => 'Author',
-                'field_name'  => 'author',
-                'expression'  => $this->authorExpression,
-                'filter_type' => FilterInterface::TYPE_STRING,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
+                'type'            => FieldDescriptionInterface::TYPE_TEXT,
+                'label'           => 'Author',
+                'field_name'      => 'author',
+                'expression'      => $this->authorExpression,
+                'filter_type'     => FilterInterface::TYPE_STRING,
+                'required'        => false,
+                'sortable'        => true,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'filter_by_where' => true
             )
         );
         $fieldAuthor->setFieldName('author');

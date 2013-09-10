@@ -1,0 +1,57 @@
+{% extends bap.layout %}
+{% import 'JMSJobQueueBundle:Job:macros.html.twig' as macros %}
+{% use 'OroCronBundle:Job:sidebar.html.twig' %}
+
+{% block page_container %}
+<script type="text/javascript">
+    require(['oro/init-job']);
+</script>
+<div class="container-fluid">
+    <h1>{{ 'oro.cron.header.jobs'|trans }}</h1>
+    <div class="row-fluid">
+        <div class="span2">
+            {{ block('sidebar') }}
+        </div>
+        <div class="span10">
+            {{ block('content') }}
+        </div>
+    </div>
+</div>
+{% endblock page_container %}
+
+{% block content %}
+
+{{ knp_pagination_render(pager, 'OroUIBundle::pager.html.twig') }}
+
+<table class="table table-bordered table-striped table-condensed">
+    <thead>
+        <tr>
+            <th>{{ 'oro.cron.header.id'|trans }}</th>
+            <th>{{ 'oro.cron.header.command'|trans }}</th>
+            <th>{{ 'oro.cron.header.state'|trans }}</th>
+            <th>{{ 'oro.cron.header.created'|trans }}</th>
+            <th>{{ 'oro.cron.header.runtime'|trans }}</th>
+            <th>{{ 'oro.cron.header.memory'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in pager %}
+        <tr>
+            <td><a href="{{ path('oro_cron_job_view', { id: job.id }) }}">{{ job.id }}</a></td>
+            <td><a href="{{ path('oro_cron_job_view', { id: job.id }) }}">{{ macros.command(job) }}</a></td>
+            <td>{{ macros.state(job) }}</td>
+            <td>{{ macros.ago(job.createdAt) }}</td>
+            <td>{{ job.runtime|default('oro.cron.na'|trans) }}</td>
+            <td>{{ (job.memoryUsageReal / 1048576)|number_format(2) }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6">{{ 'oro.cron.no_jobs'|trans }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{{ knp_pagination_render(pager, 'OroUIBundle::pager.html.twig') }}
+
+{% endblock %}

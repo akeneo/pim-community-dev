@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\DataAuditBundleZ\Tests\Entity;
+namespace Oro\Bundle\DataAuditBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Oro\Bundle\UserBundle\Entity\User;

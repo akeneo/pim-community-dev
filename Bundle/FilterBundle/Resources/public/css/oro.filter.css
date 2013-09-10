@@ -1,7 +1,10 @@
 .filter-item {
     padding-left: 5px;
 }
-
+.filter-box .btn-group [class^='icon-'] {
+  padding-top:2px;
+  vertical-align:middle;
+}
 .filter-box .filter-item .disable-filter {
     background-color: #F5F5F5;
     border-bottom-right-radius: 4px;
@@ -11,15 +14,15 @@
     border-width: 1px 1px 1px 0;
     display: inline-block;
     font-size: 18px;
-    height: 24px;
-    line-height: 28px;
-    padding: 4px 2px 0;
+    height: 29px;
+    line-height: 29px;
+    padding: 2px;
     vertical-align: top;
 }
 
 .filter-box .filter-select {
     padding-right: 4px;
-    height: 28px;
+    height: 29px;
 }
 
 .filter-box .filter-select .disable-filter {
@@ -33,7 +36,7 @@
     padding: 8px 8px 2px 8px;
     border: 1px solid #d3d3d3;
     display: none;
-    z-index: 990;
+    z-index: 700;
     left: 5px;
 }
 .filter-select .select-filter-widget {
@@ -74,16 +77,19 @@
 
 .ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label.ui-state-hover {
     background-image: none;
-    background-color: #dddddd;
-    color: #212121;
+    background-color: #3875d7;
+    color: #fff;
 }
 
 .ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label.ui-state-active {
     background-image: none;
-    background-color: #064aa7;
+    background-color: #3875d7;
     color: #ffffff;
 }
-
+.ui-multiselect-single .ui-multiselect-checkboxes label {
+  line-height:20px;
+}
+.ui-multiselect-menu.select-filter-widget { padding:0 0 2px 0; }
 .ui-multiselect-menu.select-filter-widget input[type="search"] {
     margin: 0;
 }
@@ -126,7 +132,13 @@
 .filter-criteria .date-visual-element {
     width: 80px;
 }
-
+.filter-criteria .dropdown-menu a {
+    color:#444;
+}
+.filter-criteria .dropdown-menu a:hover {
+  background:#3875d7;
+  color:#fff;
+}
 .filter-criteria .datetime-visual-element {
     width: 120px;
 }

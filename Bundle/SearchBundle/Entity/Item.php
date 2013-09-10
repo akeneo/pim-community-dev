@@ -46,13 +46,13 @@ class Item
     /**
      * @var integer $record_id
      *
-     * @ORM\Column(name="record_id", type="integer")
+     * @ORM\Column(name="record_id", type="integer", nullable=true)
      */
     protected $recordId;
 
     /**
      * @var string $title
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=255, nullable=true)
      */
     protected $title;
 
@@ -122,6 +122,7 @@ class Item
      * Set entity
      *
      * @param  string $entity
+     *
      * @return Item
      */
     public function setEntity($entity)
@@ -145,6 +146,7 @@ class Item
      * Set recordId
      *
      * @param  integer $recordId
+     *
      * @return Item
      */
     public function setRecordId($recordId)
@@ -168,11 +170,12 @@ class Item
      * Set changed
      *
      * @param  boolean $changed
+     *
      * @return Item
      */
     public function setChanged($changed)
     {
-        $this->changed = (bool) $changed;
+        $this->changed = (bool)$changed;
 
         return $this;
     }
@@ -191,6 +194,7 @@ class Item
      * Add integerFields
      *
      * @param  IndexInteger $integerFields
+     *
      * @return Item
      */
     public function addIntegerField(IndexInteger $integerFields)
@@ -224,6 +228,7 @@ class Item
      * Add decimalFields
      *
      * @param  IndexDecimal $decimalFields
+     *
      * @return Item
      */
     public function addDecimalField(IndexDecimal $decimalFields)
@@ -257,6 +262,7 @@ class Item
      * Add datetimeFields
      *
      * @param  IndexDatetime $datetimeFields
+     *
      * @return Item
      */
     public function addDatetimeField(IndexDatetime $datetimeFields)
@@ -270,6 +276,7 @@ class Item
      * Remove datetimeFields
      *
      * @param  IndexDatetime $datetimeFields
+     *
      * @return Item
      */
     public function removeDatetimeField(IndexDatetime $datetimeFields)
@@ -293,6 +300,7 @@ class Item
      * Add text fields
      *
      * @param  IndexText $textFields
+     *
      * @return Item
      */
     public function addTextField(IndexText $textFields)
@@ -306,6 +314,7 @@ class Item
      * Remove text fields
      *
      * @param  IndexText $textFields
+     *
      * @return Item
      */
     public function removeTextField(IndexText $textFields)
@@ -348,6 +357,7 @@ class Item
      * Set createdAt
      *
      * @param  \DateTime $createdAt
+     *
      * @return Item
      */
     public function setCreatedAt(\DateTime $createdAt)
@@ -400,18 +410,10 @@ class Item
      */
     public function saveItemData($objectData)
     {
-        if (isset($objectData['text']) && count($objectData['text'])) {
-            $this->saveTextData($objectData['text']);
-        }
-        if (isset($objectData['integer']) && count($objectData['integer'])) {
-            $this->saveIntegerData($objectData['integer']);
-        }
-        if (isset($objectData['datetime']) && count($objectData['datetime'])) {
-            $this->saveDatetimeData($objectData['datetime']);
-        }
-        if (isset($objectData['decimal']) && count($objectData['decimal'])) {
-            $this->saveDecimalData($objectData['decimal']);
-        }
+        $this->saveData($objectData, $this->textFields, new IndexText(), 'text');
+        $this->saveData($objectData, $this->integerFields, new IndexInteger(), 'integer');
+        $this->saveData($objectData, $this->datetimeFields, new IndexDatetime(), 'datetime');
+        $this->saveData($objectData, $this->decimalFields, new IndexDecimal(), 'decimal');
 
         return $this;
     }
@@ -420,6 +422,7 @@ class Item
      * Set alias
      *
      * @param  string $alias
+     *
      * @return Item
      */
     public function setAlias($alias)
@@ -443,6 +446,7 @@ class Item
      * Set title
      *
      * @param  string $title
+     *
      * @return Item
      */
     public function setTitle($title)
@@ -475,153 +479,41 @@ class Item
     }
 
     /**
-     * Save text data to item
-     *
-     * @param array $itemData
+     * @param array  $objectData
+     * @param object $fields
+     * @param object $newRecord
+     * @param string $type
      */
-    protected function saveTextData($itemData)
+    protected function saveData($objectData, $fields, $newRecord, $type)
     {
-        $updatedTextFields = array();
-        foreach ($itemData as $fieldName => $fieldData) {
-            foreach ($this->textFields as $index => $collectionElement) {
-                //update fields
-                if ($fieldName == $collectionElement->getField()) {
-                    $collectionElement->setValue($fieldData);
-                    $updatedTextFields[$index] = $index;
-                    unset($itemData[$fieldName]);
-                }
-            }
-        }
-
-        //delete fields
-        if (count($updatedTextFields) < count($this->textFields)) {
-            foreach ($this->textFields as $index => $collectionElement) {
-                if (!array_key_exists($index, $updatedTextFields)) {
-                    $this->textFields->removeElement($collectionElement);
-                }
-            }
-        }
-
-        //add new fields
-        if (isset($itemData) && count($itemData)) {
+        if (isset($objectData[$type]) && count($objectData[$type])) {
+            $itemData = $objectData[$type];
+            $updatedTextFields = array();
             foreach ($itemData as $fieldName => $fieldData) {
-                $record = new IndexText();
-                $this->setFieldData($record, $fieldName, $fieldData);
-                $this->addTextField($record);
-            }
-        }
-    }
-
-    /**
-     * Save integer data to item
-     *
-     * @param array $itemData
-     */
-    protected function saveIntegerData($itemData)
-    {
-        $updatedFields = array();
-        foreach ($itemData as $fieldName => $fieldData) {
-            foreach ($this->integerFields as $index => $collectionElement) {
-                //update fields
-                if ($fieldName == $collectionElement->getField()) {
-                    $collectionElement->setValue($fieldData);
-                    $updatedFields[$index] = $index;
-                    unset($itemData[$fieldName]);
+                foreach ($fields as $index => $collectionElement) {
+                    //update fields
+                    if ($fieldName == $collectionElement->getField()) {
+                        $collectionElement->setValue($fieldData);
+                        $updatedTextFields[$index] = $index;
+                        unset($itemData[$fieldName]);
+                    }
                 }
             }
-        }
-
-        //delete fields
-        if (count($updatedFields) < count($this->integerFields)) {
-            foreach ($this->integerFields as $index => $collectionElement) {
-                if (!array_key_exists($index, $updatedFields)) {
-                    $this->integerFields->removeElement($collectionElement);
+            //delete fields
+            if (count($updatedTextFields) < count($this->textFields)) {
+                foreach ($this->textFields as $index => $collectionElement) {
+                    if (!array_key_exists($index, $updatedTextFields)) {
+                        $fields->removeElement($collectionElement);
+                    }
                 }
             }
-        }
-
-        //add new fields
-        if (isset($itemData) && count($itemData)) {
-            foreach ($itemData as $fieldName => $fieldData) {
-                $record = new IndexInteger();
-                $this->setFieldData($record, $fieldName, $fieldData);
-                $this->addIntegerField($record);
-            }
-        }
-    }
-
-    /**
-     * Save datetime data to item
-     *
-     * @param array $itemData
-     */
-    protected function saveDatetimeData($itemData)
-    {
-        $updatedFields = array();
-        foreach ($itemData as $fieldName => $fieldData) {
-            foreach ($this->datetimeFields as $index => $collectionElement) {
-                //update fields
-                if ($fieldName == $collectionElement->getField()) {
-                    $collectionElement->setValue($fieldData);
-                    $updatedFields[$index] = $index;
-                    unset($itemData[$fieldName]);
+            //add new fields
+            if (isset($itemData) && count($itemData)) {
+                foreach ($itemData as $fieldName => $fieldData) {
+                    $record = clone $newRecord;
+                    $this->setFieldData($record, $fieldName, $fieldData);
+                    $fields[] = $record;
                 }
-            }
-        }
-
-        //delete fields
-        if (count($updatedFields) < count($this->datetimeFields)) {
-            foreach ($this->datetimeFields as $index => $collectionElement) {
-                if (!array_key_exists($index, $updatedFields)) {
-                    $this->datetimeFields->removeElement($collectionElement);
-                }
-            }
-        }
-
-        //add new fields
-        if (isset($itemData) && count($itemData)) {
-            foreach ($itemData as $fieldName => $fieldData) {
-                $record = new IndexDatetime();
-                $this->setFieldData($record, $fieldName, $fieldData);
-                $this->addDatetimeField($record);
-            }
-        }
-    }
-
-    /**
-     * Save decimal data to item
-     *
-     * @param array $itemData
-     */
-    protected function saveDecimalData($itemData)
-    {
-        $updatedFields = array();
-        foreach ($itemData as $fieldName => $fieldData) {
-            foreach ($this->decimalFields as $index => $collectionElement) {
-                //update fields
-                if ($fieldName == $collectionElement->getField()) {
-                    $collectionElement->setValue($fieldData);
-                    $updatedFields[$index] = $index;
-                    unset($itemData[$fieldName]);
-                }
-            }
-        }
-
-        //delete fields
-        if (count($updatedFields) < count($this->decimalFields)) {
-            foreach ($this->decimalFields as $index => $collectionElement) {
-                if (!array_key_exists($index, $updatedFields)) {
-                    $this->decimalFields->removeElement($collectionElement);
-                }
-            }
-        }
-
-        //add new fields
-        if (isset($itemData) && count($itemData)) {
-            foreach ($itemData as $fieldName => $fieldData) {
-                $record = new IndexDecimal();
-                $this->setFieldData($record, $fieldName, $fieldData);
-                $this->addDecimalField($record);
             }
         }
     }

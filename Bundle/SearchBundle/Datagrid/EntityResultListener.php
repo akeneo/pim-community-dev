@@ -2,12 +2,12 @@
 
 namespace Oro\Bundle\SearchBundle\Datagrid;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
-use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
 use Oro\Bundle\SearchBundle\Query\Result\Item;
+use Oro\Bundle\SearchBundle\Formatter\ResultFormatter;
+use Oro\Bundle\SearchBundle\Event\PrepareResultItemEvent;
+use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
 
 class EntityResultListener
 {
@@ -17,18 +17,25 @@ class EntityResultListener
     protected $datagridName;
 
     /**
-     * @var RegistryInterface
+     * @var ResultFormatter
      */
-    protected $doctrineRegistry;
+    protected $resultFormatter;
 
     /**
-     * @param RegistryInterface $doctrineRegistry
-     * @param string            $datagridName
+     * @var EventDispatcher
      */
-    public function __construct(RegistryInterface $doctrineRegistry, $datagridName)
+    protected $dispatcher;
+
+    /**
+     * @param ResultFormatter $resultFormatter
+     * @param string $datagridName
+     * @param \Symfony\Component\EventDispatcher\EventDispatcher $dispatcher
+     */
+    public function __construct(ResultFormatter $resultFormatter, $datagridName, EventDispatcher $dispatcher)
     {
-        $this->doctrineRegistry = $doctrineRegistry;
-        $this->datagridName     = $datagridName;
+        $this->resultFormatter = $resultFormatter;
+        $this->datagridName    = $datagridName;
+        $this->dispatcher      = $dispatcher;
     }
 
     /**
@@ -40,20 +47,9 @@ class EntityResultListener
             return;
         }
 
+        /** @var $rows Item[] */
         $rows = $event->getRows();
-        $entities = array();
-
-        // group entities by type
-        /** @var $row Item */
-        foreach ($rows as $row) {
-            $entityName = $row->getEntityName();
-            $entities[$entityName][] = $row->getRecordId();
-        }
-
-        // get actual entities
-        foreach ($entities as $entityName => $entityIds) {
-            $entities[$entityName] = $this->getEntities($entityName, $entityIds);
-        }
+        $entities = $this->resultFormatter->getResultEntities($rows);
 
         // add entities to result rows
         $resultRows = array();
@@ -65,6 +61,8 @@ class EntityResultListener
                 $entity = $entities[$entityName][$entityId];
             }
 
+            $this->dispatcher->dispatch(PrepareResultItemEvent::EVENT_NAME, new PrepareResultItemEvent($row, $entity));
+
             $resultRows[] = array(
                 'indexer_item' => $row,
                 'entity' => $entity,
@@ -72,54 +70,5 @@ class EntityResultListener
         }
 
         $event->setRows($resultRows);
-    }
-
-    /**
-     * @param  string        $entityName
-     * @return ClassMetadata
-     */
-    protected function getEntityMetadata($entityName)
-    {
-        /** @var $entityManager EntityManager */
-        $entityManager = $this->doctrineRegistry->getManager();
-
-        return $entityManager->getMetadataFactory()->getMetadataFor($entityName);
-    }
-
-    /**
-     * @param  string $entityName
-     * @return string
-     */
-    protected function getEntityIdentifier($entityName)
-    {
-        $idFields = $this->getEntityMetadata($entityName)->getIdentifierFieldNames();
-
-        return current($idFields);
-    }
-
-    /**
-     * @param  string $entityName
-     * @param  array  $entityIds
-     * @return array
-     */
-    protected function getEntities($entityName, array $entityIds)
-    {
-        /** @var $entityManager EntityManager */
-        $entityManager = $this->doctrineRegistry->getManager();
-        $classMetadata = $this->getEntityMetadata($entityName);
-        $idField = $this->getEntityIdentifier($entityName);
-
-        $queryBuilder = $entityManager->getRepository($entityName)->createQueryBuilder('e');
-        $queryBuilder->where($queryBuilder->expr()->in('e.' . $idField, $entityIds));
-        $currentEntities = $queryBuilder->getQuery()->getResult();
-
-        $resultEntities = array();
-        foreach ($currentEntities as $entity) {
-            $idValues = $classMetadata->getIdentifierValues($entity);
-            $idValue = $idValues[$idField];
-            $resultEntities[$idValue] = $entity;
-        }
-
-        return $resultEntities;
     }
 }

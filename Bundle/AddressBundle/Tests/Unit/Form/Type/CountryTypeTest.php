@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\AddressBundle\Tests\Unit\Type;
+namespace Oro\Bundle\AddressBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -35,7 +35,7 @@ class CountryTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetParent()
     {
-        $this->assertEquals('genemu_jqueryselect2_entity', $this->type->getParent());
+        $this->assertEquals('genemu_jqueryselect2_translatable_entity', $this->type->getParent());
     }
 
     public function testGetName()

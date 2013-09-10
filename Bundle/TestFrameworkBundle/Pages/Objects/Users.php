@@ -17,7 +17,9 @@ class Users extends PageFilteredGrid
 
     public function add()
     {
-        $this->test->byXPath("//div[@class = 'container-fluid']//a[contains(., 'Create user')]")->click();
+        $this->test->byXPath("//a[@title='Create user']")->click();
+        //due to bug BAP-965
+        sleep(1);
         $this->waitPageToLoad();
         $this->waitForAjax();
         $user = new User($this->test);
@@ -28,6 +30,7 @@ class Users extends PageFilteredGrid
     {
         $user = $this->getEntity($entityData);
         $user->click();
+        sleep(1);
         $this->waitPageToLoad();
         $this->waitForAjax();
 

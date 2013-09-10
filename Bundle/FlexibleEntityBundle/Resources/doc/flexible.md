@@ -180,14 +180,15 @@ $customer->setEmail('name@mail.com');
 $customer->setFirstname('Nicolas');
 $customer->setLastname('Dupont');
 
-// get the customer attribute 'company'
+// add a value (long version ...)
 $attCompany = $cm->getEntityRepository()->findAttributeByCode('company');
-
-// add a value
 $value = $cm->createFlexibleValue();
 $value->setAttribute($attCompany);
-$value->setData('Akeneo');
+$value->setData('Oro');
 $customer->addValue($value);
+
+// add a value (shortcut !)
+$customer->setCompany('Oro');
 
 // persist and flush
 $cm->getStorageManager()->persist($customer);
