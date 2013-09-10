@@ -21,6 +21,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\BatchBundle\Entity\JobInstance;
+use Context\DatabasePurger;
 
 /**
  * A context for creating entities
@@ -88,24 +89,31 @@ class FixturesContext extends RawMinkContext
      */
     public function resetAcl()
     {
-        $root = $this->createAcl('root', null, array(User::ROLE_DEFAULT, 'ROLE_SUPER_ADMIN'));
+        $exists = $this->getEntityManager()->getRepository('OroUserBundle:User')->findAll();
 
-        $oroSecurity = $this->createAcl('oro_security', $root, array('IS_AUTHENTICATED_ANONYMOUSLY'));
-        $this->createAcl('oro_login', $oroSecurity);
-        $this->createAcl('oro_login_check', $oroSecurity);
-        $this->createAcl('oro_logout', $oroSecurity);
+        if (!$exists) {
+            $purger = new DatabasePurger($this->getEntityManager());
+            $purger->purge(true);
 
-        $acl = $this->createAcl(
-            'template_controller',
-            $root,
-            array(),
-            'Symfony\Bundle\FrameworkBundle\Controller\TemplateController',
-            'templateAction'
-        );
+            $root = $this->createAcl('root', null, array(User::ROLE_DEFAULT, 'ROLE_SUPER_ADMIN'));
 
-        $this->getContainer()->get('oro_user.acl_manager')->synchronizeAclResources();
-        $role = $this->getRoleOrCreate('ROLE_SUPER_ADMIN');
-        $this->getContainer()->get('oro_user.acl_manager')->saveRoleAcl($role);
+            $oroSecurity = $this->createAcl('oro_security', $root, array('IS_AUTHENTICATED_ANONYMOUSLY'));
+            $this->createAcl('oro_login', $oroSecurity);
+            $this->createAcl('oro_login_check', $oroSecurity);
+            $this->createAcl('oro_logout', $oroSecurity);
+
+            $acl = $this->createAcl(
+                'template_controller',
+                $root,
+                array(),
+                'Symfony\Bundle\FrameworkBundle\Controller\TemplateController',
+                'templateAction'
+            );
+
+            $this->getContainer()->get('oro_user.acl_manager')->synchronizeAclResources();
+            $role = $this->getRoleOrCreate('ROLE_SUPER_ADMIN');
+            $this->getContainer()->get('oro_user.acl_manager')->saveRoleAcl($role);
+        }
     }
 
     /**
