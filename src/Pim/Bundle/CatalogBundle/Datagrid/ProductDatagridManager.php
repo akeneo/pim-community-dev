@@ -216,7 +216,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $result = parent::getFlexibleFieldOptions($attribute, $options);
 
         $result['filterable'] = $attribute->isUseableAsGridFilter();
-        $result['show_filter'] = $attribute->isUseableAsGridFilter();
+        $result['show_filter'] = $attribute->isUseableAsGridFilter()
+            && $attribute->getAttributeType() === 'pim_catalog_identifier';
         $result['show_column'] = $attribute->isUseableAsGridColumn();
 
         $backendType = $attribute->getBackendType();
