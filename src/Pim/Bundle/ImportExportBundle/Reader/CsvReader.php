@@ -5,10 +5,10 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File;
-use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
-use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Pim\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
-use Pim\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Oro\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Csv reader

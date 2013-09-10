@@ -3,8 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Writer;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 
 /**
  * Write data into a file on the filesystem

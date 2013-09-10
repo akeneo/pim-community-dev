@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
-use Pim\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
-use Pim\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Dummy step, can be use to do nothing until you'll have concret implementation

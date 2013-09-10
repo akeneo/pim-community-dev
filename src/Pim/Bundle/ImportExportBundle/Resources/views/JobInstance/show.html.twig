@@ -1,11 +1,11 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
 {% macro configuration(title, config, stepIndex, violations, stepType) %}
-    <li>{{ ('pim_batch.' ~ title ~ '.title')|trans }}
+    <li>{{ ('oro_batch.' ~ title ~ '.title')|trans }}
         <ul>
         {% for field, value in config %}
             <li>
-                <b>{{ ('pim_batch.' ~ title ~ '.' ~ field ~ '.label')|trans }}:</b>
+                <b>{{ ('oro_batch.' ~ title ~ '.' ~ field ~ '.label')|trans }}:</b>
                 <span class="label">{{ value|normalizeValue }}</span>
                 {{ getViolations(violations, stepIndex, stepType, field) }}
             </li>
@@ -29,7 +29,7 @@
 
     {% set buttons %}
         {{ elements.backLink(indexRoute) }}
-        {% if jobInstance.status != constant('Pim\\Bundle\\BatchBundle\\Entity\\JobInstance::STATUS_IN_PROGRESS') %}
+        {% if jobInstance.status != constant('Oro\\Bundle\\BatchBundle\\Entity\\JobInstance::STATUS_IN_PROGRESS') %}
             {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
         {% endif %}
         {% if uploadAllowed and uploadViolations|length == 0 %}

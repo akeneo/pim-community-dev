@@ -12,7 +12,7 @@ services:
         class: '%pim_import_export.controller.export.class%'
         arguments:
             - '@pim_catalog.datagrid.worker'
-            - '@pim_batch.connectors'
+            - '@oro_batch.connectors'
             - export
 
     pim_import_export.controller.import:
@@ -21,7 +21,7 @@ services:
         class: '%pim_import_export.controller.import.class%'
         arguments:
             - '@pim_catalog.datagrid.worker'
-            - '@pim_batch.connectors'
+            - '@oro_batch.connectors'
             - import
 
     pim_import_export.controller.export_report:
@@ -30,7 +30,7 @@ services:
         class: '%pim_import_export.controller.export_report.class%'
         arguments:
             - '@pim_catalog.datagrid.worker'
-            - '@pim_batch.logger.batch_log_handler'
+            - '@oro_batch.logger.batch_log_handler'
             - export
 
     pim_import_export.controller.import_report:
@@ -39,5 +39,5 @@ services:
         class: '%pim_import_export.controller.import_report.class%'
         arguments:
             - '@pim_catalog.datagrid.worker'
-            - '@pim_batch.logger.batch_log_handler'
+            - '@oro_batch.logger.batch_log_handler'
             - import
