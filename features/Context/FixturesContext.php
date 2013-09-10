@@ -88,24 +88,28 @@ class FixturesContext extends RawMinkContext
      */
     public function resetAcl()
     {
-        $root = $this->createAcl('root', null, array(User::ROLE_DEFAULT, 'ROLE_SUPER_ADMIN'));
+        $exists = $this->getEntityManager()->getRepository('OroUserBundle:User')->findAll();
 
-        $oroSecurity = $this->createAcl('oro_security', $root, array('IS_AUTHENTICATED_ANONYMOUSLY'));
-        $this->createAcl('oro_login', $oroSecurity);
-        $this->createAcl('oro_login_check', $oroSecurity);
-        $this->createAcl('oro_logout', $oroSecurity);
+        if (!$exists) {
+            $root = $this->createAcl('root', null, array(User::ROLE_DEFAULT, 'ROLE_SUPER_ADMIN'));
 
-        $acl = $this->createAcl(
-            'template_controller',
-            $root,
-            array(),
-            'Symfony\Bundle\FrameworkBundle\Controller\TemplateController',
-            'templateAction'
-        );
+            $oroSecurity = $this->createAcl('oro_security', $root, array('IS_AUTHENTICATED_ANONYMOUSLY'));
+            $this->createAcl('oro_login', $oroSecurity);
+            $this->createAcl('oro_login_check', $oroSecurity);
+            $this->createAcl('oro_logout', $oroSecurity);
 
-        $this->getContainer()->get('oro_user.acl_manager')->synchronizeAclResources();
-        $role = $this->getRoleOrCreate('ROLE_SUPER_ADMIN');
-        $this->getContainer()->get('oro_user.acl_manager')->saveRoleAcl($role);
+            $acl = $this->createAcl(
+                'template_controller',
+                $root,
+                array(),
+                'Symfony\Bundle\FrameworkBundle\Controller\TemplateController',
+                'templateAction'
+            );
+
+            $this->getContainer()->get('oro_user.acl_manager')->synchronizeAclResources();
+            $role = $this->getRoleOrCreate('ROLE_SUPER_ADMIN');
+            $this->getContainer()->get('oro_user.acl_manager')->saveRoleAcl($role);
+        }
     }
 
     /**

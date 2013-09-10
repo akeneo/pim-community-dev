@@ -6,7 +6,7 @@ use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Mink\Exception\ExpectationException;
 
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Context\DatabasePurger;
 
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -39,7 +39,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function purgeDatabase()
     {
-        $purger = new ORMPurger($this->getEntityManager());
+        $purger = new DatabasePurger($this->getEntityManager());
         $purger->purge();
     }
 
