@@ -43,8 +43,13 @@ class BatchOperationController extends AbstractController
      */
     public function chooseAction(Request $request)
     {
-        $productIds = $request->query->get('products');
-        if (!$productIds || !is_array($productIds)) {
+        if ($values = $request->query->get('values')) {
+            $productIds = explode(',', $values);
+        } else {
+            $productIds = $request->query->get('products');
+        }
+
+        if (!$productIds) {
             return $this->redirectToRoute('pim_catalog_product_index');
         }
 
