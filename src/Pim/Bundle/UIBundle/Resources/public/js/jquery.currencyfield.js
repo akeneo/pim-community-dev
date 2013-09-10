@@ -137,8 +137,8 @@
     };
 
     $.fn.currencyField.defaults = {
-        expandIcon: 'fa-icon-caret-right',
-        collapseIcon: 'fa-icon-caret-down'
+        expandIcon: 'icon-caret-right',
+        collapseIcon: 'icon-caret-down'
     };
 
 }(jQuery));

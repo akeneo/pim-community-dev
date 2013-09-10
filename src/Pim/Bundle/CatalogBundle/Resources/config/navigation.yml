@@ -4,7 +4,7 @@ oro_menu_config:
             name: 'Home'
             label: ''
             extras:
-                icon: 'fa-icon-home'
+                icon: 'icon-home'
                 position: 1
             route: 'oro_default'
         pim_enrich_tab:

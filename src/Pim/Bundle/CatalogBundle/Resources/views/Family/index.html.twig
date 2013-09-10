@@ -20,10 +20,14 @@
 {% block head_script_component %}
     {{ parent() }}
     <script type="text/javascript">
-    $(function() {
-        'use strict';
-
-        $('#family-container').sidebarize({ buttons: ['<a href="{{ path('pim_catalog_family_create') }}"><i class="icon-plus-sign"></i></a>'] });
-    });
+        require(
+            ['jquery', 'jquery.sidebarize'],
+            function ($){
+                'use strict';
+                $(function() {
+                    $('#family-container').sidebarize({ buttons: ['<a href="{{ path('pim_catalog_family_create') }}"><i class="icon-plus-sign"></i></a>'] });
+                });
+            }
+        );
     </script>
 {% endblock %}

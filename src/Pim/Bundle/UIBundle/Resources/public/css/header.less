@@ -1,0 +1,79 @@
+/* Header ***********************************************************************************************************/
+
+#oroplatform-header {
+  div.navbar-inner {
+    #gradient .vertical(@color-header_top, @color-header_bottom);
+    .logo {
+      &:before, &:after {
+        border: none;
+      }
+      a {
+        background-color: transparent;
+        padding: 0;
+        img {
+          height: 41px;
+        }
+      }
+    }
+    .nav.top-search {
+      .dropdown > .dropdown-toggle {
+        [class^='icon-'] {
+          text-shadow: 0 1px 1px @color-header_bottom;
+        }
+        &:hover [class^='icon-'] {
+          border: 1px solid darken(@color-header_bottom, 10%);
+          #gradient > .vertical(@color-header_top, darken(@color-header_bottom, 5%));
+        }
+      }
+      .dropdown > .dropdown-toggle:active > [class^=icon-],
+      .dropdown > .dropdown-toggle:focus > [class^=icon-],
+      .dropdown.open > .dropdown-toggle > [class^=icon-] {
+        border: 1px solid darken(@color-header_bottom, 22%);
+        #gradient > .vertical(@color-header_top, @color-header_bottom);
+      }
+    }
+  }
+  .oroplatform-menu>li.dropdown:not(:hover).active>a {
+    border: 1px solid darken(@color-header_bottom, 7%);
+    border-bottom-color: darken(@color-header_bottom, 20%);
+    background: @color-header_bottom;
+    #gradient > .vertical(@color-header_top, @color-header_bottom);
+  }
+}
+
+.navbar .small-divider {
+  background: transparent;
+}
+
+/* Pin bar and menus ************************************************************************************************/
+
+.pin-bar {
+  background-color: @color-purple_dark;
+  background-image: none;
+  .list-bar {
+    li.active{
+      background-color: #6800A9;
+    }
+  }
+  .pin-menus {
+    .oro-dropdown-toggle {
+      &:hover {
+        #gradient > .vertical(@color-purple_dark, darken(@color-purple_dark, 10%));
+      }
+    }
+    .dropdown-menu .tabs-left.tabbable {
+      background-color: @color-grey_tab;
+      >ul.nav-tabs {
+        li a {
+          background-color: @color-grey_tab;
+          &:hover {
+            background-color: @color-purple_hover;
+          }
+        }
+        li.active a {
+          background-color: @color-purple_hover;
+        }
+      }
+    }
+  }
+}

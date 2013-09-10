@@ -1,46 +1,52 @@
 <form id="pim_catalog_productattribute_sort" action="{{ path('pim_catalog_productattribute_sort') }}" method="POST">
-	{% for attribute in attributes %}
+    {% for attribute in attributes %}
         <input name="{{ attribute.id }}" type="hidden" value="{{ attribute.sortOrder }}">
-	{% endfor %}
+    {% endfor %}
 </form>
 
 <script>
-$(function() {
-	'use strict';
-	var $form = $('#pim_catalog_productattribute_sort');
-	var $list = $('{{ list }}');
+require(
+    ['jquery', 'jquery-ui'],
+    function ($) {
+        'use strict';
 
-    function updateAttributeSortOrder() {
-        var num = 0;
-        $list.find('tr').each(function() {
-            var $input = $(this).find('.handle input');
-            var id = $input.attr('name');
-            $input.val(num);
-            $('input[name="'+id+'"]').val(num);
-            num++;
-        });
+        $(function () {
+            var $form = $('#pim_catalog_productattribute_sort');
+            var $list = $('{{ list }}');
 
-        $.ajax({
-            url: '{{ path("pim_catalog_productattribute_sort") }}',
-            type: 'POST',
-            data: $form.serialize()
+            function updateAttributeSortOrder() {
+                var num = 0;
+                $list.find('tr').each(function() {
+                    var $input = $(this).find('.handle input');
+                    var id = $input.attr('name');
+                    $input.val(num);
+                    $('input[name="'+id+'"]').val(num);
+                    num++;
+                });
+
+                $.ajax({
+                    url: '{{ path("pim_catalog_productattribute_sort") }}',
+                    type: 'POST',
+                    data: $form.serialize()
+                });
+            }
+
+            $list.sortable({
+                handle: '.handle',
+                containment: 'parent',
+                tolerance: 'pointer',
+                update: updateAttributeSortOrder,
+                helper: function(e, tr) {
+                    var $originals = tr.children();
+                    var $helper = tr.clone();
+                    $helper.children().each(function(index) {
+                        $(this).width($originals.eq(index).width());
+                    });
+
+                    return $helper;
+                }
+            });
         });
     }
-
-    $list.sortable({
-        handle: '.handle',
-        containment: 'parent',
-        tolerance: 'pointer',
-        update: updateAttributeSortOrder,
-        helper: function(e, tr) {
-            var $originals = tr.children();
-            var $helper = tr.clone();
-            $helper.children().each(function(index) {
-                $(this).width($originals.eq(index).width());
-            });
-
-            return $helper;
-        }
-    });
-});
+);
 </script>
