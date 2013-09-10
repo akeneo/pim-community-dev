@@ -4,7 +4,7 @@
 
 {% block head_script %}
     {{ parent() }}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#product-grid'} %}
+    {% include 'PimGridBundle:Include:pim-datagrid.html.twig' with {'datagridView': datagrid, 'selector': '#product-grid'} %}
 {% endblock %}
 
 {% block content %}
