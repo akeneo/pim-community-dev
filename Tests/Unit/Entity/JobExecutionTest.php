@@ -257,7 +257,8 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
         $dummyDate = new \DateTime();
         $timezone = $dummyDate->format('P');
 
-        $expectedOutput = 'startTime=, endTime=, updatedTime=, status=2, exitStatus=[UNKNOWN] , exitDescription=[], job=[]';
+        $expectedOutput = 'startTime=, endTime=, updatedTime=, status=2, exitStatus=[UNKNOWN] , '.
+            'exitDescription=[], job=[]';
 
         $this->assertEquals($expectedOutput, (string) $this->jobExecution);
     }
