@@ -16,4 +16,9 @@ class ExtendClassMetadataFactory extends ClassMetadataFactory
 
         return $metadata;
     }
+
+    public function getAllMetadata()
+    {
+        parent::getAllMetadata();
+    }
 }

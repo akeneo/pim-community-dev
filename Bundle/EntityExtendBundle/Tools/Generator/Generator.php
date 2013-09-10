@@ -45,7 +45,7 @@ class Generator
 
     /**
      * @param OroEntityManager $em
-     * @param string $entityCacheDir
+     * @param string           $entityCacheDir
      */
     public function __construct(OroEntityManager $em, $entityCacheDir)
     {
@@ -115,7 +115,7 @@ class Generator
     {
         $this->writer = new Writer();
 
-        $class = PhpClass::create($className)
+        $class = PhpClass::create(self::ENTITY . $className)
             ->setParentClassName(self::BASE . $className)
             ->setInterfaceNames(array('Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface'));
 
@@ -137,12 +137,13 @@ class Generator
      */
     protected function generateExtendYaml($className)
     {
-        $ymlPath = $this->entityCacheDir . '/Extend/Base/' . str_replace('\\', '.', $className) . '.yml';
-        $yml     = Yaml::parse($ymlPath);
+        $ymlPath     = $this->entityCacheDir . '/Extend/Base/' . str_replace('\\', '.', $className) . '.yml';
+        $ymlPathDist = $this->entityCacheDir . '/Extend/Entity/' . str_replace('\\', '.', $className) . '.orm.yml';
+        $yml         = Yaml::parse($ymlPath);
 
         $this->generateYamlMethods($className, $yml);
 
-        file_put_contents($ymlPath, Yaml::dump($yml, 5));
+        file_put_contents($ymlPathDist, Yaml::dump($yml, 5));
     }
 
     /**
@@ -204,6 +205,9 @@ class Generator
      */
     protected function generateValidation($className)
     {
+        $cachePath = $this->entityCacheDir . '/Extend/Base/';
+        $this->createFolder($cachePath, array());
+
         $configProvider = $this->extendManager->getConfigProvider();
 
         /** Constraints */
@@ -363,8 +367,8 @@ class Generator
     }
 
     /**
-     * @param $methodName
-     * @param $methodBody
+     * @param       $methodName
+     * @param       $methodBody
      * @param array $methodArgs
      * @return $this
      */

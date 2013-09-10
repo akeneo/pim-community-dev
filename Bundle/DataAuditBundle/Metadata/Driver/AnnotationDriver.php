@@ -42,7 +42,7 @@ class AnnotationDriver implements DriverInterface
 
     /**
      * Merge DoctrineClassMetadata and DataAuditClassMetadata
-     * @param  DoctrineClassMetadata     $doctrineClassMetadata
+     * @param  DoctrineClassMetadata $doctrineClassMetadata
      * @return null|ClassMetadata
      * @throws \InvalidArgumentException
      */
@@ -70,9 +70,10 @@ class AnnotationDriver implements DriverInterface
 
                 if (!method_exists($targetMapping['targetEntity'], $property->method)) {
                     throw new \InvalidArgumentException(sprintf(
-                        "Method %s in Class %s is not defined. Class must implement a method '__toString' or configure getMethod with Versioned annotation",
-                        $property->method,
-                        $targetMapping['targetEntity'])
+                            "Method %s in Class %s is not defined. Class must implement a method '__toString' or configure getMethod with Versioned annotation",
+                            $property->method,
+                            $targetMapping['targetEntity']
+                        )
                     );
                 }
             }
@@ -101,10 +102,11 @@ class AnnotationDriver implements DriverInterface
             }
         }
 
-        if (count($classMetadata->propertyMetadata) && !$loggable) {
+        if (count($classMetadata->propertyMetadata) && (!$loggable && !$class->getParentClass())) {
             throw new \InvalidArgumentException(sprintf(
-                "Class must be annoted with Loggable annotation in order to track versioned fields in class - %s",
-                $classMetadata->name)
+                    "Class must be annoted with Loggable annotation in order to track versioned fields in class - %s",
+                    $classMetadata->name
+                )
             );
         }
 
