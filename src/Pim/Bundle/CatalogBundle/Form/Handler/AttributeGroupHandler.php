@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\VersioningBundle\Manager\PendingManager;
 
 /**
  * Form handler for attribute groups
@@ -32,16 +33,27 @@ class AttributeGroupHandler
     protected $manager;
 
     /**
-     * Constructor for handler
-     * @param FormInterface $form    Form called
-     * @param Request       $request Web request
-     * @param ObjectManager $manager Storage manager
+     * @var PendingManager
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
+    protected $pendingManager;
+
+    /**
+     * Constructor for handler
+     * @param FormInterface  $form           Form called
+     * @param Request        $request        Web request
+     * @param ObjectManager  $manager        Storage manager
+     * @param PendingManager $pendingManager Pending manager
+     */
+    public function __construct(
+        FormInterface $form,
+        Request $request,
+        ObjectManager $manager,
+        PendingManager $pendingManager)
     {
-        $this->form    = $form;
-        $this->request = $request;
-        $this->manager = $manager;
+        $this->form           = $form;
+        $this->request        = $request;
+        $this->manager        = $manager;
+        $this->pendingManager = $pendingManager;
     }
 
     /**
@@ -75,5 +87,9 @@ class AttributeGroupHandler
     {
         $this->manager->persist($group);
         $this->manager->flush();
+
+        if ($pending = $this->pendingManager->getPendingVersion($group)) {
+            $this->pendingManager->createVersionAndAudit($pending);
+        }
     }
 }
