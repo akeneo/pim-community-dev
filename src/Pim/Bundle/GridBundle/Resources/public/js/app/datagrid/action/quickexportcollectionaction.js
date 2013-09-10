@@ -10,7 +10,7 @@ Pim.Datagrid.Action = Pim.Datagrid.Action || {};
  * @extends Oro.Datagrid.Action.NavigateAction
  * @see     Oro.Datagrid.Action.AbstractAction
  */
-Pim.Datagrid.Action.QuickExportCollectionAction = Oro.Datagrid.Action.NavigateAction.extend({
+Pim.Datagrid.Action.QuickExportCollectionAction = Oro.Datagrid.Action.AbstractAction.extend({
 
     /**
      * Initialize collection and launcher
