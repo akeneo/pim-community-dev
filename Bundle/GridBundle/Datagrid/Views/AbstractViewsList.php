@@ -16,9 +16,9 @@ abstract class AbstractViewsList
     /** @var null|ArrayCollection */
     protected $views = null;
 
-    public function __construct(TranslatorInterface $tranlator)
+    public function __construct(TranslatorInterface $translator)
     {
-        $this->translator = $tranlator;
+        $this->translator = $translator;
     }
 
     /**
