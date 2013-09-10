@@ -37,4 +37,4 @@ product:
 
 mass_edit_action:
     resource: "@PimCatalogBundle/Resources/config/routing/mass_edit_action.yml"
-    prefix: /enrich/batch-operation
+    prefix: /enrich/mass-edit-action

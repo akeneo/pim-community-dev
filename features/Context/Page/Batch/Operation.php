@@ -15,7 +15,7 @@ use Behat\Mink\Driver\BrowserKitDriver;
  */
 class Operation extends Wizard
 {
-    protected $path = '/enrich/batch-operation/choose?{products}';
+    protected $path = '/enrich/mass-edit-action/choose?{products}';
 
     private $steps = array(
         'Change status (Enable/Disable)' => 'Batch ChangeStatus',
@@ -37,7 +37,7 @@ class Operation extends Wizard
 
         $driver = $this->getSession()->getDriver();
         if ($driver instanceof BrowserKitDriver) {
-            $this->selectFieldOption('pim_catalog_batch_operation[operationAlias]', $choice->getAttribute('value'));
+            $this->selectFieldOption('pim_catalog_mass_edit_action[operationAlias]', $choice->getAttribute('value'));
         } else {
             $driver->click($choice->getXpath());
         }
