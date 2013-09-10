@@ -23,7 +23,7 @@ FEATURES_DIR=`dirname $0`/../../../../features
 XDEBUG_EXTENSION="xdebug.so"
 
 XDEBUG=$1
-BEHAT_CMD=`echo $* | sed -e "s/xdebug//" -e "s/noxdebug//"`
+BEHAT_CMD=`echo $* | sed -e "s/noxdebug//" | sed -e "s/noxdebug//"`
 
 RESULT="OK"
 
