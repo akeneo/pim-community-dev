@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/a2lix/TranslationFormBundle.git",
-                "reference": "5ede9fbb37cf53a6fd70fa27bd43c3510c2a90cb"
+                "reference": "57066a5cd91583981618385d5b7d70c44a63910a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/5ede9fbb37cf53a6fd70fa27bd43c3510c2a90cb",
-                "reference": "5ede9fbb37cf53a6fd70fa27bd43c3510c2a90cb",
+                "url": "https://api.github.com/repos/a2lix/TranslationFormBundle/zipball/57066a5cd91583981618385d5b7d70c44a63910a",
+                "reference": "57066a5cd91583981618385d5b7d70c44a63910a",
                 "shasum": ""
             },
             "require": {
@@ -65,7 +65,7 @@
                 "translatable",
                 "translation"
             ],
-            "time": "2013-08-22 19:48:43"
+            "time": "2013-09-10 08:40:14"
         },
         {
             "name": "akeneo/DemoBundle",
@@ -3468,12 +3468,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "9bcfe4c96b57c1f73ff693bc64e29e5ec2c089e8"
+                "reference": "14279566dedfd4d5bf5f5395a339780b8910c6ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/9bcfe4c96b57c1f73ff693bc64e29e5ec2c089e8",
-                "reference": "9bcfe4c96b57c1f73ff693bc64e29e5ec2c089e8",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/14279566dedfd4d5bf5f5395a339780b8910c6ee",
+                "reference": "14279566dedfd4d5bf5f5395a339780b8910c6ee",
                 "shasum": ""
             },
             "require": {
@@ -3539,7 +3539,7 @@
                 "source": "https://github.com/laboro/platform/tree/master",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-09-09 18:10:07"
+            "time": "2013-09-10 10:36:36"
         },
         {
             "name": "phpcollection/phpcollection",
