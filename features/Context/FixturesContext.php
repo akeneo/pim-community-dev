@@ -21,6 +21,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\BatchBundle\Entity\JobInstance;
+use Context\DatabasePurger;
 
 /**
  * A context for creating entities
@@ -91,6 +92,9 @@ class FixturesContext extends RawMinkContext
         $exists = $this->getEntityManager()->getRepository('OroUserBundle:User')->findAll();
 
         if (!$exists) {
+            $purger = new DatabasePurger($this->getEntityManager());
+            $purger->purge(true);
+
             $root = $this->createAcl('root', null, array(User::ROLE_DEFAULT, 'ROLE_SUPER_ADMIN'));
 
             $oroSecurity = $this->createAcl('oro_security', $root, array('IS_AUTHENTICATED_ANONYMOUSLY'));

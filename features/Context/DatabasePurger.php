@@ -144,7 +144,7 @@ class DatabasePurger implements PurgerInterface
         }
 
         foreach ($orderedTables as $tbl) {
-            if (in_array($tbl, $this->excludedTables)) {
+            if (!$entire && in_array($tbl, $this->excludedTables)) {
                 continue;
             }
             if ($this->purgeMode === self::PURGE_MODE_DELETE) {
