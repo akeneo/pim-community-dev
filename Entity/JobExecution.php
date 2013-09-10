@@ -491,10 +491,10 @@ class JobExecution
     public function __toString()
     {
         $string = "";
-        $startTime       = $this->startTime   != null ? $this ->startTime->format(\DateTime::ATOM)   : '';
-        $endTime         = $this->endTime     != null ? $this ->endTime->format(\DateTime::ATOM)     : '';
-        $updatedTime     = $this->updatedTime != null ? $this ->updatedTime->format(\DateTime::ATOM) : '';
-        $jobInstanceCode = $this->jobInstance != null ? $this->jobInstance->getCode()                : '';
+        $startTime       = self::formatDate($this ->startTime);
+        $endTime         = self::formatDate($this ->endTime);
+        $updatedTime     = self::formatDate($this->updatedTime);
+        $jobInstanceCode = $this->jobInstance != null ? $this->jobInstance->getCode() : '';
 
         $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%d, exitStatus=%s, exitDescription=[%s], job=[%s]";
         $string = sprintf(
@@ -510,4 +510,23 @@ class JobExecution
 
         return $string;
     }
+
+    /**
+     * Format a date or return empty string if null
+     *
+     * @param Datetime date
+     * @param string dateformat
+     *
+     * @return string Date formatted
+     */
+     public static function formatDate(\DateTime $date, $format = \DateTime::ATOM)
+     {
+        $formattedDate = '';
+
+        if ($date != null) {
+            $formattedDate = $date->format($format);
+        }
+
+        return $formattedDate;
+     }
 }
