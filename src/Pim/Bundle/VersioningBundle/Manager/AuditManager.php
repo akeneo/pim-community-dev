@@ -90,23 +90,22 @@ class AuditManager
             $oldData = array();
         }
 
-        $diff = array_diff($newData, $oldData);
+        $merge = array();
+        foreach ($newData as $field => $value) {
+            $merge[$field]= array('old' => '', 'new' => $value);
+        }
+        foreach ($oldData as $field => $value) {
+            if (!isset($merge[$field])) {
+                $merge[$field]= array('old' => $value, 'new' => '');
+            } else {
+                $merge[$field]['old'] = $value;
+            }
+        }
+
         $diffData = array();
-        foreach (array_keys($diff) as $changedField) {
-            if (isset($oldData[$changedField])) {
-                $diffData[$changedField]= array('old' => $oldData[$changedField]);
-            } else {
-                $diffData[$changedField]= array('old' => '');
-            }
-            if (isset($newData[$changedField])) {
-                $diffData[$changedField]['new'] = $newData[$changedField];
-            } else {
-                $diffData[$changedField]['new'] = '';
-            }
-            if (empty($diffData[$changedField]['new']) and empty($diffData[$changedField]['old'])) {
-                unset($diffData[$changedField]);
-            } elseif ($diffData[$changedField]['new'] == $diffData[$changedField]['old']) {
-                unset($diffData[$changedField]);
+        foreach ($merge as $changedField => $data) {
+            if ($data['old'] != $data['new']) {
+                $diffData[$changedField]= $data;
             }
         }
 

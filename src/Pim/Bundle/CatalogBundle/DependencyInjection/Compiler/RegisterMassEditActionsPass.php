@@ -13,21 +13,21 @@ use Symfony\Component\DependencyInjection\Reference;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RegisterBatchOperationsPass implements CompilerPassInterface
+class RegisterMassEditActionsPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('pim_catalog.batch_operation.operator')) {
+        if (!$container->hasDefinition('pim_catalog.mass_edit_action.operator')) {
             return;
         }
 
-        $def = $container->getDefinition('pim_catalog.batch_operation.operator');
+        $def = $container->getDefinition('pim_catalog.mass_edit_action.operator');
 
-        foreach ($container->findTaggedServiceIds('pim_catalog.batch_operation') as $id => $config) {
-            $def->addMethodCall('registerBatchOperation', array($config[0]['alias'], new Reference($id)));
+        foreach ($container->findTaggedServiceIds('pim_catalog.mass_edit_action') as $id => $config) {
+            $def->addMethodCall('registerMassEditAction', array($config[0]['alias'], new Reference($id)));
         }
     }
 }

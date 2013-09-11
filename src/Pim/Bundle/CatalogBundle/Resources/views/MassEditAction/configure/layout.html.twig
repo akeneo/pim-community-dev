@@ -1,0 +1,28 @@
+{% extends 'PimCatalogBundle::layout.html.twig' %}
+
+{% block content %}
+    {% set parameters = parameters|merge({'operationAlias': batchOperator.operationAlias}) %}
+    <form id="{{ form.vars.id }}" action="{{ path('pim_catalog_mass_edit_action_perform', parameters) }}" method="POST" class="form-horizontal">
+        {% block form %}{{ form_widget(form) }}{% endblock %}
+        <a href="{{ path('pim_catalog_mass_edit_action_choose', {'products': parameters.products}) }}" class="btn">Cancel</a>
+        <input type="submit" value="Next" class="btn btn-primary">
+    </form>
+{% endblock %}
+
+{% block head_script_component %}
+    {{ parent() }}
+
+    {% set parameters = parameters|merge({'operationAlias': batchOperator.operationAlias}) %}
+    {% set action = path('pim_catalog_mass_edit_action_configure', parameters) %}
+
+    <script type="text/javascript">
+        $(function() {
+            'use strict';
+            $('select.operation-param').change(function (event) {
+                $('#{{ form.vars.id }}')
+                    .attr('action', '{{ action|raw }}')
+                    .submit();
+            });
+        });
+    </script>
+{% endblock %}

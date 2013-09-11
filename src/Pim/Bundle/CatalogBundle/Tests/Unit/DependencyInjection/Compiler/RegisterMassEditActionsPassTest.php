@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterBatchOperationsPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterMassEditActionsPass;
 
 /**
  * Test related class
@@ -12,11 +12,11 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterBatchOperation
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RegisterBatchOperationsPassTest extends \PHPUnit_Framework_TestCase
+class RegisterMassEditActionsPassTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->target = new RegisterBatchOperationsPass();
+        $this->target = new RegisterMassEditActionsPass();
     }
 
     public function testInstanceOfCompilerPassInterface()
@@ -24,27 +24,27 @@ class RegisterBatchOperationsPassTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface', $this->target);
     }
 
-    public function testProcessTaggedBatchOperationService()
+    public function testProcessTaggedMassEditActionService()
     {
         $container = new ContainerBuilder();
         $container
-            ->register('pim_catalog.batch_operation.foo')
-            ->addTag('pim_catalog.batch_operation', array('alias' => 'foo'));
+            ->register('pim_catalog.mass_edit_action.foo')
+            ->addTag('pim_catalog.mass_edit_action', array('alias' => 'foo'));
         $container
-            ->register('pim_catalog.batch_operation.bar')
-            ->addTag('pim_catalog.batch_operation', array('alias' => 'bar'));
+            ->register('pim_catalog.mass_edit_action.bar')
+            ->addTag('pim_catalog.mass_edit_action', array('alias' => 'bar'));
         $container->register('unrelated_service');
         $container
-            ->register('pim_catalog.batch_operation.operator');
+            ->register('pim_catalog.mass_edit_action.operator');
 
         $this->target->process($container);
 
         $calls = $container
-            ->getDefinition('pim_catalog.batch_operation.operator')
+            ->getDefinition('pim_catalog.mass_edit_action.operator')
             ->getMethodCalls();
 
-        $this->assertHasMethodCall($calls, 0, 'registerBatchOperation', 'foo', 'pim_catalog.batch_operation.foo');
-        $this->assertHasMethodCall($calls, 1, 'registerBatchOperation', 'bar', 'pim_catalog.batch_operation.bar');
+        $this->assertHasMethodCall($calls, 0, 'registerMassEditAction', 'foo', 'pim_catalog.mass_edit_action.foo');
+        $this->assertHasMethodCall($calls, 1, 'registerMassEditAction', 'bar', 'pim_catalog.mass_edit_action.bar');
     }
 
     public function assertHasMethodCall($calls, $position, $method, $alias, $id)

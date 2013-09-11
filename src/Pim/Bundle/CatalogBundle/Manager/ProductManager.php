@@ -93,6 +93,24 @@ class ProductManager extends FlexibleManager
     }
 
     /**
+     * Find products by id
+     * Also ensure that they contain all required values
+     *
+     * @param integer[] $ids
+     *
+     * @return ProductInterface[]
+     */
+    public function findByIds(array $ids)
+    {
+        $products = $this->getFlexibleRepository()->findByIds($ids);
+        foreach ($products as $product) {
+            $this->ensureRequiredAttributeValues($product);
+        }
+
+        return $products;
+    }
+
+    /**
      * Find a product by identifier
      * Also ensure that it contains all required values
      *

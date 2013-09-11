@@ -21,7 +21,6 @@ class Form extends Base
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
-            $this->elements,
             array(
                 'Tabs'                            => array('css' => '#form-navbar'),
                 'Active tab'                      => array('css' => '.form-horizontal .tab-pane.active'),
@@ -31,7 +30,8 @@ class Form extends Base
                 'Available attributes button'     => array('css' => 'button:contains("Add attributes")'),
                 'Available attributes list'       => array('css' => '.pimmultiselect .ui-multiselect-checkboxes'),
                 'Available attributes add button' => array('css' => '.pimmultiselect a:contains("Add")'),
-            )
+            ),
+            $this->elements
         );
     }
 
