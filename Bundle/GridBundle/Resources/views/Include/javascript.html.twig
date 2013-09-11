@@ -127,6 +127,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                 noDataHint : {{ 'oro_grid.no_data_hint %entityHint%'|trans({'%entityHint%': entityHint})|json_encode|raw }},
                 noResultsHint : {{ 'oro_grid.not_found_hint %entityHint%'|trans({'%entityHint%': entityHint})|json_encode|raw }},
                 toolbarOptions: {{ datagrid.toolbarOptions|json_encode|raw }},
+                multipleSorting: {{ datagrid.multipleSorting|json_encode|raw }}
             },
             collection: {
                 inputName: {{ datagrid.name|json_encode|raw }},
@@ -180,7 +181,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
 
             {# @TODO Filter should not know anything about collection. #}
             {% for filter in datagrid.filters if filter.needCollection is defined and filter.needCollection %}
-            datagridOptions.grid.filters.{{ filter.name }}.collection = datagridCollection.collection;
+                datagridOptions.grid.filters.{{ filter.name }}.collection = datagridCollection.collection;
             {% endfor %}
 
             // Title
@@ -206,10 +207,10 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
 
             {# Don't use router when grid is embedded in dialog #}
             {% if app.request.get('_widgetContainer') != 'dialog' %}
-            // Register router and start history
-            var router = new GridRouter({
-                collection: datagridCollection.collection
-            });
+                // Register router and start history
+                var router = new GridRouter({
+                    collection: datagridCollection.collection
+                });
             {% endif %}
         };
 
