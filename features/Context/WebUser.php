@@ -30,16 +30,19 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private $password = null;
 
     private $pageMapping = array(
-        'attributes' => 'Attribute index',
-        'channels'   => 'Channel index',
-        'currencies' => 'Currency index',
-        'exports'    => 'Export index',
-        'families'   => 'Family index',
-        'imports'    => 'Import index',
-        'locales'    => 'Locale index',
-        'products'   => 'Product index',
-        'categories' => 'Category tree creation',
-        'home'       => 'Base index',
+        'attributes'  => 'Attribute index',
+        'channels'    => 'Channel index',
+        'currencies'  => 'Currency index',
+        'exports'     => 'Export index',
+        'families'    => 'Family index',
+        'imports'     => 'Import index',
+        'locales'     => 'Locale index',
+        'products'    => 'Product index',
+        'users'       => 'User index',
+        'user roles'  => 'UserRole index',
+        'user groups' => 'UserGroup index',
+        'categories'  => 'Category tree creation',
+        'home'        => 'Base index',
     );
 
     /* -------------------- Page-related methods -------------------- */
@@ -157,7 +160,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         foreach ($pages->getHash() as $data) {
             $url = $this->getSession()->evaluateScript(sprintf('return Routing.generate("%s");', $data['page']));
-            $this->getSession()->executeScript(sprintf('Pim.navigate("%s");', $url));
+            $this->getSession()->executeScript(
+                sprintf("require(['oro/navigation'], function(Nav) { Nav.getInstance().setLocation('%s'); } );", $url)
+            );
             $this->wait();
 
             $currentUrl = $this->getSession()->getCurrentUrl();
@@ -704,6 +709,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $group
+     *
+     * @Given /^I should be on the "([^"]*)" group page$/
+     */
+    public function iShouldBeOnTheGroupPage($group)
+    {
+        $expectedAddress = $this->getPage('Group edit')->getUrl(array('id' => $this->getGroup($group)->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
      * @param string $family
      *
      * @Given /^I should be on the "([^"]*)" family page$/
@@ -846,6 +862,36 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iSelectCurrency($currency)
     {
         $this->getPage('Channel creation')->selectCurrency($currency);
+    }
+
+    /**
+     * @param string $status
+     *
+     * @Given /^I select the status "([^"]*)"$/
+     */
+    public function iSelectStatus($status)
+    {
+        $this->getPage('User creation')->selectStatus($status);
+    }
+
+    /**
+     * @param string $owner
+     *
+     * @Given /^I select the owner "([^"]*)"$/
+     */
+    public function iSelectOwner($owner)
+    {
+        $this->getPage('User creation')->selectOwner($owner);
+    }
+
+    /**
+     * @param string $role
+     *
+     * @Given /^I select the role "([^"]*)"$/
+     */
+    public function iSelectRole($role)
+    {
+        $this->getPage('User creation')->selectRole($role);
     }
 
     /**
@@ -1010,12 +1056,29 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I disable the products$/
+     */
+    public function iDisableTheProducts()
+    {
+        $this->getPage('Batch ChangeStatus')->disableProducts()->next();
+    }
+
+    /**
      * @Given /^I enable the product$/
      */
     public function iEnableTheProduct()
     {
         $this->getPage('Product edit')->enableProduct()->save();
     }
+
+    /**
+     * @Given /^I enable the products$/
+     */
+    public function iEnableTheProducts()
+    {
+        $this->getPage('Batch ChangeStatus')->enableProducts()->next();
+    }
+
 
     /**
      * @param string $sku
@@ -1245,7 +1308,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iBlur()
     {
         $this->getCurrentPage()->find('css', 'body')->click();
-        $this->wait();
+
+        //TODO Otherwise, it  makes the features/category/create_a_category.feature:28 scenario fails
+        $this->wait(5000, null);
     }
 
     /**
@@ -1582,6 +1647,42 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @When /^I mass-edit products (.*)$/
+     */
+    public function iMassEditProducts($products)
+    {
+        $that = $this;
+        $products = preg_replace(
+            '/]\d+=/',
+            ']=',
+            http_build_query(
+                array_map(
+                    function ($product) use ($that) {
+                        return $that->getProduct($product)->getId();
+                    },
+                    $this->listToArray($products)
+                ),
+                'products[]'
+            )
+        );
+
+        $this->openPage('Batch Operation', array('products' => $products));
+    }
+
+    /**
+     * @Given /^I choose the "([^"]*)" operation$/
+     */
+    public function iChooseTheOperation($operation)
+    {
+        $this->currentPage = $this
+            ->getPage('Batch Operation')
+            ->chooseOperation($operation)
+            ->next();
+
+        $this->wait();
+    }
+
+    /**
      * @param string $expected
      */
     private function assertAddress($expected)
@@ -1680,6 +1781,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             return $this->getMainContext()->wait($time, $condition);
         } catch (UnsupportedDriverActionException $e) {
         }
+    }
+
+    /**
+     * @param string $username
+     *
+     * @return User
+     */
+    private function getUser($username)
+    {
+        return $this->getFixturesContext()->getUser($username);
     }
 
     /**

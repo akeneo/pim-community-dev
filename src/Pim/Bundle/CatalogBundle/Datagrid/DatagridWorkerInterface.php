@@ -24,21 +24,24 @@ interface DatagridWorkerInterface
      * @return Datagrid
      */
     public function getDataAuditDatagrid($entity, $route, array $routeParams);
-    
+
     /**
      * Gets the datagrid for the given type and querybuilder
-     * 
-     * @param QueryBuilder $builder
-     * @param type $name
+     *
+     * @param string       $name
+     * @param QueryBuilder $queryBuilder
+     * @param string       $namespace
+     *
      * @return Datagrid
      */
     public function getDatagrid($name, QueryBuilder $queryBuilder = null, $namespace = 'pim_catalog');
-    
+
     /**
      * Gets the datagrid manager for the given type
-     * 
-     * @param QueryBuilder $builder
-     * @param type $name
+     *
+     * @param string $name
+     * @param string $namespace
+     *
      * @return DatagridManagerInterface
      */
     public function getDatagridManager($name, $namespace = 'pim_catalog');

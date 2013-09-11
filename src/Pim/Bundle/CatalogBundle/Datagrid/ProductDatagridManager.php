@@ -15,13 +15,16 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Oro\Bundle\GridBundle\Property\FieldProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
+<<<<<<< HEAD
 use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
+=======
+use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
+>>>>>>> master
 
 /**
  * Grid manager
@@ -423,7 +426,16 @@ class ProductDatagridManager extends FlexibleDatagridManager
             )
         );
 
-        return array($deleteMassActions);
+        $redirectMassAction = new RedirectMassAction(
+            array(
+                'name'  => 'redirect',
+                'label' => 'Mass Edition',
+                'icon' => 'edit',
+                'route' => 'pim_catalog_mass_edit_action_choose',
+            )
+        );
+
+        return array($redirectMassAction, $deleteMassActions);
     }
 
     /**

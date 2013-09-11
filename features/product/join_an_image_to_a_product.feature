@@ -1,6 +1,6 @@
 Feature: Join an image to a product
   In order to join an image to a product
-  As an user
+  As a user
   I need to be able to upload it and preview it
 
   Background:

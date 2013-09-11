@@ -39,14 +39,14 @@ class DatagridBuilder extends OroDatagridBuilder
     /**
      * Constructor
      *
-     * @param FormFactoryInterface $formFactory
+     * @param FormFactoryInterface     $formFactory
      * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerInterface $aclManager
-     * @param FilterFactoryInterface $filterFactory
-     * @param SorterFactoryInterface $sorterFactory
-     * @param ActionFactoryInterface $actionFactory
-     * @param string $className
-     * @param Serializer $serializer
+     * @param ManagerInterface         $aclManager
+     * @param FilterFactoryInterface   $filterFactory
+     * @param SorterFactoryInterface   $sorterFactory
+     * @param ActionFactoryInterface   $actionFactory
+     * @param string                   $className
+     * @param Serializer               $serializer
      */
     public function __construct(
         FormFactoryInterface $formFactory,

@@ -10,5 +10,5 @@ Pim\Bundle\ImportExportBundle\Processor\ValidCategoryCreationProcessor:
             - Choice:
                 choices: [':', '|']
                 message: Valid delimiters are ":" and "|"
-        checkCircularRefs:
+        circularRefsChecked:
             - Type: boolean

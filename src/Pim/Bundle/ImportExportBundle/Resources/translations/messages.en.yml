@@ -51,7 +51,7 @@ pim_batch:
         escape:
             label: 'Escape'
             help: 'One character used to set the field escape'
-        allowUpload:
+        uploadAllowed:
             label: 'Allow file upload'
             help: 'Whether or not to allow uploading the file directly'
 
@@ -69,7 +69,7 @@ pim_batch:
         escape:
             label: 'Escape'
             help: 'One character used to set the field escape'
-        allowUpload:
+        uploadAllowed:
             label: 'Allow file upload'
             help: 'Whether or not to allow uploading the file directly'
 
@@ -99,7 +99,7 @@ pim_batch:
         localeDelimiter:
             label: Locale delimiter
             help: One character separating the title from the locale
-        checkCircularRefs:
+        circularRefsChecked:
             label: Check circular references
             help: If yes, data will be processed to make sure that there are no circular references between the categories
 

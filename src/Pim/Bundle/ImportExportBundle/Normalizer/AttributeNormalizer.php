@@ -61,7 +61,6 @@ class AttributeNormalizer implements NormalizerInterface
             'scope'                   => $attribute->getScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
             'useable_as_grid_column'  => (string) (int) $attribute->isUseableAsGridColumn(),
             'useable_as_grid_filter'  => (string) (int) $attribute->isUseableAsGridFilter(),
-            'value_creation_allowed'  => (string) $attribute->isValueCreationAllowed(),
             'default_value'           => (string) $attribute->getDefaultValue(),
             'max_characters'          => (string) $attribute->getMaxCharacters(),
             'validation_rule'         => (string) $attribute->getValidationRule(),

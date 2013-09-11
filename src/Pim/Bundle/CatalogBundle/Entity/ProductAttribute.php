@@ -158,13 +158,6 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     protected $negativeAllowed;
 
     /**
-     * @var boolean $valueCreationAllowed
-     *
-     * @ORM\Column(name="value_creation_allowed", type="boolean", nullable=true)
-     */
-    protected $valueCreationAllowed;
-
-    /**
      * @var string $dateType
      *
      * @ORM\Column(name="date_type", type="string", length=20, nullable=true)
@@ -766,30 +759,6 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     public function setNegativeAllowed($negativeAllowed)
     {
         $this->negativeAllowed = $negativeAllowed;
-
-        return $this;
-    }
-
-    /**
-     * Predicate for valueCreationAllowed property
-     *
-     * @return boolean $valueCreationAllowed
-     */
-    public function isValueCreationAllowed()
-    {
-        return $this->valueCreationAllowed;
-    }
-
-    /**
-     * Set valueCreationAllowed
-     *
-     * @param boolean $valueCreationAllowed
-     *
-     * @return ProductAttribute
-     */
-    public function setValueCreationAllowed($valueCreationAllowed)
-    {
-        $this->valueCreationAllowed = $valueCreationAllowed;
 
         return $this;
     }

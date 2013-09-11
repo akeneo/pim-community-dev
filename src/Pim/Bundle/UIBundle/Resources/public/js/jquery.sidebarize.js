@@ -9,14 +9,14 @@
     'use strict';
 
     function getState(key) {
-        if (Storage !== 'undefined') {
+        if (typeof Storage !== 'undefined') {
             return sessionStorage[key] || null;
         }
         return null;
     }
 
     function saveState(key, value) {
-        if (Storage !== 'undefined') {
+        if (typeof Storage !== 'undefined') {
             sessionStorage[key] = value;
         }
     }
@@ -37,7 +37,7 @@
             'cursor': 'default'
         });
         $('>.content', $element).css('left', opts.collapsedSeparatorWidth).width($(window).width() - opts.collapsedSeparatorWidth);
-        $element.find('.separator i.' + opts.expandIcon).show();
+        $element.find('.separator i').addClass(opts.expandIcon);
         saveState(opts.stateStorageKey, 0);
     }
 
@@ -49,7 +49,7 @@
             'cursor': opts.resizeCursor
         });
         $('>.content', $element).css('left', sidebarWidth + opts.separatorWidth).width($(window).width() - opts.separatorWidth - sidebarWidth);
-        $element.find('.separator i.' + opts.expandIcon).hide();
+        $element.find('.separator i').removeClass(opts.expandIcon);
         saveState(opts.stateStorageKey, 1);
     }
 
@@ -117,7 +117,7 @@
             collapse($element, opts);
         }).appendTo($controls);
 
-        $('<i>', { 'class': opts.expandIcon, css: opts.iconCss }).on('click', function () {
+        $('<i>', { css: opts.iconCss }).on('click', function () {
             expand($element, opts);
         }).appendTo($separator).hide();
 
@@ -203,8 +203,8 @@
         separatorWidth: 9,
         collapsedSeparatorWidth: 22,
         controlsHeight: 25,
-        collapseIcon: 'fa-icon-chevron-left',
-        expandIcon: 'fa-icon-chevron-right',
+        collapseIcon: 'icon-chevron-left',
+        expandIcon: 'icon-chevron-right',
         resizeCursor: 'e-resize',
         controlsCss: {
             'border': '1px solid #ddd',
@@ -231,8 +231,8 @@
         },
         buttonsCss: {
             'float': 'left',
-            'height': '25px',
-            'line-height': '25px'
+            'height': '23px',
+            'line-height': '23px'
         },
         buttons: []
     };

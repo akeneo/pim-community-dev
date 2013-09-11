@@ -276,6 +276,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function addCategory(Category $category)
     {
         if (!$this->categories->contains($category)) {
+            $category->addProduct($this);
             $this->categories->add($category);
         }
 

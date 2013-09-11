@@ -1,7 +1,7 @@
 @javascript
 Feature: Filter products per price
   In order to filter products in the catalog per price
-  As an user
+  As a user
   I need to be able to filter products per price in the catalog
 
   Background:

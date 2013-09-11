@@ -3,6 +3,26 @@
 {% block head_script %}
     {{ parent() }}
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'underscore', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'jquery.currencyfield'],
+            function($, _, TreeAssociate, Scopable, FormUpdateListener){
+                'use strict';
+                $(function() {
+                    new TreeAssociate('#trees');
+
+                    _.each($('form div.scopable'), function(field) {
+                        new Scopable({ el: $(field) });
+                    });
+
+                    $('form div.currency').currencyField();
+
+                    new FormUpdateListener($('#{{ form.vars.id }}'));
+                });
+            }
+        );
+    </script>
 {% endblock %}
 
 {% block page_container %}
@@ -73,28 +93,12 @@
         {{ elements.page_header(title, buttons, subtitle, left, right) }}
 
         <div class="layout-content">
-
-            {{ elements.form_navbar(['Attributes', 'Categories', 'Completeness', 'History']) }}
+            {% include 'PimCatalogBundle:Product:_navbar.html.twig' %}
 
             <div class="row-fluid tab-content">
-
                 {{ elements.form_errors(form) }}
 
-                <div class="tab-pane active" id="attributes">
-                    {% include 'PimCatalogBundle:Product:_attributes.html.twig' with { 'product': product, 'channels': channels, 'forn': form } %}
-                </div>
-
-                <div class="tab-pane" id="categories">
-                   {% include 'PimCatalogBundle:Product:_associateCategories.html.twig' %}
-                </div>
-
-                <div class="tab-pane" id="completeness">
-                   {% include 'PimCatalogBundle:Product:_completeness.html.twig' %}
-                </div>
-
-                <div class="tab-pane" id="history">
-                    <div id="history-grid"></div>
-                </div>
+                {% include 'PimCatalogBundle:Product:_tab-panes.html.twig' %}
 
                 {{ form_row(form.id) }}
                 {{ form_row(form._token) }}

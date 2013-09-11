@@ -11,6 +11,8 @@
 
     <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat"/>
 
+    <target name="build-behat-pr" depends="prepare,composer,vendors,setupdb,dumpassets,behat-pr"/>
+
     <target name="build-behat-coverage" depends="prepare,composer,vendors,setupdb,dumpassets,behat-coverage"/>
 
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
@@ -19,6 +21,7 @@
         <delete dir="${basedir}/app/build/api"/>
         <delete dir="${basedir}/app/build/code-browser"/>
         <delete dir="${basedir}/app/build/coverage"/>
+        <delete dir="${basedir}/app/build/coverage-parts"/>
         <delete dir="${basedir}/app/build/logs"/>
         <delete dir="${basedir}/app/build/pdepend"/>
 
@@ -32,8 +35,11 @@
         <mkdir dir="${basedir}/app/build/api"/>
         <mkdir dir="${basedir}/app/build/code-browser"/>
         <mkdir dir="${basedir}/app/build/coverage"/>
+        <mkdir dir="${basedir}/app/build/coverage-parts"/>
         <mkdir dir="${basedir}/app/build/logs"/>
         <mkdir dir="${basedir}/app/build/logs/behat"/>
+        <mkdir dir="${basedir}/app/build/logs/behat-pr"/>
+        <mkdir dir="${basedir}/app/build/logs/behat-coverage"/>
         <mkdir dir="${basedir}/app/build/pdepend"/>
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
@@ -161,28 +167,23 @@
     </target>
 
     <target name="behat" description="Run acceptance tests with Behat">
-        <exec executable="bin/behat" failonerror="true">
-            <env key="DISPLAY" value=":0" />
-            <arg value="--profile=jenkins" />
-            <arg value="--ansi" />
-            <arg value="--tags=~skip" />
-            <arg value="-fprogress" />
+        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <arg value="noxdebug" />
+            <arg value="${basedir}/bin/behat --profile=jenkins --ansi" />
+        </exec>
+    </target>
+
+    <target name="behat-pr" description="Run acceptance tests with Behat for the pull request">
+        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <arg value="noxdebug" />
+            <arg value="${basedir}/bin/behat --profile=jenkins-pr --ansi" />
         </exec>
     </target>
 
     <target name="behat-coverage" description="Run acceptance tests with Behat and produce coverage">
-        <exec executable="sh" outputproperty="xdebug_path">
-            <arg value="-c" />
-            <arg value="php -i | grep extension_dir | cut -d ' ' -f3"/>
-        </exec>
-        <exec executable="php" failonerror="true">
-            <env key="DISPLAY" value=":0" />
-            <arg value="-d zend_extension=${xdebug_path}/xdebug.so" />
-            <arg value="${basedir}/app/Resources/jenkins/behat_coverage/behat-coverage" />
-            <arg value="--profile=jenkins-coverage" />
-            <arg value="--ansi" />
-            <arg value="--tags=~skip" />
-            <arg value="-fprogress" />
+        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <arg value="xdebug" />
+            <arg value="${basedir}/app/Resources/jenkins/behat-coverage --profile=jenkins-coverage --ansi" />
         </exec>
     </target>
 
@@ -232,6 +233,26 @@
         </exec>
         <exec executable="app/console">
           <arg value="doctrine:database:create" />
+          <arg value="-n" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="doctrine:schema:create" />
+          <arg value="-n" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="oro:acl:load" />
+          <arg value="-n" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="oro:entity-config:update" />
+          <arg value="-n" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="oro:entity-extend:create" />
+          <arg value="-n" />
+        </exec>
+        <exec executable="app/console">
+          <arg value="cache:clear" />
           <arg value="-n" />
         </exec>
         <exec executable="app/console">

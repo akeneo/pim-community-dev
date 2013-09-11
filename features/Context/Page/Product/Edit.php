@@ -149,9 +149,7 @@ class Edit extends Form
      */
     public function getRemoveLinkFor($field)
     {
-        $controlGroupNode = $this->findField($field)->getParent()->getParent()->getParent()->getParent()->getParent();
-
-        return $controlGroupNode->find('css', '.remove-attribute');
+        return $this->find('css', sprintf('.control-group:contains("%s") .remove-attribute', $field));
     }
 
     /**

@@ -2,12 +2,23 @@
 
 {% block head_script %}
     {{ parent() }}
-    <script src="{{ asset('/bundles/pimui/js/pim_all.js') }}"></script>
+    <script type="text/javascript">
+        require(['pim/init']);
+    </script>
     {{ block('head_script_component') }}
 {% endblock %}
 
 {% block head_style %}
     {{ parent() }}
+    {% stylesheets
+        'bundles/pimui/css/pim.less'
+
+        debug=false
+        filter='cssrewrite,lessphp'
+        output='css/pim_all.css'
+    %}
+    <link rel="stylesheet" media="all" href="{{ asset_url }}" />
+    {% endstylesheets %}
     {{ block('head_style_component') }}
 {% endblock %}
 
