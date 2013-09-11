@@ -167,7 +167,7 @@ class MassEditActionOperator
     {
         $products = $this->manager->findByIds($productIds);
         if (!$products) {
-            throw new \InvalidArgumentException('No product were found with ids %s', implode(', ', $productIds));
+            throw new \InvalidArgumentException(sprintf('No product were found with ids %s', join(', ', $productIds)));
         }
 
         return $products;

@@ -125,7 +125,7 @@ class MassEditActionController extends AbstractController
         $form = $this->getMassEditActionOperatorForm();
         $form->bind($request);
 
-        $this->batchOperator->performOperation($parameters);
+        $this->batchOperator->performOperation($productIds);
 
         $this->addFlash('success', sprintf('pim_catalog.mass_edit_action.%s.success_flash', $operationAlias));
 

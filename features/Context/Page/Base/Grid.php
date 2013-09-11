@@ -73,16 +73,6 @@ class Grid extends Index
     }
 
     /**
-     * Get rows
-     *
-     * @return \Behat\Mink\Element\Element
-     */
-    protected function getRows()
-    {
-        return $this->getElement('Grid content')->findAll('css', 'tr');
-    }
-
-    /**
      * @param string $element
      * @param string $actionName
      */
@@ -166,32 +156,6 @@ class Grid extends Index
     }
 
     /**
-     * Get column headers
-     *
-     * @param boolean $withHidden
-     *
-     * @return \Behat\Mink\Element\Element
-     */
-    protected function getColumnHeaders($withHidden = false)
-    {
-        $headers = $this->getElement('Grid')->findAll('css', 'thead th');
-
-        if ($withHidden) {
-            return $headers;
-        }
-
-        $visibleHeaders = array();
-        foreach ($headers as $header) {
-            $style = $header->getAttribute('style');
-            if (!$style || !preg_match('/display: ?none;/', $style)) {
-                $visibleHeaders[] = $header;
-            }
-        }
-
-        return $visibleHeaders;
-    }
-
-    /**
      * Predicate to know if a column is sorted
      *
      * @param string $column
@@ -269,6 +233,44 @@ class Grid extends Index
     }
 
     /**
+     * Get grid filter from label name
+     * @param string $filterName
+     *
+     * @throws \InvalidArgumentException
+     * @return NodeElement
+     */
+    public function getFilter($filterName)
+    {
+        if (strtolower($filterName) === 'channel') {
+            $filter = $this->getElement('Grid toolbar')->find('css', 'div.filter-item');
+        } else {
+            $filter = $this->getElement('Filters')->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
+        }
+
+        if (!$filter) {
+            throw new \InvalidArgumentException(
+                sprintf('Couldn\'t find a filter with name "%s"', $filterName)
+            );
+        }
+
+        return $filter;
+    }
+    public function selectRow($value)
+    {
+        $row = $this->getRow($value);
+        $checkbox = $row->find('css', 'input[type="checkbox"]');
+
+        if (!$checkbox) {
+            throw new \InvalidArgumentException(
+                sprintf('Couldn\'t find a checkbox for row "%s"', $value)
+            );
+        }
+
+        $checkbox->check();
+
+        return $checkbox;
+    }
+    /**
      * @param string $row
      * @param string $position
      *
@@ -319,26 +321,38 @@ class Grid extends Index
     }
 
     /**
-     * Get grid filter from label name
-     * @param string $filterName
+     * Get column headers
      *
-     * @throws \InvalidArgumentException
-     * @return NodeElement
+     * @param boolean $withHidden
+     *
+     * @return \Behat\Mink\Element\Element
      */
-    public function getFilter($filterName)
+    protected function getColumnHeaders($withHidden = false)
     {
-        if (strtolower($filterName) === 'channel') {
-            $filter = $this->getElement('Grid toolbar')->find('css', 'div.filter-item');
-        } else {
-            $filter = $this->getElement('Filters')->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
+        $headers = $this->getElement('Grid')->findAll('css', 'thead th');
+
+        if ($withHidden) {
+            return $headers;
         }
 
-        if (!$filter) {
-            throw new \InvalidArgumentException(
-                sprintf('Couldn\'t find a filter with name "%s"', $filterName)
-            );
+        $visibleHeaders = array();
+        foreach ($headers as $header) {
+            $style = $header->getAttribute('style');
+            if (!$style || !preg_match('/display: ?none;/', $style)) {
+                $visibleHeaders[] = $header;
+            }
         }
 
-        return $filter;
+        return $visibleHeaders;
+    }
+
+    /**
+     * Get rows
+     *
+     * @return \Behat\Mink\Element\Element
+     */
+    protected function getRows()
+    {
+        return $this->getElement('Grid content')->findAll('css', 'tr');
     }
 }
