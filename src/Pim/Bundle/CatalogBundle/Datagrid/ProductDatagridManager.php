@@ -8,6 +8,8 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\Ajax\DeleteMassAction;
+use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
+use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
@@ -19,7 +21,7 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
-use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
+use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
 
 /**
  * Grid manager
@@ -431,6 +433,42 @@ class ProductDatagridManager extends FlexibleDatagridManager
         );
 
         return array($redirectMassAction, $deleteMassActions);
+    }
+
+    /**
+     * Get list of export actions
+     *
+     * @return \Pim\Bundle\GridBundle\Action\Export\ExportActionInterface[]
+     */
+    protected function getExportActions()
+    {
+        $exportCsv = new ExportCollectionAction(
+            array(
+                'acl_resource' => 'root',
+                'baseUrl' => $this->router->generate('pim_catalog_product_index', array('_format' => 'csv')),
+                'name' =>  'exportCsv',
+                'label' => $this->translate('Quick export'),
+                'icon'  => 'icon-download',
+                'keepParameters' => true
+            )
+        );
+
+        return array($exportCsv);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Add export actions
+     */
+    protected function configureDatagrid(DatagridInterface $datagrid)
+    {
+        parent::configureDatagrid($datagrid);
+
+        $exportActions = $this->getExportActions();
+        foreach ($exportActions as $exportAction) {
+            $this->datagridBuilder->addExportAction($datagrid, $exportAction);
+        }
     }
 
     /**

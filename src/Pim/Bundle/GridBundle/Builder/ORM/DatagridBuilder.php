@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\GridBundle\Builder\ORM;
 
+use Pim\Bundle\GridBundle\Action\Export\ExportActionInterface;
+
+use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
+
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -84,5 +88,13 @@ class DatagridBuilder extends OroDatagridBuilder
         $datagrid->setSerializer($this->serializer);
 
         return $datagrid;
+    }
+
+    public function addExportAction(DatagridInterface $datagrid, ExportActionInterface $exportAction)
+    {
+        $aclResource = $exportAction->getAclResource();
+        if ($aclResource || $this->aclManager->isResourceGranted($aclResource)) {
+            $datagrid->addExportAction($exportAction);
+        }
     }
 }
