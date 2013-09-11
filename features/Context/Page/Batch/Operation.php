@@ -15,8 +15,6 @@ use Behat\Mink\Driver\BrowserKitDriver;
  */
 class Operation extends Wizard
 {
-    protected $path = '/enrich/mass-edit-action/choose?{products}';
-
     private $steps = array(
         'Change status (Enable/Disable)' => 'Batch ChangeStatus',
         'Edit attributes'                => 'Batch EditCommonAttributes',
