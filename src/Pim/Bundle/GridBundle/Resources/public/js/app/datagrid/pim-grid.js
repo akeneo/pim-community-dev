@@ -2,7 +2,7 @@ var Pim = Pim || {};
 Pim.Datagrid = Pim.Datagrid || {};
 
 /**
- * Pim grid class extending Oro Datagrid for quick export action
+ * Pim grid class extending Oro Datagrid adding export action features
  * 
  * @author  Romain Monceau <romain@akeneo.com>
  * @class   Pim.Datagrid.Grid
@@ -27,15 +27,9 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
         massActions: [],
         exportActions: []
     },
-    
-    initialize: function(options) {
-        options = options || {};
-        
-        Oro.Datagrid.Grid.prototype.initialize.apply(this, arguments);
-    },
 
     /**
-     * Get mass actions of toolbar
+     * Override get mass actions of toolbar adding export actions in it
      *
      * @return {Array}
      * @private
@@ -47,42 +41,28 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
         }, this);
         
         _.each(this.exportActions, function(action) {
-            result.push(this.createExportAction(action.prototype));
+            result.push(this.createExportAction(action));
         }, this);
 
         return result;
     },
     
-    createExportAction: function(actionPrototype) {
+    /**
+     * Creates export action
+     * 
+     * @param {Function} action
+     * @return Pim.Datagrid.Action.ExportCollectionAction
+     * @protected
+     */
+    createExportAction: function(action) {
         return new Pim.Datagrid.Action.ExportCollectionAction({
             datagrid: this,
-            baseUrl: actionPrototype.baseUrl,
+            baseUrl: action.prototype.baseUrl,
             launcherOptions: {
-                label: actionPrototype.label,
+                label: action.prototype.label,
                 className: 'btn',
-                iconClassName: actionPrototype.icon
+                iconClassName: action.prototype.icon
             }
         });
-    },
-
-    /**
-     * Get action that export grid's collection
-     *
-     * @return Pim.Datagrid.Action.ExportCollectionAction
-     */
-    getExportAction: function() {
-        if (!this.exportAction) {
-            this.exportAction = new Pim.Datagrid.Action.ExportCollectionAction({
-                datagrid: this,
-                baseUrl: Routing.generate('pim_catalog_product_index', {'_format': 'csv'}),
-                launcherOptions: {
-                    label: 'Quick export',
-                    className: 'btn no-hash',
-                    iconClassName: 'icon-download'
-                }
-            });
-        }
-        
-        return this.exportAction;
     }
 });
