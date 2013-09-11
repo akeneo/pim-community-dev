@@ -4,9 +4,10 @@
 
 {% block head_script %}
     {{ parent() }}
-    {% include 'PimGridBundle:Include:pim-datagrid.html.twig'
+    {% include 'PimGridBundle:Include:pim-javascript.html.twig'
         with {'datagridView': datagrid, 'selector': '#product-grid'}
     %}
+    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
     <script type="text/javascript">
         require(
             ['jquery', 'pim/tree/view', 'jquery.sidebarize'],
