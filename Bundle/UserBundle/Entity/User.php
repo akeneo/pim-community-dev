@@ -53,7 +53,6 @@ use DateTime;
  *          },
  *      }
  * )
- * @Extend
  */
 class User extends AbstractEntityFlexible implements
     AdvancedUserInterface,

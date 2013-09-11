@@ -31,12 +31,12 @@ class OroEntityExtendBundle extends Bundle
             }
         }
 
-        /*$container->addCompilerPass(
+        $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 array(
                     $container->getParameter('kernel.root_dir') . '/entities/Extend/Entity' => 'Extend\Entity'
                 )
             )
-        );*/
+        );
     }
 }

@@ -4,12 +4,12 @@ namespace Oro\Bundle\EntityExtendBundle\Command;
 
 use Doctrine\ORM\EntityManager;
 
-use Metadata\MetadataFactory;
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
+
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-use Oro\Bundle\EntityExtendBundle\Metadata\ExtendClassMetadata;
 use Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator;
+
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Symfony\Component\Console\Input\InputInterface;

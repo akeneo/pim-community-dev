@@ -6,19 +6,4 @@ use Doctrine\ORM\Mapping\ClassMetadataFactory;
 
 class ExtendClassMetadataFactory extends ClassMetadataFactory
 {
-    public function getMetadataFor($className)
-    {
-        if (is_subclass_of($className, 'Oro\Bundle\EntityExtendBundle\Entity\ProxyEntityInterface')) {
-            $className = get_parent_class($className);
-        }
-
-        $metadata = parent::getMetadataFor($className);
-
-        return $metadata;
-    }
-
-    public function getAllMetadata()
-    {
-        parent::getAllMetadata();
-    }
 }
