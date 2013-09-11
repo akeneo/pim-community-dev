@@ -87,4 +87,23 @@ class ExportCollectionActionTest extends ExportActionTestCase
             )
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function dataProviderGetters()
+    {
+        return array(
+            array(
+                array(
+                    'acl_resource'   => 'root',
+                    'baseUrl'        => 'MyBaseUrl',
+                    'name'           => 'MyExport',
+                    'label'          => 'MyLabel',
+                    'icon'           => 'my-icon',
+                    'keepParameters' => true
+                )
+            )
+        );
+    }
 }

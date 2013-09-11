@@ -65,4 +65,37 @@ abstract class ExportActionTestCase extends \PHPUnit_Framework_TestCase
     {
         $exportAction = $this->createExportAction($inputOptions);
     }
+
+    /**
+     * Data provider for getters
+     *
+     * @return array
+     * @abstract
+     * @static
+     */
+    abstract public static function dataProviderGetters();
+
+    /**
+     * Test related method
+     * @param array $inputOptions
+     *
+     * @dataProvider dataProviderGetters
+     */
+    public function testGetName($inputOptions)
+    {
+        $exportAction = $this->createExportAction($inputOptions);
+        $this->assertEquals($inputOptions['name'], $exportAction->getName());
+    }
+
+    /**
+     * Test related method
+     * @param array $inputOptions
+     *
+     * @dataProvider dataProviderGetters
+     */
+    public function testGetAclResource($inputOptions)
+    {
+        $exportAction = $this->createExportAction($inputOptions);
+        $this->assertEquals($inputOptions['acl_resource'], $exportAction->getAclResource());
+    }
 }
