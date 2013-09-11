@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
+
+use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
+
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -422,6 +426,33 @@ class ProductDatagridManager extends FlexibleDatagridManager
         );
 
         return array($deleteMassActions);
+    }
+
+    protected function getExportActions()
+    {
+        $exportCsv = new ExportCollectionAction(
+            array(
+                'acl_resource' => 'root',
+                'baseUrl' => $this->router->generate('pim_catalog_product_index', array('_format' => 'csv')),
+                'name' =>  'exportCsv',
+                'label' => $this->translate('Quick export'),
+                'icon'  => 'download',
+                'options' => array('keepParameters' => true)
+            )
+        );
+
+        return array($exportCsv);
+    }
+
+    protected function configureDatagrid(DatagridInterface $datagrid)
+    {
+        parent::configureDatagrid($datagrid);
+
+        $exportActions = $this->getExportActions();
+        // add export actions
+        foreach ($exportActions as $exportAction) {
+            $this->datagridBuilder->addExportAction($datagrid, $exportAction);
+        }
     }
 
     /**
