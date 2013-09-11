@@ -33,6 +33,7 @@ function ($, _, Backbone, Backgrid, PageableCollection) {
          * Add listening "reset" event of collection to able catch situation when header cell should update it's sort state.
          */
         initialize: function() {
+            this.allowNoSorting = this.collection.multipleSorting;
             Backgrid.HeaderCell.prototype.initialize.apply(this, arguments);
             this._initCellDirection(this.collection);
             this.collection.on('reset', this._initCellDirection, this);
