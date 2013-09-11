@@ -99,7 +99,7 @@ oro_entity_config:
                     filter:                 { owner: 'Custom', state: ['New', 'Requires update', 'Active'] }
                     args:                   ['id']
                 -
-                    name:                   'Resore'
+                    name:                   'Restore'
                     route:                  'oro_entityextend_field_unremove'
                     type:                   'ajax'
                     icon:                   'backward'
