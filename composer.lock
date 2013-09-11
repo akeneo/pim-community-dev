@@ -3468,12 +3468,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "bce54658f3fd059192c5b45d625ff0ab220e0387"
+                "reference": "82821877494bc504ec411bf4fd2b8f9b7e08985d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/bce54658f3fd059192c5b45d625ff0ab220e0387",
-                "reference": "bce54658f3fd059192c5b45d625ff0ab220e0387",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/82821877494bc504ec411bf4fd2b8f9b7e08985d",
+                "reference": "82821877494bc504ec411bf4fd2b8f9b7e08985d",
                 "shasum": ""
             },
             "require": {
@@ -3539,7 +3539,7 @@
                 "source": "https://github.com/laboro/platform/tree/maintenance/pim_alpha5",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-09-10 10:56:03"
+            "time": "2013-09-11 18:10:03"
         },
         {
             "name": "phpcollection/phpcollection",
