@@ -53,9 +53,9 @@ function(_, Backbone, registry, mediator) {
         _assignDatagridAndSubscribe: function(datagridName) {
             var datagrid = registry.getElement('datagrid', datagridName);
             if (datagrid) {
-                this.setDatagridAnsSubscribe(datagrid);
+                this.setDatagridAndSubscribe(datagrid);
             } else {
-                mediator.once("datagrid:created:" + datagridName, this.setDatagridAnsSubscribe, this);
+                mediator.once("datagrid:created:" + datagridName, this.setDatagridAndSubscribe, this);
             }
         },
 
@@ -64,7 +64,7 @@ function(_, Backbone, registry, mediator) {
          *
          * @param {oro.datagrid.Grid} datagrid
          */
-        setDatagridAnsSubscribe: function(datagrid) {
+        setDatagridAndSubscribe: function(datagrid) {
             this.datagrid = datagrid;
             this.datagrid.on('cellEdited', this._onCellEdited, this);
         },

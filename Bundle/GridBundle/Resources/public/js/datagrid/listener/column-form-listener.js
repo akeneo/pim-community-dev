@@ -37,8 +37,8 @@ function($, _, __, mediator, Modal, AbstractListener) {
          *
          * @param {oro.datagrid.Grid} datagrid
          */
-        setDatagridAnsSubscribe: function(datagrid) {
-            AbstractListener.prototype.setDatagridAnsSubscribe.apply(this, arguments);
+        setDatagridAndSubscribe: function(datagrid) {
+            AbstractListener.prototype.setDatagridAndSubscribe.apply(this, arguments);
 
             this.listenTo(this.datagrid.getRefreshAction(), 'preExecute', this._onExecuteRefreshAction);
             this.listenTo(this.datagrid.getResetAction(), 'preExecute', this._onExecuteResetAction);
