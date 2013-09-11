@@ -2,7 +2,7 @@ var Pim = Pim || {};
 Pim.Datagrid = Pim.Datagrid || {};
 
 /**
- * Pim grid class extending Oro Datagrid for quick export action
+ * Pim grid class extending Oro Datagrid adding export actions
  * 
  * @author  Romain Monceau <romain@akeneo.com>
  * @class   Pim.Datagrid.Grid
@@ -29,7 +29,7 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
     },
 
     /**
-     * Get mass actions of toolbar
+     * Override get mass actions of toolbar adding export actions
      *
      * @return {Array}
      * @private
@@ -47,6 +47,13 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
         return result;
     },
     
+    /**
+     * Creates export action
+     * 
+     * @param {Function} actionPrototype
+     * @return Pim.Datagrid.Action.ExportCollectionAction
+     * @protected
+     */
     createExportAction: function(actionPrototype) {
         return new Pim.Datagrid.Action.ExportCollectionAction({
             datagrid: this,
