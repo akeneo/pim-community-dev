@@ -1,0 +1,15 @@
+{% extends 'PimCatalogBundle::layout.html.twig' %}
+
+{% block content %}
+    {% set title = 'pim_catalog.mass_edit_action.choose.page_title'|trans %}
+    {% set subtitle = 'pim_catalog.mass_edit_action.choose.page_subtitle'|transchoice(productIds|length) %}
+    {{ elements.page_header(title, null, subtitle) }}
+
+    <h3>{{ 'pim_catalog.mass_edit_action.choose.title'|trans }}</h3>
+    <h4>{{ 'pim_catalog.mass_edit_action.choose.subtitle'|transchoice(productIds|length) }}</h4>
+    <form action="{{ path('pim_catalog_mass_edit_action_choose', { 'products': productIds }) }}" method="POST" class="form-horizontal">
+        {{ form_widget(form.operationAlias) }}
+        {{ form_rest(form) }}
+        <input type="submit" value="Next" class="btn btn-primary">
+    </form>
+{% endblock %}

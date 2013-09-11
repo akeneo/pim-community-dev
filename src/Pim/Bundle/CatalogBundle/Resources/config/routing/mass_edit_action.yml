@@ -1,0 +1,17 @@
+pim_catalog_mass_edit_action_choose:
+    path: /choose
+    defaults: { _controller: pim_catalog.controller.mass_edit_action:chooseAction }
+    requirements:
+        _method: GET|POST
+
+pim_catalog_mass_edit_action_configure:
+    path: /{operationAlias}/configure
+    defaults: { _controller: pim_catalog.controller.mass_edit_action:configureAction }
+    requirements:
+        _method: GET|POST
+
+pim_catalog_mass_edit_action_perform:
+    path: /{operationAlias}/perform
+    defaults: { _controller: pim_catalog.controller.mass_edit_action:performAction }
+    requirements:
+        _method: POST
