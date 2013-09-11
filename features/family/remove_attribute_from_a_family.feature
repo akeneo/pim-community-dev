@@ -1,9 +1,9 @@
+@javascript
 Feature: Remove attribute from a family
   In order to correct myself when I have wrongly added an attribute into a family
   As a user
   I need to be able to remove an attribute from a family
 
-  @javascript
   Scenario: Successfully remove an attribute in a family
     Given the following family:
       | code |
