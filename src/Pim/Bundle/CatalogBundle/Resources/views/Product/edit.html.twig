@@ -19,6 +19,8 @@
                     $('form div.currency').currencyField();
 
                     new FormUpdateListener($('#{{ form.vars.id }}'));
+
+                    $('#default_channel').select2('destroy').css('padding', '0');
                 });
             }
         );
