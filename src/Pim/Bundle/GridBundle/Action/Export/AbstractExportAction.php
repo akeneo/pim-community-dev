@@ -2,21 +2,40 @@
 
 namespace Pim\Bundle\GridBundle\Action\Export;
 
-use Pim\Bundle\GridBundle\Action\Export\ExportActionInterface;
-
+/**
+ * Abstract export action class for datagrid managers
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @abstract
+ * @see       Pim\Bundle\GridBundle\Action\Export\ExportActionInterface
+ */
 abstract class AbstractExportAction implements ExportActionInterface
 {
+    /**
+     * @var array
+     */
     protected $options = array();
 
+    /**
+     * Constructor
+     *
+     * @param array $options
+     */
     public function __construct(array $options)
     {
         $this->options = $options;
-        $this->assertRequiredOptions(array('name', 'baseUrl'));
+        $this->assertRequiredOptions(array('name'));
+        $this->defineDefaultValues();
     }
 
-    public function getRoute()
+    /**
+     * Define the default values for each export action if needed
+     */
+    protected function defineDefaultValues()
     {
-        return $this->getOption('route');
     }
 
     /**
@@ -52,15 +71,10 @@ abstract class AbstractExportAction implements ExportActionInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getLabel()
-    {
-        return $this->getOption('label');
-    }
-
-    /**
+     * Assert the required options
+     *
      * @param array $requiredOptions
+     *
      * @throws \InvalidArgumentException
      */
     protected function assertRequiredOptions(array $requiredOptions)

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\GridBundle\Action\Export;
 
 /**
- *
+ * Export collection action for datagrid managers
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -11,4 +11,23 @@ namespace Pim\Bundle\GridBundle\Action\Export;
  */
 class ExportCollectionAction extends AbstractExportAction
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(array $options)
+    {
+        parent::__construct($options);
+
+        $this->assertRequiredOptions(array('baseUrl'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function defineDefaultValues()
+    {
+        if ($this->getOption('keepParameters') === null) {
+            $this->options['keepParameters'] = true;
+        }
+    }
 }

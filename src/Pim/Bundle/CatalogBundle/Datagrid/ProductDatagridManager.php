@@ -439,8 +439,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'baseUrl' => $this->router->generate('pim_catalog_product_index', array('_format' => 'csv')),
                 'name' =>  'exportCsv',
                 'label' => $this->translate('Quick export'),
-                'icon'  => 'download',
-                'options' => array('keepParameters' => true)
+                'icon'  => 'icon-download',
+                'keepParameters' => false
             )
         );
 
