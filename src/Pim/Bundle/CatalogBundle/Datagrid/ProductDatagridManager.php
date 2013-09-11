@@ -2,16 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
-use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
-
-use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
-
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\Ajax\DeleteMassAction;
+use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
@@ -24,6 +21,7 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
+use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
 
 /**
  * Grid manager
@@ -428,6 +426,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
         return array($deleteMassActions);
     }
 
+    /**
+     * Get list of export actions
+     *
+     * @return \Pim\Bundle\GridBundle\Action\Export\ExportActionInterface[]
+     */
     protected function getExportActions()
     {
         $exportCsv = new ExportCollectionAction(
@@ -444,12 +447,16 @@ class ProductDatagridManager extends FlexibleDatagridManager
         return array($exportCsv);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Add export actions
+     */
     protected function configureDatagrid(DatagridInterface $datagrid)
     {
         parent::configureDatagrid($datagrid);
 
         $exportActions = $this->getExportActions();
-        // add export actions
         foreach ($exportActions as $exportAction) {
             $this->datagridBuilder->addExportAction($datagrid, $exportAction);
         }
