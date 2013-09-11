@@ -1036,11 +1036,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iPressTheButton($button)
     {
         $this->getCurrentPage()->pressButton($button);
-        if ($button === 'Create') {
-            $this->wait(10000, null);
-        } else {
-            $this->wait();
-        }
+        $this->wait();
     }
 
     /**
