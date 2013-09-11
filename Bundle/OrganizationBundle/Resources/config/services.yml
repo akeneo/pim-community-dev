@@ -82,7 +82,6 @@ services:
             - @security.context
             - @oro_entity_config.provider.ownership
             - @oro_organization.business_unit_manager
-            - @oro_user.acl_manager
             - @translator
         tags:
             - { name: form.type_extension, alias: form }

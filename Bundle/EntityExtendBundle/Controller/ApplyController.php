@@ -10,7 +10,7 @@ use Symfony\Component\Process\Process;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
@@ -22,11 +22,6 @@ use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 /**
  * EntityExtendBundle controller.
  * @Route("/entity/extend")
- * @Acl(
- *      id="oro_entityextend",
- *      name="Entity extend manipulation",
- *      description="Entity extend manipulation"
- * )
  */
 class ApplyController extends Controller
 {
@@ -39,9 +34,9 @@ class ApplyController extends Controller
      * )
      * @Acl(
      *      id="oro_entityextend_apply",
-     *      name="Validate changes",
-     *      description="Validate entityconfig changes",
-     *      parent="oro_entityextend"
+     *      name="Validate entityconfig changes",
+     *      type="action",
+     *      group=""
      * )
      * @Template()
      */
@@ -116,9 +111,9 @@ class ApplyController extends Controller
      * )
      * @Acl(
      *      id="oro_entityextend_update",
-     *      name="Apply changes",
-     *      description="Apply entityconfig changes",
-     *      parent="oro_entityextend"
+     *      name="Apply entityconfig changes",
+     *      type="action",
+     *      group=""
      * )
      * @Template()
      */

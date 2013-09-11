@@ -7,26 +7,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionDispatcher;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionParametersParser;
 
-/**
- * @Acl(
- *      id="oro_grid",
- *      name="Grid manipulation",
- *      description="Grid manipulation"
- * )
- */
 class MassActionController extends Controller
 {
     /**
      * @Route("/{gridName}/massAction/{actionName}", name="oro_grid_mass_action")
      * @Acl(
      *      id="oro_grid_mass_action",
-     *      name="Datagrid mass action",
-     *      description="Datagrid mass action entry point",
-     *      parent="oro_grid"
+     *      name="Datagrid mass action entry point",
+     *      type="action",
+     *      group=""
      * )
      * @param string $gridName
      * @param string $actionName

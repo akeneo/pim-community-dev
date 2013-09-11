@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Datagrid\AuditDatagridManager;
@@ -17,11 +17,6 @@ use Oro\Bundle\EntityConfigBundle\Datagrid\AuditFieldDatagridManager;
 /**
  * EntityBundle controller.
  * @Route("/entity/config")
- * @Acl(
- *      id="oro_entityconfig",
- *      name="Entity config manipulation",
- *      description="Entity config manipulation"
- * )
  */
 class AuditController extends Controller
 {
@@ -36,8 +31,8 @@ class AuditController extends Controller
      * @Acl(
      *      id="oro_entityconfig_audit",
      *      name="View entity history",
-     *      description="View entity history audit log",
-     *      parent="oro_entityconfig"
+     *      type="action",
+     *      group=""
      * )
      *
      * @param $entity
@@ -80,8 +75,8 @@ class AuditController extends Controller
      * @Acl(
      *      id="oro_entityconfig_audit_field",
      *      name="View entity's field history",
-     *      description="View entity's field history audit log",
-     *      parent="oro_entityconfig"
+     *      type="action",
+     *      group=""
      * )
      *
      * @param $entity

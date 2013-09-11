@@ -2,7 +2,7 @@
 namespace Oro\Bundle\UserBundle\Tests\Unit\Acl\ResourceReader;
 
 use Oro\Bundle\UserBundle\Acl\ResourceReader\Reader;
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 class ReaderTest extends \PHPUnit_Framework_TestCase
 {

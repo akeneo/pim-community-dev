@@ -11,8 +11,8 @@ use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiFlexibleEntityManager;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\FlexibleRestController;
@@ -116,9 +116,10 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      * )
      * @Acl(
      *      id="oro_user_user_delete",
-     *      name="Remove user user",
-     *      description="Remove user user",
-     *      parent="oro_user_user"
+     *      name="Delete user",
+     *      type="entity",
+     *      entity="OroUserBundle:User",
+     *      precision="DELETE"
      * )
      */
     public function deleteAction($id)
@@ -148,8 +149,9 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      * @Acl(
      *      id="oro_user_user_roles",
      *      name="View user roles",
-     *      description="View user roles",
-     *      parent="oro_user"
+     *      type="entity",
+     *      entity="OroUserBundle:User",
+     *      precision="VIEW"
      * )
      */
     public function getRolesAction($id)
@@ -179,8 +181,9 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      * @Acl(
      *      id="oro_user_user_groups",
      *      name="View user groups",
-     *      description="View user groups",
-     *      parent="oro_user"
+     *      type="entity",
+     *      entity="OroUserBundle:Group",
+     *      precision="VIEW"
      * )
      */
     public function getGroupsAction($id)
@@ -210,8 +213,8 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      * @Acl(
      *      id="oro_user_user_acl",
      *      name="View user ACL",
-     *      description="View user's granted ACL resources",
-     *      parent="oro_user"
+     *      type="action",
+     *      group=""
      * )
      */
     public function getAclAction($id)

@@ -60,7 +60,6 @@ class TagManager
         $taggingClass,
         ObjectMapper $mapper,
         SecurityContextInterface $securityContext,
-        Manager $aclManager,
         Router $router
     ) {
         $this->em = $em;
@@ -69,7 +68,7 @@ class TagManager
         $this->taggingClass = $taggingClass;
         $this->mapper = $mapper;
         $this->securityContext = $securityContext;
-        $this->aclManager = $aclManager;
+        $this->aclManager = null;
         $this->router = $router;
     }
 

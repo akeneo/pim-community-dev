@@ -26,9 +26,9 @@ class OroUserExtension extends \Twig_Extension
      * @param ManagerInterface $manager
      * @param GenderProvider $genderProvider
      */
-    public function __construct(ManagerInterface $manager, GenderProvider $genderProvider)
+    public function __construct(GenderProvider $genderProvider)
     {
-        $this->manager = $manager;
+        $this->manager = null;
         $this->genderProvider = $genderProvider;
     }
 
@@ -66,7 +66,8 @@ class OroUserExtension extends \Twig_Extension
      */
     public function checkResourceIsGranted($aclId)
     {
-        return $this->manager->isResourceGranted($aclId);
+        return true;
+        //return $this->manager->isResourceGranted($aclId);
     }
 
     /**

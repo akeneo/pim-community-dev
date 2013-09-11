@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
@@ -24,11 +24,6 @@ use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 /**
  * EntityConfig controller.
  * @Route("/entity/config")
- * @Acl(
- *      id="oro_entityconfig",
- *      name="Entity config manipulation",
- *      description="Entity config manipulation"
- * )
  */
 class ConfigController extends Controller
 {
@@ -37,9 +32,9 @@ class ConfigController extends Controller
      * @Route("/", name="oro_entityconfig_index")
      * @Acl(
      *      id="oro_entityconfig_index",
-     *      name="View entities",
-     *      description="View configurable entities",
-     *      parent="oro_entityconfig"
+     *      name="View configurable entities",
+     *      type="action",
+     *      group=""
      * )
      * @Template()
      */
@@ -65,9 +60,9 @@ class ConfigController extends Controller
      * @Route("/update/{id}", name="oro_entityconfig_update")
      * @Acl(
      *      id="oro_entityconfig_update",
-     *      name="Update entity",
-     *      description="Update configurable entity",
-     *      parent="oro_entityconfig"
+     *      name="Update configurable entity",
+     *      type="action",
+     *      group=""
      * )
      * @Template()
      */
@@ -118,9 +113,9 @@ class ConfigController extends Controller
      * @Route("/view/{id}", name="oro_entityconfig_view")
      * @Acl(
      *      id="oro_entityconfig_view",
-     *      name="View entity",
-     *      description="View configurable entity",
-     *      parent="oro_entityconfig"
+     *      name="View configurable entity",
+     *      type="action",
+     *      group=""
      * )
      * @Template()
      */
@@ -245,9 +240,9 @@ class ConfigController extends Controller
      * @Route("/field/update/{id}", name="oro_entityconfig_field_update")
      * @Acl(
      *      id="oro_entityconfig_field_update",
-     *      name="Update entity field",
-     *      description="Update configurable entity field",
-     *      parent="oro_entityconfig"
+     *      name="Update configurable entity field",
+     *      type="action",
+     *      group=""
      * )
      * @Template()
      */

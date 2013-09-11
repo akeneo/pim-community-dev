@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
@@ -29,11 +29,6 @@ use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
  * Class ConfigGridController
  * @package Oro\Bundle\EntityExtendBundle\Controller
  * @Route("/entity/extend/entity")
- * @Acl(
- *      id="oro_entityextend",
- *      name="Entity extend manipulation",
- *      description="Entity extend manipulation"
- * )
  */
 class ConfigEntityGridController extends Controller
 {
@@ -46,9 +41,9 @@ class ConfigEntityGridController extends Controller
      * )
      * @Acl(
      *      id="oro_entityextend_entity_unique_key",
-     *      name="Unique keys",
-     *      description="Update entity unique keys",
-     *      parent="oro_entityextend"
+     *      name="Unique entity unique keys",
+     *      type="action",
+     *      group=""
      * )
      * @Template
      */
@@ -131,8 +126,8 @@ class ConfigEntityGridController extends Controller
      * @Acl(
      *      id="oro_entityextend_entity_create",
      *      name="Create custom entity",
-     *      description="Create custom entity",
-     *      parent="oro_entityextend"
+     *      type="action",
+     *      group=""
      * )
      * @Template
      */
@@ -208,8 +203,8 @@ class ConfigEntityGridController extends Controller
      * @Acl(
      *      id="oro_entityextend_entity_remove",
      *      name="Remove custom entity",
-     *      description="Remove custom entity",
-     *      parent="oro_entityextend"
+     *      type="action",
+     *      group=""
      * )
      */
     public function removeAction(EntityConfigModel $entity)
@@ -247,8 +242,8 @@ class ConfigEntityGridController extends Controller
      * @Acl(
      *      id="oro_entityextend_entity_unremove",
      *      name="Unremove custom entity",
-     *      description="Unremove custom entity",
-     *      parent="oro_entityextend"
+     *      type="action",
+     *      group=""
      * )
      */
     public function unremoveAction(EntityConfigModel $entity)

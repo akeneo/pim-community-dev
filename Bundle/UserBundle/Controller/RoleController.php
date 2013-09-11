@@ -9,21 +9,23 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\UserBundle\Datagrid\RoleUserDatagridManager;
 
 /**
  * @Route("/role")
- * @Acl(
- *      id="oro_user_role",
- *      name="Role manipulation",
- *      description="Role manipulation"
- * )
  */
 class RoleController extends Controller
 {
     /**
+     * @Acl(
+     *      id="oro_user_role_create",
+     *      name="Create new role",
+     *      type="entity",
+     *      entity="OroUserBundle:Role",
+     *      precision="CREATE"
+     * )
      * @Route("/acl-create", name="oro_user_new_role_create")
      * @Template("OroUserBundle:Role:updateNew.html.twig")
      */
@@ -33,6 +35,13 @@ class RoleController extends Controller
     }
 
     /**
+     * @Acl(
+     *      id="oro_user_role_create",
+     *      name="Edit role",
+     *      type="entity",
+     *      entity="OroUserBundle:Role",
+     *      precision="EDIT"
+     * )
      * @Route("/acl-update/{id}", name="oro_user_new_role_update", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
      */
@@ -70,9 +79,10 @@ class RoleController extends Controller
      * @Template("OroUserBundle:Role:update.html.twig")
      * @Acl(
      *      id="oro_user_role_create",
-     *      name="Create role",
-     *      description="Create new role",
-     *      parent="oro_user_role"
+     *      name="Create new role",
+     *      type="entity",
+     *      entity="OroUserBundle:Role",
+     *      precision="CREATE"
      * )
      */
     public function createAction()
@@ -88,8 +98,9 @@ class RoleController extends Controller
      * @Acl(
      *      id="oro_user_role_update",
      *      name="Edit role",
-     *      description="Edit role",
-     *      parent="oro_user_role"
+     *      type="entity",
+     *      entity="OroUserBundle:Role",
+     *      precision="EDIT"
      * )
      */
     public function updateAction(Role $entity)
@@ -163,8 +174,9 @@ class RoleController extends Controller
      * @Acl(
      *      id="oro_user_role_list",
      *      name="View role list",
-     *      description="List of roles",
-     *      parent="oro_user_role"
+     *      type="entity",
+     *      entity="OroUserBundle:Role",
+     *      precision="VIEW"
      * )
      */
     public function indexAction(Request $request)

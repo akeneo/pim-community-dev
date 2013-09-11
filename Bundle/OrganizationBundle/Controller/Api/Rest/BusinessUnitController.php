@@ -10,8 +10,8 @@ use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 
 /**
@@ -104,8 +104,9 @@ class BusinessUnitController extends RestController implements ClassResourceInte
      * @Acl(
      *      id="oro_business_unit_delete",
      *      name="Delete business unit",
-     *      description="User can delete business units",
-     *      parent="oro_business_unit"
+     *      type="entity",
+     *      entity="OroOrganizationBundle:Organization",
+     *      precision="DELETE"
      * )
      * @return Response
      */

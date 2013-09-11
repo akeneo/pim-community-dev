@@ -9,8 +9,8 @@ use FOS\RestBundle\Controller\Annotations\NamePrefix;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 
 /**
@@ -53,8 +53,9 @@ class GroupController extends RestController implements ClassResourceInterface
      * @Acl(
      *      id="oro_user_group_show",
      *      name="View user group",
-     *      description="View user group",
-     *      parent="oro_user_group"
+     *      type="entity",
+     *      entity="OroUserBundle:GROUP",
+     *      precision="VIEW"
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -112,9 +113,10 @@ class GroupController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_user_group_remove",
-     *      name="Remove group",
-     *      description="Remove group",
-     *      parent="oro_user_group"
+     *      name="Delete user group",
+     *      type="entity",
+     *      entity="OroUserBundle:Group",
+     *      precision="DELETE"
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -138,10 +140,10 @@ class GroupController extends RestController implements ClassResourceInterface
      * @Acl(
      *      id="oro_user_group_roles",
      *      name="View group roles",
-     *      description="View group roles",
-     *      parent="oro_user_group"
+     *      type="entity",
+     *      entity="OroUserBundle:Group",
+     *      precision="VIEW"
      * )
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getRolesAction($id)
     {

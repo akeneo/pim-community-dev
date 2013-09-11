@@ -44,10 +44,10 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
      * @param \Symfony\Component\Routing\RouterInterface $router
      * @param \Oro\Bundle\UserBundle\Acl\Manager         $aclManager
      */
-    public function __construct(RouterInterface $router, Manager $aclManager)
+    public function __construct(RouterInterface $router)
     {
         $this->router = $router;
-        $this->aclManager = $aclManager;
+        $this->aclManager = null;
     }
 
     /**
@@ -103,7 +103,8 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
             if (array_key_exists($options[self::ACL_RESOURCE_ID_KEY], $this->aclCache)) {
                 $isAllowed = $this->aclCache[$options[self::ACL_RESOURCE_ID_KEY]];
             } else {
-                $isAllowed = $this->aclManager->isResourceGranted($options[self::ACL_RESOURCE_ID_KEY]);
+                //$isAllowed = $this->aclManager->isResourceGranted($options[self::ACL_RESOURCE_ID_KEY]);
+                $isAllowed = true;
                 $this->aclCache[$options[self::ACL_RESOURCE_ID_KEY]] = $isAllowed;
             }
         } else {
@@ -112,8 +113,9 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
                 if (array_key_exists($routeInfo['key'], $this->aclCache)) {
                     $isAllowed = $this->aclCache[$routeInfo['key']];
                 } else {
-                    $isAllowed = $this->aclManager
-                        ->isClassMethodGranted($routeInfo['controller'], $routeInfo['action']);
+                    //$isAllowed = $this->aclManager
+                    //    ->isClassMethodGranted($routeInfo['controller'], $routeInfo['action']);
+                    $isAllowed = true;
                     $this->aclCache[$routeInfo['key']] = $isAllowed;
                 }
             }

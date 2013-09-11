@@ -16,16 +16,9 @@ use Oro\Bundle\EmailBundle\Entity\EmailBody;
 use Oro\Bundle\EmailBundle\Entity\EmailAttachment;
 use Oro\Bundle\EmailBundle\Entity\EmailInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
-/**
- * @Acl(
- *      id="oro_email",
- *      name="Email manipulation",
- *      description="Email manipulation"
- * )
- */
 class EmailController extends Controller
 {
     /**
@@ -33,8 +26,9 @@ class EmailController extends Controller
      * @Acl(
      *      id="oro_email_view",
      *      name="View email",
-     *      description="View email",
-     *      parent="oro_email"
+     *      type="entity",
+     *      entity="OroEmailBundle:Email",
+     *      precision="VIEW"
      * )
      * @Template
      */

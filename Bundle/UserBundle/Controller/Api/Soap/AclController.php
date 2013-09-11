@@ -4,7 +4,7 @@ namespace Oro\Bundle\UserBundle\Controller\Api\Soap;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 class AclController extends ContainerAware
 {

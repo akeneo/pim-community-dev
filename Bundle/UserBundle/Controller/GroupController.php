@@ -9,17 +9,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Entity\Group;
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\UserBundle\Datagrid\GroupUserDatagridManager;
 
 /**
  * @Route("/group")
- * @Acl(
- *      id="oro_user_group",
- *      name="Group manipulation",
- *      description="Group manipulation"
- * )
  */
 class GroupController extends Controller
 {
@@ -31,8 +26,9 @@ class GroupController extends Controller
      * @Acl(
      *      id="oro_user_group_create",
      *      name="Create group",
-     *      description="Create new group",
-     *      parent="oro_user_group"
+     *      type="entity",
+     *      entity="OroUserBundle:Group",
+     *      precision="CREATE"
      * )
      */
     public function createAction()
@@ -48,8 +44,9 @@ class GroupController extends Controller
      * @Acl(
      *      id="oro_user_group_update",
      *      name="Edit group",
-     *      description="Edit group",
-     *      parent="oro_user_group"
+     *      type="entity",
+     *      entity="OroUserBundle:Group",
+     *      precision="EDIT"
      * )
      */
     public function updateAction(Group $entity)
@@ -122,8 +119,9 @@ class GroupController extends Controller
      * @Acl(
      *      id="oro_user_group_list",
      *      name="View group list",
-     *      description="List of groups",
-     *      parent="oro_user_group"
+     *      type="entity",
+     *      entity="OroUserBundle:Group",
+     *      precision="VIEW"
      * )
      */
     public function indexAction(Request $request)

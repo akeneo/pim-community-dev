@@ -16,7 +16,7 @@ class Security
      */
     protected $autocompleteAclResources;
 
-    public function __construct(ManagerInterface $manager)
+    public function __construct(ManagerInterface $manager = null)
     {
         $this->manager = $manager;
         $this->autocompleteAclResources = array();

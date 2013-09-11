@@ -69,15 +69,16 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
     public function __construct(
         FormFactoryInterface $formFactory,
         EventDispatcherInterface $eventDispatcher,
-        ManagerInterface $aclManager,
+
         FilterFactoryInterface $filterFactory,
         SorterFactoryInterface $sorterFactory,
         ActionFactoryInterface $actionFactory,
         $className
     ) {
+        //ManagerInterface $aclManager,
         $this->formFactory     = $formFactory;
         $this->eventDispatcher = $eventDispatcher;
-        $this->aclManager      = $aclManager;
+        $this->aclManager      = null;
         $this->filterFactory   = $filterFactory;
         $this->sorterFactory   = $sorterFactory;
         $this->actionFactory   = $actionFactory;
@@ -142,7 +143,8 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
         );
 
         $aclResource = $action->getAclResource();
-        if (!$aclResource || $this->aclManager->isResourceGranted($aclResource)) {
+        //$this->aclManager->isResourceGranted($aclResource)
+        if (!$aclResource || true) {
             $datagrid->addRowAction($action);
         }
     }

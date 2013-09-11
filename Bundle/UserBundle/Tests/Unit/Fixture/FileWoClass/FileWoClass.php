@@ -1,6 +1,6 @@
 <?php
 namespace Oro\Bundle\UserBundle\Tests\Unit\Fixture\Controller;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 $acl = new Acl(array());

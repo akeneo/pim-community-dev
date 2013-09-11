@@ -9,18 +9,12 @@ use Symfony\Component\Form\FormInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Datagrid\EmailTemplateDatagridManager;
 
 /**
  * @Route("/emailtemplate")
- * @Acl(
- *      id="oro_email_emailtemplate",
- *      name="Email templates",
- *      description="Email templates manipulation",
- *      parent="root"
- * )
  */
 class EmailTemplateController extends Controller
 {
@@ -33,8 +27,9 @@ class EmailTemplateController extends Controller
      * @Acl(
      *      id="oro_email_emailtemplate_index",
      *      name="View List of email templates",
-     *      description="View List of email templates",
-     *      parent="oro_email_emailtemplate"
+     *      type="entity",
+     *      entity="OroEmailBundle:EmailTemplate",
+     *      precision="VIEW"
      * )
      * @Template()
      */
@@ -56,8 +51,9 @@ class EmailTemplateController extends Controller
      * @Acl(
      *      id="oro_email_emailtemplate_update",
      *      name="Edit email template",
-     *      description="Edit email template",
-     *      parent="oro_email_emailtemplate"
+     *      type="entity",
+     *      entity="OroEmailBundle:Email",
+     *      precision="EDIT"
      * )
      * @Template()
      */
@@ -91,8 +87,9 @@ class EmailTemplateController extends Controller
      * @Acl(
      *      id="oro_email_emailtemplate_create",
      *      name="Create email template",
-     *      description="Create email template",
-     *      parent="oro_email_emailtemplate"
+     *      type="entity",
+     *      entity="OroEmailBundle:Email",
+     *      precision="CREATE"
      * )
      * @Template("OroEmailBundle:EmailTemplate:update.html.twig")
      */
@@ -106,8 +103,8 @@ class EmailTemplateController extends Controller
      * @Acl(
      *      id="oro_email_emailtemplate_clone",
      *      name="Clone email template",
-     *      description="Clone email template",
-     *      parent="oro_email_emailtemplate"
+     *      type="action",
+     *      group=""
      * )
      * @Template("OroEmailBundle:EmailTemplate:update.html.twig")
      */
@@ -121,8 +118,9 @@ class EmailTemplateController extends Controller
      * @Acl(
      *      id="oro_email_emailtemplate_preview",
      *      name="Preview email template",
-     *      description="Preview email template",
-     *      parent="oro_email_emailtemplate"
+     *      type="entity",
+     *      entity="OroEmailBundle:Email",
+     *      precision="VIEW"
      * )
      * @Template("OroEmailBundle:EmailTemplate:preview.html.twig")
      * @param bool|int $emailTemplateId

@@ -69,7 +69,7 @@ services:
 
     oro_user.form.type.user:
         class:                        %oro_user.form.type.user.class%
-        arguments:                    [@oro_user.manager.flexible, "@oro_user.acl_manager", "@security.context"]
+        arguments:                    [@oro_user.manager.flexible, "@security.context"]
         tags:
             - { name: form.type, alias: oro_user_user }
 
@@ -83,7 +83,7 @@ services:
 
     oro_user.form.type.user.api:
         class:                        %oro_user.form.type.user.api.class%
-        arguments:                    [@oro_user.manager.flexible, "@oro_user.acl_manager", "@security.context"]
+        arguments:                    [@oro_user.manager.flexible, "@security.context"]
         tags:
             - { name: form.type, alias: user }
 

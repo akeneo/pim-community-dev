@@ -20,12 +20,12 @@ class SystemConfigurationFormProvider extends FormProvider
     /** @var Manager */
     protected $aclManager;
 
-    public function __construct($config, FormFactoryInterface $factory, Manager $aclManager)
+    public function __construct($config, FormFactoryInterface $factory)
     {
         parent::__construct($config);
 
         $this->factory    = $factory;
-        $this->aclManager = $aclManager;
+        $this->aclManager = null;
     }
 
     /**
@@ -110,6 +110,7 @@ class SystemConfigurationFormProvider extends FormProvider
      */
     protected function checkIsGranted($resourceName)
     {
-        return $this->aclManager->isResourceGranted($resourceName);
+        //return $this->aclManager->isResourceGranted($resourceName);
+        return true;
     }
 }

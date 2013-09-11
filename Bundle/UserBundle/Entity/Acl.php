@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation\Exclude;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
-use Oro\Bundle\UserBundle\Annotation\Acl as AnnotationAcl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl as AnnotationAcl;
 
 /**
  * @Gedmo\Tree(type="nested")
@@ -204,7 +204,7 @@ class Acl
     /**
      * Set acl info
      *
-     * @param \Oro\Bundle\UserBundle\Annotation\Acl $aclData
+     * @param \Oro\Bundle\SecurityBundle\Annotation\Acl $aclData
      */
     public function setData(AnnotationAcl $aclData)
     {

@@ -8,15 +8,8 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
-/**
- * @Acl(
- *      id = "oro_security",
- *      name="Oro Security",
- *      description = "Oro security"
- * )
- */
 class SecurityController extends Controller
 {
     /**
@@ -25,8 +18,8 @@ class SecurityController extends Controller
      * @Acl(
      *      id = "oro_login",
      *      name="Login page",
-     *      description = "Oro Login page",
-     *      parent = "oro_security"
+     *      type="action",
+     *      group=""
      * )
      */
     public function loginAction()
@@ -66,8 +59,8 @@ class SecurityController extends Controller
      * @Acl(
      *      id = "oro_login_check",
      *      name="Login check",
-     *      description = "Oro Login check",
-     *      parent = "oro_security"
+     *      type="action",
+     *      group=""
      * )
      */
     public function checkAction()
@@ -82,8 +75,8 @@ class SecurityController extends Controller
      * @Acl(
      *      id = "oro_logout",
      *      name="Logout",
-     *      description = "Oro Logout",
-     *      parent = "oro_security"
+     *      type="action",
+     *      group=""
      * )
      */
     public function logoutAction()

@@ -4,7 +4,7 @@ namespace Oro\Bundle\EmailBundle\Controller\Api\Soap;
 
 use Oro\Bundle\SoapBundle\Controller\Api\Soap\SoapGetController;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailApiEntityManager;
 use Oro\Bundle\EmailBundle\Cache\EmailCacheManager;
 use Oro\Bundle\EmailBundle\Entity\Email;

@@ -1,6 +1,6 @@
 <?php
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 // @codingStandardsIgnoreStart
 class Annotation

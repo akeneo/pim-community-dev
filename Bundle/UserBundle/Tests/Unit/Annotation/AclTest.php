@@ -1,12 +1,12 @@
 <?php
 namespace Oro\Bundle\UserBundle\Tests\Unit\Annotation;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 class AclTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Oro\Bundle\UserBundle\Annotation\Acl
+     * @var \Oro\Bundle\SecurityBundle\Annotation\Acl
      */
     private $acl;
 

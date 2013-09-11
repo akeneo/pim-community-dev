@@ -10,8 +10,8 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 
 /**
@@ -55,8 +55,9 @@ class RoleController extends RestController implements ClassResourceInterface
      * @Acl(
      *      id="oro_user_role_show",
      *      name="View role",
-     *      description="View role",
-     *      parent="oro_user_role"
+     *      type="entity",
+     *      entity="OroUserBundle:Role",
+     *      precision="VIEW"
      * )
      */
     public function getAction($id)
@@ -114,9 +115,10 @@ class RoleController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_user_role_remove",
-     *      name="Remove role",
-     *      description="Remove role",
-     *      parent="oro_user_role"
+     *      name="Delete role",
+     *      type="entity",
+     *      entity="OroUserBundle:Role",
+     *      precision="DELETE"
      * )
      */
     public function deleteAction($id)
@@ -198,9 +200,10 @@ class RoleController extends RestController implements ClassResourceInterface
      * )
      *  @Acl(
      *      id="oro_user_role_acl",
-     *      name="Role ACL manipulation",
-     *      description="Role ACL manipulation",
-     *      parent="oro_user_acl"
+     *      name="Edit ACL manipulation",
+     *      type="entity",
+     *      entity="OroUserBundle:Role",
+     *      precision="EDIT"
      * )
      */
     public function postAclAction($id, $resource)

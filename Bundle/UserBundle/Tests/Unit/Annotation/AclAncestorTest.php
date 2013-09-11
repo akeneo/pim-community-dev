@@ -1,7 +1,7 @@
 <?php
 namespace Oro\Bundle\UserBundle\Tests\Unit\Annotation;
 
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 class AclAncestorTest extends \PHPUnit_Framework_TestCase
 {

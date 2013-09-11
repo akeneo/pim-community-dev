@@ -8,16 +8,10 @@ use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 /**
  * @NamePrefix("oro_api_")
- * @Acl(
- *      id="oro_user_acl",
- *      name="ACL manipulation",
- *      description="ACL manipulation from API",
- *      parent="oro_user_role"
- * )
  */
 class AclController extends FOSRestController implements ClassResourceInterface
 {
@@ -30,9 +24,9 @@ class AclController extends FOSRestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_user_acl_edit",
-     *      name="View ACL tree",
-     *      description="View ACL tree for a particular role",
-     *      parent="oro_user_acl"
+     *      name="View ACL tree for a particular role",
+     *      type="action",
+     *      group=""
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -64,8 +58,8 @@ class AclController extends FOSRestController implements ClassResourceInterface
      * @Acl(
      *      id="oro_user_acl_show",
      *      name="View ACL resource",
-     *      description="View ACL resource",
-     *      parent="oro_user_acl"
+     *      type="action",
+     *      group=""
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */

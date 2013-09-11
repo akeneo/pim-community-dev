@@ -70,13 +70,13 @@ class UserSubscriber implements EventSubscriberInterface
             }
         }
 
-        if (!$this->aclManager->isResourceGranted('oro_user_role')) {
+        /*if (!$this->aclManager->isResourceGranted('oro_user_role')) {
             unset($submittedData['rolesCollection']);
         }
 
         if (!$this->aclManager->isResourceGranted('oro_user_group')) {
             unset($submittedData['groups']);
-        }
+        }*/
 
         $event->setData($submittedData);
     }

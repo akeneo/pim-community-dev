@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 use Oro\Bundle\FormBundle\Autocomplete\Security;
 use Oro\Bundle\FormBundle\Autocomplete\SearchRegistry;
@@ -20,15 +20,6 @@ use Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Config\FileLocator;
 
-/**
- * @Route("/autocomplete")
- * @Acl(
- *      id="oro_form_autocomplete",
- *      name="Autocomplete functionality",
- *      description="Actions from autocomplete controller",
- *      parent="root"
- * )
- */
 class AutocompleteController extends Controller
 {
     /**
@@ -64,8 +55,8 @@ class AutocompleteController extends Controller
      * @Acl(
      *      id="oro_form_autocomplete_search",
      *      name="Autocomplete search request",
-     *      description="Autocomplete search request",
-     *      parent="oro_form_autocomplete"
+     *      type="action",
+     *      group=""
      * )
      */
     public function searchAction(Request $request)

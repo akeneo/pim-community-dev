@@ -5,7 +5,7 @@ use Oro\Bundle\UserBundle\Acl\Manager;
 use Oro\Bundle\UserBundle\Entity\Acl;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\UserBundle\Annotation\Acl as AclAnnotation;
+use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 use Symfony\Component\Translation\MessageCatalogue;
 
 class ManagerTest extends \PHPUnit_Framework_TestCase

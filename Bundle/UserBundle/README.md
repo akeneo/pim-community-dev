@@ -25,7 +25,7 @@ Acl resource definition with class annotation @Acl.
 ...
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 ...
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 /**
  * @Route("/acl")
@@ -95,7 +95,7 @@ Example:
 ...
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 ...
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 ...
 class AclAccessController extends Controller
 {
@@ -122,7 +122,7 @@ class AclAccessController extends Controller
 ...
 use Symfony\Bundle\FrameworkBundle\Controller\Controller\Api;
 ...
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 ...
 class RestAclAccessController extends Controller
 {

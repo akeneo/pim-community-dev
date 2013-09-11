@@ -55,15 +55,15 @@ class FormTypeExtension extends AbstractTypeExtension
         SecurityContextInterface $securityContext,
         ConfigProvider $configProvider,
         BusinessUnitManager $manager,
-        AclManager $aclManager,
         TranslatorInterface $translator
     ) {
         $this->securityContext = $securityContext;
         $this->configProvider = $configProvider;
         $this->manager = $manager;
-        $this->aclManager = $aclManager;
+        $this->aclManager = null;
         $this->translator = $translator;
-        $this->changeOwnerGranted = $this->aclManager->isResourceGranted('oro_change_record_owner');
+        $this->changeOwnerGranted = true;
+        //$this->changeOwnerGranted = $this->aclManager->isResourceGranted('oro_change_record_owner');
         $this->fieldName = RecordOwnerDataListener::OWNER_FIELD_NAME;
     }
 

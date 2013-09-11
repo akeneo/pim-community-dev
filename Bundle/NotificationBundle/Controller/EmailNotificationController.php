@@ -6,18 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
 use Oro\Bundle\NotificationBundle\Datagrid\EmailNotificationDatagridManager;
 
 /**
  * @Route("/email")
- * @Acl(
- *      id="oro_notification_emailnotification",
- *      name="Transactional emails",
- *      description="Notification rules manipulation",
- *      parent="root"
- * )
  */
 class EmailNotificationController extends Controller
 {
@@ -30,8 +24,9 @@ class EmailNotificationController extends Controller
      * @Acl(
      *      id="oro_notification_emailnotification_index",
      *      name="View List of notification rules",
-     *      description="View list of notification rules",
-     *      parent="oro_notification_emailnotification"
+     *      type="entity",
+     *      entity="OroNotificationBundle:EmailNotification",
+     *      precision="VIEW"
      * )
      * @Template()
      */
@@ -53,8 +48,9 @@ class EmailNotificationController extends Controller
      * @Acl(
      *      id="oro_notification_emailnotification_update",
      *      name="Edit notification rule",
-     *      description="Edit notification rule",
-     *      parent="oro_notification_emailnotification"
+     *      type="entity",
+     *      entity="OroNotificationBundle:EmailNotification",
+     *      precision="EDIT"
      * )
      * @Template()
      */
@@ -87,8 +83,9 @@ class EmailNotificationController extends Controller
      * @Acl(
      *      id="oro_notification_emailnotification_create",
      *      name="Create notification rule",
-     *      description="Create notification rule",
-     *      parent="oro_notification_emailnotification"
+     *      type="entity",
+     *      entity="OroNotificationBundle:EmailNotification",
+     *      precision="CREATE"
      * )
      * @Template("OroNotificationBundle:EmailNotification:update.html.twig")
      */

@@ -9,19 +9,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\TagBundle\Entity\Tag;
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 use Oro\Bundle\TagBundle\Datagrid\TagDatagridManager;
 use Oro\Bundle\TagBundle\Datagrid\ResultsDatagridManager;
 
-/**
- * @Acl(
- *      id="oro_tag",
- *      name="Tags",
- *      description="Tags",
- *      parent="root"
- * )
- */
 class TagController extends Controller
 {
     /**
@@ -34,8 +26,9 @@ class TagController extends Controller
      * @Acl(
      *      id="oro_tag_list",
      *      name="View list of tags",
-     *      description="User can see grid of tags",
-     *      parent="oro_tag"
+     *      type="entity",
+     *      entity="OroTagBundle:Tag",
+     *      precision="VIEW"
      * )
      * @Template
      */
@@ -57,8 +50,9 @@ class TagController extends Controller
      * @Acl(
      *      id="oro_tag_create",
      *      name="Create tag",
-     *      description="User can create tags from grid",
-     *      parent="oro_tag"
+     *      type="entity",
+     *      entity="OroTagBundle:Tag",
+     *      precision="CREATE"
      * )
      * @Template("OroTagBundle:Tag:update.html.twig")
      */
@@ -72,8 +66,9 @@ class TagController extends Controller
      * @Acl(
      *      id="oro_tag_update",
      *      name="Update tag",
-     *      description="User can edit tags",
-     *      parent="oro_tag"
+     *      type="entity",
+     *      entity="OroTagBundle:Tag",
+     *      precision="EDIT"
      * )
      * @Template
      */

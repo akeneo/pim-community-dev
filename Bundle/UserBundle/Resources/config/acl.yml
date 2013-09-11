@@ -1,16 +1,16 @@
 template_controller:
-    name: Template controller
-    description: Actions from template controller
-    parent: root
+    name: Actions from template controller
+    type: action
+    group: ""
     class: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
     method: templateAction
 
 external_bundle_actions:
     name: External bundle actions
-    description: General node for all external bundle actions
-    parent: root
+    type: action
+    group: ""
 
 oro_user:
     name: User manipulation
-    description: General node for all manipulations with users
-    parent: root
+    type: action
+    group: ""

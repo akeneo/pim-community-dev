@@ -27,7 +27,6 @@ services:
         arguments:
             - []
             - @form.factory
-            - @oro_user.acl_manager
         tags:
             -  { name: oro_config.configuration_form_provider }
 

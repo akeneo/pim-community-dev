@@ -11,8 +11,8 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
 use Oro\Bundle\EmailBundle\Provider\VariablesProvider;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
@@ -37,8 +37,9 @@ class EmailTemplateController extends RestController
      * @Acl(
      *      id="oro_email_emailtemplate_remove",
      *      name="Delete email template",
-     *      description="Delete email template",
-     *      parent="oro_email_emailtemplate"
+     *      type="entity",
+     *      entity="OroEmailBundle:Email",
+     *      precision="DELETE"
      * )
      * @return Response
      */

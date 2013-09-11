@@ -3,7 +3,7 @@ namespace Oro\Bundle\UserBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\UserBundle\Entity\Acl;
 use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\UserBundle\Annotation\Acl as AnnotationAcl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl as AnnotationAcl;
 
 class AclTest extends \PHPUnit_Framework_TestCase
 {

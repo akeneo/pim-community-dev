@@ -5,7 +5,7 @@ namespace Oro\Bundle\UserBundle\Tests\Unit\Fixture\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 /**
  * @Acl(

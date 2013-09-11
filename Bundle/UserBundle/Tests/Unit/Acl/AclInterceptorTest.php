@@ -5,7 +5,7 @@ use CG\Proxy\MethodInvocation;
 
 use Oro\Bundle\UserBundle\Acl\AclInterceptor;
 use Oro\Bundle\UserBundle\Tests\Unit\Fixture\Controller\MainTestController;
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 class AclInterceptorTest extends \PHPUnit_Framework_TestCase
 {

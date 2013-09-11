@@ -12,7 +12,7 @@ use FOS\RestBundle\Routing\ClassResourceInterface;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Oro\Bundle\AddressBundle\Entity\Manager\AddressManager;
@@ -20,12 +20,6 @@ use Oro\Bundle\AddressBundle\Entity\Manager\AddressManager;
 /**
  * @RouteResource("address")
  * @NamePrefix("oro_api_")
- * @Acl(
- *      id="oro_address",
- *      name="Address manipulation",
- *      description="Address manipulation",
- *      parent="root"
- * )
  */
 class AddressController extends RestController implements ClassResourceInterface
 {
@@ -45,8 +39,9 @@ class AddressController extends RestController implements ClassResourceInterface
      * @Acl(
      *      id="oro_address_list",
      *      name="View list of addresses",
-     *      description="View list of addresses",
-     *      parent="oro_address"
+     *      type="entity",
+     *      entity="OroAddressBundle:Address",
+     *      precision="VIEW"
      * )
      * @return Response
      */
@@ -70,8 +65,9 @@ class AddressController extends RestController implements ClassResourceInterface
      * @Acl(
      *      id="oro_address_show",
      *      name="View address",
-     *      description="View address",
-     *      parent="oro_address"
+     *      type="entity",
+     *      entity="OroAddressBundle:Address",
+     *      precision="VIEW"
      * )
      * @return Response
      */
@@ -92,8 +88,9 @@ class AddressController extends RestController implements ClassResourceInterface
      * @Acl(
      *      id="oro_address_edit",
      *      name="Edit address",
-     *      description="Edit address",
-     *      parent="oro_address"
+     *      type="entity",
+     *      entity="OroAddressBundle:Address",
+     *      precision="EDIT"
      * )
      * @return Response
      */
@@ -112,8 +109,9 @@ class AddressController extends RestController implements ClassResourceInterface
      * @Acl(
      *      id="oro_address_create",
      *      name="Create address",
-     *      description="Create address",
-     *      parent="oro_address"
+     *      type="entity",
+     *      entity="OroAddressBundle:Address",
+     *      precision="CREATE"
      * )
      */
     public function postAction()
@@ -133,8 +131,9 @@ class AddressController extends RestController implements ClassResourceInterface
      * @Acl(
      *      id="oro_address_remove",
      *      name="Remove address",
-     *      description="Remove address",
-     *      parent="oro_address"
+     *      type="entity",
+     *      entity="OroAddressBundle:Address",
+     *      precision="DELETE"
      * )
      * @return Response
      */

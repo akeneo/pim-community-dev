@@ -1,14 +1,14 @@
 oro_tag_assign_unassign:
-    name: Tag assign/unassign
-    description: User can assign tags for entities and unassign only which were assigned by this user
-    parent: oro_tag
+    name: User can assign tags for entities and unassign only which were assigned by this user
+    type: action
+    group: ""
 
 oro_tag_unassign_global:
-    name: Tag unassign global
-    description: User can unassign all tags from entities
-    parent: oro_tag
+    name: User can unassign all tags from entities
+    type: action
+    group: ""
 
 oro_tag_view_tag_cloud:
-    name: View tag cloud
-    description: User can view tag cloud
-    parent: oro_tag
+    name:  User can view tag cloud
+    type: action
+    group: ""

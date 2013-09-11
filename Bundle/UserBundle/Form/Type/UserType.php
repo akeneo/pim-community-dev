@@ -35,12 +35,11 @@ class UserType extends FlexibleType
      */
     public function __construct(
         FlexibleManager $flexibleManager,
-        AclManager $aclManager,
         SecurityContextInterface $security
     ) {
         parent::__construct($flexibleManager, '');
 
-        $this->aclManager = $aclManager;
+        $this->aclManager = null;
         $this->security   = $security;
     }
 

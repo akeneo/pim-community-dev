@@ -46,7 +46,6 @@ services:
         class: %oro_menu.factory.acl_extension.class%
         arguments:
             - @router
-            - @oro_user.acl_manager
         calls:
             - [ setCache, [ @oro_menu.cache ] ]
 
