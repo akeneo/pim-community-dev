@@ -195,13 +195,17 @@ class ProductController extends AbstractDoctrineController
                 $view = 'OroGridBundle:Datagrid:list.json.php';
                 break;
             case 'csv':
-                $csv = $datagrid->exportData('csv', array('withHeader' => true, 'heterogeneous' => true));
+                $content = $datagrid->exportData(
+                    $request->getRequestFormat(),
+                    array('withHeader' => true, 'heterogeneous' => true)
+                );
                 $headers = array(
                     'Content-Type' => 'text/csv',
-                    'Content-Disposition' => 'inline; filename=quick_export_products.csv'
+                    'Content-Disposition' =>
+                        sprintf('inline; filename=quick_export_products.%s', $request->getRequestFormat())
                 );
 
-                return $this->returnResponse($csv, 200, $headers);
+                return $this->returnResponse($content, 200, $headers);
 
                 break;
             case 'html':
