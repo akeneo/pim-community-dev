@@ -61,41 +61,44 @@ class EmailEntityBatchProcessorTest extends \PHPUnit_Framework_TestCase
         $folder = new EmailFolder();
         $folder->setType('sent');
         $folder->setName('Test');
+        $folder->setFullName('Test');
         $this->batch->addFolder($folder);
         $this->assertCount(1, ReflectionUtil::getProtectedProperty($this->batch, 'folders'));
 
-        $this->assertEquals('Test', $this->batch->getFolder('sent', 'TeST')->getName());
+        $this->assertEquals('Test', $this->batch->getFolder('sent', 'TeST')->getFullName());
         $this->assertNull($this->batch->getFolder('sent', 'Another'));
 
         $folder1 = new EmailFolder();
         $folder1->setType('trash');
         $folder1->setName('Test');
+        $folder1->setFullName('Test');
         $this->batch->addFolder($folder1);
         $this->assertCount(2, ReflectionUtil::getProtectedProperty($this->batch, 'folders'));
 
-        $this->assertEquals('Test', $this->batch->getFolder('trash', 'TeST')->getName());
+        $this->assertEquals('Test', $this->batch->getFolder('trash', 'TeST')->getFullName());
         $this->assertNull($this->batch->getFolder('trash', 'Another'));
 
         $this->setExpectedException('LogicException');
         $folder2 = new EmailFolder();
         $folder2->setType('sent');
         $folder2->setName('TEST');
+        $folder2->setFullName('TEST');
         $this->batch->addFolder($folder2);
     }
 
     public function testAddOrigin()
     {
-        $origin = new EmailOrigin();
-        $origin->setName('Test');
+        $origin = $this->getMockBuilder('Oro\Bundle\EmailBundle\Entity\EmailOrigin')->getMock();
+        $origin->expects($this->any())->method('getId')->will($this->returnValue(1));
         $this->batch->addOrigin($origin);
         $this->assertCount(1, ReflectionUtil::getProtectedProperty($this->batch, 'origins'));
 
-        $this->assertEquals('Test', $this->batch->getOrigin('TeST')->getName());
-        $this->assertNull($this->batch->getOrigin('Another'));
+        $this->assertEquals(1, $this->batch->getOrigin(1)->getId());
+        $this->assertNull($this->batch->getOrigin(123));
 
         $this->setExpectedException('LogicException');
-        $origin1 = new EmailOrigin();
-        $origin1->setName('TEST');
+        $origin1 = $this->getMockBuilder('Oro\Bundle\EmailBundle\Entity\EmailOrigin')->getMock();
+        $origin1->expects($this->any())->method('getId')->will($this->returnValue(1));
         $this->batch->addOrigin($origin1);
     }
 
@@ -104,28 +107,25 @@ class EmailEntityBatchProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function testPersist()
     {
-        $origin = new EmailOrigin();
-        $origin->setName('Exist');
+        $origin = $this->getMockBuilder('Oro\Bundle\EmailBundle\Entity\EmailOrigin')->getMock();
+        $origin->expects($this->any())->method('getId')->will($this->returnValue(1));
         $this->batch->addOrigin($origin);
-        $newOrigin = new EmailOrigin();
-        $newOrigin->setName('New');
-        $this->batch->addOrigin($newOrigin);
-
-        $dbOrigin = new EmailOrigin();
-        $dbOrigin->setName('DbExist');
 
         $folder = new EmailFolder();
         $folder->setName('Exist');
+        $folder->setFullName('Exist');
         $folder->setOrigin($origin);
         $this->batch->addFolder($folder);
         $newFolder = new EmailFolder();
         $newFolder->setName('New');
-        $newFolder->setOrigin($newOrigin);
+        $newFolder->setFullName('New');
+        $newFolder->setOrigin($origin);
         $this->batch->addFolder($newFolder);
 
         $dbFolder = new EmailFolder();
         $dbFolder->setName('DbExist');
-        $dbFolder->setOrigin($dbOrigin);
+        $dbFolder->setFullName('DbExist');
+        $dbFolder->setOrigin($origin);
 
         $addr = $this->addrManager->newEmailAddress()->setEmail('Exist');
         $this->batch->addAddress($addr);
@@ -159,42 +159,29 @@ class EmailEntityBatchProcessorTest extends \PHPUnit_Framework_TestCase
         $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $originRepo = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
         $folderRepo = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
             ->getMock();
         $addrRepo = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
             ->getMock();
-        $em->expects($this->exactly(3))
+        $em->expects($this->exactly(2))
             ->method('getRepository')
             ->will(
                 $this->returnValueMap(
                     array(
-                        array('OroEmailBundle:EmailOrigin', $originRepo),
                         array('OroEmailBundle:EmailFolder', $folderRepo),
                         array('Oro\Bundle\EmailBundle\Tests\Unit\Entity\TestFixtures\TestEmailAddressProxy', $addrRepo),
                     )
                 )
             );
 
-        $originRepo->expects($this->exactly(2))
-            ->method('findOneBy')
-            ->will(
-                $this->returnCallback(
-                    function ($c) use (&$dbOrigin) {
-                        return $c['name'] === 'Exist' ? $dbOrigin : null;
-                    }
-                )
-            );
         $folderRepo->expects($this->exactly(2))
             ->method('findOneBy')
             ->will(
                 $this->returnCallback(
                     function ($c) use (&$dbFolder) {
-                        return $c['name'] === 'Exist' ? $dbFolder : null;
+                        return $c['fullName'] === 'Exist' ? $dbFolder : null;
                     }
                 )
             );
@@ -208,11 +195,10 @@ class EmailEntityBatchProcessorTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $em->expects($this->exactly(5))
+        $em->expects($this->exactly(4))
             ->method('persist')
             ->with(
                 $this->logicalOr(
-                    $this->identicalTo($newOrigin),
                     $this->identicalTo($newFolder),
                     $this->identicalTo($newAddr),
                     $this->identicalTo($email1),
@@ -228,8 +214,8 @@ class EmailEntityBatchProcessorTest extends \PHPUnit_Framework_TestCase
 
         $this->batch->persist($em);
 
-        $this->assertTrue($dbOrigin === $email1->getFolder()->getOrigin());
-        $this->assertTrue($newOrigin === $email2->getFolder()->getOrigin());
+        $this->assertTrue($origin === $email1->getFolder()->getOrigin());
+        $this->assertTrue($origin === $email2->getFolder()->getOrigin());
         $this->assertTrue($dbFolder === $email1->getFolder());
         $this->assertTrue($newFolder === $email2->getFolder());
         $this->assertTrue($dbAddr === $email1->getFromEmailAddress());

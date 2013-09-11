@@ -7,7 +7,7 @@ use Oro\Bundle\ImapBundle\Connector\Search\SearchQueryBuilder;
 use Oro\Bundle\ImapBundle\Connector\Search\SearchStringManagerInterface;
 use Oro\Bundle\ImapBundle\Mail\Storage\Imap;
 use Oro\Bundle\ImapBundle\Mail\Storage\Message;
-use Zend\Mail\Storage\Folder;
+use Oro\Bundle\ImapBundle\Mail\Storage\Folder;
 
 /**
  * A base class for connectors intended to work with email's servers through IMAP protocol.
@@ -60,9 +60,10 @@ class ImapConnector
     /**
      * @param Folder|string|null $parentFolder
      * @param SearchQuery|null $query
+     * @param int $maxResults The maximum number of items returned by this method. Set -1 to unlimited
      * @return Message[]
      */
-    public function findItems($parentFolder = null, $query = null)
+    public function findItems($parentFolder = null, $query = null, $maxResults = 100)
     {
         $this->ensureConnected();
 
@@ -74,16 +75,24 @@ class ImapConnector
         if ($query !== null) {
             $searchString = $query->convertToSearchString();
         }
-        if (empty($searchString)) {
-            // Return all messages
-            return iterator_to_array($this->imap);
-        }
-
-        $ids = $this->imap->search(array($searchString));
 
         $result = array();
-        foreach ($ids as $messageId) {
-            $result[] = $this->imap->getMessage($messageId);
+
+        if (empty($searchString)) {
+            for ($i = $this->imap->count(), $count = 1; $i > 0; $i--, $count++) {
+                $result[] = $this->imap->getMessage($i);
+                if ($count >= $maxResults) {
+                    break;
+                }
+            }
+        } else {
+            $ids = $this->imap->search(array($searchString));
+            for ($i = count($ids) - 1, $count = 1; $i >= 0; $i--, $count++) {
+                $result[] = $this->imap->getMessage($ids[$i]);
+                if ($count >= $maxResults) {
+                    break;
+                }
+            }
         }
 
         return $result;
@@ -93,7 +102,7 @@ class ImapConnector
      * Finds folders.
      *
      * @param string|null $parentFolder The global name of a parent folder.
-     * @param bool $recursive Determines whether
+     * @param bool $recursive True to get all subordinate folders
      * @return Folder[]
      */
     public function findFolders($parentFolder = null, $recursive = false)

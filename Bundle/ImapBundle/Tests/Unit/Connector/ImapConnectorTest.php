@@ -25,7 +25,8 @@ class ImapConnectorTest extends \PHPUnit_Framework_TestCase
         $this->storage->expects($this->any())
             ->method('__destruct');
 
-        $this->searchStringManager = $this->getMock('Oro\Bundle\ImapBundle\Connector\Search\SearchStringManagerInterface');
+        $this->searchStringManager =
+            $this->getMock('Oro\Bundle\ImapBundle\Connector\Search\SearchStringManagerInterface');
         $this->searchStringManager->expects($this->any())
             ->method('isAcceptableItem')
             ->will($this->returnValue(true));
@@ -98,7 +99,7 @@ class ImapConnectorTest extends \PHPUnit_Framework_TestCase
 
     public function testFindFolders()
     {
-        $folder = $this->getMockBuilder('Zend\Mail\Storage\Folder')
+        $folder = $this->getMockBuilder('Oro\Bundle\ImapBundle\Mail\Storage\Folder')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -113,7 +114,7 @@ class ImapConnectorTest extends \PHPUnit_Framework_TestCase
 
     public function testFindFolder()
     {
-        $folder = $this->getMockBuilder('Zend\Mail\Storage\Folder')
+        $folder = $this->getMockBuilder('Oro\Bundle\ImapBundle\Mail\Storage\Folder')
             ->disableOriginalConstructor()
             ->getMock();
 

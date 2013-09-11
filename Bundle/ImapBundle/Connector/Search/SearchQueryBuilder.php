@@ -146,6 +146,38 @@ class SearchQueryBuilder extends AbstractSearchQueryBuilder
         return $this;
     }
 
+    /**
+     * Returns a string represents the given date in format required for search query criterion.
+     * Example: 21-Jan-2013
+     *
+     * @param mixed $value
+     * @return string
+     */
+    public function formatDate($value)
+    {
+        if ($value instanceof \DateTime) {
+            return $value->format('j-M-Y');
+        }
+
+        return $value;
+    }
+
+    /**
+     * Returns a string represents the given date/time in format required for search query criterion.
+     * Example: "02-Jan-2013 23:05:40 +0007"
+     *
+     * @param mixed $value
+     * @return string
+     */
+    public function formatDateTime($value)
+    {
+        if ($value instanceof \DateTime) {
+            return '"' . $value->format('d-M-Y H:i:s 0') . '"';
+        }
+
+        return $value;
+    }
+
     private function processDateField($name, $fromValue = null, $toValue = null)
     {
         if ($fromValue !== null) {

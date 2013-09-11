@@ -42,17 +42,29 @@ class EmailEntityBuilder
      *
      * @param string $subject The email subject
      * @param string $from The FROM email address, for example: john@example.com or "John Smith" <john@example.c4m>
-     * @param string|string[]|null $to The TO email address(es). Example of email address see in description of $from parameter
+     * @param string|string[]|null $to The TO email address(es).
+     *                                 Example of email address see in description of $from parameter
      * @param \DateTime $sentAt The date/time when email sent
      * @param \DateTime $receivedAt The date/time when email received
      * @param \DateTime $internalDate The date/time an email server returned in INTERNALDATE field
      * @param integer $importance The email importance flag. Can be one of *_IMPORTANCE constants of Email class
-     * @param string|string[]|null $cc The CC email address(es). Example of email address see in description of $from parameter
-     * @param string|string[]|null $bcc The BCC email address(es). Example of email address see in description of $from parameter
+     * @param string|string[]|null $cc The CC email address(es).
+     *                                 Example of email address see in description of $from parameter
+     * @param string|string[]|null $bcc The BCC email address(es).
+     *                                  Example of email address see in description of $from parameter
      * @return Email
      */
-    public function email($subject, $from, $to, $sentAt, $receivedAt, $internalDate, $importance = Email::NORMAL_IMPORTANCE, $cc = null, $bcc = null)
-    {
+    public function email(
+        $subject,
+        $from,
+        $to,
+        $sentAt,
+        $receivedAt,
+        $internalDate,
+        $importance = Email::NORMAL_IMPORTANCE,
+        $cc = null,
+        $bcc = null
+    ) {
         $result = new Email();
         $result
             ->setSubject($subject)
@@ -66,6 +78,8 @@ class EmailEntityBuilder
         $this->addRecipients($result, EmailRecipient::TO, $to);
         $this->addRecipients($result, EmailRecipient::CC, $cc);
         $this->addRecipients($result, EmailRecipient::BCC, $bcc);
+
+        $this->batch->addEmail($result);
 
         return $result;
     }
@@ -166,72 +180,95 @@ class EmailEntityBuilder
     /**
      * Create EmailFolder entity object for INBOX folder
      *
+     * @param string $fullName The full name of INBOX folder if known
      * @param string $name The name of INBOX folder if known
      * @return EmailFolder
      */
-    public function folderInbox($name = null)
+    public function folderInbox($fullName = null, $name = null)
     {
-        return $this->folder(EmailFolder::INBOX, $name !== null ? $name : 'Inbox');
+        return $this->folder(
+            EmailFolder::INBOX,
+            $fullName !== null ? $fullName : 'Inbox',
+            $name !== null ? $name : 'Inbox'
+        );
     }
 
     /**
      * Create EmailFolder entity object for SENT folder
      *
+     * @param string $fullName The full name of SENT folder if known
      * @param string $name The name of SENT folder if known
      * @return EmailFolder
      */
-    public function folderSent($name = null)
+    public function folderSent($fullName = null, $name = null)
     {
-        return $this->folder(EmailFolder::SENT, $name !== null ? $name : 'Sent');
+        return $this->folder(
+            EmailFolder::SENT,
+            $fullName !== null ? $fullName : 'Sent',
+            $name !== null ? $name : 'Sent'
+        );
     }
 
     /**
      * Create EmailFolder entity object for TRASH folder
      *
+     * @param string $fullName The full name of TRASH folder if known
      * @param string $name The name of TRASH folder if known
      * @return EmailFolder
      */
-    public function folderTrash($name = null)
+    public function folderTrash($fullName = null, $name = null)
     {
-        return $this->folder(EmailFolder::TRASH, $name !== null ? $name : 'Trash');
+        return $this->folder(
+            EmailFolder::TRASH,
+            $fullName !== null ? $fullName : 'Trash',
+            $name !== null ? $name : 'Trash'
+        );
     }
 
     /**
      * Create EmailFolder entity object for DRAFTS folder
      *
+     * @param string $fullName The full name of DRAFTS folder if known
      * @param string $name The name of DRAFTS folder if known
      * @return EmailFolder
      */
-    public function folderDrafts($name = null)
+    public function folderDrafts($fullName = null, $name = null)
     {
-        return $this->folder(EmailFolder::DRAFTS, $name !== null ? $name : 'Drafts');
+        return $this->folder(
+            EmailFolder::DRAFTS,
+            $fullName !== null ? $fullName : 'Drafts',
+            $name !== null ? $name : 'Drafts'
+        );
     }
 
     /**
      * Create EmailFolder entity object for custom folder
      *
+     * @param string $fullName The full name of the folder
      * @param string $name The name of the folder
      * @return EmailFolder
      */
-    public function folderOther($name)
+    public function folderOther($fullName, $name)
     {
-        return $this->folder(EmailFolder::OTHER, $name);
+        return $this->folder(EmailFolder::OTHER, $fullName, $name);
     }
 
     /**
      * Create EmailFolder entity object
      *
      * @param string $type The folder type. Can be inbox, sent, trash, drafts or other
+     * @param string $fullName The full name of a folder
      * @param string $name The folder name
      * @return EmailFolder
      */
-    protected function folder($type, $name)
+    protected function folder($type, $fullName, $name)
     {
-        $result = $this->batch->getFolder($type, $name);
+        $result = $this->batch->getFolder($type, $fullName);
         if ($result === null) {
             $result = new EmailFolder();
             $result
                 ->setType($type)
+                ->setFullName($fullName)
                 ->setName($name);
             $this->batch->addFolder($result);
         }
@@ -240,21 +277,29 @@ class EmailEntityBuilder
     }
 
     /**
-     * Create EmailOrigin entity object
+     * Register EmailOrigin entity object
      *
-     * @param string $name The email origin name
+     * @param EmailFolder $folder The email folder
+     * @return EmailFolder
+     */
+    public function setFolder(EmailFolder $folder)
+    {
+        $this->batch->addFolder($folder);
+
+        return $folder;
+    }
+
+    /**
+     * Register EmailOrigin entity object
+     *
+     * @param EmailOrigin $origin The email origin
      * @return EmailOrigin
      */
-    public function origin($name)
+    public function setOrigin(EmailOrigin $origin)
     {
-        $result = $this->batch->getOrigin($name);
-        if ($result === null) {
-            $result = new EmailOrigin();
-            $result->setName($name);
-            $this->batch->addOrigin($result);
-        }
+        $this->batch->addOrigin($origin);
 
-        return $result;
+        return $origin;
     }
 
     /**
@@ -305,6 +350,22 @@ class EmailEntityBuilder
             ->setType($type)
             ->setName($email)
             ->setEmailAddress($this->address($email));
+    }
+
+    /**
+     * Set this builder in initial state
+     */
+    public function clear()
+    {
+        $this->batch->clear();
+    }
+
+    /**
+     * Removes all email objects from a batch processor is used this builder
+     */
+    public function removeEmails()
+    {
+        $this->batch->removeEmails();
     }
 
     /**

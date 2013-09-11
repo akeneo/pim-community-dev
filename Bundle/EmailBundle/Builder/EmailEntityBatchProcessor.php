@@ -7,7 +7,6 @@ use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailAddress;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
-use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProvider;
 
@@ -103,10 +102,10 @@ class EmailEntityBatchProcessor implements EmailEntityBatchInterface
      */
     public function addFolder(EmailFolder $obj)
     {
-        $key = strtolower(sprintf('%s_%s', $obj->getType(), $obj->getName()));
+        $key = strtolower(sprintf('%s_%s', $obj->getType(), $obj->getFullName()));
         if (isset($this->folders[$key])) {
             throw new \LogicException(
-                sprintf('The folder "%s" (type: %s) already exists in the batch.', $obj->getName(), $obj->getType())
+                sprintf('The folder "%s" (type: %s) already exists in the batch.', $obj->getFullName(), $obj->getType())
             );
         }
         $this->folders[$key] = $obj;
@@ -116,12 +115,12 @@ class EmailEntityBatchProcessor implements EmailEntityBatchInterface
      * Get EmailFolder if it exists in the batch
      *
      * @param string $type The folder type
-     * @param string $name The folder name
+     * @param string $fullName The full name of a folder
      * @return EmailFolder|null
      */
-    public function getFolder($type, $name)
+    public function getFolder($type, $fullName)
     {
-        $key = strtolower(sprintf('%s_%s', $type, $name));
+        $key = strtolower(sprintf('%s_%s', $type, $fullName));
 
         return isset($this->folders[$key])
             ? $this->folders[$key]
@@ -131,30 +130,28 @@ class EmailEntityBatchProcessor implements EmailEntityBatchInterface
     /**
      * Register EmailOrigin object
      *
-     * @param EmailOrigin $obj
+     * @param EmailOrigin $origin
      * @throws \LogicException
      */
-    public function addOrigin(EmailOrigin $obj)
+    public function addOrigin(EmailOrigin $origin)
     {
-        $key = strtolower($obj->getName());
+        $key = $origin->getId();
         if (isset($this->origins[$key])) {
-            throw new \LogicException(sprintf('The origin "%s" already exists in the batch.', $obj->getName()));
+            throw new \LogicException(sprintf('The origin %s already exists in the batch.', $origin));
         }
-        $this->origins[$key] = $obj;
+        $this->origins[$key] = $origin;
     }
 
     /**
      * Get EmailOrigin if it exists in the batch
      *
-     * @param string $name The origin name
+     * @param int $id The origin id
      * @return EmailOrigin|null
      */
-    public function getOrigin($name)
+    public function getOrigin($id)
     {
-        $key = strtolower($name);
-
-        return isset($this->origins[$key])
-            ? $this->origins[$key]
+        return isset($this->origins[$id])
+            ? $this->origins[$id]
             : null;
     }
 
@@ -165,10 +162,28 @@ class EmailEntityBatchProcessor implements EmailEntityBatchInterface
      */
     public function persist(EntityManager $em)
     {
-        $this->persistOrigins($em);
         $this->persistFolders($em);
         $this->persistAddresses($em);
         $this->persistEmails($em);
+    }
+
+    /**
+     * Removes all objects from this batch processor
+     */
+    public function clear()
+    {
+        $this->emails = array();
+        $this->folders = array();
+        $this->origins = array();
+        $this->addresses = array();
+    }
+
+    /**
+     * Removes all email objects from this batch processor
+     */
+    public function removeEmails()
+    {
+        $this->emails = array();
     }
 
     /**
@@ -199,7 +214,7 @@ class EmailEntityBatchProcessor implements EmailEntityBatchInterface
                 $em->persist($obj);
             } else {
                 $this->updateAddressReferences($obj, $dbObj);
-                $this->origins[$key] = $dbObj;
+                $this->addresses[$key] = $dbObj;
             }
         }
     }
@@ -213,33 +228,16 @@ class EmailEntityBatchProcessor implements EmailEntityBatchInterface
     {
         $repository = $em->getRepository('OroEmailBundle:EmailFolder');
         foreach ($this->folders as $key => $obj) {
+            if ($obj->getId() !== null) {
+                continue;
+            }
             /** @var EmailFolder $dbObj */
-            $dbObj = $repository->findOneBy(array('name' => $obj->getName(), 'type' => $obj->getType()));
+            $dbObj = $repository->findOneBy(array('fullName' => $obj->getFullName(), 'type' => $obj->getType()));
             if ($dbObj === null) {
                 $em->persist($obj);
             } else {
                 $this->updateFolderReferences($obj, $dbObj);
-                $this->origins[$key] = $dbObj;
-            }
-        }
-    }
-
-    /**
-     * Tell the given EntityManager to manage EmailOrigin objects in this batch
-     *
-     * @param EntityManager $em
-     */
-    protected function persistOrigins(EntityManager $em)
-    {
-        $repository = $em->getRepository('OroEmailBundle:EmailOrigin');
-        foreach ($this->origins as $key => $obj) {
-            /** @var EmailOrigin $dbObj */
-            $dbObj = $repository->findOneBy(array('name' => $obj->getName()));
-            if ($dbObj === null) {
-                $em->persist($obj);
-            } else {
-                $this->updateOriginReferences($obj, $dbObj);
-                $this->origins[$key] = $dbObj;
+                $this->folders[$key] = $dbObj;
             }
         }
     }
@@ -275,21 +273,6 @@ class EmailEntityBatchProcessor implements EmailEntityBatchInterface
         foreach ($this->emails as $obj) {
             if ($obj->getFolder() === $old) {
                 $obj->setFolder($new);
-            }
-        }
-    }
-
-    /**
-     * Make sure that all objects in this batch have correct EmailOrigin references
-     *
-     * @param EmailOrigin $old
-     * @param EmailOrigin $new
-     */
-    protected function updateOriginReferences(EmailOrigin $old, EmailOrigin $new)
-    {
-        foreach ($this->folders as $obj) {
-            if ($obj->getOrigin() === $old) {
-                $obj->setOrigin($new);
             }
         }
     }

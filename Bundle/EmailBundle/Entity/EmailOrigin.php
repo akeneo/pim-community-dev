@@ -12,8 +12,10 @@ use JMS\Serializer\Annotation\Exclude;
  *
  * @ORM\Table(name="oro_email_origin")
  * @ORM\Entity
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="name", type="string", length=30)
  */
-class EmailOrigin
+abstract class EmailOrigin
 {
     /**
      * @var integer
@@ -26,14 +28,6 @@ class EmailOrigin
     protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100)
-     * @Type("string")
-     */
-    protected $name;
-
-    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="EmailFolder", mappedBy="origin", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -41,6 +35,9 @@ class EmailOrigin
      */
     protected $folders;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->folders = new ArrayCollection();
@@ -54,29 +51,6 @@ class EmailOrigin
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get email origin name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set email origin name
-     *
-     * @param string $name
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     /**
@@ -102,5 +76,15 @@ class EmailOrigin
         $folder->setOrigin($this);
 
         return $this;
+    }
+
+    /**
+     * Get a human-readable representation of this object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('EmailOrigin(%d)', $this->id);
     }
 }

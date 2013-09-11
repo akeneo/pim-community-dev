@@ -6,6 +6,8 @@ use Oro\Bundle\ImapBundle\Connector\ImapConnector;
 use Oro\Bundle\ImapBundle\Connector\Search\SearchQuery;
 use Oro\Bundle\ImapBundle\Manager\DTO\ItemId;
 use Oro\Bundle\ImapBundle\Manager\DTO\Email;
+use Oro\Bundle\ImapBundle\Mail\Storage\Folder;
+use Oro\Bundle\ImapBundle\Connector\Search\SearchQueryBuilder;
 use Zend\Mail\Headers;
 use Zend\Mail\Header\HeaderInterface;
 use Zend\Mail\Header\AbstractAddressList;
@@ -48,7 +50,7 @@ class ImapEmailManager
     /**
      * Set selected folder
      *
-     * @param $folder
+     * @param string $folder
      */
     public function selectFolder($folder)
     {
@@ -56,16 +58,50 @@ class ImapEmailManager
     }
 
     /**
+     * Gets UIDVALIDITY of currently selected folder
+     *
+     * @return int
+     */
+    public function getUidValidity()
+    {
+        return $this->connector->getUidValidity();
+    }
+
+    /**
+     * Gets the search query builder
+     *
+     * @return SearchQueryBuilder
+     */
+    public function getSearchQueryBuilder()
+    {
+        return $this->connector->getSearchQueryBuilder();
+    }
+
+    /**
+     * Retrieve folders
+     *
+     * @param string|null $parentFolder The global name of a parent folder.
+     * @param bool $recursive True to get all subordinate folders
+     * @return Folder[]
+     */
+    public function getFolders($parentFolder = null, $recursive = false)
+    {
+        return $this->connector->findFolders($parentFolder, $recursive);
+    }
+
+    /**
      * Retrieve emails by the given criteria
      *
      * @param SearchQuery $query
+     * @param int $maxResults The maximum number of items returned by this method. Set -1 to unlimited
      * @return Email[]
      */
-    public function getEmails(SearchQuery $query = null)
+    public function getEmails(SearchQuery $query = null, $maxResults = 100)
     {
         $response = $this->connector->findItems(
             $this->getSelectedFolder(),
-            $query
+            $query,
+            $maxResults
         );
 
         $result = array();

@@ -8,7 +8,8 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.1.*",
-        "zendframework/zend-mail": "2.1.*"
+        "zendframework/zend-mail": "2.1.*",
+        "oro/email-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\GoogleBundle": "" }

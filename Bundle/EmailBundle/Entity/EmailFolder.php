@@ -44,6 +44,15 @@ class EmailFolder
     /**
      * @var string
      *
+     * @ORM\Column(name="full_name", type="string", length=255)
+     * @Soap\ComplexType("string")
+     * @Type("string")
+     */
+    protected $fullName;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="type", type="string", length=10)
      * @Soap\ComplexType("string")
      * @Type("string")
@@ -101,6 +110,29 @@ class EmailFolder
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get full name of this folder
+     *
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->fullName;
+    }
+
+    /**
+     * Set full name of this folder
+     *
+     * @param string $fullName
+     * @return $this
+     */
+    public function setFullName($fullName)
+    {
+        $this->fullName = $fullName;
 
         return $this;
     }

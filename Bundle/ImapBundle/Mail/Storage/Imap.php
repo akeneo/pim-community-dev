@@ -73,6 +73,68 @@ class Imap extends \Zend\Mail\Storage\Imap
     }
 
     /**
+     * get root folder or given folder
+     *
+     * @param  string $rootFolder get folder structure for given folder, else root
+     * @return Folder root or wanted folder
+     * @throws \Zend\Mail\Storage\Exception\RuntimeException
+     * @throws \Zend\Mail\Storage\Exception\InvalidArgumentException
+     * @throws \Zend\Mail\Protocol\Exception\RuntimeException
+     */
+    public function getFolders($rootFolder = null)
+    {
+        $folders = $this->protocol->listMailbox((string)$rootFolder);
+        if (!$folders) {
+            throw new \Zend\Mail\Storage\Exception\InvalidArgumentException('folder not found');
+        }
+
+        $decodedFolders = array();
+        foreach ($folders as $globalName => $data) {
+            $decodedGlobalName = mb_convert_encoding($globalName, 'UTF-8', 'UTF7-IMAP');
+            $decodedFolders[$decodedGlobalName] = $data;
+        }
+        $folders = $decodedFolders;
+
+        ksort($folders, SORT_STRING);
+        $root = new Folder('/', '/', false);
+        $stack = array(null);
+        $folderStack = array(null);
+        $parentFolder = $root;
+        $parent = '';
+
+        foreach ($folders as $globalName => $data) {
+            do {
+                if (!$parent || strpos($globalName, $parent) === 0) {
+                    $pos = strrpos($globalName, $data['delim']);
+                    if ($pos === false) {
+                        $localName = $globalName;
+                    } else {
+                        $localName = substr($globalName, $pos + 1);
+                    }
+                    $selectable = !$data['flags'] || !in_array('\\Noselect', $data['flags']);
+
+                    array_push($stack, $parent);
+                    $parent = $globalName . $data['delim'];
+                    $folder = new Folder($localName, $globalName, $selectable);
+                    $folder->setFlags(!$data['flags'] ? array() : $data['flags']);
+                    $parentFolder->$localName = $folder;
+                    array_push($folderStack, $parentFolder);
+                    $parentFolder = $folder;
+                    break;
+                } elseif ($stack) {
+                    $parent = array_pop($stack);
+                    $parentFolder = array_pop($folderStack);
+                }
+            } while ($stack);
+            if (!$stack) {
+                throw new \Zend\Mail\Storage\Exception\RuntimeException('error while constructing folder tree');
+            }
+        }
+
+        return $root;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getMessage($id)
@@ -133,7 +195,9 @@ class Imap extends \Zend\Mail\Storage\Imap
         }
 
         $this->currentFolder = $globalName;
-        $selectResponse = $this->protocol->select($this->currentFolder);
+        $selectResponse = $this->protocol->select(
+            mb_convert_encoding((string)$this->currentFolder, 'UTF7-IMAP', 'UTF-8')
+        );
         if (!$selectResponse) {
             $this->currentFolder = '';
             throw new \Zend\Mail\Storage\Exception\RuntimeException('cannot change folder, maybe it does not exist');

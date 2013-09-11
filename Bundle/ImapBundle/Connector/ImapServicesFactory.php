@@ -13,7 +13,8 @@ class ImapServicesFactory
     /**
      * An array which is used to choose correct implementation of IMAP storage and search string manager
      *
-     * The key is the key capability of IMAP server. The empty key is used for IMAP servers which have not any special preferences
+     * The key is the key capability of IMAP server.
+     * The empty key is used for IMAP servers which have not any special preferences
      * The value is an array
      *    the first element if this array is the full name of a class responsible to communication with this IMAP server
      *    the second element if this array is the full name of a class responsible to build the search string
