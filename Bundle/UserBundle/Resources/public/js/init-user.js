@@ -1,8 +1,8 @@
 /* jshint browser:true */
 /* global require */
-require(['jquery', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger', 'oro/widget-manager',
-    'jquery.dialog.extended'],
-function($, __, app, mediator, messenger, widgetManager) {
+require(['jquery', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger',
+    'oro/widget-manager', 'oro/dialog-widget', 'jquery.dialog.extended'],
+function($, __, app, mediator, messenger, widgetManager, dialogWidget) {
     'use strict';
 
     /* ============================================================
@@ -43,7 +43,7 @@ function($, __, app, mediator, messenger, widgetManager) {
         $(document).on('click', '#view-activity-btn', function (e) {
             e.stopImmediatePropagation();
 
-            widgetManager.createWidget('dialog', {
+            var historyWindow = new dialogWidget({
                 url: $(this).attr('href'),
                 dialogOptions: {
                     allowMaximize: true,
@@ -53,7 +53,9 @@ function($, __, app, mediator, messenger, widgetManager) {
                     width : 1000,
                     title: $(this).attr('title')
                 }
-            }).render();
+            });
+            widgetManager.addWidgetInstance(historyWindow);
+            historyWindow.render();
 
             return false;
         });

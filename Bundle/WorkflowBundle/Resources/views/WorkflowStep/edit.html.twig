@@ -1,11 +1,28 @@
 {% extends bap.layout %}
 {% import 'OroUIBundle::macros.html.twig' as macros %}
+
+{% block set_title %}
 {% oro_title_set({
     params : {
-        '%workflow%': workflow.label,
-        '%step%': currentStep.label
+        '%section%': 'Workflows'|trans,
+        '%entity%': workflow.label,
+        '%workflow_data%': currentStep.label
     }
 }) %}
+{% endblock set_title %}
+
+{% set breadcrumbs = [{
+    label: 'Workflows'|trans
+}] %}
+
+{% block breadcrumb %}
+    {% include 'OroNavigationBundle:Menu:breadcrumbs.html.twig' %}
+{% endblock %}
+
+{% set titleParts = {
+    'indexLabel': 'Workflows'|trans,
+    'entityTitle': workflow.label ~ ' (' ~ currentStep.label ~ ')'
+} %}
 
 {% block content %}
     <style type="text/css">
@@ -78,6 +95,7 @@
     </style>
 
     {% block workflow_header %}
+    {{ block('set_title') }}
     <div class="navigation clearfix navbar-extra navbar-extra-right" style="border-bottom: 1px solid #c8c8c8">
         <div class="row">
             <div class="pull-right">
@@ -98,11 +116,25 @@
                 <div class="customer-info customer-simple well-small">
                     <div class="customer-content pull-left">
                         <div class="clearfix">
-                            <div class="pull-left">
-                                <div class="sub-title"><a href="#">{{ 'Workflows'|trans }}</a></div>
-                                <span class="separator">/</span>
-                                <h1 class="user-name">{{ workflow.label|trans }} ({{ currentStep.label|trans }})</h1>
-                            </div>
+                            {% block workflow_title %}
+                                <div class="pull-left">
+                                    <div class="sub-title">
+                                        {%- if titleParts.indexPath is defined -%}
+                                            <a href="{{ titleParts.indexPath }}">{{ titleParts.indexLabel }}</a>
+                                        {%- else -%}
+                                            {{ titleParts.indexLabel }}
+                                        {%- endif -%}
+                                    </div>
+                                    <span class="separator">/</span>
+                                    {% if titleParts.additional is defined %}
+                                        {% for titlePart in titleParts.additional %}
+                                            <div class="sub-title"><a href="{{ titlePart.indexPath }}">{{ titlePart.indexLabel }}</a></div>
+                                            <span class="separator">/</span>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <h1 class="user-name">{{ titleParts.entityTitle }}</h1>
+                                </div>
+                            {% endblock workflow_title %}
                         </div>
                     </div>
                 </div>

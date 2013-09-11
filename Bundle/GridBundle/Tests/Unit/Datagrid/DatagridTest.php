@@ -608,4 +608,16 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Oro\Bundle\GridBundle\Datagrid\DatagridView', $datagridView);
         $this->assertEquals($datagrid, $datagridView->getDatagrid());
     }
+
+    public function testMultipleSorting()
+    {
+        $datagrid = $this->createDatagrid();
+
+        // default value
+        $this->assertTrue($datagrid->getMultipleSorting());
+
+        // custom value
+        $datagrid->setMultipleSorting(false);
+        $this->assertFalse($datagrid->getMultipleSorting());
+    }
 }
