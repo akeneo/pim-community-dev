@@ -58,6 +58,13 @@ function(_, Backbone, BackbonePageableCollection, app) {
         },
 
         /**
+         * Whether multiple sorting is allowed
+         *
+         * @property {Boolean}
+         */
+        multipleSorting: true,
+
+        /**
          * Initialize basic parameters from source options
          *
          * @param models
@@ -85,6 +92,9 @@ function(_, Backbone, BackbonePageableCollection, app) {
             if (options.inputName) {
                 this.inputName = options.inputName;
             }
+            if (_.has(options, "multipleSorting")) {
+                this.multipleSorting = options.multipleSorting;
+            }
 
             _.extend(this.queryParams, {
                 currentPage: this.inputName + '[_pager][_page]',
@@ -99,7 +109,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
             if (this.state.sorters && options.state) {
                 _.each(options.state.sorters, function(direction, field) {
-                    this.setSorting(field, direction);
+                    this.setSorting(field, direction, {'reset': false});
                 }, this);
             }
         },
@@ -470,16 +480,23 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
             state.sorters = state.sorters || {};
 
-            // there is always must be at least one sorted column
-            if (_.keys(state.sorters).length <= 1 && !order) {
-                order = "-1";  // default order is ASC
-            }
+            if (this.multipleSorting) {
+                // there is always must be at least one sorted column
+                if (_.keys(state.sorters).length <= 1 && !order) {
+                    order = this.getSortDirectionKey("ASC");  // default order
+                }
 
-            state.sorters[sortKey] = order;
+                // last sorting has the lowest priority
+                delete state.sorters[sortKey];
+                if (order) {
+                    state.sorters[sortKey] = order;
+                }
+            } else {
+                // reset sorters
+                if (!options || !_.has(options, 'reset') || options.reset) {
+                    state.sorters = {};
+                }
 
-            // multiple sorting, last sorting has the lowest priority
-            delete state.sorters[sortKey];
-            if (order) {
                 state.sorters[sortKey] = order;
             }
 
