@@ -2,22 +2,19 @@
  * Custom javascript form validation for PIM
  */
 
+require(['jquery', 'oro/translator', 'jquery.bind-first'],
+function($, __){
 {% block before %}{% endblock %}
 
 var jsfv = new function () {
     function getComputeMessage(key, placeholders, number) {
-        Translator.placeHolderPrefix = '{{ '{{' }} ';
-        Translator.placeHolderSuffix = ' {{ '}}' }}';
-        // Default translations
-        if (!Translator.has('validators:'+key)) {
-            Translator.add('validators:'+key, key);
-        }
 
-        var result = Translator.get('validators:'+key, placeholders, number);
+        var result = __(key, placeholders, number);
         if (undefined == result && number != undefined) {
             // Try to get translated string without a number parameter.
-            result = Translator.get('validators:'+key, placeholders);
+            result = __(key, placeholders);
         }
+
         return result;
     }
 
@@ -289,3 +286,4 @@ $(jsfv.onReady);
 {% endblock %}
 
 {% block after %}{% endblock %}
+});

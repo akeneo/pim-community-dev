@@ -42,11 +42,11 @@ jenkins:
                 env: behat
         SensioLabs\Behat\PageObjectExtension\Extension: ~
     formatter:
-        name: pretty,pretty
+        name: progress,junit
         parameters:
-            output_path: null,app/build/logs/behat/pretty.out
+            output_path: null,app/build/logs/behat/
     filters:
-        tags: ~@select2-regression
+        tags: ~skip
 
 jenkins-pr:
     context:
@@ -64,30 +64,30 @@ jenkins-pr:
                 env: behat
         SensioLabs\Behat\PageObjectExtension\Extension: ~
     formatter:
-        name: pretty,pretty
+        name: progress,junit
         parameters:
-            output_path: null,app/build/logs/behat-pr/pretty.out
+            output_path: null,app/build/logs/behat-pr/
     filters:
-        tags: ~@select2-regression
+        tags: ~skip
 
 jenkins-coverage:
     context:
         parameters:
-            base_url: http://pim-behat-coverage.ci/app_behat.php/
+            base_url: http://pim-behat-coverage.ci:90/app_behat.php/
     extensions:
         Behat\MinkExtension\Extension:
             default_session: symfony2
             show_cmd: chromium-browser %s
             selenium2: ~
-            base_url: http://pim-behat-coverage.ci/app_behat.php/
+            base_url: http://pim-behat-coverage.ci:90/app_behat.php/
             files_path: 'features/Context/fixtures/'
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat
         SensioLabs\Behat\PageObjectExtension\Extension: ~
     formatter:
-        name: pretty,pretty
+        name: progress,junit
         parameters:
-            output_path: null,app/build/logs/behat-coverage/pretty.out
+            output_path: null,app/build/logs/behat-coverage/
     filters:
-        tags: ~@select2-regression
+        tags: ~skip

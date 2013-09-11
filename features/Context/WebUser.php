@@ -30,17 +30,19 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private $password = null;
 
     private $pageMapping = array(
-        'attributes' => 'Attribute index',
-        'channels'   => 'Channel index',
-        'currencies' => 'Currency index',
-        'exports'    => 'Export index',
-        'families'   => 'Family index',
-        'imports'    => 'Import index',
-        'locales'    => 'Locale index',
-        'products'   => 'Product index',
-        'users'      => 'User index',
-        'categories' => 'Category tree creation',
-        'home'       => 'Base index',
+        'attributes'  => 'Attribute index',
+        'channels'    => 'Channel index',
+        'currencies'  => 'Currency index',
+        'exports'     => 'Export index',
+        'families'    => 'Family index',
+        'imports'     => 'Import index',
+        'locales'     => 'Locale index',
+        'products'    => 'Product index',
+        'users'       => 'User index',
+        'user roles'  => 'UserRole index',
+        'user groups' => 'UserGroup index',
+        'categories'  => 'Category tree creation',
+        'home'        => 'Base index',
     );
 
     /* -------------------- Page-related methods -------------------- */
@@ -158,7 +160,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         foreach ($pages->getHash() as $data) {
             $url = $this->getSession()->evaluateScript(sprintf('return Routing.generate("%s");', $data['page']));
-            $this->getSession()->executeScript(sprintf('Pim.navigate("%s");', $url));
+            $this->getSession()->executeScript(
+                sprintf("require(['oro/navigation'], function(Nav) { Nav.getInstance().setLocation('%s'); } );", $url)
+            );
             $this->wait();
 
             $currentUrl = $this->getSession()->getCurrentUrl();
@@ -702,6 +706,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 )
             );
         }
+    }
+
+    /**
+     * @param string $group
+     *
+     * @Given /^I should be on the "([^"]*)" group page$/
+     */
+    public function iShouldBeOnTheGroupPage($group)
+    {
+        $expectedAddress = $this->getPage('Group edit')->getUrl(array('id' => $this->getGroup($group)->getId()));
+        $this->assertAddress($expectedAddress);
     }
 
     /**
@@ -1293,7 +1308,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iBlur()
     {
         $this->getCurrentPage()->find('css', 'body')->click();
-        $this->wait();
+
+        //TODO Otherwise, it  makes the features/category/create_a_category.feature:28 scenario fails
+        $this->wait(5000, null);
     }
 
     /**

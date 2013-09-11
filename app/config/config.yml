@@ -34,10 +34,11 @@ twig:
             start_route:      oro_default
     form:
         resources:
+            - 'OroUIBundle:Form:fields.html.twig'
+            - 'OroFormBundle:Form:fields.html.twig'
+            - 'OroTranslationBundle:Form:fields.html.twig'
+            - 'OroOrganizationBundle:Form:fields.html.twig'
             - 'PimUIBundle:Form:pim-fields.html.twig'
-#            - 'OroUIBundle:Form:fields.html.twig'
-#            - 'OroFormBundle:Form:fields.html.twig'
-#            - 'OroTranslationBundle:Form:fields.html.twig'
 
 # Assetic Configuration
 assetic:
@@ -204,6 +205,8 @@ oro_translation:
         # order of domains reflects messages fallback
         domains: [jsmessages, validators]
 
+jms_di_extra:
+    doctrine_integration: false
 
 oro_entity_extend:
     backend:        Dynamic

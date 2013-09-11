@@ -1,0 +1,8 @@
+placeholders:
+    requirejs_config_extend:
+        items:
+            require_js_config:
+                order: 100
+items:
+    require_js_config:
+        template: PimUIBundle::require.js.config.html.twig

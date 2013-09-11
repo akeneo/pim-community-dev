@@ -9,7 +9,11 @@
         }
     ],
     "autoload": {
-        "psr-0": { "": "src/", "Context": "features/" }
+        "psr-0": {
+            "": "src/",
+            "Context": "features/",
+            "Extend\\": "app/entities/"
+        }
     },
     "require": {
         "php": ">=5.3.3",
