@@ -34,7 +34,6 @@ Feature: Display the family history
     | update | 2       | label:en_US:Fly |
     When I visit the "Attributes" tab
     And I add available attributes Description
-    And I save the family
     When I visit the "History" tab
     Then there should be 3 updates
     And I should see history:
@@ -42,3 +41,14 @@ Feature: Display the family history
     | create | 1       | code:Flyer                    |
     | update | 2       | label:en_US:Fly               |
     | update | 3       | attributes:skusku,description |
+    When I visit the "Attributes" tab
+    And I remove the "Description" attribute
+    Then I should see "The family is successfully updated."
+    When I visit the "History" tab
+    Then there should be 4 updates
+    And I should see history:
+    | action | version | data                          |
+    | create | 1       | code:Flyer                    |
+    | update | 2       | label:en_US:Fly               |
+    | update | 3       | attributes:skusku,description |
+    | update | 4       | attributes:sku,descriptionsku |
