@@ -3,6 +3,7 @@
 namespace Oro\Bundle\GridBundle\Datagrid\Views;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
@@ -53,6 +54,10 @@ abstract class AbstractViewsList
      */
     public function getViewByName($name)
     {
+        if (empty($name)) {
+            return false;
+        }
+
         $filtered = $this->getList()->filter(
             function (View $view) use ($name) {
                 return $view->getName() === $name;
@@ -99,18 +104,31 @@ abstract class AbstractViewsList
      * Apply view to datagrid
      *
      * @param Datagrid $datagrid
+     * @param array $defaultGridParameters assoc array with datagrid default params
+     * @return bool
      */
-    public function applyToDatagrid(Datagrid $datagrid)
+    public function applyToDatagrid(Datagrid $datagrid, $defaultGridParameters)
     {
         $parameters = $datagrid->getParameters();
 
-        $filters = $parameters->get('_filter');
-        $sorters = $parameters->get('_sort_by');
-        $viewName = $parameters->get('_view');
+        //$filters = $parameters->get(ParametersInterface::FILTER_PARAMETERS);
+        //$sorters = $parameters->get(ParametersInterface::SORT_PARAMETERS);
+        $viewName = $parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
 
-        if (!empty($view)) {
-            // find view by name
-            $view = $this->getViewByName($viewName);
+        // test
+        $viewName = 'testGroupView';
+
+        // find view by name
+        $view = $this->getViewByName($viewName);
+        if (!$view) {
+            return false;
         }
+
+        $parameters->set(ParametersInterface::FILTER_PARAMETERS, $view->getFiltersData());
+        $viewSorters = $view->getSortersData();
+        if (empty($viewSorters)) {
+            $viewSorters = $defaultGridParameters[ParametersInterface::SORT_PARAMETERS];
+        }
+        $parameters->set(ParametersInterface::SORT_PARAMETERS, $viewSorters);
     }
 }
