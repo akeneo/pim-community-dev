@@ -292,6 +292,8 @@ class AttributeGroupController extends AbstractDoctrineController
 
         $this->getManager()->flush();
 
+        $this->addFlash('success', 'Attribute successfully added to the group');
+
         if ($pending = $this->pendingManager->getPendingVersion($group)) {
             $this->pendingManager->createVersionAndAudit($pending);
         }
@@ -330,7 +332,7 @@ class AttributeGroupController extends AbstractDoctrineController
             $this->pendingManager->createVersionAndAudit($pending);
         }
 
-        $this->addFlash('success', 'Attribute group successfully updated.');
+        $this->addFlash('success', 'Attribute successfully removed from the group');
 
         return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
 
