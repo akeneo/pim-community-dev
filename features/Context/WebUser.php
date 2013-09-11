@@ -891,6 +891,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSelectRole($role)
     {
+        $this->wait(10000, null);
         $this->getPage('User creation')->selectRole($role);
     }
 
