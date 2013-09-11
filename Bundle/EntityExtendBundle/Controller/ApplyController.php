@@ -34,9 +34,9 @@ class ApplyController extends Controller
      * )
      * @Acl(
      *      id="oro_entityextend_apply",
-     *      name="Validate entityconfig changes",
+     *      label="Validate entityconfig changes",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      * @Template()
      */
@@ -111,9 +111,9 @@ class ApplyController extends Controller
      * )
      * @Acl(
      *      id="oro_entityextend_update",
-     *      name="Apply entityconfig changes",
+     *      label="Apply entityconfig changes",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      * @Template()
      */

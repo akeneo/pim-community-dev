@@ -1,6 +1,6 @@
 test_controller:
-  name: Test controller
-  description: Test description
-  parent: root
-  class: Oro\Bundle\UserBundle\Tests\Unit\Fixture\ConfigController\ConfigController
-  method: testAction
+  label: Test controller
+  type: action
+  group_name: ""
+  binding:
+    - { class: Oro\Bundle\UserBundle\Tests\Unit\Fixture\ConfigController\ConfigController, method: testAction }

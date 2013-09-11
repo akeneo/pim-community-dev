@@ -25,10 +25,9 @@ class GroupController extends Controller
      * @Template("OroUserBundle:Group:update.html.twig")
      * @Acl(
      *      id="oro_user_group_create",
-     *      name="Create group",
      *      type="entity",
-     *      entity="OroUserBundle:Group",
-     *      precision="CREATE"
+     *      class="OroUserBundle:Group",
+     *      permission="CREATE"
      * )
      */
     public function createAction()
@@ -43,10 +42,9 @@ class GroupController extends Controller
      * @Template
      * @Acl(
      *      id="oro_user_group_update",
-     *      name="Edit group",
      *      type="entity",
-     *      entity="OroUserBundle:Group",
-     *      precision="EDIT"
+     *      class="OroUserBundle:Group",
+     *      permission="EDIT"
      * )
      */
     public function updateAction(Group $entity)
@@ -118,10 +116,9 @@ class GroupController extends Controller
      * )
      * @Acl(
      *      id="oro_user_group_list",
-     *      name="View group list",
      *      type="entity",
-     *      entity="OroUserBundle:Group",
-     *      precision="VIEW"
+     *      class="OroUserBundle:Group",
+     *      permission="VIEW"
      * )
      */
     public function indexAction(Request $request)

@@ -21,10 +21,9 @@ class RoleController extends Controller
     /**
      * @Acl(
      *      id="oro_user_role_create",
-     *      name="Create new role",
      *      type="entity",
-     *      entity="OroUserBundle:Role",
-     *      precision="CREATE"
+     *      class="OroUserBundle:Role",
+     *      permission="CREATE"
      * )
      * @Route("/acl-create", name="oro_user_new_role_create")
      * @Template("OroUserBundle:Role:updateNew.html.twig")
@@ -37,10 +36,9 @@ class RoleController extends Controller
     /**
      * @Acl(
      *      id="oro_user_role_create",
-     *      name="Edit role",
      *      type="entity",
-     *      entity="OroUserBundle:Role",
-     *      precision="EDIT"
+     *      class="OroUserBundle:Role",
+     *      permission="EDIT"
      * )
      * @Route("/acl-update/{id}", name="oro_user_new_role_update", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
@@ -79,10 +77,9 @@ class RoleController extends Controller
      * @Template("OroUserBundle:Role:update.html.twig")
      * @Acl(
      *      id="oro_user_role_create",
-     *      name="Create new role",
      *      type="entity",
-     *      entity="OroUserBundle:Role",
-     *      precision="CREATE"
+     *      class="OroUserBundle:Role",
+     *      permission="CREATE"
      * )
      */
     public function createAction()
@@ -97,10 +94,9 @@ class RoleController extends Controller
      * @Template
      * @Acl(
      *      id="oro_user_role_update",
-     *      name="Edit role",
      *      type="entity",
-     *      entity="OroUserBundle:Role",
-     *      precision="EDIT"
+     *      class="OroUserBundle:Role",
+     *      permission="EDIT"
      * )
      */
     public function updateAction(Role $entity)
@@ -173,10 +169,9 @@ class RoleController extends Controller
      * )
      * @Acl(
      *      id="oro_user_role_list",
-     *      name="View role list",
      *      type="entity",
-     *      entity="OroUserBundle:Role",
-     *      precision="VIEW"
+     *      class="OroUserBundle:Role",
+     *      permission="VIEW"
      * )
      */
     public function indexAction(Request $request)

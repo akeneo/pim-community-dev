@@ -38,10 +38,9 @@ class AddressController extends RestController implements ClassResourceInterface
      *  }
      * @Acl(
      *      id="oro_address_list",
-     *      name="View list of addresses",
      *      type="entity",
-     *      entity="OroAddressBundle:Address",
-     *      precision="VIEW"
+     *      class="OroAddressBundle:Address",
+     *      permission="VIEW"
      * )
      * @return Response
      */
@@ -64,10 +63,9 @@ class AddressController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_address_show",
-     *      name="View address",
      *      type="entity",
-     *      entity="OroAddressBundle:Address",
-     *      precision="VIEW"
+     *      class="OroAddressBundle:Address",
+     *      permission="VIEW"
      * )
      * @return Response
      */
@@ -87,10 +85,9 @@ class AddressController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_address_edit",
-     *      name="Edit address",
      *      type="entity",
-     *      entity="OroAddressBundle:Address",
-     *      precision="EDIT"
+     *      class="OroAddressBundle:Address",
+     *      permission="EDIT"
      * )
      * @return Response
      */
@@ -108,10 +105,9 @@ class AddressController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_address_create",
-     *      name="Create address",
      *      type="entity",
-     *      entity="OroAddressBundle:Address",
-     *      precision="CREATE"
+     *      class="OroAddressBundle:Address",
+     *      permission="CREATE"
      * )
      */
     public function postAction()
@@ -130,10 +126,9 @@ class AddressController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_address_remove",
-     *      name="Remove address",
      *      type="entity",
-     *      entity="OroAddressBundle:Address",
-     *      precision="DELETE"
+     *      class="OroAddressBundle:Address",
+     *      permission="DELETE"
      * )
      * @return Response
      */

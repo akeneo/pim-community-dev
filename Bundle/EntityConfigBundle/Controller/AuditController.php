@@ -30,9 +30,9 @@ class AuditController extends Controller
      * @Template
      * @Acl(
      *      id="oro_entityconfig_audit",
-     *      name="View entity history",
+     *      label="View entity history",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      *
      * @param $entity
@@ -74,9 +74,9 @@ class AuditController extends Controller
      * @Template("OroEntityConfigBundle:Audit:audit.html.twig")
      * @Acl(
      *      id="oro_entityconfig_audit_field",
-     *      name="View entity's field history",
+     *      label="View entity's field history",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      *
      * @param $entity

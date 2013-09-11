@@ -23,10 +23,9 @@ class AuditController extends Controller
      * )
      * @Acl(
      *      id="oro_dataaudit_index",
-     *      name="View audit stream",
      *      type="entity",
-     *      entity="OroDataAuditBundle:Audit",
-     *      precision="VIEW"
+     *      class="OroDataAuditBundle:Audit",
+     *      permission="VIEW"
      * )
      */
     public function indexAction(Request $request)
@@ -49,10 +48,9 @@ class AuditController extends Controller
      * @Template
      * @Acl(
      *      id="oro_dataaudit_history",
-     *      name="View entity history",
      *      type="entity",
-     *      entity="OroDataAuditBundle:Audit",
-     *      precision="VIEW"
+     *      class="OroDataAuditBundle:Audit",
+     *      permission="VIEW"
      * )
      */
     public function historyAction($entity, $id)

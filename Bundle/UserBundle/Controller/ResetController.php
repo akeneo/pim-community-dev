@@ -20,9 +20,9 @@ class ResetController extends Controller
      * @Template
      * @Acl(
      *      id = "oro_reset_request",
-     *      name="reset password",
+     *      label="reset password",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      */
     public function requestAction()
@@ -37,9 +37,9 @@ class ResetController extends Controller
      * @Method({"POST"})
      * @Acl(
      *      id = "oro_reset_send_mail",
-     *      name="Request reset user password",
+     *      label="Request reset user password",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      */
     public function sendEmailAction()
@@ -94,9 +94,9 @@ class ResetController extends Controller
      * @Template
      * @Acl(
      *      id = "oro_reset_check_email",
-     *      name="Tell the user to check his email provider",
+     *      label="Tell the user to check his email provider",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      */
     public function checkEmailAction()
@@ -124,9 +124,9 @@ class ResetController extends Controller
      * @Template
      * @Acl(
      *      id = "oro_reset_password",
-     *      name="Reset user password",
+     *      label="Reset user password",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      */
     public function resetAction($token)

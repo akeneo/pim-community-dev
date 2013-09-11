@@ -27,10 +27,9 @@ class BusinessUnitController extends Controller
      * @Template("OroOrganizationBundle:BusinessUnit:update.html.twig")
      * @Acl(
      *      id="oro_business_unit_create",
-     *      name="Create business unit",
      *      type="entity",
-     *      entity="OroOrganizationBundle:Organization",
-     *      precision="CREATE"
+     *      class="OroOrganizationBundle:Organization",
+     *      permission="CREATE"
      * )
      */
     public function createAction()
@@ -43,10 +42,9 @@ class BusinessUnitController extends Controller
      * @Template
      * @Acl(
      *      id="oro_business_unit_view",
-     *      name="View business unit",
      *      type="entity",
-     *      entity="OroOrganizationBundle:Organization",
-     *      precision="VIEW"
+     *      class="OroOrganizationBundle:Organization",
+     *      permission="VIEW"
      * )
      */
     public function viewAction(BusinessUnit $entity)
@@ -64,10 +62,9 @@ class BusinessUnitController extends Controller
      * @Template
      * @Acl(
      *      id="oro_business_unit_update",
-     *      name="Edit business unit",
      *      type="entity",
-     *      entity="OroOrganizationBundle:Organization",
-     *      precision="EDIT"
+     *      class="OroOrganizationBundle:Organization",
+     *      permission="EDIT"
      * )
      */
     public function updateAction(BusinessUnit $entity)
@@ -101,10 +98,9 @@ class BusinessUnitController extends Controller
      * )
      * @Acl(
      *      id="oro_business_unit_list",
-     *      name="View business units list",
      *      type="entity",
-     *      entity="OroOrganizationBundle:Organization",
-     *      precision="VIEW"
+     *      class="OroOrganizationBundle:Organization",
+     *      permission="VIEW"
      * )
      * @Template()
      */

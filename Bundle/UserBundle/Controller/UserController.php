@@ -25,10 +25,9 @@ class UserController extends Controller
      * @Template
      * @Acl(
      *      id="oro_user_user_view",
-     *      name="View user",
      *      type="entity",
-     *      entity="OroUserBundle:User",
-     *      precision="VIEW"
+     *      class="OroUserBundle:User",
+     *      permission="VIEW"
      * )
      */
     public function viewAction(User $user)
@@ -41,10 +40,10 @@ class UserController extends Controller
     /**
      * @Route("/apigen/{id}", name="oro_user_apigen", requirements={"id"="\d+"})
      * @Acl(
-     *      id="oro_user_user_apigen",
-     *      name="Generate new API key",
+     *      id="oro_user_apigen",
+     *      label="Generate new API key",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      */
     public function apigenAction(User $user)
@@ -73,10 +72,9 @@ class UserController extends Controller
      * @Template("OroUserBundle:User:update.html.twig")
      * @Acl(
      *      id="oro_user_user_create",
-     *      name="Create user",
      *      type="entity",
-     *      entity="OroUserBundle:User",
-     *      precision="CREATE"
+     *      class="OroUserBundle:User",
+     *      permission="CREATE"
      * )
      */
     public function createAction()
@@ -93,10 +91,9 @@ class UserController extends Controller
      * @Template
      * @Acl(
      *      id="oro_user_user_update",
-     *      name="Edit user",
      *      type="entity",
-     *      entity="OroUserBundle:Role",
-     *      precision="EDIT"
+     *      class="OroUserBundle:Role",
+     *      permission="EDIT"
      * )
      */
     public function updateAction(User $entity)
@@ -130,10 +127,9 @@ class UserController extends Controller
      * )
      * @Acl(
      *      id="oro_user_user_list",
-     *      name="View list of users",
      *      type="entity",
-     *      entity="OroUserBundle:Role",
-     *      precision="VIEW"
+     *      class="OroUserBundle:Role",
+     *      permission="VIEW"
      * )
      */
     public function indexAction()

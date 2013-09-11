@@ -29,10 +29,9 @@ class TagController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_tag_delete",
-     *      name="Delete tags",
      *      type="entity",
-     *      entity="OroTagBundle:Tag",
-     *      precision="DELETE"
+     *      class="OroTagBundle:Tag",
+     *      permission="DELETE"
      * )
      * @return Response
      */

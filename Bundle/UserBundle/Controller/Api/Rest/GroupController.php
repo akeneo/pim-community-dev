@@ -52,10 +52,9 @@ class GroupController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_user_group_show",
-     *      name="View user group",
      *      type="entity",
-     *      entity="OroUserBundle:GROUP",
-     *      precision="VIEW"
+     *      class="OroUserBundle:Group",
+     *      permission="VIEW"
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -113,10 +112,9 @@ class GroupController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_user_group_remove",
-     *      name="Delete user group",
      *      type="entity",
-     *      entity="OroUserBundle:Group",
-     *      precision="DELETE"
+     *      class="OroUserBundle:Group",
+     *      permission="DELETE"
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -139,11 +137,11 @@ class GroupController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_user_group_roles",
-     *      name="View group roles",
      *      type="entity",
-     *      entity="OroUserBundle:Group",
-     *      precision="VIEW"
+     *      class="OroUserBundle:Group",
+     *      permission="VIEW"
      * )
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getRolesAction($id)
     {

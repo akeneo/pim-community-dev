@@ -24,9 +24,9 @@ class AclController extends FOSRestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_user_acl_edit",
-     *      name="View ACL tree for a particular role",
+     *      label="View ACL tree for a particular role",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -57,9 +57,9 @@ class AclController extends FOSRestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_user_acl_show",
-     *      name="View ACL resource",
+     *      label="View ACL resource",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */

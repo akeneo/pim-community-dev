@@ -1,16 +1,18 @@
 template_controller:
-    name: Actions from template controller
+    label: Actions from template controller
     type: action
-    group: ""
-    class: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
-    method: templateAction
+    group_name: ""
+    binding:
+        - {  class: Symfony\Bundle\FrameworkBundle\Controller\TemplateController, method: templateAction}
 
 external_bundle_actions:
-    name: External bundle actions
+    label: External bundle actions
     type: action
-    group: ""
+    group_name: ""
+    binding: ~
 
 oro_user:
-    name: User manipulation
+    label: User manipulation
     type: action
-    group: ""
+    group_name: ""
+    binding: ~

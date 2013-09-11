@@ -41,9 +41,9 @@ class ConfigEntityGridController extends Controller
      * )
      * @Acl(
      *      id="oro_entityextend_entity_unique_key",
-     *      name="Unique entity unique keys",
+     *      label="Unique entity unique keys",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      * @Template
      */
@@ -125,9 +125,9 @@ class ConfigEntityGridController extends Controller
      * @Route("/create", name="oro_entityextend_entity_create")
      * @Acl(
      *      id="oro_entityextend_entity_create",
-     *      name="Create custom entity",
+     *      label="Create custom entity",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      * @Template
      */
@@ -202,9 +202,9 @@ class ConfigEntityGridController extends Controller
      * )
      * @Acl(
      *      id="oro_entityextend_entity_remove",
-     *      name="Remove custom entity",
+     *      label="Remove custom entity",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      */
     public function removeAction(EntityConfigModel $entity)
@@ -241,9 +241,9 @@ class ConfigEntityGridController extends Controller
      * )
      * @Acl(
      *      id="oro_entityextend_entity_unremove",
-     *      name="Unremove custom entity",
+     *      label="Unremove custom entity",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      */
     public function unremoveAction(EntityConfigModel $entity)

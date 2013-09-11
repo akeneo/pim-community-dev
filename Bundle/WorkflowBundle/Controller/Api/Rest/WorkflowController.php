@@ -185,9 +185,9 @@ class WorkflowController extends FOSRestController
      * @ApiDoc(description="Delete workflow item", resource=true)
      * @Acl(
      *      id="oro_workflow_workflow_item_delete",
-     *      name="Delete workflow item",
-     *      description="Delete workflow item",
-     *      parent="oro_workflow"
+     *      label="Delete workflow item",
+     *      group_name=""
+     *      type="action"
      * )
      *
      * @param WorkflowItem $workflowItem

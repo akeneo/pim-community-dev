@@ -26,10 +26,9 @@ class EmailTemplateController extends Controller
      * )
      * @Acl(
      *      id="oro_email_emailtemplate_index",
-     *      name="View List of email templates",
      *      type="entity",
-     *      entity="OroEmailBundle:EmailTemplate",
-     *      precision="VIEW"
+     *      class="OroEmailBundle:EmailTemplate",
+     *      permission="VIEW"
      * )
      * @Template()
      */
@@ -50,10 +49,9 @@ class EmailTemplateController extends Controller
      * @Route("/update/{id}", requirements={"id"="\d+"}, defaults={"id"=0}))
      * @Acl(
      *      id="oro_email_emailtemplate_update",
-     *      name="Edit email template",
      *      type="entity",
-     *      entity="OroEmailBundle:Email",
-     *      precision="EDIT"
+     *      class="OroEmailBundle:Email",
+     *      permission="EDIT"
      * )
      * @Template()
      */
@@ -86,10 +84,9 @@ class EmailTemplateController extends Controller
      * @Route("/create")
      * @Acl(
      *      id="oro_email_emailtemplate_create",
-     *      name="Create email template",
      *      type="entity",
-     *      entity="OroEmailBundle:Email",
-     *      precision="CREATE"
+     *      class="OroEmailBundle:Email",
+     *      permission="CREATE"
      * )
      * @Template("OroEmailBundle:EmailTemplate:update.html.twig")
      */
@@ -102,9 +99,9 @@ class EmailTemplateController extends Controller
      * @Route("/clone/{id}", requirements={"id"="\d+"}, defaults={"id"=0}))
      * @Acl(
      *      id="oro_email_emailtemplate_clone",
-     *      name="Clone email template",
+     *      label="Clone email template",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      * @Template("OroEmailBundle:EmailTemplate:update.html.twig")
      */
@@ -117,10 +114,9 @@ class EmailTemplateController extends Controller
      * @Route("/preview/{id}", requirements={"id"="\d+"}, defaults={"id"=0}))
      * @Acl(
      *      id="oro_email_emailtemplate_preview",
-     *      name="Preview email template",
      *      type="entity",
-     *      entity="OroEmailBundle:Email",
-     *      precision="VIEW"
+     *      class="OroEmailBundle:Email",
+     *      permission="VIEW"
      * )
      * @Template("OroEmailBundle:EmailTemplate:preview.html.twig")
      * @param bool|int $emailTemplateId

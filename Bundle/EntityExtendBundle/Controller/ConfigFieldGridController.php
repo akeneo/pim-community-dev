@@ -41,9 +41,9 @@ class ConfigFieldGridController extends Controller
      * @Route("/create/{id}", name="oro_entityextend_field_create", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Acl(
      *      id="oro_entityextend_field_create",
-     *      name="Create custom field",
+     *      label="Create custom field",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      *
      * @Template
@@ -111,9 +111,9 @@ class ConfigFieldGridController extends Controller
      * @Route("/update/{id}", name="oro_entityextend_field_update", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Acl(
      *      id="oro_entityextend_field_update",
-     *      name="Update custom field",
+     *      label="Update custom field",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      */
     public function updateAction(EntityConfigModel $entity)
@@ -207,9 +207,9 @@ class ConfigFieldGridController extends Controller
      * )
      * @Acl(
      *      id="oro_entityextend_field_remove",
-     *      name="Remove custom field",
+     *      label="Remove custom field",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      */
     public function removeAction(FieldConfigModel $field)
@@ -249,9 +249,9 @@ class ConfigFieldGridController extends Controller
      * )
      * @Acl(
      *      id="oro_entityextend_field_unremove",
-     *      name="UnRemove custom field",
+     *      label="UnRemove custom field",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      */
     public function unremoveAction(FieldConfigModel $field)

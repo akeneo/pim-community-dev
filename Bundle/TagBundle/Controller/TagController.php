@@ -25,10 +25,9 @@ class TagController extends Controller
      * )
      * @Acl(
      *      id="oro_tag_list",
-     *      name="View list of tags",
      *      type="entity",
-     *      entity="OroTagBundle:Tag",
-     *      precision="VIEW"
+     *      class="OroTagBundle:Tag",
+     *      permission="VIEW"
      * )
      * @Template
      */
@@ -49,10 +48,9 @@ class TagController extends Controller
      * @Route("/create", name="oro_tag_create")
      * @Acl(
      *      id="oro_tag_create",
-     *      name="Create tag",
      *      type="entity",
-     *      entity="OroTagBundle:Tag",
-     *      precision="CREATE"
+     *      class="OroTagBundle:Tag",
+     *      permission="CREATE"
      * )
      * @Template("OroTagBundle:Tag:update.html.twig")
      */
@@ -65,10 +63,9 @@ class TagController extends Controller
      * @Route("/update/{id}", name="oro_tag_update", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Acl(
      *      id="oro_tag_update",
-     *      name="Update tag",
      *      type="entity",
-     *      entity="OroTagBundle:Tag",
-     *      precision="EDIT"
+     *      class="OroTagBundle:Tag",
+     *      permission="EDIT"
      * )
      * @Template
      */

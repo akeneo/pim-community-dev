@@ -54,10 +54,9 @@ class RoleController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_user_role_show",
-     *      name="View role",
      *      type="entity",
-     *      entity="OroUserBundle:Role",
-     *      precision="VIEW"
+     *      class="OroUserBundle:Role",
+     *      permission="VIEW"
      * )
      */
     public function getAction($id)
@@ -115,10 +114,9 @@ class RoleController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_user_role_remove",
-     *      name="Delete role",
      *      type="entity",
-     *      entity="OroUserBundle:Role",
-     *      precision="DELETE"
+     *      class="OroUserBundle:Role",
+     *      permission="DELETE"
      * )
      */
     public function deleteAction($id)
@@ -200,10 +198,9 @@ class RoleController extends RestController implements ClassResourceInterface
      * )
      *  @Acl(
      *      id="oro_user_role_acl",
-     *      name="Edit ACL manipulation",
      *      type="entity",
-     *      entity="OroUserBundle:Role",
-     *      precision="EDIT"
+     *      class="OroUserBundle:Role",
+     *      permission="EDIT"
      * )
      */
     public function postAclAction($id, $resource)

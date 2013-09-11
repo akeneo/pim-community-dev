@@ -54,9 +54,9 @@ class AutocompleteController extends Controller
      * @Route("/search", name="oro_form_autocomplete_search")
      * @Acl(
      *      id="oro_form_autocomplete_search",
-     *      name="Autocomplete search request",
+     *      label="Autocomplete search request",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      */
     public function searchAction(Request $request)

@@ -32,10 +32,9 @@ class JobController extends Controller
      * @Template
      * @Acl(
      *      id="oro_cron_job_list",
-     *      name="View job list",
      *      type="entity",
-     *      entity="OroCronBundle:Schedule",
-     *      precision="VIEW"
+     *      class="OroCronBundle:Schedule",
+     *      permission="VIEW"
      * )
      */
     public function indexAction($page, $limit)
@@ -55,10 +54,9 @@ class JobController extends Controller
      * @Template
      * @Acl(
      *      id="oro_cron_job_view",
-     *      name="View job",
      *      type="entity",
-     *      entity="OroCronBundle:Schedule",
-     *      precision="VIEW"
+     *      class="OroCronBundle:Schedule",
+     *      permission="VIEW"
      * )
      */
     public function viewAction(Job $job)
@@ -83,9 +81,9 @@ class JobController extends Controller
      * @Route("/run-daemon", name="oro_cron_job_run_daemon")
      * @Acl(
      *      id="oro_cron_job_run",
-     *      name="Run daemon",
+     *      label="Run daemon",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      */
     public function runDaemonAction()
@@ -122,9 +120,9 @@ class JobController extends Controller
      * @Route("/stop-daemon", name="oro_cron_job_stop_daemon")
      * @Acl(
      *      id="oro_cron_job_stop",
-     *      name="Stop daemon",
+     *      label="Stop daemon",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      */
     public function stopDaemonAction()

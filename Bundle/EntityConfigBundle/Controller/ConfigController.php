@@ -32,9 +32,9 @@ class ConfigController extends Controller
      * @Route("/", name="oro_entityconfig_index")
      * @Acl(
      *      id="oro_entityconfig_index",
-     *      name="View configurable entities",
+     *      label="View configurable entities",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      * @Template()
      */
@@ -60,9 +60,9 @@ class ConfigController extends Controller
      * @Route("/update/{id}", name="oro_entityconfig_update")
      * @Acl(
      *      id="oro_entityconfig_update",
-     *      name="Update configurable entity",
+     *      label="Update configurable entity",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      * @Template()
      */
@@ -113,9 +113,9 @@ class ConfigController extends Controller
      * @Route("/view/{id}", name="oro_entityconfig_view")
      * @Acl(
      *      id="oro_entityconfig_view",
-     *      name="View configurable entity",
+     *      label="View configurable entity",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      * @Template()
      */
@@ -240,9 +240,9 @@ class ConfigController extends Controller
      * @Route("/field/update/{id}", name="oro_entityconfig_field_update")
      * @Acl(
      *      id="oro_entityconfig_field_update",
-     *      name="Update configurable entity field",
+     *      label="Update configurable entity field",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      * @Template()
      */

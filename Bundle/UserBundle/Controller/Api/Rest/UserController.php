@@ -116,10 +116,9 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      * )
      * @Acl(
      *      id="oro_user_user_delete",
-     *      name="Delete user",
      *      type="entity",
-     *      entity="OroUserBundle:User",
-     *      precision="DELETE"
+     *      class="OroUserBundle:User",
+     *      permission="DELETE"
      * )
      */
     public function deleteAction($id)
@@ -148,10 +147,9 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      * )
      * @Acl(
      *      id="oro_user_user_roles",
-     *      name="View user roles",
      *      type="entity",
-     *      entity="OroUserBundle:User",
-     *      precision="VIEW"
+     *      class="OroUserBundle:User",
+     *      permission="VIEW"
      * )
      */
     public function getRolesAction($id)
@@ -180,10 +178,9 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      * )
      * @Acl(
      *      id="oro_user_user_groups",
-     *      name="View user groups",
      *      type="entity",
-     *      entity="OroUserBundle:Group",
-     *      precision="VIEW"
+     *      class="OroUserBundle:Group",
+     *      permission="VIEW"
      * )
      */
     public function getGroupsAction($id)
@@ -212,9 +209,9 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      * )
      * @Acl(
      *      id="oro_user_user_acl",
-     *      name="View user ACL",
+     *      label="View user ACL",
      *      type="action",
-     *      group=""
+     *      group_name=""
      * )
      */
     public function getAclAction($id)
