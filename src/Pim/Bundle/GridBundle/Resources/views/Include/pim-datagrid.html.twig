@@ -3,6 +3,7 @@
 {% set datagrid = datagridView.datagrid %}
 {% set form     = datagridView.formView %}
 
+
 <script type="text/javascript">
     {% set idSuffix = random() %}
     {% set templateElId = datagrid.name ~ '-datagrid-template-' ~ idSuffix %}
@@ -102,6 +103,12 @@
                 massActions: {
                     {% for action in datagrid.massActions %}
                         {{ action.name|json_encode|raw }}: Oro.Datagrid.Action.MassAction.extend({{ action.options|json_encode|raw }})
+                        {% if not loop.last %},{% endif %}
+                    {% endfor %}
+                },
+                exportActions: {
+                    {% for action in datagrid.exportActions %}
+                        {{ action.name|json_encode|raw }}: Pim.Datagrid.Action.ExportCollectionAction.extend({{ action.options|json_encode|raw }})
                         {% if not loop.last %},{% endif %}
                     {% endfor %}
                 },
