@@ -143,6 +143,9 @@ class ApplyController extends Controller
             'cacheWarmup'  => new Process('php ../app/console cache:warmup' . ' --env ' . $env),
         );
 
+        // put system in maintenance mode
+        $this->get('oro_platform.maintenance')->on();
+
         foreach ($commands as $command) {
             /** @var $command Process */
             $command->run();
@@ -183,6 +186,8 @@ class ApplyController extends Controller
 
         $extendConfigProvider->persist($extendConfig);
         $extendConfigProvider->flush();
+
+        $this->get('oro_platform.maintenance')->off();
 
         return $this->redirect($this->generateUrl('oro_entityconfig_index'));
     }

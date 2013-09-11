@@ -67,7 +67,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
          * @property
          */
         selectors: {
-            links:          'a:not([href^=#],[href^=javascript],[href^=mailto],[href^=skype],[href^=http],[href^=ftp],[href^=callto],[href^=tel]),span[data-url]',
+            links:          'a:not([href^=#],[href^=javascript],[href^=mailto],[href^=skype],[href^=ftp],[href^=callto],[href^=tel]),span[data-url]',
             scrollLinks:    'a[href^=#]',
             forms:          'form',
             content:        '#content',
@@ -81,7 +81,8 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
             flashMessages:  '#flash-messages',
             menu:           '#main-menu',
             breadcrumb:     '#breadcrumb',
-            pinButton:      '#pin-button-div'
+            pinButton:      '#pin-button-div',
+            gridContainer:  '.grid-container'
         },
         selectorCached: {},
 
@@ -555,7 +556,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                             this.addCurrentPageToCache();
                         }
                     }
-                    this.processClicks($('.grid-container').find(this.selectors.links));
+                    this.processGridLinks();
                 },
                 this
             );
@@ -655,6 +656,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                     if (!this.skipGridStateChange) {
                         this.gridChangeState();
                     }
+                    this.processGridLinks();
                 },
                 this
             );
@@ -918,6 +920,11 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                 e.preventDefault();
                 e.stopPropagation();
             });
+        },
+
+        processGridLinks: function()
+        {
+            this.processClicks($(this.selectors.gridContainer).find(this.selectors.links));
         },
 
         processRedirect: function (data) {
