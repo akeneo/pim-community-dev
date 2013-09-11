@@ -57,26 +57,5 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
                 iconClassName: actionPrototype.icon
             }
         });
-    },
-
-    /**
-     * Get action that export grid's collection
-     *
-     * @return Pim.Datagrid.Action.ExportCollectionAction
-     */
-    getExportAction: function() {
-        if (!this.exportAction) {
-            this.exportAction = new Pim.Datagrid.Action.ExportCollectionAction({
-                datagrid: this,
-                baseUrl: Routing.generate('pim_catalog_product_index', {'_format': 'csv'}),
-                launcherOptions: {
-                    label: 'Quick export',
-                    className: 'btn no-hash',
-                    iconClassName: 'icon-download'
-                }
-            });
-        }
-        
-        return this.exportAction;
     }
 });
