@@ -21,11 +21,17 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
         toolbarOptions: {},
         addResetAction: true,
         addRefreshAction: true,
-        addQuickExportAction: true,
+        addExportAction: true,
         rowClickAction: undefined,
         rowActions: [],
         massActions: [],
         exportActions: []
+    },
+    
+    initialize: function(options) {
+        options = options || {};
+        
+        Oro.Datagrid.Grid.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -39,21 +45,34 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
         _.each(this.massActions, function(action) {
             result.push(this.createMassAction(action));
         }, this);
-        if (this.addQuickExportAction) {
-            result.push(this.getQuickExportAction());
-        }
+        
+        _.each(this.exportActions, function(action) {
+            result.push(this.createExportAction(action.prototype));
+        }, this);
 
         return result;
     },
+    
+    createExportAction: function(actionPrototype) {
+        return new Pim.Datagrid.Action.ExportCollectionAction({
+            datagrid: this,
+            baseUrl: actionPrototype.baseUrl,
+            launcherOptions: {
+                label: actionPrototype.label,
+                className: 'btn',
+                iconClassName: actionPrototype.icon
+            }
+        });
+    },
 
     /**
-     * Get action that quick export grid's collection
+     * Get action that export grid's collection
      *
-     * @return Pim.Datagrid.Action.QuickExportCollectionAction
+     * @return Pim.Datagrid.Action.ExportCollectionAction
      */
-    getQuickExportAction: function() {
-        if (!this.quickExportAction) {
-            this.quickExportAction = new Pim.Datagrid.Action.QuickExportCollectionAction({
+    getExportAction: function() {
+        if (!this.exportAction) {
+            this.exportAction = new Pim.Datagrid.Action.ExportCollectionAction({
                 datagrid: this,
                 baseUrl: Routing.generate('pim_catalog_product_index', {'_format': 'csv'}),
                 launcherOptions: {
@@ -64,6 +83,6 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
             });
         }
         
-        return this.quickExportAction;
+        return this.exportAction;
     }
 });

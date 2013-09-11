@@ -6,10 +6,10 @@ Pim.Datagrid.Action = Pim.Datagrid.Action || {};
  * Export collection action
  * 
  * @author  Romain Monceau <romain@akeneo.com>
- * @class   Pim.Datagrid.Action.QuickExportCollectionAction
+ * @class   Pim.Datagrid.Action.ExportCollectionAction
  * @extends Oro.Datagrid.Action.AbstractAction
  */
-Pim.Datagrid.Action.QuickExportCollectionAction = Oro.Datagrid.Action.AbstractAction.extend({
+Pim.Datagrid.Action.ExportCollectionAction = Oro.Datagrid.Action.AbstractAction.extend({
     /**
      * The base url of the action called
      * 
@@ -42,7 +42,7 @@ Pim.Datagrid.Action.QuickExportCollectionAction = Oro.Datagrid.Action.AbstractAc
         this.baseUrl = options.baseUrl;
         this.keepParameters = (!options.keepParameters) ? true : options.keepParameters;
         
-        if (!options.datagrid && !options.datagrid.collection) {
+        if (!options.datagrid || !options.datagrid.collection) {
             throw new TypeError("'datagrid' and 'collection' are required");
         }
         this.collection = options.datagrid.collection;
@@ -78,6 +78,10 @@ Pim.Datagrid.Action.QuickExportCollectionAction = Oro.Datagrid.Action.AbstractAc
         data = this.collection.processFiltersParams(data, this.collection.state);
         data = Oro.packToQueryString(data);
         
+        if (data === null) {
+            return this.baseUrl;
+        }
+        
         return this.baseUrl.concat('?'+data);
-    }
+    },
 });
