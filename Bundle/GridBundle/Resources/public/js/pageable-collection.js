@@ -54,7 +54,15 @@ function(_, Backbone, BackbonePageableCollection, app) {
             pageSize: 'p',
             sorters: 's',
             filters: 'f',
-            gridName: 't'
+            gridName: 't',
+            gridView: 'v'
+        },
+
+        /**
+         * @property {Object}
+         */
+        additionalParameters: {
+            view: 'gridView'
         },
 
         /**
@@ -165,6 +173,36 @@ function(_, Backbone, BackbonePageableCollection, app) {
                     this.generateParameterStrings(state.filters, prefix)
                 );
             }
+            return data;
+        },
+
+        /**
+         * Adds additional parameters to data
+         *
+         * @param {Object} data
+         * @param {Object} state
+         * @param {String} prefix
+         * @return {Object}
+         */
+        processAdditionalParams: function (data, state, prefix) {
+            if (!state) {
+                state = this.state;
+            }
+
+            if (!prefix) {
+                prefix = this.inputName + '[_parameters]'
+            }
+
+            var additionalData = {};
+            _.each(this.additionalParameters, _.bind(function(value, key) {
+                var paramName = prefix + '[' + key + ']';
+                if (!_.isUndefined(state[value])) {
+                    additionalData[paramName] =state[value]
+                }
+            }, this));
+
+            data = _.extend(data, additionalData);
+
             return data;
         },
 
@@ -344,6 +382,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
             data = this.processQueryParams(data, state);
             data = this.processFiltersParams(data, state);
+            data = this.processAdditionalParams(data, state);
 
             var fullCollection = this.fullCollection, links = this.links;
 

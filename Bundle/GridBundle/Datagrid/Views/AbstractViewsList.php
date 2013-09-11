@@ -78,7 +78,7 @@ abstract class AbstractViewsList
 
         /** @var View $view */
         foreach ($this->getList() as $view) {
-            $choices[$view->getName()] = $this->translator->trans($view->getName());
+            $choices[] = array('value' => $view->getName(), 'label' => $this->translator->trans($view->getName()));
         }
 
         return $choices;
@@ -109,6 +109,8 @@ abstract class AbstractViewsList
      */
     public function applyToDatagrid(Datagrid $datagrid, $defaultGridParameters)
     {
+        $datagrid->setViewsList($this);
+        return false;
         $parameters = $datagrid->getParameters();
 
         //$filters = $parameters->get(ParametersInterface::FILTER_PARAMETERS);

@@ -83,7 +83,8 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
             addRefreshAction: true,
             rowClickAction: undefined,
             rowActions: [],
-            massActions: []
+            massActions: [],
+            gridViews: []
         },
 
         /**
@@ -232,7 +233,8 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
             return new this.toolbar(_.extend({}, toolbarOptions, {
                 collection: this.collection,
                 actions: this._getToolbarActions(),
-                massActions: this._getToolbarMassActions()
+                massActions: this._getToolbarMassActions(),
+                gridViews: this.gridViews
             }));
         },
 
