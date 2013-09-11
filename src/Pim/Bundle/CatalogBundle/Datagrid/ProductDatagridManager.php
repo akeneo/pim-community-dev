@@ -19,6 +19,7 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
+use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
 
 /**
  * Grid manager
@@ -412,7 +413,16 @@ class ProductDatagridManager extends FlexibleDatagridManager
             )
         );
 
-        return array($deleteMassActions);
+        $redirectMassAction = new RedirectMassAction(
+            array(
+                'name'  => 'redirect',
+                'label' => 'Mass Edition',
+                'icon' => 'edit',
+                'route' => 'pim_catalog_mass_edit_action_choose',
+            )
+        );
+
+        return array($redirectMassAction, $deleteMassActions);
     }
 
     /**

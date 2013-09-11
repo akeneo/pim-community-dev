@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\Subscriber;
+namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\Subscriber\MassEditAction;
 
-use Pim\Bundle\CatalogBundle\Form\Subscriber\BatchProduct\AddSelectedOperationSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\MassEditAction\AddSelectedOperationSubscriber;
 
 /**
  * Test related class
@@ -32,11 +32,11 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
-    public function testPreSetDataWithOperation()
+    public function testPostSetDataWithOperation()
     {
         $form      = $this->getFormMock();
-        $operation = $this->getBatchOperationMock('foo_type');
-        $data      = $this->getBatchOperatorMock($operation);
+        $operation = $this->getMassEditActionMock('foo_type', array('foo' => 'bar'));
+        $data      = $this->getMassEditActionOperatorMock($operation);
 
         $event = $this->getFormEventMock($form, $data);
 
@@ -47,18 +47,19 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $form->expects($this->once())
             ->method('add')
-            ->with('operation', 'foo_type');
+            ->with('operation', 'foo_type', array('foo' => 'bar'));
 
-        $this->subscriber->preSetData($event);
+
+        $this->subscriber->postSetData($event);
     }
 
     /**
      * Test related method
      */
-    public function testPreSetDataWithoutOperation()
+    public function testPostSetDataWithoutOperation()
     {
         $form = $this->getFormMock();
-        $data = $this->getBatchOperatorMock(null);
+        $data = $this->getMassEditActionOperatorMock(null);
 
         $event = $this->getFormEventMock($form, $data);
 
@@ -69,13 +70,13 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
         $form->expects($this->never())
             ->method('add');
 
-        $this->subscriber->preSetData($event);
+        $this->subscriber->postSetData($event);
     }
 
     /**
      * Test related method
      */
-    public function testPreSetDataWithoutData()
+    public function testPostSetDataWithoutData()
     {
         $form = $this->getFormMock();
 
@@ -88,7 +89,7 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
         $form->expects($this->never())
             ->method('add');
 
-        $this->subscriber->preSetData($event);
+        $this->subscriber->postSetData($event);
     }
 
     /**
@@ -132,12 +133,12 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
      * Test related method
      * @param mixed $operation
      *
-     * @return BatchOperator
+     * @return MassEditActionOperator
      */
-    protected function getBatchOperatorMock($operation)
+    protected function getMassEditActionOperatorMock($operation)
     {
         $operator = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\BatchOperation\BatchOperator')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -152,15 +153,19 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
      * Test related method
      * @param mixed $formType
      *
-     * @return BatchOperation
+     * @return MassEditAction
      */
-    protected function getBatchOperationMock($formType)
+    protected function getMassEditActionMock($formType, array $formOptions)
     {
-        $operation = $this->getMock('Pim\Bundle\CatalogBundle\BatchOperation\BatchOperation');
+        $operation = $this->getMock('Pim\Bundle\CatalogBundle\MassEditAction\MassEditAction');
 
         $operation->expects($this->any())
             ->method('getFormType')
             ->will($this->returnValue($formType));
+
+        $operation->expects($this->any())
+            ->method('getFormOptions')
+            ->will($this->returnValue($formOptions));
 
         return $operation;
     }

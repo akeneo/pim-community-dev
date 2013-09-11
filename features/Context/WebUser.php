@@ -1056,12 +1056,29 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I disable the products$/
+     */
+    public function iDisableTheProducts()
+    {
+        $this->getPage('Batch ChangeStatus')->disableProducts()->next();
+    }
+
+    /**
      * @Given /^I enable the product$/
      */
     public function iEnableTheProduct()
     {
         $this->getPage('Product edit')->enableProduct()->save();
     }
+
+    /**
+     * @Given /^I enable the products$/
+     */
+    public function iEnableTheProducts()
+    {
+        $this->getPage('Batch ChangeStatus')->enableProducts()->next();
+    }
+
 
     /**
      * @param string $sku
@@ -1291,7 +1308,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iBlur()
     {
         $this->getCurrentPage()->find('css', 'body')->click();
-        $this->wait();
+
+        //TODO Otherwise, it  makes the features/category/create_a_category.feature:28 scenario fails
+        $this->wait(5000, null);
     }
 
     /**
@@ -1625,6 +1644,42 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iWaitSeconds($seconds)
     {
         $this->wait($seconds * 1000, false);
+    }
+
+    /**
+     * @When /^I mass-edit products (.*)$/
+     */
+    public function iMassEditProducts($products)
+    {
+        $that = $this;
+        $products = preg_replace(
+            '/]\d+=/',
+            ']=',
+            http_build_query(
+                array_map(
+                    function ($product) use ($that) {
+                        return $that->getProduct($product)->getId();
+                    },
+                    $this->listToArray($products)
+                ),
+                'products[]'
+            )
+        );
+
+        $this->openPage('Batch Operation', array('products' => $products));
+    }
+
+    /**
+     * @Given /^I choose the "([^"]*)" operation$/
+     */
+    public function iChooseTheOperation($operation)
+    {
+        $this->currentPage = $this
+            ->getPage('Batch Operation')
+            ->chooseOperation($operation)
+            ->next();
+
+        $this->wait();
     }
 
     /**
