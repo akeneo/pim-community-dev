@@ -5,11 +5,28 @@
     {% set subtitle = 'pim_catalog.mass_edit_action.choose.page_subtitle'|transchoice(productIds|length) %}
     {{ elements.page_header(title, null, subtitle) }}
 
-    <h3>{{ 'pim_catalog.mass_edit_action.choose.title'|trans }}</h3>
-    <h4>{{ 'pim_catalog.mass_edit_action.choose.subtitle'|transchoice(productIds|length) }}</h4>
+    <div class="row">
+        <div class="offset1">
+            <h3>{{ 'pim_catalog.mass_edit_action.choose.title'|trans }}</h3>
+            <h4>{{ 'pim_catalog.mass_edit_action.choose.subtitle'|transchoice(productIds|length) }}</h4>
+        </div>
+    </div>
+
     <form action="{{ path('pim_catalog_mass_edit_action_choose', { 'products': productIds }) }}" method="POST" class="form-horizontal">
-        {{ form_widget(form.operationAlias) }}
-        {{ form_rest(form) }}
-        <input type="submit" value="Next" class="btn btn-primary">
+
+        <div class="row">
+            <div class="offset1">
+                {{ form_widget(form.operationAlias) }}
+                {{ form_rest(form) }}
+            </div>
+        </div>
+
+        <div class="row buffer-top">
+            <div class="offset1">
+                <a href="{{ path('pim_catalog_product_index') }}" class="btn">Cancel</a>
+                <input type="submit" value="Next" class="btn btn-primary">
+            </div>
+        </div>
+
     </form>
 {% endblock %}
