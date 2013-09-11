@@ -15,6 +15,9 @@ class AbstractViewsListTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject|AbstractViewsList */
     protected $list;
 
+    /**
+     * Setup mocks
+     */
     public function setUp()
     {
         $this->translator = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
@@ -95,6 +98,9 @@ class AbstractViewsListTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * test getViewByName
+     */
     public function testGetViewByName()
     {
         $view1 = new View('some_test_name');
@@ -105,10 +111,13 @@ class AbstractViewsListTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($viewsArray));
 
         $this->assertFalse($this->list->getViewByName('SOME_NOT_EXISTING'));
-
         $this->assertEquals($view1, $this->list->getViewByName('some_test_name'));
+        $this->assertFalse($this->list->getViewByName(null));
     }
 
+    /**
+     * test toChoiceList
+     */
     public function testToChoiceList()
     {
         $view1 = new View('some_test_name');
@@ -125,12 +134,33 @@ class AbstractViewsListTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->list->toChoiceList();
 
-        $this->assertEquals(
-            $result,
-            array(
-                'some_test_name'         => 'some_test_name_trans',
-                'some_another_test_name' => 'some_another_test_name_trans'
-            )
-        );
+        $this->assertCount(2, $result);
+        $this->assertEquals('some_test_name', $result[0]['value']);
+        $this->assertEquals('some_another_test_name', $result[1]['value']);
+        $this->assertEquals('some_test_name_trans', $result[0]['label']);
+        $this->assertEquals('some_another_test_name_trans', $result[1]['label']);
+    }
+
+    /**
+     * test applyToDatagrid
+     */
+    public function testApplyToDatagrid()
+    {
+        $defaultParameters = array();
+        $parameters = array();
+
+        $datagrid = $this->getMockBuilder('Oro\Bundle\GridBundle\Datagrid\Datagrid')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $datagrid->expects($this->once())
+            ->method('setViewsList')
+            ->with($this->isInstanceOf('Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList'));
+
+        $datagrid->expects($this->once())
+            ->method('getParameters')
+            ->will($this->returnValue($parameters));
+
+        $this->list->applyToDatagrid($datagrid, $defaultParameters);
     }
 }
