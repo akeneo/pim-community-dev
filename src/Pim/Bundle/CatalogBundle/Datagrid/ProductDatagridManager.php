@@ -449,7 +449,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'name' =>  'exportCsv',
                 'label' => $this->translate('Quick export'),
                 'icon'  => 'icon-download',
-                'keepParameters' => false
+                'keepParameters' => true
             )
         );
 
