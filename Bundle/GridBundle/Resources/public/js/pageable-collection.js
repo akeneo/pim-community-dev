@@ -92,9 +92,6 @@ function(_, Backbone, BackbonePageableCollection, app) {
             if (options.inputName) {
                 this.inputName = options.inputName;
             }
-            if (_.has(options, "multipleSorting")) {
-                this.multipleSorting = options.multipleSorting;
-            }
 
             _.extend(this.queryParams, {
                 currentPage: this.inputName + '[_pager][_page]',
@@ -106,12 +103,6 @@ function(_, Backbone, BackbonePageableCollection, app) {
             this.on('remove', this.onRemove, this);
 
             BackbonePageableCollection.prototype.initialize.apply(this, arguments);
-
-            if (this.state.sorters && options.state) {
-                _.each(options.state.sorters, function(direction, field) {
-                    this.setSorting(field, direction, {'reset': false});
-                }, this);
-            }
         },
 
         /**
@@ -488,15 +479,11 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
                 // last sorting has the lowest priority
                 delete state.sorters[sortKey];
-                if (order) {
-                    state.sorters[sortKey] = order;
-                }
             } else {
-                // reset sorters
-                if (!options || !_.has(options, 'reset') || options.reset) {
-                    state.sorters = {};
-                }
+                state.sorters = {};
+            }
 
+            if (order) {
                 state.sorters[sortKey] = order;
             }
 
