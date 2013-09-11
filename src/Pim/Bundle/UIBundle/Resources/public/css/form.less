@@ -157,6 +157,9 @@ a.accordion-toggle {
 
 .form-horizontal .control-group {
   margin-bottom: 20px;
+  label.control-label:after {
+    content: '';
+  }
 }
 
 .controls .switch label{
@@ -555,7 +558,8 @@ table.ui-sortable, tbody.ui-sortable {
     width: 288px;
   }
   .input-prepend .control-label {
-    padding-right: 10px;
+    padding-right: 8px;
+    line-height: 20px;
     border-right-width: 0px;
   }
 }
@@ -716,9 +720,13 @@ form .currency {
   &>.control-group .control-group>.controls .control-group {
     .controls {
       margin: 0;
+      .control-label {
+        height: 29px;
+      }
     }
     &:first-of-type {
       .control-label {
+        height: 30px;
         background-color: @backgroundColor-white;
         font-weight: bold;
         border-top-left-radius: 3px;
