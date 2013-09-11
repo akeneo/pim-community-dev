@@ -2,7 +2,7 @@ var Pim = Pim || {};
 Pim.Datagrid = Pim.Datagrid || {};
 
 /**
- * Pim grid class extending Oro Datagrid adding export action features
+ * Pim grid class extending Oro Datagrid for quick export action
  * 
  * @author  Romain Monceau <romain@akeneo.com>
  * @class   Pim.Datagrid.Grid
@@ -29,7 +29,7 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
     },
 
     /**
-     * Override get mass actions of toolbar adding export actions in it
+     * Get mass actions of toolbar
      *
      * @return {Array}
      * @private
@@ -41,28 +41,42 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
         }, this);
         
         _.each(this.exportActions, function(action) {
-            result.push(this.createExportAction(action));
+            result.push(this.createExportAction(action.prototype));
         }, this);
 
         return result;
     },
     
-    /**
-     * Creates export action
-     * 
-     * @param {Function} action
-     * @return Pim.Datagrid.Action.ExportCollectionAction
-     * @protected
-     */
-    createExportAction: function(action) {
+    createExportAction: function(actionPrototype) {
         return new Pim.Datagrid.Action.ExportCollectionAction({
             datagrid: this,
-            baseUrl: action.prototype.baseUrl,
+            baseUrl: actionPrototype.baseUrl,
             launcherOptions: {
-                label: action.prototype.label,
-                className: 'btn',
-                iconClassName: action.prototype.icon
+                label: actionPrototype.label,
+                className: 'btn no-hash',
+                iconClassName: actionPrototype.icon
             }
         });
+    },
+
+    /**
+     * Get action that export grid's collection
+     *
+     * @return Pim.Datagrid.Action.ExportCollectionAction
+     */
+    getExportAction: function() {
+        if (!this.exportAction) {
+            this.exportAction = new Pim.Datagrid.Action.ExportCollectionAction({
+                datagrid: this,
+                baseUrl: Routing.generate('pim_catalog_product_index', {'_format': 'csv'}),
+                launcherOptions: {
+                    label: 'Quick export',
+                    className: 'btn no-hash',
+                    iconClassName: 'icon-download'
+                }
+            });
+        }
+        
+        return this.exportAction;
     }
 });
