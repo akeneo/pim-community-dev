@@ -117,7 +117,6 @@ abstract class AbstractViewsList
         $additionalParams = $parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
         $viewName =  isset($additionalParams[self::PARAM_KEY]) ? $additionalParams[self::PARAM_KEY] : false;
 
-
         if ($viewName !== false) {
             // find view by name
             $view = $this->getViewByName($viewName);

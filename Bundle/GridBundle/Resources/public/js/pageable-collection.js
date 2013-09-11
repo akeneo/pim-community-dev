@@ -178,33 +178,22 @@ function(_, Backbone, BackbonePageableCollection, app) {
         },
 
         /**
-         * Adds additional parameters to data
+         * Adds additional parameters to state
          *
-         * @param {Object} data
          * @param {Object} state
-         * @param {String} prefix
          * @return {Object}
          */
-        processAdditionalParams: function (data, state, prefix) {
-            if (!state) {
-                state = this.state;
-            }
+        processAdditionalParams: function (state) {
+            var state = app.deepClone(state);
+            state.parameters = state.parameters || {};
 
-            if (!prefix) {
-                prefix = this.inputName + '[_parameters]'
-            }
-
-            var additionalData = {};
             _.each(this.additionalParameters, _.bind(function(value, key) {
-                var paramName = prefix + '[' + key + ']';
                 if (!_.isUndefined(state[value])) {
-                    additionalData[paramName] =state[value]
+                    state.parameters[key] = state[value]
                 }
             }, this));
 
-            data = _.extend(data, additionalData);
-
-            return data;
+            return state;
         },
 
         /**
@@ -383,7 +372,6 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
             data = this.processQueryParams(data, state);
             data = this.processFiltersParams(data, state);
-            data = this.processAdditionalParams(data, state);
 
             var fullCollection = this.fullCollection, links = this.links;
 
@@ -440,6 +428,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @return {Object}
          */
         processQueryParams: function(data, state) {
+            state = this.processAdditionalParams(state);
             var pageablePrototype = PageableCollection.prototype;
 
             // map params except directions

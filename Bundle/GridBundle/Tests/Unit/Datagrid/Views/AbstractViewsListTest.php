@@ -147,7 +147,7 @@ class AbstractViewsListTest extends \PHPUnit_Framework_TestCase
     public function testApplyToDatagrid()
     {
         $defaultParameters = array();
-        $parameters = array();
+        $parameters = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ParametersInterface');
 
         $datagrid = $this->getMockBuilder('Oro\Bundle\GridBundle\Datagrid\Datagrid')
             ->disableOriginalConstructor()

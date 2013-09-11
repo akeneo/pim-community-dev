@@ -19,7 +19,7 @@ define(['backbone', 'underscore', 'oro/translations'], function (Backbone, _, __
         template: _.template(
             '<div class="btn-group ">' +
                 '<button data-toggle="dropdown" class="btn dropdown-toggle <% if (disabled) { %>disabled<% } %>">' +
-                    '<i class="icon icon-eye-open"></i>' + '<%=  current %><span class="caret"></span>' +
+                    '<i class="icon icon-eye-open"></i>' + '<%=  current %>' + '<span class="caret"></span>' +
                 '</button>' +
                 '<ul class="dropdown-menu pull-right">' +
                     '<% _.each(choices, function (choice) { %>' +
@@ -32,12 +32,7 @@ define(['backbone', 'underscore', 'oro/translations'], function (Backbone, _, __
         /** @property */
         enabled: true,
 
-        choices: [
-            {
-                value: '',
-                label: ''
-            }
-        ],
+        choices: [],
 
         /**
          * Initializer.
@@ -128,7 +123,7 @@ define(['backbone', 'underscore', 'oro/translations'], function (Backbone, _, __
                 )
             );
 
-            var currentViewLabel = currentView.length ? _.first(currentView).label : _.first(this.choices).label;
+            var currentViewLabel = currentView.length ? _.first(currentView).label : '';
 
             this.$el.append(
                 $(

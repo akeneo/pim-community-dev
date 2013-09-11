@@ -17,7 +17,7 @@ class GroupViewsList extends AbstractViewsList
     {
         return array(
             new View(
-                'testGroupView',
+                'test.group.name',
                 array(
                     'name' => array(
                         'value' => 'admin',

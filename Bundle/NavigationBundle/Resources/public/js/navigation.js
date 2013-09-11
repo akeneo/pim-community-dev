@@ -253,7 +253,6 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
 
                         stringState = collection.processQueryParams({}, state);
                         stringState = collection.processFiltersParams(stringState, state);
-                        stringState = collection.processAdditionalParams(stringState, state);
 
                         mediator.once(
                             "datagrid_filters:rendered",
