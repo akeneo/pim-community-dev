@@ -2,10 +2,10 @@
     <ul class="nav nav-list">
         {% for tree in trees %}
             {% set aClass = "" %}
-            {% set iClass = "icon-tick-off" %}
+            {% set iClass = "tick-off" %}
             {% if (tree['productsCount'] > 0) %}
                 {% set aClass = "tree-has-product" %}
-                {% set iClass = "icon-tick" %}
+                {% set iClass = "tick" %}
             {% endif %}
             <li>
                 <a class="{{ aClass }}" href="javascript:void(0);" id="tree-link-{{ tree['tree'].id }}">
