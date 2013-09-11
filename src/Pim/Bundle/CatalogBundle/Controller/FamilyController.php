@@ -262,6 +262,10 @@ class FamilyController extends AbstractDoctrineController
 
         $this->getManager()->flush();
 
+        if ($pending = $this->pendingManager->getPendingVersion($family)) {
+            $this->pendingManager->createVersionAndAudit($pending);
+        }
+
         return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
     }
 
@@ -292,6 +296,10 @@ class FamilyController extends AbstractDoctrineController
         } else {
             $family->removeAttribute($attribute);
             $this->getManager()->flush();
+
+            if ($pending = $this->pendingManager->getPendingVersion($family)) {
+                $this->pendingManager->createVersionAndAudit($pending);
+            }
 
             $this->addFlash('success', 'The family is successfully updated.');
         }
