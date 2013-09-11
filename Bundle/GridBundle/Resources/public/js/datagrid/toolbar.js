@@ -148,7 +148,7 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel, GridViews) {
             this.$('.actions-panel').append(this.actionsPanel.render().$el);
             this.$('.mass-actions-panel').append(this.massActionsPanel.render().$el);
 
-            if (_.isObject(this.gridViewsPanel)) {
+            if (!_.isFunction(this.gridViewsPanel)) {
                 this.$('.grid-views-panel').append(this.gridViewsPanel.render().$el);
             }
 
