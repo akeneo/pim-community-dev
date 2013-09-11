@@ -20,11 +20,15 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
     {
         $job       = $this->getJobMock();
         $step      = $this->getConstructorDisabledMock('Oro\Bundle\BatchBundle\Step\ItemStep');
-        $reader    = $this->getConstructorDisabledMock('Oro\Bundle\ImportExportBundle\Reader\ProductReader');
-        $processor = $this->getConstructorDisabledMock(
-            'Oro\Bundle\ImportExportBundle\Processor\CsvSerializerProcessor'
+        $reader    = $this->getConstructorDisabledMock(
+            'Oro\Bundle\BatchBundle\Tests\Unit\Item\ItemReaderTestHelper'
         );
-        $writer    = $this->getConstructorDisabledMock('Oro\Bundle\ImportExportBundle\Writer\FileWriter');
+        $processor = $this->getConstructorDisabledMock(
+            'Oro\Bundle\BatchBundle\Tests\Unit\Item\ItemProcessorTestHelper'
+        );
+        $writer    = $this->getConstructorDisabledMock(
+            'Oro\Bundle\BatchBundle\Tests\Unit\Item\ItemWriterTestHelper'
+        );
 
         $this->jobFactory
             ->expects($this->once())
@@ -68,11 +72,15 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
         $job       = $this->getJobMock();
         $step0     = $this->getConstructorDisabledMock('Oro\Bundle\BatchBundle\Step\ItemStep');
         $step1     = $this->getConstructorDisabledMock('Oro\Bundle\BatchBundle\Step\ItemStep');
-        $reader    = $this->getConstructorDisabledMock('Oro\Bundle\ImportExportBundle\Reader\ProductReader');
-        $processor = $this->getConstructorDisabledMock(
-            'Oro\Bundle\ImportExportBundle\Processor\CsvSerializerProcessor'
+        $reader    = $this->getConstructorDisabledMock(
+            'Oro\Bundle\BatchBundle\Tests\Unit\Item\ItemReaderTestHelper'
         );
-        $writer    = $this->getConstructorDisabledMock('Oro\Bundle\ImportExportBundle\Writer\FileWriter');
+        $processor = $this->getConstructorDisabledMock(
+            'Oro\Bundle\BatchBundle\Tests\Unit\Item\ItemProcessorTestHelper'
+        );
+        $writer    = $this->getConstructorDisabledMock(
+            'Oro\Bundle\BatchBundle\Tests\Unit\Item\ItemWriterTestHelper'
+        );
 
         $this->jobFactory
             ->expects($this->once())

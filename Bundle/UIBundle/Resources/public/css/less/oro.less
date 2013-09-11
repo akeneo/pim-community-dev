@@ -2668,12 +2668,13 @@ footer {
     height:auto;
     .border-radius(4px);
     #gradient > .vertical(#838d98, #46515d);
-    [class^='ui-dialog-titlebar-'] {
+    [class*='ui-dialog-titlebar-'] {
       width:auto !important;
       height:auto !important;
       padding:0 !important;
       margin:0 !important;
       .ui-icon { display:none; }
+      .ui-button-text { display:none; }
       &:before {
         display:inline-block;
         border-right:1px solid #272e36;
@@ -2702,7 +2703,7 @@ footer {
     }
   }
   &.ui-dialog-normal {
-    [class^='ui-dialog-titlebar-'] {
+    [class*='ui-dialog-titlebar-'] {
       &:hover:before {
         #gradient > .vertical(darken(#838d98,5%), darken(#46515d,5%));
       }
