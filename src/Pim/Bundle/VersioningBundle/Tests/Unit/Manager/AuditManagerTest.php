@@ -78,7 +78,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
         $numVersion = 1;
 
         // update version
-        $data = array('field1' => 'the-same', 'field2' => 'will-be-changed');
+        $data = array('field1' => 'the-same', 'field2' => 'will-be-changed', 'field4' => 'old-data');
         $previousVersion = new Version($resourceName, $resourceId, $numVersion, $data, $user);
 
         $data = array('field1' => 'the-same', 'field2' => 'has-changed', 'field3' => 'new-data');
@@ -88,6 +88,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
         $expected = array(
             'field2' => array('old' => 'will-be-changed', 'new' => 'has-changed'),
             'field3' => array('old' => '', 'new' => 'new-data'),
+            'field4' => array('old' => 'old-data', 'new' => ''),
         );
         $this->assertEquals($expected, $audit->getData());
 
