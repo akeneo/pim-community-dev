@@ -425,11 +425,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
             array(
                 'name'  => 'redirect',
                 'label' => 'Mass Edition',
+                'icon' => 'edit',
                 'route' => 'pim_catalog_mass_edit_action_choose',
             )
         );
 
-        return array($deleteMassActions, $redirectMassAction);
+        return array($redirectMassAction, $deleteMassActions);
     }
 
     /**
