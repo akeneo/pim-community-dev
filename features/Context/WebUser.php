@@ -1291,7 +1291,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iBlur()
     {
         $this->getCurrentPage()->find('css', 'body')->click();
-        $this->wait();
+
+        //TODO Otherwise, it  makes the features/category/create_a_category.feature:28 scenario fails
+        $this->wait(5000, null);
     }
 
     /**
