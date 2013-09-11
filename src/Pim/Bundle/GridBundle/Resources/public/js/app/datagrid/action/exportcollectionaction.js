@@ -40,7 +40,7 @@ Pim.Datagrid.Action.ExportCollectionAction = Oro.Datagrid.Action.AbstractAction.
             throw new TypeError("'baseUrl' is required");
         }
         this.baseUrl = options.baseUrl;
-        this.keepParameters = (!options.keepParameters) ? true : options.keepParameters;
+        this.keepParameters = options.keepParameters;
         
         if (!options.datagrid || !options.datagrid.collection) {
             throw new TypeError("'datagrid' and 'collection' are required");

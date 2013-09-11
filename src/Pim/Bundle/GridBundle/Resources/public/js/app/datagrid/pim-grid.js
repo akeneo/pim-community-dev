@@ -58,6 +58,7 @@ Pim.Datagrid.Grid = Oro.Datagrid.Grid.extend({
         return new Pim.Datagrid.Action.ExportCollectionAction({
             datagrid: this,
             baseUrl: actionPrototype.baseUrl,
+            keepParameters: actionPrototype.keepParameters,
             launcherOptions: {
                 label: actionPrototype.label,
                 className: 'btn no-hash',
