@@ -27,7 +27,6 @@ class OroEntityExtendExtension extends Extension
 
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
         $loader      = new Loader\YamlFileLoader($container, $fileLocator);
-        $loader->load('metadata.yml');
         $loader->load('services.yml');
     }
 
@@ -38,10 +37,9 @@ class OroEntityExtendExtension extends Extension
         $annotationCacheDir = $cacheDir . '/annotation';
         if (!is_dir($annotationCacheDir)) {
             if (false === @mkdir($annotationCacheDir, 0777, true)) {
-                throw new RuntimeException(sprintf(
-                    'Could not create annotation cache directory "%s".',
-                    $annotationCacheDir
-                ));
+                throw new RuntimeException(
+                    sprintf('Could not create annotation cache directory "%s".', $annotationCacheDir)
+                );
             }
         }
         $container->setParameter('oro_entity_extend.cache_dir.annotation', $annotationCacheDir);

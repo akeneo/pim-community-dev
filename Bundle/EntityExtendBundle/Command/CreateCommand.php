@@ -83,7 +83,7 @@ class CreateCommand extends ContainerAwareCommand
             }
         }
 
-        //$this->getApplication()->find('oro:entity-extend:update')->run($input, $output);
+        $this->getApplication()->find('oro:entity-extend:update')->run($input, $output);
     }
 
     /**
@@ -97,15 +97,31 @@ class CreateCommand extends ContainerAwareCommand
         $extendManager  = $this->getContainer()->get('oro_entity_extend.extend.extend_manager');
         $configProvider = $extendManager->getConfigProvider();
 
+        if (class_exists($className)) {
+            $error = false;
+            if (!$this->configManager->isConfigurable($className)) {
+                $error = true;
+            } else {
+                $config = $this->configManager->getProvider('extend')->getConfig($className);
+                if (!$config->is('is_extend')) {
+                    $error = true;
+                }
+            }
+
+            if ($error) {
+                throw new \InvalidArgumentException(
+                    sprintf('Class "%s" is not extended.', $className)
+                );
+            }
+        }
+
         if (!$this->configManager->isConfigurable($className)) {
             $this->createEntityModel($className, $entityOptions);
             $this->setDefaultConfig($entityOptions, $className);
 
             $entityConfig = $configProvider->getConfig($className);
-            if (!class_exists($className)) {
-                $entityConfig->set('owner', ExtendManager::OWNER_SYSTEM);
 
-            }
+            $entityConfig->set('owner', ExtendManager::OWNER_SYSTEM);
 
             if (isset($entityOptions['is_extend'])) {
                 $entityConfig->set('is_extend', $entityOptions['is_extend']);

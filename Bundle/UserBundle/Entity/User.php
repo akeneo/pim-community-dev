@@ -28,7 +28,6 @@ use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityExtendBundle\Metadata\Annotation\Extend;
 
 use DateTime;
 
@@ -53,7 +52,6 @@ use DateTime;
  *          },
  *      }
  * )
- * @Extend
  */
 class User extends AbstractEntityFlexible implements
     AdvancedUserInterface,

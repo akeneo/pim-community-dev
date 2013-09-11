@@ -34,7 +34,8 @@ TestClassExtend2:
             options:
                 length:             200
 
-Oro\Bundle\UserBundle\Entity\User:
+#Oro\Bundle\UserBundle\Entity\User:
+OroCRM\Bundle\ContactBundle\Entity\Contact:
     fields:
         testField:
             type:                   string

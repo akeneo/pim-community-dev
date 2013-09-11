@@ -301,22 +301,6 @@ class PropertyConfigContainer
     }
 
     /**
-     * @param string $type
-     * @return array
-     */
-    public function getRequireJsModules($type = self::TYPE_ENTITY)
-    {
-        $type = $this->getConfigType($type);
-
-        $result = array();
-        if (isset($this->config[$type]) && isset($this->config[$type]['require_js'])) {
-            $result = $this->config[$type]['require_js'];
-        }
-
-        return $result;
-    }
-
-    /**
      * @param $config
      * @return array|string
      */

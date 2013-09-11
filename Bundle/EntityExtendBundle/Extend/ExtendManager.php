@@ -2,10 +2,6 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Extend;
 
-use Metadata\MetadataFactory;
-
-use Oro\Bundle\EntityExtendBundle\Metadata\ExtendClassMetadata;
-
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
@@ -20,19 +16,13 @@ class ExtendManager
     const OWNER_CUSTOM = 'Custom';
 
     /**
-     * @var MetadataFactory
-     */
-    protected $metadataFactory;
-
-    /**
      * @var ConfigProvider
      */
     protected $configProvider;
 
-    public function __construct(ConfigProvider $configProvider, MetadataFactory $metadataFactory)
+    public function __construct(ConfigProvider $configProvider)
     {
         $this->configProvider  = $configProvider;
-        $this->metadataFactory = $metadataFactory;
     }
 
     /**
@@ -49,15 +39,7 @@ class ExtendManager
      */
     public function isExtend($className)
     {
-        if (class_exists($className)) {
-            /** @var ExtendClassMetadata $metadata */
-            $metadata = $this->metadataFactory->getMetadataForClass($className);
-            $isExtend = $metadata->isExtend;
-        } else {
-            $isExtend = $this->configProvider->getConfig($className)->is('is_extend');
-        }
-
-        return $isExtend;
+        return $this->configProvider->getConfig($className)->is('is_extend');
     }
 
     /**
