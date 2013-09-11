@@ -35,6 +35,7 @@ services:
             - @pim_catalog.datagrid.worker
             - @pim_catalog.form.handler.attribute_group
             - @pim_catalog.form.attribute_group
+            - @pim_versioning.manager.pending
 
     pim_catalog.controller.category_tree:
         scope: request

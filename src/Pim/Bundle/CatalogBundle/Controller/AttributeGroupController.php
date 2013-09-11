@@ -20,6 +20,7 @@ use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\VersioningBundle\Manager\PendingManager;
 
 /**
  * AttributeGroup controller
@@ -58,6 +59,11 @@ class AttributeGroupController extends AbstractDoctrineController
     private $attributeGroupForm;
 
     /**
+     * @var PendingManager
+     */
+    private $pendingManager;
+
+    /**
      * constructor
      *
      * @param Request                  $request
@@ -71,6 +77,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param DatagridWorkerInterface  $dataGridWorker
      * @param AttributeGroupHandler    $attributeGroupHandler
      * @param Form                     $attributeGroupForm
+     * @param PendingManager           $pendingManager
      */
     public function __construct(
         Request $request,
@@ -83,7 +90,8 @@ class AttributeGroupController extends AbstractDoctrineController
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $dataGridWorker,
         AttributeGroupHandler $attributeGroupHandler,
-        Form $attributeGroupForm
+        Form $attributeGroupForm,
+        PendingManager $pendingManager
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
 
@@ -91,6 +99,7 @@ class AttributeGroupController extends AbstractDoctrineController
         $this->dataGridWorker        = $dataGridWorker;
         $this->attributeGroupHandler = $attributeGroupHandler;
         $this->attributeGroupForm    = $attributeGroupForm;
+        $this->pendingManager        = $pendingManager;
     }
     /**
      * Create attribute group
@@ -283,6 +292,10 @@ class AttributeGroupController extends AbstractDoctrineController
 
         $this->getManager()->flush();
 
+        if ($pending = $this->pendingManager->getPendingVersion($group)) {
+            $this->pendingManager->createVersionAndAudit($pending);
+        }
+
         return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
     }
 
@@ -312,6 +325,10 @@ class AttributeGroupController extends AbstractDoctrineController
 
         $group->removeAttribute($attribute);
         $this->getManager()->flush();
+
+        if ($pending = $this->pendingManager->getPendingVersion($group)) {
+            $this->pendingManager->createVersionAndAudit($pending);
+        }
 
         $this->addFlash('success', 'Attribute group successfully updated.');
 
