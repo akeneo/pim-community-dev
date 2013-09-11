@@ -43,12 +43,7 @@ class MassEditActionController extends AbstractController
      */
     public function chooseAction(Request $request)
     {
-        if ($values = $request->query->get('values')) {
-            $productIds = explode(',', $values);
-        } else {
-            $productIds = $request->query->get('products');
-        }
-
+        $productIds = $this->getProductIds($request);
         if (!$productIds) {
             return $this->redirectToRoute('pim_catalog_product_index');
         }
@@ -82,21 +77,17 @@ class MassEditActionController extends AbstractController
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
 
-        $parameters = $request->query->all();
-        try {
-            $this->batchOperator->initializeOperation($parameters);
-        } catch (\InvalidArgumentException $e) {
+        $productIds = $this->getProductIds($request);
+        if (!$productIds) {
             return $this->redirectToRoute('pim_catalog_product_index');
         }
+
+        $this->batchOperator->initializeOperation($productIds);
         $form = $this->getMassEditActionOperatorForm();
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
-            try {
-                $this->batchOperator->initializeOperation($parameters);
-            } catch (\InvalidArgumentException $e) {
-                return $this->redirectToRoute('pim_catalog_product_index');
-            }
+            $this->batchOperator->initializeOperation($productIds);
             $form = $this->getMassEditActionOperatorForm();
         }
 
@@ -105,33 +96,32 @@ class MassEditActionController extends AbstractController
             array(
                 'form'          => $form->createView(),
                 'batchOperator' => $this->batchOperator,
-                'parameters'    => $parameters,
+                'productIds'    => $productIds,
             )
         );
     }
 
     public function performAction(Request $request, $operationAlias)
     {
-        $this->batchOperator->setOperationAlias($operationAlias);
+        try {
+            $this->batchOperator->setOperationAlias($operationAlias);
+        } catch (\InvalidArgumentException $e) {
+            throw $this->createNotFoundException($e->getMessage(), $e);
+        }
 
-        $parameters = $request->query->all();
+        $productIds = $this->getProductIds($request);
+        if (!$productIds) {
+            return $this->redirectToRoute('pim_catalog_product_index');
+        }
 
         // Hacky hack for the edit common attribute operation to work
         // first time is to set diplayed attributes and locale
-        try {
-            $this->batchOperator->initializeOperation($parameters);
-        } catch (\InvalidArgumentException $e) {
-            return $this->redirectToRoute('pim_catalog_product_index');
-        }
+        $this->batchOperator->initializeOperation($productIds);
         $form = $this->getMassEditActionOperatorForm();
         $form->bind($request);
 
         //second time is to set values
-        try {
-            $this->batchOperator->initializeOperation($parameters);
-        } catch (\InvalidArgumentException $e) {
-            return $this->redirectToRoute('pim_catalog_product_index');
-        }
+        $this->batchOperator->initializeOperation($productIds);
         $form = $this->getMassEditActionOperatorForm();
         $form->bind($request);
 
@@ -149,5 +139,21 @@ class MassEditActionController extends AbstractController
             $this->batchOperator,
             array('operations' => $this->batchOperator->getOperationChoices())
         );
+    }
+
+    /**
+     * Get the product ids stored in the query string
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    private function getProductIds(Request $request)
+    {
+        if ($values = $request->query->get('values')) {
+            return explode(',', $values);
+        } else {
+            return $request->query->get('products');
+        }
     }
 }

@@ -1,0 +1,27 @@
+{% extends 'PimCatalogBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="row wizard-header">
+        <ul class="wizard">
+            <li>Choose products</li><li>Choose operation</li><li>Configure</li><li>Confirm</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block head_script_component %}
+    {{ parent() }}
+
+    <script type="text/javascript" charset="utf-8">
+        require(
+            ['jquery.wizard'],
+            function() {
+                $(document).ready(function() {
+                    $('.wizard').wizard({
+                        currentStep: {{ currentStep }}
+                    });
+                });
+            }
+        );
+    </script>
+
+{% endblock %}

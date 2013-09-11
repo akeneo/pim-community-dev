@@ -137,3 +137,56 @@ code.flag-language {
   .border-radius(5px);
   .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
 }
+
+.wizard li {
+    display: inline-block;
+    position: relative;
+    list-style: none;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    text-align: center;
+    width: 250px;
+    font-weight: bold;
+
+    .progress-start, .progress-end {
+        position: absolute;
+        background-color: @color-light_grey;
+        height: 3px;
+        bottom: 0;
+        width: 50%;
+    }
+
+    .dot {
+        position: absolute;
+        color: @color-purple_light;
+        bottom: -6px;
+        left: 119px;
+        line-height: 0px;
+        .icon-circle {
+            margin: 0;
+            font-size: 14px;
+        }
+    }
+}
+
+.wizard li .progress-start {
+    left: 0;
+
+    &.active {
+        background-color: @color-purple_light;
+    }
+}
+
+.wizard li .progress-end {
+    right: 0;
+
+    &.active {
+        background-color: @color-purple_light;
+    }
+}
+
+.wizard-header {
+    background-color: #f9f9f9;
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+}
