@@ -1,3 +1,5 @@
+Thank you to sign the following agreement http://www.akeneo.com/contributor-license-agreement/
+
 Every PR should start with:
 
 ```
