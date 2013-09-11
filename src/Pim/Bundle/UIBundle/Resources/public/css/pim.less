@@ -18,6 +18,10 @@ body {
 a {
   color: @color-purple_dark;
 }
+a:hover,
+a:focus {
+  color: darken(@color-purple_dark, 5%);
+}
 
 /* Grids */
 .grid th a {color: #666666; }
@@ -63,7 +67,7 @@ table.grid { margin-bottom: 0; }
     margin-bottom: 10px;
 }
 
-.dropdown-menu li {
+.filter-criteria .dropdown-menu li {
   > a,
   &.active > a {
     &:hover, &:focus, &:active {
@@ -76,15 +80,15 @@ table.grid { margin-bottom: 0; }
   }
 }
 
-a {
-  &.icons-holder,
-  &.icons-holder-text {
-    height: 28px;
-    line-height: 28px;
+.dropdown-menu>li>a {
+  color: @color-purple_dark;
+  &:hover, &:active {
+    color: darken(@color-purple_dark, 5%);
   }
-  &.icons-holder [class^="icon-"] {
-    margin: 0 -3px;
-  }
+}
+
+a.back-link i {
+  vertical-align: middle;
 }
 
 .icon-collapse-alt, .icon-expand-alt {

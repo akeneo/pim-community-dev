@@ -26,6 +26,7 @@ class Creation extends Form
             $this->elements,
             array(
                 'Updates grid' => array('css' => '#history table.grid'),
+                'Attributes'     => array('css' => '#attributes table'),
             )
         );
     }
@@ -36,5 +37,37 @@ class Creation extends Form
     public function getHistoryRows()
     {
         return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
+    }
+
+    /**
+     * @param string $attribute
+     *
+     * @return NodeElement
+     */
+    public function getRemoveLinkFor($attribute)
+    {
+        $attributeRow = $this->getElement('Attributes')->find('css', sprintf('tr:contains("%s")', $attribute));
+
+        if (!$attributeRow) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Couldn\'t find the attribute row "%s" in the attributes table',
+                    $attribute
+                )
+            );
+        }
+
+        $removeLink = $attributeRow->find('css', 'a.remove-attribute');
+
+        if (!$removeLink) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Couldn\'t find the attribute remove link for "%s" in the attributes table',
+                    $attribute
+                )
+            );
+        }
+
+        return $removeLink;
     }
 }

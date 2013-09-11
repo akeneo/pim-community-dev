@@ -147,7 +147,7 @@ require(
                     $zone.removeClass('empty');
                     $preview.removeClass('empty');
                     $removeBtn.removeClass('hide');
-                    $input.attr('disabled', 'disabled').addClass('hide');
+                    $input.addClass('hide');
                     $removeCheckbox.removeAttr('checked');
                 } else {
                     $filename.html($filename.attr('data-empty-title'));
