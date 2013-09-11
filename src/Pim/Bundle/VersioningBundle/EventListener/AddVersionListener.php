@@ -15,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 
@@ -125,7 +126,19 @@ class AddVersionListener implements EventSubscriber
      */
     public function checkScheduledUpdate($em, $entity)
     {
-        if ($entity instanceof VersionableInterface) {
+        if ($entity instanceof ProductAttribute) {
+            $changeset = $em->getUnitOfWork()->getEntityChangeSet($entity);
+            if ($changeset and in_array('group', array_keys($changeset))) {
+                $groupChangeset = $changeset['group'];
+                if (isset($groupChangeset[0]) and $groupChangeset[0]) {
+                    $this->addPendingVersioning($em, $groupChangeset[0]);
+                }
+                if (isset($groupChangeset[1]) and $groupChangeset[1]) {
+                    $this->addPendingVersioning($em, $groupChangeset[1]);
+                }
+            }
+
+        } elseif ($entity instanceof VersionableInterface) {
             $this->addPendingVersioning($em, $entity);
 
         } elseif ($entity instanceof ProductValueInterface) {
