@@ -149,6 +149,11 @@ class Datagrid implements DatagridInterface
     private $viewsList;
 
     /**
+     * @var bool
+     */
+    protected $multipleSorting = true;
+
+    /**
      * @param ProxyQueryInterface        $query
      * @param FieldDescriptionCollection $columns
      * @param PagerInterface             $pager
@@ -156,7 +161,6 @@ class Datagrid implements DatagridInterface
      * @param RouteGeneratorInterface    $routeGenerator
      * @param ParametersInterface        $parameters
      * @param EventDispatcherInterface   $eventDispatcher
-     * @param string                     $name
      */
     public function __construct(
         ProxyQueryInterface $query,
@@ -597,5 +601,21 @@ class Datagrid implements DatagridInterface
             return $this->columns->get($identifierFieldName);
         }
         throw new \RuntimeException(sprintf('There is no identifier field in grid "%s"', $this->getName()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMultipleSorting($multipleSorting)
+    {
+        $this->multipleSorting = $multipleSorting;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMultipleSorting()
+    {
+        return $this->multipleSorting;
     }
 }

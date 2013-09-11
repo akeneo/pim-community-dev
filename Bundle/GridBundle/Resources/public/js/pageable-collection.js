@@ -66,6 +66,13 @@ function(_, Backbone, BackbonePageableCollection, app) {
         },
 
         /**
+         * Whether multiple sorting is allowed
+         *
+         * @property {Boolean}
+         */
+        multipleSorting: true,
+
+        /**
          * Initialize basic parameters from source options
          *
          * @param models
@@ -104,12 +111,6 @@ function(_, Backbone, BackbonePageableCollection, app) {
             this.on('remove', this.onRemove, this);
 
             BackbonePageableCollection.prototype.initialize.apply(this, arguments);
-
-            if (this.state.sorters && options.state) {
-                _.each(options.state.sorters, function(direction, field) {
-                    this.setSorting(field, direction);
-                }, this);
-            }
         },
 
         /**
@@ -509,15 +510,18 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
             state.sorters = state.sorters || {};
 
-            // there is always must be at least one sorted column
-            if (_.keys(state.sorters).length <= 1 && !order) {
-                order = "-1";  // default order is ASC
+            if (this.multipleSorting) {
+                // there is always must be at least one sorted column
+                if (_.keys(state.sorters).length <= 1 && !order) {
+                    order = this.getSortDirectionKey("ASC");  // default order
+                }
+
+                // last sorting has the lowest priority
+                delete state.sorters[sortKey];
+            } else {
+                state.sorters = {};
             }
 
-            state.sorters[sortKey] = order;
-
-            // multiple sorting, last sorting has the lowest priority
-            delete state.sorters[sortKey];
             if (order) {
                 state.sorters[sortKey] = order;
             }

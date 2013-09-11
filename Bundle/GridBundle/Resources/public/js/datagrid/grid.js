@@ -82,6 +82,7 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
             addResetAction: true,
             addRefreshAction: true,
             rowClickAction: undefined,
+            multipleSorting: true,
             rowActions: [],
             massActions: [],
             gridViews: []
@@ -119,6 +120,8 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
 
             // Init properties values based on options and defaults
             _.extend(this, this.defaults, options);
+
+            this.collection.multipleSorting = this.multipleSorting;
 
             this._initRowActions();
 

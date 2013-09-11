@@ -118,6 +118,11 @@ abstract class DatagridManager implements DatagridManagerInterface
     protected $toolbarOptions = array();
 
     /**
+     * @var bool
+     */
+    protected $multipleSorting = true;
+
+    /**
      * {@inheritDoc}
      */
     public function setDatagridBuilder(DatagridBuilderInterface $datagridBuilder)
@@ -352,6 +357,9 @@ abstract class DatagridManager implements DatagridManagerInterface
         $datagrid->setEntityName($this->entityName);
         $datagrid->setName($this->name);
         $datagrid->setEntityHint($this->entityHint);
+
+        // set multiple sorting flag
+        $datagrid->setMultipleSorting($this->multipleSorting);
 
         $views = $this->getViewsList();
         if ($views) {
