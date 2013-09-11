@@ -106,12 +106,16 @@
                         {% if not loop.last %},{% endif %}
                     {% endfor %}
                 },
+                /*****************************/
+                /** Added code in this file **/
                 exportActions: {
                     {% for action in datagrid.exportActions %}
                         {{ action.name|json_encode|raw }}: Pim.Datagrid.Action.ExportCollectionAction.extend({{ action.options|json_encode|raw }})
                         {% if not loop.last %},{% endif %}
                     {% endfor %}
                 },
+                /** End of added code       **/
+                /*****************************/
                 entityHint : {{ datagrid.entityHint|capitalize|json_encode|raw }},
                 noDataHint : {{ 'oro_grid.no_data_hint %entityHint%'|trans({'%entityHint%': entityHint})|json_encode|raw }},
                 noResultsHint : {{ 'oro_grid.not_found_hint %entityHint%'|trans({'%entityHint%': entityHint})|json_encode|raw }},
@@ -162,11 +166,11 @@
                 })
             }, datagridOptions.grid);
 
-            /******************************/
-            /** Only change in this file **/
+            /*****************************/
+            /** Added code in this file **/
             var datagrid = new Pim.Datagrid.Grid(datagridParameters);
-            /** End of changes           **/
-            /******************************/
+            /** End of added code       **/
+            /*****************************/
 
             $(datagridBodySelector).html(datagrid.render().$el);
             Oro.Registry.setElement('datagrid', {{ datagrid.name|json_encode|raw }}, datagrid);
