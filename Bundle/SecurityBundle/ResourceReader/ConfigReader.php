@@ -1,8 +1,8 @@
 <?php
-namespace Oro\Bundle\UserBundle\Acl\ResourceReader;
+namespace Oro\Bundle\SecurityBundle\ResourceReader;
 
 use Symfony\Component\Yaml\Yaml;
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 class ConfigReader
 {
@@ -21,7 +21,7 @@ class ConfigReader
      *
      * @param string $directory
      *
-     * @return \Oro\Bundle\UserBundle\Annotation\Aclarray
+     * @return \Oro\Bundle\SecurityBundle\Annotation\Acl[]
      */
     public function getConfigResources($directory = '')
     {

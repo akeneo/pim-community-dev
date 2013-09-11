@@ -1,14 +1,14 @@
 <?php
-namespace Oro\Bundle\UserBundle\Acl\ResourceReader;
+namespace Oro\Bundle\SecurityBundle\ResourceReader;
 
 use Symfony\Component\HttpKernel\KernelInterface;
-use Doctrine\Common\Annotations\Reader as AnnotationReader;
+use Doctrine\Common\Annotations\Reader as Reader;
 
 use JMS\DiExtraBundle\Finder\PatternFinder;
 
-class Reader
+class AnnotationReader
 {
-    const ACL_CLASS = 'Oro\Bundle\UserBundle\Annotation\Acl';
+    const ACL_CLASS = 'Oro\Bundle\SecurityBundle\Annotation\Acl';
 
     /**
      * @var \Symfony\Component\HttpKernel\KernelInterface
@@ -20,7 +20,7 @@ class Reader
      */
     private $reader;
 
-    public function __construct(KernelInterface $kernel, AnnotationReader $reader)
+    public function __construct(KernelInterface $kernel, Reader $reader)
     {
         $this->kernel = $kernel;
         $this->reader = $reader;
@@ -31,7 +31,7 @@ class Reader
      *
      * @param string $directory
      *
-     * @return \Oro\Bundle\UserBundle\Annotation\Acl[]
+     * @return \Oro\Bundle\SecurityBundle\Annotation\Acl[]
      */
     public function getResources($directory = '')
     {
@@ -71,7 +71,7 @@ class Reader
      *
      * @param array $files
      *
-     * @return \Oro\Bundle\UserBundle\Annotation\Acl[]
+     * @return \Oro\Bundle\SecurityBundle\Annotation\Acl[]
      */
     private function findResources(array $files)
     {

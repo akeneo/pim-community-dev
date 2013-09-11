@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Annotation;
+namespace Oro\Bundle\SecurityBundle\Annotation;
 
 /**
  * @Annotation
