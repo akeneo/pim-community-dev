@@ -15,11 +15,15 @@ abstract class AbstractEntity extends Page
         sleep(1);
         $this->waitPageToLoad();
         $this->waitForAjax();
-        if ($this->assertElementPresent("//div[@class='customer-content pull-left']/div[1]//a")) {
-            $this->byXpath("//div[@class='customer-content pull-left']/div[1]//a")->click();
-            $this->waitPageToLoad();
-            $this->waitForAjax();
-        }
+
+        return $this;
+    }
+
+    public function toGrid()
+    {
+        $this->byXpath("//div[@class='customer-content pull-left']/div[1]//a")->click();
+        $this->waitPageToLoad();
+        $this->waitForAjax();
 
         return $this;
     }

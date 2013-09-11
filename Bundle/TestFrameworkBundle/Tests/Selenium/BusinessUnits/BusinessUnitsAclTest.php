@@ -68,6 +68,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setRoles(array('Label_' . $role))
             ->save()
             ->assertMessage('User successfully saved')
+            ->toGrid()
             ->close()
             ->assertTitle('Users - System');
 
@@ -93,6 +94,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setOwner('Main')
             ->save()
             ->assertMessage('Business Unit successfully saved')
+            ->toGrid()
             ->assertTitle('Business Units - System')
             ->close();
 
