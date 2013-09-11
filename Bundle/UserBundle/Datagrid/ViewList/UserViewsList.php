@@ -43,12 +43,8 @@ class UserViewsList extends AbstractViewsList
                 )
             ),
             new View(
-                'test.user.view.active.sort_by_name',
-                array(
-                    'enabled' => array(
-                        'value' => 1,
-                    )
-                ),
+                'test.user.view.sort_by_name_desc',
+                array(),
                 array(
                     'firstName' => 'DESC',
                 )

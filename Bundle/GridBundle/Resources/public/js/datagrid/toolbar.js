@@ -1,7 +1,7 @@
 /* global define */
 define(['underscore', 'backbone', 'oro/translator', 'oro/datagrid/pagination-input',
-    'oro/datagrid/page-size', 'oro/datagrid/actions-panel', 'oro/datagrid/grid-views'],
-function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel, GridViews) {
+    'oro/datagrid/page-size', 'oro/datagrid/actions-panel'],
+function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
     'use strict';
 
     /**
@@ -31,7 +31,6 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel, GridViews) {
                     '</div>' +
                 '</div>' +
                 '<div class="pull-right">' +
-                    '<div class="grid-views-panel pull-right form-horizontal"></div>' +
                     '<div class="actions-panel pull-right form-horizontal"></div>' +
                     '<div class="page-size pull-right form-horizontal"></div>' +
                 '</div>' +
@@ -50,9 +49,6 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel, GridViews) {
 
         /** @property */
         massActionsPanel: ActionsPanel,
-
-        /** @property */
-        gridViewsPanel: GridViews,
 
         /**
          * Initializer.
@@ -91,10 +87,6 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel, GridViews) {
             this.massActionsPanel = new this.massActionsPanel();
             if (options.massActions) {
                 this.massActionsPanel.setActions(options.massActions);
-            }
-
-            if (!_.isUndefined(options.gridViews) && options.gridViews.length > 0) {
-                this.gridViewsPanel = new this.gridViewsPanel(_.extend({}, { collection: this.collection, choices: options.gridViews}));
             }
 
             Backbone.View.prototype.initialize.call(this, options);
@@ -147,10 +139,6 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel, GridViews) {
             this.$('.page-size').append(this.pageSize.render().$el);
             this.$('.actions-panel').append(this.actionsPanel.render().$el);
             this.$('.mass-actions-panel').append(this.massActionsPanel.render().$el);
-
-            if (!_.isFunction(this.gridViewsPanel)) {
-                this.$('.grid-views-panel').append(this.gridViewsPanel.render().$el);
-            }
 
             return this;
         }

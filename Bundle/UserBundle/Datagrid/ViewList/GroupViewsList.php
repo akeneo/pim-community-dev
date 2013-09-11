@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\UserBundle\Datagrid\ViewList;
 
-use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 use Oro\Bundle\GridBundle\Datagrid\Views\View;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 
 class GroupViewsList extends AbstractViewsList
