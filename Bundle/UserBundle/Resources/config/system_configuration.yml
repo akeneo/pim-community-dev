@@ -109,7 +109,7 @@ oro_system_configuration:
             options:
                 label: 'Name format'
                 required: true
-                tooltip: 'Available variables:<br> %%firstname%%, %%lastname%%'
+                #tooltip: 'Available variables:<br> %%firstname%%, %%lastname%%'
                 constraints:
                     - NotBlank: ~
 
