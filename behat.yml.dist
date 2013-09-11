@@ -42,11 +42,11 @@ jenkins:
                 env: behat
         SensioLabs\Behat\PageObjectExtension\Extension: ~
     formatter:
-        name: pretty,pretty
+        name: progress,junit
         parameters:
-            output_path: null,app/build/logs/behat/pretty.out
+            output_path: null,app/build/logs/behat/
     filters:
-        tags: ~@select2-regression
+        tags: ~skip
 
 jenkins-pr:
     context:
@@ -64,11 +64,11 @@ jenkins-pr:
                 env: behat
         SensioLabs\Behat\PageObjectExtension\Extension: ~
     formatter:
-        name: pretty,pretty
+        name: progress,junit
         parameters:
-            output_path: null,app/build/logs/behat-pr/pretty.out
+            output_path: null,app/build/logs/behat-pr/
     filters:
-        tags: ~@select2-regression
+        tags: ~skip
 
 jenkins-coverage:
     context:
@@ -86,8 +86,8 @@ jenkins-coverage:
                 env: behat
         SensioLabs\Behat\PageObjectExtension\Extension: ~
     formatter:
-        name: progress, junit
+        name: progress,junit
         parameters:
-            output_path: null, app/build/logs/behat-coverage/
+            output_path: null,app/build/logs/behat-coverage/
     filters:
         tags: ~skip

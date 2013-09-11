@@ -167,30 +167,23 @@
     </target>
 
     <target name="behat" description="Run acceptance tests with Behat">
-        <exec executable="bin/behat" failonerror="true">
-            <env key="DISPLAY" value=":0" />
-            <arg value="--profile=jenkins" />
-            <arg value="--ansi" />
-            <arg value="--tags=~skip" />
-            <arg value="-fprogress" />
+        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <arg value="noxdebug" />
+            <arg value="${basedir}/bin/behat --profile=jenkins --ansi" />
         </exec>
     </target>
 
     <target name="behat-pr" description="Run acceptance tests with Behat for the pull request">
-        <exec executable="bin/behat" failonerror="true">
-            <env key="DISPLAY" value=":0" />
-            <arg value="--profile=jenkins-pr" />
-            <arg value="--ansi" />
-            <arg value="--tags=~skip" />
-            <arg value="-fprogress" />
+        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <arg value="noxdebug" />
+            <arg value="${basedir}/bin/behat --profile=jenkins-pr --ansi" />
         </exec>
     </target>
 
     <target name="behat-coverage" description="Run acceptance tests with Behat and produce coverage">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
-            <arg value="noxdebug" />
-            <!--<arg value="${basedir}/app/Resources/jenkins/behat-coverage - -profile=jenkins-coverage - -ansi - -tags=~skip -fprogress" />-->
-            <arg value="${basedir}/bin/behat --profile=jenkins-coverage --ansi" />
+            <arg value="xdebug" />
+            <arg value="${basedir}/app/Resources/jenkins/behat-coverage --profile=jenkins-coverage --ansi" />
         </exec>
     </target>
 

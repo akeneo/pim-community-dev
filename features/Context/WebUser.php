@@ -709,6 +709,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $group
+     *
+     * @Given /^I should be on the "([^"]*)" group page$/
+     */
+    public function iShouldBeOnTheGroupPage($group)
+    {
+        $expectedAddress = $this->getPage('Group edit')->getUrl(array('id' => $this->getGroup($group)->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
      * @param string $family
      *
      * @Given /^I should be on the "([^"]*)" family page$/
