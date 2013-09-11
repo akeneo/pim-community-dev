@@ -22,6 +22,7 @@
 {% set parametersSorterType = constant(parameterTypePrefix ~ 'SORT_PARAMETERS') %}
 {% set parametersFilterType = constant(parameterTypePrefix ~ 'FILTER_PARAMETERS') %}
 {% set parametersAdditionalType = constant(parameterTypePrefix ~ 'ADDITIONAL_PARAMETERS') %}
+{% set additionalParametersViewKey = constant('Oro\\Bundle\\GridBundle\\Datagrid\\Views\\AbstractViewsList::PARAM_KEY') %}
 
 {% set sorterData = [] %}
 {% if parametersSorterType in currentDatagridParameters|keys %}
@@ -37,8 +38,8 @@
 {% set currentView = '' %}
 {% if datagrid.viewsList %}
     {% set viewsData = datagrid.viewsList.toChoiceList %}
-    {% if currentDatagridParameters[parametersAdditionalType]['view'] is defined %}
-        {% set currentView = currentDatagridParameters[parametersAdditionalType]['view'] %}
+    {% if currentDatagridParameters[parametersAdditionalType][additionalParametersViewKey] is defined %}
+        {% set currentView = currentDatagridParameters[parametersAdditionalType][additionalParametersViewKey] %}
     {% endif %}
 {% endif %}
 

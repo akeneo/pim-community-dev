@@ -3,13 +3,15 @@
 namespace Oro\Bundle\GridBundle\Datagrid\Views;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
 abstract class AbstractViewsList
 {
+    const PARAM_KEY = 'view';
+
     /** @var TranslatorInterface */
     protected $translator;
 
@@ -105,32 +107,31 @@ abstract class AbstractViewsList
      *
      * @param Datagrid $datagrid
      * @param array $defaultGridParameters assoc array with datagrid default params
-     * @return bool
+     * @return void
      */
     public function applyToDatagrid(Datagrid $datagrid, $defaultGridParameters)
     {
         $datagrid->setViewsList($this);
-        return false;
+
         $parameters = $datagrid->getParameters();
 
         //$filters = $parameters->get(ParametersInterface::FILTER_PARAMETERS);
         //$sorters = $parameters->get(ParametersInterface::SORT_PARAMETERS);
-        $viewName = $parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
+        $additionalParams = $parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
+        $viewName =  isset($additionalParams[self::PARAM_KEY]) ? $additionalParams[self::PARAM_KEY] : false;
 
-        // test
-        $viewName = 'testGroupView';
 
-        // find view by name
-        $view = $this->getViewByName($viewName);
-        if (!$view) {
-            return false;
+        if ($viewName !== false) {
+            // find view by name
+            $view = $this->getViewByName($viewName);
+            if ($view) {
+                $parameters->set(ParametersInterface::FILTER_PARAMETERS, $view->getFiltersData());
+                $viewSorters = $view->getSortersData();
+                if (empty($viewSorters)) {
+                    $viewSorters = $defaultGridParameters[ParametersInterface::SORT_PARAMETERS];
+                }
+                $parameters->set(ParametersInterface::SORT_PARAMETERS, $viewSorters);
+            }
         }
-
-        $parameters->set(ParametersInterface::FILTER_PARAMETERS, $view->getFiltersData());
-        $viewSorters = $view->getSortersData();
-        if (empty($viewSorters)) {
-            $viewSorters = $defaultGridParameters[ParametersInterface::SORT_PARAMETERS];
-        }
-        $parameters->set(ParametersInterface::SORT_PARAMETERS, $viewSorters);
     }
 }
