@@ -36,9 +36,6 @@ require(
             // Initialize tooltip
             $('[data-toggle="tooltip"]').tooltip();
 
-            // Destroy Select2 where it's not necessary
-            $('#default_channel').select2('destroy');
-
             // Activate a form tab
             $('li.tab.active a').each(function () {
                 var paneId = $(this).attr('href');
