@@ -409,24 +409,30 @@ div.ui-dialog {
   }
   .ui-widget-content {
     border: 1px solid #c3c3c3;
+    border-width: 1px 0;
   }
   .ui-dialog-titlebar {
     #gradient .vertical(@color-dialogHeader_top, @color-dialogHeader_bottom);
+    border: none;
+    margin: 0;
     .ui-dialog-title {
       font-weight: bold;
     }
   }
-  .ui-dialog-titlebar-buttonpane .ui-dialog-titlebar-close {
-    .buttonBackground(@color-dialogHeader_top, @color-dialogHeader_bottom);
-    .icon-close-white();
-    .border-radius(3px);
-    border: @border-purple;
-    top: 5px;
-    right: 6px;
-    height: 22px;
-    width: 22px;
-    span.ui-button-text {
-      font-size: 0px;
+  .ui-dialog-titlebar-buttonpane {
+    border: none;
+    .ui-dialog-titlebar-close {
+      .buttonBackground(@color-dialogHeader_top, @color-dialogHeader_bottom);
+      .border-radius(3px);
+      border: @border-purple;
+      top: 5px;
+      right: 6px;
+      height: 22px;
+      width: 22px;
+      font-family: FontAwesome!important; // Override ORO !important
+      span.ui-button-text {
+        font-size: 0px;
+      }
     }
   }
   form {
