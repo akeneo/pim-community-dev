@@ -146,6 +146,9 @@ a.return {
 a.accordion-toggle {
   text-decoration: none;
   color: @textColor;
+  &:hover {
+    color: @textColor;
+  }
 }
 
 .accordion-group {
@@ -346,15 +349,19 @@ input[type="file"] {
     background-color: #f7f7f7;
     i {
       cursor: pointer;
+      color: @textColor;
     }
-    button {
+    a, button {
       background-color: #f3f3f3;
-      display:block;
-      float:left;
+      display: block;
+      float: left;
       border: 0px;
       border-right: 1px solid #d3d3d3;
-      color:#000;
-      text-decoration:none;
+      color: #000;
+      text-decoration: none;
+      width: 30px;
+      text-align: center;
+      font-size: 13px;
     }
     .btn-group .dropdown-toggle {
       border-radius: 0px;
@@ -481,6 +488,9 @@ div.ui-dialog {
 
 /* Sortable table */
 table.ui-sortable, tbody.ui-sortable {
+  i {
+    color: @textColor;
+  }
   td.handle {
     line-height: 30px;
   }
