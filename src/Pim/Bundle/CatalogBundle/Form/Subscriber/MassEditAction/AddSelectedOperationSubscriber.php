@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Form\Subscriber\BatchProduct;
+namespace Pim\Bundle\CatalogBundle\Form\Subscriber\MassEditAction;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperation;
+use Pim\Bundle\CatalogBundle\MassEditAction\MassEditAction;
 use Pim\Bundle\CatalogBundle\Model\BatchProduct;
 
 /**
@@ -20,11 +20,11 @@ class AddSelectedOperationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            FormEvents::PRE_SET_DATA => 'preSetData'
+            FormEvents::POST_SET_DATA => 'postSetData'
         );
     }
 
-    public function preSetData(FormEvent $event)
+    public function postSetData(FormEvent $event)
     {
         $data = $event->getData();
         $form = $event->getForm();
@@ -34,10 +34,10 @@ class AddSelectedOperationSubscriber implements EventSubscriberInterface
         }
 
         $operation = $data->getOperation();
-        if ($operation instanceof BatchOperation) {
+        if ($operation instanceof MassEditAction) {
             $form
                 ->remove('operationAlias')
-                ->add('operation', $operation->getFormType());
+                ->add('operation', $operation->getFormType(), $operation->getFormOptions());
         }
     }
 }

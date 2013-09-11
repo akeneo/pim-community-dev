@@ -1,9 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\BatchOperation;
+namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperation;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * A batch operation operator
@@ -13,15 +12,10 @@ use Pim\Bundle\CatalogBundle\BatchOperation\BatchOperation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BatchOperator
+class MassEditActionOperator
 {
     /**
-     * @var array $productIds
-     */
-    protected $productIds = array();
-
-    /**
-     * @var BatchOperation $operation
+     * @var MassEditAction $operation
      */
     protected $operation;
 
@@ -31,19 +25,19 @@ class BatchOperator
     protected $operationAlias;
 
     /**
-     * @var FlexibleManager $manager
+     * @var ProductManager $manager
      */
     protected $manager;
 
     /**
-     * @var BatchOperation[] $operations
+     * @var MassEditAction[] $operations
      */
     protected $operations = array();
 
     /**
-     * @param FlexibleManager $manager
+     * @param ProductManager $manager
      */
-    public function __construct(FlexibleManager $manager)
+    public function __construct(ProductManager $manager)
     {
         $this->manager = $manager;
     }
@@ -52,11 +46,11 @@ class BatchOperator
      * Register a batch operation into the operator
      *
      * @param string         $alias
-     * @param BatchOperation $operation
+     * @param MassEditAction $operation
      *
      * @throw \InvalidArgumentException
      */
-    public function registerBatchOperation($alias, BatchOperation $operation)
+    public function registerMassEditAction($alias, MassEditAction $operation)
     {
         if (array_key_exists($alias, $this->operations)) {
             throw new \InvalidArgumentException(sprintf('Operation "%s" is already registered', $alias));
@@ -74,44 +68,20 @@ class BatchOperator
         $choices = array();
 
         foreach (array_keys($this->operations) as $alias) {
-            $choices[$alias] = sprintf('pim_catalog.batch_operation.%s.label', $alias);
+            $choices[$alias] = sprintf('pim_catalog.mass_edit_action.%s.label', $alias);
         }
 
         return $choices;
     }
 
     /**
-     * Set the product ids
-     *
-     * @param array $productIds
-     *
-     * @return BatchOperator
-     */
-    public function setProductIds(array $productIds)
-    {
-        $this->productIds = $productIds;
-
-        return $this;
-    }
-
-    /**
-     * Get the product ids
-     *
-     * @return array
-     */
-    public function getProductIds()
-    {
-        return $this->productIds;
-    }
-
-    /**
      * Set the batch operation
      *
-     * @param BatchOperation $operation
+     * @param MassEditAction $operation
      *
-     * @return BatchOperator
+     * @return MassEditActionOperator
      */
-    public function setOperation(BatchOperation $operation)
+    public function setOperation(MassEditAction $operation)
     {
         $this->operation = $operation;
 
@@ -121,7 +91,7 @@ class BatchOperator
     /**
      * Get the batch operation
      *
-     * @return BatchOperation
+     * @return MassEditAction
      */
     public function getOperation()
     {
@@ -135,7 +105,7 @@ class BatchOperator
      * @param string $operationAlias
      *
      * @throw InvalidArgumentException when the alias is not registered
-     * @return BatchOperation
+     * @return MassEditAction
      */
     public function setOperationAlias($operationAlias)
     {
@@ -161,22 +131,63 @@ class BatchOperator
     }
 
     /**
-     * Delegate the batch operation execution to the chosen operation adapter
+     * Delegate the batch operation initialization to the chosen operation adapter
+     *
+     * @param array $parameters
+     *
+     * @throw \InvalidArgumentException if $parameters is missing a "products" key
      */
-    public function performOperation()
+    public function initializeOperation(array $parameters)
     {
         if ($this->operation) {
-            $this->operation->perform($this->getProducts());
+            if (!array_key_exists('products', $parameters)) {
+                throw new \InvalidArgumentException('Missing mandatory parameter "products"');
+            }
+
+            $products = $this->getProducts($parameters['products']);
+            unset($parameters['products']);
+
+            $this->operation->initialize($products, $parameters);
+        }
+    }
+
+    /**
+     * Delegate the batch operation execution to the chosen operation adapter
+     *
+     * @param array $parameters
+     *
+     * @throw \InvalidArgumentException if $parameters is missing a "products" key
+     */
+    public function performOperation(array $parameters)
+    {
+        if ($this->operation) {
+            if (!array_key_exists('products', $parameters)) {
+                throw new \InvalidArgumentException('Missing mandatory parameter "products"');
+            }
+
+            $products = $this->getProducts($parameters['products']);
+            unset($parameters['products']);
+
+            $this->operation->perform($products, $parameters);
         }
     }
 
     /**
      * Get the product matching the stored product ids
      *
-     * @return Product[]
+     * @param integer[] $productIds
+     *
+     * @return ProductInterface[]
+     *
+     * @throw InvalidArgumentException
      */
-    private function getProducts()
+    private function getProducts(array $productIds)
     {
-        return $this->manager->getFlexibleRepository()->findByIds($this->productIds);
+        $products = $this->manager->findByIds($productIds);
+        if (!$products) {
+            throw new \InvalidArgumentException('No product were selected');
+        }
+
+        return $products;
     }
 }
