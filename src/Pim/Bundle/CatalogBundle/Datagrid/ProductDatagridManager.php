@@ -8,6 +8,7 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\Ajax\DeleteMassAction;
+use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
 use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
@@ -20,11 +21,7 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
-<<<<<<< HEAD
 use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
-=======
-use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
->>>>>>> master
 
 /**
  * Grid manager
