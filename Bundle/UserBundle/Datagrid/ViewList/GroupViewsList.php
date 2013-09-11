@@ -1,12 +1,12 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Datagrid;
+namespace Oro\Bundle\UserBundle\Datagrid\ViewList;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 use Oro\Bundle\GridBundle\Datagrid\Views\View;
 use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 
-class GroupDatagridViewsList extends AbstractViewsList
+class GroupViewsList extends AbstractViewsList
 {
     /**
      * Returns an array of available views

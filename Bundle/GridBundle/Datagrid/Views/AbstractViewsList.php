@@ -112,11 +112,8 @@ abstract class AbstractViewsList
     public function applyToDatagrid(Datagrid $datagrid, $defaultGridParameters)
     {
         $datagrid->setViewsList($this);
-
         $parameters = $datagrid->getParameters();
 
-        //$filters = $parameters->get(ParametersInterface::FILTER_PARAMETERS);
-        //$sorters = $parameters->get(ParametersInterface::SORT_PARAMETERS);
         $additionalParams = $parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
         $viewName =  isset($additionalParams[self::PARAM_KEY]) ? $additionalParams[self::PARAM_KEY] : false;
 
@@ -125,11 +122,13 @@ abstract class AbstractViewsList
             // find view by name
             $view = $this->getViewByName($viewName);
             if ($view) {
+                $parameters->set(ParametersInterface::FILTER_PARAMETERS, false);
                 $parameters->set(ParametersInterface::FILTER_PARAMETERS, $view->getFiltersData());
                 $viewSorters = $view->getSortersData();
                 if (empty($viewSorters)) {
                     $viewSorters = $defaultGridParameters[ParametersInterface::SORT_PARAMETERS];
                 }
+                $parameters->set(ParametersInterface::SORT_PARAMETERS, false);
                 $parameters->set(ParametersInterface::SORT_PARAMETERS, $viewSorters);
             }
         }

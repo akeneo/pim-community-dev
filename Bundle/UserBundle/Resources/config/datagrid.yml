@@ -2,10 +2,12 @@ parameters:
     oro_user.user_datagrid_manager.class: Oro\Bundle\UserBundle\Datagrid\UserDatagridManager
     oro_user.role_datagrid_manager.class: Oro\Bundle\UserBundle\Datagrid\RoleDatagridManager
     oro_user.group_datagrid_manager.class: Oro\Bundle\UserBundle\Datagrid\GroupDatagridManager
-    oro_user.group_datagrid_views_list.class: Oro\Bundle\UserBundle\Datagrid\GroupDatagridViewsList
     oro_user.role_user_datagrid_manager.class: Oro\Bundle\UserBundle\Datagrid\RoleUserDatagridManager
     oro_user.group_user_datagrid_manager.class: Oro\Bundle\UserBundle\Datagrid\GroupUserDatagridManager
     oro_user.group_user_datagrid_manager.class: Oro\Bundle\UserBundle\Datagrid\GroupUserDatagridManager
+    # views classes
+    oro_user.group_datagrid_views_list.class: Oro\Bundle\UserBundle\Datagrid\ViewList\GroupViewsList
+    oro_user.user_datagrid_views_list.class:  Oro\Bundle\UserBundle\Datagrid\ViewList\UserViewsList
 
 services:
     oro_user.user_datagrid_manager:
@@ -17,6 +19,7 @@ services:
               entity_hint: user
               flexible: true
               route_name: oro_user_index
+              views_list: oro_user.user_datagrid_views_list
 
     oro_user.role_datagrid_manager:
         class: %oro_user.role_datagrid_manager.class%
@@ -27,8 +30,15 @@ services:
               entity_hint: role
               route_name: oro_user_role_index
 
+    # view list
     oro_user.group_datagrid_views_list:
         class:  %oro_user.group_datagrid_views_list.class%
+        arguments:
+            - @translator
+
+    # view list
+    oro_user.user_datagrid_views_list:
+        class:  %oro_user.user_datagrid_views_list.class%
         arguments:
             - @translator
 
@@ -62,3 +72,4 @@ services:
               query_entity_alias: user
               entity_hint: user
               route_name: oro_user_group_user_grid
+              views_list: oro_user.user_datagrid_views_list
