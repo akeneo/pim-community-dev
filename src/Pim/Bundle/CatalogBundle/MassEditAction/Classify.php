@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
-use Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\ChangeStatusType;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\ClassifyType;
 
 /**
  * Batch operation to classify products
@@ -32,7 +32,7 @@ class Classify extends AbstractMassEditAction
      */
     public function getFormType()
     {
-        return new ChangeStatusType();
+        return new ClassifyType();
     }
 
     /**
