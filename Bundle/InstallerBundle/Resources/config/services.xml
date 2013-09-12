@@ -70,7 +70,6 @@
         </service>
 
         <service id="oro.form.type.setup" class="%oro.form.type.setup.class%">
-            <!--argument>%oro.model.user.class%</argument-->
             <argument>%oro_user.entity.class%</argument>
             <tag name="form.type" alias="oro_setup" />
         </service>
@@ -79,5 +78,4 @@
             <argument>%kernel.root_dir%/config/parameters.yml</argument>
         </service>
     </services>
-
 </container>
