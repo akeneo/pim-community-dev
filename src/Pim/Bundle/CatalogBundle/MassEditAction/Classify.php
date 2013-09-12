@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\ClassifyType;
+use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 
 /**
  * Batch operation to classify products
@@ -20,11 +21,47 @@ class Classify extends AbstractMassEditAction
     protected $manager;
 
     /**
-     * @param FlexibleManager $manager
+     * @var CategoryManager $categoryManager
      */
-    public function __construct(FlexibleManager $manager)
+    protected $categoryManager;
+
+    /**
+     * @var CategoryInterface[]
+     */
+    protected $trees;
+
+    /**
+     * @var CategoryInterface[]
+     */
+    protected $categories;
+
+    /**
+     * @param FlexibleManager $manager
+     * @param CategoryManager $categoryManager
+     */
+    public function __construct(FlexibleManager $manager, CategoryManager $categoryManager)
     {
-        $this->manager = $manager;
+        $this->manager         = $manager;
+        $this->categoryManager = $categoryManager;
+
+        $this->trees           = $categoryManager->getEntityRepository()->findBy(array('parent' => null));
+        $this->categories      = array();
+    }
+
+    /**
+     * @return CategoryInterface[]
+     */
+    public function getTrees()
+    {
+        return $this->trees;
+    }
+
+    /**
+     * @return CategoryInterface[]
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 
     /**
