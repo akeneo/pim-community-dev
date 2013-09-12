@@ -33,7 +33,9 @@ class Generator
      */
     protected $extendManager;
 
-    /** @var OroEntityManager */
+    /**
+     * @var OroEntityManager
+     */
     protected $em;
 
     /**
@@ -88,6 +90,11 @@ class Generator
 
                 $this->writer = new Writer();
                 $class = PhpClass::create(self::ENTITY . $parentClassName);
+
+                if ($inheritedClass) {
+                    $class->setParentClassName($inheritedClass);
+                }
+
                 $strategy = new DefaultGeneratorStrategy();
 
                 $filePath = $this->entityCacheDir . '/Extend/Entity/'. $parentClassName. '.php';
