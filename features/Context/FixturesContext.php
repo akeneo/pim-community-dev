@@ -11,6 +11,7 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\Acl;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
+use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -20,7 +21,6 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
  * A context for creating entities
@@ -625,7 +625,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingJobs(TableNode $table)
     {
-        $registry = $this->getContainer()->get('pim_batch.connectors');
+        $registry = $this->getContainer()->get('oro_batch.connectors');
 
         foreach ($table->getHash() as $data) {
             $jobInstance = new JobInstance($data['connector'], $data['type'], $data['alias']);
@@ -647,7 +647,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingJobConfiguration($code, TableNode $table)
     {
-        $registry    = $this->getContainer()->get('pim_batch.connectors');
+        $registry    = $this->getContainer()->get('oro_batch.connectors');
         $jobInstance = $this->getJobInstance($code);
         $job         = $registry->getJob($jobInstance);
         $steps       = $job->getSteps();
@@ -1003,7 +1003,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getJobInstance($code)
     {
-        return $this->getEntityOrException('PimBatchBundle:JobInstance', array('code' => $code));
+        return $this->getEntityOrException('OroBatchBundle:JobInstance', array('code' => $code));
     }
 
     /**

@@ -5,8 +5,8 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
 use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 

@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass;
-use Pim\Bundle\BatchBundle\Connector\Connector;
+use Oro\Bundle\BatchBundle\Connector\Connector;
 
 /**
  * The Pim Import Export Bundle

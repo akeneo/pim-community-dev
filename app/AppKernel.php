@@ -70,6 +70,7 @@ class AppKernel extends Kernel
             new Oro\Bundle\EntityExtendBundle\OroEntityExtendBundle(),
             new Oro\Bundle\ImapBundle\OroImapBundle(),
             new Oro\Bundle\CronBundle\OroCronBundle(),
+            new Oro\Bundle\BatchBundle\OroBatchBundle(),
 
             // BAP overrided bundles
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
@@ -85,7 +86,6 @@ class AppKernel extends Kernel
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
             new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
-            new Pim\Bundle\BatchBundle\PimBatchBundle(),
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
             new Pim\Bundle\DemoBundle\PimDemoBundle(),
             new Pim\Bundle\VersioningBundle\PimVersioningBundle,

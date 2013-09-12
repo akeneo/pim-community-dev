@@ -24,7 +24,7 @@ pim_import_export:
             import.title: 'Configuration'
 
 ## Step elements (readers, processors, writers)
-pim_batch:
+oro_batch:
     product_reader:
         title: 'Scope'
         channel:

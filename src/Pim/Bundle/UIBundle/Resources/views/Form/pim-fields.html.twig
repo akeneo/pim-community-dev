@@ -205,13 +205,13 @@
 {% endspaceless %}
 {% endblock pim_catalog_price_widget %}
 
-{% block pim_batch_step_element_configuration_widget %}
+{% block oro_batch_step_element_configuration_widget %}
     {% for child in form %}
         {{ form_row(child) }}
     {% else %}
         {{ 'No configuration'|trans }}
     {% endfor %}
-{% endblock pim_batch_step_element_configuration_widget %}
+{% endblock oro_batch_step_element_configuration_widget %}
 
 {% block pim_attribute_requirement_widget %}
     <div class="attribute-requirement" data-required-title="{{ 'Required'|trans }}" data-not-required-title="{{ 'Not required'|trans }}">

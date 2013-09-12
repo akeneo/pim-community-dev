@@ -11,16 +11,16 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
-use Pim\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
 
 use Pim\Bundle\CatalogBundle\Form\Type\UploadType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
-use Pim\Bundle\BatchBundle\Entity\JobInstance;
-use Pim\Bundle\BatchBundle\Entity\JobExecution;
-use Pim\Bundle\BatchBundle\Job\ExitStatus;
-use Pim\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+use Oro\Bundle\BatchBundle\Entity\JobInstance;
+use Oro\Bundle\BatchBundle\Entity\JobExecution;
+use Oro\Bundle\BatchBundle\Job\ExitStatus;
+use Oro\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 
 /**
  * Job Instance controller
@@ -323,7 +323,7 @@ class JobInstanceController extends AbstractDoctrineController
      */
     protected function getJobInstance($id, $checkStatus = true)
     {
-        $jobInstance = $this->findOr404('PimBatchBundle:JobInstance', $id);
+        $jobInstance = $this->findOr404('OroBatchBundle:JobInstance', $id);
 
         // Fixme: should look at the job execution to see the status of a job instance execution
         if ($checkStatus && $jobInstance->getStatus() === JobInstance::STATUS_IN_PROGRESS) {
