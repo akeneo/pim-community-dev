@@ -1,20 +1,24 @@
-{% extends 'PimCatalogBundle::layout.html.twig' %}
+{% extends 'PimCatalogBundle:MassEditAction:layout.html.twig' %}
 
 {% block content %}
-    {% set parameters = parameters|merge({'operationAlias': batchOperator.operationAlias}) %}
-    <form id="{{ form.vars.id }}" action="{{ path('pim_catalog_mass_edit_action_perform', parameters) }}" method="POST" class="form-horizontal">
+    {% set title = 'pim_catalog.mass_edit_action.choose.page_title'|trans %}
+    {% set subtitle = 'pim_catalog.mass_edit_action.choose.page_subtitle'|transchoice(productIds|length) %}
+    {{ elements.page_header(title, null, subtitle) }}
+
+    {{ parent() }}
+
+    <form id="{{ form.vars.id }}" action="{{ path('pim_catalog_mass_edit_action_perform', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) }}" method="POST" class="form-horizontal">
         {% block form %}{{ form_widget(form) }}{% endblock %}
-        <a href="{{ path('pim_catalog_mass_edit_action_choose', {'products': parameters.products}) }}" class="btn">Cancel</a>
+        <a href="{{ path('pim_catalog_mass_edit_action_choose', {'products': productIds}) }}" class="btn">Cancel</a>
         <input type="submit" value="Next" class="btn btn-primary">
     </form>
 {% endblock %}
 
 {% block head_script_component %}
+    {% set currentStep = 3 %}
     {{ parent() }}
 
-    {% set parameters = parameters|merge({'operationAlias': batchOperator.operationAlias}) %}
-    {% set action = path('pim_catalog_mass_edit_action_configure', parameters) %}
-
+    {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) %}
     <script type="text/javascript">
         $(function() {
             'use strict';

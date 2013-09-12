@@ -1,3 +1,4 @@
+@javascript
 Feature: Change status of many products at once
   In order to include or exclude many products in or from the export
   As Julia
@@ -7,6 +8,7 @@ Feature: Change status of many products at once
     Given a disabled "boat" product
     And a disabled "jet-ski" product
     And I am logged in as "Julia"
+    And I am on the products page
     When I mass-edit products boat and jet-ski
     And I choose the "Change status (Enable/Disable)" operation
     And I enable the products
@@ -17,6 +19,7 @@ Feature: Change status of many products at once
     Given an enabled "boat" product
     And an enabled "jet-ski" product
     And I am logged in as "Julia"
+    And I am on the products page
     When I mass-edit products boat and jet-ski
     And I choose the "Change status (Enable/Disable)" operation
     And I disable the products
