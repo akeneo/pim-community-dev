@@ -589,7 +589,7 @@ table i {
         border-top-right-radius: 3px;
       }
       &:first-child {
-        margin-left: 20px;
+        margin-left: 10px;
       }
     }
     &:last-of-type .controls {
@@ -614,7 +614,7 @@ table i {
     background-color: #fbfbfb;
     padding-right: 10px;
     padding-top: 4px;
-    width: 100px;
+    width: 135px;
     margin-bottom: 0;
     border-radius: 0;
     float: left;
@@ -635,6 +635,17 @@ table i {
   }
   .control-group {
     margin: 0;
+    &>.controls.input-prepend {
+      position: relative;
+      .control-label.add-on {
+        position: absolute;
+        height: 100%;
+      }
+      .scopable-input {
+        position: relative;
+        left: 135px;
+      }
+    }
   }
   textarea.input-large {
     width: 523px;
