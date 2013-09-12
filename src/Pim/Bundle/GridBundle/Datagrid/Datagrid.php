@@ -3,9 +3,8 @@
 namespace Pim\Bundle\GridBundle\Datagrid;
 
 use Pim\Bundle\GridBundle\Action\Export\ExportActionInterface;
-
-use Symfony\Component\Serializer\Serializer;
 use Oro\Bundle\GridBundle\Datagrid\Datagrid as OroDatagrid;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * Override of OroPlatform datagrid
@@ -22,13 +21,26 @@ class Datagrid extends OroDatagrid
      */
     protected $serializer;
 
+    /**
+     * @var ExportActionInterface[]
+     */
     protected $exportActions = array();
 
+    /**
+     * Add export action
+     *
+     * @param ExportActionInterface $action
+     */
     public function addExportAction(ExportActionInterface $action)
     {
         $this->exportActions[] = $action;
     }
 
+    /**
+     * Get list of export actions
+     *
+     * @return \Pim\Bundle\GridBundle\Datagrid\ExportActionInterface[]
+     */
     public function getExportActions()
     {
         return $this->exportActions;
