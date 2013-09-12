@@ -34,7 +34,7 @@ class AclAnnotationStorage
      * Gets an annotation by its id
      *
      * @param string $id
-     * @return AclAnnotation|null
+     * @return AclAnnotation|null AclAnnotation object or null if ACL annotation was not found
      * @throws \InvalidArgumentException
      */
     public function findById($id)
@@ -53,7 +53,7 @@ class AclAnnotationStorage
      *
      * @param string $class
      * @param string|null $method
-     * @return AclAnnotation|null
+     * @return AclAnnotation|null AclAnnotation object or null if ACL annotation was not found
      * @throws \InvalidArgumentException
      */
     public function find($class, $method = null)
@@ -72,6 +72,23 @@ class AclAnnotationStorage
         return isset($this->annotations[$id])
             ? $this->annotations[$id]
             : null;
+    }
+
+    /**
+     * Determines whether the given class/method has an annotation
+     *
+     * @param string $class
+     * @param string|null $method
+     * @return bool
+     */
+    public function has($class, $method = null)
+    {
+        $key = empty($method) ? $class : $class . '!' . $method;
+        if (!isset($this->bindings[$key])) {
+            return false;
+        }
+
+        return isset($this->annotations[$this->bindings[$key]]);
     }
 
     /**

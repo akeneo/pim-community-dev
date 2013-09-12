@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Acl;
+namespace Oro\Bundle\SecurityBundle\Acl\Interceptor;
 
 use JMS\AopBundle\Aop\PointcutInterface;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
@@ -41,9 +41,14 @@ class AclPointcut implements PointcutInterface
      */
     public function matchesMethod(\ReflectionMethod $method)
     {
-        return $this->annotationProvider->isProtectedMethod(
-            $method->getDeclaringClass()->getName(),
-            $method->getName()
-        );
+        $className = $method->getDeclaringClass()->getName();
+
+        $result = $this->annotationProvider->isProtectedMethod($className, $method->getName());
+        // it is supposed that a method is protected is it has no own ACL annotation but the declaring class has
+        if (!$result) {
+            $result = $this->annotationProvider->hasAnnotation($className);
+        }
+
+        return $result;
     }
 }
