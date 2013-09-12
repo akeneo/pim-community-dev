@@ -1,5 +1,6 @@
 /* global define */
-define(['backbone', 'underscore', 'oro/translations'], function (Backbone, _, __) {
+define(['backbone', 'underscore', 'oro/translations', 'oro/datagrid/grid-views/collection', 'oro/datagrid/grid-views/collection'],
+function (Backbone, _, __, GridViewsCollection, GridViewsModel) {
     'use strict';
 
     /**
@@ -32,14 +33,20 @@ define(['backbone', 'underscore', 'oro/translations'], function (Backbone, _, __
         /** @property */
         enabled: true,
 
+        /** @property */
         choices: [],
+
+        /** @property */
+        viewsCollection: GridViewsCollection,
 
         /**
          * Initializer.
          *
          * @param {Object} options
          * @param {Backbone.Collection} options.collection
-         * @param {Array} [options.items]
+         * @param {Boolean} [options.enable]
+         * @param {Array}   [options.choices]
+         * @param {Array}   [options.views]
          */
         initialize: function (options) {
             options = options || {};
@@ -57,6 +64,9 @@ define(['backbone', 'underscore', 'oro/translations'], function (Backbone, _, __
 
             this.listenTo(this.collection, "updateState", this.render);
             this.listenTo(this.collection, "beforeFetch", this.render);
+
+            options.views = options.views || [];
+            this.viewsCollection = new this.viewsCollection(options.views);
 
             Backbone.View.prototype.initialize.call(this, options);
         },
@@ -105,8 +115,13 @@ define(['backbone', 'underscore', 'oro/translations'], function (Backbone, _, __
          * @returns {*}
          */
         changeView: function (gridView) {
-            this.collection.state.gridView = gridView;
-            this.collection.fetch();
+            var view = this.viewsCollection.get(gridView);
+
+            if (view) {
+                var viewState = _.extend({}, this.collection.initialState, view.toGridState());
+                this.collection.updateState(viewState);
+                this.collection.fetch();
+            }
 
             return this;
         },

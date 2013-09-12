@@ -86,6 +86,25 @@ abstract class AbstractViewsList
         return $choices;
     }
 
+    public function toViewData()
+    {
+        $result = array();
+
+        /** @var View $view */
+        foreach ($this->getList() as $view) {
+            $result[] = array(
+                'name'    => $view->getName(),
+                'filters' => $view->getFiltersData(),
+                'sorters' => $view->getSortersData()
+            );
+        }
+
+        return array(
+            'choices' => $this->toChoiceList(),
+            'views'   => $result
+        );
+    }
+
     /**
      * Validates input array
      *
@@ -127,9 +146,7 @@ abstract class AbstractViewsList
         $currentFilters = $parameters->get(ParametersInterface::FILTER_PARAMETERS);
         //$defaultFilters = $defaultGridParameters[ParametersInterface::FILTER_PARAMETERS];
 
-        $viewFilters = array_merge($currentFilters, $viewFilters);
-
-
+        $viewFilters = array_merge($viewFilters, $currentFilters);
         $parameters->set(ParametersInterface::FILTER_PARAMETERS, false);
         $parameters->set(ParametersInterface::FILTER_PARAMETERS, $viewFilters);
 

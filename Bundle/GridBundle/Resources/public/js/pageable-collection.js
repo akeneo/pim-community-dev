@@ -254,6 +254,8 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param {Object} state
          */
         updateState: function(state) {
+
+            console.log(state);
             var newState = _.extend({}, this.state, state);
             this.state = this._checkState(newState);
             this.trigger('updateState', this, this.state);

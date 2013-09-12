@@ -38,10 +38,10 @@
 {% set viewsData = [] %}
 {% set currentView = '' %}
 {% if datagrid.viewsList %}
-    {% set viewsData = datagrid.viewsList.toChoiceList %}
     {% if currentDatagridParameters[parametersAdditionalType][additionalParametersViewKey] is defined %}
         {% set currentView = currentDatagridParameters[parametersAdditionalType][additionalParametersViewKey] %}
     {% endif %}
+    {% set viewsData = datagrid.viewsList.toViewData() %}
 {% endif %}
 
 
@@ -221,10 +221,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                  */
                 mediator.trigger("datagrid_filters:rendered", datagridCollection.collection);
             {% endif %}
-            var gridViewsPanel = new GridViewsView({
-                collection: datagridCollection.collection,
-                choices: {{ viewsData|json_encode|raw }}
-            });
+            var gridViewsPanel = new GridViewsView(_.extend({}, { collection: datagridCollection.collection }, {{ viewsData|json_encode|raw }}));
             $(containerSelector).append(gridViewsPanel.render().$el);
 
             {# Don't use router when grid is embedded in dialog #}
