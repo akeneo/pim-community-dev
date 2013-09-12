@@ -57,4 +57,25 @@ class ViewTest extends \PHPUnit_Framework_TestCase
         $view = new View(self::TEST_NAME, array(), $sortersData);
         $this->assertEquals($sortersData, $view->getSortersData());
     }
+
+    public function testToViewData()
+    {
+        $filtersData = array(
+            'some_filter' => array(
+                'value' => 'someValue'
+            )
+        );
+        $sortersData = array(
+            'some_field' => 'ASC'
+        );
+        $view        = new View(self::TEST_NAME, $filtersData, $sortersData);
+        $this->assertEquals(
+            array(
+                'name'    => self::TEST_NAME,
+                'filters' => $filtersData,
+                'sorters' => $sortersData
+            ),
+            $view->toViewData()
+        );
+    }
 }

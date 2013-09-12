@@ -31,6 +31,8 @@ class View
     }
 
     /**
+     * Setter for sorters data
+     *
      * @param array $sortersData
      *
      * @return $this
@@ -43,6 +45,8 @@ class View
     }
 
     /**
+     * Getter for sorters data
+     *
      * @return array
      */
     public function getSortersData()
@@ -51,6 +55,8 @@ class View
     }
 
     /**
+     * Setter for filter data
+     *
      * @param array $filtersData
      *
      * @return $this
@@ -63,10 +69,26 @@ class View
     }
 
     /**
+     * Getter for filter data
+     *
      * @return array
      */
     public function getFiltersData()
     {
         return $this->filtersData;
+    }
+
+    /**
+     * Convert to view data
+     *
+     * @return array
+     */
+    public function toViewData()
+    {
+        return array(
+            'name'    => $this->getName(),
+            'filters' => $this->getFiltersData(),
+            'sorters' => $this->getSortersData()
+        );
     }
 }
