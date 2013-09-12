@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -195,16 +199,48 @@ class ProductController extends AbstractDoctrineController
                 $view = 'OroGridBundle:Datagrid:list.json.php';
                 break;
             case 'csv':
-                $content = $datagrid->exportData(
-                    'csv',
-                    array('withHeader' => true, 'heterogeneous' => true, 'scope' => $this->productManager->getScope())
-                );
-                $headers = array(
-                    'Content-Type' => 'text/csv',
-                    'Content-Disposition' => 'inline; filename=quick_export_products.csv'
+                // get attribute lists
+                $qb = $datagrid->getQuery();
+                $attributesList = $gridManager->getAttributeAvailableIds($qb);
+
+                // get values of all the defined attributes
+                if (!empty($attributesList)) {
+                    $exprIn = $qb->expr()->in('values.attribute', $attributesList);
+                    $qb->andWhere($exprIn);
+                }
+
+                // prepare serializer context
+                $context = array(
+                    'withHeader' => true,
+                    'heterogeneous' => false,
+                    'scope' => $this->productManager->getScope()
                 );
 
-                return $this->returnResponse($content, 200, $headers);
+                // prepare response
+                $response = new StreamedResponse();
+                $attachment = $response->headers->makeDisposition(
+                    ResponseHeaderBag::DISPOSITION_INLINE,
+                    'quick_export_products.csv'
+                );
+                $response->headers->set('Content-Type', 'text/csv');
+                $response->headers->set('Content-Disposition', $attachment);
+
+                $response->setCallback(
+                    function () use ($datagrid, $context) {
+                        // prepare serializer batching
+                        $limit = 250;
+                        $count = $datagrid->countResults();
+                        $iterations = ceil($count/$limit);
+
+                        for ($i=0; $i<$iterations; $i++) {
+                            $data = $datagrid->exportData('csv', $i*$limit, $limit, $context);
+                            echo $data;
+                            flush();
+                            $context['withHeader'] = false;
+                        }
+                    }
+                );
+                return $response->send();
 
                 break;
             case 'html':
