@@ -22,6 +22,19 @@ class ClassifyType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
+        $builder
+            ->add(
+                'trees',
+                'oro_entity_identifier',
+                array(
+                    'class'    => 'PimCatalogBundle:Category',
+                    'required' => false,
+                    'mapped'   => false,
+                    'multiple' => true,
+                )
+            );
+
+
         /*
         $builder
             ->add(
@@ -43,7 +56,7 @@ class ClassifyType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class'       => 'Pim\\Bundle\\CatalogBundle\\MassEditAction\\Classify',
+                'data_class' => 'Pim\\Bundle\\CatalogBundle\\MassEditAction\\Classify'
             )
         );
     }
