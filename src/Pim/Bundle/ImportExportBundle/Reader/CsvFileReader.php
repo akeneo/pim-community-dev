@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
-use Pim\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Csv file reader

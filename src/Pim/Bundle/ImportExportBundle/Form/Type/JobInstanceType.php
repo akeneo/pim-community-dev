@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
-use Pim\Bundle\BatchBundle\Form\Type\JobConfigurationType;
+use Oro\Bundle\BatchBundle\Form\Type\JobConfigurationType;
 
 /**
  * Job instance form type
