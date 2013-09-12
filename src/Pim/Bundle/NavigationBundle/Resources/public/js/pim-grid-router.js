@@ -1,7 +1,9 @@
+/**
+ * Saves filter status
+ */
 ;require(
     ['oro/datagrid/router', 'oro/navigation'],
     function(Router, Navigation) {
-        console.debug("hello")
         Router.prototype._handleStateChange = function(collection, options) {
             options = options || {};
             if (options.ignoreSaveStateInUrl) {
