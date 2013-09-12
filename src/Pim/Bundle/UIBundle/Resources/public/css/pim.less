@@ -48,6 +48,35 @@ table.grid { margin-bottom: 0; }
   padding-right: 0;
 }
 
+.ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label {
+  &.ui-state-hover, &.ui-state-active {
+    background-color: @color-purple_light;
+  }
+}
+
+.filter-criteria .dropdown-menu li {
+  > a,
+  &.active > a {
+    &:hover, &:focus, &:active {
+      background: @color-purple_light;
+    }
+  }
+  &.active > a {
+    background: @textColor + #777;
+  }
+}
+
+.dropdown-menu>li>a {
+  color: @color-purple_light;
+  &:hover, &:active {
+    color: darken(@color-purple_light, 5%);
+  }
+}
+
+.btn-group>.dropdown-menu li a:hover {
+  background: @color-purple_light;
+}
+
 /* Tree */
 .jstree-default {
   height: 100%;
@@ -67,36 +96,12 @@ table.grid { margin-bottom: 0; }
     margin-bottom: 10px;
 }
 
-.filter-criteria .dropdown-menu li {
-  > a,
-  &.active > a {
-    &:hover, &:focus, &:active {
-      background: @color-purple_dark;
-      color: #ffffff;
-    }
-  }
-  &.active > a {
-    background: @textColor + #777;
-  }
-}
-
-.dropdown-menu>li>a {
-  color: @color-purple_dark;
-  &:hover, &:active {
-    color: darken(@color-purple_dark, 5%);
-  }
-}
-
 a.back-link i {
   vertical-align: middle;
 }
 
 .icon-collapse-alt, .icon-expand-alt {
   font-size: 14px;
-}
-
-.ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label.ui-state-active {
-  background-color: @color-purple_light;
 }
 
 .icon-bullet:before {
@@ -117,10 +122,6 @@ code.flag-language {
   min-width: 130px;
   padding-right: 0px;
   padding-left: 5px;
-}
-
-.ui-multiselect-menu.scope-filter-select {
-  min-width: 150px!important; // Added !important otherwise position is incorrect on first display
 }
 
 /** Dashboard ********************************************************************************************************/
