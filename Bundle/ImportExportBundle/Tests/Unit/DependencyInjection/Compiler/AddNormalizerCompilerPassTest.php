@@ -80,10 +80,23 @@ class AddNormalizerCompilerPassTest extends \PHPUnit_Framework_TestCase
                     new Reference('baz'),
                 )
             ),
-            'empty' => array(
-                'taggedServices' => array(),
-                'expectedNormalizers' => array()
-            ),
         );
+    }
+
+    // @codingStandartsIgnoreStart
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage You must tag at least one service as "oro_importexport.normalizer" to use the import export Serializer service
+     */
+    // @codingStandartsIgnoreEnd
+    public function testProcessFailsWhenNoNormalizers()
+    {
+        $this->containerBuilder->expects($this->once())
+            ->method('findTaggedServiceIds')
+            ->with(AddNormalizerCompilerPass::ATTRIBUTE_NORMALIZER_TAG)
+            ->will($this->returnValue(array()));
+
+        $pass = new AddNormalizerCompilerPass();
+        $pass->process($this->containerBuilder);
     }
 }

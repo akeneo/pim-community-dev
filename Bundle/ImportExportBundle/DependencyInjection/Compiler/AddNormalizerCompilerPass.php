@@ -25,8 +25,13 @@ class AddNormalizerCompilerPass implements CompilerPassInterface
     {
         $services = $container->findTaggedServiceIds($tagName);
 
-        if (!$services) {
-            return array();
+        if (empty($services)) {
+            throw new \RuntimeException(
+                sprintf(
+                    'You must tag at least one service as "%s" to use the import export Serializer service',
+                    $tagName
+                )
+            );
         }
 
         $sortedServices = array();
