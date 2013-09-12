@@ -181,6 +181,9 @@ class MassEditActionController extends AbstractController
         return $this->redirectToRoute('pim_catalog_product_index');
     }
 
+    /**
+     * @return Form
+     */
     private function getMassEditActionOperatorForm()
     {
         return $this->createForm(
