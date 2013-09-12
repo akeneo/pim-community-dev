@@ -53,6 +53,7 @@ in SampleViewsList one method should be defined
         return array(
             new View(
                 'test.user.view.last_active',
+                // filters
                 array(
                     'enabled' => array(
                         'value' => 1,
@@ -61,9 +62,14 @@ in SampleViewsList one method should be defined
                         'value' => array(
                             'start' => $lastDay,
                         ),
-                        'type' => DateRangeFilterType::TYPE_MORE_THAN
+                        'type' => Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType::TYPE_MORE_THAN
+                    ),
+                    'username' => array(
+                        'value' => 'Jo',
+                        'type' => Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType\TextFilterType::TYPE_STARTS_WITH
                     )
                 ),
+                // sorters
                 array(
                     'firstName' => 'DESC',
                 )
@@ -72,3 +78,8 @@ in SampleViewsList one method should be defined
         );
     }
 ```
+
+Filter and sorter parameters that used here must be the same format as they're coming from request.
+Filters type used in example here defined in Oro\Bundle\FilterBundle\Form\Type\Filter\*:
+* DateRangeFilterType
+* TextFilterType
