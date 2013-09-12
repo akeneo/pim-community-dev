@@ -8,6 +8,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
@@ -19,11 +20,32 @@ use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @Acl(
+ *      id="pim_catalog_mass_edit",
+ *      name="Product mass edit actions",
+ *      description="Product mass edit actions",
+ *      parent="pim_catalog"
+ * )
  */
 class MassEditActionController extends AbstractController
 {
+    /**
+     * @var MassEditActionOperator
+     */
     protected $batchOperator;
 
+    /**
+     * Constructor
+     *
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param MassEditActionOperator   $batchOperator
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,
@@ -40,6 +62,12 @@ class MassEditActionController extends AbstractController
 
     /**
      * @Template
+     * @Acl(
+     *      id="pim_catalog_mass_edit_choose",
+     *      name="Choose action",
+     *      description="Choose action",
+     *      parent="pim_catalog_mass_edit"
+     * )
      */
     public function chooseAction(Request $request)
     {
@@ -69,6 +97,16 @@ class MassEditActionController extends AbstractController
         );
     }
 
+    /**
+     * @param Request $request
+     * @param string  $operationAlias
+     * @Acl(
+     *      id="pim_catalog_mass_edit_configure",
+     *      name="Configure action",
+     *      description="Configure action",
+     *      parent="pim_catalog_mass_edit"
+     * )
+     */
     public function configureAction(Request $request, $operationAlias)
     {
         try {
@@ -101,6 +139,17 @@ class MassEditActionController extends AbstractController
         );
     }
 
+    /**
+     *
+     * @param Request $request
+     * @param alis    $operationAlias
+     * @Acl(
+     *      id="pim_catalog_mass_edit_perform",
+     *      name="Perform action",
+     *      description="Perform action",
+     *      parent="pim_catalog_mass_edit"
+     * )
+     */
     public function performAction(Request $request, $operationAlias)
     {
         try {
