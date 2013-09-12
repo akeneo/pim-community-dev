@@ -117,7 +117,6 @@ abstract class AbstractViewsList
         $additionalParams = $parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
         $viewName =  isset($additionalParams[self::PARAM_KEY]) ? $additionalParams[self::PARAM_KEY] : false;
 
-        $viewName = 'test.user.view.active';
         $view = $viewName ? $this->getViewByName($viewName) : false;
         if ($view === false) {
             return false;
@@ -127,10 +126,12 @@ abstract class AbstractViewsList
         $viewFilters = $view->getFiltersData();
         $currentFilters = $parameters->get(ParametersInterface::FILTER_PARAMETERS);
         //$defaultFilters = $defaultGridParameters[ParametersInterface::FILTER_PARAMETERS];
-        $currentFilters = array_merge_recursive($viewFilters, $currentFilters);
+
+        $viewFilters = array_merge($currentFilters, $viewFilters);
+
 
         $parameters->set(ParametersInterface::FILTER_PARAMETERS, false);
-        $parameters->set(ParametersInterface::FILTER_PARAMETERS, $currentFilters);
+        $parameters->set(ParametersInterface::FILTER_PARAMETERS, $viewFilters);
 
         // set sorters
         $viewSorters = $view->getSortersData();
