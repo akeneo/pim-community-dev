@@ -22,33 +22,37 @@
 
     {% set trees = form.vars.value.operation.trees %}
 
-    <div id="trees-list" class="tab-groups">
-        <ul class="nav nav-list">
-            {% for tree in trees %}
-                {% set aClass = "" %}
-                {% set iClass = "gray" %}
-                <li>
-                    <a class="{{ aClass }}" href="javascript:void(0);" id="tree-link-{{ tree.id }}">
-                        <i class="icon-ok {{ iClass }}"></i>{{ tree.title }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <div class="tab-content">
-        {% if trees %}
-            {% set firstTree = trees|first %}
-            {% set selectedTree = firstTree.id %}
-        {% endif %}
-        <div id="trees" data-id="" data-assets-path="{{ asset('bundles/pimcatalog/') }}" data-datalocale="en_US" {% if selectedTree is defined %} data-selected-tree="{{ selectedTree }}"{% endif %}>
-            {% for tree in trees %}
-                <div class="tree" data-tree-id="{{ tree.id }}">
-                    <h3>{{ tree.title }}</h3>
-                    <input type="hidden" id="apply-on-tree-{{ tree.id }}" name="apply_on_tree_{{ tree.id }}" value="0"/>
-                    <div id="tree-{{ tree.id }}"></div>
+    <div class="classify">
+        <div class="tab-pane">
+            <div id="trees-list" class="tab-groups">
+                <ul class="nav nav-list">
+                    {% for tree in trees %}
+                        {% set aClass = "" %}
+                        {% set iClass = "gray" %}
+                        <li>
+                            <a class="{{ aClass }}" href="javascript:void(0);" id="tree-link-{{ tree.id }}">
+                                <i class="icon-ok {{ iClass }}"></i>{{ tree.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        
+            <div class="tab-content">
+                {% if trees %}
+                    {% set firstTree = trees|first %}
+                    {% set selectedTree = firstTree.id %}
+                {% endif %}
+                <div id="trees" data-id="" data-assets-path="{{ asset('bundles/pimcatalog/') }}" data-datalocale="en_US" {% if selectedTree is defined %} data-selected-tree="{{ selectedTree }}"{% endif %}>
+                    {% for tree in trees %}
+                        <div class="tree" data-tree-id="{{ tree.id }}">
+                            <h3>{{ tree.title }}</h3>
+                            <input type="hidden" id="apply-on-tree-{{ tree.id }}" name="apply_on_tree_{{ tree.id }}" value="0"/>
+                            <div id="tree-{{ tree.id }}"></div>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
