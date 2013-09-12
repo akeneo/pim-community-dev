@@ -57,6 +57,9 @@ form.form-signin {
 
 // Form navbar
 #form-navbar li {
+  a:hover {
+    border-bottom: 3px solid @textColor + #999;
+  }
   &.active a, a {
     color: @textColor;
     background-color: transparent;
@@ -243,6 +246,9 @@ div.btn-group > .has-switch {
 .select2-container.input-large {
   width: 250px;
 }
+.select2-container-multi.select2-container-active .select2-choices {
+  border: none;
+}
 
 #attribute-buttons {
   margin: 10px;
@@ -322,18 +328,20 @@ div.btn-group > .has-switch {
     font-size: 26px;
     width: 45px;
   }
-}
-
-input[type="file"] {
-  display: block;
-  z-index: 99;
-  position: relative;
-  top: -100px;
-  width: 100%!important;
-  height: 100%;
-  border-radius: 20px;
-  cursor: pointer;
-  opacity: 0;
+  input[type="file"] {
+    display: block;
+    z-index: 99;
+    position: relative;
+    top: -100px;
+    width: 100%!important;
+    height: 100%;
+    border-radius: 20px;
+    cursor: pointer;
+    opacity: 0;
+    &.hide {
+      display: none;
+    }
+  }
 }
 
 /* Collapsable sidebar **********************************************************************************************/
