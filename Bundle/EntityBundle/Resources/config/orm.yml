@@ -1,5 +1,4 @@
 parameters:
-    #doctrine.orm.metadata.annotation.class:                    Oro\Bundle\EntityBundle\ORM\Mapping\AnnotationDriver
     doctrine.orm.entity_manager.class:                         Oro\Bundle\EntityBundle\ORM\OroEntityManager
 
     oro_entity.orm.entity_class_resolver.class:                Oro\Bundle\EntityBundle\ORM\EntityClassResolver

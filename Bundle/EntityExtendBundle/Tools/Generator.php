@@ -178,8 +178,9 @@ class Generator
 
         $strategy = new DefaultGeneratorStrategy();
 
+        $classNameArray = explode('\\', $className);
         file_put_contents(
-            $this->entityCacheDir . '/Extend/Entity/' . array_pop(explode('\\', $className)) . '.php',
+            $this->entityCacheDir . '/Extend/Entity/' . array_pop($classNameArray) . '.php',
             "<?php\n\n" . $strategy->generate($class)
         );
     }
@@ -207,8 +208,9 @@ class Generator
 
         $this->generateYamlMethods($className, $className, $yml);
 
+        $classNameArray = explode('\\', $className);
         file_put_contents(
-            $this->entityCacheDir . '/Extend/Entity/' . array_pop(explode('\\', $className)) . '.orm.yml',
+            $this->entityCacheDir . '/Extend/Entity/' . array_pop($classNameArray) . '.orm.yml',
             Yaml::dump($yml, 5)
         );
     }
