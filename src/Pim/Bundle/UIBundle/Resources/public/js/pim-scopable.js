@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'backbone', 'underscore', 'oro/mediator'],
+    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'bootstrap', 'jquery.select2'],
     function ($, Backbone, _, mediator) {
         'use strict';
 
@@ -51,7 +51,20 @@ define(
                     field.input = $wrap.get(0).outerHTML;
                 } else if (this.$el.find('.control-label')) {
                     field.id = this.$el.find('.control-label').attr('for');
-                    field.input = $('#' + field.id).get(0).outerHTML;
+
+                    var $field = $('#' + field.id);
+
+                    if ($field.hasClass('select2-input') || $field.hasClass('select2-focusser')) {
+                        var id = $field.closest('.select2-container').attr('id');
+                        if (/^s2id_.+/.test(id)) {
+                            id = id.slice(5);
+                            field.id = id;
+                            $field = $('#' + id);
+                        }
+                        $field.select2('destroy');
+                    }
+
+                    field.input = $field.get(0).outerHTML;
                 }
 
                 field.scope       = this.$el.data('scope');
@@ -73,6 +86,7 @@ define(
 
                     this.$el.find('[data-toggle="tooltip"]').tooltip();
                     this.$el.find('.switch').bootstrapSwitch();
+                    this.$el.find('select').select2();
                 }
 
                 return this;
