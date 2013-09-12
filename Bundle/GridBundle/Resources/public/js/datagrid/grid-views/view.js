@@ -19,7 +19,7 @@ define(['backbone', 'underscore', 'oro/translations'], function (Backbone, _, __
         template: _.template(
             '<div class="btn-group ">' +
                 '<button data-toggle="dropdown" class="btn dropdown-toggle <% if (disabled) { %>disabled<% } %>">' +
-                    '<i class="icon icon-eye-open"></i>' + '<%=  current %>' + '<span class="caret"></span>' +
+                    '<%=  current %>' + '<span class="caret"></span>' +
                 '</button>' +
                 '<ul class="dropdown-menu pull-right">' +
                     '<% _.each(choices, function (choice) { %>' +
@@ -69,6 +69,7 @@ define(['backbone', 'underscore', 'oro/translations'], function (Backbone, _, __
         disable: function () {
             this.enabled = false;
             this.render();
+
             return this;
         },
 
@@ -80,9 +81,9 @@ define(['backbone', 'underscore', 'oro/translations'], function (Backbone, _, __
         enable: function () {
             this.enabled = true;
             this.render();
+
             return this;
         },
-
 
         /**
          * Select change event handler
@@ -113,27 +114,26 @@ define(['backbone', 'underscore', 'oro/translations'], function (Backbone, _, __
         render: function () {
             this.$el.empty();
 
-            var currentView = _.filter(
-                this.choices,
-                _.bind(
-                    function (item) {
+            if (this.choices.length > 0) {
+                var currentView = _.filter(
+                    this.choices,
+                    _.bind(function (item) {
                         return item.value == this.collection.state.gridView;
-                    },
-                    this
-                )
-            );
+                    }, this)
+                );
 
-            var currentViewLabel = currentView.length ? _.first(currentView).label : '';
+                var currentViewLabel = currentView.length ? _.first(currentView).label : __('Please select view');
 
-            this.$el.append(
-                $(
-                    this.template({
-                        disabled: !this.enabled,
-                        choices: this.choices,
-                        current: currentViewLabel
-                    })
-                )
-            );
+                this.$el.append(
+                    $(
+                        this.template({
+                            disabled: !this.enabled,
+                            choices: this.choices,
+                            current: currentViewLabel
+                        })
+                    )
+                );
+            }
 
             return this;
         }

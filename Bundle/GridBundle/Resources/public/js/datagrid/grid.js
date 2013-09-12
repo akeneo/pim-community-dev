@@ -84,8 +84,7 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
             rowClickAction: undefined,
             multipleSorting: true,
             rowActions: [],
-            massActions: [],
-            gridViews: []
+            massActions: []
         },
 
         /**
