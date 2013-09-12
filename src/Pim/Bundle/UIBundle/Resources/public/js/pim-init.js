@@ -10,16 +10,6 @@ require(
             // Disable the oro scrollable container
             $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
 
-            // Move scope filter to the proper location and remove it from the 'Manage filters' selector
-            // TODO: Override Oro/Bundle/FilterBundle/Resources/public/js/app/filter/list.js and manage this there
-            mediator.once('datagrid_filters:rendered', function () {
-                $('.scope-filter').parent().addClass('pull-right').insertBefore($('.actions-panel'));
-                $('.scope-filter').find('select').multiselect({classes: 'select-filter-widget scope-filter-select'});
-
-                $('#add-filter-select').find('option[value="scope"]').remove();
-                $('#add-filter-select').multiselect('refresh');
-            });
-
             $('.remove-attribute').each(function () {
                 var target = $(this).parent().find('.icons-container').first();
                 if (target.length) {
@@ -59,9 +49,6 @@ require(
                 e.preventDefault();
                 mediator.trigger('scopablefield:' + $(this).data('action'));
             });
-
-            // Clean up multiselect plugin generated content that is appended to body
-            $('body>.ui-multiselect-menu').appendTo($('#container'));
 
             // Save and restore activated form tabs and groups
             function saveFormState() {
