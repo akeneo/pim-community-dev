@@ -292,6 +292,16 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
         $this->model->setIdentifierField(self::TEST_IDENTIFIER);
 
         $translatorMock = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
+
+        $viewListMock = $this->getMockForAbstractClass(
+            'Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList',
+            array($translatorMock)
+        );
+        $this->model->setViewsList($viewListMock);
+        $datagridMock->expects($this->once())
+            ->method('setViewsList')
+            ->with($this->equalTo($viewListMock));
+
         $this->model->setTranslator($translatorMock);
         $translatorMock->expects($this->at(0))->method('trans')
             ->with(self::TEST_IDENTIFIER, array(), null)
