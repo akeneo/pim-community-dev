@@ -86,9 +86,9 @@ class Datagrid extends OroDatagrid
         $this->pagerApplied = true;
         $this->applyParameters();
 
-        // allow to get all the columns
+        // reset select and allow to get all the columns
         $this->query->select($this->query->getRootAlias());
 
-        return $this->getQuery()->execute();
+        return $this->query->execute();
     }
 }
