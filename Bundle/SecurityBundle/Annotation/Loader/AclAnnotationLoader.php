@@ -9,10 +9,17 @@ use Symfony\Component\Finder\Adapter\PhpAdapter;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 
+use JMS\DiExtraBundle\Finder\PatternFinder;
+
 class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderInterface
 {
     const ANNOTATION_CLASS = 'Oro\Bundle\SecurityBundle\Annotation\Acl';
     const ANCESTOR_CLASS = 'Oro\Bundle\SecurityBundle\Annotation\AclAncestor';
+
+    /**
+     * @var KernelInterface
+     */
+    protected $kernel;
 
     /**
      * @var AnnotationReader
@@ -31,8 +38,9 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
         AnnotationReader $reader,
         AclExtensionSelector $extensionSelector
     ) {
-        parent::__construct($kernel, $extensionSelector);
+        parent::__construct($extensionSelector);
         $this->reader = $reader;
+        $this->kernel = $kernel;
     }
 
     /**
@@ -46,10 +54,9 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
         foreach ($this->kernel->getBundles() as $bundle) {
             $directories[] = $bundle->getPath();
         }
-        $files = $this->getFinder()
-            ->files()
-            ->in($directories)
-            ->exclude('Tests');
+
+        $files = $this->getFinder()->findFiles($directories);
+
         foreach ($files as $file) {
             $className = $this->getClassName($file);
             if ($className !== null) {
@@ -94,6 +101,10 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
      */
     protected function getClassName($fileName)
     {
+        if (preg_match('/Test/ui', $fileName)) {
+            return null;
+        }
+
         $src = $this->getFileContent($fileName);
 
         if (!preg_match('/\bnamespace\s+([^;]+);/s', $src, $match)) {
@@ -109,14 +120,13 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
     }
 
     /**
-     * Creates Finder object
+     * Creates PatternFinder object
      *
-     * @return Finder
+     * @return PatternFinder
      */
     protected function getFinder()
     {
-        $finder = new Finder();
-        $finder->addAdapter(new PhpAdapter());
+        $finder = new PatternFinder(self::ANNOTATION_CLASS, '*.php');
 
         return $finder;
     }
