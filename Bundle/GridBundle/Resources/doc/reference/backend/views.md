@@ -81,5 +81,5 @@ in SampleViewsList one method should be defined
 
 Filter and sorter parameters that used here must be the same format as they're coming from request.
 Filters type used in example here defined in Oro\Bundle\FilterBundle\Form\Type\Filter\*:
-* DateRangeFilterType
-* TextFilterType
+- [DateRangeFilterType](./../../../../../FilterBundle/Form/Type/Filter/DateRangeFilterType.php)
+- [TextFilterType](./../../../../../FilterBundle/Form/Type/Filter/TextFilterType.php)
