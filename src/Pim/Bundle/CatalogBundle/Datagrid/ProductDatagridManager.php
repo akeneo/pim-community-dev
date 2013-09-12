@@ -418,7 +418,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $deleteMassActions = new DeleteMassAction(
             array(
                 'name'  => 'delete',
-                'label' => 'Delete',
+                'label' => $this->translate('Delete'),
                 'icon'  => 'trash'
             )
         );
@@ -426,8 +426,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $redirectMassAction = new RedirectMassAction(
             array(
                 'name'  => 'redirect',
-                'label' => 'Mass Edition',
-                'icon' => 'edit',
+                'label' => $this->translate('Mass Edition'),
+                'icon'  => 'edit',
                 'route' => 'pim_catalog_mass_edit_action_choose',
             )
         );
