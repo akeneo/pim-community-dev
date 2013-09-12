@@ -2,5 +2,5 @@ bazinga_expose_translation:
     label: Frontend translations provided by APY/JsFormValidationBundle and Bazinga/ExposeTranslationBundle
     type: action
     group_name: ""
-    binding:
+    bindings:
         - { class: Bazinga\ExposeTranslationBundle\Controller\Controller, method: exposeTranslationAction }

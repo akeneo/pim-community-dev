@@ -2,4 +2,4 @@ oro_change_record_owner:
     label: Permission for record owner changing
     type: action
     group_name: ""
-    binding: ~
+    bindings: ~

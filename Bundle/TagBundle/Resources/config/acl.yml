@@ -2,16 +2,16 @@ oro_tag_assign_unassign:
     label: User can assign tags for entities and unassign only which were assigned by this user
     type: action
     group_name: ""
-    binding: ~
+    bindings: ~
 
 oro_tag_unassign_global:
     label: User can unassign all tags from entities
     type: action
     group_name: ""
-    binding: ~
+    bindings: ~
 
 oro_tag_view_tag_cloud:
     label:  User can view tag cloud
     type: action
     group_name: ""
-    binding: ~
+    bindings: ~
