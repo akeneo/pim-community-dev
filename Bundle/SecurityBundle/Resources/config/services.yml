@@ -239,6 +239,7 @@ services:
           - @logger
           - @service_container
           - @oro_security.acl.annotation_provider
+          - @oro_security.acl.object_identity_factory
           - @request
 
  #   oro_user.acl_manager.api:

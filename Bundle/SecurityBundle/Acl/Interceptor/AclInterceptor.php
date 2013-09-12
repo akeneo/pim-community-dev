@@ -45,17 +45,21 @@ class AclInterceptor implements MethodInterceptorInterface
      * @param LoggerInterface $logger
      * @param SecurityContextInterface $securityContext
      * @param AclAnnotationProvider $annotationProvider
+     * @param ObjectIdentityFactory $objectIdentityFactory
      * @param Request|null $request
      */
     public function __construct(
         LoggerInterface $logger,
         SecurityContextInterface $securityContext,
         AclAnnotationProvider $annotationProvider,
+        ObjectIdentityFactory $objectIdentityFactory,
         Request $request = null
     ) {
         $this->logger = $logger;
         $this->securityContext = $securityContext;
         $this->annotationProvider = $annotationProvider;
+        $this->objectIdentityFactory = $objectIdentityFactory;
+        $this->request = $request;
     }
 
     /**
