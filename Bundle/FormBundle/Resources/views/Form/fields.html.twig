@@ -193,3 +193,36 @@
         }
     };
 {% endblock %}
+
+{% block oro_multiple_entity_widget %}
+    {{ form_widget(form) }}
+
+    <div id="{{ id }}-container" style="width: 300px;"></div>
+    <script type="text/javascript">
+        require(['oro/multiple-entity', 'oro/multiple-entity/collection', 'oro/multiple-entity/model'],
+        function(MultipleEntity, MultipleEntityCollection, MultipleEntityModel) {
+            var widget = new MultipleEntity({
+                el: '#{{ id }}-container',
+                addedElement: '#{{ id }}_added',
+                removedElement: '#{{ id }}_removed',
+                defaultElementName: '{{ name }}[default]',
+                selectionUrl: {{ form.vars.grid_url|json_encode|raw }},
+                collection: new MultipleEntityCollection()
+            });
+            widget.getCollection().reset([
+                new MultipleEntityModel({
+                    'id': 1,
+                    'isDefault': true,
+                    'link': {{ path('orocrm_contact_info', { id: 1 } )|json_encode|raw }},
+                    'label': 'Test Uno'
+                }),
+                new MultipleEntityModel({
+                    'id': 2,
+                    'isDefault': false,
+                    'link': {{ path('orocrm_contact_info', { id: 1 } )|json_encode|raw }},
+                    'label': 'Test Duo'
+                })
+            ]);
+        });
+    </script>
+{% endblock %}
