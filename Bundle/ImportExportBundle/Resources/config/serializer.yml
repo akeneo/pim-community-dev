@@ -1,0 +1,13 @@
+parameters:
+    oro_importexport.serializer.class: Oro\Bundle\ImportExportBundle\Serializer\Serializer
+    oro_importexport.serializer.dummy_encoder.class: Oro\Bundle\ImportExportBundle\Serializer\Encoder\DummyEncoder
+
+services:
+    oro_importexport.serializer:
+        class: %oro_importexport.serializer.class%
+        arguments:
+          - []
+          - [@oro_importexport.serializer.dummy_encoder]
+
+    oro_importexport.serializer.dummy_encoder:
+        class: %oro_importexport.serializer.dummy_encoder.class%
