@@ -9,7 +9,6 @@ define(
                 throw new Error('Unable to instantiate tree on this element');
             }
             var self       = this,
-                assetsPath = $el.attr('data-assets-path'),
                 dataLocale = $el.attr('data-datalocale');
 
             this.config = {
@@ -33,9 +32,7 @@ define(
                 },
                 'themes': {
                     'dots': true,
-                    'icons': true,
-                    'themes': 'bap',
-                    'url': assetsPath + '/css/style.css'
+                    'icons': true
                 },
                 'json_data': {
                     'ajax': {

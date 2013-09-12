@@ -8,8 +8,7 @@ define(
             if (!$el || !$el.length || !_.isObject($el)) {
                 throw new Error('Unable to instantiate tree on this element');
             }
-            var assetsPath   = $el.attr('data-assets-path'),
-                selectedNode = $el.attr('data-node-id') || -1,
+            var selectedNode = $el.attr('data-node-id') || -1,
                 preventFirst = selectedNode > 0,
                 loadingMask  = new LoadingMask();
 
@@ -47,9 +46,7 @@ define(
                 },
                 'themes': {
                     'dots': true,
-                    'icons': true,
-                    'themes': 'bap',
-                    'url': assetsPath + '/css/style.css'
+                    'icons': true
                 },
                 'json_data': {
                     'ajax': {
