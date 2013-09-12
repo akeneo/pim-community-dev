@@ -20,10 +20,12 @@ js:
 
       - '@OroGridBundle/Resources/public/js/app/datagrid/cell/formatter/momentformatter.js'
       - '@OroGridBundle/Resources/public/js/app/datagrid/cell/formatter/cellformatter.js'
+      - '@OroGridBundle/Resources/public/js/app/datagrid/cell/formatter/percentformatter.js'
 
       - '@OroGridBundle/Resources/public/js/app/datagrid/cell/momentcell.js'
       - '@OroGridBundle/Resources/public/js/app/datagrid/cell/booleancell.js'
       - '@OroGridBundle/Resources/public/js/app/datagrid/cell/numbercell.js'
+      - '@OroGridBundle/Resources/public/js/app/datagrid/cell/percentcell.js'
       - '@OroGridBundle/Resources/public/js/app/datagrid/cell/integercell.js'
       - '@OroGridBundle/Resources/public/js/app/datagrid/cell/stringcell.js'
       - '@OroGridBundle/Resources/public/js/app/datagrid/cell/htmlcell.js'

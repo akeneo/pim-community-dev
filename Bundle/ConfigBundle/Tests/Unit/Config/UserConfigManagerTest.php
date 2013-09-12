@@ -1,15 +1,14 @@
 <?php
 
-namespace Oro\Bundle\ConfigBundle\Config;
+namespace Oro\Bundle\ConfigBundle\Tests\Unit\Config;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
-
 use Doctrine\Common\Persistence\ObjectRepository;
 
-use Oro\Bundle\ConfigBundle\Entity\Config;
+use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
 use Oro\Bundle\UserBundle\Entity\User;
 
-class UserConfigManagerTest extends ConfigManagerTest
+class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var UserConfigManager
@@ -26,23 +25,29 @@ class UserConfigManagerTest extends ConfigManagerTest
      */
     protected $security;
 
+    /**
+     * @var array
+     */
+    protected $settings = array(
+        'oro_user' => array(
+            'level'    => array(
+                'value' => 20,
+                'type'  => 'scalar',
+            )
+        )
+    );
+
     protected function setUp()
     {
-        parent::setUp();
+        $this->om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+        $this->object = new UserConfigManager($this->om, $this->settings);
 
-        $this->repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
         $this->security   = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
         $this->group1     = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
         $this->group2     = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
 
-        $token  = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
-        $user   = new User();
-
-        $this->om
-            ->expects($this->any())
-            ->method('getRepository')
-            ->withAnyParameters()
-            ->will($this->returnValue($this->repository));
+        $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
+        $user  = new User();
 
         $this->security
             ->expects($this->any())
@@ -69,60 +74,22 @@ class UserConfigManagerTest extends ConfigManagerTest
             ->addGroup($this->group1)
             ->addGroup($this->group2);
 
-        $this->object = new UserConfigManager($this->om, $this->settings);
+        $this->object = $this->getMock(
+            'Oro\Bundle\ConfigBundle\Config\UserConfigManager',
+            array('loadStoredSettings'),
+            array($this->om, $this->settings)
+        );
     }
 
     public function testSecurity()
     {
         $object      = $this->object;
-        $configUser  = new Config();
-        $configGroup = new Config();
-
-        $configUser->setSettings(array(
-            'oro_user' => array(
-                'level' => 30,
-             ),
-        ));
-
-        $configGroup->setSettings(array(
-            'oro_test' => array(
-                'anysetting' => 'qwerty',
-             ),
-        ));
-
-        $this->repository
-            ->expects($this->any())
-            ->method('findOneBy')
-            ->with($this->logicalOr(
-                $this->equalTo(array(
-                    'entity'   => 'Oro\Bundle\UserBundle\Entity\User',
-                    'recordId' => 1,
-                )),
-                $this->equalTo(array(
-                    'entity'   => get_class($this->group1),
-                    'recordId' => 2
-                )),
-                $this->equalTo(array(
-                    'entity'   => get_class($this->group2),
-                    'recordId' => 3
-                ))
-            ))
-            ->will($this->returnCallback(
-                function ($param) use ($configUser, $configGroup) {
-                    switch ($param['recordId']) {
-                        case 1:
-                            return $configUser;
-                        case 2:
-                            return $configGroup;
-                        case 3:
-                            return null;
-                    }
-                }
-            ));
+        $object->expects($this->exactly(3))
+            ->method('loadStoredSettings');
 
         $object->setSecurity($this->security);
 
-        $this->assertEquals(30, $object->get('oro_user.level'));
-        $this->assertEquals('qwerty', $object->get('oro_test.anysetting'));
+        $this->assertEquals('user', $object->getScopedEntityName());
+        $this->assertEquals(0, $object->getScopeId());
     }
 }

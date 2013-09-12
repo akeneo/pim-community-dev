@@ -1,0 +1,23 @@
+{
+    "name": "oro/platform-bundle",
+    "type": "symfony-bundle",
+    "description": "Main BAP Bundle",
+    "keywords": ["BAP"],
+    "homepage": "https://github.com/laboro/PlatformBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.3.*",
+        "lexik/maintenance-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\PlatformBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/PlatformBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

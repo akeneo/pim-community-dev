@@ -22,6 +22,14 @@ class CronCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // check for maintenance mode - do not run cron jobs if it is switched on
+        if ($this->getContainer()->get('oro_platform.maintenance')->isOn()) {
+            $output->writeln('');
+            $output->writeln('<error>System is in maintenance mode, aborting</error>');
+
+            return;
+        }
+
         $commands   = $this->getApplication()->all('oro:cron');
         $em         = $this->getContainer()->get('doctrine.orm.entity_manager');
         $daemon     = $this->getContainer()->get('oro_cron.job_daemon');

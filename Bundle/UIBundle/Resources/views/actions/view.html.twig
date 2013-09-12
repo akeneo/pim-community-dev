@@ -7,8 +7,10 @@
         <div class="row">
             <div class="pull-right">
                 <div class="pull-right">
+                    {% placeholder navButtons_before with {entity: entity} %}
                     {% block navButtons %}
                     {% endblock navButtons %}
+                    {% placeholder navButtons_after with {entity: entity} %}
                 </div>
                 <div class="pull-right user-info-state">
                     <ul class="inline-decorate">

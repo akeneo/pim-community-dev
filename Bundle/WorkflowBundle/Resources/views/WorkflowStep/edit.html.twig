@@ -1,0 +1,189 @@
+{% extends bap.layout %}
+{% import 'OroUIBundle::macros.html.twig' as macros %}
+
+{% block set_title %}
+{% oro_title_set({
+    params : {
+        '%section%': 'Workflows'|trans,
+        '%entity%': workflow.label,
+        '%workflow_data%': currentStep.label
+    }
+}) %}
+{% endblock set_title %}
+
+{% set breadcrumbs = [{
+    label: 'Workflows'|trans
+}] %}
+
+{% block breadcrumb %}
+    {% include 'OroNavigationBundle:Menu:breadcrumbs.html.twig' %}
+{% endblock %}
+
+{% set titleParts = {
+    'indexLabel': 'Workflows'|trans,
+    'entityTitle': workflow.label ~ ' (' ~ currentStep.label ~ ')'
+} %}
+
+{% block content %}
+    <style type="text/css">
+        /** Step form styles */
+        .step-form .box-type1 {
+            border: none;
+        }
+
+        .step-form .box-type1 .title {
+            font-weight: normal;
+            padding: 20px 0 0;
+        }
+
+        /** Bottom layout */
+        .span6.no-margin {
+            margin: 0 !important;
+            width: 50%;
+        }
+
+        .workflow-data {
+            border-top: 1px solid #d0d0d0;
+        }
+
+        .workflow-data.dark-bg {
+            background: #fbfbfb;
+        }
+
+        .workflow-data > :first-child {
+            border-right: 1px solid #d0d0d0;
+        }
+
+        .workflow-data > :last-child {
+            border-left: 1px solid #d0d0d0;
+            position: relative;
+            left: -1px;
+        }
+
+        /** Widget styles */
+        .workflow-data .box-type1 {
+            border: none;
+            background: inherit;
+            margin-top: 20px;
+        }
+
+        .workflow-data .box-type1 .title {
+            height: 1px;
+            margin: 20px 0;
+            padding: 0;
+            position: relative;
+            text-align: left;
+            border-color: #d0d0d0;
+        }
+
+        .workflow-data .box-type1 .title .widget-title {
+            background: #FBFBFB;
+            display: inline-block;
+            line-height: 15px;
+            padding-right: 15px;
+            position: relative;
+            top: -0.6em;
+        }
+
+        .workflow-data .box-type1 .title .widget-actions-container {
+            background: #FBFBFB;
+            display: inline-block;
+            line-height: 24px;
+            position: relative;
+            top: -0.8em;
+        }
+    </style>
+
+    {% block workflow_header %}
+    {{ block('set_title') }}
+    <div class="navigation clearfix navbar-extra navbar-extra-right" style="border-bottom: 1px solid #c8c8c8">
+        <div class="row">
+            <div class="pull-right">
+                <div class="pull-left">
+                    {% block workflow_transitions %}
+                        {{ oro_widget_render({
+                            'widgetType': 'buttons',
+                            'url': path('oro_workflow_widget_buttons_wizard', {workflowItemId: workflowItem.id}),
+                            'alias': 'workflow_transitions'
+                        }) }}
+                    {% endblock workflow_transitions %}
+
+                    {% block workflow_actions %}
+                    {% endblock workflow_actions %}
+                </div>
+            </div>
+            <div class="span9">
+                <div class="customer-info customer-simple well-small">
+                    <div class="customer-content pull-left">
+                        <div class="clearfix">
+                            {% block workflow_title %}
+                                <div class="pull-left">
+                                    <div class="sub-title">
+                                        {%- if titleParts.indexPath is defined -%}
+                                            <a href="{{ titleParts.indexPath }}">{{ titleParts.indexLabel }}</a>
+                                        {%- else -%}
+                                            {{ titleParts.indexLabel }}
+                                        {%- endif -%}
+                                    </div>
+                                    <span class="separator">/</span>
+                                    {% if titleParts.additional is defined %}
+                                        {% for titlePart in titleParts.additional %}
+                                            <div class="sub-title"><a href="{{ titlePart.indexPath }}">{{ titlePart.indexLabel }}</a></div>
+                                            <span class="separator">/</span>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <h1 class="user-name">{{ titleParts.entityTitle }}</h1>
+                                </div>
+                            {% endblock workflow_title %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    <div class="scrollable-container">
+    {% block step_form %}
+        <div class="container-fluid step-form ">
+            {{ oro_widget_render({
+                'widgetType': 'block',
+                'url': path('oro_workflow_widget_step_form', {workflowItemId: workflowItem.id}),
+                'alias': 'workflow_step_form'
+            }) }}
+            <script type="text/javascript">
+                require(['oro/widget-manager', 'oro/messenger'],
+                function(widgetManager, messenger){
+                    widgetManager.getWidgetInstanceByAlias('workflow_step_form', function(widget){
+                        widget.on('formSave', function() {
+                            messenger.notificationFlashMessage('success', {{ 'Step information saved'|trans|json_encode|raw }});
+                            widgetManager.getWidgetInstanceByAlias('workflow_transitions', function(transitionsWidget){
+                                transitionsWidget.loadContent();
+                            });
+                        });
+                    });
+                });
+            </script>
+        </div>
+    {% endblock step_form %}
+
+    {% block workflow_data %}
+        <div class="workflow-data row-fluid dark-bg">
+            <div class="span6 no-margin">
+                <div class="container-fluid" style="padding: 20px;">
+                    {% block workflow_entities %}
+                    {% endblock workflow_entities %}
+                </div>
+            </div>
+
+            <div class="span6 no-margin">
+                    {% block workflow_toolbox %}
+                        <div style="line-height: 200px;vertical-align: middle;text-align: center;">
+                            More exciting things are coming here soon...
+                        </div>
+                    {% endblock workflow_toolbox %}
+            </div>
+        </div>
+    {% endblock workflow_data %}
+    </div>
+{% endblock content %}

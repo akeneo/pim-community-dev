@@ -18,6 +18,9 @@ placeholders:
         label: Head styles
     head_script:
         label: Head scripts
+    requirejs_config_extend:
+        lable: RequireJS Configuration Extend
+
 items:
    logo:
         template: OroUIBundle:Default:logo.html.twig
