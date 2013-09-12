@@ -29,10 +29,20 @@ class AclAnnotationProvider
      * @param AclAnnotationLoaderInterface[] $loaders
      * @param CacheProvider $cache
      */
-    public function __construct(array $loaders, CacheProvider $cache = null)
+    public function __construct($loaders = array(), CacheProvider $cache = null)
     {
         $this->loaders = $loaders;
         $this->cache = $cache;
+    }
+
+    /**
+     * Add new loader
+     *
+     * @param AclAnnotationLoaderInterface $loader
+     */
+    public function addLoader(AclAnnotationLoaderInterface $loader)
+    {
+        $this->loaders[] = $loader;
     }
 
     /**

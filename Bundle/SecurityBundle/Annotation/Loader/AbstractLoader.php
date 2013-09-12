@@ -9,11 +9,6 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 abstract class AbstractLoader
 {
     /**
-     * @var KernelInterface
-     */
-    protected $kernel;
-
-    /**
      * @var AclExtensionSelector
      */
     protected $extensionSelector;
@@ -21,12 +16,10 @@ abstract class AbstractLoader
     /**
      * Constructor
      *
-     * @param KernelInterface $kernel
      * @param AclExtensionSelector $extensionSelector
      */
-    protected function __construct(KernelInterface $kernel, AclExtensionSelector $extensionSelector)
+    protected function __construct(AclExtensionSelector $extensionSelector)
     {
-        $this->kernel = $kernel;
         $this->extensionSelector = $extensionSelector;
     }
 

@@ -11,6 +11,11 @@ use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 class AclYamlConfigLoader extends AbstractLoader implements AclAnnotationLoaderInterface
 {
     /**
+     * @var KernelInterface
+     */
+    protected $kernel;
+
+    /**
      * Constructor
      *
      * @param KernelInterface $kernel
@@ -18,7 +23,8 @@ class AclYamlConfigLoader extends AbstractLoader implements AclAnnotationLoaderI
      */
     public function __construct(KernelInterface $kernel, AclExtensionSelector $extensionSelector)
     {
-        parent::__construct($kernel, $extensionSelector);
+        $this->kernel = $kernel;
+        parent::__construct($extensionSelector);
     }
 
     /**
