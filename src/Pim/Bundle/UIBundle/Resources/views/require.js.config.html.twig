@@ -1,8 +1,5 @@
 <script type="text/javascript">
     var shims = {
-        'jquery.actual': {
-            deps: ['jquery']
-        },
         'jquery.slimbox': {
             deps: ['jquery']
         },
@@ -24,7 +21,6 @@
     };
 
     var paths = {
-        'jquery.actual'                  : 'pimui/js/jquery.actual.min',
         'jquery.slimbox'                 : 'pimui/js/slimbox2',
         'bootstrap.bootstrapswitch'      : 'oroui/lib/bootstrap/js/bootstrap.switch',
         'bootstrap.tooltip'              : 'oroui/lib/bootstrap/js/bootstrap-tooltip',
@@ -41,6 +37,7 @@
         'pim/datafilter/currency-filter' : 'pimfilter/js/datafilter/filter/currency-filter',
         'pim/datafilter/scope-filter'    : 'pimfilter/js/datafilter/filter/scope-filter',
         'pim/tree/associate'             : 'pimcatalog/js/tree-associate.jstree',
+        'pim/tree/mass-associate'        : 'pimcatalog/js/tree-mass-associate.jstree',
         'pim/tree/manage'                : 'pimcatalog/js/tree-manage.jstree',
         'pim/tree/view'                  : 'pimcatalog/js/tree-view.jstree',
         'pim/datagrid/grid'              : 'pimgrid/js/datagrid/pim-grid',
@@ -51,6 +48,7 @@
     var require = require || {};
     require.shim = require.shim || {};
     require.paths = require.paths || {};
+    /* require.urlArgs = 'bust=' + new Date().getTime(); DEBUG MODE*/
 
     for (var alias in shims) {
         require.shim[alias] = shims[alias];

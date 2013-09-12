@@ -62,3 +62,4 @@ parameters:
     pim_catalog.mass_edit_action.operator.class:               Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator
     pim_catalog.mass_edit_action.change_status.class:          Pim\Bundle\CatalogBundle\MassEditAction\ChangeStatus
     pim_catalog.mass_edit_action.edit_common_attributes.class: Pim\Bundle\CatalogBundle\MassEditAction\EditCommonAttributes
+    pim_catalog.mass_edit_action.classify.class:               Pim\Bundle\CatalogBundle\MassEditAction\Classify

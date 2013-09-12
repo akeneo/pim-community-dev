@@ -35,7 +35,7 @@ Feature: Remove an attribute from a product
     Then I should see "Attribute was successfully removed."
     And attributes in group "Other" should be Model and SKU
 
-  @javascript
+  @skip @javascript
   Scenario: Successfully remove a scopable attribute from a product
     Given the following family:
       | code    |

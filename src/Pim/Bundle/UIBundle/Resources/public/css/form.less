@@ -57,6 +57,9 @@ form.form-signin {
 
 // Form navbar
 #form-navbar li {
+  a:hover {
+    border-bottom: 3px solid @textColor + #999;
+  }
   &.active a, a {
     color: @textColor;
     background-color: transparent;
@@ -243,6 +246,9 @@ div.btn-group > .has-switch {
 .select2-container.input-large {
   width: 250px;
 }
+.select2-container-multi.select2-container-active .select2-choices {
+  border: none;
+}
 
 #attribute-buttons {
   margin: 10px;
@@ -322,18 +328,20 @@ div.btn-group > .has-switch {
     font-size: 26px;
     width: 45px;
   }
-}
-
-input[type="file"] {
-  display: block;
-  z-index: 99;
-  position: relative;
-  top: -100px;
-  width: 100%!important;
-  height: 100%;
-  border-radius: 20px;
-  cursor: pointer;
-  opacity: 0;
+  input[type="file"] {
+    display: block;
+    z-index: 99;
+    position: relative;
+    top: -100px;
+    width: 100%!important;
+    height: 100%;
+    border-radius: 20px;
+    cursor: pointer;
+    opacity: 0;
+    &.hide {
+      display: none;
+    }
+  }
 }
 
 /* Collapsable sidebar **********************************************************************************************/
@@ -502,7 +510,7 @@ table i {
 
 /* Product edit form - common */
 
-.product-edit {
+.classify, .product-edit {
   .nav-list {
     padding-left: 0px;
     padding-right: 0px;
@@ -525,15 +533,15 @@ table i {
   }
   .tab-content {
     border-left: 1px solid #BBBBBB;
-    .tab-pane h3 {
-      background-color: @color-grey_tab;
-      border-bottom: 1px solid #e5e5e5;
-      margin-top: 0;
-      padding-left: 20px;
-    }
-    .modal-header h3 {
-      background-color: @color-purple_light;
-    }
+  }
+  .tab-pane h3 {
+    background-color: @color-grey_tab;
+    border-bottom: 1px solid #e5e5e5;
+    margin-top: 0;
+    padding-left: 20px;
+  }
+  .modal-header h3 {
+    background-color: @color-purple_light;
   }
 }
 
@@ -589,7 +597,7 @@ table i {
         border-top-right-radius: 3px;
       }
       &:first-child {
-        margin-left: 20px;
+        margin-left: 10px;
       }
     }
     &:last-of-type .controls {
@@ -614,7 +622,7 @@ table i {
     background-color: #fbfbfb;
     padding-right: 10px;
     padding-top: 4px;
-    width: 100px;
+    width: 135px;
     margin-bottom: 0;
     border-radius: 0;
     float: left;
@@ -635,6 +643,17 @@ table i {
   }
   .control-group {
     margin: 0;
+    &>.controls.input-prepend {
+      position: relative;
+      .control-label.add-on {
+        position: absolute;
+        height: 100%;
+      }
+      .scopable-input {
+        position: relative;
+        left: 135px;
+      }
+    }
   }
   textarea.input-large {
     width: 523px;
@@ -672,10 +691,7 @@ table i {
   }
 }
 
-.navbar-extra {
-    padding: 10px 7px 10px 12px;
-    .box-shadow(0 3px 5px #ccc);
-}
+.navbar-extra {padding: 10px 7px 10px 12px;}
 .navbar-content {
   line-height: 18px;
   .title {
@@ -897,6 +913,7 @@ div.entity-updated {
 
 /* Product edit form - categories tab */
 
+.classify .nav-list li a i,
 #categories .nav-list li a i {
   font-size: 16px;
   padding-right: 5px;

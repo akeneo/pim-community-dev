@@ -95,7 +95,7 @@ class FixturesContext extends RawMinkContext
         $this->createAcl('oro_login_check', $oroSecurity);
         $this->createAcl('oro_logout', $oroSecurity);
 
-        $acl = $this->createAcl(
+        $this->createAcl(
             'template_controller',
             $root,
             array(),

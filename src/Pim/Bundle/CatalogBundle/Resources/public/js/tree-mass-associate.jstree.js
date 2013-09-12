@@ -11,6 +11,7 @@ define(
             var self         = this,
                 currentTree  = -1,
                 id           = $el.attr('data-id'),
+                assetsPath   = $el.attr('data-assets-path'),
                 selectedTree = $el.attr('data-selected-tree'),
                 dataLocale   = $el.attr('data-datalocale');
 
@@ -36,7 +37,9 @@ define(
                 },
                 'themes': {
                     'dots': true,
-                    'icons': true
+                    'icons': true,
+                    'themes': 'bap',
+                    'url': assetsPath + 'css/style.css'
                 },
                 'json_data': {
                     'ajax': {
@@ -104,6 +107,36 @@ define(
                 var $tree = $('#tree-' + treeId);
                 $('#apply-on-tree-' + treeId).val(1);
                 $tree.jstree(self.config);
+
+                $tree.bind("check_node.jstree", function (e, d) {
+                    if (d.inst.get_checked() && $(d.rslt.obj[0]).hasClass('jstree-root') == false) {
+                        var selected = $('#pim_catalog_mass_edit_action_operation_categories').val();
+                        if (selected.length > 0) {
+                            selected = selected.split(',');
+                        } else {
+                            selected = new Array();
+                        }
+                        var id = d.rslt.obj[0].id.replace('node_', '');
+                        if ($.inArray(id, selected) < 0) {
+                            selected.push(id);
+                            selected = $.unique(selected);
+                            selected = selected.join(',');
+                            $('#pim_catalog_mass_edit_action_operation_categories').val(selected);
+                        }
+                    }
+                });
+
+                $tree.bind("uncheck_node.jstree", function (e, d) {
+                    if (d.inst.get_checked()) {
+                        var selected = $('#pim_catalog_mass_edit_action_operation_categories').val();
+                        selected = selected.split(',');
+                        var id = d.rslt.obj[0].id.replace('node_', '');
+                        selected.splice($.inArray(id, selected),1);
+                        selected = selected.join(',');
+                        $('#pim_catalog_mass_edit_action_operation_categories').val(selected);
+                    }
+                });
+                
             };
 
             this.bindEvents = function () {
