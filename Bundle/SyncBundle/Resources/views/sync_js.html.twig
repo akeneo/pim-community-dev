@@ -1,3 +1,4 @@
+{% if check_ws() %}
 <script type="text/javascript">
     require(['jquery', 'oro/mediator', 'oro/sync', 'oro/sync/wamp', 'oro/messenger'],
     function($, mediator, sync, Wamp, messenger){
@@ -26,3 +27,4 @@
         });*/
     });
 </script>
+{% endif %}

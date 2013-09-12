@@ -115,7 +115,8 @@ class UserController extends Controller
                     'parameters' => array('id' => $entity->getId()),
                 ),
                 array(
-                    'route' => 'oro_user_index',
+                    'route' => 'oro_user_view',
+                    'parameters' => array('id' => $entity->getId())
                 )
             );
         }

@@ -209,4 +209,18 @@ interface DatagridInterface
      * @throws \RuntimeException         If there is no identifier field
      */
     public function getIdentifierField();
+
+    /**
+     * Set multiple sorting flag
+     *
+     * @param boolean $multipleSorting
+     */
+    public function setMultipleSorting($multipleSorting);
+
+    /**
+     * Get multiple sorting flag
+     *
+     * @return boolean
+     */
+    public function getMultipleSorting();
 }

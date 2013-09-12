@@ -193,7 +193,7 @@ function ($, _, Backgrid, SelectRowCell) {
             this.$el.empty().append('<div class="btn-group">\
                 <button type="button" class="btn btn-default btn-small" data-select-all>All</button>\
                 <button type="button" class="btn btn-default btn-small dropdown-toggle" data-toggle="dropdown">\
-                    <span class="caret"></span>\
+                    <i class="caret"></i>\
                 </button>\
                 <ul class="dropdown-menu">\
                     <li><a href="#" data-select-all-visible>All visible</a></li>\
