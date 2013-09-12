@@ -1,7 +1,3 @@
-css:
-    'tags':
-        - 'bundles/orotag/css/tag.css'
-
 js:
     'tags':
         - '@OroTagBundle/Resources/public/js/models/tag.js'

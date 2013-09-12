@@ -22,7 +22,9 @@
                     require(['oro/init-layout', 'oro/init-user', 'jquery.uniform']);
                 </script>
 
-                {% placeholder scripts_before %}
+                {% block scripts_before %}
+                    {% placeholder scripts_before %}
+                {% endblock %}
 
                 {% if app.debug %}
                     <script type="text/javascript">

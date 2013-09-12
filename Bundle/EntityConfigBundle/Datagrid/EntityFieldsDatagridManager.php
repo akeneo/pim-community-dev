@@ -5,47 +5,25 @@ namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 use Doctrine\ORM\Query;
 
 use Oro\Bundle\GridBundle\Action\ActionInterface;
-
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
-
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
-
 use Oro\Bundle\GridBundle\Property\ActionConfigurationProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
-use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-
-use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
-class EntityFieldsDatagridManager extends DatagridManager
+class EntityFieldsDatagridManager extends BaseDatagrid
 {
-    /**
-     * @var FieldDescriptionCollection
-     */
-    protected $fieldsCollection;
-
     /**
      * @var integer id
      */
     protected $entityId;
-
-    /**
-     * @var ConfigManager
-     */
-    protected $configManager;
-
-    public function __construct(ConfigManager $configManager)
-    {
-        $this->configManager = $configManager;
-    }
 
     /**
      * @param $id
@@ -122,20 +100,9 @@ class EntityFieldsDatagridManager extends DatagridManager
         $actions = array();
 
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getPropertyConfig()->getGridActions(PropertyConfigContainer::TYPE_FIELD) as $config) {
-                $properties[] = new UrlProperty(
-                    strtolower($config['name']) . '_link',
-                    $this->router,
-                    $config['route'],
-                    (isset($config['args']) ? $config['args'] : array())
-                );
+            $gridActions = $provider->getPropertyConfig()->getGridActions(PropertyConfigContainer::TYPE_FIELD);
 
-                if (isset($config['filter'])) {
-                    $filters[strtolower($config['name'])] = $config['filter'];
-                }
-
-                $actions[strtolower($config['name'])] = true;
-            }
+            $this->prepareProperties($gridActions, $properties, $actions, $filters);
         }
 
         if (count($filters)) {
@@ -181,6 +148,43 @@ class EntityFieldsDatagridManager extends DatagridManager
         }
 
         return $properties;
+    }
+
+    /**
+     * @param FieldDescriptionCollection $fieldsCollection
+     */
+    protected function getDynamicFields(FieldDescriptionCollection $fieldsCollection)
+    {
+        $fields = array();
+
+        foreach ($this->configManager->getProviders() as $provider) {
+            foreach ($provider->getPropertyConfig()->getItems(PropertyConfigContainer::TYPE_FIELD) as $code => $item) {
+                if (isset($item['grid'])) {
+                    $fieldObject = new FieldDescription();
+                    $fieldObject->setName($code);
+                    $fieldObject->setOptions(
+                        array_merge(
+                            $item['grid'],
+                            array(
+                                'expression' => 'cfv_' . $code . '.value',
+                                'field_name' => $code,
+                            )
+                        )
+                    );
+
+                    if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
+                        $fields[$item['options']['priority']] = $fieldObject;
+                    } else {
+                        $fields[] = $fieldObject;
+                    }
+                }
+            }
+        }
+
+        ksort($fields);
+        foreach ($fields as $field) {
+            $fieldsCollection->add($field);
+        }
     }
 
     /**
@@ -233,44 +237,7 @@ class EntityFieldsDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($fieldType);
 
-        $this->addDynamicRows($fieldsCollection);
-    }
-
-    /**
-     * @param      $fieldsCollection
-     */
-    protected function addDynamicRows($fieldsCollection)
-    {
-        $fields = array();
-
-        foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getPropertyConfig()->getItems(PropertyConfigContainer::TYPE_FIELD) as $code => $item) {
-                if (isset($item['grid'])) {
-                    $fieldObject = new FieldDescription();
-                    $fieldObject->setName($code);
-                    $fieldObject->setOptions(
-                        array_merge(
-                            $item['grid'],
-                            array(
-                                'expression' => 'cfv_' . $code . '.value',
-                                'field_name' => $code,
-                            )
-                        )
-                    );
-
-                    if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
-                        $fields[$item['options']['priority']] = $fieldObject;
-                    } else {
-                        $fields[] = $fieldObject;
-                    }
-                }
-            }
-        }
-
-        ksort($fields);
-        foreach ($fields as $field) {
-            $fieldsCollection->add($field);
-        }
+        $this->getDynamicFields($fieldsCollection);
     }
 
     /**
@@ -302,37 +269,7 @@ class EntityFieldsDatagridManager extends DatagridManager
 
         $actions = array($clickAction, $updateAction);
 
-        foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getPropertyConfig()->getGridActions(PropertyConfigContainer::TYPE_FIELD) as $config) {
-                $configItem = array(
-                    'name'         => strtolower($config['name']),
-                    'acl_resource' => isset($config['acl_resource']) ? $config['acl_resource'] : 'root',
-                    'options'      => array(
-                        'label' => ucfirst($config['name']),
-                        'icon'  => isset($config['icon']) ? $config['icon'] : 'question-sign',
-                        'link'  => strtolower($config['name']) . '_link'
-                    )
-                );
-
-                if (isset($config['type'])) {
-                    switch ($config['type']) {
-                        case 'delete':
-                            $configItem['type'] = ActionInterface::TYPE_DELETE;
-                            break;
-                        case 'redirect':
-                            $configItem['type'] = ActionInterface::TYPE_REDIRECT;
-                            break;
-                        case 'ajax':
-                            $configItem['type'] = ActionInterface::TYPE_AJAX;
-                            break;
-                    }
-                } else {
-                    $configItem['type'] = ActionInterface::TYPE_REDIRECT;
-                }
-
-                $actions[] = $configItem;
-            }
-        }
+        $this->prepareRowActions($actions, PropertyConfigContainer::TYPE_FIELD);
 
         return $actions;
     }

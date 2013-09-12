@@ -191,7 +191,8 @@ class ConfigEntityGridController extends Controller
                         'parameters' => array('id' => $entityModel->getId()),
                     ),
                     array(
-                        'route' => 'oro_entityconfig_index'
+                        'route' => 'oro_entityconfig_view',
+                        'parameters' => array('id' => $entityModel->getId()),
                     )
                 );
             }

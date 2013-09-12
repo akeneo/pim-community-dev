@@ -17,7 +17,6 @@ class OroEntityExtendBundle extends Bundle
         $container->addCompilerPass(new EntityManagerPass());
 
         $cacheDirs = array(
-            $container->getParameter('kernel.root_dir') . '/entities/Extend/Base',
             $container->getParameter('kernel.root_dir') . '/entities/Extend/Entity',
             $container->getParameter('kernel.root_dir') . '/entities/Extend/Backup',
             $container->getParameter('kernel.root_dir') . '/entities/Extend/Validator',

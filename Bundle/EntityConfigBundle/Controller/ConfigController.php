@@ -99,7 +99,8 @@ class ConfigController extends Controller
                         'parameters' => array('id' => $id),
                     ),
                     array(
-                        'route' => 'oro_entityconfig_index'
+                        'route' => 'oro_entityconfig_view',
+                        'parameters' => array('id' => $id)
                     )
                 );
             }

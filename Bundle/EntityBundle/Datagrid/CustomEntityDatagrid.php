@@ -8,7 +8,6 @@ use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\CallbackProperty;
 
@@ -18,7 +17,7 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-use Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator;
+use Oro\Bundle\EntityExtendBundle\Tools\Generator;
 
 class CustomEntityDatagrid extends DatagridManager
 {

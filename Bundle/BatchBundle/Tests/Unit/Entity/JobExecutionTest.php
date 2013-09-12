@@ -252,6 +252,17 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedOutput, (string) $this->jobExecution);
     }
 
+    public function testToStringEmpty()
+    {
+        $dummyDate = new \DateTime();
+        $timezone = $dummyDate->format('P');
+
+        $expectedOutput = 'startTime=, endTime=, updatedTime=, status=2, '.
+            'exitStatus=[UNKNOWN] , exitDescription=[], job=[]';
+
+        $this->assertEquals($expectedOutput, (string) $this->jobExecution);
+    }
+
     /**
      * Assert the entity tested
      *

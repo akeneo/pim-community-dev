@@ -1,8 +1,7 @@
 parameters:
     oro_entity_extend.extend.extend_manager.class:          Oro\Bundle\EntityExtendBundle\Extend\ExtendManager
     oro_entity_extend.extension.extend_entity.class:        Oro\Bundle\EntityExtendBundle\Form\Extension\ExtendEntityExtension
-#    oro_entity_extend.tools.schema.class:                   Oro\Bundle\EntityExtendBundle\Tools\Schema
-    oro_entity_extend.tools.generator.class:                Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator
+    oro_entity_extend.tools.generator.class:                Oro\Bundle\EntityExtendBundle\Tools\Generator
     oro_entity_extend.listener.config_subscriber.class:     Oro\Bundle\EntityExtendBundle\EventListener\ConfigSubscriber
     oro_entity_extend.command.backup.class:                 Oro\Bundle\EntityExtendBundle\Command\BackupCommand
     oro_entity_extend.command.generate.class:               Oro\Bundle\EntityExtendBundle\Command\UpdateCommand
@@ -12,19 +11,12 @@ services:
         class:                                              %oro_entity_extend.extend.extend_manager.class%
         arguments:
             - @oro_entity_config.provider.extend
-            - @oro_entity_extend.metadata.metadata_factory
-            #- @oro_entity_extend.tools.generator
 
 #    oro_entity_extend.extension.extend_entity:
 #        class:                                              %oro_entity_extend.extension.extend_entity.class%
 #        arguments:                                          [@oro_entity_extend.extend.extend_manager]
 #        tags:
 #            - { name: form.type_extension, alias: form }
-
-#    oro_entity_extend.tools.schema:
-#        class:                                              %oro_entity_extend.tools.schema.class%
-#        arguments:
-#            - @doctrine.orm.default_entity_manager
 
     oro_entity_extend.tools.generator:
         class:                                              %oro_entity_extend.tools.generator.class%
