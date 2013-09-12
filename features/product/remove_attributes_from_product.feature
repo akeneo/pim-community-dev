@@ -36,6 +36,7 @@ Feature: Remove an attribute from a product
     And attributes in group "Other" should be Model and SKU
 
   @javascript
+  @skip
   Scenario: Successfully remove a scopable attribute from a product
     Given the following family:
       | code    |
