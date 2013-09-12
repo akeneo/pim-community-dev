@@ -1,55 +1,46 @@
-oro:
-    extensions:
-        header:               extensions
-        accelerator:
-            header:           Accelerator
-            help:             Install and enable a PHP accelerator like APC (highly recommended).
-        apc:                  APC
-        ctype:                Ctype
-        help:                 Install and enable the %extension% extension.
-        iconv:                Iconv
-        icu:                  ICU
-        intl:                 Intl
-        json_encode:          JSON
-        mbstring:             Multibyte String
-        off:                  off
-        on:                   on
-        pcre:                 PCRE
-        pdo:                  PDO
-        php_xml:              PHP-XML
-        session_start:        Session
-        simplexml_import_dom: SimpleXML
-        token_get_all:        Tokenizer
-    filesystem:
-        header:               file system
-        cache:
-            header:           cache
-            help:             "<![CDATA[To set permissions run: sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX %path% & sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx %path%]]>"
-        logs:
-            header:           logs
-            help:             "<![CDATA[To set permissions run: sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX %path% & sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx %path%]]>"
-        exists:               exists
-        not_exists:           not exists
-        writable:             writable
-        not_writable:         not writable
-        parameters:
-            header:           parameters.yml
-            help:             "To set permissions run: sudo chmod a+w %path%"
-        vendors:              vendors
-    settings:
-        header:               PHP version and settings
-        any:                  any
-        detect_unicode:       detect_unicode
-        magic_quotes_gpc:     magic_quotes_gpc
-        non_deprecated:       non deprecated
-        off:                  off
-        on:                   on
-        register_globals:     register_globals
-        session.auto_start:   session.auto_start
-        short_open_tag:       short_open_tag
-        timezone:             timezone
-        timezone_deprecated:
-            header:           Deprecated timezone
-            help:             Timezone %timezone% is deprcated. Fix your php.ini file (list of deprecated timezones http://php.net/manual/en/timezones.others.php).
-        version:              PHP version
-        version_recommanded:  Recommanded PHP version
+settings:
+    header:               PHP version and settings
+    any:                  any
+    timezone:             Timezone
+    timezone_deprecated:
+        header:           Deprecated timezone
+        help:             Timezone %timezone% is deprcated. Fix your php.ini file (list of deprecated timezones http://php.net/manual/en/timezones.others.php)
+    non_deprecated:       non deprecated
+    version:              PHP version
+    version_recommended:  Recommended PHP version
+
+extensions:
+    header:               Extensions
+    accelerator:
+        header:           Accelerator
+        help:             Install and enable a PHP accelerator like APC (highly recommended)
+    apc:                  APC
+    help:                 Install and enable the %extension% extension
+    iconv:                Iconv
+    icu:                  ICU
+    intl:                 Intl
+    json_encode:          JSON
+    mbstring:             Multibyte String
+    pcre:                 PCRE
+    pdo:                  PDO
+    php_xml:              PHP-XML
+    session_start:        Session
+    simplexml_import_dom: SimpleXML
+    token_get_all:        Tokenizer
+
+filesystem:
+    header:               File system
+    cache:
+        header:           Cache directory
+        help:             "<![CDATA[To set permissions run: sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX %path% & sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx %path%]]>"
+    logs:
+        header:           Logs directory
+        help:             "<![CDATA[To set permissions run: sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX %path% & sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx %path%]]>"
+    exists:               exists
+    not_exists:           not exists
+    writable:             writable
+    not_writable:         not writable
+    parameters:
+        header:           parameters.yml
+        help:             "To set permissions run: sudo chmod a+w %path%"
+    vendors:              Vendors directory

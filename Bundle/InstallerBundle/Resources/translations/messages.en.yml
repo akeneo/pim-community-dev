@@ -1,46 +1,51 @@
-oro:
-    flashes.installed:        Sylius has been successfully installed.
-    form:
-        configuration:
-            database:
-                header:       Database connection
-                host:         Host
-                port:         Port
-                user:         User
-                password:     Password
-                name:         Name
-            driver:           Driver
-            locale:
-                header:       Locale settings
-                locale:       Locale
-            mailer:
-                header:       Mailer settings
-                host:         Host
-                user:         User
-                password:     Password
-                transport:    Transport
-        setup:
-            email:            Email
-            username:         Username
-            plain_password:   Password
-            load_fixtures:    Load fixtures
+flash:
+    installed:            Oro has been successfully installed.
 
-    process:
-        step:
-            check:
-                button:
-                    back:     Back
-                    install:  Install
-                    next:     Next
-                header:       <![CDATA[System requirements check <small>Sylius installer</small>]]>
-                table:
-                    current:  current
-                    required: required
-                    status:   status
-            configure:
-                header:       <![CDATA[Configuration <small>Sylius installer</small>]]>
-            setup:
-                header:       <![CDATA[Administration setup <small>Sylius installer</small>]]> </trans-unit>
-            welcome:
-                content:      <![CDATA[<p>Welcome to Sylius installer.</p>]]>
-                header:       <![CDATA[Welcome <small>Sylius installer</small>]]>
+switch:
+    off:                  off
+    on:                   on
+
+form:
+    configuration:
+        database:
+            header:       Database connection
+            host:         Host
+            port:         Port
+            user:         User
+            password:     Password
+            name:         Name
+        driver:           Driver
+        locale:
+            header:       Locale settings
+            locale:       Locale
+        mailer:
+            header:       Mailer settings
+            host:         Host
+            user:         User
+            password:     Password
+            transport:    Transport
+    setup:
+        email:            Email
+        username:         Username
+        plain_password:   Password
+        load_fixtures:    Load fixtures
+
+process:
+    step:
+        check:
+            header:       System requirements check
+            button:
+                back:     Back
+                install:  Install
+                next:     Next
+            table:
+                current:  Current
+                required: Required
+                status:   Status
+        configure:
+            header:       Configuration
+        setup:
+            header:       Administration setup
+        welcome:
+            content:      This will guide you through the setup process.
+            header:       Welcome to Oro installer

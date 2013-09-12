@@ -1,0 +1,73 @@
+{% extends bap.layout %}
+
+{% block head_script %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        require(['jquery'],
+        function($) {
+            $(function () {
+                $(document).ready(function() {
+                    $('table a').on('click', function(e) {
+                        e.preventDefault();
+
+                        $(this).popover();
+                    });
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block header %}{% endblock %}
+{% block before_content %}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ 'process.step.check.header'|trans }}</h1>
+</div>
+
+{% set fulfilled = true %}
+{% for collection in collections %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>{{ collection.label }}</th>
+            <th class="span5">{{ 'process.step.check.table.current'|trans }}</th>
+            <th class="span5">{{ 'process.step.check.table.required'|trans }}</th>
+            <th class="span1">{{ 'process.step.check.table.status'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for requirement in collection %}
+        <tr>
+            <td>{{ requirement.label }}</td>
+            <td>{{ requirement.actual }}</td>
+            <td>{{ requirement.expected }}</td>
+            <td>
+                {% if requirement.fulfilled %}
+                <span class="label label-success"><i class="icon-ok"></i></span>
+                {% else %}
+                    <a href="javascript: void(0);" title="{{ requirement.help ? requirement.help : requirement.label }}" data-placement="top" data-trigger="click" data-content="{{ requirement.help }}"
+                        {% if requirement.required %}
+                            {% set fulfilled = false %}
+                            class="label label-important"><i class="icon-remove"
+                        {% else %}
+                            class="label label-warning"><i class="icon-warning-sign"
+                        {% endif %}
+                    ></i></a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endfor %}
+
+<div class="form-actions">
+    <a href="{{ path('sylius_flow_display', { scenarioAlias: 'oro_installer', stepName: 'welcome' }) }}" class="btn btn-large"><i class="icon-chevron-left"></i> {{ 'process.step.check.button.back'|trans }}</a> &nbsp;
+    <a href="{{ fulfilled ? path('sylius_flow_forward', { scenarioAlias: 'oro_installer', stepName: 'check' }) : 'javascript: void(0);' }}" class="btn btn-large {% if fulfilled %}btn-primary{% else %}disabled{% endif %}">
+        {{ 'process.step.check.button.next'|trans }} <i class="icon-chevron-right"></i>
+    </a>
+</div>
+{% endblock %}

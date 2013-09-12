@@ -1,0 +1,46 @@
+parameters:
+    oro_installer.scenario.class:                 Oro\Bundle\InstallerBundle\Process\InstallerScenario
+    oro_installer.requirements.class:             Oro\Bundle\InstallerBundle\Requirement\OroRequirements
+    oro_installer.requirements.settings.class:    Oro\Bundle\InstallerBundle\Requirement\SettingsRequirements
+    oro_installer.requirements.extensions.class:  Oro\Bundle\InstallerBundle\Requirement\ExtensionsRequirements
+    oro_installer.requirements.filesystem.class:  Oro\Bundle\InstallerBundle\Requirement\FilesystemRequirements
+    oro_installer.yaml_persister.class:           Oro\Bundle\InstallerBundle\Persister\YamlPersister
+
+services:
+    oro_installer.scenario:
+        class:                                    %oro_installer.scenario.class%
+        calls:
+          - [ setContainer, ["@service_container"] ]
+        tags:
+          - { name: sylius.process.scenario, alias: oro_installer }
+
+    oro_installer.requirements:
+        class:                                    %oro_installer.requirements.class%
+        arguments:
+            - [ "@oro_installer.requirements.settings", "@oro_installer.requirements.extensions", "@oro_installer.requirements.filesystem" ]
+
+    oro_installer.requirements.settings:
+        class:                                    %oro_installer.requirements.settings.class%
+        public:                                   false
+        arguments:
+            - "@translator"
+
+    oro_installer.requirements.extensions:
+        class:                                    %oro_installer.requirements.extensions.class%
+        public:                                   false
+        arguments:
+            - "@translator"
+
+    oro_installer.requirements.filesystem:
+        class:                                    %oro_installer.requirements.filesystem.class%
+        public:                                   false
+        arguments:
+            - "@translator"
+            - %kernel.root_dir%
+            - %kernel.cache_dir%
+            - %kernel.logs_dir%
+
+    oro_installer.yaml_persister:
+        class:                                    %oro_installer.yaml_persister.class%
+        arguments:
+            - %kernel.root_dir%/config/parameters.yml
