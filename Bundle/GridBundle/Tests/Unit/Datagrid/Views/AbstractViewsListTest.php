@@ -140,4 +140,28 @@ class AbstractViewsListTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('some_test_name_trans', $result[0]['label']);
         $this->assertEquals('some_another_test_name_trans', $result[1]['label']);
     }
+
+    public function testToViewData()
+    {
+        $view = $this->getMockBuilder('Oro\Bundle\GridBundle\Datagrid\Views\View')
+            ->disableOriginalConstructor()->getMock();
+
+        $view->expects($this->exactly(2))->method('getName')->will($this->returnValue('test_name'));
+        $this->translator->expects($this->once())->method('trans')->with($this->equalTo('test_name'))
+            ->will($this->returnValue('test_name_trans'));
+
+        $choices = array(
+            'value' => 'test_name',
+            'label' => 'test_name_trans'
+        );
+
+        $this->list->expects($this->once())->method('getViewsList')
+            ->will($this->returnValue(array($view)));
+
+        $result = $this->list->toViewData();
+        $this->assertArrayHasKey('choices', $result);
+        $this->assertNotEmpty($result['choices']);
+        $this->assertEquals($choices, $result['choices'][0]);
+        $this->assertArrayHasKey('views', $result);
+    }
 }

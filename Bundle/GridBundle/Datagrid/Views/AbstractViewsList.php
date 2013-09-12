@@ -3,10 +3,8 @@
 namespace Oro\Bundle\GridBundle\Datagrid\Views;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Translation\TranslatorInterface;
 
-use Oro\Bundle\GridBundle\Datagrid\Datagrid;
-use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 abstract class AbstractViewsList
 {
@@ -88,20 +86,15 @@ abstract class AbstractViewsList
 
     public function toViewData()
     {
-        $result = array();
-
-        /** @var View $view */
-        foreach ($this->getList() as $view) {
-            $result[] = array(
-                'name'    => $view->getName(),
-                'filters' => $view->getFiltersData(),
-                'sorters' => $view->getSortersData()
-            );
-        }
+        $result = $this->getList()->map(
+            function (View $view) {
+                return $view->toViewData();
+            }
+        );
 
         return array(
             'choices' => $this->toChoiceList(),
-            'views'   => $result
+            'views'   => $result->toArray()
         );
     }
 
