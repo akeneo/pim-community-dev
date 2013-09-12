@@ -61,19 +61,39 @@ class Datagrid extends OroDatagrid
     }
 
     /**
+     * Returns the results count of the query
+     *
+     * @return integer
+     */
+    public function countResults()
+    {
+        $this->pagerApplied = true;
+        $this->applyParameters();
+
+        $exprFieldId = sprintf('%s.id', $this->query->getRootAlias());
+        $this->query->select($exprFieldId);
+        $this->query->groupBy($exprFieldId);
+
+        return count($this->query->execute());
+    }
+
+    /**
      * Serialize datagrid results in a specific format and with a specific context
      * @param string $format
      * @param array  $context
      *
      * @return string
      */
-    public function exportData($format, array $context = array())
+    public function exportData($format, $offset = 0, $limit = 250, array $context = array())
     {
-        return $this->serializer->serialize(
-            $this->getResultsWithoutPaging(),
-            $format,
-            $context
-        );
+        $results = $this->getBatchedResults($offset, $limit);
+
+        $data = $this->serializer->serialize($results, $format, $context);
+
+        $em = $this->query->getEntityManager();
+        $em->clear();
+
+        return $data;
     }
 
     /**
@@ -81,13 +101,14 @@ class Datagrid extends OroDatagrid
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
-    public function getResultsWithoutPaging()
+    public function getBatchedResults($offset, $limit)
     {
         $this->pagerApplied = true;
         $this->applyParameters();
 
-        // reset select and allow to get all the columns
         $this->query->select($this->query->getRootAlias());
+        $this->query->setFirstResult($offset);
+        $this->query->setMaxResults($limit);
 
         return $this->query->execute();
     }

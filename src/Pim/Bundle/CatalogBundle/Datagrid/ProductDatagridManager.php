@@ -562,4 +562,24 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
         return $dataScope;
     }
+
+    /**
+     * Get the attributes ids of the products
+     */
+    public function getAttributeAvailableIds(ProxyQueryInterface $proxyQuery)
+    {
+        $qb = clone $proxyQuery;
+
+        $qb->leftJoin('values.attribute', 'attribute');
+        $qb->groupBy('attribute.id');
+        $qb->select('attribute.id');
+
+        $attributesList = array();
+        $results = $qb->getQuery()->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        foreach ($results as $attribute) {
+            $attributesList[] = current($attribute);
+        }
+
+        return $attributesList;
+    }
 }
