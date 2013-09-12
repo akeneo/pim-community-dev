@@ -1,5 +1,6 @@
 TestClassExtend:
     is_extend:                      true
+    owner:                          'Custom'
     configs:
         entity:
             label:                  TestClassExtend

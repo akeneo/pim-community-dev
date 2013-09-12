@@ -62,15 +62,6 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * @param $className
-     * @return bool
-     */
-    public function isConfigurable($className)
-    {
-        return $this->configManager->isConfigurable($this->getClassName($className));
-    }
-
-    /**
      * @param      $className
      * @param null $fieldName
      * @param null $fieldType
@@ -90,7 +81,7 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function hasConfig($className, $fieldName = null)
     {
-        return $this->configManager->hasConfig($this->getId($className, $fieldName));
+        return $this->configManager->isConfigurable($this->getClassName($className), $fieldName);
     }
 
     /**

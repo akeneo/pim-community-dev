@@ -92,15 +92,16 @@ class FormTypeExtension extends AbstractTypeExtension
         $user = $token->getUser();
         if ($user
             && $dataClassName
-            && $this->configProvider->isConfigurable($dataClassName)
+            && $this->configProvider->hasConfig($dataClassName)
         ) {
-            if (!method_exists($dataClassName, 'getOwner')) {
-                throw new \LogicException(
-                    sprintf('Method getOwner must be implemented for %s entity', $dataClassName)
-                );
-            }
             $config = $this->configProvider->getConfig($dataClassName);
             if ($config->has('owner_type')) {
+                if (!method_exists($dataClassName, 'getOwner')) {
+                    throw new \LogicException(
+                        sprintf('Method getOwner must be implemented for %s entity', $dataClassName)
+                    );
+                }
+
                 $ownerType = $config->get('owner_type');
                 /**
                  * Adding listener to hide owner field for update pages

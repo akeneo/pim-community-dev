@@ -71,7 +71,7 @@ class Generator
             $className       = array_pop($classArray);
 
             if ($parentClassName == 'Extend' . $className) {
-                if (!$configProvider->isConfigurable($originalClassName)) {
+                if (!$configProvider->hasConfig($originalClassName)) {
                     throw new RuntimeException(sprintf('Class "%s" should be configurable.', $originalClassName));
                 }
 

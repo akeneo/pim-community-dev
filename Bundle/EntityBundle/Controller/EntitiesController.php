@@ -66,10 +66,11 @@ class EntitiesController extends Controller
         $datagridManager = $this->get('oro_entity.custom_datagrid.manager');
 
         $className = $entity->getClassName();
+        $extendClassName = $className;
 
-        $datagridManager->setCustomEntityClass($className, $em->getExtendManager()->getExtendClass($className));
+        $datagridManager->setCustomEntityClass($className, $extendClassName);
         $datagridManager->setParent($entity->getId());
-        $datagridManager->setEntityName($em->getExtendManager()->getExtendClass($className));
+        $datagridManager->setEntityName($extendClassName);
         $datagridManager->getRouteGenerator()->setRouteParameters(array('id' => $request->get('id')));
 
         $view = $datagridManager->getDatagrid()->createView();
@@ -132,7 +133,7 @@ class EntitiesController extends Controller
         $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
         $entityConfig         = $entityConfigProvider->getConfig($entity->getClassName());
 
-        $extendEntityName       = $em->getExtendManager()->getExtendClass($entity->getClassName());
+        $extendEntityName       = $entity->getClassName();
         $extendEntityRepository = $em->getRepository($extendEntityName);
 
         $record = !$id ? new $extendEntityName : $extendEntityRepository->find($id);
