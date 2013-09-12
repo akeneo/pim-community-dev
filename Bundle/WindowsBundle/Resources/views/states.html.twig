@@ -11,13 +11,15 @@
     </div>
 
     <script type="text/javascript">
-        require(['jquery', 'oro/widget-manager', 'oro/dialog/state/model'],
-        function($, widgetManager, StateModel) {
+        require(['jquery', 'oro/widget-manager', 'oro/dialog-widget', 'oro/dialog/state/model'],
+        function($, widgetManager, DialogWidget, StateModel) {
             $(function(){
                 {% for stateId, state in states %}
-                widgetManager.createWidget('dialog', {
+                var widget = new DialogWidget({
                     model: new StateModel({{ {'data': state, 'id': stateId}|json_encode|raw }})
-                }).render();
+                });
+                widgetManager.addWidgetInstance(widget);
+                widget.render();
                 {% endfor %}
             });
         });
