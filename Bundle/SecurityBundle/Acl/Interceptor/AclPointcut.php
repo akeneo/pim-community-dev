@@ -41,12 +41,12 @@ class AclPointcut implements PointcutInterface
      */
     public function matchesMethod(\ReflectionMethod $method)
     {
-        $className = $method->getDeclaringClass()->getName();
-
-        $result = $this->annotationProvider->isProtectedMethod($className, $method->getName());
-        // it is supposed that a method is protected is it has no own ACL annotation but the declaring class has
-        if (!$result) {
-            $result = $this->annotationProvider->hasAnnotation($className);
+        // at the first check if a method has own ACL annotation
+        $result = $this->annotationProvider->isProtectedMethod($method->class, $method->name);
+        // if it hasn't and it is a public method
+        if (!$result && $method->isPublic()) {
+            // check if there is an ACL annotation for the class
+            $result = $this->annotationProvider->hasAnnotation($method->class);
         }
 
         return $result;
