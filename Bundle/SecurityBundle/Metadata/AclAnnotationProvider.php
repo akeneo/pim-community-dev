@@ -76,6 +76,33 @@ class AclAnnotationProvider
     }
 
     /**
+     * Checks whether the given class or at least one of its method is protected by ACL security policy
+     *
+     * @param string $class
+     * @return bool true if the class is protected; otherwise, false
+     */
+    public function isProtectedClass($class)
+    {
+        $this->ensureAnnotationsLoaded();
+
+        return $this->storage->isKnownClass($class);
+    }
+
+    /**
+     * Checks whether the given method of the given class is protected by ACL security policy
+     *
+     * @param string $class
+     * @param string $method
+     * @return bool true if the method is protected; otherwise, false
+     */
+    public function isProtectedMethod($class, $method)
+    {
+        $this->ensureAnnotationsLoaded();
+
+        return $this->storage->isKnownMethod($class, $method);
+    }
+
+    /**
      * Warms up the cache
      */
     public function warmUpCache()

@@ -3,41 +3,47 @@
 namespace Oro\Bundle\UserBundle\Acl;
 
 use JMS\AopBundle\Aop\PointcutInterface;
+use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
 
 class AclPointcut implements PointcutInterface
 {
+    /**
+     * @var AclAnnotationProvider
+     */
+    protected $annotationProvider;
 
     /**
-     * Check class for ACL
+     * Constructor
+     *
+     * @param AclAnnotationProvider $annotationProvider
+     */
+    public function __construct(AclAnnotationProvider $annotationProvider)
+    {
+        $this->annotationProvider = $annotationProvider;
+    }
+
+    /**
+     * Determines whether the given class is protected by ACL security policy.
      *
      * @param  \ReflectionClass $class
      * @return bool
      */
     public function matchesClass(\ReflectionClass $class)
     {
-        $className = $class->getName();
-
-        if (substr($className, -10, 10) == 'Controller' &&
-            strpos($className, 'ExceptionController') === false
-        ) {
-            return true;
-        }
-
-        return false;
+        return $this->annotationProvider->isProtectedClass($class->getName());
     }
 
     /**
-     * Check method for Acl
+     * Determines whether the given method is protected by ACL security policy.
      *
      * @param  \ReflectionMethod $method
      * @return bool
      */
     public function matchesMethod(\ReflectionMethod $method)
     {
-        if (substr($method->getName(), -6, 6) == 'Action') {
-            return true;
-        }
-
-        return false;
+        return $this->annotationProvider->isProtectedMethod(
+            $method->getDeclaringClass()->getName(),
+            $method->getName()
+        );
     }
 }

@@ -22,6 +22,15 @@ class AclAnnotationStorage
     private $bindings = array();
 
     /**
+     * @var string[]
+     *   key = class name
+     *   value = array of methods
+     *               key = method name
+     *               value = true
+     */
+    private $classes = array();
+
+    /**
      * Gets an annotation by its id
      *
      * @param string $id
@@ -87,6 +96,29 @@ class AclAnnotationStorage
     }
 
     /**
+     * Checks whether the given class is registered in this storage
+     *
+     * @param string $class
+     * @return bool true if the class is registered in this storage; otherwise, false
+     */
+    public function isKnownClass($class)
+    {
+        return isset($this->classes[$class]);
+    }
+
+    /**
+     * Checks whether the given method is registered in this storage
+     *
+     * @param string $class
+     * @param string $method
+     * @return bool true if the method is registered in this storage; otherwise, false
+     */
+    public function isKnownMethod($class, $method)
+    {
+        return isset($this->classes[$class]) && isset($this->classes[$class][$method]);
+    }
+
+    /**
      * Adds an annotation
      *
      * @param AclAnnotation $annotation
@@ -128,6 +160,8 @@ class AclAnnotationStorage
      * @param string|null $method
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function addBinding($id, $class, $method = null)
     {
@@ -149,6 +183,17 @@ class AclAnnotationStorage
             }
         } else {
             $this->bindings[$key] = $id;
+        }
+
+        // update classes collection
+        if (isset($this->classes[$class])) {
+            if (!empty($method)) {
+                $this->classes[$class][$method] = true;
+            }
+        } else {
+            $this->classes[$class] = empty($method)
+                ? array()
+                : array($method => true);
         }
     }
 }
