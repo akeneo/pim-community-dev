@@ -45,7 +45,7 @@
     {% if form is defined and form is not empty and uploadAllowed and uploadViolations|length == 0 %}
         <form id="pim_importexport_import_upload" method="POST" class="form-horizontal form-upload hide" action="{{ path('pim_importexport_import_launch', { id: jobInstance.id }) }}" {{ form_enctype(form) }}>
             {{ elements.form_errors(form) }}
-            <div class="row-fluid">
+            <div class="row-fluid buffer-top">
                 {{ form_row(form.file) }}
                 {{ form_row(form._token) }}
                 {{ elements.submitBtn('Upload and '~title|lower~' now'|trans) }}
