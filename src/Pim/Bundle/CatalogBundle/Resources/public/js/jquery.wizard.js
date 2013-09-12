@@ -2,14 +2,19 @@
     'use strict';
 
     $.fn.wizard = function(options) {
+        var opts = $.extend({}, $.fn.wizard.defaults, options),
+            $steps = $(this).find('li'),
+            currentStep = opts.currentStep;
+
         if (!$(this).hasClass('wizard')) {
             $(this).addClass('wizard');
         }
 
-        var $steps = $(this).find('li'),
-            currentStep = options.currentStep;
-
         $steps.each(function(index){
+            $('div', this)
+                .remove('.progress-start')
+                .remove('.progress-end')
+                .remove('.dot');
             $(this)
                 .append('<div class="progress-start"></div>')
                 .append('<div class="progress-end"></div>');
@@ -31,5 +36,7 @@
         }
     }
 
-    // $.fn.wizard.defaults = 
+    $.fn.wizard.defaults = {
+        currentStep: 1
+    }
 }) (jQuery);
