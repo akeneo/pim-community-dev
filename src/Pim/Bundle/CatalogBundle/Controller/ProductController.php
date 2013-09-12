@@ -196,13 +196,12 @@ class ProductController extends AbstractDoctrineController
                 break;
             case 'csv':
                 $content = $datagrid->exportData(
-                    $request->getRequestFormat(),
-                    array('withHeader' => true, 'heterogeneous' => true)
+                    'csv',
+                    array('withHeader' => true, 'heterogeneous' => true, 'scope' => $this->productManager->getScope())
                 );
                 $headers = array(
                     'Content-Type' => 'text/csv',
-                    'Content-Disposition' =>
-                        sprintf('inline; filename=quick_export_products.%s', $request->getRequestFormat())
+                    'Content-Disposition' => 'inline; filename=quick_export_products.csv'
                 );
 
                 return $this->returnResponse($content, 200, $headers);
