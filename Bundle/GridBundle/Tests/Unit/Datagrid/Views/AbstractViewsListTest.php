@@ -140,35 +140,4 @@ class AbstractViewsListTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('some_test_name_trans', $result[0]['label']);
         $this->assertEquals('some_another_test_name_trans', $result[1]['label']);
     }
-
-    /**
-     * test applyToDatagrid
-     */
-    public function testApplyToDatagrid()
-    {
-        $viewList = $this->viewsDataProvider();
-        $viewList = $viewList['good scenario']['views'];
-
-        $defaultParameters = array();
-        $parameters = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ParametersInterface');
-
-        $datagrid = $this->getMockBuilder('Oro\Bundle\GridBundle\Datagrid\Datagrid')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $datagrid->expects($this->once())
-            ->method('setViewsList')
-            ->with($this->isInstanceOf('Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList'));
-
-        $datagrid->expects($this->once())
-            ->method('getParameters')
-            ->will($this->returnValue($parameters));
-
-        $this->list
-            ->expects($this->once())
-            ->method('getViewsList')
-            ->will($this->returnValue($viewList));
-
-        $this->list->applyToDatagrid($datagrid, $defaultParameters);
-    }
 }

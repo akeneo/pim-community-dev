@@ -120,44 +120,4 @@ abstract class AbstractViewsList
             }
         }
     }
-
-    /**
-     * Apply view to datagrid
-     *
-     * @param Datagrid $datagrid
-     * @param array $defaultGridParameters assoc array with datagrid default params
-     * @return boolean
-     */
-    public function applyToDatagrid(Datagrid $datagrid, $defaultGridParameters)
-    {
-        $datagrid->setViewsList($this);
-        $parameters = $datagrid->getParameters();
-
-        $additionalParams = $parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
-        $viewName =  isset($additionalParams[self::PARAM_KEY]) ? $additionalParams[self::PARAM_KEY] : false;
-
-        $view = $viewName ? $this->getViewByName($viewName) : false;
-        if ($view === false) {
-            return false;
-        }
-
-        // set filters
-        $viewFilters = $view->getFiltersData();
-        $currentFilters = $parameters->get(ParametersInterface::FILTER_PARAMETERS);
-        //$defaultFilters = $defaultGridParameters[ParametersInterface::FILTER_PARAMETERS];
-
-        $viewFilters = array_merge($viewFilters, $currentFilters);
-        $parameters->set(ParametersInterface::FILTER_PARAMETERS, false);
-        $parameters->set(ParametersInterface::FILTER_PARAMETERS, $viewFilters);
-
-        // set sorters
-        $viewSorters = $view->getSortersData();
-        if (empty($viewSorters)) {
-            $viewSorters = $defaultGridParameters[ParametersInterface::SORT_PARAMETERS];
-        }
-        $parameters->set(ParametersInterface::SORT_PARAMETERS, false);
-        $parameters->set(ParametersInterface::SORT_PARAMETERS, $viewSorters);
-
-        return true;
-    }
 }

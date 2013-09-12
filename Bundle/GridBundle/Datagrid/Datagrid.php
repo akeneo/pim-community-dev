@@ -586,7 +586,7 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritDoc}
      */
-    public function setViewsList(AbstractViewsList $list)
+    public function setViewsList($list)
     {
         $this->viewsList = $list;
     }

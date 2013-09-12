@@ -362,10 +362,7 @@ abstract class DatagridManager implements DatagridManagerInterface
         $datagrid->setMultipleSorting($this->multipleSorting);
 
         $views = $this->getViewsList();
-        if ($views) {
-            $defaultParameters = $this->getDefaultParameters();
-            $views->applyToDatagrid($datagrid, $defaultParameters);
-        }
+        $datagrid->setViewsList($views);
     }
 
     /**
