@@ -38,6 +38,6 @@ class ChangeStatusType extends AbstractType
 
     public function getName()
     {
-        return 'pim_catalog_operation_change_status';
+        return 'pim_catalog_mass_change_status';
     }
 }

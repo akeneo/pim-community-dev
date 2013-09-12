@@ -1,1 +1,57 @@
 {% extends 'PimCatalogBundle:MassEditAction:configure/layout.html.twig' %}
+
+{% block form %}
+    <div class="row offset1">
+        <div class="span3">
+            <h3>Edit attributes</h3>
+        </div>
+        <div class="span8">
+            {{ form_widget(form.operation.locale) }}
+            {{ form_widget(form.operation.attributesToDisplay) }}
+        </div>
+    </div>
+
+{% for groupView in form.operation.vars.groups %}
+    <div class="row offset1">
+        <h4>{{ groupView.name }}</h4>
+        {% for attributeId, attributeView in groupView.attributes %}
+        <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
+            {% if attributeView.values is defined %}
+            {% for scope, subvalue in attributeView.values %}
+            <div class="control-group" data-field="{{ attributeView.code }}">
+                {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="control-group" data-field="{{ attributeView.code }}">
+                {{ form_widget(attributeView.value) }}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+
+    <div class="row offset1">
+        <a href="{{ path('pim_catalog_mass_edit_action_choose', {'products': productIds}) }}" class="btn">Cancel</a>
+        <input type="submit" value="Next" class="btn btn-primary">
+    </div>
+{% endblock %}
+
+{% block head_script_component %}
+    {{ parent() }}
+    <script type="text/javascript">
+        require(
+            ['jquery', 'underscore', 'pim/scopable', 'jquery.currencyfield'],
+            function($, _, Scopable){
+                'use strict';
+                $(function() {
+                    _.each($('form div.scopable'), function(field) {
+                        new Scopable({ el: $(field) });
+                    });
+                    $('form div.currency').currencyField();
+                });
+            }
+        );
+    </script>
+{% endblock %}

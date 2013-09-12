@@ -8,9 +8,11 @@
     {{ parent() }}
 
     <form id="{{ form.vars.id }}" action="{{ path('pim_catalog_mass_edit_action_perform', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) }}" method="POST" class="form-horizontal">
-        {% block form %}{{ form_widget(form) }}{% endblock %}
+        {% block form %}
+        {{ form_widget(form) }}
         <a href="{{ path('pim_catalog_mass_edit_action_choose', {'products': productIds}) }}" class="btn">Cancel</a>
         <input type="submit" value="Next" class="btn btn-primary">
+        {% endblock %}
     </form>
 {% endblock %}
 
