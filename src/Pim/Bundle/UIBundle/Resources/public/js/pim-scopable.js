@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'jquery.actual'],
+    ['jquery', 'backbone', 'underscore', 'oro/mediator'],
     function ($, Backbone, _, mediator) {
         'use strict';
 
@@ -18,13 +18,13 @@ define(
                 '<%= field.hiddenInput %>' +
                 '<div class="control-group">' +
                     '<div class="controls input-prepend">' +
-                        '<label class="control-label add-on" for="<%= field.id %>" style="height: <%= field.height - 10 %>px;">' +
+                        '<label class="control-label add-on" for="<%= field.id %>">' +
                             '<span class="field-toggle">' +
                                 '<i class="icon-caret-down"></i>' +
                             '</span>' +
                             '<%= field.scope %>' +
                         '</label>' +
-                        '<div class="scopable-input" style="display: inline-block; height: <%= field.height %>px;">' +
+                        '<div class="scopable-input">' +
                             '<%= field.input %>' +
                             '<div class="icons-container">' +
                                 '<%= field.icons %>' +
@@ -40,6 +40,9 @@ define(
                 if (this.$el.find('.upload-zone').length) {
                     field.id = null;
                     field.input = this.$el.find('.upload-zone').get(0).outerHTML;
+                } else if (this.$el.find('.switch').length) {
+                    field.id = null;
+                    field.input = this.$el.find('.switch').get(0).outerHTML;
                 } else if (this.$el.find('.control-label')) {
                     field.id = this.$el.find('.control-label').attr('for');
                     field.input = $('#' + field.id).get(0).outerHTML;
@@ -48,7 +51,6 @@ define(
                 field.scope       = this.$el.data('scope');
                 field.hiddenInput = this.$el.find('input[type="hidden"]').get(0).outerHTML;
                 field.icons       = this.$el.find('.icons-container').html();
-                field.height      = this.$el.actual('height');
 
                 this.field = field;
             },
