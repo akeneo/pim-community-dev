@@ -510,7 +510,7 @@ table i {
 
 /* Product edit form - common */
 
-.product-edit {
+.classify, .product-edit {
   .nav-list {
     padding-left: 0px;
     padding-right: 0px;
@@ -533,15 +533,15 @@ table i {
   }
   .tab-content {
     border-left: 1px solid #BBBBBB;
-    .tab-pane h3 {
-      background-color: @color-grey_tab;
-      border-bottom: 1px solid #e5e5e5;
-      margin-top: 0;
-      padding-left: 20px;
-    }
-    .modal-header h3 {
-      background-color: @color-purple_light;
-    }
+  }
+  .tab-pane h3 {
+    background-color: @color-grey_tab;
+    border-bottom: 1px solid #e5e5e5;
+    margin-top: 0;
+    padding-left: 20px;
+  }
+  .modal-header h3 {
+    background-color: @color-purple_light;
   }
 }
 
@@ -913,6 +913,7 @@ div.entity-updated {
 
 /* Product edit form - categories tab */
 
+.classify .nav-list li a i,
 #categories .nav-list li a i {
   font-size: 16px;
   padding-right: 5px;
