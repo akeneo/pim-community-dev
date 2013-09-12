@@ -41,6 +41,7 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
                 ->disableOriginalConstructor()
                 ->getMock();
         $this->request = new Request();
+        $this->request->attributes->add(array('_route' => 'test'));
         $this->interceptor = new AclInterceptor(
             $logger,
             $this->securityContext,
@@ -84,8 +85,52 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
 
     public function testInterceptAccessGranted()
     {
-        $annotation = new AclAnnotation(array('id' => 'test', 'type' => 'test', 'permission' => 'TEST'));
-        $identity = new ObjectIdentity('123', 'test');
+        $classAnnotation = new AclAnnotation(array('id' => 'test_class', 'type' => 'test', 'permission' => 'TEST'));
+        $classIdentity = new ObjectIdentity('123', 'test_class');
+        $methodAnnotation = new AclAnnotation(array('id' => 'test_method', 'type' => 'test', 'permission' => 'TEST'));
+        $methodIdentity = new ObjectIdentity('123', 'test_method');
+
+        $this->annotationProvider->expects($this->at(0))
+            ->method('findAnnotation')
+            ->with(
+                $this->methodInvocation->reflection->class,
+                $this->methodInvocation->reflection->name
+            )
+            ->will($this->returnValue($methodAnnotation));
+        $this->objectIdentityFactory->expects($this->at(0))
+            ->method('get')
+            ->with($this->identicalTo($methodAnnotation))
+            ->will($this->returnValue($methodIdentity));
+        $this->securityContext->expects($this->at(0))
+            ->method('isGranted')
+            ->with($this->equalTo('TEST'), $this->identicalTo($methodIdentity))
+            ->will($this->returnValue(true));
+
+        $this->annotationProvider->expects($this->at(1))
+            ->method('findAnnotation')
+            ->with(
+                $this->methodInvocation->reflection->class
+            )
+            ->will($this->returnValue($classAnnotation));
+        $this->objectIdentityFactory->expects($this->at(1))
+            ->method('get')
+            ->with($this->identicalTo($classAnnotation))
+            ->will($this->returnValue($classIdentity));
+        $this->securityContext->expects($this->at(1))
+            ->method('isGranted')
+            ->with($this->equalTo('TEST'), $this->identicalTo($classIdentity))
+            ->will($this->returnValue(true));
+
+        $result = $this->interceptor->intercept($this->methodInvocation);
+        $this->assertEquals('getId()', $result);
+    }
+
+    public function testInterceptAccessGrantedWithIgnoreClassAcl()
+    {
+        $methodAnnotation = new AclAnnotation(
+            array('id' => 'test_method', 'type' => 'test', 'permission' => 'TEST', 'ignore_class_acl' => true)
+        );
+        $methodIdentity = new ObjectIdentity('123', 'test_method');
 
         $this->annotationProvider->expects($this->once())
             ->method('findAnnotation')
@@ -93,15 +138,80 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
                 $this->methodInvocation->reflection->class,
                 $this->methodInvocation->reflection->name
             )
-            ->will($this->returnValue($annotation));
+            ->will($this->returnValue($methodAnnotation));
         $this->objectIdentityFactory->expects($this->once())
             ->method('get')
-            ->with($this->identicalTo($annotation))
-            ->will($this->returnValue($identity));
-
+            ->with($this->identicalTo($methodAnnotation))
+            ->will($this->returnValue($methodIdentity));
         $this->securityContext->expects($this->once())
             ->method('isGranted')
-            ->with($this->equalTo('TEST'), $this->identicalTo($identity))
+            ->with($this->equalTo('TEST'), $this->identicalTo($methodIdentity))
+            ->will($this->returnValue(true));
+
+        $result = $this->interceptor->intercept($this->methodInvocation);
+        $this->assertEquals('getId()', $result);
+    }
+
+    public function testInterceptAccessGrantedWithoutClassAcl()
+    {
+        $methodAnnotation = new AclAnnotation(
+            array('id' => 'test_method', 'type' => 'test', 'permission' => 'TEST')
+        );
+        $methodIdentity = new ObjectIdentity('123', 'test_method');
+
+        $this->annotationProvider->expects($this->at(0))
+            ->method('findAnnotation')
+            ->with(
+                $this->methodInvocation->reflection->class,
+                $this->methodInvocation->reflection->name
+            )
+            ->will($this->returnValue($methodAnnotation));
+        $this->objectIdentityFactory->expects($this->once())
+            ->method('get')
+            ->with($this->identicalTo($methodAnnotation))
+            ->will($this->returnValue($methodIdentity));
+        $this->securityContext->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('TEST'), $this->identicalTo($methodIdentity))
+            ->will($this->returnValue(true));
+
+        $this->annotationProvider->expects($this->at(1))
+            ->method('findAnnotation')
+            ->with(
+                $this->methodInvocation->reflection->class
+            )
+            ->will($this->returnValue(null));
+
+        $result = $this->interceptor->intercept($this->methodInvocation);
+        $this->assertEquals('getId()', $result);
+    }
+
+    public function testInterceptAccessGrantedByClassAcl()
+    {
+        $classAnnotation = new AclAnnotation(array('id' => 'test_class', 'type' => 'test', 'permission' => 'TEST'));
+        $classIdentity = new ObjectIdentity('123', 'test_class');
+
+        $this->annotationProvider->expects($this->at(0))
+            ->method('findAnnotation')
+            ->with(
+                $this->methodInvocation->reflection->class,
+                $this->methodInvocation->reflection->name
+            )
+            ->will($this->returnValue(null));
+
+        $this->annotationProvider->expects($this->at(1))
+            ->method('findAnnotation')
+            ->with(
+                $this->methodInvocation->reflection->class
+            )
+            ->will($this->returnValue($classAnnotation));
+        $this->objectIdentityFactory->expects($this->once())
+            ->method('get')
+            ->with($this->identicalTo($classAnnotation))
+            ->will($this->returnValue($classIdentity));
+        $this->securityContext->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('TEST'), $this->identicalTo($classIdentity))
             ->will($this->returnValue(true));
 
         $result = $this->interceptor->intercept($this->methodInvocation);
@@ -111,11 +221,83 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
+    public function testInterceptAccessDeniedByClassAcl()
+    {
+        $classAnnotation = new AclAnnotation(array('id' => 'test_class', 'type' => 'test', 'permission' => 'TEST'));
+        $classIdentity = new ObjectIdentity('123', 'test_class');
+        $methodAnnotation = new AclAnnotation(array('id' => 'test_method', 'type' => 'test', 'permission' => 'TEST'));
+        $methodIdentity = new ObjectIdentity('123', 'test_method');
+
+        $this->annotationProvider->expects($this->at(0))
+            ->method('findAnnotation')
+            ->with(
+                $this->methodInvocation->reflection->class,
+                $this->methodInvocation->reflection->name
+            )
+            ->will($this->returnValue($methodAnnotation));
+        $this->objectIdentityFactory->expects($this->at(0))
+            ->method('get')
+            ->with($this->identicalTo($methodAnnotation))
+            ->will($this->returnValue($methodIdentity));
+        $this->securityContext->expects($this->at(0))
+            ->method('isGranted')
+            ->with($this->equalTo('TEST'), $this->identicalTo($methodIdentity))
+            ->will($this->returnValue(true));
+
+        $this->annotationProvider->expects($this->at(1))
+            ->method('findAnnotation')
+            ->with(
+                $this->methodInvocation->reflection->class
+            )
+            ->will($this->returnValue($classAnnotation));
+        $this->objectIdentityFactory->expects($this->at(1))
+            ->method('get')
+            ->with($this->identicalTo($classAnnotation))
+            ->will($this->returnValue($classIdentity));
+        $this->securityContext->expects($this->at(1))
+            ->method('isGranted')
+            ->with($this->equalTo('TEST'), $this->identicalTo($classIdentity))
+            ->will($this->returnValue(false));
+
+        $this->interceptor->intercept($this->methodInvocation);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     */
+    public function testInterceptAccessDeniedByMethodAcl()
+    {
+        $methodAnnotation = new AclAnnotation(
+            array('id' => 'test_method', 'type' => 'test', 'permission' => 'TEST', 'ignore_class_acl' => true)
+        );
+        $methodIdentity = new ObjectIdentity('123', 'test_method');
+
+        $this->annotationProvider->expects($this->once())
+            ->method('findAnnotation')
+            ->with(
+                $this->methodInvocation->reflection->class,
+                $this->methodInvocation->reflection->name
+            )
+            ->will($this->returnValue($methodAnnotation));
+        $this->objectIdentityFactory->expects($this->once())
+            ->method('get')
+            ->with($this->identicalTo($methodAnnotation))
+            ->will($this->returnValue($methodIdentity));
+        $this->securityContext->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('TEST'), $this->identicalTo($methodIdentity))
+            ->will($this->returnValue(false));
+
+        $this->interceptor->intercept($this->methodInvocation);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     */
     public function testInterceptAccessDenied()
     {
         $annotation = new AclAnnotation(array('id' => 'test', 'type' => 'test', 'permission' => 'TEST'));
         $identity = new ObjectIdentity('123', 'test');
-        $this->request->attributes->add(array('_route' => 'test'));
 
         $this->annotationProvider->expects($this->once())
             ->method('findAnnotation')
@@ -139,6 +321,8 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
 
     public function testInterceptAccessDeniedForInternalAction()
     {
+        $this->request->attributes->remove('_route');
+
         $annotation = new AclAnnotation(array('id' => 'test', 'type' => 'test', 'permission' => 'TEST'));
         $identity = new ObjectIdentity('123', 'test');
 

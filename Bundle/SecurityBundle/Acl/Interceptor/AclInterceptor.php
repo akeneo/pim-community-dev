@@ -75,20 +75,32 @@ class AclInterceptor implements MethodInterceptorInterface
             sprintf('User invoked class: "%s", Method: "%s".', $method->reflection->class, $method->reflection->name)
         );
 
-        $annotation = $this->annotationProvider->findAnnotation($method->reflection->class, $method->reflection->name);
-        if ($annotation === null) {
-            $annotation = $this->annotationProvider->findAnnotation($method->reflection->class);
-        }
-
         $isGranted = true;
+
+        // check method level ACL
+        $annotation = $this->annotationProvider->findAnnotation($method->reflection->class, $method->reflection->name);
         if ($annotation !== null) {
             $this->logger->info(
-                sprintf('Check access based on "%s" ACL annotation.', $annotation->getId())
+                sprintf('Check an access using "%s" ACL annotation.', $annotation->getId())
             );
             $isGranted = $this->securityContext->isGranted(
                 $annotation->getPermission(),
                 $this->objectIdentityFactory->get($annotation)
             );
+        }
+
+        // check class level ACL
+        if ($isGranted && ($annotation === null || !$annotation->getIgnoreClassAcl())) {
+            $annotation = $this->annotationProvider->findAnnotation($method->reflection->class);
+            if ($annotation !== null) {
+                $this->logger->info(
+                    sprintf('Check an access using "%s" ACL annotation.', $annotation->getId())
+                );
+                $isGranted = $this->securityContext->isGranted(
+                    $annotation->getPermission(),
+                    $this->objectIdentityFactory->get($annotation)
+                );
+            }
         }
 
         if (!$isGranted) {
