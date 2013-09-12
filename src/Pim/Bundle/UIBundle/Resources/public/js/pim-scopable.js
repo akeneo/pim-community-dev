@@ -42,7 +42,13 @@ define(
                     field.input = this.$el.find('.upload-zone').get(0).outerHTML;
                 } else if (this.$el.find('.switch').length) {
                     field.id = null;
-                    field.input = this.$el.find('.switch').get(0).outerHTML;
+
+                    var $original = this.$el.find('.switch'),
+                        $wrap = $original.clone().empty().removeClass('has-switch'),
+                        $input = $original.find('input');
+                    $input.appendTo($wrap);
+
+                    field.input = $wrap.get(0).outerHTML;
                 } else if (this.$el.find('.control-label')) {
                     field.id = this.$el.find('.control-label').attr('for');
                     field.input = $('#' + field.id).get(0).outerHTML;
@@ -66,6 +72,7 @@ define(
                     );
 
                     this.$el.find('[data-toggle="tooltip"]').tooltip();
+                    this.$el.find('.switch').bootstrapSwitch();
                 }
 
                 return this;
