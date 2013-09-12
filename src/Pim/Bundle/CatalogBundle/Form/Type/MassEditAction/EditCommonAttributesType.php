@@ -65,9 +65,6 @@ class EditCommonAttributesType extends AbstractType
                     'multiple' => true,
                     'expanded' => false,
                     'group_by' => 'virtualGroup.name',
-                    'attr'     => array(
-                        'class' => 'operation-param',
-                    )
                 )
             );
     }

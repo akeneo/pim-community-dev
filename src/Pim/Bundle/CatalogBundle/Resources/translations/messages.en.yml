@@ -214,9 +214,10 @@
 # Batch operations
 pim_catalog.mass_edit_action:
     change-status.label:          'Change status (Enable/Disable)'
-    edit-common-attributes.label: 'Edit attributes'
-    choose:
-        page_title: 'Products'
-        page_subtitle: 'Mass Edit (1 product)|Mass Edit (%count% products)'
-        title: 'Choose operation'
-        subtitle: 'Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products'
+    edit-common-attributes:
+        label: 'Edit attributes'
+        empty: 'Please select the attribute(s) you want to edit'
+    page_title: 'Products'
+    page_subtitle: 'Mass Edit (1 product)|Mass Edit (%count% products)'
+    title: 'Choose operation'
+    subtitle: 'Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products'
