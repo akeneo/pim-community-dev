@@ -46,10 +46,10 @@ interface AclExtensionInterface
     /**
      * Constructs an ObjectIdentity for the given object
      *
-     * @param mixed $object
+     * @param mixed $val A domain object, object identity descriptor (id:type) or ACL annotation
      * @return ObjectIdentity
      */
-    public function getObjectIdentity($object);
+    public function getObjectIdentity($val);
 
     /**
      * Gets the new instance of the mask builder which can be used to build permission bitmask
@@ -171,6 +171,16 @@ interface AclExtensionInterface
      * @return string[]
      */
     public function getAllowedPermissions(ObjectIdentity $oid);
+
+    /**
+     * Gets default permission.
+     * If ACL extension supports only one permission then this permission is default one.
+     * If ACL extension supports several permissions and there is no default permission
+     * this method must return empty string.
+     *
+     * @return string
+     */
+    public function getDefaultPermission();
 
     /**
      * Gets all types of domain objects or resources supported by this ACL extension.

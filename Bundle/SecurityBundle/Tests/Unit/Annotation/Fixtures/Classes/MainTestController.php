@@ -1,17 +1,19 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Tests\Unit\Fixture\Controller;
+namespace Oro\Bundle\SecurityBundle\Tests\Unit\Annotation\Fixtures\Classes;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * @Acl(
  *      id = "user_test_main_controller",
- *      name="Test controller",
- *      description = "Test controller for ACL"
+ *      type="action",
+ *      group_name="Test Group",
+ *      label = "Test controller for ACL"
  * )
  */
 class MainTestController extends Controller
@@ -20,9 +22,11 @@ class MainTestController extends Controller
     /**
      * @Acl(
      *      id = "user_test_main_controller_action1",
-     *      name="action 1",
-     *      description = "Action 1",
-     *      parent = "user_test_main_controller"
+     *      type="entity",
+     *      class="AcmeBundle\Entity\SomeClass",
+     *      permission="VIEW",
+     *      group_name="Test Group",
+     *      label="Action 1"
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -34,9 +38,9 @@ class MainTestController extends Controller
     /**
      * @Acl(
      *      id = "user_test_main_controller_action2",
-     *      name="action 2",
-     *      description = "Action 2",
-     *      parent = "user_test_main_controller"
+     *      type="action",
+     *      group_name="Another Group",
+     *      label="Action 2"
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -46,12 +50,7 @@ class MainTestController extends Controller
     }
 
     /**
-     * @Acl(
-     *      id = "user_test_main_controller_action3",
-     *      name="action 3",
-     *      description = "Action 3",
-     *      parent = "user_test_main_controller"
-     * )
+     * @AclAncestor("user_test_main_controller_action2")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function test3Action()

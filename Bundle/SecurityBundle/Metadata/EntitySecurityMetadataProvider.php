@@ -91,6 +91,11 @@ class EntitySecurityMetadataProvider
                 $this->cache->deleteAll();
             }
         }
+        if ($securityType !== null) {
+            unset($this->localCache[$securityType]);
+        } else {
+            $this->localCache = array();
+        }
     }
 
     /**

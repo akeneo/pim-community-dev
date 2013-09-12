@@ -1,5 +1,6 @@
 <?php
-namespace Oro\Bundle\UserBundle\Tests\Unit\Fixture\Controller;
+
+namespace Oro\Bundle\SecurityBundle\Tests\Unit\Annotation\Fixtures;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 

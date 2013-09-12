@@ -6,6 +6,7 @@ use Oro\Bundle\SecurityBundle\Metadata\ActionMetadataProvider;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
+use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 
 class ActionAclExtension extends AbstractAclExtension
 {
@@ -66,10 +67,15 @@ class ActionAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getObjectIdentity($object)
+    public function getObjectIdentity($val)
     {
         $type = $id = null;
-        $this->parseDescriptor($object, $type, $id);
+        if (is_string($val)) {
+            $this->parseDescriptor($val, $type, $id);
+        } elseif ($val instanceof AclAnnotation) {
+            $type = $val->getId();
+            $id = $val->getType();
+        }
 
         return new ObjectIdentity($id, $type);
     }
@@ -127,6 +133,14 @@ class ActionAclExtension extends AbstractAclExtension
     public function getAllowedPermissions(ObjectIdentity $oid)
     {
         return array('EXECUTE');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultPermission()
+    {
+        return 'EXECUTE';
     }
 
     /**

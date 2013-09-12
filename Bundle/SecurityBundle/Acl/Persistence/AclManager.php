@@ -302,13 +302,13 @@ class AclManager
      *     getOid('Entity:AcmeBundle:SomeEntity')
      *     getOid('Action:Some Action')
      *
-     * @param mixed $domainObjectOrDescriptor An domain object or the object identity descriptor
+     * @param mixed $val An domain object, object identity descriptor (id:type) or ACL annotation
      * @return OID
      * @throws InvalidDomainObjectException
      */
-    public function getOid($domainObjectOrDescriptor)
+    public function getOid($val)
     {
-        return $this->objectIdentityFactory->get($domainObjectOrDescriptor);
+        return $this->objectIdentityFactory->get($val);
     }
 
     /**

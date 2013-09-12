@@ -16,6 +16,7 @@ use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
+use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -209,11 +210,15 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getObjectIdentity($object)
+    public function getObjectIdentity($val)
     {
-        return is_string($object)
-            ? $this->fromDescriptor($object)
-            : $this->fromDomainObject($object);
+        if (is_string($val)) {
+            return $this->fromDescriptor($val);
+        } elseif ($val instanceof AclAnnotation) {
+            return new ObjectIdentity($val->getType(), $val->getClass());
+        }
+
+        return $this->fromDomainObject($val);
     }
 
     /**

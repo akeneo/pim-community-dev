@@ -40,7 +40,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getObjectIdentity($object)
+    public function getObjectIdentity($val)
     {
         throw new InvalidDomainObjectException('Not supported by NullAclExtension.');
     }
@@ -131,6 +131,14 @@ final class NullAclExtension implements AclExtensionInterface
     public function getAllowedPermissions(ObjectIdentity $oid)
     {
         return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultPermission()
+    {
+        return '';
     }
 
     /**

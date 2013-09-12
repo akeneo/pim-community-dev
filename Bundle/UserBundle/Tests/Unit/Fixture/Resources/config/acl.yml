@@ -1,6 +1,0 @@
-test_controller:
-  label: Test controller
-  type: action
-  group_name: ""
-  binding:
-    - { class: Oro\Bundle\UserBundle\Tests\Unit\Fixture\ConfigController\ConfigController, method: testAction }

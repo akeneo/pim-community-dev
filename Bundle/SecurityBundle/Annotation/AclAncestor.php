@@ -4,7 +4,7 @@ namespace Oro\Bundle\SecurityBundle\Annotation;
 
 /**
  * @Annotation
- * @Target({"METHOD"})
+ * @Target({"METHOD", "CLASS"})
  */
 class AclAncestor
 {
@@ -13,24 +13,27 @@ class AclAncestor
      */
     private $id;
 
+    /**
+     * Constructor
+     *
+     * @param array $data
+     * @throws \InvalidArgumentException
+     */
     public function __construct(array $data)
     {
-        $this->setId($data["value"]);
+        $this->id = isset($data['value']) ? $data['value'] : null;
+        if (empty($this->id) || strpos($this->id, ' ') !== false) {
+            throw new \InvalidArgumentException('ACL id must not be empty or contain blank spaces.');
+        }
     }
 
     /**
+     * Gets id of ACL annotation this ancestor is referred to
+     *
      * @return string
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param string $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 }

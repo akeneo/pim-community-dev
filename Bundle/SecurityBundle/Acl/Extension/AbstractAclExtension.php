@@ -56,6 +56,14 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
+    public function getDefaultPermission()
+    {
+        return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function decideIsGranting($triggeredMask, $object, TokenInterface $securityToken)
     {
         return true;

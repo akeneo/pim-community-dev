@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Tests\Unit\Fixture\ConfigController;
+namespace Oro\Bundle\SecurityBundle\Tests\Unit\Annotation\Fixtures\Classes;
 
 class ConfigController
 {

@@ -5,6 +5,7 @@ namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 
 /**
  * This class provides a functionality to find ACL extension
@@ -51,30 +52,36 @@ class AclExtensionSelector
     /**
      * Gets ACL extension responsible for work with the given domain object
      *
-     * @param mixed $object A domain object, ObjectIdentity or descriptor (id:type)
+     * @param mixed $val A domain object, ObjectIdentity, object identity descriptor (id:type) or ACL annotation
      * @throws InvalidDomainObjectException
      * @return AclExtensionInterface
      */
-    public function select($object)
+    public function select($val)
     {
-        if ($object === null) {
+        if ($val === null) {
             return new NullAclExtension();
         }
 
         $type = $id = null;
-        if (is_string($object)) {
-            $delim = strpos($object, ':');
+        if (is_string($val)) {
+            $delim = strpos($val, ':');
             if ($delim) {
-                $type = ltrim(substr($object, $delim + 1), ' ');
-                $id = strtolower(substr($object, 0, $delim));
+                $type = ltrim(substr($val, $delim + 1), ' ');
+                $id = strtolower(substr($val, 0, $delim));
             }
-        } elseif (is_object($object)) {
-            if ($object instanceof ObjectIdentityInterface) {
-                $type = $object->getType();
-                $id = $object->getIdentifier();
+        } elseif (is_object($val)) {
+            if ($val instanceof ObjectIdentityInterface) {
+                $type = $val->getType();
+                $id = $val->getIdentifier();
+            } elseif ($val instanceof AclAnnotation) {
+                $type = $val->getClass();
+                if (empty($type)) {
+                    $type = $val->getId();
+                }
+                $id = $val->getType();
             } else {
-                $type = get_class($object);
-                $id = $this->objectIdAccessor->getId($object);
+                $type = get_class($val);
+                $id = $this->objectIdAccessor->getId($val);
             }
         }
 
@@ -93,7 +100,7 @@ class AclExtensionSelector
             }
         }
 
-        throw $this->createAclExtensionNotFoundException($object, $type, $id);
+        throw $this->createAclExtensionNotFoundException($val, $type, $id);
     }
 
     /**
@@ -109,16 +116,16 @@ class AclExtensionSelector
     /**
      * Creates an exception indicates that ACL extension was not found for the given domain object
      *
-     * @param mixed $object
+     * @param mixed $val
      * @param string $type
      * @param int|string $id
      * @return InvalidDomainObjectException
      */
-    protected function createAclExtensionNotFoundException($object, $type, $id)
+    protected function createAclExtensionNotFoundException($val, $type, $id)
     {
-        $objInfo = is_object($object) && !($object instanceof ObjectIdentityInterface)
-            ? get_class($object)
-            : (string)$object;
+        $objInfo = is_object($val) && !($val instanceof ObjectIdentityInterface)
+            ? get_class($val)
+            : (string)$val;
 
         return new InvalidDomainObjectException(
             sprintf('An ACL extension was not found for: %s. Type: %s. Id: %s', $objInfo, $type, (string)$id)

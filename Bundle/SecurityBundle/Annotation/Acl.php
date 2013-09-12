@@ -16,22 +16,7 @@ class Acl
     /**
      * @var string
      */
-    private $name;
-
-    /**
-     * @var string
-     */
     private $type;
-
-    /**
-     * @var string
-     */
-    private $entity;
-
-    /**
-     * @var string
-     */
-    private $privilege;
 
     /**
      * @var string
@@ -41,23 +26,47 @@ class Acl
     /**
      * @var string
      */
-    private $method;
+    private $permission;
 
+    /**
+     * @var string
+     */
+    private $group;
+
+    /**
+     * @var string
+     */
+    private $label;
+
+    /**
+     * Constructor
+     *
+     * @param array $data
+     * @throws \InvalidArgumentException
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
     public function __construct(array $data)
     {
-        $aclId = $data['id'];
-        if (preg_match('/\s/', $aclId) > 0) {
-            throw new \RuntimeException('ACL Id can\'t contain blank spaces');
+        $this->id = isset($data['id']) ? $data['id'] : null;
+        if (empty($this->id) || strpos($this->id, ' ') !== false) {
+            throw new \InvalidArgumentException('ACL id must not be empty or contain blank spaces.');
         }
-        unset($data['id']);
 
-        foreach ($data as $key=>$value)
-        {
-            $this->$key = $value;
+        $this->type = isset($data['type']) ? $data['type'] : null;
+        if (empty($this->type)) {
+            throw new \InvalidArgumentException(sprintf('ACL type must not be empty. Id: %s.', $this->id));
         }
+
+        $this->permission = isset($data['permission']) ? $data['permission'] : '';
+        $this->class = isset($data['class']) ? $data['class'] : '';
+        $this->group = isset($data['group_name']) ? $data['group_name'] : '';
+        $this->label = isset($data['label']) ? $data['label'] : '';
     }
 
     /**
+     * Gets id of this ACL annotation
+     *
      * @return string
      */
     public function getId()
@@ -66,38 +75,18 @@ class Acl
     }
 
     /**
+     * Gets ACL extension key
+     *
      * @return string
      */
-    public function getName()
+    public function getType()
     {
-        return $this->name;
+        return $this->type;
     }
 
     /**
-     * @param string $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @param string $className
-     */
-    public function setClass($className)
-    {
-        $this->class = $className;
-    }
-
-    /**
+     * Gets ACL class name
+     *
      * @return string
      */
     public function getClass()
@@ -106,66 +95,42 @@ class Acl
     }
 
     /**
-     * @param string $methodName
-     */
-    public function setMethod($methodName)
-    {
-        $this->method = $methodName;
-    }
-
-    /**
+     * Gets ACL permission name
+     *
      * @return string
      */
-    public function getMethod()
+    public function getPermission()
     {
-        return $this->method;
+        return $this->permission;
     }
 
     /**
-     * @param string $entity
+     * Sets ACL permission name
+     *
+     * @param string $permission
      */
-    public function setEntity($entity)
+    public function setPermission($permission)
     {
-        $this->entity = $entity;
+        $this->permission = $permission;
     }
 
     /**
+     * Gets ACL group name
+     *
      * @return string
      */
-    public function getEntity()
+    public function getGroup()
     {
-        return $this->entity;
+        return $this->group;
     }
 
     /**
-     * @param string $privilege
-     */
-    public function setPrivilege($privilege)
-    {
-        $this->privilege = $privilege;
-    }
-
-    /**
+     * Gets ACL label name
+     *
      * @return string
      */
-    public function getPrivilege()
+    public function getLabel()
     {
-        return $this->privilege;
-    }
-
-    /**
-     * @param string $type
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
+        return $this->label;
     }
 }

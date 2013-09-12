@@ -61,21 +61,21 @@ class ObjectIdentityFactory
      *     get('Entity:AcmeBundle:SomeEntity')
      *     get('Action:Some Action')
      *
-     * @param mixed $domainObjectOrDescriptor An domain object or the object identity descriptor
+     * @param mixed $val An domain object, object identity descriptor (id:type) or ACL annotation
      * @return ObjectIdentity
      * @throws InvalidDomainObjectException
      */
-    public function get($domainObjectOrDescriptor)
+    public function get($val)
     {
         try {
             $result = $this->extensionSelector
-                ->select($domainObjectOrDescriptor)
-                ->getObjectIdentity($domainObjectOrDescriptor);
+                ->select($val)
+                ->getObjectIdentity($val);
 
             if ($result === null) {
-                $objInfo = is_object($domainObjectOrDescriptor)
-                    ? get_class($domainObjectOrDescriptor)
-                    : (string)$domainObjectOrDescriptor;
+                $objInfo = is_object($val)
+                    ? get_class($val)
+                    : (string)$val;
                 throw new \InvalidArgumentException(sprintf('Cannot create ObjectIdentity for: %s.', $objInfo));
             }
         } catch (\InvalidArgumentException $ex) {

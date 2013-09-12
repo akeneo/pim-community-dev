@@ -7,6 +7,7 @@ use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntityImplementsDomainObjectInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Oro\Bundle\SecurityBundle\Tests\Unit\TestHelper;
+use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 
 class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -125,6 +126,22 @@ class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
     public function testGetIncorrectActionDescriptor()
     {
         $this->factory->get('Some Action');
+    }
+
+    public function testFromEntityAclAnnotation()
+    {
+        $obj = new AclAnnotation(array('id' => 'test', 'type'=> 'entity', 'class' => 'Acme\SomeEntity'));
+        $id = $this->factory->get($obj);
+        $this->assertEquals('entity', $id->getIdentifier());
+        $this->assertEquals('Acme\SomeEntity', $id->getType());
+    }
+
+    public function testFromActionAclAnnotation()
+    {
+        $obj = new AclAnnotation(array('id' => 'test_action', 'type'=> 'action'));
+        $id = $this->factory->get($obj);
+        $this->assertEquals('action', $id->getIdentifier());
+        $this->assertEquals('test_action', $id->getType());
     }
 
     public static function getProvider()

@@ -3,9 +3,9 @@
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 // @codingStandardsIgnoreStart
-class Annotation
+class ClassWONamespace
 {
-    private function testAction(Acl $acl)
+    private function test(Acl $test)
     {
     }
 }
