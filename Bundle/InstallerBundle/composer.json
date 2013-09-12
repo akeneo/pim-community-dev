@@ -1,0 +1,27 @@
+{
+    "name": "oro/installer-bundle",
+    "type": "symfony-bundle",
+    "description": "Web installer for BAP/OroCRM",
+    "keywords": ["BAP"],
+    "homepage": "https://github.com/laboro/InstallerBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": "2.3.*",
+        "sylius/flow-bundle": "0.1.*"
+    },
+    "require-dev": {
+        "symfony/form": "~2.3",
+        "symfony/validator": "~2.3"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\InstallerBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/InstallerBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
