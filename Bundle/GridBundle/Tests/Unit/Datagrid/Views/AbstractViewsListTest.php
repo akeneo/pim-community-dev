@@ -146,6 +146,9 @@ class AbstractViewsListTest extends \PHPUnit_Framework_TestCase
      */
     public function testApplyToDatagrid()
     {
+        $viewList = $this->viewsDataProvider();
+        $viewList = $viewList['good scenario']['views'];
+
         $defaultParameters = array();
         $parameters = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ParametersInterface');
 
@@ -160,6 +163,11 @@ class AbstractViewsListTest extends \PHPUnit_Framework_TestCase
         $datagrid->expects($this->once())
             ->method('getParameters')
             ->will($this->returnValue($parameters));
+
+        $this->list
+            ->expects($this->once())
+            ->method('getViewsList')
+            ->will($this->returnValue($viewList));
 
         $this->list->applyToDatagrid($datagrid, $defaultParameters);
     }
