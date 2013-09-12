@@ -43,7 +43,6 @@ class Classify extends AbstractMassEditAction
     {
         $this->manager         = $manager;
         $this->categoryManager = $categoryManager;
-
         $this->trees           = $categoryManager->getEntityRepository()->findBy(array('parent' => null));
         $this->categories      = array();
     }
@@ -65,6 +64,16 @@ class Classify extends AbstractMassEditAction
     }
 
     /**
+     * @return CategoryInterface[]
+     */
+    public function setCategories($categories)
+    {
+        $this->categories = $categories;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getFormType()
@@ -77,6 +86,12 @@ class Classify extends AbstractMassEditAction
      */
     public function perform(array $products)
     {
-
+        foreach ($products as $product) {
+            foreach ($this->getCategories() as $category) {
+                $product->addCategory($category);
+                $this->manager->getStorageManager()->persist($product);
+            }
+        }
+        $this->manager->getStorageManager()->flush();
     }
 }
