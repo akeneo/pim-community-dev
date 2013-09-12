@@ -24,9 +24,8 @@ class EntitySecurityMetadataTest extends \PHPUnit_Framework_TestCase
 
     public function testSerialize()
     {
-        $data = $this->entity->serialize();
-        $emptyEntity = new EntitySecurityMetadata();
-        $emptyEntity->unserialize($data);
+        $data = serialize($this->entity);
+        $emptyEntity = unserialize($data);
         $this->assertEquals('SomeType', $emptyEntity->getSecurityType());
         $this->assertEquals('SomeClass', $emptyEntity->getClassName());
         $this->assertEquals('SomeGroup', $emptyEntity->getGroup());

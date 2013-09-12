@@ -99,7 +99,7 @@ class AclAnnotationProvider
     public function clearCache()
     {
         if ($this->cache) {
-            $this->cache->deleteAll();
+            $this->cache->delete('AclAnnotations');
         }
         $this->storage = null;
     }

@@ -77,12 +77,12 @@ class OwnershipMetadataTest extends \PHPUnit_Framework_TestCase
     public function testSerialization()
     {
         $metadata = new OwnershipMetadata('ORGANIZATION', 'org', 'org_id');
-        $data = $metadata->serialize();
+        $data = serialize($metadata);
         $metadata = new OwnershipMetadata();
         $this->assertFalse($metadata->isOrganizationOwned());
         $this->assertEquals('', $metadata->getOwnerFieldName());
         $this->assertEquals('', $metadata->getOwnerColumnName());
-        $metadata->unserialize($data);
+        $metadata = unserialize($data);
         $this->assertTrue($metadata->isOrganizationOwned());
         $this->assertEquals('org', $metadata->getOwnerFieldName());
         $this->assertEquals('org_id', $metadata->getOwnerColumnName());
