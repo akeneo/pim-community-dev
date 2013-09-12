@@ -767,7 +767,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iRemoveTheAttribute($field)
     {
-        $this->wait(10000, null);
         if (null === $link = $this->getCurrentPage()->getRemoveLinkFor($field)) {
             throw $this->createExpectationException(
                 sprintf(
