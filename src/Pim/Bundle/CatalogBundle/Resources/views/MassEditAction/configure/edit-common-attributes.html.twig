@@ -11,28 +11,37 @@
         </div>
     </div>
 
-{% for groupView in form.operation.vars.groups %}
-    <div class="row offset1">
-        <h4>{{ groupView.name }}</h4>
-        {% for attributeId, attributeView in groupView.attributes %}
-        <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
-            {% if attributeView.values is defined %}
-            {% for scope, subvalue in attributeView.values %}
-            <div class="control-group" data-field="{{ attributeView.code }}">
-                {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
+    <div class="row">
+        <div class="offset1 span12 grouped-attributes">
+        {% for groupView in form.operation.vars.groups %}
+
+            <h4>{{ groupView.name }}</h4>
+
+            {% for attributeId, attributeView in groupView.attributes %}
+            <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
+                {% if attributeView.values is defined %}
+                {% for scope, subvalue in attributeView.values %}
+                <div class="control-group" data-field="{{ attributeView.code }}">
+                    {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="control-group" data-field="{{ attributeView.code }}">
+                    {{ form_widget(attributeView.value) }}
+                </div>
+                {% endif %}
             </div>
             {% endfor %}
-            {% else %}
-            <div class="control-group" data-field="{{ attributeView.code }}">
-                {{ form_widget(attributeView.value) }}
-            </div>
-            {% endif %}
-        </div>
-        {% endfor %}
-    </div>
-{% endfor %}
 
-    <div class="row offset1">
+            {% if not loop.last %}
+            <hr />
+            {% endif %}
+
+        {% endfor %}
+        </div>
+    </div>
+
+    <div class="row offset1 buffer-top">
         <a href="{{ path('pim_catalog_mass_edit_action_choose', {'products': productIds}) }}" class="btn">Cancel</a>
         <input type="submit" value="Next" class="btn btn-primary">
     </div>
