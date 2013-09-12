@@ -5,7 +5,7 @@
 
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore', 'pim/tree/associate'],
+            ['jquery', 'underscore', 'pim/tree/mass-associate'],
             function($, _, TreeAssociate){
                 'use strict';
                 $(function() {
@@ -16,8 +16,9 @@
     </script>
 {% endblock %}
 
-{% block content %}
-    {{ parent() }}
+{% block form %}
+
+    {{ form_widget(form) }}
 
     {% set trees = form.vars.value.operation.trees %}
 
@@ -50,5 +51,4 @@
             {% endfor %}
         </div>
     </div>
-
 {% endblock %}
