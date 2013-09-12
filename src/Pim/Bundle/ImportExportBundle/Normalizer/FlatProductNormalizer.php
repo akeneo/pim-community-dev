@@ -43,6 +43,8 @@ class FlatProductNormalizer implements NormalizerInterface
     {
         $this->results = array();
 
+        $scope = (isset($context['scope'])) ? $context['scope'] : null;
+
         $this->normalizeValue($identifier = $object->getIdentifier());
 
         $this->normalizeFamily($object->getFamily());
@@ -50,6 +52,10 @@ class FlatProductNormalizer implements NormalizerInterface
         foreach ($object->getValues() as $value) {
             if ($value === $identifier) {
                 continue;
+            } elseif ($value->getScope() !== null && $scope !== null) {
+                if ($value->getScope() !== $scope) {
+                    continue;
+                }
             }
             $this->normalizeValue($value);
         }
