@@ -23,9 +23,8 @@ class ActionMetadataTest extends \PHPUnit_Framework_TestCase
 
     public function testSerialize()
     {
-        $data = $this->metadata->serialize();
-        $emptyMetadata = new ActionMetadata();
-        $emptyMetadata->unserialize($data);
+        $data = serialize($this->metadata);
+        $emptyMetadata = unserialize($data);
         $this->assertEquals('SomeName', $emptyMetadata->getClassName());
         $this->assertEquals('SomeGroup', $emptyMetadata->getGroup());
         $this->assertEquals('SomeLabel', $this->metadata->getLabel());

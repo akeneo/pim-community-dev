@@ -137,15 +137,18 @@ class AclAnnotationStorage
 
         $key = empty($method) ? $class : $class . '!' . $method;
         if (isset($this->bindings[$key])) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Duplicate binding for "%s". New Id: %s. Existing Id: %s',
-                    empty($method) ? $class : $class . '::' . $method,
-                    $id,
-                    $this->bindings[$key]
-                )
-            );
+            if ($this->bindings[$key] !== $id) {
+                throw new \RuntimeException(
+                    sprintf(
+                        'Duplicate binding for "%s". New Id: %s. Existing Id: %s',
+                        empty($method) ? $class : $class . '::' . $method,
+                        $id,
+                        $this->bindings[$key]
+                    )
+                );
+            }
+        } else {
+            $this->bindings[$key] = $id;
         }
-        $this->bindings[$key] = $id;
     }
 }

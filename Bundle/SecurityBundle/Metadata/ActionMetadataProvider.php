@@ -5,16 +5,36 @@ namespace Oro\Bundle\SecurityBundle\Metadata;
 class ActionMetadataProvider
 {
     /**
+     * @var AclAnnotationProvider
+     */
+    protected $annotationProvider;
+
+    /**
+     * Constructor
+     *
+     * @param AclAnnotationProvider $annotationProvider
+     */
+    public function __construct(AclAnnotationProvider $annotationProvider)
+    {
+        $this->annotationProvider = $annotationProvider;
+    }
+
+    /**
      * Gets metadata for all actions.
      *
      * @return ActionMetadata[]
      */
     public function getActions()
     {
-        // @todo not implemented yet
-        return array(
-            new ActionMetadata('DemoAction1', '', 'Demo Action 1'),
-            new ActionMetadata('DemoAction2', '', 'Demo Action 2'),
-        );
+        $result = array();
+        foreach ($this->annotationProvider->getAnnotations('action') as $annotation) {
+            $result[] = new ActionMetadata(
+                $annotation->getId(),
+                $annotation->getGroup(),
+                $annotation->getLabel()
+            );
+        }
+
+        return $result;
     }
 }

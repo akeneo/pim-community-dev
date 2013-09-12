@@ -40,6 +40,19 @@ class EntitySecurityMetadataProviderTest extends \PHPUnit_Framework_TestCase
         $this->entity = new EntitySecurityMetadata(Provider::ACL_SECURITY_TYPE, 'SomeClass', 'SomeGroup', 'SomeLabel');
     }
 
+    public function testIsProtectedEntity()
+    {
+        $this->cache->expects($this->any())
+            ->method('fetch')
+            ->with(Provider::ACL_SECURITY_TYPE)
+            ->will($this->returnValue(array('SomeClass' => new EntitySecurityMetadata())));
+
+        $provider = new Provider($this->securityConfigProvider, $this->entityConfigProvider, $this->cache);
+
+        $this->assertTrue($provider->isProtectedEntity('SomeClass'));
+        $this->assertFalse($provider->isProtectedEntity('UnknownClass'));
+    }
+
     public function testGetEntities()
     {
         $entityConfig = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface')
