@@ -325,18 +325,20 @@ div.btn-group > .has-switch {
     font-size: 26px;
     width: 45px;
   }
-}
-
-input[type="file"] {
-  display: block;
-  z-index: 99;
-  position: relative;
-  top: -100px;
-  width: 100%!important;
-  height: 100%;
-  border-radius: 20px;
-  cursor: pointer;
-  opacity: 0;
+  input[type="file"] {
+    display: block;
+    z-index: 99;
+    position: relative;
+    top: -100px;
+    width: 100%!important;
+    height: 100%;
+    border-radius: 20px;
+    cursor: pointer;
+    opacity: 0;
+    &.hide {
+      display: none;
+    }
+  }
 }
 
 /* Collapsable sidebar **********************************************************************************************/

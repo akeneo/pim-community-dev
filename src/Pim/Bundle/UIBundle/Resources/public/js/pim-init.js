@@ -143,14 +143,6 @@ require(
                 }
             });
 
-            $('.remove-upload').on('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                var $input = $(this).siblings('input[type="file"]').first();
-                $input.wrap('<form>').closest('form').get(0).reset();
-                $input.unwrap().trigger('change');
-            });
-
             $('[data-form-toggle]').on('click', function () {
                 $('#' + $(this).attr('data-form-toggle')).show();
                 $(this).hide();
@@ -164,6 +156,14 @@ require(
 
             $(document).on('uniformInit', function () {
                 $.uniform.restore();
+            });
+
+            $(document).on('click', '.remove-upload', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $input = $(this).siblings('input[type="file"]').first();
+                $input.wrap('<form>').closest('form').get(0).reset();
+                $input.unwrap().trigger('change');
             });
 
             $(document).on('mouseover', '.upload-zone:not(.empty)', function() {
