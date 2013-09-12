@@ -1063,6 +1063,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iDisableTheProducts()
     {
         $this->getPage('Batch ChangeStatus')->disableProducts()->next();
+        $this->wait();
     }
 
     /**
@@ -1079,6 +1080,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iEnableTheProducts()
     {
         $this->getPage('Batch ChangeStatus')->enableProducts()->next();
+        $this->wait();
     }
 
 
@@ -1089,7 +1091,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function productShouldBeDisabled($sku)
     {
-        if ($this->getProduct($sku)->isEnabled()) {
+        $product = $this->getProduct($sku);
+        $this->getMainContext()->getEntityManager()->refresh($product);
+        if ($product->isEnabled()) {
             throw $this->createExpectationException('Product was expected to be be disabled');
         }
     }
@@ -1101,7 +1105,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function productShouldBeEnabled($sku)
     {
-        if (!$this->getProduct($sku)->isEnabled()) {
+        $product = $this->getProduct($sku);
+        $this->getMainContext()->getEntityManager()->refresh($product);
+        if (!$product->isEnabled()) {
             throw $this->createExpectationException('Product was expected to be be enabled');
         }
     }
@@ -1653,22 +1659,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iMassEditProducts($products)
     {
-        $that = $this;
-        $products = preg_replace(
-            '/]\d+=/',
-            ']=',
-            http_build_query(
-                array_map(
-                    function ($product) use ($that) {
-                        return $that->getProduct($product)->getId();
-                    },
-                    $this->listToArray($products)
-                ),
-                'products[]'
-            )
-        );
+        $page = $this->getPage('Product index');
 
-        $this->openPage('Batch Operation', array('products' => $products));
+        foreach ($this->listToArray($products) as $product) {
+            $page->selectRow($product);
+        }
+
+        $page->massEdit();
+        $this->wait();
     }
 
     /**

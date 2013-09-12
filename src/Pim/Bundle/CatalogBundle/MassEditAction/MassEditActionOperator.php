@@ -134,41 +134,23 @@ class MassEditActionOperator
      * Delegate the batch operation initialization to the chosen operation adapter
      *
      * @param array $parameters
-     *
-     * @throw \InvalidArgumentException if $parameters is missing a "products" key
      */
-    public function initializeOperation(array $parameters)
+    public function initializeOperation($productIds)
     {
         if ($this->operation) {
-            if (!array_key_exists('products', $parameters)) {
-                throw new \InvalidArgumentException('Missing mandatory parameter "products"');
-            }
-
-            $products = $this->getProducts($parameters['products']);
-            unset($parameters['products']);
-
-            $this->operation->initialize($products, $parameters);
+            $this->operation->initialize($this->getProducts($productIds));
         }
     }
 
     /**
      * Delegate the batch operation execution to the chosen operation adapter
      *
-     * @param array $parameters
-     *
-     * @throw \InvalidArgumentException if $parameters is missing a "products" key
+     * @param array $productIds
      */
-    public function performOperation(array $parameters)
+    public function performOperation(array $productIds)
     {
         if ($this->operation) {
-            if (!array_key_exists('products', $parameters)) {
-                throw new \InvalidArgumentException('Missing mandatory parameter "products"');
-            }
-
-            $products = $this->getProducts($parameters['products']);
-            unset($parameters['products']);
-
-            $this->operation->perform($products, $parameters);
+            $this->operation->perform($this->getProducts($productIds));
         }
     }
 
@@ -185,7 +167,7 @@ class MassEditActionOperator
     {
         $products = $this->manager->findByIds($productIds);
         if (!$products) {
-            throw new \InvalidArgumentException('No product were selected');
+            throw new \InvalidArgumentException(sprintf('No product were found with ids %s', join(', ', $productIds)));
         }
 
         return $products;

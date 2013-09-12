@@ -1,9 +1,11 @@
-{% extends 'PimCatalogBundle::layout.html.twig' %}
+{% extends 'PimCatalogBundle:MassEditAction:layout.html.twig' %}
 
 {% block content %}
     {% set title = 'pim_catalog.mass_edit_action.choose.page_title'|trans %}
     {% set subtitle = 'pim_catalog.mass_edit_action.choose.page_subtitle'|transchoice(productIds|length) %}
     {{ elements.page_header(title, null, subtitle) }}
+
+    {{ parent() }}
 
     <div class="row">
         <div class="offset1">
@@ -29,4 +31,9 @@
         </div>
 
     </form>
+{% endblock %}
+
+{% block head_script_component %}
+    {% set currentStep = 2 %}
+    {{ parent() }}
 {% endblock %}
