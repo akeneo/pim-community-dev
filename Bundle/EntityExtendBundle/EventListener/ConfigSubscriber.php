@@ -71,6 +71,7 @@ class ConfigSubscriber implements EventSubscriberInterface
             }
         }
 
+
         if ($scope == 'datagrid'
             && $event->getConfig()->getId() instanceof FieldConfigIdInterface
             && !in_array($event->getConfig()->getId()->getFieldType(), array('text'))
@@ -79,11 +80,10 @@ class ConfigSubscriber implements EventSubscriberInterface
         ) {
             /** @var ConfigProvider $extendConfigProvider */
             $extendConfigProvider = $event->getConfigManager()->getProvider('extend');
+            $extendConfig         = $extendConfigProvider->getConfig($className);
+            $index                = $extendConfig->has('index') ? $extendConfig->get('index') : array();
 
-            $fieldName = $event->getConfig()->getId()->getFieldName();
-
-            $extendConfig = $extendConfigProvider->getConfig($className, $fieldName);
-            $extendConfig->set('is_indexable', $event->getConfig()->get('is_visible'));
+            $index[$event->getConfig()->getId()->getFieldName()] = $event->getConfig()->get('is_visible');
 
             $event->getConfigManager()->persist($extendConfig);
         }

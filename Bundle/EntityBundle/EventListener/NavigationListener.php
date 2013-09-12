@@ -52,7 +52,6 @@ class NavigationListener
             $entities = $this->em->getRepository(EntityConfigModel::ENTITY_NAME)->findAll();
             if ($entities) {
                 foreach ($entities as $entity) {
-
                     $extendConfig = $this->entityExtendProvider->getConfig($entity->getClassName());
                     if ($extendConfig->is('is_extend')
                         && $extendConfig->get('owner') == ExtendManager::OWNER_CUSTOM

@@ -11,7 +11,7 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
-use Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator;
+use Oro\Bundle\EntityExtendBundle\Tools\Generator;
 
 class CustomEntityType extends AbstractType
 {

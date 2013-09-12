@@ -33,7 +33,9 @@ class Generator
      */
     protected $extendManager;
 
-    /** @var OroEntityManager */
+    /**
+     * @var OroEntityManager
+     */
     protected $em;
 
     /**
@@ -69,7 +71,7 @@ class Generator
             $className       = array_pop($classArray);
 
             if ($parentClassName == 'Extend' . $className) {
-                if (!$configProvider->isConfigurable($originalClassName)) {
+                if (!$configProvider->hasConfig($originalClassName)) {
                     throw new RuntimeException(sprintf('Class "%s" should be configurable.', $originalClassName));
                 }
 
@@ -88,6 +90,11 @@ class Generator
 
                 $this->writer = new Writer();
                 $class = PhpClass::create(self::ENTITY . $parentClassName);
+
+                if ($inheritedClass) {
+                    $class->setParentClassName($inheritedClass);
+                }
+
                 $strategy = new DefaultGeneratorStrategy();
 
                 $filePath = $this->entityCacheDir . '/Extend/Entity/'. $parentClassName. '.php';
@@ -178,8 +185,9 @@ class Generator
 
         $strategy = new DefaultGeneratorStrategy();
 
+        $classNameArray = explode('\\', $className);
         file_put_contents(
-            $this->entityCacheDir . '/Extend/Entity/' . array_pop(explode('\\', $className)) . '.php',
+            $this->entityCacheDir . '/Extend/Entity/' . array_pop($classNameArray) . '.php',
             "<?php\n\n" . $strategy->generate($class)
         );
     }
@@ -207,8 +215,9 @@ class Generator
 
         $this->generateYamlMethods($className, $className, $yml);
 
+        $classNameArray = explode('\\', $className);
         file_put_contents(
-            $this->entityCacheDir . '/Extend/Entity/' . array_pop(explode('\\', $className)) . '.orm.yml',
+            $this->entityCacheDir . '/Extend/Entity/' . array_pop($classNameArray) . '.orm.yml',
             Yaml::dump($yml, 5)
         );
     }
