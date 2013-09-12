@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\EntityBundle\Controller;
 
+use BeSimple\SoapCommon\Type\KeyValue\DateTime;
+use Oro\Bundle\EntityExtendBundle\Tools\Generator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,7 +67,7 @@ class EntitiesController extends Controller
         /** @var  CustomEntityDatagrid $datagrid */
         $datagridManager = $this->get('oro_entity.custom_datagrid.manager');
 
-        $className = $entity->getClassName();
+        $className       = $entity->getClassName();
         $extendClassName = $className;
 
         $datagridManager->setCustomEntityClass($className, $extendClassName);
@@ -102,9 +104,43 @@ class EntitiesController extends Controller
      * )
      * @Template()
      */
-    public function viewAction(Request $request)
+    public function viewAction($entity_id, $id)
     {
+        /** @var OroEntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        /** @var EntityConfigModel $entity */
+        $entity = $em->getRepository(EntityConfigModel::ENTITY_NAME)->find($entity_id);
 
+        /** @var ConfigProvider $entityConfigProvider */
+        $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
+        $entityConfig         = $entityConfigProvider->getConfig($entity->getClassName());
+
+        $extendEntityName       = $entity->getClassName();
+        $extendEntityRepository = $em->getRepository($extendEntityName);
+
+        $record = $extendEntityRepository->find($id);
+
+        /** @var ConfigProvider $entityConfigProvider */
+        $viewConfigProvider = $this->get('oro_entity_config.provider.view');
+
+        $fields = array();
+        foreach ($record->__toArray() as $key => $value) {
+            $config = $viewConfigProvider->getConfig($entity->getClassName(), str_replace(Generator::PREFIX, '', $key));
+            if ($config->is('is_displayable')) {
+                if ($value instanceof \DateTime) {
+                    $value = $value->format('Y-m-d H:i:s');
+                }
+                $fields[$key] = $value;
+            }
+        }
+
+        return array(
+            'parent'        => $entity_id,
+            'entity'        => $record,
+            'entity_fields' => $fields,
+            'id'            => $id,
+            'entity_config' => $entityConfig,
+        );
     }
 
     /**
