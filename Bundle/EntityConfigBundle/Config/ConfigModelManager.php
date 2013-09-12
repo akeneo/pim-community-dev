@@ -34,6 +34,12 @@ class ConfigModelManager
      */
     protected $proxyEm;
 
+    private $ignoreModel = array(
+        'Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel',
+        'Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel',
+        'Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel',
+    );
+
     public function __construct(ServiceLink $proxyEm)
     {
         $this->localCache = new ArrayCollection;
@@ -53,10 +59,7 @@ class ConfigModelManager
      */
     public function checkDatabase()
     {
-        $tables = $this->getEntityManager()->getConnection()->getSchemaManager()->listTableNames();
-        $table  = $this->getEntityManager()->getClassMetadata(EntityConfigModel::ENTITY_NAME)->getTableName();
-
-        return in_array($table, $tables);
+        return (bool) count($this->getEntityManager()->getConnection()->getSchemaManager()->listTableNames());
     }
 
     /**
@@ -66,6 +69,10 @@ class ConfigModelManager
      */
     public function findModel($className, $fieldName = null)
     {
+        if (in_array($className, $this->ignoreModel)) {
+            return false;
+        }
+
         $cacheKey = $className . $fieldName;
 
         if ($this->localCache->containsKey($cacheKey)) {

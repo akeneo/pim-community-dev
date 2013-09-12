@@ -3,6 +3,7 @@ parameters:
     oro_entity_extend.extension.extend_entity.class:        Oro\Bundle\EntityExtendBundle\Form\Extension\ExtendEntityExtension
     oro_entity_extend.tools.generator.class:                Oro\Bundle\EntityExtendBundle\Tools\Generator
     oro_entity_extend.listener.config_subscriber.class:     Oro\Bundle\EntityExtendBundle\EventListener\ConfigSubscriber
+    oro_entity_extend.listener.entity_subscriber.class:     Oro\Bundle\EntityExtendBundle\EventListener\DoctrineSubscriber
     oro_entity_extend.command.backup.class:                 Oro\Bundle\EntityExtendBundle\Command\BackupCommand
     oro_entity_extend.command.generate.class:               Oro\Bundle\EntityExtendBundle\Command\UpdateCommand
 
@@ -30,6 +31,14 @@ services:
             - @oro_entity_config.provider.extend
         tags:
             - { name: kernel.event_subscriber}
+
+    oro_entity_extend.listener.entity_subscriber:
+        class:                                      %oro_entity_extend.listener.entity_subscriber.class%
+#        arguments:
+#            -
+
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
 
     oro_entity_extend.command.backup:
         class:                                              %oro_entity_extend.command.backup.class%

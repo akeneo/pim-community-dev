@@ -216,6 +216,10 @@ class ConfigManager
      */
     public function isConfigurable($className, $fieldName = null)
     {
+        if (!$this->modelManager->checkDatabase()) {
+            return false;
+        }
+
         $result = $this->cache->getConfigurable($className, $fieldName);
         if ($result === null) {
             $result = (bool)$this->modelManager->findModel($className, $fieldName);
