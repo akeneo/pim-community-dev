@@ -54,6 +54,10 @@ var require = {
         'bootstrap': {
             deps: ['jquery']
         },
+        'bootstrap-tooltip': {
+            deps: ['bootstrap']
+        },
+
         'underscore': {
             exports: '_'
         },
@@ -86,6 +90,23 @@ var require = {
         'routing': {
             exports: 'window.Routing'
         },
+        'cryptojs/enc-base64': {
+            deps: ['cryptojs/core']
+        },
+        'cryptojs/hmac': {
+            deps: ['cryptojs/core']
+        },
+        'cryptojs/sha256': {
+            deps: ['cryptojs/core']
+        },
+        'cryptojs/pbkdf2': {
+            deps: ['cryptojs/core']
+        },
+        'autobahn': {
+            deps: ['when', 'cryptojs/core', 'cryptojs/enc-base64',
+                'cryptojs/hmac', 'cryptojs/sha256', 'cryptojs/pbkdf2'],
+            exports: 'ab'
+        },
         'oro/translations': {
             deps: ['oro/translator', 'translator'],
             init: function(__) {
@@ -113,6 +134,7 @@ var require = {
         'jstree/jquery.hotkeys': 'oroui/lib/jstree/jquery.hotkeys',
         'jquery.bind-first': 'orojsformvalidation/lib/jquery.bind-first-0.2.1',
         'bootstrap': 'oroui/lib/bootstrap.min',
+        'bootstrap-tooltip': 'oroui/lib/bootstrap/js/bootstrap-tooltip',
         'underscore': 'oroui/lib/underscore',
         'backbone': 'oroui/lib/backbone',
         'backbone/pageable-collection': 'orogrid/lib/backbone-pageable',
@@ -123,6 +145,13 @@ var require = {
         'url': 'oronavigation/lib/url.min',
         'translator': 'bazingaexposetranslation/js/translator.min',
         'routing': 'fosjsrouting/js/router',
+        'cryptojs/core': 'orosync/lib/cryptojs/core-min',
+        'cryptojs/enc-base64': 'orosync/lib/cryptojs/enc-base64-min',
+        'cryptojs/hmac': 'orosync/lib/cryptojs/hmac-min',
+        'cryptojs/sha256': 'orosync/lib/cryptojs/sha256-min',
+        'cryptojs/pbkdf2': 'orosync/lib/cryptojs/pbkdf2-min',
+        'when': 'orosync/lib/when',
+        'autobahn': 'orosync/lib/autobahn',
 
         'oro/address-book': 'oroaddress/js/address-book',
         'oro/address/collection': 'oroaddress/js/address/collection',
@@ -209,6 +238,9 @@ var require = {
         'oro/navigation/pinbar/view': 'oronavigation/js/navigation/pinbar/view',
         'oro/navigation/shortcuts/view': 'oronavigation/js/navigation/shortcuts/view',
         'oro/init-search-bar': 'orosearch/js/init-search-bar',
+        'oro/sync': 'orosync/js/sync',
+        'oro/sync/wamp': 'orosync/js/sync/wamp',
+        'oro/when-setup': 'orosync/js/when-setup',
         'oro/tag/collection': 'orotag/js/tag/collection',
         'oro/tag/model': 'orotag/js/tag/model',
         'oro/tag/update-view': 'orotag/js/tag/update-view',
@@ -240,10 +272,14 @@ var require = {
         },
         '*': {
             'jquery': 'oro/jquery-setup',
+            'when': 'oro/when-setup',
             'oro/translator': 'oro/translations'
         },
         'oro/jquery-setup': {
             'jquery': 'jquery'
+        },
+        'oro/when-setup': {
+            'when': 'when'
         },
         'oro/translations': {
             'oro/translator': 'oro/translator'
