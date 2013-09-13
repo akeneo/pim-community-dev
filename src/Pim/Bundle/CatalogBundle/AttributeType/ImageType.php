@@ -21,17 +21,6 @@ class ImageType extends OroImageType
     {
         $properties = array(
             array(
-                'name'      => 'allowedFileSources',
-                'fieldType' => 'choice',
-                'options'   => array(
-                    'required' => true,
-                    'choices'  => array(
-                        'upload'   => 'Upload',
-                        'external' => 'External'
-                    )
-                )
-            ),
-            array(
                 'name'      => 'maxFileSize',
                 'fieldType' => 'integer'
             ),

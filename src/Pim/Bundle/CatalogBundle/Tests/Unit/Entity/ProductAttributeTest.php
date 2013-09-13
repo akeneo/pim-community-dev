@@ -400,19 +400,6 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for allowedFileSources property
-     */
-    public function testGetSetAllowedFileSources()
-    {
-        $this->assertNull($this->attribute->getAllowedFileSources());
-
-        // Change value and assert new
-        $source = 'upload';
-        $this->assertEntity($this->attribute->setAllowedFileSources($source));
-        $this->assertEquals($source, $this->attribute->getAllowedFileSources());
-    }
-
-    /**
      * Test getter/setter for maxFileSize property
      */
     public function testGetSetMaxFileSize()
