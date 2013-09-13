@@ -1,6 +1,7 @@
-{% if value|length == 0 %}-{% endif %}
+{% set showableCompleteness = false %}
 {% for completeness in value %}
     {% if completeness.locale.code == localeCode and completeness.channel.code == channelCode %}
+        {% set showableCompleteness = true %}
         {% if completeness.ratio == 100 %}
             {% set class = 'success' %}
         {% elseif completeness.ratio == 0 %}
@@ -11,3 +12,6 @@
         <span class="label label-{{ class }}">{{ completeness.ratio }}%</span>
     {% endif %}
 {% endfor %}
+{% if not showableCompleteness %}
+ -
+{% endif%}
