@@ -49,6 +49,7 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setRoles(array('Manager'))
             ->save()
             ->assertMessage('User successfully saved')
+            ->toGrid()
             ->close()
             ->assertTitle('Users - System');
 
@@ -80,8 +81,9 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setFirstname('First_' . $newUsername)
             ->setLastname('Last_' . $newUsername)
             ->save()
-            ->assertTitle('Users - System')
             ->assertMessage('User successfully saved')
+            ->toGrid()
+            ->assertTitle('Users - System')
             ->close();
 
         return $newUsername;
