@@ -128,7 +128,7 @@ class BusinessUnit
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -144,14 +144,14 @@ class BusinessUnit
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -167,7 +167,7 @@ class BusinessUnit
     public function setOrganization(Organization $organization)
     {
         $this->organization = $organization;
-    
+
         return $this;
     }
 
@@ -190,14 +190,14 @@ class BusinessUnit
     public function setPhone($phone)
     {
         $this->phone = $phone;
-    
+
         return $this;
     }
 
     /**
      * Get phone
      *
-     * @return string 
+     * @return string
      */
     public function getPhone()
     {
@@ -213,14 +213,14 @@ class BusinessUnit
     public function setWebsite($website)
     {
         $this->website = $website;
-    
+
         return $this;
     }
 
     /**
      * Get website
      *
-     * @return string 
+     * @return string
      */
     public function getWebsite()
     {
@@ -236,14 +236,14 @@ class BusinessUnit
     public function setEmail($email)
     {
         $this->email = $email;
-    
+
         return $this;
     }
 
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -259,14 +259,14 @@ class BusinessUnit
     public function setFax($fax)
     {
         $this->fax = $fax;
-    
+
         return $this;
     }
 
     /**
      * Get fax
      *
-     * @return string 
+     * @return string
      */
     public function getFax()
     {
@@ -319,7 +319,7 @@ class BusinessUnit
      */
     public function __toString()
     {
-        return $this->getName();
+        return (string)$this->getName();
     }
 
     /**

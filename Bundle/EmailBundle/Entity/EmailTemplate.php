@@ -131,7 +131,7 @@ class EmailTemplate implements Translatable
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -147,14 +147,14 @@ class EmailTemplate implements Translatable
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -170,14 +170,14 @@ class EmailTemplate implements Translatable
     public function setParent($parent)
     {
         $this->parent = $parent;
-    
+
         return $this;
     }
 
     /**
      * Get parent
      *
-     * @return integer 
+     * @return integer
      */
     public function getParent()
     {
@@ -193,14 +193,14 @@ class EmailTemplate implements Translatable
     public function setSubject($subject)
     {
         $this->subject = $subject;
-    
+
         return $this;
     }
 
     /**
      * Get subject
      *
-     * @return string 
+     * @return string
      */
     public function getSubject()
     {
@@ -216,14 +216,14 @@ class EmailTemplate implements Translatable
     public function setContent($content)
     {
         $this->content = $content;
-    
+
         return $this;
     }
 
     /**
      * Get content
      *
-     * @return string 
+     * @return string
      */
     public function getContent()
     {
@@ -239,14 +239,14 @@ class EmailTemplate implements Translatable
     public function setEntityName($entityName)
     {
         $this->entityName = $entityName;
-    
+
         return $this;
     }
 
     /**
      * Get entityName
      *
-     * @return string 
+     * @return string
      */
     public function getEntityName()
     {
@@ -375,6 +375,6 @@ class EmailTemplate implements Translatable
      */
     public function __toString()
     {
-        return $this->getName();
+        return (string)$this->getName();
     }
 }

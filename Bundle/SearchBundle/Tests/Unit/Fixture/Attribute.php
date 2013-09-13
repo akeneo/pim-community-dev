@@ -13,7 +13,7 @@ class Attribute
 
     public function __toString()
     {
-        return $this->code;
+        return (string)$this->code;
     }
 
     public function getData()

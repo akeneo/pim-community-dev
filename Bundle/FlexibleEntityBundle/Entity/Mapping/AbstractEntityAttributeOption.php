@@ -122,6 +122,6 @@ abstract class AbstractEntityAttributeOption extends AbstractAttributeOption
     {
         $value = $this->getOptionValue();
 
-        return ($value) ? $value->getValue() : '';
+        return ($value) ? (string)$value->getValue() : '';
     }
 }

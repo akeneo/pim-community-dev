@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Item extends AbstractEntityFlexible
 {
- 
+
     /**
      * @var string $stringValue
      *
@@ -101,6 +101,6 @@ class Item extends AbstractEntityFlexible
 
     public function __toString()
     {
-        return $this->stringValue;
+        return (string)$this->stringValue;
     }
 }

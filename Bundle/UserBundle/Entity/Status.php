@@ -131,6 +131,6 @@ class Status
 
     public function __toString()
     {
-        return $this->getStatus();
+        return (string)$this->getStatus();
     }
 }
