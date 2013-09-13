@@ -1,16 +1,39 @@
 {% extends 'PimCatalogBundle:MassEditAction:layout.html.twig' %}
 
 {% block content %}
-    {% set title = 'pim_catalog.mass_edit_action.choose.page_title'|trans %}
-    {% set subtitle = 'pim_catalog.mass_edit_action.choose.page_subtitle'|transchoice(productIds|length) %}
+    {% set title = 'pim_catalog.mass_edit_action.page_title'|trans %}
+    {% set subtitle = 'pim_catalog.mass_edit_action.page_subtitle'|transchoice(productIds|length) %}
     {{ elements.page_header(title, null, subtitle) }}
 
     {{ parent() }}
 
     <form id="{{ form.vars.id }}" action="{{ path('pim_catalog_mass_edit_action_perform', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) }}" method="POST" class="form-horizontal">
-        {% block form %}{{ form_widget(form) }}{% endblock %}
-        <a href="{{ path('pim_catalog_mass_edit_action_choose', {'products': productIds}) }}" class="btn">Cancel</a>
-        <input type="submit" value="Next" class="btn btn-primary">
+
+        <div class="row">
+            <div class="offset1 span12">
+                <h3>{{ ('pim_catalog.mass_edit_action.' ~ batchOperator.operationAlias ~ '.label')|trans }}</h3>
+                <div class="pull-right">
+                    {% block formTitle %}{% endblock %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row buffer-top">
+            <div class="offset1 span12 mass-edit-form">
+            {% block formContent %}
+                {{ form_widget(form) }}
+
+                <a href="{{ path('pim_catalog_mass_edit_action_choose', {'products': productIds}) }}" class="btn">Cancel</a>
+                <input type="submit" value="Next" class="btn btn-primary">
+            {% endblock %}
+            </div>
+        </div>
+
+        <div class="row offset1 buffer-top">
+            <a href="{{ path('pim_catalog_mass_edit_action_choose', {'products': productIds}) }}" class="btn">Cancel</a>
+            <input type="submit" value="Next" class="btn btn-primary">
+        </div>
+
     </form>
 {% endblock %}
 
