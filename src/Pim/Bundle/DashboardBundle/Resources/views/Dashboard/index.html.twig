@@ -1,6 +1,8 @@
 {% extends bap.layout %}
 
 {% macro renderWidget(widget) %}
+
+    {% if resource_granted('pim_navigation_' ~ widget.label |lower) %}
     <div class="quick-launchpad-widget span6">
         <div class="clearfix">
             <div class="image-wrap pull-left">
@@ -15,13 +17,14 @@
                 <ul class="nav nav-list">
                     {% for link in widget.links %}
                         <li class="{{ loop.last ? 'last' : '' }}">
-                            <a href="{{  link.url|raw }}" title="{{ link.label|trans }}">{{ link.label|trans }}</a>
+                            <a href="{{ link.url|raw }}" title="{{ link.label|trans }}">{{ link.label|trans }}</a>
                         </li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
+    {% endif %}
 {% endmacro %}
 {% import _self as __ %}
 
@@ -56,7 +59,7 @@
                     image: 'spread-image'
                 },
                 {
-                    label: 'Configure',
+                    label: 'Settings',
                     links: [
                         {url: path('pim_catalog_productattribute_index'), label: 'Manage attributes'|trans},
                         {url: path('pim_catalog_family_create'), label: 'Manage families'|trans}
