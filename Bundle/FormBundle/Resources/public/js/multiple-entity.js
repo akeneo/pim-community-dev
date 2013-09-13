@@ -1,7 +1,8 @@
 /* jshint devel:true */
 /* global define */
-define(['underscore', 'backbone', 'oro/translator', 'oro/multiple-entity/view', 'oro/widget-manager', 'oro/dialog-widget'],
-function(_, Backbone, __, EntityView, WidgetManager, DialogWidget) {
+define(['underscore', 'backbone', 'oro/translator', 'oro/multiple-entity/view', 'oro/multiple-entity/model',
+    'oro/widget-manager', 'oro/dialog-widget'],
+function(_, Backbone, __, EntityView, MultipleEntityModel, WidgetManager, DialogWidget) {
     'use strict';
 
     var $ = Backbone.$;
@@ -13,21 +14,54 @@ function(_, Backbone, __, EntityView, WidgetManager, DialogWidget) {
      */
     return Backbone.View.extend({
         options: {
+            template: null,
+            elementTemplate: null,
+            entitiesContainerSelector: '.entities',
+            name: null,
             collection: null,
             selectionUrl: null,
             addedElement: null,
             removedElement: null,
-            defaultElementName: null
+            defaultElement: null
+        },
+
+        events: {
+            'click .add-btn': 'addEntities'
         },
 
         initialize: function() {
+            this.template = _.template(this.options.template)
             this.listenTo(this.getCollection(), 'add', this.addEntity);
             this.listenTo(this.getCollection(), 'reset', this.addAll);
+            this.listenTo(this.getCollection(), 'remove', this.removeDefault);
 
             this.$addedEl = $(this.options.addedElement);
             this.$removedEl = $(this.options.removedElement);
+            if (this.options.defaultElement) {
+                this.listenTo(this.getCollection(), 'defaultChange', this.updateDefault);
+                this.$defaultEl = $(this.options.defaultElement);
+            }
 
             this.render();
+        },
+
+        handleRemove: function(item) {
+            var removedElVal = this.$removedEl.val();
+            var removed = removedElVal ? this.$removedEl.val().split(',') : [];
+            if (item.get('id') && removed.indexOf(item.get('id')) === -1) {
+                removed.push(item.get('id'));
+                this.$removedEl.val(removed.join(','));
+            }
+        },
+
+        removeDefault: function(item) {
+            if (item.get('isDefault')) {
+                this.$defaultEl.val('');
+            }
+        },
+
+        updateDefault: function(item) {
+            this.$defaultEl.val(item.get('id'));
         },
 
         getCollection: function() {
@@ -42,25 +76,36 @@ function(_, Backbone, __, EntityView, WidgetManager, DialogWidget) {
         },
 
         addEntity: function(item) {
+            if (item.get('id') == this.$defaultEl.val()) {
+                item.set('isDefault', true);
+            }
             var entityView = new EntityView({
-                defaultElementName: this.options.defaultElementName,
-                model: item
+                model: item,
+                name: this.options.name,
+                hasDefault: this.options.defaultElement,
+                template: this.options.elementTemplate
             });
+            entityView.on('removal', _.bind(this.handleRemove, this));
             this.$entitiesContainer.append(entityView.render().$el);
         },
 
         addEntities: function() {
             if (!this.selectorDialog) {
+                var url = this.options.selectionUrl;
+                var separator = url.indexOf('?') > -1 ? '&' : '?';
                 this.selectorDialog = new DialogWidget({
-                    url: this.options.selectionUrl,
+                    url: url + separator
+                        + 'added=' + this.$addedEl.val()
+                        + '&removed=' + this.$removedEl.val()
+                        + '&default=' + this.$defaultEl.val(),
                     title: __('Select Contacts'),
+                    stateEnabled: false,
                     dialogOptions: {
                         'modal': true,
-                        'stateEnabled': false,
-                        'width': 750,
-                        'autoResize':true,
+                        'width': 1024,
+                        'height': 500,
                         'close': _.bind(function() {
-                            delete this.selectorDialog;
+                            this.selectorDialog = null;
                         }, this)
                     }
                 });
@@ -70,19 +115,34 @@ function(_, Backbone, __, EntityView, WidgetManager, DialogWidget) {
             }
         },
 
-        processSelectedEntities: function(added, removed) {
-            console.log(arguments);
+        processSelectedEntities: function(added, addedModels, removed) {
+            this.$addedEl.val(added.join(','));
+            this.$removedEl.val(removed.join(','));
+
+            _.each(addedModels, _.bind(function(model) {
+                this.getCollection().add(
+                    new MultipleEntityModel({
+                        'id': model.get('id'),
+                        'link': Routing.generate('orocrm_contact_info', {id: model.get('id')}),
+                        'label': model.get('first_name') + ' ' + model.get('last_name')
+                    })
+                );
+            }, this));
+            for (var i = 0; i < removed.length; i++) {
+                var model = this.getCollection().get(removed[i]);
+                if (model) {
+                    model.set('id', null);
+                    model.destroy()
+                }
+            }
+
+            this.selectorDialog.remove();
         },
 
         render: function() {
-            this.$el.empty();
-            this.$entitiesContainer = $('<div class="entities"/>').appendTo(this.$el);
-            $('<button type="button" class="btn btn-medium"><i class="icon-plus"></i>' + __('Add Contacts') + '</button>')
-                .click(_.bind(this.addEntities, this))
-                .appendTo(
-                    $('<div class="actions"/>')
-                        .appendTo(this.$el)
-                );
+            this.$el.html(this.template());
+            this.$entitiesContainer = this.$el.find(this.options.entitiesContainerSelector);
+
             return this;
         }
     });

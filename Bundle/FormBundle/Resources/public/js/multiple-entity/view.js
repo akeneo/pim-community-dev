@@ -15,27 +15,24 @@ function(_, Backbone, DialogWidget, WidgetManager) {
         },
 
         events: {
-            'click .remove-btn': 'remove',
-            'click a': 'viewDetails',
+            'click .remove-btn': 'removeElement',
             'change .default-selector': 'defaultSelected'
         },
 
         options: {
-            defaultElementName: 'default',
+            name: null,
+            hasDefault: false,
+            defaultRequired: false,
             model: null,
-            template:
-                '<a href="<%= link %>"><%= label %></a>' +
-                '<div class="pull-right">' +
-                    '<div class="input-prepend"><span class="add-on">' +
-                    '<input type="radio" class="default-selector" name="<%= defaultElementName %>" title="<%= _.__("Default") %>" value="<%= id %>" <% if(isDefault) { %>checked="checked"<% } %>  />' +
-                    '</span></div>' +
-                    '<button class="btn remove-btn" title="<%= _.__("Remove") %>"><i class="icon-remove"></i></button>' +
-                '</div>'
+            template: null
         },
 
         initialize: function() {
             this.template = _.template(this.options.template);
-            this.listenTo(this.model, 'change:isDefault', this.toggleDefault);
+            this.listenTo(this.model, 'destroy', this.remove);
+            if (this.options.defaultRequired) {
+                this.listenTo(this.model, 'change:isDefault', this.toggleDefault);
+            }
         },
 
         /**
@@ -59,18 +56,28 @@ function(_, Backbone, DialogWidget, WidgetManager) {
             widget.render();
         },
 
+        removeElement: function() {
+            this.trigger('removal', this.model);
+            this.model.set('id', null);
+            this.model.destroy();
+        },
+
         defaultSelected: function(e) {
             this.options.model.set('isDefault', e.target.checked);
         },
 
         toggleDefault: function() {
-            this.$el.find('.remove-btn')[0].disabled = this.model.get('isDefault');
+            if (this.options.defaultRequired) {
+                this.$el.find('.remove-btn')[0].disabled = this.model.get('isDefault');
+            }
         },
 
         render: function() {
             var data = this.model.toJSON();
-            data['defaultElementName'] = this.options.defaultElementName;
+            data['hasDefault'] = this.options.hasDefault;
+            data['name'] = this.options.name;
             this.$el.append(this.template(data));
+            this.$el.find('a.contact-info').click(_.bind(this.viewDetails, this));
             this.toggleDefault();
             return this;
         }

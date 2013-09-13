@@ -5,6 +5,7 @@ namespace Oro\Bundle\FormBundle\Form\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
+use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
@@ -38,9 +39,11 @@ class EntityIdentifierType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->addViewTransformer($this->createEntitiesToIdsTransformer($options))
-            ->addViewTransformer(new ArrayToStringTransformer($options['values_delimiter'], true))
-            ->addEventSubscriber(new FixArrayToStringListener($options['values_delimiter']));
+            ->addViewTransformer($this->createEntitiesToIdsTransformer($options));
+        if ($options['multiple']) {
+            $builder->addViewTransformer(new ArrayToStringTransformer($options['values_delimiter'], true))
+                ->addEventSubscriber(new FixArrayToStringListener($options['values_delimiter']));
+        }
     }
 
     /**
@@ -49,12 +52,21 @@ class EntityIdentifierType extends AbstractType
      */
     protected function createEntitiesToIdsTransformer(array $options)
     {
-        return new EntitiesToIdsTransformer(
-            $options['em'],
-            $options['class'],
-            $options['property'],
-            $options['queryBuilder']
-        );
+        if ($options['multiple']) {
+            return new EntitiesToIdsTransformer(
+                $options['em'],
+                $options['class'],
+                $options['property'],
+                $options['queryBuilder']
+            );
+        } else {
+            return new EntityToIdTransformer(
+                $options['em'],
+                $options['class'],
+                $options['property'],
+                $options['queryBuilder']
+            );
+        }
     }
 
     /**
@@ -73,7 +85,7 @@ class EntityIdentifierType extends AbstractType
         )
         ->setAllowedValues(
             array(
-                'multiple' => array(true), // working with single entity is not supported yet
+                'multiple' => array(true, false), // working with single entity is not supported yet
             )
         );
         $resolver->setRequired(array('class'));

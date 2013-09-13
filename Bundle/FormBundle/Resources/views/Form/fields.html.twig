@@ -197,32 +197,69 @@
 {% block oro_multiple_entity_widget %}
     {{ form_widget(form) }}
 
+    <style type="text/css">
+        #{{ id }}-container .entity-item {
+            line-height: 32px;
+        }
+
+        #{{ id }}-container .entity-item:hover {
+            background-color: #FAFAFA;
+        }
+
+        #{{ id }}-container .actions {
+            margin-top: 15px;
+        }
+    </style>
+
     <div id="{{ id }}-container" style="width: 300px;"></div>
+
+    <script type="text/html" id="multiple-entities-container-template">
+        <div class="entities"></div>
+        <div class="actions">
+            <button type="button" class="btn btn-medium add-btn"><i class="icon-plus"></i>{{ 'Add Contacts'|trans }}</button>
+        </div>
+    </script>
+
+    <script type="text/html" id="multiple-entity-template">
+        <% if (hasDefault) { %>
+            <input type="radio" class="default-selector"
+                   name="<%= name %>_default"
+                   title="{{ 'Default'|trans }}"
+                   value="<%= id %>"
+                <% if(isDefault) { %>
+                    checked="checked"
+                <% } %>
+            />
+        <% } %>
+        <a href="<%= link %>" class="contact-info"><%= label %></a>
+        <div class="pull-right">
+            <a href="javascript:void(0)" class="remove-btn" title="{{ 'Remove'|trans }}"><i class="icon-remove"></i></a>
+        </div>
+    </script>
+
     <script type="text/javascript">
-        require(['oro/multiple-entity', 'oro/multiple-entity/collection', 'oro/multiple-entity/model'],
-        function(MultipleEntity, MultipleEntityCollection, MultipleEntityModel) {
+        require(['jquery', 'oro/multiple-entity', 'oro/multiple-entity/collection', 'oro/multiple-entity/model'],
+        function($, MultipleEntity, MultipleEntityCollection, MultipleEntityModel) {
+            {% set defaultElementId = null %}
+            {% if form.vars.default_element is defined and form.vars.default_element %}
+                {% set defaultElementId = '#' ~ form.vars.default_element %}
+            {% endif %}
             var widget = new MultipleEntity({
                 el: '#{{ id }}-container',
+                template: $('#multiple-entities-container-template').html(),
+                elementTemplate: $('#multiple-entity-template').html(),
                 addedElement: '#{{ id }}_added',
                 removedElement: '#{{ id }}_removed',
-                defaultElementName: '{{ name }}[default]',
+                name: {{ id|json_encode|raw }},
+                defaultElement: {{ defaultElementId|json_encode|raw }},
                 selectionUrl: {{ form.vars.grid_url|json_encode|raw }},
                 collection: new MultipleEntityCollection()
             });
-            widget.getCollection().reset([
-                new MultipleEntityModel({
-                    'id': 1,
-                    'isDefault': true,
-                    'link': {{ path('orocrm_contact_info', { id: 1 } )|json_encode|raw }},
-                    'label': 'Test Uno'
-                }),
-                new MultipleEntityModel({
-                    'id': 2,
-                    'isDefault': false,
-                    'link': {{ path('orocrm_contact_info', { id: 1 } )|json_encode|raw }},
-                    'label': 'Test Duo'
-                })
-            ]);
+            var data = [];
+            {% for element in initial_elements %}
+                data.push(new MultipleEntityModel({{ element|json_encode|raw }}));
+            {% endfor %}
+            widget.getCollection().reset(data);
         });
     </script>
 {% endblock %}

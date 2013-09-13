@@ -40,18 +40,21 @@ class MultipleEntityType extends AbstractType
             array(
                 'class' => null,
                 'mapped' => false,
-                'grid_url' => null
+                'grid_url' => null,
+                'default_element' => null,
+                'initial_elements' => null
             )
         );
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        if (isset($options['grid_url'])) {
-            $view->vars['grid_url'] = $options['grid_url'];
+        $view->vars['grid_url'] = isset($options['grid_url']) ? $options['grid_url'] : null;
+        $view->vars['initial_elements'] = isset($options['initial_elements']) ? $options['initial_elements'] : null;
+        if (isset($options['default_element']) && $options['default_element'] instanceof FormInterface) {
+            $view->vars['default_element'] =  $options['default_element']->createView($view->parent)->vars['id'];
         }
     }
-
 
     /**
      * {@inheritdoc}
