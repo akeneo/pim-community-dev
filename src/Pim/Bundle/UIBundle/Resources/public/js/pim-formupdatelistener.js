@@ -13,7 +13,7 @@ define(
                     $('#updated').show();
 
                     $form.off('change', formUpdated);
-                    $form.find('ins.jstree-checkbox').off('click', formUpdated);
+                    $(document).off('click', '#' + $form.attr('id') + ' ins.jstree-checkbox', formUpdated);
 
                     $form.find('button[type="submit"]').on('click', function () {
                         self.updated = false;
@@ -41,7 +41,7 @@ define(
                 };
 
             $form.on('change', formUpdated);
-            $form.find('ins.jstree-checkbox').on('click', formUpdated);
+            $(document).on('click', '#' + $form.attr('id') + ' ins.jstree-checkbox', formUpdated);
 
             $('a[href^="/"]:not(".no-hash")').off('click').on('click', linkClicked);
 
