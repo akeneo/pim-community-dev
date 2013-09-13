@@ -14,7 +14,7 @@ class ActionMetadataProvider
      *
      * @param AclAnnotationProvider $annotationProvider
      */
-    public function __construct(AclAnnotationProvider $annotationProvider)
+    public function __construct(AclAnnotationProvider $annotationProvider = null)
     {
         $this->annotationProvider = $annotationProvider;
     }

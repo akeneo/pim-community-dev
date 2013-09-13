@@ -2,12 +2,11 @@
 
 namespace Oro\Bundle\SecurityBundle\Annotation\Loader;
 
-use Symfony\Component\HttpKernel\KernelInterface;
 use Doctrine\Common\Annotations\Reader as AnnotationReader;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\Adapter\PhpAdapter;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
-use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 
 use JMS\DiExtraBundle\Finder\PatternFinder;
 
@@ -17,11 +16,6 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
     const ANCESTOR_CLASS = 'Oro\Bundle\SecurityBundle\Annotation\AclAncestor';
 
     /**
-     * @var KernelInterface
-     */
-    protected $kernel;
-
-    /**
      * @var AnnotationReader
      */
     private $reader;
@@ -29,18 +23,15 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
     /**
      * Constructor
      *
-     * @param KernelInterface $kernel
      * @param AnnotationReader $reader
-     * @param AclExtensionSelector $extensionSelector
+     * @param ServiceLink $extensionSelectorLink
      */
     public function __construct(
-        KernelInterface $kernel,
         AnnotationReader $reader,
-        AclExtensionSelector $extensionSelector
+        ServiceLink $extensionSelectorLink
     ) {
-        parent::__construct($extensionSelector);
+        parent::__construct($extensionSelectorLink);
         $this->reader = $reader;
-        $this->kernel = $kernel;
     }
 
     /**
@@ -50,12 +41,7 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
      */
     public function load(AclAnnotationStorage $storage)
     {
-        $directories = array();
-        foreach ($this->kernel->getBundles() as $bundle) {
-            $directories[] = $bundle->getPath();
-        }
-
-        $files = $this->getFinder()->findFiles($directories);
+        $files = $this->getFinder()->findFiles($this->bundleDirectories);
 
         foreach ($files as $file) {
             $className = $this->getClassName($file);

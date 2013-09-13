@@ -31,7 +31,7 @@ parameters:
     oro_security.entity_security_metadata_provider.cache.class: Doctrine\Common\Cache\FilesystemCache
     oro_security.action_metadata_provider.class:               Oro\Bundle\SecurityBundle\Metadata\ActionMetadataProvider
 
-    oro_security.acl_annotation_metadata_provider.class:      Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider
+    oro_security.acl_annotation_provider.class:               Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider
     oro_security.acl_annotation_provider.cache.class:         Doctrine\Common\Cache\FilesystemCache
     oro_security.acl.annotation_reader.class:                 Oro\Bundle\SecurityBundle\Annotation\Loader\AclAnnotationLoader
     oro_security.acl.config_reader.class:                     Oro\Bundle\SecurityBundle\Annotation\Loader\AclYamlConfigLoader
@@ -197,6 +197,12 @@ services:
     oro_security.action_metadata_provider:
         public: false
         class: %oro_security.action_metadata_provider.class%
+        arguments:
+            - @oro_security.acl_annotation_provider
+
+    oro_security.acl_extension_selector:
+        tags:
+            - { name: oro_service_link,  service: oro_security.acl.extension_selector }
 
     oro_security.acl_annotation_provider.cache:
         public: false
@@ -207,21 +213,24 @@ services:
     oro_security.acl_annotation_loader:
         public: false
         class:                        %oro_security.acl.annotation_reader.class%
-        arguments:                    ["@kernel", "@annotation_reader", "@oro_security.acl.extension_selector"]
+        arguments:                    ["@annotation_reader", "@oro_security.acl_extension_selector"]
+        calls:
+            - [setBundles, ["%kernel.bundles%"]]
         tags:
-            -  { name: oro_security.acl_metadata_loader }
+            -  { name: oro_security.acl_annotation_loader }
 
     oro_security.acl_config_loader:
         public: false
         class:                        %oro_security.acl.config_reader.class%
-        arguments:                    ["@kernel", "@oro_security.acl.extension_selector"]
+        arguments:                    ["@oro_security.acl_extension_selector"]
+        calls:
+            - [setBundles, ["%kernel.bundles%"]]
         tags:
-            -  { name: oro_security.acl_metadata_loader }
+            -  { name: oro_security.acl_annotation_loader }
 
-    oro_security.acl_annotation_metadata_provider:
-        class:                        %oro_security.acl_annotation_metadata_provider.class%
+    oro_security.acl_annotation_provider:
+        class:                        %oro_security.acl_annotation_provider.class%
         arguments:
-          - ~
           - "@oro_security.acl_annotation_provider.cache"
 
  #   oro_user.acl_pointcut:
