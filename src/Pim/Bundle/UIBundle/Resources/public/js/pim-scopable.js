@@ -134,11 +134,12 @@ define(
                     this._expand();
                 }, this);
 
+                var self = this;
                 this.$el.closest('form').on('validate', function () {
-                    if (this.$el.find('.validation-tooltip:hidden').length) {
-                        this._expand();
+                    if (self.$el.find('.validation-tooltip:hidden').length) {
+                        self._expand();
                     }
-                }, this);
+                });
             },
 
             render: function () {

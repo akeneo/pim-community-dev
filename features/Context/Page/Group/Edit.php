@@ -2,8 +2,6 @@
 
 namespace Context\Page\Group;
 
-use Context\Page\Base\Form;
-
 /**
  * Attribute group edit page
  *

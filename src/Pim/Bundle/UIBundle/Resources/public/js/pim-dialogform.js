@@ -63,7 +63,7 @@ define(
                 });
 
                 $(formId + ' select').select2({ allowClear: true });
-                $(formId + ' a.validation-tooltip').tooltip();
+                $(formId + ' .validation-tooltip').tooltip();
             }
 
             function isJSON(str) {

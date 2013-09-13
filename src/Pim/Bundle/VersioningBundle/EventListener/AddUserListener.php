@@ -7,7 +7,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
-use Pim\Bundle\VersioningBundle\EventListener\AddUserListener;
 
 /**
  * Add current user to version builder
