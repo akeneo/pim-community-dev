@@ -22,16 +22,13 @@
             <div class="offset1 span12 mass-edit-form">
             {% block formContent %}
                 {{ form_widget(form) }}
-
-                <a href="{{ path('pim_catalog_mass_edit_action_choose', {'products': productIds}) }}" class="btn">Cancel</a>
-                <input type="submit" value="Next" class="btn btn-primary">
             {% endblock %}
             </div>
         </div>
 
         <div class="row offset1 buffer-top">
-            <a href="{{ path('pim_catalog_mass_edit_action_choose', {'products': productIds}) }}" class="btn">Cancel</a>
-            <input type="submit" value="Next" class="btn btn-primary">
+            <a href="#" class="btn cancel">Cancel</a>
+            <a href="#" class="btn btn-primary confirm">Next</a>
         </div>
 
     </form>
@@ -45,11 +42,50 @@
     <script type="text/javascript">
         $(function() {
             'use strict';
+
+            var disableForm = function($form) {
+                $form.find('input[type="checkbox"]').each(function() {
+                    $(this).closest('.has-switch').bootstrapSwitch('setActive', false);
+                });
+                $form.find('input[type="text"], textarea').each(function() {
+                    $(this).attr('disabled', 'disabled');
+                });
+            };
+
+            var enableForm = function($form) {
+                $form.find('input[type="checkbox"]').each(function() {
+                    $(this).closest('.has-switch').bootstrapSwitch('setActive', true);
+                });
+                $form.find('input[type="text"], textarea').each(function() {
+                    $(this).removeAttr('disabled');
+                });
+            };
+
             $('select.operation-param').change(function (event) {
                 $('#{{ form.vars.id }}')
                     .attr('action', '{{ action|raw }}')
                     .submit();
             });
+
+            /**
+             * Confirmation
+             */
+            $('a.confirm').click(function(event) {
+                event.preventDefault();
+
+                $('.wizard').wizard({ currentStep: 4});
+                disableForm($(this).parents('form').first());
+            });
+
+            $('a.cancel').click(function(event) {
+                event.preventDefault();
+
+                $('.wizard').wizard({ currentStep: 3});
+                enableForm($(this).parents('form').first());
+            });
+
+
+
         });
     </script>
 {% endblock %}
