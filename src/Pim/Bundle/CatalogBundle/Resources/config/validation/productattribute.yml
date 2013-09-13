@@ -111,10 +111,6 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
             - Choice:
                 choices: [date, time, datetime]
                 groups: [pim_catalog_date]
-        allowedFileSources:
-            - Choice:
-                choices: [upload, external]
-                groups: [pim_catalog_file, pim_catalog_image]
         maxFileSize:
             - GreaterThanOrEqual:
                 value: 0

@@ -122,7 +122,8 @@ class AddVersionListener implements EventSubscriber
     /**
      * Check if an entity must be versioned due to entity changes
      *
-     * @param object $entity
+     * @param EntityManager $em
+     * @param object        $entity
      */
     public function checkScheduledUpdate($em, $entity)
     {
@@ -170,7 +171,8 @@ class AddVersionListener implements EventSubscriber
     /**
      * Check if an entity must be versioned due to collection changes
      *
-     * @param object $entity
+     * @param EntityManager $em
+     * @param object        $entity
      */
     public function checkScheduledCollection($em, $entity)
     {
@@ -182,6 +184,7 @@ class AddVersionListener implements EventSubscriber
     /**
      * Mark entity as to be versioned
      *
+     * @param EntityManager        $em
      * @param VersionableInterface $versionable
      */
     protected function addPendingVersioning($em, VersionableInterface $versionable)

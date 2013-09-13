@@ -331,13 +331,14 @@ class ProductController extends AbstractDoctrineController
             $form->bind($request);
 
             if ($form->isValid()) {
-                // Call completeness calculator after validating data
-                $this->completenessCalculator->calculateForAProduct($product);
 
                 $categoriesData = $this->getCategoriesData($request->request->all());
                 $categories = $this->categoryManager->getCategoriesByIds($categoriesData['categories']);
 
                 $this->productManager->save($product, $categories, $categoriesData['trees']);
+                // Call completeness calculator after validating data and saving product
+                // so all values for all locale are loaded now
+                $this->completenessCalculator->calculateForAProduct($product);
 
                 $this->addFlash('success', 'Product successfully saved');
 

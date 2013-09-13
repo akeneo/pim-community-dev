@@ -1,9 +1,9 @@
-@javascript
 Feature: View an export detail page
   In order to know if an export is ready to be executed
   As a user
   I need to have access to a show export page which will present me its status
 
+  @javascript
   Scenario: Successfully display the export information
     Given the following job:
       | connector            | alias          | code                | label                       | type   |

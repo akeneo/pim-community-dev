@@ -103,7 +103,6 @@
 'Default currency': 'Default currency'
 'Metric family': 'Metric family'
 'Default metric unit': 'Default metric unit'
-'Allowed file sources': 'Allowed file sources'
 'Max file size': 'Max file size'
 'Allowed file extensions': 'Allowed file extensions'
 
@@ -213,11 +212,20 @@
 
 # Batch operations
 pim_catalog.mass_edit_action:
-    change-status.label:          'Change status (Enable/Disable)'
-    edit-common-attributes:
-        label: 'Edit attributes'
-        empty: 'Please select the attribute(s) you want to edit'
     page_title: 'Products'
     page_subtitle: 'Mass Edit (1 product)|Mass Edit (%count% products)'
     title: 'Choose operation'
     subtitle: 'Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products'
+
+    change-status:
+        label:         'Change status (Enable/Disable)'
+        success_flash: 'Product(s) status have been changed'
+
+    edit-common-attributes:
+        label:         'Edit attributes'
+        empty:         'Please select the attribute(s) you want to edit'
+        success_flash: 'Product(s) attribute(s) have been updated'
+
+    classify:
+        label:         'Classify products in categories'
+        success_flash: 'Product(s) have been classified into selected categories'

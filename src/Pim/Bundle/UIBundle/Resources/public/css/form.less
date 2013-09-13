@@ -510,7 +510,7 @@ table i {
 
 /* Product edit form - common */
 
-.product-edit {
+.classify, .product-edit {
   .nav-list {
     padding-left: 0px;
     padding-right: 0px;
@@ -533,15 +533,15 @@ table i {
   }
   .tab-content {
     border-left: 1px solid #BBBBBB;
-    .tab-pane h3 {
-      background-color: @color-grey_tab;
-      border-bottom: 1px solid #e5e5e5;
-      margin-top: 0;
-      padding-left: 20px;
-    }
-    .modal-header h3 {
-      background-color: @color-purple_light;
-    }
+  }
+  .tab-pane h3 {
+    background-color: @color-grey_tab;
+    border-bottom: 1px solid #e5e5e5;
+    margin-top: 0;
+    padding-left: 20px;
+  }
+  .modal-header h3 {
+    background-color: @color-purple_light;
   }
 }
 
@@ -694,16 +694,10 @@ table i {
 .navbar-extra {padding: 10px 7px 10px 12px;}
 .navbar-content {
   line-height: 18px;
-  .title {
+  .sub-title {
     float: left;
     font-size: 17px;
     color: #999;
-   }
-  .sub-title {
-    float: left;
-    font-size: 18px;
-    color: #000;
-    font-weight: bold;
   }
   .separator {
     float: left;
@@ -862,41 +856,45 @@ div.dropdown-menu.channel {
 #locale-switcher {
   span.dropdown-toggle {
     color: @textColor;
-    margin-top: 2px;
     margin-bottom: 0;
-    padding: 3px 6px;
+    padding: 5px 6px 3px 6px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-shadow: none;
     cursor: pointer;
-    .caret {
-      margin-top: 6px;
+    > i {
+      vertical-align: middle;
+      font-size: 14px;
     }
   }
   .dropdown-menu {
     padding: 0;
-    li.activeLocale>a {
-        padding-left: 0px;
-    }
     li>a {
-      padding: 5px 5px 5px 23px;
+      padding: 5px;
       color: @textColor;
       &:hover, &:active, &:focus {
-        background-color: #f1f1f1;
-        background-image: none;
+        background: #f1f1f1;
+      }
+      span.icon {
+        width: 25px;
+        min-height: 1px;
       }
       span.code {
-          color: @textColor + #444;
-          float: left;
-          text-align: right;
-          width: 70px;
+        color: @textColor + #444;
       }
       span.title {
-          font-weight: bold;
-          margin: 0 10px;
-          font-size: 12px;
+        float: none;
+        font-weight: bold;
+        margin: 0 10px;
+        font-size: 12px;
       }
     }
+  }
+  code.flag-language {
+    color: @textColor;
+    border: none;
+    background-color: transparent;
+    padding: 4px;
   }
 }
 
@@ -913,6 +911,7 @@ div.entity-updated {
 
 /* Product edit form - categories tab */
 
+.classify .nav-list li a i,
 #categories .nav-list li a i {
   font-size: 16px;
   padding-right: 5px;

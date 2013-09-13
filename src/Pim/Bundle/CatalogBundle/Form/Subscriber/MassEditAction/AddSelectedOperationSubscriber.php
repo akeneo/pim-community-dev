@@ -6,7 +6,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Pim\Bundle\CatalogBundle\MassEditAction\MassEditAction;
-use Pim\Bundle\CatalogBundle\Model\BatchProduct;
 
 /**
  * Add selected operation field if one is set
@@ -17,6 +16,9 @@ use Pim\Bundle\CatalogBundle\Model\BatchProduct;
  */
 class AddSelectedOperationSubscriber implements EventSubscriberInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return array(
@@ -24,6 +26,9 @@ class AddSelectedOperationSubscriber implements EventSubscriberInterface
         );
     }
 
+    /**
+     * @param FormEvent $event
+     */
     public function postSetData(FormEvent $event)
     {
         $data = $event->getData();

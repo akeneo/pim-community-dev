@@ -1,9 +1,9 @@
-@javascript
 Feature: View an import detail page
   In order to know if an import is ready to be executed
   As a user
   I need to have access to a show import page which will present me its status
 
+  @javascript
   Scenario: Successfully display the import information
     Given the following job:
       | connector            | alias          | code                | label                       | type   |

@@ -47,6 +47,25 @@
     {% endspaceless %}
 {% endblock form_info %}
 
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            {% if form.parent %}
+                {% set combinedError = '' %}
+                {% for error in errors %}
+                    {% set error = error.messagePluralization is null
+                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators') %}
+                    {% set combinedError = (combinedError != '') ? combinedError ~ '; ' ~ error : error %}
+                {% endfor %}
+                <i class="validation-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="{{ combinedError }}"></i>
+            {% else %}
+                {{ parent() }}
+            {% endif %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
 {% block pim_wysiwyg_widget %}
     {{ block('textarea_widget') }}
 {% endblock pim_wysiwyg_widget %}

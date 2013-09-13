@@ -16,7 +16,7 @@ class ProductEnabledConverter
     public function convert($data)
     {
         if (array_key_exists(self::ENABLED_KEY, $data)) {
-            return array('enabled' => (string) (int) $data[self::ENABLED_KEY]);
+            return array('enabled' => $data[self::ENABLED_KEY]);
         }
 
         return array();

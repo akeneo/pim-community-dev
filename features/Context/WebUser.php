@@ -1082,7 +1082,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->wait();
     }
 
-
     /**
      * @param string $sku
      *
@@ -1654,6 +1653,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $products
+     *
      * @When /^I mass-edit products (.*)$/
      */
     public function iMassEditProducts($products)
@@ -1669,6 +1670,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $operation
+     *
      * @Given /^I choose the "([^"]*)" operation$/
      */
     public function iChooseTheOperation($operation)
@@ -1679,6 +1682,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ->next();
 
         $this->wait();
+    }
+
+    /**
+     * @param string $text
+     *
+     * @Then /^I should see a tooltip "([^"]*)"$/
+     */
+    public function iShouldSeeATooltip($text)
+    {
+        if (!$this->getCurrentPage()->findTooltip($text)) {
+            throw $this->createExpectationException(sprintf('No tooltip containing "%s" were found.', $text));
+        }
     }
 
     /**
