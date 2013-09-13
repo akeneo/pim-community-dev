@@ -1,14 +1,20 @@
 {% extends bap.layout %}
 
+{% block header %}{% endblock %}
+{% block before_content %}{% endblock %}
+
 {% block content %}
 <div class="page-header">
-    <h1>{{ 'process.step.setup.header'|trans|raw }}</h1>
+    <h1>{{ 'process.step.setup.header'|trans }}</h1>
 </div>
 
-<form action="{{ path('sylius_flow_forward', {'scenarioAlias': 'oro_installer', 'stepName': 'setup'}) }}" method="post" class="form-horizontal">
-    <div>{{ form_widget(form) }}</div>
+<form action="{{ path('sylius_flow_forward', { scenarioAlias: 'oro_installer', stepName: 'setup' }) }}" method="post">
+    <fieldset class="form-horizontal form-container">
+        {{ form_widget(form) }}
+    </fieldset>
+
     <div class="form-actions">
-        <a href="{{ path('sylius_flow_display', {'scenarioAlias': 'oro_installer', 'stepName': 'configure'}) }}" class="btn btn-large"><i class="icon-chevron-left"></i> {{ 'process.step.check.button.back'|trans }}</a> &nbsp;
+        <a href="{{ path('sylius_flow_display', { scenarioAlias: 'oro_installer', stepName: 'configure' }) }}" class="btn btn-large"><i class="icon-chevron-left"></i> {{ 'process.step.check.button.back'|trans }}</a> &nbsp;
         <button class="btn btn-large btn-primary" type="submit">
             <i class="icon-magic"></i> {{ 'process.step.check.button.install'|trans }}
         </button>

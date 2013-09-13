@@ -2,39 +2,39 @@ parameters:
     oro_installer.form.type.configuration.class:          Oro\Bundle\InstallerBundle\Form\Type\ConfigurationType
     oro_installer.form.type.configuration.database.class: Oro\Bundle\InstallerBundle\Form\Type\Configuration\DatabaseType
     oro_installer.form.type.configuration.mailer.class:   Oro\Bundle\InstallerBundle\Form\Type\Configuration\MailerType
-    oro_installer.form.type.configuration.locale.class:   Oro\Bundle\InstallerBundle\Form\Type\Configuration\LocaleType
-    oro_installer.form.type.configuration.hidden.class:   Oro\Bundle\InstallerBundle\Form\Type\Configuration\HiddenType
+    oro_installer.form.type.configuration.system.class:   Oro\Bundle\InstallerBundle\Form\Type\Configuration\SystemType
+    oro_installer.form.type.configuration.ws.class:       Oro\Bundle\InstallerBundle\Form\Type\Configuration\WebsocketType
     oro_installer.form.type.setup.class:                  Oro\Bundle\InstallerBundle\Form\Type\SetupType
 
 services:
     oro_installer.form.type.configuration:
         class:                                            %oro_installer.form.type.configuration.class%
         tags:
-            - { name: form.type, alias: oro_configuration }
+            - { name: form.type, alias: oro_installer_configuration }
 
     oro_installer.form.type.configuration.database:
         class:                                            %oro_installer.form.type.configuration.database.class%
         tags:
-            - { name: form.type, alias: oro_configuration_database }
+            - { name: form.type, alias: oro_installer_configuration_database }
 
     oro_installer.form.type.configuration.mailer:
         class:                                            %oro_installer.form.type.configuration.mailer.class%
         tags:
-            - { name: form.type, alias: oro_configuration_mailer }
+            - { name: form.type, alias: oro_installer_configuration_mailer }
 
-    oro_installer.form.type.configuration.locale:
-        class:                                            %oro_installer.form.type.configuration.locale.class%
+    oro_installer.form.type.configuration.system:
+        class:                                            %oro_installer.form.type.configuration.system.class%
         tags:
-            - { name: form.type, alias: oro_configuration_locale }
+            - { name: form.type, alias: oro_installer_configuration_system }
 
-    oro_installer.form.type.configuration.hidden:
-        class:                                            %oro_installer.form.type.configuration.hidden.class%
+    oro_installer.form.type.configuration.websocket:
+        class:                                            %oro_installer.form.type.configuration.ws.class%
         tags:
-            - { name: form.type, alias: oro_configuration_hidden }
+            - { name: form.type, alias: oro_installer_configuration_websocket }
 
     oro_installer.form.type.setup:
         class:                                            %oro_installer.form.type.setup.class%
         arguments:
             - %oro_user.entity.class%
         tags:
-            - { name: form.type, alias: oro_setup }
+            - { name: form.type, alias: oro_installer_setup }

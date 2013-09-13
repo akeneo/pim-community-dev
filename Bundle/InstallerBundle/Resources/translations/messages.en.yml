@@ -9,25 +9,31 @@ form:
     configuration:
         database:
             header:       Database connection
+            driver:       Driver
             host:         Host
             port:         Port
             user:         User
             password:     Password
             name:         Name
-        driver:           Driver
-        locale:
-            header:       Locale settings
-            locale:       Locale
         mailer:
             header:       Mailer settings
             host:         Host
             user:         User
             password:     Password
             transport:    Transport
+        system:
+            header:       System settings
+            secret:       Secret
+            locale:       Locale
+        websocket:
+            header:       Websocket connection
+            host:         Host
+            port:         Port
     setup:
         email:            Email
         username:         Username
-        plain_password:   Password
+        password:         Password
+        password_re:      Re-enter password
         load_fixtures:    Load fixtures
 
 process:

@@ -11,7 +11,9 @@ class ConfigureStep extends ControllerStep
     {
         return $this->render(
             'OroInstallerBundle:Process/Step:configure.html.twig',
-            array('form' => $this->createConfigurationForm()->createView())
+            array(
+                'form' => $this->createConfigurationForm()->createView()
+            )
         );
     }
 
@@ -19,24 +21,26 @@ class ConfigureStep extends ControllerStep
     {
         $form = $this->createConfigurationForm();
 
-        if ($this->getRequest()->isMethod('POST') && $form->bind($this->getRequest())->isValid()) {
-            $data = $form->getData();
+        $form->handleRequest($this->getRequest());
 
-            $this->get('oro_installer.yaml_persister')->dump($data);
+        if ($form->isValid()) {
+            $this->get('oro_installer.yaml_persister')->dump($form->getData());
 
             return $this->complete();
         }
 
         return $this->render(
             'OroInstallerBundle:Process/Step:configure.html.twig',
-            array('form' => $form->createView())
+            array(
+                'form' => $form->createView()
+            )
         );
     }
 
     protected function createConfigurationForm()
     {
         return $this->createForm(
-            'oro_configuration',
+            'oro_installer_configuration',
             $this->get('oro_installer.yaml_persister')->parse()
         );
     }

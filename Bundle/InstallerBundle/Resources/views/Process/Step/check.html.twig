@@ -7,12 +7,10 @@
         require(['jquery'],
         function($) {
             $(function () {
-                $(document).ready(function() {
-                    $('table a').on('click', function(e) {
-                        e.preventDefault();
+                $('table a').on('click', function(e) {
+                    e.preventDefault();
 
-                        $(this).popover();
-                    });
+                    $(this).popover();
                 });
             });
         });
@@ -48,7 +46,7 @@
                 {% if requirement.fulfilled %}
                 <span class="label label-success"><i class="icon-ok"></i></span>
                 {% else %}
-                    <a href="javascript: void(0);" title="{{ requirement.help ? requirement.help : requirement.label }}" data-placement="top" data-trigger="click" data-content="{{ requirement.help }}"
+                    <a href="javascript: void(0);" title="{{ requirement.label }}" data-placement="left" data-trigger="click" data-content="{{ requirement.help }}"
                         {% if requirement.required %}
                             {% set fulfilled = false %}
                             class="label label-important"><i class="icon-remove"

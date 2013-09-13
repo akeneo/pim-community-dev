@@ -10,21 +10,38 @@ class ConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('database', 'oro_configuration_database', array(
-                'label' => 'form.configuration.database'
-            ))
-            ->add('mailer', 'oro_configuration_mailer', array(
-                'label' => 'form.configuration.mailer'
-            ))
-            ->add('locale', 'oro_configuration_locale', array(
-                'label' => 'form.configuration.locale'
-            ))
-            ->add('hidden', 'oro_configuration_hidden')
-        ;
+            ->add(
+                'database',
+                'oro_installer_configuration_database',
+                array(
+                    'label' => 'form.configuration.database.header'
+                )
+            )
+            ->add(
+                'mailer',
+                'oro_installer_configuration_mailer',
+                array(
+                    'label' => 'form.configuration.mailer.header'
+                )
+            )
+            ->add(
+                'websocket',
+                'oro_installer_configuration_websocket',
+                array(
+                    'label' => 'form.configuration.websocket.header'
+                )
+            )
+            ->add(
+                'system',
+                'oro_installer_configuration_system',
+                array(
+                    'label' => 'form.configuration.system.header'
+                )
+            );
     }
 
     public function getName()
     {
-        return 'oro_configuration';
+        return 'oro_installer_configuration';
     }
 }
