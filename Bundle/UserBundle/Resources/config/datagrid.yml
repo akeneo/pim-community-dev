@@ -19,7 +19,6 @@ services:
               entity_hint: user
               flexible: true
               route_name: oro_user_index
-              views_list: oro_user.user_datagrid_views_list
 
     oro_user.role_datagrid_manager:
         class: %oro_user.role_datagrid_manager.class%
@@ -30,18 +29,6 @@ services:
               entity_hint: role
               route_name: oro_user_role_index
 
-    # view list
-    oro_user.group_datagrid_views_list:
-        class:  %oro_user.group_datagrid_views_list.class%
-        arguments:
-            - @translator
-
-    # view list
-    oro_user.user_datagrid_views_list:
-        class:  %oro_user.user_datagrid_views_list.class%
-        arguments:
-            - @translator
-
     oro_user.group_datagrid_manager:
         class: %oro_user.group_datagrid_manager.class%
         tags:
@@ -51,7 +38,6 @@ services:
               query_entity_alias: user_group
               entity_hint: group
               route_name: oro_user_group_index
-              views_list: oro_user.group_datagrid_views_list
 
     oro_user.role_user_datagrid_manager:
         class: %oro_user.role_user_datagrid_manager.class%
