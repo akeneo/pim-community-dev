@@ -340,8 +340,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 $fieldCompleteness,
                 'PimCatalogBundle:Completeness:_completeness.html.twig',
                 array(
-                    'locale'  => $this->flexibleManager->getLocale(),
-                    'channel' => $this->flexibleManager->getScope()
+                    'localeCode'  => $this->flexibleManager->getLocale(),
+                    'channelCode' => $this->flexibleManager->getScope()
                 )
             )
         );
@@ -498,7 +498,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $proxyQuery
             ->addSelect($selectConcat, true)
             ->leftJoin($rootAlias .'.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :locale')
+            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
             ->leftJoin('values.prices', 'valuePrices')
             ->leftJoin(
@@ -506,10 +506,25 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'pCompleteness',
                 'WITH',
                 'pCompleteness.locale = :locale AND pCompleteness.channel = :channel'
+
             );
 
-        $proxyQuery->setParameter('locale', $this->flexibleManager->getLocale());
-        $proxyQuery->setParameter('channel', $this->flexibleManager->getScope());
+        $channelCode = $this->flexibleManager->getScope();
+        $channel = $this->flexibleManager
+            ->getStorageManager()
+            ->getRepository('PimCatalogBundle:Channel')
+            ->findBy(array('code' => $channelCode));
+
+        $localeCode = $this->flexibleManager->getLocale();
+        $locale = $this->flexibleManager
+            ->getStorageManager()
+            ->getRepository('PimCatalogBundle:Locale')
+            ->findBy(array('code' => $localeCode));
+
+        $proxyQuery->setParameter('localeCode', $localeCode);
+        $proxyQuery->setParameter('locale', $locale);
+        $proxyQuery->setParameter('channelCode', $channelCode);
+        $proxyQuery->setParameter('channel', $channel);
 
         // prepare query for categories
         if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
