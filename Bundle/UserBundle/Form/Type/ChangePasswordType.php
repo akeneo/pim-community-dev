@@ -67,7 +67,7 @@ class ChangePasswordType extends AbstractType
                     )
                 ),
                 'first_options'  => array('label' => 'New password'),
-                'second_options' => array('label' => 'Repeat password'),
+                'second_options' => array('label' => 'Repeat new password'),
                 'mapped' => false,
             )
         );
@@ -89,6 +89,20 @@ class ChangePasswordType extends AbstractType
         $resolver->setDefaults(
             array(
                 'inherit_data' => true,
+                'intention'            => 'user',
+                'validation_groups'    => function ($form) {
+                    if ($form instanceof FormInterface) {
+                        $user = $form->getData();
+                    } elseif ($form instanceof FormView) {
+                        $user = $form->vars['value'];
+                    } else {
+                        $user = null;
+                    }
+
+                    return $user && $user->getId()
+                        ? array('User', 'Default')
+                        : array('Registration', 'User', 'Default');
+                },
             )
         );
     }

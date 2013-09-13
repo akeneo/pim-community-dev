@@ -113,6 +113,14 @@ class UserType extends FlexibleType
                 'tags',
                 'oro_tag_select'
             );
+
+            $builder->add(
+                'change_password',
+                'oro_change_password'
+//                array(
+//                    'cascade_validation' => true
+//                )
+            );
     }
 
     /**
@@ -165,6 +173,7 @@ class UserType extends FlexibleType
                 'error_mapping' => array(
                     'roles' => 'rolesCollection'
                 ),
+                //'cascade_validation' => true
             )
         );
     }

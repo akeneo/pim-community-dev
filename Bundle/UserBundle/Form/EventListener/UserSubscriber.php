@@ -121,11 +121,8 @@ class UserSubscriber implements EventSubscriberInterface
             )
         );
 
-        if ($entity->getId() && $this->isCurrentUser($entity)) {
-            $form->add(
-                'change_password',
-                'oro_change_password'
-            );
+        if (!($entity->getId() && $this->isCurrentUser($entity))) {
+            $form->remove('change_password');
         }
     }
 
