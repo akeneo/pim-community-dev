@@ -1682,6 +1682,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should see a tooltip "([^"]*)"$/
+     */
+    public function iShouldSeeATooltip($text)
+    {
+        if (!$this->getCurrentPage()->findTooltip($text)) {
+            throw $this->createExpectationException(sprintf('No tooltip containing "%s" were found.', $text));
+        }
+    }
+
+    /**
      * @param string $expected
      */
     private function assertAddress($expected)
