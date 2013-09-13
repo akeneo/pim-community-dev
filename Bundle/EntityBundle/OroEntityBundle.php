@@ -4,7 +4,9 @@ namespace Oro\Bundle\EntityBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineSqlFiltersConfigurationPass;
+use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DatagridConfigurationPass;
 
 class OroEntityBundle extends Bundle
 {
@@ -16,5 +18,6 @@ class OroEntityBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new DoctrineSqlFiltersConfigurationPass());
+        $container->addCompilerPass(new DatagridConfigurationPass());
     }
 }

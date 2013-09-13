@@ -7,7 +7,6 @@ use Oro\Bundle\GridBundle\Datagrid\ORM\EntityProxyQuery;
 use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
-use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\CallbackProperty;
 
@@ -205,7 +204,7 @@ class CustomEntityDatagrid extends DatagridManager
 
                     $fieldObject->setOptions(
                         array(
-                            'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                            'type'        => $this->typeMap[$fieldConfig->getFieldType()],
                             'label'       => $label,
                             'field_name'  => $code,
                             'filter_type' => $this->filterMap[$fieldConfig->getFieldType()],

@@ -305,7 +305,7 @@ class ConfigManager
         if (!$resultConfig) {
             $model = $this->modelManager->getModelByConfigId($configId);
 
-            $config = new Config($configId);
+            $config = new Config($this->getConfigIdByModel($model, $configId->getScope()));
             $config->setValues($model->toArray($configId->getScope()));
 
             if (null !== $this->cache) {
@@ -556,5 +556,22 @@ class ConfigManager
         }
 
         return $config;
+    }
+
+    private function getConfigIdByModel(AbstractConfigModel $model, $scope)
+    {
+        if ($model instanceof FieldConfigModel) {
+            return new FieldConfigId(
+                $model->getEntity()->getClassName(),
+                $scope,
+                $model->getFieldName(),
+                $model->getType()
+            );
+        } else {
+            return new EntityConfigId(
+                $model->getClassName(),
+                $scope
+            );
+        }
     }
 }
