@@ -96,7 +96,6 @@
     text-align: center;
 }
 .ui-datepicker .ui-datepicker-title select {
-    font-size: 1em;
     margin: 0;
 }
 .ui-datepicker select.ui-datepicker-month-year {
@@ -241,17 +240,12 @@
 ----------------------------------*/
 .ui-datepicker .ui-widget {
     font-family: 'Helvetica Neue',Helvetica,sans-serif;
-    font-size: 1.1em;
-}
-.ui-datepicker .ui-widget .ui-widget {
-    font-size: 1em;
 }
 .ui-datepicker .ui-widget input,
 .ui-datepicker .ui-widget select,
 .ui-datepicker .ui-widget textarea,
 .ui-datepicker .ui-widget button {
     font-family: 'Helvetica Neue',Helvetica,sans-serif;
-    font-size: 1em;
 }
 .ui-widget-content,
 .ui-datepicker.ui-widget-content{
