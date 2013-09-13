@@ -8,8 +8,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class AclMetadataLoaderPass implements CompilerPassInterface
 {
-    const ACL_ANNOTATION_METADATA_PROVIDER = 'oro_security.acl_annotation_provider';
-    const ACL_ANNOTATION_METADATA_PROVIDER_TAG = 'oro_security.acl_annotation_loader';
+    const ACL_ANNOTATION_METADATA_PROVIDER = 'oro_security.acl.annotation_provider';
+    const ACL_ANNOTATION_METADATA_PROVIDER_TAG = 'oro_security.acl.metadata_loader';
 
     /**
      * {@inheritDoc}

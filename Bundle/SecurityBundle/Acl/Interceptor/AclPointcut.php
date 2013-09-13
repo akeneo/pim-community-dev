@@ -30,7 +30,7 @@ class AclPointcut implements PointcutInterface
      */
     public function matchesClass(\ReflectionClass $class)
     {
-        return $this->annotationProvider->isProtectedClass($class->getName());
+        return $this->annotationProvider->isProtectedClass($class->name);
     }
 
     /**

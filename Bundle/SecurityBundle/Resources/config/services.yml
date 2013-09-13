@@ -69,6 +69,10 @@ services:
         arguments:
             - @oro_security.acl.object_id_accessor
 
+    oro_security.acl.extension_selector_link:
+        tags:
+           - { name: oro_service_link,  service: oro_security.acl.extension_selector }
+
     oro_security.acl.extension.entity:
         public: false
         class: %oro_security.acl.extension.entity.class%
@@ -197,11 +201,7 @@ services:
         public: false
         class: %oro_security.action_metadata_provider.class%
         arguments:
-            - @oro_security.acl_annotation_provider
-            
-   oro_security.acl_extension_selector:
-       tags:
-           - { name: oro_service_link,  service: oro_security.acl.extension_selector }         
+            - @oro_security.acl.annotation_provider
 
     oro_security.acl.annotation_provider.cache:
         public: false
@@ -212,7 +212,7 @@ services:
     oro_security.acl.annotation_loader:
         public: false
         class:                        %oro_security.acl.annotation_reader.class%
-        arguments:                    ["@annotation_reader", "@oro_security.acl_extension_selector"]
+        arguments:                    ["@annotation_reader", "@oro_security.acl.extension_selector_link"]
         calls:
             - [setBundles, ["%kernel.bundles%"]]
         tags:
@@ -221,7 +221,7 @@ services:
     oro_security.acl.config_loader:
         public: false
         class:                        %oro_security.acl.config_reader.class%
-        arguments:                    ["@oro_security.acl_extension_selector"]
+        arguments:                    ["@oro_security.acl.extension_selector_link"]
         calls:
             - [setBundles, ["%kernel.bundles%"]]
         tags:
@@ -233,7 +233,6 @@ services:
           - "@oro_security.acl.annotation_provider.cache"
 
     oro_security.acl.pointcut:
-        public: false
         class: %oro_security.acl.pointcut.class%
         arguments:
             - @oro_security.acl.annotation_provider
@@ -241,7 +240,6 @@ services:
             - { name: jms_aop.pointcut, interceptor: oro_security.acl.interceptor }
 
     oro_security.acl.interceptor:
-        public: false
         scope: request
         class: %oro_security.acl.interceptor.class%
         arguments:

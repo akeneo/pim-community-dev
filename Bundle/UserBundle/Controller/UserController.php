@@ -135,7 +135,6 @@ class UserController extends Controller
      */
     public function indexAction()
     {
-        var_dump($this->get("oro_security.acl_annotation_provider")->getAnnotations());die;
         $view = $this->get('oro_user.user_datagrid_manager')->getDatagrid()->createView();
 
         return 'json' == $this->getRequest()->getRequestFormat()
