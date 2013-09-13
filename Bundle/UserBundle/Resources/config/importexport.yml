@@ -1,0 +1,8 @@
+parameters:
+    oro_user.importexport.user_normalizer.class: Oro\Bundle\UserBundle\ImportExport\Serializer\Normalizer\UserNormalizer
+
+services:
+    oro_user.importexport.user_normalizer:
+        class: %oro_user.importexport.user_normalizer.class%
+        tags:
+            - { name: oro_importexport.normalizer }

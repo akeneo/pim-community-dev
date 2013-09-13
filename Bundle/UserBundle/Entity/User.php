@@ -723,6 +723,17 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
+     * @param string $salt
+     * @return User
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+    /**
      * @param  string $password New encoded password
      * @return User
      */
