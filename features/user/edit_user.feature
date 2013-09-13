@@ -1,4 +1,3 @@
-@javascript
 Feature: Edit a user
   In order to manage the users and rights
   As Peter
@@ -7,7 +6,6 @@ Feature: Edit a user
   Background:
     Given I am logged in as "admin"
 
-  @skip
   Scenario: Successfully edit a user
     Given I edit the "admin" user
     Then I should see "Doe, John"

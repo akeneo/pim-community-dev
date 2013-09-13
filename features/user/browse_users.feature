@@ -12,4 +12,3 @@ Feature: Browse users
     Then the grid should contain 1 element
     When I click on the "View" action of the row which contains "Peter"
     Then I should see "Doe, John"
-

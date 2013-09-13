@@ -25,12 +25,12 @@ Feature: Navigate the application in hash navigation mode
     | pim_importexport_import_index        |
     | pim_importexport_import_report_index |
     | pim_importexport_import_report_index |
-#   | oro_user_group_create                |
+    | oro_user_group_create                |
     | oro_user_group_index                 |
-#   | oro_user_role_create                 |
+    | oro_user_role_create                 |
     | oro_user_role_index                  |
     | oro_user_status_list                 |
     | oro_user_status_create               |
-#   | oro_user_index                       |
+    | oro_user_index                       |
     | oro_user_create                      |
     | oro_default                          |
