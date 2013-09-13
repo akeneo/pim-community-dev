@@ -43,14 +43,15 @@ class ChangePasswordType extends AbstractType
         );
 
         $builder->add(
-            'password',
+            'currentPassword',
             'password',
             array(
                 'required' => true,
                 'label' => 'Current password',
                 'constraints' => array(
                     new UserPassword()
-                )
+                ),
+                'mapped' => false,
             )
         )
         ->add(

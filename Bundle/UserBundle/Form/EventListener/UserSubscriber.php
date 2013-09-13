@@ -120,6 +120,13 @@ class UserSubscriber implements EventSubscriberInterface
                 )
             )
         );
+
+        if ($entity->getId() && $this->isCurrentUser($entity)) {
+            $form->add(
+                'change_password',
+                'oro_change_password'
+            );
+        }
     }
 
     /**

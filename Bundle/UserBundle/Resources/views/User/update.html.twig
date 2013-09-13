@@ -94,7 +94,7 @@
                         form_row(form.email),
                         UI.collectionField(form.emails, 'Additional emails', 'Add another email'),
                         form_row(form.tags),
-                        form_widget(form.change_password)
+                        form.change_password is defined ? form_widget(form.change_password) : ''
                     ]
                 }
             ]
