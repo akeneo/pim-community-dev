@@ -29,7 +29,8 @@ class AclAnnotationProviderTest extends \PHPUnit_Framework_TestCase
             array('fetch', 'save', 'delete', 'deleteAll')
         );
         $this->loader = $this->getMock('Oro\Bundle\SecurityBundle\Annotation\Loader\AclAnnotationLoaderInterface');
-        $this->provider = new AclAnnotationProvider(array($this->loader), $this->cache);
+        $this->provider = new AclAnnotationProvider($this->cache);
+        $this->provider->addLoader($this->loader);
     }
 
     public function testFindAndGetAnnotation()
@@ -78,7 +79,7 @@ class AclAnnotationProviderTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $this->assertTrue($this->provider->hasAnnotation('SomeClass'));
+        $this->assertFalse($this->provider->hasAnnotation('SomeClass'));
         $this->assertFalse($this->provider->hasAnnotation('UnknownClass'));
         $this->assertTrue($this->provider->hasAnnotation('SomeClass', 'SomeMethod'));
         $this->assertFalse($this->provider->hasAnnotation('SomeClass', 'UnknownMethod'));

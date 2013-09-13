@@ -42,7 +42,7 @@ class PermissionMap implements PermissionMapInterface
     public function contains($permission)
     {
         foreach ($this->extensionSelector->all() as $extension) {
-            if ($extension->hasMasks($permission)) {
+            if ($extension->hasMasks(empty($permission) ? $extension->getDefaultPermission() : $permission)) {
                 return true;
             }
         }

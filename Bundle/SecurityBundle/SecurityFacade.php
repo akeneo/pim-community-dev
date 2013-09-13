@@ -50,7 +50,7 @@ class SecurityFacade
     }
 
     /**
-     * Checks if an access to the given method of the given class is granted
+     * Checks if an access to the given method of the given class is granted to the caller
      *
      * @param string $class
      * @param string $method
@@ -90,26 +90,26 @@ class SecurityFacade
     }
 
     /**
-     * Checks if an access to a resource is granted
+     * Checks if an access to a resource is granted to the caller
      *
-     * Checks if an access to a resource protected the given ACL annotation is granted
-     *
-     * @param string $aclId
+     * @param string|string[] $attributes Can be a role name(s), permission name(s), an ACL annotation id
+     *                                    or something else, it depends on registered security voters
+     * @param mixed $object
      * @return bool
      */
-    public function isGranted($aclId)
+    public function isGranted($attributes, $object = null)
     {
-        $isGranted = true;
-
-        $annotation = $this->annotationProvider->findAnnotationById($aclId);
-        if ($annotation !== null) {
-            $this->logger->info(
-                sprintf('Check an access using "%s" ACL annotation.', $annotation->getId())
-            );
+        if ($object === null
+            && is_string($attributes)
+            && $annotation = $this->annotationProvider->findAnnotationById($attributes)
+        ) {
+            $this->logger->info(sprintf('Check an access using "%s" ACL annotation.', $annotation->getId()));
             $isGranted = $this->securityContext->isGranted(
                 $annotation->getPermission(),
                 $this->objectIdentityFactory->get($annotation)
             );
+        } else {
+            $isGranted = $this->securityContext->isGranted($attributes, $object);
         }
 
         return $isGranted;

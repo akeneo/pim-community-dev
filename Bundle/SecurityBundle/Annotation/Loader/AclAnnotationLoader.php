@@ -4,9 +4,7 @@ namespace Oro\Bundle\SecurityBundle\Annotation\Loader;
 
 use Doctrine\Common\Annotations\Reader as AnnotationReader;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\Adapter\PhpAdapter;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 
 use JMS\DiExtraBundle\Finder\PatternFinder;
 
@@ -21,17 +19,23 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
     private $reader;
 
     /**
+     * @var string[]
+     */
+    private $subDirs;
+
+    /**
      * Constructor
      *
+     * @param string[] $bundles A list of loaded bundles
+     * @param string[] $subDirs A list of sub directories (related to a bundle directory)
+     *                          where classes with ACL annotations may be located
      * @param AnnotationReader $reader
-     * @param ServiceLink $extensionSelectorLink
      */
-    public function __construct(
-        AnnotationReader $reader,
-        ServiceLink $extensionSelectorLink
-    ) {
-        parent::__construct($extensionSelectorLink);
+    public function __construct($bundles, array $subDirs, AnnotationReader $reader)
+    {
+        parent::__construct($bundles);
         $this->reader = $reader;
+        $this->subDirs = $subDirs;
     }
 
     /**
@@ -41,8 +45,21 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
      */
     public function load(AclAnnotationStorage $storage)
     {
-        $files = $this->getFinder()->findFiles($this->bundleDirectories);
+        if (!empty($this->subDirs)) {
+            $directories = array();
+            foreach ($this->bundleDirectories as $bundleDir) {
+                foreach ($this->subDirs as $subDir) {
+                    $dir = $bundleDir . DIRECTORY_SEPARATOR . $subDir;
+                    if (is_dir($dir)) {
+                        $directories[] = $dir;
+                    }
+                }
+            }
+        } else {
+            $directories = $this->bundleDirectories;
+        }
 
+        $files = $this->getFinder()->findFiles($directories);
         foreach ($files as $file) {
             $className = $this->getClassName($file);
             if ($className !== null) {
@@ -50,7 +67,6 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
                 // read annotations from class
                 $annotation = $this->reader->getClassAnnotation($reflection, self::ANNOTATION_CLASS);
                 if ($annotation) {
-                    $this->postLoadAnnotation($annotation);
                     $storage->add($annotation, $reflection->getName());
                 } else {
                     $ancestor = $this->reader->getClassAnnotation($reflection, self::ANCESTOR_CLASS);
@@ -62,7 +78,6 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
                 foreach ($reflection->getMethods() as $reflectionMethod) {
                     $annotation = $this->reader->getMethodAnnotation($reflectionMethod, self::ANNOTATION_CLASS);
                     if ($annotation) {
-                        $this->postLoadAnnotation($annotation);
                         $storage->add($annotation, $reflection->getName(), $reflectionMethod->getName());
                     } else {
                         $ancestor = $this->reader->getMethodAnnotation($reflectionMethod, self::ANCESTOR_CLASS);
@@ -87,10 +102,6 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
      */
     protected function getClassName($fileName)
     {
-        if (preg_match('/Test/ui', $fileName)) {
-            return null;
-        }
-
         $src = $this->getFileContent($fileName);
 
         if (!preg_match('/\bnamespace\s+([^;]+);/s', $src, $match)) {
@@ -112,9 +123,7 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
      */
     protected function getFinder()
     {
-        $finder = new PatternFinder(self::ANNOTATION_CLASS, '*.php');
-
-        return $finder;
+        return new PatternFinder(self::ANNOTATION_CLASS, '*.php');
     }
 
     /**

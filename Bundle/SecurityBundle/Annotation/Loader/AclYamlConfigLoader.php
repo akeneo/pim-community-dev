@@ -5,20 +5,9 @@ namespace Oro\Bundle\SecurityBundle\Annotation\Loader;
 use Symfony\Component\Yaml\Yaml;
 use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 
 class AclYamlConfigLoader extends AbstractLoader implements AclAnnotationLoaderInterface
 {
-    /**
-     * Constructor
-     *
-     * @param ServiceLink $extensionSelectorLink
-     */
-    public function __construct(ServiceLink $extensionSelectorLink)
-    {
-        parent::__construct($extensionSelectorLink);
-    }
-
     /**
      * Loads ACL annotations from YAML config files
      *
@@ -32,9 +21,7 @@ class AclYamlConfigLoader extends AbstractLoader implements AclAnnotationLoaderI
                 $config = Yaml::parse(realpath($file));
                 foreach ($config as $id => $data) {
                     $data['id'] = $id;
-                    $annotation = new AclAnnotation($data);
-                    $this->postLoadAnnotation($annotation);
-                    $storage->add($annotation);
+                    $storage->add(new AclAnnotation($data));
                     if (isset($data['bindings'])) {
                         foreach ($data['bindings'] as $binding) {
                             $storage->addBinding(

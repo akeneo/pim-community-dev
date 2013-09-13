@@ -35,8 +35,8 @@ parameters:
 
     oro_security.acl.annotation_provider.class:               Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider
     oro_security.acl.annotation_provider.cache.class:         Doctrine\Common\Cache\FilesystemCache
-    oro_security.acl.annotation_reader.class:                 Oro\Bundle\SecurityBundle\Annotation\Loader\AclAnnotationLoader
-    oro_security.acl.config_reader.class:                     Oro\Bundle\SecurityBundle\Annotation\Loader\AclYamlConfigLoader
+    oro_security.acl.annotation_loader.class:                 Oro\Bundle\SecurityBundle\Annotation\Loader\AclAnnotationLoader
+    oro_security.acl.yaml_config_loader.class:                Oro\Bundle\SecurityBundle\Annotation\Loader\AclYamlConfigLoader
 
     oro_security.acl.pointcut.class:                          Oro\Bundle\SecurityBundle\Acl\Interceptor\AclPointcut
     oro_security.acl.interceptor.class:                       Oro\Bundle\SecurityBundle\Acl\Interceptor\AclInterceptor
@@ -79,10 +79,6 @@ services:
         arguments:
             - @oro_security.acl.object_id_accessor
 
-    oro_security.acl.extension_selector_link:
-        tags:
-           - { name: oro_service_link,  service: oro_security.acl.extension_selector }
-
     oro_security.acl.extension.entity:
         public: false
         class: %oro_security.acl.extension.entity.class%
@@ -114,7 +110,7 @@ services:
         public: false
         class: %oro_security.acl.permission_granting_strategy.class%
         calls:
-             - [setAuditLogger, ["@?security.acl.audit_logger"]]
+             - [setAuditLogger, [@?security.acl.audit_logger]]
 
     oro_security.acl.permission_map:
         public: false
@@ -168,7 +164,7 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
         calls:
-            - [setBuilder, ["@oro_security.orm.ownership_sql_filter_builder"]]
+            - [setBuilder, [@oro_security.orm.ownership_sql_filter_builder]]
         tags:
             - { name: oro_entity.orm.sql_filter, filter_name: ownershipFilter, enabled: true }
             - { name: kernel.event_listener, priority: -255, event: kernel.request, method: setUserParameter }
@@ -213,6 +209,11 @@ services:
         arguments:
             - @oro_security.acl.annotation_provider
 
+    oro_security.acl.annotation_provider:
+        class: %oro_security.acl.annotation_provider.class%
+        arguments:
+          - @oro_security.acl.annotation_provider.cache
+
     oro_security.acl.annotation_provider.cache:
         public: false
         class: %oro_security.acl.annotation_provider.cache.class%
@@ -221,26 +222,21 @@ services:
 
     oro_security.acl.annotation_loader:
         public: false
-        class:                        %oro_security.acl.annotation_reader.class%
-        arguments:                    ["@annotation_reader", "@oro_security.acl.extension_selector_link"]
-        calls:
-            - [setBundles, ["%kernel.bundles%"]]
-        tags:
-            -  { name: oro_security.acl.metadata_loader }
-
-    oro_security.acl.config_loader:
-        public: false
-        class:                        %oro_security.acl.config_reader.class%
-        arguments:                    ["@oro_security.acl.extension_selector_link"]
-        calls:
-            - [setBundles, ["%kernel.bundles%"]]
-        tags:
-            -  { name: oro_security.acl.metadata_loader }
-
-    oro_security.acl.annotation_provider:
-        class:                        %oro_security.acl.annotation_provider.class%
+        class: %oro_security.acl.annotation_loader.class%
         arguments:
-          - "@oro_security.acl.annotation_provider.cache"
+            - %kernel.bundles%
+            - ["Controller"]
+            - @annotation_reader
+        tags:
+            - { name: oro_security.acl.config_loader }
+
+    oro_security.acl.yaml_config_loader:
+        public: false
+        class: %oro_security.acl.yaml_config_loader.class%
+        arguments:
+            - %kernel.bundles%
+        tags:
+            - { name: oro_security.acl.config_loader }
 
     oro_security.acl.pointcut:
         class: %oro_security.acl.pointcut.class%

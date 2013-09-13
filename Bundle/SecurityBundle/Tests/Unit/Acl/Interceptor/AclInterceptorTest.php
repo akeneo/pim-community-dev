@@ -4,6 +4,7 @@ namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Interceptor;
 
 use Oro\Bundle\SecurityBundle\Acl\Interceptor\AclInterceptor;
 use CG\Proxy\MethodInvocation;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject;
 use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
@@ -43,11 +44,14 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
         $this->request = new Request();
         $this->request->attributes->add(array('_route' => 'test'));
         $this->interceptor = new AclInterceptor(
-            $logger,
-            $this->securityContext,
-            $this->annotationProvider,
-            $this->objectIdentityFactory,
-            $this->request
+            new SecurityFacade(
+                $this->securityContext,
+                $this->annotationProvider,
+                $this->objectIdentityFactory,
+                $logger
+            ),
+            $this->request,
+            $logger
         );
 
         $reflection = new \ReflectionClass('Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject');
