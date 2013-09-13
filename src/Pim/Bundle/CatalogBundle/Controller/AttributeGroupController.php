@@ -51,12 +51,12 @@ class AttributeGroupController extends AbstractDoctrineController
     /**
      * @var AttributeGroupHandler
      */
-    private $attributeGroupHandler;
+    private $formHandler;
 
     /**
      * @var Form
      */
-    private $attributeGroupForm;
+    private $form;
 
     /**
      * @var PendingManager
@@ -75,8 +75,8 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param RegistryInterface        $doctrine
      * @param GridRenderer             $gridRenderer
      * @param DatagridWorkerInterface  $dataGridWorker
-     * @param AttributeGroupHandler    $attributeGroupHandler
-     * @param Form                     $attributeGroupForm
+     * @param AttributeGroupHandler    $formHandler
+     * @param Form                     $form
      * @param PendingManager           $pendingManager
      */
     public function __construct(
@@ -89,17 +89,17 @@ class AttributeGroupController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $dataGridWorker,
-        AttributeGroupHandler $attributeGroupHandler,
-        Form $attributeGroupForm,
+        AttributeGroupHandler $formHandler,
+        Form $form,
         PendingManager $pendingManager
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
 
-        $this->gridRenderer          = $gridRenderer;
-        $this->dataGridWorker        = $dataGridWorker;
-        $this->attributeGroupHandler = $attributeGroupHandler;
-        $this->attributeGroupForm    = $attributeGroupForm;
-        $this->pendingManager        = $pendingManager;
+        $this->gridRenderer   = $gridRenderer;
+        $this->dataGridWorker = $dataGridWorker;
+        $this->formHandler    = $formHandler;
+        $this->form           = $form;
+        $this->pendingManager = $pendingManager;
     }
     /**
      * Create attribute group
@@ -118,7 +118,7 @@ class AttributeGroupController extends AbstractDoctrineController
         $group = new AttributeGroup();
         $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToNameOrderedBySortOrder();
 
-        if ($this->attributeGroupHandler->process($group)) {
+        if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'Attribute group successfully created');
 
             return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
@@ -127,7 +127,7 @@ class AttributeGroupController extends AbstractDoctrineController
         return array(
             'groups'         => $groups,
             'group'          => $group,
-            'form'           => $this->attributeGroupForm->createView(),
+            'form'           => $this->form->createView(),
             'attributesForm' => $this->getAvailableProductAttributesForm($this->getGroupedAttributes())->createView(),
         );
     }
@@ -161,7 +161,7 @@ class AttributeGroupController extends AbstractDoctrineController
             return $this->gridRenderer->renderResultsJsonResponse($datagridView);
         }
 
-        if ($this->attributeGroupHandler->process($group)) {
+        if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'Attribute group successfully saved');
 
             return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
@@ -170,7 +170,7 @@ class AttributeGroupController extends AbstractDoctrineController
         return array(
             'groups'         => $groups,
             'group'          => $group,
-            'form'           => $this->attributeGroupForm->createView(),
+            'form'           => $this->form->createView(),
             'attributesForm' => $this->getAvailableProductAttributesForm($this->getGroupedAttributes())->createView(),
             'datagrid'       => $datagridView,
         );
@@ -180,6 +180,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * Edit AttributeGroup sort order
      *
      * @param Request $request
+     *
      * @Acl(
      *      id="pim_catalog_attribute_group_sort",
      *      name="Sort groups",
@@ -217,6 +218,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @param Request        $request
      * @param AttributeGroup $group
+     *
      * @Acl(
      *      id="pim_catalog_attribute_group_remove",
      *      name="Remove group",
@@ -266,6 +268,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @param Request $request The request object
      * @param integer $id      The group id to add attributes to
+     *
      * @Acl(
      *      id="pim_catalog_attribute_group_add_attribute",
      *      name="Add attribute to group",
@@ -306,6 +309,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @param integer $groupId
      * @param integer $attributeId
+     *
      * @Acl(
      *      id="pim_catalog_attribute_group_remove_attribute",
      *      name="Remove attribute from a group",

@@ -79,7 +79,7 @@ class ProductController extends AbstractDoctrineController
     /**
      * @var CompletenessCalculator
      */
-    private $completenessCalculator;
+    private $calculator;
 
     /**
      * @var ProductManager
@@ -125,7 +125,7 @@ class ProductController extends AbstractDoctrineController
      * @param DatagridWorkerInterface  $datagridWorker
      * @param ProductCreateHandler     $productCreateHandler
      * @param Form                     $productCreateForm
-     * @param CompletenessCalculator   $completenessCalculator
+     * @param CompletenessCalculator   $calculator
      * @param ProductManager           $productManager
      * @param CategoryManager          $categoryManager
      * @param LocaleManager            $localeManager
@@ -145,7 +145,7 @@ class ProductController extends AbstractDoctrineController
         DatagridWorkerInterface $datagridWorker,
         ProductCreateHandler $productCreateHandler,
         Form $productCreateForm,
-        CompletenessCalculator $completenessCalculator,
+        CompletenessCalculator $calculator,
         ProductManager $productManager,
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
@@ -155,17 +155,17 @@ class ProductController extends AbstractDoctrineController
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
 
-        $this->gridRenderer           = $gridRenderer;
-        $this->datagridWorker         = $datagridWorker;
-        $this->productCreateHandler   = $productCreateHandler;
-        $this->productCreateForm      = $productCreateForm;
-        $this->completenessCalculator = $completenessCalculator;
-        $this->productManager         = $productManager;
-        $this->categoryManager        = $categoryManager;
-        $this->localeManager          = $localeManager;
-        $this->pendingManager         = $pendingManager;
-        $this->auditManager           = $auditManager;
-        $this->aclManager             = $aclManager;
+        $this->gridRenderer         = $gridRenderer;
+        $this->datagridWorker       = $datagridWorker;
+        $this->productCreateHandler = $productCreateHandler;
+        $this->productCreateForm    = $productCreateForm;
+        $this->calculator           = $calculator;
+        $this->productManager       = $productManager;
+        $this->categoryManager      = $categoryManager;
+        $this->localeManager        = $localeManager;
+        $this->pendingManager       = $pendingManager;
+        $this->auditManager         = $auditManager;
+        $this->aclManager           = $aclManager;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -338,7 +338,7 @@ class ProductController extends AbstractDoctrineController
                 $this->productManager->save($product, $categories, $categoriesData['trees']);
                 // Call completeness calculator after validating data and saving product
                 // so all values for all locale are loaded now
-                $this->completenessCalculator->calculateForAProduct($product);
+                $this->calculator->calculateForAProduct($product);
 
                 $this->addFlash('success', 'Product successfully saved');
 
