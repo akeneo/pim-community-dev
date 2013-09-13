@@ -112,6 +112,10 @@ class UserType extends FlexibleType
             ->add(
                 'tags',
                 'oro_tag_select'
+            )
+            ->add(
+                'change_password',
+                'oro_change_password'
             );
     }
 
@@ -165,7 +169,6 @@ class UserType extends FlexibleType
                 'error_mapping' => array(
                     'roles' => 'rolesCollection'
                 ),
-
             )
         );
     }
