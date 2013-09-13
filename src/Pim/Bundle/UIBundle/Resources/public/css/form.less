@@ -856,41 +856,45 @@ div.dropdown-menu.channel {
 #locale-switcher {
   span.dropdown-toggle {
     color: @textColor;
-    margin-top: 2px;
     margin-bottom: 0;
-    padding: 3px 6px;
+    padding: 5px 6px 3px 6px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-shadow: none;
     cursor: pointer;
-    .caret {
-      margin-top: 6px;
+    > i {
+      vertical-align: middle;
+      font-size: 14px;
     }
   }
   .dropdown-menu {
     padding: 0;
-    li.activeLocale>a {
-        padding-left: 0px;
-    }
     li>a {
-      padding: 5px 5px 5px 23px;
+      padding: 5px;
       color: @textColor;
       &:hover, &:active, &:focus {
-        background-color: #f1f1f1;
-        background-image: none;
+        background: #f1f1f1;
+      }
+      span.icon {
+        width: 25px;
+        min-height: 1px;
       }
       span.code {
-          color: @textColor + #444;
-          float: left;
-          text-align: right;
-          width: 70px;
+        color: @textColor + #444;
       }
       span.title {
-          font-weight: bold;
-          margin: 0 10px;
-          font-size: 12px;
+        float: none;
+        font-weight: bold;
+        margin: 0 10px;
+        font-size: 12px;
       }
     }
+  }
+  code.flag-language {
+    color: @textColor;
+    border: none;
+    background-color: transparent;
+    padding: 4px;
   }
 }
 
