@@ -38,13 +38,13 @@
                     {% endfor %}
                 </ul>
             </div>
-        
+
             <div class="tab-content">
                 {% if trees %}
                     {% set firstTree = trees|first %}
                     {% set selectedTree = firstTree.id %}
                 {% endif %}
-                <div id="trees" data-id="" data-assets-path="{{ asset('bundles/pimcatalog/') }}" data-datalocale="en_US" {% if selectedTree is defined %} data-selected-tree="{{ selectedTree }}"{% endif %}>
+                <div id="trees" data-id="" data-datalocale="en_US" {% if selectedTree is defined %} data-selected-tree="{{ selectedTree }}"{% endif %}>
                     {% for tree in trees %}
                         <div class="tree" data-tree-id="{{ tree.id }}">
                             <h3>{{ tree.title }}</h3>
