@@ -1,0 +1,42 @@
+parameters:
+    oro_wamp.publisher.class:             Oro\Bundle\SyncBundle\Wamp\TopicPublisher
+    oro_wamp.db_ping.class:               Oro\Bundle\SyncBundle\Wamp\DbPing
+    oro_wamp.twig.class:                  Oro\Bundle\SyncBundle\Twig\OroSyncExtension
+    oro_wamp.listener.clank.class:        Oro\Bundle\SyncBundle\EventListener\WampListener
+    oro_wamp.listener.maintenance.class:  Oro\Bundle\SyncBundle\EventListener\MaintenanceListener
+
+services:
+    oro_wamp.publisher:
+        class:                            %oro_wamp.publisher.class%
+        arguments:
+            - %websocket_host%
+            - %websocket_port%
+
+    oro_wamp.db_ping:
+        class:                            %oro_wamp.db_ping.class%
+        arguments:
+            - "@doctrine.dbal.default.wrapped_connection"
+
+    oro_wamp.twig.sync_extension:
+        class:                            %oro_wamp.twig.class%
+        arguments:
+            - "@oro_wamp.publisher"
+        tags:
+            - { name: twig.extension }
+
+    kernel.listener.clank.event:
+        class:                            %oro_wamp.listener.clank.class%
+        arguments:
+            - "@session.handler.pdo"
+            - "@security.context"
+            - %session.storage.options%
+        tags:
+            - { name: kernel.event_listener, event: clank.client.connected, method: onClientConnect }
+
+    kernel.listener.maintenance.event:
+        class:                            %oro_wamp.listener.maintenance.class%
+        arguments:
+            - "@oro_wamp.publisher"
+        tags:
+            - { name: kernel.event_listener, event: maintenance.on, method: onModeOn }
+            - { name: kernel.event_listener, event: maintenance.off, method: onModeOff }

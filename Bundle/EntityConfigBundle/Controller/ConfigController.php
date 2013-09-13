@@ -92,7 +92,8 @@ class ConfigController extends Controller
                         'parameters' => array('id' => $id),
                     ),
                     array(
-                        'route' => 'oro_entityconfig_index'
+                        'route' => 'oro_entityconfig_view',
+                        'parameters' => array('id' => $id)
                     )
                 );
             }
@@ -197,6 +198,7 @@ class ConfigController extends Controller
             'entity_name'      => $entityName,
             'module_name'      => $moduleName,
             'button_config'    => $datagridManager->getLayoutActions($entity),
+            'require_js'       => $datagridManager->getRequireJsModules(),
         );
     }
 

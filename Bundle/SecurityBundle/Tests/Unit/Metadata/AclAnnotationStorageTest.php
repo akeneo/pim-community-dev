@@ -78,6 +78,20 @@ class AclAnnotationStorageTest extends \PHPUnit_Framework_TestCase
             $storage->find('Acme\SomeClass1', 'SomeMethod')->getId()
         );
 
+        // test 'has' method
+        $this->assertTrue($storage->has('Acme\SomeClass'));
+        $this->assertFalse($storage->has('Acme\UnknownClass'));
+        $this->assertTrue($storage->has('Acme\SomeClass', 'SomeMethod'));
+        $this->assertFalse($storage->has('Acme\SomeClass', 'UnknownMethod'));
+        $this->assertFalse($storage->has('Acme\UnknownClass', 'SomeMethod'));
+
+        // test isKnownClass and isKnownMethod methods
+        $this->assertTrue($storage->isKnownClass('Acme\SomeClass'));
+        $this->assertFalse($storage->isKnownClass('Acme\UnknownClass'));
+        $this->assertTrue($storage->isKnownMethod('Acme\SomeClass', 'SomeMethod'));
+        $this->assertFalse($storage->isKnownMethod('Acme\SomeClass', 'UnknownMethod'));
+        $this->assertFalse($storage->isKnownMethod('Acme\UnknownClass', 'SomeMethod'));
+
         // test annotation override
         $this->assertEquals(
             'entity',

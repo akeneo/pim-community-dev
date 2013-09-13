@@ -61,6 +61,36 @@ class AclAnnotationProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $this->provider->getAnnotations('action'));
     }
 
+    public function testHasAnnotationAndIsProtected()
+    {
+        $this->loader->expects($this->once())
+            ->method('load')
+            ->will(
+                $this->returnCallback(
+                    function ($storage) {
+                        /** @var AclAnnotationStorage $storage */
+                        $storage->add(
+                            new AclAnnotation(array('id' => 'test', 'type' => 'entity')),
+                            'SomeClass',
+                            'SomeMethod'
+                        );
+                    }
+                )
+            );
+
+        $this->assertTrue($this->provider->hasAnnotation('SomeClass'));
+        $this->assertFalse($this->provider->hasAnnotation('UnknownClass'));
+        $this->assertTrue($this->provider->hasAnnotation('SomeClass', 'SomeMethod'));
+        $this->assertFalse($this->provider->hasAnnotation('SomeClass', 'UnknownMethod'));
+        $this->assertFalse($this->provider->hasAnnotation('UnknownClass', 'SomeMethod'));
+
+        $this->assertTrue($this->provider->isProtectedClass('SomeClass'));
+        $this->assertFalse($this->provider->isProtectedClass('UnknownClass'));
+        $this->assertTrue($this->provider->isProtectedMethod('SomeClass', 'SomeMethod'));
+        $this->assertFalse($this->provider->isProtectedMethod('SomeClass', 'UnknownMethod'));
+        $this->assertFalse($this->provider->isProtectedMethod('UnknownClass', 'SomeMethod'));
+    }
+
     public function testCache()
     {
         $this->loader->expects($this->exactly(2))

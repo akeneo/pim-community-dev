@@ -31,15 +31,14 @@ parameters:
     oro_security.entity_security_metadata_provider.cache.class: Doctrine\Common\Cache\FilesystemCache
     oro_security.action_metadata_provider.class:               Oro\Bundle\SecurityBundle\Metadata\ActionMetadataProvider
 
-    oro_security.acl_annotation_provider.class:               Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider
-    oro_security.acl_annotation_provider.cache.class:         Doctrine\Common\Cache\FilesystemCache
+    oro_security.acl.annotation_provider.class:               Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider
+    oro_security.acl.annotation_provider.cache.class:         Doctrine\Common\Cache\FilesystemCache
     oro_security.acl.annotation_reader.class:                 Oro\Bundle\SecurityBundle\Annotation\Loader\AclAnnotationLoader
     oro_security.acl.config_reader.class:                     Oro\Bundle\SecurityBundle\Annotation\Loader\AclYamlConfigLoader
 
+    oro_security.acl.pointcut.class:                          Oro\Bundle\SecurityBundle\Acl\Interceptor\AclPointcut
+    oro_security.acl.interceptor.class:                       Oro\Bundle\SecurityBundle\Acl\Interceptor\AclInterceptor
 
-    oro_user.acl.pointcut.class:        Oro\Bundle\UserBundle\Acl\AclPointcut
-    oro_user.acl.interceptor.class:     Oro\Bundle\UserBundle\Acl\AclInterceptor
-    oro_user.acl.manager.class:         Oro\Bundle\UserBundle\Acl\Manager
     oro_user.acl.manager.api.class:     Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_user.acl.twig.class:            Oro\Bundle\UserBundle\Twig\OroUserExtension
 
@@ -199,53 +198,58 @@ services:
         class: %oro_security.action_metadata_provider.class%
         arguments:
             - @oro_security.acl_annotation_provider
+            
+   oro_security.acl_extension_selector:
+       tags:
+           - { name: oro_service_link,  service: oro_security.acl.extension_selector }         
 
-    oro_security.acl_extension_selector:
-        tags:
-            - { name: oro_service_link,  service: oro_security.acl.extension_selector }
-
-    oro_security.acl_annotation_provider.cache:
+    oro_security.acl.annotation_provider.cache:
         public: false
-        class: %oro_security.acl_annotation_provider.cache.class%
+        class: %oro_security.acl.annotation_provider.cache.class%
         arguments:
-            - %kernel.cache_dir%/oro_security_acl_resource_metadata
+            - %kernel.cache_dir%/oro_security_acl_annotations
 
-    oro_security.acl_annotation_loader:
+    oro_security.acl.annotation_loader:
         public: false
         class:                        %oro_security.acl.annotation_reader.class%
         arguments:                    ["@annotation_reader", "@oro_security.acl_extension_selector"]
         calls:
             - [setBundles, ["%kernel.bundles%"]]
         tags:
-            -  { name: oro_security.acl_annotation_loader }
+            -  { name: oro_security.acl.metadata_loader }
 
-    oro_security.acl_config_loader:
+    oro_security.acl.config_loader:
         public: false
         class:                        %oro_security.acl.config_reader.class%
         arguments:                    ["@oro_security.acl_extension_selector"]
         calls:
             - [setBundles, ["%kernel.bundles%"]]
         tags:
-            -  { name: oro_security.acl_annotation_loader }
+            -  { name: oro_security.acl.metadata_loader }
 
-    oro_security.acl_annotation_provider:
-        class:                        %oro_security.acl_annotation_provider.class%
+    oro_security.acl.annotation_provider:
+        class:                        %oro_security.acl.annotation_provider.class%
         arguments:
-          - "@oro_security.acl_annotation_provider.cache"
+          - "@oro_security.acl.annotation_provider.cache"
 
- #   oro_user.acl_pointcut:
- #       class:                        %oro_user.acl.pointcut.class%
- #       arguments:                    ["@annotation_reader", "@logger"]
- #       tags:
- #           - { name: jms_aop.pointcut, interceptor: oro_user.acl_interceptor }
+    oro_security.acl.pointcut:
+        public: false
+        class: %oro_security.acl.pointcut.class%
+        arguments:
+            - @oro_security.acl.annotation_provider
+        tags:
+            - { name: jms_aop.pointcut, interceptor: oro_security.acl.interceptor }
 
- #   oro_user.acl_interceptor:
- #       class:                        %oro_user.acl.interceptor.class%
- #       arguments:                    ["@service_container"]
-
- #     oro_user.acl_manager:
- #       class:                        %oro_user.acl.manager.class%
- #       arguments:                    ["@doctrine.orm.entity_manager", "@oro_user.acl_reader", "@oro_user.cache", "@security.context", "@oro_user.acl_config_reader"]
+    oro_security.acl.interceptor:
+        public: false
+        scope: request
+        class: %oro_security.acl.interceptor.class%
+        arguments:
+          - @logger
+          - @service_container
+          - @oro_security.acl.annotation_provider
+          - @oro_security.acl.object_identity_factory
+          - @request
 
  #   oro_user.acl_manager.api:
  #       class:                        %oro_user.acl.manager.api.class%

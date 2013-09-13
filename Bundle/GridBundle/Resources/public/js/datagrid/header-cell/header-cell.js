@@ -1,6 +1,6 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'backgrid'],
-function ($, _, Backbone, Backgrid) {
+define(['jquery', 'underscore', 'backbone', 'backgrid', 'oro/pageable-collection'],
+function ($, _, Backbone, Backgrid, PageableCollection) {
     "use strict";
 
     /**
@@ -25,7 +25,7 @@ function ($, _, Backbone, Backgrid) {
         ),
 
         /** @property {Boolean} */
-        allowNoSorting: false,
+        allowNoSorting: true,
 
         /**
          * Initialize.
@@ -33,10 +33,18 @@ function ($, _, Backbone, Backgrid) {
          * Add listening "reset" event of collection to able catch situation when header cell should update it's sort state.
          */
         initialize: function() {
+            this.allowNoSorting = this.collection.multipleSorting;
             Backgrid.HeaderCell.prototype.initialize.apply(this, arguments);
             this._initCellDirection(this.collection);
             this.collection.on('reset', this._initCellDirection, this);
         },
+
+        /**
+         * There is no need to reset cell direction because of multiple sorting
+         *
+         * @private
+         */
+        _resetCellDirection: function () {},
 
         /**
          * Inits cell direction when collections loads first time.
@@ -100,7 +108,7 @@ function ($, _, Backbone, Backgrid) {
                         if (leftVal === rightVal) {
                             return 0;
                         }
-                        else if (leftVal.toLowerCase() > rightVal.toLowerCase()) { return -1; }
+                        else if (leftVal > rightVal) { return -1; }
                         return 1;
                     });
                 }
@@ -114,7 +122,7 @@ function ($, _, Backbone, Backgrid) {
                         if (leftVal === rightVal) {
                             return 0;
                         }
-                        else if (leftVal.toLowerCase() < rightVal.toLowerCase()) { return -1; }
+                        else if (leftVal < rightVal) { return -1; }
                         return 1;
                     });
                 }
@@ -127,12 +135,11 @@ function ($, _, Backbone, Backgrid) {
          * @param {function(*, *): number} [comparator]
          */
         sort: function (columnName, direction, comparator) {
-
             comparator = comparator || this._cidComparator;
 
             var collection = this.collection;
 
-            if (Backbone.PageableCollection && collection instanceof Backbone.PageableCollection) {
+            if (collection instanceof PageableCollection) {
                 var order;
                 if (direction === "ascending") order = -1;
                 else if (direction === "descending") order = 1;

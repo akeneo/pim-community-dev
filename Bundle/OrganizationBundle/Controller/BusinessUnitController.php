@@ -78,7 +78,8 @@ class BusinessUnitController extends Controller
                     'parameters' => array('id' => $entity->getId()),
                 ),
                 array(
-                    'route' => 'oro_business_unit_index',
+                    'route' => 'oro_business_unit_view',
+                    'parameters' => array('id' => $entity->getId())
                 )
             );
         }
