@@ -7,9 +7,6 @@ require(
         function init() {
             // Place code that we need to run on every page load here
 
-            // Disable the oro scrollable container
-            $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
-
             $('.remove-attribute').each(function () {
                 var target = $(this).parent().find('.icons-container').first();
                 if (target.length) {
