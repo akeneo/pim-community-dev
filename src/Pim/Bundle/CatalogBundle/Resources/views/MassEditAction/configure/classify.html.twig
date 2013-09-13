@@ -18,7 +18,8 @@
 
 {% block formContent %}
 
-    {{ form_widget(form) }}
+    {{ form_widget(form.operation.categories) }}
+    {{ form_widget(form._token) }}
 
     {% set trees = form.vars.value.operation.trees %}
 
