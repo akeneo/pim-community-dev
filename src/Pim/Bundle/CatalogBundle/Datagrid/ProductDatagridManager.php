@@ -500,13 +500,31 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias .'.family', 'family')
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
-            ->leftJoin('values.prices', 'valuePrices');
+            ->leftJoin('values.prices', 'valuePrices')
+            ->leftJoin(
+                $rootAlias .'.completenesses',
+                'pCompleteness',
+                'WITH',
+                'pCompleteness.locale = :locale AND pCompleteness.channel = :channel'
 
-        // prepare query for completeness
-        $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
+            );
 
-        $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
-        $proxyQuery->setParameter('channelCode', $this->flexibleManager->getScope());
+        $channelCode = $this->flexibleManager->getScope();
+        $channel = $this->flexibleManager
+            ->getStorageManager()
+            ->getRepository('PimCatalogBundle:Channel')
+            ->findBy(array('code' => $channelCode));
+
+        $localeCode = $this->flexibleManager->getLocale();
+        $locale = $this->flexibleManager
+            ->getStorageManager()
+            ->getRepository('PimCatalogBundle:Locale')
+            ->findBy(array('code' => $localeCode));
+
+        $proxyQuery->setParameter('localeCode', $localeCode);
+        $proxyQuery->setParameter('locale', $locale);
+        $proxyQuery->setParameter('channelCode', $channelCode);
+        $proxyQuery->setParameter('channel', $channel);
 
         // prepare query for categories
         if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
@@ -524,26 +542,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 $proxyQuery->andWhere($expression);
             }
         }
-    }
-
-    /**
-     * Prepare query for completeness field
-     * @param ProxyQueryInterface $proxyQuery
-     * @param string              $rootAlias
-     */
-    protected function prepareQueryForCompleteness(ProxyQueryInterface $proxyQuery, $rootAlias)
-    {
-        $exprLocaleAndScope      = $proxyQuery->expr()->andX(
-            'locale.code = :localeCode',
-            'channel.code = :channelCode'
-        );
-        $exprWithoutCompleteness = $proxyQuery->expr()->isNull('pCompleteness');
-        $exprFamilyIsNull        = $proxyQuery->expr()->isNull($rootAlias .'.family');
-        $proxyQuery
-            ->leftJoin($rootAlias .'.completenesses', 'pCompleteness')
-            ->leftJoin('pCompleteness.locale', 'locale')
-            ->leftJoin('pCompleteness.channel', 'channel')
-            ->orWhere($exprLocaleAndScope, $exprWithoutCompleteness, $exprFamilyIsNull);
     }
 
     /**

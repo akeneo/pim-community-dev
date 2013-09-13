@@ -30,7 +30,10 @@ class CompletenessFilter extends BooleanFilter
 
         switch ($data['value']) {
             case BooleanFilterType::TYPE_NO:
-                $expression = $expressionFactory->neq($fieldExpression .'.ratio', '100');
+                $expression = $expressionFactory->orX(
+                    $expressionFactory->neq($fieldExpression .'.ratio', '100'),
+                    $expressionFactory->isNull($fieldExpression)
+                );
                 break;
             case BooleanFilterType::TYPE_YES:
             default:
