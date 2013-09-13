@@ -174,11 +174,21 @@ class MassEditActionController extends AbstractController
         $form = $this->getMassEditActionOperatorForm();
         $form->bind($request);
 
-        $this->batchOperator->performOperation($productIds);
+        if ($form->isValid()) {
+            $this->batchOperator->performOperation($productIds);
+            $this->addFlash('success', sprintf('pim_catalog.mass_edit_action.%s.success_flash', $operationAlias));
 
-        $this->addFlash('success', sprintf('pim_catalog.mass_edit_action.%s.success_flash', $operationAlias));
+            return $this->redirectToRoute('pim_catalog_product_index');
+        }
 
-        return $this->redirectToRoute('pim_catalog_product_index');
+        return $this->render(
+            sprintf('PimCatalogBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
+            array(
+                'form'          => $form->createView(),
+                'batchOperator' => $this->batchOperator,
+                'productIds'    => $productIds,
+            )
+        );
     }
 
     /**

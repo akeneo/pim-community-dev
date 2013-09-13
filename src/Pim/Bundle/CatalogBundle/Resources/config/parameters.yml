@@ -1,12 +1,13 @@
 parameters:
     pim_catalog.manager.product.class:                Pim\Bundle\CatalogBundle\Manager\ProductManager
 
-    pim_catalog.entity.product.class:                 Pim\Bundle\CatalogBundle\Entity\Product
-    pim_catalog.form.type.product.view.class:         Pim\Bundle\CatalogBundle\Form\View\ProductFormView
-    pim_catalog.form.type.product.class:              Pim\Bundle\CatalogBundle\Form\Type\ProductType
-    pim_catalog.form.type.product_create.class:       Pim\Bundle\CatalogBundle\Form\Type\ProductCreateType
-    pim_catalog.form.type.product_value.class:        Pim\Bundle\CatalogBundle\Form\Type\ProductValueType
-    pim_catalog.form.type.image.class:                Pim\Bundle\CatalogBundle\Form\Type\ImageType
+    pim_catalog.entity.product.class:                   Pim\Bundle\CatalogBundle\Entity\Product
+    pim_catalog.form.type.product.view.class:           Pim\Bundle\CatalogBundle\Form\View\ProductFormView
+    pim_catalog.form.type.product.class:                Pim\Bundle\CatalogBundle\Form\Type\ProductType
+    pim_catalog.form.type.product_create.class:         Pim\Bundle\CatalogBundle\Form\Type\ProductCreateType
+    pim_catalog.form.type.product_value.class:          Pim\Bundle\CatalogBundle\Form\Type\ProductValueType
+    pim_catalog.form.type.image.class:                  Pim\Bundle\CatalogBundle\Form\Type\ImageType
+    pim_catalog.form.type.edit_common_attributes.class: Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\EditCommonAttributesType
 
     pim_catalog.form.handler.product_create.class:     Pim\Bundle\CatalogBundle\Form\Handler\ProductCreateHandler
 

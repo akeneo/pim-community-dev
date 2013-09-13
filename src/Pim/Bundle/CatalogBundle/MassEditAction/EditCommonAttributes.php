@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\EditCommonAttributesType;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -75,7 +74,7 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     public function getFormType()
     {
-        return new EditCommonAttributesType();
+        return 'pim_catalog_mass_edit_common_attributes';
     }
 
     public function getFormOptions()

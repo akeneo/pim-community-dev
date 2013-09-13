@@ -3,8 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Form\Type\MassEditAction;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Pim\Bundle\CatalogBundle\Form\View\ProductFormView;
 
 /**
  * Form type of the EditCommonAttributes operation
@@ -15,6 +18,19 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class EditCommonAttributesType extends AbstractType
 {
+    /**
+     * @var ProductFormView
+     */
+    protected $productFormView;
+
+    /**
+     * @param ProductFormView $productFormView
+     */
+    public function __construct(ProductFormView $productFormView)
+    {
+        $this->productFormView = $productFormView;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -49,11 +65,16 @@ class EditCommonAttributesType extends AbstractType
                     'multiple' => true,
                     'expanded' => false,
                     'group_by' => 'virtualGroup.name',
-                    'attr'     => array(
-                        'class' => 'operation-param',
-                    )
                 )
             );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['groups'] = $this->productFormView->getView();
     }
 
     /**
@@ -73,6 +94,6 @@ class EditCommonAttributesType extends AbstractType
 
     public function getName()
     {
-        return 'pim_catalog_operation_edit_common_attributes';
+        return 'pim_catalog_mass_edit_common_attributes';
     }
 }
