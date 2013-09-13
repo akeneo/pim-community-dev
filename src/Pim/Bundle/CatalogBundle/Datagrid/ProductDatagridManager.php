@@ -506,7 +506,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'pCompleteness',
                 'WITH',
                 'pCompleteness.locale = :locale AND pCompleteness.channel = :channel'
-
             );
 
         $channelCode = $this->flexibleManager->getScope();
