@@ -122,6 +122,10 @@ define(
                             selected = $.unique(selected);
                             selected = selected.join(',');
                             $('#pim_catalog_mass_edit_action_operation_categories').val(selected);
+                            var treeId = e.target.id;
+                            var treeLinkId = treeId.replace('-', '-link-');
+                            $('#'+treeLinkId+' i').removeClass('gray');
+                            $('#'+treeLinkId+' i').addClass('green');
                         }
                     }
                 });
@@ -134,6 +138,12 @@ define(
                         selected.splice($.inArray(id, selected),1);
                         selected = selected.join(',');
                         $('#pim_catalog_mass_edit_action_operation_categories').val(selected);
+                        var treeId = e.target.id;
+                        if ($("#"+treeId).jstree('get_checked').length == 0) {
+                            var treeLinkId = treeId.replace('-', '-link-');
+                            $('#'+treeLinkId+' i').removeClass('green');
+                            $('#'+treeLinkId+' i').addClass('gray');
+                        }
                     }
                 });
                 
