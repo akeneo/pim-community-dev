@@ -217,11 +217,16 @@ pim_catalog.mass_edit_action:
     page_subtitle: 'Mass Edit (1 product)|Mass Edit (%count% products)'
     title: 'Choose operation'
     subtitle: 'Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products'
+
     change-status:
-        label: 'Change status (Enable/Disable)'
+        label:         'Change status (Enable/Disable)'
+        success_flash: 'Product(s) status have been changed'
+
     edit-common-attributes:
-        label: 'Edit attributes'
-        empty: 'Please select the attribute(s) you want to edit'
+        label:         'Edit attributes'
+        empty:         'Please select the attribute(s) you want to edit'
+        success_flash: 'Product(s) attribute(s) have been updated'
+
     classify:
         label:         'Classify products in categories'
-        success_flash: 'Product(s) have been classified into selected categories'    
+        success_flash: 'Product(s) have been classified into selected categories'
