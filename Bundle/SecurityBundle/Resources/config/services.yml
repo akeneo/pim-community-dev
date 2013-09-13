@@ -2,6 +2,8 @@ parameters:
     # replace the default ACL provider with an extended version of the provider
     security.acl.dbal.provider.class:                          Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider
 
+    oro_security.security_facade.class:                        Oro\Bundle\SecurityBundle\SecurityFacade
+
     oro_security.acl.manager.class:                            Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager
     oro_security.acl.cache.class:                              Oro\Bundle\SecurityBundle\Acl\Cache\FilesystemCache
     oro_security.acl.ace_provider.class:                       Oro\Bundle\SecurityBundle\Acl\Persistence\AceManipulationHelper
@@ -43,6 +45,14 @@ parameters:
     oro_user.acl.twig.class:            Oro\Bundle\UserBundle\Twig\OroUserExtension
 
 services:
+    oro_security.security_facade:
+        class: %oro_security.security_facade.class%
+        arguments:
+            - @security.context
+            - @oro_security.acl.annotation_provider
+            - @oro_security.acl.object_identity_factory
+            - @logger
+
     oro_security.acl.manager:
         class: %oro_security.acl.manager.class%
         scope: prototype
@@ -243,11 +253,9 @@ services:
         scope: request
         class: %oro_security.acl.interceptor.class%
         arguments:
-          - @logger
-          - @service_container
-          - @oro_security.acl.annotation_provider
-          - @oro_security.acl.object_identity_factory
-          - @request
+           - @oro_security.security_facade
+           - @request
+           - @logger
 
  #   oro_user.acl_manager.api:
  #       class:                        %oro_user.acl.manager.api.class%

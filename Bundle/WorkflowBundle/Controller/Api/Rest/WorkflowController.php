@@ -186,7 +186,7 @@ class WorkflowController extends FOSRestController
      * @Acl(
      *      id="oro_workflow_workflow_item_delete",
      *      label="Delete workflow item",
-     *      group_name=""
+     *      group_name="",
      *      type="action"
      * )
      *

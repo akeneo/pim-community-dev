@@ -8,21 +8,14 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
-use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 class AclInterceptor implements MethodInterceptorInterface
 {
     /**
-     * @var LoggerInterface
+     * @var SecurityFacade
      */
-    private $logger;
-
-    /**
-     * @var SecurityContextInterface
-     */
-    private $securityContext;
+    private $securityFacade;
 
     /**
      * @var Request
@@ -30,36 +23,25 @@ class AclInterceptor implements MethodInterceptorInterface
     private $request;
 
     /**
-     * @var AclAnnotationProvider
+     * @var LoggerInterface
      */
-    protected $annotationProvider;
-
-    /**
-     * @var ObjectIdentityFactory
-     */
-    protected $objectIdentityFactory;
+    private $logger;
 
     /**
      * Constructor
      *
+     * @param SecurityFacade $securityFacade
+     * @param Request $request
      * @param LoggerInterface $logger
-     * @param SecurityContextInterface $securityContext
-     * @param AclAnnotationProvider $annotationProvider
-     * @param ObjectIdentityFactory $objectIdentityFactory
-     * @param Request|null $request
      */
     public function __construct(
-        LoggerInterface $logger,
-        SecurityContextInterface $securityContext,
-        AclAnnotationProvider $annotationProvider,
-        ObjectIdentityFactory $objectIdentityFactory,
-        Request $request = null
+        SecurityFacade $securityFacade,
+        Request $request,
+        LoggerInterface $logger
     ) {
-        $this->logger = $logger;
-        $this->securityContext = $securityContext;
-        $this->annotationProvider = $annotationProvider;
-        $this->objectIdentityFactory = $objectIdentityFactory;
+        $this->securityFacade = $securityFacade;
         $this->request = $request;
+        $this->logger = $logger;
     }
 
     /**
@@ -75,35 +57,7 @@ class AclInterceptor implements MethodInterceptorInterface
             sprintf('User invoked class: "%s", Method: "%s".', $method->reflection->class, $method->reflection->name)
         );
 
-        $isGranted = true;
-
-        // check method level ACL
-        $annotation = $this->annotationProvider->findAnnotation($method->reflection->class, $method->reflection->name);
-        if ($annotation !== null) {
-            $this->logger->info(
-                sprintf('Check an access using "%s" ACL annotation.', $annotation->getId())
-            );
-            $isGranted = $this->securityContext->isGranted(
-                $annotation->getPermission(),
-                $this->objectIdentityFactory->get($annotation)
-            );
-        }
-
-        // check class level ACL
-        if ($isGranted && ($annotation === null || !$annotation->getIgnoreClassAcl())) {
-            $annotation = $this->annotationProvider->findAnnotation($method->reflection->class);
-            if ($annotation !== null) {
-                $this->logger->info(
-                    sprintf('Check an access using "%s" ACL annotation.', $annotation->getId())
-                );
-                $isGranted = $this->securityContext->isGranted(
-                    $annotation->getPermission(),
-                    $this->objectIdentityFactory->get($annotation)
-                );
-            }
-        }
-
-        if (!$isGranted) {
+        if (!$this->securityFacade->isClassMethodGranted($method->reflection->class, $method->reflection->name)) {
             // check if we have internal action - show blank
             if ($this->request !== null && $this->request->attributes->get('_route') == null) {
                 return new Response('');

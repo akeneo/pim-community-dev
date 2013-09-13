@@ -10,6 +10,7 @@ parameters:
     oro_user.acl.entity.class:          Oro\Bundle\UserBundle\Entity\Acl
     oro_user.security.provider.class:   Oro\Bundle\UserBundle\Security\UserProvider
     oro_user.security.login.class:      Oro\Bundle\UserBundle\EventListener\LoginSubscriber
+    oro_user.acl.twig.class:            Oro\Bundle\UserBundle\Twig\OroUserExtension
     oro_user.user_menu.builder.class:   Oro\Bundle\UserBundle\Menu\UserMenuBuilder
     oro_user.role.listener.class:       Oro\Bundle\UserBundle\EventListener\RoleListener
     oro_user.role.manager.class:        Oro\Bundle\UserBundle\Entity\Manager\RoleManager
