@@ -477,6 +477,6 @@ class Acl
      */
     public function __toString()
     {
-        return (string)$this->getId();
+        return (string) $this->getId();
     }
 }

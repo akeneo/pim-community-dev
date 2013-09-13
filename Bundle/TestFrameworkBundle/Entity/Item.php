@@ -101,6 +101,6 @@ class Item extends AbstractEntityFlexible
 
     public function __toString()
     {
-        return (string)$this->stringValue;
+        return (string) $this->stringValue;
     }
 }

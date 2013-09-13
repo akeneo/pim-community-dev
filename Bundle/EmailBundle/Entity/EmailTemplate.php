@@ -375,6 +375,6 @@ class EmailTemplate implements Translatable
      */
     public function __toString()
     {
-        return (string)$this->getName();
+        return (string) $this->getName();
     }
 }

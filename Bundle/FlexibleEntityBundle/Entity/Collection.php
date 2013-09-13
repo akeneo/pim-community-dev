@@ -114,6 +114,6 @@ class Collection
      */
     public function __toString()
     {
-        return (string)$this->getData();
+        return (string) $this->getData();
     }
 }
