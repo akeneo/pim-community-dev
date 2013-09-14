@@ -42,7 +42,12 @@ class AddVersionListener implements EventSubscriber
      *
      * @var VersionableInterface[]
      */
-    protected $pendingEntities;
+    protected $versionableEntities;
+
+    /**
+     * @var integer[]
+     */
+    protected $versionedEntities;
 
     /**
      * @var string
@@ -117,16 +122,16 @@ class AddVersionListener implements EventSubscriber
     {
         $em = $args->getEntityManager();
 
-        if (!empty($this->pendingEntities) and $this->username) {
+        if (!empty($this->versionableEntities) and $this->username) {
             $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
 
             // TODO : install fixtures issue
             if (!$user) {
-                $this->pendingEntities = array();
+                $this->versionableEntities = array();
                 return;
             }
 
-            foreach ($this->pendingEntities as $versionable) {
+            foreach ($this->versionableEntities as $versionable) {
                 if ($versionable->getId()) {
                     $pending = new Pending(get_class($versionable), $versionable->getId(), $this->username);
                     if ($this->realTimeVersioning) {
@@ -159,9 +164,10 @@ class AddVersionListener implements EventSubscriber
                     } else {
                         $this->computeChangeSet($em, $pending);
                     }
+                    $this->versionedEntities[]= spl_object_hash($versionable);
                 }
             }
-            $this->pendingEntities = array();
+            $this->versionableEntities = array();
             $em->flush();
         }
     }
@@ -262,8 +268,8 @@ class AddVersionListener implements EventSubscriber
     protected function addPendingVersioning($em, VersionableInterface $versionable)
     {
         $oid = spl_object_hash($versionable);
-        if (!isset($this->pendingEntities[$oid])) {
-            $this->pendingEntities[$oid] = $versionable;
+        if (!isset($this->versionableEntities[$oid]) and !isset($this->versionedEntities)) {
+            $this->versionableEntities[$oid] = $versionable;
         }
     }
 

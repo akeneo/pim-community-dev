@@ -73,7 +73,6 @@ services:
             - @pim_catalog.datagrid.worker
             - @pim_catalog.manager.channel
             - @pim_catalog.manager.product
-            - @pim_versioning.manager.pending
 
     pim_catalog.controller.locale:
         scope: request
