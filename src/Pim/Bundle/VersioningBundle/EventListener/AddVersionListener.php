@@ -124,38 +124,16 @@ class AddVersionListener implements EventSubscriber
 
         if (!empty($this->versionableEntities) and $this->username) {
             $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
-
-            // TODO : install fixtures issue
-            if (!$user) {
+            if (!$user and $this->realTimeVersioning) {
                 $this->versionableEntities = array();
                 return;
             }
-
             foreach ($this->versionableEntities as $versionable) {
                 if ($versionable->getId()) {
                     $pending = new Pending(get_class($versionable), $versionable->getId(), $this->username);
                     if ($this->realTimeVersioning) {
-                            $em->refresh($versionable);
-                            $current = $this->versionBuilder->buildVersion($versionable, $user);
-                            $this->computeChangeSet($em, $current);
-                            $previous = $em->getRepository('PimVersioningBundle:Version')->findPreviousVersion($current);
-                            $previousAudit = $em->getRepository('Oro\Bundle\DataAuditBundle\Entity\Audit')
-                                ->findOneBy(
-                                        array('objectId' => $current->getResourceId(), 'objectName' => $current->getResourceName()),
-                                        array('loggedAt' => 'desc')
-                                    );
-                            if ($previousAudit) {
-                                $versionNumber = $previousAudit->getVersion() + 1;
-                            } else {
-                                $versionNumber = 1;
-                            }
-
-                            $audit = $this->auditBuilder->buildAudit($current, $previous, $versionNumber);
-                            $diffData = $audit->getData();
-                            if (!empty($diffData)) {
-                                $this->computeChangeSet($em, $audit);
-                            }
-
+                        $em->refresh($versionable);
+                        $this->createVersionAndAudit($em, $versionable, $user);
                     } else {
                         $this->computeChangeSet($em, $pending);
                     }
@@ -164,6 +142,34 @@ class AddVersionListener implements EventSubscriber
             }
             $this->versionableEntities = array();
             $em->flush();
+        }
+    }
+
+    /**
+     * @param EntityManager $em
+     * @param Versionable   $versionable
+     * @param User          $user
+     */
+    public function createVersionAndAudit(EntityManager $em, VersionableInterface $versionable, User $user)
+    {
+        $current = $this->versionBuilder->buildVersion($versionable, $user);
+        $this->computeChangeSet($em, $current);
+        $previous = $em->getRepository('PimVersioningBundle:Version')->findPreviousVersion($current);
+        $previousAudit = $em->getRepository('Oro\Bundle\DataAuditBundle\Entity\Audit')
+            ->findOneBy(
+                array('objectId' => $current->getResourceId(), 'objectName' => $current->getResourceName()),
+                array('loggedAt' => 'desc')
+            );
+        if ($previousAudit) {
+            $versionNumber = $previousAudit->getVersion() + 1;
+        } else {
+            $versionNumber = 1;
+        }
+
+        $audit = $this->auditBuilder->buildAudit($current, $previous, $versionNumber);
+        $diffData = $audit->getData();
+        if (!empty($diffData)) {
+            $this->computeChangeSet($em, $audit);
         }
     }
 

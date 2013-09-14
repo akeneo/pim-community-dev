@@ -34,7 +34,7 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    pim_versioning.listener.adduser:
+    pim_versioning.event_listener.adduser:
         class:     %pim_versioning.event_listener.adduser.class%
         arguments: [@pim_versioning.event_listener.addversion, @security.context]
         tags:

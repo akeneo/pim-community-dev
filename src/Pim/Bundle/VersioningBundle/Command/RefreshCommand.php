@@ -53,6 +53,7 @@ class RefreshCommand extends ContainerAwareCommand
             $logger->pushHandler(new StreamHandler('php://stdout'));
         }
 
+        $em = $this->getEntityManager();
         $pendingVersions = $this->getPendingManager()->getAllPendingVersions();
         $nbPendings = count($pendingVersions);
         if ($nbPendings === 0) {
@@ -64,18 +65,20 @@ class RefreshCommand extends ContainerAwareCommand
             $batchSize = $input->getOption('batch-size');
             $progress->start($output, $nbPendings);
             foreach ($pendingVersions as $pending) {
-                $this->getPendingManager()->createVersionAndAudit($pending, false);
+                $user = $em->getRepository('OroUserBundle:User')
+                    ->findOneBy(array('username' => $pending->getUsername()));
+                $versionable = $this->getPendingManager()->getRelatedVersionable($pending);
+                $this->getAddVersionListener()->createVersionAndAudit($em, $versionable, $user);
                 $ind++;
                 if (($ind % $batchSize) == 0) {
-                    $this->getEntityManager()->flush();
-                    $this->getEntityManager()->clear('Pim\\Bundle\\VersioningBundle\\Entity\\Version');
+                    $em->flush();
+                    $em->clear('Pim\\Bundle\\VersioningBundle\\Entity\\Version');
                 }
                 $progress->advance();
             }
             $progress->finish();
             $output->writeln(sprintf('<info>%d created versions.</info>', $nbPendings));
-
-            $this->getEntityManager()->flush();
+            $em->flush();
         }
     }
 
@@ -85,6 +88,14 @@ class RefreshCommand extends ContainerAwareCommand
     protected function getPendingManager()
     {
         return $this->getContainer()->get('pim_versioning.manager.pending');
+    }
+
+    /**
+     * @return AddVersionListener
+     */
+    protected function getAddVersionListener()
+    {
+        return $this->getContainer()->get('pim_versioning.event_listener.addversion');
     }
 
     /**
