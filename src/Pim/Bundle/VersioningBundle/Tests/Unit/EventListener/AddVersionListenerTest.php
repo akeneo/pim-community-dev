@@ -2,9 +2,14 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\EventListener;
 
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
 use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
+use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
+use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
 use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
@@ -28,7 +33,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSubscribedEvents()
     {
-        $listener = new AddVersionListener();
+        $listener = $this->getListener();
         $this->assertEquals($listener->getSubscribedEvents(), array('onFlush', 'postFlush'));
     }
 
@@ -37,7 +42,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetUsername()
     {
-        $listener = new AddVersionListener();
+        $listener = $this->getListener();
         $listener->setUsername('admin');
         $user = new User();
         $listener->setUsername($user);
@@ -49,7 +54,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetUsernameException()
     {
-        $listener = new AddVersionListener();
+        $listener = $this->getListener();
         $listener->setUsername(null);
     }
 
@@ -58,7 +63,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckScheduledUpdate()
     {
-        $listener = new AddVersionListener();
+        $listener = $this->getListener();
 
         $emMock          = $this->getEntityManagerMock();
         $versionableMock = $this->getVersionableMock('{"field1":  "value1"}');
@@ -87,6 +92,21 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
         $translation = new FamilyTranslation();
         $translation->setForeignKey($family);
         $listener->checkScheduledUpdate($emMock, $translation);
+    }
+
+    /**
+      * @return AddVersionListener
+      */
+    protected function getListener()
+    {
+        $encoders    = array(new CsvEncoder());
+        $normalizers = array(new GetSetMethodNormalizer());
+        $serializer  = new Serializer($normalizers, $encoders);
+        $versionBuilder = new VersionBuilder($serializer);
+        $auditBuilder   = new AuditBuilder();
+        $listener = new AddVersionListener($versionBuilder, $auditBuilder);
+
+        return $listener;
     }
 
     /**

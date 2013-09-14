@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\Tests\Unit\Manager;
+namespace Pim\Bundle\VersioningBundle\Tests\Unit\Builder;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Serializer\Serializer;
 use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 
 /**
@@ -16,10 +16,10 @@ use Pim\Bundle\VersioningBundle\Entity\Version;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VersionManagerTest extends \PHPUnit_Framework_TestCase
+class VersionBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Pim\Bundle\VersioningBundle\Manager\VersionManager
+     * @var \Pim\Bundle\VersioningBundle\Builder\VersionBuilder
      */
     protected $manager;
 
@@ -31,7 +31,7 @@ class VersionManagerTest extends \PHPUnit_Framework_TestCase
         $encoders = array(new CsvEncoder());
         $normalizers = array(new GetSetMethodNormalizer());
         $serializer = new Serializer($normalizers, $encoders);
-        $this->manager = new VersionManager($this->getEntityManagerMock(), $serializer);
+        $this->manager = new VersionBuilder($serializer);
     }
 
     /**
@@ -42,51 +42,6 @@ class VersionManagerTest extends \PHPUnit_Framework_TestCase
         $data = array('field' => 'value');
         $version = $this->manager->buildVersion($this->getVersionableMock($data), $this->getUserMock());
         $this->assertTrue($version instanceof Version);
-    }
-
-    /**
-     * Test related method
-     */
-    public function testGetPreviousVersion()
-    {
-        $version = $this->manager->buildVersion($this->getVersionableMock(array()), $this->getUserMock());
-        $previous = $this->manager->getPreviousVersion($version);
-        $this->assertTrue($previous instanceof Version);
-    }
-
-    /**
-     * @return EntityManager
-     */
-    protected function getEntityManagerMock()
-    {
-        $mock = $this
-            ->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $mock
-            ->expects($this->any())
-            ->method('getRepository')
-            ->will($this->returnValue($this->getRepositoryMock()));
-
-        return $mock;
-    }
-
-    /**
-     * @return EntityRepository
-     */
-    protected function getRepositoryMock()
-    {
-        $repo = $this
-            ->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $repo->expects($this->any())
-            ->method('findOneBy')
-            ->will($this->returnValue(new Version('a', 1, 1, array(), $this->getUserMock())));
-
-        return $repo;
     }
 
     /**
