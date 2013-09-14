@@ -135,15 +135,10 @@ class AddVersionListener implements EventSubscriber
                 if ($versionable->getId()) {
                     $pending = new Pending(get_class($versionable), $versionable->getId(), $this->username);
                     if ($this->realTimeVersioning) {
-
+                            $em->refresh($versionable);
                             $current = $this->versionBuilder->buildVersion($versionable, $user);
                             $this->computeChangeSet($em, $current);
-                            $previous = $em->getRepository('PimVersioningBundle:Version')
-                                ->findOneBy(
-                                        array('resourceId' => $current->getResourceId(), 'resourceName' => $current->getResourceName()),
-                                        array('loggedAt' => 'desc')
-                                );
-
+                            $previous = $em->getRepository('PimVersioningBundle:Version')->findPreviousVersion($current);
                             $previousAudit = $em->getRepository('Oro\Bundle\DataAuditBundle\Entity\Audit')
                                 ->findOneBy(
                                         array('objectId' => $current->getResourceId(), 'objectName' => $current->getResourceName()),
