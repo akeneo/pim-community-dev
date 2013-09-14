@@ -17,11 +17,9 @@ class AclAnnotationStorage implements \Serializable
     /**
      * @var string[]
      *   key = class name
-     *   value = array
-     *               'b' => annotation id bound to the class
-     *               'm' => array of methods
-     *                          key = method name
-     *                          value = annotation id bound to the method
+     *   value = array of methods
+     *              key = method name ('!' for class if it have an annotation)
+     *              value = annotation id bound to the method
      */
     private $classes = array();
 
@@ -58,15 +56,15 @@ class AclAnnotationStorage implements \Serializable
         }
 
         if (empty($method)) {
-            if (!isset($this->classes[$class]['b'])) {
+            if (!isset($this->classes[$class]['!'])) {
                 return null;
             }
-            $id = $this->classes[$class]['b'];
+            $id = $this->classes[$class]['!'];
         } else {
-            if (!isset($this->classes[$class]['m'][$method])) {
+            if (!isset($this->classes[$class][$method])) {
                 return null;
             }
-            $id = $this->classes[$class]['m'][$method];
+            $id = $this->classes[$class][$method];
         }
 
         return isset($this->annotations[$id])
@@ -84,15 +82,15 @@ class AclAnnotationStorage implements \Serializable
     public function has($class, $method = null)
     {
         if (empty($method)) {
-            if (!isset($this->classes[$class]['b'])) {
+            if (!isset($this->classes[$class]['!'])) {
                 return false;
             }
-            $id = $this->classes[$class]['b'];
+            $id = $this->classes[$class]['!'];
         } else {
-            if (!isset($this->classes[$class]['m'][$method])) {
+            if (!isset($this->classes[$class][$method])) {
                 return false;
             }
-            $id = $this->classes[$class]['m'][$method];
+            $id = $this->classes[$class][$method];
         }
 
         return isset($this->annotations[$id]);
@@ -140,7 +138,7 @@ class AclAnnotationStorage implements \Serializable
      */
     public function isKnownMethod($class, $method)
     {
-        return isset($this->classes[$class]) && isset($this->classes[$class]['m'][$method]);
+        return isset($this->classes[$class]) && isset($this->classes[$class][$method]);
     }
 
     /**
@@ -196,35 +194,35 @@ class AclAnnotationStorage implements \Serializable
 
         if (isset($this->classes[$class])) {
             if (empty($method)) {
-                if (isset($this->classes[$class]['b']) && $this->classes[$class]['b'] !== $id) {
+                if (isset($this->classes[$class]['!']) && $this->classes[$class]['!'] !== $id) {
                     throw new \RuntimeException(
                         sprintf(
                             'Duplicate binding for "%s". New Id: %s. Existing Id: %s',
                             $class,
                             $id,
-                            $this->classes[$class]['b']
+                            $this->classes[$class]['!']
                         )
                     );
                 }
-                $this->classes[$class]['b'] = $id;
+                $this->classes[$class]['!'] = $id;
             } else {
-                if (isset($this->classes[$class]['m'][$method]) && $this->classes[$class]['m'][$method] !== $id) {
+                if (isset($this->classes[$class][$method]) && $this->classes[$class][$method] !== $id) {
                     throw new \RuntimeException(
                         sprintf(
                             'Duplicate binding for "%s". New Id: %s. Existing Id: %s',
                             $class . '::' . $method,
                             $id,
-                            $this->classes[$class]['m'][$method]
+                            $this->classes[$class][$method]
                         )
                     );
                 }
-                $this->classes[$class]['m'][$method] = $id;
+                $this->classes[$class][$method] = $id;
             }
         } else {
             if (empty($method)) {
-                $this->classes[$class] = array('m' => array(), 'b' => $id);
+                $this->classes[$class] = array('!' => $id);
             } else {
-                $this->classes[$class] = array('m' => array($method => $id));
+                $this->classes[$class] = array($method => $id);
             }
         }
     }
