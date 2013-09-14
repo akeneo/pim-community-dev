@@ -5,9 +5,13 @@ define(
 
         return function ($form) {
             this.updated = false;
-            var message     = $form.attr('data-updated-message'),
-                title       = $form.attr('data-updated-title'),
-                self        = this,
+            var message = $form.attr('data-updated-message');
+            if (!message) {
+                console.error('FormUpdateListener: message not provided.');
+                return;
+            }
+            var title = $form.attr('data-updated-title'),
+                self  = this,
                 formUpdated = function () {
                     self.updated = true;
                     $('#updated').show();
