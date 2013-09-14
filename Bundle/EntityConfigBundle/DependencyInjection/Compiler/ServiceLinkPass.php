@@ -21,8 +21,8 @@ class ServiceLinkPass implements CompilerPassInterface
         $tags = $container->findTaggedServiceIds(self::TAG_NAME);
 
         foreach ($tags as $id => $tag) {
-            /** @var Definition $service */
-            $service = $container->getDefinition($id);
+            /** @var Definition $serviceLinkDef */
+            $serviceLinkDef = $container->getDefinition($id);
 
             if (!isset($tag[0]['service'])) {
                 throw new RuntimeException(
@@ -30,25 +30,27 @@ class ServiceLinkPass implements CompilerPassInterface
                 );
             }
 
-            if (!$container->hasDefinition($tag[0]['service'])) {
+            $serviceId = $tag[0]['service'];
+            $isOptional = false;
+            if (strpos($serviceId, '?') === 0) {
+                $serviceId = substr($serviceId, 1);
+                $isOptional = true;
+            }
+
+            if (!$isOptional && !$container->hasDefinition($serviceId)) {
                 throw new RuntimeException(
                     sprintf(
-                        "Target service '%s' is undefined. Link Service '%s' with tag '%s' and tag-service '%s' ",
-                        $tag[0]['service'],
+                        'Target service "%s" is undefined. The service link "%s" with tag "%s" and tag-service "%s"',
+                        $serviceId,
                         $id,
                         self::TAG_NAME,
-                        $tag[0]['service']
+                        $serviceId
                     )
                 );
             }
 
-            $service->setClass('Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink');
-            $service->setArguments(
-                array(
-                    new Reference('service_container'),
-                    $tag[0]['service']
-                )
-            );
+            $serviceLinkDef->setClass('Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink');
+            $serviceLinkDef->setArguments(array(new Reference('service_container'), $serviceId, $isOptional));
         }
     }
 }
