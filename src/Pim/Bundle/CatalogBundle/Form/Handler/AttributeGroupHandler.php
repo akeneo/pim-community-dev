@@ -87,9 +87,5 @@ class AttributeGroupHandler
     {
         $this->manager->persist($group);
         $this->manager->flush();
-
-        if ($pending = $this->pendingManager->getPendingVersion($group)) {
-            $this->pendingManager->createVersionAndAudit($pending);
-        }
     }
 }
