@@ -33,27 +33,19 @@ class AttributeGroupHandler
     protected $manager;
 
     /**
-     * @var PendingManager
-     */
-    protected $pendingManager;
-
-    /**
      * Constructor for handler
      * @param FormInterface  $form           Form called
      * @param Request        $request        Web request
      * @param ObjectManager  $manager        Storage manager
-     * @param PendingManager $pendingManager Pending manager
      */
     public function __construct(
         FormInterface $form,
         Request $request,
-        ObjectManager $manager,
-        PendingManager $pendingManager
+        ObjectManager $manager
     ) {
         $this->form           = $form;
         $this->request        = $request;
         $this->manager        = $manager;
-        $this->pendingManager = $pendingManager;
     }
 
     /**
