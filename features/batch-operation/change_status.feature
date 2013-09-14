@@ -10,7 +10,7 @@ Feature: Change status of many products at once
     And I am logged in as "Julia"
     And I am on the products page
     When I mass-edit products boat and jet-ski
-    And I choose the "Change status (Enable/Disable)" operation
+    And I choose the "Change status (enable / disable)" operation
     And I enable the products
     Then product "boat" should be enabled
     And product "jet-ski" should be enabled
@@ -21,7 +21,7 @@ Feature: Change status of many products at once
     And I am logged in as "Julia"
     And I am on the products page
     When I mass-edit products boat and jet-ski
-    And I choose the "Change status (Enable/Disable)" operation
+    And I choose the "Change status (enable / disable)" operation
     And I disable the products
     Then product "boat" should be disabled
     And product "jet-ski" should be disabled
