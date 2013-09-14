@@ -20,7 +20,6 @@ use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Form\Type\CategoryType;
-use Pim\Bundle\VersioningBundle\Manager\PendingManager;
 use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 
@@ -61,11 +60,6 @@ class CategoryTreeController extends AbstractDoctrineController
     private $categoryType;
 
     /**
-     * @var PendingManager
-     */
-    private $pendingManager;
-
-    /**
      * Constructor
      *
      * @param Request                  $request
@@ -79,7 +73,6 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param DatagridWorkerInterface  $dataGridWorker
      * @param CategoryManager          $categoryManager
      * @param CategoryType             $categoryType
-     * @param PendingManager           $pendingManager
      */
     public function __construct(
         Request $request,
@@ -92,8 +85,7 @@ class CategoryTreeController extends AbstractDoctrineController
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $dataGridWorker,
         CategoryManager $categoryManager,
-        CategoryType $categoryType,
-        PendingManager $pendingManager
+        CategoryType $categoryType
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
 
@@ -101,7 +93,6 @@ class CategoryTreeController extends AbstractDoctrineController
         $this->dataGridWorker  = $dataGridWorker;
         $this->categoryManager = $categoryManager;
         $this->categoryType    = $categoryType;
-        $this->pendingManager  = $pendingManager;
     }
 
     /**
@@ -301,10 +292,6 @@ class CategoryTreeController extends AbstractDoctrineController
                     sprintf('%s successfully created.', $category->getParent() ? 'Category' : 'Tree')
                 );
 
-                if ($pending = $this->pendingManager->getPendingVersion($category)) {
-                    $this->pendingManager->createVersionAndAudit($pending);
-                }
-
                 return $this->redirectToRoute('pim_catalog_categorytree_edit', array('id' => $category->getId()));
             }
         }
@@ -359,10 +346,6 @@ class CategoryTreeController extends AbstractDoctrineController
                     'success',
                     sprintf('%s successfully updated.', $category->getParent() ? 'Category' : 'Tree')
                 );
-
-                if ($pending = $this->pendingManager->getPendingVersion($category)) {
-                    $this->pendingManager->createVersionAndAudit($pending);
-                }
             }
         }
 
