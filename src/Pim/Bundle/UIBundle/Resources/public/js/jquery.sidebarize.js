@@ -84,7 +84,6 @@
 
         $content.addClass('content').css({
             'height': '100%',
-            'overflow-y': 'auto',
             'margin-left': '0',
             'position': 'absolute',
             'left': sidebarWidth + opts.separatorWidth
