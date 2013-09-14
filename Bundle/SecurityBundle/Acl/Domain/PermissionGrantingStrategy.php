@@ -11,7 +11,7 @@ use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 
 /**
- * The owner based permission granting strategy to apply to the access control list.
+ * The ACL extensions based permission granting strategy to apply to the access control list.
  * The default Symfony permission granting strategy is supported as well.
  */
 class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface

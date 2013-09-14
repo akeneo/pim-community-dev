@@ -78,7 +78,13 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
         );
         $this->selector = TestHelper::get($this)->createAclExtensionSelector($this->metadataProvider);
         $this->context = new PermissionGrantingStrategyContext($this->selector);
-        $this->strategy->setContext($this->context);
+        $contextLink = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $contextLink->expects($this->any())
+            ->method('getService')
+            ->will($this->returnValue($this->context));
+        $this->strategy->setContext($contextLink);
 
         $user = new User(1);
         $this->sid = new UserSecurityIdentity('TestUser', get_class($user));
