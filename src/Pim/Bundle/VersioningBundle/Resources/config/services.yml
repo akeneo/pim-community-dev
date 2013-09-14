@@ -28,6 +28,9 @@ services:
 
     pim_versioning.event_listener.addversion:
         class: %pim_versioning.event_listener.addversion.class%
+        arguments:
+            - @pim_versioning.builder.version
+            - @pim_versioning.builder.audit
         tags:
             - { name: doctrine.event_subscriber }
 

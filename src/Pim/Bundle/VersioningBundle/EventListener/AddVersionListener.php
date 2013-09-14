@@ -11,6 +11,8 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 use Pim\Bundle\VersioningBundle\Entity\Pending;
+use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
+use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
@@ -48,6 +50,33 @@ class AddVersionListener implements EventSubscriber
     protected $username = self::DEFAULT_SYSTEM_USER;
 
     /**
+     * @var integer
+     */
+    protected $realTimeVersioning = true;
+
+    /**
+     * @var VersionBuilder
+     */
+    protected $versionBuilder;
+
+    /**
+     * @var AuditBuilder
+     */
+    protected $auditBuilder;
+
+    /**
+     * Constructor
+     *
+     * @param VersionBuilder $versionBuilder
+     * @param AuditBuilder   $auditBuilder
+     */
+    public function __construct(VersionBuilder $versionBuilder, AuditBuilder $auditBuilder)
+    {
+        $this->versionBuilder = $versionBuilder;
+        $this->auditBuilder   = $auditBuilder;
+    }
+
+    /**
      * Specifies the list of events to listen
      *
      * @return string[]
@@ -74,23 +103,49 @@ class AddVersionListener implements EventSubscriber
     }
 
     /**
+     * @param boolean $mode
+     */
+    public function setRealTimeVersioning($mode)
+    {
+        $this->realTimeVersioning = $mode;
+    }
+
+    /**
      * @param PostFlushEventArgs $args
      */
     public function postFlush(PostFlushEventArgs $args)
     {
         $em = $args->getEntityManager();
 
-        if (!empty($this->pendingEntities)) {
-            if ($this->username) {
-                foreach ($this->pendingEntities as $versionable) {
-                    if ($versionable->getId()) {
-                        $pending = new Pending(get_class($versionable), $versionable->getId(), $this->username);
+        if (!empty($this->pendingEntities) and $this->username) {
+            $user = $this->em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
+
+            foreach ($this->pendingEntities as $versionable) {
+                if ($versionable->getId()) {
+                    $pending = new Pending(get_class($versionable), $versionable->getId(), $this->username);
+                    if ($this->realTimeVersioning) {
+
+                            $current = $this->versionBuilder->buildVersion($versionable, $user);
+                            $this->computeChangeSet($current);
+                            $previous = $em->getRepository('PimVersioningBundle:Version')
+                                ->findOneBy(
+                                        array('resourceId' => $current->getResourceId(), 'resourceName' => $current->getResourceName()),
+                                        array('loggedAt' => 'desc')
+                                );
+
+                            $audit = $this->auditBuilder->buildAudit($current, $previous, 1); // TODO last version number ?
+                            $diffData = $audit->getData();
+                            if (!empty($diffData)) {
+                                $this->computeChangeSet($audit);
+                            }
+
+                    } else {
                         $this->computeChangeSet($em, $pending);
                     }
                 }
-                $this->pendingEntities = array();
-                $em->flush();
             }
+            $this->pendingEntities = array();
+            $em->flush();
         }
     }
 
