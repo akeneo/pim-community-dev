@@ -5,7 +5,7 @@ namespace Oro\Bundle\EntityBundle\Owner\Metadata;
 /**
  * This class represents the entity ownership metadata
  */
-class OwnershipMetadata
+class OwnershipMetadata implements \Serializable
 {
     const OWNER_TYPE_NONE = 0;
     const OWNER_TYPE_ORGANIZATION = 1;
@@ -122,5 +122,31 @@ class OwnershipMetadata
     public function getOwnerColumnName()
     {
         return $this->ownerColumnName;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize()
+    {
+        return serialize(
+            array(
+                $this->ownerType,
+                $this->ownerFieldName,
+                $this->ownerColumnName
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->ownerType,
+            $this->ownerFieldName,
+            $this->ownerColumnName
+            ) = unserialize($serialized);
     }
 }

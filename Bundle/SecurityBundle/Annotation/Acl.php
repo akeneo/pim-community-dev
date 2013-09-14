@@ -6,7 +6,7 @@ namespace Oro\Bundle\SecurityBundle\Annotation;
  * @Annotation
  * @Target({"METHOD", "CLASS"})
  */
-class Acl
+class Acl implements \Serializable
 {
     /**
      * @var string
@@ -51,8 +51,12 @@ class Acl
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function __construct(array $data)
+    public function __construct(array $data = null)
     {
+        if ($data === null) {
+            return;
+        }
+
         $this->id = isset($data['id']) ? $data['id'] : null;
         if (empty($this->id) || strpos($this->id, ' ') !== false) {
             throw new \InvalidArgumentException('ACL id must not be empty or contain blank spaces.');
@@ -152,5 +156,39 @@ class Acl
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize()
+    {
+        return serialize(
+            array(
+                $this->id,
+                $this->type,
+                $this->class,
+                $this->permission,
+                $this->ignoreClassAcl,
+                $this->group,
+                $this->label
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->type,
+            $this->class,
+            $this->permission,
+            $this->ignoreClassAcl,
+            $this->group,
+            $this->label
+            ) = unserialize($serialized);
     }
 }

@@ -5,7 +5,7 @@ namespace Oro\Bundle\SecurityBundle\Metadata;
 use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor as AclAnnotationAncestor;
 
-class AclAnnotationStorage
+class AclAnnotationStorage implements \Serializable
 {
     /**
      * @var AclAnnotation[]
@@ -16,17 +16,12 @@ class AclAnnotationStorage
 
     /**
      * @var string[]
-     *   key = a binding key (class!method or class)
-     *   value = annotation id
-     */
-    private $bindings = array();
-
-    /**
-     * @var string[]
      *   key = class name
-     *   value = array of methods
-     *               key = method name
-     *               value = true
+     *   value = array
+     *               'b' => annotation id bound to the class
+     *               'm' => array of methods
+     *                          key = method name
+     *                          value = annotation id bound to the method
      */
     private $classes = array();
 
@@ -62,12 +57,17 @@ class AclAnnotationStorage
             throw new \InvalidArgumentException('$class must not be empty.');
         }
 
-        $key = empty($method) ? $class : $class . '!' . $method;
-        if (!isset($this->bindings[$key])) {
-            return null;
+        if (empty($method)) {
+            if (!isset($this->classes[$class]['b'])) {
+                return null;
+            }
+            $id = $this->classes[$class]['b'];
+        } else {
+            if (!isset($this->classes[$class]['m'][$method])) {
+                return null;
+            }
+            $id = $this->classes[$class]['m'][$method];
         }
-
-        $id = $this->bindings[$key];
 
         return isset($this->annotations[$id])
             ? $this->annotations[$id]
@@ -83,12 +83,19 @@ class AclAnnotationStorage
      */
     public function has($class, $method = null)
     {
-        $key = empty($method) ? $class : $class . '!' . $method;
-        if (!isset($this->bindings[$key])) {
-            return false;
+        if (empty($method)) {
+            if (!isset($this->classes[$class]['b'])) {
+                return false;
+            }
+            $id = $this->classes[$class]['b'];
+        } else {
+            if (!isset($this->classes[$class]['m'][$method])) {
+                return false;
+            }
+            $id = $this->classes[$class]['m'][$method];
         }
 
-        return isset($this->annotations[$this->bindings[$key]]);
+        return isset($this->annotations[$id]);
     }
 
     /**
@@ -109,6 +116,7 @@ class AclAnnotationStorage
                 $result[] = $annotation;
             }
         }
+
         return $result;
     }
 
@@ -132,7 +140,7 @@ class AclAnnotationStorage
      */
     public function isKnownMethod($class, $method)
     {
-        return isset($this->classes[$class]) && isset($this->classes[$class][$method]);
+        return isset($this->classes[$class]) && isset($this->classes[$class]['m'][$method]);
     }
 
     /**
@@ -186,31 +194,74 @@ class AclAnnotationStorage
             throw new \InvalidArgumentException('$class must not be empty.');
         }
 
-        $key = empty($method) ? $class : $class . '!' . $method;
-        if (isset($this->bindings[$key])) {
-            if ($this->bindings[$key] !== $id) {
-                throw new \RuntimeException(
-                    sprintf(
-                        'Duplicate binding for "%s". New Id: %s. Existing Id: %s',
-                        empty($method) ? $class : $class . '::' . $method,
-                        $id,
-                        $this->bindings[$key]
-                    )
-                );
+        if (isset($this->classes[$class])) {
+            if (empty($method)) {
+                if (isset($this->classes[$class]['b']) && $this->classes[$class]['b'] !== $id) {
+                    throw new \RuntimeException(
+                        sprintf(
+                            'Duplicate binding for "%s". New Id: %s. Existing Id: %s',
+                            $class,
+                            $id,
+                            $this->classes[$class]['b']
+                        )
+                    );
+                }
+                $this->classes[$class]['b'] = $id;
+            } else {
+                if (isset($this->classes[$class]['m'][$method]) && $this->classes[$class]['m'][$method] !== $id) {
+                    throw new \RuntimeException(
+                        sprintf(
+                            'Duplicate binding for "%s". New Id: %s. Existing Id: %s',
+                            $class . '::' . $method,
+                            $id,
+                            $this->classes[$class]['m'][$method]
+                        )
+                    );
+                }
+                $this->classes[$class]['m'][$method] = $id;
             }
         } else {
-            $this->bindings[$key] = $id;
+            if (empty($method)) {
+                $this->classes[$class] = array('m' => array(), 'b' => $id);
+            } else {
+                $this->classes[$class] = array('m' => array($method => $id));
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize()
+    {
+        $data = array();
+        foreach ($this->annotations as $annotation) {
+            $data[] = $annotation->serialize();
         }
 
-        // update classes collection
-        if (isset($this->classes[$class])) {
-            if (!empty($method)) {
-                $this->classes[$class][$method] = true;
-            }
-        } else {
-            $this->classes[$class] = empty($method)
-                ? array()
-                : array($method => true);
+        return serialize(
+            array(
+                $data,
+                $this->classes
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $data,
+            $this->classes
+            ) = unserialize($serialized);
+
+        $this->annotations = array();
+        foreach ($data as $d) {
+            $annotation = new AclAnnotation();
+            $annotation->unserialize($d);
+            $this->annotations[$annotation->getId()] = $annotation;
         }
     }
 }

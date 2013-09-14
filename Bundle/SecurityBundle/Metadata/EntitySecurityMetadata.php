@@ -4,7 +4,7 @@ namespace Oro\Bundle\SecurityBundle\Metadata;
 
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclClassInfo;
 
-class EntitySecurityMetadata implements AclClassInfo
+class EntitySecurityMetadata implements AclClassInfo, \Serializable
 {
     /**
      * @var string
@@ -80,5 +80,33 @@ class EntitySecurityMetadata implements AclClassInfo
         $this->className = $className;
         $this->group = $group;
         $this->label = $label;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize()
+    {
+        return serialize(
+            array(
+                $this->securityType,
+                $this->className,
+                $this->group,
+                $this->label
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->securityType,
+            $this->className,
+            $this->group,
+            $this->label
+            ) = unserialize($serialized);
     }
 }

@@ -6,7 +6,7 @@ namespace Oro\Bundle\SecurityBundle\Annotation;
  * @Annotation
  * @Target({"METHOD", "CLASS"})
  */
-class AclAncestor
+class AclAncestor implements \Serializable
 {
     /**
      * @var string
@@ -35,5 +35,27 @@ class AclAncestor
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize()
+    {
+        return serialize(
+            array(
+                $this->id
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id
+            ) = unserialize($serialized);
     }
 }
