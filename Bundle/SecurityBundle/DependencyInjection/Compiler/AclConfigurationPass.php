@@ -11,12 +11,16 @@ class AclConfigurationPass implements CompilerPassInterface
 {
     const NEW_ACL_VOTER_CLASS = 'oro_security.acl.voter.class';
     const NEW_ACL_PROVIDER = 'oro_security.acl.provider';
+    const NEW_ACL_DBAL_PROVIDER_CLASS = 'oro_security.acl.dbal.provider.class';
     const NEW_ACL_PERMISSION_GRANTING_STRATEGY = 'oro_security.acl.permission_granting_strategy';
     const NEW_ACL_PERMISSION_MAP = 'oro_security.acl.permission_map';
     const NEW_ACL_OBJECT_ID_STRATEGY = 'oro_security.acl.object_identity_retrieval_strategy';
 
     const DEFAULT_ACL_VOTER = 'security.acl.voter.basic_permissions';
+    const DEFAULT_ACL_VOTER_LINK = 'oro_security.acl.voter_link';
     const DEFAULT_ACL_PROVIDER = 'security.acl.dbal.provider';
+    const DEFAULT_ACL_DBAL_PROVIDER_CLASS = 'security.acl.dbal.provider.class';
+    const DEFAULT_ACL_CACHE = 'security.acl.cache.doctrine';
 
     const ACL_EXTENSION_SELECTOR = 'oro_security.acl.extension_selector';
     const ACL_EXTENSION_TAG = 'oro_security.acl.extension';
@@ -28,6 +32,7 @@ class AclConfigurationPass implements CompilerPassInterface
     {
         $this->configureAclExtensionSelector($container);
         $this->configureDefaultAclProvider($container);
+        $this->configureDefaultAclCache($container);
         $this->configureDefaultAclVoter($container);
     }
 
@@ -50,11 +55,34 @@ class AclConfigurationPass implements CompilerPassInterface
      */
     protected function configureDefaultAclProvider(ContainerBuilder $container)
     {
+        if ($container->hasParameter(self::DEFAULT_ACL_DBAL_PROVIDER_CLASS)) {
+            if ($container->hasParameter(self::NEW_ACL_DBAL_PROVIDER_CLASS)) {
+                // change implementation of ACL DBAL provider
+                $container->setParameter(
+                    self::DEFAULT_ACL_DBAL_PROVIDER_CLASS,
+                    $container->getParameter(self::NEW_ACL_DBAL_PROVIDER_CLASS)
+                );
+            }
+        }
         if ($container->hasDefinition(self::DEFAULT_ACL_PROVIDER)) {
             $providerDef = $container->getDefinition(self::DEFAULT_ACL_PROVIDER);
             // substitute the ACL Permission Granting Strategy
             if ($container->hasDefinition(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY)) {
                 $providerDef->replaceArgument(1, new Reference(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY));
+            }
+        }
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function configureDefaultAclCache(ContainerBuilder $container)
+    {
+        if ($container->hasDefinition(self::DEFAULT_ACL_CACHE)) {
+            $cacheDef = $container->getDefinition(self::DEFAULT_ACL_CACHE);
+            // substitute the ACL Permission Granting Strategy
+            if ($container->hasDefinition(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY)) {
+                $cacheDef->replaceArgument(1, new Reference(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY));
             }
         }
     }
@@ -72,12 +100,15 @@ class AclConfigurationPass implements CompilerPassInterface
                 // make the ACL Voter as a context for the ACL Permission Granting Strategy
                 if ($container->hasDefinition(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY)) {
                     $newStrategyDef = $container->getDefinition(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY);
-                    $newStrategyDef->addMethodCall('setContext', array($voterDef));
+                    $newStrategyDef->addMethodCall('setContext', array(new Reference(self::DEFAULT_ACL_VOTER_LINK)));
                 }
                 // inject ACL Extension Selector into the ACL Voter
                 if ($container->hasDefinition(self::ACL_EXTENSION_SELECTOR)) {
-                    $selectorDef = $container->getDefinition(self::ACL_EXTENSION_SELECTOR);
-                    $voterDef->addMethodCall('setAclExtensionSelector', array($selectorDef));
+                    //$selectorDef = $container->getDefinition(self::ACL_EXTENSION_SELECTOR);
+                    $voterDef->addMethodCall(
+                        'setAclExtensionSelector',
+                        array(new Reference(self::ACL_EXTENSION_SELECTOR))
+                    );
                 }
             }
             // substitute the ACL Provider and set the default ACL Provider as a base provider for new ACL Provider

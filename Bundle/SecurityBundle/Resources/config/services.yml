@@ -1,9 +1,5 @@
 parameters:
-    # replace the default ACL provider with an extended version of the provider
-    security.acl.dbal.provider.class:                          Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider
-
     oro_security.security_facade.class:                        Oro\Bundle\SecurityBundle\SecurityFacade
-
     oro_security.acl.manager.class:                            Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager
     oro_security.acl.cache.class:                              Oro\Bundle\SecurityBundle\Acl\Cache\FilesystemCache
     oro_security.acl.ace_provider.class:                       Oro\Bundle\SecurityBundle\Acl\Persistence\AceManipulationHelper
@@ -13,6 +9,7 @@ parameters:
     oro_security.acl.extension.action.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension
     oro_security.acl.voter.class:                              Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter
     oro_security.acl.provider.class:                           Oro\Bundle\SecurityBundle\Acl\Domain\RootBasedAclProvider
+    oro_security.acl.dbal.provider.class:                      Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider
     oro_security.acl.permission_granting_strategy.class:       Oro\Bundle\SecurityBundle\Acl\Domain\PermissionGrantingStrategy
     oro_security.acl.permission_map.class:                     Oro\Bundle\SecurityBundle\Acl\Permission\PermissionMap
     oro_security.acl.object_identity_factory.class:            Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory
@@ -105,6 +102,10 @@ services:
         class: %oro_security.acl.provider.class%
         arguments:
             - @oro_security.acl.object_identity_factory
+
+    oro_security.acl.voter_link:
+        tags:
+            - { name: oro_service_link,  service: security.acl.voter.basic_permissions }
 
     oro_security.acl.permission_granting_strategy:
         public: false

@@ -8,6 +8,7 @@ use Symfony\Component\Security\Acl\Model\EntryInterface;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 use Symfony\Component\Security\Acl\Model\AuditLoggerInterface;
 use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 
 /**
  * The owner based permission granting strategy to apply to the access control list.
@@ -25,9 +26,9 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
     protected $auditLogger;
 
     /**
-     * @var PermissionGrantingStrategyContextInterface
+     * @var ServiceLink
      */
-    protected $context;
+    private $contextLink;
 
     /**
      * Sets the audit logger
@@ -42,11 +43,26 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
     /**
      * Sets the accessor to the context data of this strategy
      *
-     * @param PermissionGrantingStrategyContextInterface $context
+     * @param ServiceLink $contextLink The link to a service implementing PermissionGrantingStrategyContextInterface
      */
-    public function setContext(PermissionGrantingStrategyContextInterface $context)
+    public function setContext(ServiceLink $contextLink)
     {
-        $this->context = $context;
+        $this->contextLink = $contextLink;
+    }
+
+    /**
+     * Gets context this strategy is working in
+     *
+     * @return PermissionGrantingStrategyContextInterface
+     * @throws \RuntimeException
+     */
+    protected function getContext()
+    {
+        if ($this->contextLink === null) {
+            throw new \RuntimeException('The context link is not set.');
+        }
+
+        return $this->contextLink->getService();
     }
 
     /**
@@ -167,10 +183,10 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
 
                         // give an additional chance for the appropriate ACL extension to decide
                         // whether an access to a domain object is granted or not
-                        $decisionResult = $this->context->getAclExtension()->decideIsGranting(
+                        $decisionResult = $this->getContext()->getAclExtension()->decideIsGranting(
                             $requiredMask,
-                            $this->context->getObject(),
-                            $this->context->getSecurityToken()
+                            $this->getContext()->getObject(),
+                            $this->getContext()->getSecurityToken()
                         );
                         if (!$decisionResult) {
                             $isGranting = !$isGranting;
@@ -201,7 +217,7 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
             // ACE was not found
             return null;
         } else {
-            $this->context->setTriggeredMask($triggeredMask);
+            $this->getContext()->setTriggeredMask($triggeredMask);
         }
 
         if (!$administrativeMode && null !== $this->auditLogger) {
@@ -233,13 +249,13 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      */
     protected function isAceApplicable($requiredMask, EntryInterface $ace, AclInterface $acl)
     {
-        $extension = $this->context->getAclExtension();
+        $extension = $this->getContext()->getAclExtension();
         $aceMask = $ace->getMask();
         if ($acl->getObjectIdentity()->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
             if ($acl->getObjectIdentity()->getIdentifier() !== $extension->getExtensionKey()) {
                 return false;
             }
-            $aceMask = $extension->adaptRootMask($aceMask, $this->context->getObject());
+            $aceMask = $extension->adaptRootMask($aceMask, $this->getContext()->getObject());
         }
         if ($extension->getServiceBits($requiredMask) !== $extension->getServiceBits($aceMask)) {
             return false;
