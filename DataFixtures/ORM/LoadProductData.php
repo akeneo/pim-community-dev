@@ -48,6 +48,14 @@ class LoadProductData extends AbstractDemoFixture
     }
 
     /**
+     * @return \Pim\Bundle\VersioningBundle\EventListener\AddVersionListener
+     */
+    protected function getAddVersionListener()
+    {
+        return $this->container->get('pim_versioning.event_listener.addversion');
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
@@ -60,7 +68,7 @@ class LoadProductData extends AbstractDemoFixture
         $batchSize = 200;
 
         $pm = $this->getProductManager();
-
+        $this->getAddVersionListener()->setRealTimeVersioning(false);
         $channels = $this->getChannels();
 
         for ($ind= 0; $ind < $nbProducts; $ind++) {
