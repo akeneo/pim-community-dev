@@ -42,7 +42,7 @@ class RootBasedAclWrapper implements AclInterface
         /** @var EntryInterface[] $aces */
         $aces = $this->acl->getClassAces();
         /** @var EntryInterface[] $rootAces */
-        $rootAces = $this->rootAcl->getClassAces();
+        $rootAces = $this->rootAcl->getObjectAces();
 
         foreach ($rootAces as $rootAce) {
             $exists = false;
@@ -69,7 +69,7 @@ class RootBasedAclWrapper implements AclInterface
         /** @var EntryInterface[] $aces */
         $aces = $this->acl->getClassFieldAces($field);
         /** @var EntryInterface[] $rootAces */
-        $rootAces = $this->rootAcl->getClassFieldAces($field);
+        $rootAces = $this->rootAcl->getObjectFieldAces($field);
 
         foreach ($rootAces as $rootAce) {
             $exists = false;
@@ -93,26 +93,7 @@ class RootBasedAclWrapper implements AclInterface
      */
     public function getObjectAces()
     {
-        /** @var EntryInterface[] $aces */
-        $aces = $this->acl->getObjectAces();
-        /** @var EntryInterface[] $rootAces */
-        $rootAces = $this->rootAcl->getObjectAces();
-
-        foreach ($rootAces as $rootAce) {
-            $exists = false;
-            $rootSid = $rootAce->getSecurityIdentity();
-            foreach ($aces as $ace) {
-                if ($rootSid->equals($ace->getSecurityIdentity())) {
-                    $exists = true;
-                    break;
-                }
-            }
-            if (!$exists) {
-                $aces[] = $rootAce;
-            }
-        }
-
-        return $aces;
+        return $this->acl->getObjectAces();
     }
 
     /**
@@ -120,26 +101,7 @@ class RootBasedAclWrapper implements AclInterface
      */
     public function getObjectFieldAces($field)
     {
-        /** @var EntryInterface[] $aces */
-        $aces = $this->acl->getObjectFieldAces($field);
-        /** @var EntryInterface[] $rootAces */
-        $rootAces = $this->rootAcl->getObjectFieldAces($field);
-
-        foreach ($rootAces as $rootAce) {
-            $exists = false;
-            $rootSid = $rootAce->getSecurityIdentity();
-            foreach ($aces as $ace) {
-                if ($rootSid->equals($ace->getSecurityIdentity())) {
-                    $exists = true;
-                    break;
-                }
-            }
-            if (!$exists) {
-                $aces[] = $rootAce;
-            }
-        }
-
-        return $aces;
+        return $this->acl->getObjectFieldAces($field);
     }
 
     /**
