@@ -34,6 +34,7 @@ parameters:
     oro_security.acl.annotation_loader.class:                  Oro\Bundle\SecurityBundle\Annotation\Loader\AclAnnotationLoader
     oro_security.acl.yaml_config_loader.class:                 Oro\Bundle\SecurityBundle\Annotation\Loader\AclYamlConfigLoader
 
+    oro_security.entity_security_config_subscriber.class:      Oro\Bundle\SecurityBundle\EventListener\EntitySecurityMetadataConfigSubscriber
     oro_security.acl.annotation_provider.cache.warmer.class:   Oro\Bundle\SecurityBundle\Cache\AclAnnotationCacheWarmer
     oro_security.acl.annotation_provider.cache.clearer.class:  Oro\Bundle\SecurityBundle\Cache\AclAnnotationCacheClearer
     oro_security.action_metadata_provider.cache.warmer.class:  Oro\Bundle\SecurityBundle\Cache\ActionMetadataCacheWarmer
@@ -247,6 +248,13 @@ services:
             - %kernel.bundles%
         tags:
             - { name: oro_security.acl.config_loader }
+
+    oro_security.entity_security_config_subscriber:
+        class: %oro_security.entity_security_config_subscriber.class%
+        arguments:
+            - @oro_security.entity_security_metadata_provider
+        tags:
+            - { name: kernel.event_subscriber }
 
     oro_security.acl.annotation_provider.cache.warmer:
         public: false
