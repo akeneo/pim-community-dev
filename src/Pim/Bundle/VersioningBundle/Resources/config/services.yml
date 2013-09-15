@@ -14,8 +14,6 @@ services:
     pim_versioning.manager.pending:
         class: %pim_versioning.manager.pending.class%
         arguments:
-            - @pim_versioning.manager.version
-            - @pim_versioning.manager.audit
             - @doctrine.orm.entity_manager
 
     pim_versioning.builder.version:
