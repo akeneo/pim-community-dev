@@ -39,6 +39,7 @@ class BusinessUnitsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setOwner('Main')
             ->save()
             ->assertMessage('Business Unit successfully saved')
+            ->toGrid()
             ->assertTitle('Business Units - System')
             ->close();
 
@@ -63,8 +64,9 @@ class BusinessUnitsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->edit()
             ->setBusinessUnitName($newunitname)
             ->save()
-            ->assertTitle('Business Units - System')
-            ->assertMessage('Business Unit successfully saved');
+            ->assertMessage('Business Unit successfully saved')
+            ->toGrid()
+            ->assertTitle('Business Units - System');
 
         return $newunitname;
     }

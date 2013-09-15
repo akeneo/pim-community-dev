@@ -30,12 +30,21 @@ function($, _, __, mediator, Modal, AbstractListener) {
             this.selectors = options.selectors;
 
             AbstractListener.prototype.initialize.apply(this, arguments);
+        },
 
-            this._clearState();
-            this._synchronizeState();
+        /**
+         * Set datagrid instance
+         *
+         * @param {oro.datagrid.Grid} datagrid
+         */
+        setDatagridAndSubscribe: function(datagrid) {
+            AbstractListener.prototype.setDatagridAndSubscribe.apply(this, arguments);
 
             this.listenTo(this.datagrid.getRefreshAction(), 'preExecute', this._onExecuteRefreshAction);
             this.listenTo(this.datagrid.getResetAction(), 'preExecute', this._onExecuteResetAction);
+
+            this._clearState();
+            this._restoreState();
 
             /**
              * Restore include/exclude state from pagestate
@@ -141,7 +150,7 @@ function($, _, __, mediator, Modal, AbstractListener) {
           *
           * @private
           */
-         _restoreState: function () {
+        _restoreState: function () {
             var included = '';
             var excluded = '';
             if (this.selectors.included && $(this.selectors.included).length) {
@@ -156,11 +165,12 @@ function($, _, __, mediator, Modal, AbstractListener) {
                 this.datagrid.setAdditionalParameter('data_in', included);
                 this.datagrid.setAdditionalParameter('data_not_in', excluded);
                 var columnName = this.columnName;
+                var dataField = this.dataField;
                 this.datagrid.collection.each(function(model) {
-                    if (_.indexOf(included, model.get('id')) !== -1) {
+                    if (_.indexOf(included, model.get(dataField)) !== -1) {
                         model.set(columnName, true);
                     }
-                    if (_.indexOf(excluded, model.get('id')) !== -1) {
+                    if (_.indexOf(excluded, model.get(dataField)) !== -1) {
                         model.set(columnName, false);
                     }
                 });

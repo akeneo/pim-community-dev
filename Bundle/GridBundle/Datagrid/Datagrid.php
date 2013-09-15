@@ -16,6 +16,7 @@ use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
+use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
 /**
@@ -143,6 +144,16 @@ class Datagrid implements DatagridInterface
     protected $identifierFieldName;
 
     /**
+     * @var AbstractViewsList|null
+     */
+    private $viewsList;
+
+    /**
+     * @var bool
+     */
+    protected $multipleSorting = true;
+
+    /**
      * @param ProxyQueryInterface        $query
      * @param FieldDescriptionCollection $columns
      * @param PagerInterface             $pager
@@ -150,7 +161,6 @@ class Datagrid implements DatagridInterface
      * @param RouteGeneratorInterface    $routeGenerator
      * @param ParametersInterface        $parameters
      * @param EventDispatcherInterface   $eventDispatcher
-     * @param string                     $name
      */
     public function __construct(
         ProxyQueryInterface $query,
@@ -566,6 +576,22 @@ class Datagrid implements DatagridInterface
     }
 
     /**
+     * @return null|AbstractViewsList
+     */
+    public function getViewsList()
+    {
+        return $this->viewsList;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setViewsList($list)
+    {
+        $this->viewsList = $list;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getIdentifierField()
@@ -575,5 +601,21 @@ class Datagrid implements DatagridInterface
             return $this->columns->get($identifierFieldName);
         }
         throw new \RuntimeException(sprintf('There is no identifier field in grid "%s"', $this->getName()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMultipleSorting($multipleSorting)
+    {
+        $this->multipleSorting = $multipleSorting;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMultipleSorting()
+    {
+        return $this->multipleSorting;
     }
 }

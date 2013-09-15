@@ -31,8 +31,8 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
                     '</div>' +
                 '</div>' +
                 '<div class="pull-right">' +
-                '<div class="actions-panel pull-right form-horizontal"></div>' +
-                '<div class="page-size pull-right form-horizontal"></div>' +
+                    '<div class="actions-panel pull-right form-horizontal"></div>' +
+                    '<div class="page-size pull-right form-horizontal"></div>' +
                 '</div>' +
                 '<div class="pagination pagination-centered"></div>' +
             '</div>'

@@ -16,12 +16,15 @@
 
             {% block script %}
                 {% include 'OroUIBundle:Default:require.js.config.html.twig' %}
+                {% placeholder requirejs_config_extend %}
                 <script type="text/javascript" src="{{ asset('bundles/oroui/lib/require.js') }}"></script>
                 <script type="text/javascript">
                     require(['oro/init-layout', 'oro/init-user', 'jquery.uniform']);
                 </script>
 
-                {% placeholder scripts_before %}
+                {% block scripts_before %}
+                    {% placeholder scripts_before %}
+                {% endblock %}
 
                 {% if app.debug %}
                     <script type="text/javascript">
@@ -116,24 +119,33 @@
                     {% endblock before_content %}
                     <div id="flash-messages">
                         {% block messages %}
-                            {%  set hasMessages = app.session.flashbag.peekAll|length > 0 %}
-                            <div class="flash-messages-frame" {% if not hasMessages %}style="display:none"{% endif %}>
+                            <div class="flash-messages-frame">
                                 <div class="flash-messages-holder"></div>
                             </div>
-                            {% if hasMessages %}
+                            <script type="text/template" id="message-item-template">
+                                <div class="alert <% if (type) {  %><%= 'alert-' + type %><% } %> fade in top-messages ">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <div class="message"><%= message %></div>
+                                </div>
+                            </script>
                             <script type="text/javascript">
                                 require(['jquery', 'oro/messenger'],
-                                function($, messenger){
+                                function($, messenger) {
+                                    messenger.setup({
+                                        container: '#flash-messages .flash-messages-holder',
+                                        template: _.template($.trim($('#message-item-template').html()))
+                                    });
+                                {% if app.session.flashbag.peekAll|length > 0 %}
                                     $(function() {
                                     {% for type, messages in app.session.flashbag.all %}
                                         {% for message in messages %}
-                                            messenger.notificationFlashMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }});
+                                        messenger.notificationFlashMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }});
                                         {% endfor %}
                                     {% endfor %}
                                     });
+                                {% endif %}
                                 });
                             </script>
-                            {% endif %}
                         {% endblock messages %}
                     </div>
                     <div class="hash-loading-mask"></div>

@@ -54,8 +54,23 @@ function(_, Backbone, BackbonePageableCollection, app) {
             pageSize: 'p',
             sorters: 's',
             filters: 'f',
-            gridName: 't'
+            gridName: 't',
+            gridView: 'v'
         },
+
+        /**
+         * @property {Object}
+         */
+        additionalParameters: {
+            view: 'gridView'
+        },
+
+        /**
+         * Whether multiple sorting is allowed
+         *
+         * @property {Boolean}
+         */
+        multipleSorting: true,
 
         /**
          * Initialize basic parameters from source options
@@ -96,12 +111,6 @@ function(_, Backbone, BackbonePageableCollection, app) {
             this.on('remove', this.onRemove, this);
 
             BackbonePageableCollection.prototype.initialize.apply(this, arguments);
-
-            if (this.state.sorters && options.state) {
-                _.each(options.state.sorters, function(direction, field) {
-                    this.setSorting(field, direction, {'reset': false});
-                }, this);
-            }
         },
 
         /**
@@ -166,6 +175,25 @@ function(_, Backbone, BackbonePageableCollection, app) {
                 );
             }
             return data;
+        },
+
+        /**
+         * Adds additional parameters to state
+         *
+         * @param {Object} state
+         * @return {Object}
+         */
+        processAdditionalParams: function (state) {
+            var state = app.deepClone(state);
+            state.parameters = state.parameters || {};
+
+            _.each(this.additionalParameters, _.bind(function(value, key) {
+                if (!_.isUndefined(state[value])) {
+                    state.parameters[key] = state[value]
+                }
+            }, this));
+
+            return state;
         },
 
         /**
@@ -347,7 +375,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
             var fullCollection = this.fullCollection, links = this.links;
 
-        if (mode != "server") {
+            if (mode != "server") {
 
                 var self = this;
                 var success = options.success;
@@ -400,6 +428,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @return {Object}
          */
         processQueryParams: function(data, state) {
+            state = this.processAdditionalParams(state);
             var pageablePrototype = PageableCollection.prototype;
 
             // map params except directions
@@ -466,24 +495,25 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @return {*}
          */
         setSorting: function (sortKey, order, options) {
-
             var state = this.state;
 
-            if (!options || !_.has(options, 'reset') || options.reset) {
+            state.sorters = state.sorters || {};
+
+            if (this.multipleSorting) {
+                // there is always must be at least one sorted column
+                if (_.keys(state.sorters).length <= 1 && !order) {
+                    order = this.getSortDirectionKey("ASC");  // default order
+                }
+
+                // last sorting has the lowest priority
+                delete state.sorters[sortKey];
+            } else {
                 state.sorters = {};
             }
-            state.sorters[sortKey] = order;
 
-            // multiple sorting, last sorting has lowest priority
-            //
-            // to enable uncomment this block, remove block that works with sorters several string higher
-            // and remove reset option usage in initialize method
-            /*
-            delete state.sorters[sortKey];
             if (order) {
-            state.sorters[sortKey] = order;
+                state.sorters[sortKey] = order;
             }
-            */
 
             var fullCollection = this.fullCollection;
 
@@ -493,7 +523,8 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
             var mode = this.mode;
             options = _.extend({side: mode == "client" ? mode : "server", full: true},
-                options);
+                options
+            );
 
             var comparator = this._makeComparator(sortKey, order);
 
