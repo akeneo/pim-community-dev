@@ -1,23 +1,23 @@
 <?php
 
-namespace Oro\Bundle\EntityBundle\EventListener;
+namespace Oro\Bundle\SecurityBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
+use Oro\Bundle\SecurityBundle\Metadata\EntitySecurityMetadataProvider;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
 
-class OwnershipConfigSubscriber implements EventSubscriberInterface
+class EntitySecurityMetadataConfigSubscriber implements EventSubscriberInterface
 {
-    /** @var OwnershipMetadataProvider */
+    /** @var EntitySecurityMetadataProvider */
     protected $provider;
 
     /**
      * Constructor
      *
-     * @param OwnershipMetadataProvider $provider
+     * @param EntitySecurityMetadataProvider $provider
      */
-    public function __construct(OwnershipMetadataProvider $provider)
+    public function __construct(EntitySecurityMetadataProvider $provider)
     {
         $this->provider = $provider;
     }
@@ -37,9 +37,10 @@ class OwnershipConfigSubscriber implements EventSubscriberInterface
      */
     public function newEntityConfig(NewEntityConfigModelEvent $event)
     {
-        $cp = $event->getConfigManager()->getProvider('ownership');
+        $cp = $event->getConfigManager()->getProvider('security');
         if ($cp->hasConfig($event->getClassName())) {
-            $this->provider->warmUpCache($event->getClassName());
+            $config = $cp->getConfig($event->getClassName());
+            $this->provider->clearCache($config->get('type'));
         }
     }
 }

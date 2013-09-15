@@ -106,18 +106,26 @@ class OwnershipMetadataProvider
 
     /**
      * Warms up the cache
+     *
+     * If the class name is specified this method warms up cache for this class only
+     *
+     * @param string|null $className
      */
-    public function warmUpCache()
+    public function warmUpCache($className = null)
     {
-        foreach ($this->configProvider->getConfigs() as $config) {
-            $this->ensureMetadataLoaded($config->getId()->getClassName());
+        if ($className === null) {
+            foreach ($this->configProvider->getConfigs() as $config) {
+                $this->ensureMetadataLoaded($config->getId()->getClassName());
+            }
+        } else {
+            $this->ensureMetadataLoaded($className);
         }
     }
 
     /**
      * Clears the ownership metadata cache
      *
-     * If the class name is not specifies this method clears all cached data
+     * If the class name is not specified this method clears all cached data
      *
      * @param string|null $className
      */
