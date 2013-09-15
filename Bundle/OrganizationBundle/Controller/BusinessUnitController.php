@@ -28,7 +28,7 @@ class BusinessUnitController extends Controller
      * @Acl(
      *      id="oro_business_unit_create",
      *      type="entity",
-     *      class="OroOrganizationBundle:Organization",
+     *      class="OroOrganizationBundle:BusinessUnit",
      *      permission="CREATE"
      * )
      */
@@ -43,7 +43,7 @@ class BusinessUnitController extends Controller
      * @Acl(
      *      id="oro_business_unit_view",
      *      type="entity",
-     *      class="OroOrganizationBundle:Organization",
+     *      class="OroOrganizationBundle:BusinessUnit",
      *      permission="VIEW"
      * )
      */
@@ -63,7 +63,7 @@ class BusinessUnitController extends Controller
      * @Acl(
      *      id="oro_business_unit_update",
      *      type="entity",
-     *      class="OroOrganizationBundle:Organization",
+     *      class="OroOrganizationBundle:BusinessUnit",
      *      permission="EDIT"
      * )
      */
@@ -100,7 +100,7 @@ class BusinessUnitController extends Controller
      * @Acl(
      *      id="oro_business_unit_list",
      *      type="entity",
-     *      class="OroOrganizationBundle:Organization",
+     *      class="OroOrganizationBundle:BusinessUnit",
      *      permission="VIEW"
      * )
      * @Template()

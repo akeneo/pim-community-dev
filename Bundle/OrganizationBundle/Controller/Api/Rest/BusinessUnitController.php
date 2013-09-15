@@ -104,7 +104,7 @@ class BusinessUnitController extends RestController implements ClassResourceInte
      * @Acl(
      *      id="oro_business_unit_delete",
      *      type="entity",
-     *      class="OroOrganizationBundle:Organization",
+     *      class="OroOrganizationBundle:BusinessUnit",
      *      permission="DELETE"
      * )
      * @return Response

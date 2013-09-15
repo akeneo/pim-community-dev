@@ -25,25 +25,25 @@ class RoleController extends Controller
      *      class="OroUserBundle:Role",
      *      permission="CREATE"
      * )
-     * @Route("/acl-create", name="oro_user_new_role_create")
-     * @Template("OroUserBundle:Role:updateNew.html.twig")
+     * @Route("/create", name="oro_user_role_create")
+     * @Template("OroUserBundle:Role:update.html.twig")
      */
     public function createNewAction()
     {
-        return $this->updateNewAction(new Role());
+        return $this->updateAction(new Role());
     }
 
     /**
      * @Acl(
-     *      id="oro_user_role_create",
+     *      id="oro_user_role_update",
      *      type="entity",
      *      class="OroUserBundle:Role",
      *      permission="EDIT"
      * )
-     * @Route("/acl-update/{id}", name="oro_user_new_role_update", requirements={"id"="\d+"}, defaults={"id"=0})
+     * @Route("/update/{id}", name="oro_user_role_update", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
      */
-    public function updateNewAction(Role $entity)
+    public function updateAction(Role $entity)
     {
         $aclRoleHandler = $this->get('oro_user.form.handler.acl_role');
         $aclRoleHandler->createForm($entity);
@@ -67,61 +67,6 @@ class RoleController extends Controller
             'form'     => $aclRoleHandler->createView(),
             'privilegesConfig' => $this->container->getParameter('oro_user.privileges'),
             'datagrid' => $this->getRoleUserDatagridManager($entity)->getDatagrid()->createView(),
-        );
-    }
-
-    /**
-     * Create role form
-     *
-     * @Route("/create", name="oro_user_role_create")
-     * @Template("OroUserBundle:Role:update.html.twig")
-     * @Acl(
-     *      id="oro_user_role_create",
-     *      type="entity",
-     *      class="OroUserBundle:Role",
-     *      permission="CREATE"
-     * )
-     */
-    public function createAction()
-    {
-        return $this->updateAction(new Role());
-    }
-
-    /**
-     * Edit role form
-     *
-     * @Route("/update/{id}", name="oro_user_role_update", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Template
-     * @Acl(
-     *      id="oro_user_role_update",
-     *      type="entity",
-     *      class="OroUserBundle:Role",
-     *      permission="EDIT"
-     * )
-     */
-    public function updateAction(Role $entity)
-    {
-        $resources = $this->getRequest()->request->get('resource');
-        if ($this->get('oro_user.form.handler.role')->process($entity)) {
-            $this->getAclManager()->saveRoleAcl($entity, $resources);
-
-            $this->get('session')->getFlashBag()->add('success', 'Role successfully saved');
-
-            return $this->get('oro_ui.router')->actionRedirect(
-                array(
-                    'route' => 'oro_user_role_update',
-                    'parameters' => array('id' => $entity->getId()),
-                ),
-                array(
-                    'route' => 'oro_user_role_index',
-                )
-            );
-        }
-
-        return array(
-            'datagrid' => $this->getRoleUserDatagridManager($entity)->getDatagrid()->createView(),
-            'form'     => $this->get('oro_user.form.role')->createView(),
-            'resources' => $this->getAclManager()->getRoleAclTree($entity)
         );
     }
 

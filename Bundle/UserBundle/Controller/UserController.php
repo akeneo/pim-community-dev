@@ -92,7 +92,7 @@ class UserController extends Controller
      * @Acl(
      *      id="oro_user_user_update",
      *      type="entity",
-     *      class="OroUserBundle:Role",
+     *      class="OroUserBundle:User",
      *      permission="EDIT"
      * )
      */
@@ -129,7 +129,7 @@ class UserController extends Controller
      * @Acl(
      *      id="oro_user_user_list",
      *      type="entity",
-     *      class="OroUserBundle:Role",
+     *      class="OroUserBundle:User",
      *      permission="VIEW"
      * )
      */

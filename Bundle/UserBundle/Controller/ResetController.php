@@ -18,12 +18,6 @@ class ResetController extends Controller
      * @Route("/reset-request", name="oro_user_reset_request")
      * @Method({"GET"})
      * @Template
-     * @Acl(
-     *      id = "oro_reset_request",
-     *      label="reset password",
-     *      type="action",
-     *      group_name=""
-     * )
      */
     public function requestAction()
     {
@@ -35,12 +29,6 @@ class ResetController extends Controller
      *
      * @Route("/send-email", name="oro_user_reset_send_email")
      * @Method({"POST"})
-     * @Acl(
-     *      id = "oro_reset_send_mail",
-     *      label="Request reset user password",
-     *      type="action",
-     *      group_name=""
-     * )
      */
     public function sendEmailAction()
     {
@@ -92,12 +80,6 @@ class ResetController extends Controller
      * @Route("/check-email", name="oro_user_reset_check_email")
      * @Method({"GET"})
      * @Template
-     * @Acl(
-     *      id = "oro_reset_check_email",
-     *      label="Tell the user to check his email provider",
-     *      type="action",
-     *      group_name=""
-     * )
      */
     public function checkEmailAction()
     {
@@ -122,12 +104,6 @@ class ResetController extends Controller
      * @Route("/reset/{token}", name="oro_user_reset_reset", requirements={"token"="\w+"})
      * @Method({"GET", "POST"})
      * @Template
-     * @Acl(
-     *      id = "oro_reset_password",
-     *      label="Reset user password",
-     *      type="action",
-     *      group_name=""
-     * )
      */
     public function resetAction($token)
     {

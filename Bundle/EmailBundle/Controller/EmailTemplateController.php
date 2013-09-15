@@ -50,7 +50,7 @@ class EmailTemplateController extends Controller
      * @Acl(
      *      id="oro_email_emailtemplate_update",
      *      type="entity",
-     *      class="OroEmailBundle:Email",
+     *      class="OroEmailBundle:EmailTemplate",
      *      permission="EDIT"
      * )
      * @Template()
@@ -85,7 +85,7 @@ class EmailTemplateController extends Controller
      * @Acl(
      *      id="oro_email_emailtemplate_create",
      *      type="entity",
-     *      class="OroEmailBundle:Email",
+     *      class="OroEmailBundle:EmailTemplate",
      *      permission="CREATE"
      * )
      * @Template("OroEmailBundle:EmailTemplate:update.html.twig")
@@ -115,7 +115,7 @@ class EmailTemplateController extends Controller
      * @Acl(
      *      id="oro_email_emailtemplate_preview",
      *      type="entity",
-     *      class="OroEmailBundle:Email",
+     *      class="OroEmailBundle:EmailTemplate",
      *      permission="VIEW"
      * )
      * @Template("OroEmailBundle:EmailTemplate:preview.html.twig")
