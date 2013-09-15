@@ -215,7 +215,10 @@ class EntityAclExtension extends AbstractAclExtension
         if (is_string($val)) {
             return $this->fromDescriptor($val);
         } elseif ($val instanceof AclAnnotation) {
-            return new ObjectIdentity($val->getType(), $val->getClass());
+            return new ObjectIdentity(
+                $val->getType(),
+                $this->entityClassResolver->getEntityClass($this->entityClassAccessor->getClass($val->getClass()))
+            );
         }
 
         return $this->fromDomainObject($val);

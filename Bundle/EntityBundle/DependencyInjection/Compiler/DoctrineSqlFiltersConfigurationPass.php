@@ -8,33 +8,32 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class DoctrineSqlFiltersConfigurationPass implements CompilerPassInterface
 {
-    const TAG = 'oro_entity.orm.sql_filter';
-    const FILTERS_SERVICE_KEY = 'oro_entity.orm.sql_filter_collection';
+    const TAG_NAME = 'oro_entity.orm.sql_filter';
+    const FILTER_COLLECTION_SERVICE_NAME = 'oro_entity.orm.sql_filter_collection';
+    const ENTITY_MANAGER_SERVICE_NAME = 'doctrine.orm.entity_manager';
 
     /**
      * {@inheritDoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition(self::FILTERS_SERVICE_KEY)) {
+        if (!$container->hasDefinition(self::FILTER_COLLECTION_SERVICE_NAME)) {
             return;
         }
-        $filtersDefinition = $container->getDefinition(self::FILTERS_SERVICE_KEY);
-        $filters = $this->loadFilters($container);
-        foreach ($filters as $filter) {
-            $filtersDefinition->addMethodCall(
+
+        $em = $container->findDefinition(self::ENTITY_MANAGER_SERVICE_NAME);
+        $em->addMethodCall('setFilterCollection', array(new Reference(self::FILTER_COLLECTION_SERVICE_NAME)));
+
+        $collectionDef = $container->getDefinition(self::FILTER_COLLECTION_SERVICE_NAME);
+        foreach ($this->loadFilters($container) as $filter) {
+            $collectionDef->addMethodCall(
                 'addFilter',
-                array(
-                    $filter['filter_name'],
-                    new Reference($filter['id'])
-                )
+                array($filter['filter_name'], new Reference($filter['id']))
             );
             if ($filter['enabled']) {
-                $filtersDefinition->addMethodCall('enable', array($filter['filter_name']));
+                $collectionDef->addMethodCall('enable', array($filter['filter_name']));
             }
         }
-        $em = $container->findDefinition('doctrine.orm.entity_manager');
-        $em->addMethodCall('setFilterCollection', array(new Reference(self::FILTERS_SERVICE_KEY)));
     }
 
     /**
@@ -44,7 +43,7 @@ class DoctrineSqlFiltersConfigurationPass implements CompilerPassInterface
      */
     protected function loadFilters(ContainerBuilder $container)
     {
-        $taggedServices = $container->findTaggedServiceIds(self::TAG);
+        $taggedServices = $container->findTaggedServiceIds(self::TAG_NAME);
         $filters = array();
         $enabled = false;
         $names = array();

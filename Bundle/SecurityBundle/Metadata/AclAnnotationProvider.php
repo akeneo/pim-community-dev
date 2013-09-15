@@ -8,6 +8,9 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 
 class AclAnnotationProvider
 {
+    const CACHE_NAMESPACE = 'AclAnnotation';
+    const CACHE_KEY = 'data';
+
     /**
      * @var AclAnnotationLoaderInterface[]
      */
@@ -31,6 +34,9 @@ class AclAnnotationProvider
     public function __construct(CacheProvider $cache = null)
     {
         $this->cache = $cache;
+        if ($this->cache !== null && $this->cache->getNamespace() === '') {
+            $this->cache->setNamespace(self::CACHE_NAMESPACE);
+        }
     }
 
     /**
@@ -138,7 +144,7 @@ class AclAnnotationProvider
     public function clearCache()
     {
         if ($this->cache) {
-            $this->cache->delete('AclAnnotations');
+            $this->cache->delete(self::CACHE_KEY);
         }
         $this->storage = null;
     }
@@ -148,7 +154,7 @@ class AclAnnotationProvider
         if ($this->storage === null) {
             $data = null;
             if ($this->cache) {
-                $data = $this->cache->fetch('AclAnnotations');
+                $data = $this->cache->fetch(self::CACHE_KEY);
             }
             if (!$data) {
                 $data = new AclAnnotationStorage();
@@ -157,7 +163,7 @@ class AclAnnotationProvider
                 }
 
                 if ($this->cache) {
-                    $this->cache->save('AclAnnotations', $data);
+                    $this->cache->save(self::CACHE_KEY, $data);
                 }
             }
 

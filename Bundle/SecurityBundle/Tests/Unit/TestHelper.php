@@ -47,6 +47,9 @@ class TestHelper
             $this->testCase->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\ActionMetadataProvider')
                 ->disableOriginalConstructor()
                 ->getMock();
+        $actionMetadataProvider->expects($this->testCase->any())
+            ->method('isKnownAction')
+            ->will($this->testCase->returnValue(true));
         $selector->addAclExtension(
             new ActionAclExtension($actionMetadataProvider)
         );

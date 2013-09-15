@@ -38,7 +38,8 @@ class ActionAclExtension extends AbstractAclExtension
             return true;
         }
 
-        return $id === $this->getExtensionKey();
+        return $id === $this->getExtensionKey()
+            && $this->actionMetadataProvider->isKnownAction($type);
     }
 
     /**

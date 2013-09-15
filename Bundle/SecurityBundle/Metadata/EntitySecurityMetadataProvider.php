@@ -7,6 +7,8 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class EntitySecurityMetadataProvider
 {
+    const CACHE_NAMESPACE = 'AclEntity';
+
     const ACL_SECURITY_TYPE = 'ACL';
 
     /**
@@ -46,6 +48,9 @@ class EntitySecurityMetadataProvider
         $this->securityConfigProvider = $securityConfigProvider;
         $this->entityConfigProvider = $entityConfigProvider;
         $this->cache = $cache;
+        if ($this->cache !== null && $this->cache->getNamespace() === '') {
+            $this->cache->setNamespace(self::CACHE_NAMESPACE);
+        }
     }
 
     /**

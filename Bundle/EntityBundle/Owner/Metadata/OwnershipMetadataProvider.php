@@ -5,12 +5,15 @@ namespace Oro\Bundle\EntityBundle\Owner\Metadata;
 use Doctrine\Common\Cache\CacheProvider;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * This class provides access to the ownership metadata of a domain object
  */
 class OwnershipMetadataProvider
 {
+    const CACHE_NAMESPACE = 'EntityOwnership';
+
     /**
      * @var string
      */
@@ -37,6 +40,13 @@ class OwnershipMetadataProvider
     protected $cache;
 
     /**
+     * @var array
+     *         key = class name
+     *         value = OwnershipMetadata or true if an entity has no ownership config
+     */
+    protected $localCache;
+
+    /**
      * @var OwnershipMetadata
      */
     protected $noOwnershipMetadata;
@@ -48,6 +58,8 @@ class OwnershipMetadataProvider
      * @param ConfigProvider $configProvider
      * @param EntityClassResolver $entityClassResolver
      * @param CacheProvider|null $cache
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function __construct(
         array $owningEntityNames,
@@ -67,6 +79,9 @@ class OwnershipMetadataProvider
 
         $this->configProvider = $configProvider;
         $this->cache = $cache;
+        if ($this->cache !== null && $this->cache->getNamespace() === '') {
+            $this->cache->setNamespace(self::CACHE_NAMESPACE);
+        }
 
         $this->noOwnershipMetadata = new OwnershipMetadata();
     }
@@ -79,28 +94,24 @@ class OwnershipMetadataProvider
      */
     public function getMetadata($className)
     {
-        $result = null;
-        if ($this->cache) {
-            $result = $this->cache->fetch($className);
-        }
-        if (!$result) {
-            if ($this->configProvider->hasConfig($className)) {
-                $config = $this->configProvider->getConfig($className);
-                $result = new OwnershipMetadata(
-                    $config->get('owner_type'),
-                    $config->get('owner_field_name'),
-                    $config->get('owner_column_name')
-                );
-            }
-            if (!$result) {
-                $result = new OwnershipMetadata();
-            }
-            if ($this->cache) {
-                $this->cache->save($className, $result);
-            }
+        $this->ensureMetadataLoaded($className);
+
+        $result = $this->localCache[$className];
+        if ($result === true) {
+            return $this->noOwnershipMetadata;
         }
 
         return $result;
+    }
+
+    /**
+     * Warms up the cache
+     */
+    public function warmUpCache()
+    {
+        foreach ($this->configProvider->getConfigs() as $config) {
+            $this->ensureMetadataLoaded($config->getId()->getClassName());
+        }
     }
 
     /**
@@ -149,5 +160,48 @@ class OwnershipMetadataProvider
     public function getUserClass()
     {
         return $this->userClass;
+    }
+
+    /**
+     * Makes sure that metadata for the given class are loaded
+     *
+     * @param string $className
+     * @throws InvalidConfigurationException
+     */
+    protected function ensureMetadataLoaded($className)
+    {
+        if (!isset($this->localCache[$className])) {
+            $data = null;
+            if ($this->cache) {
+                $data = $this->cache->fetch($className);
+            }
+            if (!$data) {
+                if ($this->configProvider->hasConfig($className)) {
+                    $config = $this->configProvider->getConfig($className);
+                    try {
+                        $data = new OwnershipMetadata(
+                            $config->get('owner_type'),
+                            $config->get('owner_field_name'),
+                            $config->get('owner_column_name')
+                        );
+                    } catch (\InvalidArgumentException $ex) {
+                        throw new InvalidConfigurationException(
+                            sprintf('Invalid entity ownership configuration for "%s".', $className),
+                            0,
+                            $ex
+                        );
+                    }
+                }
+                if (!$data) {
+                    $data = true;
+                }
+
+                if ($this->cache) {
+                    $this->cache->save($className, $data);
+                }
+            }
+
+            $this->localCache[$className] = $data;
+        }
     }
 }
