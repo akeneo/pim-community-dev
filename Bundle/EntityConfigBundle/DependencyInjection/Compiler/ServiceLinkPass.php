@@ -37,7 +37,13 @@ class ServiceLinkPass implements CompilerPassInterface
                 $isOptional = true;
             }
 
-            if (!$isOptional && !$container->hasDefinition($serviceId)) {
+            if ($container->hasDefinition($serviceId)) {
+                // the service we are referred to must be public
+                $serviceDef = $container->getDefinition($serviceId);
+                if (!$serviceDef->isPublic()) {
+                    $serviceDef->setPublic(true);
+                }
+            } elseif (!$isOptional) {
                 throw new RuntimeException(
                     sprintf(
                         'Target service "%s" is undefined. The service link "%s" with tag "%s" and tag-service "%s"',
