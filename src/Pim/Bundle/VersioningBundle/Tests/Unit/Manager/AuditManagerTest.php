@@ -3,7 +3,6 @@
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\Manager;
 
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
-use Pim\Bundle\VersioningBundle\Entity\Version;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 
 /**

@@ -126,6 +126,7 @@ class AddVersionListener implements EventSubscriber
                 $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
                 if (!$user and $this->realTimeVersioning) {
                     $this->versionableEntities = array();
+
                     return;
                 }
                 foreach ($this->versionableEntities as $versionable) {

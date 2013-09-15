@@ -4,9 +4,6 @@ namespace Pim\Bundle\VersioningBundle\Manager;
 
 use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\DataAuditBundle\Entity\Audit;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 
 /**
@@ -39,7 +36,7 @@ class VersionManager
     }
 
     /**
-     * @param EntityManager $em
+     * @param Version $version
      *
      * @return Version
      */

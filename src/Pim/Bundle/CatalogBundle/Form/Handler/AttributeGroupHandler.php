@@ -33,9 +33,9 @@ class AttributeGroupHandler
 
     /**
      * Constructor for handler
-     * @param FormInterface  $form           Form called
-     * @param Request        $request        Web request
-     * @param ObjectManager  $manager        Storage manager
+     * @param FormInterface $form    Form called
+     * @param Request       $request Web request
+     * @param ObjectManager $manager Storage manager
      */
     public function __construct(
         FormInterface $form,

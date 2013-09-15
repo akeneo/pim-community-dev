@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
-use Pim\Bundle\VersioningBundle\Entity\Version;
 
 /**
  * Audit manager

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\Builder;
 
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Serializer\Serializer;
 use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;

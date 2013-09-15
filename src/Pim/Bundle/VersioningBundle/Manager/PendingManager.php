@@ -24,7 +24,7 @@ class PendingManager
     /**
      * Constructor
      *
-     * @param ObjectManager  $em
+     * @param ObjectManager $em
      */
     public function __construct(ObjectManager $em)
     {
@@ -33,6 +33,7 @@ class PendingManager
 
     /**
      * Return the pending version for the versionable entity
+     * @param VersionableInterface $versionable
      *
      * @return Pending | null
      */
@@ -49,6 +50,7 @@ class PendingManager
 
     /**
      * Return the pending versions for the versionable entity
+     * @param VersionableInterface $versionable
      *
      * @return Pending[]
      */

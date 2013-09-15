@@ -13,7 +13,7 @@ services:
     pim_catalog.form.handler.attribute:
         class: %pim_catalog.form.handler.product_attribute.class%
         scope: request
-        arguments: 
+        arguments:
             - @pim_catalog.form.attribute
             - @request
             - @doctrine.orm.entity_manager
