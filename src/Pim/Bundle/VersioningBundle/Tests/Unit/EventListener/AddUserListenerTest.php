@@ -3,8 +3,13 @@
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\EventListener;
 
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Pim\Bundle\VersioningBundle\EventListener\AddUserListener;
 use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
+use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
+use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
+use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
 
 /**
  * Test related class
@@ -25,7 +30,12 @@ class AddUserListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->versionListener = new AddVersionListener();
+        $encoders    = array(new CsvEncoder());
+        $normalizers = array(new GetSetMethodNormalizer());
+        $serializer  = new Serializer($normalizers, $encoders);
+        $versionBuilder = new VersionBuilder($serializer);
+        $auditBuilder   = new AuditBuilder();
+        $this->versionListener = new AddVersionListener($versionBuilder, $auditBuilder);
     }
 
     /**

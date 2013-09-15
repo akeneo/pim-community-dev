@@ -1,6 +1,6 @@
 Feature: Display the product history
   In order to know who, when and what changes has been made to a product
-  As a user
+  As Julia
   I need to have access to a product history
 
   @javascript
@@ -10,7 +10,7 @@ Feature: Display the product history
       | SKU          | yes      |
       | Brand        | no       |
       | Manufacturer | no       |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I am on the products page
     And I create a new product
     And I fill in the following information:

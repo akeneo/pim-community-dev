@@ -48,7 +48,9 @@
     var require = require || {};
     require.shim = require.shim || {};
     require.paths = require.paths || {};
-    /* require.urlArgs = 'bust=' + new Date().getTime(); DEBUG MODE*/
+    {% if app.debug %}
+        require.urlArgs = 'bust=' + new Date().getTime();
+    {% endif %}
 
     for (var alias in shims) {
         require.shim[alias] = shims[alias];

@@ -36,7 +36,7 @@
             'left': 0,
             'cursor': 'default'
         });
-        $('>.content', $element).css('left', opts.collapsedSeparatorWidth).width($(window).width() - opts.collapsedSeparatorWidth);
+        $('>.content', $element).css('left', opts.collapsedSeparatorWidth);
         $element.find('.separator i').addClass(opts.expandIcon);
         saveState(opts.stateStorageKey, 0);
     }
@@ -48,7 +48,7 @@
             'left': sidebarWidth,
             'cursor': opts.resizeCursor
         });
-        $('>.content', $element).css('left', sidebarWidth + opts.separatorWidth).width($(window).width() - opts.separatorWidth - sidebarWidth);
+        $('>.content', $element).css('left', sidebarWidth + opts.separatorWidth);
         $element.find('.separator i').removeClass(opts.expandIcon);
         saveState(opts.stateStorageKey, 1);
     }
@@ -56,16 +56,6 @@
     function adjustHeight($element) {
         var height = getAvailableHeight($element);
         $element.outerHeight(height);
-    }
-
-    function adjustWidth($element, opts) {
-        var contentWidth = $(window).width();
-        if ($('>.separator', $element).hasClass('collapsed')) {
-            contentWidth -= opts.collapsedSeparatorWidth;
-        } else {
-            contentWidth -= opts.separatorWidth + $('>.sidebar', $element).width();
-        }
-        $('>.content', $element).width(contentWidth);
     }
 
     function prepare($element, opts) {
@@ -155,7 +145,7 @@
 
                 $('>.separator', $element).css('left', position);
                 $('>.sidebar', $element).css('left', 0).width(position);
-                $('>.content', $element).css('left', position + opts.separatorWidth).width(windowWidth - position - opts.separatorWidth);
+                $('>.content', $element).css('left', position + opts.separatorWidth);
             }
 
             function endSplit() {
@@ -182,11 +172,9 @@
 
             $(window).on('resize', function () {
                 adjustHeight($element);
-                adjustWidth($element, opts);
             });
             $(document).ajaxSuccess(function () {
                 adjustHeight($element);
-                adjustWidth($element, opts);
             });
 
             $(window).trigger('resize');
