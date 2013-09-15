@@ -35,6 +35,7 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
     {
         $this->container = $container;
         $this->files = $container->getParameter('pim_installer.files');
+        $this->container->get('pim_versioning.event_listener.addversion')->setRealTimeVersioning(false);
     }
 
     /**

@@ -22,7 +22,6 @@ use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\VersioningBundle\Manager\PendingManager;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
@@ -97,11 +96,6 @@ class ProductController extends AbstractDoctrineController
     private $localeManager;
 
     /**
-     * @var PendingManager
-     */
-    private $pendingManager;
-
-    /**
      * @var AuditManager
      */
     private $auditManager;
@@ -129,7 +123,6 @@ class ProductController extends AbstractDoctrineController
      * @param ProductManager           $productManager
      * @param CategoryManager          $categoryManager
      * @param LocaleManager            $localeManager
-     * @param PendingManager           $pendingManager
      * @param AuditManager             $auditManager
      * @param AclManager               $aclManager
      */
@@ -149,7 +142,6 @@ class ProductController extends AbstractDoctrineController
         ProductManager $productManager,
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
-        PendingManager $pendingManager,
         AuditManager $auditManager,
         AclManager $aclManager
     ) {
@@ -163,7 +155,6 @@ class ProductController extends AbstractDoctrineController
         $this->productManager       = $productManager;
         $this->categoryManager      = $categoryManager;
         $this->localeManager        = $localeManager;
-        $this->pendingManager       = $pendingManager;
         $this->auditManager         = $auditManager;
         $this->aclManager           = $aclManager;
 
@@ -263,10 +254,6 @@ class ProductController extends AbstractDoctrineController
 
         if ($this->productCreateHandler->process($entity)) {
 
-            if ($pending = $this->pendingManager->getPendingVersion($entity)) {
-                $this->pendingManager->createVersionAndAudit($pending);
-            }
-
             $this->addFlash('success', 'Product successfully saved.');
 
             if ($dataLocale === null) {
@@ -341,10 +328,6 @@ class ProductController extends AbstractDoctrineController
                 $this->calculator->calculateForAProduct($product);
 
                 $this->addFlash('success', 'Product successfully saved');
-
-                if ($pending = $this->pendingManager->getPendingVersion($product)) {
-                    $this->pendingManager->createVersionAndAudit($pending);
-                }
 
                 // TODO : Check if the locale exists and is activated
                 $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());

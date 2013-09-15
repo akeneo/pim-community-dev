@@ -22,55 +22,13 @@ class PendingManager
     protected $em;
 
     /**
-     * @var VersionManager
-     */
-    protected $versionManager;
-
-    /**
-     * @var AuditManager
-     */
-    protected $auditManager;
-
-    /**
      * Constructor
      *
-     * @param VersionManager $vm
-     * @param AuditManager   $am
      * @param ObjectManager  $em
      */
-    public function __construct(VersionManager $versionM, AuditManager $auditM, ObjectManager $em)
+    public function __construct(ObjectManager $em)
     {
-        $this->em             = $em;
-        $this->versionManager = $versionM;
-        $this->auditManager   = $auditM;
-    }
-
-    /**
-     * Create Version and Audit from Pending
-     *
-     * @param Pending $pending
-     */
-    public function createVersionAndAudit(Pending $pending, $withFlush = true)
-    {
-        $user = $this->em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $pending->getUsername()));
-        $versionable = $this->getRelatedVersionable($pending);
-
-        $current = $this->versionManager->buildVersion($versionable, $user);
-        $this->em->persist($current);
-        foreach ($this->getPendingVersions($versionable) as $pending) {
-            $this->em->remove($pending);
-        }
-
-        $previous = $this->versionManager->getPreviousVersion($current);
-        $audit = $this->auditManager->buildAudit($current, $previous);
-        $diffData = $audit->getData();
-        if (!empty($diffData)) {
-            $this->em->persist($audit);
-        }
-
-        if ($withFlush) {
-            $this->em->flush();
-        }
+        $this->em = $em;
     }
 
     /**
