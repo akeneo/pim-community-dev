@@ -42,12 +42,12 @@ class AddVersionListener implements EventSubscriber
      *
      * @var VersionableInterface[]
      */
-    protected $versionableEntities;
+    protected $versionableEntities = array();
 
     /**
      * @var integer[]
      */
-    protected $versionedEntities;
+    protected $versionedEntities = array();
 
     /**
      * @var string
@@ -121,27 +121,27 @@ class AddVersionListener implements EventSubscriber
     public function postFlush(PostFlushEventArgs $args)
     {
         $em = $args->getEntityManager();
-
-        if (!empty($this->versionableEntities) and $this->username) {
-            $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
-            if (!$user and $this->realTimeVersioning) {
-                $this->versionableEntities = array();
-                return;
-            }
-            foreach ($this->versionableEntities as $versionable) {
-                if ($versionable->getId()) {
-                    $pending = new Pending(get_class($versionable), $versionable->getId(), $this->username);
+        if (!empty($this->versionableEntities)) {
+            if ($this->username) {
+                $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
+                if (!$user and $this->realTimeVersioning) {
+                    $this->versionableEntities = array();
+                    return;
+                }
+                foreach ($this->versionableEntities as $versionable) {
                     if ($this->realTimeVersioning) {
                         $em->refresh($versionable);
                         $this->createVersionAndAudit($em, $versionable, $user);
                     } else {
+                        $className = \Doctrine\Common\Util\ClassUtils::getRealClass(get_class($versionable));
+                        $pending = new Pending($className, $versionable->getId(), $this->username);
                         $this->computeChangeSet($em, $pending);
                     }
                     $this->versionedEntities[]= spl_object_hash($versionable);
                 }
+                $this->versionableEntities = array();
+                $em->flush();
             }
-            $this->versionableEntities = array();
-            $em->flush();
         }
     }
 
@@ -269,7 +269,7 @@ class AddVersionListener implements EventSubscriber
     protected function addPendingVersioning($em, VersionableInterface $versionable)
     {
         $oid = spl_object_hash($versionable);
-        if (!isset($this->versionableEntities[$oid]) and !isset($this->versionedEntities)) {
+        if (!isset($this->versionableEntities[$oid]) and !in_array($oid, $this->versionedEntities)) {
             $this->versionableEntities[$oid] = $versionable;
         }
     }
