@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Form\EventListener;
 
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -29,18 +30,24 @@ class UserSubscriber implements EventSubscriberInterface
     protected $security;
 
     /**
+     * @var ObjectIdentityFactory
+     */
+    protected $objectIdentityFactory;
+
+    /**
      * @param FormFactoryInterface     $factory    Factory to add new form children
      * @param AclManager               $aclManager ACL manager
      * @param SecurityContextInterface $security   Security context
      */
     public function __construct(
         FormFactoryInterface $factory,
-        AclManager $aclManager,
-        SecurityContextInterface $security
+        SecurityContextInterface $security,
+        ObjectIdentityFactory $objectIdentityFactory
     ) {
         $this->factory    = $factory;
-        $this->aclManager = $aclManager;
+        //$this->aclManager = $aclManager;
         $this->security   = $security;
+        $this->objectIdentityFactory = $objectIdentityFactory;
     }
 
     /**
@@ -50,7 +57,7 @@ class UserSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_BIND => 'preBind',
+            FormEvents::PRE_SUBMIT => 'preBind',
         );
     }
 
@@ -70,13 +77,25 @@ class UserSubscriber implements EventSubscriberInterface
             }
         }
 
-        /*if (!$this->aclManager->isResourceGranted('oro_user_role')) {
+        if ($submittedData['id']) {
+            $permission = 'EDIT';
+        } else {
+            $permission = 'CREATE';
+        }
+
+        if (!$this->security->isGranted(
+            $permission,
+            $this->objectIdentityFactory->get('Entity:OroUserBundle:Role')
+        )) {
             unset($submittedData['rolesCollection']);
         }
 
-        if (!$this->aclManager->isResourceGranted('oro_user_group')) {
+        if (!$this->security->isGranted(
+            $permission,
+            $this->objectIdentityFactory->get('Entity:OroUserBundle:Group')
+        )) {
             unset($submittedData['groups']);
-        }*/
+        }
 
         $event->setData($submittedData);
     }
@@ -93,15 +112,32 @@ class UserSubscriber implements EventSubscriberInterface
 
         if ($entity->getId()) {
             $form->remove('plainPassword');
+            $permission = 'EDIT';
+        } else {
+            $permission = 'CREATE';
         }
 
-        if (!$this->aclManager->isResourceGranted('oro_user_role')) {
+        if (!$this->security->isGranted(
+            $permission,
+            $this->objectIdentityFactory->get('Entity:OroUserBundle:Role')
+        )) {
+            $form->remove('rolesCollection');
+        }
+
+        if (!$this->security->isGranted(
+            $permission,
+            $this->objectIdentityFactory->get('Entity:OroUserBundle:Group')
+        )) {
+            $form->remove('groups');
+        }
+
+        /*if (!$this->aclManager->isResourceGranted('oro_user_role')) {
             $form->remove('rolesCollection');
         }
 
         if (!$this->aclManager->isResourceGranted('oro_user_group')) {
             $form->remove('groups');
-        }
+        }*/
 
         // do not allow user to disable his own account
         $form->add(

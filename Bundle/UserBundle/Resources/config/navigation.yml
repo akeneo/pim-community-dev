@@ -69,10 +69,6 @@ oro_titles:
     oro_user_create: Create User
     oro_user_index: ~
 
-    #TODO: remove after new acl ui is implemented
-    oro_user_new_role_update: %%role%%
-    oro_user_new_role_create: Create Role
-    ##########################
     oro_user_role_update: %%role%%
     oro_user_role_create: Create Role
     oro_user_role_index: ~

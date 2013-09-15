@@ -229,7 +229,6 @@ class AclRoleHandler
         $this->removeUsers($entity, $removeUsers);
         $this->manager->persist($entity);
         $this->manager->flush();
-        die;
     }
 
     /**
