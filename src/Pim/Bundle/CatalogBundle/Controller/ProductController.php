@@ -362,8 +362,8 @@ class ProductController extends AbstractDoctrineController
             'attributesForm' => $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
             'product'        => $product,
             'trees'          => $trees,
-            'created'        => $this->auditManager->getFirstLogEntry($product),
-            'updated'        => $this->auditManager->getLastLogEntry($product),
+            'created'        => $this->auditManager->getOldestLogEntry($product),
+            'updated'        => $this->auditManager->getNewestLogEntry($product),
             'datagrid'       => $datagrid->createView(),
             'locales'        => $this->localeManager->getActiveLocales()
         );

@@ -46,31 +46,33 @@ class AuditManager
     }
 
     /**
-     * Return first log entry
+     * Return the oldest log entry. A the log is order by date
+     * desc, it means the very last line of the log
      *
      * @param VersionableInterface $versionable
      *
      * @return Audit
      */
-    public function getFirstLogEntry(VersionableInterface $versionable)
-    {
-        $logs = $this->getLogEntries($versionable);
-
-        return (!empty($logs)) ? current($logs) : null;
-    }
-
-    /**
-     * Return last log entry
-     *
-     * @param VersionableInterface $versionable
-     *
-     * @return Audit
-     */
-    public function getLastLogEntry(VersionableInterface $versionable)
+    public function getOldestLogEntry(VersionableInterface $versionable)
     {
         $logs = $this->getLogEntries($versionable);
 
         return (!empty($logs)) ? end($logs) : null;
+    }
+
+    /**
+     * Return the newest log entry. As the log is order by date
+     * desc, it means the first line of the log
+     *
+     * @param VersionableInterface $versionable
+     *
+     * @return Audit
+     */
+    public function getNewestLogEntry(VersionableInterface $versionable)
+    {
+        $logs = $this->getLogEntries($versionable);
+
+        return (!empty($logs)) ? reset($logs) : null;
     }
 
     /**

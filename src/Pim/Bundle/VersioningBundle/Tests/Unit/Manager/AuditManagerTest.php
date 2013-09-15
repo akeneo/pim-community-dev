@@ -50,20 +50,20 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
-    public function testGetFirstLogEntry()
+    public function testGetNewestLogEntry()
     {
         $versionable = $this->getMock('Pim\Bundle\VersioningBundle\Entity\VersionableInterface');
-        $entry = $this->manager->getFirstLogEntry($versionable);
-        $this->assertEquals($entry, current($this->entries));
+        $entry = $this->manager->getNewestLogEntry($versionable);
+        $this->assertEquals($entry, reset($this->entries));
     }
 
     /**
      * Test related method
      */
-    public function testGetLastLogEntry()
+    public function testGetOldestLogEntry()
     {
         $versionable = $this->getMock('Pim\Bundle\VersioningBundle\Entity\VersionableInterface');
-        $entry = $this->manager->getLastLogEntry($versionable);
+        $entry = $this->manager->getOldestLogEntry($versionable);
         $this->assertEquals($entry, end($this->entries));
     }
 
