@@ -64,11 +64,16 @@ class RefreshCommand extends ContainerAwareCommand
             $ind = 0;
             $batchSize = $input->getOption('batch-size');
             $progress->start($output, $nbPendings);
+            $versioned = array();
             foreach ($pendingVersions as $pending) {
                 $user = $em->getRepository('OroUserBundle:User')
                     ->findOneBy(array('username' => $pending->getUsername()));
                 $versionable = $this->getPendingManager()->getRelatedVersionable($pending);
-                $this->getAddVersionListener()->createVersionAndAudit($em, $versionable, $user);
+                if (!in_array(spl_object_hash($versionable), $versioned)) {
+                    $this->getAddVersionListener()->createVersionAndAudit($em, $versionable, $user);
+                    $versioned[]= spl_object_hash($versionable);
+                }
+                $em->remove($pending);
                 $ind++;
                 if (($ind % $batchSize) == 0) {
                     $em->flush();
