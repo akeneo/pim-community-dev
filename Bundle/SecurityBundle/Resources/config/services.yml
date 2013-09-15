@@ -38,6 +38,8 @@ parameters:
     oro_security.acl.annotation_provider.cache.clearer.class:  Oro\Bundle\SecurityBundle\Cache\AclAnnotationCacheClearer
     oro_security.action_metadata_provider.cache.warmer.class:  Oro\Bundle\SecurityBundle\Cache\ActionMetadataCacheWarmer
     oro_security.action_metadata_provider.cache.clearer.class: Oro\Bundle\SecurityBundle\Cache\ActionMetadataCacheClearer
+    oro_security.entity_security_metadata_provider.cache.warmer.class:  Oro\Bundle\SecurityBundle\Cache\EntitySecurityMetadataCacheWarmer
+    oro_security.entity_security_metadata_provider.cache.clearer.class: Oro\Bundle\SecurityBundle\Cache\EntitySecurityMetadataCacheClearer
 
     oro_security.acl.pointcut.class:                           Oro\Bundle\SecurityBundle\Acl\Interceptor\AclPointcut
     oro_security.acl.interceptor.class:                        Oro\Bundle\SecurityBundle\Acl\Interceptor\AclInterceptor
@@ -275,6 +277,22 @@ services:
         class: %oro_security.action_metadata_provider.cache.clearer.class%
         arguments:
             - @oro_security.action_metadata_provider
+        tags:
+            - { name: kernel.cache_clearer }
+
+    oro_security.entity_security_metadata_provider.cache.warmer:
+        public: false
+        class: %oro_security.entity_security_metadata_provider.cache.warmer.class%
+        arguments:
+            - @oro_security.entity_security_metadata_provider
+        tags:
+            - { name: kernel.cache_warmer}
+
+    oro_security.entity_security_metadata_provider.cache.clearer:
+        public: false
+        class: %oro_security.entity_security_metadata_provider.cache.clearer.class%
+        arguments:
+            - @oro_security.entity_security_metadata_provider
         tags:
             - { name: kernel.cache_clearer }
 

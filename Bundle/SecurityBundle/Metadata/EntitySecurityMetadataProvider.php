@@ -81,6 +81,23 @@ class EntitySecurityMetadataProvider
     }
 
     /**
+     * Warms up the cache
+     */
+    public function warmUpCache()
+    {
+        $securityTypes = array();
+        foreach ($this->securityConfigProvider->getConfigs() as $securityConfig) {
+            $securityType = $securityConfig->get('type');
+            if (!in_array($securityType, $securityTypes, true)) {
+                $securityTypes[] = $securityType;
+            }
+        }
+        foreach ($securityTypes as $securityType) {
+            $this->ensureMetadataLoaded($securityType);
+        }
+    }
+
+    /**
      * Clears the cache by security type
      *
      * If the $securityType is not specified, clear all cached data
@@ -118,7 +135,7 @@ class EntitySecurityMetadataProvider
             if (!$data) {
                 $securityConfigs = $this->securityConfigProvider->getConfigs();
                 foreach ($securityConfigs as $securityConfig) {
-                    if ($securityConfig->get('type') == $securityType) {
+                    if ($securityConfig->get('type') === $securityType) {
                         $className = $securityConfig->getId()->getClassName();
                         $label = '';
                         if ($this->entityConfigProvider->hasConfig($className)) {

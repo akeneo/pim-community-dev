@@ -217,7 +217,7 @@ class EntityAclExtension extends AbstractAclExtension
         } elseif ($val instanceof AclAnnotation) {
             return new ObjectIdentity(
                 $val->getType(),
-                $this->entityClassResolver->getEntityClass($this->entityClassAccessor->getClass($val->getClass()))
+                $this->entityClassResolver->getEntityClass($val->getClass())
             );
         }
 
