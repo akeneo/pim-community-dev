@@ -21,7 +21,7 @@ class FlatAttributeGroupNormalizer extends AttributeGroupNormalizer
     /**
      * @var array
      */
-    private $results;
+    protected $results;
 
     /**
      * {@inheritdoc}

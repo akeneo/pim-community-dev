@@ -16,8 +16,8 @@ use Behat\Mink\Driver\BrowserKitDriver;
 class Operation extends Wizard
 {
     private $steps = array(
-        'Change status (Enable/Disable)' => 'Batch ChangeStatus',
-        'Edit attributes'                => 'Batch EditCommonAttributes',
+        'Change status (enable / disable)' => 'Batch ChangeStatus',
+        'Edit attributes'                  => 'Batch EditCommonAttributes',
     );
 
     public function chooseOperation($operation)

@@ -97,27 +97,14 @@ a.back-link i {
 .btn.scope-filter {
   height: 28px;
   min-width: 130px;
-  padding-right: 0px;
+  padding-right: 0;
   padding-left: 5px;
 }
 
 /** Dashboard ********************************************************************************************************/
 .dashboard {
-  .box-shadow(@shadow) {
-    -webkit-box-shadow: @shadow;
-    -moz-box-shadow: @shadow;
-    box-shadow: @shadow;
-  }
-  .border-radius(@radius) {
-    -webkit-border-radius: @radius;
-    -moz-border-radius: @radius;
-    border-radius: @radius;
-  }
   .fullHeight() {
     height: 100%;
-  }
-  .quick-launchpad {
-    background: @backgroundColor
   }
   .quick-launchpad #container > .container {
     padding-top: 30px;
@@ -208,16 +195,16 @@ a.back-link i {
   }
 
   li.jstree-open > a:not(.jstree-loading) .jstree-icon {
-    background:url("jstree/folder_standard_opened.png") 0px 0px no-repeat;
+    background:url("jstree/folder_standard_opened.png") 0 0 no-repeat;
   }
   li.jstree-closed > a:not(.jstree-loading) .jstree-icon {
-    background:url("jstree/folder_standard_closed.png") 0px 0px no-repeat;
+    background:url("jstree/folder_standard_closed.png") 0 0 no-repeat;
   }
   li.jstree-leaf > a:not(.jstree-loading) .jstree-icon {
-    background:url("jstree/folder_leaf.png") 0px 0px no-repeat;
+    background:url("jstree/folder_leaf.png") 0 0 no-repeat;
   }
   li.jstree-unclassified > a:not(.jstree-loading) .jstree-icon {
-    background:url("jstree/folder_unclassified.png") 0px 0px no-repeat;
+    background:url("jstree/folder_unclassified.png") 0 0 no-repeat;
   }
 }
 
