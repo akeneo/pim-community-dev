@@ -158,11 +158,12 @@ class ChannelType extends AbstractType
 
         /** @var array<ChoiceView> $locales */
         $locales = $view['locales'];
+        $userLocale = $this->localeManager->getUserLocaleCode();
         foreach ($locales->vars['choices'] as $locale) {
-            $locale->label = $this->localeHelper->getLocalizedLabel($locale->label);
+            $locale->label = $this->localeHelper->getLocalizedLabel($locale->label, $userLocale);
         }
         foreach ($locales->vars['preferred_choices'] as $locale) {
-            $locale->label = $this->localeHelper->getLocalizedLabel($locale->label);
+            $locale->label = $this->localeHelper->getLocalizedLabel($locale->label, $userLocale);
         }
 
         $locales->vars['choices'] = SortHelper::sortByProperty($locales->vars['choices'], 'label');

@@ -13,6 +13,10 @@ use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
  */
 class LocaleHelperTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        $this->localeHelper = new LocaleHelper();
+    }
     /**
      * Data provider for the localizedLabel method
      * Can only test for a user locale because locale helper use static property
@@ -30,47 +34,31 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
                     'en_US' => 'anglais (États-Unis)',
                     'en_EN' => 'anglais',
                     'fr_FR' => 'français',
+                    'de_DE' => 'allemand',
+                    'azert' => 'azert'
+                )
+            ),
+            'EN' => array(
+                'en_US',
+                array(
+                    'en_US' => 'English (United States)',
+                    'en_EN' => 'English',
+                    'fr_FR' => 'French',
+                    'de_DE' => 'German',
+                    'azert' => 'azert'
+                )
+            ),
+            'DE' => array(
+                'de_DE',
+                array(
+                    'en_US' => 'Englisch (Vereinigte Staaten)',
+                    'en_EN' => 'Englisch',
+                    'fr_FR' => 'Französisch',
+                    'de_DE' => 'Deutsch',
                     'azert' => 'azert'
                 )
             )
         );
-    }
-
-    /**
-     * Create locale helper
-     *
-     * @param string $userLocaleCode
-     *
-     * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
-     */
-    protected function createLocaleHelper($userLocaleCode)
-    {
-        $localeManager = $this->createLocaleManager($userLocaleCode);
-        $localeHelper = new LocaleHelper($localeManager);
-
-        return $localeHelper;
-    }
-
-    /**
-     * Create locale manager
-     *
-     * @param string $userLocaleCode
-     *
-     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
-     */
-    protected function createLocaleManager($userLocaleCode)
-    {
-        $localeManager = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
-            ->disableOriginalConstructor()
-            ->getMock(array('getUserLocaleCode'));
-
-        $localeManager
-            ->expects($this->any())
-            ->method('getUserLocaleCode')
-            ->will($this->returnValue($userLocaleCode));
-
-        return $localeManager;
     }
 
     /**
@@ -84,11 +72,8 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetLocalizedLabelFR($userLocaleCode, $expectedResults)
     {
-        $localeHelper = $this->createLocaleHelper($userLocaleCode);
-
         foreach ($expectedResults as $code => $expectedResult) {
-            $result = $localeHelper->getLocalizedLabel($code);
-            $this->assertEquals($expectedResult, $localeHelper->getLocalizedLabel($code));
+            $this->assertEquals($expectedResult, $this->localeHelper->getLocalizedLabel($code, $userLocaleCode));
         }
     }
 }
