@@ -39,7 +39,7 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *     id="oro_pagestate_api_list",
      *     name="List page state",
      *     description="List page state",
-     *     parent="oro_pagestate_api",
+     *     parent="oro_pagestate_api"
      * )
      */
     public function cgetAction()
@@ -69,7 +69,7 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *     id="oro_pagestate_api_get",
      *     name="Get a specific page state",
      *     description="Get a specific page state",
-     *     parent="oro_pagestate_api",
+     *     parent="oro_pagestate_api"
      * )
      */
     public function getAction($id)
@@ -93,7 +93,7 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *     id="oro_pagestate_api_post",
      *     name="Create a page state",
      *     description="Create a page state",
-     *     parent="oro_pagestate_api",
+     *     parent="oro_pagestate_api"
      * )
      */
     public function postAction()
@@ -124,7 +124,7 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *     id="oro_pagestate_api_update",
      *     name="Update page state",
      *     description="Update page state",
-     *     parent="oro_pagestate_api",
+     *     parent="oro_pagestate_api"
      * )
      */
     public function putAction($id)
@@ -157,7 +157,7 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *     id="oro_pagestate_api_delete",
      *     name="Delete a page state",
      *     description="Delete a page state",
-     *     parent="oro_pagestate_api",
+     *     parent="oro_pagestate_api"
      * )
      */
     public function deleteAction($id)
@@ -186,7 +186,7 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *     id="oro_pagestate_api_check",
      *     name="Check page state",
      *     description="Check if a page state already exists",
-     *     parent="oro_pagestate_api",
+     *     parent="oro_pagestate_api"
      * )
      */
     public function getCheckidAction()
