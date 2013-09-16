@@ -29,6 +29,7 @@ services:
         arguments:
             - @form.factory
             - @event_dispatcher
+            - @oro_security.security_facade
             - @oro_grid.filter.factory
             - @oro_grid.sorter.factory
             - @oro_grid.action.factory

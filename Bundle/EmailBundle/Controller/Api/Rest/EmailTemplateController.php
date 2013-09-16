@@ -36,9 +36,9 @@ class EmailTemplateController extends RestController
      * )
      * @Acl(
      *      id="oro_email_emailtemplate_remove",
-     *      type="entity",
-     *      class="OroEmailBundle:EmailTemplate",
-     *      permission="DELETE"
+     *      type="action",
+     *      label="Delete email template",
+     *      group_name=""
      * )
      * @return Response
      */

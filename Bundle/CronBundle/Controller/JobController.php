@@ -32,9 +32,9 @@ class JobController extends Controller
      * @Template
      * @Acl(
      *      id="oro_cron_job_list",
-     *      type="entity",
-     *      class="OroCronBundle:Schedule",
-     *      permission="VIEW"
+     *      type="action",
+     *      label="Get Jobs",
+     *      group_name=""
      * )
      */
     public function indexAction($page, $limit)
@@ -54,9 +54,9 @@ class JobController extends Controller
      * @Template
      * @Acl(
      *      id="oro_cron_job_view",
-     *      type="entity",
-     *      class="OroCronBundle:Schedule",
-     *      permission="VIEW"
+     *      type="action",
+     *      label="View Job",
+     *      group_name=""
      * )
      */
     public function viewAction(Job $job)

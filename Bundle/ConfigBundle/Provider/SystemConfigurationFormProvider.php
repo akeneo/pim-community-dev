@@ -4,10 +4,10 @@ namespace Oro\Bundle\ConfigBundle\Provider;
 
 use Symfony\Component\Form\FormFactoryInterface;
 
-use Oro\Bundle\UserBundle\Acl\Manager;
 use Oro\Bundle\ConfigBundle\Utils\TreeUtils;
 use Oro\Bundle\ConfigBundle\Config\Tree\FieldNodeDefinition;
 use Oro\Bundle\ConfigBundle\Config\Tree\GroupNodeDefinition;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 class SystemConfigurationFormProvider extends FormProvider
 {
@@ -17,15 +17,15 @@ class SystemConfigurationFormProvider extends FormProvider
     /** @var FormFactoryInterface */
     protected $factory;
 
-    /** @var Manager */
-    protected $aclManager;
+    /** @var SecurityFacade */
+    protected $securityFacade;
 
-    public function __construct($config, FormFactoryInterface $factory)
+    public function __construct($config, FormFactoryInterface $factory, SecurityFacade $securityFacade)
     {
         parent::__construct($config);
 
         $this->factory    = $factory;
-        $this->aclManager = null;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -110,7 +110,6 @@ class SystemConfigurationFormProvider extends FormProvider
      */
     protected function checkIsGranted($resourceName)
     {
-        //return $this->aclManager->isResourceGranted($resourceName);
-        return true;
+        return $this->securityFacade->isGranted($resourceName);
     }
 }

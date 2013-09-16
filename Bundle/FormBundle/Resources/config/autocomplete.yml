@@ -6,6 +6,7 @@ parameters:
 services:
     oro_form.autocomplete.security:
         class: %oro_form.autocomplete.security.class%
+        arguments: [@oro_grid.filter.factory]
 
     oro_form.autocomplete.search_registry:
         class: %oro_form.autocomplete.search_registry.class%

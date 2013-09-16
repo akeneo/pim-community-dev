@@ -27,6 +27,7 @@ services:
         arguments:
             - []
             - @form.factory
+            - @oro_grid.filter.factory
         tags:
             -  { name: oro_config.configuration_form_provider }
 

@@ -30,9 +30,9 @@ class AddressTypeController extends FOSRestController implements ClassResourceIn
      * )
      * @Acl(
      *      id="oro_address_type_list",
-     *      type="entity",
-     *      class="OroAddressBundle:AddressType",
-     *      permission="VIEW"
+     *      type="action",
+     *      label="API Get Address Types",
+     *      group_name=""
      * )
      * @return Response
      */
@@ -56,9 +56,9 @@ class AddressTypeController extends FOSRestController implements ClassResourceIn
      * )
      * @Acl(
      *      id="oro_address_type_show",
-     *      type="entity",
-     *      class="OroAddressBundle:AddressType",
-     *      permission="VIEW"
+     *      type="action",
+     *      label="API Get Address Type",
+     *      group_name=""
      * )
      * @return Response
      */

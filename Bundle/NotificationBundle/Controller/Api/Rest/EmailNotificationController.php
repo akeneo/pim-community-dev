@@ -31,9 +31,9 @@ class EmailNotificationController extends RestController
      * )
      * @Acl(
      *      id="oro_notification_emailnotification_remove",
-     *      type="entity",
-     *      class="OroNotificationBundle:EmailNotification",
-     *      permission="DELETE"
+     *      type="action",
+     *      label="Delete notification rule",
+     *      group_name=""
      * )
      * @return Response
      */

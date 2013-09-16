@@ -38,9 +38,9 @@ class AddressController extends RestController implements ClassResourceInterface
      *  }
      * @Acl(
      *      id="oro_address_list",
-     *      type="entity",
-     *      class="OroAddressBundle:Address",
-     *      permission="VIEW"
+     *      type="action",
+     *      label="API Get Addresses",
+     *      group_name=""
      * )
      * @return Response
      */
@@ -63,9 +63,9 @@ class AddressController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_address_show",
-     *      type="entity",
-     *      class="OroAddressBundle:Address",
-     *      permission="VIEW"
+     *      type="action",
+     *      label="API Get Address",
+     *      group_name=""
      * )
      * @return Response
      */
@@ -85,9 +85,9 @@ class AddressController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_address_edit",
-     *      type="entity",
-     *      class="OroAddressBundle:Address",
-     *      permission="EDIT"
+     *      type="action",
+     *      label="API Edit Addresses",
+     *      group_name=""
      * )
      * @return Response
      */
@@ -105,9 +105,9 @@ class AddressController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_address_create",
-     *      type="entity",
-     *      class="OroAddressBundle:Address",
-     *      permission="CREATE"
+     *      type="action",
+     *      label="API Create Addresses",
+     *      group_name=""
      * )
      */
     public function postAction()
@@ -126,9 +126,9 @@ class AddressController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_address_remove",
-     *      type="entity",
-     *      class="OroAddressBundle:Address",
-     *      permission="DELETE"
+     *      type="action",
+     *      label="API Delete Addresses",
+     *      group_name=""
      * )
      * @return Response
      */

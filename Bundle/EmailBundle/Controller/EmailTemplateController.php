@@ -26,9 +26,9 @@ class EmailTemplateController extends Controller
      * )
      * @Acl(
      *      id="oro_email_emailtemplate_index",
-     *      type="entity",
-     *      class="OroEmailBundle:EmailTemplate",
-     *      permission="VIEW"
+     *      type="action",
+     *      label="View List of email templates",
+     *      group_name=""
      * )
      * @Template()
      */
@@ -49,9 +49,9 @@ class EmailTemplateController extends Controller
      * @Route("/update/{id}", requirements={"id"="\d+"}, defaults={"id"=0}))
      * @Acl(
      *      id="oro_email_emailtemplate_update",
-     *      type="entity",
-     *      class="OroEmailBundle:EmailTemplate",
-     *      permission="EDIT"
+     *      type="action",
+     *      label="Edit email template",
+     *      group_name=""
      * )
      * @Template()
      */
@@ -84,9 +84,9 @@ class EmailTemplateController extends Controller
      * @Route("/create")
      * @Acl(
      *      id="oro_email_emailtemplate_create",
-     *      type="entity",
-     *      class="OroEmailBundle:EmailTemplate",
-     *      permission="CREATE"
+     *      type="action",
+     *      label="Create email template",
+     *      group_name=""
      * )
      * @Template("OroEmailBundle:EmailTemplate:update.html.twig")
      */
@@ -114,9 +114,9 @@ class EmailTemplateController extends Controller
      * @Route("/preview/{id}", requirements={"id"="\d+"}, defaults={"id"=0}))
      * @Acl(
      *      id="oro_email_emailtemplate_preview",
-     *      type="entity",
-     *      class="OroEmailBundle:EmailTemplate",
-     *      permission="VIEW"
+     *      type="action",
+     *      label="View email template",
+     *      group_name=""
      * )
      * @Template("OroEmailBundle:EmailTemplate:preview.html.twig")
      * @param bool|int $emailTemplateId
