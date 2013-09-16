@@ -1,6 +1,6 @@
 <script type="text/javascript">
 require(
-    ['jquery', 'jquery.sidebarize'],
+    ['jquery', 'jquery.sidebarize', 'bootstrap.tooltip'],
     function ($){
         'use strict';
         $(function() {
@@ -25,9 +25,17 @@ require(
                 update: updateSortOrder
             });
 
-            var addBtn = $('<a href="{{ path("pim_catalog_attributegroup_create") }}">').html($('<i>', { 'class': 'icon-plus-sign' }));
+            var createBtn = $('<a>', {
+                'href': '{{ path("pim_catalog_attributegroup_create") }}',
+                'data-toggle': 'tooltip',
+                'data-placement': 'right',
+                'data-original-title': '{{ "Create a new group"|trans }}'
+            }).html(
+                $('<i>', { 'class': 'icon-plus-sign' })
+            );
 
-            $('#group-container').sidebarize({ buttons: [ addBtn ] });
+            $('#group-container').sidebarize({ buttons: [ createBtn ] });
+            $('[data-toggle="tooltip"]').tooltip();
         });
     }
 );

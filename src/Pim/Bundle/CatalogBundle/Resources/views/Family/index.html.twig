@@ -21,11 +21,21 @@
     {{ parent() }}
     <script type="text/javascript">
         require(
-            ['jquery', 'jquery.sidebarize'],
+            ['jquery', 'jquery.sidebarize', 'bootstrap.tooltip'],
             function ($){
                 'use strict';
                 $(function() {
-                    $('#family-container').sidebarize({ buttons: ['<a href="{{ path('pim_catalog_family_create') }}"><i class="icon-plus-sign"></i></a>'] });
+                    var createBtn = $('<a>', {
+                        'href': '{{ path("pim_catalog_family_create") }}',
+                        'data-toggle': 'tooltip',
+                        'data-placement': 'right',
+                        'data-original-title': '{{ "Create a new family"|trans }}'
+                    }).html(
+                        $('<i>', { 'class': 'icon-plus-sign' })
+                    );
+
+                    $('#family-container').sidebarize({ buttons: [ createBtn ] });
+                    $('[data-toggle="tooltip"]').tooltip();
                 });
             }
         );

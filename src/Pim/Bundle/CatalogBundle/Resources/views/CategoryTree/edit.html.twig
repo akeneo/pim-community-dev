@@ -8,11 +8,14 @@
             function($, TreeManage, Navigation){
                 'use strict';
                 $(function() {
-                    var createBtn = $('<button>', { id: 'tree-create', 'data-toggle': 'tooltip', 'data-placement': 'right', 'data-original-title': '{{ "Create a new tree"|trans }}' }).html(
+                    var createBtn = $('<a>', {
+                        'href': '{{ path("pim_catalog_categorytree_create") }}',
+                        'data-toggle': 'tooltip',
+                        'data-placement': 'right',
+                        'data-original-title': '{{ "Create a new tree"|trans }}'
+                    }).html(
                         $('<i>', { 'class': 'icon-plus-sign' })
-                    ).on('click', function() {
-                        Navigation.getInstance().setLocation('{{ path("pim_catalog_categorytree_create") }}');
-                    });
+                    );
 
                     // Instantiate sidebar
                     $('#category-tree-container').sidebarize({ buttons: [ createBtn ] });
