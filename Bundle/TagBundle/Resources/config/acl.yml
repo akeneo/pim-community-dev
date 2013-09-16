@@ -1,5 +1,5 @@
 oro_tag_assign_unassign:
-    label: User can assign tags for entities and unassign only which were assigned by this user
+    label: Tag assign/unassign
     type: action
     group_name: ""
     bindings: ~

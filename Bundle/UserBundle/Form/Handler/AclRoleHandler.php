@@ -241,8 +241,6 @@ class AclRoleHandler
     {
         /** @var $user User */
         foreach ($users as $user) {
-            var_dump($user->getId());
-
             $user->addRole($role);
             $this->manager->persist($user);
         }
