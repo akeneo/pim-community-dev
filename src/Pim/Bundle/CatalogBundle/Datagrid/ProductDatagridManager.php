@@ -219,7 +219,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $result = parent::getFlexibleFieldOptions($attribute, $options);
 
         $result['filterable'] = $attribute->isUseableAsGridFilter();
-        $result['show_filter'] = $attribute->isUseableAsGridFilter();
+        $result['show_filter'] = $attribute->isUseableAsGridFilter()
+            && $attribute->getAttributeType() === 'pim_catalog_identifier';
         $result['show_column'] = $attribute->isUseableAsGridColumn();
 
         $backendType = $attribute->getBackendType();
@@ -321,7 +322,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $fieldCompleteness->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_HTML,
-                'label'       => $this->translate('Completed'),
+                'label'       => $this->translate('Complete'),
                 'field_name'  => 'completenesses',
                 'expression'  => 'pCompleteness',
                 'filter_type' => FilterInterface::TYPE_COMPLETENESS,
@@ -354,37 +355,28 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function getRowActions()
     {
-        $clickAction = array(
-            'name'         => 'rowClick',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label'         => $this->translate('Edit'),
-                'icon'          => 'edit',
-                'link'          => 'edit_link',
-                'backUrl'       => true,
-                'runOnRowClick' => true
-            )
-        );
-
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translate('Edit'),
+                'label'   => $this->translate('Edit attributes of the product'),
                 'icon'    => 'edit',
                 'link'    => 'edit_link',
                 'backUrl' => true
             )
         );
 
+        $clickAction = $editAction;
+        $clickAction['name'] = 'rowClick';
+        $clickAction['options']['runOnRowClick'] = true;
+
         $editCategoriesAction = array(
             'name'         => 'edit_categories',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translate('Edit categories'),
+                'label'   => $this->translate('Classify the product'),
                 'icon'    => 'folder-close',
                 'link'    => 'edit_categories_link',
                 'backUrl' => true
@@ -396,7 +388,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translate('Delete'),
+                'label'   => $this->translate('Delete the product'),
                 'icon'    => 'trash',
                 'link'    => 'delete_link'
             )

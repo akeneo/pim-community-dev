@@ -17,7 +17,7 @@ class Base extends Page
 {
     protected $elements = array(
         'Dialog' => array('css' => 'div.modal'),
-        'Title'  => array('css' => '.navbar-title'),
+        'Title'  => array('css' => '.navbar-title')
     );
 
     /**

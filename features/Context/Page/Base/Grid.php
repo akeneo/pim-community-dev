@@ -23,10 +23,11 @@ class Grid extends Index
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Grid'         => array('css' => 'table.grid'),
-                'Grid content' => array('css' => 'table.grid tbody'),
-                'Filters'      => array('css' => 'div.filter-box'),
-                'Grid toolbar' => array('css' => 'div.grid-toolbar'),
+                'Grid'           => array('css' => 'table.grid'),
+                'Grid content'   => array('css' => 'table.grid tbody'),
+                'Filters'        => array('css' => 'div.filter-box'),
+                'Grid toolbar'   => array('css' => 'div.grid-toolbar'),
+                'Manage filters' => array('css' => 'div.filter-list')
             )
         );
     }
@@ -255,6 +256,98 @@ class Grid extends Index
 
         return $filter;
     }
+
+    /**
+     * Show a filter from the management list
+     * @param string $filterName
+     */
+    public function showFilter($filterName)
+    {
+        $this->clickFiltersList();
+        $this->activateFilter($filterName);
+        $this->clickFiltersList();
+    }
+
+    /**
+     * Hide a filter from the management list
+     * @param string $filterName
+     */
+    public function hideFilter($filterName)
+    {
+        $this->clickFiltersList();
+        $this->deactivateFilter($filterName);
+        $this->clickFiltersList();
+    }
+
+    /**
+     * Activate a filter
+     * @param string $filterName
+     * @throws \InvalidArgumentException
+     */
+    private function activateFilter($filterName)
+    {
+        $this->clickOnFilterToManage($filterName);
+
+        if (!$this->getFilter($filterName)->isVisible()) {
+            throw new \InvalidArgumentException(
+                sprintf('Filter "%s" is not visible', $filterName)
+            );
+        }
+    }
+
+    /**
+     * Deactivate filter
+     * @param string $filterName
+     * @throws \InvalidArgumentException
+     */
+    private function deactivateFilter($filterName)
+    {
+        $this->clickOnFilterToManage($filterName);
+
+        if ($this->getFilter($filterName)->isVisible()) {
+            throw new \InvalidArgumentException(
+                sprintf('Filter "%s" is visible', $filterName)
+            );
+        }
+    }
+
+    /**
+     * Click on a filter in filter management list
+     * @param string $filterName
+     * @throws \InvalidArgumentException
+     */
+    private function clickOnFilterToManage($filterName)
+    {
+        try {
+            $filter = $this
+            ->getElement('Manage filters')
+            ->find('css', sprintf('label:contains("%s")', $filterName))
+            ->click();
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException(
+                sprintf('Impossible to activate filter "%s"', $filterName)
+            );
+        }
+    }
+
+    /**
+     * Open/close filters list
+     */
+    private function clickFiltersList()
+    {
+        $this
+            ->getElement('Filters')
+            ->find('css', 'a#add-filter-button')
+            ->click();
+    }
+
+    /**
+     * Select a row
+     * @param string $value
+     *
+     * @throws \InvalidArgumentException
+     * @return \Behat\Mink\Element\NodeElement|null
+     */
     public function selectRow($value)
     {
         $row = $this->getRow($value);
