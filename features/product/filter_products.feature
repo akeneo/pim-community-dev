@@ -67,7 +67,7 @@ Feature: Filter products
 
   Scenario: Successfully filter by Name
     Given I am on the products page
-    Then I make visible the filter "Name"
+    And I make visible the filter "Name"
     When I filter by "Name" with value "post"
     Then the grid should contain 1 element
     And I should see products postit
@@ -75,7 +75,7 @@ Feature: Filter products
 
   Scenario: Successfully filter by Description
     Given I am on the products page
-    Then I make visible the filter "Description"
+    And I make visible the filter "Description"
     When I filter by "Description" with value "book"
     Then the grid should contain 1 element
     And I should see products book
