@@ -50,7 +50,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
 
         $sid->expects($this->at(0))
             ->method('equals')
-            ->with($this->identicalTo($aceSid3))
+            ->with($this->identicalTo($aceSid1))
             ->will($this->returnValue(true));
         $sid->expects($this->at(1))
             ->method('equals')
@@ -58,7 +58,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(false));
         $sid->expects($this->at(2))
             ->method('equals')
-            ->with($this->identicalTo($aceSid1))
+            ->with($this->identicalTo($aceSid3))
             ->will($this->returnValue(true));
 
         if ($field === null) {
@@ -132,11 +132,11 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
         $ace1 = $this->getAce($aceSid1);
         $ace2 = $this->getAce($aceSid2, $aceGranting2, $aceMask2, $aceStrategy2);
 
-        $sid->expects($this->at(1))
+        $sid->expects($this->at(0))
             ->method('equals')
             ->with($this->identicalTo($aceSid1))
             ->will($this->returnValue(false));
-        $sid->expects($this->at(0))
+        $sid->expects($this->at(1))
             ->method('equals')
             ->with($this->identicalTo($aceSid2))
             ->will($this->returnValue(true));
@@ -222,7 +222,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
 
         $sid->expects($this->at(0))
             ->method('equals')
-            ->with($this->identicalTo($aceSid3))
+            ->with($this->identicalTo($aceSid1))
             ->will($this->returnValue(true));
         $sid->expects($this->at(1))
             ->method('equals')
@@ -230,7 +230,7 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(false));
         $sid->expects($this->at(2))
             ->method('equals')
-            ->with($this->identicalTo($aceSid1))
+            ->with($this->identicalTo($aceSid3))
             ->will($this->returnValue(true));
 
         if ($field === null) {
@@ -277,12 +277,12 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
 
         $sid->expects($this->at(0))
             ->method('equals')
-            ->with($this->identicalTo($aceSid2))
-            ->will($this->returnValue(false));
-        $sid->expects($this->at(1))
-            ->method('equals')
             ->with($this->identicalTo($aceSid1))
             ->will($this->returnValue(true));
+        $sid->expects($this->at(1))
+            ->method('equals')
+            ->with($this->identicalTo($aceSid2))
+            ->will($this->returnValue(false));
 
         if ($field === null) {
             $this->acl->expects($this->once())

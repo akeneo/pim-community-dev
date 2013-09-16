@@ -53,14 +53,25 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
     public function testFindAcl()
     {
         $oid = new ObjectIdentity('test', 'Test');
+        $rootOid = new ObjectIdentity('test', ObjectIdentityFactory::ROOT_IDENTITY_TYPE);
         $sids = array($this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface'));
-        $acl = $this->getMock('Symfony\Component\Security\Acl\Model\AclInterface');
-        $this->baseProvider->expects($this->once())
+        $acl = $this->getMockBuilder('Symfony\Component\Security\Acl\Domain\Acl')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $rootAcl = $this->getMockBuilder('Symfony\Component\Security\Acl\Domain\Acl')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->baseProvider->expects($this->at(0))
             ->method('findAcl')
             ->with($this->identicalTo($oid), $this->equalTo($sids))
             ->will($this->returnValue($acl));
+        $this->baseProvider->expects($this->at(1))
+            ->method('findAcl')
+            ->with($this->equalTo($rootOid), $this->equalTo($sids))
+            ->will($this->returnValue($rootAcl));
 
-        $this->assertTrue($acl === $this->provider->findAcl($oid, $sids));
+        $result = $this->provider->findAcl($oid, $sids);
+        $this->assertInstanceOf('Oro\Bundle\SecurityBundle\Acl\Domain\RootBasedAclWrapper', $result);
     }
 
     public function testFindAclShouldReturnRootAcl()

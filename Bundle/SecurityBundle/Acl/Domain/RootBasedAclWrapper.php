@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
+use Symfony\Component\Security\Acl\Domain\Acl;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\EntryInterface;
 use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
@@ -9,12 +10,12 @@ use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
 class RootBasedAclWrapper implements AclInterface
 {
     /**
-     * @var AclInterface
+     * @var Acl
      */
     private $acl;
 
     /**
-     * @var AclInterface
+     * @var Acl
      */
     private $rootAcl;
 
@@ -23,15 +24,16 @@ class RootBasedAclWrapper implements AclInterface
      */
     private $permissionGrantingStrategy;
 
-    public function __construct(AclInterface $acl, AclInterface $rootAcl)
+    /**
+     * Constructor
+     *
+     * @param Acl $acl
+     * @param Acl $rootAcl
+     */
+    public function __construct(Acl $acl, Acl $rootAcl)
     {
         $this->acl = $acl;
         $this->rootAcl = $rootAcl;
-
-        $r = new \ReflectionClass(get_class($this->acl));
-        $p = $r->getProperty('permissionGrantingStrategy');
-        $p->setAccessible(true);
-        $this->permissionGrantingStrategy = $p->getValue($this->acl);
     }
 
     /**
@@ -133,7 +135,7 @@ class RootBasedAclWrapper implements AclInterface
      */
     public function isFieldGranted($field, array $masks, array $securityIdentities, $administrativeMode = false)
     {
-        return $this->permissionGrantingStrategy
+        return $this->getPermissionGrantingStrategy()
             ->isFieldGranted($this, $field, $masks, $securityIdentities, $administrativeMode);
     }
 
@@ -142,7 +144,7 @@ class RootBasedAclWrapper implements AclInterface
      */
     public function isGranted(array $masks, array $securityIdentities, $administrativeMode = false)
     {
-        return $this->permissionGrantingStrategy
+        return $this->getPermissionGrantingStrategy()
             ->isGranted($this, $masks, $securityIdentities, $administrativeMode);
     }
 
@@ -168,5 +170,24 @@ class RootBasedAclWrapper implements AclInterface
     public function unserialize($serialized)
     {
         throw new \LogicException('Not supported.');
+    }
+
+    /**
+     * Gets the permission granting strategy implementation
+     *
+     * @return PermissionGrantingStrategyInterface
+     */
+    protected function getPermissionGrantingStrategy()
+    {
+        if ($this->permissionGrantingStrategy === null) {
+            // Unfortunately permissionGrantingStrategy property is private, so the only way
+            // to get it is to use the reflection
+            $r = new \ReflectionClass(get_class($this->acl));
+            $p = $r->getProperty('permissionGrantingStrategy');
+            $p->setAccessible(true);
+            $this->permissionGrantingStrategy = $p->getValue($this->acl);
+        }
+
+        return $this->permissionGrantingStrategy;
     }
 }

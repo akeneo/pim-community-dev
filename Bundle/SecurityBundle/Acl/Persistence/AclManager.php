@@ -3,6 +3,7 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Persistence;
 
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Security\Acl\Dbal\AclProvider;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
@@ -336,7 +337,7 @@ class AclManager
         $this->validateAclEnabled();
 
         try {
-            return $this->aclProvider->findAcls($oids, array($sid));
+            return $this->doFindAcls($oids, array($sid));
         } catch (AclNotFoundException $ex) {
             if ($ex instanceof NotAllAclsFoundException) {
                 $partialResultException = $ex;
@@ -923,6 +924,81 @@ class AclManager
                 return $sid->equals($ace->getSecurityIdentity());
             }
         );
+    }
+
+    /**
+     * Gets the ACLs that belong to the given object identities
+     *
+     * We have to implement this method due a bug in AclProvider::findAcls:
+     *     when $oids array length > AclProvider::MAX_BATCH_SIZE and no any ACLs were found for any bath, the findAcls
+     *     method throws AclNotFoundException rather than continue loading ACLs for other batched and throw
+     *     this exception only when no any ACLs found for all batches. But if at least one ACL (but not all) was found
+     *     this method should throw NotAllAclsFoundException.
+     *
+     * @param OID[] $oids
+     * @param SID[] $sids
+     * @return \SplObjectStorage mapping the passed object identities to ACLs
+     * @throws AclNotFoundException
+     * @throws NotAllAclsFoundException
+     */
+    protected function doFindAcls(array $oids, array $sids)
+    {
+        // split object identities to batches (batch size must be less than or equal AclProvider::MAX_BATCH_SIZE)
+        $oidsBatches = array();
+        $batchIndex = 0;
+        $oidsBatches[$batchIndex] = array();
+        $index = 0;
+        foreach ($oids as $oid) {
+            $index++;
+            if ($index > AclProvider::MAX_BATCH_SIZE) {
+                $index = 0;
+                $batchIndex++;
+            }
+            $oidsBatches[$batchIndex][] = $oid;
+        }
+
+        $result = null;
+        foreach ($oidsBatches as $oidsBatch) {
+            try {
+                $acls = $this->aclProvider->findAcls($oidsBatch, $sids);
+                if ($result === null) {
+                    $result = $acls;
+                }
+            } catch (AclNotFoundException $ex) {
+                if ($ex instanceof NotAllAclsFoundException) {
+                    if ($result === null) {
+                        $result = $ex->getPartialResult();
+                    } else {
+                        $partialResult = $ex->getPartialResult();
+                        foreach ($partialResult as $aclOid) {
+                            $result->attach($aclOid, $partialResult->offsetGet($aclOid));
+                        }
+                    }
+                } else {
+                    if ($result === null) {
+                        $result = new \SplObjectStorage();
+                    }
+                }
+            }
+        }
+
+        // check that we got ACLs for all the identities
+        foreach ($oids as $oid) {
+            if (!$result->contains($oid)) {
+                if (1 === count($oids)) {
+                    throw new AclNotFoundException(sprintf('No ACL found for %s.', $oid));
+                }
+
+                $partialResultEx = new NotAllAclsFoundException(
+                    'The provider could not find ACLs for all object identities.'
+                );
+                $partialResultEx->setPartialResult($result);
+
+                throw $partialResultEx;
+            }
+        }
+
+        return $result;
     }
 
     /**
