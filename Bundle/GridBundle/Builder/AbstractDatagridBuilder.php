@@ -17,8 +17,8 @@ use Oro\Bundle\GridBundle\Filter\FilterFactoryInterface;
 use Oro\Bundle\GridBundle\Sorter\SorterFactoryInterface;
 use Oro\Bundle\GridBundle\Action\ActionFactoryInterface;
 use Oro\Bundle\GridBundle\Datagrid\PagerInterface;
-use Oro\Bundle\UserBundle\Acl\ManagerInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
 {
@@ -48,9 +48,9 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
     protected $actionFactory;
 
     /**
-     * @var ManagerInterface
+     * @var SecurityFacade
      */
-    protected $aclManager;
+    protected $securityFacade;
 
     /**
      * @var string
@@ -60,16 +60,16 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
     /**
      * @param FormFactoryInterface $formFactory
      * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerInterface $aclManager
+     * @param SecurityFacade $securityFacade
      * @param FilterFactoryInterface $filterFactory
      * @param SorterFactoryInterface $sorterFactory
      * @param ActionFactoryInterface $actionFactory
-     * @param string $className
+     * @param $className
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         EventDispatcherInterface $eventDispatcher,
-
+        SecurityFacade         $securityFacade,
         FilterFactoryInterface $filterFactory,
         SorterFactoryInterface $sorterFactory,
         ActionFactoryInterface $actionFactory,
@@ -78,7 +78,7 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
         //ManagerInterface $aclManager,
         $this->formFactory     = $formFactory;
         $this->eventDispatcher = $eventDispatcher;
-        $this->aclManager      = null;
+        $this->securityFacade  = $securityFacade;
         $this->filterFactory   = $filterFactory;
         $this->sorterFactory   = $sorterFactory;
         $this->actionFactory   = $actionFactory;
@@ -143,8 +143,8 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
         );
 
         $aclResource = $action->getAclResource();
-        //$this->aclManager->isResourceGranted($aclResource)
-        if (!$aclResource || true) {
+
+        if (!$aclResource || $this->securityFacade->isGranted($aclResource)) {
             $datagrid->addRowAction($action);
         }
     }
@@ -156,7 +156,7 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
     public function addMassAction(DatagridInterface $datagrid, MassActionInterface $massAction)
     {
         $aclResource = $massAction->getAclResource();
-        if (!$aclResource || $this->aclManager->isResourceGranted($aclResource)) {
+        if (!$aclResource || $this->securityFacade->isGranted($aclResource)) {
             $datagrid->addMassAction($massAction);
         }
     }

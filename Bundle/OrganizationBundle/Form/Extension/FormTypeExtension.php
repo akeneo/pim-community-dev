@@ -15,7 +15,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\OrganizationBundle\Event\RecordOwnerDataListener;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
-use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
@@ -38,9 +38,9 @@ class FormTypeExtension extends AbstractTypeExtension
     protected $manager;
 
     /**
-     * @var AclManager
+     * @var SecurityFacade
      */
-    protected $aclManager;
+    protected $securityFacade;
 
     /**
      * @var TranslatorInterface
@@ -55,15 +55,15 @@ class FormTypeExtension extends AbstractTypeExtension
         SecurityContextInterface $securityContext,
         ConfigProvider $configProvider,
         BusinessUnitManager $manager,
+        SecurityFacade $securityFacade,
         TranslatorInterface $translator
     ) {
         $this->securityContext = $securityContext;
         $this->configProvider = $configProvider;
         $this->manager = $manager;
-        $this->aclManager = null;
+        $this->securityFacade = $securityFacade;
         $this->translator = $translator;
-        $this->changeOwnerGranted = true;
-        //$this->changeOwnerGranted = $this->aclManager->isResourceGranted('oro_change_record_owner');
+        $this->changeOwnerGranted = $this->securityFacade->isGranted('oro_change_record_owner');
         $this->fieldName = RecordOwnerDataListener::OWNER_FIELD_NAME;
     }
 

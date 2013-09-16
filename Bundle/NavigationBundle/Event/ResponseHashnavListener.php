@@ -45,7 +45,7 @@ class ResponseHashnavListener
                     $isFullRedirect = true;
                 }
             }
-            if ($response->isNotFound()) {
+            if ($response->isNotFound() || $response->isForbidden()) {
                 $location = $request->getUri();
                 $isFullRedirect = true;
             }
