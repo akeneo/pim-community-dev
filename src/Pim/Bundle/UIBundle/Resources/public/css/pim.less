@@ -68,8 +68,14 @@ table.grid {
   }
 }
 
-.btn-group>.dropdown-menu li a:hover {
-  background: @color-purple_light;
+.btn-group>.dropdown-menu li {
+  a:hover {
+    background: @color-purple_light;
+  }
+  &.disabled a {
+    background: @backgroundColor-white;
+    color: @textColor + #555;
+  }
 }
 
 /* Tree */
@@ -111,7 +117,7 @@ a.back-link {
 }
 
 .btn.scope-filter {
-  height: 28px;
+  height: @buttonHeight;
   min-width: 130px;
   padding-right: 0;
   padding-left: 5px;
