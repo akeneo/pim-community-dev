@@ -91,5 +91,7 @@ services:
         class: %pim_catalog.form.type.edit_common_attributes.class%
         arguments:
             - @pim_catalog.form.type.product.view
+            - @pim_catalog.manager.locale
+            - @pim_catalog.helper.locale
         tags:
             - { name: form.type, alias: pim_catalog_mass_edit_common_attributes }
