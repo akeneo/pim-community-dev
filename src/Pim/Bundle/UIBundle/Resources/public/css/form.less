@@ -125,19 +125,11 @@ a.select2-choice {
 }
 
 .navbar-buttons .btn-group>.btn-primary {
-  height: 30px;
-  line-height: 30px;
   font-size: 14px;
 }
 
 .btn-group.open .btn-primary.dropdown-toggle {
   .buttonBackground(@btnPrimaryBackgroundLight, @btnPrimaryBackground);
-}
-
-a.return {
-  line-height: 30px;
-  margin-top: 8px;
-  margin-right: 8px;
 }
 
 .scrollspy-title {
@@ -503,9 +495,6 @@ div.ui-dialog {
   th {
     text-align: center;
   }
-  td.handle {
-    line-height: 30px;
-  }
 }
 
 /* Sortable table */
@@ -514,7 +503,7 @@ table.ui-sortable, tbody.ui-sortable {
     line-height: 30px;
   }
   td a.btn {
-    height: 28px;
+    height: @buttonHeight;
   }
 }
 
@@ -961,8 +950,8 @@ form.form-upload {
 
 /* Pim multiselect styles */
 button.pimmultiselect {
-  height: 30px;
-  line-height: 30px;
+  height: @buttonHeight;
+  line-height: @buttonHeight;
   padding: 0 10px;
   color: @textColor;
   &:hover {
@@ -1094,4 +1083,16 @@ table#progress-table {
   background-image: linear-gradient(to bottom, #bbbbbb, #cccccc);
   background-repeat: repeat-x;
   filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffbbbbbb', endColorstr='#ffcccccc', GradientType=0);
+}
+
+/** mass-edition *****************************************************************************************************/
+.mass-edit-form {
+  padding: 25px;
+  background-color: lighten(@color-light_grey, 4%);
+  hr {
+    height: 3px;
+    border-top: 1px solid lighten(@color-light_grey, 5%);
+    border-bottom: 1px solid lighten(@color-light_grey, 4%);
+    background-color: lighten(@color-light_grey, 2%);
+  }
 }
