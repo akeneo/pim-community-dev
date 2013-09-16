@@ -117,3 +117,4 @@ services:
         parent: pim_catalog.controller.abstract
         arguments:
             - @pim_catalog.mass_edit_action.operator
+            - @translator
