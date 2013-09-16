@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\SearchBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -11,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\SearchBundle\Datagrid\SearchDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\DatagridView;
 use Oro\Bundle\SearchBundle\Provider\ResultStatisticsProvider;
-
 use Oro\Bundle\UserBundle\Annotation\Acl;
 
 /**
