@@ -8,8 +8,8 @@
         border: none;
       }
       a {
-        background-color: transparent;
         padding: 0;
+        background-color: transparent;
         img {
           height: 41px;
         }
@@ -21,23 +21,23 @@
           text-shadow: 0 1px 1px @color-header_bottom;
         }
         &:hover [class^='icon-'] {
-          border: 1px solid darken(@color-header_bottom, 10%);
           #gradient > .vertical(@color-header_top, darken(@color-header_bottom, 5%));
+          border: 1px solid darken(@color-header_bottom, 10%);
         }
       }
       .dropdown > .dropdown-toggle:active > [class^=icon-],
       .dropdown > .dropdown-toggle:focus > [class^=icon-],
       .dropdown.open > .dropdown-toggle > [class^=icon-] {
-        border: 1px solid darken(@color-header_bottom, 22%);
         #gradient > .vertical(@color-header_top, @color-header_bottom);
+        border: 1px solid darken(@color-header_bottom, 22%);
       }
     }
   }
   .oroplatform-menu>li.dropdown:not(:hover).active>a {
-    border: 1px solid darken(@color-header_bottom, 7%);
-    border-bottom-color: darken(@color-header_bottom, 20%);
     background: @color-header_bottom;
     #gradient > .vertical(@color-header_top, @color-header_bottom);
+    border: 1px solid darken(@color-header_bottom, 7%);
+    border-bottom-color: darken(@color-header_bottom, 20%);
   }
 }
 

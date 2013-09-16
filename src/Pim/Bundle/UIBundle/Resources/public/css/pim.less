@@ -8,8 +8,8 @@
 /* General **********************************************************************************************************/
 
 body {
-  background-color: @backgroundColor-white;
   color: @textColor;
+  background-color: @backgroundColor-white;
 }
 
 a {
@@ -71,8 +71,8 @@ table.grid {
     background: @color-purple_light;
   }
   &.disabled a {
-    background: @backgroundColor-white;
     color: @textColor + #555;
+    background: @backgroundColor-white;
   }
 }
 
@@ -88,11 +88,11 @@ table.grid {
 
 #tree_toolbar {
     display: block;
+    padding: 16px 20px 16px 20px;
+    margin-bottom: 10px;
     background: #efefef url("../../oroui/img/bg-gray-box.png") repeat-x;
     border: solid #ccc;
     border-width: 1px 0;
-    padding: 16px 20px 16px 20px;
-    margin-bottom: 10px;
 }
 
 a.back-link {
@@ -109,9 +109,9 @@ a.back-link {
 }
 
 .icon-bullet:before {
-  content: "\2022";
   font-size: 2em;
   color: #777777;
+  content: "\2022";
 }
 
 .btn.scope-filter {
@@ -131,8 +131,8 @@ a.back-link {
   }
   .quick-launchpad-widget > div {
     height: @widgetHeight;
-    border: 1px solid #b6b6b6;
     overflow: hidden;
+    border: 1px solid #b6b6b6;
     .border-radius(5px);
     .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
   }
@@ -142,17 +142,17 @@ a.back-link {
       background-color: lighten(@color-light_grey, 4%);
     }
     .image-wrap {
-      background: #fff;
       display: block;
       width: 40%;
       .fullHeight();
+      background: #fff;
       .widget-image {
         display: block;
         width: @imageWidth;
         height: @imageHeight;
-        background: url("../images/pim-icon.png") no-repeat;
-        cursor: default;
         margin: 0 auto;
+        cursor: default;
+        background: url("../images/pim-icon.png") no-repeat;
         &.extract-image {
           background-position: 0 (@imageHeight*0);
         }
@@ -185,10 +185,10 @@ a.back-link {
       }
     }
     .list-wrap {
-      border-left: 1px solid darken(@color-light_grey, 5%);
       width: 60%;
-      margin-left: -1px;
       .fullHeight();
+      margin-left: -1px;
+      border-left: 1px solid darken(@color-light_grey, 5%);
       ul {
         margin: 5px 0;
         li > a {
