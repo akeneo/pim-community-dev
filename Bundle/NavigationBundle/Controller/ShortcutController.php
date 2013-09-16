@@ -56,6 +56,10 @@ class ShortcutController extends Controller
         );
     }
 
+    /**
+     * @param ItemInterface $items
+     * @return array
+     */
     protected function getResults(ItemInterface $items)
     {
         /** @var $translator TranslatorInterface */
