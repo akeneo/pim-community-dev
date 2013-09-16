@@ -114,7 +114,7 @@ services:
     pim_catalog.controller.mass_edit_action:
         scope: request
         class: %pim_catalog.controller.mass_edit_action.class%
-        parent: pim_catalog.controller.abstract
+        parent: pim_catalog.controller.abstract_doctrine
         arguments:
             - @pim_catalog.mass_edit_action.operator
             - @translator

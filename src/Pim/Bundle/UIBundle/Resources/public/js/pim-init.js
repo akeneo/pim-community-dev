@@ -1,5 +1,5 @@
 require(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'pim/dialog', 'pim/initselect2', 'bootstrap.tooltip',
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'pim/dialog', 'pim/initselect2', 'bootstrap',
         'jquery-ui', 'bootstrap.bootstrapswitch', 'bootstrap.tooltip', 'jquery.slimbox'],
     function ($, __, mediator, Navigation, Dialog, initSelect2) {
         'use strict';
@@ -64,18 +64,18 @@ require(
             function restoreFormState() {
                 if (sessionStorage.activeTab) {
                     var $activeTab = $('[href=' + sessionStorage.activeTab + ']');
-                    if ($activeTab) {
+                    if ($activeTab.length && !$('.loading-mask').is(':visible')) {
                         $activeTab.tab('show');
+                        sessionStorage.removeItem('activeTab');
                     }
-                    sessionStorage.removeItem('activeTab');
                 }
 
                 if (sessionStorage.activeGroup) {
                     var $activeGroup = $('[href=' + sessionStorage.activeGroup + ']');
-                    if ($activeGroup) {
+                    if ($activeGroup.length && !$('.loading-mask').is(':visible')) {
                         $activeGroup.tab('show');
+                        sessionStorage.removeItem('activeGroup');
                     }
-                    sessionStorage.removeItem('activeGroup');
                 }
             }
 
