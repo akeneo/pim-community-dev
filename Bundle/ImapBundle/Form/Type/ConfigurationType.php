@@ -16,7 +16,6 @@ class ConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('id', 'hidden')
             ->add('host', 'text', array('required' => true))
             ->add('port', 'text', array('required' => true))
             ->add(
