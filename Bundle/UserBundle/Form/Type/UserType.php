@@ -116,10 +116,10 @@ class UserType extends FlexibleType
 
             $builder->add(
                 'change_password',
-                'oro_change_password'
-//                array(
-//                    'cascade_validation' => true
-//                )
+                'oro_change_password',
+                array(
+                    'cascade_validation' => true
+                )
             );
     }
 
@@ -173,7 +173,7 @@ class UserType extends FlexibleType
                 'error_mapping' => array(
                     'roles' => 'rolesCollection'
                 ),
-                //'cascade_validation' => true
+                'cascade_validation' => true
             )
         );
     }

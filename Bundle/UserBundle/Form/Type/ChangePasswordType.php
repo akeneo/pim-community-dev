@@ -69,6 +69,7 @@ class ChangePasswordType extends AbstractType
                 'first_options'  => array('label' => 'New password'),
                 'second_options' => array('label' => 'Repeat new password'),
                 'mapped' => false,
+                'cascade_validation' => true,
             )
         );
     }
