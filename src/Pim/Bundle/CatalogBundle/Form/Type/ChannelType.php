@@ -52,93 +52,49 @@ class ChannelType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
-
-        $builder->add('id', 'hidden');
-
-        $builder->add('code');
-
-        $builder->add('name', 'text', array('label' => 'Default label'));
-
-        $builder->addEventSubscriber(new ChannelSubscriber());
-
-        $this->addCurrencyField($builder);
-
-        $this->addLocaleField($builder);
-
-        $this->addCategoryField($builder);
-    }
-
-    /**
-     * Create a currency field and add it to the form builder
-     *
-     * @param FormBuilderInterface $builder
-     *
-     * @return null
-     */
-    protected function addCurrencyField(FormBuilderInterface $builder)
-    {
-        $builder->add(
-            'currencies',
-            'entity',
-            array(
-                'required'      => true,
-                'multiple'      => true,
-                'class'         => 'Pim\Bundle\CatalogBundle\Entity\Currency',
-                'query_builder' => function (CurrencyRepository $repository) {
-                    return $repository->getActivatedCurrenciesQB();
-                }
+        $builder
+            ->add('id', 'hidden')
+            ->add('code')
+            ->add('name', 'text', array('label' => 'Default label'))
+            ->add(
+                'currencies',
+                'entity',
+                array(
+                    'required'      => true,
+                    'multiple'      => true,
+                    'class'         => 'Pim\Bundle\CatalogBundle\Entity\Currency',
+                    'query_builder' => function (CurrencyRepository $repository) {
+                        return $repository->getActivatedCurrenciesQB();
+                    }
+                )
             )
-        );
-    }
-
-    /**
-     * Create a locale field and add it to the form builder
-     *
-     * @param FormBuilderInterface $builder
-     *
-     * @return null
-     */
-    protected function addLocaleField(FormBuilderInterface $builder)
-    {
-        $builder->add(
-            'locales',
-            'entity',
-            array(
-                'by_reference'  => false,
-                'required'      => true,
-                'multiple'      => true,
-                'class'         => 'Pim\Bundle\CatalogBundle\Entity\Locale',
-                'query_builder' => function (LocaleRepository $repository) {
-                    return $repository->getLocalesQB();
-                },
-                'preferred_choices' => $this->localeManager->getActiveLocales()
+            ->add(
+                'locales',
+                'entity',
+                array(
+                    'by_reference'  => false,
+                    'required'      => true,
+                    'multiple'      => true,
+                    'class'         => 'Pim\Bundle\CatalogBundle\Entity\Locale',
+                    'query_builder' => function (LocaleRepository $repository) {
+                        return $repository->getLocalesQB();
+                    },
+                    'preferred_choices' => $this->localeManager->getActiveLocales()
+                )
             )
-        );
-    }
-
-    /**
-     * Create a category field and add it to the form builder
-     * This field only display trees (channel is linked to tree)
-     *
-     * @param FormBuilderInterface $builder
-     *
-     * @return null
-     */
-    protected function addCategoryField(FormBuilderInterface $builder)
-    {
-        $builder->add(
-            'category',
-            'entity',
-            array(
-                'label'         => 'Category tree',
-                'required'      => true,
-                'class'         => 'Pim\Bundle\CatalogBundle\Entity\Category',
-                'query_builder' => function (CategoryRepository $repository) {
-                    return $repository->getTreesQB();
-                }
+            ->add(
+                'category',
+                'entity',
+                array(
+                    'label'         => 'Category tree',
+                    'required'      => true,
+                    'class'         => 'Pim\Bundle\CatalogBundle\Entity\Category',
+                    'query_builder' => function (CategoryRepository $repository) {
+                        return $repository->getTreesQB();
+                    }
+                )
             )
-        );
+            ->addEventSubscriber(new ChannelSubscriber());
     }
 
     /**
