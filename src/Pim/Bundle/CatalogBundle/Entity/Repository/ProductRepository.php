@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Doctrine\ORM\AbstractQuery;
 
 /**
  * Product repository
@@ -75,6 +76,9 @@ class ProductRepository extends FlexibleEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
     public function findByIds(array $ids)
     {
         $qb = $this->findByWithAttributesQB();
@@ -83,5 +87,17 @@ class ProductRepository extends FlexibleEntityRepository
         );
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * @return integer[]
+     */
+    public function getAllIds()
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('p.id')
+            ->from($this->_entityName, 'p', 'p.id');
+
+        return array_keys($qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY));
     }
 }

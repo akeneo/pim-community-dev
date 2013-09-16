@@ -1,8 +1,12 @@
 {% extends 'PimCatalogBundle:MassEditAction:configure/layout.html.twig' %}
 
 {% block formTitle %}
-    {{ form_widget(form.operation.attributesToDisplay) }}&nbsp;
-    {{ form_widget(form.operation.locale) }}
+    <div class="pull-left">
+        {{ form_widget(form.operation.locale) }}
+    </div>
+    <div class="pull-left">
+        {{ form_widget(form.operation.attributesToDisplay) }}
+    </div>
 {% endblock %}
 
 {% block formContent %}
@@ -79,18 +83,14 @@
                             placeholder: opts.placeholder
                         });
 
-                    var $menu = $('.ui-multiselect-menu.pimmultiselect');
+                    var $menu = $('.ui-multiselect-menu.pimmultiselect').appendTo('#container');
                     var saveButton = '{{ 'Select'|trans }}';
 
                     var footerContainer = $('<div>').addClass('ui-multiselect-footer').appendTo($menu);
                     var $saveButton = $('<a>').addClass('btn btn-small').html(saveButton).on('click', function () {
                         $el.multiselect('close');
-                        if ($el.val() !== null) {
-                            {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) %}
-                            $('#{{ form.vars.id }}')
-                                .attr('action', '{{ action|raw }}')
-                                .submit();
-                        }
+                        {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) %}
+                        $('#{{ form.vars.id }}').attr('action', '{{ action|raw }}').submit();
                     }).appendTo(footerContainer);
 
                     var $openButton = $('button.pimmultiselect').addClass('btn btn-group');
