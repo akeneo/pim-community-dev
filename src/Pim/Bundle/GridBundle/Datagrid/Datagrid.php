@@ -3,8 +3,8 @@
 namespace Pim\Bundle\GridBundle\Datagrid;
 
 use Pim\Bundle\GridBundle\Action\Export\ExportActionInterface;
-
 use Symfony\Component\Serializer\Serializer;
+use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\GridBundle\Datagrid\Datagrid as OroDatagrid;
 
 /**
@@ -79,4 +79,25 @@ class Datagrid extends OroDatagrid
 
         return $this->getQuery()->execute();
     }
+
+    /**
+     *Get all query result ids
+     *
+     * @return integer[]
+     */
+    public function getAllIds()
+    {
+        $this->pagerApplied = true;
+        $this->sorterApplied = true;
+        $this->applyParameters();
+        $this->query->select($this->query->getRootAlias());
+        $entities = $this->query->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+        $func = function($entity) {
+            return $entity['id'];
+        };
+        $ids = array_unique(array_map($func, $entities));
+
+        return $ids;
+    }
+
 }
