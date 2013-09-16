@@ -286,7 +286,7 @@ class EntityFieldsDatagridManager extends BaseDatagrid
         $query->where('cf.mode <> :mode');
         $query->setParameter('mode', ConfigModelManager::MODE_HIDDEN);
         $query->innerJoin('cf.entity', 'ce', 'WITH', 'ce.id=' . $this->entityId);
-        $query->addSelect('ce.id as entity_id', false);
+        $query->addSelect('ce.id as entity_id', true);
 
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getPropertyConfig()->getItems(PropertyConfigContainer::TYPE_FIELD) as $code => $item) {
@@ -305,7 +305,7 @@ class EntityFieldsDatagridManager extends BaseDatagrid
                     'WITH',
                     $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'"
                 );
-                $query->addSelect($alias . '.value as ' . $fieldName . '', false);
+                $query->addSelect($alias . '.value as ' . $fieldName . '', true);
             }
         }
 
