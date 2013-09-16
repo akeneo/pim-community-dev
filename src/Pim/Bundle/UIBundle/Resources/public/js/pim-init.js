@@ -1,14 +1,11 @@
 require(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'pim/dialog', 'pim/initselect2', 'bootstrap',
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'pim/dialog', 'pim/initselect2', 'bootstrap.tooltip',
         'jquery-ui', 'bootstrap.bootstrapswitch', 'bootstrap.tooltip', 'jquery.slimbox'],
     function ($, __, mediator, Navigation, Dialog, initSelect2) {
         'use strict';
 
         function init() {
             // Place code that we need to run on every page load here
-
-            // Disable the oro scrollable container
-            $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
 
             $('.remove-attribute').each(function () {
                 var target = $(this).parent().find('.icons-container').first();

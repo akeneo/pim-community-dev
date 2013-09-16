@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
 use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Batch operation controller
@@ -36,6 +37,11 @@ class MassEditActionController extends AbstractController
     protected $batchOperator;
 
     /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -53,11 +59,13 @@ class MassEditActionController extends AbstractController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
-        MassEditActionOperator $batchOperator
+        MassEditActionOperator $batchOperator,
+        TranslatorInterface $translator
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator);
 
         $this->batchOperator = $batchOperator;
+        $this->translator    = $translator;
     }
 
     /**
@@ -217,5 +225,22 @@ class MassEditActionController extends AbstractController
         } else {
             return $request->query->get('products');
         }
+    }
+
+    /**
+     * Manual flash translator
+     * Otherwise, flash messages are not translated...
+     *
+     * @param string $type
+     * @param string $message
+     *
+     * TODO Fix flash translation
+     */
+    protected function addFlash($type, $message)
+    {
+        parent::addFlash(
+            $type,
+            $this->translator->trans($message)
+        );
     }
 }

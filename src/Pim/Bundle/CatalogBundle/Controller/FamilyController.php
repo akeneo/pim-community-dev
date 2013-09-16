@@ -16,7 +16,6 @@ use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\VersioningBundle\Manager\PendingManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
@@ -58,11 +57,6 @@ class FamilyController extends AbstractDoctrineController
     private $productManager;
 
     /**
-     * @var PendingManager
-     */
-    private $pendingManager;
-
-    /**
      * Constructor
      *
      * @param Request                  $request
@@ -76,7 +70,6 @@ class FamilyController extends AbstractDoctrineController
      * @param DatagridWorkerInterface  $dataGridWorker
      * @param ChannelManager           $channelManager
      * @param ProductManager           $productManager
-     * @param PendingManager           $pendingManager
      */
     public function __construct(
         Request $request,
@@ -89,8 +82,7 @@ class FamilyController extends AbstractDoctrineController
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $dataGridWorker,
         ChannelManager $channelManager,
-        ProductManager $productManager,
-        PendingManager $pendingManager
+        ProductManager $productManager
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
 
@@ -98,7 +90,6 @@ class FamilyController extends AbstractDoctrineController
         $this->dataGridWorker = $dataGridWorker;
         $this->channelManager = $channelManager;
         $this->productManager = $productManager;
-        $this->pendingManager = $pendingManager;
     }
 
     /**
@@ -129,10 +120,6 @@ class FamilyController extends AbstractDoctrineController
                 $this->getManager()->persist($family);
                 $this->getManager()->flush();
                 $this->addFlash('success', 'Family successfully created');
-
-                if ($pending = $this->pendingManager->getPendingVersion($family)) {
-                    $this->pendingManager->createVersionAndAudit($pending);
-                }
 
                 return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
             }
@@ -189,10 +176,6 @@ class FamilyController extends AbstractDoctrineController
             if ($form->isValid()) {
                 $this->getManager()->flush();
                 $this->addFlash('success', 'Family successfully updated.');
-
-                if ($pending = $this->pendingManager->getPendingVersion($family)) {
-                    $this->pendingManager->createVersionAndAudit($pending);
-                }
 
                 return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $id));
             }
@@ -262,10 +245,6 @@ class FamilyController extends AbstractDoctrineController
 
         $this->getManager()->flush();
 
-        if ($pending = $this->pendingManager->getPendingVersion($family)) {
-            $this->pendingManager->createVersionAndAudit($pending);
-        }
-
         return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
     }
 
@@ -296,10 +275,6 @@ class FamilyController extends AbstractDoctrineController
         } else {
             $family->removeAttribute($attribute);
             $this->getManager()->flush();
-
-            if ($pending = $this->pendingManager->getPendingVersion($family)) {
-                $this->pendingManager->createVersionAndAudit($pending);
-            }
 
             $this->addFlash('success', 'The family is successfully updated.');
         }

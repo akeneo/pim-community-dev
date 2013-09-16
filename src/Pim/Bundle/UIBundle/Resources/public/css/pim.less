@@ -12,10 +12,6 @@ body {
   color: @textColor;
 }
 
-#main, .container-fluid {
-  padding: 0;
-}
-
 a {
   color: @color-purple_dark;
 }
@@ -27,21 +23,8 @@ a:focus {
 /* Grids */
 .grid th a {color: #666666; }
 .table-hover tbody tr:hover > td {background-color: @color-purple_hover; }
-table.grid { margin-bottom: 0; }
+table.grid { margin-bottom: 20px; }
 .grid-container { overflow: visible; }
-#pim_catalog_product_create {
-  label {
-    text-align: left;
-    width: 200px;
-  }
-  .select2-search-field, .select2-container {
-      width: 314px!important;
-      min-width: 314px!important;
-  }
-  input {
-    width: 300px;
-  }
-}
 .filter-box select.filter-select-oro {
   height: 25px;
   line-height: 25px;
@@ -114,27 +97,90 @@ a.back-link i {
 .btn.scope-filter {
   height: 28px;
   min-width: 130px;
-  padding-right: 0px;
+  padding-right: 0;
   padding-left: 5px;
 }
 
 /** Dashboard ********************************************************************************************************/
 .dashboard {
-  background: @backgroundColor
-  .row {
-    margin-top:20px;
+  .fullHeight() {
+    height: 100%;
   }
-  #container > .container {
+  .quick-launchpad #container > .container {
     padding-top: 30px;
   }
-}
-
-.dashboard-widget > div {
-  height: 190px;
-  border: 1px solid #b6b6b6;
-  overflow: hidden;
-  .border-radius(5px);
-  .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
+  .quick-launchpad-widget > div {
+    height: @widgetHeight;
+    border: 1px solid #b6b6b6;
+    overflow: hidden;
+    .border-radius(5px);
+    .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
+  }
+  .quick-launchpad-widget {
+    padding-bottom: 20px;
+    .clearfix {
+      background-color: lighten(@color-light_grey, 4%);
+    }
+    .image-wrap {
+      background: #fff;
+      display: block;
+      width: 40%;
+      .fullHeight();
+      .widget-image {
+        display: block;
+        width: @imageWidth;
+        height: @imageHeight;
+        background: url("../images/pim-icon.png") no-repeat;
+        cursor: default;
+        margin: 0 auto;
+        &.extract-image {
+          background-position: 0 (@imageHeight*0);
+        }
+        &.extract-image:hover {
+          background-position: (@imageWidth*-1) (@imageHeight*0);
+        }
+        &.enrich-image {
+          background-position: 0 (@imageHeight*-1);
+        }
+        &.enrich-image:hover {
+          background-position: (@imageWidth*-1) (@imageHeight*-1);
+        }
+        &.spread-image {
+          background-position: 0 (@imageHeight*-2);
+        }
+        &.spread-image:hover {
+          background-position: (@imageWidth*-1) (@imageHeight*-2);
+        }
+        &.configure-image {
+          background-position: 0 (@imageHeight*-3);
+        }
+        &.configure-image:hover {
+          background-position: (@imageWidth*-1) (@imageHeight*-3);
+        }
+      }
+      p {
+        padding: 35px 0 10px;
+        font-size: 17px;
+        color: #555555;
+      }
+    }
+    .list-wrap {
+      border-left: 1px solid darken(@color-light_grey, 5%);
+      width: 60%;
+      margin-left: -1px;
+      .fullHeight();
+      ul {
+        margin: 5px 0;
+        li > a {
+          border-bottom: 1px solid darken(@color-light_grey, 5%);
+          font-size:14px;
+        }
+        li.last > a {
+          border: none;
+        }
+      }
+    }
+  }
 }
 
 /** jstree ***********************************************************************************************************/
@@ -149,16 +195,16 @@ a.back-link i {
   }
 
   li.jstree-open > a:not(.jstree-loading) .jstree-icon {
-    background:url("jstree/folder_standard_opened.png") 0px 0px no-repeat;
+    background:url("jstree/folder_standard_opened.png") 0 0 no-repeat;
   }
   li.jstree-closed > a:not(.jstree-loading) .jstree-icon {
-    background:url("jstree/folder_standard_closed.png") 0px 0px no-repeat;
+    background:url("jstree/folder_standard_closed.png") 0 0 no-repeat;
   }
   li.jstree-leaf > a:not(.jstree-loading) .jstree-icon {
-    background:url("jstree/folder_leaf.png") 0px 0px no-repeat;
+    background:url("jstree/folder_leaf.png") 0 0 no-repeat;
   }
   li.jstree-unclassified > a:not(.jstree-loading) .jstree-icon {
-    background:url("jstree/folder_unclassified.png") 0px 0px no-repeat;
+    background:url("jstree/folder_unclassified.png") 0 0 no-repeat;
   }
 }
 

@@ -21,7 +21,7 @@ class FlatFamilyNormalizer extends FamilyNormalizer
     /**
      * @var array
      */
-    private $results;
+    protected $results;
 
     /**
      * Normalize the label

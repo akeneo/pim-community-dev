@@ -36,11 +36,10 @@ class AppKernel extends Kernel
             new Bazinga\ExposeTranslationBundle\BazingaExposeTranslationBundle(),
             new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
             new Genemu\Bundle\FormBundle\GenemuFormBundle(),
-            // new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
+            new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
 
             // PIM deps
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
-
 
             // BAP bundles
             new Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),

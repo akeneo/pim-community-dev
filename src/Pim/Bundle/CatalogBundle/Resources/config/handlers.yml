@@ -13,12 +13,11 @@ services:
     pim_catalog.form.handler.attribute:
         class: %pim_catalog.form.handler.product_attribute.class%
         scope: request
-        arguments: 
+        arguments:
             - @pim_catalog.form.attribute
             - @request
             - @doctrine.orm.entity_manager
             - @pim_catalog.manager.attribute_type
-            - @pim_versioning.manager.pending
 
     pim_catalog.form.handler.attribute_group:
         class: %pim_catalog.form.handler.attribute_group.class%
@@ -27,7 +26,6 @@ services:
             - @pim_catalog.form.attribute_group
             - @request
             - @doctrine.orm.entity_manager
-            - @pim_versioning.manager.pending
 
     pim_catalog.form.handler.channel:
         class: %pim_catalog.form.handler.channel.class%

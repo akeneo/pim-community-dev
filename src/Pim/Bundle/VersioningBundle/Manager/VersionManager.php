@@ -4,9 +4,6 @@ namespace Pim\Bundle\VersioningBundle\Manager;
 
 use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\DataAuditBundle\Entity\Audit;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 
 /**
@@ -39,25 +36,7 @@ class VersionManager
     }
 
     /**
-     * Build a version from a versionable entity
-     *
-     * @param VersionableInterface $versionable
-     *
-     * @return \Pim\Bundle\VersioningBundle\Entity\Version
-     */
-    public function buildVersion(VersionableInterface $versionable, User $user)
-    {
-        $resourceName = get_class($versionable);
-        $resourceId   = $versionable->getId();
-        $numVersion   = $versionable->getVersion();
-        // TODO: we don't use direct json serialize due to convert to audit data based on array_diff
-        $data         = $this->serializer->normalize($versionable, 'csv');
-
-        return new Version($resourceName, $resourceId, $numVersion, $data, $user);
-    }
-
-    /**
-     * @param EntityManager $em
+     * @param Version $version
      *
      * @return Version
      */

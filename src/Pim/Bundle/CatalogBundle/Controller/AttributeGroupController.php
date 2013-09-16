@@ -20,7 +20,6 @@ use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
-use Pim\Bundle\VersioningBundle\Manager\PendingManager;
 
 /**
  * AttributeGroup controller
@@ -51,17 +50,12 @@ class AttributeGroupController extends AbstractDoctrineController
     /**
      * @var AttributeGroupHandler
      */
-    private $attributeGroupHandler;
+    private $formHandler;
 
     /**
      * @var Form
      */
-    private $attributeGroupForm;
-
-    /**
-     * @var PendingManager
-     */
-    private $pendingManager;
+    private $form;
 
     /**
      * constructor
@@ -75,9 +69,8 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param RegistryInterface        $doctrine
      * @param GridRenderer             $gridRenderer
      * @param DatagridWorkerInterface  $dataGridWorker
-     * @param AttributeGroupHandler    $attributeGroupHandler
-     * @param Form                     $attributeGroupForm
-     * @param PendingManager           $pendingManager
+     * @param AttributeGroupHandler    $formHandler
+     * @param Form                     $form
      */
     public function __construct(
         Request $request,
@@ -89,17 +82,15 @@ class AttributeGroupController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $dataGridWorker,
-        AttributeGroupHandler $attributeGroupHandler,
-        Form $attributeGroupForm,
-        PendingManager $pendingManager
+        AttributeGroupHandler $formHandler,
+        Form $form
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
 
-        $this->gridRenderer          = $gridRenderer;
-        $this->dataGridWorker        = $dataGridWorker;
-        $this->attributeGroupHandler = $attributeGroupHandler;
-        $this->attributeGroupForm    = $attributeGroupForm;
-        $this->pendingManager        = $pendingManager;
+        $this->gridRenderer   = $gridRenderer;
+        $this->dataGridWorker = $dataGridWorker;
+        $this->formHandler    = $formHandler;
+        $this->form           = $form;
     }
     /**
      * Create attribute group
@@ -118,7 +109,7 @@ class AttributeGroupController extends AbstractDoctrineController
         $group = new AttributeGroup();
         $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToNameOrderedBySortOrder();
 
-        if ($this->attributeGroupHandler->process($group)) {
+        if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'Attribute group successfully created');
 
             return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
@@ -127,7 +118,7 @@ class AttributeGroupController extends AbstractDoctrineController
         return array(
             'groups'         => $groups,
             'group'          => $group,
-            'form'           => $this->attributeGroupForm->createView(),
+            'form'           => $this->form->createView(),
             'attributesForm' => $this->getAvailableProductAttributesForm($this->getGroupedAttributes())->createView(),
         );
     }
@@ -161,7 +152,7 @@ class AttributeGroupController extends AbstractDoctrineController
             return $this->gridRenderer->renderResultsJsonResponse($datagridView);
         }
 
-        if ($this->attributeGroupHandler->process($group)) {
+        if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'Attribute group successfully saved');
 
             return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
@@ -170,7 +161,7 @@ class AttributeGroupController extends AbstractDoctrineController
         return array(
             'groups'         => $groups,
             'group'          => $group,
-            'form'           => $this->attributeGroupForm->createView(),
+            'form'           => $this->form->createView(),
             'attributesForm' => $this->getAvailableProductAttributesForm($this->getGroupedAttributes())->createView(),
             'datagrid'       => $datagridView,
         );
@@ -180,6 +171,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * Edit AttributeGroup sort order
      *
      * @param Request $request
+     *
      * @Acl(
      *      id="pim_catalog_attribute_group_sort",
      *      name="Sort groups",
@@ -217,6 +209,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @param Request        $request
      * @param AttributeGroup $group
+     *
      * @Acl(
      *      id="pim_catalog_attribute_group_remove",
      *      name="Remove group",
@@ -266,6 +259,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @param Request $request The request object
      * @param integer $id      The group id to add attributes to
+     *
      * @Acl(
      *      id="pim_catalog_attribute_group_add_attribute",
      *      name="Add attribute to group",
@@ -294,10 +288,6 @@ class AttributeGroupController extends AbstractDoctrineController
 
         $this->addFlash('success', 'Attribute successfully added to the group');
 
-        if ($pending = $this->pendingManager->getPendingVersion($group)) {
-            $this->pendingManager->createVersionAndAudit($pending);
-        }
-
         return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
     }
 
@@ -306,6 +296,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @param integer $groupId
      * @param integer $attributeId
+     *
      * @Acl(
      *      id="pim_catalog_attribute_group_remove_attribute",
      *      name="Remove attribute from a group",
@@ -327,10 +318,6 @@ class AttributeGroupController extends AbstractDoctrineController
 
         $group->removeAttribute($attribute);
         $this->getManager()->flush();
-
-        if ($pending = $this->pendingManager->getPendingVersion($group)) {
-            $this->pendingManager->createVersionAndAudit($pending);
-        }
 
         $this->addFlash('success', 'Attribute successfully removed from the group');
 

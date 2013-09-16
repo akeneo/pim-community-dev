@@ -35,7 +35,6 @@ services:
             - @pim_catalog.datagrid.worker
             - @pim_catalog.form.handler.attribute_group
             - @pim_catalog.form.attribute_group
-            - @pim_versioning.manager.pending
 
     pim_catalog.controller.category_tree:
         scope: request
@@ -46,7 +45,6 @@ services:
             - @pim_catalog.datagrid.worker
             - @pim_catalog.manager.category
             - @pim_catalog.form.type.category
-            - @pim_versioning.manager.pending
 
     pim_catalog.controller.channel:
         scope: request
@@ -73,7 +71,6 @@ services:
             - @pim_catalog.datagrid.worker
             - @pim_catalog.manager.channel
             - @pim_catalog.manager.product
-            - @pim_versioning.manager.pending
 
     pim_catalog.controller.locale:
         scope: request
@@ -111,7 +108,6 @@ services:
             - @pim_catalog.manager.product
             - @pim_catalog.manager.category
             - @pim_catalog.manager.locale
-            - @pim_versioning.manager.pending
             - @pim_versioning.manager.audit
             - @oro_user.acl_manager
 
@@ -121,3 +117,4 @@ services:
         parent: pim_catalog.controller.abstract
         arguments:
             - @pim_catalog.mass_edit_action.operator
+            - @translator

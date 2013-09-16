@@ -84,11 +84,14 @@
 
         $content.addClass('content').css({
             'height': '100%',
-            'overflow-y': 'auto',
             'margin-left': '0',
+            'overflow-y': 'auto',
             'position': 'absolute',
             'left': sidebarWidth + opts.separatorWidth
         });
+
+        // Disable the oro scrollable container
+        $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
 
         var $controls = $('<div>', {
             'class': 'sidebar-controls',
@@ -203,8 +206,8 @@
         separatorWidth: 9,
         collapsedSeparatorWidth: 22,
         controlsHeight: 25,
-        collapseIcon: 'icon-chevron-left',
-        expandIcon: 'icon-chevron-right',
+        collapseIcon: 'icon-double-angle-left',
+        expandIcon: 'icon-double-angle-right',
         resizeCursor: 'e-resize',
         controlsCss: {
             'border': '1px solid #ddd',
@@ -222,11 +225,12 @@
         },
         iconCss: {
             'font-weight': 'bold',
-            'font-size': 14,
+            'font-size': 16,
+            'color': '#999',
             'line-height': '20px',
             'float': 'right',
             'margin': '0',
-            'padding': '3px 6px 0',
+            'padding': '1px 6px 0',
             'cursor': 'pointer'
         },
         buttonsCss: {

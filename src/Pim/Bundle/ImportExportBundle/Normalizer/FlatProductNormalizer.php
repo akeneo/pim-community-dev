@@ -28,7 +28,7 @@ class FlatProductNormalizer implements NormalizerInterface
     /**
      * @var array
      */
-    private $results;
+    protected $results;
 
     /**
      * Transforms an object into a flat array
@@ -77,7 +77,7 @@ class FlatProductNormalizer implements NormalizerInterface
      *
      * @param mixed $value
      */
-    private function normalizeValue($value)
+    protected function normalizeValue($value)
     {
         $suffix = '';
         if ($value->getAttribute()->getTranslatable()) {
@@ -102,6 +102,7 @@ class FlatProductNormalizer implements NormalizerInterface
         }
 
         $this->results[$value->getAttribute()->getCode().$suffix] = (string) $data;
+
     }
 
     /**
@@ -109,7 +110,7 @@ class FlatProductNormalizer implements NormalizerInterface
      *
      * @param Family $family
      */
-    private function normalizeFamily(Family $family = null)
+    protected function normalizeFamily(Family $family = null)
     {
         $this->results['family'] = $family ? $family->getCode() : '';
     }
@@ -119,7 +120,7 @@ class FlatProductNormalizer implements NormalizerInterface
      *
      * @param string $categories
      */
-    private function normalizeCategories($categories = '')
+    protected function normalizeCategories($categories = '')
     {
         $this->results['categories'] = $categories;
     }

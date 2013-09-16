@@ -506,7 +506,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'pCompleteness',
                 'WITH',
                 'pCompleteness.locale = :locale AND pCompleteness.channel = :channel'
-
             );
 
         $channelCode = $this->flexibleManager->getScope();
@@ -523,7 +522,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
         $proxyQuery->setParameter('localeCode', $localeCode);
         $proxyQuery->setParameter('locale', $locale);
-        $proxyQuery->setParameter('channelCode', $channelCode);
         $proxyQuery->setParameter('channel', $channel);
 
         // prepare query for categories
