@@ -51,6 +51,7 @@ class MassEditActionController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param MassEditActionOperator   $batchOperator
+     * @param TranslatorInterface      $translator
      */
     public function __construct(
         Request $request,
@@ -69,6 +70,8 @@ class MassEditActionController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     *
      * @Template
      * @Acl(
      *      id="pim_catalog_mass_edit_choose",
@@ -76,6 +79,7 @@ class MassEditActionController extends AbstractController
      *      description="Choose action",
      *      parent="pim_catalog_mass_edit"
      * )
+     * @return template|RedirectResponse
      */
     public function chooseAction(Request $request)
     {
@@ -108,12 +112,15 @@ class MassEditActionController extends AbstractController
     /**
      * @param Request $request
      * @param string  $operationAlias
+     *
      * @Acl(
      *      id="pim_catalog_mass_edit_configure",
      *      name="Configure action",
      *      description="Configure action",
      *      parent="pim_catalog_mass_edit"
      * )
+     * @throws NotFoundHttpException
+     * @return template|RedirectResponse
      */
     public function configureAction(Request $request, $operationAlias)
     {
@@ -148,15 +155,17 @@ class MassEditActionController extends AbstractController
     }
 
     /**
-     *
      * @param Request $request
-     * @param alis    $operationAlias
+     * @param string  $operationAlias
+     *
      * @Acl(
      *      id="pim_catalog_mass_edit_perform",
      *      name="Perform action",
      *      description="Perform action",
      *      parent="pim_catalog_mass_edit"
      * )
+     * @throws NotFoundHttpException
+     * @return template|RedirectResponse
      */
     public function performAction(Request $request, $operationAlias)
     {
