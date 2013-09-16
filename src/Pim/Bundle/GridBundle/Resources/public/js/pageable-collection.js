@@ -17,7 +17,7 @@ define(
                  * @param {int} categoryId
                  */
                 setCategory: function(treeId, categoryId) {
-                    this.state.treeId = treeId;
+                    this.state.treeId = (categoryId === '') ? '' : treeId;
                     this.state.categoryId = categoryId;
                     var treePattern = /(&treeId=(\d+))/,
                         nodePattern = /(&categoryId=(\d+))/,
