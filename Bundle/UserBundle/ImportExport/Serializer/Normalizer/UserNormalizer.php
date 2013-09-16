@@ -2,33 +2,23 @@
 
 namespace Oro\Bundle\UserBundle\ImportExport\Serializer\Normalizer;
 
-use Symfony\Component\Serializer\Exception\RuntimeException;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
+use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\AbstractContextModeAwareNormalizer;
 use Oro\Bundle\UserBundle\Entity\User;
 
-class UserNormalizer implements NormalizerInterface, DenormalizerInterface
+class UserNormalizer extends AbstractContextModeAwareNormalizer
 {
     const FULL_MODE  = 'full';
     const SHORT_MODE = 'short';
     const USER_TYPE  = 'Oro\Bundle\UserBundle\Entity\User';
 
-    private static $modes = array(self::FULL_MODE, self::SHORT_MODE);
-
-    /**
-     * @param User $object
-     * @param mixed $format
-     * @param array $context
-     * @return array
-     */
-    public function normalize($object, $format = null, array $context = array())
+    public function __construct()
     {
-        $method = 'normalize' . ucfirst($this->getMode($context));
-        return $this->$method($object, $format, $context);
+        parent::__construct(array(self::FULL_MODE, self::SHORT_MODE));
     }
 
     /**
+     * Short mode normalization
+     *
      * @param User $object
      * @param mixed $format
      * @param array $context
@@ -42,25 +32,9 @@ class UserNormalizer implements NormalizerInterface, DenormalizerInterface
         );
     }
 
-    protected function normalizeFull($object, $format = null, array $context = array())
-    {
-        throw new RuntimeException('Full normalization is not implemented.');
-    }
-
     /**
-     * @param mixed $data
-     * @param string $class
-     * @param mixed $format
-     * @param array $context
-     * @return User
-     */
-    public function denormalize($data, $class, $format = null, array $context = array())
-    {
-        $method = 'denormalize' . ucfirst($this->getMode($context));
-        return $this->$method($data, $class, $format, $context);
-    }
-
-    /**
+     * Short mode denormalization
+     *
      * @param mixed $data
      * @param string $class
      * @param mixed $format
@@ -79,11 +53,6 @@ class UserNormalizer implements NormalizerInterface, DenormalizerInterface
         return $result;
     }
 
-    protected function denormalizeFull($object, $format = null, array $context = array())
-    {
-        throw new RuntimeException('Full denormalization is not implemented.');
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -98,19 +67,5 @@ class UserNormalizer implements NormalizerInterface, DenormalizerInterface
     public function supportsDenormalization($data, $type, $format = null)
     {
         return is_array($data) && $type == static::USER_TYPE;
-    }
-
-    /**
-     * @param array $context
-     * @return string
-     * @throws RuntimeException
-     */
-    protected function getMode(array $context)
-    {
-        $mode = isset($context['mode']) ? $context['mode'] : self::FULL_MODE;
-        if (!in_array($mode, self::$modes)) {
-            throw new RuntimeException(sprintf('Mode "%s" is not supported', $mode));
-        }
-        return $mode;
     }
 }

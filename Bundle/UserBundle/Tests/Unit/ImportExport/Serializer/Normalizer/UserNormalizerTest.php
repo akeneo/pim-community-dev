@@ -35,22 +35,22 @@ class UserNormalizerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider normalizeScalarFieldsDataProvider
      */
-    public function testNormalizeScalarFields(User $contact, array $expectedData, array $context)
+    public function testNormalizeScalarFields(User $user, array $expectedData, array $context)
     {
         $this->assertEquals(
             $expectedData,
-            $this->normalizer->normalize($contact, null, $context)
+            $this->normalizer->normalize($user, null, $context)
         );
     }
 
     /**
      * @dataProvider normalizeScalarFieldsDataProvider
      */
-    public function testDenormalizeScalarFields(User $expectedUser, array $data, array $context)
+    public function testDenormalizeScalarFields(User $expectedObject, array $data, array $context)
     {
         $actualUser = $this->normalizer->denormalize($data, self::USER_TYPE, null, $context);
-        $actualUser->setSalt($expectedUser->getSalt());
-        $this->assertEquals($expectedUser, $actualUser);
+        $actualUser->setSalt($expectedObject->getSalt());
+        $this->assertEquals($expectedObject, $actualUser);
     }
 
     public function normalizeScalarFieldsDataProvider()
@@ -80,6 +80,26 @@ class UserNormalizerTest extends \PHPUnit_Framework_TestCase
                 )
             ),
         );
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Serializer\Exception\RuntimeException
+     * @expectedExceptionMessage Normalization with mode "full" is not supported
+     */
+    public function testNormalizeFullMode()
+    {
+        $object = $this->createUser();
+        $this->normalizer->normalize($object, null);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Serializer\Exception\RuntimeException
+     * @expectedExceptionMessage Denormalization with mode "full" is not supported
+     */
+    public function testDeormalizeFullMode()
+    {
+        $data = array();
+        $this->normalizer->denormalize($data, self::USER_TYPE, null);
     }
 
     /**
