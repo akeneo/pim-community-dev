@@ -112,7 +112,8 @@ class UserType extends FlexibleType
             ->add(
                 'tags',
                 'oro_tag_select'
-            );
+            )
+            ->add('imapConfiguration', 'oro_imap_configuration');
     }
 
     /**
