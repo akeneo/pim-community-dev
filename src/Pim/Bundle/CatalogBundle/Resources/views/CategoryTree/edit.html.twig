@@ -4,11 +4,11 @@
     {{ parent() }}
     <script type="text/javascript">
         require(
-            ['jquery', 'pim/tree/manage', 'oro/navigation', 'jquery.sidebarize'],
+            ['jquery', 'pim/tree/manage', 'oro/navigation', 'jquery.sidebarize', 'bootstrap.tooltip'],
             function($, TreeManage, Navigation){
                 'use strict';
                 $(function() {
-                    var createBtn = $('<button>', { id: 'tree-create' }).html(
+                    var createBtn = $('<button>', { id: 'tree-create', 'data-toggle': 'tooltip', 'data-placement': 'right', 'data-original-title': '{{ "Create a new tree"|trans }}' }).html(
                         $('<i>', { 'class': 'icon-plus-sign' })
                     ).on('click', function() {
                         Navigation.getInstance().setLocation('{{ path("pim_catalog_categorytree_create") }}');
@@ -17,6 +17,7 @@
                     // Instantiate sidebar
                     $('#category-tree-container').sidebarize({ buttons: [ createBtn ] });
                     new TreeManage('#tree');
+                    $('[data-toggle="tooltip"]').tooltip();
                 });
             }
         );
