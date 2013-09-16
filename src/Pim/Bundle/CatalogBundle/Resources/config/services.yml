@@ -77,8 +77,6 @@ services:
     # Locale helper
     pim_catalog.helper.locale:
         class: Pim\Bundle\CatalogBundle\Helper\LocaleHelper
-        arguments:
-            - @pim_catalog.manager.locale
 
     # twig extension
     pim_catalog.twig.product_extension:
@@ -92,6 +90,7 @@ services:
     pim_catalog.twig.locale_extension:
         class: Pim\Bundle\CatalogBundle\Twig\LocaleExtension
         arguments:
+            - @pim_catalog.manager.locale
             - @pim_catalog.helper.locale
         tags:
             - { name: twig.extension }
@@ -123,13 +122,13 @@ services:
             - @pim_catalog.manager.product
             - @doctrine.orm.entity_manager
 
-    # Batch operation operator
+    # Mass edit action operator
     pim_catalog.mass_edit_action.operator:
         class: %pim_catalog.mass_edit_action.operator.class%
         arguments:
             - @pim_catalog.manager.product
 
-    # Batch operations
+    # Mass edit actions
     pim_catalog.mass_edit_action.change_status:
         public: false
         class: %pim_catalog.mass_edit_action.change_status.class%

@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'oro/navigation', 'jquery.select2'],
+    ['jquery', 'oro/navigation', 'jquery-ui', 'jquery.select2', 'bootstrap.tooltip'],
     function ($, Navigation) {
         'use strict';
 
@@ -59,11 +59,18 @@ define(
                     modal: true,
                     resizable: false,
                     width: width,
-                    buttons: formButtons
+                    buttons: formButtons,
+                    open: function () {
+                        $(this).parent().keypress(function (e) {
+                            if (e.keyCode === $.ui.keyCode.ENTER) {
+                                $(this).find('button.btn-primary:eq(0)').click();
+                            }
+                        });
+                    }
                 });
 
-                $(formId + ' select').select2({ allowClear: true });
-                $(formId + ' .validation-tooltip').tooltip();
+                $(formId).find('select').select2({ allowClear: true });
+                $(formId).find('[data-toggle="tooltip"]').tooltip();
             }
 
             function isJSON(str) {

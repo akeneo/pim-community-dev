@@ -21,10 +21,21 @@ a:focus {
 }
 
 /* Grids */
-.grid th a {color: #666666; }
-.table-hover tbody tr:hover > td {background-color: @color-purple_hover; }
-table.grid { margin-bottom: 20px; }
-.grid-container { overflow: visible; }
+.grid th a {
+  color: #666666;
+}
+.table-hover tbody tr:hover > td {
+  background-color: @color-purple_hover;
+}
+table.grid {
+  margin-bottom: 20px;
+  thead th>a>span.caret {
+    border-color: transparent;
+  }
+}
+.grid-container {
+  overflow: visible;
+}
 .filter-box select.filter-select-oro {
   height: 25px;
   line-height: 25px;

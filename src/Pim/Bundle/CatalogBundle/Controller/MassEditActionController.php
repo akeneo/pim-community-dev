@@ -8,10 +8,11 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditActionOperatorType;
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -29,7 +30,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  *      parent="pim_catalog"
  * )
  */
-class MassEditActionController extends AbstractController
+class MassEditActionController extends AbstractDoctrineController
 {
     /**
      * @var MassEditActionOperator
@@ -50,6 +51,7 @@ class MassEditActionController extends AbstractController
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param RegistryInterface        $doctrine
      * @param MassEditActionOperator   $batchOperator
      * @param TranslatorInterface      $translator
      */
@@ -60,10 +62,11 @@ class MassEditActionController extends AbstractController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        RegistryInterface $doctrine,
         MassEditActionOperator $batchOperator,
         TranslatorInterface $translator
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator);
+        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
 
         $this->batchOperator = $batchOperator;
         $this->translator    = $translator;
@@ -229,7 +232,10 @@ class MassEditActionController extends AbstractController
      */
     private function getProductIds(Request $request)
     {
-        if ($values = $request->query->get('values')) {
+        $inset = $request->query->get('inset');
+        if ($inset === '0') {
+            return $this->getManager()->getRepository('PimCatalogBundle:Product')->getAllIds();
+        } elseif ($values = $request->query->get('values')) {
             return explode(',', $values);
         } else {
             return $request->query->get('products');

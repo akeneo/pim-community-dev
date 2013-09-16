@@ -24,76 +24,9 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $localeHelper = $this->createLocaleHelper();
-        $this->localeExtension = new LocaleExtension($localeHelper);
-    }
-
-    /**
-     * Create locale helper
-     *
-     * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
-     */
-    protected function createLocaleHelper()
-    {
-        $localeManager = $this->createLocaleManager();
-        $localeHelper = new LocaleHelper($localeManager);
-
-        return $localeHelper;
-    }
-
-    /**
-     * Create locale manager
-     *
-     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
-     */
-    protected function createLocaleManager()
-    {
-        $localeManager = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
-            ->disableOriginalConstructor()
-            ->getMock(array('getUserLocaleCode'));
-
-        $localeManager
-            ->expects($this->any())
-            ->method('getUserLocaleCode')
-            ->will($this->returnValue('fr_FR'));
-
-        return $localeManager;
-    }
-
-    /**
-     * Data provider for localized label
-     *
-     * @static
-     *
-     * @return array
-     */
-    public static function dataProviderForLocalizedLabel()
-    {
-        return array(
-            'FR' => array(
-                array(
-                    'en_US' => 'anglais (États-Unis)',
-                    'en_EN' => 'anglais',
-                    'fr_FR' => 'français'
-                )
-            )
-        );
-    }
-
-    /**
-     * Test related method
-     *
-     * @param array $expectedResults
-     *
-     * @dataProvider dataProviderForLocalizedLabel
-     */
-    public function testLocalizedLabel($expectedResults)
-    {
-        foreach ($expectedResults as $code => $expectedResult) {
-            $result = $this->localeExtension->localizedLabel($code);
-            $this->assertEquals($expectedResult, $result);
-        }
+        $localeHelper          = $this->getLocaleHelperMock();
+        $localeManager         = $this->getLocaleManagerMock('fr_FR');
+        $this->localeExtension = new LocaleExtension($localeManager, $localeHelper);
     }
 
     /**
@@ -104,35 +37,48 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('pim_locale_extension', $this->localeExtension->getName());
     }
 
-    /**
-     * Data provider with expected functions
-     *
-     * @static
-     *
-     * @return array
-     */
-    public static function dataProviderForExpectedFunctions()
+    public function testLocalizedLabel()
     {
-        return array(
-            array('localizedLabel')
-        );
+        $this->assertEquals('fr_FR', $this->localeExtension->localizedLabel('fr_FR'));
     }
 
-    /**
-     * Test related method
-     *
-     * @param string $expectedFunctions
-     *
-     * @dataProvider dataProviderForExpectedFunctions
-     */
-    public function testGetFunctions($expectedFunctions)
+    public function testGetFunctions()
     {
         $twigFunctions = $this->localeExtension->getFunctions();
 
-        foreach ($twigFunctions as $name => $twigFunction) {
-            $this->assertEquals($expectedFunctions, $name);
-            $this->assertTrue(method_exists($this->localeExtension, $name));
-            $this->assertInstanceOf('\Twig_Function_Method', $twigFunction);
-        }
+        $this->assertArrayHasKey('localizedLabel', $twigFunctions);
+        $this->assertTrue(method_exists($this->localeExtension, 'localizedLabel'));
+        $this->assertInstanceOf('\Twig_Function_Method', $twigFunctions['localizedLabel']);
+    }
+
+    protected function getLocaleHelperMock()
+    {
+        $helper = $this->getMock('Pim\Bundle\CatalogBundle\Helper\LocaleHelper');
+
+        $helper->expects($this->any())
+            ->method('getLocalizedLabel')
+            ->will($this->returnArgument(0));
+
+        return $helper;
+    }
+
+    /**
+     * Create locale manager
+     *
+     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
+     */
+    protected function getLocaleManagerMock($code)
+    {
+        $localeManager = $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $localeManager
+            ->expects($this->any())
+            ->method('getUserLocaleCode')
+            ->will($this->returnValue($code));
+
+        return $localeManager;
     }
 }
