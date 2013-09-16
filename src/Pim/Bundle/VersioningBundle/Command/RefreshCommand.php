@@ -108,6 +108,6 @@ class RefreshCommand extends ContainerAwareCommand
      */
     protected function getEntityManager()
     {
-        return $this->getContainer()->get('doctrine')->getEntityManager();
+        return $this->getContainer()->get('doctrine')->getManager();
     }
 }
