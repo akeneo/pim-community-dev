@@ -79,18 +79,14 @@
                             placeholder: opts.placeholder
                         });
 
-                    var $menu = $('.ui-multiselect-menu.pimmultiselect');
+                    var $menu = $('.ui-multiselect-menu.pimmultiselect').appendTo('#container');
                     var saveButton = '{{ 'Select'|trans }}';
 
                     var footerContainer = $('<div>').addClass('ui-multiselect-footer').appendTo($menu);
                     var $saveButton = $('<a>').addClass('btn btn-small').html(saveButton).on('click', function () {
                         $el.multiselect('close');
-                        if ($el.val() !== null) {
-                            {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) %}
-                            $('#{{ form.vars.id }}')
-                                .attr('action', '{{ action|raw }}')
-                                .submit();
-                        }
+                        {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) %}
+                        $('#{{ form.vars.id }}').attr('action', '{{ action|raw }}').submit();
                     }).appendTo(footerContainer);
 
                     var $openButton = $('button.pimmultiselect').addClass('btn btn-group');

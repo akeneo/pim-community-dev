@@ -44,13 +44,16 @@
 
     {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) %}
     <script type="text/javascript">
-        $(function() {
-            'use strict';
-            $('select.operation-param').change(function (event) {
-                $('#{{ form.vars.id }}')
-                    .attr('action', '{{ action|raw }}')
-                    .submit();
-            });
-        });
+        require(
+            ['jquery'],
+            function ($) {
+                'use strict';
+                $(function () {
+                    $('select.operation-param').change(function () {
+                        $('#{{ form.vars.id }}').attr('action', '{{ action|raw }}').submit();
+                    });
+                });
+            }
+        );
     </script>
 {% endblock %}
