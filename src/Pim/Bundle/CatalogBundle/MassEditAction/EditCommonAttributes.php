@@ -176,9 +176,8 @@ class EditCommonAttributes extends AbstractMassEditAction
     {
         foreach ($products as $product) {
             $this->setProductValues($product);
+            $this->productManager->save($product);
         }
-
-        $this->productManager->getStorageManager()->flush();
     }
 
     /**

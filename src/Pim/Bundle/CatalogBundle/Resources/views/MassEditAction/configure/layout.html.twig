@@ -7,7 +7,7 @@
 
     {{ parent() }}
 
-    <form id="{{ form.vars.id }}" action="{{ path('pim_catalog_mass_edit_action_perform', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) }}" method="POST" class="form-horizontal">
+    <form id="{{ form.vars.id }}" action="{{ path('pim_catalog_mass_edit_action_perform', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) }}" method="POST" class="form-horizontal" {{ form_enctype(form) }}>
 
         <div class="row">
             <div class="offset1 span12">
@@ -21,12 +21,16 @@
 
         <div class="row buffer-top">
             <div class="offset1 span12 mass-edit-form">
-            {% block formContent %}
-                {{ form_widget(form) }}
+                <div class="errors">
+                    {{ form_errors(form) }}
+                </div>
+                {{ JSFV(form) }}
+                {% block formContent %}
+                    {{ form_widget(form) }}
 
-                <a href="{{ path('pim_catalog_mass_edit_action_choose', {'products': productIds}) }}" class="btn">Cancel</a>
-                <input type="submit" value="Next" class="btn btn-primary">
-            {% endblock %}
+                    <a href="{{ path('pim_catalog_mass_edit_action_choose', {'products': productIds}) }}" class="btn">Cancel</a>
+                    <input type="submit" value="Next" class="btn btn-primary">
+                {% endblock %}
             </div>
         </div>
 
