@@ -1,27 +1,27 @@
 .wizard li {
-  display: inline-block;
   position: relative;
-  list-style: none;
+  display: inline-block;
+  width: 250px;
   padding-top: 10px;
   padding-bottom: 30px;
-  text-align: center;
-  width: 250px;
   font-weight: bold;
+  text-align: center;
+  list-style: none;
 
   .progress-start, .progress-end {
     position: absolute;
-    background-color: @color-light_grey;
-    height: 3px;
     bottom: 0;
     width: 50%;
+    height: 3px;
+    background-color: @color-light_grey;
   }
 
   .dot {
     position: absolute;
-    color: @color-purple_light;
     bottom: -6px;
     left: 119px;
     line-height: 0;
+    color: @color-purple_light;
     .icon-circle {
       margin: 0;
       font-size: 14px;
@@ -29,7 +29,7 @@
   }
 }
 
-.wizard li .progress-start {
+.progress-start {
   left: 0;
 
   &.active {
@@ -37,7 +37,7 @@
   }
 }
 
-.wizard li .progress-end {
+.progress-end {
   right: 0;
 
   &.active {
@@ -46,8 +46,8 @@
 }
 
 .wizard-header {
-  background-color: lighten(@color-light_grey, 4%);
   padding: 25px 0;
   margin-bottom: 25px;
+  background-color: lighten(@color-light_grey, 4%);
   .box-shadow(inset 0 3px 5px #cccccc);
 }
