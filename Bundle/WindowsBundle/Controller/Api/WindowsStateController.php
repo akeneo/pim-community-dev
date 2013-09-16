@@ -64,8 +64,8 @@ class WindowsStateController extends FOSRestController
      *
      * @Acl(
      *     id="oro_windows_state_api_rest_post",
-     *     name="Post windows state",
-     *     description="Post windows state",
+     *     name="Create windows state",
+     *     description="Create windows state item",
      *     parent="oro_windows_state_api_rest"
      * )
      */
@@ -104,8 +104,8 @@ class WindowsStateController extends FOSRestController
      *
      * @Acl(
      *     id="oro_windows_state_api_rest_put",
-     *     name="Put windows state",
-     *     description="Put windows state",
+     *     name="Update windows state",
+     *     description="Update windows state item",
      *     parent="oro_windows_state_api_rest"
      * )
      */
@@ -144,8 +144,8 @@ class WindowsStateController extends FOSRestController
      *
      * @Acl(
      *     id="oro_windows_state_api_rest_delete",
-     *     name="Delete windows state",
-     *     description="Delete windows state",
+     *     name="Delete windows state item",
+     *     description="Delete windows state item",
      *     parent="oro_windows_state_api_rest"
      * )
      */
