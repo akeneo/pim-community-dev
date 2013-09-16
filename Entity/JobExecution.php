@@ -39,7 +39,7 @@ class JobExecution
      * @var JobInstance
      *
      * @ORM\ManyToOne(targetEntity="JobInstance", inversedBy="jobExecutions")
-     * @ORM\JoinColumn(name="job_instance_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="job_instance_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $jobInstance;
 
