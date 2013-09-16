@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Writer;
 
-use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 
 /**
  * Dummy step, can be use to do nothing until you'll have concret implementation

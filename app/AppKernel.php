@@ -36,11 +36,10 @@ class AppKernel extends Kernel
             new Bazinga\ExposeTranslationBundle\BazingaExposeTranslationBundle(),
             new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
             new Genemu\Bundle\FormBundle\GenemuFormBundle(),
-            // new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
+            new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
 
             // PIM deps
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
-
 
             // BAP bundles
             new Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),
@@ -70,6 +69,7 @@ class AppKernel extends Kernel
             new Oro\Bundle\EntityExtendBundle\OroEntityExtendBundle(),
             new Oro\Bundle\ImapBundle\OroImapBundle(),
             new Oro\Bundle\CronBundle\OroCronBundle(),
+            new Oro\Bundle\BatchBundle\OroBatchBundle(),
 
             // BAP overrided bundles
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
@@ -85,7 +85,6 @@ class AppKernel extends Kernel
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
             new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
-            new Pim\Bundle\BatchBundle\PimBatchBundle(),
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
             new Pim\Bundle\DemoBundle\PimDemoBundle(),
             new Pim\Bundle\VersioningBundle\PimVersioningBundle,

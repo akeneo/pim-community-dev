@@ -113,7 +113,7 @@
         return this.each(function() {
             var el = this;
             if (!$(el).hasClass('currencyfield')) {
-                $(el).addClass('currencyfield');
+                $(el).addClass('currencyfield control-group');
                 showTitle(el);
             }
 

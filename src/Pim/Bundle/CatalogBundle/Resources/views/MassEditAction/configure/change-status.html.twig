@@ -1,1 +1,6 @@
 {% extends 'PimCatalogBundle:MassEditAction:configure/layout.html.twig' %}
+
+{% block formContent %}
+    {{ form_row(form.operation.enable) }}
+    {{ form_widget(form._token) }}
+{% endblock %}

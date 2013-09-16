@@ -7,7 +7,7 @@ form.form-signin {
     padding: 0;
     #gradient .vertical(@color-header_top, @color-header_bottom);
     h1.oro-title {
-      padding: 0px;
+      padding: 0;
       img {
         vertical-align: top;
       }
@@ -57,6 +57,9 @@ form.form-signin {
 
 // Form navbar
 #form-navbar li {
+  a:hover {
+    border-bottom: 3px solid @textColor + #999;
+  }
   &.active a, a {
     color: @textColor;
     background-color: transparent;
@@ -105,11 +108,19 @@ a.select2-choice {
 }
 
 .btn-primary {
-  .buttonBackground(@btnPrimaryBackgroundLight, @btnPrimaryBackground);
-  &:focus,
-  &:active {
-    background-image: none;
-    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+  .box-shadow(inset 0 1px 0 0 lighten(@btnPrimaryBackgroundLight, 7%));
+  #gradient > .vertical(@btnPrimaryBackgroundLight, darken(@btnPrimaryBackgroundLight, 5%));
+  border-color: darken(@btnPrimaryBackgroundLight, 7%) darken(@btnPrimaryBackgroundLight, 10%) darken(@btnPrimaryBackgroundLight, 10%) darken(@btnPrimaryBackgroundLight, 10%);
+  text-shadow: 0 1px 0 darken(@btnPrimaryBackgroundLight, 16%);
+  filter: dropshadow(color=darken(@btnPrimaryBackgroundLight, 42%), offx=1, offy=1);
+  &:hover {
+    #gradient > .vertical(lighten(@btnPrimaryBackgroundLight, 5%), darken(@btnPrimaryBackgroundLight, 4%));
+    .box-shadow(inset 0 1px 0 0 @btnPrimaryBackgroundLight);
+  }
+  &:active,
+  &:focus {
+    #gradient > .vertical(lighten(@btnPrimaryBackgroundLight, 5%), darken(@btnPrimaryBackgroundLight, 10%));
+    .box-shadow(inset 0 1px 4px 0 darken(@btnPrimaryBackgroundLight, 10%));
   }
 }
 
@@ -138,6 +149,9 @@ a.return {
 a.accordion-toggle {
   text-decoration: none;
   color: @textColor;
+  &:hover {
+    color: @textColor;
+  }
 }
 
 .accordion-group {
@@ -149,6 +163,9 @@ a.accordion-toggle {
 
 .form-horizontal .control-group {
   margin-bottom: 20px;
+  label.control-label:after {
+    content: '';
+  }
 }
 
 .controls .switch label{
@@ -167,7 +184,8 @@ span.handle, td.handle {
       border-bottom: 1px solid #dfdfdf;
       background-color: #f3f3f3;
       th {
-        line-height: 6px;
+        line-height: 20px;
+        font-size: 12px;
         &.channel {
             text-align: center;
         }
@@ -207,6 +225,7 @@ th label {
 
 /* bootstrapSwitch */
 .has-switch {
+  margin-right: 3px;
   span {
     font-size: 12px;
     font-weight: bold;
@@ -217,7 +236,7 @@ th label {
   }
   &>div.switch-off,
   &>div.switch-on {
-    height: auto;
+    height: 26px;
   }
 }
 div.btn-group > .has-switch {
@@ -226,6 +245,9 @@ div.btn-group > .has-switch {
 
 .select2-container.input-large {
   width: 250px;
+}
+.select2-container-multi.select2-container-active .select2-choices {
+  border: none;
 }
 
 #attribute-buttons {
@@ -248,6 +270,7 @@ div.btn-group > .has-switch {
   border-radius: 10px;
   color: @textColor + #333;
   cursor: pointer;
+  float: left;
   &.empty {
     margin: 0;
     border-style: dashed;
@@ -303,20 +326,22 @@ div.btn-group > .has-switch {
     border-top-right-radius: 10px;
     line-height: 100px;
     font-size: 26px;
-    width: 30px;
+    width: 45px;
   }
-}
-
-input[type="file"] {
-  display: block;
-  z-index: 99;
-  position: relative;
-  top: -100px;
-  width: 100%!important;
-  height: 100%;
-  border-radius: 20px;
-  cursor: pointer;
-  opacity: 0;
+  input[type="file"] {
+    display: block;
+    z-index: 99;
+    position: relative;
+    top: -100px;
+    width: 100%!important;
+    height: 100%;
+    border-radius: 20px;
+    cursor: pointer;
+    opacity: 0;
+    &.hide {
+      display: none;
+    }
+  }
 }
 
 /* Collapsable sidebar **********************************************************************************************/
@@ -332,18 +357,22 @@ input[type="file"] {
     background-color: #f7f7f7;
     i {
       cursor: pointer;
+      color: @textColor;
     }
-    button {
+    a, button {
       background-color: #f3f3f3;
-      display:block;
-      float:left;
-      border: 0px;
+      display: block;
+      float: left;
+      border: 0;
       border-right: 1px solid #d3d3d3;
-      color:#000;
-      text-decoration:none;
+      color: #000;
+      text-decoration: none;
+      width: 30px;
+      text-align: center;
+      font-size: 13px;
     }
     .btn-group .dropdown-toggle {
-      border-radius: 0px;
+      border-radius: 0;
       .caret {
         vertical-align: middle;
       }
@@ -401,24 +430,30 @@ div.ui-dialog {
   }
   .ui-widget-content {
     border: 1px solid #c3c3c3;
+    border-width: 1px 0;
   }
   .ui-dialog-titlebar {
     #gradient .vertical(@color-dialogHeader_top, @color-dialogHeader_bottom);
+    border: none;
+    margin: 0;
     .ui-dialog-title {
       font-weight: bold;
     }
   }
-  .ui-dialog-titlebar-buttonpane .ui-dialog-titlebar-close {
-    .buttonBackground(@color-dialogHeader_top, @color-dialogHeader_bottom);
-    .icon-close-white();
-    .border-radius(3px);
-    border: @border-purple;
-    top: 5px;
-    right: 6px;
-    height: 22px;
-    width: 22px;
-    span.ui-button-text {
-      font-size: 0px;
+  .ui-dialog-titlebar-buttonpane {
+    border: none;
+    .ui-dialog-titlebar-close {
+      .buttonBackground(@color-dialogHeader_top, @color-dialogHeader_bottom);
+      .border-radius(3px);
+      border: @border-purple;
+      top: 5px;
+      right: 6px;
+      height: 22px;
+      width: 22px;
+      font-family: FontAwesome!important; // Override ORO !important
+      span.ui-button-text {
+        font-size: 0;
+      }
     }
   }
   form {
@@ -448,6 +483,20 @@ div.ui-dialog {
   color: #fff;
 }
 
+#pim_catalog_product_create {
+  label {
+    text-align: left;
+    width: 200px;
+  }
+  .select2-search-field, .select2-container {
+      width: 314px!important;
+      min-width: 314px!important;
+  }
+  input {
+    width: 300px;
+  }
+}
+
 /* Attribute Form ***************************************************************************************************/
 
 #sortable_options {
@@ -469,12 +518,16 @@ table.ui-sortable, tbody.ui-sortable {
   }
 }
 
+table i {
+  color: @textColor;
+}
+
 /* Product edit form - common */
 
-.product-edit {
+.classify, .product-edit {
   .nav-list {
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 0;
+    padding-right: 0;
     > .active > a {
       font-weight: bold;
       color: #000000;
@@ -494,15 +547,15 @@ table.ui-sortable, tbody.ui-sortable {
   }
   .tab-content {
     border-left: 1px solid #BBBBBB;
-    .tab-pane h3 {
-      background-color: @color-grey_tab;
-      border-bottom: 1px solid #e5e5e5;
-      margin-top: 0;
-      padding-left: 20px;
-    }
-    .modal-header h3 {
-      background-color: @color-purple_light;
-    }
+  }
+  .tab-pane h3 {
+    background-color: @color-grey_tab;
+    border-bottom: 1px solid #e5e5e5;
+    margin-top: 0;
+    padding-left: 20px;
+  }
+  .modal-header h3 {
+    background-color: @color-purple_light;
   }
 }
 
@@ -539,8 +592,9 @@ table.ui-sortable, tbody.ui-sortable {
     width: 288px;
   }
   .input-prepend .control-label {
-    padding-right: 10px;
-    border-right-width: 0px;
+    padding-right: 8px;
+    line-height: 20px;
+    border-right-width: 0;
   }
 }
 
@@ -557,7 +611,7 @@ table.ui-sortable, tbody.ui-sortable {
         border-top-right-radius: 3px;
       }
       &:first-child {
-        margin-left: 20px;
+        margin-left: 10px;
       }
     }
     &:last-of-type .controls {
@@ -577,12 +631,12 @@ table.ui-sortable, tbody.ui-sortable {
     }
   }
   label.control-label.add-on {
-    border-right-width: 0px;
+    border-right-width: 0;
     font-weight: normal;
     background-color: #fbfbfb;
     padding-right: 10px;
     padding-top: 4px;
-    width: 100px;
+    width: 135px;
     margin-bottom: 0;
     border-radius: 0;
     float: left;
@@ -603,6 +657,17 @@ table.ui-sortable, tbody.ui-sortable {
   }
   .control-group {
     margin: 0;
+    &>.controls.input-prepend {
+      position: relative;
+      .control-label.add-on {
+        position: absolute;
+        height: 100%;
+      }
+      .scopable-input {
+        position: relative;
+        left: 135px;
+      }
+    }
   }
   textarea.input-large {
     width: 523px;
@@ -700,9 +765,13 @@ form .currency {
   &>.control-group .control-group>.controls .control-group {
     .controls {
       margin: 0;
+      .control-label {
+        height: 29px;
+      }
     }
     &:first-of-type {
       .control-label {
+        height: 30px;
         background-color: @backgroundColor-white;
         font-weight: bold;
         border-top-left-radius: 3px;
@@ -801,41 +870,45 @@ div.dropdown-menu.channel {
 #locale-switcher {
   span.dropdown-toggle {
     color: @textColor;
-    margin-top: 2px;
     margin-bottom: 0;
-    padding: 3px 6px;
+    padding: 5px 6px 3px 6px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-shadow: none;
     cursor: pointer;
-    .caret {
-      margin-top: 6px;
+    > i {
+      vertical-align: middle;
+      font-size: 14px;
     }
   }
   .dropdown-menu {
     padding: 0;
-    li.activeLocale>a {
-        padding-left: 0px;
-    }
     li>a {
-      padding: 5px 5px 5px 23px;
+      padding: 5px;
       color: @textColor;
       &:hover, &:active, &:focus {
-        background-color: #f1f1f1;
-        background-image: none;
+        background: #f1f1f1;
+      }
+      span.icon {
+        width: 25px;
+        min-height: 1px;
       }
       span.code {
-          color: @textColor + #444;
-          float: left;
-          text-align: right;
-          width: 70px;
+        color: @textColor + #444;
       }
       span.title {
-          font-weight: bold;
-          margin: 0 10px;
-          font-size: 12px;
+        float: none;
+        font-weight: bold;
+        margin: 0 10px;
+        font-size: 12px;
       }
     }
+  }
+  code.flag-language {
+    color: @textColor;
+    border: none;
+    background-color: transparent;
+    padding: 4px;
   }
 }
 
@@ -852,9 +925,17 @@ div.entity-updated {
 
 /* Product edit form - categories tab */
 
-#categories .nav-list li a i { min-width: 19px; display: inline-block; margin-left: 3px; margin-right: 2px; }
-i.icon-tick { background: url("../../pimcatalog/images/tick.png") 0px 0px no-repeat !important;}
-i.icon-tick-off { background: url("../../pimcatalog/images/tick-off.png") 0px 0px no-repeat !important;}
+.classify .nav-list li a i,
+#categories .nav-list li a i {
+  font-size: 16px;
+  padding-right: 5px;
+  &.gray {
+    color: #ddd;
+  }
+  &.green {
+    color: #58BB00;
+  }
+}
 
 /* Import upload file form */
 
@@ -880,7 +961,8 @@ form.form-upload {
 
 /* Pim multiselect styles */
 button.pimmultiselect {
-  height: 32px;
+  height: 30px;
+  line-height: 30px;
   padding: 0 10px;
   color: @textColor;
   &:hover {

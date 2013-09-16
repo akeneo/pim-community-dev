@@ -11,7 +11,6 @@ define(
             var self         = this,
                 currentTree  = -1,
                 id           = $el.attr('data-id'),
-                assetsPath   = $el.attr('data-assets-path'),
                 selectedTree = $el.attr('data-selected-tree'),
                 dataLocale   = $el.attr('data-datalocale');
 
@@ -37,9 +36,7 @@ define(
                 },
                 'themes': {
                     'dots': true,
-                    'icons': true,
-                    'themes': 'bap',
-                    'url': assetsPath + 'css/style.css'
+                    'icons': true
                 },
                 'json_data': {
                     'ajax': {
@@ -67,6 +64,10 @@ define(
                             }
 
                             return data;
+                        },
+                        complete: function () {
+                            // Disable the root checkbox
+                            $('.jstree-root>input.jstree-real-checkbox').attr('disabled', 'disabled');
                         }
                     }
                 },

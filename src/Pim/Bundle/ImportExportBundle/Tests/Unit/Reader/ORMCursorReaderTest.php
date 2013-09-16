@@ -13,7 +13,7 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testInstanceOfItemReaderInterface()
     {
-        $this->assertInstanceOf('Pim\Bundle\BatchBundle\Item\ItemReaderInterface', new ORMCursorReader);
+        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\ItemReaderInterface', new ORMCursorReader);
     }
 
     public function testRead()
@@ -68,7 +68,7 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
     private function getStepExecutionMock()
     {
         return $this
-            ->getMockBuilder('Pim\Bundle\BatchBundle\Entity\StepExecution')
+            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
     }

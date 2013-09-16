@@ -891,6 +891,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSelectRole($role)
     {
+        $this->wait(10000, null);
         $this->getPage('User creation')->selectRole($role);
     }
 
@@ -1061,6 +1062,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iDisableTheProducts()
     {
         $this->getPage('Batch ChangeStatus')->disableProducts()->next();
+        $this->wait();
     }
 
     /**
@@ -1077,8 +1079,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iEnableTheProducts()
     {
         $this->getPage('Batch ChangeStatus')->enableProducts()->next();
+        $this->wait();
     }
-
 
     /**
      * @param string $sku
@@ -1087,7 +1089,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function productShouldBeDisabled($sku)
     {
-        if ($this->getProduct($sku)->isEnabled()) {
+        $product = $this->getProduct($sku);
+        $this->getMainContext()->getEntityManager()->refresh($product);
+        if ($product->isEnabled()) {
             throw $this->createExpectationException('Product was expected to be be disabled');
         }
     }
@@ -1099,7 +1103,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function productShouldBeEnabled($sku)
     {
-        if (!$this->getProduct($sku)->isEnabled()) {
+        $product = $this->getProduct($sku);
+        $this->getMainContext()->getEntityManager()->refresh($product);
+        if (!$product->isEnabled()) {
             throw $this->createExpectationException('Product was expected to be be enabled');
         }
     }
@@ -1647,29 +1653,25 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $products
+     *
      * @When /^I mass-edit products (.*)$/
      */
     public function iMassEditProducts($products)
     {
-        $that = $this;
-        $products = preg_replace(
-            '/]\d+=/',
-            ']=',
-            http_build_query(
-                array_map(
-                    function ($product) use ($that) {
-                        return $that->getProduct($product)->getId();
-                    },
-                    $this->listToArray($products)
-                ),
-                'products[]'
-            )
-        );
+        $page = $this->getPage('Product index');
 
-        $this->openPage('Batch Operation', array('products' => $products));
+        foreach ($this->listToArray($products) as $product) {
+            $page->selectRow($product);
+        }
+
+        $page->massEdit();
+        $this->wait();
     }
 
     /**
+     * @param string $operation
+     *
      * @Given /^I choose the "([^"]*)" operation$/
      */
     public function iChooseTheOperation($operation)
@@ -1680,6 +1682,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ->next();
 
         $this->wait();
+    }
+
+    /**
+     * @param string $text
+     *
+     * @Then /^I should see a tooltip "([^"]*)"$/
+     */
+    public function iShouldSeeATooltip($text)
+    {
+        if (!$this->getCurrentPage()->findTooltip($text)) {
+            throw $this->createExpectationException(sprintf('No tooltip containing "%s" were found.', $text));
+        }
     }
 
     /**

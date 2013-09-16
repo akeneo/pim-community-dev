@@ -150,7 +150,7 @@ stof_doctrine_extensions:
 
 services:
     oro.cache.abstract:
-        abstract: true
+        abstract:  true
         class:     Doctrine\Common\Cache\PhpFileCache
         arguments: [%kernel.cache_dir%]
     twig.extension.intl:

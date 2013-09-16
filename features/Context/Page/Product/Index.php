@@ -137,4 +137,9 @@ class Index extends Grid
 
         $elt->selectOption($code);
     }
+
+    public function massEdit()
+    {
+        $this->pressButton('Mass Edition');
+    }
 }

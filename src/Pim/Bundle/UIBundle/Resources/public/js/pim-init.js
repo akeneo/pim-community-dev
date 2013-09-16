@@ -1,24 +1,11 @@
 require(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'pim/dialog', 'pim/initselect2', 'bootstrap',
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'pim/dialog', 'pim/initselect2', 'bootstrap.tooltip',
         'jquery-ui', 'bootstrap.bootstrapswitch', 'bootstrap.tooltip', 'jquery.slimbox'],
     function ($, __, mediator, Navigation, Dialog, initSelect2) {
         'use strict';
 
         function init() {
             // Place code that we need to run on every page load here
-
-            // Disable the oro scrollable container
-            $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
-
-            // Move scope filter to the proper location and remove it from the 'Manage filters' selector
-            // TODO: Override Oro/Bundle/FilterBundle/Resources/public/js/app/filter/list.js and manage this there
-            mediator.once('datagrid_filters:rendered', function () {
-                $('.scope-filter').parent().addClass('pull-right').insertBefore($('.actions-panel'));
-                $('.scope-filter').find('select').multiselect({classes: 'select-filter-widget scope-filter-select'});
-
-                $('#add-filter-select').find('option[value="scope"]').remove();
-                $('#add-filter-select').multiselect('refresh');
-            });
 
             $('.remove-attribute').each(function () {
                 var target = $(this).parent().find('.icons-container').first();
@@ -35,9 +22,6 @@ require(
 
             // Initialize tooltip
             $('[data-toggle="tooltip"]').tooltip();
-
-            // Destroy Select2 where it's not necessary
-            $('#default_channel').select2('destroy');
 
             // Activate a form tab
             $('li.tab.active a').each(function () {
@@ -62,9 +46,6 @@ require(
                 e.preventDefault();
                 mediator.trigger('scopablefield:' + $(this).data('action'));
             });
-
-            // Clean up multiselect plugin generated content that is appended to body
-            $('body>.ui-multiselect-menu').appendTo($('#container'));
 
             // Save and restore activated form tabs and groups
             function saveFormState() {
@@ -147,7 +128,7 @@ require(
                     $zone.removeClass('empty');
                     $preview.removeClass('empty');
                     $removeBtn.removeClass('hide');
-                    $input.attr('disabled', 'disabled').addClass('hide');
+                    $input.addClass('hide');
                     $removeCheckbox.removeAttr('checked');
                 } else {
                     $filename.html($filename.attr('data-empty-title'));
@@ -157,14 +138,6 @@ require(
                     $input.removeAttr('disabled').removeClass('hide');
                     $removeCheckbox.attr('checked', 'checked');
                 }
-            });
-
-            $('.remove-upload').on('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                var $input = $(this).siblings('input[type="file"]').first();
-                $input.wrap('<form>').closest('form').get(0).reset();
-                $input.unwrap().trigger('change');
             });
 
             $('[data-form-toggle]').on('click', function () {
@@ -180,6 +153,14 @@ require(
 
             $(document).on('uniformInit', function () {
                 $.uniform.restore();
+            });
+
+            $(document).on('click', '.remove-upload', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $input = $(this).siblings('input[type="file"]').first();
+                $input.wrap('<form>').closest('form').get(0).reset();
+                $input.unwrap().trigger('change');
             });
 
             $(document).on('mouseover', '.upload-zone:not(.empty)', function() {

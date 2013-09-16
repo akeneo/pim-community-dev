@@ -28,7 +28,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     /**
      * @var array
      */
-    private $results;
+    protected $results;
 
     /**
      * Indicates whether this normalizer can normalize the given data

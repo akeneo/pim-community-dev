@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'jquery.actual'],
+    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'bootstrap', 'jquery.select2'],
     function ($, Backbone, _, mediator) {
         'use strict';
 
@@ -18,13 +18,13 @@ define(
                 '<%= field.hiddenInput %>' +
                 '<div class="control-group">' +
                     '<div class="controls input-prepend">' +
-                        '<label class="control-label add-on" for="<%= field.id %>" style="height: <%= field.height - 10 %>px;">' +
+                        '<label class="control-label add-on" for="<%= field.id %>">' +
                             '<span class="field-toggle">' +
                                 '<i class="icon-caret-down"></i>' +
                             '</span>' +
                             '<%= field.scope %>' +
                         '</label>' +
-                        '<div class="scopable-input" style="display: inline-block; height: <%= field.height %>px;">' +
+                        '<div class="scopable-input">' +
                             '<%= field.input %>' +
                             '<div class="icons-container">' +
                                 '<%= field.icons %>' +
@@ -40,15 +40,36 @@ define(
                 if (this.$el.find('.upload-zone').length) {
                     field.id = null;
                     field.input = this.$el.find('.upload-zone').get(0).outerHTML;
+                } else if (this.$el.find('.switch').length) {
+                    field.id = null;
+
+                    var $original = this.$el.find('.switch'),
+                        $wrap = $original.clone().empty().removeClass('has-switch'),
+                        $input = $original.find('input');
+                    $input.appendTo($wrap);
+
+                    field.input = $wrap.get(0).outerHTML;
                 } else if (this.$el.find('.control-label')) {
                     field.id = this.$el.find('.control-label').attr('for');
-                    field.input = $('#' + field.id).get(0).outerHTML;
+
+                    var $field = $('#' + field.id);
+
+                    if ($field.hasClass('select2-input') || $field.hasClass('select2-focusser')) {
+                        var id = $field.closest('.select2-container').attr('id');
+                        if (/^s2id_.+/.test(id)) {
+                            id = id.slice(5);
+                            field.id = id;
+                            $field = $('#' + id);
+                        }
+                        $field.select2('destroy');
+                    }
+
+                    field.input = $field.get(0).outerHTML;
                 }
 
                 field.scope       = this.$el.data('scope');
                 field.hiddenInput = this.$el.find('input[type="hidden"]').get(0).outerHTML;
                 field.icons       = this.$el.find('.icons-container').html();
-                field.height      = this.$el.actual('height');
 
                 this.field = field;
             },
@@ -64,6 +85,8 @@ define(
                     );
 
                     this.$el.find('[data-toggle="tooltip"]').tooltip();
+                    this.$el.find('.switch').bootstrapSwitch();
+                    this.$el.find('select').select2();
                 }
 
                 return this;
@@ -111,11 +134,12 @@ define(
                     this._expand();
                 }, this);
 
+                var self = this;
                 this.$el.closest('form').on('validate', function () {
-                    if (this.$el.find('.validation-tooltip:hidden').length) {
-                        this._expand();
+                    if (self.$el.find('.validation-tooltip:hidden').length) {
+                        self._expand();
                     }
-                }, this);
+                });
             },
 
             render: function () {

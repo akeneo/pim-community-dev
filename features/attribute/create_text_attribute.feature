@@ -8,11 +8,9 @@ Feature: Create an attribute
     And I am on the attribute creation page
     And I select the attribute type "Text"
 
-  @javascript
   Scenario: Sucessfully create and validate a text attribute
     Given I fill in the following information:
      | Code | short_description |
-    And I visit the "Values" tab
     And I save the attribute
     Then I should see "Attribute successfully created"
 
@@ -30,7 +28,7 @@ Feature: Create an attribute
     And I save the attribute
     Then I should see validation error "This regular expression is not valid."
 
-  @javascript @info Codes 'treeId', 'categoryId', 'scope', 'enabled' and 'family' can't be used because there are grid filters with these codes
+  @info Codes 'treeId', 'categoryId', 'scope', 'enabled' and 'family' can't be used because there are grid filters with these codes
   Scenario Outline: Fail to create a text attribute with a code that is a reserved word
     Given I change the Code to "<invalid code>"
     And I save the attribute

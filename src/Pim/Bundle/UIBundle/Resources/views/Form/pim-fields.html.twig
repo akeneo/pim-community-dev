@@ -47,6 +47,25 @@
     {% endspaceless %}
 {% endblock form_info %}
 
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            {% if form.parent %}
+                {% set combinedError = '' %}
+                {% for error in errors %}
+                    {% set error = error.messagePluralization is null
+                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators') %}
+                    {% set combinedError = (combinedError != '') ? combinedError ~ '; ' ~ error : error %}
+                {% endfor %}
+                <i class="validation-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="{{ combinedError }}"></i>
+            {% else %}
+                {{ parent() }}
+            {% endif %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
 {% block pim_wysiwyg_widget %}
     {{ block('textarea_widget') }}
 {% endblock pim_wysiwyg_widget %}
@@ -205,13 +224,13 @@
 {% endspaceless %}
 {% endblock pim_catalog_price_widget %}
 
-{% block pim_batch_step_element_configuration_widget %}
+{% block oro_batch_step_element_configuration_widget %}
     {% for child in form %}
         {{ form_row(child) }}
     {% else %}
         {{ 'No configuration'|trans }}
     {% endfor %}
-{% endblock pim_batch_step_element_configuration_widget %}
+{% endblock oro_batch_step_element_configuration_widget %}
 
 {% block pim_attribute_requirement_widget %}
     <div class="attribute-requirement" data-required-title="{{ 'Required'|trans }}" data-not-required-title="{{ 'Not required'|trans }}">

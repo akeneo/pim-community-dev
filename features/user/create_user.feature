@@ -1,4 +1,3 @@
-@javascript
 Feature: Create a user
   In order to manage the users and rights
   As Peter
@@ -19,6 +18,6 @@ Feature: Create a user
     And I select the status "Inactive"
     And I select the role "Role_user"
     When I save the user
-    Then I should see "Doe, Jack"
+    Then I should see "Jack"
+    And I should see "Doe"
     And I should see "User successfully saved"
-

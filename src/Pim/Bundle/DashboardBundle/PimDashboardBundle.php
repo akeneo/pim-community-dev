@@ -3,8 +3,6 @@
 namespace Pim\Bundle\DashboardBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 
 /**
  * Dashboard bundle

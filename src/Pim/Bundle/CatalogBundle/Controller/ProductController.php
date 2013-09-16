@@ -22,7 +22,6 @@ use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\VersioningBundle\Manager\PendingManager;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
@@ -79,7 +78,7 @@ class ProductController extends AbstractDoctrineController
     /**
      * @var CompletenessCalculator
      */
-    private $completenessCalculator;
+    private $calculator;
 
     /**
      * @var ProductManager
@@ -95,11 +94,6 @@ class ProductController extends AbstractDoctrineController
      * @var LocaleManager
      */
     private $localeManager;
-
-    /**
-     * @var PendingManager
-     */
-    private $pendingManager;
 
     /**
      * @var AuditManager
@@ -125,11 +119,10 @@ class ProductController extends AbstractDoctrineController
      * @param DatagridWorkerInterface  $datagridWorker
      * @param ProductCreateHandler     $productCreateHandler
      * @param Form                     $productCreateForm
-     * @param CompletenessCalculator   $completenessCalculator
+     * @param CompletenessCalculator   $calculator
      * @param ProductManager           $productManager
      * @param CategoryManager          $categoryManager
      * @param LocaleManager            $localeManager
-     * @param PendingManager           $pendingManager
      * @param AuditManager             $auditManager
      * @param AclManager               $aclManager
      */
@@ -145,27 +138,25 @@ class ProductController extends AbstractDoctrineController
         DatagridWorkerInterface $datagridWorker,
         ProductCreateHandler $productCreateHandler,
         Form $productCreateForm,
-        CompletenessCalculator $completenessCalculator,
+        CompletenessCalculator $calculator,
         ProductManager $productManager,
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
-        PendingManager $pendingManager,
         AuditManager $auditManager,
         AclManager $aclManager
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
 
-        $this->gridRenderer           = $gridRenderer;
-        $this->datagridWorker         = $datagridWorker;
-        $this->productCreateHandler   = $productCreateHandler;
-        $this->productCreateForm      = $productCreateForm;
-        $this->completenessCalculator = $completenessCalculator;
-        $this->productManager         = $productManager;
-        $this->categoryManager        = $categoryManager;
-        $this->localeManager          = $localeManager;
-        $this->pendingManager         = $pendingManager;
-        $this->auditManager           = $auditManager;
-        $this->aclManager             = $aclManager;
+        $this->gridRenderer         = $gridRenderer;
+        $this->datagridWorker       = $datagridWorker;
+        $this->productCreateHandler = $productCreateHandler;
+        $this->productCreateForm    = $productCreateForm;
+        $this->calculator           = $calculator;
+        $this->productManager       = $productManager;
+        $this->categoryManager      = $categoryManager;
+        $this->localeManager        = $localeManager;
+        $this->auditManager         = $auditManager;
+        $this->aclManager           = $aclManager;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -195,13 +186,17 @@ class ProductController extends AbstractDoctrineController
                 $view = 'OroGridBundle:Datagrid:list.json.php';
                 break;
             case 'csv':
-                $csv = $datagrid->exportData('csv', array('withHeader' => true, 'heterogeneous' => true));
+                $content = $datagrid->exportData(
+                    $request->getRequestFormat(),
+                    array('withHeader' => true, 'heterogeneous' => true)
+                );
                 $headers = array(
                     'Content-Type' => 'text/csv',
-                    'Content-Disposition' => 'inline; filename=quick_export_products.csv'
+                    'Content-Disposition' =>
+                        sprintf('inline; filename=quick_export_products.%s', $request->getRequestFormat())
                 );
 
-                return $this->returnResponse($csv, 200, $headers);
+                return $this->returnResponse($content, 200, $headers);
 
                 break;
             case 'html':
@@ -258,10 +253,6 @@ class ProductController extends AbstractDoctrineController
         $entity = $this->productManager->createFlexible(true);
 
         if ($this->productCreateHandler->process($entity)) {
-
-            if ($pending = $this->pendingManager->getPendingVersion($entity)) {
-                $this->pendingManager->createVersionAndAudit($pending);
-            }
 
             $this->addFlash('success', 'Product successfully saved.');
 
@@ -327,19 +318,17 @@ class ProductController extends AbstractDoctrineController
             $form->bind($request);
 
             if ($form->isValid()) {
-                // Call completeness calculator after validating data
-                $this->completenessCalculator->calculateForAProduct($product);
 
                 $categoriesData = $this->getCategoriesData($request->request->all());
                 $categories = $this->categoryManager->getCategoriesByIds($categoriesData['categories']);
 
                 $this->productManager->save($product, $categories, $categoriesData['trees']);
+                // Call completeness calculator after validating data and saving product
+                // so all values for all locale are loaded now
+                $this->calculator->calculateForAProduct($product);
+                $this->productManager->save($product);
 
                 $this->addFlash('success', 'Product successfully saved');
-
-                if ($pending = $this->pendingManager->getPendingVersion($product)) {
-                    $this->pendingManager->createVersionAndAudit($pending);
-                }
 
                 // TODO : Check if the locale exists and is activated
                 $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
@@ -357,8 +346,8 @@ class ProductController extends AbstractDoctrineController
             'attributesForm' => $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
             'product'        => $product,
             'trees'          => $trees,
-            'created'        => $this->auditManager->getFirstLogEntry($product),
-            'updated'        => $this->auditManager->getLastLogEntry($product),
+            'created'        => $this->auditManager->getOldestLogEntry($product),
+            'updated'        => $this->auditManager->getNewestLogEntry($product),
             'datagrid'       => $datagrid->createView(),
             'locales'        => $this->localeManager->getActiveLocales()
         );

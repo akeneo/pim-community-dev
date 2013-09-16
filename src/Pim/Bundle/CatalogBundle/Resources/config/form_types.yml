@@ -86,3 +86,10 @@ services:
         tags:
             - { name: form.type, alias: pim_catalog_locale }
 
+
+    pim_catalog.form.type.edit_common_attributes:
+        class: %pim_catalog.form.type.edit_common_attributes.class%
+        arguments:
+            - @pim_catalog.form.type.product.view
+        tags:
+            - { name: form.type, alias: pim_catalog_mass_edit_common_attributes }

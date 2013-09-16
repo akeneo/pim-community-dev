@@ -148,4 +148,16 @@ class Base extends Page
 
         $button->click();
     }
+
+    /**
+     * Find a validation tooltip containing a text
+     *
+     * @param string $text
+     *
+     * @return null|Element
+     */
+    public function findTooltip($text)
+    {
+        return $this->find('css', sprintf('.validation-tooltip[data-original-title="%s"]', $text));
+    }
 }

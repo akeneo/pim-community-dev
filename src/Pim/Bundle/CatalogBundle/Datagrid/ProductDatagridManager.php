@@ -8,6 +8,8 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\Ajax\DeleteMassAction;
+use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
+use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
@@ -19,7 +21,7 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
-use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
+use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
 
 /**
  * Grid manager
@@ -426,6 +428,42 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
+     * Get list of export actions
+     *
+     * @return \Pim\Bundle\GridBundle\Action\Export\ExportActionInterface[]
+     */
+    protected function getExportActions()
+    {
+        $exportCsv = new ExportCollectionAction(
+            array(
+                'acl_resource' => 'root',
+                'baseUrl' => $this->router->generate('pim_catalog_product_index', array('_format' => 'csv')),
+                'name' =>  'exportCsv',
+                'label' => $this->translate('Quick export'),
+                'icon'  => 'icon-download',
+                'keepParameters' => true
+            )
+        );
+
+        return array($exportCsv);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Add export actions
+     */
+    protected function configureDatagrid(DatagridInterface $datagrid)
+    {
+        parent::configureDatagrid($datagrid);
+
+        $exportActions = $this->getExportActions();
+        foreach ($exportActions as $exportAction) {
+            $this->datagridBuilder->addExportAction($datagrid, $exportAction);
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setFlexibleManager(FlexibleManager $flexibleManager)
@@ -454,13 +492,29 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias .'.family', 'family')
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
-            ->leftJoin('values.prices', 'valuePrices');
+            ->leftJoin('values.prices', 'valuePrices')
+            ->leftJoin(
+                $rootAlias .'.completenesses',
+                'pCompleteness',
+                'WITH',
+                'pCompleteness.locale = :locale AND pCompleteness.channel = :channel'
+            );
 
-        // prepare query for completeness
-        $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
+        $channelCode = $this->flexibleManager->getScope();
+        $channel = $this->flexibleManager
+            ->getStorageManager()
+            ->getRepository('PimCatalogBundle:Channel')
+            ->findBy(array('code' => $channelCode));
 
-        $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
-        $proxyQuery->setParameter('channelCode', $this->flexibleManager->getScope());
+        $localeCode = $this->flexibleManager->getLocale();
+        $locale = $this->flexibleManager
+            ->getStorageManager()
+            ->getRepository('PimCatalogBundle:Locale')
+            ->findBy(array('code' => $localeCode));
+
+        $proxyQuery->setParameter('localeCode', $localeCode);
+        $proxyQuery->setParameter('locale', $locale);
+        $proxyQuery->setParameter('channel', $channel);
 
         // prepare query for categories
         if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
@@ -478,26 +532,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 $proxyQuery->andWhere($expression);
             }
         }
-    }
-
-    /**
-     * Prepare query for completeness field
-     * @param ProxyQueryInterface $proxyQuery
-     * @param string              $rootAlias
-     */
-    protected function prepareQueryForCompleteness(ProxyQueryInterface $proxyQuery, $rootAlias)
-    {
-        $exprLocaleAndScope      = $proxyQuery->expr()->andX(
-            'locale.code = :localeCode',
-            'channel.code = :channelCode'
-        );
-        $exprWithoutCompleteness = $proxyQuery->expr()->isNull('pCompleteness');
-        $exprFamilyIsNull        = $proxyQuery->expr()->isNull($rootAlias .'.family');
-        $proxyQuery
-            ->leftJoin($rootAlias .'.completenesses', 'pCompleteness')
-            ->leftJoin('pCompleteness.locale', 'locale')
-            ->leftJoin('pCompleteness.channel', 'channel')
-            ->orWhere($exprLocaleAndScope, $exprWithoutCompleteness, $exprFamilyIsNull);
     }
 
     /**

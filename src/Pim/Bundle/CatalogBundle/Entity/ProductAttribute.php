@@ -193,13 +193,6 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     protected $defaultMetricUnit;
 
     /**
-     * @var string $allowedFileSources
-     *
-     * @ORM\Column(name="allowed_file_sources", type="string", length=255, nullable=true)
-     */
-    protected $allowedFileSources;
-
-    /**
      * @var integer $maxFileSize
      *
      * @ORM\Column(name="max_file_size", type="integer", nullable=true)
@@ -879,30 +872,6 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
     public function setDefaultMetricUnit($defaultMetricUnit)
     {
         $this->defaultMetricUnit = $defaultMetricUnit;
-
-        return $this;
-    }
-
-    /**
-     * Get allowedFileSources
-     *
-     * @return array $allowedFileSources
-     */
-    public function getAllowedFileSources()
-    {
-        return $this->allowedFileSources;
-    }
-
-    /**
-     * Set allowedFileSources
-     *
-     * @param array $allowedFileSources
-     *
-     * @return ProductAttribute
-     */
-    public function setAllowedFileSources($allowedFileSources)
-    {
-        $this->allowedFileSources = $allowedFileSources;
 
         return $this;
     }

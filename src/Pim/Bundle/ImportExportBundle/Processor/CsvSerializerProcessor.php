@@ -4,8 +4,8 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\SerializerInterface;
-use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
-use Pim\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 
 /**
  * An abstract processor to serialize data into csv
