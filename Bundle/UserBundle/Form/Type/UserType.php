@@ -49,7 +49,7 @@ class UserType extends FlexibleType
 
         $this->aclManager = null;
         $this->security   = $security;
-        $this->securityFacade = securityFacade;
+        $this->securityFacade = $securityFacade;
     }
 
     /**

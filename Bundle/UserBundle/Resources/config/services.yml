@@ -7,7 +7,6 @@ parameters:
     oro_user.entity.value.class:        Oro\Bundle\UserBundle\Entity\UserValue
     oro_user.group.entity.class:        Oro\Bundle\UserBundle\Entity\Group
     oro_user.role.entity.class:         Oro\Bundle\UserBundle\Entity\Role
-    oro_user.acl.entity.class:          Oro\Bundle\UserBundle\Entity\Acl
     oro_user.security.provider.class:   Oro\Bundle\UserBundle\Security\UserProvider
     oro_user.security.login.class:      Oro\Bundle\UserBundle\EventListener\LoginSubscriber
     oro_user.acl.twig.class:            Oro\Bundle\UserBundle\Twig\OroUserExtension
