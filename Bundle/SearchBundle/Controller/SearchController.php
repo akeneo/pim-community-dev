@@ -19,7 +19,7 @@ use Oro\Bundle\UserBundle\Annotation\Acl;
  *     id="oro_search",
  *     name="Search",
  *     description="Search",
- *     parent="oro_security"
+ *     parent="root"
  * )
  */
 class SearchController extends Controller
