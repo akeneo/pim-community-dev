@@ -1,6 +1,6 @@
 <div class="progress-cell">
 {% if product.getFamily is null %}
-    {{ 'Impossible to calculate' | trans }}
+    {{ 'Waiting for calculation' | trans }}
 {% elseif completeness is null %}
     {{ 'Not yet calculated' | trans }}
 {% else %}
@@ -19,7 +19,7 @@
     </div>
 
     {% if completeness.missingCount == 0 %}
-        <div class="center">{{ 'Completed' | trans }}</div>
+        <div class="center">{{ 'Complete' | trans }}</div>
     {% else %}
         {% set titleMissing = "Missing attributes :"|trans %}
         {% for attribute in completeness.missingAttributes %}
