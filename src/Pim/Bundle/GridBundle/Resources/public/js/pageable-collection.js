@@ -10,30 +10,43 @@ define(
     function(OroPageableCollection, app){
         var parent = OroPageableCollection.prototype,
             PageableCollection = OroPageableCollection.extend({
-        
+                /**
+                 * @inheritdoc
+                 */
+                state: _.extend(OroPageableCollection.prototype.state, {
+                    categoryId: '',
+                    treeId: ''
+                }),
                 /**
                  * Sets the category for the collection
+                 * 
                  * @param {int} treeId
                  * @param {int} categoryId
+                 * @return {boolean} true if the category was changed
                  */
                 setCategory: function(treeId, categoryId) {
-                    this.state.treeId = (categoryId === '') ? '' : treeId;
-                    this.state.categoryId = categoryId;
-                    var treePattern = /(&treeId=(\d+))/,
-                        nodePattern = /(&categoryId=(\d+))/,
-                        treeString = categoryId === '' ? '' : '&treeId=' + treeId,
-                        categoryString = categoryId === '' ? '' : '&categoryId=' + categoryId;
+                    treeId = (categoryId === '') ? '' : treeId;
+                    if (treeId !== this.state.treeId || categoryId !== this.state.categoryId) {
+                        this.state.categoryId = categoryId;
+                        var treePattern = /(&treeId=(\d+))/,
+                            nodePattern = /(&categoryId=(\d+))/,
+                            treeString = categoryId === '' ? '' : '&treeId=' + treeId,
+                            categoryString = categoryId === '' ? '' : '&categoryId=' + categoryId;
 
-                    if (this.url.match(treePattern)) {
-                        this.url = this.url.replace(treePattern, treeString);
-                    } else {
-                        this.url += treeString;
-                    }
+                        if (this.url.match(treePattern)) {
+                            this.url = this.url.replace(treePattern, treeString);
+                        } else {
+                            this.url += treeString;
+                        }
 
-                    if (this.url.match(nodePattern)) {
-                        this.url = this.url.replace(nodePattern, categoryString);
+                        if (this.url.match(nodePattern)) {
+                            this.url = this.url.replace(nodePattern, categoryString);
+                        } else {
+                            this.url += categoryString;
+                        }
+                        return true;
                     } else {
-                        this.url += categoryString;
+                        return false;
                     }
                 },
                 /**

@@ -68,8 +68,7 @@ define(
 
             function updateGrid(treeId, categoryId) {
                 var collection = Registry.getElement('datagrid', 'products').collection;
-                if (treeId !== collection.treeId || categoryId !== collection.categoryId) {
-                    collection.setCategory(treeId, categoryId);
+                if (collection.setCategory(treeId, categoryId)) {
                     $('.grid-toolbar .actions-panel .action.btn .icon-refresh').click();
                 }
             }
