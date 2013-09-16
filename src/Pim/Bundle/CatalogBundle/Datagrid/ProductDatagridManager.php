@@ -582,4 +582,19 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
         return $attributesList;
     }
+
+    public function prepareQueryForExport(ProxyQueryInterface $proxyQuery)
+    {
+        $proxyQuery->leftJoin('values.options', 'valueOptions');
+        $proxyQuery->leftJoin(sprintf('%s.categories', $proxyQuery->getRootAlias()), 'categories');
+
+        $proxyQuery->addSelect($proxyQuery->getRootAlias());
+        $proxyQuery->addSelect('values');
+        $proxyQuery->addSelect('valuePrices');
+        $proxyQuery->addSelect('valueOptions');
+        $proxyQuery->addSelect('categories');
+        $proxyQuery->addSelect('family');
+
+        echo count($proxyQuery->getDQLPart('select')) ."\n";
+    }
 }

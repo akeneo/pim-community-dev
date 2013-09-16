@@ -199,15 +199,7 @@ class ProductController extends AbstractDoctrineController
                 $view = 'OroGridBundle:Datagrid:list.json.php';
                 break;
             case 'csv':
-                // get attribute lists
-                $qb = $datagrid->getQuery();
-                $attributesList = $gridManager->getAttributeAvailableIds($qb);
-
-                // get values of all the defined attributes
-                if (!empty($attributesList)) {
-                    $exprIn = $qb->expr()->in('values.attribute', $attributesList);
-                    $qb->andWhere($exprIn);
-                }
+                ini_set('max_execution_time', 100);
 
                 // prepare serializer context
                 $context = array(
@@ -226,9 +218,23 @@ class ProductController extends AbstractDoctrineController
                 $response->headers->set('Content-Disposition', $attachment);
 
                 $response->setCallback(
-                    function () use ($datagrid, $context) {
+                    function () use ($gridManager, $context) {
+                        flush();
+
+                        $datagrid = $gridManager->getDatagrid();
+
+                        // get attribute lists
+//                         $qb = $datagrid->getQuery();
+//                         $attributesList = $gridManager->getAttributeAvailableIds($qb);
+
+                        // get values of all the defined attributes
+                        if (!empty($attributesList)) {
+                            $exprIn = $qb->expr()->in('values.attribute', $attributesList);
+                            $qb->andWhere($exprIn);
+                        }
+
                         // prepare serializer batching
-                        $limit = 250;
+                        $limit = 10;
                         $count = $datagrid->countResults();
                         $iterations = ceil($count/$limit);
 
@@ -240,6 +246,7 @@ class ProductController extends AbstractDoctrineController
                         }
                     }
                 );
+
                 return $response->send();
 
                 break;
