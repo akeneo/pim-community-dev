@@ -28,8 +28,9 @@ define(
                     treeId = (categoryId === '') ? '' : treeId;
                     if (treeId !== this.state.treeId || categoryId !== this.state.categoryId) {
                         this.state.categoryId = categoryId;
+                        this.state.treeId = treeId;
                         var treePattern = /(&treeId=(\d+))/,
-                            nodePattern = /(&categoryId=(\d+))/,
+                            categoryPattern = /(&categoryId=(\d+))/,
                             treeString = categoryId === '' ? '' : '&treeId=' + treeId,
                             categoryString = categoryId === '' ? '' : '&categoryId=' + categoryId;
 
@@ -39,8 +40,8 @@ define(
                             this.url += treeString;
                         }
 
-                        if (this.url.match(nodePattern)) {
-                            this.url = this.url.replace(nodePattern, categoryString);
+                        if (this.url.match(categoryPattern)) {
+                            this.url = this.url.replace(categoryPattern, categoryString);
                         } else {
                             this.url += categoryString;
                         }
