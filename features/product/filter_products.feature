@@ -45,9 +45,18 @@ Feature: Filter products
 
   Scenario: Successfully display filters
     Given I am on the products page
-    Then I should see the filters SKU, Name, Image, Description, Family and Enabled
+    Then I should see the filters SKU, Family and Enabled
+    And I should not see the filters Name, Image, Description
     And the grid should contain 2 elements
     And I should see products postit and book
+
+  Scenario: Successfully hide/show filters
+    Given I am on the products page
+    When I make visible the filter "Name"
+    And I make visible the filter "Description"
+    And I hide the filter "SKU"
+    Then I should see the filters Name, Description, Family and Enabled
+    And I should not see the filters Image, SKU
 
   Scenario: Successfully filter by SKU
     Given I am on the products page
@@ -58,10 +67,19 @@ Feature: Filter products
 
   Scenario: Successfully filter by Name
     Given I am on the products page
+    Then I make visible the filter "Name"
     When I filter by "Name" with value "post"
     Then the grid should contain 1 element
     And I should see products postit
     And I should not see products book
+
+  Scenario: Successfully filter by Description
+    Given I am on the products page
+    Then I make visible the filter "Description"
+    When I filter by "Description" with value "book"
+    Then the grid should contain 1 element
+    And I should see products book
+    And I should not see products postit
 
   Scenario: Successfully display enabled products
     Given I am on the products page

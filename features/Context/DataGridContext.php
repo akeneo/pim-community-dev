@@ -78,14 +78,57 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $filters
      *
-     * @Given /^I should see the filters? (.*)$/
+     * @Then /^I should see the filters? (.*)$/
      */
     public function iShouldSeeTheFilters($filters)
     {
         $filters = $this->getMainContext()->listToArray($filters);
         foreach ($filters as $filter) {
-            $this->datagrid->getFilter($filter);
+            $filterNode = $this->datagrid->getFilter($filter);
+            if (!$filterNode->isVisible()) {
+                $this->createExpectationException(
+                    sprintf('Filter "%s" should be visible', $filter)
+                );
+            }
         }
+    }
+
+    /**
+     * @param string $filters
+     *
+     * @Then /^I should not see the filters? (.*)$/
+     */
+    public function iShouldNotSeeTheFilters($filters)
+    {
+        $filters = $this->getMainContext()->listToArray($filters);
+        foreach ($filters as $filter) {
+            $filterNode = $this->datagrid->getFilter($filter);
+            if ($filterNode->isVisible()) {
+                $this->createExpectationException(
+                    sprintf('Filter "%s" should not be visible', $filter)
+                );
+            }
+        }
+    }
+
+    /**
+     * @param string $filterName
+     *
+     * @Then /^I make visible the filter "([^"]*)"$/
+     */
+    public function iMakeVisibleTheFilter($filterName)
+    {
+        $this->datagrid->showFilter($filterName);
+    }
+
+    /**
+     * @param string $filterName
+     *
+     * @Then /^I hide the filter "([^"]*)"$/
+     */
+    public function iHideTheFilter($filterName)
+    {
+        $this->datagrid->hideFilter($filterName);
     }
 
     /**
