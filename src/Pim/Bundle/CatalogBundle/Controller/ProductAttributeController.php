@@ -220,8 +220,8 @@ class ProductAttributeController extends AbstractDoctrineController
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
             'measures'        => $this->measuresConfig,
             'datagrid'        => $datagridView,
-            'created'         => $this->auditManager->getFirstLogEntry($attribute),
-            'updated'         => $this->auditManager->getLastLogEntry($attribute),
+            'created'         => $this->auditManager->getOldestLogEntry($attribute),
+            'updated'         => $this->auditManager->geNewestLogEntry($attribute),
         );
     }
 
