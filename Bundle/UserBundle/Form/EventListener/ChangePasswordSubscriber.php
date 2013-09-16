@@ -4,7 +4,6 @@ namespace Oro\Bundle\UserBundle\Form\EventListener;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -24,12 +23,10 @@ class ChangePasswordSubscriber implements EventSubscriberInterface
     protected $security;
 
     /**
-     * @param FormFactoryInterface     $factory    Factory to add new form children
      * @param AclManager               $aclManager ACL manager
      * @param SecurityContextInterface $security   Security context
      */
     public function __construct(
-        FormFactoryInterface $factory,
         AclManager $aclManager,
         SecurityContextInterface $security
     ) {
@@ -71,6 +68,7 @@ class ChangePasswordSubscriber implements EventSubscriberInterface
     {
         $token = $this->security->getToken();
         $currentUser = $token ? $token->getUser() : null;
+
         if ($user->getId() && is_object($currentUser)) {
             return $currentUser->getId() == $user->getId();
         }

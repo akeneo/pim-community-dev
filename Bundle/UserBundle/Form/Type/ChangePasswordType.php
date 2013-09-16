@@ -39,7 +39,7 @@ class ChangePasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addEventSubscriber(
-            new ChangePasswordSubscriber($builder->getFormFactory(), $this->aclManager, $this->security)
+            new ChangePasswordSubscriber($this->aclManager, $this->security)
         );
 
         $builder->add(
@@ -104,6 +104,7 @@ class ChangePasswordType extends AbstractType
                         ? array('User', 'Default')
                         : array('Registration', 'User', 'Default');
                 },
+                'constraints' => array(),
             )
         );
     }
