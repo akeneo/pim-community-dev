@@ -1,8 +1,12 @@
 {% extends 'PimCatalogBundle:MassEditAction:configure/layout.html.twig' %}
 
 {% block formTitle %}
-    {{ form_widget(form.operation.attributesToDisplay) }}&nbsp;
-    {{ form_widget(form.operation.locale) }}
+    <div class="pull-left">
+        {{ form_widget(form.operation.locale) }}
+    </div>
+    <div class="pull-left">
+        {{ form_widget(form.operation.attributesToDisplay) }}
+    </div>
 {% endblock %}
 
 {% block formContent %}
