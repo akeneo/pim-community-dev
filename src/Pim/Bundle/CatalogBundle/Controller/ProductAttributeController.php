@@ -221,7 +221,7 @@ class ProductAttributeController extends AbstractDoctrineController
             'measures'        => $this->measuresConfig,
             'datagrid'        => $datagridView,
             'created'         => $this->auditManager->getOldestLogEntry($attribute),
-            'updated'         => $this->auditManager->geNewestLogEntry($attribute),
+            'updated'         => $this->auditManager->getNewestLogEntry($attribute),
         );
     }
 
