@@ -85,9 +85,13 @@
         $content.addClass('content').css({
             'height': '100%',
             'margin-left': '0',
+            'overflow-y': 'auto',
             'position': 'absolute',
             'left': sidebarWidth + opts.separatorWidth
         });
+
+        // Disable the oro scrollable container
+        $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
 
         var $controls = $('<div>', {
             'class': 'sidebar-controls',
