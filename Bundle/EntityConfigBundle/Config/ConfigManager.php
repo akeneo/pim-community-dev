@@ -214,7 +214,7 @@ class ConfigManager
      * @param string $fieldName
      * @return bool
      */
-    public function isConfigurable($className, $fieldName = null)
+    public function hasConfig($className, $fieldName = null)
     {
         if (!$this->modelManager->checkDatabase()) {
             return false;
@@ -258,25 +258,6 @@ class ConfigManager
 
     /**
      * @param ConfigIdInterface $configId
-     * @return bool
-     */
-    public function hasConfig(ConfigIdInterface $configId)
-    {
-        if ($this->localCache->containsKey($configId->toString())) {
-            return true;
-        }
-
-        if (null !== $this->cache
-            && $config = $this->cache->loadConfigFromCache($configId)
-        ) {
-            return true;
-        }
-
-        return (bool) $this->modelManager->getModelByConfigId($configId);
-    }
-
-    /**
-     * @param ConfigIdInterface $configId
      * @throws RuntimeException
      * @throws LogicException
      * @return ConfigInterface
@@ -294,7 +275,7 @@ class ConfigManager
             );
         }
 
-        if (!$this->isConfigurable($configId->getClassName())) {
+        if (!$this->hasConfig($configId->getClassName())) {
             throw new RuntimeException(sprintf('Entity "%s" is not configurable', $configId->getClassName()));
         }
 
@@ -342,6 +323,16 @@ class ConfigManager
     {
         if ($this->cache) {
             $this->cache->removeAll();
+        }
+    }
+
+    /**
+     * Remove All Configurable cache
+     */
+    public function clearConfigurableCache()
+    {
+        if ($this->cache) {
+            $this->cache->removeAllConfigurable();
         }
     }
 

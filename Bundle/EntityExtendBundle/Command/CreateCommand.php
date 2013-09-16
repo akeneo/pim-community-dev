@@ -81,6 +81,8 @@ class CreateCommand extends ContainerAwareCommand
             }
         }
 
+        $this->configManager->clearConfigurableCache();
+
         $this->getApplication()->find('oro:entity-extend:update')->run($input, $output);
     }
 
@@ -97,7 +99,7 @@ class CreateCommand extends ContainerAwareCommand
 
         if (class_exists($className)) {
             $error = false;
-            if (!$this->configManager->isConfigurable($className)) {
+            if (!$this->configManager->hasConfig($className)) {
                 $error = true;
             } else {
                 $config = $this->configManager->getProvider('extend')->getConfig($className);
@@ -113,13 +115,14 @@ class CreateCommand extends ContainerAwareCommand
             }
         }
 
-        if (!$this->configManager->isConfigurable($className)) {
+        if (!$this->configManager->hasConfig($className)) {
             $this->createEntityModel($className, $entityOptions);
             $this->setDefaultConfig($entityOptions, $className);
 
             $entityConfig = $configProvider->getConfig($className);
 
-            $entityConfig->set('owner', ExtendManager::OWNER_SYSTEM);
+            $owner  = isset($entityOptions['owner']) ? $entityOptions['owner'] : ExtendManager::OWNER_SYSTEM;
+            $entityConfig->set('owner', $owner);
 
             if (isset($entityOptions['is_extend'])) {
                 $entityConfig->set('is_extend', $entityOptions['is_extend']);
@@ -129,7 +132,7 @@ class CreateCommand extends ContainerAwareCommand
         }
 
         foreach ($entityOptions['fields'] as $fieldName => $fieldConfig) {
-            if ($this->configManager->isConfigurable($className, $fieldName)) {
+            if ($this->configManager->hasConfig($className, $fieldName)) {
                 throw new \InvalidArgumentException(
                     sprintf('Field "%s" for Entity "%s" already added', $className, $fieldName)
                 );

@@ -81,7 +81,7 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function hasConfig($className, $fieldName = null)
     {
-        return $this->configManager->isConfigurable($this->getClassName($className), $fieldName);
+        return $this->configManager->hasConfig($this->getClassName($className), $fieldName);
     }
 
     /**

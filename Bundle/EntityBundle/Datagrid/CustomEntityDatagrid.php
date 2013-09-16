@@ -25,9 +25,6 @@ class CustomEntityDatagrid extends DatagridManager
     /** @var null original entity class */
     protected $entityClass = null;
 
-    /** @var null extended entity class */
-    protected $extendClass = null;
-
     /** @var array fields to be shown on grid */
     protected $queryFields = array();
 
@@ -42,7 +39,6 @@ class CustomEntityDatagrid extends DatagridManager
         'boolean'  => 'oro_grid_orm_boolean',
         'decimal'  => 'oro_grid_orm_number',
         'date'     => 'oro_grid_orm_date_range',
-        'datetime' => 'oro_grid_orm_datetime_range',
         'text'     => 'oro_grid_orm_string',
         'float'    => 'oro_grid_orm_number',
     );
@@ -55,8 +51,6 @@ class CustomEntityDatagrid extends DatagridManager
         'boolean'  => 'boolean',
         'decimal'  => 'decimal',
         'date'     => 'date',
-        'time'     => 'datetime',
-        'datetime' => 'datetime',
         'text'     => 'text',
         'float'    => 'decimal',
     );
@@ -66,15 +60,9 @@ class CustomEntityDatagrid extends DatagridManager
         $this->configManager = $configManager;
     }
 
-    public function setCustomEntityClass($className, $extendClass)
+    public function setCustomEntityClass($className)
     {
         $this->entityClass = $className;
-        $this->extendClass = $extendClass;
-    }
-
-    public function setParent($parentId)
-    {
-        $this->parentId = $parentId;
     }
 
     /**
@@ -99,11 +87,11 @@ class CustomEntityDatagrid extends DatagridManager
 
     protected function getLinkProperty($route)
     {
-        $router   = $this->router;
-        $parentId = $this->parentId;
+        $router    = $this->router;
+        $className = $this->entityClass;
 
-        return function (ResultRecord $record) use ($router, $parentId, $route) {
-            return $router->generate($route, array('entity_id' => $parentId, 'id' => $record->getValue('id')));
+        return function (ResultRecord $record) use ($router, $className, $route) {
+            return $router->generate($route, array('entity_id' => $className, 'id' => $record->getValue('id')));
         };
     }
 
@@ -172,8 +160,7 @@ class CustomEntityDatagrid extends DatagridManager
         $extendConfigs        = $extendConfigProvider->getConfigs($this->entityClass);
 
         foreach ($extendConfigs as $extendConfig) {
-            if ($extendConfig->get('owner') == ExtendManager::OWNER_CUSTOM
-                && $extendConfig->get('state') == ExtendManager::STATE_ACTIVE
+            if ($extendConfig->get('state') == ExtendManager::STATE_ACTIVE
                 && !$extendConfig->get('is_deleted')
 
             ) {
@@ -234,7 +221,7 @@ class CustomEntityDatagrid extends DatagridManager
         $query = $this->queryFactory->createQuery();
 
         $queryBuilder = $query->getQueryBuilder();
-        $queryBuilder->resetDQLPart('from')->from($this->extendClass, 'ce');
+        $queryBuilder->resetDQLPart('from')->from($this->entityClass, 'ce');
 
         foreach ($this->queryFields as $field) {
             $query->addSelect('ce.' . $field . ' as ' . $field, false);
