@@ -13,7 +13,7 @@ class EmbedRepeatedFieldListener extends RepeatedFieldListener
         $fieldsConstraints = $event->getFieldsConstraints();
 
         foreach ($formFields as $formField) {
-            foreach ($formField->children as $childFieldName => $childField) {
+            foreach ($formField->children as $childField) {
                 if (isset($childField->vars['type']) && $childField->vars['type'] == 'repeated') {
                     $event = new PostProcessEvent($formField, $fieldsConstraints);
                     parent::onJsfvPostProcess($event);
