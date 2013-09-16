@@ -85,6 +85,8 @@ class ConfigSubscriber implements EventSubscriberInterface
 
             $index[$event->getConfig()->getId()->getFieldName()] = $event->getConfig()->get('is_visible');
 
+            $extendConfig->set('index', $index);
+
             $event->getConfigManager()->persist($extendConfig);
         }
     }

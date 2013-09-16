@@ -102,7 +102,7 @@ class EntityFieldsDatagridManager extends BaseDatagrid
         foreach ($this->configManager->getProviders() as $provider) {
             $gridActions = $provider->getPropertyConfig()->getGridActions(PropertyConfigContainer::TYPE_FIELD);
 
-            $this->prepareProperties($gridActions, $properties, $actions, $filters);
+            $this->prepareProperties($gridActions, $properties, $actions, $filters, $provider->getScope());
         }
 
         if (count($filters)) {
@@ -160,14 +160,16 @@ class EntityFieldsDatagridManager extends BaseDatagrid
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getPropertyConfig()->getItems(PropertyConfigContainer::TYPE_FIELD) as $code => $item) {
                 if (isset($item['grid'])) {
+                    $fieldName = $provider->getScope() . '_' . $code;
+
                     $fieldObject = new FieldDescription();
-                    $fieldObject->setName($code);
+                    $fieldObject->setName($fieldName);
                     $fieldObject->setOptions(
                         array_merge(
                             $item['grid'],
                             array(
                                 'expression' => 'cfv_' . $code . '.value',
-                                'field_name' => $code,
+                                'field_name' => $fieldName,
                             )
                         )
                     );
@@ -290,6 +292,8 @@ class EntityFieldsDatagridManager extends BaseDatagrid
             foreach ($provider->getPropertyConfig()->getItems(PropertyConfigContainer::TYPE_FIELD) as $code => $item) {
                 $alias = 'cfv_' . $code;
 
+                $fieldName = $provider->getScope() . '_' . $code;
+
                 if (isset($item['grid']['query'])) {
                     $query->andWhere($alias . '.value ' . $item['grid']['query']['operator'] . ' :' . $alias);
                     $query->setParameter($alias, $item['grid']['query']['value']);
@@ -301,7 +305,7 @@ class EntityFieldsDatagridManager extends BaseDatagrid
                     'WITH',
                     $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'"
                 );
-                $query->addSelect($alias . '.value as ' . $code . '', false);
+                $query->addSelect($alias . '.value as ' . $fieldName . '', false);
             }
         }
 

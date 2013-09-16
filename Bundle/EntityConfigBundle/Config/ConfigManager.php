@@ -222,7 +222,7 @@ class ConfigManager
 
         $result = $this->cache->getConfigurable($className, $fieldName);
         if ($result === null) {
-            $result = (bool)$this->modelManager->findModel($className, $fieldName);
+            $result = (bool) $this->modelManager->findModel($className, $fieldName);
 
             $this->cache->setConfigurable($result, $className, $fieldName);
         }
@@ -272,7 +272,7 @@ class ConfigManager
             return true;
         }
 
-        return (bool)$this->modelManager->getModelByConfigId($configId);
+        return (bool) $this->modelManager->getModelByConfigId($configId);
     }
 
     /**
@@ -374,7 +374,13 @@ class ConfigManager
 
             $this->eventDispatcher->dispatch(Events::PRE_PERSIST_CONFIG, new PersistConfigEvent($config, $this));
 
-            $models[] = $model = $this->modelManager->getModelByConfigId($config->getId());
+            if (isset($models[$config->getId()->toString()])) {
+                $model = $models[$config->getId()->toString()];
+            } else {
+                $model = $this->modelManager->getModelByConfigId($config->getId());
+
+                $models[$config->getId()->toString()] = $model;
+            }
 
             //TODO::refactoring
             $serializableValues = $this->getProvider($config->getId()->getScope())
@@ -475,6 +481,7 @@ class ConfigManager
 
     /**
      * TODO:: check class name for custom entity
+     *
      * @param string $className
      * @param string $mode
      * @return EntityConfigModel
@@ -486,7 +493,7 @@ class ConfigManager
 
             foreach ($this->getProviders() as $provider) {
 
-                $metadata = $this->getEntityMetadata($className);
+                $metadata      = $this->getEntityMetadata($className);
                 $defaultValues = array();
                 if ($metadata && isset($metadata->defaultValues[$provider->getScope()])) {
                     $defaultValues = $metadata->defaultValues[$provider->getScope()];
@@ -521,9 +528,9 @@ class ConfigManager
 
             foreach ($this->getProviders() as $provider) {
                 $defaultValues = array();
-                $metadata = $this->getFieldMetadata($className, $fieldName);
+                $metadata      = $this->getFieldMetadata($className, $fieldName);
                 if ($metadata && isset($metadata->defaultValues[$provider->getScope()])) {
-                    $defaultValues =  $metadata->defaultValues[$provider->getScope()];
+                    $defaultValues = $metadata->defaultValues[$provider->getScope()];
                 }
 
                 $fieldId = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);

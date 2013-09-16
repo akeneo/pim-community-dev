@@ -33,6 +33,7 @@ class DatagridConfigurationPass implements CompilerPassInterface
 
             $class = new \ReflectionClass($className);
 
+            //var_dump($className, is_subclass_of($className, 'Oro\Bundle\EntityBundle\Datagrid\AbstractDatagrid'));
             if (strpos($class->getParentClass(), 'AbstractDatagrid') !== false) {
                 $service
                     ->addArgument($container->getDefinition('oro_entity_config.config_manager'))

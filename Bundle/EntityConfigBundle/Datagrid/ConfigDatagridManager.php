@@ -68,7 +68,7 @@ class ConfigDatagridManager extends BaseDatagrid
         foreach ($this->configManager->getProviders() as $provider) {
             $gridActions = $provider->getPropertyConfig()->getGridActions();
 
-            $this->prepareProperties($gridActions, $properties, $actions, $filters);
+            $this->prepareProperties($gridActions, $properties, $actions, $filters, $provider->getScope());
 
             if ($provider->getPropertyConfig()->getUpdateActionFilter()) {
                 $filters['update'] = $provider->getPropertyConfig()->getUpdateActionFilter();
@@ -167,14 +167,16 @@ class ConfigDatagridManager extends BaseDatagrid
                 if (isset($item['grid'])) {
                     $item['grid'] = $provider->getPropertyConfig()->initConfig($item['grid']);
 
+                    $fieldName = $provider->getScope() . '_' . $code;
+
                     $fieldObject = new FieldDescription();
-                    $fieldObject->setName($code);
+                    $fieldObject->setName($fieldName);
                     $fieldObject->setOptions(
                         array_merge(
                             $item['grid'],
                             array(
                                 'expression' => 'cev' . $code . '.value',
-                                'field_name' => $code,
+                                'field_name' => $fieldName,
                             )
                         )
                     );
@@ -334,7 +336,8 @@ class ConfigDatagridManager extends BaseDatagrid
     {
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getPropertyConfig()->getItems() as $code => $item) {
-                $alias = 'cev' . $code;
+                $alias     = 'cev' . $code;
+                $fieldName = $provider->getScope() . '_' . $code;
 
                 if (isset($item['grid']['query'])) {
                     $query->andWhere($alias . '.value ' . $item['grid']['query']['operator'] . ' :' . $alias);
@@ -347,7 +350,7 @@ class ConfigDatagridManager extends BaseDatagrid
                     'WITH',
                     $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'"
                 );
-                $query->addSelect($alias . '.value as ' . $code, true);
+                $query->addSelect($alias . '.value as ' . $fieldName, true);
             }
         }
 

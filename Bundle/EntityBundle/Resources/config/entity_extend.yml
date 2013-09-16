@@ -1,7 +1,7 @@
 TestClassExtend:
-    is_extend:                      true
-    owner:                          'Custom'
-    configs:
+    is_extend:                      true                    #default false
+    owner:                          'Custom'                #default 'System'
+    configs:                                                #config for entity
         entity:
             label:                  TestClassExtend
     fields:
@@ -14,35 +14,10 @@ TestClassExtend:
                 length:             200
         testIntegerField:
             type:                   smallint
-        testHiddenField:
-            mode:                   hidden
-            type:                   string
-        testReadonlyField:
-            mode:                   readonly
-            type:                   string
 
-TestClassExtend2:
-    is_extend:                      false
-    configs:
-        entity:
-            label:                  TestClassExtend2
-    fields:
-        testStringField2:
-            type:                   string
-            configs:
-                entity:
-                    label:          testStringField2
-            options:
-                length:             200
 
-#Oro\Bundle\UserBundle\Entity\User:
 OroCRM\Bundle\ContactBundle\Entity\Contact:
     fields:
         testField:
-            type:                   string
-        testHiddenField:
-            mode:                   hidden
-            type:                   string
-        testReadonlyField:
-            mode:                   readonly
+            owner:                  'System'                #default 'System'
             type:                   string

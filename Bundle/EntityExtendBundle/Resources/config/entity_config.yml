@@ -80,6 +80,11 @@ oro_entity_config:
                         internal:           true
                         serializable:       true
 
+                index:
+                    options:
+                        internal:           true
+                        serializable:       true
+
         field:
             grid_action:
                 -

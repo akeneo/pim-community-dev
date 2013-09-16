@@ -3,7 +3,7 @@
 namespace Oro\Bundle\EntityExtendBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
+use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 
 class DoctrineSubscriber implements EventSubscriber
@@ -24,7 +24,7 @@ class DoctrineSubscriber implements EventSubscriber
     public function loadClassMetadata(LoadClassMetadataEventArgs $event)
     {
         /** @var OroEntityManager $em */
-        $em = $event->getObjectManager();
+        $em = $event->getEntityManager();
 
         $configProvider = $em->getExtendManager()->getConfigProvider();
         $className      = $event->getClassMetadata()->getName();

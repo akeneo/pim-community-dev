@@ -57,14 +57,6 @@ oro_entity_config:
                     constraints:
                         - Length:
                             max:            500
-                    grid:
-                        type:               text
-                        label:              'Description'
-                        filter_type:        oro_grid_orm_string
-                        required:           false
-                        sortable:           true
-                        filterable:         true
-                        show_filter:        true
                     form:
                         type:               textarea
                         options:
@@ -105,14 +97,6 @@ oro_entity_config:
                     constraints:
                         - Length:
                             max:            500
-                    grid:
-                        type:               text
-                        label:              'Description'
-                        filter_type:        oro_grid_orm_string
-                        required:           false
-                        sortable:           true
-                        filterable:         false
-                        show_filter:        false
                     form:
                         type:               textarea
                         options:
