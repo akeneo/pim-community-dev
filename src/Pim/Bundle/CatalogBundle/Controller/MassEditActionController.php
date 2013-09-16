@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
 use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Batch operation controller
@@ -36,6 +37,11 @@ class MassEditActionController extends AbstractController
     protected $batchOperator;
 
     /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -45,6 +51,7 @@ class MassEditActionController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param MassEditActionOperator   $batchOperator
+     * @param TranslatorInterface      $translator
      */
     public function __construct(
         Request $request,
@@ -53,14 +60,18 @@ class MassEditActionController extends AbstractController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
-        MassEditActionOperator $batchOperator
+        MassEditActionOperator $batchOperator,
+        TranslatorInterface $translator
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator);
 
         $this->batchOperator = $batchOperator;
+        $this->translator    = $translator;
     }
 
     /**
+     * @param Request $request
+     *
      * @Template
      * @Acl(
      *      id="pim_catalog_mass_edit_choose",
@@ -68,6 +79,7 @@ class MassEditActionController extends AbstractController
      *      description="Choose action",
      *      parent="pim_catalog_mass_edit"
      * )
+     * @return template|RedirectResponse
      */
     public function chooseAction(Request $request)
     {
@@ -100,12 +112,15 @@ class MassEditActionController extends AbstractController
     /**
      * @param Request $request
      * @param string  $operationAlias
+     *
      * @Acl(
      *      id="pim_catalog_mass_edit_configure",
      *      name="Configure action",
      *      description="Configure action",
      *      parent="pim_catalog_mass_edit"
      * )
+     * @throws NotFoundHttpException
+     * @return template|RedirectResponse
      */
     public function configureAction(Request $request, $operationAlias)
     {
@@ -140,15 +155,17 @@ class MassEditActionController extends AbstractController
     }
 
     /**
-     *
      * @param Request $request
-     * @param alis    $operationAlias
+     * @param string  $operationAlias
+     *
      * @Acl(
      *      id="pim_catalog_mass_edit_perform",
      *      name="Perform action",
      *      description="Perform action",
      *      parent="pim_catalog_mass_edit"
      * )
+     * @throws NotFoundHttpException
+     * @return template|RedirectResponse
      */
     public function performAction(Request $request, $operationAlias)
     {
@@ -217,5 +234,22 @@ class MassEditActionController extends AbstractController
         } else {
             return $request->query->get('products');
         }
+    }
+
+    /**
+     * Manual flash translator
+     * Otherwise, flash messages are not translated...
+     *
+     * @param string $type
+     * @param string $message
+     *
+     * TODO Fix flash translation
+     */
+    protected function addFlash($type, $message)
+    {
+        parent::addFlash(
+            $type,
+            $this->translator->trans($message)
+        );
     }
 }

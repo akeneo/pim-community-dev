@@ -1,5 +1,5 @@
 require(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'pim/dialog', 'pim/initselect2', 'bootstrap',
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'pim/dialog', 'pim/initselect2', 'bootstrap.tooltip',
         'jquery-ui', 'bootstrap.bootstrapswitch', 'bootstrap.tooltip', 'jquery.slimbox'],
     function ($, __, mediator, Navigation, Dialog, initSelect2) {
         'use strict';

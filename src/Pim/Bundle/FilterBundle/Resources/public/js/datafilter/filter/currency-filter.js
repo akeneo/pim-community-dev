@@ -70,7 +70,7 @@ define(
              * @inheritDoc
              */
             popupCriteriaTemplate: _.template(
-                '<div class="currencyfilter">' +
+                '<div class="currencyfilter choicefilter">' +
                     '<div class="input-prepend input-append">' +
                         '<div class="btn-group">' +
                             '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
@@ -87,7 +87,7 @@ define(
 
                         '<input type="text" name="value" value="">' +
 
-                        '<div class="btn-group">' +
+                        '<div class="btn-group pull-right">' +
                             '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
                                 'Currency' +
                                 '<span class="caret"></span>' +

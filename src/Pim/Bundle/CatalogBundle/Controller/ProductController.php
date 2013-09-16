@@ -326,6 +326,7 @@ class ProductController extends AbstractDoctrineController
                 // Call completeness calculator after validating data and saving product
                 // so all values for all locale are loaded now
                 $this->calculator->calculateForAProduct($product);
+                $this->productManager->save($product);
 
                 $this->addFlash('success', 'Product successfully saved');
 

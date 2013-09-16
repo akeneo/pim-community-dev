@@ -64,6 +64,10 @@ define(
                             }
 
                             return data;
+                        },
+                        complete: function () {
+                            // Disable the root checkbox
+                            $('.jstree-root>input.jstree-real-checkbox').attr('disabled', 'disabled');
                         }
                     }
                 },
