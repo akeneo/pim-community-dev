@@ -9,6 +9,7 @@ use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
+use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 use Oro\Bundle\GridBundle\Datagrid\PagerInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
@@ -223,4 +224,20 @@ interface DatagridInterface
      * @return boolean
      */
     public function getMultipleSorting();
+
+    /**
+     * Setter for views list
+     *
+     * @param AbstractViewsList|null $list
+     *
+     * @return mixed
+     */
+    public function setViewsList($list);
+
+    /**
+     * Getter for views list
+     *
+     * @return AbstractViewsList|null
+     */
+    public function getViewsList();
 }
