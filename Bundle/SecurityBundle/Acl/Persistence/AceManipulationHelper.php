@@ -44,12 +44,12 @@ class AceManipulationHelper
         $found = false;
         $maskServiceBits = $extension->getServiceBits($mask);
         $aces = $this->getAces($acl, $type, $field);
-        for ($i = count($aces) - 1; $i >= 0; $i--) {
-            if ($sid->equals($aces[$i]->getSecurityIdentity()) && $granting === $aces[$i]->isGranting()) {
-                if ($mask === $aces[$i]->getMask() && ($strategy === null || $strategy === $aces[$i]->getStrategy())) {
+        foreach ($aces as $index => $ace) {
+            if ($sid->equals($ace->getSecurityIdentity()) && $granting === $ace->isGranting()) {
+                if ($mask === $ace->getMask() && ($strategy === null || $strategy === $ace->getStrategy())) {
                     $found = true;
-                } elseif ($replace && $maskServiceBits === $extension->getServiceBits($aces[$i]->getMask())) {
-                    $this->updateAce($acl, $type, $field, $i, $mask, $strategy);
+                } elseif ($replace && $maskServiceBits === $extension->getServiceBits($ace->getMask())) {
+                    $this->updateAce($acl, $type, $field, $index, $mask, $strategy);
                     $found = true;
                     $hasChanges = true;
                 }
@@ -88,11 +88,11 @@ class AceManipulationHelper
     ) {
         $hasChanges = false;
         $aces = $this->getAces($acl, $type, $field);
-        for ($i = count($aces) - 1; $i >= 0; $i--) {
-            if ($sid->equals($aces[$i]->getSecurityIdentity()) && $granting === $aces[$i]->isGranting()
-                && $mask === $aces[$i]->getMask() && ($strategy === null || $strategy === $aces[$i]->getStrategy())
+        foreach ($aces as $index => $ace) {
+            if ($sid->equals($ace->getSecurityIdentity()) && $granting === $ace->isGranting()
+                && $mask === $ace->getMask() && ($strategy === null || $strategy === $ace->getStrategy())
             ) {
-                $this->deleteAce($acl, $type, $field, $i);
+                $this->deleteAce($acl, $type, $field, $index);
                 $hasChanges = true;
             }
         }
@@ -115,9 +115,9 @@ class AceManipulationHelper
     {
         $hasChanges = false;
         $aces = $this->getAces($acl, $type, $field);
-        for ($i = count($aces) - 1; $i >= 0; $i--) {
-            if ($sid->equals($aces[$i]->getSecurityIdentity())) {
-                $this->deleteAce($acl, $type, $field, $i);
+        foreach ($aces as $index => $ace) {
+            if ($sid->equals($ace->getSecurityIdentity())) {
+                $this->deleteAce($acl, $type, $field, $index);
                 $hasChanges = true;
             }
         }
