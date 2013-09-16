@@ -28,13 +28,7 @@ class BatchCommand extends ContainerAwareCommand
         $this
             ->setName('oro:batch:job')
             ->setDescription('Launch a registered job instance')
-            ->addArgument('code', InputArgument::REQUIRED, 'Job instance code')
-            ->addOption(
-                'show-log',
-                null,
-                InputOption::VALUE_OPTIONAL,
-                'display the log on the output'
-            );
+            ->addArgument('code', InputArgument::REQUIRED, 'Job instance code');
     }
 
     /**
@@ -89,7 +83,7 @@ class BatchCommand extends ContainerAwareCommand
      */
     protected function getEntityManager()
     {
-        return $this->getContainer()->get('doctrine')->getEntityManager();
+        return $this->getContainer()->get('doctrine')->getManager();
     }
 
     /**
