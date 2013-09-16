@@ -1,0 +1,20 @@
+parameters:
+    oro_address.importexport.primary_item_collection_normalizer.class: Oro\Bundle\AddressBundle\ImportExport\Serializer\Normalizer\PrimaryItemCollectionNormalizer
+    oro_address.importexport.phone_normalizer.class: Oro\Bundle\AddressBundle\ImportExport\Serializer\Normalizer\PhoneNormalizer
+    oro_address.importexport.email_normalizer.class: Oro\Bundle\AddressBundle\ImportExport\Serializer\Normalizer\EmailNormalizer
+
+services:
+    oro_address.importexport.primary_item_collection_normalizer:
+        class: %oro_address.importexport.primary_item_collection_normalizer.class%
+        tags:
+            - { name: oro_importexport.normalizer }
+
+    oro_address.importexport.phone_normalizer:
+        class: %oro_address.importexport.phone_normalizer.class%
+        tags:
+            - { name: oro_importexport.normalizer }
+
+    oro_address.importexport.email_normalizer:
+        class: %oro_address.importexport.email_normalizer.class%
+        tags:
+            - { name: oro_importexport.normalizer }

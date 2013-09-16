@@ -43,7 +43,7 @@ class DateTimeNormalizerTest extends \PHPUnit_Framework_TestCase
         $date = new \DateTime('2013-12-31 23:59:59+0200');
         $this->assertEquals(
             $date,
-            $this->normalizer->denormalize('2013-12-31T23:59:59+0200', null)
+            $this->normalizer->denormalize('2013-12-31T23:59:59+0200', 'DateTime', null)
         );
     }
 }

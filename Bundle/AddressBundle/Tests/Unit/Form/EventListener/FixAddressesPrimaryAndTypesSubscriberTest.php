@@ -17,7 +17,6 @@ class FixAddressesPrimaryAndTypesSubscriberTest extends \PHPUnit_Framework_TestC
         $this->subscriber = new FixAddressesPrimaryAndTypesSubscriber('owner.address');
     }
 
-
     public function testGetSubscribedEvents()
     {
         $this->assertEquals(
