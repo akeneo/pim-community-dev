@@ -9,14 +9,14 @@
 
 {% block oro_acl_collection_widget %}
     {% if privileges_config.view_type == 'grid' %}
-        <table class="table table-striped">
+        <table class="table table-striped acl-table">
             <tbody>
             <tr>
                 <th>
                     &nbsp;
                 </th>
                 {% for field in privileges_config['permissions'] %}
-                    <th>
+                    <th class="a-center">
                         {{ field|trans }}
                     </th>
                 {% endfor %}
@@ -53,7 +53,7 @@
 
 {% block oro_acl_permission_collection_widget %}
     {% for field in privileges_config['permissions'] %}
-        <td>
+        <td class="a-center">
             {% for permission in form %}
                 {% if permission.vars.value.name == field %}
                     {{ form_widget(permission) }}

@@ -32,7 +32,7 @@ class AclRoleTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('oro_acl_role', $this->formType->getName());
+        $this->assertEquals('oro_user_role', $this->formType->getName());
     }
 
     public function testSetDefaultOptions()
@@ -44,7 +44,8 @@ class AclRoleTypeTest extends \PHPUnit_Framework_TestCase
         $resolver->expects($this->once())->method('setDefaults')
             ->with(
                 array(
-                    'data_class' => 'Oro\Bundle\UserBundle\Entity\Role'
+                    'data_class' => 'Oro\Bundle\UserBundle\Entity\Role',
+                    'intention'  => 'role'
                 )
             );
         $this->formType->setDefaultOptions($resolver);
