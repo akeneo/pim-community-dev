@@ -19,8 +19,8 @@ use Oro\Bundle\UserBundle\Annotation\Acl;
  *
  * @Acl(
  *     id="oro_shortcut",
- *     name="Get windows state",
- *     description="Get windows state",
+ *     name="Shortcut",
+ *     description="Shortcut",
  *     parent="root"
  * )
  */
