@@ -49,7 +49,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     protected $locale;
 
     /**
-     * Locale code
+     * Scope code
      * @var string $scope
      *
      * @ORM\Column(name="scope_code", type="string", length=20, nullable=true)
