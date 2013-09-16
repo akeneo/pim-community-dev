@@ -44,22 +44,18 @@
             'use strict';
 
             var disableForm = function($form) {
-                $form.find('input[type="checkbox"]').each(function() {
-                    $(this).closest('.has-switch').bootstrapSwitch('setActive', false);
-                });
-                $form.find('input[type="text"], textarea').each(function() {
-                    $(this).attr('disabled', 'disabled');
+                $form.find('input, textarea').each(function() {
+                    $(this).attr('readonly', 'true');
                 });
             };
 
             var enableForm = function($form) {
-                $form.find('input[type="checkbox"]').each(function() {
-                    $(this).closest('.has-switch').bootstrapSwitch('setActive', true);
-                });
-                $form.find('input[type="text"], textarea').each(function() {
-                    $(this).removeAttr('disabled');
+                $form.find('input, textarea').each(function() {
+                    $(this).removeAttr('readonly');
                 });
             };
+
+            var $confirmLink;
 
             $('select.operation-param').change(function (event) {
                 $('#{{ form.vars.id }}')
@@ -70,11 +66,13 @@
             /**
              * Confirmation
              */
-            $('a.confirm').click(function(event) {
+            $('body').on('click', 'a.confirm', function(event) {
                 event.preventDefault();
 
                 $('.wizard').wizard({ currentStep: 4});
                 disableForm($(this).parents('form').first());
+                $confirmLink = $(this);
+                $(this).replaceWith('<input type="submit" class="btn btn-primary confirm" value="Confirm"/>');
             });
 
             $('a.cancel').click(function(event) {
@@ -82,6 +80,7 @@
 
                 $('.wizard').wizard({ currentStep: 3});
                 enableForm($(this).parents('form').first());
+                $('.confirm').replaceWith($confirmLink);
             });
 
 
