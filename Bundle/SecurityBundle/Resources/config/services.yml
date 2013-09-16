@@ -46,7 +46,7 @@ parameters:
     oro_security.acl.interceptor.class:                        Oro\Bundle\SecurityBundle\Acl\Interceptor\AclInterceptor
 
     oro_user.acl.manager.api.class:     Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-    oro_user.acl.twig.class:            Oro\Bundle\UserBundle\Twig\OroUserExtension
+    oro_security.twig.security_extension:                      Oro\Bundle\SecurityBundle\Twig\OroSecurityExtension
 
 services:
     oro_security.security_facade:
@@ -318,6 +318,13 @@ services:
            - @oro_security.security_facade
            - @request
            - @logger
+
+    oro_security.twig.security_extension:
+        class: %oro_security.twig.security_extension%
+        arguments:
+            - @oro_security.security_facade
+        tags:
+            - { name: twig.extension }
 
  #   oro_user.acl_manager.api:
  #       class:                        %oro_user.acl.manager.api.class%
