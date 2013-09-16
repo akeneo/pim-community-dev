@@ -2,12 +2,8 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Form\Extension;
 
-use Oro\Bundle\EntityExtendBundle\Entity\ProxyEntityInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
-
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
@@ -33,29 +29,17 @@ class ExtendEntityExtension extends AbstractTypeExtension
     {
         $xm = $this->extendManager;
 
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($xm) {
-                $data = $event->getData();
-                //TODO::check empty data end data_class
-                if (is_object($data) && $xm->isExtend($data)) {
-                    $event->setData($xm->createProxyObject($data));
-                }
-            }
-        );
-
-        $builder->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($xm) {
-                $data = $event->getForm()->getConfig()->getData();
-
-                if (is_object($data) && $xm->isExtend($data)) {
-                    if ($event->getData() instanceof ProxyEntityInterface) {
-                        $event->getData()->__proxy__cloneToEntity($data);
-                    }
-                }
-            }
-        );
+        $className = $options['data_class'];
+        if ($className && $xm->getConfigProvider()->hasConfig($className)) {
+            $builder->add(
+                'additional',
+                'custom_entity_type',
+                array(
+                    'inherit_data' => true,
+                    'class_name' => $className
+                )
+            );
+        }
     }
 
     /**

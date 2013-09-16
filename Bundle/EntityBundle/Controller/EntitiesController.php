@@ -120,12 +120,15 @@ class EntitiesController extends Controller
 
         $fields = array();
         foreach ($record->__toArray() as $key => $value) {
-            $config = $viewConfigProvider->getConfig($extendEntityName, str_replace(Generator::PREFIX, '', $key));
+            $key = str_replace(Generator::PREFIX, '', $key);
+            $config = $viewConfigProvider->getConfig($extendEntityName, $key);
             if ($config->is('is_displayable')) {
                 if ($value instanceof \DateTime) {
-                    $value = $value->format('Y-m-d H:i:s');
+                    $value = $value->format('Y-m-d');
                 }
-                $fields[$key] = $value;
+                $fieldConfig = $entityConfigProvider->getConfig($extendEntityName, $key);
+
+                $fields[$fieldConfig->get('label') ?: $key] = $value;
             }
         }
 
@@ -172,7 +175,7 @@ class EntitiesController extends Controller
             'custom_entity_type',
             $record,
             array(
-                'className' => $extendEntityName,
+                'class_name' => $extendEntityName,
             )
         );
 

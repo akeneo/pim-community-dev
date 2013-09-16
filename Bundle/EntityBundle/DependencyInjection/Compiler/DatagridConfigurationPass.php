@@ -9,7 +9,6 @@ use Symfony\Component\DependencyInjection\Definition;
 class DatagridConfigurationPass implements CompilerPassInterface
 {
     const TAG_NAME = 'oro_grid.datagrid.manager';
-    const PARAM    = 'class';
 
     /**
      * {@inheritdoc}
@@ -31,17 +30,13 @@ class DatagridConfigurationPass implements CompilerPassInterface
                 $className = $container->getParameter(substr($className, 1, strlen($className) - 2));
             }
 
-            $class = new \ReflectionClass($className);
-
-            //var_dump($className, is_subclass_of($className, 'Oro\Bundle\EntityBundle\Datagrid\AbstractDatagrid'));
-            if (strpos($class->getParentClass(), 'AbstractDatagrid') !== false) {
+            if (is_subclass_of($className, 'Oro\Bundle\EntityBundle\Datagrid\AbstractDatagrid')) {
                 $service
                     ->addArgument($container->getDefinition('oro_entity_config.config_manager'))
-//                    ->addMethodCall(
-//                        'addDynamicFields',
-//                        array()
-//                    )
-                ;
+                    ->addMethodCall(
+                        'addDynamicFields',
+                        array()
+                    );
             }
         }
     }

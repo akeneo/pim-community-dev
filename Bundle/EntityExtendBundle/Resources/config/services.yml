@@ -13,11 +13,11 @@ services:
         arguments:
             - @oro_entity_config.provider.extend
 
-#    oro_entity_extend.extension.extend_entity:
-#        class:                                              %oro_entity_extend.extension.extend_entity.class%
-#        arguments:                                          [@oro_entity_extend.extend.extend_manager]
-#        tags:
-#            - { name: form.type_extension, alias: form }
+    oro_entity_extend.extension.extend_entity:
+        class:                                              %oro_entity_extend.extension.extend_entity.class%
+        arguments:                                          [@oro_entity_extend.extend.extend_manager]
+        tags:
+            - { name: form.type_extension, alias: form }
 
     oro_entity_extend.tools.generator:
         class:                                              %oro_entity_extend.tools.generator.class%
@@ -34,9 +34,6 @@ services:
 
     oro_entity_extend.listener.entity_subscriber:
         class:                                      %oro_entity_extend.listener.entity_subscriber.class%
-#        arguments:
-#            -
-
         tags:
             - { name: doctrine.event_subscriber, connection: default }
 
@@ -49,4 +46,3 @@ services:
         class:                                              %oro_entity_extend.command.generate.class%
         calls:
             - [setContainer, ["@service_container"]]
-

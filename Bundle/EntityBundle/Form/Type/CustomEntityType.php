@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EntityBundle\Form\Type;
 
 use Doctrine\Common\Util\Inflector;
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -46,7 +47,7 @@ class CustomEntityType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $className = $options['className'];
+        $className = $options['class_name'];
 
         /** @var ConfigProvider $formConfigProvider */
         $formConfigProvider = $this->configManager->getProvider('form');
@@ -58,11 +59,13 @@ class CustomEntityType extends AbstractType
         /** @var ConfigProvider $extendConfigProvider */
         $extendConfigProvider = $this->configManager->getProvider('extend');
 
-
         foreach ($formConfigs as $formConfig) {
             $extendConfig = $extendConfigProvider->getConfig($className, $formConfig->getId()->getFieldName());
             if ($formConfig->get('is_enabled')
                 && !$extendConfig->get('is_deleted')
+                && $extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)
+                && !in_array($formConfig->getId()->getFieldType(), array('ref-one', 'ref-many'))
+                && $builder->getForm()->getName() != $this->getName()
             ) {
                 /** @var FieldConfigIdInterface $fieldConfigId */
                 $fieldConfigId = $formConfig->getId();
@@ -97,7 +100,7 @@ class CustomEntityType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('className'));
+        $resolver->setRequired(array('class_name'));
     }
 
     /**

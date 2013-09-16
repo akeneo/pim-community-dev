@@ -2,8 +2,6 @@ parameters:
     oro_entity_config.config_manager.class:                     Oro\Bundle\EntityConfigBundle\Config\ConfigManager
     oro_entity_config.cache.cache.class:                        Oro\Bundle\EntityConfigBundle\Config\ConfigCache
     oro_entity_config.provider_bag.class:                       Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderBag
-    oro_entity_config.cache.file_cache.class:                   Oro\Bundle\EntityConfigBundle\Cache\FileCache
-    oro_entity_config.command.setup.class:                      Oro\Bundle\EntityConfigBundle\Command\SetupCommand
 
 services:
     oro_entity_config.link.entity_manager:
@@ -47,8 +45,3 @@ services:
         parent: oro.cache.abstract
         calls:
             - [setNamespace, ['oro_entity_config.model']]
-
-    oro_entity_config.command:
-        class:                                                  %oro_entity_config.command.setup.class%
-        calls:
-            - [setContainer, [@service_container]]

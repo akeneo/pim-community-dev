@@ -28,26 +28,10 @@
 {% endblock stats%}
 
 {% block content_data %}
-
-    {#{{ dump(entity) }}#}
-
-    {#{{ entity.getFieldName() }}#}
-    {#{{ entity.field_name }}#}
-
     {% set general_fields = [ ] %}
     {% for key, value in entity_fields|default %}
         {% set general_fields = general_fields|merge([UI.attibuteRow(key|capitalize, value)])%}
     {% endfor %}
-
-    {#UI.attibuteRow('Name', entity_name),#}
-        {#UI.renderAttribute('Icon', ['<div class="clearfix-oro"><p class="control-label"><i class="',entity_config.get('icon'),' hide-text"></i> (',entity_config.get('icon'),')</p></div>']|join),#}
-        {#UI.attibuteRow('Label', entity_config.get('label')),#}
-        {#UI.attibuteRow('Plural Label', entity_config.get('plural_label')),#}
-        {#UI.attibuteRow('Type', entity_extend.get('owner')),#}
-        {#UI.attibuteRow('Description', entity_config.get('description')),#}
-        {#UI.attibuteRow('Ownership Type', entity_ownership.get('owner_type')),#}
-        {#UI.attibuteRow('Module', module_name),#}
-    {#]%}#}
 
     {% set data = { 'dataBlocks': [{
         'title': 'General',
