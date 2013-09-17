@@ -1316,7 +1316,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getCurrentPage()->find('css', 'body')->click();
 
         //TODO Otherwise, it  makes the features/category/create_a_category.feature:28 scenario fails
-        $this->wait(5000, null);
+        $this->wait(4000, null);
     }
 
     /**
@@ -1789,7 +1789,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return void
      */
-    private function wait($time = 5000, $condition = 'document.readyState == "complete" && !$.active')
+    private function wait($time = 4000, $condition = 'document.readyState == "complete" && !$.active')
     {
         try {
             return $this->getMainContext()->wait($time, $condition);
