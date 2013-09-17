@@ -49,9 +49,6 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
                     'title'   => 'en:Root category,fr:Categorie racine',
                     'parent'  => '',
                     'dynamic' => '0',
-                    'left'    => '1',
-                    'level'   => '0',
-                    'right'   => '2'
                 )
             ),
             array(
@@ -60,9 +57,6 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
                     'title'   => 'en:Child category,fr:Catégorie enfant',
                     'parent'  => '1',
                     'dynamic' => '0',
-                    'left'    => '2',
-                    'level'   => '1',
-                    'right'   => '3'
                 )
             ),
         );
@@ -82,6 +76,8 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
     }
 
     /**
+     * @param array $data
+     *
      * @return array
      */
     protected function getTitles($data)
