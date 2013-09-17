@@ -62,9 +62,9 @@ class MultipleEntityType extends AbstractType
             ? $options['selector_window_title']
             : null;
 
-        if (isset($options['default_element']) && $options['default_element'] instanceof FormInterface) {
-            $view->vars['default_element'] =  $options['default_element']->createView($view->parent)->vars['id'];
-        }
+        $view->vars['default_element'] = isset($options['default_element'])
+            ? $options['default_element']
+            : null;
     }
 
     /**

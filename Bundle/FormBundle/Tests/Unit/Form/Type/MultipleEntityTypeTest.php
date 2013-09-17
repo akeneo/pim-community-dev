@@ -81,15 +81,6 @@ class MultipleEntityTypeTypeTest extends \PHPUnit_Framework_TestCase
 
     public function optionsDataProvider()
     {
-        $view = new FormView();
-        $view->vars['id'] = 'test_id';
-        $defaultElementForm = $this->getMockBuilder('Symfony\Component\Form\Form')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $defaultElementForm->expects($this->any())
-            ->method('createView')
-            ->will($this->returnValue($view));
-
         return array(
             array(
                 array('grid_url' => '/test'), 'grid_url', '/test'
@@ -110,7 +101,10 @@ class MultipleEntityTypeTypeTest extends \PHPUnit_Framework_TestCase
                 array(), 'selector_window_title', null
             ),
             array(
-                array('default_element' => $defaultElementForm), 'default_element', 'test_id'
+                array('default_element' => 'id'), 'default_element', 'id'
+            ),
+            array(
+                array(), 'default_element', null
             )
         );
     }
