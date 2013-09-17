@@ -28,8 +28,8 @@ class FilesystemCacheTest extends \PHPUnit_Framework_TestCase
     public static function getFilenameProvider()
     {
         return array(
-            array('test', 'dir\test.ext'),
-            array('test\\\\//::""**??<<>>||file', 'dir\testfile.ext'),
+            array('test', 'dir' . DIRECTORY_SEPARATOR . 'test.ext'),
+            array('test\\\\//::""**??<<>>||file', 'dir' . DIRECTORY_SEPARATOR . 'testfile.ext'),
         );
     }
 

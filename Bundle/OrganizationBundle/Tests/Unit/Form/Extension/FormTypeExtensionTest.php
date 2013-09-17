@@ -100,7 +100,9 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
         $this->user->expects($this->any())->method('getId')->will($this->returnValue(1));
         $this->user->expects($this->any())->method('getBusinessUnits')->will($this->returnValue($this->businessUnits));
         $this->entityClassName = get_class($this->user);
-        $this->securityFacade = $this->getMock('Oro\Bundle\SecurityBundle\SecurityFacade');
+        $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+            ->disableOriginalConstructor()
+            ->getMock();
         $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
             ->disableOriginalConstructor()
             ->getMock();
