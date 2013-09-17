@@ -21,6 +21,8 @@
 
 {% set parametersSorterType = constant(parameterTypePrefix ~ 'SORT_PARAMETERS') %}
 {% set parametersFilterType = constant(parameterTypePrefix ~ 'FILTER_PARAMETERS') %}
+{% set parametersAdditionalType = constant(parameterTypePrefix ~ 'ADDITIONAL_PARAMETERS') %}
+{% set additionalParametersViewKey = constant('Oro\\Bundle\\GridBundle\\Datagrid\\Views\\AbstractViewsList::PARAM_KEY') %}
 
 {% set sorterData = [] %}
 {% if parametersSorterType in currentDatagridParameters|keys %}
@@ -32,6 +34,15 @@
 {% set filterData = currentDatagridParameters[parametersFilterType] %}
 {% endif %}
 
+{% set viewsData = [] %}
+{% set currentView = '' %}
+{% if datagrid.viewsList %}
+    {% if currentDatagridParameters[parametersAdditionalType][additionalParametersViewKey] is defined %}
+        {% set currentView = currentDatagridParameters[parametersAdditionalType][additionalParametersViewKey] %}
+    {% endif %}
+    {% set viewsData = datagrid.viewsList.toViewData() %}
+{% endif %}
+
 {% set entityHint = datagrid.entityHint ? datagrid.entityHint : 'records' %}
 
 require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'oro/loading-mask',
@@ -41,7 +52,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
     'oro/datagrid/delete-action', 'oro/datagrid/navigate-action', 'oro/datagrid/mass-action',
     'oro/datafilter/choice-filter', 'oro/datafilter/number-filter', 'oro/datafilter/date-filter',
     'oro/datafilter/datetime-filter', 'oro/datafilter/select-filter', 'oro/datafilter/multiselect-filter',
-    'oro/datafilter/select-row-filter', 'oro/datagrid/ajax-action'],
+    'oro/datafilter/select-row-filter', 'oro/datagrid/ajax-action', 'oro/datagrid/grid-views/view'],
     function($, _, Backbone, mediator, registry, LoadingMask,
              Grid, GridRouter, PageableCollection, FilterList,
              MomentCell, NumberCell, IntegerCell, BooleanCell,
@@ -49,7 +60,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
              DeleteAction, NavigateAction, MassAction,
              ChoiceFilter, NumberFilter, DateFilter,
              DatetimeFilter, SelectFilter, MultiselectFilter,
-             SelectRowFilter, AjaxAction
+             SelectRowFilter, AjaxAction, GridViewsView
     ) {
         var datagridOptions = {
             grid: {
@@ -137,7 +148,8 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                     pageSize:     {{ datagrid.pager.maxPerPage|json_encode|raw }},
                     totalRecords: {{ datagrid.pager.nbResults|json_encode|raw }},
                     filters:      {{ filterData ? filterData|json_encode|raw : '{}' }},
-                    sorters:      {{ sorterData ? sorterData|json_encode|raw : '{}' }}
+                    sorters:      {{ sorterData ? sorterData|json_encode|raw : '{}' }},
+                    gridView:     {{ currentView ? currentView|json_encode|raw : '{}' }},
                 }
             },
             results: {{ oro_grid_render_results_json(datagridView) }}
@@ -147,13 +159,15 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
         var datagridTemplateSelector = {{ ("#" ~ templateElId)|json_encode|raw }};
         var datagridFiltersSelector = {{ ("#" ~ filtersElId)|json_encode|raw }};
         var datagridBodySelector = {{ ("#" ~ bodyElId)|json_encode|raw }};
+        var datagridGridViewsSelector = '.page-title > .navbar-extra .span9:last';
 
         var initDatagrid = function(
             datagridOptions,
             datagridTemplateSelector,
             containerSelector,
             datagridFiltersSelector,
-            datagridBodySelector
+            datagridBodySelector,
+            datagridGridViewsSelector
         ) {
             var datagridCollection = {};
             // Initialize grid collection
@@ -204,6 +218,8 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                  */
                 mediator.trigger("datagrid_filters:rendered", datagridCollection.collection);
             {% endif %}
+            var gridViewsPanel = new GridViewsView(_.extend({}, { collection: datagridCollection.collection }, {{ viewsData|json_encode|raw }}));
+            $(datagridGridViewsSelector).append(gridViewsPanel.render().$el);
 
             {# Don't use router when grid is embedded in dialog #}
             {% if app.request.get('_widgetContainer') != 'dialog' %}
@@ -219,7 +235,8 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
             datagridTemplateSelector,
             containerSelector,
             datagridFiltersSelector,
-            datagridBodySelector
+            datagridBodySelector,
+            datagridGridViewsSelector
         );
 
         if (!Backbone.History.started) {

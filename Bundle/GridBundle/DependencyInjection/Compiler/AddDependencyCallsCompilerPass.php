@@ -30,6 +30,7 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
     const ENTITY_HINT_ATTRIBUTE        = 'entity_hint';
     const QUERY_ENTITY_ALIAS_ATTRIBUTE = 'query_entity_alias';
     const IDENTIFIER_FIELD             = 'identifier_field';
+    const VIEWS_ATTRIBUTE              = 'views_list';
 
     /**
      * @var Definition
@@ -81,6 +82,7 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
             self::TRANSLATOR_ATTRIBUTE,
             self::VALIDATOR_ATTRIBUTE,
             self::ROUTER_ATTRIBUTE,
+            self::VIEWS_ATTRIBUTE,
         );
 
         foreach ($serviceKeys as $key) {

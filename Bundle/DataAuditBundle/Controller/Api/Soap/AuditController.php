@@ -6,7 +6,6 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 use Doctrine\Common\Persistence\ObjectManager;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 
 class AuditController extends ContainerAware
