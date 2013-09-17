@@ -14,18 +14,12 @@ use Knp\Menu\ItemInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider;
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * @RouteResource("shortcuts")
  * @NamePrefix("oro_api_")
  *
- * @Acl(
- *     id="oro_shortcut_api",
- *     name="Shortcut API",
- *     description="Shortcut API",
- *     parent="oro_shortcut"
- * )
  */
 class ShortcutsController extends FOSRestController
 {
@@ -42,12 +36,7 @@ class ShortcutsController extends FOSRestController
      * )
      * @return Response
      *
-     * @Acl(
-     *     id="oro_shortcut_api_list",
-     *     name="List shortcuts",
-     *     description="List shortcuts",
-     *     parent="oro_shortcut_api"
-     * )
+     * @AclAncestor("oro_shortcuts")
      */
     public function getAction($query)
     {

@@ -11,19 +11,13 @@ use FOS\Rest\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use Oro\Bundle\NavigationBundle\Entity\PageState;
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Symfony\Component\Validator\Constraints\True;
 
 /**
  * @NamePrefix("oro_api_")
- *
- * @Acl(
- *     id="oro_pagestate_api",
- *     name="Page state API",
- *     description="Page state API",
- *     parent="root"
- * )
  */
 class PagestateController extends FOSRestController implements ClassResourceInterface
 {
@@ -36,10 +30,10 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      * )
      *
      * @Acl(
-     *     id="oro_pagestate_api_list",
-     *     name="List page state",
-     *     description="List page state",
-     *     parent="oro_pagestate_api"
+     *      id="oro_pagestate",
+     *      type="action",
+     *      label="Page States",
+     *      group_name=""
      * )
      */
     public function cgetAction()
@@ -65,12 +59,7 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *  }
      * )
      *
-     * @Acl(
-     *     id="oro_pagestate_api_get",
-     *     name="Get a specific page state",
-     *     description="Get a specific page state",
-     *     parent="oro_pagestate_api"
-     * )
+     * @AclAncestor("oro_pagestate")
      */
     public function getAction($id)
     {
@@ -89,12 +78,7 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *  resource=true
      * )
      *
-     * @Acl(
-     *     id="oro_pagestate_api_post",
-     *     name="Create a page state",
-     *     description="Create a page state",
-     *     parent="oro_pagestate_api"
-     * )
+     * @AclAncestor("oro_pagestate")
      */
     public function postAction()
     {
@@ -120,12 +104,7 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *  }
      * )
      *
-     * @Acl(
-     *     id="oro_pagestate_api_update",
-     *     name="Update page state",
-     *     description="Update page state",
-     *     parent="oro_pagestate_api"
-     * )
+     * @AclAncestor("oro_pagestate")
      */
     public function putAction($id)
     {
@@ -153,12 +132,7 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *  }
      * )
      *
-     * @Acl(
-     *     id="oro_pagestate_api_delete",
-     *     name="Delete a page state",
-     *     description="Delete a page state",
-     *     parent="oro_pagestate_api"
-     * )
+     * @AclAncestor("oro_pagestate")
      */
     public function deleteAction($id)
     {
@@ -182,12 +156,7 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *  resource=true
      * )
      *
-     * @Acl(
-     *     id="oro_pagestate_api_check",
-     *     name="Check page state",
-     *     description="Check if a page state already exists",
-     *     parent="oro_pagestate_api"
-     * )
+     * @AclAncestor("oro_pagestate")
      */
     public function getCheckidAction()
     {

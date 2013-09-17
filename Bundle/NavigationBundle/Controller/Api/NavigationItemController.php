@@ -13,18 +13,12 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory;
 use Oro\Bundle\NavigationBundle\Entity\Repository\NavigationRepositoryInterface;
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * @RouteResource("navigationitems")
  * @NamePrefix("oro_api_")
- *
- * @Acl(
- *     id="oro_navigation_item_api",
- *     name="Navigation item API",
- *     description="Navigation item API",
- *     parent="root"
- * )
  */
 class NavigationItemController extends FOSRestController
 {
@@ -40,10 +34,10 @@ class NavigationItemController extends FOSRestController
      * @return Response
      *
      * @Acl(
-     *     id="oro_navigation_item_api_list",
-     *     name="List navigation items",
-     *     description="Get list of navigation items",
-     *     parent="oro_navigation_item_api"
+     *      id="oro_navigation_api",
+     *      type="action",
+     *      label="Navigation Items Api",
+     *      group_name=""
      * )
      */
     public function getAction($type)
@@ -71,12 +65,7 @@ class NavigationItemController extends FOSRestController
      * )
      * @return Response
      *
-     * @Acl(
-     *     id="oro_navigation_item_api_post",
-     *     name="Create navigation item",
-     *     description="Create a navigation item",
-     *     parent="oro_navigation_item_api"
-     * )
+     * @AclAncestor("oro_navigation_api")
      */
     public function postAction($type)
     {
@@ -123,12 +112,7 @@ class NavigationItemController extends FOSRestController
      * )
      * @return Response
      *
-     * @Acl(
-     *     id="oro_navigation_item_api_put",
-     *     name="Update navigation item",
-     *     description="Update a navigation item",
-     *     parent="oro_navigation_item_api"
-     * )
+     * @AclAncestor("oro_navigation_api")
      */
     public function putIdAction($type, $itemId)
     {
@@ -180,12 +164,7 @@ class NavigationItemController extends FOSRestController
      * )
      * @return Response
      *
-     * @Acl(
-     *     id="oro_navigation_item_api_delete",
-     *     name="Delete navigation item",
-     *     description="Delete a navigation item",
-     *     parent="oro_navigation_item_api"
-     * )
+     * @AclAncestor("oro_navigation_api")
      */
     public function deleteIdAction($type, $itemId)
     {

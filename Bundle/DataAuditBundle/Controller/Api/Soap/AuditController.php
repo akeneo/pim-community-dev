@@ -35,6 +35,7 @@ class AuditController extends ContainerAware
      * @Soap\Method("deleteAudit")
      * @Soap\Param("id", phpType = "int")
      * @Soap\Result(phpType = "boolean")
+     * @AclAncestor("oro_dataaudit_history_delete")
      */
     public function deleteAction($id)
     {

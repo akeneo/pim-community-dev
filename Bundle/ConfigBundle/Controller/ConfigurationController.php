@@ -8,16 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Oro\Bundle\ConfigBundle\Provider\SystemConfigurationFormProvider;
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
-/**
- * @Acl(
- *     id="oro_config",
- *     name="Configuration",
- *     description="Configuration",
- *     parent="root"
- * )
- */
 class ConfigurationController extends Controller
 {
     /**
@@ -29,9 +21,9 @@ class ConfigurationController extends Controller
      * @Template()
      * @Acl(
      *      id="oro_config_system",
-     *      name="System configuration",
-     *      description="System configuration",
-     *      parent="oro_config"
+     *      type="action",
+     *      label="System configuration",
+     *      group_name=""
      * )
      */
     public function systemAction($activeGroup = null, $activeSubGroup = null)

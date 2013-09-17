@@ -9,18 +9,12 @@ use FOS\RestBundle\View\View;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * @RouteResource("search_advanced")
  * @NamePrefix("oro_api_")
- *
- * @Acl(
- *     id="oro_search_api_advanced",
- *     name="Advanced search API",
- *     description="Advanced search API",
- *     parent="oro_search"
- * )
  */
 class SearchAdvancedController extends FOSRestController
 {
@@ -87,12 +81,7 @@ class SearchAdvancedController extends FOSRestController
      *      {"name"="query", "dataType"="string"}
      *  }
      * )
-     * @Acl(
-     *     id="oro_search_api_advanced_feature",
-     *     name="API for advanced search",
-     *     description="API for advanced search",
-     *     parent="oro_search_api_advanced"
-     * )
+     * @AclAncestor("oro_search")
      */
     public function getAction()
     {
