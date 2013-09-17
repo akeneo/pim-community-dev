@@ -7,6 +7,7 @@ use Oro\Bundle\BatchBundle\Job\ExitStatus;
 /**
  * Tests related to the ExitStatus class
  *
+ * @SuppressWarnings(PHPMD.TooManyMethods)
  */
 class ExitStatusTest extends \PHPUnit_Framework_TestCase
 {
