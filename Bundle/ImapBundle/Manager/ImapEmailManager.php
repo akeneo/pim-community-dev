@@ -12,6 +12,7 @@ use Zend\Mail\Headers;
 use Zend\Mail\Header\HeaderInterface;
 use Zend\Mail\Header\AbstractAddressList;
 use Zend\Mail\Address\AddressInterface;
+use Oro\Bundle\ImapBundle\Mail\Storage\Message;
 
 class ImapEmailManager
 {
@@ -93,51 +94,55 @@ class ImapEmailManager
      * Retrieve emails by the given criteria
      *
      * @param SearchQuery $query
-     * @param int $maxResults The maximum number of items returned by this method. Set -1 to unlimited
-     * @return Email[]
+     * @return ImapEmailIterator
      */
-    public function getEmails(SearchQuery $query = null, $maxResults = 100)
+    public function getEmails(SearchQuery $query = null)
     {
         $response = $this->connector->findItems(
             $this->getSelectedFolder(),
-            $query,
-            $maxResults
+            $query
         );
 
-        $result = array();
-        foreach ($response as $msg) {
-            $headers = $msg->getHeaders();
-            $email = new Email($msg);
-            $email
-                ->setId(
-                    new ItemId(
-                        intval($headers->get('UID')->getFieldValue()),
-                        $this->connector->getUidValidity()
-                    )
-                )
-                ->setSubject($this->getString($headers, 'Subject'))
-                ->setFrom($this->getString($headers, 'From'))
-                ->setSentAt($this->getDateTime($headers, 'Date'))
-                ->setReceivedAt($this->getReceivedAt($headers))
-                ->setInternalDate($this->getDateTime($headers, 'InternalDate'))
-                ->setImportance($this->getImportance($headers))
-                ->setMessageId($this->getString($headers, 'Message-ID'))
-                ->setXMessageId($this->getString($headers, 'X-GM-MSG-ID'))
-                ->setXThreadId($this->getString($headers, 'X-GM-THR-ID'));
-            foreach ($this->getRecipients($headers, 'To') as $val) {
-                $email->addToRecipient($val);
-            }
-            foreach ($this->getRecipients($headers, 'Cc') as $val) {
-                $email->addCcRecipient($val);
-            }
-            foreach ($this->getRecipients($headers, 'Bcc') as $val) {
-                $email->addBccRecipient($val);
-            }
+        return new ImapEmailIterator($response, $this);
+    }
 
-            $result[] = $email;
+    /**
+     * Creates Email DTO for the given email message
+     *
+     * @param Message $msg
+     * @return Email
+     */
+    public function getEmail(Message $msg)
+    {
+        $headers = $msg->getHeaders();
+        $email = new Email($msg);
+        $email
+            ->setId(
+                new ItemId(
+                    intval($headers->get('UID')->getFieldValue()),
+                    $this->connector->getUidValidity()
+                )
+            )
+            ->setSubject($this->getString($headers, 'Subject'))
+            ->setFrom($this->getString($headers, 'From'))
+            ->setSentAt($this->getDateTime($headers, 'Date'))
+            ->setReceivedAt($this->getReceivedAt($headers))
+            ->setInternalDate($this->getDateTime($headers, 'InternalDate'))
+            ->setImportance($this->getImportance($headers))
+            ->setMessageId($this->getString($headers, 'Message-ID'))
+            ->setXMessageId($this->getString($headers, 'X-GM-MSG-ID'))
+            ->setXThreadId($this->getString($headers, 'X-GM-THR-ID'));
+        foreach ($this->getRecipients($headers, 'To') as $val) {
+            $email->addToRecipient($val);
+        }
+        foreach ($this->getRecipients($headers, 'Cc') as $val) {
+            $email->addCcRecipient($val);
+        }
+        foreach ($this->getRecipients($headers, 'Bcc') as $val) {
+            $email->addBccRecipient($val);
         }
 
-        return $result;
+        return $email;
     }
 
     /**
