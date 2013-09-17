@@ -10,18 +10,8 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
 use Oro\Bundle\UserBundle\Entity\User;
 
-class ChangePasswordSubscriber implements EventSubscriberInterface
+class ChangePasswordSubscriber extends UserSubscriber
 {
-    /**
-     * @var AclManager
-     */
-    protected $aclManager;
-
-    /**
-     * @var SecurityContextInterface
-     */
-    protected $security;
-
     /**
      * @param AclManager               $aclManager ACL manager
      * @param SecurityContextInterface $security   Security context
@@ -56,23 +46,5 @@ class ChangePasswordSubscriber implements EventSubscriberInterface
         if ($this->isCurrentUser($user)) {
             $user->setPlainPassword($plainPassword->getData());
         }
-    }
-
-    /**
-     * Returns true if passed user is currently authenticated
-     *
-     * @param  User $user
-     * @return bool
-     */
-    protected function isCurrentUser(User $user)
-    {
-        $token = $this->security->getToken();
-        $currentUser = $token ? $token->getUser() : null;
-
-        if ($user->getId() && is_object($currentUser)) {
-            return $currentUser->getId() == $user->getId();
-        }
-
-        return false;
     }
 }

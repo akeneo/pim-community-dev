@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Form\EventListener;
+namespace Oro\Bundle\JsFormValidationBundle\Form\EventListener;
 
 use APY\JsFormValidationBundle\EventListener\RepeatedFieldListener;
 use APY\JsFormValidationBundle\Generator\PostProcessEvent;
@@ -11,7 +11,6 @@ class EmbedRepeatedFieldListener extends RepeatedFieldListener
     {
         $formFields = $event->getFormView()->children;
         $fieldsConstraints = $event->getFieldsConstraints();
-
         foreach ($formFields as $formField) {
             foreach ($formField->children as $childField) {
                 if (isset($childField->vars['type']) && $childField->vars['type'] == 'repeated') {
