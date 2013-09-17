@@ -257,7 +257,7 @@ div.btn-group > .has-switch {
 
 .upload-zone {
   float: left;
-  height: 100px;
+  height: @uploadZoneHeight;
   margin: 1px;
   color: @textColor + #333;
   cursor: pointer;
@@ -279,19 +279,19 @@ div.btn-group > .has-switch {
   }
   div.upload-info {
     display: inline-block;
-    height: 80px;
+    height: @uploadZoneHeight - 20;
     min-width: 229px;
     margin: 10px;
     font-size: 22px;
-    line-height: 80px;
+    line-height: @uploadZoneHeight - 20;
     text-align: center;
     .upload-preview, img {
       display: inline-block;
       max-width: 120px;
-      max-height: 80px;
+      max-height: @uploadZoneHeight - 20;
       min-width: 40px;
       font-size: 40px;
-      line-height: 80px;
+      line-height: @uploadZoneHeight - 20;
       color: @textColor + #333;
       text-decoration: none;
       vertical-align: middle;
@@ -305,24 +305,24 @@ div.btn-group > .has-switch {
     }
     span.upload-filename {
       padding: 0 5px;
-      line-height: 80px;
+      line-height: @uploadZoneHeight - 20;
     }
   }
   .remove-upload {
     float: right;
     width: 45px;
-    height: 100px;
+    height: @uploadZoneHeight;
     padding: 0 9px;
     margin-top: -1px;
     margin-right: -1px;
     font-size: 26px;
-    line-height: 100px;
+    line-height: @uploadZoneHeight;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
   }
   input[type="file"] {
     position: relative;
-    top: -100px;
+    top: -@uploadZoneHeight;
     z-index: 99;
     display: block;
     width: 100%!important;
