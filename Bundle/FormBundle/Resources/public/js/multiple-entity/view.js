@@ -36,7 +36,7 @@ function(_, Backbone, DialogWidget, WidgetManager) {
         },
 
         /**
-         * Display information about selected contact.
+         * Display information about selected entity.
          *
          * @param {jQuery.Event} e
          */
@@ -77,7 +77,7 @@ function(_, Backbone, DialogWidget, WidgetManager) {
             data['hasDefault'] = this.options.hasDefault;
             data['name'] = this.options.name;
             this.$el.append(this.template(data));
-            this.$el.find('a.contact-info').click(_.bind(this.viewDetails, this));
+            this.$el.find('a.entity-info').click(_.bind(this.viewDetails, this));
             this.toggleDefault();
             return this;
         }
