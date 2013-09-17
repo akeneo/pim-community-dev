@@ -108,6 +108,11 @@ class SecurityFacade
                 $annotation->getPermission(),
                 $this->objectIdentityFactory->get($annotation)
             );
+        } elseif (is_string($object)) {
+            $isGranted = $this->securityContext->isGranted(
+                $attributes,
+                $this->objectIdentityFactory->get($object)
+            );
         } else {
             $isGranted = $this->securityContext->isGranted($attributes, $object);
         }

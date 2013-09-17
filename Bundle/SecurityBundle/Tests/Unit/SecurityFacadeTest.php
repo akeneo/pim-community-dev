@@ -326,6 +326,20 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
+    public function testIsGrantedWithString()
+    {
+        $obj = "Entity:SomeClass";
+        $this->annotationProvider->expects($this->never())
+            ->method('findAnnotationById');
+        $this->securityContext->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('PERMISSION'), $this->equalTo($obj))
+            ->will($this->returnValue(true));
+
+        $result = $this->facade->isGranted('PERMISSION', $obj);
+        $this->assertTrue($result);
+    }
+
     public function testIsGrantedWithObject()
     {
         $obj = new \stdClass();
