@@ -29,6 +29,11 @@ use Symfony\Component\Security\Acl\Model\EntryInterface;
  */
 class AclManager
 {
+    /**
+     * We can not use BATCH_SIZE of Symfony ACL due to a bug check in the cache
+     */
+    const MAX_BATCH_SIZE = 1;
+
     const CLASS_ACE = 'Class';
     const OBJECT_ACE = 'Object';
 
@@ -949,12 +954,15 @@ class AclManager
         $oidsBatches[$batchIndex] = array();
         $index = 0;
         foreach ($oids as $oid) {
-            $index++;
-            if ($index > AclProvider::MAX_BATCH_SIZE) {
+            /**
+             * We can not use AclProvider::MAX_BATCH_SIZE of Symfony ACL due to a bug check in the cache
+             */
+            if ($index >= self::MAX_BATCH_SIZE) {
                 $index = 0;
                 $batchIndex++;
             }
             $oidsBatches[$batchIndex][] = $oid;
+            $index++;
         }
 
         $result = null;

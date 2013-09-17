@@ -98,12 +98,21 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
      */
     protected function processAcl(array &$options = array())
     {
+        if (isset($options['check_access']) && $options['check_access'] == false) {
+            $needCheck = false;
+        } else {
+            $needCheck = true;
+        }
+
         $isAllowed = self::DEFAULT_ACL_POLICY;
         if (array_key_exists(self::ACL_RESOURCE_ID_KEY, $options)) {
             if (array_key_exists($options[self::ACL_RESOURCE_ID_KEY], $this->aclCache)) {
                 $isAllowed = $this->aclCache[$options[self::ACL_RESOURCE_ID_KEY]];
             } else {
-                $isAllowed =  $this->securityFacade->isGranted($options[self::ACL_RESOURCE_ID_KEY]);
+                if ($needCheck) {
+                    $isAllowed =  $this->securityFacade->isGranted($options[self::ACL_RESOURCE_ID_KEY]);
+                }
+
                 $this->aclCache[$options[self::ACL_RESOURCE_ID_KEY]] = $isAllowed;
             }
         } else {
@@ -112,7 +121,9 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
                 if (array_key_exists($routeInfo['key'], $this->aclCache)) {
                     $isAllowed = $this->aclCache[$routeInfo['key']];
                 } else {
-                    $isAllowed = $this->securityFacade->isClassMethodGranted($routeInfo['controller'], $routeInfo['action']);
+                    if ($needCheck) {
+                        $isAllowed = $this->securityFacade->isClassMethodGranted($routeInfo['controller'], $routeInfo['action']);
+                    }
                     $this->aclCache[$routeInfo['key']] = $isAllowed;
                 }
             }
