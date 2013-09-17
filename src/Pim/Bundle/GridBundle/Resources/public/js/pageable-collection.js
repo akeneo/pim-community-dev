@@ -28,28 +28,29 @@ define(
                 setCategory: function(treeId, categoryId) {
                     treeId = (categoryId === '') ? '' : treeId;
                     if (treeId !== this.state.treeId || categoryId !== this.state.categoryId) {
-                        var treeString = categoryId === '' ? '' : '&treeId=' + treeId,
-                            categoryString = categoryId === '' ? '' : '&categoryId=' + categoryId;
-
-                        if (this.url.match(treePattern)) {
-                            this.url = this.url.replace(treePattern, treeString);
-                        } else {
-                            this.url += treeString;
-                        }
-
-                        if (this.url.match(categoryPattern)) {
-                            this.url = this.url.replace(categoryPattern, categoryString);
-                        } else {
-                            this.url += categoryString;
-                        }
-                        this.updateState({
-                            treeId: treeId,
-                            categoryId: categoryId
-                        })
+                        this.updateState({ treeId: treeId, categoryId: categoryId })
+                        this.url = this.setCategoryInUrl(this.url)
                         return true;
                     } else {
                         return false;
                     }
+                },
+                setCategoryInUrl: function(url) {
+                    var treeString = this.state.categoryId === '' ? '' : '&treeId=' + this.state.treeId,
+                        categoryString = this.state.categoryId === '' ? '' : '&categoryId=' + this.state.categoryId;
+
+                    if (url.match(treePattern)) {
+                        url = url.replace(treePattern, treeString);
+                    } else {
+                        url += treeString;
+                    }
+
+                    if (url.match(categoryPattern)) {
+                        url = url.replace(categoryPattern, categoryString);
+                    } else {
+                        url += categoryString;
+                    }
+                    return url
                 },
                 /**
                  * @inheritdoc
