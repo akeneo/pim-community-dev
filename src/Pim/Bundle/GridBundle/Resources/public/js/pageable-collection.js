@@ -82,8 +82,11 @@ define(
                 /**
                  * @inheritdoc
                  */
-                processQueryParams: function(data, state) {
-                    var queryParams = parent.processQueryParams.call(this, data, state)
+                processFiltersParams: function(data, state) {
+                    if (!state) {
+                        state = this.state;
+                    }
+                    var queryParams = parent.processFiltersParams.call(this, data, state)
                     if (state.categoryId) {
                         queryParams.categoryId = state.categoryId;
                     }
