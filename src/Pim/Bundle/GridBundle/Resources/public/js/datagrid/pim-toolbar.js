@@ -30,7 +30,7 @@ define(
                             '<button class="btn"><i class="icon-copy hide-text"><%- _.__("copy") %></i></button>' +
                             '<button class="btn"><i class="icon-trash hide-text"><%- _.__("remove") %></i></button>' +
                         '</div>' +
-                        '<div class="export-actions-panel btn-group"></div>' +
+                        '<div class="export-actions-panel btn-group buffer-left"></div>' +
                         '<div class="btn-group" style="display: none;">' +
                             '<button data-toggle="dropdown" class="btn dropdown-toggle"><%- _.__("Status") %>: <strong><%- _.__("All") %></strong><span class="caret"></span></button>' +
                             '<ul class="dropdown-menu">' +
