@@ -131,12 +131,4 @@ class RoleController extends Controller
             array('datagrid' => $datagrid->createView())
         );
     }
-
-    /**
-     * @return \Oro\Bundle\UserBundle\Acl\Manager
-     */
-    protected function getAclManager()
-    {
-        return $this->get('oro_user.acl_manager');
-    }
 }

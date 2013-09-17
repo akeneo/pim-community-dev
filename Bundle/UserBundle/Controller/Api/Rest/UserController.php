@@ -195,37 +195,6 @@ class UserController extends FlexibleRestController implements ClassResourceInte
     }
 
     /**
-     * Get user's ACL list
-     *
-     * @param int $id User id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @ApiDoc(
-     *      description="Get user's granted ACL resources",
-     *      resource=true,
-     *      requirements={
-     *          {"name"="id", "dataType"="integer"},
-     *      }
-     * )
-     * @Acl(
-     *      id="oro_user_user_acl",
-     *      label="View user ACL",
-     *      type="action",
-     *      group_name=""
-     * )
-     */
-    public function getAclAction($id)
-    {
-        $user = $this->getManager()->find($id);
-
-        if (!$user) {
-            return $this->handleView($this->view('', Codes::HTTP_NOT_FOUND));
-        }
-
-        return $this->handleView($this->view($this->getAclManager()->getAclForUser($user), Codes::HTTP_OK));
-    }
-
-    /**
      * Filter user by username or email
      *
      * @QueryParam(name="email", requirements="[a-zA-Z0-9\-_\.@]+", nullable=true, description="Email to filter")
@@ -257,14 +226,6 @@ class UserController extends FlexibleRestController implements ClassResourceInte
                 $entity ? Codes::HTTP_OK : Codes::HTTP_NOT_FOUND
             )
         );
-    }
-
-    /**
-     * @return \Oro\Bundle\UserBundle\Acl\Manager
-     */
-    protected function getAclManager()
-    {
-        return $this->get('oro_user.acl_manager');
     }
 
     /**

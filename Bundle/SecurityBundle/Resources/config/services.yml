@@ -325,7 +325,3 @@ services:
             - @oro_security.security_facade
         tags:
             - { name: twig.extension }
-
- #   oro_user.acl_manager.api:
- #       class:                        %oro_user.acl.manager.api.class%
- #       arguments:                    [%oro_user.acl.entity.class%, @doctrine.orm.entity_manager]
