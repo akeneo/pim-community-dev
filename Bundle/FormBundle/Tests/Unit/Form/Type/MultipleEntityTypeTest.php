@@ -5,7 +5,7 @@ namespace Oro\Bundle\FormBundle\Tests\Unit\Form\Type;
 use Oro\Bundle\FormBundle\Form\Type\MultipleEntityType;
 use Symfony\Component\Form\FormView;
 
-class EntityIdentifierTypeTest extends \PHPUnit_Framework_TestCase
+class MultipleEntityTypeTypeTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var MultipleEntityType
@@ -54,7 +54,8 @@ class EntityIdentifierTypeTest extends \PHPUnit_Framework_TestCase
                     'mapped' => false,
                     'grid_url' => null,
                     'default_element' => null,
-                    'initial_elements' => null
+                    'initial_elements' => null,
+                    'selector_window_title' => null
                 )
             );
         $this->type->setDefaultOptions($optionsResolver);
@@ -101,6 +102,12 @@ class EntityIdentifierTypeTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(), 'initial_elements', null
+            ),
+            array(
+                array('selector_window_title' => 'Select'), 'selector_window_title', 'Select'
+            ),
+            array(
+                array(), 'selector_window_title', null
             ),
             array(
                 array('default_element' => $defaultElementForm), 'default_element', 'test_id'

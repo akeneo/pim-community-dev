@@ -42,15 +42,26 @@ class MultipleEntityType extends AbstractType
                 'mapped' => false,
                 'grid_url' => null,
                 'default_element' => null,
-                'initial_elements' => null
+                'initial_elements' => null,
+                'selector_window_title' => null
             )
         );
     }
 
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['grid_url'] = isset($options['grid_url']) ? $options['grid_url'] : null;
-        $view->vars['initial_elements'] = isset($options['initial_elements']) ? $options['initial_elements'] : null;
+        $view->vars['grid_url'] = isset($options['grid_url'])
+            ? $options['grid_url']
+            : null;
+
+        $view->vars['initial_elements'] = isset($options['initial_elements'])
+            ? $options['initial_elements']
+            : null;
+
+        $view->vars['selector_window_title'] = isset($options['selector_window_title'])
+            ? $options['selector_window_title']
+            : null;
+
         if (isset($options['default_element']) && $options['default_element'] instanceof FormInterface) {
             $view->vars['default_element'] =  $options['default_element']->createView($view->parent)->vars['id'];
         }

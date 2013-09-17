@@ -1,8 +1,8 @@
 /* jshint devel:true */
 /* global define */
-define(['underscore', 'backbone', 'oro/translator', 'oro/multiple-entity/view', 'oro/multiple-entity/model',
+define(['underscore', 'backbone', 'oro/multiple-entity/view', 'oro/multiple-entity/model',
     'oro/widget-manager', 'oro/dialog-widget'],
-function(_, Backbone, __, EntityView, MultipleEntityModel, WidgetManager, DialogWidget) {
+function(_, Backbone, EntityView, MultipleEntityModel, WidgetManager, DialogWidget) {
     'use strict';
 
     var $ = Backbone.$;
@@ -22,7 +22,9 @@ function(_, Backbone, __, EntityView, MultipleEntityModel, WidgetManager, Dialog
             selectionUrl: null,
             addedElement: null,
             removedElement: null,
-            defaultElement: null
+            defaultElement: null,
+            itemsPerRow: 4,
+            selectorWindowTitle: null
         },
 
         events: {
@@ -98,7 +100,7 @@ function(_, Backbone, __, EntityView, MultipleEntityModel, WidgetManager, Dialog
                         + 'added=' + this.$addedEl.val()
                         + '&removed=' + this.$removedEl.val()
                         + '&default=' + this.$defaultEl.val(),
-                    title: __('Select Contacts'),
+                    title: this.options.selectorWindowTitle,
                     stateEnabled: false,
                     dialogOptions: {
                         'modal': true,
@@ -120,13 +122,7 @@ function(_, Backbone, __, EntityView, MultipleEntityModel, WidgetManager, Dialog
             this.$removedEl.val(removed.join(','));
 
             _.each(addedModels, _.bind(function(model) {
-                this.getCollection().add(
-                    new MultipleEntityModel({
-                        'id': model.get('id'),
-                        'link': Routing.generate('orocrm_contact_info', {id: model.get('id')}),
-                        'label': model.get('first_name') + ' ' + model.get('last_name')
-                    })
-                );
+                this.getCollection().add(model);
             }, this));
             for (var i = 0; i < removed.length; i++) {
                 var model = this.getCollection().get(removed[i]);

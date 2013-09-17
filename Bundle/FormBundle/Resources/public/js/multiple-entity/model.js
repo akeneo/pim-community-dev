@@ -13,7 +13,8 @@ define(['backbone'],
                 id: null,
                 link: null,
                 label: null,
-                isDefault: false
+                isDefault: false,
+                extraData: []
             }
         });
     });

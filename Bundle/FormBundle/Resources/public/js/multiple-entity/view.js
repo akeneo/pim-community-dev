@@ -11,7 +11,7 @@ function(_, Backbone, DialogWidget, WidgetManager) {
      */
     return Backbone.View.extend({
         attributes: {
-            'class': 'entity-item clearfix'
+            'class': 'entity-item clearfix span3'
         },
 
         events: {
