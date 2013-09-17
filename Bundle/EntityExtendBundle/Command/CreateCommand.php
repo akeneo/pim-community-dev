@@ -34,7 +34,7 @@ class CreateCommand extends ContainerAwareCommand
     /**
      * Runs command
      *
-     * @param  InputInterface $input
+     * @param  InputInterface  $input
      * @param  OutputInterface $output
      * @throws \InvalidArgumentException
      * @return int|null|void
@@ -64,7 +64,7 @@ class CreateCommand extends ContainerAwareCommand
 
                 //fix state "Update" for existing class.
                 foreach ($config as $className => $entityOptions) {
-                    $className = class_exists($className) ? $className : 'Extend\\Entity\\' . $className;
+                    $className    = class_exists($className) ? $className : 'Extend\\Entity\\' . $className;
                     $entityConfig = $configProvider->getConfig($className);
                     $entityConfig->set('state', ExtendManager::STATE_ACTIVE);
 
@@ -121,7 +121,7 @@ class CreateCommand extends ContainerAwareCommand
 
             $entityConfig = $configProvider->getConfig($className);
 
-            $owner  = isset($entityOptions['owner']) ? $entityOptions['owner'] : ExtendManager::OWNER_SYSTEM;
+            $owner = isset($entityOptions['owner']) ? $entityOptions['owner'] : ExtendManager::OWNER_SYSTEM;
             $entityConfig->set('owner', $owner);
 
             if (isset($entityOptions['is_extend'])) {
@@ -138,8 +138,9 @@ class CreateCommand extends ContainerAwareCommand
                 );
             }
 
+            $owner = isset($fieldConfig['owner']) ? $fieldConfig['owner'] : ExtendManager::OWNER_SYSTEM;
             $mode  = isset($fieldConfig['mode']) ? $fieldConfig['mode'] : ConfigModelManager::MODE_DEFAULT;
-            $extendManager->createField($className, $fieldName, $fieldConfig, ExtendManager::OWNER_SYSTEM, $mode);
+            $extendManager->createField($className, $fieldName, $fieldConfig, $owner, $mode);
 
             $this->setDefaultConfig($entityOptions, $className, $fieldName);
 
@@ -175,7 +176,7 @@ class CreateCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param array $options
+     * @param array  $options
      * @param string $entityName
      * @param string $fieldName
      */

@@ -6,6 +6,7 @@ TestClassExtend:
             label:                  TestClassExtend
     fields:
         testStringField:
+            owner:                  'Custom'
             type:                   string
             configs:
                 entity:
@@ -13,11 +14,12 @@ TestClassExtend:
             options:
                 length:             200
         testIntegerField:
+            owner:                  'Custom'
             type:                   smallint
 
 
 OroCRM\Bundle\ContactBundle\Entity\Contact:
     fields:
         testField:
-            owner:                  'System'                #default 'System'
+            owner:                  'Custom'                #default 'System'
             type:                   string

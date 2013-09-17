@@ -75,6 +75,21 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
+     * Clone Config id with ConfigProvider scope
+     *
+     * @param ConfigIdInterface $configId
+     * @return ConfigIdInterface
+     */
+    public function copyId(ConfigIdInterface $configId)
+    {
+        if ($configId instanceof FieldConfigIdInterface) {
+            return $this->getId($configId->getClassName(), $configId->getFieldName(), $configId->getFieldType());
+        } else {
+            return $this->getId($configId->getClassName());
+        }
+    }
+
+    /**
      * @param      $className
      * @param null $fieldName
      * @return bool
@@ -100,7 +115,7 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function getConfigById(ConfigIdInterface $configId)
     {
-        return $this->configManager->getConfig($configId);
+        return $this->configManager->getConfig($this->copyId($configId));
     }
 
     /**

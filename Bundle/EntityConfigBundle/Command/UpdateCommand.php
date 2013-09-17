@@ -50,6 +50,8 @@ class UpdateCommand extends BaseCommand
             }
         }
 
+        $this->getConfigManager()->clearConfigurableCache();
+
         $this->getConfigManager()->flush();
 
         $output->writeln('Completed');
