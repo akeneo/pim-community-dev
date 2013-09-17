@@ -29,7 +29,8 @@ interface ItemReaderInterface
      * @throws UnexpectedInputException if there is an uncategorised problem
      * with the input data. Assume potentially transient, so subsequent calls to
      * read might succeed.
-     * @throws Exception if an there is a non-specific error.
+     * @throws \Exception if an there is a non-specific error.
+     * @return null|mixed Returns false in case of reading error
      */
     public function read(StepExecution $stepExecution);
 }
