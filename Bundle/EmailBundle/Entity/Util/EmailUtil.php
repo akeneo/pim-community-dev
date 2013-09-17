@@ -18,12 +18,12 @@ class EmailUtil
      */
     public static function extractPureEmailAddress($fullEmailAddress)
     {
-        $atPos = strpos($fullEmailAddress, '@');
+        $atPos = strrpos($fullEmailAddress, '@');
         if ($atPos === false) {
             return $fullEmailAddress;
         }
 
-        $startPos = strrpos($fullEmailAddress, '<', -$atPos);
+        $startPos = strrpos($fullEmailAddress, '<', -(strlen($fullEmailAddress) - $atPos));
         if ($startPos === false) {
             return $fullEmailAddress;
         }

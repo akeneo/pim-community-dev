@@ -40,9 +40,16 @@ class UserController extends Controller
      */
     public function viewAction(User $user)
     {
-        return array(
-            'entity' => $user,
-        );
+        $manager = $this->get('oro_email.email_datagrid_manager');
+        $manager->setUser($user);
+        $view = $manager->getDatagrid()->createView();
+
+        return 'json' == $this->getRequest()->getRequestFormat()
+            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
+            : array(
+                'entity' => $user,
+                'datagrid' => $view,
+            );
     }
 
     /**
