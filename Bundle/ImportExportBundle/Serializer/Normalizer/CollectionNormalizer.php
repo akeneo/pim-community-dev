@@ -87,11 +87,9 @@ class CollectionNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     protected function getItemType($class)
     {
-        if (preg_match(
-            '/^(Doctrine\\\Common\\\Collections\\\ArrayCollection|ArrayCollection)(<([\w_<>\\\]+)>)$/',
-            $class,
-            $matches)
-        ) {
+        $collectionRegexp = '/^(Doctrine\\\Common\\\Collections\\\ArrayCollection|ArrayCollection)(<([\w_<>\\\]+)>)$/';
+
+        if (preg_match($collectionRegexp, $class, $matches)) {
             return $matches[3];
         }
         return null;

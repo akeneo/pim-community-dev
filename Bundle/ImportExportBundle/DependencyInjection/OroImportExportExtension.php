@@ -19,5 +19,6 @@ class OroImportExportExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('serializer.yml');
+        $loader->load('converter.yml');
     }
 }
