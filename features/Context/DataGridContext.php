@@ -345,7 +345,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iResetTheGrid()
     {
-        $this->wait();
         $this->datagrid->clickOnResetButton();
         $this->wait();
     }
