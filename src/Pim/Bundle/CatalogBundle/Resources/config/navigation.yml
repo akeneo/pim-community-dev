@@ -34,7 +34,7 @@ oro_menu_config:
             uri: '#'
             extras:
                 position: 10
-            aclResourceId: 'pim_navigation_extract'
+            aclResourceId: 'pim_navigation_collect'
             showNonAuthorized: false
         pim_export_tab:
             label: 'Spread'
@@ -65,7 +65,7 @@ oro_menu_config:
         pim_catalog_channel:
             label: 'Channels'
             route: 'pim_catalog_channel_index'
-            
+
         oro_tag_list:
             display: false
         oro_business_unit_list:
