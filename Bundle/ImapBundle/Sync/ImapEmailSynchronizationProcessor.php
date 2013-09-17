@@ -10,14 +10,13 @@ use Oro\Bundle\ImapBundle\Entity\ImapEmail;
 use Oro\Bundle\ImapBundle\Manager\ImapEmailManager;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
-use Oro\Bundle\ImapBundle\Entity\ImapEmailFolder;
 use Oro\Bundle\ImapBundle\Mail\Storage\Folder;
 use Oro\Bundle\ImapBundle\Manager\DTO\Email;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 
 class ImapEmailSynchronizationProcessor
 {
-    const BATCH_SIZE = 10;
+    const DB_BATCH_SIZE = 5;
 
     /**
      * @var LoggerInterface
@@ -71,14 +70,15 @@ class ImapEmailSynchronizationProcessor
         $folders = $this->getFolders($origin);
 
         foreach ($folders as $folder) {
-            $this->emailEntityBuilder->setFolder($folder->getFolder());
+            $this->emailEntityBuilder->setFolder($folder);
 
-            $folderName = $folder->getFolder()->getFullName();
+            $folderName = $folder->getFullName();
             $this->manager->selectFolder($folderName);
             $qb = $this->manager->getSearchQueryBuilder();
 
-            if ($folder->getSynchronizedAt()) {
-                $qb->sent($qb->formatDate($folder->getSynchronizedAt()));
+            // prepare email search query
+            if ($origin->getSynchronizedAt()) {
+                $qb->sent($qb->formatDate($origin->getSynchronizedAt()));
             } else {
                 // this is the first synchronization of this folder; just load emails for last month
                 $fromDate = new \DateTime('now');
@@ -87,14 +87,14 @@ class ImapEmailSynchronizationProcessor
             }
 
             $this->log->info(sprintf('Loading emails from "%s" folder ...', $folderName));
-            $emails = $this->manager->getEmails($qb->get(), 21);
+            $emails = $this->manager->getEmails($qb->get());
 
             $inBatchCount = 0;
             $batch = array();
             foreach ($emails as $email) {
                 $inBatchCount++;
                 $batch[] = $email;
-                if ($inBatchCount === self::BATCH_SIZE) {
+                if ($inBatchCount === self::DB_BATCH_SIZE) {
                     $this->saveEmails($batch, $this->manager->getUidValidity(), $folder);
                     $inBatchCount = 0;
                     $batch = array();
@@ -108,18 +108,16 @@ class ImapEmailSynchronizationProcessor
 
     /**
      * @param ImapEmailOrigin $origin
-     * @return ImapEmailFolder[]
+     * @return EmailFolder[]
      */
     protected function getFolders(ImapEmailOrigin $origin)
     {
         $this->log->info('Loading folders ...');
 
-        $repo = $this->em->getRepository('OroImapBundle:ImapEmailFolder');
+        $repo = $this->em->getRepository('OroEmailBundle:EmailFolder');
         $query = $repo->createQueryBuilder('f')
-            ->select('f, sf')
-            ->innerJoin('f.folder', 'sf')
-            ->where('sf.origin = ?1')
-            ->orderBy('f.syncCode, f.synchronizedAt, sf.name')
+            ->where('f.origin = ?1')
+            ->orderBy('f.name')
             ->setParameter(1, $origin)
             ->getQuery();
         $folders = $query->getResult();
@@ -132,7 +130,7 @@ class ImapEmailSynchronizationProcessor
     }
 
     /**
-     * @param ImapEmailFolder[] $folders
+     * @param EmailFolder[] $folders
      * @param ImapEmailOrigin $origin
      */
     protected function ensureFoldersInitialized(array &$folders, ImapEmailOrigin $origin)
@@ -164,27 +162,26 @@ class ImapEmailSynchronizationProcessor
                     ->setName($srcFolder->getLocalName())
                     ->setType($type);
 
-                $imapFolder = new ImapEmailFolder();
-                $imapFolder->setFolder($folder);
-
                 $origin->addFolder($folder);
 
                 $this->em->persist($origin);
-                $this->em->persist($imapFolder);
+                $this->em->persist($folder);
 
-                $folders[] = $imapFolder;
+                $folders[] = $folder;
 
                 $this->log->info(sprintf('The "%s" folder was persisted.', $globalName));
             }
         }
+
+        $this->em->flush();
     }
 
     /**
      * @param Email[] $emails
      * @param int $uidValidity
-     * @param \Oro\Bundle\ImapBundle\Entity\ImapEmailFolder $folder
+     * @param EmailFolder $folder
      */
-    protected function saveEmails(array $emails, $uidValidity, ImapEmailFolder $folder)
+    protected function saveEmails(array $emails, $uidValidity, EmailFolder $folder)
     {
         $this->emailEntityBuilder->removeEmails();
 
@@ -199,7 +196,7 @@ class ImapEmailSynchronizationProcessor
             ->innerJoin('e.email', 'se')
             ->innerJoin('se.folder', 'sf')
             ->where('sf.id = :folderId AND e.uidValidity = :uidValidity AND e.uid IN (:uids)')
-            ->setParameter('folderId', $folder->getFolder()->getId())
+            ->setParameter('folderId', $folder->getId())
             ->setParameter('uidValidity', $uidValidity)
             ->setParameter('uids', $uids)
             ->getQuery();
@@ -232,5 +229,6 @@ class ImapEmailSynchronizationProcessor
         }
 
         $this->emailEntityBuilder->getBatch()->persist($this->em);
+        $this->em->flush();
     }
 }
