@@ -53,7 +53,7 @@
 {% block content_data %}
     {% if require_js|length %}
         <script type="text/javascript">
-            require(['{{ require_js|join(',') }}'])
+            require({{ require_js|json_encode|raw }})
         </script>
     {% endif %}
 
