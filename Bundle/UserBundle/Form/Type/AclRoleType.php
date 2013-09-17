@@ -134,6 +134,6 @@ class AclRoleType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_user_role';
+        return 'oro_user_role_form';
     }
 }
