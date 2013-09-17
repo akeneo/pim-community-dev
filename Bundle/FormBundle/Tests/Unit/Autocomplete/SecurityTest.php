@@ -2,15 +2,14 @@
 
 namespace Oro\Bundle\FormBundle\Tests\Unit\Autocomplete;
 
-use Oro\Bundle\UserBundle\Acl\ManagerInterface;
 use Oro\Bundle\FormBundle\Autocomplete\Security;
 
 class SecurityTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $manager;
+    protected $securityFacade;
 
     /**
      * @var Security
@@ -19,8 +18,9 @@ class SecurityTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->manager = $this->getMock('Oro\Bundle\UserBundle\Acl\ManagerInterface');
-        $this->security = new Security($this->manager);
+        $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+            ->disableOriginalConstructor()->getMock();
+        $this->security = new Security($this->securityFacade);
     }
 
     public function testSetAutocompleteAclResource()
@@ -47,8 +47,8 @@ class SecurityTest extends \PHPUnit_Framework_TestCase
 
         $this->security->setAutocompleteAclResource('test_search', 'test_acl_resource');
 
-        $this->manager->expects($this->once())
-            ->method('isResourceGranted')
+        $this->securityFacade->expects($this->once())
+            ->method('isGranted')
             ->with('test_acl_resource')
             ->will($this->returnValue(true));
 

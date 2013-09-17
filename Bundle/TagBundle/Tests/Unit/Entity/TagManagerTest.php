@@ -32,7 +32,7 @@ class TagManagerTest extends \PHPUnit_Framework_TestCase
     protected $securityContext;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
-    protected $aclManager;
+    protected $securityFacade;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $router;
@@ -50,7 +50,7 @@ class TagManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
 
-        $this->aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\Manager')
+        $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
             ->disableOriginalConstructor()->getMock();
 
         $this->router = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Routing\Router')
@@ -76,7 +76,7 @@ class TagManagerTest extends \PHPUnit_Framework_TestCase
             'Oro\Bundle\TagBundle\Entity\Tagging',
             $this->mapper,
             $this->securityContext,
-            $this->aclManager,
+            $this->securityFacade,
             $this->router
         );
     }

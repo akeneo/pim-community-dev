@@ -54,7 +54,7 @@ class BreadcrumbManagerTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with(
                 'test',
-                array()
+                array('check_access' => false)
             )
             ->will($this->returnValue($item));
 
