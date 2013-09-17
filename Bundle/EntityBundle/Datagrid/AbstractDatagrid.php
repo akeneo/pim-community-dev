@@ -4,17 +4,18 @@ namespace Oro\Bundle\EntityBundle\Datagrid;
 
 use Doctrine\Common\Inflector\Inflector;
 
-use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
+
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
-use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Tools\Generator;
 
 class AbstractDatagrid extends DatagridManager
@@ -32,12 +33,12 @@ class AbstractDatagrid extends DatagridManager
 
     /**
      * @param FieldDescriptionCollection $fieldsCollection
-     * @param FieldConfigId $field
-     * @param Config $fieldConfig
+     * @param FieldConfigIdInterface     $field
+     * @param Config                     $fieldConfig
      */
     public function addDynamicField(
         FieldDescriptionCollection $fieldsCollection,
-        FieldConfigId $field,
+        FieldConfigIdInterface $field,
         Config $fieldConfig
     ) {
         $fieldObject = new FieldDescription();
@@ -59,25 +60,17 @@ class AbstractDatagrid extends DatagridManager
 
     public function addDynamicFields()
     {
-        $entityProvider = $this->configManager->getProvider('entity');
+        $entityProvider   = $this->configManager->getProvider('entity');
+        $extendProvider   = $this->configManager->getProvider('extend');
+        $datagridProvider = $this->configManager->getProvider('datagrid');
 
-        /** @var FieldConfigId $field */
-        $fields = $entityProvider->getIds($this->entityName);
-        foreach ($fields as $field) {
-            $extendProvider = $this->configManager->getProvider('extend');
-            $fieldName      = $field->getFieldName();
+        $fieldIds = $entityProvider->getIds($this->entityName);
+        foreach ($fieldIds as $fieldId) {
+            if ($extendProvider->getConfigById($fieldId)->is('owner', ExtendManager::OWNER_CUSTOM)) {
+                if ($datagridProvider->getConfigById($fieldId)->is('is_visible')) {
+                    $fieldConfig = $entityProvider->getConfigById($fieldId);
 
-            if ($extendProvider->getConfig($this->entityName, $fieldName)->get('extend')) {
-                /** @var Config $datagridConfig */
-                $datagridConfig = $this->configManager->getProvider('datagrid')->getConfig(
-                    $this->entityName,
-                    $fieldName
-                );
-                if ($datagridConfig->get('is_visible')) {
-                    /** @var Config $fieldConfig */
-                    $fieldConfig = $entityProvider->getConfig($this->entityName, $fieldName);
-
-                    $this->addDynamicField($this->getFieldDescriptionCollection(), $field, $fieldConfig);
+                    $this->addDynamicField($this->getFieldDescriptionCollection(), $fieldId, $fieldConfig);
                 }
             }
         }

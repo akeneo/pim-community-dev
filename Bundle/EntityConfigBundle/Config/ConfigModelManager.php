@@ -30,6 +30,11 @@ class ConfigModelManager
     protected $localCache;
 
     /**
+     * @var bool
+     */
+    protected $dbCheckCache;
+
+    /**
      * @var ServiceLink
      */
     protected $proxyEm;
@@ -59,7 +64,13 @@ class ConfigModelManager
      */
     public function checkDatabase()
     {
-        return (bool) count($this->getEntityManager()->getConnection()->getSchemaManager()->listTableNames());
+        if ($this->dbCheckCache === null) {
+            $this->dbCheckCache = (bool) count(
+                $this->getEntityManager()->getConnection()->getSchemaManager()->listTableNames()
+            );
+        }
+
+        return $this->dbCheckCache;
     }
 
     /**

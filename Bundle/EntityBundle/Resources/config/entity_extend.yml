@@ -6,6 +6,7 @@ TestClassExtend:
             label:                  TestClassExtend
     fields:
         testStringField:
+            owner:                  'Custom'
             type:                   string
             configs:
                 entity:
@@ -13,6 +14,7 @@ TestClassExtend:
             options:
                 length:             200
         testIntegerField:
+            owner:                  'Custom'
             type:                   smallint
 
 
