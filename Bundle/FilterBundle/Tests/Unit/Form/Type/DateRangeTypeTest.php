@@ -122,7 +122,6 @@ class DateRangeTypeTest extends AbstractTypeTestCase
             }
         }
 
-        $dateTime->setTimezone(new \DateTimeZone($timeZone));
         return $dateTime;
     }
 }
