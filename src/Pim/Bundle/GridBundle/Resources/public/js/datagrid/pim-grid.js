@@ -30,6 +30,14 @@ define(
                 exportActions: []
             },
             
+            /**
+             * @override
+             * Add export actions in toolbar
+             * 
+             * @param {Object} toolbarOptions
+             * @return {pim.datagrid.Toolbar}
+             * @private
+             */
             _createToolbar:function(toolbarOptions) {
                 return new this.toolbar(_.extend({}, toolbarOptions, {
                     collection: this.collection,
@@ -39,6 +47,12 @@ define(
                 }));
             },
             
+            /**
+             * Get toolbar export actions
+             * 
+             * @return {Array}
+             * @private
+             */
             _getToolbarExportActions: function() {
                 var result = [];
                 
@@ -46,21 +60,6 @@ define(
                     result.push(this.createExportAction(action.prototype));
                 }, this);
                 
-                return result;
-            },
-
-            /**
-             * Override get mass actions of toolbar adding export actions
-             *
-             * @return {Array}
-             * @private
-             */
-            _getToolbarMassActions: function() {
-                var result = [];
-                _.each(this.massActions, function(action) {
-                    result.push(this.createMassAction(action));
-                }, this);
-
                 return result;
             },
             
@@ -86,4 +85,3 @@ define(
         });
     }
 );
-
