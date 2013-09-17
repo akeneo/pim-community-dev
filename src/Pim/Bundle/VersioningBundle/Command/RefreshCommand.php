@@ -53,6 +53,7 @@ class RefreshCommand extends ContainerAwareCommand
             $logger->pushHandler(new StreamHandler('php://stdout'));
         }
 
+        $em = $this->getEntityManager();
         $pendingVersions = $this->getPendingManager()->getAllPendingVersions();
         $nbPendings = count($pendingVersions);
         if ($nbPendings === 0) {
@@ -63,19 +64,26 @@ class RefreshCommand extends ContainerAwareCommand
             $ind = 0;
             $batchSize = $input->getOption('batch-size');
             $progress->start($output, $nbPendings);
+            $versioned = array();
             foreach ($pendingVersions as $pending) {
-                $this->getPendingManager()->createVersionAndAudit($pending, false);
+                $user = $em->getRepository('OroUserBundle:User')
+                    ->findOneBy(array('username' => $pending->getUsername()));
+                $versionable = $this->getPendingManager()->getRelatedVersionable($pending);
+                if (!in_array(spl_object_hash($versionable), $versioned)) {
+                    $this->getAddVersionListener()->createVersionAndAudit($em, $versionable, $user);
+                    $versioned[]= spl_object_hash($versionable);
+                }
+                $em->remove($pending);
                 $ind++;
                 if (($ind % $batchSize) == 0) {
-                    $this->getEntityManager()->flush();
-                    $this->getEntityManager()->clear('Pim\\Bundle\\VersioningBundle\\Entity\\Version');
+                    $em->flush();
+                    $em->clear('Pim\\Bundle\\VersioningBundle\\Entity\\Version');
                 }
                 $progress->advance();
             }
             $progress->finish();
             $output->writeln(sprintf('<info>%d created versions.</info>', $nbPendings));
-
-            $this->getEntityManager()->flush();
+            $em->flush();
         }
     }
 
@@ -88,10 +96,18 @@ class RefreshCommand extends ContainerAwareCommand
     }
 
     /**
+     * @return AddVersionListener
+     */
+    protected function getAddVersionListener()
+    {
+        return $this->getContainer()->get('pim_versioning.event_listener.addversion');
+    }
+
+    /**
      * @return EntityManager
      */
     protected function getEntityManager()
     {
-        return $this->getContainer()->get('doctrine')->getEntityManager();
+        return $this->getContainer()->get('doctrine')->getManager();
     }
 }

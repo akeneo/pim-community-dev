@@ -11,7 +11,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
-use Pim\Bundle\BatchBundle\Job\BatchStatus;
+use Oro\Bundle\BatchBundle\Job\BatchStatus;
 
 /**
  * Report datagrid manager
@@ -184,7 +184,7 @@ class ReportDatagridManager extends DatagridManager
                 'sortable'        => false,
                 'filterable'      => true,
                 'show_filter'     => true,
-                'class'           => 'PimBatchBundle:JobInstance',
+                'class'           => 'OroBatchBundle:JobInstance',
                 'property'        => 'code',
                 'query_builder'   => function (EntityRepository $repository) {
                     return $repository->createQueryBuilder('j')->orderBy('j.code', 'ASC');
@@ -216,7 +216,7 @@ class ReportDatagridManager extends DatagridManager
                 'sortable'        => false,
                 'filterable'      => true,
                 'show_filter'     => true,
-                'class'           => 'PimBatchBundle:JobInstance',
+                'class'           => 'OroBatchBundle:JobInstance',
                 'property'        => 'alias',
                 'query_builder'   => function (EntityRepository $repository) use ($jobType) {
                     $qb = $repository->createQueryBuilder('j')->orderBy('j.alias', 'ASC');

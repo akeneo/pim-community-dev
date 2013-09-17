@@ -11,8 +11,8 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
-use Pim\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Pim\Bundle\BatchBundle\Entity\JobInstance;
+use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Oro\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
  * JobInstance datagrid manager
@@ -202,7 +202,7 @@ class JobInstanceDatagridManager extends DatagridManager
     /**
      * Get registry jobs
      *
-     * @return \Pim\Bundle\BatchBundle\Connector\multitype:JobInterface
+     * @return \Oro\Bundle\BatchBundle\Connector\multitype:JobInterface
      */
     protected function getRegistryJobs()
     {

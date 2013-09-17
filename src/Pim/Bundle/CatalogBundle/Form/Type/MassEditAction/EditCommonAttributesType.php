@@ -3,8 +3,13 @@
 namespace Pim\Bundle\CatalogBundle\Form\Type\MassEditAction;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Pim\Bundle\CatalogBundle\Form\View\ProductFormView;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 
 /**
  * Form type of the EditCommonAttributes operation
@@ -15,6 +20,36 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class EditCommonAttributesType extends AbstractType
 {
+    /**
+     * @var ProductFormView
+     */
+    protected $productFormView;
+
+    /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
+     * @var LocaleHelper
+     */
+    protected $localeHelper;
+
+    /**
+     * @param ProductFormView $productFormView
+     * @param LocaleManager   $localeManager
+     * @param LocaleHelper    $localeHelper
+     */
+    public function __construct(
+        ProductFormView $productFormView,
+        LocaleManager $localeManager,
+        LocaleHelper $localeHelper
+    ) {
+        $this->productFormView = $productFormView;
+        $this->localeManager   = $localeManager;
+        $this->localeHelper    = $localeHelper;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -49,11 +84,21 @@ class EditCommonAttributesType extends AbstractType
                     'multiple' => true,
                     'expanded' => false,
                     'group_by' => 'virtualGroup.name',
-                    'attr'     => array(
-                        'class' => 'operation-param',
-                    )
                 )
             );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $userLocale = $this->localeManager->getUserLocaleCode();
+        foreach ($view['locale']->vars['choices'] as $choice) {
+            $choice->label = $this->localeHelper->getLocalizedLabel($choice->label, $userLocale);
+        }
+
+        $view->vars['groups'] = $this->productFormView->getView();
     }
 
     /**
@@ -73,6 +118,6 @@ class EditCommonAttributesType extends AbstractType
 
     public function getName()
     {
-        return 'pim_catalog_operation_edit_common_attributes';
+        return 'pim_catalog_mass_edit_common_attributes';
     }
 }

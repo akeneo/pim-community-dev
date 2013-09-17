@@ -12,5 +12,3 @@ Feature: Browse roles
     Then the grid should contain 2 elements
     When I click on the "Update" action of the row which contains "ROLE_USER"
     Then I should see "ROLE_USER"
-
-

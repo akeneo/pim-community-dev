@@ -3,8 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Writer;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Pim\Bundle\ImportExportBundle\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**

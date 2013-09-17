@@ -4,19 +4,23 @@
     {{ parent() }}
     <script type="text/javascript">
         require(
-            ['jquery', 'pim/tree/manage', 'oro/navigation', 'jquery.sidebarize'],
+            ['jquery', 'pim/tree/manage', 'oro/navigation', 'jquery.sidebarize', 'bootstrap.tooltip'],
             function($, TreeManage, Navigation){
                 'use strict';
                 $(function() {
-                    var createBtn = $('<button>', { id: 'tree-create' }).html(
+                    var createBtn = $('<a>', {
+                        'href': '{{ path("pim_catalog_categorytree_create") }}',
+                        'data-toggle': 'tooltip',
+                        'data-placement': 'right',
+                        'data-original-title': '{{ "Create a new tree"|trans }}'
+                    }).html(
                         $('<i>', { 'class': 'icon-plus-sign' })
-                    ).on('click', function() {
-                        Navigation.getInstance().setLocation('{{ path("pim_catalog_categorytree_create") }}');
-                    });
+                    );
 
                     // Instantiate sidebar
                     $('#category-tree-container').sidebarize({ buttons: [ createBtn ] });
                     new TreeManage('#tree');
+                    $('[data-toggle="tooltip"]').tooltip();
                 });
             }
         );
@@ -25,7 +29,7 @@
 
 {% block content %}
     <div id="category-tree-container" class="row-fluid">
-        <div id="tree" data-assets-path="{{ asset('bundles/pimcatalog/') }}"{% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %}></div>
+        <div id="tree" {% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %}></div>
 
         <div id="category-form">
             {% include 'PimCatalogBundle:CategoryTree:form.html.twig' with {'form': form} %}

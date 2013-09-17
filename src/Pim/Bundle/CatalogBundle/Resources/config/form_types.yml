@@ -7,25 +7,25 @@ services:
     pim_catalog.form.type.product:
         class:     %pim_catalog.form.type.product.class%
         arguments:
-            - @pim_catalog.manager.product
+            - '@pim_catalog.manager.product'
             - 'pim_product_value'
-            - @pim_catalog.form.type.product.view
-            - @pim_catalog.form.transform_imported_product_data_subscriber
+            - '@pim_catalog.form.type.product.view'
+            - '@pim_catalog.form.transform_imported_product_data_subscriber'
         tags:
             - { name: form.type, alias: pim_product }
 
     pim_catalog.form.type.product_create:
         class:     %pim_catalog.form.type.product_create.class%
-        arguments: [@pim_catalog.manager.product, 'pim_product_value']
+        arguments: ['@pim_catalog.manager.product', 'pim_product_value']
         tags:
             - { name: form.type, alias: pim_product_create }
 
     pim_catalog.form.type.product_value:
         class:     %pim_catalog.form.type.product_value.class%
         arguments:
-            - @pim_catalog.manager.product
-            - @oro_flexibleentity.value_form.value_subscriber
-            - @pim_catalog.form.type.product.view
+            - '@pim_catalog.manager.product'
+            - '@oro_flexibleentity.value_form.value_subscriber'
+            - '@pim_catalog.form.type.product.view'
         tags:
             - { name: form.type, alias: pim_product_value }
 
@@ -33,7 +33,7 @@ services:
         class: %pim_catalog.form.type.product_attribute.class%
         tags:
             - { name: form.type, alias: pim_catalog_attribute }
-        arguments: [@pim_catalog.manager.attribute_type, @pim_catalog.form.subscriber.attribute]
+        arguments: ['@pim_catalog.manager.attribute_type', '@pim_catalog.form.subscriber.attribute']
 
     pim_catalog.form.type.attribute_group:
         class: %pim_catalog.form.type.attribute_group.class%
@@ -69,8 +69,8 @@ services:
     pim_catalog.form.type.channel:
         class: %pim_catalog.form.type.channel.class%
         arguments:
-            - @pim_catalog.manager.locale
-            - @pim_catalog.helper.locale
+            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.helper.locale'
         tags:
             - { name: form.type, alias: pim_catalog_channel }
 
@@ -86,3 +86,12 @@ services:
         tags:
             - { name: form.type, alias: pim_catalog_locale }
 
+
+    pim_catalog.form.type.edit_common_attributes:
+        class: %pim_catalog.form.type.edit_common_attributes.class%
+        arguments:
+            - '@pim_catalog.form.type.product.view'
+            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.helper.locale'
+        tags:
+            - { name: form.type, alias: pim_catalog_mass_edit_common_attributes }

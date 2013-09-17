@@ -1,24 +1,11 @@
 require(
     ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'pim/dialog', 'pim/initselect2', 'bootstrap',
-        'jquery-ui', 'bootstrap.bootstrapswitch', 'bootstrap.tooltip', 'jquery.slimbox'],
+        'bootstrap.bootstrapswitch', 'bootstrap.tooltip', 'jquery.slimbox'],
     function ($, __, mediator, Navigation, Dialog, initSelect2) {
         'use strict';
 
         function init() {
             // Place code that we need to run on every page load here
-
-            // Disable the oro scrollable container
-            $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
-
-            // Move scope filter to the proper location and remove it from the 'Manage filters' selector
-            // TODO: Override Oro/Bundle/FilterBundle/Resources/public/js/app/filter/list.js and manage this there
-            mediator.once('datagrid_filters:rendered', function () {
-                $('.scope-filter').parent().addClass('pull-right').insertBefore($('.actions-panel'));
-                $('.scope-filter').find('select').multiselect({classes: 'select-filter-widget scope-filter-select'});
-
-                $('#add-filter-select').find('option[value="scope"]').remove();
-                $('#add-filter-select').multiselect('refresh');
-            });
 
             $('.remove-attribute').each(function () {
                 var target = $(this).parent().find('.icons-container').first();
@@ -60,9 +47,6 @@ require(
                 mediator.trigger('scopablefield:' + $(this).data('action'));
             });
 
-            // Clean up multiselect plugin generated content that is appended to body
-            $('body>.ui-multiselect-menu').appendTo($('#container'));
-
             // Save and restore activated form tabs and groups
             function saveFormState() {
                 var activeTab   = $('#form-navbar .nav li.active a').attr('href'),
@@ -80,18 +64,18 @@ require(
             function restoreFormState() {
                 if (sessionStorage.activeTab) {
                     var $activeTab = $('[href=' + sessionStorage.activeTab + ']');
-                    if ($activeTab) {
+                    if ($activeTab.length && !$('.loading-mask').is(':visible')) {
                         $activeTab.tab('show');
+                        sessionStorage.removeItem('activeTab');
                     }
-                    sessionStorage.removeItem('activeTab');
                 }
 
                 if (sessionStorage.activeGroup) {
                     var $activeGroup = $('[href=' + sessionStorage.activeGroup + ']');
-                    if ($activeGroup) {
+                    if ($activeGroup.length && !$('.loading-mask').is(':visible')) {
                         $activeGroup.tab('show');
+                        sessionStorage.removeItem('activeGroup');
                     }
-                    sessionStorage.removeItem('activeGroup');
                 }
             }
 
@@ -120,7 +104,7 @@ require(
                 }
             });
             $('.attribute-field.translatable').each(function () {
-                $(this).find('div.controls .icons-container').append($localizableIcon.clone());
+                $(this).find('div.controls .icons-container').append($localizableIcon.clone().tooltip());
             });
 
             $('form').on('change', 'input[type="file"]', function () {
@@ -156,14 +140,6 @@ require(
                 }
             });
 
-            $('.remove-upload').on('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                var $input = $(this).siblings('input[type="file"]').first();
-                $input.wrap('<form>').closest('form').get(0).reset();
-                $input.unwrap().trigger('change');
-            });
-
             $('[data-form-toggle]').on('click', function () {
                 $('#' + $(this).attr('data-form-toggle')).show();
                 $(this).hide();
@@ -177,6 +153,14 @@ require(
 
             $(document).on('uniformInit', function () {
                 $.uniform.restore();
+            });
+
+            $(document).on('click', '.remove-upload', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $input = $(this).siblings('input[type="file"]').first();
+                $input.wrap('<form>').closest('form').get(0).reset();
+                $input.unwrap().trigger('change');
             });
 
             $(document).on('mouseover', '.upload-zone:not(.empty)', function() {

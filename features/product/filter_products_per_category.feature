@@ -24,6 +24,7 @@ Feature: Filter products per category
     Then I should see products purple-tshirt and green-tshirt
     And I should not see products akeneo-mug
 
+  @insulated
   Scenario: Successfully display all products unclassified on products page
     Given I am on the products page
     And I filter per unclassified category

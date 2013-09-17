@@ -69,9 +69,6 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
                     'title'   => array('en' => 'Root category', 'fr' => 'Categorie racine'),
                     'parent'  => '',
                     'dynamic' => '0',
-                    'left'    => '1',
-                    'level'   => '0',
-                    'right'   => '2'
                 )
             ),
             array(
@@ -80,9 +77,6 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
                     'title'   => array('en' => 'Child category', 'fr' => 'fr:Catégorie enfant'),
                     'parent'  => '1',
                     'dynamic' => '0',
-                    'left'    => '2',
-                    'level'   => '1',
-                    'right'   => '3'
                 )
             ),
         );
@@ -128,14 +122,13 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
         }
 
         $category->setDynamic($data['dynamic']);
-        $category->setLeft($data['left']);
-        $category->setLevel($data['level']);
-        $category->setRight($data['right']);
 
         return $category;
     }
 
     /**
+     * @param array $data
+     *
      * @return array
      */
     protected function getTitles($data)

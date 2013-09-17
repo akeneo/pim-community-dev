@@ -1,14 +1,16 @@
-{% extends 'PimCatalogBundle::layout.html.twig' %}
+{% extends 'PimCatalogBundle:MassEditAction:layout.html.twig' %}
 
 {% block content %}
-    {% set title = 'pim_catalog.mass_edit_action.choose.page_title'|trans %}
-    {% set subtitle = 'pim_catalog.mass_edit_action.choose.page_subtitle'|transchoice(productIds|length) %}
+    {% set title = 'pim_catalog.mass_edit_action.page_title'|trans %}
+    {% set subtitle = 'pim_catalog.mass_edit_action.page_subtitle'|transchoice(productIds|length) %}
     {{ elements.page_header(title, null, subtitle) }}
+
+    {{ parent() }}
 
     <div class="row">
         <div class="offset1">
-            <h3>{{ 'pim_catalog.mass_edit_action.choose.title'|trans }}</h3>
-            <h4>{{ 'pim_catalog.mass_edit_action.choose.subtitle'|transchoice(productIds|length) }}</h4>
+            <h3>{{ 'pim_catalog.mass_edit_action.title'|trans }}</h3>
+            <h4>{{ 'pim_catalog.mass_edit_action.subtitle'|transchoice(productIds|length) }}</h4>
         </div>
     </div>
 
@@ -23,10 +25,15 @@
 
         <div class="row buffer-top">
             <div class="offset1">
-                <a href="{{ path('pim_catalog_product_index') }}" class="btn">Cancel</a>
-                <input type="submit" value="Next" class="btn btn-primary">
+                {{ elements.link('Cancel', path('pim_catalog_product_index')) }}
+                {{ elements.submitBtn('Next') }}
             </div>
         </div>
 
     </form>
+{% endblock %}
+
+{% block head_script_component %}
+    {% set currentStep = 2 %}
+    {{ parent() }}
 {% endblock %}

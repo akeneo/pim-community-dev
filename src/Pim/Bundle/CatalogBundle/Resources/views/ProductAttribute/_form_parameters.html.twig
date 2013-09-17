@@ -40,8 +40,8 @@
     {% endif %}
 
     {% set optionalFields = ['dateType', 'dateMin', 'dateMax', 'negativeAllowed', 'decimalsAllowed', 'numberMin',
-    'numberMax', 'maxCharacters', 'wysiwygEnabled', 'metricFamily', 'defaultMetricUnit', 'allowedFileSources',
-    'maxFileSize', 'allowedExtensions', 'validationRule', 'validationRegexp', 'defaultValue', 'sortOrder'] %}
+    'numberMax', 'maxCharacters', 'wysiwygEnabled', 'metricFamily', 'defaultMetricUnit', 'maxFileSize',
+    'allowedExtensions', 'validationRule', 'validationRegexp', 'defaultValue', 'sortOrder'] %}
 
     {% for field in optionalFields %}
         {% if form[field] is defined %}

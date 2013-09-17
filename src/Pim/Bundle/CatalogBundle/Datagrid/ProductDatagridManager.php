@@ -219,7 +219,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $result = parent::getFlexibleFieldOptions($attribute, $options);
 
         $result['filterable'] = $attribute->isUseableAsGridFilter();
-        $result['show_filter'] = $attribute->isUseableAsGridFilter();
+        $result['show_filter'] = $attribute->isUseableAsGridFilter()
+            && $attribute->getAttributeType() === 'pim_catalog_identifier';
         $result['show_column'] = $attribute->isUseableAsGridColumn();
 
         $backendType = $attribute->getBackendType();
@@ -418,7 +419,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $deleteMassActions = new DeleteMassAction(
             array(
                 'name'  => 'delete',
-                'label' => $this->translate('Delete'),
+                'label' => 'Delete',
                 'icon'  => 'trash'
             )
         );
@@ -426,8 +427,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $redirectMassAction = new RedirectMassAction(
             array(
                 'name'  => 'redirect',
-                'label' => $this->translate('Mass Edition'),
-                'icon'  => 'edit',
+                'label' => 'Mass Edition',
+                'icon' => 'edit',
                 'route' => 'pim_catalog_mass_edit_action_choose',
             )
         );
@@ -561,40 +562,5 @@ class ProductDatagridManager extends FlexibleDatagridManager
         }
 
         return $dataScope;
-    }
-
-    /**
-     * Get the attributes ids of the products
-     */
-    public function getAttributeAvailableIds(ProxyQueryInterface $proxyQuery)
-    {
-        $qb = clone $proxyQuery;
-
-        $qb->leftJoin('values.attribute', 'attribute');
-        $qb->groupBy('attribute.id');
-        $qb->select('attribute.id');
-
-        $attributesList = array();
-        $results = $qb->getQuery()->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
-        foreach ($results as $attribute) {
-            $attributesList[] = current($attribute);
-        }
-
-        return $attributesList;
-    }
-
-    public function prepareQueryForExport(ProxyQueryInterface $proxyQuery)
-    {
-        $proxyQuery->leftJoin('values.options', 'valueOptions');
-        $proxyQuery->leftJoin(sprintf('%s.categories', $proxyQuery->getRootAlias()), 'categories');
-
-        $proxyQuery->addSelect($proxyQuery->getRootAlias());
-        $proxyQuery->addSelect('values');
-        $proxyQuery->addSelect('valuePrices');
-        $proxyQuery->addSelect('valueOptions');
-        $proxyQuery->addSelect('categories');
-        $proxyQuery->addSelect('family');
-
-        echo count($proxyQuery->getDQLPart('select')) ."\n";
     }
 }

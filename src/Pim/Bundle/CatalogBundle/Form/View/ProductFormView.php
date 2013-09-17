@@ -9,14 +9,11 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
  * Custom form view for Product form
- *
- * @TODO : develop the goal of this class
+ * This class allows to group ProductValue fields in order to use them easily in the templates
  *
  * @author    Gildas Quemener <gildas.quemener@gmail.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @TODO : Set all method scopes to protected
  */
 class ProductFormView
 {
@@ -51,7 +48,7 @@ class ProductFormView
     /**
      * @param AttributeGroup $group
      */
-    private function orderGroupAttributes(AttributeGroup $group)
+    protected function orderGroupAttributes(AttributeGroup $group)
     {
         $this->view[$group->getId()]['attributes'] = $this->sortAttributes($this->view[$group->getId()]['attributes']);
     }
@@ -61,7 +58,7 @@ class ProductFormView
      *
      * @return boolean
      */
-    private function hasGroup(AttributeGroup $group)
+    protected function hasGroup(AttributeGroup $group)
     {
         return isset($this->view[$group->getId()]);
     }
@@ -69,7 +66,7 @@ class ProductFormView
     /**
      * @param AttributeGroup $group
      */
-    private function initializeGroup(AttributeGroup $group)
+    protected function initializeGroup(AttributeGroup $group)
     {
         $this->view[$group->getId()] = array(
             'name'       => $group->getName(),
@@ -81,10 +78,8 @@ class ProductFormView
      * @param ProductAttribute $attribute
      *
      * @return array
-     *
-     * @TODO : set protected ?! What happened if another type is added and need some specific redefinition
      */
-    private function getAttributeClasses(ProductAttribute $attribute)
+    protected function getAttributeClasses(ProductAttribute $attribute)
     {
         $classes = array();
         if ($attribute->getScopable()) {
@@ -106,7 +101,7 @@ class ProductFormView
      * @param ProductValueInterface $value
      * @param FormView              $view
      */
-    private function addValue(ProductValueInterface $value, FormView $view)
+    protected function addValue(ProductValueInterface $value, FormView $view)
     {
         $attribute = $value->getAttribute();
         $group     = $attribute->getVirtualGroup();
@@ -140,7 +135,7 @@ class ProductFormView
      *
      * @return ArrayCollection
      */
-    private function getAttributeValues(ProductAttribute $attribute)
+    protected function getAttributeValues(ProductAttribute $attribute)
     {
         $group = $attribute->getVirtualGroup();
         if (!isset($this->view[$group->getId()]['attributes'][$attribute->getId()]['values'])) {

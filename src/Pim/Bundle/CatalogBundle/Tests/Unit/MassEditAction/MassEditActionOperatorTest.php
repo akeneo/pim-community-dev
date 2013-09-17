@@ -80,7 +80,7 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
             ->method('perform')
             ->with(array(1, 2, 3));
 
-        $this->operator->performOperation(array('products' => array(1, 2, 3)));
+        $this->operator->performOperation(array(1, 2, 3));
     }
 
     public function testInitializeOperation()
@@ -93,7 +93,7 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
             ->method('initialize')
             ->with(array(1, 2, 3));
 
-        $this->operator->initializeOperation(array('products' => array(1, 2, 3)));
+        $this->operator->initializeOperation(array(1, 2, 3));
     }
 
     protected function getFlexibleManagerMock()

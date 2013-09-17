@@ -49,7 +49,6 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
             ->method('add')
             ->with('operation', 'foo_type', array('foo' => 'bar'));
 
-
         $this->subscriber->postSetData($event);
     }
 
@@ -152,6 +151,7 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      * @param mixed $formType
+     * @param array $formOptions
      *
      * @return MassEditAction
      */

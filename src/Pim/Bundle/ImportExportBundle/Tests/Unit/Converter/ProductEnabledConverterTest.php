@@ -20,12 +20,18 @@ class ProductEnabledConverterTest extends \PHPUnit_Framework_TestCase
 
     public function testConvertProductEnabled()
     {
-        $this->assertEquals(array('enabled' => '1'), $this->converter->convert(array('[enabled]' => true)));
+        $this->assertEquals(
+            array('enabled' => true),
+            $this->converter->convert(array(ProductEnabledConverter::ENABLED_KEY => true))
+        );
     }
 
     public function testConvertProductDisabled()
     {
-        $this->assertEquals(array('enabled' => '0'), $this->converter->convert(array('[enabled]' => false)));
+        $this->assertEquals(
+            array('enabled' => false),
+            $this->converter->convert(array(ProductEnabledConverter::ENABLED_KEY => false))
+        );
     }
 
     public function testUnresolvedEnabledKey()

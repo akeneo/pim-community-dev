@@ -9,8 +9,8 @@ define(
                 throw new Error('Unable to instantiate tree on this element');
             }
             var self       = this,
-                assetsPath = $el.attr('data-assets-path'),
-                dataLocale = $el.attr('data-datalocale');
+                dataLocale = $el.attr('data-datalocale'),
+                selectedNode = $el.attr('data-node-id') || '#node_';
 
             this.config = {
                 'core': {
@@ -26,16 +26,15 @@ define(
                 ],
                 'tree_selector': {
                     'ajax': {
-                        'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale })
+                        'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale, 'select_node_id': selectedNode  })
                     },
                     'auto_open_root': true,
-                    'node_label_field': 'title'
+                    'node_label_field': 'title',
+                    'preselect_node_id': selectedNode
                 },
                 'themes': {
                     'dots': true,
-                    'icons': true,
-                    'themes': 'bap',
-                    'url': assetsPath + '/css/style.css'
+                    'icons': true
                 },
                 'json_data': {
                     'ajax': {
@@ -45,6 +44,7 @@ define(
                             var id = (node && node !== -1) ? node.attr('id').replace('node_', '') : -1;
                             return {
                                 'id': id,
+                                'select_node_id': selectedNode,
                                 'with_products_count': 1
                             };
                         }
@@ -66,28 +66,9 @@ define(
                 }
             };
 
-            function updateGrid(treeId, nodeId) {
-                var treePattern = /(&treeId=(\d+))/,
-                    nodePattern = /(&categoryId=(\d+))/,
-                    datagrid    = Registry.getElement('datagrid', 'products'),
-                    url         = datagrid.collection.url,
-                    treeString = nodeId === '' ? '' : '&treeId=' + treeId,
-                    nodeString = nodeId === '' ? '' : '&categoryId=' + nodeId;
-
-                if (url.match(treePattern)) {
-                    url = url.replace(treePattern, treeString);
-                } else {
-                    url += treeString;
-                }
-
-                if (url.match(nodePattern)) {
-                    url = url.replace(nodePattern, nodeString);
-                } else {
-                    url += nodeString;
-                }
-
-                if (datagrid.collection.url !== url) {
-                    datagrid.collection.url = url;
+            function updateGrid(treeId, categoryId) {
+                var collection = Registry.getElement('datagrid', 'products').collection;
+                if (collection.setCategory(treeId, categoryId)) {
                     $('.grid-toolbar .actions-panel .action.btn .icon-refresh').click();
                 }
             }
@@ -103,7 +84,6 @@ define(
                             'attr': { 'class': 'jstree-unclassified', 'id': 'node_' },
                             'data': { 'title': _.__('jstree.all') }
                         }, null, true);
-                        $el.jstree('select_node', '#node_');
 
                         $el.jstree('create', '#node_' + root_node_id, 'last', {
                             'attr': { 'class': 'jstree-unclassified', 'id': 'node_0' },

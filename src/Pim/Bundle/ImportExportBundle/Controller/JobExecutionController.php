@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
-use Pim\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
+use Oro\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -92,7 +92,7 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function showAction($id)
     {
-        $jobExecution = $this->findOr404('PimBatchBundle:JobExecution', $id);
+        $jobExecution = $this->findOr404('OroBatchBundle:JobExecution', $id);
         $view = sprintf('PimImportExportBundle:%s:show.html.twig', ucfirst($this->getJobType()).'Report');
 
         return $this->render($view, array('execution' => $jobExecution));
@@ -107,7 +107,7 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function downloadLogFileAction($id)
     {
-        $jobExecution = $this->findOr404('PimBatchBundle:JobExecution', $id);
+        $jobExecution = $this->findOr404('OroBatchBundle:JobExecution', $id);
 
         $response = new BinaryFileResponse($this->batchLogHandler->getRealPath($jobExecution->getLogFile()));
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);

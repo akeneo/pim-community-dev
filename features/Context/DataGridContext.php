@@ -78,14 +78,57 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $filters
      *
-     * @Given /^I should see the filters? (.*)$/
+     * @Then /^I should see the filters? (.*)$/
      */
     public function iShouldSeeTheFilters($filters)
     {
         $filters = $this->getMainContext()->listToArray($filters);
         foreach ($filters as $filter) {
-            $this->datagrid->getFilter($filter);
+            $filterNode = $this->datagrid->getFilter($filter);
+            if (!$filterNode->isVisible()) {
+                $this->createExpectationException(
+                    sprintf('Filter "%s" should be visible', $filter)
+                );
+            }
         }
+    }
+
+    /**
+     * @param string $filters
+     *
+     * @Then /^I should not see the filters? (.*)$/
+     */
+    public function iShouldNotSeeTheFilters($filters)
+    {
+        $filters = $this->getMainContext()->listToArray($filters);
+        foreach ($filters as $filter) {
+            $filterNode = $this->datagrid->getFilter($filter);
+            if ($filterNode->isVisible()) {
+                $this->createExpectationException(
+                    sprintf('Filter "%s" should not be visible', $filter)
+                );
+            }
+        }
+    }
+
+    /**
+     * @param string $filterName
+     *
+     * @Then /^I make visible the filter "([^"]*)"$/
+     */
+    public function iMakeVisibleTheFilter($filterName)
+    {
+        $this->datagrid->showFilter($filterName);
+    }
+
+    /**
+     * @param string $filterName
+     *
+     * @Then /^I hide the filter "([^"]*)"$/
+     */
+    public function iHideTheFilter($filterName)
+    {
+        $this->datagrid->hideFilter($filterName);
     }
 
     /**
@@ -294,7 +337,25 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iClickOnTheRow($row)
     {
         $this->datagrid->getRow($row)->click();
-        $this->wait(5000, null);
+        $this->wait(4000, null);
+    }
+
+    /**
+     * @Then /^I reset the grid$/
+     */
+    public function iResetTheGrid()
+    {
+        $this->datagrid->clickOnResetButton();
+        $this->wait();
+    }
+
+    /**
+     * @Then /^I refresh the grid$/
+     */
+    public function iRefrestTheGrid()
+    {
+        $this->datagrid->clickOnRefreshButton();
+        $this->wait();
     }
 
     /**
@@ -317,7 +378,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return void
      */
-    private function wait($time = 5000, $condition = 'document.readyState == "complete" && !$.active')
+    private function wait($time = 4000, $condition = 'document.readyState == "complete" && !$.active')
     {
         return $this->getMainContext()->wait($time, $condition);
     }

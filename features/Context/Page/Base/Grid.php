@@ -23,10 +23,11 @@ class Grid extends Index
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Grid'         => array('css' => 'table.grid'),
-                'Grid content' => array('css' => 'table.grid tbody'),
-                'Filters'      => array('css' => 'div.filter-box'),
-                'Grid toolbar' => array('css' => 'div.grid-toolbar'),
+                'Grid'           => array('css' => 'table.grid'),
+                'Grid content'   => array('css' => 'table.grid tbody'),
+                'Filters'        => array('css' => 'div.filter-box'),
+                'Grid toolbar'   => array('css' => 'div.grid-toolbar'),
+                'Manage filters' => array('css' => 'div.filter-list')
             )
         );
     }
@@ -70,16 +71,6 @@ class Grid extends Index
         throw new \InvalidArgumentException(
             sprintf('Couldn\'t find a row for value "%s"', $value)
         );
-    }
-
-    /**
-     * Get rows
-     *
-     * @return \Behat\Mink\Element\Element
-     */
-    protected function getRows()
-    {
-        return $this->getElement('Grid content')->findAll('css', 'tr');
     }
 
     /**
@@ -166,32 +157,6 @@ class Grid extends Index
     }
 
     /**
-     * Get column headers
-     *
-     * @param boolean $withHidden
-     *
-     * @return \Behat\Mink\Element\Element
-     */
-    protected function getColumnHeaders($withHidden = false)
-    {
-        $headers = $this->getElement('Grid')->findAll('css', 'thead th');
-
-        if ($withHidden) {
-            return $headers;
-        }
-
-        $visibleHeaders = array();
-        foreach ($headers as $header) {
-            $style = $header->getAttribute('style');
-            if (!$style || !preg_match('/display: ?none;/', $style)) {
-                $visibleHeaders[] = $header;
-            }
-        }
-
-        return $visibleHeaders;
-    }
-
-    /**
      * Predicate to know if a column is sorted
      *
      * @param string $column
@@ -269,6 +234,170 @@ class Grid extends Index
     }
 
     /**
+     * Get grid filter from label name
+     * @param string $filterName
+     *
+     * @throws \InvalidArgumentException
+     * @return NodeElement
+     */
+    public function getFilter($filterName)
+    {
+        if (strtolower($filterName) === 'channel') {
+            $filter = $this->getElement('Grid toolbar')->find('css', 'div.filter-item');
+        } else {
+            $filter = $this->getElement('Filters')->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
+        }
+
+        if (!$filter) {
+            throw new \InvalidArgumentException(
+                sprintf('Couldn\'t find a filter with name "%s"', $filterName)
+            );
+        }
+
+        return $filter;
+    }
+
+    /**
+     * Show a filter from the management list
+     * @param string $filterName
+     */
+    public function showFilter($filterName)
+    {
+        $this->clickFiltersList();
+        $this->activateFilter($filterName);
+        $this->clickFiltersList();
+    }
+
+    /**
+     * Hide a filter from the management list
+     * @param string $filterName
+     */
+    public function hideFilter($filterName)
+    {
+        $this->clickFiltersList();
+        $this->deactivateFilter($filterName);
+        $this->clickFiltersList();
+    }
+
+    /**
+     * Click on the reset button of the datagrid toolbar
+     * @throws \InvalidArgumentException
+     */
+    public function clickOnResetButton()
+    {
+        $resetBtn = $this
+            ->getElement('Grid toolbar')
+            ->find('css', sprintf('a:contains("%s")', 'Reset'));
+
+        if (!$resetBtn) {
+            throw new \InvalidArgumentException('Reset button not found');
+        }
+
+        $resetBtn->click();
+    }
+
+    /**
+     * Click on the refresh button of the datagrid toolbar
+     * @throws \InvalidArgumentException
+     */
+    public function clickOnRefreshButton()
+    {
+        $refreshBtn = $this
+            ->getElement('Grid toolbar')
+            ->find('css', sprintf('a:contains("%s")', 'Refresh'));
+
+        if (!$refreshBtn) {
+            throw new \InvalidArgumentException('Refresh button not found');
+        }
+
+        $refreshBtn->click();
+    }
+
+    /**
+     * Activate a filter
+     * @param string $filterName
+     * @throws \InvalidArgumentException
+     */
+    private function activateFilter($filterName)
+    {
+        $this->clickOnFilterToManage($filterName);
+
+        if (!$this->getFilter($filterName)->isVisible()) {
+            throw new \InvalidArgumentException(
+                sprintf('Filter "%s" is not visible', $filterName)
+            );
+        }
+    }
+
+    /**
+     * Deactivate filter
+     * @param string $filterName
+     * @throws \InvalidArgumentException
+     */
+    private function deactivateFilter($filterName)
+    {
+        $this->clickOnFilterToManage($filterName);
+
+        if ($this->getFilter($filterName)->isVisible()) {
+            throw new \InvalidArgumentException(
+                sprintf('Filter "%s" is visible', $filterName)
+            );
+        }
+    }
+
+    /**
+     * Click on a filter in filter management list
+     * @param string $filterName
+     * @throws \InvalidArgumentException
+     */
+    private function clickOnFilterToManage($filterName)
+    {
+        try {
+            $filter = $this
+            ->getElement('Manage filters')
+            ->find('css', sprintf('label:contains("%s")', $filterName))
+            ->click();
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException(
+                sprintf('Impossible to activate filter "%s"', $filterName)
+            );
+        }
+    }
+
+    /**
+     * Open/close filters list
+     */
+    private function clickFiltersList()
+    {
+        $this
+            ->getElement('Filters')
+            ->find('css', 'a#add-filter-button')
+            ->click();
+    }
+
+    /**
+     * Select a row
+     * @param string $value
+     *
+     * @throws \InvalidArgumentException
+     * @return \Behat\Mink\Element\NodeElement|null
+     */
+    public function selectRow($value)
+    {
+        $row = $this->getRow($value);
+        $checkbox = $row->find('css', 'input[type="checkbox"]');
+
+        if (!$checkbox) {
+            throw new \InvalidArgumentException(
+                sprintf('Couldn\'t find a checkbox for row "%s"', $value)
+            );
+        }
+
+        $checkbox->check();
+
+        return $checkbox;
+    }
+    /**
      * @param string $row
      * @param string $position
      *
@@ -319,26 +448,38 @@ class Grid extends Index
     }
 
     /**
-     * Get grid filter from label name
-     * @param string $filterName
+     * Get column headers
      *
-     * @throws \InvalidArgumentException
-     * @return NodeElement
+     * @param boolean $withHidden
+     *
+     * @return \Behat\Mink\Element\Element
      */
-    public function getFilter($filterName)
+    protected function getColumnHeaders($withHidden = false)
     {
-        if (strtolower($filterName) === 'channel') {
-            $filter = $this->getElement('Grid toolbar')->find('css', 'div.filter-item');
-        } else {
-            $filter = $this->getElement('Filters')->find('css', sprintf('div.filter-item:contains("%s")', $filterName));
+        $headers = $this->getElement('Grid')->findAll('css', 'thead th');
+
+        if ($withHidden) {
+            return $headers;
         }
 
-        if (!$filter) {
-            throw new \InvalidArgumentException(
-                sprintf('Couldn\'t find a filter with name "%s"', $filterName)
-            );
+        $visibleHeaders = array();
+        foreach ($headers as $header) {
+            $style = $header->getAttribute('style');
+            if (!$style || !preg_match('/display: ?none;/', $style)) {
+                $visibleHeaders[] = $header;
+            }
         }
 
-        return $filter;
+        return $visibleHeaders;
+    }
+
+    /**
+     * Get rows
+     *
+     * @return \Behat\Mink\Element\Element
+     */
+    protected function getRows()
+    {
+        return $this->getElement('Grid content')->findAll('css', 'tr');
     }
 }

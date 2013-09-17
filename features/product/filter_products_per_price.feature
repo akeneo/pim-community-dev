@@ -36,13 +36,15 @@ Feature: Filter products per price
 
   Scenario: Successfully display filters
     Given I am on the products page
-    Then I should see the filters SKU, Price
+    Then I should see the filter SKU
+    And I should not see the filter Price
     And the grid should contain 2 elements
     And I should see products postit and book
 
   Scenario: Successfully filter per Price
     Given I am on the products page
-    When I filter per price with value "20" and currency "Euro"
+    When I make visible the filter "Price"
+    And I filter per price with value "20" and currency "Euro"
     Then the grid should contain 1 element
     And I should see products book
     And I should not see products postit

@@ -17,7 +17,7 @@ class Base extends Page
 {
     protected $elements = array(
         'Dialog' => array('css' => 'div.modal'),
-        'Title'  => array('css' => '.navbar-title'),
+        'Title'  => array('css' => '.navbar-title')
     );
 
     /**
@@ -147,5 +147,17 @@ class Base extends Page
         }
 
         $button->click();
+    }
+
+    /**
+     * Find a validation tooltip containing a text
+     *
+     * @param string $text
+     *
+     * @return null|Element
+     */
+    public function findTooltip($text)
+    {
+        return $this->find('css', sprintf('.validation-tooltip[data-original-title="%s"]', $text));
     }
 }

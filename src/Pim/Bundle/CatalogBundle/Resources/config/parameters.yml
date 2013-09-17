@@ -1,12 +1,13 @@
 parameters:
     pim_catalog.manager.product.class:                Pim\Bundle\CatalogBundle\Manager\ProductManager
 
-    pim_catalog.entity.product.class:                 Pim\Bundle\CatalogBundle\Entity\Product
-    pim_catalog.form.type.product.view.class:         Pim\Bundle\CatalogBundle\Form\View\ProductFormView
-    pim_catalog.form.type.product.class:              Pim\Bundle\CatalogBundle\Form\Type\ProductType
-    pim_catalog.form.type.product_create.class:       Pim\Bundle\CatalogBundle\Form\Type\ProductCreateType
-    pim_catalog.form.type.product_value.class:        Pim\Bundle\CatalogBundle\Form\Type\ProductValueType
-    pim_catalog.form.type.image.class:                Pim\Bundle\CatalogBundle\Form\Type\ImageType
+    pim_catalog.entity.product.class:                   Pim\Bundle\CatalogBundle\Entity\Product
+    pim_catalog.form.type.product.view.class:           Pim\Bundle\CatalogBundle\Form\View\ProductFormView
+    pim_catalog.form.type.product.class:                Pim\Bundle\CatalogBundle\Form\Type\ProductType
+    pim_catalog.form.type.product_create.class:         Pim\Bundle\CatalogBundle\Form\Type\ProductCreateType
+    pim_catalog.form.type.product_value.class:          Pim\Bundle\CatalogBundle\Form\Type\ProductValueType
+    pim_catalog.form.type.image.class:                  Pim\Bundle\CatalogBundle\Form\Type\ImageType
+    pim_catalog.form.type.edit_common_attributes.class: Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\EditCommonAttributesType
 
     pim_catalog.form.handler.product_create.class:     Pim\Bundle\CatalogBundle\Form\Handler\ProductCreateHandler
 
@@ -62,3 +63,4 @@ parameters:
     pim_catalog.mass_edit_action.operator.class:               Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator
     pim_catalog.mass_edit_action.change_status.class:          Pim\Bundle\CatalogBundle\MassEditAction\ChangeStatus
     pim_catalog.mass_edit_action.edit_common_attributes.class: Pim\Bundle\CatalogBundle\MassEditAction\EditCommonAttributes
+    pim_catalog.mass_edit_action.classify.class:               Pim\Bundle\CatalogBundle\MassEditAction\Classify

@@ -3,16 +3,13 @@
 @import 'icons';
 @import 'header';
 @import 'form';
+@import 'wizard';
 
 /* General **********************************************************************************************************/
 
 body {
-  background-color: @backgroundColor-white;
   color: @textColor;
-}
-
-#main, .container-fluid {
-  padding: 0;
+  background-color: @backgroundColor-white;
 }
 
 a {
@@ -24,28 +21,59 @@ a:focus {
 }
 
 /* Grids */
-.grid th a {color: #666666; }
-.table-hover tbody tr:hover > td {background-color: @color-purple_hover; }
-table.grid { margin-bottom: 0; }
-.grid-container { overflow: visible; }
-#pim_catalog_product_create {
-  label {
-    text-align: left;
-    width: 200px;
-  }
-  .select2-search-field, .select2-container {
-      width: 314px!important;
-      min-width: 314px!important;
-  }
-  input {
-    width: 300px;
+.grid th a {
+  color: #666666;
+}
+.table-hover tbody tr:hover > td {
+  background-color: @color-purple_hover;
+}
+table.grid {
+  margin-bottom: 20px;
+  thead th>a>span.caret {
+    border-color: transparent;
   }
 }
+.grid-container {
+  overflow: visible;
+}
 .filter-box select.filter-select-oro {
-  height: 25px;
-  line-height: 25px;
   width: 100px;
   padding-right: 0;
+}
+
+.ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label {
+  &.ui-state-hover, &.ui-state-active {
+    background-color: @color-purple_light;
+  }
+}
+
+.filter-criteria .dropdown-menu li {
+  > a,
+  &.active > a {
+    &:hover, &:focus, &:active {
+      background: @color-purple_light;
+    }
+  }
+  &.active > a {
+    background: @textColor + #777;
+  }
+}
+
+.dropdown-menu>li>a {
+  color: @color-purple_light;
+  &:hover, &:active {
+    color: darken(@color-purple_light, 5%);
+  }
+}
+
+.btn-group>.dropdown-menu li {
+  a:hover {
+    background: @color-purple_light;
+  }
+  &.disabled a {
+    color: @textColor + #555;
+    background: @backgroundColor-white;
+  }
 }
 
 /* Tree */
@@ -60,84 +88,142 @@ table.grid { margin-bottom: 0; }
 
 #tree_toolbar {
     display: block;
+    padding: 16px 20px 16px 20px;
+    margin-bottom: 10px;
     background: #efefef url("../../oroui/img/bg-gray-box.png") repeat-x;
     border: solid #ccc;
     border-width: 1px 0;
-    padding: 16px 20px 16px 20px;
-    margin-bottom: 10px;
 }
 
-.filter-criteria .dropdown-menu li {
-  > a,
-  &.active > a {
-    &:hover, &:focus, &:active {
-      background: @color-purple_dark;
-      color: #ffffff;
-    }
-  }
-  &.active > a {
-    background: @textColor + #777;
+a.back-link {
+  float: left;
+  margin-right: 3px;
+  i {
+    vertical-align: middle;
   }
 }
 
-.dropdown-menu>li>a {
-  color: @color-purple_dark;
-  &:hover, &:active {
-    color: darken(@color-purple_dark, 5%);
-  }
-}
-
-a.back-link i {
-  vertical-align: middle;
-}
 
 .icon-collapse-alt, .icon-expand-alt {
   font-size: 14px;
 }
 
-.ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label.ui-state-active {
-  background-color: @color-purple_light;
-}
-
 .icon-bullet:before {
-  content: "\2022";
   font-size: 2em;
   color: #777777;
-}
-
-code.flag-language {
-  color: #000000;
-  border: none;
-  background-color: transparent;
-  padding: 4px;
+  content: "\2022";
 }
 
 .btn.scope-filter {
-  height: 28px;
+  height: @buttonHeight;
   min-width: 130px;
-  padding-right: 0px;
+  padding-right: 0;
   padding-left: 5px;
-}
-
-.ui-multiselect-menu.scope-filter-select {
-  min-width: 150px!important; // Added !important otherwise position is incorrect on first display
 }
 
 /** Dashboard ********************************************************************************************************/
 .dashboard {
-  background: @backgroundColor
-  .row {
-    margin-top:20px;
+  .fullHeight() {
+    height: 100%;
   }
-  #container > .container {
+  .quick-launchpad #container > .container {
     padding-top: 30px;
+  }
+  .quick-launchpad-widget > div {
+    height: @widgetHeight;
+    overflow: hidden;
+    border: 1px solid #b6b6b6;
+    .border-radius(5px);
+    .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
+  }
+  .quick-launchpad-widget {
+    padding-bottom: 20px;
+    .clearfix {
+      background-color: lighten(@color-light_grey, 4%);
+    }
+    .image-wrap {
+      display: block;
+      width: 40%;
+      .fullHeight();
+      background: #fff;
+      .widget-image {
+        display: block;
+        width: @imageWidth;
+        height: @imageHeight;
+        margin: 0 auto;
+        cursor: default;
+        background: url("../images/pim-icon.png") no-repeat;
+        &.collect-image {
+          background-position: 0 (@imageHeight*0);
+        }
+        &.collect-image:hover {
+          background-position: (@imageWidth*-1) (@imageHeight*0);
+        }
+        &.enrich-image {
+          background-position: 0 (@imageHeight*-1);
+        }
+        &.enrich-image:hover {
+          background-position: (@imageWidth*-1) (@imageHeight*-1);
+        }
+        &.spread-image {
+          background-position: 0 (@imageHeight*-2);
+        }
+        &.spread-image:hover {
+          background-position: (@imageWidth*-1) (@imageHeight*-2);
+        }
+        &.configure-image {
+          background-position: 0 (@imageHeight*-3);
+        }
+        &.configure-image:hover {
+          background-position: (@imageWidth*-1) (@imageHeight*-3);
+        }
+      }
+      p {
+        padding: 35px 0 10px;
+        font-size: 17px;
+        color: #555555;
+      }
+    }
+    .list-wrap {
+      width: 60%;
+      .fullHeight();
+      margin-left: -1px;
+      border-left: 1px solid darken(@color-light_grey, 5%);
+      ul {
+        margin: 5px 0;
+        li > a {
+          font-size:14px;
+          border-bottom: 1px solid darken(@color-light_grey, 5%);
+        }
+        li.last > a {
+          border: none;
+        }
+      }
+    }
   }
 }
 
-.dashboard-widget > div {
-  height: 190px;
-  border: 1px solid #b6b6b6;
-  overflow: hidden;
-  .border-radius(5px);
-  .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
+/** jstree ***********************************************************************************************************/
+.jstree.jstree-default {
+  .jstree-hovered {
+    background: @color-purple_hover;
+    border: 1px solid @color-purple_hover;
+  }
+  .jstree-clicked {
+    background: darken(@color-purple_hover, 5%);
+    border: 1px solid darken(@color-purple_hover, 5%);
+  }
+
+  li.jstree-open > a:not(.jstree-loading) .jstree-icon {
+    background:url("jstree/folder_standard_opened.png") 0 0 no-repeat;
+  }
+  li.jstree-closed > a:not(.jstree-loading) .jstree-icon {
+    background:url("jstree/folder_standard_closed.png") 0 0 no-repeat;
+  }
+  li.jstree-leaf > a:not(.jstree-loading) .jstree-icon {
+    background:url("jstree/folder_leaf.png") 0 0 no-repeat;
+  }
+  li.jstree-unclassified > a:not(.jstree-loading) .jstree-icon {
+    background:url("jstree/folder_unclassified.png") 0 0 no-repeat;
+  }
 }

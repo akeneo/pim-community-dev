@@ -2,19 +2,19 @@
 
 form.form-signin {
   .title-box {
-    .border-radius(6px 6px 0 0);
-    border: 1px solid #d4d4d4;
     padding: 0;
     #gradient .vertical(@color-header_top, @color-header_bottom);
+    border: 1px solid #d4d4d4;
+    .border-radius(6px 6px 0 0);
     h1.oro-title {
-      padding: 0px;
+      padding: 0;
       img {
         vertical-align: top;
       }
     }
     h2.title {
-      text-align: center;
       font-size: 20px;
+      text-align: center;
     }
   }
   .input-prepend {
@@ -57,11 +57,14 @@ form.form-signin {
 
 // Form navbar
 #form-navbar li {
+  a:hover {
+    border-bottom: 3px solid @textColor + #999;
+  }
   &.active a, a {
+    padding-bottom: 4px;
     color: @textColor;
     background-color: transparent;
     border-bottom: 3px solid transparent;
-    padding-bottom: 4px;
   }
   &.active a {
     border-bottom: 3px solid @textColor + #111;
@@ -73,10 +76,10 @@ form.form-signin {
 
 .icons-container {
   display: inline-block;
-  vertical-align: middle;
-  font-size: 17px;
   margin-left: 5px;
+  font-size: 17px;
   color: @textColor + #333;
+  vertical-align: middle;
   i {
     outline: none;
     &[data-dialog] {
@@ -95,9 +98,9 @@ a.select2-choice {
     line-height: 34px;
   }
   .btn {
-    font-weight: bold;
     margin-top: 8px;
     margin-right: 8px;
+    font-weight: bold;
   }
   h3 {
     padding-left: 20px;
@@ -105,11 +108,11 @@ a.select2-choice {
 }
 
 .btn-primary {
-  .box-shadow(inset 0 1px 0 0 lighten(@btnPrimaryBackgroundLight, 7%));
+  text-shadow: 0 1px 0 darken(@btnPrimaryBackgroundLight, 16%);
   #gradient > .vertical(@btnPrimaryBackgroundLight, darken(@btnPrimaryBackgroundLight, 5%));
   border-color: darken(@btnPrimaryBackgroundLight, 7%) darken(@btnPrimaryBackgroundLight, 10%) darken(@btnPrimaryBackgroundLight, 10%) darken(@btnPrimaryBackgroundLight, 10%);
-  text-shadow: 0px 1px 0px darken(@btnPrimaryBackgroundLight, 16%);
   filter: dropshadow(color=darken(@btnPrimaryBackgroundLight, 42%), offx=1, offy=1);
+  .box-shadow(inset 0 1px 0 0 lighten(@btnPrimaryBackgroundLight, 7%));
   &:hover {
     #gradient > .vertical(lighten(@btnPrimaryBackgroundLight, 5%), darken(@btnPrimaryBackgroundLight, 4%));
     .box-shadow(inset 0 1px 0 0 @btnPrimaryBackgroundLight);
@@ -122,8 +125,6 @@ a.select2-choice {
 }
 
 .navbar-buttons .btn-group>.btn-primary {
-  height: 30px;
-  line-height: 30px;
   font-size: 14px;
 }
 
@@ -131,21 +132,18 @@ a.select2-choice {
   .buttonBackground(@btnPrimaryBackgroundLight, @btnPrimaryBackground);
 }
 
-a.return {
-  line-height: 30px;
-  margin-top: 8px;
-  margin-right: 8px;
-}
-
 .scrollspy-title {
-  background-color: @color-grey_tab;
   padding: 10px;
   margin-top: 0;
+  background-color: @color-grey_tab;
 }
 
 a.accordion-toggle {
-  text-decoration: none;
   color: @textColor;
+  text-decoration: none;
+  &:hover {
+    color: @textColor;
+  }
 }
 
 .accordion-group {
@@ -174,11 +172,12 @@ span.handle, td.handle {
   margin: 10px 0;
   thead {
     tr {
+      background-color: #f3f3f3;
       border-top: 1px solid #dfdfdf;
       border-bottom: 1px solid #dfdfdf;
-      background-color: #f3f3f3;
       th {
-        line-height: 6px;
+        font-size: 12px;
+        line-height: 20px;
         &.channel {
             text-align: center;
         }
@@ -188,14 +187,14 @@ span.handle, td.handle {
   tbody, tbody + tbody {
     border: 0;
     tr.group {
-      border-bottom: 1px solid #d8d8d8;
-      background-color: #ffffff;
       font-weight: bold;
       cursor: pointer;
+      background-color: #ffffff;
+      border-bottom: 1px solid #d8d8d8;
     }
     tr {
-      border-bottom: 1px solid #ebebeb;
       background-color: #f8f8f8;
+      border-bottom: 1px solid #ebebeb;
     }
   }
 }
@@ -220,9 +219,9 @@ th label {
 .has-switch {
   margin-right: 3px;
   span {
+    padding: 4px 7px;
     font-size: 12px;
     font-weight: bold;
-    padding: 4px 7px;
     &.switch-primary, &.switch-left {
       .buttonBackground(@btnPrimaryBackgroundLight, @btnPrimaryBackground);
     }
@@ -237,12 +236,15 @@ div.btn-group > .has-switch {
 }
 
 .select2-container.input-large {
-  width: 250px;
+  width: 250px!important;
+}
+.select2-container-multi.select2-container-active .select2-choices {
+  border: none;
 }
 
 #attribute-buttons {
-  margin: 10px;
   float: right;
+  margin: 10px;
 }
 
 #lbCenter {
@@ -254,13 +256,13 @@ div.btn-group > .has-switch {
 }
 
 .upload-zone {
+  float: left;
   height: 100px;
   margin: 1px;
-  border: 1px solid @textColor + #888;
-  border-radius: 10px;
   color: @textColor + #333;
   cursor: pointer;
-  float: left;
+  border: 1px solid @textColor + #888;
+  border-radius: 10px;
   &.empty {
     margin: 0;
     border-style: dashed;
@@ -277,22 +279,22 @@ div.btn-group > .has-switch {
   }
   div.upload-info {
     display: inline-block;
-    min-width: 229px;
     height: 80px;
-    line-height: 80px;
+    min-width: 229px;
     margin: 10px;
     font-size: 22px;
+    line-height: 80px;
     text-align: center;
     .upload-preview, img {
       display: inline-block;
-      min-width: 40px;
       max-width: 120px;
       max-height: 80px;
+      min-width: 40px;
       font-size: 40px;
       line-height: 80px;
       color: @textColor + #333;
-      vertical-align: middle;
       text-decoration: none;
+      vertical-align: middle;
       cursor: pointer;
       &.empty {
         display: none;
@@ -308,28 +310,30 @@ div.btn-group > .has-switch {
   }
   .remove-upload {
     float: right;
+    width: 45px;
     height: 100px;
+    padding: 0 9px;
     margin-top: -1px;
     margin-right: -1px;
-    padding: 0 9px;
-    border-bottom-right-radius: 10px;
-    border-top-right-radius: 10px;
-    line-height: 100px;
     font-size: 26px;
-    width: 45px;
+    line-height: 100px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
   }
-}
-
-input[type="file"] {
-  display: block;
-  z-index: 99;
-  position: relative;
-  top: -100px;
-  width: 100%!important;
-  height: 100%;
-  border-radius: 20px;
-  cursor: pointer;
-  opacity: 0;
+  input[type="file"] {
+    position: relative;
+    top: -100px;
+    z-index: 99;
+    display: block;
+    width: 100%!important;
+    height: 100%;
+    cursor: pointer;
+    border-radius: 20px;
+    opacity: 0;
+    &.hide {
+      display: none;
+    }
+  }
 }
 
 /* Collapsable sidebar **********************************************************************************************/
@@ -344,19 +348,23 @@ input[type="file"] {
   .sidebar-controls {
     background-color: #f7f7f7;
     i {
+      color: @textColor;
       cursor: pointer;
     }
-    button {
+    a, button {
+      display: block;
+      float: left;
+      width: 30px;
+      font-size: 13px;
+      color: #000;
+      text-align: center;
+      text-decoration: none;
       background-color: #f3f3f3;
-      display:block;
-      float:left;
-      border: 0px;
+      border: 0;
       border-right: 1px solid #d3d3d3;
-      color:#000;
-      text-decoration:none;
     }
     .btn-group .dropdown-toggle {
-      border-radius: 0px;
+      border-radius: 0;
       .caret {
         vertical-align: middle;
       }
@@ -375,9 +383,9 @@ input[type="file"] {
         margin: 0;
         li {
           padding: 0 10px;
+          line-height: 35px;
           list-style: none;
           cursor: pointer;
-          line-height: 35px;
           &:hover {
             background-color: @color-grey_tab;
           }
@@ -392,8 +400,8 @@ input[type="file"] {
             }
           }
           span.handle {
-            padding-right: 5px;
             float: left;
+            padding-right: 5px;
           }
         }
       }
@@ -417,9 +425,9 @@ div.ui-dialog {
     border-width: 1px 0;
   }
   .ui-dialog-titlebar {
+    margin: 0;
     #gradient .vertical(@color-dialogHeader_top, @color-dialogHeader_bottom);
     border: none;
-    margin: 0;
     .ui-dialog-title {
       font-weight: bold;
     }
@@ -427,16 +435,16 @@ div.ui-dialog {
   .ui-dialog-titlebar-buttonpane {
     border: none;
     .ui-dialog-titlebar-close {
-      .buttonBackground(@color-dialogHeader_top, @color-dialogHeader_bottom);
-      .border-radius(3px);
-      border: @border-purple;
       top: 5px;
       right: 6px;
-      height: 22px;
       width: 22px;
+      height: 22px;
       font-family: FontAwesome!important; // Override ORO !important
+      .buttonBackground(@color-dialogHeader_top, @color-dialogHeader_bottom);
+      border: @border-purple;
+      .border-radius(3px);
       span.ui-button-text {
-        font-size: 0px;
+        font-size: 0;
       }
     }
   }
@@ -467,14 +475,25 @@ div.ui-dialog {
   color: #fff;
 }
 
+#pim_catalog_product_create {
+  label {
+    width: 200px;
+    text-align: left;
+  }
+  .select2-search-field, .select2-container {
+      width: 314px!important;
+      min-width: 314px!important;
+  }
+  input {
+    width: 300px;
+  }
+}
+
 /* Attribute Form ***************************************************************************************************/
 
 #sortable_options {
   th {
     text-align: center;
-  }
-  td.handle {
-    line-height: 30px;
   }
 }
 
@@ -484,25 +503,29 @@ table.ui-sortable, tbody.ui-sortable {
     line-height: 30px;
   }
   td a.btn {
-    height: 28px;
+    height: @buttonHeight;
   }
+}
+
+table i {
+  color: @textColor;
 }
 
 /* Product edit form - common */
 
-.product-edit {
+.classify, .product-edit {
   .nav-list {
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-right: 0;
+    padding-left: 0;
     > .active > a {
       font-weight: bold;
       color: #000000;
-      background-color: @color-purple_hover;
       text-shadow: none;
+      background-color: @color-purple_hover;
     }
     > li {
-      padding-left: 15px;
       padding-right: 15px;
+      padding-left: 15px;
       line-height: 25px;
       border-bottom: 1px solid #e5e5e5;
       > a {
@@ -513,15 +536,15 @@ table.ui-sortable, tbody.ui-sortable {
   }
   .tab-content {
     border-left: 1px solid #BBBBBB;
-    .tab-pane h3 {
-      background-color: @color-grey_tab;
-      border-bottom: 1px solid #e5e5e5;
-      margin-top: 0;
-      padding-left: 20px;
-    }
-    .modal-header h3 {
-      background-color: @color-purple_light;
-    }
+  }
+  .tab-pane h3 {
+    padding-left: 20px;
+    margin-top: 0;
+    background-color: @color-grey_tab;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .modal-header h3 {
+    background-color: @color-purple_light;
   }
 }
 
@@ -529,13 +552,9 @@ table.ui-sortable, tbody.ui-sortable {
 
 .product-edit #attributes {
   #attribute-buttons {
-    margin-top: 0;
     position: relative;
     top: 4px;
-    .btn-group>a.btn {
-      height: 30px;
-      line-height: 30px;
-    }
+    margin-top: 0;
   }
   .select2-container { max-width: 365px;}
   .select2-container { width: 365px!important; } /* important statement come from bap */
@@ -560,7 +579,7 @@ table.ui-sortable, tbody.ui-sortable {
   .input-prepend .control-label {
     padding-right: 8px;
     line-height: 20px;
-    border-right-width: 0px;
+    border-right-width: 0;
   }
 }
 
@@ -569,15 +588,15 @@ table.ui-sortable, tbody.ui-sortable {
   >div {
     &:first-of-type .controls {
       .control-label.add-on {
-        background-color: @backgroundColor-white;
         font-weight: bold;
+        background-color: @backgroundColor-white;
         border-top-left-radius: 3px;
       }
       input, select, textarea {
         border-top-right-radius: 3px;
       }
       &:first-child {
-        margin-left: 20px;
+        margin-left: 10px;
       }
     }
     &:last-of-type .controls {
@@ -597,23 +616,23 @@ table.ui-sortable, tbody.ui-sortable {
     }
   }
   label.control-label.add-on {
-    border-right-width: 0px;
-    font-weight: normal;
-    background-color: #fbfbfb;
-    padding-right: 10px;
-    padding-top: 4px;
-    width: 100px;
-    margin-bottom: 0;
-    border-radius: 0;
     float: left;
+    width: 135px;
+    padding-top: 4px;
+    padding-right: 10px;
+    margin-bottom: 0;
+    font-weight: normal;
     text-align: right;
+    background-color: #fbfbfb;
+    border-right-width: 0;
+    border-radius: 0;
     span.field-toggle {
       position: relative;
-      float: left;
-      left: -5px;
       top: -4px;
-      padding: 4px 5px;
+      left: -5px;
+      float: left;
       height: 100%;
+      padding: 4px 5px;
       i {
         padding-left: 3px;
         font-size: 16px;
@@ -623,6 +642,17 @@ table.ui-sortable, tbody.ui-sortable {
   }
   .control-group {
     margin: 0;
+    &>.controls.input-prepend {
+      position: relative;
+      .control-label.add-on {
+        position: absolute;
+        height: 100%;
+      }
+      .scopable-input {
+        position: relative;
+        left: 135px;
+      }
+    }
   }
   textarea.input-large {
     width: 523px;
@@ -652,8 +682,8 @@ table.ui-sortable, tbody.ui-sortable {
     font-size: 12px;
   }
   .upload-zone {
-    border-radius: 0;
     margin: 0;
+    border-radius: 0;
     .remove-upload {
       border-radius: 0;
     }
@@ -678,17 +708,16 @@ table.ui-sortable, tbody.ui-sortable {
     color: #777;
       li {
         padding: 0 10px;
-        border-left: 1px solid #e6e6e6;
         font-size: 11px;
         line-height: 14px;
+        border-left: 1px solid #e6e6e6;
       }
   }
   .product-name {
-    margin: 0 10px 5px 0;
-    font-size: 19px;
-    line-height: 22px;
     float: left;
-    font: bold 17px/18px 'HelveticaNeue bold',Arial,Helvetica,sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 18px;
   }
   .locale-switcher {
     height: 30px;
@@ -710,6 +739,10 @@ table.ui-sortable, tbody.ui-sortable {
   .buffer-right {padding-right:20px;}
   .buffer-bottom {padding-bottom:20px;}
   .buffer-left {padding-left:20px;}
+  .buffer-small-top {padding-top:10px;}
+  .buffer-small-right {padding-right:10px;}
+  .buffer-small-bottom {padding-bottom:10px;}
+  .buffer-small-left {padding-left:10px;}
 }
 
 form .currency {
@@ -727,8 +760,8 @@ form .currency {
     &:first-of-type {
       .control-label {
         height: 30px;
-        background-color: @backgroundColor-white;
         font-weight: bold;
+        background-color: @backgroundColor-white;
         border-top-left-radius: 3px;
       }
       input {
@@ -746,21 +779,21 @@ form .currency {
   }
   div.controls {
     .control-label {
-      font-weight: normal;
-      background-color: #fbfbfb;
-      padding-top: 4px;
-      width: 50px;
-      margin-bottom: 0;
-      border-radius: 0;
       float: left;
+      width: 50px;
+      padding-top: 4px;
+      margin-bottom: 0;
+      font-weight: normal;
       text-align: right;
+      background-color: #fbfbfb;
+      border-radius: 0;
       span {
         position: relative;
-        float: left;
-        left: -5px;
         top: -4px;
-        padding: 4px 5px;
+        left: -5px;
+        float: left;
         height: 100%;
+        padding: 4px 5px;
         i {
           padding-left: 3px;
           font-size: 16px;
@@ -790,8 +823,8 @@ form .currency {
 div.dropdown-menu.channel {
   padding: 10px;
   h5 {
-    text-transform: uppercase;
     margin: 0;
+    text-transform: uppercase;
   }
   a {
     display: block;
@@ -800,8 +833,8 @@ div.dropdown-menu.channel {
   }
   label {
     float: left;
-    line-height: 26px;
     margin-right: 10px;
+    line-height: 26px;
   }
   select {
     width: auto;
@@ -811,8 +844,8 @@ div.dropdown-menu.channel {
 #channel-controls {
   display: inline-block;
   float: left;
-  min-width: 210px;
   max-width: 400px;
+  min-width: 210px;
 }
 
 .form-horizontal .tab-content {
@@ -824,64 +857,72 @@ div.dropdown-menu.channel {
 
 #locale-switcher {
   span.dropdown-toggle {
-    color: @textColor;
-    margin-top: 2px;
+    padding: 5px 6px 3px 6px;
     margin-bottom: 0;
-    padding: 3px 6px;
+    color: @textColor;
+    cursor: pointer;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-shadow: none;
-    cursor: pointer;
-    .caret {
-      margin-top: 6px;
+    > i {
+      font-size: 14px;
+      vertical-align: middle;
     }
   }
   .dropdown-menu {
     padding: 0;
-    li.activeLocale>a {
-        padding-left: 0px;
-    }
     li>a {
-      padding: 5px 5px 5px 23px;
+      padding: 5px;
       color: @textColor;
       &:hover, &:active, &:focus {
-        background-color: #f1f1f1;
-        background-image: none;
+        background: #f1f1f1;
+      }
+      span.icon {
+        width: 25px;
+        min-height: 1px;
       }
       span.code {
-          color: @textColor + #444;
-          float: left;
-          text-align: right;
-          width: 70px;
+        color: @textColor + #444;
       }
       span.title {
-          font-weight: bold;
-          margin: 0 10px;
-          font-size: 12px;
+        float: none;
+        margin: 0 10px;
+        font-size: 12px;
+        font-weight: bold;
       }
     }
+  }
+  code.flag-language {
+    padding: 4px;
+    color: @textColor;
+    background-color: transparent;
+    border: none;
   }
 }
 
 div.entity-updated {
-  clear: right;
   margin-top: 10px;
   margin-right: 5px;
+  clear: right;
   .label-warning {
-    background-color: #fefecb;
     color: @textColor + #333;
     text-shadow: none;
+    background-color: #fefecb;
   }
 }
 
 /* Product edit form - categories tab */
 
+.classify .nav-list li a i,
 #categories .nav-list li a i {
-  width: 19px;
-  height: 19px;
-  display: inline-block;
-  margin: 3px 2px 0 0;
-  vertical-align: middle;
+  padding-right: 5px;
+  font-size: 16px;
+  &.gray {
+    color: #ddd;
+  }
+  &.green {
+    color: #58BB00;
+  }
 }
 
 /* Import upload file form */
@@ -894,8 +935,8 @@ form.form-upload {
       display: none;
     }
     .controls {
-      margin-left: 20px;
       margin-right: 20px;
+      margin-left: 20px;
       .upload-zone {
         width: 100%;
       }
@@ -908,9 +949,9 @@ form.form-upload {
 
 /* Pim multiselect styles */
 button.pimmultiselect {
-  height: 30px;
-  line-height: 30px;
+  height: @buttonHeight;
   padding: 0 10px;
+  line-height: @buttonHeight;
   color: @textColor;
   &:hover {
     color: @textColor;
@@ -926,11 +967,11 @@ button.pimmultiselect {
     .ui-multiselect-filter {
       width: auto;
       input {
+        padding: 5px;
+        margin: 3px;
+        font-size: 12px;
         color: #999;
         border-color: #d6d6d6;
-        font-size: 12px;
-        margin: 3px;
-        padding: 5px;
       }
     }
   }
@@ -943,9 +984,9 @@ button.pimmultiselect {
         text-transform: uppercase;
       }
       label {
-        margin: 0;
         padding: 0;
         padding-left: 10px;
+        margin: 0;
       }
       input[type="checkbox"] {
         margin: 0;
@@ -964,8 +1005,8 @@ button.pimmultiselect {
 }
 
 ul.medias label.remove-media {
-  float: none;
   display: inline;
+  float: none;
   margin-left: 10px;
 }
 
@@ -974,28 +1015,28 @@ ul.medias label.remove-media {
   text-align: center;
   cursor: pointer;
   .required {
-    margin: 0;
     padding: 3px;
-    color: #33be00;
+    margin: 0;
     font-size: 1.5em;
+    color: #33be00;
   }
   .non-required {
-    margin: 0;
     padding: 7px;
+    margin: 0;
     color: #b9b9b9;
   }
 }
 
 /** Product completeness *******************************************************************************/
 div#legend {
-  margin-left: 15px;
   margin-top: 15px;
+  margin-left: 15px;
   .progress {
+    height: 10px;
     margin-top: 5px;
     margin-bottom: 15px;
     background-color: none;
     background-image: none;
-    height: 10px;
   }
   .bar {
     margin-right: 10px;
@@ -1014,14 +1055,14 @@ div#legend {
 
 table#progress-table {
   .progress {
+    height: 10px;
     margin-bottom: 5px;
     background-image: linear-gradient(to bottom,#e4e4e4,#eee);
     border-radius: 6px;
-    height: 10px;
   }
   .progress-cell {
-    margin-left: 15px;
     margin-right: 15px;
+    margin-left: 15px;
     div.center {
       text-align: center;
     }
@@ -1041,4 +1082,16 @@ table#progress-table {
   background-image: linear-gradient(to bottom, #bbbbbb, #cccccc);
   background-repeat: repeat-x;
   filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffbbbbbb', endColorstr='#ffcccccc', GradientType=0);
+}
+
+/** mass-edition *****************************************************************************************************/
+.mass-edit-form {
+  padding: 25px;
+  background-color: lighten(@color-light_grey, 4%);
+  hr {
+    height: 3px;
+    background-color: lighten(@color-light_grey, 2%);
+    border-top: 1px solid lighten(@color-light_grey, 5%);
+    border-bottom: 1px solid lighten(@color-light_grey, 4%);
+  }
 }

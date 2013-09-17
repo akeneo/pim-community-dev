@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
-use Pim\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Product reader
