@@ -27,6 +27,7 @@ use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
+use Oro\Bundle\ImapBundle\Entity\ImapConfigurationOwnerInterface;
 use Oro\Bundle\TagBundle\Entity\Tag;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
@@ -57,7 +58,8 @@ class User extends AbstractEntityFlexible implements
     \Serializable,
     EntityUploadedImageInterface,
     Taggable,
-    EmailOwnerInterface
+    EmailOwnerInterface,
+    ImapConfigurationOwnerInterface
 {
     const ROLE_DEFAULT   = 'ROLE_USER';
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
@@ -322,9 +324,11 @@ class User extends AbstractEntityFlexible implements
     protected $businessUnits;
 
     /**
-     * @var UserImapConfiguration
+     * @var ImapEmailOrigin
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin", cascade={"persist"})
+     * @ORM\OneToOne(
+     *     targetEntity="Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin", orphanRemoval=true, cascade={"all"}
+     * )
      * @ORM\JoinColumn(name="imap_configuration_id", referencedColumnName="id", onDelete="SET NULL")
      * @Exclude
      */
@@ -1272,9 +1276,7 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
-     * Getter for imap configuration
-     *
-     * @return ImapEmailOrigin
+     * {@inheritDoc}
      */
     public function getImapConfiguration()
     {
@@ -1282,11 +1284,7 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
-     * Setter for imap configuration
-     *
-     * @param ImapEmailOrigin $imapConfiguration
-     *
-     * @return $this
+     * {@inheritDoc}
      */
     public function setImapConfiguration(ImapEmailOrigin $imapConfiguration)
     {
