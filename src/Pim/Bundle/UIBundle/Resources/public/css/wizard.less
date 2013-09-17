@@ -7,6 +7,18 @@
   font-weight: bold;
   text-align: center;
   list-style: none;
+
+  .dot {
+    position: absolute;
+    bottom: -6px;
+    left: 119px;
+    line-height: 0;
+    color: @color-purple_light;
+    .icon-circle {
+      margin: 0;
+      font-size: 14px;
+    }
+  }
 }
 
 .progress-start, .progress-end {
@@ -30,18 +42,6 @@
 
   &.active {
     background-color: @color-purple_light;
-  }
-
-  .dot {
-    position: absolute;
-    bottom: -6px;
-    left: 119px;
-    line-height: 0;
-    color: @color-purple_light;
-    .icon-circle {
-      margin: 0;
-      font-size: 14px;
-    }
   }
 }
 
