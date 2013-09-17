@@ -281,6 +281,7 @@ class Grid extends Index
 
     /**
      * Click on the reset button of the datagrid toolbar
+     * @throws \InvalidArgumentException
      */
     public function clickOnResetButton()
     {
@@ -293,6 +294,23 @@ class Grid extends Index
         }
 
         $resetBtn->click();
+    }
+
+    /**
+     * Click on the refresh button of the datagrid toolbar
+     * @throws \InvalidArgumentException
+     */
+    public function clickOnRefreshButton()
+    {
+        $refreshBtn = $this
+            ->getElement('Grid toolbar')
+            ->find('css', sprintf('a:contains("%s")', 'Refresh'));
+
+        if (!$refreshBtn) {
+            throw new \InvalidArgumentException('Refresh button not found');
+        }
+
+        $refreshBtn->click();
     }
 
     /**
