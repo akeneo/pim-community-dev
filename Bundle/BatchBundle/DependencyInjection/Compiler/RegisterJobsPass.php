@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Yaml\Parser as YamlParser;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\NodeInterface;
 
 /**
  * Read the jobs.yml file of the connectors to register the jobs
@@ -16,8 +17,14 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
  */
 class RegisterJobsPass implements CompilerPassInterface
 {
+    /**
+     * @var YamlParser
+     */
     protected $yamlParser;
 
+    /**
+     * @var NodeInterface
+     */
     protected $jobsConfig;
 
     public function __construct($yamlParser = null)
@@ -31,13 +38,15 @@ class RegisterJobsPass implements CompilerPassInterface
 
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflClass = new \ReflectionClass($bundle);
-            if ($reflClass->isSubclassOf('Oro\\Bundle\\BatchBundle\\Connector\\Connector')) {
-                if (false === $bundleDir = dirname($reflClass->getFileName())) {
-                    continue;
-                }
-                if (is_file($configFile = $bundleDir.'/Resources/config/jobs.yml')) {
-                    $this->registerJobs($registry, $configFile);
-                }
+            if (false === $bundleDir = dirname($reflClass->getFileName())) {
+                continue;
+            }
+            // TODO: discuss using of only one file format
+            if (is_file($configFile = $bundleDir.'/Resources/config/jobs.yml')) {
+                $this->registerJobs($registry, $configFile);
+            }
+            if (is_file($configFile = $bundleDir.'/Resources/config/batch_jobs.yml')) {
+                $this->registerJobs($registry, $configFile);
             }
         }
     }
