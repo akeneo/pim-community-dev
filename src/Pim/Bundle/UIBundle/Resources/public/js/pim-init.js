@@ -104,7 +104,7 @@ require(
                 }
             });
             $('.attribute-field.translatable').each(function () {
-                $(this).find('div.controls .icons-container').append($localizableIcon.clone());
+                $(this).find('div.controls .icons-container').append($localizableIcon.clone().tooltip());
             });
 
             $('form').on('change', 'input[type="file"]', function () {
