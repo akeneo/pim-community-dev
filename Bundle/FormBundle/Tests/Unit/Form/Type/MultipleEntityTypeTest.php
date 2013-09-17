@@ -101,7 +101,7 @@ class MultipleEntityTypeTypeTest extends \PHPUnit_Framework_TestCase
                 array(), 'selector_window_title', null
             ),
             array(
-                array('default_element' => 'id'), 'default_element', 'id'
+                array('default_element' => 'name'), 'default_element', 'name'
             ),
             array(
                 array(), 'default_element', null

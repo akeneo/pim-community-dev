@@ -41,7 +41,7 @@ function(_, Backbone, EntityView, MultipleEntityModel, WidgetManager, DialogWidg
             this.$removedEl = $(this.options.removedElement);
             if (this.options.defaultElement) {
                 this.listenTo(this.getCollection(), 'defaultChange', this.updateDefault);
-                this.$defaultEl = $(this.options.defaultElement);
+                this.$defaultEl = this.$el.closest('form').find('[name$="[' + this.options.defaultElement + ']"]');
             }
 
             this.render();
@@ -71,10 +71,22 @@ function(_, Backbone, EntityView, MultipleEntityModel, WidgetManager, DialogWidg
         },
 
         addAll: function(items) {
+            this._resortCollection();
             this.$entitiesContainer.empty();
             items.each(function(item) {
                 this.addEntity(item);
             }, this);
+        },
+
+        _resortCollection: function() {
+            this.getCollection().comparator = function(model) {
+                if (model.get('isDefault')) {
+                    return 'A';
+                } else {
+                    return model.get('label');
+                }
+            };
+            this.getCollection().sort();
         },
 
         addEntity: function(item) {
