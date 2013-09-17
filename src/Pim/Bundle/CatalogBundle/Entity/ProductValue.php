@@ -242,6 +242,22 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     }
 
     /**
+     * Get the price matching the given currency
+     *
+     * @param string $currency
+     *
+     * @return boolean|Price
+     */
+    public function getPrice($currency)
+    {
+        return $this->prices->filter(
+            function ($price) use ($currency) {
+                return $currency === $price->getCurrency();
+            }
+        )->first();
+    }
+
+    /**
      * Set prices, used for multi select to retrieve many options
      *
      * @param ArrayCollection $prices
