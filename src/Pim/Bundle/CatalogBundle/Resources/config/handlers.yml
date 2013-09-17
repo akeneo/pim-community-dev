@@ -5,48 +5,48 @@ services:
         class: %pim_catalog.form.handler.product_create.class%
         scope: request
         arguments:
-            - @pim_catalog.form.product_create
-            - @request
-            - @pim_catalog.manager.product
-            - @pim_catalog.calculator.completeness
+            - '@pim_catalog.form.product_create'
+            - '@request'
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.calculator.completeness'
 
     pim_catalog.form.handler.attribute:
         class: %pim_catalog.form.handler.product_attribute.class%
         scope: request
         arguments:
-            - @pim_catalog.form.attribute
-            - @request
-            - @doctrine.orm.entity_manager
-            - @pim_catalog.manager.attribute_type
+            - '@pim_catalog.form.attribute'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.manager.attribute_type'
 
     pim_catalog.form.handler.attribute_group:
         class: %pim_catalog.form.handler.attribute_group.class%
         scope: request
         arguments:
-            - @pim_catalog.form.attribute_group
-            - @request
-            - @doctrine.orm.entity_manager
+            - '@pim_catalog.form.attribute_group'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
 
     pim_catalog.form.handler.channel:
         class: %pim_catalog.form.handler.channel.class%
         scope: request
         arguments:
-            - @pim_catalog.form.channel
-            - @request
-            - @doctrine.orm.entity_manager
+            - '@pim_catalog.form.channel'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
 
     pim_catalog.form.handler.currency:
         class: %pim_catalog.form.handler.currency.class%
         scope: request
         arguments:
-            - @pim_catalog.form.currency
-            - @request
-            - @doctrine.orm.entity_manager
+            - '@pim_catalog.form.currency'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
 
     pim_catalog.form.handler.locale:
         class: %pim_catalog.form.handler.locale.class%
         scope: request
         arguments:
-            - @pim_catalog.form.locale
-            - @request
-            - @doctrine.orm.entity_manager
+            - '@pim_catalog.form.locale'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
