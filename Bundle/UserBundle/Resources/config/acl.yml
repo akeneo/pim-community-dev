@@ -10,9 +10,3 @@ external_bundle_actions:
     type: action
     group_name: ""
     bindings: ~
-
-oro_user:
-    label: User manipulation
-    type: action
-    group_name: ""
-    bindings: ~
