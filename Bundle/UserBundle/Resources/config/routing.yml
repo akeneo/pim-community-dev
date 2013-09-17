@@ -23,10 +23,3 @@ oro_user_api_group:
     prefix:       api/rest/{version}/
     defaults:
         version:  latest
-
-oro_user_api_acl:
-    resource:     "@OroUserBundle/Controller/Api/Rest/AclController.php"
-    type:         rest
-    prefix:       api/rest/{version}/
-    defaults:
-        version:  latest
