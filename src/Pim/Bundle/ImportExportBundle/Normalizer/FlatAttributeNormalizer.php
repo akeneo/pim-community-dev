@@ -110,7 +110,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
                     $label = str_replace('{value}', $value->getValue(), $label);
                     $item[] = $label;
                 }
-                $data[] = implode(self::ITEM_SEPARATOR, $item);
+                $data[] = 'Code:'.$option->getCode().self::ITEM_SEPARATOR.implode(self::ITEM_SEPARATOR, $item);
             }
             $options = implode(self::GROUP_SEPARATOR, $data);
         }
