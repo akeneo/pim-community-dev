@@ -80,6 +80,7 @@ abstract class AbstractAddress implements EmptyItem
     /**
      * @var Region
      *
+     * @TODO Refactor in CRM-185
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Region", cascade={"persist"})
      * @ORM\JoinColumn(name="region_code", referencedColumnName="combined_code")
      * @Soap\ComplexType("string", nillable=true)
@@ -89,6 +90,7 @@ abstract class AbstractAddress implements EmptyItem
     /**
      * @var string
      *
+     * @TODO Refactor in CRM-185
      * @ORM\Column(name="state_text", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
      */
@@ -239,12 +241,27 @@ abstract class AbstractAddress implements EmptyItem
     /**
      * Set state
      *
-     * @param Region $state
+     * @TODO Refactor in CRM-185
+     * @deprecated Use setRegion
+     * @param Region $region
      * @return AbstractAddress
      */
-    public function setState($state)
+    public function setState($region)
     {
-        $this->state = $state;
+        $this->setRegion($region);
+
+        return $this;
+    }
+
+    /**
+     * Set region
+     *
+     * @param Region $region
+     * @return AbstractAddress
+     */
+    public function setRegion(Region $region)
+    {
+        $this->state = $region;
 
         return $this;
     }
@@ -252,9 +269,21 @@ abstract class AbstractAddress implements EmptyItem
     /**
      * Get state
      *
+     * @TODO Refactor in CRM-185
+     * @deprecated Use getRegion
      * @return Region
      */
     public function getState()
+    {
+        return $this->getRegion();
+    }
+
+    /**
+     * Get region
+     *
+     * @return Region
+     */
+    public function getRegion()
     {
         return $this->state;
     }
@@ -262,12 +291,27 @@ abstract class AbstractAddress implements EmptyItem
     /**
      * Set state text
      *
-     * @param string $stateText
+     * @TODO Refactor in CRM-185
+     * @deprecated Use setRegionText
+     * @param string $regionText
      * @return AbstractAddress
      */
-    public function setStateText($stateText)
+    public function setStateText($regionText)
     {
-        $this->stateText = $stateText;
+        $this->setRegionText($regionText);
+
+        return $this;
+    }
+
+    /**
+     * Set region text
+     *
+     * @param string $regionText
+     * @return AbstractAddress
+     */
+    public function setRegionText($regionText)
+    {
+        $this->stateText = $regionText;
 
         return $this;
     }
@@ -275,9 +319,21 @@ abstract class AbstractAddress implements EmptyItem
     /**
      * Get state test
      *
+     * @TODO Refactor in CRM-185
+     * @deprecated Use getRegionText
      * @return string
      */
     public function getStateText()
+    {
+        return $this->getRegionText();
+    }
+
+    /**
+     * Get region test
+     *
+     * @return string
+     */
+    public function getRegionText()
     {
         return $this->stateText;
     }
@@ -285,9 +341,21 @@ abstract class AbstractAddress implements EmptyItem
     /**
      * Get state
      *
+     * @TODO Refactor in CRM-185
+     * @deprecated Use getUniversalRegion
      * @return Region|string
      */
     public function getUniversalState()
+    {
+        return $this->getUniversalRegion();
+    }
+
+    /**
+     * Get region or region string
+     *
+     * @return Region|string
+     */
+    public function getUniversalRegion()
     {
         if (!empty($this->stateText)) {
             return $this->stateText;
@@ -440,7 +508,17 @@ abstract class AbstractAddress implements EmptyItem
         $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
+    /**
+     * @TODO Refactor in CRM-185
+     * @deprecated Use isRegionValid
+     * @param ExecutionContext $context
+     */
     public function isStateValid(ExecutionContext $context)
+    {
+        $this->isRegionValid($context);
+    }
+
+    public function isRegionValid(ExecutionContext $context)
     {
         if ($this->getCountry() && $this->getCountry()->hasRegions() && !$this->state) {
             $propertyPath = $context->getPropertyPath() . '.state';
@@ -467,7 +545,7 @@ abstract class AbstractAddress implements EmptyItem
             $this->getStreet(),
             $this->getStreet2(),
             $this->getCity(),
-            $this->getUniversalState(),
+            $this->getUniversalRegion(),
             ',',
             $this->getCountry(),
             $this->getPostalCode(),

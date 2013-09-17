@@ -7,7 +7,7 @@ use Oro\Bundle\AddressBundle\Tests\Unit\ImportExport\Serializer\Normalizer\Stub\
 
 class EmailNormalizerTest extends \PHPUnit_Framework_TestCase
 {
-    const EMAIL_CLASS = 'Oro\Bundle\AddressBundle\Tests\Unit\ImportExport\Serializer\Normalizer\Stub\StubEmail';
+    const EMAIL_TYPE = 'Oro\Bundle\AddressBundle\Tests\Unit\ImportExport\Serializer\Normalizer\Stub\StubEmail';
 
     /**
      * @var EmailNormalizer
@@ -28,8 +28,14 @@ class EmailNormalizerTest extends \PHPUnit_Framework_TestCase
     public function testSupportsDenormalization()
     {
         $this->assertFalse($this->normalizer->supportsDenormalization(array(), 'stdClass'));
-        $this->assertFalse($this->normalizer->supportsDenormalization(array(), self::EMAIL_CLASS));
-        $this->assertTrue($this->normalizer->supportsDenormalization('email@example.com', self::EMAIL_CLASS));
+        $this->assertFalse($this->normalizer->supportsDenormalization(array(), self::EMAIL_TYPE));
+        $this->assertFalse(
+            $this->normalizer->supportsDenormalization(
+                'email@example.com',
+                EmailNormalizer::ABSTRACT_EMAIL_TYPE
+            )
+        );
+        $this->assertTrue($this->normalizer->supportsDenormalization('email@example.com', self::EMAIL_TYPE));
     }
 
     public function testNormalize()
@@ -42,9 +48,9 @@ class EmailNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function testDenormalize()
     {
-        $result = $this->normalizer->denormalize('email@example.com', self::EMAIL_CLASS);
+        $result = $this->normalizer->denormalize('email@example.com', self::EMAIL_TYPE);
 
-        $this->assertInstanceOf(self::EMAIL_CLASS, $result);
+        $this->assertInstanceOf(self::EMAIL_TYPE, $result);
         $this->assertEquals('email@example.com', $result->getEmail());
     }
 

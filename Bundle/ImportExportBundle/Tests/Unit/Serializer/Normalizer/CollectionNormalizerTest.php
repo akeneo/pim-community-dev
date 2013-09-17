@@ -19,9 +19,18 @@ class CollectionNormalizerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->serializer = $this->getMock('Symfony\Component\Serializer\SerializerInterface');
+        $this->serializer = $this->getMock('Oro\Bundle\ImportExportBundle\Serializer\Serializer');
         $this->normalizer = new CollectionNormalizer();
         $this->normalizer->setSerializer($this->serializer);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Serializer\Exception\InvalidArgumentException
+     * @expectedExceptionMessage Serializer must implement
+     */
+    public function testSetInvalidSerialzer()
+    {
+        $this->normalizer->setSerializer($this->getMock('Symfony\Component\Serializer\SerializerInterface'));
     }
 
     public function testSupportsNormalization()
@@ -62,7 +71,7 @@ class CollectionNormalizerTest extends \PHPUnit_Framework_TestCase
         $data = new ArrayCollection(array($firstElement, $secondElement));
 
         $this->serializer->expects($this->exactly(2))
-            ->method('serialize')
+            ->method('normalize')
             ->will(
                 $this->returnValueMap(
                     array(
@@ -106,7 +115,7 @@ class CollectionNormalizerTest extends \PHPUnit_Framework_TestCase
         $barEntity = new \stdClass();
 
         $this->serializer->expects($this->exactly(2))
-            ->method('deserialize')
+            ->method('denormalize')
             ->will(
                 $this->returnValueMap(
                     array(

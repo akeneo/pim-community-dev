@@ -19,7 +19,7 @@ class PrimaryItemCollectionNormalizerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->serializer = $this->getMock('Symfony\Component\Serializer\SerializerInterface');
+        $this->serializer = $this->getMock('Oro\Bundle\ImportExportBundle\Serializer\Serializer');
         $this->normalizer = new PrimaryItemCollectionNormalizer();
         $this->normalizer->setSerializer($this->serializer);
     }
@@ -34,7 +34,7 @@ class PrimaryItemCollectionNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function supportsNormalizationDataProvider()
     {
-        $primaryItem = $this->getMock('Oro\Bundle\AddressBundle\Entity\PrimaryItem');
+        $primaryItem = $this->getMock(PrimaryItemCollectionNormalizer::PRIMARY_ITEM_TYPE);
         return array(
             array('stdClass', false),
             array(new ArrayCollection(), false),
@@ -53,7 +53,7 @@ class PrimaryItemCollectionNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function supportsDenormalizationDataProvider()
     {
-        $primaryItemClass = $this->getMockClass('Oro\Bundle\AddressBundle\Entity\PrimaryItem');
+        $primaryItemClass = $this->getMockClass(PrimaryItemCollectionNormalizer::PRIMARY_ITEM_TYPE);
         return array(
             array('stdClass', false),
             array('ArrayCollection', false),
@@ -75,7 +75,7 @@ class PrimaryItemCollectionNormalizerTest extends \PHPUnit_Framework_TestCase
 
         $data = new ArrayCollection(array($firstItem, $secondPrimaryItem, $thirdItem));
         $this->serializer->expects($this->exactly(3))
-            ->method('serialize')
+            ->method('normalize')
             ->will(
                 $this->returnValueMap(
                     array(
@@ -94,7 +94,7 @@ class PrimaryItemCollectionNormalizerTest extends \PHPUnit_Framework_TestCase
 
     protected function getMockPrimaryItem($primary)
     {
-        $result = $this->getMock('Oro\Bundle\AddressBundle\Entity\PrimaryItem');
+        $result = $this->getMock(PrimaryItemCollectionNormalizer::PRIMARY_ITEM_TYPE);
         $result->expects($this->once())->method('isPrimary')->will($this->returnValue($primary));
         return $result;
     }
@@ -105,19 +105,19 @@ class PrimaryItemCollectionNormalizerTest extends \PHPUnit_Framework_TestCase
         $format = null;
         $context = array('context');
 
-        $primaryItemClass = $this->getMockClass('Oro\Bundle\AddressBundle\Entity\PrimaryItem');
+        $primaryItemClass = $this->getMockClass(PrimaryItemCollectionNormalizer::PRIMARY_ITEM_TYPE);
 
-        $firstElement = $this->getMock('Oro\Bundle\AddressBundle\Entity\PrimaryItem');
+        $firstElement = $this->getMock(PrimaryItemCollectionNormalizer::PRIMARY_ITEM_TYPE);
         $firstElement->expects($this->once())->method('setPrimary')->with(true); // first is primary
 
-        $secondElement = $this->getMock('Oro\Bundle\AddressBundle\Entity\PrimaryItem');
+        $secondElement = $this->getMock(PrimaryItemCollectionNormalizer::PRIMARY_ITEM_TYPE);
         $secondElement->expects($this->once())->method('setPrimary')->with(false);
 
-        $thirdElement = $this->getMock('Oro\Bundle\AddressBundle\Entity\PrimaryItem');
+        $thirdElement = $this->getMock(PrimaryItemCollectionNormalizer::PRIMARY_ITEM_TYPE);
         $thirdElement->expects($this->once())->method('setPrimary')->with(false);
 
         $this->serializer->expects($this->exactly(3))
-            ->method('deserialize')
+            ->method('denormalize')
             ->will(
                 $this->returnValueMap(
                     array(

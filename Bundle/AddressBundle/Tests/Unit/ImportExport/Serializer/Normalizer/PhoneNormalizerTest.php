@@ -7,7 +7,7 @@ use Oro\Bundle\AddressBundle\Tests\Unit\ImportExport\Serializer\Normalizer\Stub\
 
 class PhoneNormalizerTest extends \PHPUnit_Framework_TestCase
 {
-    const PHONE_CLASS = 'Oro\Bundle\AddressBundle\Tests\Unit\ImportExport\Serializer\Normalizer\Stub\StubPhone';
+    const PHONE_TYPE = 'Oro\Bundle\AddressBundle\Tests\Unit\ImportExport\Serializer\Normalizer\Stub\StubPhone';
 
     /**
      * @var PhoneNormalizer
@@ -28,8 +28,9 @@ class PhoneNormalizerTest extends \PHPUnit_Framework_TestCase
     public function testSupportsDenormalization()
     {
         $this->assertFalse($this->normalizer->supportsDenormalization(array(), 'stdClass'));
-        $this->assertFalse($this->normalizer->supportsDenormalization(array(), self::PHONE_CLASS));
-        $this->assertTrue($this->normalizer->supportsDenormalization('phone', self::PHONE_CLASS));
+        $this->assertFalse($this->normalizer->supportsDenormalization(array(), self::PHONE_TYPE));
+        $this->assertFalse($this->normalizer->supportsDenormalization('phone', PhoneNormalizer::ABSTRACT_PHONE_TYPE));
+        $this->assertTrue($this->normalizer->supportsDenormalization('phone', self::PHONE_TYPE));
     }
 
     public function testNormalize()
@@ -42,9 +43,9 @@ class PhoneNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function testDenormalize()
     {
-        $result = $this->normalizer->denormalize('phone', self::PHONE_CLASS);
+        $result = $this->normalizer->denormalize('phone', self::PHONE_TYPE);
 
-        $this->assertInstanceOf(self::PHONE_CLASS, $result);
+        $this->assertInstanceOf(self::PHONE_TYPE, $result);
         $this->assertEquals('phone', $result->getPhone());
     }
 

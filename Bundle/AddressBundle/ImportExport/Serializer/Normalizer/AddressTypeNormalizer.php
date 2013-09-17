@@ -5,21 +5,21 @@ namespace Oro\Bundle\AddressBundle\ImportExport\Serializer\Normalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-use Oro\Bundle\AddressBundle\Entity\AbstractPhone;
+use Oro\Bundle\AddressBundle\Entity\AddressType;
 
-class PhoneNormalizer implements NormalizerInterface, DenormalizerInterface
+class AddressTypeNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-    const ABSTRACT_PHONE_TYPE = 'Oro\Bundle\AddressBundle\Entity\AbstractPhone';
+    const ADDRESS_TYPE_TYPE = 'Oro\Bundle\AddressBundle\Entity\AddressType';
 
     /**
-     * @param AbstractPhone $object
+     * @param AddressType $object
      * @param mixed $format
      * @param array $context
      * @return array
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        return $object->getPhone();
+        return $object->getName();
     }
 
     /**
@@ -27,14 +27,11 @@ class PhoneNormalizer implements NormalizerInterface, DenormalizerInterface
      * @param string $class
      * @param mixed $format
      * @param array $context
-     * @return AbstractPhone
+     * @return AddressType
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        /** @var AbstractPhone $result */
-        $result = new $class();
-        $result->setPhone($data);
-        return $result;
+        return new AddressType($data);
     }
 
     /**
@@ -42,7 +39,7 @@ class PhoneNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AbstractPhone;
+        return $data instanceof AddressType;
     }
 
     /**
@@ -50,9 +47,6 @@ class PhoneNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return
-            is_string($data)
-            && class_exists($type)
-            && in_array(self::ABSTRACT_PHONE_TYPE, class_parents($type));
+        return is_string($data) && $type == self::ADDRESS_TYPE_TYPE;
     }
 }

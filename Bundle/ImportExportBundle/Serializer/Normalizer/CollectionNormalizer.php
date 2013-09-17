@@ -6,6 +6,7 @@ use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,15 +14,25 @@ use Doctrine\Common\Collections\Collection;
 class CollectionNormalizer implements NormalizerInterface, DenormalizerInterface, SerializerAwareInterface
 {
     /**
-     * @var SerializerInterface
+     * @var SerializerInterface|NormalizerInterface|DenormalizerInterface
      */
     protected $serializer;
 
     /**
      * @param SerializerInterface $serializer
+     * @throws InvalidArgumentException
      */
     public function setSerializer(SerializerInterface $serializer)
     {
+        if (!$serializer instanceof NormalizerInterface || !$serializer instanceof DenormalizerInterface) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Serializer must implement "%s" and "%s"',
+                    'Symfony\Component\Serializer\Normalizer\NormalizerInterface',
+                    'Symfony\Component\Serializer\Normalizer\DenormalizerInterface'
+                )
+            );
+        }
         $this->serializer = $serializer;
     }
 
@@ -38,7 +49,7 @@ class CollectionNormalizer implements NormalizerInterface, DenormalizerInterface
         $result = array();
 
         foreach ($object as $item) {
-            $serializedItem = $this->serializer->serialize($item, $format, $context);
+            $serializedItem = $this->serializer->normalize($item, $format, $context);
             $result[] = $serializedItem;
         }
 
@@ -65,7 +76,7 @@ class CollectionNormalizer implements NormalizerInterface, DenormalizerInterface
         }
         $result = new ArrayCollection();
         foreach ($data as $item) {
-            $result->add($this->serializer->deserialize($item, $itemType, $format, $context));
+            $result->add($this->serializer->denormalize($item, $itemType, $format, $context));
         }
         return $result;
     }

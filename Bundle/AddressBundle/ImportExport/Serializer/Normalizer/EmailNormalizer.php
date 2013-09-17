@@ -50,9 +50,9 @@ class EmailNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        if (!is_string($data)) {
-            return false;
-        }
-        return class_exists($type) && in_array(self::ABSTRACT_EMAIL_TYPE, class_parents($type));
+        return
+            is_string($data) &&
+            class_exists($type) &&
+            in_array(self::ABSTRACT_EMAIL_TYPE, class_parents($type));
     }
 }

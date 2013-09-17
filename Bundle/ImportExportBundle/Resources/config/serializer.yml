@@ -17,14 +17,9 @@ services:
     oro_importexport.serializer.datetime_normalizer:
         class: %oro_importexport.serializer.datetime_normalizer.class%
         tags:
-            - { name: oro_importexport.normalizer }
-
-    oro_importexport.serializer.datetime_normalizer:
-        class: %oro_importexport.serializer.datetime_normalizer.class%
-        tags:
-            - { name: oro_importexport.normalizer }
+            - { name: oro_importexport.normalizer, priority: -10 }
 
     oro_importexport.serializer.collection_normalizer:
         class: %oro_importexport.serializer.collection_normalizer.class%
         tags:
-            - { name: oro_importexport.normalizer, priority: -1 }
+            - { name: oro_importexport.normalizer, priority: -10 }

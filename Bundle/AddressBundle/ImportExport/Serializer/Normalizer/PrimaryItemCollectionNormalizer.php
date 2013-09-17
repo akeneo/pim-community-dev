@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\AddressBundle\ImportExport\Serializer\Normalizer;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -12,6 +10,8 @@ use Oro\Bundle\AddressBundle\Entity\PrimaryItem;
 
 class PrimaryItemCollectionNormalizer extends CollectionNormalizer
 {
+    const PRIMARY_ITEM_TYPE = 'Oro\Bundle\AddressBundle\Entity\PrimaryItem';
+
     /**
      * Returned normalized data where first element is primary
      *
@@ -26,7 +26,7 @@ class PrimaryItemCollectionNormalizer extends CollectionNormalizer
 
         /** @var $item PrimaryItem */
         foreach ($object as $item) {
-            $serializedItem = $this->serializer->serialize($item, $format, $context);
+            $serializedItem = $this->serializer->normalize($item, $format, $context);
             if ($item->isPrimary()) {
                 array_unshift($result, $serializedItem);
             } else {
@@ -81,7 +81,7 @@ class PrimaryItemCollectionNormalizer extends CollectionNormalizer
     {
         $itemType = $this->getItemType($type);
         if ($itemType && class_exists($itemType)) {
-            return in_array('Oro\Bundle\AddressBundle\Entity\PrimaryItem', class_implements($itemType));
+            return in_array(self::PRIMARY_ITEM_TYPE, class_implements($itemType));
         }
         return false;
     }
