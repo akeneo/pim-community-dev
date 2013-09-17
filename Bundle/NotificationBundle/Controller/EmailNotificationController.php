@@ -23,9 +23,9 @@ class EmailNotificationController extends Controller
      * )
      * @Acl(
      *      id="oro_notification_emailnotification_index",
-     *      type="action",
-     *      label="View list of notification rules",
-     *      group_name=""
+     *      type="entity",
+     *      class="OroNotificationBundle:EmailNotification",
+     *      permission="VIEW"
      * )
      * @Template()
      */
@@ -46,9 +46,9 @@ class EmailNotificationController extends Controller
      * @Route("/update/{id}", requirements={"id"="\d+"}, defaults={"id"=0}))
      * @Acl(
      *      id="oro_notification_emailnotification_update",
-     *      type="action",
-     *      label="Edit notification rule",
-     *      group_name=""
+     *      type="entity",
+     *      class="OroNotificationBundle:EmailNotification",
+     *      permission="UPDATE"
      * )
      * @Template()
      */
@@ -80,9 +80,9 @@ class EmailNotificationController extends Controller
      * @Route("/create")
      * @Acl(
      *      id="oro_notification_emailnotification_create",
-     *      type="action",
-     *      label="Create notification rule",
-     *      group_name=""
+     *      type="entity",
+     *      class="OroNotificationBundle:EmailNotification",
+     *      permission="CREATE"
      * )
      * @Template("OroNotificationBundle:EmailNotification:update.html.twig")
      */
