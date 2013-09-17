@@ -182,7 +182,7 @@ class CustomEntityDatagrid extends DatagridManager
                         $fieldConfig->getFieldName()
                     );
 
-                    $label               = $entityConfig->get('label');
+                    $label               = $entityConfig->get('label') ?: $fieldConfig->getFieldName();
                     $code                = Generator::PREFIX . $fieldConfig->getFieldName();
                     $this->queryFields[] = $code;
 

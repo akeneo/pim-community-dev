@@ -26,7 +26,7 @@ class AbstractDatagrid extends DatagridManager
     /**
      * @param ConfigManager $configManager
      */
-    public function __construct(ConfigManager $configManager)
+    public function setConfigManager(ConfigManager $configManager)
     {
         $this->configManager = $configManager;
     }
@@ -47,7 +47,7 @@ class AbstractDatagrid extends DatagridManager
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => $fieldConfig->get('label') ? : $field->getFieldName(),
-                'field_name'  => Generator::PREFIX . $field->getFieldName(),
+                'field_name'  => $field->getFieldName(),
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'sortable'    => true,
                 'filterable'  => true,
@@ -60,14 +60,17 @@ class AbstractDatagrid extends DatagridManager
 
     public function addDynamicFields()
     {
-        $entityProvider   = $this->configManager->getProvider('entity');
-        $extendProvider   = $this->configManager->getProvider('extend');
-        $datagridProvider = $this->configManager->getProvider('datagrid');
+        if ($this->configManager->hasConfig($this->entityName)) {
+            $entityProvider   = $this->configManager->getProvider('entity');
+            $extendProvider   = $this->configManager->getProvider('extend');
+            $datagridProvider = $this->configManager->getProvider('datagrid');
 
-        $fieldIds = $entityProvider->getIds($this->entityName);
-        foreach ($fieldIds as $fieldId) {
-            if ($extendProvider->getConfigById($fieldId)->is('owner', ExtendManager::OWNER_CUSTOM)) {
-                if ($datagridProvider->getConfigById($fieldId)->is('is_visible')) {
+            $fieldIds = $entityProvider->getIds($this->entityName);
+            foreach ($fieldIds as $fieldId) {
+                if ($extendProvider->getConfigById($fieldId)->is('owner', ExtendManager::OWNER_CUSTOM)
+                    && $datagridProvider->getConfigById($fieldId)->is('is_visible')
+                    && !$extendProvider->getConfigById($fieldId)->is('is_deleted')
+                ) {
                     $fieldConfig = $entityProvider->getConfigById($fieldId);
 
                     $this->addDynamicField($this->getFieldDescriptionCollection(), $fieldId, $fieldConfig);

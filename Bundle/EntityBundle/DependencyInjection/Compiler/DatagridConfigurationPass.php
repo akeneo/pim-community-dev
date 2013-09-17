@@ -5,6 +5,7 @@ namespace Oro\Bundle\EntityBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 class DatagridConfigurationPass implements CompilerPassInterface
 {
@@ -31,12 +32,10 @@ class DatagridConfigurationPass implements CompilerPassInterface
             }
 
             if (is_subclass_of($className, 'Oro\Bundle\EntityBundle\Datagrid\AbstractDatagrid')) {
-                $service
-                    ->addArgument($container->getDefinition('oro_entity_config.config_manager'))
-                    ->addMethodCall(
-                        'addDynamicFields',
-                        array()
-                    );
+                $service->addMethodCall(
+                    'setConfigManager',
+                    array(new Reference('oro_entity_config.config_manager'))
+                );
             }
         }
     }
