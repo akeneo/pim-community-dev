@@ -11,8 +11,9 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
-use Pim\Bundle\CatalogBundle\Entity\Product;
-use Pim\Bundle\CatalogBundle\Entity\ProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+
 
 /**
  * Edit common attributes of given products
@@ -183,9 +184,9 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * Set product values with the one stored inside $this->values
      *
-     * @param Product $product
+     * @param ProductInterface $product
      */
-    protected function setProductValues(Product $product)
+    protected function setProductValues(ProductInterface $product)
     {
         foreach ($this->values as $value) {
             $this->setProductValue($product, $value);
@@ -195,10 +196,10 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * Set a product value
      *
-     * @param Product      $product
-     * @param ProductValue $value
+     * @param ProductInterface      $product
+     * @param ProductValueInterface $value
      */
-    protected function setProductValue(Product $product, ProductValue $value)
+    protected function setProductValue(ProductInterface $product, ProductValueInterface $value)
     {
         $productValue = $product->getValue(
             $value->getAttribute()->getCode(),
