@@ -29,6 +29,7 @@ parameters:
     oro_user.email.owner.provider.class: Oro\Bundle\UserBundle\Entity\Provider\EmailOwnerProvider
     oro_user.gender_provider.class:     Oro\Bundle\UserBundle\Provider\GenderProvider
     oro_user.password_form.validation_listener.class: Oro\Bundle\UserBundle\Form\EventListener\EmbedRepeatedFieldListener
+    oro_user.change_password.subscriber.class:  Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber
 
 services:
     oro_user.manager.flexible:
@@ -181,3 +182,9 @@ services:
         class: %oro_user.password_form.validation_listener.class%
         tags:
             - { name: kernel.event_listener, event: jsfv.post_process, method: onJsfvPostProcess }
+
+    oro_user.change_password.subscriber:
+        class: %oro_user.change_password.subscriber.class%
+        arguments:
+            - @oro_user.acl_manager
+            - @security.context

@@ -89,7 +89,7 @@ services:
 
     oro_user.form.type.change_password:
         class: %oro_user.form.type.change_password.class%
-        arguments:                    ["@oro_user.acl_manager", "@security.context"]
+        arguments:                    ["@oro_user.change_password.subscriber"]
         tags:
              - { name: form.type, alias: oro_change_password }
 

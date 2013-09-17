@@ -3,34 +3,25 @@
 namespace Oro\Bundle\UserBundle\Form\Type;
 
 use Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber;
-use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 class ChangePasswordType extends AbstractType
 {
     /**
-     * @var AclManager
+     * @var ChangePasswordSubscriber
      */
-    protected $aclManager;
+    protected $subscriber;
 
     /**
-     * @var SecurityContextInterface
+     * @param ChangePasswordSubscriber $subscriber
      */
-    protected $security;
-
-    /**
-     * @param AclManager $aclManager      ACL manager
-     * @param SecurityContextInterface $security        Security context
-     */
-    public function __construct(AclManager $aclManager, SecurityContextInterface $security)
+    public function __construct(ChangePasswordSubscriber $subscriber)
     {
-        $this->aclManager = $aclManager;
-        $this->security   = $security;
+        $this->subscriber = $subscriber;
     }
 
     /**
@@ -38,9 +29,7 @@ class ChangePasswordType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventSubscriber(
-            new ChangePasswordSubscriber($this->aclManager, $this->security)
-        );
+        $builder->addEventSubscriber($this->subscriber);
 
         $builder->add(
             'currentPassword',
@@ -90,21 +79,7 @@ class ChangePasswordType extends AbstractType
         $resolver->setDefaults(
             array(
                 'inherit_data' => true,
-                'intention'            => 'user',
-                'validation_groups'    => function ($form) {
-                    if ($form instanceof FormInterface) {
-                        $user = $form->getData();
-                    } elseif ($form instanceof FormView) {
-                        $user = $form->vars['value'];
-                    } else {
-                        $user = null;
-                    }
-
-                    return $user && $user->getId()
-                        ? array('User', 'Default')
-                        : array('Registration', 'User', 'Default');
-                },
-                'constraints' => array(),
+                'cascade_validation' => true,
             )
         );
     }

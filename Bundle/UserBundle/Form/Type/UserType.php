@@ -112,14 +112,10 @@ class UserType extends FlexibleType
             ->add(
                 'tags',
                 'oro_tag_select'
-            );
-
-            $builder->add(
+            )
+            ->add(
                 'change_password',
-                'oro_change_password',
-                array(
-                    'cascade_validation' => true
-                )
+                'oro_change_password'
             );
     }
 

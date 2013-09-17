@@ -8,10 +8,7 @@ use Symfony\Component\Form\Test\FormIntegrationTestCase;
 class ChangePasswordTypeTest extends FormIntegrationTestCase
 {
     /** @var  \PHPUnit_Framework_MockObject_MockObject */
-    protected $aclManager;
-
-    /** @var  \PHPUnit_Framework_MockObject_MockObject */
-    protected $securityContext;
+    protected $subscriber;
 
     /** @var  ChangePasswordType */
     protected $type;
@@ -20,15 +17,11 @@ class ChangePasswordTypeTest extends FormIntegrationTestCase
     {
         parent::setUp();
 
-        $this->aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\Manager')
+        $this->subscriber = $this->getMockBuilder('Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->securityContext = $this->getMockForAbstractClass(
-            'Symfony\Component\Security\Core\SecurityContextInterface'
-        );
-
-        $this->type = new ChangePasswordType($this->aclManager, $this->securityContext);
+        $this->type = new ChangePasswordType($this->subscriber);
     }
 
     /**

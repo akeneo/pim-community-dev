@@ -111,13 +111,23 @@
         {% endmacro %}
         {% set dataBlocks = dataBlocks|merge(
             [{
-                'title': 'Groups, Roles and Passwords',
+                'title': 'Groups and Roles',
                 'subblocks': [
                     {
                         'title': '',
                         'data': [
                             form.rolesCollection is defined ? form_row(form.groups, { attr: { class: 'horizontal' } }) : null,
                             _self.userRoles(form),
+                        ]
+                    }
+                ]
+            },
+            {
+                'title': 'Passwords',
+                'subblocks': [
+                    {
+                        'title': '',
+                        'data': [
                             form.change_password is defined ? form_widget(form.change_password) : ''
                         ]
                     }
