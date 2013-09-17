@@ -29,6 +29,25 @@ define(
                 massActions: [],
                 exportActions: []
             },
+            
+            _createToolbar:function(toolbarOptions) {
+                return new this.toolbar(_.extend({}, toolbarOptions, {
+                    collection: this.collection,
+                    actions: this._getToolbarActions(),
+                    massActions: this._getToolbarMassActions(),
+                    exportActions: this._getToolbarExportActions()
+                }));
+            },
+            
+            _getToolbarExportActions: function() {
+                var result = [];
+                
+                _.each(this.exportActions, function(action) {
+                    result.push(this.createExportAction(action.prototype));
+                }, this);
+                
+                return result;
+            },
 
             /**
              * Override get mass actions of toolbar adding export actions
@@ -40,10 +59,6 @@ define(
                 var result = [];
                 _.each(this.massActions, function(action) {
                     result.push(this.createMassAction(action));
-                }, this);
-                
-                _.each(this.exportActions, function(action) {
-                    result.push(this.createExportAction(action.prototype));
                 }, this);
 
                 return result;
