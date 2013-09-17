@@ -3,9 +3,9 @@ pim_navigation:
     description: Access to main menu entries
     parent: root
 
-pim_navigation_extract:
-    name: Extract menu entry
-    description: Extract menu entry
+pim_navigation_collect:
+    name: Collect menu entry
+    description: Collect menu entry
     parent: pim_navigation
 
 pim_navigation_enrich:

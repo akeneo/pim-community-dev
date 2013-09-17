@@ -35,12 +35,12 @@
 
             {% set widgetsArray = [
                 {
-                    label: 'Extract',
+                    label: 'Collect',
                     links: [
                         {url: path('pim_importexport_import_index'), label: 'Manage import profiles'|trans},
                         {url: path('pim_importexport_import_create', {connector: 'Akeneo', alias: 'product_import'}), label: 'Create an import CSV'|trans}
                     ],
-                    image: 'extract-image'
+                    image: 'collect-image'
                 },
                 {
                     label: 'Enrich',

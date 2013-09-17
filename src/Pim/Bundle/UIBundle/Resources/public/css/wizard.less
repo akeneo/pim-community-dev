@@ -7,26 +7,14 @@
   font-weight: bold;
   text-align: center;
   list-style: none;
+}
 
-  .progress-start, .progress-end {
-    position: absolute;
-    bottom: 0;
-    width: 50%;
-    height: 3px;
-    background-color: @color-light_grey;
-  }
-
-  .dot {
-    position: absolute;
-    bottom: -6px;
-    left: 119px;
-    line-height: 0;
-    color: @color-purple_light;
-    .icon-circle {
-      margin: 0;
-      font-size: 14px;
-    }
-  }
+.progress-start, .progress-end {
+  position: absolute;
+  bottom: 0;
+  width: 50%;
+  height: 3px;
+  background-color: @color-light_grey;
 }
 
 .progress-start {
@@ -42,6 +30,18 @@
 
   &.active {
     background-color: @color-purple_light;
+  }
+
+  .dot {
+    position: absolute;
+    bottom: -6px;
+    left: 119px;
+    line-height: 0;
+    color: @color-purple_light;
+    .icon-circle {
+      margin: 0;
+      font-size: 14px;
+    }
   }
 }
 
