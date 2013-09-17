@@ -9,6 +9,8 @@ define(
     ["oro/pageable-collection-orig", "oro/app"], 
     function(OroPageableCollection, app){
         var parent = OroPageableCollection.prototype,
+            treePattern = /(&treeId=(\d+))/,
+            categoryPattern = /(&categoryId=(\d+))/,
             PageableCollection = OroPageableCollection.extend({
                 /**
                  * @inheritdoc
@@ -22,16 +24,11 @@ define(
                  * 
                  * @param {int} treeId
                  * @param {int} categoryId
-                 * @return {boolean} true if the category was changed
                  */
                 setCategory: function(treeId, categoryId) {
                     treeId = (categoryId === '') ? '' : treeId;
                     if (treeId !== this.state.treeId || categoryId !== this.state.categoryId) {
-                        this.state.categoryId = categoryId;
-                        this.state.treeId = treeId;
-                        var treePattern = /(&treeId=(\d+))/,
-                            categoryPattern = /(&categoryId=(\d+))/,
-                            treeString = categoryId === '' ? '' : '&treeId=' + treeId,
+                        var treeString = categoryId === '' ? '' : '&treeId=' + treeId,
                             categoryString = categoryId === '' ? '' : '&categoryId=' + categoryId;
 
                         if (this.url.match(treePattern)) {
@@ -45,6 +42,10 @@ define(
                         } else {
                             this.url += categoryString;
                         }
+                        this.updateState({
+                            treeId: treeId,
+                            categoryId: categoryId
+                        })
                         return true;
                     } else {
                         return false;

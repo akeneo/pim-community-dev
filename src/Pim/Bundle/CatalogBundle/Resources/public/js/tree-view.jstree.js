@@ -84,7 +84,6 @@ define(
                             'attr': { 'class': 'jstree-unclassified', 'id': 'node_' },
                             'data': { 'title': _.__('jstree.all') }
                         }, null, true);
-                        $el.jstree('select_node', '#node_');
 
                         $el.jstree('create', '#node_' + root_node_id, 'last', {
                             'attr': { 'class': 'jstree-unclassified', 'id': 'node_0' },
