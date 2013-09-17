@@ -1697,6 +1697,24 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I display the (.*) attribute$/
+     */
+    public function iDisplayTheNameAttribute($fields)
+    {
+        $this->getCurrentPage()->addAvailableAttributes($this->listToArray($fields));
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I move on to the next step$/
+     */
+    public function iMoveOnToTheNextStep()
+    {
+        $this->getCurrentPage()->next();
+        $this->wait();
+    }
+
+    /**
      * @param string $expected
      */
     private function assertAddress($expected)
@@ -1789,8 +1807,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return void
      */
-    private function wait($time = 5000, $condition = 'document.readyState == "complete" && !$.active')
+    private function wait($time = 5000, $condition = null)
     {
+        $condition = $condition ?: <<<JS
+        document.readyState == "complete"                   // Page is ready
+            && !$.active                                    // No ajax request is active
+            && $("#page").css("display") == "block"         // Page is displayed (no yellow progress bar)
+            && $(".loading-mask").css("display") == "none"; // Page is not loading (no black mask loading page)
+JS;
+
         try {
             return $this->getMainContext()->wait($time, $condition);
         } catch (UnsupportedDriverActionException $e) {

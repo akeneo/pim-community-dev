@@ -702,6 +702,29 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Given /^the (\w+) (\w+) of (\w+) should be "([^"]*)"$/
+     */
+    public function theOfShouldBe($lang, $attribute, $identifier, $value)
+    {
+        $product = $this->getProductManager()->findByIdentifier($identifier);
+        if (!$product) {
+            throw $this->createExpectationException(
+                sprintf('Could not find product with identifier "%s"', $identifier)
+            );
+        }
+
+        $productValue = $product->getValue(strtolower($attribute), $this->locales[$lang]);
+        if (!$productValue) {
+            throw $this->createExpectationException(
+                sprintf('Could not find product value for attribute "%s" in locale "%s"', $attribute, $lang)
+            );
+        }
+        $this->getEntityManager()->refresh($productValue);
+
+        assertEquals($value, $productValue->getData());
+    }
+
+    /**
      * @param string $username
      *
      * @return User

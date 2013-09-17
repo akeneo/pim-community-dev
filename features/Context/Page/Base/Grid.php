@@ -21,14 +21,14 @@ class Grid extends Index
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
-            $this->elements,
             array(
                 'Grid'           => array('css' => 'table.grid'),
                 'Grid content'   => array('css' => 'table.grid tbody'),
                 'Filters'        => array('css' => 'div.filter-box'),
                 'Grid toolbar'   => array('css' => 'div.grid-toolbar'),
                 'Manage filters' => array('css' => 'div.filter-list')
-            )
+            ),
+            $this->elements
         );
     }
 
