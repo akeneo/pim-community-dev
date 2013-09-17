@@ -20,6 +20,19 @@ use Pim\Bundle\ImportExportBundle\Writer\FileWriter;
 class ArchiveSubscriber implements EventSubscriberInterface
 {
     /**
+     * @var string
+     */
+    protected $rootDir;
+
+    /**
+     * @param string $rootDir
+     */
+    public function __construct($rootDir)
+    {
+        $this->rootDir = $rootDir;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
@@ -41,9 +54,10 @@ class ArchiveSubscriber implements EventSubscriberInterface
         $job          = $jobInstance->getJob();
         $type         = $jobInstance->getType();
         $dirsep       = DIRECTORY_SEPARATOR;
-        $path         = '/tmp/'.$type.$dirsep.$jobInstance->getAlias().$dirsep.$jobExecution->getId().$dirsep;
+        $path         = $this->rootDir.$dirsep.$type.$dirsep.$jobInstance->getAlias()
+            .$dirsep.$jobExecution->getId().$dirsep;
 
-        // TODO use %kernel.root_dir% 
+        // TODO : deal with multi-steps
         foreach ($job->getSteps() as $step) {
             $reader = $step->getReader();
             $writer = $step->getWriter();
