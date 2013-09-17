@@ -9,6 +9,7 @@ define(
          * @override
          * @see Oro/Bundle/GridBundle/Resources/public/js/datagrid/toolbar.js
          * 
+         * @author  Romain Monceau <romain@akeneo.com>
          * @export oro/datagrid/toolbar
          * @class  pim.datagrid.Toolbar
          * @extends oro.datagrid.Toolbar
