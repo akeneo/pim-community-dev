@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
@@ -13,7 +13,6 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-
 
 /**
  * Edit common attributes of given products
@@ -35,7 +34,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     protected $locale;
 
     /**
-     * @var FlexibleManager
+     * @var ProductManager
      */
     protected $productManager;
 
@@ -60,7 +59,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     protected $attributesToDisplay;
 
     public function __construct(
-        FlexibleManager $productManager,
+        ProductManager $productManager,
         LocaleManager $localeManager,
         CurrencyManager $currencyManager
     ) {
