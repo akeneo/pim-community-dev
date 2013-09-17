@@ -15,6 +15,9 @@ use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
  */
 class NumberType extends OroNumberType
 {
+    /**
+     * @staticvar integer
+     */
     const DECIMAL_PLACES = 4;
 
     /**
