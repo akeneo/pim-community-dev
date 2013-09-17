@@ -25,8 +25,8 @@
 
         <div class="row buffer-top">
             <div class="offset1">
-                <a href="{{ path('pim_catalog_product_index') }}" class="btn">{{ 'Back'|trans }}</a>
-                <input type="submit" value="{{ 'Next'|trans }}" class="btn btn-primary">
+                {{ elements.link('Cancel', path('pim_catalog_product_index')) }}
+                {{ elements.submitBtn('Next') }}
             </div>
         </div>
 
