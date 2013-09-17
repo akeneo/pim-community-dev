@@ -6,6 +6,7 @@ parameters:
     pim_import_export.converter.product_value_converter.class:               Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter
     pim_import_export.converter.product_family_converter.class:              Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter
     pim_import_export.converter.product_categories_converter.class:          Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter
+    pim_import_export.event_listener.archive_subscriber.class:               Pim\Bundle\ImportExportBundle\EventListener\ArchiveSubscriber
 
 services:
     pim_import_export.twig.normalize_configuration_extension:
@@ -50,3 +51,9 @@ services:
         class: %pim_import_export.converter.product_categories_converter.class%
         arguments:
             - @doctrine.orm.entity_manager
+
+    pim_import_export.event_listener.archive_subscriber:
+        class: %pim_import_export.event_listener.archive_subscriber.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
