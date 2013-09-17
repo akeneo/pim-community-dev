@@ -64,7 +64,7 @@ abstract class AbstractTableDataConverter extends DefaultDataConverter
         // if data contains keys that are not in header
         if ($dataDiff) {
             throw new \LogicException(
-                sprintf('Backend header doesn\'t contain fields %s', implode(', ', $dataDiff))
+                sprintf('Backend header doesn\'t contain fields: %s', implode(', ', $dataDiff))
             );
         }
 

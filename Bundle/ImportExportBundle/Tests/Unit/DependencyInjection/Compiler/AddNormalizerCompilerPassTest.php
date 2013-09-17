@@ -83,12 +83,12 @@ class AddNormalizerCompilerPassTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    // @codingStandartsIgnoreStart
+    //@codingStandardsIgnoreStart
     /**
      * @expectedException \RuntimeException
      * @expectedExceptionMessage You must tag at least one service as "oro_importexport.normalizer" to use the import export Serializer service
      */
-    // @codingStandartsIgnoreEnd
+    // @codingStandardIgnoreEnd
     public function testProcessFailsWhenNoNormalizers()
     {
         $this->containerBuilder->expects($this->once())

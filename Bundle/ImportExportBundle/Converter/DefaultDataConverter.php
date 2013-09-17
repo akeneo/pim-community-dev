@@ -39,7 +39,7 @@ class DefaultDataConverter implements DataConverterInterface
         foreach ($complexData as $key => $value) {
             $key = (string)$key;
             if (strpos($key, $this->convertDelimiter) !== false) {
-                throw new \LogicException(sprintf('Delimiter %s is not allowed in keys', $this->convertDelimiter));
+                throw new \LogicException(sprintf('Delimiter "%s" is not allowed in keys', $this->convertDelimiter));
             }
 
             if (is_array($value)) {
@@ -90,7 +90,7 @@ class DefaultDataConverter implements DataConverterInterface
                 $data[$currentKey] = array();
             }
             if (!is_array($data[$currentKey])) {
-                throw new \LogicException('Can\'t set nested value under key "%s"', $currentKey);
+                throw new \LogicException(sprintf('Can\'t set nested value under key "%s"', $currentKey));
             }
 
             $data[$currentKey] = $this->setValueByKeys($data[$currentKey], $keys, $value);
