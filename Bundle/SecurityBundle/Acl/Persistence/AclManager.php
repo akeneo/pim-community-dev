@@ -971,6 +971,10 @@ class AclManager
                 $acls = $this->aclProvider->findAcls($oidsBatch, $sids);
                 if ($result === null) {
                     $result = $acls;
+                } else {
+                    foreach ($acls as $aclOid) {
+                        $result->attach($aclOid, $acls->offsetGet($aclOid));
+                    }
                 }
             } catch (AclNotFoundException $ex) {
                 if ($ex instanceof NotAllAclsFoundException) {

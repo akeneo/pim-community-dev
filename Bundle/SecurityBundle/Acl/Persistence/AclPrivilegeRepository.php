@@ -630,13 +630,22 @@ class AclPrivilegeRepository
             if ($itIsRootAcl) {
                 $mask = $extension->adaptRootMask($mask, $privilege->getIdentity()->getId());
             }
-            foreach ($extension->getPermissions($mask) as $permission) {
-                if (!$privilege->hasPermission($permission) && in_array($permission, $permissions)) {
-                    $privilege->addPermission(
-                        new AclPermission($permission, $extension->getAccessLevel($mask, $permission))
-                    );
+            if ($extension->removeServiceBits($mask) === 0) {
+                foreach ($permissions as $permission) {
+                    if (!$privilege->hasPermission($permission)) {
+                        $privilege->addPermission(new AclPermission($permission, AccessLevel::NONE_LEVEL));
+                    }
+                }
+            } else {
+                foreach ($extension->getPermissions($mask) as $permission) {
+                    if (!$privilege->hasPermission($permission) && in_array($permission, $permissions)) {
+                        $privilege->addPermission(
+                            new AclPermission($permission, $extension->getAccessLevel($mask, $permission))
+                        );
+                    }
                 }
             }
+
         }
     }
 }
