@@ -36,7 +36,7 @@
             {{ elements.link('Upload and '~title|lower, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
         {% endif %}
         {% if violations|length == 0 %}
-            {{ elements.link(title~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
+            {{ elements.link(action~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
         {% endif %}
     {% endset %}
 
