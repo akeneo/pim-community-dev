@@ -410,7 +410,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $deleteMassActions = new DeleteMassAction(
             array(
                 'name'  => 'delete',
-                'label' => 'Delete',
+                'label' => $this->translate('Delete'),
                 'icon'  => 'trash'
             )
         );
@@ -418,7 +418,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $redirectMassAction = new RedirectMassAction(
             array(
                 'name'  => 'redirect',
-                'label' => 'Mass Edition',
+                'label' => $this->translate('Mass Edition'),
                 'icon' => 'edit',
                 'route' => 'pim_catalog_mass_edit_action_choose',
             )
@@ -439,7 +439,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'acl_resource' => 'root',
                 'baseUrl' => $this->router->generate('pim_catalog_product_index', array('_format' => 'csv')),
                 'name' =>  'exportCsv',
-                'label' => $this->translate('Quick export'),
+                'label' => $this->translate('CSV export'),
                 'icon'  => 'icon-download',
                 'keepParameters' => true
             )

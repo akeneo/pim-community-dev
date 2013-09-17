@@ -43,8 +43,8 @@ Feature: Filter products per price
 
   Scenario: Successfully filter per Price
     Given I am on the products page
-    And I make visible the filter "Price"
-    When I filter per price with value "20" and currency "Euro"
+    When I make visible the filter "Price"
+    And I filter per price with value "20" and currency "Euro"
     Then the grid should contain 1 element
     And I should see products book
     And I should not see products postit

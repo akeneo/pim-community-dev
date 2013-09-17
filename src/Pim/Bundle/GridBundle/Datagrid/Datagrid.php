@@ -22,13 +22,24 @@ class Datagrid extends OroDatagrid
      */
     protected $serializer;
 
+    /**
+     * @var array
+     */
     protected $exportActions = array();
 
+    /**
+     * Add an export action
+     * @param ExportActionInterface $action
+     */
     public function addExportAction(ExportActionInterface $action)
     {
         $this->exportActions[] = $action;
     }
 
+    /**
+     * Get list of export actions
+     * @return ExportActionInterface[]
+     */
     public function getExportActions()
     {
         return $this->exportActions;
@@ -81,7 +92,7 @@ class Datagrid extends OroDatagrid
     }
 
     /**
-     *Get all query result ids
+     * Get all query result ids
      *
      * @return integer[]
      */
@@ -92,12 +103,11 @@ class Datagrid extends OroDatagrid
         $this->applyParameters();
         $this->query->select($this->query->getRootAlias());
         $entities = $this->query->execute(array(), AbstractQuery::HYDRATE_ARRAY);
-        $func = function($entity) {
+        $func = function ($entity) {
             return $entity['id'];
         };
         $ids = array_unique(array_map($func, $entities));
 
         return $ids;
     }
-
 }
