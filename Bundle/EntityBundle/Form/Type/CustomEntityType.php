@@ -62,7 +62,7 @@ class CustomEntityType extends AbstractType
         foreach ($formConfigs as $formConfig) {
             $extendConfig = $extendConfigProvider->getConfig($className, $formConfig->getId()->getFieldName());
             if ($formConfig->get('is_enabled')
-                && !$extendConfig->get('is_deleted')
+                && !$extendConfig->is('is_deleted')
                 && $extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)
                 && !in_array($formConfig->getId()->getFieldType(), array('ref-one', 'ref-many'))
                 && $builder->getForm()->getName() != $this->getName()
