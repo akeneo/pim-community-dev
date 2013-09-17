@@ -10,11 +10,14 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionParametersParser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
 use Symfony\Component\Translation\TranslatorInterface;
+use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
 /**
  * Batch operation controller
@@ -43,17 +46,29 @@ class MassEditActionController extends AbstractDoctrineController
     protected $translator;
 
     /**
+     * @var DatagridWorkerInterface
+     */
+    private $datagridWorker;
+
+    /**
+     * @var MassActionParametersParser
+     */
+    private $parametersParser;
+
+    /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param RegistryInterface        $doctrine
-     * @param MassEditActionOperator   $batchOperator
-     * @param TranslatorInterface      $translator
+     * @param Request                    $request
+     * @param EngineInterface            $templating
+     * @param RouterInterface            $router
+     * @param SecurityContextInterface   $securityContext
+     * @param FormFactoryInterface       $formFactory
+     * @param ValidatorInterface         $validator
+     * @param RegistryInterface          $doctrine
+     * @param MassEditActionOperator     $batchOperator
+     * @param TranslatorInterface        $translator
+     * @param DatagridWorkerInterface    $datagridWorker
+     * @param MassActionParametersParser $parametersParser
      */
     public function __construct(
         Request $request,
@@ -64,12 +79,16 @@ class MassEditActionController extends AbstractDoctrineController
         ValidatorInterface $validator,
         RegistryInterface $doctrine,
         MassEditActionOperator $batchOperator,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        DatagridWorkerInterface $datagridWorker,
+        MassActionParametersParser $parametersParser
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
 
-        $this->batchOperator = $batchOperator;
-        $this->translator    = $translator;
+        $this->batchOperator    = $batchOperator;
+        $this->translator       = $translator;
+        $this->datagridWorker   = $datagridWorker;
+        $this->parametersParser = $parametersParser;
     }
 
     /**
@@ -234,9 +253,21 @@ class MassEditActionController extends AbstractDoctrineController
     {
         $inset = $request->query->get('inset');
         if ($inset === '0') {
-            return $this->getManager()->getRepository('PimCatalogBundle:Product')->getAllIds();
+            /** @var $gridManager ProductDatagridManager */
+            $gridManager = $this->datagridWorker->getDatagridManager('product');
+            $gridManager->setFilterTreeId($request->get('treeId', 0));
+            $gridManager->setFilterCategoryId($request->get('categoryId', 0));
+            $parameters = $this->parametersParser->parse($request);
+            $filters = $parameters['filters'];
+            $datagrid = $gridManager->getDatagrid();
+            $datagrid->getParameters()->set(ParametersInterface::FILTER_PARAMETERS, $filters);
+            $ids = $datagrid->getAllIds();
+
+            return $ids;
+
         } elseif ($values = $request->query->get('values')) {
             return explode(',', $values);
+
         } else {
             return $request->query->get('products');
         }
