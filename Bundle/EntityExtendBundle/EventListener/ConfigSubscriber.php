@@ -70,8 +70,6 @@ class ConfigSubscriber implements EventSubscriberInterface
                 $event->getConfigManager()->persist($entityConfig);
             }
         }
-
-
         if ($scope == 'datagrid'
             && $event->getConfig()->getId() instanceof FieldConfigIdInterface
             && !in_array($event->getConfig()->getId()->getFieldType(), array('text'))

@@ -21,5 +21,5 @@ TestClassExtend:
 OroCRM\Bundle\ContactBundle\Entity\Contact:
     fields:
         testField:
-            owner:                  'System'                #default 'System'
+            owner:                  'Custom'                #default 'System'
             type:                   string
