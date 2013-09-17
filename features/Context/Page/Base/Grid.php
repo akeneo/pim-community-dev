@@ -280,6 +280,22 @@ class Grid extends Index
     }
 
     /**
+     * Click on the reset button of the datagrid toolbar
+     */
+    public function clickOnResetButton()
+    {
+        $resetBtn = $this
+            ->getElement('Grid toolbar')
+            ->find('css', sprintf('a:contains("%s")', 'Reset'));
+
+        if (!$resetBtn) {
+            throw new \InvalidArgumentException('Reset button not found');
+        }
+
+        $resetBtn->click();
+    }
+
+    /**
      * Activate a filter
      * @param string $filterName
      * @throws \InvalidArgumentException

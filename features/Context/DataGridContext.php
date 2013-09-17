@@ -337,7 +337,26 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iClickOnTheRow($row)
     {
         $this->datagrid->getRow($row)->click();
-        $this->wait(5000, null);
+        $this->wait(4000, null);
+    }
+
+    /**
+     * @Then /^I reset the grid$/
+     */
+    public function iResetTheGrid()
+    {
+        $this->wait();
+        $this->datagrid->clickOnResetButton();
+        $this->wait();
+    }
+
+    /**
+     * @Then /^I refresh the grid$/
+     */
+    public function iRefrestTheGrid()
+    {
+        $this->datagrid->clickOnRefreshButton();
+        $this->wait();
     }
 
     /**
@@ -360,7 +379,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return void
      */
-    private function wait($time = 5000, $condition = 'document.readyState == "complete" && !$.active')
+    private function wait($time = 4000, $condition = 'document.readyState == "complete" && !$.active')
     {
         return $this->getMainContext()->wait($time, $condition);
     }
