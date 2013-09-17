@@ -21,9 +21,9 @@ interface ItemProcessorInterface
      *
      * @param mixed $item item to be processed
      *
-     * @return potentially modified or new item for continued processing, null if processing of the
+     * @return mixed Potentially modified or new item for continued processing, null if processing of the
      *  provided item should not continue.
-     * @throws Exception
+     * @throws \Exception
      */
     public function process($item);
 }
