@@ -308,7 +308,7 @@ class JobInstanceController extends AbstractDoctrineController
             }
         }
 
-        return $this->redirectToShowView($jobInstance->getId());
+        return $this->redirectToReportView($jobInstance->getId());
     }
 
     /**
@@ -383,6 +383,18 @@ class JobInstanceController extends AbstractDoctrineController
     protected function redirectToShowView($jobId)
     {
         return $this->redirectToRoute(sprintf('pim_importexport_%s_show', $this->getJobType()), array('id' => $jobId));
+    }
+
+    /**
+     * Redirect to the report view
+     *
+     * @param integer $jobId
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function redirectToReportView($jobId)
+    {
+        return $this->redirectToRoute(sprintf('pim_importexport_%s_report_show', $this->getJobType()), array('id' => $jobId));
     }
 
     /**
