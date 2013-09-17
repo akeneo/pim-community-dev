@@ -1,5 +1,5 @@
 define(
-    ['oro/datagrid/toolbar-orig', 'oro/datagrid/actions-panel'],
+    ['oro/datagrid/toolbar', 'oro/datagrid/actions-panel'],
     function(Toolbar, ActionsPanel) {
         'use strict';
         

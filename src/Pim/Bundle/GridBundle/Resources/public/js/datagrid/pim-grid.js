@@ -1,6 +1,6 @@
 define(
-    ['underscore', 'oro/datagrid/grid', 'pim/datagrid/export-action'],
-    function (_, Grid, ExportCollectionAction) {
+    ['underscore', 'oro/datagrid/grid', 'pim/datagrid/export-action', 'pim/datagrid/toolbar'],
+    function (_, Grid, ExportCollectionAction, Toolbar) {
         'use strict';
 
         /**
@@ -29,6 +29,9 @@ define(
                 massActions: [],
                 exportActions: []
             },
+
+            /** @property {pim.datagrid.Toolbar} */
+            toolbar: Toolbar,
             
             /**
              * @override
