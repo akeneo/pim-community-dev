@@ -271,6 +271,7 @@ class AttributeGroupController extends AbstractDoctrineController
     public function addProductAttributesAction(Request $request, $id)
     {
         $group               = $this->findOr404('PimCatalogBundle:AttributeGroup', $id);
+        $maxOrder            = $group->getMaxAttributeSortOrder();
         $availableAttributes = new AvailableProductAttributes();
 
         $attributesForm      = $this->getAvailableProductAttributesForm(
@@ -281,6 +282,7 @@ class AttributeGroupController extends AbstractDoctrineController
         $attributesForm->bind($request);
 
         foreach ($availableAttributes->getAttributes() as $attribute) {
+            $attribute->setSortOrder(++$maxOrder);
             $group->addAttribute($attribute);
         }
 

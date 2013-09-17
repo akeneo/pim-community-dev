@@ -58,6 +58,7 @@ Feature: Filter products
     Then I should see the filters Name, Description, Family and Enabled
     And I should not see the filters Image, SKU
 
+  @insulated
   Scenario: Successfully filter by SKU
     Given I am on the products page
     When I filter by "SKU" with value "book"
@@ -65,22 +66,25 @@ Feature: Filter products
     And I should see products book
     And I should not see products postit
 
+  @insulated
   Scenario: Successfully filter by Name
     Given I am on the products page
-    And I make visible the filter "Name"
-    When I filter by "Name" with value "post"
+    When I make visible the filter "Name"
+    And I filter by "Name" with value "post"
     Then the grid should contain 1 element
     And I should see products postit
     And I should not see products book
 
+  @insulated
   Scenario: Successfully filter by Description
     Given I am on the products page
-    And I make visible the filter "Description"
-    When I filter by "Description" with value "book"
+    When I make visible the filter "Description"
+    And I filter by "Description" with value "book"
     Then the grid should contain 1 element
     And I should see products book
     And I should not see products postit
 
+  @insulated
   Scenario: Successfully display enabled products
     Given I am on the products page
     When I filter by "Enabled" with value "yes"
@@ -88,9 +92,26 @@ Feature: Filter products
     And I should see products postit
     And I should not see products book
 
+  @insulated
   Scenario: Successfully display disabled products
     Given I am on the products page
     When I filter by "Enabled" with value "no"
     Then the grid should contain 1 element
     And I should see products book
     And I should not see products postit
+
+  @insulated
+  Scenario: Successfully reset the filters
+    Given I am on the products page
+    Then I filter by "Enabled" with value "yes"
+    And the grid should contain 1 element
+    When I reset the grid
+    Then the grid should contain 2 elements
+
+  @insulated
+  Scenario: Successfully refresh the grid
+    Given I am on the products page
+    Then I filter by "Enabled" with value "yes"
+    And the grid should contain 1 element
+    When I refresh the grid
+    Then the grid should contain 1 element

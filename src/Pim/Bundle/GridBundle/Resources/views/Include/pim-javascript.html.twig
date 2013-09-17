@@ -221,14 +221,12 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                 collection: datagridCollection.collection
             }, datagridOptions.grid);
             var filtersList = new FilterList(filterListParameters);
-            {% if (datagrid.pager.nbResults > 0) %}
             $(datagridFiltersSelector).html(filtersList.render().$el);
 
             /**
              * @event datagrid_filters:initialized
              */
             mediator.trigger("datagrid_filters:rendered", datagridCollection.collection);
-            {% endif %}
 
             {# Don't use router when grid is embedded in dialog #}
             {% if app.request.get('_widgetContainer') != 'dialog' %}

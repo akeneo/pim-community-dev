@@ -1316,7 +1316,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getCurrentPage()->find('css', 'body')->click();
 
         //TODO Otherwise, it  makes the features/category/create_a_category.feature:28 scenario fails
-        $this->wait(5000, null);
+        $this->wait(4000, null);
     }
 
     /**
@@ -1476,11 +1476,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @When /^I launch the export job$/
+     * @param string $type
+     *
+     * @When /^I launch the (import|export) job$/
      */
-    public function iExecuteTheExportJob()
+    public function iExecuteTheJob($type)
     {
-        $this->getPage('Export show')->execute();
+        $this->getPage(sprintf('%s show', ucfirst($type)))->execute();
     }
 
     /**
@@ -1495,6 +1497,94 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         }
 
         unlink($file);
+    }
+
+    /**
+     * @param string  $fileName
+     * @param integer $rows
+     *
+     * @Given /^file "([^"]*)" should contain (\d+) rows$/
+     */
+    public function fileShouldContainRows($fileName, $rows)
+    {
+        if (!file_exists($fileName)) {
+            throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
+        }
+
+        $file = fopen($fileName, 'rb');
+        $rowCount = 0;
+        while (fgets($file) !== false) {
+            $rowCount++;
+        }
+        fclose($file);
+
+        assertEquals($rows, $rowCount, sprintf('Expecting file to contain %d rows, found %d.', $rows, $rowCount));
+    }
+
+    /**
+     * @param string    $fileName
+     * @param TableNode $table
+     *
+     * @Given /^the category order in the file "([^"]*)" should be following:$/
+     */
+    public function theCategoryOrderInTheFileShouldBeFollowing($fileName, TableNode $table)
+    {
+        if (!file_exists($fileName)) {
+            throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
+        }
+
+        $categories = array();
+        foreach (array_keys($table->getRowsHash()) as $category) {
+            $categories[] = $category;
+        }
+
+        $file = fopen($fileName, 'rb');
+        fgets($file);
+
+        while (false !== $row = fgets($file)) {
+            $category = array_shift($categories);
+            assertSame(0, strpos($row, $category), sprintf('Expecting category "%s", saw "%s"', $category, $row));
+        }
+
+        fclose($file);
+    }
+
+    /**
+     * @param string $original
+     * @param string $target
+     *
+     * @Given /^I copy the file "([^"]*)" to "([^"]*)"$/
+     */
+    public function iCopyTheFileTo($original, $target)
+    {
+        if (!file_exists($original)) {
+            throw $this->createExpectationException(sprintf('File %s does not exist.', $original));
+        }
+
+        copy($original, $target);
+    }
+
+    /**
+     * @param integer $original
+     * @param integer $target
+     * @param string  $fileName
+     *
+     * @Given /^I move the row (\d+) to row (\d+) in the file "([^"]*)"$/
+     */
+    public function iMoveTheRowToRowInTheFile($original, $target, $fileName)
+    {
+        if (!file_exists($fileName)) {
+            throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
+        }
+
+        $file = file($fileName);
+
+        $row = $file[$original];
+        unset($file[$original]);
+
+        array_splice($file, $target, 0, $row);
+
+        file_put_contents($fileName, $file);
     }
 
     /**
@@ -1807,7 +1897,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return void
      */
-    private function wait($time = 5000, $condition = null)
+    private function wait($time = 4000, $condition = null)
     {
         $condition = $condition ?: <<<JS
         document.readyState == "complete"                   // Page is ready

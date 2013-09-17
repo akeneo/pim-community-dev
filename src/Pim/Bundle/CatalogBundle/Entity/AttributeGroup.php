@@ -295,6 +295,19 @@ class AttributeGroup implements TranslatableInterface, VersionableInterface
     }
 
     /**
+     * @return integer
+     */
+    public function getMaxAttributeSortOrder()
+    {
+        $max = 0;
+        foreach ($this->getAttributes() as $att) {
+            $max = ($att->getSortOrder() > $max) ? $att->getSortOrder() : $max;
+        }
+
+        return $max;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setLocale($locale)

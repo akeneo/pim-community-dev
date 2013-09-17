@@ -111,7 +111,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      * @param integer $time
      * @param string  $condition
      */
-    public function wait($time = 5000, $condition = 'document.readyState == "complete" && !$.active')
+    public function wait($time = 4000, $condition = 'document.readyState == "complete" && !$.active')
     {
         $this->getSession()->wait($time, $condition);
     }
