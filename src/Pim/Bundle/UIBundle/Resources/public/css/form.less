@@ -287,9 +287,9 @@ div.btn-group > .has-switch {
     text-align: center;
     .upload-preview, img {
       display: inline-block;
-      max-width: 120px;
+      max-width: (@uploadZoneHeight - 20) * 1.5;
       max-height: @uploadZoneHeight - 20;
-      min-width: 40px;
+      min-width: (@uploadZoneHeight - 20) / 2;
       font-size: 40px;
       line-height: @uploadZoneHeight - 20;
       color: @textColor + #333;
