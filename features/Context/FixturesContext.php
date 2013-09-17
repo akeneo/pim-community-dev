@@ -725,6 +725,33 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Given /^the prices "([^"]*)" of products (.*) should be:$/
+     */
+    public function thePricesOfProductsShouldBe($attribute, $products, TableNode $table)
+    {
+        foreach ($this->listToArray($products) as $identifier) {
+            $product = $this->getProductManager()->findByIdentifier($identifier);
+            if (!$product) {
+                throw $this->createExpectationException(
+                    sprintf('Could not find product with identifier "%s"', $identifier)
+                );
+            }
+
+            $productValue = $product->getValue(strtolower($attribute));
+            if (!$productValue) {
+                throw $this->createExpectationException(
+                    sprintf('Could not find product value for attribute "%s"', $attribute)
+                );
+            }
+            $this->getEntityManager()->refresh($productValue);
+
+            foreach ($table->getHash() as $price) {
+                assertEquals($price['amount'], $productValue->getPrice($price['currency'])->getData());
+            }
+        }
+    }
+
+    /**
      * @param string $username
      *
      * @return User
@@ -883,7 +910,17 @@ class FixturesContext extends RawMinkContext
      */
     private function getAttributeType($type)
     {
-        return isset($this->attributeTypes[$type]) ? $this->attributeTypes[$type] : null;
+        if (!isset($this->attributeTypes[$type])) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Attribute type "%s" is not defined. Please add it in the %s::$attributeTypes property',
+                    $type,
+                    get_class($this)
+                )
+            );
+        }
+
+        return $this->attributeTypes[$type];
     }
 
     /**

@@ -209,9 +209,12 @@ class EditCommonAttributes extends AbstractMassEditAction
 
         if ('pim_catalog_price_collection' === $value->getAttribute()->getAttributeType()) {
             foreach ($value->getPrices() as $price) {
-                if ($productPrice = $productValue->getPrice($price->getCurrency())) {
-                    $productPrice->setData($price->getData());
+                if (false === $productPrice = $productValue->getPrice($price->getCurrency())) {
+                    // Add a new product price to the value if it wasn't defined before
+                    $productPrice = $this->createProductPrice($price->getCurrency());
+                    $productValue->addPrice($productPrice);
                 }
+                $productPrice->setData($price->getData());
             }
         } else {
             $productValue->setData($value->getData());

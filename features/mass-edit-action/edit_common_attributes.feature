@@ -12,14 +12,15 @@ Feature: Edit common attributes of many products at once
       | name    |
       | General |
     And the following product attributes:
-      | product | label | group   | translatable | scopable |
-      | lamp    | Name  | General | yes          | no       |
-      | ceiling | Name  | General | yes          | no       |
-      | torch   | Name  | General | yes          | no       |
-      | lamp    | Color | General | no           | no       |
-      | ceiling | Color | General | no           | no       |
-      | torch   | Color | General | no           | no       |
-      | lamp    | Price | General | no           | no       |
+      | product | label | group   | translatable | scopable | type   |
+      | lamp    | Name  | General | yes          | no       | text   |
+      | ceiling | Name  | General | yes          | no       | text   |
+      | torch   | Name  | General | yes          | no       | text   |
+      | lamp    | Color | General | no           | no       | text   |
+      | ceiling | Color | General | no           | no       | text   |
+      | torch   | Color | General | no           | no       | text   |
+      | lamp    | Price | General | no           | no       | prices |
+      | torch   | Price | General | no           | no       | prices |
     And I am logged in as "Julia"
 
   Scenario: Allow editing only common attributes
@@ -41,6 +42,22 @@ Feature: Edit common attributes of many products at once
     And the english name of ceiling should be "Lamp"
 
   Scenario: Succesfully update many price values at once
+    Given the following currencies:
+      | code | activated |
+      | USD  | yes       |
+      | EUR  | yes       |
+    And I am on the products page
+    When I mass-edit products lamp and torch
+    And I choose the "Edit attributes" operation
+    And I display the Price attribute
+    And I change the "$ Price" to "100"
+    And I change the "€ Price" to "150"
+    And I move on to the next step
+    Then I should see "Product(s) attribute(s) have been updated"
+    And the prices "Price" of products lamp and torch should be:
+      | amount | currency |
+      | 100    | USD      |
+      | 150    | EUR      |
 
   Scenario: Succesfully update many file values at once
 
