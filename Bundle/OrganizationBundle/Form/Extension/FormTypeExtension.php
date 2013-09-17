@@ -63,7 +63,7 @@ class FormTypeExtension extends AbstractTypeExtension
         $this->manager = $manager;
         $this->aclManager = $aclManager;
         $this->translator = $translator;
-        $this->changeOwnerGranted = $this->aclManager->isResourceGranted('oro_change_record_owner');
+        $this->changeOwnerGranted = null;
         $this->fieldName = RecordOwnerDataListener::OWNER_FIELD_NAME;
     }
 
@@ -110,7 +110,8 @@ class FormTypeExtension extends AbstractTypeExtension
                     FormEvents::POST_SET_DATA,
                     array($this, 'postSetData')
                 );
-                if (OwnershipType::OWNERSHIP_TYPE_USER == $ownerType && $this->changeOwnerGranted) {
+
+                if (OwnershipType::OWNERSHIP_TYPE_USER == $ownerType && $this->changeOwnerGranted()) {
                     /**
                      * Showing user owner box for entities with owner type USER if change owner permission is
                      * granted.
@@ -148,7 +149,7 @@ class FormTypeExtension extends AbstractTypeExtension
         if (is_object($entity)
             && $entity->getId()
             && $form->has($this->fieldName)
-            && !$this->changeOwnerGranted
+            && !$this->changeOwnerGranted()
         ) {
             $owner = $form->get($this->fieldName)->getData();
             $form->remove($this->fieldName);
@@ -185,7 +186,8 @@ class FormTypeExtension extends AbstractTypeExtension
                 'required' => true,
             );
         }
-        if ($this->changeOwnerGranted) {
+
+        if ($this->changeOwnerGranted()) {
             /**
              * If change owner permission is granted, showing all available business units
              */
@@ -236,7 +238,8 @@ class FormTypeExtension extends AbstractTypeExtension
             'required' => true,
             'constraints' => array(new NotBlank())
         );
-        if (!$this->changeOwnerGranted) {
+
+        if (!$this->changeOwnerGranted()) {
             $organizations = array();
             $bu = $user->getBusinessUnits();
             /** @var $businessUnit BusinessUnit */
@@ -267,5 +270,19 @@ class FormTypeExtension extends AbstractTypeExtension
         }
 
         return $choices;
+    }
+
+    /**
+     * Deferred ACL check
+     *
+     * @return bool Is resource granted
+     */
+    protected function changeOwnerGranted()
+    {
+        if (null === $this->changeOwnerGranted) {
+            $this->changeOwnerGranted = $this->aclManager->isResourceGranted('oro_change_record_owner');
+        }
+
+        return $this->changeOwnerGranted;
     }
 }
