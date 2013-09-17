@@ -8,6 +8,9 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor as AclAnnotationAncestor;
 
 class AclAnnotationStorageTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public function testStorage()
     {
         $storage = new AclAnnotationStorage();

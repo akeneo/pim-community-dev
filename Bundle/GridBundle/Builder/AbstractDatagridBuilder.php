@@ -69,7 +69,7 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
     public function __construct(
         FormFactoryInterface $formFactory,
         EventDispatcherInterface $eventDispatcher,
-        SecurityFacade         $securityFacade,
+        SecurityFacade $securityFacade,
         FilterFactoryInterface $filterFactory,
         SorterFactoryInterface $sorterFactory,
         ActionFactoryInterface $actionFactory,

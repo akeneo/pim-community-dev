@@ -218,4 +218,3 @@ class FilterCollection
         $this->filtersState = self::FILTERS_STATE_DIRTY;
     }
 }
-
