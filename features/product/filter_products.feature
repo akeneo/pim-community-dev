@@ -99,3 +99,19 @@ Feature: Filter products
     Then the grid should contain 1 element
     And I should see products book
     And I should not see products postit
+
+  @insulated
+  Scenario: Successfully reset the filters
+    Given I am on the products page
+    Then I filter by "Enabled" with value "yes"
+    And the grid should contain 1 element
+    When I reset the grid
+    Then the grid should contain 2 elements
+
+  @insulated
+  Scenario: Successfully refresh the grid
+    Given I am on the products page
+    Then I filter by "Enabled" with value "yes"
+    And the grid should contain 1 element
+    When I refresh the grid
+    Then the grid should contain 1 element
