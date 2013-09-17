@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\GridBundle\Tests\Unit\Datagrid\ORM;
+namespace Oro\Bundle\BatchBundle\Tests\Unit\ORM\Query;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Configuration;
@@ -10,9 +10,9 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\Type;
 
-use Oro\Bundle\GridBundle\Datagrid\ORM\CountCalculator;
+use Oro\Bundle\BatchBundle\ORM\Query\QueryCountCalculator;
 
-class CountCalculatorTest extends \PHPUnit_Framework_TestCase
+class QueryCountCalculatorTest extends \PHPUnit_Framework_TestCase
 {
     const TEST_COUNT = 42;
 
@@ -24,7 +24,7 @@ class CountCalculatorTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider getCountDataProvider
      */
-    public function testGetCount($dql, array $sqlParameters, array $types, array $queryParameters = array())
+    public function testCalculateCount($dql, array $sqlParameters, array $types, array $queryParameters = array())
     {
         /** @var $entityManager EntityManager|\PHPUnit_Framework_MockObject_MockObject */
         /** @var $connection Connection|\PHPUnit_Framework_MockObject_MockObject */
@@ -46,9 +46,7 @@ class CountCalculatorTest extends \PHPUnit_Framework_TestCase
             ->with()
             ->will($this->returnValue(self::TEST_COUNT));
 
-        $countCalculator = new CountCalculator();
-
-        $this->assertEquals(self::TEST_COUNT, $countCalculator->getCount($query));
+        $this->assertEquals(self::TEST_COUNT, QueryCountCalculator::calculateCount($query));
     }
 
     /**
