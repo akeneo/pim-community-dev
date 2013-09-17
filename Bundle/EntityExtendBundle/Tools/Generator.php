@@ -45,7 +45,7 @@ class Generator
 
     /**
      * @param OroEntityManager $em
-     * @param string $entityCacheDir
+     * @param string           $entityCacheDir
      */
     public function __construct(OroEntityManager $em, $entityCacheDir)
     {
@@ -56,7 +56,7 @@ class Generator
 
     public function initBase()
     {
-        $aliases = array();
+        $aliases        = array();
         $configProvider = $this->extendManager->getConfigProvider();
 
         /** @var ClassMetadataInfo $metadata */
@@ -89,7 +89,7 @@ class Generator
                 $aliases[self::ENTITY . $parentClassName] = $originalParentClassName;
 
                 $this->writer = new Writer();
-                $class = PhpClass::create(self::ENTITY . $parentClassName);
+                $class        = PhpClass::create(self::ENTITY . $parentClassName);
 
                 if ($inheritedClass) {
                     $class->setParentClassName($inheritedClass);
@@ -97,7 +97,7 @@ class Generator
 
                 $strategy = new DefaultGeneratorStrategy();
 
-                $filePath = $this->entityCacheDir . '/Extend/Entity/'. $parentClassName. '.php';
+                $filePath = $this->entityCacheDir . '/Extend/Entity/' . $parentClassName . '.php';
                 file_put_contents($filePath, "<?php\n\n" . $strategy->generate($class));
             }
         }
@@ -126,7 +126,7 @@ class Generator
     {
         $this->writer = new Writer();
 
-        $config = $this->extendManager->getConfigProvider()->getConfig($className);
+        $config      = $this->extendManager->getConfigProvider()->getConfig($className);
         $extendClass = $config->get('extend_class');
         $parentClass = $config->get('inheritance');
 
@@ -148,7 +148,7 @@ class Generator
      */
     protected function generateExtendYaml($className)
     {
-        $config = $this->extendManager->getConfigProvider()->getConfig($className);
+        $config      = $this->extendManager->getConfigProvider()->getConfig($className);
         $extendClass = $config->get('extend_class');
 
         $yml = array(
@@ -224,7 +224,6 @@ class Generator
 
     /**
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     *
      * @param $className
      */
     protected function generateValidation($className)
@@ -348,18 +347,19 @@ class Generator
         if ($fieldIds = $configProvider->getIds($className)) {
             foreach ($fieldIds as $fieldId) {
                 if ($configProvider->getConfigById($fieldId)->is('extend')) {
-                    $fieldName = self::PREFIX . $fieldId->getFieldName();
+                    $fieldName  = self::PREFIX . $fieldId->getFieldName();
+                    $methodName = $fieldId->getFieldName();
                     $class
                         ->setProperty(PhpProperty::create($fieldName)->setVisibility('protected'))
                         ->setMethod(
                             $this->generateClassMethod(
-                                'get' . ucfirst(Inflector::camelize($fieldName)),
+                                'get' . ucfirst(Inflector::camelize($methodName)),
                                 'return $this->' . $fieldName . ';'
                             )
                         )
                         ->setMethod(
                             $this->generateClassMethod(
-                                'set' . ucfirst(Inflector::camelize($fieldName)),
+                                'set' . ucfirst(Inflector::camelize($methodName)),
                                 '$this->' . $fieldName . ' = $value; return $this;',
                                 array('value')
                             )
