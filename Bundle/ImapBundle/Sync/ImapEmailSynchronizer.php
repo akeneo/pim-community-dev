@@ -10,6 +10,7 @@ use Oro\Bundle\ImapBundle\Connector\ImapConnectorFactory;
 use Oro\Bundle\ImapBundle\Manager\ImapEmailManager;
 use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
+use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 
 class ImapEmailSynchronizer
 {
@@ -44,17 +45,20 @@ class ImapEmailSynchronizer
      * @param ImapConnectorFactory $connectorFactory
      * @param EntityManager $em
      * @param EmailEntityBuilder $emailEntityBuilder
+     * @param EmailAddressManager $emailAddressManager
      */
     public function __construct(
         LoggerInterface $log,
         ImapConnectorFactory $connectorFactory,
         EntityManager $em,
-        EmailEntityBuilder $emailEntityBuilder
+        EmailEntityBuilder $emailEntityBuilder,
+        EmailAddressManager $emailAddressManager
     ) {
         $this->log = $log;
         $this->connectorFactory = $connectorFactory;
         $this->em = $em;
         $this->emailEntityBuilder = $emailEntityBuilder;
+        $this->emailAddressManager = $emailAddressManager;
     }
 
     /**
@@ -88,7 +92,8 @@ class ImapEmailSynchronizer
             $this->log,
             new ImapEmailManager($this->connectorFactory->createImapConnector($config)),
             $this->em,
-            $this->emailEntityBuilder
+            $this->emailEntityBuilder,
+            $this->emailAddressManager
         );
 
         try {

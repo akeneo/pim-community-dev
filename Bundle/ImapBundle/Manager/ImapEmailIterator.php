@@ -48,7 +48,7 @@ class ImapEmailIterator implements \Iterator
      */
     public function current()
     {
-        return $this->manager->getEmail($this->iterator->current());
+        return $this->manager->convertToEmail($this->iterator->current());
     }
 
     /**

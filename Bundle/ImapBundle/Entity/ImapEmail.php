@@ -10,7 +10,6 @@ use Oro\Bundle\EmailBundle\Entity\Email;
  *
  * @ORM\Table(name="oro_email_imap")
  * @ORM\Entity
- * @ORM\Entity(repositoryClass="Oro\Bundle\ImapBundle\Entity\Repository\ImapEmailRepository")
  */
 class ImapEmail
 {

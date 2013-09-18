@@ -50,8 +50,10 @@ class {{ className }} extends EmailAddress
 {% for owner in owners %}
         if (is_a($owner, '{{ owner.targetEntity }}')) {
             $this->{{ owner.fieldName }} = $owner;
+            $this->hasOwner = true;
         } else {
             $this->{{ owner.fieldName }} = null;
+            $this->hasOwner = false;
         }
 {% endfor %}
 

@@ -7,6 +7,7 @@ parameters:
     oro_email.email.owner.manager.class:          Oro\Bundle\EmailBundle\Entity\Manager\EmailOwnerManager
     oro_email.email.entity.builder.class:         Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder
     oro_email.email.entity.batch_processor.class: Oro\Bundle\EmailBundle\Builder\EmailEntityBatchProcessor
+    oro_email.email_body_loader_selector.class:   Oro\Bundle\EmailBundle\Provider\EmailBodyLoaderSelector
     oro_email.listener.entity_subscriber.class:   Oro\Bundle\EmailBundle\EventListener\EntitySubscriber
     oro_email.manager.email.api.class:            Oro\Bundle\EmailBundle\Entity\Manager\EmailApiEntityManager
     oro_email.entity.cache.warmer.class:          Oro\Bundle\EmailBundle\Cache\EntityCacheWarmer
@@ -65,10 +66,14 @@ services:
     oro_email.email.cache.manager:
         class: %oro_email.email.cache.manager.class%
         arguments:
+            - @oro_email.email_body_loader_selector
             - @doctrine.orm.entity_manager
 
-    oro_email.email.address.manager:
+    oro_email.email_body_loader_selector:
         public: false
+        class: %oro_email.email_body_loader_selector.class%
+
+    oro_email.email.address.manager:
         class: %oro_email.email.address.manager.class%
         arguments:
             - %oro_email.entity.cache_namespace%

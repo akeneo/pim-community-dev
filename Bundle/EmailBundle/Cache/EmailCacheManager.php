@@ -4,12 +4,15 @@ namespace Oro\Bundle\EmailBundle\Cache;
 
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\EmailBundle\Entity\Email;
-use Oro\Bundle\EmailBundle\Entity\EmailBody;
-use Oro\Bundle\EmailBundle\Entity\EmailAttachment;
-use Oro\Bundle\EmailBundle\Entity\EmailAttachmentContent;
+use Oro\Bundle\EmailBundle\Provider\EmailBodyLoaderSelector;
 
 class EmailCacheManager
 {
+    /**
+     * @var EmailBodyLoaderSelector
+     */
+    private $selector;
+
     /**
      * @var EntityManager
      */
@@ -18,15 +21,18 @@ class EmailCacheManager
     /**
      * Constructor.
      *
+     * @param EmailBodyLoaderSelector $selector
      * @param EntityManager $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EmailBodyLoaderSelector $selector, EntityManager $em)
     {
+        $this->selector = $selector;
         $this->em = $em;
     }
 
     /**
-     * Check that email body is cached. If not load it through an email service connector and add it to a cache
+     * Check that email body is cached.
+     * If do not, load it using appropriate email extension add it to a cache.
      *
      * @param Email $email
      */
@@ -37,62 +43,14 @@ class EmailCacheManager
             return;
         }
 
-        // TODO: implement getting email details through correct connector here
+        $emailBody = $this->selector
+            ->select($email->getFolder()->getOrigin())
+            ->loadEmailBody($email, $this->em);
 
-        //$emailOriginName = $email->getFolder()->getOrigin()->getName();
-        //$connector = $this->get(sprintf('oro_%s.connector', $emailOriginName));
-
-        $emailBody = new EmailBody();
-        $emailBody
-            ->setHeader($email)
-            ->setContent("<html><body>\n<h1>Sample Email Body</h1>\n some text \n some text \n some text \n some text \n some text</body></html>");
-
-        $emailBody->addAttachment(
-            $this->createEmailAttachment(
-                'sample attachment file.txt',
-                'text/plain',
-                'binary',
-                'some text'
-            )
-        );
-
-        $emailBody->addAttachment(
-            $this->createEmailAttachment(
-                'sample attachment file (base64).txt',
-                'text/plain',
-                'base64',
-                'some text'
-            )
-        );
-
+        $emailBody->setHeader($email);
         $email->setEmailBody($emailBody);
 
         $this->em->persist($email);
         $this->em->flush();
-    }
-
-    /**
-     * Create CreateEmailAttachment object
-     *
-     * @param string $fileName
-     * @param string $contentType
-     * @param string $contentTransferEncoding
-     * @param string $content
-     * @return EmailAttachment
-     */
-    protected function createEmailAttachment($fileName, $contentType, $contentTransferEncoding, $content)
-    {
-        $emailAttachmentContent = new EmailAttachmentContent();
-        $emailAttachmentContent
-            ->setContentTransferEncoding($contentTransferEncoding)
-            ->setValue($content);
-
-        $emailAttachment = new EmailAttachment();
-        $emailAttachment
-            ->setFileName($fileName)
-            ->setContentType($contentType)
-            ->setContent($emailAttachmentContent);
-
-        return $emailAttachment;
     }
 }

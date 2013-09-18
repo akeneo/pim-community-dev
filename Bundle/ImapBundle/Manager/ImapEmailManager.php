@@ -12,6 +12,7 @@ use Zend\Mail\Headers;
 use Zend\Mail\Header\HeaderInterface;
 use Zend\Mail\Header\AbstractAddressList;
 use Zend\Mail\Address\AddressInterface;
+use Zend\Mail\Storage\Exception as MailException;
 use Oro\Bundle\ImapBundle\Mail\Storage\Message;
 
 class ImapEmailManager
@@ -107,12 +108,29 @@ class ImapEmailManager
     }
 
     /**
+     * Retrieve email by its UID
+     *
+     * @param int $uid The UID of an email message
+     * @return Email|null An Email DTO or null if an email with the given UID was not found
+     */
+    public function findEmail($uid)
+    {
+        try {
+            $msg = $this->connector->getItem($uid);
+
+            return $this->convertToEmail($msg);
+        } catch (MailException\InvalidArgumentException $ex) {
+            return null;
+        }
+    }
+
+    /**
      * Creates Email DTO for the given email message
      *
      * @param Message $msg
      * @return Email
      */
-    public function getEmail(Message $msg)
+    public function convertToEmail(Message $msg)
     {
         $headers = $msg->getHeaders();
         $email = new Email($msg);
@@ -228,6 +246,7 @@ class ImapEmailManager
                 $result[] = $addr->toString();
             }
         }
+
         return $result;
     }
 

@@ -39,7 +39,8 @@ class EmailSyncCommand extends ContainerAwareCommand implements CronCommandInter
             $log,
             $this->getContainer()->get('oro_imap.connector.factory'),
             $this->getContainer()->get('doctrine.orm.entity_manager'),
-            $this->getContainer()->get('oro_email.email.entity.builder')
+            $this->getContainer()->get('oro_email.email.entity.builder'),
+            $this->getContainer()->get('oro_email.email.address.manager')
         );
         $synchronizer->sync(5, 0);
     }

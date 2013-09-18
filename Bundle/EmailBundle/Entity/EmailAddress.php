@@ -56,6 +56,14 @@ abstract class EmailAddress
     protected $email;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="has_owner", type="boolean")
+     * @Type("boolean")
+     */
+    protected $hasOwner;
+
+    /**
      * Get id
      *
      * @return integer
@@ -106,6 +114,16 @@ abstract class EmailAddress
         $this->email = $email;
 
         return $this;
+    }
+
+    /**
+     * Checks if this email address has an owner
+     *
+     * @return bool
+     */
+    public function hasOwner()
+    {
+        return $this->hasOwner;
     }
 
     /**
