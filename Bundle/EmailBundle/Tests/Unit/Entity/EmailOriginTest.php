@@ -27,4 +27,16 @@ class EmailOriginTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $folders);
         $this->assertTrue($folder === $folders[0]);
     }
+
+    public function testIsActive()
+    {
+        $entity = new TestEmailOrigin();
+
+        // check  that true by default
+        $this->assertTrue($entity->getIsActive());
+
+        // check setter
+        $entity->setIsActive(false);
+        $this->assertFalse($entity->getIsActive());
+    }
 }

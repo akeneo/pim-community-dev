@@ -1,6 +1,6 @@
 parameters:
     oro_platform.maintenance.class:               Oro\Bundle\PlatformBundle\Maintenance\Mode
-    oro_platform.security.encryptor.mcrypt.class: Oro\Bundle\PlatformBundle\Security\Encryptors\Mcrypt
+    oro_platform.security.encryptor.mcrypt.class: Oro\Bundle\PlatformBundle\Security\Encryptor\Mcrypt
 
 services:
     oro_platform.maintenance:

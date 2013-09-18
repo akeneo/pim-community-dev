@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\PlatformBundle\Security\Encryptors;
+namespace Oro\Bundle\PlatformBundle\Security\Encryptor;
 
 use ass\XmlSecurity\Key\Aes256Cbc as Origin;
 

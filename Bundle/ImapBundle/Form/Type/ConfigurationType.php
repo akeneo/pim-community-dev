@@ -3,12 +3,12 @@
 namespace Oro\Bundle\ImapBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Oro\Bundle\PlatformBundle\Security\Encryptors\Mcrypt;
+use Oro\Bundle\PlatformBundle\Security\Encryptor\Mcrypt;
 
 class ConfigurationType extends AbstractType
 {
@@ -32,14 +32,23 @@ class ConfigurationType extends AbstractType
             FormEvents::PRE_SUBMIT,
             function (FormEvent $event) use ($encryptor) {
                 $data = $event->getData();
-                $oldPassword = $event->getForm()->get('password')->getData();
-                if (empty($data['password']) && $oldPassword) {
-                    $password = $oldPassword;
+
+                if (empty($data['host']) && empty($data['port'])) {
+                    // case when user does not fill any data to subform empty entity should not be created
+                    $data = array();
                 } else {
-                    $password = $encryptor->encryptData($data['password']);
+                    $oldPassword = $event->getForm()->get('password')->getData();
+
+                    if (empty($data['password']) && $oldPassword) {
+                        // populate old password
+                        $password = $oldPassword;
+                    } else {
+                        $password = $encryptor->encryptData($data['password']);
+                    }
+
+                    $data['password'] = $password;
                 }
 
-                $data['password'] = $password;
                 $event->setData($data);
             }
         );
@@ -68,8 +77,8 @@ class ConfigurationType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class'     => 'Oro\\Bundle\\ImapBundle\\Entity\\ImapEmailOrigin',
-//                'error_bubbling' => true
+                'data_class' => 'Oro\\Bundle\\ImapBundle\\Entity\\ImapEmailOrigin',
+                'required'   => false
             )
         );
     }
