@@ -8,8 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-use Doctrine\ORM\EntityManager;
-
 use FOS\Rest\Util\Codes;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -19,17 +17,12 @@ use Oro\Bundle\UserBundle\Annotation\Acl;
 
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
-use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-
 use Oro\Bundle\EntityExtendBundle\Form\Type\EntityType;
 use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
-use Oro\Bundle\EntityExtendBundle\Form\Type\RelationType;
 
 /**
  * Class ConfigGridController
