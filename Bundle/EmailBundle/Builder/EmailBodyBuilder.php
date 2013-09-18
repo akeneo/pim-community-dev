@@ -41,8 +41,8 @@ class EmailBodyBuilder
      */
     public function setEmailBody($content, $bodyIsText)
     {
-        $emailBody = new EmailBody();
-        $emailBody
+        $this->emailBody = new EmailBody();
+        $this->emailBody
             ->setContent($content)
             ->setBodyIsText($bodyIsText);
     }
@@ -75,9 +75,10 @@ class EmailBodyBuilder
             ->setValue($content);
 
         $emailAttachment
-            ->setEmailBody($this->emailBody)
             ->setFileName($fileName)
             ->setContentType($contentType)
             ->setContent($emailAttachmentContent);
+
+        $this->emailBody->addAttachment($emailAttachment);
     }
 }

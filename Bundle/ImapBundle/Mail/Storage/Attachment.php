@@ -54,11 +54,15 @@ class Attachment
             $contentDisposition = $this->part->getHeader('Content-Disposition');
             $value = Decode::splitContentType($contentDisposition->getFieldValue(), 'filename');
             $encoding = $contentDisposition->getEncoding();
-        } else {
+        }
+        if (empty($value) && $this->part->getHeaders()->has('Content-Type')) {
             /** @var \Zend\Mail\Header\ContentType $contentType */
             $contentType = $this->part->getHeader('Content-Type');
             $value = $contentType->getParameter('name');
             $encoding = $contentType->getEncoding();
+        }
+        if (empty($encoding)) {
+            $encoding = 'ASCII';
         }
 
         return new Value($value, $encoding);
@@ -84,22 +88,10 @@ class Attachment
 
         if ($this->part->getHeaders()->has('Content-Transfer-Encoding')) {
             $contentTransferEncoding = $this->part->getHeader('Content-Transfer-Encoding')->getFieldValue();
-            switch (strtolower($contentTransferEncoding)) {
-                case 'base64':
-                    $content = base64_decode($this->part->getContent());
-                    break;
-                case 'quoted-printable':
-                    $content = quoted_printable_decode($this->part->getContent());
-                    break;
-                default:
-                    $content = $this->part->getContent();
-                    break;
-            }
         } else {
             $contentTransferEncoding = 'BINARY';
-            $content = $this->part->getContent();
         }
 
-        return new Content($content, $contentType, $contentTransferEncoding, $encoding);
+        return new Content($this->part->getContent(), $contentType, $contentTransferEncoding, $encoding);
     }
 }

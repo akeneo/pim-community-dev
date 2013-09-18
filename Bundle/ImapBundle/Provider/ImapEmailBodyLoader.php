@@ -58,14 +58,14 @@ class ImapEmailBodyLoader implements EmailBodyLoaderInterface
 
         $repo = $em->getRepository('OroImapBundle:ImapEmail');
         $query = $repo->createQueryBuilder('e')
-            ->select('partial e.{uid, uidValidity}')
+            ->select('e.uid')
             ->where('e.email = ?1')
             ->setParameter(1, $email)
             ->getQuery();
         /** @var ImapEmail $imapEmail */
         $imapEmail = $query->getSingleResult();
 
-        $loadedEmail = $manager->findEmail($imapEmail->getUid());
+        $loadedEmail = $manager->findEmail($imapEmail['uid']);
         if ($loadedEmail === null) {
             throw new \RuntimeException(sprintf('Cannot find a body for "%s" email.', $email->getSubject()));
         }

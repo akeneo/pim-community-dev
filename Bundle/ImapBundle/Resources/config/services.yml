@@ -30,6 +30,8 @@ services:
     oro_imap.email_body_loader:
         public: false
         class: %oro_imap.email_body_loader.class%
+        arguments:
+            - @oro_imap.connector.factory
         tags:
             - { name: oro_email.email_body_loader }
 

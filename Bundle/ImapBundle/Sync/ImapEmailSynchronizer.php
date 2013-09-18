@@ -170,10 +170,11 @@ class ImapEmailSynchronizer
                 . ', (COALESCE(o.syncCode, 1000) * 100'
                 . ' + (:now - o.syncCodeUpdatedAt) / (CASE o.syncCode WHEN :success THEN 100 ELSE 1 END)) AS HIDDEN p2'
             )
-            ->where('o.syncCodeUpdatedAt IS NULL OR o.syncCodeUpdatedAt <= :border')
+            ->where('o.isActive = :isActive AND o.syncCodeUpdatedAt IS NULL OR o.syncCodeUpdatedAt <= :border')
             ->orderBy('p1, p2 DESC, o.syncCodeUpdatedAt')
             ->setParameter('inProcess', self::SYNC_CODE_IN_PROCESS)
             ->setParameter('success', self::SYNC_CODE_SUCCESS)
+            ->setParameter('isActive', true)
             ->setParameter('now', $now)
             ->setParameter('border', $border)
             ->setMaxResults($maxConcurrentTasks + 1)
