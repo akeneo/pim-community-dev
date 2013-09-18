@@ -8,6 +8,7 @@ settings:
     non_deprecated:       non deprecated
     version:              PHP version
     version_recommended:  Recommended PHP version
+    memory_limit:         Memory limit
 
 extensions:
     header:               Extensions

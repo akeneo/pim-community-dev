@@ -3,9 +3,8 @@
 namespace Oro\Bundle\InstallerBundle\Process\Step;
 
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
-use Sylius\Bundle\FlowBundle\Process\Step\ControllerStep;
 
-class ConfigureStep extends ControllerStep
+class ConfigureStep extends AbstractStep
 {
     public function displayAction(ProcessContextInterface $context)
     {
@@ -19,12 +18,18 @@ class ConfigureStep extends ControllerStep
 
     public function forwardAction(ProcessContextInterface $context)
     {
+        set_time_limit(60);
+
         $form = $this->createConfigurationForm();
 
         $form->handleRequest($this->getRequest());
 
         if ($form->isValid()) {
-            $this->get('oro_installer.yaml_persister')->dump($form->getData());
+            $data = $form->getData();
+
+            $this->get('oro_installer.yaml_persister')->dump($data);
+
+            $this->runCommand('cache:clear');
 
             return $this->complete();
         }
@@ -39,9 +44,8 @@ class ConfigureStep extends ControllerStep
 
     protected function createConfigurationForm()
     {
-        return $this->createForm(
-            'oro_installer_configuration',
-            $this->get('oro_installer.yaml_persister')->parse()
-        );
+        $data = $this->get('oro_installer.yaml_persister')->parse();
+
+        return $this->createForm('oro_installer_configuration', empty($data) ? null : $data);
     }
 }

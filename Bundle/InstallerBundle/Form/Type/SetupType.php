@@ -4,7 +4,6 @@ namespace Oro\Bundle\InstallerBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SetupType extends AbstractType
@@ -23,11 +22,7 @@ class SetupType extends AbstractType
                 'username',
                 'text',
                 array(
-                    'label'         => 'form.setup.username',
-                    'constraints'   => array(
-                        new Assert\NotBlank(),
-                        new Assert\Length(array('min' => 3, 'max' => 255)),
-                    ),
+                    'label' => 'form.setup.username',
                 )
             )
             ->add(
@@ -37,20 +32,27 @@ class SetupType extends AbstractType
                     'type'           => 'password',
                     'first_options'  => array('label' => 'form.setup.password'),
                     'second_options' => array('label' => 'form.setup.password_re'),
-                    'constraints'    => array(
-                        new Assert\NotBlank(),
-                    ),
                 )
             )
             ->add(
                 'email',
                 'email',
                 array(
-                    'label'         => 'form.setup.email',
-                    'constraints'   => array(
-                        new Assert\NotBlank(),
-                        new Assert\Email(),
-                    ),
+                    'label' => 'form.setup.email',
+                )
+            )
+            ->add(
+                'firstName',
+                'text',
+                array(
+                    'label' => 'form.setup.firstname',
+                )
+            )
+            ->add(
+                'lastName',
+                'text',
+                array(
+                    'label' => 'form.setup.lastname',
                 )
             )
             ->add(
@@ -68,7 +70,8 @@ class SetupType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => $this->dataClass
+                'data_class'        => $this->dataClass,
+                'validation_groups' => array('Registration', 'Default'),
             )
         );
     }

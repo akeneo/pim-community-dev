@@ -5,6 +5,7 @@ parameters:
     oro_installer.requirements.extensions.class:  Oro\Bundle\InstallerBundle\Requirement\ExtensionsRequirements
     oro_installer.requirements.filesystem.class:  Oro\Bundle\InstallerBundle\Requirement\FilesystemRequirements
     oro_installer.yaml_persister.class:           Oro\Bundle\InstallerBundle\Persister\YamlPersister
+    oro_installer.listener.request.class:         Oro\Bundle\InstallerBundle\EventListener\RequestListener
 
 services:
     oro_installer.scenario:
@@ -44,3 +45,11 @@ services:
         class:                                    %oro_installer.yaml_persister.class%
         arguments:
             - %kernel.root_dir%/config/parameters.yml
+
+    kernel.listener.install.event:
+        class:                                    %oro_installer.listener.request.class%
+        arguments:
+            - %installed%
+            - "@router"
+        tags:
+            - { name: kernel.event_listener, priority: 10, event: kernel.request, method: onRequest }

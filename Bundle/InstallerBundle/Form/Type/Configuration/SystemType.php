@@ -28,7 +28,7 @@ class SystemType extends AbstractType
                 'text',
                 array(
                     'label'             => 'form.configuration.system.secret',
-                    'data'              => uniqid(),
+                    'data'              => md5(uniqid()),
                     'constraints'       => array(
                         new Assert\NotBlank(),
                     )

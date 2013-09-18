@@ -1,5 +1,5 @@
 flash:
-    installed:            Oro has been successfully installed.
+    installed:            Oro Application has been successfully installed!
 
 switch:
     off:                  off
@@ -32,6 +32,8 @@ form:
     setup:
         email:            Email
         username:         Username
+        firstname:        First name
+        lastname:         Last name
         password:         Password
         password_re:      Re-enter password
         load_fixtures:    Load fixtures
@@ -40,10 +42,6 @@ process:
     step:
         check:
             header:       System requirements check
-            button:
-                back:     Back
-                install:  Install
-                next:     Next
             table:
                 current:  Current
                 required: Required
@@ -54,4 +52,12 @@ process:
             header:       Administration setup
         welcome:
             content:      This will guide you through the setup process.
-            header:       Welcome to Oro installer
+            header:       Welcome to Oro Application installer
+        final:
+            content:      Oro Application successfully installed.
+            header:       Congratulations!
+    button:
+        back:             Back
+        next:             Next
+        install:          Install
+        finish:           Go to dashboard

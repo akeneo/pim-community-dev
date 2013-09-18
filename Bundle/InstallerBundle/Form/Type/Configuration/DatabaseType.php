@@ -5,7 +5,6 @@ namespace Oro\Bundle\InstallerBundle\Form\Type\Configuration;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class DatabaseType extends AbstractType
 {
@@ -78,15 +77,6 @@ class DatabaseType extends AbstractType
                     'required'      => false,
                 )
             );
-    }
-
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(
-            array(
-                'oro_installer_database_host' => '127.0.0.1',
-            )
-        );
     }
 
     public function getName()

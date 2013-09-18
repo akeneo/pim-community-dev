@@ -32,6 +32,12 @@ class SettingsRequirements extends RequirementCollection
                 false
             ))
             ->add(new Requirement(
+                $translator->trans('settings.memory_limit', array(), 'requirements'),
+                $this->getBytes(ini_get('memory_limit')) >= 128 * 1024 * 1024,
+                '128M',
+                ini_get('memory_limit')
+            ))
+            ->add(new Requirement(
                 $translator->trans('settings.timezone', array(), 'requirements'),
                 $this->isOn('date.timezone'),
                 $translator->trans('settings.any', array(), 'requirements'),
@@ -87,10 +93,41 @@ class SettingsRequirements extends RequirementCollection
             ));
     }
 
-    private function isOn($key)
+    protected function isOn($key)
     {
         $value = ini_get($key);
 
         return false != $value && 'off' !== $value;
+    }
+
+    /**
+     * @param  string $val
+     * @return int
+     */
+    protected function getBytes($val)
+    {
+        if (empty($val)) {
+            return 0;
+        }
+
+        preg_match('/([0-9]+)[\s]*([a-z]*)$/i', trim($val), $matches);
+
+        if (isset($matches[1])) {
+            $val = (int) $matches[1];
+        }
+
+        switch (strtolower($matches[2])) {
+            case 'g':
+            case 'gb':
+                $val *= 1024;
+            case 'm':
+            case 'mb':
+                $val *= 1024;
+            case 'k':
+            case 'kb':
+                $val *= 1024;
+        }
+
+        return (int) $val;
     }
 }

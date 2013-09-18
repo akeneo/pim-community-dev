@@ -1,0 +1,18 @@
+{% extends bap.layout %}
+
+{% block header %}{% endblock %}
+{% block before_content %}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ 'process.step.final.header'|trans }}</h1>
+</div>
+
+{{ 'process.step.final.content'|trans }}
+
+<div class="form-actions">
+    <a href="{{ path('oro_default') }}" class="btn btn-large btn-primary btn-success">
+        {{ 'process.button.finish'|trans }}
+    </a>
+</div>
+{% endblock %}

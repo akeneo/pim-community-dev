@@ -21,6 +21,10 @@ class EventsCompilerPass implements CompilerPassInterface
             return;
         }
 
+        if (!$container->hasParameter('installed') || !$container->getParameter('installed')) {
+            return;
+        }
+
         $eventClassName = $container->getParameter('oro_notification.event_entity.class');
 
         $dispatcher = $container->getDefinition(self::DISPATCHER_KEY);

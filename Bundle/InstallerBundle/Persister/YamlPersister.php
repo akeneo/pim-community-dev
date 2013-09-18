@@ -6,16 +6,29 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlPersister
 {
-    protected $file;
+    /**
+     * Path to parameters.yml file
+     *
+     * @var string
+     */
+    protected $paramFile;
 
-    public function __construct($file)
+    /**
+     * @param string $paramFile Path to parameters.yml file
+     */
+    public function __construct($paramFile)
     {
-        $this->file = $file;
+        $this->paramFile = $paramFile;
     }
 
     public function parse()
     {
-        $data       = Yaml::parse($this->file);
+        $data = Yaml::parse($this->paramFile);
+
+        if (!is_array($data) || !isset($data['parameters'])) {
+            return array();
+        }
+
         $parameters = array();
 
         foreach ($data['parameters'] as $key => $value) {
@@ -42,7 +55,7 @@ class YamlPersister
             }
         }
 
-        if (false === file_put_contents($this->file, Yaml::dump(array('parameters' => $parameters)))) {
+        if (false === file_put_contents($this->paramFile, Yaml::dump(array('parameters' => $parameters)))) {
             throw new \RuntimeException(sprintf('Failed to write to %s.', $this->file));
         }
     }

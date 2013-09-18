@@ -15,7 +15,9 @@ class InstallerScenario extends ContainerAware implements ProcessScenarioInterfa
             ->add('welcome', new Step\WelcomeStep())
             ->add('check', new Step\CheckStep())
             ->add('configure', new Step\ConfigureStep())
+            ->add('schema', new Step\SchemaStep())
             ->add('setup', new Step\SetupStep())
+            ->add('final', new Step\FinalStep())
             ->setRedirect('oro_default');
     }
 }

@@ -1,7 +1,6 @@
 parameters:
     oro_wamp.publisher.class:             Oro\Bundle\SyncBundle\Wamp\TopicPublisher
     oro_wamp.db_ping.class:               Oro\Bundle\SyncBundle\Wamp\DbPing
-    oro_wamp.listener.clank.class:        Oro\Bundle\SyncBundle\EventListener\WampListener
     oro_wamp.listener.maintenance.class:  Oro\Bundle\SyncBundle\EventListener\MaintenanceListener
 
 services:
@@ -14,16 +13,7 @@ services:
     oro_wamp.db_ping:
         class:                            %oro_wamp.db_ping.class%
         arguments:
-            - "@doctrine.dbal.default.wrapped_connection"
-
-    kernel.listener.clank.event:
-        class:                            %oro_wamp.listener.clank.class%
-        arguments:
-            - "@session.handler.pdo"
-            - "@security.context"
-            - %session.storage.options%
-        tags:
-            - { name: kernel.event_listener, event: clank.client.connected, method: onClientConnect }
+            - "@?doctrine.dbal.default.wrapped_connection"
 
     kernel.listener.maintenance.event:
         class:                            %oro_wamp.listener.maintenance.class%

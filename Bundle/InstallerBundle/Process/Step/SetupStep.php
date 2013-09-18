@@ -2,17 +2,9 @@
 
 namespace Oro\Bundle\InstallerBundle\Process\Step;
 
-use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
-
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
-use Sylius\Bundle\FlowBundle\Process\Step\ControllerStep;
 
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\DBAL\DriverManager;
-use Doctrine\ORM\Tools\SchemaTool;
-
-class SetupStep extends ControllerStep
+class SetupStep extends AbstractStep
 {
     public function displayAction(ProcessContextInterface $context)
     {
@@ -26,55 +18,28 @@ class SetupStep extends ControllerStep
 
     public function forwardAction(ProcessContextInterface $context)
     {
+        set_time_limit(60);
+
         $form = $this->createForm('oro_installer_setup');
-        $em   = $this->getDoctrine()->getEntityManager();
 
         $form->handleRequest($this->getRequest());
 
         if ($form->isValid()) {
-            $params = $this->get('doctrine')->getConnection()->getParams();
-            $dbname = $params['dbname'];
+            // load demo fixtures
+            if ($form->has('load_fixtures') && $form->get('load_fixtures')->getData()) {
 
-            unset($params['dbname']);
-
-            $schemaManager = DriverManager::getConnection($params)->getSchemaManager();
-
-            if (!in_array($dbname, $schemaManager->listDatabases())) {
-                $schemaManager->createDatabase($dbname);
-            }
-
-            $schemaTool = new SchemaTool($em);
-
-            $schemaTool->dropSchema($em->getMetadataFactory()->getAllMetadata());
-            $schemaTool->createSchema($em->getMetadataFactory()->getAllMetadata());
-
-            if ($form->get('load_fixtures')->getData()) {
-                $loader = new ContainerAwareLoader($this->container);
-
-                foreach ($this->get('kernel')->getBundles() as $bundle) {
-                    if (is_dir($path = $bundle->getPath() . '/DataFixtures/ORM')) {
-                        $loader->loadFromDirectory($path);
-                    }
-                }
-
-                $purger = new ORMPurger($em);
-
-                $purger->setPurgeMode(ORMPurger::PURGE_MODE_DELETE);
-
-                $executor = new ORMExecutor($em, $purger);
-
-                $executor->execute($loader->getFixtures());
             }
 
             $user = $form->getData();
+            $role = $this
+                ->getDoctrine()
+                ->getRepository('OroUserBundle:Role')
+                ->findOneBy(array('role' => 'ROLE_SUPER_ADMIN'));
 
-            $user->setEnabled(true);
-            $user->setRoles(array('ROLE_SUPER_ADMIN'));
+            $user->setEnabled(true)
+                ->addRole($role);
 
-            $em->persist($user);
-            $em->flush();
-
-            $this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('flash.installed'));
+            $this->get('oro_user.manager')->updateUser($user);
 
             return $this->complete();
         }

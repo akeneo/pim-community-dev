@@ -40,8 +40,8 @@ class Requirement
      * @param bool   $fulfilled Is requirement fullfiled
      * @param mixed  $expected  Expected requirement value
      * @param mixed  $actual    Actual requirement value
-     * @param bool   $required  Is this requirement required to continue
-     * @param string $help      Some help info
+     * @param bool   $required  [optional] Is this requirement required to continue. Defaults to true.
+     * @param string $help      [optional] Some help info. Defaults to null.
      */
     public function __construct($label, $fulfilled, $expected, $actual, $required = true, $help = null)
     {

@@ -1,4 +1,4 @@
-oro_installer_bundle:
+oro_installer_flow:
     pattern:  /installer
     defaults: { _controller: sylius.controller.process:startAction, scenarioAlias: "oro_installer" }
 

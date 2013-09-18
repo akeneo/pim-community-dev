@@ -63,9 +63,9 @@
 {% endfor %}
 
 <div class="form-actions">
-    <a href="{{ path('sylius_flow_display', { scenarioAlias: 'oro_installer', stepName: 'welcome' }) }}" class="btn btn-large"><i class="icon-chevron-left"></i> {{ 'process.step.check.button.back'|trans }}</a> &nbsp;
+    <a href="{{ path('sylius_flow_display', { scenarioAlias: 'oro_installer', stepName: 'welcome' }) }}" class="btn btn-large"><i class="icon-chevron-left"></i> {{ 'process.button.back'|trans }}</a> &nbsp;
     <a href="{{ fulfilled ? path('sylius_flow_forward', { scenarioAlias: 'oro_installer', stepName: 'check' }) : 'javascript: void(0);' }}" class="btn btn-large {% if fulfilled %}btn-primary{% else %}disabled{% endif %}">
-        {{ 'process.step.check.button.next'|trans }} <i class="icon-chevron-right"></i>
+        {{ 'process.button.next'|trans }} <i class="icon-chevron-right"></i>
     </a>
 </div>
 {% endblock %}
