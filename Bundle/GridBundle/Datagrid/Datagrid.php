@@ -16,6 +16,7 @@ use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
+use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
 /**
@@ -141,6 +142,11 @@ class Datagrid implements DatagridInterface
      * @var string|null
      */
     protected $identifierFieldName;
+
+    /**
+     * @var AbstractViewsList|null
+     */
+    private $viewsList;
 
     /**
      * @var bool
@@ -567,6 +573,22 @@ class Datagrid implements DatagridInterface
     public function setIdentifierFieldName($identifierFieldName)
     {
         $this->identifierFieldName = $identifierFieldName;
+    }
+
+    /**
+     * @return null|AbstractViewsList
+     */
+    public function getViewsList()
+    {
+        return $this->viewsList;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setViewsList($list)
+    {
+        $this->viewsList = $list;
     }
 
     /**

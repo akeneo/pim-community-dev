@@ -1,6 +1,6 @@
 <script type="text/javascript">
 var require = {
-    baseUrl: '/bundles',
+    baseUrl: '{{ asset('bundles') }}',
     waitSeconds: 0,
     shim: {
         'jquery': {
@@ -216,6 +216,9 @@ var require = {
         'oro/datagrid/abstract-listener': 'orogrid/js/datagrid/listener/abstract-listener',
         'oro/datagrid/column-form-listener': 'orogrid/js/datagrid/listener/column-form-listener',
         'oro/datagrid/page-size': 'orogrid/js/datagrid/page-size',
+        'oro/datagrid/grid-views/view': 'orogrid/js/datagrid/grid-views/view',
+        'oro/datagrid/grid-views/model': 'orogrid/js/datagrid/grid-views/model',
+        'oro/datagrid/grid-views/collection': 'orogrid/js/datagrid/grid-views/collection',
         'oro/datagrid/pagination-input': 'orogrid/js/datagrid/pagination-input',
         'oro/datagrid/pagination': 'orogrid/js/datagrid/pagination',
         'oro/datagrid/router': 'orogrid/js/datagrid/router',

@@ -49,6 +49,7 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setRoles(array('Manager'))
             ->save()
             ->assertMessage('User successfully saved')
+            ->toGrid()
             ->close()
             ->assertTitle('Users - System');
 
@@ -80,11 +81,29 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setFirstname('First_' . $newUsername)
             ->setLastname('Last_' . $newUsername)
             ->save()
-            ->assertTitle('Users - System')
             ->assertMessage('User successfully saved')
+            ->toGrid()
+            ->assertTitle('Users - System')
             ->close();
 
         return $newUsername;
+    }
+
+    /**
+     * @depends testUpdateUser
+     * @param $username
+     */
+    public function testHistoryWindow($username)
+    {
+        $login = new Login($this);
+        $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
+            ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
+            ->submit()
+            ->openUsers()
+            ->filterBy('Username', $username)
+            ->open(array($username))
+            ->checkHistoryWindow()
+            ->close();
     }
 
     /**
