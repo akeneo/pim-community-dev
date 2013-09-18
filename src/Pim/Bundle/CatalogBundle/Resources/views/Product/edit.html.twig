@@ -6,8 +6,8 @@
 
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'jquery.currencyfield'],
-            function($, _, TreeAssociate, Scopable, FormUpdateListener){
+            ['jquery', 'underscore', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'pim/dialog', 'jquery.currencyfield'],
+            function($, _, TreeAssociate, Scopable, FormUpdateListener, Dialog){
                 'use strict';
                 $(function() {
                     new TreeAssociate('#trees');
@@ -21,6 +21,22 @@
                     new FormUpdateListener($('#{{ form.vars.id }}'));
 
                     $('#default_channel').select2('destroy').css('padding', '0');
+
+                    var $family = $('#{{ form.vars.id }}_family').removeClass('input-large').addClass('input-inline');
+                    $family.select2('enable', false);
+
+                    $('#edit-family').on('click', function () {
+                        var message = '{{ ("Current attributes will be merged with the ones in the new family."|trans
+                                ~ "</br>" ~ "No attributes will be removed."|trans)|raw }}',
+                            title   = '{{ "Are you sure you want to change the family?"|trans }}',
+                            doAction = function () {
+                                $('#edit-family').off('click').remove();
+                                $family.select2('enable', true);
+                                $family.select2('open');
+                            };
+
+                        Dialog.confirm(message, title, doAction);
+                    })
                 });
             }
         );
@@ -82,7 +98,10 @@
 
         {% set left %}
             <ul class="inline">
-               <li>{{ 'Family'|trans }}: {{ form.vars.value.family|capitalize|default('N/A'|trans) }}</li>
+               <li>
+                    {{ 'Family'|trans }}: {{ form_widget(form.family) }}
+                    <i id="edit-family" class="icon-pencil"></i>
+                </li>
                <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
                <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
            </ul>
