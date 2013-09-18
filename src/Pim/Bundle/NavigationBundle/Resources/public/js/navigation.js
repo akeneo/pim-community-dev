@@ -8,7 +8,8 @@ define(
     ['oro/navigation-orig'],
     function(OroNavigation) {
         
-        var instance,
+        var GRID_URL_REGEX = /enrich\/product\/(\?.*)$/,
+            instance,
             Navigation = OroNavigation.extend({
                 /**
                  * @inheritdoc
@@ -20,7 +21,7 @@ define(
                     if (!this.url) {
                         this.url = window.location.href.replace(this.baseUrl, '');
                     }
-                    if (this.url.match(/enrich\/product/) && !encodedStateData && sessionStorage && sessionStorage.gridURL_products) {
+                    if (this.url.match(GRID_URL_REGEX) && !encodedStateData && sessionStorage && sessionStorage.gridURL_products) {
                         this.navigate(sessionStorage.gridURL_products, { trigger: false, replace: true});
                         this.encodedStateData = sessionStorage.gridURL_products;
                     }
