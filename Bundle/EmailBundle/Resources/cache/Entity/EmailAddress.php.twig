@@ -48,14 +48,13 @@ class {{ className }} extends EmailAddress
     public function setOwner(EmailOwnerInterface $owner = null)
     {
 {% for owner in owners %}
-        if (is_a($owner, '{{ owner.targetEntity }}')) {
+        if ($owner !== null && is_a($owner, '{{ owner.targetEntity }}')) {
             $this->{{ owner.fieldName }} = $owner;
-            $this->hasOwner = true;
         } else {
             $this->{{ owner.fieldName }} = null;
-            $this->hasOwner = false;
         }
 {% endfor %}
+        $this->hasOwner = ($owner !== null);
 
         return $this;
     }

@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\ImapBundle\Tests\Unit\Manager\DTO;
 
+use Oro\Bundle\ImapBundle\Connector\ImapMessageIterator;
+use Oro\Bundle\ImapBundle\Manager\ImapEmailIterator;
 use Oro\Bundle\ImapBundle\Manager\ImapEmailManager;
 
 class ImapEmailManagerTest extends \PHPUnit_Framework_TestCase
@@ -137,17 +139,24 @@ class ImapEmailManagerTest extends \PHPUnit_Framework_TestCase
         $query = $this->getMockBuilder('Oro\Bundle\ImapBundle\Connector\Search\SearchQuery')
             ->disableOriginalConstructor()
             ->getMock();
+
+        $imap = $this->getMockBuilder('Oro\Bundle\ImapBundle\Mail\Storage\Imap')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $imap->expects($this->any())->method('getMessage')->will($this->returnValue($msg));
+        $messageIterator = new ImapMessageIterator($imap, array(1));
         $this->connector->expects($this->once())
             ->method('findItems')
             ->with($this->equalTo('Test Folder'), $this->identicalTo($query))
-            ->will($this->returnValue(array($msg)));
+            ->will($this->returnValue($messageIterator));
 
         $this->manager->selectFolder('Test Folder');
         $emails = $this->manager->getEmails($query);
 
         $this->assertCount(1, $emails);
 
-        $email = $emails[0];
+        $emails->rewind();
+        $email = $emails->current();
         $this->assertEquals(123, $email->getId()->getUid());
         $this->assertEquals(456, $email->getId()->getUidValidity());
         $this->assertEquals('Subject', $email->getSubject());

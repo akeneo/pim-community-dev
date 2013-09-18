@@ -6,7 +6,7 @@ namespace Oro\Bundle\ImapBundle\Connector;
 use Oro\Bundle\ImapBundle\Mail\Storage\Imap;
 use Oro\Bundle\ImapBundle\Mail\Storage\Message;
 
-class ImapMessageIterator implements \Iterator
+class ImapMessageIterator implements \Iterator, \Countable
 {
     /**
      * @var Imap
@@ -61,6 +61,18 @@ class ImapMessageIterator implements \Iterator
     {
         $this->reverse = $reverse;
         $this->rewind();
+    }
+
+    /**
+     * The number of messages in this iterator
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return $this->ids === null
+            ? $this->imap->count()
+            : count($this->ids);
     }
 
     /**

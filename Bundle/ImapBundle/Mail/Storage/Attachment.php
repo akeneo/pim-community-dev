@@ -50,12 +50,14 @@ class Attachment
      */
     public function getFileName()
     {
-        if ($this->part->getHeaders()->has('Content-Disposition')) {
+        $value = '';
+        $headers = $this->part->getHeaders();
+        if ($headers->has('Content-Disposition')) {
             $contentDisposition = $this->part->getHeader('Content-Disposition');
             $value = Decode::splitContentType($contentDisposition->getFieldValue(), 'filename');
             $encoding = $contentDisposition->getEncoding();
         }
-        if (empty($value) && $this->part->getHeaders()->has('Content-Type')) {
+        if (empty($value) && $headers->has('Content-Type')) {
             /** @var \Zend\Mail\Header\ContentType $contentType */
             $contentType = $this->part->getHeader('Content-Type');
             $value = $contentType->getParameter('name');

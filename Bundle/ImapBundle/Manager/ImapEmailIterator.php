@@ -5,7 +5,7 @@ namespace Oro\Bundle\ImapBundle\Manager;
 use Oro\Bundle\ImapBundle\Connector\ImapMessageIterator;
 use Oro\Bundle\ImapBundle\Manager\DTO\Email;
 
-class ImapEmailIterator implements \Iterator
+class ImapEmailIterator implements \Iterator, \Countable
 {
     /**
      * @var ImapMessageIterator
@@ -39,6 +39,16 @@ class ImapEmailIterator implements \Iterator
     public function setIterationOrder($reverse)
     {
         $this->iterator->setIterationOrder($reverse);
+    }
+
+    /**
+     * The number of emails in this iterator
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return $this->iterator->count();
     }
 
     /**
