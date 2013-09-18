@@ -6,7 +6,7 @@ use Doctrine\ORM\Query;
 
 use Oro\Bundle\ImportExportBundle\Reader\EntityReader;
 
-class EntityReadeTest extends \PHPUnit_Framework_TestCase
+class EntityReaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject

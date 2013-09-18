@@ -7,14 +7,12 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
 
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator;
 
 use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\ImportExportBundle\Exception\LogicException;
 
-class EntityReader implements ItemReaderInterface, StepExecutionAwareInterface
+class EntityReader implements ReaderInterface
 {
     /**
      * @var \Iterator
