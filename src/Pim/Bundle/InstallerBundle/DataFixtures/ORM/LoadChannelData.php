@@ -23,7 +23,7 @@ class LoadChannelData extends AbstractInstallerFixture
         $configuration = Yaml::parse(realpath($this->getFilePath()));
 
         foreach ($configuration['channels'] as $data) {
-            $channel = $this->createChannel($data['code'], $data['label'], $data['locales'], $data['currencies']);
+            $channel = $this->createChannel($data['code'], $data['label'], $data['locales'], $data['currencies'], $data['tree']);
             $manager->persist($channel);
         }
 
@@ -36,14 +36,16 @@ class LoadChannelData extends AbstractInstallerFixture
      * @param string   $name       Channel name
      * @param string[] $locales    Locales
      * @param string[] $currencies Currencies
+     * @param string   $tree       Category tree
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\Channel
      */
-    protected function createChannel($code, $name, $locales, $currencies)
+    protected function createChannel($code, $name, $locales, $currencies, $tree)
     {
         $channel = new Channel();
         $channel->setCode($code);
         $channel->setName($name);
+        $channel->setCategory($this->getReference('category.'.$tree));
         foreach ($locales as $locale) {
             $channel->addLocale($this->getReference('locale.'.$locale));
         }
