@@ -50,29 +50,6 @@ class ArchiveSubscriber implements EventSubscriberInterface
     {
         $jobExecution = $event->getJobExecution();
         $this->archiver->archive($jobExecution);
-/*
-        $jobInstance  = $jobExecution->getJobInstance();
-        $job          = $jobInstance->getJob();
-        $type         = $jobInstance->getType();
-        $dirsep       = DIRECTORY_SEPARATOR;
-        $path         = $this->rootDir.$dirsep.$type.$dirsep.$jobInstance->getAlias()
-            .$dirsep.$jobExecution->getId().$dirsep;
-
-        // TODO : deal with multi-steps
-        foreach ($job->getSteps() as $step) {
-            $reader = $step->getReader();
-            $writer = $step->getWriter();
-
-            if ($reader instanceof CsvReader) {
-                mkdir($path, 755, true);
-                copy($reader->getFilePath(), $path.'input.csv');
-            }
-
-            if ($writer instanceof FileWriter) {
-                mkdir($path, 755, true);
-                copy($writer->getPath(), $path.'output.csv');
-            }
-        }*/
     }
 }
 
