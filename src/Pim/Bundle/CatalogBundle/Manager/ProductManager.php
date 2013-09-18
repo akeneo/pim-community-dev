@@ -291,6 +291,10 @@ class ProductManager extends FlexibleManager
             }
         }
 
+        if (!is_array($attributes)) {
+            return;
+        }
+
         $attributes = array_unique($attributes);
 
         foreach ($attributes as $attribute) {
