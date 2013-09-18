@@ -200,9 +200,10 @@ class EntitiesController extends Controller
                         ),
                     ),
                     array(
-                        'route'      => 'oro_entity_index',
+                        'route'      => 'oro_entity_view',
                         'parameters' => array(
-                            'id' => $entity_id,
+                            'entity_id' => $entity_id,
+                            'id'        => $id
                         )
                     )
                 );
