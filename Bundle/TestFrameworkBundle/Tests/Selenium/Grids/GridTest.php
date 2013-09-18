@@ -159,9 +159,21 @@ class GridTest extends \PHPUnit_Extensions_Selenium2TestCase
         natcasesort($sortedColumnOrder);
         $sortedColumnOrder = array_reverse($sortedColumnOrder);
 
-        $this->assertTrue($columnOrder === $sortedColumnOrder, print_r(array('expected' => $sortedColumnOrder, 'actual' => $columnOrder), true));
+        $this->assertTrue(
+            $columnOrder === $sortedColumnOrder,
+            print_r(array('expected' => $sortedColumnOrder, 'actual' => $columnOrder), true)
+        );
+        //change page size to 10 and refresh grid
+        $users->changePageSize('first');
+        $users->sortBy($columnName, 'asc');
+        $columnOrder = $users->sortBy($columnName, 'desc')->getColumn($columnId);
+        $this->assertTrue(
+            $columnOrder === array_slice($sortedColumnOrder, 0, 10),
+            print_r(array('expected' => $sortedColumnOrder, 'actual' => $columnOrder), true)
+        );
 
         //test ascending order
+        $users->changePageSize('last');
         $columnOrder = $users->sortBy($columnName, 'asc')->getColumn($columnId);
 
         if ($columnName == 'Birthday') {
@@ -175,7 +187,18 @@ class GridTest extends \PHPUnit_Extensions_Selenium2TestCase
         $sortedColumnOrder = $columnOrder;
         natcasesort($sortedColumnOrder);
 
-        $this->assertTrue($columnOrder === $sortedColumnOrder, print_r(array('expected' => $sortedColumnOrder, 'actual' => $columnOrder), true));
+        $this->assertTrue(
+            $columnOrder === $sortedColumnOrder,
+            print_r(array('expected' => $sortedColumnOrder, 'actual' => $columnOrder), true)
+        );
+        //change page size to 10 and refresh grid
+        $users->changePageSize('first');
+        $users->sortBy($columnName, 'desc');
+        $columnOrder = $users->sortBy($columnName, 'asc')->getColumn($columnId);
+        $this->assertTrue(
+            $columnOrder === array_slice($sortedColumnOrder, 0, 10),
+            print_r(array('expected' => $sortedColumnOrder, 'actual' => $columnOrder), true)
+        );
     }
 
     /**
@@ -188,7 +211,7 @@ class GridTest extends \PHPUnit_Extensions_Selenium2TestCase
         return array(
             //'ID' => array('ID'),
             'Username' => array('Username'),
-            'Email' => array('Email'),
+            //'Email' => array('Email'),
             //'First name' => array('First name'),
             //'Birthday' => array('Birthday'),
             //'Company' => array('Company'),

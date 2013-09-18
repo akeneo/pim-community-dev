@@ -32,8 +32,9 @@ class ConfigurationType extends AbstractType
             FormEvents::PRE_SUBMIT,
             function (FormEvent $event) use ($encryptor) {
                 $data = $event->getData();
-                if (empty($data['password'])) {
-                    $password = $event->getForm()->get('password')->getData();
+                $oldPassword = $event->getForm()->get('password')->getData();
+                if (empty($data['password']) && $oldPassword) {
+                    $password = $oldPassword;
                 } else {
                     $password = $encryptor->encryptData($data['password']);
                 }
@@ -45,7 +46,7 @@ class ConfigurationType extends AbstractType
 
         $builder
             ->add('host', 'text', array('required' => true))
-            ->add('port', 'text', array('required' => true))
+            ->add('port', 'number', array('required' => true))
             ->add(
                 'ssl',
                 'choice',
@@ -68,7 +69,7 @@ class ConfigurationType extends AbstractType
         $resolver->setDefaults(
             array(
                 'data_class'     => 'Oro\\Bundle\\ImapBundle\\Entity\\ImapEmailOrigin',
-                'error_bubbling' => true
+//                'error_bubbling' => true
             )
         );
     }
