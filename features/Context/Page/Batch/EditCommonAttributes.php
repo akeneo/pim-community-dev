@@ -30,8 +30,8 @@ class EditCommonAttributes extends Wizard
      * We have a field "$" embedded inside a "Price" field
      * We can call fillField('$ Price', 26) to set the "$" value of parent field "Price"
      *
-     * @param string $labelContent
-     * @param string $value
+     * @param string  $labelContent
+     * @param string  $value
      * @param Element $element
      */
     public function fillField($labelContent, $value, Element $element = null)
@@ -54,8 +54,15 @@ class EditCommonAttributes extends Wizard
         }
 
         if ($label->hasAttribute('for')) {
-            $field = $this->find('css', sprintf('#%s', $label->getAttribute('for')));
-            $field->setValue($value);
+            if (false === strpos($value, ',')) {
+                $field = $this->find('css', sprintf('#%s', $label->getAttribute('for')));
+                $field->setValue($value);
+            } else {
+                foreach (explode(',', $value) as $value) {
+                    $field = $label->getParent()->find('css', 'select');
+                    $field->selectOption(trim($value), true);
+                }
+            }
         } else {
             if (!$subLabelContent) {
                 throw new \InvalidArgumentException(

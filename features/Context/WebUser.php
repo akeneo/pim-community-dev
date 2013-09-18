@@ -5,7 +5,6 @@ namespace Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Behat\Exception\PendingException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
@@ -1771,7 +1770,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ->chooseOperation($operation)
             ->next();
 
-        $this->wait();
+        $this->wait(10000);
     }
 
     /**
@@ -1801,7 +1800,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iMoveOnToTheNextStep()
     {
         $this->getCurrentPage()->next();
-        $this->wait();
+        $this->wait(10000);
     }
 
     /**

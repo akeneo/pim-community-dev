@@ -14,7 +14,6 @@ use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
-
 /**
  * Edit common attributes of given products
  *
@@ -201,23 +200,45 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     protected function setProductValue(ProductInterface $product, ProductValueInterface $value)
     {
+
         $productValue = $product->getValue(
             $value->getAttribute()->getCode(),
-            $this->getLocale()->getCode(),
-            $value->getScope()
+            $value->getAttribute()->getTranslatable() ? $this->getLocale()->getCode() : null,
+            $value->getAttribute()->getScopable() ? $value->getScope() : null
         );
 
-        if ('pim_catalog_price_collection' === $value->getAttribute()->getAttributeType()) {
-            foreach ($value->getPrices() as $price) {
-                if (false === $productPrice = $productValue->getPrice($price->getCurrency())) {
-                    // Add a new product price to the value if it wasn't defined before
-                    $productPrice = $this->createProductPrice($price->getCurrency());
-                    $productValue->addPrice($productPrice);
-                }
-                $productPrice->setData($price->getData());
+        switch ($value->getAttribute()->getAttributeType()) {
+            case 'pim_catalog_price_collection':
+                $this->setProductPrice($productValue, $value);
+                break;
+
+            case 'pim_catalog_multiselect':
+                $this->setProductOption($productValue, $value);
+                break;
+
+            default:
+                $productValue->setData($value->getData());
+        }
+    }
+
+    private function setProductPrice(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        foreach ($value->getPrices() as $price) {
+            if (false === $productPrice = $productValue->getPrice($price->getCurrency())) {
+                // Add a new product price to the value if it wasn't defined before
+                $productPrice = $this->createProductPrice($price->getCurrency());
+                $productValue->addPrice($productPrice);
             }
-        } else {
-            $productValue->setData($value->getData());
+            $productPrice->setData($price->getData());
+        }
+    }
+
+    private function setProductOption(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        $productValue->getOptions()->clear();
+        $this->productManager->getStorageManager()->flush();
+        foreach ($value->getOptions() as $option) {
+            $productValue->addOption($option);
         }
     }
 

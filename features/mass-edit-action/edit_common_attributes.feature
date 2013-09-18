@@ -12,22 +12,22 @@ Feature: Edit common attributes of many products at once
       | name    |
       | General |
     And the following product attributes:
-      | product | label | group   | translatable | scopable | type   |
-      | lamp    | Name  | General | yes          | no       | text   |
-      | ceiling | Name  | General | yes          | no       | text   |
-      | torch   | Name  | General | yes          | no       | text   |
-      | lamp    | Color | General | no           | no       | text   |
-      | ceiling | Color | General | no           | no       | text   |
-      | torch   | Color | General | no           | no       | text   |
-      | lamp    | Price | General | no           | no       | prices |
-      | torch   | Price | General | no           | no       | prices |
+      | product | label  | group   | translatable | scopable | type        |
+      | lamp    | Name   | General | yes          | no       | text        |
+      | ceiling | Name   | General | yes          | no       | text        |
+      | torch   | Name   | General | yes          | no       | text        |
+      | lamp    | Colors | General | no           | no       | multiselect |
+      | ceiling | Colors | General | no           | no       | multiselect |
+      | torch   | Colors | General | no           | no       | multiselect |
+      | lamp    | Price  | General | no           | no       | prices      |
+      | torch   | Price  | General | no           | no       | prices      |
     And I am logged in as "Julia"
 
   Scenario: Allow editing only common attributes
     Given I am on the products page
     When I mass-edit products lamp, torch and ceiling
     And I choose the "Edit attributes" operation
-    Then I should see available attributes Name and Color in group "General"
+    Then I should see available attributes Name and Colors in group "General"
 
   Scenario: Succesfully update many text values at once
     Given I am on the products page
@@ -62,3 +62,15 @@ Feature: Edit common attributes of many products at once
   Scenario: Succesfully update many file values at once
 
   Scenario: Succesfully update many multi-valued values at once
+    Given the following "Colors" attribute options: Red, Blue and White
+    Given I am on the products page
+    When I mass-edit products lamp and ceiling
+    And I choose the "Edit attributes" operation
+    And I display the Colors attribute
+    And I change the "Colors" to "Red, Blue"
+    And I move on to the next step
+    Then I should see "Product(s) attribute(s) have been updated"
+    And the options "Colors" of products lamp and ceiling should be:
+      | value |
+      | Red   |
+      | Blue  |
