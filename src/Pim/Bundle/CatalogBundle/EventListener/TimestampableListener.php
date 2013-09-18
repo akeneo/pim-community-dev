@@ -32,15 +32,14 @@ class TimestampableListener extends BaseTimestampableListener
      * @param Flexible      $flexible
      * @param array         $fields
      */
-    protected function updateFlexibleFields(ObjectManager $om, AbstractFlexible $flexible, $fields)
+    protected function updateFlexibleFields(ObjectManager $objectManager, AbstractFlexible $flexible, $fields)
     {
-        $meta = $om->getClassMetadata(get_class($flexible));
-        $uow  = $om->getUnitOfWork();
+        $unitOfWork  = $objectManager->getUnitOfWork();
         $now  = new \DateTime('now');
         $changes = array();
         foreach ($fields as $field) {
             $changes[$field]= array(null, $now);
         }
-        $uow->scheduleExtraUpdate($flexible, $changes);
+        $unitOfWork->scheduleExtraUpdate($flexible, $changes);
     }
 }
