@@ -40,20 +40,23 @@ class ChannelManager
      *
      * @param multitype:string $criterias
      *
-     * @return \Doctrine\Common\Persistence\mixed
+     * @return array
      */
     public function getChannels($criterias = array())
     {
-        return $this->objectManager->getRepository('PimCatalogBundle:Channel')->findBy($criterias);
+        return $this
+            ->objectManager
+            ->getRepository('PimCatalogBundle:Channel')
+            ->findBy($criterias);
     }
 
     /**
      * Get channel choices with criterias
      * Allow to list channels in an array like array[<code>] = <label>
      *
-     * @param multitype $criterias
+     * @param array $criterias
      *
-     * @return multitype:string
+     * @return string[]
      */
     public function getChannelChoices($criterias = array())
     {
@@ -70,14 +73,19 @@ class ChannelManager
     /**
      * Get channel choices with user channel code in first
      *
-     * @return multitype:string
+     * @return string[]
+     *
+     * @throws \Exception
      */
     public function getChannelChoiceWithUserChannel()
     {
         $channelChoices  = $this->getChannelChoices();
         $userChannelCode = $this->getUserChannelCode();
-        $userChannelValue = $channelChoices[$userChannelCode];
+        if (!array_key_exists($userChannelCode, $channelChoices)) {
+            throw new \Exception('User channel code is deactivated');
+        }
 
+        $userChannelValue = $channelChoices[$userChannelCode];
         $newChannelChoices = array($userChannelCode => $userChannelValue);
         unset($channelChoices[$userChannelCode]);
 
