@@ -23,7 +23,13 @@ class LoadChannelData extends AbstractInstallerFixture
         $configuration = Yaml::parse(realpath($this->getFilePath()));
 
         foreach ($configuration['channels'] as $data) {
-            $channel = $this->createChannel($data['code'], $data['label'], $data['locales'], $data['currencies'], $data['tree']);
+            $channel = $this->createChannel(
+                $data['code'],
+                $data['label'],
+                $data['locales'],
+                $data['currencies'],
+                $data['tree']
+            );
             $manager->persist($channel);
         }
 
