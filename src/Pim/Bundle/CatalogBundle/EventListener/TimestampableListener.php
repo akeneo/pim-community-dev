@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Oro\Bundle\FlexibleEntityBundle\EventListener\TimestampableListener as BaseTimestampableListener;
