@@ -336,3 +336,8 @@ pim_catalog_locale_en_IE:
     name: en_IE
     description: Access to data related to locale en_IE
     parent: pim_catalog_locales
+
+pim_catalog_product_change_family:
+    name: Change product family
+    description: Change the family of products
+    parent: pim_catalog_product
