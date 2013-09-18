@@ -197,7 +197,7 @@ class AbstractTableDataConverterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \LogicException
+     * @expectedException \Oro\Bundle\ImportExportBundle\Exception\LogicException
      * @expectedExceptionMessage Backend header doesn't contain fields: fax
      */
     public function testConvertToExportFormatExtraFields()

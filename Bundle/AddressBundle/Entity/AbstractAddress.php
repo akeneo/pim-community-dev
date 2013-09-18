@@ -259,7 +259,7 @@ abstract class AbstractAddress implements EmptyItem
      * @param Region $region
      * @return AbstractAddress
      */
-    public function setRegion(Region $region)
+    public function setRegion($region)
     {
         $this->state = $region;
 
@@ -472,7 +472,7 @@ abstract class AbstractAddress implements EmptyItem
      *
      * @param \DateTime $created
      */
-    public function setCreatedAt(\DateTime $created)
+    public function setCreatedAt($created)
     {
         $this->created = $created;
     }
@@ -492,7 +492,7 @@ abstract class AbstractAddress implements EmptyItem
      *
      * @param \DateTime $updated
      */
-    public function setUpdatedAt(\DateTime $updated)
+    public function setUpdatedAt($updated)
     {
         $this->updated = $updated;
     }

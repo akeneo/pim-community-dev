@@ -74,7 +74,7 @@ class DefaultDataConverterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \LogicException
+     * @expectedException \Oro\Bundle\ImportExportBundle\Exception\LogicException
      * @expectedExceptionMessage Delimiter ":" is not allowed in keys
      */
     public function testConvertToExportFormatIncorrectKey()
@@ -88,7 +88,7 @@ class DefaultDataConverterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \LogicException
+     * @expectedException \Oro\Bundle\ImportExportBundle\Exception\LogicException
      * @expectedExceptionMessage Can't set nested value under key "owner"
      */
     public function testConvertToImportIncorrectKey()
