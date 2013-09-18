@@ -41,14 +41,12 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
             'delimiter' => ',',
             'enclosure' => "'''",
             'escape' => ';',
-            'firstLineIsHeader' => false,
             'header' => array('one', 'two')
         );
 
         $this->assertAttributeEquals(';', 'delimiter', $this->reader);
         $this->assertAttributeEquals('"', 'enclosure', $this->reader);
         $this->assertAttributeEquals('\\', 'escape', $this->reader);
-        $this->assertAttributeEquals(true, 'firstLineIsHeader', $this->reader);
         $this->assertAttributeEmpty('header', $this->reader);
 
         $this->reader->setStepExecution($this->getMockStepExecution($options));
@@ -56,13 +54,17 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals($options['delimiter'], 'delimiter', $this->reader);
         $this->assertAttributeEquals($options['enclosure'], 'enclosure', $this->reader);
         $this->assertAttributeEquals($options['escape'], 'escape', $this->reader);
-        $this->assertAttributeEquals($options['firstLineIsHeader'], 'firstLineIsHeader', $this->reader);
         $this->assertAttributeEquals($options['header'], 'header', $this->reader);
     }
 
-    public function testRead()
+    /**
+     * @dataProvider optionsDataProvider
+     * @param array $options
+     * @param array $expected
+     */
+    public function testRead($options, $expected)
     {
-        $stepExecution = $this->getMockStepExecution(array('filePath' => __DIR__ . '/fixtures/import_correct.csv'));
+        $stepExecution = $this->getMockStepExecution($options);
         $this->reader->setStepExecution($stepExecution);
         $stepExecution->expects($this->atLeastOnce())
             ->method('incrementReadCount');
@@ -72,24 +74,61 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
         while (($dataRow = $this->reader->read($stepExecution)) !== null) {
             $data[] = $dataRow;
         }
-        $expectedData = array(
+        $this->assertEquals($expected, $data);
+    }
+
+    public function optionsDataProvider()
+    {
+        return array(
             array(
-                'field_one' => '1',
-                'field_two' => '2',
-                'field_three' => '3',
+                array('filePath' => __DIR__ . '/fixtures/import_correct.csv'),
+                array(
+                    array(
+                        'field_one' => '1',
+                        'field_two' => '2',
+                        'field_three' => '3',
+                    ),
+                    array(
+                        'field_one' => 'test1',
+                        'field_two' => 'test2',
+                        'field_three' => 'test3',
+                    ),
+                    array(
+                        'field_one' => 'after_new1',
+                        'field_two' => 'after_new2',
+                        'field_three' => 'after_new3',
+                    )
+                )
             ),
             array(
-                'field_one' => 'test1',
-                'field_two' => 'test2',
-                'field_three' => 'test3',
-            ),
-            array(
-                'field_one' => 'after_new1',
-                'field_two' => 'after_new2',
-                'field_three' => 'after_new3',
+                array(
+                    'filePath' => __DIR__ . '/fixtures/import_correct.csv',
+                    'header' => array('h1', 'h2', 'h3')
+                ),
+                array(
+                    array(
+                        'h1' => 'field_one',
+                        'h2' => 'field_two',
+                        'h3' => 'field_three'
+                    ),
+                    array(
+                        'h1' => '1',
+                        'h2' => '2',
+                        'h3' => '3',
+                    ),
+                    array(
+                        'h1' => 'test1',
+                        'h2' => 'test2',
+                        'h3' => 'test3',
+                    ),
+                    array(
+                        'h1' => 'after_new1',
+                        'h2' => 'after_new2',
+                        'h3' => 'after_new3',
+                    )
+                )
             )
         );
-        $this->assertEquals($expectedData, $data);
     }
 
     public function testReadError()
