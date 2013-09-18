@@ -11,6 +11,7 @@
     {{ elements.page_header(title, buttons) }}
 
     <ul>
+        <li><a class="no-hash" href="{{ path(download_file_route, { 'id': execution.id }) }}">{{ "Download the file"|trans }}</a></li>
         <li><a class="no-hash" href="{{ path(download_log_route, { 'id': execution.id }) }}">{{ "Download the log"|trans }}</a></li>
     </ul>
 
