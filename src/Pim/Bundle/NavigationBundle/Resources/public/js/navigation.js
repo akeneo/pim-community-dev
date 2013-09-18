@@ -8,7 +8,7 @@ define(
     ['oro/navigation-orig'],
     function(OroNavigation) {
         
-        var GRID_URL_REGEX = /enrich\/product\/(\?.*)$/,
+        var GRID_URL_REGEX = /enrich\/product\/(\?.*)?$/,
             instance,
             Navigation = OroNavigation.extend({
                 /**
