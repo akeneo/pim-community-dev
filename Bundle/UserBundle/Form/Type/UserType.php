@@ -118,7 +118,7 @@ class UserType extends FlexibleType
                 'change_password',
                 'oro_change_password'
             );
-1    }
+    }
 
     /**
      * Add entity fields to form builder
