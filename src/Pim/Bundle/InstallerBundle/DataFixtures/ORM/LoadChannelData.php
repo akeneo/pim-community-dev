@@ -45,7 +45,7 @@ class LoadChannelData extends AbstractInstallerFixture
         $channel = new Channel();
         $channel->setCode($code);
         $channel->setName($name);
-        $channel->setCategory($this->getReference('categories.'.tree));
+        $channel->setCategory($this->getReference('category.'.$tree));
         foreach ($locales as $locale) {
             $channel->addLocale($this->getReference('locale.'.$locale));
         }
