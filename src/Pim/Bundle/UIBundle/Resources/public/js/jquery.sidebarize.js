@@ -32,23 +32,16 @@
 
     function collapse($element, opts) {
         $('>.sidebar', $element).hide();
-        $('>.separator', $element).toggleClass('expanded collapsed').outerWidth(opts.collapsedSeparatorWidth).css({
-            'left': 0,
-            'cursor': 'default'
-        });
-        $('>.content', $element).css('left', opts.collapsedSeparatorWidth).width($(window).width() - opts.collapsedSeparatorWidth);
+        $('>.separator', $element).toggleClass('expanded collapsed').outerWidth(opts.collapsedSeparatorWidth).css('cursor', 'default');
+        adjustWidth($element, opts);
         $element.find('.separator i').addClass(opts.expandIcon);
         saveState(opts.stateStorageKey, 0);
     }
 
     function expand($element, opts) {
         $('>.sidebar', $element).show();
-        var sidebarWidth = $('>.sidebar', $element).width();
-        $('>.separator', $element).toggleClass('expanded collapsed').outerWidth(opts.separatorWidth).css({
-            'left': sidebarWidth,
-            'cursor': opts.resizeCursor
-        });
-        $('>.content', $element).css('left', sidebarWidth + opts.separatorWidth).width($(window).width() - opts.separatorWidth - sidebarWidth);
+        $('>.separator', $element).toggleClass('expanded collapsed').outerWidth(opts.separatorWidth).css('cursor', opts.resizeCursor);
+        adjustWidth($element, opts);
         $element.find('.separator i').removeClass(opts.expandIcon);
         saveState(opts.stateStorageKey, 1);
     }
@@ -69,29 +62,21 @@
     }
 
     function prepare($element, opts) {
+        $('body').css('overflow', 'hidden');
+
         var $sidebar     = $element.children().first(),
             $content     = $element.children().last(),
             sidebarWidth = parseInt(getState(opts.widthStorageKey), 10) || opts.sidebarWidth;
 
-        $element.addClass('sidebarized').css('position', 'relative');
+        $element.addClass('sidebarized').css('position', 'absolute');
 
         $sidebar = $sidebar.wrap($('<div>', { 'class': 'sidebar-content', 'height': '100%' })).parent().css('overflow', 'auto');
-        $sidebar = $sidebar.wrap($('<div>', { 'class': 'sidebar' })).parent().css({
-            'position': 'absolute',
-            'height': '100%',
-            'width': sidebarWidth
-        });
+        $sidebar = $sidebar.wrap($('<div>', { 'class': 'sidebar' })).parent().width(sidebarWidth);
 
         $content.addClass('content').css({
-            'height': '100%',
             'margin-left': '0',
-            'overflow-y': 'auto',
-            'position': 'absolute',
-            'left': sidebarWidth + opts.separatorWidth
+            'overflow-y': 'auto'
         });
-
-        // Disable the oro scrollable container
-        $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
 
         var $controls = $('<div>', {
             'class': 'sidebar-controls',
@@ -104,9 +89,8 @@
             'attr': {
                 unselectable: 'on'
             },
-            css: opts.separatorCss,
-            height: '100%'
-        }).css({ 'cursor': opts.resizeCursor, 'left': sidebarWidth });
+            css: opts.separatorCss
+        }).css('cursor', opts.resizeCursor).css(opts.unselectableCss);
 
         $separator.insertAfter($sidebar).on('dblclick', function () {
             if ($(this).hasClass('collapsed')) {
@@ -115,6 +99,10 @@
                 collapse($element, opts);
             }
         });
+
+        $sidebar.css(opts.childrenCss);
+        $content.css(opts.childrenCss);
+        $separator.css(opts.childrenCss);
 
         $('<i>', { 'class': opts.collapseIcon, css: opts.iconCss }).on('click', function () {
             collapse($element, opts);
@@ -157,15 +145,14 @@
 
                 position = Math.min(Math.max(position, opts.minSidebarWidth), maxWidth);
 
-                $('>.separator', $element).css('left', position);
-                $('>.sidebar', $element).css('left', 0).width(position);
-                $('>.content', $element).css('left', position + opts.separatorWidth).width(windowWidth - position - opts.separatorWidth);
+                $('>.sidebar', $element).width(position);
+                $('>.content', $element).width(windowWidth - position - opts.separatorWidth);
             }
 
             function endSplit() {
                 $(document).off('mousemove', doSplit).off('mouseup', endSplit);
 
-                $element.children().css('-webkit-user-select', 'text');
+                $element.children().css(opts.selectableCss);
                 saveState(opts.widthStorageKey, parseInt($('>.sidebar', $element).width(), 10));
             }
 
@@ -173,7 +160,7 @@
                 if ($('>.separator', $element).hasClass('collapsed')) {
                     return;
                 }
-                $element.children().css('-webkit-user-select', 'none');
+                $element.children().css(opts.unselectableCss);
 
                 $(document).on('mousemove', doSplit).on('mouseup', endSplit);
             }
@@ -209,19 +196,32 @@
         collapseIcon: 'icon-double-angle-left',
         expandIcon: 'icon-double-angle-right',
         resizeCursor: 'e-resize',
+        childrenCss: {
+            'position': 'relative',
+            'float': 'left',
+            'height': '100%',
+            'left': 0
+        },
         controlsCss: {
             'border': '1px solid #ddd',
             'text-align': 'right'
         },
         separatorCss: {
             'z-index': '100',
-            'position': 'absolute',
+            'width': '7px',
+            'border': '1px solid #ddd'
+        },
+        unselectableCss: {
             'user-select': 'none',
             '-webkit-user-select': 'none',
             '-khtml-user-select': 'none',
-            '-moz-user-select': 'none',
-            'width': '7px',
-            'border': '1px solid #ddd'
+            '-moz-user-select': 'none'
+        },
+        selectableCss: {
+            'user-select': 'text',
+            '-webkit-user-select': 'text',
+            '-khtml-user-select': 'text',
+            '-moz-user-select': 'text'
         },
         iconCss: {
             'font-weight': 'bold',
