@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EmailBundle\Datagrid;
 
-use Oro\Bundle\EmailBundle\Entity\EmailInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -10,27 +9,21 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
-use Oro\Bundle\UserBundle\Entity\User;
 
 class EmailDatagridManager extends DatagridManager
 {
     /**
-     * @var User
+     * @var
      */
-    protected $user;
+    protected $entity;
 
     /**
-     * {@inheritDoc}
+     * @param $entity
      */
-    protected function getProperties()
+    public function setEntity($entity)
     {
-        return array();
-    }
-
-    public function setUser(User $user)
-    {
-        $this->user = $user;
-        $this->routeGenerator->setRouteParameters(array('id' => $user->getId()));
+        $this->entity = $entity;
+        $this->routeGenerator->setRouteParameters(array('id' => $entity->getId()));
     }
 
     /**
@@ -38,17 +31,11 @@ class EmailDatagridManager extends DatagridManager
      */
     protected function createQuery()
     {
-        $this->entityManager->getRepository('Oro\Bundle\EmailBundle\Entity\Email')->setUser($this->user);
+        $this->entityManager
+            ->getRepository('Oro\Bundle\EmailBundle\Entity\Email')
+            ->setEntity($this->entity);
 
         return parent::createQuery();
-    }
-
-    /**
-     * @param ProxyQueryInterface $query
-     */
-    protected function prepareQuery(ProxyQueryInterface $query)
-    {
-        //$query->
     }
 
     /**
@@ -126,13 +113,5 @@ class EmailDatagridManager extends DatagridManager
         );
         $fieldEntityName->setProperty($templateDataProperty);
         $fieldsCollection->add($fieldEntityName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getRowActions()
-    {
-        return array();
     }
 }
