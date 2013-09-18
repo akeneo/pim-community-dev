@@ -10,7 +10,6 @@ define(
         
         var GRID_URL_REGEX = /enrich\/product\/(\?.*)?$/,
             QUERY_STRING_REGEX = /^[^\?]+\??/,
-            LOCALE_REGEX = /dataLocale=[a-zA-z0-9_]+/,
             instance,
             Navigation = OroNavigation.extend({
                 /**
@@ -23,19 +22,20 @@ define(
                     if (!this.url) {
                         this.url = window.location.href.replace(this.baseUrl, '');
                     }
-                    if (this.url.match(GRID_URL_REGEX) && !encodedStateData && sessionStorage && sessionStorage.gridURL_products) {
-                        var qs = this.url.replace(QUERY_STRING_REGEX, '')
-                        if (qs) {
-                            var args = app.unpackFromQueryString(qs)
-                            if (args.dataLocale) {
-                                sessionStorage.gridURL_products = 
-                                        sessionStorage.gridURL_products.replace(LOCALE_REGEX, '') +
-                                        '&dataLocale=' + args.dataLocale;
-                                
-                            }
+                    if (this.url.match(GRID_URL_REGEX)) {
+                        var qs = this.url.replace(QUERY_STRING_REGEX, ''),
+                            args = qs ? app.unpackFromQueryString(qs) : {}
+                        if (!encodedStateData && sessionStorage && sessionStorage.gridURL_products) {
+                            this.encodedStateData = sessionStorage.gridURL_products
+                        } else if (!this.encodedStateData) {
+                            this.encodedStateData = ""
                         }
-                        this.navigate(sessionStorage.gridURL_products, { trigger: false, replace: true});
-                        this.encodedStateData = sessionStorage.gridURL_products;
+                        if (args.dataLocale) {
+                            this.encodedStateData += (this.encodedStateData ? '&' : '') +
+                                    'dataLocale=' + args.dataLocale;
+                            sessionStorage.gridURL_products = this.encodedStateData
+                        }
+                        this.navigate("url=" + this.url.split("?").shift() + "|g/" + this.encodedStateData, { trigger: false, replace: true});
                     }
                     if (!this.skipAjaxCall) {
                         this.loadPage();
