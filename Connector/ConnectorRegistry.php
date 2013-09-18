@@ -31,9 +31,9 @@ class ConnectorRegistry
     /**
      * Get a registered job definition from a JobInstance
      *
-     * @param Oro\Bundle\BatchBundle\Entity\JobInstance $jobInstance
-     *
-     * @return Oro\Bundle\BatchBundle\Job\JobInterface
+     * @param JobInstance $jobInstance
+     * @return JobInterface
+     * @throws \LogicException
      */
     public function getJob(JobInstance $jobInstance)
     {
@@ -45,13 +45,15 @@ class ConnectorRegistry
                 return $job;
             }
         }
+
+        return null;
     }
 
     /**
      * Get the list of jobs
      * @param string $type
      *
-     * @return multitype:JobInterface
+     * @return JobInterface[]
      *
      * TODO : Rather return an array of array of JobInterface ?
      */
