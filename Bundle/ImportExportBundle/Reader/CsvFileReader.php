@@ -38,11 +38,6 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
     protected $escape = '\\';
 
     /**
-     * @var bool
-     */
-    protected $firstLineIsHeader = true;
-
-    /**
      * @var array
      */
     protected $header;
@@ -101,7 +96,7 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
                 $this->enclosure,
                 $this->escape
             );
-            if ($this->firstLineIsHeader && !$this->header) {
+            if (!$this->header) {
                 $this->header = $this->file->fgetcsv();
             }
         }
@@ -135,10 +130,6 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
 
         if (isset($configuration['escape'])) {
             $this->escape = $configuration['escape'];
-        }
-
-        if (isset($configuration['firstLineIsHeader'])) {
-            $this->firstLineIsHeader = (bool)$configuration['firstLineIsHeader'];
         }
 
         if (isset($configuration['header'])) {
