@@ -29,6 +29,7 @@ parameters:
     oro_user.email.owner.provider.class: Oro\Bundle\UserBundle\Entity\Provider\EmailOwnerProvider
     oro_user.gender_provider.class:     Oro\Bundle\UserBundle\Provider\GenderProvider
     oro_user.change_password.subscriber.class:  Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber
+    oro_user.validator.user_optional_password.class: Oro\Bundle\UserBundle\Form\Validator\UserPasswordValidator
 
 services:
     oro_user.manager.flexible:
@@ -182,3 +183,11 @@ services:
         arguments:
             - @oro_user.acl_manager
             - @security.context
+
+    oro_user.validator.optional_user_password:
+        class: %oro_user.validator.user_optional_password.class%
+        arguments:
+            - @security.context
+            - @security.encoder_factory
+        tags:
+            - { name: validator.constraint_validator, alias: oro_user.validator.optional_user_password }

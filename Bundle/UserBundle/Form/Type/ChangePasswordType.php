@@ -31,14 +31,17 @@ class ChangePasswordType extends AbstractType
     {
         $builder->addEventSubscriber($this->subscriber);
 
+        $userPasswordConstraint = new UserPassword();
+        $userPasswordConstraint->service = 'oro_user.validator.optional_user_password';
+
         $builder->add(
             'currentPassword',
             'password',
             array(
-                'required' => true,
+                'required' => false,
                 'label' => 'Current password',
                 'constraints' => array(
-                    new UserPassword()
+                    $userPasswordConstraint
                 ),
                 'mapped' => false,
             )
