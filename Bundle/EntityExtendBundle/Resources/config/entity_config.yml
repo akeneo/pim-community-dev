@@ -114,11 +114,11 @@ oro_entity_config:
                     route:                  'oro_entityextend_field_create'
                     entity_id:              true
                     filter:                 { is_extend: true }
-                -
-                    name:                   'Create relation'
-                    route:                  'oro_entityextend_entity_relation'
-                    entity_id:              true
-                    filter:                 { is_extend: true }
+#                -
+#                    name:                   'Create relation'
+#                    route:                  'oro_entityextend_entity_relation'
+#                    entity_id:              true
+#                    filter:                 { is_extend: true }
                 -
                     name:                   'Update schema'
                     route:                  'oro_entityextend_update'
@@ -145,9 +145,9 @@ oro_entity_config:
                     options:
                         internal:           true
 
-                relation:
-                    options:
-                        internal:           true
+#                relation:
+#                    options:
+#                        internal:           true
 
                 state:
                     options:
@@ -231,6 +231,23 @@ oro_entity_config:
                         options:
                             required:       false
                             label:          'Scale'
+                            block:          entity
+                            subblock:       properties
+
+                target_entity:
+                    options:
+                        allowed_type:       [ref-one-to-many, ref-many-to-one, ref-many-to-many]
+                        required_property:
+                            config_id:
+                                field_name:  null
+                                scope:      extend
+                            code:           is_extend
+                            value:          true
+                    form:
+                        type:
+                        options:
+                            required:       true
+                            label:          'Target '
                             block:          entity
                             subblock:       properties
 

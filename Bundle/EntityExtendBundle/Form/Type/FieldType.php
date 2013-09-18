@@ -19,8 +19,14 @@ class FieldType extends AbstractType
         'date',
         'text',
         'float',
+        'ref-one-to-many',
+        'ref-many-to-one',
+        'ref-many-to-many',
     );
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
@@ -42,6 +48,9 @@ class FieldType extends AbstractType
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
