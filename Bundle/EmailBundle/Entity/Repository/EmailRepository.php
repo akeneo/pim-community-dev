@@ -4,10 +4,15 @@ namespace Oro\Bundle\EmailBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
+use Oro\Bundle\EmailBundle\Entity\EmailInterface;
 use Oro\Bundle\EmailBundle\Entity\Util\EmailUtil;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class EmailRepository extends EntityRepository
 {
+    /** @var  User */
+    protected $user;
+
     /**
      * Return a query builder for get a list of emails which were sent to or from given email addresses
      * The emails are ordered by Sent date in reverse order
@@ -47,5 +52,76 @@ class EmailRepository extends EntityRepository
         }
 
         return $qb;
+    }
+
+    public function createQueryBuilder($alias)
+    {
+        $emails = $this->extractEmailAddresses($this->user->getEmails());
+        $emails[] = $this->user->getEmail();
+        if (empty($emails)) {
+            $emails = array(null);
+        }
+
+        $qbRecipients =
+            $this->getEntityManager()->createQueryBuilder()
+                ->select('re.id')
+                ->from('OroEmailBundle:Email', 're')
+                ->innerJoin('re.recipients', 'r')
+                ->innerJoin('r.emailAddress', 'ra');
+        $qbRecipients->where($qbRecipients->expr()->in('ra.email', $emails));
+
+        $qb = $this->getEntityManager()->createQueryBuilder()
+            ->select('e')
+            ->from($this->getClassName(), 'e')
+            ->select('partial e.{id, fromName, subject, sentAt}, a')
+            ->innerJoin('e.fromEmailAddress', 'a');
+        $qb->where(
+            $qb->expr()->orX(
+                $qb->expr()->in('e.id', $qbRecipients->getDQL()),
+                $qb->expr()->in('a.email', $emails)
+            )
+        );
+
+        return $qb;
+    }
+
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * Extract email addresses from the given argument.
+     * Always return an array, even if no any email is given.
+     *
+     * @param $emails
+     * @return string[]
+     * @throws \InvalidArgumentException
+     */
+    protected function extractEmailAddresses($emails)
+    {
+        if (is_string($emails)) {
+            return empty($emails)
+                ? array()
+                : array($emails);
+        }
+        if (!is_array($emails) && !($emails instanceof \Traversable)) {
+            throw new \InvalidArgumentException('The emails argument must be a string, array or collection.');
+        }
+
+        $result = array();
+        foreach ($emails as $email) {
+            if (is_string($email)) {
+                $result[] = $email;
+            } elseif ($email instanceof EmailInterface) {
+                $result[] = $email->getEmail();
+            } else {
+                throw new \InvalidArgumentException(
+                    'Each item of the emails collection must be a string or an object of EmailInterface.'
+                );
+            }
+        }
+
+        return $result;
     }
 }
