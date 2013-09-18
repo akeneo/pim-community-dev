@@ -15,11 +15,4 @@ interface StrategyInterface
      * @return mixed|null
      */
     public function process($entity);
-
-    /**
-     * Strategy label to use on frontend
-     *
-     * @return string
-     */
-    public function getLabel();
 }

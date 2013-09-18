@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\ImportExportBundle\Converter;
 
+use Oro\Bundle\ImportExportBundle\Exception\LogicException;
+
 class DefaultDataConverter implements DataConverterInterface
 {
     /**
@@ -30,7 +32,7 @@ class DefaultDataConverter implements DataConverterInterface
     /**
      * @param array $complexData
      * @return array
-     * @throws \LogicException
+     * @throws LogicException
      */
     protected function convertToPlainData(array $complexData)
     {
@@ -39,7 +41,7 @@ class DefaultDataConverter implements DataConverterInterface
         foreach ($complexData as $key => $value) {
             $key = (string)$key;
             if (strpos($key, $this->convertDelimiter) !== false) {
-                throw new \LogicException(sprintf('Delimiter "%s" is not allowed in keys', $this->convertDelimiter));
+                throw new LogicException(sprintf('Delimiter "%s" is not allowed in keys', $this->convertDelimiter));
             }
 
             if (is_array($value)) {
@@ -78,7 +80,7 @@ class DefaultDataConverter implements DataConverterInterface
      * @param array $keys
      * @param mixed $value
      * @return array
-     * @throws \LogicException
+     * @throws LogicException
      */
     protected function setValueByKeys(array $data, array $keys, $value)
     {
@@ -90,7 +92,7 @@ class DefaultDataConverter implements DataConverterInterface
                 $data[$currentKey] = array();
             }
             if (!is_array($data[$currentKey])) {
-                throw new \LogicException(sprintf('Can\'t set nested value under key "%s"', $currentKey));
+                throw new LogicException(sprintf('Can\'t set nested value under key "%s"', $currentKey));
             }
 
             $data[$currentKey] = $this->setValueByKeys($data[$currentKey], $keys, $value);

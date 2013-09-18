@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\ImportExportBundle\Converter;
 
+use Oro\Bundle\ImportExportBundle\Exception\LogicException;
+
 abstract class AbstractTableDataConverter extends DefaultDataConverter
 {
     const BACKEND_TO_FRONTEND = 'backend_to_frontend';
@@ -56,14 +58,14 @@ abstract class AbstractTableDataConverter extends DefaultDataConverter
      * @param array $header
      * @param array $data
      * @return array
-     * @throws \LogicException
+     * @throws LogicException
      */
     protected function fillEmptyColumns(array $header, array $data)
     {
         $dataDiff = array_diff(array_keys($data), $header);
         // if data contains keys that are not in header
         if ($dataDiff) {
-            throw new \LogicException(
+            throw new LogicException(
                 sprintf('Backend header doesn\'t contain fields: %s', implode(', ', $dataDiff))
             );
         }
