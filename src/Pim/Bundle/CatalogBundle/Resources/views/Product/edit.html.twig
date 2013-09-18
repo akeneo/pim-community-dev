@@ -37,6 +37,10 @@
 
                         Dialog.confirm(message, title, doAction);
                     })
+
+                    $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function(e) {
+                        $family.removeAttr('disabled');
+                    });
                 });
             }
         );
@@ -99,8 +103,13 @@
         {% set left %}
             <ul class="inline">
                <li>
-                    {{ 'Family'|trans }}: {{ form_widget(form.family) }}
-                    <i id="edit-family" class="icon-pencil"></i>
+                    {{ 'Family'|trans }}:
+                    {% if resource_granted('pim_catalog_product_change_family') %}
+                        {{ form_widget(form.family) }}
+                        <i id="edit-family" class="icon-pencil"></i>
+                    {% else %}
+                        {{ form.vars.value.family|capitalize|default('N/A'|trans) }}
+                    {% endif %}
                 </li>
                <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
                <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>

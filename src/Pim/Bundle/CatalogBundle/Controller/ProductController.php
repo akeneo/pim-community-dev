@@ -314,6 +314,10 @@ class ProductController extends AbstractDoctrineController
             array('currentLocale' => $this->getDataLocale())
         );
 
+        if (!$this->aclManager->isResourceGranted('pim_catalog_product_change_family')) {
+            $form->remove('family');
+        }
+
         if ($request->isMethod('POST')) {
             $form->bind($request);
 

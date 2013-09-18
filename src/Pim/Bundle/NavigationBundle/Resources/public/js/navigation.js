@@ -35,6 +35,7 @@ define(
                                     'dataLocale=' + args.dataLocale;
                             sessionStorage.gridURL_products = this.encodedStateData
                         }
+                        this.skipAjaxCall = false
                         this.navigate("url=" + this.url.split("?").shift() + "|g/" + this.encodedStateData, { trigger: false, replace: true});
                     }
                     if (!this.skipAjaxCall) {
