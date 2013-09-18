@@ -20,7 +20,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         $this->attributeRepository = $this->getEntityRepositoryMock();
         $this->locale              = $this->getLocaleMock();
 
-        $this->productManager      = $this->getFlexibleManagerMock($this->objectManager, $this->attributeRepository);
+        $this->productManager      = $this->getProductManagerMock($this->objectManager, $this->attributeRepository);
         $this->localeManager       = $this->getLocaleManagerMock($this->locale);
         $this->currencyManager     = $this->getCurrencyManagerMock(array('EUR', 'USD'));
 
@@ -198,10 +198,10 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    protected function getFlexibleManagerMock($objectManager, $attributeRepository)
+    protected function getProductManagerMock($objectManager, $attributeRepository)
     {
         $manager = $this
-            ->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
             ->disableOriginalConstructor()
             ->getMock();
 

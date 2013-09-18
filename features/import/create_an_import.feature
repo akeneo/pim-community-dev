@@ -13,7 +13,7 @@ Feature: Create an import
       | Label | Mobile product import |
     And I visit the "Configuration" tab
     And I save the import
-    Then I should see "Import / Mobile product import"
+    Then I should see "Import profile / Mobile product import"
     And I should see "The import has been successfully created."
 
   Scenario: Fail to create an unknown product import
