@@ -9,6 +9,7 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\Ajax\DeleteMassAction;
 use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
+use Oro\Bundle\GridBundle\Builder\DatagridBuilderInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
@@ -461,6 +462,18 @@ class ProductDatagridManager extends FlexibleDatagridManager
         foreach ($exportActions as $exportAction) {
             $this->datagridBuilder->addExportAction($datagrid, $exportAction);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDatagrid()
+    {
+        $datagrid = parent::getDatagrid();
+
+        $datagrid->removeFilter(DatagridBuilderInterface::SELECTED_ROW_FILTER_NAME);
+
+        return $datagrid;
     }
 
     /**

@@ -9,8 +9,9 @@ define(
     ["oro/pageable-collection-orig", "oro/app"], 
     function(OroPageableCollection, app){
         var parent = OroPageableCollection.prototype,
-            treePattern = /(&treeId=(\d+))/,
-            categoryPattern = /(&categoryId=(\d+))/,
+            TREE_REGEX = /(&treeId=(\d+))/,
+            CATEGORY_REGEX = /(&categoryId=(\d+))/,
+            QUERY_STRING_REGEX = /^[^\?]+\??/,
             PageableCollection = OroPageableCollection.extend({
                 /**
                  * @inheritdoc
@@ -39,14 +40,14 @@ define(
                     var treeString = this.state.categoryId === '' ? '' : '&treeId=' + this.state.treeId,
                         categoryString = this.state.categoryId === '' ? '' : '&categoryId=' + this.state.categoryId;
 
-                    if (url.match(treePattern)) {
-                        url = url.replace(treePattern, treeString);
+                    if (url.match(TREE_REGEX)) {
+                        url = url.replace(TREE_REGEX, treeString);
                     } else {
                         url += treeString;
                     }
 
-                    if (url.match(categoryPattern)) {
-                        url = url.replace(categoryPattern, categoryString);
+                    if (url.match(CATEGORY_REGEX)) {
+                        url = url.replace(CATEGORY_REGEX, categoryString);
                     } else {
                         url += categoryString;
                     }
@@ -77,6 +78,9 @@ define(
                     if (QSData.categoryId) {
                         data.categoryId = QSData.categoryId;
                     }
+                    if (QSData.dataLocale) {
+                        data.dataLocale = QSData.dataLocale
+                    }
                     return data;
                 },
                 /**
@@ -94,8 +98,32 @@ define(
                         queryParams.treeId = state.treeId;
                     }
                     return queryParams;
-                }
+                },
+                /**
+                 * @inheritdoc
+                 */
+                processQueryParams: function(data, state) {
+                    var params = OroPageableCollection.prototype.processQueryParams(data, state)
+                    if (state.dataLocale) {
+                        params.dataLocale = state.dataLocale;
+                    }
+                    return params;
+                },
+                /**
+                * Clone collection
+                *
+                * @return {PageableCollection}
+                */
+               clone: function() {
+                   var collectionOptions = {};
+                   collectionOptions.url = this.url;
+                   collectionOptions.inputName = this.inputName;
+                   var newCollection = new PageableCollection(this.toJSON(), collectionOptions);
+                   newCollection.state = app.deepClone(this.state);
+                   return newCollection;
+               }
             });
         return PageableCollection;
     }
+    
 )
