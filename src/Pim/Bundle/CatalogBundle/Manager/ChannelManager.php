@@ -81,10 +81,11 @@ class ChannelManager
     {
         $channelChoices  = $this->getChannelChoices();
         $userChannelCode = $this->getUserChannelCode();
-        if (!array_keys_exists($userChannelCode, $channelChoices)) {
+        if (!array_key_exists($userChannelCode, $channelChoices)) {
             throw new \Exception('User channel code is deactivated');
         }
 
+        $userChannelValue = $channelChoices[$userChannelCode];
         $newChannelChoices = array($userChannelCode => $userChannelValue);
         unset($channelChoices[$userChannelCode]);
 
