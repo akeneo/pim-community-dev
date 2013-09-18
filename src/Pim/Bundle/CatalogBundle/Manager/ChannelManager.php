@@ -44,7 +44,10 @@ class ChannelManager
      */
     public function getChannels($criterias = array())
     {
-        return $this->objectManager->getRepository('PimCatalogBundle:Channel')->findBy($criterias);
+        return $this
+            ->objectManager
+            ->getRepository('PimCatalogBundle:Channel')
+            ->findBy($criterias);
     }
 
     /**
