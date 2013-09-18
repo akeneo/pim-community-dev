@@ -83,7 +83,7 @@ class Base extends Page
     public function pressButton($locator)
     {
         # Search with exact name at first
-        $button = $this->find('xpath', "//button[text() = '".$locator."']");
+        $button = $this->find('xpath', sprintf("//button[text() = '%s']", $locator));
 
         if (!$button) {
             # Use Mink search, which use "contains" xpath condition
