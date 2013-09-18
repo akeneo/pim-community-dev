@@ -121,14 +121,19 @@
                         ]
                     }
                 ]
-            },
-            {
+            }]
+        ) %}
+    {% endif %}
+
+    {% if form.change_password is defined %}
+        {% set dataBlocks = dataBlocks|merge(
+            [{
                 'title': 'Passwords',
                 'subblocks': [
                     {
                         'title': '',
                         'data': [
-                            form.change_password is defined ? form_widget(form.change_password) : ''
+                            form_widget(form.change_password)
                         ]
                     }
                 ]
