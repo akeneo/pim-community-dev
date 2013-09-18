@@ -1,0 +1,6 @@
+parameters:
+    oro_importexport.strategy.registry.class: Oro\Bundle\ImportExportBundle\Strategy\StrategyRegistry
+
+services:
+    oro_importexport.strategy.registry:
+        class: %oro_importexport.strategy.registry.class%
