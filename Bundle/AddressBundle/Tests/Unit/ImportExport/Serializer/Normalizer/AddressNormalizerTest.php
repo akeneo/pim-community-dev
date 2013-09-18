@@ -85,6 +85,7 @@ class AddressNormalizerTest extends \PHPUnit_Framework_TestCase
                     ->setStreet('street')
                     ->setStreet2('street2')
                     ->setCity('city')
+                    ->setPostalCode('112233')
                     ->setRegionText('region_text')
                 ,
                 array(
@@ -94,6 +95,7 @@ class AddressNormalizerTest extends \PHPUnit_Framework_TestCase
                     'street' => 'street',
                     'street2' => 'street2',
                     'city' => 'city',
+                    'postalCode' => '112233',
                     'regionText' => 'region_text',
                     'region' => null,
                     'country' => null,
@@ -111,6 +113,7 @@ class AddressNormalizerTest extends \PHPUnit_Framework_TestCase
                     'street' => null,
                     'street2' => null,
                     'city' => null,
+                    'postalCode' => null,
                     'regionText' => null,
                     'region' => 'CA',
                     'country' => 'US',
@@ -125,6 +128,7 @@ class AddressNormalizerTest extends \PHPUnit_Framework_TestCase
                     'street' => null,
                     'street2' => null,
                     'city' => null,
+                    'postalCode' => null,
                     'regionText' => null,
                     'region' => null,
                     'country' => 'US',
