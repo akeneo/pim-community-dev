@@ -305,7 +305,7 @@ class LoggableManager
                     $flexibleEntityMeta = $this->em->getClassMetadata($this->getEntityClassName($entity));
 
                     // if no "parent" object has been saved previously - get it from attribute and save it's log
-                    $value =$flexibleEntityMeta->reflFields['entity']->getValue($entity);
+                    $value = $flexibleEntityMeta->reflFields['entity']->getValue($entity);
                     if ($value instanceof AbstractEntityFlexible) {
                         $this->createLogEntity($action, $flexibleEntityMeta->reflFields['entity']->getValue($entity));
                     }
@@ -549,11 +549,13 @@ class LoggableManager
             $classMetadata = new ClassMetadata($reflection->getName());
 
             foreach ($reflection->getProperties() as $reflectionProperty) {
-                if ($this->auditConfigProvider->hasConfig($entityClassName, $reflectionProperty->getName())
-                    && ($fieldConfig = $this->auditConfigProvider->getConfig(
-                        $entityClassName,
-                        $reflectionProperty->getName()
-                    ))
+                $fieldName = $reflectionProperty->getName();
+                if (strpos($fieldName, 'field_') === 0) {
+                    $fieldName = str_replace('field_', '', $fieldName);
+                }
+
+                if ($this->auditConfigProvider->hasConfig($entityClassName, $fieldName)
+                    && ($fieldConfig = $this->auditConfigProvider->getConfig($entityClassName, $fieldName))
                     && $fieldConfig->is('auditable')
                 ) {
                     $propertyMetadata         = new PropertyMetadata($entityClassName, $reflectionProperty->getName());
