@@ -1,0 +1,12 @@
+parameters:
+    oro_importexport.reader.csv.class: Oro\Bundle\ImportExportBundle\Reader\CsvFileReader
+    oro_importexport.reader.entity.class: Oro\Bundle\ImportExportBundle\Reader\EntityReader
+
+services:
+    oro_importexport.reader.csv:
+        class: %oro_importexport.reader.csv.class%
+
+    oro_importexport.reader.entity:
+        class: %oro_importexport.reader.entity.class%
+        arguments:
+            - @doctrine
