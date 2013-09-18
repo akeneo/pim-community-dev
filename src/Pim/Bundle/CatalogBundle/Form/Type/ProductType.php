@@ -110,7 +110,7 @@ class ProductType extends FlexibleType
     {
         $builder->add(
             'values',
-            new LocalizedCollectionType,
+            new LocalizedCollectionType(),
             array(
                 'type'               => $this->valueFormAlias,
                 'allow_add'          => true,

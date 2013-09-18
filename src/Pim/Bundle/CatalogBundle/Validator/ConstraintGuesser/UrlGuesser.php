@@ -31,7 +31,7 @@ class UrlGuesser implements ConstraintGuesserInterface
         $constraints = array();
 
         if ('url' === $attribute->getValidationRule()) {
-            $constraints[] = new Assert\Url;
+            $constraints[] = new Assert\Url();
         }
 
         return $constraints;

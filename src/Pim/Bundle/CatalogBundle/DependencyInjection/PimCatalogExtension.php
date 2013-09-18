@@ -30,7 +30,7 @@ class PimCatalogExtension extends Extension
         $this->processConfiguration(new LocaleConfiguration(), $localeConfig);
         $container->setParameter('pim_catalog.locales', $localeConfig);
 
-        $config = $this->processConfiguration(new Configuration, $configs);
+        $config = $this->processConfiguration(new Configuration(), $configs);
 
         $container->setParameter(
             'pim_catalog.imported_product_data_transformer',

@@ -36,7 +36,7 @@ class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
         $this->context->expects($this->never())
             ->method('addViolation');
 
-        $this->validator->validate('foo', new Channel);
+        $this->validator->validate('foo', new Channel());
     }
 
     public function testInvalidChannel()
@@ -59,7 +59,7 @@ class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidInitialization()
     {
-        $this->validator->validate('foo', new Channel);
+        $this->validator->validate('foo', new Channel());
     }
 
     private function getChannelManagerMock($channels = array())
