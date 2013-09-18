@@ -308,7 +308,7 @@ class JobInstanceController extends AbstractDoctrineController
             }
         }
 
-        return $this->redirectToReportView($jobInstance->getId());
+        return $this->redirectToReportView($jobExecution->getId());
     }
 
     /**
