@@ -73,7 +73,7 @@ Config function
 - getId()
 - get($code, $strict = false)
 - set($code, $value)
-- has($code)cd bap
+- has($code)
 - is($code)
 - all(\Closure $filter = null)
 - public function setValues($values)

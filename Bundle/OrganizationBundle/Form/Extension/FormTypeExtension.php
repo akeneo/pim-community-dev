@@ -47,8 +47,14 @@ class FormTypeExtension extends AbstractTypeExtension
      */
     protected $translator;
 
+    /**
+     * @var string
+     */
     protected $fieldName;
 
+    /**
+     * @var bool
+     */
     protected $changeOwnerGranted;
 
     public function __construct(

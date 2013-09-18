@@ -211,7 +211,7 @@ class EntitiesController extends Controller
         }
 
         return array(
-            'record'        => $record,
+            'entity'        => $record,
             'entity_id'     => $entity_id,
             'entity_config' => $entityConfig,
             'form'          => $form->createView(),
