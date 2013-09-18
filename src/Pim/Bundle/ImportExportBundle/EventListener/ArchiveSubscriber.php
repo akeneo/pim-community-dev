@@ -7,8 +7,7 @@ use Oro\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Oro\Bundle\BatchBundle\Event\EventInterface;
 use Oro\Bundle\BatchBundle\Event\StepExecutionEvent;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Pim\Bundle\ImportExportBundle\Reader\CsvReader;
-use Pim\Bundle\ImportExportBundle\Writer\FileWriter;
+use Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver;
 
 /**
  * Subscriber to archive job execution files used as input and output
@@ -20,16 +19,16 @@ use Pim\Bundle\ImportExportBundle\Writer\FileWriter;
 class ArchiveSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var string
+     * @var JobExecutionArchiver
      */
-    protected $rootDir;
+    protected $archiver;
 
     /**
-     * @param string $rootDir
+     * @param JobExecutionArchiver $archiver
      */
-    public function __construct($rootDir)
+    public function __construct($archiver)
     {
-        $this->rootDir = $rootDir;
+        $this->archiver = $archiver;
     }
 
     /**
@@ -50,6 +49,8 @@ class ArchiveSubscriber implements EventSubscriberInterface
     public function afterJobExecution(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
+        $this->archiver->archive($jobExecution);
+/*
         $jobInstance  = $jobExecution->getJobInstance();
         $job          = $jobInstance->getJob();
         $type         = $jobInstance->getType();
@@ -71,7 +72,7 @@ class ArchiveSubscriber implements EventSubscriberInterface
                 mkdir($path, 755, true);
                 copy($writer->getPath(), $path.'output.csv');
             }
-        }
+        }*/
     }
 }
 
