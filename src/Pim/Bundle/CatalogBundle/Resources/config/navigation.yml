@@ -100,21 +100,21 @@ oro_menu_config:
 oro_titles:
     oro_default:                         Dashboard
     pim_catalog_attributegroup_create:   Attribute groups | Create
-    pim_catalog_attributegroup_edit:     Attribute groups | Edit
+    pim_catalog_attributegroup_edit:     Attribute groups %%group.name%% | Edit
     pim_catalog_categorytree_listtree:   Category trees | List
     pim_catalog_categorytree_create:     Category trees | Create
-    pim_catalog_categorytree_edit:       Category trees | Edit
+    pim_catalog_categorytree_edit:       Category trees %%category.title%% | Edit
     pim_catalog_productattribute_index:  Product attributes
     pim_catalog_productattribute_create: Product attributes | Create
-    pim_catalog_productattribute_edit:   Product attributes | Edit
+    pim_catalog_productattribute_edit:   Product attributes %%attribute.label%% | Edit
     pim_catalog_product_index:           Products
     pim_catalog_product_create:          Products | Create
-    pim_catalog_product_edit:            Products | Edit
+    pim_catalog_product_edit:            Products %%product.sku%% | Edit
     pim_catalog_family_create:           Families | Create
-    pim_catalog_family_edit:             Families | Edit
+    pim_catalog_family_edit:             Families %%family.label%% | Edit
     pim_catalog_channel_index:           Channels
     pim_catalog_channel_create:          Channels | Create
-    pim_catalog_channel_edit:            Channels | Edit
+    pim_catalog_channel_edit:            Channels %%channel.name%% | Edit
     pim_catalog_currency_index:          Currencies
     pim_catalog_locale_index:            Locales
-    pim_catalog_locale_edit:             Locales | Edit
+    pim_catalog_locale_edit:             Locales %%locale.code%% | Edit

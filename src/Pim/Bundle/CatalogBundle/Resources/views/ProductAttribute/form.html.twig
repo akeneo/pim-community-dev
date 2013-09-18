@@ -1,5 +1,7 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
+{% oro_title_set({ params: { "%attribute.label%": form.vars.value.label } }) %}
+
 {% block content %}
     {{ JSFV(form) }}
     <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
