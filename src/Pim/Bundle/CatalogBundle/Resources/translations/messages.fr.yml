@@ -1,15 +1,10 @@
 # Product/Attribute
-'Edit attribute': 'Modifier un attribut'
-'Add attribute': 'Ajouter un attribut'
-'Back to list': 'Retour à la liste'
 'Options': 'Options'
-'Additional information': 'Informations supplémentaires'
 'Created at': 'Créé le'
 'Updated at': 'Mis à jour le'
 'N/A': 'N/A'
 'Save': 'Sauvegarder'
 'Add an option': 'Ajouter une option'
-'Delete option': 'Supprimer une option'
 'Attributes overview': "Aperçu des attributs"
 'New attribute': 'Nouvel attribut'
 'Manage products': 'Gestion des produits'
@@ -31,15 +26,12 @@
 'Delete': '__Delete'
 'Parameters': '__Parameters'
 'Values': '__Values'
-'Rules': '__Rules'
 'General parameters': '__General parameters'
 'Backend parameters': '__Backend parameters'
-'Label': '__Label'
-'Description': '__Description'
+'Label': 'Libellé'
 'Default label': '__Default label'
 'Default value': '__Default value'
 
-'Name': 'Nom'
 'Attributetype': "Type d'attribut"
 'searchable': 'Recherchable'
 'Defaultvalue': 'Valeur par défaut'
@@ -59,7 +51,6 @@
 'New product': '__New product'
 'Create a new product': '__Create a new product'
 'Choose a family': '__Choose a family'
-'Activated locales': '__Activated locales'
 'Attributes are added to the product form.': '__Attributes are added to the product form.'
 'Product successfully saved': '__Product successfully saved'
 'There are unsaved changes.': '__There are unsaved changes.'
@@ -78,13 +69,6 @@
 'Group values': '__Group values'
 'New group': 'Nouveau groupe'
 'Groups overview': 'Aperçu des groupes'
-'Attributes count': "Nombre d'attributs"
-'Order': 'Ordre'
-'Show list': 'Afficher la liste'
-
-'Add group': 'Ajouter un groupe'
-'Edit group': 'Modifier un groupe'
-'Sort order': 'Ordre'
 
 'Y-m-d h:i:s': 'd/m/Y h:i:s'
 
@@ -116,13 +100,9 @@
 # Category
 'Category successfully saved': '__Category successfully saved'
 'Category successfully removed': '__Category successfully removed'
-'Category tree overview': '__Category tree overview'
 'New tree': '__New tree'
 'Title': '__Title'
-'Parent': '__Parent'
-'Root': '__Root'
 'Is dynamic': '__Is dynamic'
-'Add child': '__Add child'
 'Edit category': '__Edit category'
 'Add category': '__Add category'
 
@@ -190,13 +170,10 @@
 
 'Edit locale': 'Modifier une locale'
 'Add locale': 'Ajouter une locale'
-'Back to list': 'Retour à la liste'
-'Save': 'Sauvegarder'
 
 # Currencies
 'Currencies overview': 'Aperçu des monnaies'
 'New currency': 'Nouvelle monnaie'
-'Label': 'Libellé'
 'Add currency': 'Ajouter une monnaie'
 'Edit currency': 'Modifier une monnaie'
 'Currencies': 'Monnaies'
@@ -205,7 +182,28 @@
 'Channels overview': 'Aperçu des canaux'
 'New channel': 'Nouveau canal'
 'Add channel': 'Ajouter un canal'
-'Name': 'Nom'
 'Edit channel': 'Modifier un canal'
-'Remove': 'Supprimer'
 'Channels': 'Canaux'
+
+# Batch operations
+pim_catalog.mass_edit_action:
+    page_title: '__Products'
+    page_subtitle: '__Mass Edit (1 product)|Mass Edit (%count% products)'
+    title: '__Choose operation'
+    subtitle: '__Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products'
+
+    change-status:
+        label:         '__Change status (enable / disable)'
+        description:   "__The selected products will be enabled or disabled."
+        success_flash: '__Product(s) status have been changed'
+
+    edit-common-attributes:
+        label:         '__Edit attributes'
+        description:   "__The selected product's attributes will be edited with following data for the chosen locale."
+        empty:         '__Please select the attribute(s) you want to edit'
+        success_flash: '__Product(s) attribute(s) have been updated'
+
+    classify:
+        label:         '__Classify products in categories'
+        description:   '__The products will be positioned into following categories, the existing placement are kept.'
+        success_flash: '__Product(s) have been classified into selected categories'
