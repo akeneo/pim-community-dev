@@ -10,7 +10,7 @@ define(
             }
             var self       = this,
                 dataLocale = $el.attr('data-datalocale'),
-                selectedNode = $el.attr('data-node-id') || '#node_';
+                selectedNode = $el.attr('data-node-id') || 'node_';
 
             this.config = {
                 'core': {
@@ -84,6 +84,9 @@ define(
                             'attr': { 'class': 'jstree-unclassified', 'id': 'node_' },
                             'data': { 'title': _.__('jstree.all') }
                         }, null, true);
+                        if ('node_' === selectedNode) {
+                            $el.jstree('select_node', '#node_');
+                        }
 
                         $el.jstree('create', '#node_' + root_node_id, 'last', {
                             'attr': { 'class': 'jstree-unclassified', 'id': 'node_0' },
