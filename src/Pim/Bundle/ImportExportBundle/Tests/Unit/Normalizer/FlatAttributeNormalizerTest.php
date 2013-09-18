@@ -97,7 +97,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                     'localizable'            => '1',
                     'available_locales'      => 'All',
                     'scope'                  => 'Global',
-                    'options'                => 'en:Green,fr:Vert|en:Red,fr:Rouge',
+                    'options'                => 'Code:green,en:Green,fr:Vert|Code:red,en:Red,fr:Rouge',
                     'useable_as_grid_column' => '1',
                     'useable_as_grid_filter' => '0',
                 )
@@ -205,10 +205,14 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                 $translation = explode(':', $translation);
                 $locale      = reset($translation);
                 $value       = end($translation);
-                $optionValue = new AttributeOptionValue();
-                $optionValue->setLocale($locale);
-                $optionValue->setValue($value);
-                $attributeOption->addOptionValue($optionValue);
+                if ($locale == 'Code') {
+                    $attributeOption->setCode($value);
+                } else {
+                    $optionValue = new AttributeOptionValue();
+                    $optionValue->setLocale($locale);
+                    $optionValue->setValue($value);
+                    $attributeOption->addOptionValue($optionValue);
+                }
             }
             $attribute->addOption($attributeOption);
         }

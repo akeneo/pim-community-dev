@@ -248,8 +248,8 @@ class AttributeGroupController extends AbstractDoctrineController
         AvailableProductAttributes $availableAttributes = null
     ) {
         return $this->createForm(
-            new AvailableProductAttributesType,
-            $availableAttributes ?: new AvailableProductAttributes,
+            new AvailableProductAttributesType(),
+            $availableAttributes ?: new AvailableProductAttributes(),
             array('attributes' => $attributes)
         );
     }

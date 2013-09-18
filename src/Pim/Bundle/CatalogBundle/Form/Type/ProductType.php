@@ -49,6 +49,15 @@ class ProductType extends FlexibleType
     {
         parent::buildForm($builder, $options);
 
+        $builder->add(
+            'family',
+            'entity',
+            array(
+                'class' => 'PimCatalogBundle:Family',
+                'empty_value' => 'N/A'
+            )
+        );
+
         if ($options['import_mode']) {
             $builder
                 ->add(
@@ -58,13 +67,6 @@ class ProductType extends FlexibleType
                         'multiple'     => true,
                         'class'        => 'PimCatalogBundle:Category',
                         'by_reference' => false,
-                    )
-                )
-                ->add(
-                    'family',
-                    'entity',
-                    array(
-                        'class' => 'PimCatalogBundle:Family',
                     )
                 )
                 ->addEventSubscriber($this->transformer);
@@ -110,7 +112,7 @@ class ProductType extends FlexibleType
     {
         $builder->add(
             'values',
-            new LocalizedCollectionType,
+            new LocalizedCollectionType(),
             array(
                 'type'               => $this->valueFormAlias,
                 'allow_add'          => true,

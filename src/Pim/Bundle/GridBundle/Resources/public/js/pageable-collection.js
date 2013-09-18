@@ -6,11 +6,11 @@
  * @returns {unresolved}
  */
 define(
-    ["oro/pageable-collection-orig", "oro/app"], 
-    function(OroPageableCollection, app){
+    ["oro/pageable-collection-orig", "oro/app", "underscore"], 
+    function(OroPageableCollection, app, _){
         var parent = OroPageableCollection.prototype,
-            treePattern = /(&treeId=(\d+))/,
-            categoryPattern = /(&categoryId=(\d+))/,
+            TREE_REGEX = /(&?treeId=(\d+))/,
+            CATEGORY_REGEX = /(&?categoryId=(\d+))/,
             PageableCollection = OroPageableCollection.extend({
                 /**
                  * @inheritdoc
@@ -36,32 +36,36 @@ define(
                     }
                 },
                 setCategoryInUrl: function(url) {
-                    var treeString = this.state.categoryId === '' ? '' : '&treeId=' + this.state.treeId,
-                        categoryString = this.state.categoryId === '' ? '' : '&categoryId=' + this.state.categoryId;
-
-                    if (url.match(treePattern)) {
-                        url = url.replace(treePattern, treeString);
+                    url = url.replace(CATEGORY_REGEX, '').replace(TREE_REGEX, '');
+                    var qs = app.packToQueryString({
+                                categoryId: this.state.categoryId,
+                                treeId: this.state.treeId
+                            });
+                    if ("?" === _.last(url)) {
+                        url += qs
+                    } else if (-1 === url.indexOf("?")) {
+                        url += "?" + qs;
                     } else {
-                        url += treeString;
+                        url += "&" + qs;
                     }
-
-                    if (url.match(categoryPattern)) {
-                        url = url.replace(categoryPattern, categoryString);
-                    } else {
-                        url += categoryString;
-                    }
-                    return url
+                    return url;
                 },
                 /**
                  * @inheritdoc
                  */
                 encodeStateData: function(stateObject) {
-                    var encodedStateData = parent.encodeStateData.call(this, stateObject);
+                    var encodedStateData = parent.encodeStateData.call(this, stateObject)
                     if (stateObject.treeId) {
                         encodedStateData += "&treeId=" + stateObject.treeId;
                     }
                     if (stateObject.categoryId) {
                         encodedStateData += "&categoryId=" + stateObject.categoryId;
+                    }
+                    if (stateObject.dataLocale) {
+                        encodedStateData += "&dataLocale=" + stateObject.dataLocale;
+                    }
+                    if ("&" === encodedStateData[0]) {
+                        encodedStateData = encodedStateData.substr(1);
                     }
                     return encodedStateData;
                 },
@@ -76,6 +80,9 @@ define(
                     }
                     if (QSData.categoryId) {
                         data.categoryId = QSData.categoryId;
+                    }
+                    if (QSData.dataLocale) {
+                        data.dataLocale = QSData.dataLocale;
                     }
                     return data;
                 },
@@ -93,9 +100,26 @@ define(
                     if (state.treeId) {
                         queryParams.treeId = state.treeId;
                     }
+                    if (state.dataLocale) {
+                        queryParams.dataLocale = state.dataLocale;
+                    }
                     return queryParams;
-                }
+                },
+                /**
+                * Clone collection
+                *
+                * @return {PageableCollection}
+                */
+               clone: function() {
+                   var collectionOptions = {};
+                   collectionOptions.url = this.url;
+                   collectionOptions.inputName = this.inputName;
+                   var newCollection = new PageableCollection(this.toJSON(), collectionOptions);
+                   newCollection.state = app.deepClone(this.state);
+                   return newCollection;
+               }
             });
         return PageableCollection;
     }
+    
 )

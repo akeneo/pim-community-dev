@@ -24,6 +24,18 @@ class LocaleManagerTest extends WebTestCase
     protected $localeManager;
 
     /**
+     * List of activated locales
+     * @staticvar $activatedLocales
+     */
+    protected static $activatedLocales = array('en_US', 'fr_FR');
+
+    /**
+     * Count of all locales
+     * @staticvar integer
+     */
+    protected static $totalCount = 82;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -34,7 +46,7 @@ class LocaleManagerTest extends WebTestCase
             static::$kernel->shutdown();
         }
 
-        static::$kernel = static::createKernel(array("debug" => true));
+        static::$kernel = static::createKernel(array("debug" => false));
         static::$kernel->boot();
 
         $this->container = static::$kernel->getContainer();
@@ -48,7 +60,7 @@ class LocaleManagerTest extends WebTestCase
     public function testGetActiveLocales()
     {
         $locales = $this->localeManager->getActiveLocales();
-        $expectedLocales = array('en_US', 'fr_FR', 'de_DE');
+        $expectedLocales = static::$activatedLocales;
 
         $this->assertCount(count($expectedLocales), $locales);
         foreach ($locales as $locale) {
@@ -62,11 +74,12 @@ class LocaleManagerTest extends WebTestCase
     public function testGetDisabledLocales()
     {
         $locales = $this->localeManager->getDisabledLocales();
-        $expectedLocales = array();
+        $unexpectedLocales = static::$activatedLocales;
+        $expectedCount = self::$totalCount - count(static::$activatedLocales);
 
-        $this->assertCount(0, $locales);
+        $this->assertCount($expectedCount, $locales);
         foreach ($locales as $locale) {
-            $this->assertContains($locale->getCode(), $expectedLocales);
+            $this->assertNotContains($locale->getCode(), $unexpectedLocales);
         }
     }
 
@@ -76,7 +89,7 @@ class LocaleManagerTest extends WebTestCase
     public function testGetActiveCodes()
     {
         $locales = $this->localeManager->getActiveCodes();
-        $expectedLocales = array('en_US', 'fr_FR', 'de_DE');
+        $expectedLocales = static::$activatedLocales;
 
         $this->assertCount(count($expectedLocales), $locales);
         foreach ($locales as $locale) {
@@ -90,11 +103,11 @@ class LocaleManagerTest extends WebTestCase
     public function testGetLocales()
     {
         $locales = $this->localeManager->getLocales();
-        $expectedLocales = array('en_US', 'fr_FR', 'de_DE');
+        $expectedLocales = static::$activatedLocales;
 
-        $this->assertCount(count($expectedLocales), $locales);
+        $this->assertCount(self::$totalCount, $locales);
         foreach ($locales as $locale) {
-            $this->assertContains($locale->getCode(), $expectedLocales);
+            $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Locale', $locale);
         }
     }
 }

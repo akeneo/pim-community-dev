@@ -44,11 +44,11 @@ class UserPreferencesListenerTest extends WebTestCase
     public function testRemoveChannel()
     {
         $prefix = sha1(rand(0, 9999999));
-        $channel1 = new Channel;
+        $channel1 = new Channel();
         $channel1->setCode($prefix . 'channel1')->setName('channel1');
         $this->entityManager->persist($channel1);
 
-        $channel2 = new Channel;
+        $channel2 = new Channel();
         $channel2->setCode($prefix . 'channel2')->setName('channel2');
         $this->entityManager->persist($channel2);
 

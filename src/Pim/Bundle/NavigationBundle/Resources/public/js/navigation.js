@@ -5,10 +5,12 @@
  * @returns {unresolved}
  */
 define(
-    ['oro/navigation-orig'],
-    function(OroNavigation) {
+    ['oro/navigation-orig', 'oro/app'],
+    function(OroNavigation, app) {
         
-        var instance,
+        var GRID_URL_REGEX = /enrich\/product\/(\?.*)?$/,
+            QUERY_STRING_REGEX = /^[^\?]+\??/,
+            instance,
             Navigation = OroNavigation.extend({
                 /**
                  * @inheritdoc
@@ -20,9 +22,20 @@ define(
                     if (!this.url) {
                         this.url = window.location.href.replace(this.baseUrl, '');
                     }
-                    if (this.url.match(/enrich\/product/) && !encodedStateData && sessionStorage && sessionStorage.gridURL_products) {
-                        this.navigate(sessionStorage.gridURL_products, { trigger: false, replace: true});
-                        this.encodedStateData = sessionStorage.gridURL_products;
+                    if (this.url.match(GRID_URL_REGEX)) {
+                        var qs = this.url.replace(QUERY_STRING_REGEX, ''),
+                            args = qs ? app.unpackFromQueryString(qs) : {}
+                        if (!encodedStateData && sessionStorage && sessionStorage.gridURL_products) {
+                            this.encodedStateData = sessionStorage.gridURL_products
+                        } else if (!this.encodedStateData) {
+                            this.encodedStateData = ""
+                        }
+                        if (args.dataLocale) {
+                            this.encodedStateData += (this.encodedStateData ? '&' : '') +
+                                    'dataLocale=' + args.dataLocale;
+                            sessionStorage.gridURL_products = this.encodedStateData
+                        }
+                        this.navigate("url=" + this.url.split("?").shift() + "|g/" + this.encodedStateData, { trigger: false, replace: true});
                     }
                     if (!this.skipAjaxCall) {
                         this.loadPage();

@@ -154,6 +154,9 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                     {% if app.request.get("treeId") %}
                         treeId: {{ app.request.get("treeId")|json_encode|raw }},
                     {% endif %}
+                    {% if app.request.get("dataLocale") %}
+                        dataLocale: {{ app.request.get("dataLocale")|json_encode|raw }},
+                    {% endif %}
                     currentPage:  {{ datagrid.pager.page|json_encode|raw }},
                     pageSize:     {{ datagrid.pager.maxPerPage|json_encode|raw }},
                     totalRecords: {{ datagrid.pager.nbResults|json_encode|raw }},

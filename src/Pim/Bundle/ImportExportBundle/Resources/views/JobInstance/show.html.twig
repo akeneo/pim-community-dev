@@ -33,10 +33,10 @@
             {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
         {% endif %}
         {% if uploadAllowed and uploadViolations|length == 0 %}
-            {{ elements.link('Upload and '~title|lower, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
+            {{ elements.link('Upload and '~action|lower, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
         {% endif %}
         {% if violations|length == 0 %}
-            {{ elements.link(title~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
+            {{ elements.link(action~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
         {% endif %}
     {% endset %}
 
@@ -48,7 +48,7 @@
             <div class="row-fluid">
                 {{ form_row(form.file) }}
                 {{ form_row(form._token) }}
-                {{ elements.submitBtn('Upload and '~title|lower~' now'|trans) }}
+                {{ elements.submitBtn('Upload and '~action|lower~' now'|trans) }}
             </div>
         </form>
     {% endif %}
