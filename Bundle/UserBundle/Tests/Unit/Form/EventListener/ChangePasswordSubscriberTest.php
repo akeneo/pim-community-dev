@@ -3,9 +3,11 @@
 namespace Oro\Bundle\UserBundle\Tests\Unit\Type;
 
 use Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber;
-use Symfony\Component\Form\FormEvents;
 
-class ChangePasswordSubscriberTest extends \PHPUnit_Framework_TestCase
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\Test\FormIntegrationTestCase;
+
+class ChangePasswordSubscriberTest extends FormIntegrationTestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $aclManager;
@@ -21,6 +23,8 @@ class ChangePasswordSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        parent::setUp();
+
         $this->aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\Manager')
             ->disableOriginalConstructor()
             ->getMock();
@@ -34,7 +38,7 @@ class ChangePasswordSubscriberTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->subscriber = new ChangePasswordSubscriber($this->aclManager, $this->securityContext);
+        $this->subscriber = new ChangePasswordSubscriber($this->factory, $this->aclManager, $this->securityContext);
     }
 
     /**
@@ -45,6 +49,7 @@ class ChangePasswordSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 FormEvents::POST_SUBMIT => 'onSubmit',
+                FormEvents::PRE_SUBMIT   => 'preSubmit'
             ),
             $this->subscriber->getSubscribedEvents()
         );
@@ -104,7 +109,7 @@ class ChangePasswordSubscriberTest extends \PHPUnit_Framework_TestCase
             ->method('getData')
             ->will($this->returnValue($userMock));
 
-        $eventMock->expects($this->exactly(2))
+        $eventMock->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($formMock));
 

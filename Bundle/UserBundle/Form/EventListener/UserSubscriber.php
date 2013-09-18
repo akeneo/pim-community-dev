@@ -91,6 +91,10 @@ class UserSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if ($entity->getId()) {
+            $form->remove('plainPassword');
+        }
+
         if (!$this->aclManager->isResourceGranted('oro_user_role')) {
             $form->remove('rolesCollection');
         }

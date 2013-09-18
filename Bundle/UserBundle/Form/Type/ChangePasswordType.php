@@ -41,7 +41,6 @@ class ChangePasswordType extends AbstractType
                     new UserPassword()
                 ),
                 'mapped' => false,
-                'auto_initialize' => false,
             )
         )
         ->add(

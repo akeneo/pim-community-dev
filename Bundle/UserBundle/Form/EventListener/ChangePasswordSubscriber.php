@@ -57,9 +57,9 @@ class ChangePasswordSubscriber extends UserSubscriber
      */
     public function onSubmit(FormEvent $event)
     {
-        /** @var User $user */
-        $user = $event->getForm()->getParent()->getData();
         $form = $event->getForm();
+        /** @var User $user */
+        $user = $form->getParent()->getData();
         $plainPassword = $form->get('plainPassword');
 
         if ($this->isCurrentUser($user)) {
