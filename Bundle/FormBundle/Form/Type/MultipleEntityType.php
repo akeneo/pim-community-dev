@@ -9,6 +9,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MultipleEntityType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -48,23 +51,25 @@ class MultipleEntityType extends AbstractType
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['grid_url'] = isset($options['grid_url'])
-            ? $options['grid_url']
-            : null;
+        $this->setOptionToView($view, $options, 'grid_url');
+        $this->setOptionToView($view, $options, 'initial_elements');
+        $this->setOptionToView($view, $options, 'selector_window_title');
+        $this->setOptionToView($view, $options, 'default_element');
+    }
 
-        $view->vars['initial_elements'] = isset($options['initial_elements'])
-            ? $options['initial_elements']
-            : null;
-
-        $view->vars['selector_window_title'] = isset($options['selector_window_title'])
-            ? $options['selector_window_title']
-            : null;
-
-        $view->vars['default_element'] = isset($options['default_element'])
-            ? $options['default_element']
-            : null;
+    /**
+     * @param FormView $view
+     * @param array $options
+     * @param string $option
+     */
+    protected function setOptionToView(FormView $view, array $options, $option)
+    {
+        $view->vars[$option] = isset($options[$option]) ? $options[$option] : null;
     }
 
     /**
