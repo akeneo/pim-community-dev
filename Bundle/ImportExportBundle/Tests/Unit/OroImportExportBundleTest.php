@@ -20,7 +20,6 @@ class OroImportExportBundleTest extends \PHPUnit_Framework_TestCase
     {
         $expectedCompilerPasses = array(
             'Oro\Bundle\ImportExportBundle\DependencyInjection\Compiler\AddNormalizerCompilerPass',
-            'Oro\Bundle\ImportExportBundle\DependencyInjection\Compiler\AddStrategyCompilerPass'
         );
 
         $containerBuilderMock = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')

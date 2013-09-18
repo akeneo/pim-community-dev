@@ -5,7 +5,6 @@ namespace Oro\Bundle\ImportExportBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Oro\Bundle\ImportExportBundle\DependencyInjection\Compiler\AddNormalizerCompilerPass;
-use Oro\Bundle\ImportExportBundle\DependencyInjection\Compiler\AddStrategyCompilerPass;
 
 class OroImportExportBundle extends Bundle
 {
@@ -15,6 +14,5 @@ class OroImportExportBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new AddNormalizerCompilerPass());
-        $container->addCompilerPass(new AddStrategyCompilerPass());
-    }
+   }
 }
