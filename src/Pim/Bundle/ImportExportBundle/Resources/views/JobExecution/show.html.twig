@@ -3,17 +3,15 @@
 {% block content %}
 
     {% set title = "Execution details" | trans  %}
-
+    
     {% set buttons %}
         {{ elements.backLink(indexRoute) }}
+        {{ elements.link('Download file', path(download_file_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }) }}
+        {{ elements.link('Download log', path(download_log_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }) }}
+        {{ elements.link('Show profile', path(show_profile_route, { 'id': execution.jobInstance.id })) }}
     {% endset %}
 
     {{ elements.page_header(title, buttons) }}
-
-    <ul>
-        <li><a class="no-hash" href="{{ path(download_file_route, { 'id': execution.id }) }}">{{ "Download the file"|trans }}</a></li>
-        <li><a class="no-hash" href="{{ path(download_log_route, { 'id': execution.id }) }}">{{ "Download the log"|trans }}</a></li>
-    </ul>
 
     <table class="table groups">
         <thead>
