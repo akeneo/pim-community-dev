@@ -1,0 +1,10 @@
+{% set valueArray = value.toArray %}
+{% if value.first %}
+    {% set recipients = value.first.email.getRecipients('to') %}
+{% endif %}
+
+<ul>
+    {% for recipient in recipients if recipient is not empty %}
+        <li>{{ recipient.name }} &lt;{{ recipient.getEmailAddress.email }}&gt;</li>
+    {% endfor %}
+</ul>

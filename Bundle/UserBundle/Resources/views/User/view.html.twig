@@ -85,6 +85,12 @@
         {% set dataSubBlocks = dataSubBlocks|merge([UI.renderAttribute('Tags', _tag.renderView(entity))]) %}
     {% endif %}
 
+    {% set emailSubBlock = [] %}
+    {% if resource_granted('oro_email_view') %}
+        {#{{ render(controller('OroEmailBundle:Email:activities', {'emails': entity.emails})) }}#}
+        {% set emailSubBlock = UI.gridBlock(gridId) %}
+    {% endif %}
+
     {% set data = {
         'dataBlocks':
             [
@@ -120,9 +126,7 @@
                         {
                             'title': null,
                             'useSpan': false,
-                            'data': [
-                                UI.gridBlock(gridId)
-                            ]
+                            'data': [emailSubBlock]
                         }
                     ]
                 }

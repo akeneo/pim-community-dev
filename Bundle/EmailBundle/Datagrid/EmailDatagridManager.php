@@ -2,11 +2,14 @@
 
 namespace Oro\Bundle\EmailBundle\Datagrid;
 
+use Oro\Bundle\EmailBundle\Entity\EmailInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class EmailDatagridManager extends DatagridManager
@@ -28,6 +31,24 @@ class EmailDatagridManager extends DatagridManager
     {
         $this->user = $user;
         $this->routeGenerator->setRouteParameters(array('id' => $user->getId()));
+    }
+
+    /**
+     * @return ProxyQueryInterface
+     */
+    protected function createQuery()
+    {
+        $this->entityManager->getRepository('Oro\Bundle\EmailBundle\Entity\Email')->setUser($this->user);
+
+        return parent::createQuery();
+    }
+
+    /**
+     * @param ProxyQueryInterface $query
+     */
+    protected function prepareQuery(ProxyQueryInterface $query)
+    {
+        //$query->
     }
 
     /**
@@ -82,6 +103,29 @@ class EmailDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($fieldName);
+
+        $fieldEntityName = new FieldDescription();
+        $fieldEntityName->setName('recipients');
+        $fieldEntityName->setOptions(
+            array(
+                'type'                => FieldDescriptionInterface::TYPE_HTML,
+                'label'               => $this->translate('oro.email.datagrid.recipients'),
+                'field_name'          => 'recipients',
+                'filter_type'         => FilterInterface::TYPE_CHOICE,
+                'choices'             => array(),
+                'translation_domain'  => 'config',
+                'required'            => false,
+                'sortable'            => false,
+                'filterable'          => true,
+                'show_filter'         => true,
+            )
+        );
+        $templateDataProperty = new TwigTemplateProperty(
+            $fieldEntityName,
+            'OroEmailBundle:Email:Datagrid/Property/recipients.html.twig'
+        );
+        $fieldEntityName->setProperty($templateDataProperty);
+        $fieldsCollection->add($fieldEntityName);
     }
 
     /**
