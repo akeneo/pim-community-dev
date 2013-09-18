@@ -1,7 +1,8 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
-{% oro_title_set({params : {"%entityName%": 'Item #'~record.id|default('N/A') }}) %}
+{% oro_title_set({params : {"%entityName%": record.id ? 'Item #'~record.id : 'New '~entity_config.get('label') }}) %}
+
 {% set formAction = path('oro_entity_update', {'entity_id': entity_id, id: record.id}) %}
 
 {#{% set entityClass = entity_config.getId.getClassName|replace('\\', '_') %}#}
@@ -20,7 +21,7 @@
         'entity':      'entity',
         'indexPath':   path('oro_entityconfig_index'),
         'indexLabel': 'Entities',
-        'entityTitle': 'Item #'~record.id|default('N/A'),
+        'entityTitle': record.id ? 'Item #'~record.id|default('N/A') : 'New '~entity_config.get('label'),
         'additional': [
             {
                 'indexPath'  : path('oro_entity_index', {id: entity_id}),
