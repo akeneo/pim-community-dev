@@ -1,4 +1,4 @@
-define(
+    define(
     ['jquery', 'underscore', 'routing', 'oro/registry', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector'],
     function ($, _, Routing, Registry) {
         'use strict';
@@ -94,8 +94,13 @@ define(
                         }, null, true);
                     });
                 }).on('select_node.jstree', function () {
-                    var nodeId = $.jstree._focused().get_selected().attr('id').replace('node_', ''),
-                        treeId = $('#tree li').first().attr('id').replace('node_', '');
+                    function getNodeId(node) {
+                        return (node && node.attr("id")) 
+                                ? node.attr('id').replace('node_','') 
+                                : '';
+                    }
+                    var nodeId = getNodeId($.jstree._focused().get_selected()),
+                        treeId = getNodeId($('#tree li').first());
                     updateGrid(treeId, nodeId);
                 });
             };

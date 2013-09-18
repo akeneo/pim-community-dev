@@ -483,7 +483,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         $this->flexibleManager = $flexibleManager;
         $this->flexibleManager->setScope($this->getScopeFilterValue());
-        $this->getRouteGenerator()->setRouteParameters(array('dataLocale' => $flexibleManager->getLocale()));
     }
 
     /**
