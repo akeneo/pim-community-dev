@@ -60,7 +60,7 @@ class EmailController extends Controller
         /** @var $emailRepository EmailRepository */
         $emailRepository = $this->getDoctrine()->getRepository('OroEmailBundle:Email');
 
-        $emails = $this->extractEmailAddresses($emails);
+        $emails = $emailRepository->extractEmailAddresses($emails);
         $rows = empty($emails)
             ? array()
             : $emailRepository->getEmailListQueryBuilder($emails)->getQuery()->execute();

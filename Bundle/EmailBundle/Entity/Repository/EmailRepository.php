@@ -58,7 +58,7 @@ class EmailRepository extends EntityRepository
     {
         $emails = $this->extractEmailAddresses($this->entity->getEmails());
 
-        // TODO: remove this afer User will have getPrimaryEmail method, like Contact
+        // TODO: remove this afer User will have getPrimaryEmail method
         if (method_exists($this->entity, 'getEmail')) {
             $emails[] =  $this->entity->getEmail();
         }
@@ -106,7 +106,7 @@ class EmailRepository extends EntityRepository
      * @return string[]
      * @throws \InvalidArgumentException
      */
-    protected function extractEmailAddresses($emails)
+    public function extractEmailAddresses($emails)
     {
         if (is_string($emails)) {
             return empty($emails)

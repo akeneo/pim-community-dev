@@ -9,25 +9,16 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
-use Oro\Bundle\UserBundle\Entity\User;
 
 class EmailDatagridManager extends DatagridManager
 {
     /**
-     * @var User|Contact
+     * @var
      */
     protected $entity;
 
     /**
-     * {@inheritDoc}
-     */
-    protected function getProperties()
-    {
-        return array();
-    }
-
-    /**
-     * @param User|Contact $user
+     * @param $entity
      */
     public function setEntity($entity)
     {
@@ -45,14 +36,6 @@ class EmailDatagridManager extends DatagridManager
             ->setEntity($this->entity);
 
         return parent::createQuery();
-    }
-
-    /**
-     * @param ProxyQueryInterface $query
-     */
-    protected function prepareQuery(ProxyQueryInterface $query)
-    {
-        //$query->
     }
 
     /**
@@ -130,13 +113,5 @@ class EmailDatagridManager extends DatagridManager
         );
         $fieldEntityName->setProperty($templateDataProperty);
         $fieldsCollection->add($fieldEntityName);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getRowActions()
-    {
-        return array();
     }
 }
