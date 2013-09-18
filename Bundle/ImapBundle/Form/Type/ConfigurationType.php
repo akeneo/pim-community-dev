@@ -8,28 +8,40 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Oro\Bundle\PlatformBundle\Security\Encryptors\Mcrypt;
+
 class ConfigurationType extends AbstractType
 {
     const NAME = 'oro_imap_configuration';
+
+    /** @var Mcrypt */
+    protected $encryptor;
+
+    public function __construct(Mcrypt $encryptor)
+    {
+        $this->encryptor = $encryptor;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $encryptor = $this->encryptor;
         $builder->addEventListener(
             FormEvents::PRE_SUBMIT,
-            function (FormEvent $event) {
+            function (FormEvent $event) use ($encryptor) {
                 $data = $event->getData();
                 if (empty($data['password'])) {
-                    $event->getForm()->remove('password');
-
-                    unset($data['password']);
-                    $event->setData($data);
+                    $password = $event->getForm()->get('password')->getData();
+                } else {
+                    $password = $encryptor->encryptData($data['password']);
                 }
+
+                $data['password'] = $password;
+                $event->setData($data);
             }
         );
-
 
         $builder
             ->add('host', 'text', array('required' => true))
