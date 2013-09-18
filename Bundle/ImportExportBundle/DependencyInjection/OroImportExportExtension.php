@@ -21,6 +21,7 @@ class OroImportExportExtension extends Extension
         $loader->load('serializer.yml');
         $loader->load('converter.yml');
         $loader->load('strategy.yml');
+        $loader->load('reader.yml');
         $loader->load('processor.yml');
     }
 }
