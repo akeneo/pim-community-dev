@@ -1,7 +1,7 @@
 oro_entity_config:
     extend:
         entity:
-            require_js:                     ['oro/init-entity-extend-apply','oro/init-entity-extend-relation']
+            require_js:                     ['oro/init-entity-extend-apply']
             grid_action:
                 -
                     name:                   'Remove'
@@ -115,11 +115,6 @@ oro_entity_config:
                     entity_id:              true
                     filter:                 { is_extend: true }
                 -
-                    name:                   'Create relation'
-                    route:                  'oro_entityextend_entity_relation'
-                    entity_id:              true
-                    filter:                 { is_extend: true }
-                -
                     name:                   'Update schema'
                     route:                  'oro_entityextend_update'
                     entity_id:              true
@@ -142,10 +137,6 @@ oro_entity_config:
                         show_filter:        false
 
                 constraint:
-                    options:
-                        internal:           true
-
-                relation:
                     options:
                         internal:           true
 
