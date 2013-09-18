@@ -37,6 +37,10 @@
 
                         Dialog.confirm(message, title, doAction);
                     })
+
+                    $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function(e) {
+                        $family.removeAttr('disabled');
+                    });
                 });
             }
         );
