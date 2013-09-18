@@ -212,52 +212,17 @@
 
     <div id="{{ id }}-container"></div>
 
-    <script type="text/html" id="multiple-entities-container-template">
-        <div class="actions">
-            <button type="button" class="btn btn-medium add-btn"><i class="icon-plus"></i>{{ 'Add Contacts'|trans }}</button>
-        </div>
-        <div class="entities clearfix row-fluid"></div>
-    </script>
-
-    <script type="text/html" id="multiple-entity-template">
-        <div class="clearfix">
-            <div class="clearfix">
-                <% if (hasDefault) { %>
-                <div class="pull-left" style="margin-right: 10px;">
-                    <input type="radio" class="default-selector"
-                           name="<%= name %>_default"
-                           title="{{ 'Default'|trans }}"
-                           value="<%= id %>"
-                           id="contact-label-{{ id }}"
-                           <% if(isDefault) { %>
-                           checked="checked"
-                           <% } %>
-                    />
-                </div>
-                <% } %>
-                <div class="pull-left">
-                    <h4><a href="<%= link %>" class="entity-info"><%= label %></a></h4>
-                </div>
-                <div class="pull-right">
-                    <a href="javascript:void(0)" class="remove-btn" title="{{ 'Remove'|trans }}"><i class="icon-remove"></i></a>
-                </div>
-            </div>
-            <div class="extra-info">
-                <% _.each(extraData, function(item) { %>
-                <% if (item.value.length == 0) { item.value = "{{ 'N/A'|trans }}"; }%>
-                <div><%= _.__(item.label) %>: <%= item.value %></div>
-                <% }); %>
-            </div>
-        </div>
-    </script>
-
     <script type="text/javascript">
-        require(['jquery', 'oro/multiple-entity', 'oro/multiple-entity/collection', 'oro/multiple-entity/model'],
-        function($, MultipleEntity, MultipleEntityCollection, MultipleEntityModel) {
+        require(['jquery',
+            'oro/multiple-entity', 'oro/multiple-entity/collection', 'oro/multiple-entity/model',
+            'text!{{ asset('bundles/oroform/js/multiple-entity/templates/multiple-entities.html') }}',
+            'text!{{ asset('bundles/oroform/js/multiple-entity/templates/multiple-entity.html') }}'
+        ],
+        function($, MultipleEntity, MultipleEntityCollection, MultipleEntityModel, EntitiesTpl, EntityTpl) {
             var widget = new MultipleEntity({
                 el: '#{{ id }}-container',
-                template: $('#multiple-entities-container-template').html(),
-                elementTemplate: $('#multiple-entity-template').html(),
+                template: EntitiesTpl,
+                elementTemplate: EntityTpl,
                 addedElement: '#{{ id }}_added',
                 removedElement: '#{{ id }}_removed',
                 name: {{ id|json_encode|raw }},
