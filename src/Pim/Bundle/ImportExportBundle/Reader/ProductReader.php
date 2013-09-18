@@ -17,6 +17,9 @@ use Oro\Bundle\BatchBundle\Entity\StepExecution;
   */
 class ProductReader extends ORMReader
 {
+    /**
+     * @var EntityManager
+     */
     protected $em;
 
     /**

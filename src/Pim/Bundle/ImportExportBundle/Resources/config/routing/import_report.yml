@@ -4,7 +4,7 @@ pim_importexport_import_report_index:
     requirements:
         _format: html|json
 
-pim_importexport_import_report_download:
+pim_importexport_import_report_download_log:
     path: collect/import_report/{id}/download
     defaults: { _controller: pim_import_export.controller.import_report:downloadLogFileAction }
     requirements:
@@ -15,3 +15,10 @@ pim_importexport_import_report_show:
     defaults: { _controller: pim_import_export.controller.import_report:showAction }
     requirements:
         id: \d+
+
+pim_importexport_import_report_download_file:
+    path: collect/import_report/{id}/downloadFiles
+    defaults: { _controller: pim_import_export.controller.import_report:downloadFilesAction }
+    requirements:
+        id: \d+
+
