@@ -89,8 +89,7 @@ class JobExecutionArchiver
     {
         $jobInstance = $jobExecution->getJobInstance();
         $jobType     = $jobInstance->getType();
-        $path        = $jobInstance->getAlias().DIRECTORY_SEPARATOR
-            .$jobExecution->getId().DIRECTORY_SEPARATOR;
+        $path        = $jobInstance->getAlias().DIRECTORY_SEPARATOR.$jobExecution->getId().DIRECTORY_SEPARATOR;
 
         return $this->getBaseDirectory($jobType).$path;
     }
