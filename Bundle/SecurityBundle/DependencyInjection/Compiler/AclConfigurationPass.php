@@ -25,6 +25,8 @@ class AclConfigurationPass implements CompilerPassInterface
     const ACL_EXTENSION_SELECTOR = 'oro_security.acl.extension_selector';
     const ACL_EXTENSION_TAG = 'oro_security.acl.extension';
 
+    const DEFAULT_ACL_CACHE_CLASS = 'Oro\Bundle\SecurityBundle\Acl\Cache\AclCache';
+
     /**
      * {@inheritDoc}
      */
@@ -80,6 +82,8 @@ class AclConfigurationPass implements CompilerPassInterface
     {
         if ($container->hasDefinition(self::DEFAULT_ACL_CACHE)) {
             $cacheDef = $container->getDefinition(self::DEFAULT_ACL_CACHE);
+            //change cache class
+            $cacheDef->setClass(self::DEFAULT_ACL_CACHE_CLASS);
             // substitute the ACL Permission Granting Strategy
             if ($container->hasDefinition(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY)) {
                 $cacheDef->replaceArgument(1, new Reference(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY));
