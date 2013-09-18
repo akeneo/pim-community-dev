@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Component\Serializer\Exception;
+namespace Oro\Bundle\ImportExportBundle\Exception;
 
 class UnexpectedValueException extends \UnexpectedValueException implements Exception
 {

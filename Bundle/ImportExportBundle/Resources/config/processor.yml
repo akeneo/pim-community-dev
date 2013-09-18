@@ -1,0 +1,6 @@
+parameters:
+    oro_importexport.processor.registry.class: Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry
+
+services:
+    oro_importexport.processor.registry:
+        class: %oro_importexport.processor.registry.class%

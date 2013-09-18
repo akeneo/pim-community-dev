@@ -28,6 +28,7 @@ class AddressNormalizer implements NormalizerInterface, DenormalizerInterface
             'street' => $object->getStreet(),
             'street2' => $object->getStreet2(),
             'city' => $object->getCity(),
+            'postalCode' => $object->getPostalCode() ? $object->getPostalCode() : null,
             'regionText' => $object->getRegionText(),
             'region' => $object->getRegion() ? $object->getRegion()->getCode() : null,
             'country' => $object->getCountry() ? $object->getCountry()->getIso2Code() : null,
@@ -62,6 +63,9 @@ class AddressNormalizer implements NormalizerInterface, DenormalizerInterface
         }
         if (!empty($data['city'])) {
             $result->setCity($data['city']);
+        }
+        if (!empty($data['postalCode'])) {
+            $result->setPostalCode($data['postalCode']);
         }
         if (!empty($data['regionText'])) {
             $result->setRegionText($data['regionText']);
