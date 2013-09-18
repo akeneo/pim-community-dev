@@ -9,10 +9,6 @@ parameters:
     pim_import_export.event_listener.archive_subscriber.class:               Pim\Bundle\ImportExportBundle\EventListener\ArchiveSubscriber
     pim_import_export.archiver.job_execution_archiver.class:                 Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver
 
-
-
-
-
 services:
     pim_import_export.twig.normalize_configuration_extension:
         class: %pim_import_export.twig.normalize_configuration_extension.class%
