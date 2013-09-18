@@ -94,8 +94,23 @@ define(
                         queryParams.treeId = state.treeId;
                     }
                     return queryParams;
-                }
+                },
+                        
+                /**
+                * Clone collection
+                *
+                * @return {PageableCollection}
+                */
+               clone: function() {
+                   var collectionOptions = {};
+                   collectionOptions.url = this.url;
+                   collectionOptions.inputName = this.inputName;
+                   var newCollection = new PageableCollection(this.toJSON(), collectionOptions);
+                   newCollection.state = app.deepClone(this.state);
+                   return newCollection;
+               }
             });
         return PageableCollection;
     }
+    
 )
