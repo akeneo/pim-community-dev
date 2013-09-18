@@ -6,3 +6,5 @@ channels:
             - 'en_US'
         'currencies':
             - 'USD'
+        'tree':
+            - 'default'
