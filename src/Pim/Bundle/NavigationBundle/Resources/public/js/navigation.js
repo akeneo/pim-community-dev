@@ -12,31 +12,6 @@ define(
             QUERY_STRING_REGEX = /^[^\?]+\??/,
             instance,
             Navigation = OroNavigation.extend({
-        /**
-         * Initialize hash navigation
-         *
-         * @param options
-         */
-        initialize: function(options) {
-                    for (var selector in this.selectors) if (this.selectors.hasOwnProperty(selector)) {
-                        this.selectorCached[selector] = $(this.selectors[selector]);
-                    }
-
-                    options = options || {};
-                    if (!options.baseUrl) {
-                        throw new TypeError("'baseUrl' is required");
-                    }
-
-                    this.baseUrl =  options.baseUrl;
-                    this.headerId = options.headerId;
-                    var header = {};
-                    header[this.headerId] = true;
-                    this.headerObject = header;
-
-                    this.init();
-
-                    Backbone.Router.prototype.initialize.apply(this, arguments);
-                },
                 /**
                  * @inheritdoc
                  */
@@ -60,6 +35,7 @@ define(
                                     'dataLocale=' + args.dataLocale;
                             sessionStorage.gridURL_products = this.encodedStateData
                         }
+                        this.skipAjaxCall = false
                         this.navigate("url=" + this.url.split("?").shift() + "|g/" + this.encodedStateData, { trigger: false, replace: true});
                     }
                     if (!this.skipAjaxCall) {
