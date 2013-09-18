@@ -32,17 +32,25 @@
 
     function collapse($element, opts) {
         $('>.sidebar', $element).hide();
-        $('>.separator', $element).toggleClass('expanded collapsed').outerWidth(opts.collapsedSeparatorWidth).css('cursor', 'default');
+        $('>.separator', $element).toggleClass('expanded collapsed').css({
+            'width': opts.collapsedSeparatorWidth - 2 + 'px',
+            'cursor': 'default'
+        });
         adjustWidth($element, opts);
         $element.find('.separator i').addClass(opts.expandIcon);
+        $element.find('.separator b').removeClass(opts.dragIcon);
         saveState(opts.stateStorageKey, 0);
     }
 
     function expand($element, opts) {
         $('>.sidebar', $element).show();
-        $('>.separator', $element).toggleClass('expanded collapsed').outerWidth(opts.separatorWidth).css('cursor', opts.resizeCursor);
+        $('>.separator', $element).toggleClass('expanded collapsed').css({
+            'width': opts.separatorWidth - 2 + 'px',
+            'cursor': opts.resizeCursor
+        });
         adjustWidth($element, opts);
         $element.find('.separator i').removeClass(opts.expandIcon);
+        $element.find('.separator b').addClass(opts.dragIcon);
         saveState(opts.stateStorageKey, 1);
     }
 
@@ -90,7 +98,7 @@
                 unselectable: 'on'
             },
             css: opts.separatorCss
-        }).css('cursor', opts.resizeCursor).css(opts.unselectableCss);
+        }).css('cursor', opts.resizeCursor).css(opts.unselectableCss).width(opts.separatorWidth - 2 + 'px');
 
         $separator.insertAfter($sidebar).on('dblclick', function () {
             if ($(this).hasClass('collapsed')) {
@@ -111,6 +119,8 @@
         $('<i>', { css: opts.iconCss }).on('click', function () {
             expand($element, opts);
         }).appendTo($separator).hide();
+
+        $('<b>').addClass(opts.dragIcon).css(opts.dragIconCss).appendTo($separator);
 
         opts.buttons.map(function (button) {
             $(button).children('.dropdown-toggle').css(opts.buttonsCss);
@@ -190,11 +200,12 @@
         maxSidebarWidth: null,
         widthStorageKey: 'sidebar_width',
         stateStorageKey: 'sidebar_state',
-        separatorWidth: 9,
+        separatorWidth: 10,
         collapsedSeparatorWidth: 22,
         controlsHeight: 25,
         collapseIcon: 'icon-double-angle-left',
         expandIcon: 'icon-double-angle-right',
+        dragIcon: 'icon-ellipsis-vertical',
         resizeCursor: 'e-resize',
         childrenCss: {
             'position': 'relative',
@@ -208,7 +219,6 @@
         },
         separatorCss: {
             'z-index': '100',
-            'width': '7px',
             'border': '1px solid #ddd'
         },
         unselectableCss: {
@@ -222,6 +232,13 @@
             '-webkit-user-select': 'text',
             '-khtml-user-select': 'text',
             '-moz-user-select': 'text'
+        },
+        dragIconCss: {
+            'position': 'relative',
+            'top': '48%',
+            'margin-left': '1px',
+            'font-size': '16px',
+            'color': '#999'
         },
         iconCss: {
             'font-weight': 'bold',
