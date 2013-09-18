@@ -71,6 +71,7 @@ class AbstractDatagrid extends DatagridManager
             foreach ($fieldIds as $fieldId) {
                 if ($extendProvider->getConfigById($fieldId)->is('owner', ExtendManager::OWNER_CUSTOM)
                     && $datagridProvider->getConfigById($fieldId)->is('is_visible')
+                    && !$extendProvider->getConfigById($fieldId)->is('state', ExtendManager::STATE_NEW)
                     && !$extendProvider->getConfigById($fieldId)->is('is_deleted')
                 ) {
                     $fieldConfig = $entityProvider->getConfigById($fieldId);
