@@ -27,6 +27,8 @@ services:
 
     oro_imap.form.type.configuration:
         class: %oro_imap.form.type.configuration.class%
+        arguments:
+            - @oro_platform.security.encryptor.mcrypt
         tags:
              - { name: form.type, alias: oro_imap_configuration }
 

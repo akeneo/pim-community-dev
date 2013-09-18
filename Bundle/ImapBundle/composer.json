@@ -1,20 +1,21 @@
 {
-    "name": "oro/google-bundle",
+    "name": "oro/imap-bundle",
     "type": "symfony-bundle",
-    "description": "BAP Google Apps Bundle",
+    "description": "BAP Imap Bundle",
     "keywords": ["BAP"],
-    "homepage": "https://github.com/laboro/GoogleBundle",
+    "homepage": "https://github.com/laboro/ImapBundle",
     "license": "MIT",
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.1.*",
         "zendframework/zend-mail": "2.1.*",
+        "oro/platform-bundle": "dev-master",
         "oro/email-bundle": "dev-master"
     },
     "autoload": {
-        "psr-0": { "Oro\\Bundle\\GoogleBundle": "" }
+        "psr-0": { "Oro\\Bundle\\ImapBundle": "" }
     },
-    "target-dir": "Oro/Bundle/GoogleBundle",
+    "target-dir": "Oro/Bundle/ImapBundle",
     "minimum-stability": "dev",
     "extra": {
         "branch-alias": {

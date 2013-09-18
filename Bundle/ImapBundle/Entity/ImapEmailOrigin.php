@@ -3,6 +3,7 @@
 namespace Oro\Bundle\ImapBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 
 /**
@@ -71,6 +72,13 @@ class ImapEmailOrigin extends EmailOrigin
      * @ORM\Column(name="sync_code", type="integer", nullable=true)
      */
     protected $syncCode;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="isActive", type="boolean")
+     */
+    protected $isActive = true;
 
     /**
      * Gets the host name of IMAP server
@@ -241,5 +249,28 @@ class ImapEmailOrigin extends EmailOrigin
         $this->syncCode = $syncCode;
 
         return $this;
+    }
+
+    /**
+     * Set template is active or not
+     *
+     * @param boolean $isActive
+     * @return $this
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Getter for isActive property
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 }
