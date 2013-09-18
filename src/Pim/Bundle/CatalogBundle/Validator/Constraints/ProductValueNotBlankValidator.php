@@ -38,13 +38,8 @@ class ProductValueNotBlankValidator extends ConstraintValidator
             return;
         }
 
-        if ($data === '') {
-            $this->context->addViolation($constraint->messageNotBlank);
-
-            return;
-        }
-
-        if ($data instanceof Collection and count($data) === 0) {
+        if ($data === ''
+            || ($data instanceof Collection and count($data) === 0)) {
             $this->context->addViolation($constraint->messageNotBlank);
 
             return;
