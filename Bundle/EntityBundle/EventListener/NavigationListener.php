@@ -62,9 +62,7 @@ class NavigationListener
                     $children[$config->get('label')] = array(
                         'label'   => $config->get('label'),
                         'options' => array(
-                            'label'           => $config->get('label') . '<i class="' . $config->get(
-                                'icon'
-                            ) . ' hide-text pull-right"></i>',
+                            'label'           => $config->get('label'),
                             'route'           => 'oro_entity_index',
                             'routeParameters' => array(
                                 'id' => str_replace('\\', '_', $config->getId()->getClassName())

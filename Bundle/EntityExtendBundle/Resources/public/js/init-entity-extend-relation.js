@@ -4,10 +4,8 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/modal'],
 function($, _, __, Modal) {
     'use strict';
     $(function() {
-        console.log($('form select.json-get-columns'));
-
         $(document).on('change', 'form select.json-get-columns', function (e) {
-            alert('okkk');
+
 //            var el = $(this),
 //                message = el.data('message'),
 //                doAction = function() {

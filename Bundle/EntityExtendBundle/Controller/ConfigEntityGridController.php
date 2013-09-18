@@ -227,17 +227,6 @@ class ConfigEntityGridController extends Controller
             }
         }
 
-        /*
-         * $modules = array();
-        foreach ($this->configManager->getProviders() as $provider) {
-            $modules = array_merge(
-                $modules,
-                $provider->getPropertyConfig(PropertyConfigContainer::TYPE_FIELD)->getRequireJsModules()
-            );
-        }
-         * */
-
-
         $require_js = $extendConfigProvider->getPropertyConfig(PropertyConfigContainer::TYPE_FIELD)
             ->getRequireJsModules();
 
