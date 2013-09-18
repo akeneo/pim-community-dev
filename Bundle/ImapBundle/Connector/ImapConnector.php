@@ -135,9 +135,7 @@ class ImapConnector
      */
     public function getUidValidity()
     {
-        if ($this->imap === null) {
-            throw new \LogicException('Cannot get UIDVALIDITY due the connector is in disconnected state.');
-        }
+        $this->ensureConnected();
 
         return $this->imap->getUidValidity();
     }

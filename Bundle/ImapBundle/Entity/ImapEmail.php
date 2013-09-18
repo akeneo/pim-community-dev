@@ -30,13 +30,6 @@ class ImapEmail
     protected $uid;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="uid_validity", type="integer")
-     */
-    protected $uidValidity;
-
-    /**
      * @var Email
      *
      * @ORM\OneToOne(targetEntity="Oro\Bundle\EmailBundle\Entity\Email")
@@ -73,29 +66,6 @@ class ImapEmail
     public function setUid($uid)
     {
         $this->uid = $uid;
-
-        return $this;
-    }
-
-    /**
-     * Get email UIDVALIDITY
-     *
-     * @return int
-     */
-    public function getUidValidity()
-    {
-        return $this->uidValidity;
-    }
-
-    /**
-     * Set email UIDVALIDITY
-     *
-     * @param int $uidValidity
-     * @return ImapEmail
-     */
-    public function setUidValidity($uidValidity)
-    {
-        $this->uidValidity = $uidValidity;
 
         return $this;
     }

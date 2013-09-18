@@ -4,11 +4,13 @@ namespace Oro\Bundle\ImapBundle\Sync;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Oro\Bundle\CronBundle\Command\Logger\LoggerInterface;
 use Oro\Bundle\ImapBundle\Connector\Search\SearchQuery;
 use Oro\Bundle\ImapBundle\Connector\Search\SearchQueryBuilder;
 use Oro\Bundle\ImapBundle\Entity\ImapEmail;
+use Oro\Bundle\ImapBundle\Entity\ImapEmailFolder;
 use Oro\Bundle\ImapBundle\Manager\ImapEmailManager;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
@@ -74,18 +76,7 @@ class ImapEmailSynchronizationProcessor
     {
         $this->emailEntityBuilder->clear();
 
-        $emailAddressBatches = array();
-        $batchIndex = 0;
-        $count = 0;
-        foreach ($this->getKnownEmailAddresses() as $emailAddress) {
-            if ($count >= self::EMAIL_ADDRESS_BATCH_SIZE) {
-                $batchIndex++;
-                $count = 0;
-            }
-            $emailAddressBatches[$batchIndex][$count] = $emailAddress;
-            $count++;
-        }
-
+        $emailAddressBatches = $this->getKnownEmailAddressBatches();
         $folders = $this->getFolders($origin);
 
         foreach ($folders as $folder) {
@@ -93,6 +84,13 @@ class ImapEmailSynchronizationProcessor
 
             $folderName = $folder->getFullName();
             $this->manager->selectFolder($folderName);
+
+            $imapFolder = $this->getImapFolder($folder);
+            if ($imapFolder->getUidValidity() !== $this->manager->getUidValidity()) {
+                $imapFolder->setUidValidity($this->manager->getUidValidity());
+                $this->em->persist($imapFolder);
+                $this->em->flush();
+            }
 
             $this->log->info(sprintf('Loading emails from "%s" folder ...', $folderName));
 
@@ -149,25 +147,26 @@ class ImapEmailSynchronizationProcessor
         return $sqb;
     }
 
-    protected function loadEmails(EmailFolder $folder, SearchQuery $searchQuery)
+    /**
+     * Gets a list of email addresses which have an owner split into batches
+     *
+     * @return string[][]
+     */
+    protected function getKnownEmailAddressBatches()
     {
-        $this->log->info(sprintf('Query: "%s".', $searchQuery->convertToSearchString()));
-        $emails = $this->manager->getEmails($searchQuery);
-
+        $batches = array();
+        $batchIndex = 0;
         $count = 0;
-        $batch = array();
-        foreach ($emails as $email) {
-            $count++;
-            $batch[] = $email;
-            if ($count === self::DB_BATCH_SIZE) {
-                $this->saveEmails($batch, $this->manager->getUidValidity(), $folder);
+        foreach ($this->getKnownEmailAddresses() as $emailAddress) {
+            if ($count >= self::EMAIL_ADDRESS_BATCH_SIZE) {
+                $batchIndex++;
                 $count = 0;
-                $batch = array();
             }
+            $batches[$batchIndex][$count] = $emailAddress;
+            $count++;
         }
-        if ($count > 0) {
-            $this->saveEmails($batch, $this->manager->getUidValidity(), $folder);
-        }
+
+        return $batches;
     }
 
     /**
@@ -268,11 +267,58 @@ class ImapEmailSynchronizationProcessor
     }
 
     /**
+     * Gets ImapEmailFolder entity related with the given EmailFolder entity
+     *
+     * @param EmailFolder $folder
+     * @return ImapEmailFolder
+     */
+    protected function getImapFolder(EmailFolder $folder)
+    {
+        $this->log->info(sprintf('Load IMAP folder for "%s".', $folder->getFullName()));
+
+        $repo = $this->em->getRepository('OroImapBundle:ImapEmailFolder');
+        $query = $repo->createQueryBuilder('f')
+            ->where('f.folder = ?1')
+            ->setParameter(1, $folder)
+            ->getQuery();
+
+        try {
+            $imapFolder = $query->getSingleResult();
+        } catch (NoResultException $ex) {
+            $this->log->info('IMAP folder does not exist. Create a new one.');
+            $imapFolder = new ImapEmailFolder();
+            $imapFolder->setFolder($folder);
+        }
+
+        return $imapFolder;
+    }
+
+    protected function loadEmails(EmailFolder $folder, SearchQuery $searchQuery)
+    {
+        $this->log->info(sprintf('Query: "%s".', $searchQuery->convertToSearchString()));
+        $emails = $this->manager->getEmails($searchQuery);
+
+        $count = 0;
+        $batch = array();
+        foreach ($emails as $email) {
+            $count++;
+            $batch[] = $email;
+            if ($count === self::DB_BATCH_SIZE) {
+                $this->saveEmails($batch, $folder);
+                $count = 0;
+                $batch = array();
+            }
+        }
+        if ($count > 0) {
+            $this->saveEmails($batch, $folder);
+        }
+    }
+
+    /**
      * @param Email[] $emails
-     * @param int $uidValidity
      * @param EmailFolder $folder
      */
-    protected function saveEmails(array $emails, $uidValidity, EmailFolder $folder)
+    protected function saveEmails(array $emails, EmailFolder $folder)
     {
         $this->emailEntityBuilder->removeEmails();
 
@@ -289,9 +335,8 @@ class ImapEmailSynchronizationProcessor
             ->select('e.uid')
             ->innerJoin('e.email', 'se')
             ->innerJoin('se.folder', 'sf')
-            ->where('sf.id = :folderId AND e.uidValidity = :uidValidity AND e.uid IN (:uids)')
+            ->where('sf.id = :folderId AND e.uid IN (:uids)')
             ->setParameter('folderId', $folder->getId())
-            ->setParameter('uidValidity', $uidValidity)
             ->setParameter('uids', $uids)
             ->getQuery();
         $existingUids = array_map(
@@ -322,7 +367,6 @@ class ImapEmailSynchronizationProcessor
                 $imapEmail = new ImapEmail();
                 $imapEmail
                     ->setUid($src->getId()->getUid())
-                    ->setUidValidity($src->getId()->getUidValidity())
                     ->setEmail($email);
                 $this->em->persist($imapEmail);
 
