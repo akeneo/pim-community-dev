@@ -140,7 +140,7 @@ class MassActionDispatcher
      */
     protected function getResultIterator(ProxyQueryInterface $proxyQuery, $bufferSize = null)
     {
-        $result = IterableResult::createFromProxyQuery($proxyQuery);
+        $result = new IterableResult($proxyQuery);
 
         if ($bufferSize) {
             $result->setBufferSize($result);

@@ -417,7 +417,7 @@ class StepExecution
     /**
      * Accessor for the execution context information of the enclosing job.
      *
-     * @return the that was used to start this step execution.
+     * @return JobExecution that was used to start this step execution.
      *
      */
     public function getJobExecution()
@@ -436,7 +436,7 @@ class StepExecution
 
     /**
      * Add a failure exception
-     * @param Exception $e
+     * @param \Exception $e
      *
      * @return $this
      */

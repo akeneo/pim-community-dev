@@ -95,29 +95,46 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
     protected $current = null;
 
     /**
-     * @param Query $query
+     * @param Query|QueryBuilder $source
      */
-    public function __construct(Query $query)
+    public function __construct($source)
     {
-        $this->query = clone $query;
+        $this->source = $source;
     }
 
     /**
-     * @param Query $query
-     * @return BufferedQueryResultIterator
+     * @return Query
      */
-    public static function create(Query $query)
+    protected function getQuery()
     {
-        return new static($query);
+        if (null === $this->query) {
+            $this->query = $this->getQueryBy($this->source);
+            unset($this->source);
+        }
+        return $this->query;
     }
 
     /**
-     * @param QueryBuilder $queryBuilder
-     * @return BufferedQueryResultIterator
+     * @param mixed $source
+     * @return Query
+     * @throws \InvalidArgumentException
      */
-    public static function createFromQueryBuilder(QueryBuilder $queryBuilder)
+    protected function getQueryBy($source)
     {
-        return new static($queryBuilder->getQuery());
+        if ($source instanceof Query) {
+            return clone $source;
+        } elseif ($source instanceof QueryBuilder) {
+            return $source->getQuery();
+        } else {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Cannot get query from "%s", instance of "%s" or "%s" must be given',
+                    is_object($source) ? get_class($source) : gettype($source),
+                    'Doctrine\ORM\Query',
+                    'Doctrine\ORM\QueryBuilder'
+                )
+            );
+        }
     }
 
     /**
@@ -134,8 +151,8 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
         if ($this->bufferSize <= 0) {
             throw new \InvalidArgumentException('$bufferSize must be greater than 0');
         }
-        if ($this->query->getMaxResults() && $this->query->getMaxResults() < $this->bufferSize) {
-            $this->bufferSize = $this->query->getMaxResults();
+        if ($this->getQuery()->getMaxResults() && $this->getQuery()->getMaxResults() < $this->bufferSize) {
+            $this->bufferSize = $this->getQuery()->getMaxResults();
         }
         return $this;
     }
@@ -202,16 +219,16 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
      */
     public function next()
     {
+        $this->rewound = true;
         $this->offset++;
 
         if (!isset($this->rows[$this->offset]) && !$this->loadNextPage()) {
+            $this->offset--;
             return $this->current = null;
         }
 
         $this->current = $this->rows[$this->offset];
         $this->key = $this->offset + $this->bufferSize * $this->page;
-
-        return $this->current;
     }
 
     /**
@@ -231,8 +248,8 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
         $this->page++;
         $this->offset = 0;
 
-        $pageQuery = clone $this->query;
-        $pageQuery->setFirstResult($this->bufferSize * $this->page + $this->query->getFirstResult());
+        $pageQuery = $this->getQuery();
+        $pageQuery->setFirstResult($this->bufferSize * $this->page + $this->getQuery()->getFirstResult());
         $pageQuery->setMaxResults($this->bufferSize);
 
         $this->rows = $pageQuery->execute($this->parameters, $this->hydrationMode);
@@ -268,8 +285,7 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
         if ($this->rewound == true) {
             throw new \RuntimeException("Can only iterate a Result once.");
         } else {
-            $this->current = $this->next();
-            $this->rewound = true;
+            $this->next();
         }
     }
 
@@ -279,8 +295,8 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
     public function count()
     {
         if (null === $this->totalCount) {
-            $countQuery = clone $this->query;
-            foreach ($this->query->getHints() as $name => $value) {
+            $countQuery = clone $this->getQuery();
+            foreach ($this->getQuery()->getHints() as $name => $value) {
                 $countQuery->setHint($name, $value);
             }
             $this->totalCount = QueryCountCalculator::calculateCount($countQuery, $this->parameters);

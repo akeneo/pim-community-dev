@@ -2,8 +2,9 @@
 
 namespace Oro\Bundle\GridBundle\Datagrid\ORM;
 
-use Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator;
+use Doctrine\ORM\Query;
 
+use Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator;
 use Oro\Bundle\GridBundle\Datagrid\ORM\ProxyQuery;
 use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
 use Oro\Bundle\GridBundle\Datagrid\IterableResultInterface;
@@ -14,11 +15,15 @@ use Oro\Bundle\GridBundle\Datagrid\IterableResultInterface;
 class IterableResult extends BufferedQueryResultIterator implements IterableResultInterface
 {
     /**
-     * @return IterableResult
+     * {@inheritdoc}
      */
-    public static function createFromProxyQuery(ProxyQuery $proxyQuery)
+    protected function getQueryBy($source)
     {
-        return static::createFromQueryBuilder($proxyQuery->getQueryBuilder());
+        if ($source instanceof ProxyQuery) {
+            return parent::getQueryBy($source->getQueryBuilder());
+        } else {
+            return parent::getQueryBy($source);
+        }
     }
 
     /**
@@ -26,13 +31,11 @@ class IterableResult extends BufferedQueryResultIterator implements IterableResu
      */
     public function next()
     {
-        $result = parent::next();
+        parent::next();
 
-        if (null !== $result) {
-            $result = new ResultRecord($result);
+        if (null !== $this->current) {
+            $result = new ResultRecord($this->current);
             $this->current = $result;
         }
-
-        return $result;
     }
 }
