@@ -32,23 +32,6 @@ class AuditController extends ContainerAware
     }
 
     /**
-     * @Soap\Method("deleteAudit")
-     * @Soap\Param("id", phpType = "int")
-     * @Soap\Result(phpType = "boolean")
-     * @AclAncestor("oro_dataaudit_history_delete")
-     */
-    public function deleteAction($id)
-    {
-        $em = $this->getManager();
-        $entity = $this->getEntity('OroDataAuditBundle:Audit', (int) $id);
-
-        $em->remove($entity);
-        $em->flush();
-
-        return true;
-    }
-
-    /**
      * Shortcut to get entity
      *
      * @param  string     $repo

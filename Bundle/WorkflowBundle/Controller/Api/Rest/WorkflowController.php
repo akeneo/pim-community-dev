@@ -183,12 +183,7 @@ class WorkflowController extends FOSRestController
      * @Rest\Delete("/{workflowItemId}", requirements={"workflowItemId"="\d+"}, defaults={"_format"="json"})
      * @ParamConverter("workflowItem", options={"id"="workflowItemId"})
      * @ApiDoc(description="Delete workflow item", resource=true)
-     * @Acl(
-     *      id="oro_workflow_workflow_item_delete",
-     *      label="Delete workflow item",
-     *      group_name="",
-     *      type="action"
-     * )
+     * @AclAncestor("oro_workflow")
      *
      * @param WorkflowItem $workflowItem
      * @return Response

@@ -30,13 +30,6 @@ class WindowsStateController extends FOSRestController
      *  resource=true
      * )
      * @return Response
-     *
-     * @Acl(
-     *      id="oro_windows",
-     *      type="action",
-     *      label="Work with windows",
-     *      group_name=""
-     * )
      */
     public function cgetAction()
     {
@@ -55,8 +48,6 @@ class WindowsStateController extends FOSRestController
      *  resource=true
      * )
      * @return Response
-     *
-     * @AclAncestor("oro_windows")
      */
     public function postAction()
     {
@@ -90,8 +81,6 @@ class WindowsStateController extends FOSRestController
      *  resource=true
      * )
      * @return Response
-     *
-     * @AclAncestor("oro_windows")
      */
     public function putAction($windowId)
     {
@@ -125,8 +114,6 @@ class WindowsStateController extends FOSRestController
      *  resource=true
      * )
      * @return Response
-     *
-     * @AclAncestor("oro_windows")
      */
     public function deleteAction($windowId)
     {

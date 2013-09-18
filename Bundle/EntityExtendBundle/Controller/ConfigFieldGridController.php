@@ -30,6 +30,7 @@ use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
  *
  * @package Oro\Bundle\EntityExtendBundle\Controller
  * @Route("/entity/extend/field")
+ * TODO: Discuss ACL impl., currently acl is disabled
  */
 class ConfigFieldGridController extends Controller
 {
@@ -39,7 +40,7 @@ class ConfigFieldGridController extends Controller
 
     /**
      * @Route("/create/{id}", name="oro_entityextend_field_create", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_field_create",
      *      label="Create custom field",
      *      type="action",
@@ -109,7 +110,7 @@ class ConfigFieldGridController extends Controller
 
     /**
      * @Route("/update/{id}", name="oro_entityextend_field_update", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_field_update",
      *      label="Update custom field",
      *      type="action",
@@ -205,7 +206,7 @@ class ConfigFieldGridController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_field_remove",
      *      label="Remove custom field",
      *      type="action",
@@ -247,7 +248,7 @@ class ConfigFieldGridController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_field_unremove",
      *      label="UnRemove custom field",
      *      type="action",

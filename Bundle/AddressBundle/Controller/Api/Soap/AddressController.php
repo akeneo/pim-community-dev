@@ -10,6 +10,9 @@ use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
+/**
+ * TODO: Discuss ACL impl.
+ */
 class AddressController extends SoapController
 {
     /**
@@ -17,7 +20,7 @@ class AddressController extends SoapController
      * @Soap\Param("page", phpType="int")
      * @Soap\Param("limit", phpType="int")
      * @Soap\Result(phpType = "Oro\Bundle\AddressBundle\Entity\Address[]")
-     * @AclAncestor("oro_address_list")
+     * AclAncestor("oro_address_list")
      */
     public function cgetAction($page = 1, $limit = 10)
     {
@@ -28,7 +31,7 @@ class AddressController extends SoapController
      * @Soap\Method("getAddress")
      * @Soap\Param("id", phpType = "int")
      * @Soap\Result(phpType = "Oro\Bundle\AddressBundle\Entity\Address")
-     * @AclAncestor("oro_address_show")
+     * AclAncestor("oro_address_show")
      */
     public function getAction($id)
     {
@@ -39,7 +42,7 @@ class AddressController extends SoapController
      * @Soap\Method("createAddress")
      * @Soap\Param("address", phpType = "Oro\Bundle\AddressBundle\Entity\Address")
      * @Soap\Result(phpType = "int")
-     * @AclAncestor("oro_address_create")
+     * AclAncestor("oro_address_create")
      */
     public function createAction($address)
     {
@@ -51,7 +54,7 @@ class AddressController extends SoapController
      * @Soap\Param("id", phpType = "int")
      * @Soap\Param("address", phpType = "Oro\Bundle\AddressBundle\Entity\Address")
      * @Soap\Result(phpType = "boolean")
-     * @AclAncestor("oro_address_edit")
+     * AclAncestor("oro_address_edit")
      */
     public function updateAction($id, $address)
     {
@@ -62,7 +65,7 @@ class AddressController extends SoapController
      * @Soap\Method("deleteAddress")
      * @Soap\Param("id", phpType = "int")
      * @Soap\Result(phpType = "boolean")
-     * @AclAncestor("oro_address_remove")
+     * AclAncestor("oro_address_remove")
      */
     public function deleteAction($id)
     {

@@ -15,6 +15,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 /**
  * @RouteResource("region")
  * @NamePrefix("oro_api_")
+ * TODO: Discuss ACL impl.
  */
 class RegionController extends FOSRestController
 {
@@ -25,7 +26,7 @@ class RegionController extends FOSRestController
      *  description="Get regions",
      *  resource=true
      * )
-     * @AclAncestor("oro_address")
+     * AclAncestor("oro_address")
      * @return Response
      */
     public function cgetAction()

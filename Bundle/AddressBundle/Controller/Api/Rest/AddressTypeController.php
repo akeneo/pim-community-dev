@@ -18,6 +18,7 @@ use Oro\Bundle\AddressBundle\Entity\AddressType;
 /**
  * @RouteResource("addresstype")
  * @NamePrefix("oro_api_")
+ * TODO: Discuss ACL impl.
  */
 class AddressTypeController extends FOSRestController implements ClassResourceInterface
 {
@@ -28,7 +29,7 @@ class AddressTypeController extends FOSRestController implements ClassResourceIn
      *      description="Get all address types items",
      *      resource=true
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_address_type_list",
      *      type="action",
      *      label="API Get Address Types",
@@ -54,7 +55,7 @@ class AddressTypeController extends FOSRestController implements ClassResourceIn
      *      description="Get address type item",
      *      resource=true
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_address_type_show",
      *      type="action",
      *      label="API Get Address Type",

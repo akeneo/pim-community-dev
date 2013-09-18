@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Datagrid\AuditDatagridManager;
@@ -28,12 +29,7 @@ class AuditController extends Controller
      *      defaults={"entity"="entity", "id"=0, "_format" = "html"}
      * )
      * @Template
-     * @Acl(
-     *      id="oro_entityconfig_audit",
-     *      label="View entity history",
-     *      type="action",
-     *      group_name=""
-     * )
+     * @AclAncestor("oro_dataaudit_history")
      *
      * @param $entity
      * @param $id
@@ -72,12 +68,7 @@ class AuditController extends Controller
      *      defaults={"entity"="entity", "id"=0, "_format" = "html"}
      * )
      * @Template("OroEntityConfigBundle:Audit:audit.html.twig")
-     * @Acl(
-     *      id="oro_entityconfig_audit_field",
-     *      label="View entity's field history",
-     *      type="action",
-     *      group_name=""
-     * )
+     * @AclAncestor("oro_dataaudit_history")
      *
      * @param $entity
      * @param $id

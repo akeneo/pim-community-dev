@@ -80,7 +80,7 @@ class RoleController extends Controller
      *      defaults={"id"=0, "_format"="json"}
      * )
      * @Template("OroGridBundle:Datagrid:list.json.php")
-     * @AclAncestor("oro_user_role_list")
+     * @AclAncestor("oro_user_user_view")
      */
     public function gridDataAction(Role $entity = null)
     {
@@ -113,7 +113,7 @@ class RoleController extends Controller
      *      defaults={"_format" = "html"}
      * )
      * @Acl(
-     *      id="oro_user_role_list",
+     *      id="oro_user_role_view",
      *      type="entity",
      *      class="OroUserBundle:Role",
      *      permission="VIEW"

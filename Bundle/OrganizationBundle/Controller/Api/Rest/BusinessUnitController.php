@@ -33,7 +33,7 @@ class BusinessUnitController extends RestController implements ClassResourceInte
      *      {"name"="page", "dataType"="integer"},
      *      {"name"="limit", "dataType"="integer"}
      *  }
-     * @AclAncestor("oro_business_unit_list")
+     * @AclAncestor("oro_business_unit_view")
      * @return Response
      */
     public function cgetAction()

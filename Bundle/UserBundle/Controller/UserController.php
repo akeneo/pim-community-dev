@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
@@ -39,12 +40,7 @@ class UserController extends Controller
 
     /**
      * @Route("/apigen/{id}", name="oro_user_apigen", requirements={"id"="\d+"})
-     * @Acl(
-     *      id="oro_user_apigen",
-     *      label="Generate new API key",
-     *      type="action",
-     *      group_name=""
-     * )
+     * @AclAncestor("oro_user_user_update")
      */
     public function apigenAction(User $user)
     {
@@ -126,12 +122,7 @@ class UserController extends Controller
      *      requirements={"_format"="html|json"},
      *      defaults={"_format" = "html"}
      * )
-     * @Acl(
-     *      id="oro_user_user_list",
-     *      type="entity",
-     *      class="OroUserBundle:User",
-     *      permission="VIEW"
-     * )
+     * @AclAncestor("oro_user_user_view")
      */
     public function indexAction()
     {

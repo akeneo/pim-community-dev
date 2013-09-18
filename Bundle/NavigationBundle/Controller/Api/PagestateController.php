@@ -28,13 +28,6 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *  description="Get list of user's page states",
      *  resource=true
      * )
-     *
-     * @Acl(
-     *      id="oro_pagestate",
-     *      type="action",
-     *      label="Page States",
-     *      group_name=""
-     * )
      */
     public function cgetAction()
     {
@@ -58,8 +51,6 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *      {"name"="id", "dataType"="integer"},
      *  }
      * )
-     *
-     * @AclAncestor("oro_pagestate")
      */
     public function getAction($id)
     {
@@ -77,8 +68,6 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *  description="Create new page state",
      *  resource=true
      * )
-     *
-     * @AclAncestor("oro_pagestate")
      */
     public function postAction()
     {
@@ -103,8 +92,6 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *      {"name"="id", "dataType"="integer"},
      *  }
      * )
-     *
-     * @AclAncestor("oro_pagestate")
      */
     public function putAction($id)
     {
@@ -131,8 +118,6 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *      {"name"="id", "dataType"="integer"},
      *  }
      * )
-     *
-     * @AclAncestor("oro_pagestate")
      */
     public function deleteAction($id)
     {
@@ -155,8 +140,6 @@ class PagestateController extends FOSRestController implements ClassResourceInte
      *  description="Check if page id already exists",
      *  resource=true
      * )
-     *
-     * @AclAncestor("oro_pagestate")
      */
     public function getCheckidAction()
     {

@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Datagrid\EmailTemplateDatagridManager;
 
@@ -97,12 +98,7 @@ class EmailTemplateController extends Controller
 
     /**
      * @Route("/clone/{id}", requirements={"id"="\d+"}, defaults={"id"=0}))
-     * @Acl(
-     *      id="oro_email_emailtemplate_clone",
-     *      label="Clone email template",
-     *      type="action",
-     *      group_name=""
-     * )
+     * @AclAncestor("oro_email_emailtemplate_create")
      * @Template("OroEmailBundle:EmailTemplate:update.html.twig")
      */
     public function cloneAction(EmailTemplate $entity)

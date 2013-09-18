@@ -30,12 +30,7 @@ class JobController extends Controller
      *      defaults={"page"=1, "limit"=20}
      * )
      * @Template
-     * @Acl(
-     *      id="oro_cron_job_list",
-     *      type="action",
-     *      label="Get Jobs",
-     *      group_name=""
-     * )
+     * @AclAncestor("oro_jobs")
      */
     public function indexAction($page, $limit)
     {
@@ -52,12 +47,7 @@ class JobController extends Controller
     /**
      * @Route("/view/{id}", name="oro_cron_job_view", requirements={"id"="\d+"})
      * @Template
-     * @Acl(
-     *      id="oro_cron_job_view",
-     *      type="action",
-     *      label="View Job",
-     *      group_name=""
-     * )
+     * @AclAncestor("oro_jobs")
      */
     public function viewAction(Job $job)
     {
@@ -79,12 +69,7 @@ class JobController extends Controller
 
     /**
      * @Route("/run-daemon", name="oro_cron_job_run_daemon")
-     * @Acl(
-     *      id="oro_cron_job_run",
-     *      label="Run daemon",
-     *      type="action",
-     *      group_name=""
-     * )
+     * @AclAncestor("oro_jobs")
      */
     public function runDaemonAction()
     {
@@ -118,12 +103,7 @@ class JobController extends Controller
 
     /**
      * @Route("/stop-daemon", name="oro_cron_job_stop_daemon")
-     * @Acl(
-     *      id="oro_cron_job_stop",
-     *      label="Stop daemon",
-     *      type="action",
-     *      group_name=""
-     * )
+     * @AclAncestor("oro_jobs")
      */
     public function stopDaemonAction()
     {
@@ -153,7 +133,7 @@ class JobController extends Controller
 
     /**
      * @Route("/status", name="oro_cron_job_status")
-     * @AclAncestor("oro_cron_job_list")
+     * @AclAncestor("oro_jobs")
      */
     public function statusAction()
     {

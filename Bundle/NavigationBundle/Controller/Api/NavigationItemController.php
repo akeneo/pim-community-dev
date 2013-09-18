@@ -32,13 +32,6 @@ class NavigationItemController extends FOSRestController
      *  resource=true
      * )
      * @return Response
-     *
-     * @Acl(
-     *      id="oro_navigation_api",
-     *      type="action",
-     *      label="Navigation Items Api",
-     *      group_name=""
-     * )
      */
     public function getAction($type)
     {
@@ -64,8 +57,6 @@ class NavigationItemController extends FOSRestController
      *  resource=true
      * )
      * @return Response
-     *
-     * @AclAncestor("oro_navigation_api")
      */
     public function postAction($type)
     {
@@ -111,8 +102,6 @@ class NavigationItemController extends FOSRestController
      *  resource=true
      * )
      * @return Response
-     *
-     * @AclAncestor("oro_navigation_api")
      */
     public function putIdAction($type, $itemId)
     {
@@ -163,8 +152,6 @@ class NavigationItemController extends FOSRestController
      *  resource=true
      * )
      * @return Response
-     *
-     * @AclAncestor("oro_navigation_api")
      */
     public function deleteIdAction($type, $itemId)
     {

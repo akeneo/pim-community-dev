@@ -29,7 +29,7 @@ class RoleController extends RestController implements ClassResourceInterface
      * )
      * @QueryParam(name="page", requirements="\d+", nullable=true, description="Page number, starting from 1. Defaults to 1.")
      * @QueryParam(name="limit", requirements="\d+", nullable=true, description="Number of items per page. defaults to 10.")
-     * @AclAncestor("oro_user_role_list")
+     * @AclAncestor("oro_user_role_view")
      */
     public function cgetAction()
     {
@@ -52,12 +52,7 @@ class RoleController extends RestController implements ClassResourceInterface
      *          {"name"="id", "dataType"="integer"},
      *      }
      * )
-     * @Acl(
-     *      id="oro_user_role_show",
-     *      type="entity",
-     *      class="OroUserBundle:Role",
-     *      permission="VIEW"
-     * )
+     * @AclAncestor("oro_user_role_view")
      */
     public function getAction($id)
     {
@@ -137,7 +132,7 @@ class RoleController extends RestController implements ClassResourceInterface
      *          {"name"="name", "dataType"="string"},
      *      }
      * )
-     * @AclAncestor("oro_user_role_show")
+     * @AclAncestor("oro_user_role_view")
      */
     public function getBynameAction($name)
     {

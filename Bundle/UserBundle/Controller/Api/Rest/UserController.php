@@ -36,7 +36,7 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      *          {"name"="limit", "dataType"="integer"}
      *      }
      * )
-     * @AclAncestor("oro_user_user_list")
+     * @AclAncestor("oro_user_user_view")
      */
     public function cgetAction()
     {
@@ -145,12 +145,7 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      *          {"name"="id", "dataType"="integer"},
      *      }
      * )
-     * @Acl(
-     *      id="oro_user_user_roles",
-     *      type="entity",
-     *      class="OroUserBundle:User",
-     *      permission="VIEW"
-     * )
+     * @AclAncestor("oro_user_role_view")
      */
     public function getRolesAction($id)
     {
@@ -176,12 +171,7 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      *          {"name"="id", "dataType"="integer"},
      *      }
      * )
-     * @Acl(
-     *      id="oro_user_user_groups",
-     *      type="entity",
-     *      class="OroUserBundle:Group",
-     *      permission="VIEW"
-     * )
+     * @AclAncestor("oro_user_group_view")
      */
     public function getGroupsAction($id)
     {

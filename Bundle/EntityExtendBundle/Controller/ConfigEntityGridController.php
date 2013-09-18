@@ -29,6 +29,7 @@ use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
  * Class ConfigGridController
  * @package Oro\Bundle\EntityExtendBundle\Controller
  * @Route("/entity/extend/entity")
+ * TODO: Discuss ACL impl., currently acl is disabled
  */
 class ConfigEntityGridController extends Controller
 {
@@ -39,7 +40,7 @@ class ConfigEntityGridController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_entity_unique_key",
      *      label="Unique entity unique keys",
      *      type="action",
@@ -123,7 +124,7 @@ class ConfigEntityGridController extends Controller
 
     /**
      * @Route("/create", name="oro_entityextend_entity_create")
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_entity_create",
      *      label="Create custom entity",
      *      type="action",
@@ -201,7 +202,7 @@ class ConfigEntityGridController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_entity_remove",
      *      label="Remove custom entity",
      *      type="action",
@@ -240,7 +241,7 @@ class ConfigEntityGridController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_entity_unremove",
      *      label="Unremove custom entity",
      *      type="action",

@@ -24,13 +24,14 @@ use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 /**
  * EntityConfig controller.
  * @Route("/entity/config")
+ * TODO: Discuss ACL impl., currently acl is disabled
  */
 class ConfigController extends Controller
 {
     /**
      * Lists all Flexible entities.
      * @Route("/", name="oro_entityconfig_index")
-     * @Acl(
+     * Acl(
      *      id="oro_entityconfig_index",
      *      label="View configurable entities",
      *      type="action",
@@ -58,7 +59,7 @@ class ConfigController extends Controller
 
     /**
      * @Route("/update/{id}", name="oro_entityconfig_update")
-     * @Acl(
+     * Acl(
      *      id="oro_entityconfig_update",
      *      label="Update configurable entity",
      *      type="action",
@@ -112,7 +113,7 @@ class ConfigController extends Controller
     /**
      * View Entity
      * @Route("/view/{id}", name="oro_entityconfig_view")
-     * @Acl(
+     * Acl(
      *      id="oro_entityconfig_view",
      *      label="View configurable entity",
      *      type="action",
@@ -240,7 +241,7 @@ class ConfigController extends Controller
 
     /**
      * @Route("/field/update/{id}", name="oro_entityconfig_field_update")
-     * @Acl(
+     * Acl(
      *      id="oro_entityconfig_field_update",
      *      label="Update configurable entity field",
      *      type="action",

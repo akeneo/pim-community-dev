@@ -20,6 +20,7 @@ use Oro\Bundle\AddressBundle\Entity\Manager\AddressManager;
 /**
  * @RouteResource("address")
  * @NamePrefix("oro_api_")
+ * TODO: Discuss ACL impl.
  */
 class AddressController extends RestController implements ClassResourceInterface
 {
@@ -36,7 +37,7 @@ class AddressController extends RestController implements ClassResourceInterface
      *      {"name"="page", "dataType"="integer"},
      *      {"name"="limit", "dataType"="integer"}
      *  }
-     * @Acl(
+     * Acl(
      *      id="oro_address_list",
      *      type="action",
      *      label="API Get Addresses",
@@ -61,7 +62,7 @@ class AddressController extends RestController implements ClassResourceInterface
      *      description="Get address item",
      *      resource=true
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_address_show",
      *      type="action",
      *      label="API Get Address",
@@ -83,7 +84,7 @@ class AddressController extends RestController implements ClassResourceInterface
      *      description="Update address",
      *      resource=true
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_address_edit",
      *      type="action",
      *      label="API Edit Addresses",
@@ -103,7 +104,7 @@ class AddressController extends RestController implements ClassResourceInterface
      *      description="Create new address",
      *      resource=true
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_address_create",
      *      type="action",
      *      label="API Create Addresses",
@@ -124,7 +125,7 @@ class AddressController extends RestController implements ClassResourceInterface
      *      description="Remove Address",
      *      resource=true
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_address_remove",
      *      type="action",
      *      label="API Delete Addresses",

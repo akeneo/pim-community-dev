@@ -27,7 +27,7 @@ class GroupController extends RestController implements ClassResourceInterface
      * )
      * @QueryParam(name="page", requirements="\d+", nullable=true, description="Page number, starting from 1. Defaults to 1.")
      * @QueryParam(name="limit", requirements="\d+", nullable=true, description="Number of items per page. defaults to 10.")
-     * @AclAncestor("oro_user_group_list")
+     * @AclAncestor("oro_user_group_view")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function cgetAction()
@@ -50,12 +50,7 @@ class GroupController extends RestController implements ClassResourceInterface
      *          {"name"="id", "dataType"="integer"},
      *      }
      * )
-     * @Acl(
-     *      id="oro_user_group_show",
-     *      type="entity",
-     *      class="OroUserBundle:Group",
-     *      permission="VIEW"
-     * )
+     * @AclAncestor("oro_user_group_view")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getAction($id)
@@ -135,12 +130,7 @@ class GroupController extends RestController implements ClassResourceInterface
      *          {"name"="id", "dataType"="integer"},
      *      }
      * )
-     * @Acl(
-     *      id="oro_user_group_roles",
-     *      type="entity",
-     *      class="OroUserBundle:Group",
-     *      permission="VIEW"
-     * )
+     * @AclAncestor("oro_user_group_view")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getRolesAction($id)

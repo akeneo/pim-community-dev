@@ -1,6 +1,0 @@
-bazinga_expose_translation:
-    label: Frontend translations
-    type: action
-    group_name: ""
-    bindings:
-        - { class: Bazinga\ExposeTranslationBundle\Controller\Controller, method: exposeTranslationAction }

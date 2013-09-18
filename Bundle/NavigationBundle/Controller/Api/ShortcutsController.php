@@ -19,7 +19,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 /**
  * @RouteResource("shortcuts")
  * @NamePrefix("oro_api_")
- *
  */
 class ShortcutsController extends FOSRestController
 {
@@ -35,8 +34,6 @@ class ShortcutsController extends FOSRestController
      *  resource=true
      * )
      * @return Response
-     *
-     * @AclAncestor("oro_shortcuts")
      */
     public function getAction($query)
     {

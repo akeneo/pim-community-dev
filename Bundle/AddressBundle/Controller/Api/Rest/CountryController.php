@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @RouteResource("country")
  * @NamePrefix("oro_api_")
+ * TODO: Discuss ACL impl.
  */
 class CountryController extends FOSRestController
 {
@@ -23,7 +24,7 @@ class CountryController extends FOSRestController
      *  description="Get countries",
      *  resource=true
      * )
-     * @AclAncestor("oro_address")
+     * AclAncestor("oro_address")
      * @return Response
      */
     public function cgetAction()
@@ -44,7 +45,7 @@ class CountryController extends FOSRestController
      *  description="Get country",
      *  resource=true
      * )
-     * @AclAncestor("oro_address")
+     * AclAncestor("oro_address")
      * @return Response
      */
     public function getAction($id)

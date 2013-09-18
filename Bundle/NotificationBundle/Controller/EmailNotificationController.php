@@ -22,7 +22,7 @@ class EmailNotificationController extends Controller
      *      defaults={"_format" = "html"}
      * )
      * @Acl(
-     *      id="oro_notification_emailnotification_index",
+     *      id="oro_notification_emailnotification_view",
      *      type="entity",
      *      class="OroNotificationBundle:EmailNotification",
      *      permission="VIEW"

@@ -22,6 +22,7 @@ use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 /**
  * EntityExtendBundle controller.
  * @Route("/entity/extend")
+ * TODO: Discuss ACL impl., currently acl is disabled
  */
 class ApplyController extends Controller
 {
@@ -32,7 +33,7 @@ class ApplyController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_apply",
      *      label="Validate entityconfig changes",
      *      type="action",
@@ -109,7 +110,7 @@ class ApplyController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_update",
      *      label="Apply entityconfig changes",
      *      type="action",

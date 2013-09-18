@@ -24,13 +24,6 @@ class ShortcutController extends Controller
     /**
      * @Route("actionslist", name="oro_shortcut_actionslist")
      * @Template
-     *
-     * @Acl(
-     *      id="oro_shortcuts",
-     *      type="action",
-     *      label="Use shortcuts",
-     *      group_name=""
-     * )
      */
     public function actionslistAction()
     {

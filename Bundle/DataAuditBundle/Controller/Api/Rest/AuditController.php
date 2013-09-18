@@ -69,37 +69,6 @@ class AuditController extends FOSRestController implements ClassResourceInterfac
     }
 
     /**
-     * Remove audit entity
-     *
-     * @param int $d
-     *
-     * @ApiDoc(
-     *  description="Remove audit entity",
-     *  resource=true,
-     *  requirements={
-     *      {"name"="id", "dataType"="integer"},
-     *  }
-     * )
-     * @Acl(
-     *      id="oro_dataaudit_delete",
-     *      type="action",
-     *      label="Delete audit entity",
-     *      group_name=""
-     * )
-     */
-    public function deleteAction($id)
-    {
-        if (!$entity = $this->getEntity($id)) {
-            return $this->handleView($this->view('', Codes::HTTP_NOT_FOUND));
-        }
-
-        $this->getManager()->remove($entity);
-        $this->getManager()->flush();
-
-        return $this->handleView($this->view('', Codes::HTTP_NO_CONTENT));
-    }
-
-    /**
      * Get entity Manager
      *
      * @return \Doctrine\Common\Persistence\ObjectManager

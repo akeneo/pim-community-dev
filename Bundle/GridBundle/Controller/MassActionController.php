@@ -15,12 +15,6 @@ class MassActionController extends Controller
 {
     /**
      * @Route("/{gridName}/massAction/{actionName}", name="oro_grid_mass_action")
-     * @Acl(
-     *      id="oro_grid_mass_action",
-     *      label="Datagrid mass action entry point",
-     *      type="action",
-     *      group_name=""
-     * )
      * @param string $gridName
      * @param string $actionName
      * @return Response

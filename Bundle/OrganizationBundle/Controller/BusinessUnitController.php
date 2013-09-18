@@ -97,12 +97,7 @@ class BusinessUnitController extends Controller
      *      requirements={"_format"="html|json"},
      *      defaults={"_format" = "html"}
      * )
-     * @Acl(
-     *      id="oro_business_unit_list",
-     *      type="entity",
-     *      class="OroOrganizationBundle:BusinessUnit",
-     *      permission="VIEW"
-     * )
+     * @AclAncestor("oro_business_unit_view")
      * @Template()
      */
     public function indexAction(Request $request)
@@ -127,7 +122,7 @@ class BusinessUnitController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0, "_format"="json"}
      * )
-     * @AclAncestor("oro_business_unit_list")
+     * @AclAncestor("oro_user_user_view")
      */
     public function updateGridDataAction(BusinessUnit $entity = null)
     {
@@ -149,7 +144,7 @@ class BusinessUnitController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"_format"="json"}
      * )
-     * @AclAncestor("oro_business_unit_list")
+     * @AclAncestor("oro_user_user_view")
      */
     public function viewGridDataAction(BusinessUnit $entity)
     {

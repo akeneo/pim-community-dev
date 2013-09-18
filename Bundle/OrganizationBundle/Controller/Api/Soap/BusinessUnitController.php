@@ -16,7 +16,7 @@ class BusinessUnitController extends SoapController
      * @Soap\Param("page", phpType="int")
      * @Soap\Param("limit", phpType="int")
      * @Soap\Result(phpType = "Oro\Bundle\OrganizationBundle\Entity\BusinessUnit[]")
-     * @AclAncestor("oro_business_unit_list")
+     * @AclAncestor("oro_business_unit_view")
      */
     public function cgetAction($page = 1, $limit = 10)
     {
