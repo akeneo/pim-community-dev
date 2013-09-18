@@ -1,209 +1,206 @@
 # Product/Attribute
-'Options': 'Options'
-'Created at': 'Créé le'
-'Updated at': 'Mis à jour le'
-'N/A': 'N/A'
-'Save': 'Sauvegarder'
-'Add an option': 'Ajouter une option'
-'Attributes overview': "Aperçu des attributs"
-'New attribute': 'Nouvel attribut'
-'Manage products': 'Gestion des produits'
-'Code': 'Code'
-'Name': 'Nom'
-'Type': 'Type'
-'Scope': '__Scope'
-'Required': 'Requis'
-'Unique': 'Unique'
-'translatable': 'Traduisible'
-'Scopable': 'Scopable'
-'Unique value': '__Unique value'
-'Attribute group': '__Attribute group'
-'Variants behavior when edited': '__Variants behavior when edited'
-'Created': 'Créé'
-'Updated': 'Mis à jour'
-'Edit': 'Modifier'
-'Remove': 'Supprimer'
-'Delete': '__Delete'
-'Parameters': '__Parameters'
-'Values': '__Values'
-'General parameters': '__General parameters'
-'Backend parameters': '__Backend parameters'
-'Label': 'Libellé'
-'Default label': '__Default label'
-'Default value': '__Default value'
+Options:                       Options
+Created at:                    Créé le
+Updated at:                    Mis à jour le
+N/A:                           N/A
+Save:                          Sauvegarder
+Add an option:                 Ajouter une option
+Attributes overview:           Aperçu des attributs
+New attribute:                 Nouvel attribut
+Manage products:               Gestion des produits
+Code:                          Code
+Name:                          Nom
+Type:                          Type
+Scope:                         __Scope
+Required:                      Requis
+Unique:                        Unique
+translatable:                  Traduisible
+Scopable:                      Scopable
+Unique value:                  __Unique value
+Attribute group:               __Attribute group
+Variants behavior when edited: __Variants behavior when edited
+Created:                       Créé
+Updated:                       Mis à jour
+Edit:                          Modifier
+Remove:                        Supprimer
+Delete:                        __Delete
+Parameters:                    __Parameters
+Values:                        __Values
+General parameters:            __General parameters
+Backend parameters:            __Backend parameters
+Label:                         Libellé
+Default label:                 __Default label
+Default value:                 __Default value
+Attributetype:                 Type dattribut
+searchable:                    Recherchable
+Defaultvalue:                  Valeur par défaut
+Variant:                       Variante
+Smart:                         __Smart
+Useable as grid column:        Utilisable comme colonne de grille
+Useable as grid filter:        Utilisable comme filtre de grille
+Family:                        Famille
+Available locales:             Locales disponibles
+Locale specific:               __Locale specific
+Label translations:            __Label translations
+default:                       __Default
 
-'Attributetype': "Type d'attribut"
-'searchable': 'Recherchable'
-'Defaultvalue': 'Valeur par défaut'
-'Variant': 'Variante'
-'Smart': __Smart
-'Useable as grid column': 'Utilisable comme colonne de grille'
-'Useable as grid filter': 'Utilisable comme filtre de grille'
-'Family': 'Famille'
-'Available locales': 'Locales disponibles'
-'Locale specific': '__Locale specific'
-
-'Label translations': '__Label translations'
-'default': '__Default'
-
-'Create': '__Create'
-'Cancel': '__Cancel'
-'New product': '__New product'
-'Create a new product': '__Create a new product'
-'Choose a family': '__Choose a family'
-'Attributes are added to the product form.': '__Attributes are added to the product form.'
-'Product successfully saved': '__Product successfully saved'
-'There are unsaved changes.': '__There are unsaved changes.'
+Create:                                    __Create
+Cancel:                                    __Cancel
+New product:                               __New product
+Create a new product:                      __Create a new product
+Choose a family:                           __Choose a family
+Attributes are added to the product form.: __Attributes are added to the product form.
+Product successfully saved:                __Product successfully saved
+There are unsaved changes.:                __There are unsaved changes.
 
 # Scopes
-'Global': 'Global'
-'Channel': 'Canal'
+Global:  Global
+Channel: Canal
 
 # Variants
-'Always override': 'Toujours écraser'
-'A selection of variants': 'Une sélection de variantes'
-'Ask': 'Demander'
+Always override:         Toujours écraser
+A selection of variants: Une sélection de variantes
+Ask:                     Demander
 
 # Attribute group
-'General Properties': '__General Properties'
-'Group values': '__Group values'
-'New group': 'Nouveau groupe'
-'Groups overview': 'Aperçu des groupes'
+General Properties: __General Properties
+Group values:       __Group values
+New group:          Nouveau groupe
+Groups overview:    Aperçu des groupes
 
 'Y-m-d h:i:s': 'd/m/Y h:i:s'
 
 # Attribute properties
-'Max characters': '__Max characters'
-'Validation rule': '__Validation rule'
-'Validation regexp': '__Validation regexp'
-'Wysiwyg enabled': '__WYSIWYG enabled'
-'Number min': '__Min number'
-'Number max': '__Max number'
-'Decimals allowed': '__Allow decimals'
-'Negative allowed': '__Allow negative values'
-'Date type': '__Date type'
-'Date min': '__Min date'
-'Date max': '__Max date'
-'Default currency': '__Default currency'
-'Metric family': '__Metric family'
-'Default metric unit': '__Default metric unit'
-'Max file size': '__Max file size'
-'Allowed file extensions': '__Allowed file extensions'
+Max characters:          __Max characters
+Validation rule:         __Validation rule
+Validation regexp:       __Validation regexp
+Wysiwyg enabled:         __WYSIWYG enabled
+Number min:              __Min number
+Number max:              __Max number
+Decimals allowed:        __Allow decimals
+Negative allowed:        __Allow negative values
+Date type:               __Date type
+Date min:                __Min date
+Date max:                __Max date
+Default currency:        __Default currency
+Metric family:           __Metric family
+Default metric unit:     __Default metric unit
+Max file size:           __Max file size
+Allowed file extensions: __Allowed file extensions
 
 # Family
-'Families overview': '__Families overview'
-'New family': '__New family'
-'Attributes': '__Attributes'
-'Edit family': '__Edit family'
-'Add family': '__Add family'
+Families overview: __Families overview
+New family:        __New family
+Attributes:        __Attributes
+Edit family:       __Edit family
+Add family:        __Add family
 
 # Category
-'Category successfully saved': '__Category successfully saved'
-'Category successfully removed': '__Category successfully removed'
-'New tree': '__New tree'
-'Title': '__Title'
-'Is dynamic': '__Is dynamic'
-'Edit category': '__Edit category'
-'Add category': '__Add category'
+Category successfully saved:   __Category successfully saved
+Category successfully removed: __Category successfully removed
+New tree:                      __New tree
+Title:                         __Title
+Is dynamic:                    __Is dynamic
+Edit category:                 __Edit category
+Add category:                  __Add category
 
 # Export profiles
-'Export profiles overview': '__Export profiles overview'
-'New export profile': '__New export profile'
-'Edit export profile': '__Edit export profile'
+Export profiles overview: __Export profiles overview
+New export profile:       __New export profile
+Edit export profile:      __Edit export profile
 
 # Page titles
-'Dashboard'                    : '__Dashboard'
-'Attribute groups'             : '__Attribute groups'
-'Attribute groups | Create'    : '__Attribute groups | Create'
-'Attribute groups | Edit'      : '__Attribute groups | Edit'
-'Attribute groups | Sort'      : '__Attribute groups | Sort'
-'Category trees'               : '__Category trees'
-'Category trees | List'        : '__Category trees | List'
-'Category trees | Manage'      : '__Category trees | Manage'
-'Category trees | View'        : '__Category trees | View'
-'Category trees | Create'      : '__Category trees | Create'
-'Category trees | Edit'        : '__Category trees | Edit'
-'Export profiles'              : '__Export profiles'
-'Export profiles | Create'     : '__Export profiles | Create'
-'Export profiles | Edit'       : '__Export profiles | Edit'
-'Product attributes'           : '__Product attributes'
-'Product attributes | Create'  : '__Product attributes | Create'
-'Product attributes | Edit'    : '__Product attributes | Edit'
-'Products'                     : '__Products'
-'Products | Create'            : '__Products | Create'
-'Products | Edit'              : '__Products | Edit'
-'Families'                     : '__Families'
-'Families | Create'            : '__Families | Create'
-'Families | Edit'              : '__Families | Edit'
-'Channels'                     : '__Channels'
-'Channels | Create'            : '__Channels | Create'
-'Channels | Edit'              : '__Channels | Edit'
-'Currencies'                   : '__Currencies'
-'Currencies | Create'          : '__Currencies | Create'
-'Currencies | Edit'            : '__Currencies | Edit'
-'Locales'                      : '__Locales'
-'Locales | Create'             : '__Locales | Create'
-'Locales | Edit'               : '__Locales | Edit'
+Dashboard:                   __Dashboard
+Attribute groups:            __Attribute groups
+Attribute groups | Create:   __Attribute groups | Create
+Attribute groups | Edit:     __Attribute groups | Edit
+Attribute groups | Sort:     __Attribute groups | Sort
+Category trees:              __Category trees
+Category trees | List:       __Category trees | List
+Category trees | Manage:     __Category trees | Manage
+Category trees | View:       __Category trees | View
+Category trees | Create:     __Category trees | Create
+Category trees | Edit:       __Category trees | Edit
+Export profiles:             __Export profiles
+Export profiles | Create:    __Export profiles | Create
+Export profiles | Edit:      __Export profiles | Edit
+Product attributes:          __Product attributes
+Product attributes | Create: __Product attributes | Create
+Product attributes | Edit:   __Product attributes | Edit
+Products:                    __Products
+Products | Create:           __Products | Create
+Products | Edit:             __Products | Edit
+Families:                    __Families
+Families | Create:           __Families | Create
+Families | Edit:             __Families | Edit
+Channels:                    __Channels
+Channels | Create:           __Channels | Create
+Channels | Edit:             __Channels | Edit
+Currencies:                  __Currencies
+Currencies | Create:         __Currencies | Create
+Currencies | Edit:           __Currencies | Edit
+Locales:                     __Locales
+Locales | Create:            __Locales | Create
+Locales | Edit:              __Locales | Edit
 
-'pim_catalog_identifier'       : '__Identifier'
-'pim_catalog_text'             : '__Text'
-'pim_catalog_textarea'         : '__Text Area'
-'pim_catalog_number'           : '__Number'
-'pim_catalog_price_collection' : '__Price'
-'pim_catalog_multiselect'      : '__Multi select'
-'pim_catalog_simpleselect'     : '__Simple select'
-'pim_catalog_file'             : '__File'
-'pim_catalog_image'            : '__Image'
-'pim_catalog_boolean'          : '__Yes/No'
-'pim_catalog_date'             : '__Date'
-'pim_catalog_metric'           : '__Metric'
+pim_catalog_identifier:       __Identifier
+pim_catalog_text:             __Text
+pim_catalog_textarea:         __Text Area
+pim_catalog_number:           __Number
+pim_catalog_price_collection: __Price
+pim_catalog_multiselect:      __Multi select
+pim_catalog_simpleselect:     __Simple select
+pim_catalog_file:             __File
+pim_catalog_image:            __Image
+pim_catalog_boolean:          __Yes/No
+pim_catalog_date:             __Date
+pim_catalog_metric:           __Metric
 
 # Locales
-'Locales overview': 'Aperçu des locales'
-'New locale': 'Nouvelle locale'
-'Code': 'Code'
-'Fallback': 'Repli'
-'Activated': 'Actif'
-'Edit': 'Modifier'
-'Disable': 'Désactiver'
-'Locales': 'Locales'
-
-'Edit locale': 'Modifier une locale'
-'Add locale': 'Ajouter une locale'
+Locales overview: Aperçu des locales
+New locale:       Nouvelle locale
+Code:             Code
+Fallback:         Repli
+Activated:        Actif
+Edit:             Modifier
+Disable:          Désactiver
+Locales:          Locales
+Edit locale:      Modifier une locale
+Add locale:       Ajouter une locale
 
 # Currencies
-'Currencies overview': 'Aperçu des monnaies'
-'New currency': 'Nouvelle monnaie'
-'Add currency': 'Ajouter une monnaie'
-'Edit currency': 'Modifier une monnaie'
-'Currencies': 'Monnaies'
+Currencies overview: Aperçu des monnaies
+New currency:        Nouvelle monnaie
+Add currency:        Ajouter une monnaie
+Edit currency:       Modifier une monnaie
+Currencies:          Monnaies
 
 # Channels
-'Channels overview': 'Aperçu des canaux'
-'New channel': 'Nouveau canal'
-'Add channel': 'Ajouter un canal'
-'Edit channel': 'Modifier un canal'
-'Channels': 'Canaux'
+Channels overview: Aperçu des canaux
+New channel:       Nouveau canal
+Add channel:       Ajouter un canal
+Edit channel:      Modifier un canal
+Channels:          Canaux
 
 # Batch operations
 pim_catalog.mass_edit_action:
-    page_title: '__Products'
-    page_subtitle: '__Mass Edit (1 product)|Mass Edit (%count% products)'
-    title: '__Choose operation'
-    subtitle: '__Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products'
+    page_title:    __Products
+    page_subtitle: __Mass Edit (1 product)|Mass Edit (%count% products)
+    title:         '__Choose operation'
+    subtitle:      '__Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products'
 
     change-status:
-        label:         '__Change status (enable / disable)'
-        description:   "__The selected products will be enabled or disabled."
-        success_flash: '__Product(s) status have been changed'
+        label:         __Change status (enable / disable)
+        description:   __The selected products will be enabled or disabled.
+        success_flash: __Product(s) status have been changed
 
     edit-common-attributes:
-        label:         '__Edit attributes'
-        description:   "__The selected product's attributes will be edited with following data for the chosen locale."
-        empty:         '__Please select the attribute(s) you want to edit'
-        success_flash: '__Product(s) attribute(s) have been updated'
+        label:         __Edit attributes
+        description:   __The selected product's attributes will be edited with following data for the chosen locale.
+        empty:         __Please select the attribute(s) you want to edit
+        success_flash: __Product(s) attribute(s) have been updated
 
     classify:
-        label:         '__Classify products in categories'
-        description:   '__The products will be positioned into following categories, the existing placement are kept.'
-        success_flash: '__Product(s) have been classified into selected categories'
+        label:         __Classify products in categories
+        description:   __The products will be positioned into following categories, the existing placement are kept.
+        success_flash: __Product(s) have been classified into selected categories

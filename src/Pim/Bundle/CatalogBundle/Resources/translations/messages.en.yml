@@ -1,210 +1,206 @@
 # Product/Attribute
-'Options': 'Options'
-'Created at': 'Created at'
-'Updated at': 'Updated at'
-'N/A': 'N/A'
-'Save': 'Save'
-'Add an option': 'Add an option'
-'Attributes overview': 'Attributes overview'
-'New attribute': 'New attribute'
-'Manage products': 'Manage products'
-'Code': 'Code'
-'Name': 'Name'
-'Type': 'Type'
-'Scope': 'Scope'
-'Required': 'Required'
-'Unique': 'Unique'
-'translatable': 'Translatable'
-'Scopable': 'Scopable'
-'Unique value': 'Unique value'
-'Attribute group': 'Attribute group'
-'Variants behavior when edited': 'Variants behavior when edited'
-'Created': 'Created'
-'Updated': 'Updated'
-'Edit': 'Edit'
-'Remove': 'Remove'
-'Delete': 'Delete'
-'Parameters': 'Parameters'
-'Values': 'Values'
-'General parameters': 'General parameters'
-'Backend parameters': 'Backend parameters'
-'Label': 'Label'
-'Default label': 'Default label'
-'Default value': 'Default value'
+Options:                       Options
+Created at:                    Created at
+Updated at:                    Updated at
+N/A:                           N/A
+Save:                          Save
+Add an option:                 Add an option
+Attributes overview:           Attributes overview
+New attribute:                 New attribute
+Manage products:               Manage products
+Code:                          Code
+Name:                          Name
+Type:                          Type
+Scope:                         Scope
+Required:                      Required
+Unique:                        Unique
+translatable:                  Translatable
+Scopable:                      Scopable
+Unique value:                  Unique value
+Attribute group:               Attribute group
+Variants behavior when edited: Variants behavior when edited
+Created:                       Created
+Updated:                       Updated
+Edit:                          Edit
+Remove:                        Remove
+Delete:                        Delete
+Parameters:                    Parameters
+Values:                        Values
+General parameters:            General parameters
+Backend parameters:            Backend parameters
+Label:                         Label
+Default label:                 Default label
+Default value:                 Default value
+Attributetype:                 Attribute type
+searchable:                    Searchable
+Defaultvalue:                  Default value
+Variant:                       Variant
+Smart:                         Smart
+Useable as grid column:        Usable as grid column
+Useable as grid filter:        Usable as grid filter
+Family:                        Family
+Available locales:             Available locales
+Locale specific:               Locale specific
+Label translations:            Label translations
+default:                       Default
 
-'Attributetype': 'Attribute type'
-'searchable': 'Searchable'
-'Defaultvalue': 'Default value'
-'Variant': 'Variant'
-'Smart': 'Smart'
-'Useable as grid column': 'Usable as grid column'
-'Useable as grid filter': 'Usable as grid filter'
-'Family': 'Family'
-'Available locales': 'Available locales'
-'Locale specific': 'Locale specific'
-
-'Label translations': 'Label translations'
-'default': 'Default'
-
-'Create': 'Create'
-'Cancel': 'Cancel'
-'New product': 'New product'
-'Create a new product': 'Create a new product'
-'Choose a family': 'Choose a family'
-'Attributes are added to the product form.': 'Attributes are added to the product form.'
-'Product successfully saved': 'Product successfully saved'
-'There are unsaved changes.': 'There are unsaved changes.'
+Create:                                    Create
+Cancel:                                    Cancel
+New product:                               New product
+Create a new product:                      Create a new product
+Choose a family:                           Choose a family
+Attributes are added to the product form.: Attributes are added to the product form.
+Product successfully saved:                Product successfully saved
+There are unsaved changes.:                There are unsaved changes.
 
 # Scopes
-'Global': 'Global'
-'Channel': 'Channel'
+Global:  Global
+Channel: Channel
 
 # Variants
-'Always override': 'Always override'
-'A selection of variants': 'A selection of variants'
-'Ask': 'Ask'
+Always override:         Always override
+A selection of variants: A selection of variants
+Ask:                     Ask
 
 # Attribute group
-'General Properties': 'General Properties'
-'Group values': 'Group values'
-'New group': 'New group'
-'Groups overview': 'Groups overview'
+General Properties: General Properties
+Group values:       Group values
+New group:          New group
+Groups overview:    Groups overview
 
 'Y-m-d h:i:s': 'Y-m-d h:i:s'
 
 # Attribute properties
-'Max characters': 'Max characters'
-'Validation rule': 'Validation rule'
-'Validation regexp': 'Validation regexp'
-'Wysiwyg enabled': 'WYSIWYG enabled'
-'Number min': 'Min number'
-'Number max': 'Max number'
-'Decimals allowed': 'Allow decimals'
-'Negative allowed': 'Allow negative values'
-'Date type': 'Date type'
-'Date min': 'Min date'
-'Date max': 'Max date'
-'Default currency': 'Default currency'
-'Metric family': 'Metric family'
-'Default metric unit': 'Default metric unit'
-'Max file size': 'Max file size'
-'Allowed file extensions': 'Allowed file extensions'
+Max characters:          Max characters
+Validation rule:         Validation rule
+Validation regexp:       Validation regexp
+Wysiwyg enabled:         WYSIWYG enabled
+Number min:              Min number
+Number max:              Max number
+Decimals allowed:        Allow decimals
+Negative allowed:        Allow negative values
+Date type:               Date type
+Date min:                Min date
+Date max:                Max date
+Default currency:        Default currency
+Metric family:           Metric family
+Default metric unit:     Default metric unit
+Max file size:           Max file size
+Allowed file extensions: Allowed file extensions
 
 # Family
-'Families overview': 'Families overview'
-'New family': 'New family'
-'Attributes': 'Attributes'
-'Edit family': 'Edit family'
-'Add family': 'Add family'
+Families overview: Families overview
+New family:        New family
+Attributes:        Attributes
+Edit family:       Edit family
+Add family:        Add family
 
 # Category
-'Category successfully saved': 'Category successfully saved'
-'Category successfully removed': 'Category successfully removed'
-'New tree': 'New tree'
-'Title': 'Title'
-'Is dynamic': 'Is dynamic'
-'Edit category': 'Edit category'
-'Add category': 'Add category'
+Category successfully saved:   Category successfully saved
+Category successfully removed: Category successfully removed
+New tree:                      New tree
+Title:                         Title
+Is dynamic:                    Is dynamic
+Edit category:                 Edit category
+Add category:                  Add category
 
 # Export profiles
-'Export profiles overview': 'Export profiles overview'
-'New export profile': 'New export profile'
-'Edit export profile': 'Edit export profile'
+Export profiles overview: Export profiles overview
+New export profile:       New export profile
+Edit export profile:      Edit export profile
 
 # Page titles
-'Dashboard'                    : 'Dashboard'
-'Attribute groups'             : 'Attribute groups'
-'Attribute groups | Create'    : 'Attribute groups | Create'
-'Attribute groups | Edit'      : 'Attribute groups | Edit'
-'Attribute groups | Sort'      : 'Attribute groups | Sort'
-'Category trees'               : 'Category trees'
-'Category trees | List'        : 'Category trees | List'
-'Category trees | Manage'      : 'Category trees | Manage'
-'Category trees | View'        : 'Category trees | View'
-'Category trees | Create'      : 'Category trees | Create'
-'Category trees | Edit'        : 'Category trees | Edit'
-'Export profiles'              : 'Export profiles'
-'Export profiles | Create'     : 'Export profiles | Create'
-'Export profiles | Edit'       : 'Export profiles | Edit'
-'Product attributes'           : 'Product attributes'
-'Product attributes | Create'  : 'Product attributes | Create'
-'Product attributes | Edit'    : 'Product attributes | Edit'
-'Products'                     : 'Products'
-'Products | Create'            : 'Products | Create'
-'Products | Edit'              : 'Products | Edit'
-'Families'                     : 'Families'
-'Families | Create'            : 'Families | Create'
-'Families | Edit'              : 'Families | Edit'
-'Channels'                     : 'Channels'
-'Channels | Create'            : 'Channels | Create'
-'Channels | Edit'              : 'Channels | Edit'
-'Currencies'                   : 'Currencies'
-'Currencies | Create'          : 'Currencies | Create'
-'Currencies | Edit'            : 'Currencies | Edit'
-'Locales'                      : 'Locales'
-'Locales | Create'             : 'Locales | Create'
-'Locales | Edit'               : 'Locales | Edit'
+Dashboard:                   Dashboard
+Attribute groups:            Attribute groups
+Attribute groups | Create:   Attribute groups | Create
+Attribute groups | Edit:     Attribute groups | Edit
+Attribute groups | Sort:     Attribute groups | Sort
+Category trees:              Category trees
+Category trees | List:       Category trees | List
+Category trees | Manage:     Category trees | Manage
+Category trees | View:       Category trees | View
+Category trees | Create:     Category trees | Create
+Category trees | Edit:       Category trees | Edit
+Export profiles:             Export profiles
+Export profiles | Create:    Export profiles | Create
+Export profiles | Edit:      Export profiles | Edit
+Product attributes:          Product attributes
+Product attributes | Create: Product attributes | Create
+Product attributes | Edit:   Product attributes | Edit
+Products:                    Products
+Products | Create:           Products | Create
+Products | Edit:             Products | Edit
+Families:                    Families
+Families | Create:           Families | Create
+Families | Edit:             Families | Edit
+Channels:                    Channels
+Channels | Create:           Channels | Create
+Channels | Edit:             Channels | Edit
+Currencies:                  Currencies
+Currencies | Create:         Currencies | Create
+Currencies | Edit:           Currencies | Edit
+Locales:                     Locales
+Locales | Create:            Locales | Create
+Locales | Edit:              Locales | Edit
 
-'pim_catalog_identifier'       : 'Identifier'
-'pim_catalog_text'             : 'Text'
-'pim_catalog_textarea'         : 'Text Area'
-'pim_catalog_number'           : 'Number'
-'pim_catalog_price_collection' : 'Price'
-'pim_catalog_multiselect'      : 'Multi select'
-'pim_catalog_simpleselect'     : 'Simple select'
-'pim_catalog_file'             : 'File'
-'pim_catalog_image'            : 'Image'
-'pim_catalog_boolean'          : 'Yes/No'
-'pim_catalog_date'             : 'Date'
-'pim_catalog_metric'           : 'Metric'
+pim_catalog_identifier:       Identifier
+pim_catalog_text:             Text
+pim_catalog_textarea:         Text Area
+pim_catalog_number:           Number
+pim_catalog_price_collection: Price
+pim_catalog_multiselect:      Multi select
+pim_catalog_simpleselect:     Simple select
+pim_catalog_file:             File
+pim_catalog_image:            Image
+pim_catalog_boolean:          Yes/No
+pim_catalog_date:             Date
+pim_catalog_metric:           Metric
 
 # Locales
-'Locales overview': 'Locales overview'
-'New locale': 'New locale'
-'Code': 'Code'
-'Fallback': 'Fallback'
-'Activated': 'Activated'
-'Edit': 'Edit'
-'Disable': 'Disable'
-'Locales': 'Locales'
-
-'Edit locale': 'Edit locale'
-'Add locale': 'Add locale'
+Locales overview: Locales overview
+New locale:       New locale
+Code:             Code
+Fallback:         Fallback
+Activated:        Activated
+Edit:             Edit
+Disable:          Disable
+Locales:          Locales
+Edit locale:      Edit locale
+Add locale:       Add locale
 
 # Currencies
-'Currencies overview': 'Currencies overview'
-'New currency': 'New currency'
-'Add currency': 'Add currency'
-'Edit currency': 'Edit currency'
-'Currencies': 'Currencies'
+Currencies overview: Currencies overview
+New currency:        New currency
+Add currency:        Add currency
+Edit currency:       Edit currency
+Currencies:          Currencies
 
 # Channels
-'Channels overview': 'Channels overview'
-'New channel': 'New channel'
-'Add channel': 'Add channel'
-'Edit channel': 'Edit channel'
-'Remove': 'Remove'
-'Channels': 'Channels'
+Channels overview: Channels overview
+New channel:       New channel
+Add channel:       Add channel
+Edit channel:      Edit channel
+Channels:          Channels
 
 # Batch operations
 pim_catalog.mass_edit_action:
-    page_title: 'Products'
-    page_subtitle: 'Mass Edit (1 product)|Mass Edit (%count% products)'
-    title: 'Choose operation'
-    subtitle: 'Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products'
+    page_title:    Products
+    page_subtitle: Mass Edit (1 product)|Mass Edit (%count% products)
+    title:         Choose operation
+    subtitle:      Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products
 
     change-status:
-        label:         'Change status (enable / disable)'
-        description:   "The selected products will be enabled or disabled."
-        success_flash: 'Product(s) status have been changed'
+        label:         Change status (enable / disable)
+        description:   The selected products will be enabled or disabled.
+        success_flash: Product(s) status have been changed
 
     edit-common-attributes:
-        label:         'Edit attributes'
-        description:   "The selected product's attributes will be edited with following data for the chosen locale."
-        empty:         'Please select the attribute(s) you want to edit'
-        success_flash: 'Product(s) attribute(s) have been updated'
+        label:         Edit attributes
+        description:   The selected product's attributes will be edited with following data for the chosen locale.
+        empty:         Please select the attribute(s) you want to edit
+        success_flash: Product(s) attribute(s) have been updated
 
     classify:
-        label:         'Classify products in categories'
-        description:   'The products will be positioned into following categories, the existing placement are kept.'
-        success_flash: 'Product(s) have been classified into selected categories'
+        label:         Classify products in categories
+        description:   The products will be positioned into following categories, the existing placement is kept.
+        success_flash: Product(s) have been classified into selected categories
