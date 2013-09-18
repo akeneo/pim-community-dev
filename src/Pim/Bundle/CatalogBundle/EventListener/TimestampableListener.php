@@ -1,5 +1,4 @@
-<?php                                                                                                             
-
+<?php 
 namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Oro\Bundle\FlexibleEntityBundle\EventListener\TimestampableListener as BaseTimestampableListener;
@@ -45,4 +44,3 @@ class TimestampableListener extends BaseTimestampableListener
         $uow->scheduleExtraUpdate($flexible, $changes);
     }
 }
-
