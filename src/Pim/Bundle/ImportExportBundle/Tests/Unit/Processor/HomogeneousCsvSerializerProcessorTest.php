@@ -28,7 +28,7 @@ class HomogeneousCsvSerializerProcessorTest extends \PHPUnit_Framework_TestCase
         $this->processor->setDelimiter(';');
         $this->processor->setEnclosure('"');
         $this->processor->setWithHeader(true);
-        $item = new \StdClass;
+        $item = new \StdClass();
 
         $this->serializer
             ->expects($this->once())

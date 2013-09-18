@@ -39,7 +39,7 @@ class FamilyType extends AbstractType
                     'property_path'     => 'translations'
                 )
             )
-            ->add('attributeRequirements', 'collection', array('type' => new AttributeRequirementType))
+            ->add('attributeRequirements', 'collection', array('type' => new AttributeRequirementType()))
             ->addEventSubscriber(new AddAttributeAsLabelSubscriber($factory))
             ->addEventSubscriber(new AddAttributeRequirementsSubscriber($channels, $attributes));
     }

@@ -59,7 +59,7 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('addViolation');
 
-        $this->validator->validate('bar', new UniqueValue);
+        $this->validator->validate('bar', new UniqueValue());
     }
 
     public function testNonFormProductData()
@@ -74,14 +74,14 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
             ->form
             ->expects($this->once())
             ->method('getData')
-            ->will($this->returnValue(new \StdClass));
+            ->will($this->returnValue(new \StdClass()));
 
         $this
             ->context
             ->expects($this->never())
             ->method('addViolation');
 
-        $this->validator->validate('bar', new UniqueValue);
+        $this->validator->validate('bar', new UniqueValue());
     }
 
     public function testNonExistingProductAttribute()
@@ -110,7 +110,7 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('addViolation');
 
-        $this->validator->validate('bar', new UniqueValue);
+        $this->validator->validate('bar', new UniqueValue());
     }
 
     public function testNonProductValue()
@@ -132,14 +132,14 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getValue')
             ->with('sku')
-            ->will($this->returnValue(new \StdClass));
+            ->will($this->returnValue(new \StdClass()));
 
         $this
             ->context
             ->expects($this->never())
             ->method('addViolation');
 
-        $this->validator->validate('bar', new UniqueValue);
+        $this->validator->validate('bar', new UniqueValue());
     }
 
     public function testValidValueBecauseNoResult()
@@ -193,7 +193,7 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('addViolation');
 
-        $this->validator->validate('bar', new UniqueValue);
+        $this->validator->validate('bar', new UniqueValue());
     }
 
     public function testValidValueBecauseSameProduct()
@@ -247,7 +247,7 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->never())
             ->method('addViolation');
 
-        $this->validator->validate('bar', new UniqueValue);
+        $this->validator->validate('bar', new UniqueValue());
     }
 
     public function testInvalidValue()
