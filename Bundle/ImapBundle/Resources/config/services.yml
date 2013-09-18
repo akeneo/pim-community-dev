@@ -1,14 +1,16 @@
 parameters:
-    oro_imap.connector.factory.class:            Oro\Bundle\ImapBundle\Connector\ImapConnectorFactory
-    oro_imap.connector.class:                    Oro\Bundle\ImapBundle\Connector\ImapConnector
-    oro_imap.services.factory.class:             Oro\Bundle\ImapBundle\Connector\ImapServicesFactory
-    oro_imap.search_string_manager.gmail.class:  Oro\Bundle\ImapBundle\Connector\Search\GmailSearchStringManager
-    oro_imap.search_string_manager.other.class:  Oro\Bundle\ImapBundle\Connector\Search\SearchStringManager
-    oro_imap.storage.gmail.class:                Oro\Bundle\ImapBundle\Mail\Storage\GmailImap
-    oro_imap.storage.other.class:                Oro\Bundle\ImapBundle\Mail\Storage\Imap
-    oro_imap.email_body_loader.class:            Oro\Bundle\ImapBundle\Provider\ImapEmailBodyLoader
+    oro_imap.connector.factory.class:                Oro\Bundle\ImapBundle\Connector\ImapConnectorFactory
+    oro_imap.connector.class:                        Oro\Bundle\ImapBundle\Connector\ImapConnector
+    oro_imap.services.factory.class:                 Oro\Bundle\ImapBundle\Connector\ImapServicesFactory
+    oro_imap.search_string_manager.gmail.class:      Oro\Bundle\ImapBundle\Connector\Search\GmailSearchStringManager
+    oro_imap.search_string_manager.other.class:      Oro\Bundle\ImapBundle\Connector\Search\SearchStringManager
+    oro_imap.storage.gmail.class:                    Oro\Bundle\ImapBundle\Mail\Storage\GmailImap
+    oro_imap.storage.other.class:                    Oro\Bundle\ImapBundle\Mail\Storage\Imap
+    oro_imap.email_body_loader.class:                Oro\Bundle\ImapBundle\Provider\ImapEmailBodyLoader
 
-    oro_imap.form.type.configuration.class:      Oro\Bundle\ImapBundle\Form\Type\ConfigurationType
+    oro_imap.form.type.configuration.class:          Oro\Bundle\ImapBundle\Form\Type\ConfigurationType
+
+    oro_imap.listener.imap_configuration_save.class: Oro\Bundle\ImapBundle\EventListener\ImapConfigurationSaveListener
 
 services:
     oro_imap.connector.factory:
@@ -35,3 +37,8 @@ services:
         class: %oro_imap.form.type.configuration.class%
         tags:
              - { name: form.type, alias: oro_imap_configuration }
+
+    oro_imap.listener.imap_configuration_save:
+        class: %oro_imap.listener.imap_configuration_save.class%
+        tags:
+            - { name: doctrine.event_subscriber }
