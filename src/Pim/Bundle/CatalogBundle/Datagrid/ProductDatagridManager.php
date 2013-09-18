@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Builder\DatagridBuilderInterface;
+
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -461,6 +463,18 @@ class ProductDatagridManager extends FlexibleDatagridManager
         foreach ($exportActions as $exportAction) {
             $this->datagridBuilder->addExportAction($datagrid, $exportAction);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDatagrid()
+    {
+        $datagrid = parent::getDatagrid();
+
+        $datagrid->removeFilter(DatagridBuilderInterface::SELECTED_ROW_FILTER_NAME);
+
+        return $datagrid;
     }
 
     /**
