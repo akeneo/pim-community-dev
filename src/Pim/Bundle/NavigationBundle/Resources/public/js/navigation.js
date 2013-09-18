@@ -5,10 +5,12 @@
  * @returns {unresolved}
  */
 define(
-    ['oro/navigation-orig'],
-    function(OroNavigation) {
+    ['oro/navigation-orig', 'oro/app'],
+    function(OroNavigation, app) {
         
         var GRID_URL_REGEX = /enrich\/product\/(\?.*)?$/,
+            QUERY_STRING_REGEX = /^[^\?]+\??/,
+            LOCALE_REGEX = /dataLocale=[a-zA-z0-9_]+/,
             instance,
             Navigation = OroNavigation.extend({
                 /**
@@ -22,6 +24,16 @@ define(
                         this.url = window.location.href.replace(this.baseUrl, '');
                     }
                     if (this.url.match(GRID_URL_REGEX) && !encodedStateData && sessionStorage && sessionStorage.gridURL_products) {
+                        var qs = this.url.replace(QUERY_STRING_REGEX, '')
+                        if (qs) {
+                            var args = app.unpackFromQueryString(qs)
+                            if (args.dataLocale) {
+                                sessionStorage.gridURL_products = 
+                                        sessionStorage.gridURL_products.replace(LOCALE_REGEX, '') +
+                                        '&dataLocale=' + args.dataLocale;
+                                
+                            }
+                        }
                         this.navigate(sessionStorage.gridURL_products, { trigger: false, replace: true});
                         this.encodedStateData = sessionStorage.gridURL_products;
                     }
