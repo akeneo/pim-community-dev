@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Oro\Bundle\FlexibleEntityBundle\EventListener\TimestampableListener as BaseTimestampableListener;
@@ -34,7 +34,6 @@ class TimestampableListener extends BaseTimestampableListener
      */
     protected function updateFlexibleFields(ObjectManager $om, AbstractFlexible $flexible, $fields)
     {
-        $meta = $om->getClassMetadata(get_class($flexible));
         $uow  = $om->getUnitOfWork();
         $now  = new \DateTime('now');
         $changes = array();
