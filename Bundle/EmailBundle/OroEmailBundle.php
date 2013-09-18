@@ -57,12 +57,13 @@ class OroEmailBundle extends Bundle
     /**
      * Create DoctrineOrmMappingsPass object
      *
-     * @param array       $namespaces           List of namespaces that are handled with annotation mapping
-     * @param array       $directories          List of directories to look for annotated classes
-     * @param string[]    $managerParameters    List of parameters that could which object manager name your bundle uses.
-     *                                          This compiler pass will automatically append the parameter name for the default entity manager to this list.
-     * @param bool|string $enabledParameter     Service container parameter that must be present to enable the mapping
-     *                                          Set to false to not do any check, optional.
+     * @param array       $namespaces         List of namespaces that are handled with annotation mapping
+     * @param array       $directories        List of directories to look for annotated classes
+     * @param string[]    $managerParameters  List of parameters that could which object manager name your bundle uses.
+     *                                        This compiler pass will automatically append the parameter name for the
+     *                                        default entity manager to this list.
+     * @param bool|string $enabledParameter   Service container parameter that must be present to enable the mapping
+     *                                        Set to false to not do any check, optional.
      *
      * @return DoctrineOrmMappingsPass
      */
