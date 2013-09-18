@@ -1,5 +1,6 @@
 parameters:
     oro_email.emailtemplate.datagrid_manager.class: Oro\Bundle\EmailBundle\Datagrid\EmailTemplateDatagridManager
+    oro_email.user_email_datagrid_manager.class: Oro\Bundle\EmailBundle\Datagrid\EmailDatagridManager
 
 services:
     oro_email.emailtemplate.datagrid_manager:
@@ -12,3 +13,14 @@ services:
               entity_hint: email template
               route_name: oro_email_emailtemplate_index
               identifier_field: "id"
+
+    oro_email.email_datagrid_manager:
+        class: %oro_email.user_email_datagrid_manager.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: user_emails
+              entity_name: Oro\Bundle\EmailBundle\Entity\Email
+              query_entity_alias: email
+              entity_hint: email
+              route_name: oro_user_view
+

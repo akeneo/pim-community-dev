@@ -60,10 +60,9 @@ class ImapConnector
     /**
      * @param Folder|string|null $parentFolder
      * @param SearchQuery|null $query
-     * @param int $maxResults The maximum number of items returned by this method. Set -1 to unlimited
-     * @return Message[]
+     * @return ImapMessageIterator
      */
-    public function findItems($parentFolder = null, $query = null, $maxResults = 100)
+    public function findItems($parentFolder = null, $query = null)
     {
         $this->ensureConnected();
 
@@ -76,23 +75,11 @@ class ImapConnector
             $searchString = $query->convertToSearchString();
         }
 
-        $result = array();
-
         if (empty($searchString)) {
-            for ($i = $this->imap->count(), $count = 1; $i > 0; $i--, $count++) {
-                $result[] = $this->imap->getMessage($i);
-                if ($count >= $maxResults) {
-                    break;
-                }
-            }
+            $result = new ImapMessageIterator($this->imap);
         } else {
             $ids = $this->imap->search(array($searchString));
-            for ($i = count($ids) - 1, $count = 1; $i >= 0; $i--, $count++) {
-                $result[] = $this->imap->getMessage($ids[$i]);
-                if ($count >= $maxResults) {
-                    break;
-                }
-            }
+            $result = new ImapMessageIterator($this->imap, $ids);
         }
 
         return $result;

@@ -1,5 +1,12 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroTagBundle::macros.html.twig' as _tag %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set gridId = 'users-email-grid' %}
+{% block head_script %}
+    {{ parent() }}
+    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
+{% endblock %}
 
 {% set format = oro_config_value('oro_user.name_format') %}
 {% oro_title_set({params : {"%username%": entity.fullname(format)|default('N/A') }}) %}
@@ -78,6 +85,12 @@
         {% set dataSubBlocks = dataSubBlocks|merge([UI.renderAttribute('Tags', _tag.renderView(entity))]) %}
     {% endif %}
 
+    {% set emailSubBlock = [] %}
+    {% if resource_granted('oro_email_view') %}
+        {#{{ render(controller('OroEmailBundle:Email:activities', {'emails': entity.emails})) }}#}
+        {% set emailSubBlock = UI.gridBlock(gridId) %}
+    {% endif %}
+
     {% set data = {
         'dataBlocks':
             [
@@ -105,6 +118,16 @@
                     'title': 'Additional data',
                     'subblocks': [
                         {'title': null, 'data': attributes}
+                    ]
+                },
+                {
+                    'title': 'User emails',
+                    'subblocks': [
+                        {
+                            'title': null,
+                            'useSpan': false,
+                            'data': [emailSubBlock]
+                        }
                     ]
                 }
             ]
