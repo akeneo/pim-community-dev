@@ -394,7 +394,10 @@ class JobInstanceController extends AbstractDoctrineController
      */
     protected function redirectToReportView($jobId)
     {
-        return $this->redirectToRoute(sprintf('pim_importexport_%s_report_show', $this->getJobType()), array('id' => $jobId));
+        return $this->redirectToRoute(
+            sprintf('pim_importexport_%s_report_show', $this->getJobType()),
+            array('id' => $jobId)
+        );
     }
 
     /**

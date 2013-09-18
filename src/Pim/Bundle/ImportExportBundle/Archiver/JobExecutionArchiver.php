@@ -102,5 +102,3 @@ class JobExecutionArchiver
         return $this->rootDir.DIRECTORY_SEPARATOR.$jobType.DIRECTORY_SEPARATOR;
     }
 }
-
-

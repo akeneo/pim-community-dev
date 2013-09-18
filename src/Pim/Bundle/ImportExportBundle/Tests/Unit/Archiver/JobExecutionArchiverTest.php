@@ -56,4 +56,3 @@ class JobExecutionArchiverTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->archiver->getJobExecutionPath($execution));
     }
 }
-

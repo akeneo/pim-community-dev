@@ -52,4 +52,3 @@ class ArchiveSubscriber implements EventSubscriberInterface
         $this->archiver->archive($jobExecution);
     }
 }
-
