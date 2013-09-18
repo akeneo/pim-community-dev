@@ -10,8 +10,8 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 class EmailRepository extends EntityRepository
 {
-    /** @var  User */
-    protected $user;
+    /** @var  User|Contact, etc */
+    protected $entity;
 
     /**
      * Return a query builder for get a list of emails which were sent to or from given email addresses
@@ -56,8 +56,13 @@ class EmailRepository extends EntityRepository
 
     public function createQueryBuilder($alias)
     {
-        $emails = $this->extractEmailAddresses($this->user->getEmails());
-        $emails[] = $this->user->getEmail();
+        $emails = $this->extractEmailAddresses($this->entity->getEmails());
+
+        // TODO: remove this afer User will have getPrimaryEmail method, like Contact
+        if (method_exists($this->entity, 'getEmail')) {
+            $emails[] =  $this->entity->getEmail();
+        }
+
         if (empty($emails)) {
             $emails = array(null);
         }
@@ -85,9 +90,12 @@ class EmailRepository extends EntityRepository
         return $qb;
     }
 
-    public function setUser(User $user)
+    /**
+     * @param $entity
+     */
+    public function setEntity($entity)
     {
-        $this->user = $user;
+        $this->entity = $entity;
     }
 
     /**

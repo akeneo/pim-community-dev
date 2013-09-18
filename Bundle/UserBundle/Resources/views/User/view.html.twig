@@ -85,54 +85,56 @@
         {% set dataSubBlocks = dataSubBlocks|merge([UI.renderAttribute('Tags', _tag.renderView(entity))]) %}
     {% endif %}
 
-    {% set emailSubBlock = [] %}
-    {% if resource_granted('oro_email_view') %}
-        {#{{ render(controller('OroEmailBundle:Email:activities', {'emails': entity.emails})) }}#}
-        {% set emailSubBlock = UI.gridBlock(gridId) %}
-    {% endif %}
+    {#{{ render(controller('OroEmailBundle:Email:activities', {'emails': entity.emails})) }}#}
 
-    {% set data = {
-        'dataBlocks':
-            [
+    {% set dataBlocks = [
+        {
+            'title': 'General',
+            'class': 'active',
+            'subblocks': [
                 {
-                    'title': 'General',
-                    'class': 'active',
-                    'subblocks': [
-                        {
-                            'title': 'Basic Information',
-                            'data': [
-                                UI.attibuteRow('User name', entity.username),
-                                UI.attibuteRow('First name', entity.firstname),
-                                UI.attibuteRow('Last name', entity.lastname),
-                                UI.attibuteRow('Birthday', entity.birthday ? UI.date(entity.birthday) : 'N/A'),
-                                UI.renderAttribute('API key', _self.api_data_block(entity))
-                            ]
-                        },
-                        {
-                            'title': 'Contact Information',
-                            'data': dataSubBlocks
-                        }
+                    'title': 'Basic Information',
+                    'data': [
+                        UI.attibuteRow('User name', entity.username),
+                        UI.attibuteRow('First name', entity.firstname),
+                        UI.attibuteRow('Last name', entity.lastname),
+                        UI.attibuteRow('Birthday', entity.birthday ? UI.date(entity.birthday) : 'N/A'),
+                        UI.renderAttribute('API key', _self.api_data_block(entity))
                     ]
                 },
                 {
-                    'title': 'Additional data',
-                    'subblocks': [
-                        {'title': null, 'data': attributes}
-                    ]
-                },
-                {
-                    'title': 'User emails',
-                    'subblocks': [
-                        {
-                            'title': null,
-                            'useSpan': false,
-                            'data': [emailSubBlock]
-                        }
-                    ]
+                'title': 'Contact Information',
+                'data': dataSubBlocks
                 }
             ]
+        },
+        {
+            'title': 'Additional data',
+            'subblocks': [
+                {'title': null, 'data': attributes}
+            ]
         }
+    ]
     %}
+
+    {% if resource_granted('oro_email_view') %}
+        {% set dataBlocks = dataBlocks|merge
+            (
+                    [{
+                        'title': 'User emails',
+                        'subblocks': [
+                            {
+                                'title': '',
+                                'useSpan': false,
+                                'data': [UI.gridBlock(gridId)]
+                            }
+                        ]
+                    }]
+            )
+        %}
+    {% endif %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
   </div>
 {% endblock content_data %}

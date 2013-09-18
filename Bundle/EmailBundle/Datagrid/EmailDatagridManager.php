@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EmailBundle\Datagrid;
 
-use Oro\Bundle\EmailBundle\Entity\EmailInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -15,9 +14,9 @@ use Oro\Bundle\UserBundle\Entity\User;
 class EmailDatagridManager extends DatagridManager
 {
     /**
-     * @var User
+     * @var User|Contact
      */
-    protected $user;
+    protected $entity;
 
     /**
      * {@inheritDoc}
@@ -27,10 +26,13 @@ class EmailDatagridManager extends DatagridManager
         return array();
     }
 
-    public function setUser(User $user)
+    /**
+     * @param User|Contact $user
+     */
+    public function setEntity($entity)
     {
-        $this->user = $user;
-        $this->routeGenerator->setRouteParameters(array('id' => $user->getId()));
+        $this->entity = $entity;
+        $this->routeGenerator->setRouteParameters(array('id' => $entity->getId()));
     }
 
     /**
@@ -38,7 +40,9 @@ class EmailDatagridManager extends DatagridManager
      */
     protected function createQuery()
     {
-        $this->entityManager->getRepository('Oro\Bundle\EmailBundle\Entity\Email')->setUser($this->user);
+        $this->entityManager
+            ->getRepository('Oro\Bundle\EmailBundle\Entity\Email')
+            ->setEntity($this->entity);
 
         return parent::createQuery();
     }
