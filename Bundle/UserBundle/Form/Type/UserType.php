@@ -113,7 +113,11 @@ class UserType extends FlexibleType
                 'tags',
                 'oro_tag_select'
             )
-            ->add('imapConfiguration', 'oro_imap_configuration');
+            ->add('imapConfiguration', 'oro_imap_configuration')
+            ->add(
+                'change_password',
+                'oro_change_password'
+            );
     }
 
     /**
@@ -166,7 +170,7 @@ class UserType extends FlexibleType
                 'error_mapping' => array(
                     'roles' => 'rolesCollection'
                 ),
-
+                'cascade_validation' => true
             )
         );
     }

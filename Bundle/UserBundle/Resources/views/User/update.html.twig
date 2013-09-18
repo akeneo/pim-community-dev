@@ -85,7 +85,7 @@
                         form_row(form.firstName),
                         form_row(form.lastName),
                         form_row(form.birthday),
-                        form_row(form.imageFile)
+                        form_row(form.imageFile),
                     ]
                 },
                 {
@@ -93,7 +93,7 @@
                     'data': [
                         form_row(form.email),
                         UI.collectionField(form.emails, 'Additional emails', 'Add another email'),
-                        form_row(form.tags),
+                        form_row(form.tags)
                     ]
                 }
             ]
@@ -117,7 +117,23 @@
                         'title': '',
                         'data': [
                             form.rolesCollection is defined ? form_row(form.groups, { attr: { class: 'horizontal' } }) : null,
-                            _self.userRoles(form)
+                            _self.userRoles(form),
+                        ]
+                    }
+                ]
+            }]
+        ) %}
+    {% endif %}
+
+    {% if form.change_password is defined %}
+        {% set dataBlocks = dataBlocks|merge(
+            [{
+                'title': 'Passwords',
+                'subblocks': [
+                    {
+                        'title': '',
+                        'data': [
+                            form_widget(form.change_password)
                         ]
                     }
                 ]
