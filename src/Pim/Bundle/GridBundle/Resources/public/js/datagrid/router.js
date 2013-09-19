@@ -21,7 +21,7 @@ define(
                     url = 'g/' + encodedStateData;
                 }
                 if (sessionStorage) {
-                    sessionStorage['gridURL_' + collection.inputName] = url;
+                    sessionStorage['gridURL_' + collection.inputName] = encodedStateData;
                 }
                 this.navigate(url);
             }

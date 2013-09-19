@@ -369,6 +369,10 @@ class ProductController extends AbstractDoctrineController
             array('currentLocale' => $this->getDataLocale())
         );
 
+        if (!$this->aclManager->isResourceGranted('pim_catalog_product_change_family')) {
+            $form->remove('family');
+        }
+
         if ($request->isMethod('POST')) {
             $form->bind($request);
 
@@ -687,8 +691,8 @@ class ProductController extends AbstractDoctrineController
         AvailableProductAttributes $availableAttributes = null
     ) {
         return $this->createForm(
-            new AvailableProductAttributesType,
-            $availableAttributes ?: new AvailableProductAttributes,
+            new AvailableProductAttributesType(),
+            $availableAttributes ?: new AvailableProductAttributes(),
             array('attributes' => $attributes)
         );
     }

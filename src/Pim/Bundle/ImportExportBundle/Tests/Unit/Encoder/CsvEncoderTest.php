@@ -38,7 +38,7 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
 
     public function testIsAnEncoder()
     {
-        $this->assertInstanceOf('Symfony\Component\Serializer\Encoder\EncoderInterface', new CsvEncoder);
+        $this->assertInstanceOf('Symfony\Component\Serializer\Encoder\EncoderInterface', new CsvEncoder());
     }
 
     public function testSupportCsv()

@@ -56,13 +56,15 @@ class LoadFamilyData extends AbstractInstallerFixture
             $family->addAttribute($this->getReference('product-attribute.'.$attribute));
         }
 
-        foreach ($data['requirements'] as $channel => $attributes) {
-            foreach ($attributes as $attribute) {
-                $requirement =  new AttributeRequirement();
-                $requirement->setAttribute($this->getReference('product-attribute.'.$attribute));
-                $requirement->setChannel($this->getReference('channel.'.$channel));
-                $requirement->setRequired(true);
-                $family->addAttributeRequirement($requirement);
+        if (array_key_exists('requirements', $data)) {
+            foreach ($data['requirements'] as $channel => $attributes) {
+                foreach ($attributes as $attribute) {
+                    $requirement =  new AttributeRequirement();
+                    $requirement->setAttribute($this->getReference('product-attribute.'.$attribute));
+                    $requirement->setChannel($this->getReference('channel.'.$channel));
+                    $requirement->setRequired(true);
+                    $family->addAttributeRequirement($requirement);
+                }
             }
         }
 

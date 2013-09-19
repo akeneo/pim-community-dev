@@ -1,9 +1,9 @@
+@javascript
 Feature: Display the product history
   In order to know who, when and what changes has been made to a product
   As Julia
   I need to have access to a product history
 
-  @javascript
   Scenario: Display product updates
     Given the following product attributes:
       | label        | required |
@@ -16,7 +16,7 @@ Feature: Display the product history
     And I fill in the following information:
       | SKU               | cam  |
     And I press the "Create" button
-    Then I should see "Product successfully saved."
+    And I should see "Product successfully saved."
     And I edit the "cam" product
     When I visit the "History" tab
     Then there should be 1 update

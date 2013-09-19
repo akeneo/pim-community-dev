@@ -12,6 +12,7 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\BatchBundle\Job\BatchStatus;
+use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
 /**
  * Report datagrid manager
@@ -232,5 +233,13 @@ class ReportDatagridManager extends DatagridManager
         );
 
         return $field;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getDefaultSorters()
+    {
+        return array('startTime' => SorterInterface::DIRECTION_DESC);
     }
 }

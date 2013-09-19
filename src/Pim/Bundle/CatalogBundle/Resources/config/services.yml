@@ -1,3 +1,6 @@
+parameters:
+    oro_flexibleentity.listener.timestampable.class: Pim\Bundle\CatalogBundle\EventListener\TimestampableListener
+
 services:
     # Attribute property types
     pim_catalog.form.type.scopable:

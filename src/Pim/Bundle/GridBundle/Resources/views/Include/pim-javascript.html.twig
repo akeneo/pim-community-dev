@@ -117,7 +117,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                             AjaxAction.extend({{ currentOptions|json_encode|raw }})
                         {% else %}
                             {# merge additional options to navigateAction to use execute method #}
-                            {% set currentOptions = currentOptions|merge({'name': action.name, 'launcherOptions': {'onClickReturnValue': false, 'runAction': true, 'className': 'no-hash'}}) %}
+                            {% set currentOptions = currentOptions|merge({'name': action.name, 'launcherOptions': {'onClickReturnValue': false, 'runAction': true, 'className': currentOptions.className|default("") ~ ' no-hash' }}) %}
                             NavigateAction.extend({{ currentOptions|json_encode|raw }})
                         {% endif %}
                         {% if not loop.last %},{% endif %}
@@ -153,6 +153,9 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                     {% endif %}
                     {% if app.request.get("treeId") %}
                         treeId: {{ app.request.get("treeId")|json_encode|raw }},
+                    {% endif %}
+                    {% if app.request.get("dataLocale") %}
+                        dataLocale: {{ app.request.get("dataLocale")|json_encode|raw }},
                     {% endif %}
                     currentPage:  {{ datagrid.pager.page|json_encode|raw }},
                     pageSize:     {{ datagrid.pager.maxPerPage|json_encode|raw }},

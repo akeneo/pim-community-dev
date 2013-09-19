@@ -5,7 +5,6 @@ namespace Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Behat\Exception\PendingException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
@@ -1771,7 +1770,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ->chooseOperation($operation)
             ->next();
 
-        $this->wait();
+        $this->wait(10000);
     }
 
     /**
@@ -1784,6 +1783,24 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         if (!$this->getCurrentPage()->findTooltip($text)) {
             throw $this->createExpectationException(sprintf('No tooltip containing "%s" were found.', $text));
         }
+    }
+
+    /**
+     * @Given /^I display the (.*) attribute$/
+     */
+    public function iDisplayTheNameAttribute($fields)
+    {
+        $this->getCurrentPage()->addAvailableAttributes($this->listToArray($fields));
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I move on to the next step$/
+     */
+    public function iMoveOnToTheNextStep()
+    {
+        $this->getCurrentPage()->next();
+        $this->wait(10000);
     }
 
     /**
@@ -1879,8 +1896,15 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return void
      */
-    private function wait($time = 4000, $condition = 'document.readyState == "complete" && !$.active')
+    private function wait($time = 4000, $condition = null)
     {
+        $condition = $condition ?: <<<JS
+        document.readyState == "complete"                   // Page is ready
+            && !$.active                                    // No ajax request is active
+            && $("#page").css("display") == "block"         // Page is displayed (no yellow progress bar)
+            && $(".loading-mask").css("display") == "none"; // Page is not loading (no black mask loading page)
+JS;
+
         try {
             return $this->getMainContext()->wait($time, $condition);
         } catch (UnsupportedDriverActionException $e) {

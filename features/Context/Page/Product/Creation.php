@@ -14,9 +14,32 @@ use Behat\Mink\Exception\ElementNotFoundException;
  */
 class Creation extends Form
 {
+    /**
+     * @var array
+     */
     protected $elements = array(
         'Activated locales' => array('css' => '#select2-drop'),
+        'Create popin' => array('css' => 'div.ui-dialog')
     );
+
+    /**
+     * {@inheritdoc}
+     */
+    public function pressButton($locator)
+    {
+        if ($locator === 'Create') {
+            $button = $this
+                ->getElement('Create popin')
+                ->find('css', sprintf('button:contains("%s")', $locator));
+
+            if ($button) {
+                return $button->click();
+            }
+        }
+
+        parent::pressButton($locator);
+    }
+
 
     /**
      * {@inheritdoc}

@@ -1,6 +1,6 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
-{% set title = 'Products'|trans %}
+{% set title = 'products'|trans %}
 
 {% block head_script %}
     {{ parent() }}
@@ -30,8 +30,15 @@
 
                 mediator.once('datagrid_filters:rendered', moveScopeFilter);
 
+                function setEditCategoriesListener() {
+                    $(".edit-categories-action").click(function(ev){
+                        sessionStorage.activeTab = "#categories"
+                    });
+                }
+                mediator.on("datagrid_filters:rendered", setEditCategoriesListener)
                 $(function() {
                     moveScopeFilter();
+                    setEditCategoriesListener();
                     $('.has-sidebar').sidebarize();
                     new TreeView('#tree');
                 });
@@ -45,10 +52,9 @@
     {% set buttons %}
         {% if resource_granted('pim_catalog_product_create') %}
             {{ elements.createBtn(
-                'New product',
+                'product',
                 null,
-                'create-product',
-                { 'data-form': 'dialog', 'data-form-url': path('pim_catalog_product_create') }
+                { 'id': 'create-product', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_product_create') }
             ) }}
             <script type="text/javascript">
                 require(

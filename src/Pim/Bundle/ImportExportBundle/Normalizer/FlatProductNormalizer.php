@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Normalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -57,26 +58,15 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        // initialize context
-        $scope  = isset($context['scope']) && is_string($context['scope']) ? $context['scope'] : null;
-        if (isset($context['fields']) && is_array($context['fields'])) {
-            $this->fields = array_fill_keys($context['fields'], '');
-        }
+        $this->results = array();
 
-        $this->results = $this->fields;
-
-        $identifier = $object->getIdentifier();
-        $this->normalizeValue($identifier);
+        $this->normalizeValue($identifier = $object->getIdentifier());
 
         $this->normalizeFamily($object->getFamily());
 
         foreach ($object->getValues() as $value) {
             if ($value === $identifier) {
                 continue;
-            } elseif ($value->getScope() !== null && $scope !== null) {
-                if ($value->getScope() !== $scope) {
-                    continue;
-                }
             }
             $this->normalizeValue($value);
         }
@@ -122,10 +112,12 @@ class FlatProductNormalizer implements NormalizerInterface
                         $result[] = (string) $item;
                     }
                 }
-                $data = join(self::ITEM_SEPARATOR, $result);
             }
-        } else {
-            $data = '';
+            $data = join(self::ITEM_SEPARATOR, $result);
+        } elseif ($data instanceof Media) {
+            // TODO Handle media export
+            // They are ignored for now (both file and image type)
+            return;
         }
 
         $this->results[$this->getFieldValue($value)] = (string) $data;

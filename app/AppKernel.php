@@ -87,7 +87,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
             new Pim\Bundle\DemoBundle\PimDemoBundle(),
-            new Pim\Bundle\VersioningBundle\PimVersioningBundle,
+            new Pim\Bundle\VersioningBundle\PimVersioningBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {

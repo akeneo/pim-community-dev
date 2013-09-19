@@ -178,6 +178,7 @@ var jsfv = new function () {
 {% block removeErrors_method %}
         removeErrors: function (field) {
             $(field).removeClass('error').parent().filter('.controls').removeClass('validation-error');
+            $(field).siblings('.icons-container').find('.validation-tooltip').remove();
         },
 {% endblock %}
 {% block addError_method %}

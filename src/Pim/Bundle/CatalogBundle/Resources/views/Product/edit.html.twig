@@ -6,8 +6,8 @@
 
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'jquery.currencyfield'],
-            function($, _, TreeAssociate, Scopable, FormUpdateListener){
+            ['jquery', 'underscore', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'pim/dialog', 'jquery.currencyfield'],
+            function($, _, TreeAssociate, Scopable, FormUpdateListener, Dialog){
                 'use strict';
                 $(function() {
                     new TreeAssociate('#trees');
@@ -21,16 +21,42 @@
                     new FormUpdateListener($('#{{ form.vars.id }}'));
 
                     $('#default_channel').select2('destroy').css('padding', '0');
+
+                    var $family = $('#{{ form.vars.id }}_family').removeClass('input-large').addClass('input-inline');
+                    $family.select2('enable', false);
+
+                    $('#edit-family').on('click', function () {
+                        var message = '{{ ("Current attributes will be merged with the ones in the new family."|trans
+                                ~ "</br>" ~ "No attributes will be removed."|trans)|raw }}',
+                            title   = '{{ "Are you sure you want to change the family?"|trans }}',
+                            doAction = function () {
+                                $('#edit-family').off('click').remove();
+                                $family.select2('enable', true);
+                                $family.select2('open');
+                            };
+
+                        Dialog.confirm(message, title, doAction);
+                    })
+
+                    $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function(e) {
+                        $family.removeAttr('disabled');
+                    });
+
+                    function setFullHeight() {
+                        $('.fullheight').each(function() {
+                            $(this).height($('.scrollable-container').height() - $(this).position().top + $('.scrollable-container').position().top);
+                        })
+                    }
+
+                    $('a[data-toggle="tab"]').on('shown', setFullHeight);
+                    setFullHeight();
                 });
             }
         );
     </script>
 {% endblock %}
 
-{% block page_container %}
-<div class="product-edit">
-
-    {% block content %}
+{% block content %}
 
     {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
         'form': attributesForm,
@@ -38,9 +64,9 @@
     } %}
 
     {{ JSFV(form) }}
-    <form id="{{ form.vars.id }}" method="POST" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}"  data-updated-message="{{ 'You will lose changes to the product if you leave the page.'|trans }}" action="{{ path('pim_catalog_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
+    <form id="{{ form.vars.id }}" method="POST" class="form-horizontal product-edit" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}"  data-updated-message="{{ 'You will lose changes to the product if you leave the page.'|trans }}" action="{{ path('pim_catalog_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
-        {% set title = 'Products'|trans %}
+        {% set title = 'product'|trans %}
 
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_product_index')) }}
@@ -82,9 +108,17 @@
 
         {% set left %}
             <ul class="inline">
-               <li>{{ 'Family'|trans }}: {{ form.vars.value.family|capitalize|default('N/A'|trans) }}</li>
-               <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
-               <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
+               <li>
+                    {{ 'Family'|trans }}:
+                    {% if resource_granted('pim_catalog_product_change_family') %}
+                        {{ form_widget(form.family) }}
+                        <i id="edit-family" class="icon-pencil"></i>
+                    {% else %}
+                        {{ form.vars.value.family|capitalize|default('N/A'|trans) }}
+                    {% endif %}
+                </li>
+               <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
+               <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
            </ul>
         {% endset %}
 
@@ -109,6 +143,4 @@
             </div>
         </div>
     </form>
-    {% endblock %}
-</div>
 {% endblock %}

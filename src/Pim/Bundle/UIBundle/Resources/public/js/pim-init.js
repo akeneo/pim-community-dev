@@ -34,7 +34,7 @@ require(
                 $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-collapse-alt icon-expand-alt');
             });
 
-            $('#attribute-buttons .dropdown-menu').click(function (e) {
+            $('#attribute-buttons').find('.dropdown-menu').click(function (e) {
                 e.stopPropagation();
             });
 
@@ -49,8 +49,8 @@ require(
 
             // Save and restore activated form tabs and groups
             function saveFormState() {
-                var activeTab   = $('#form-navbar .nav li.active a').attr('href'),
-                    activeGroup = $('.tab-groups li.tab.active a').attr('href');
+                var activeTab   = $('#form-navbar').find('li.active').find('a').attr('href'),
+                    activeGroup = $('.tab-groups').find('li.tab.active').find('a').attr('href');
 
                 if (activeTab) {
                     sessionStorage.activeTab = activeTab;
@@ -63,7 +63,7 @@ require(
 
             function restoreFormState() {
                 if (sessionStorage.activeTab) {
-                    var $activeTab = $('[href=' + sessionStorage.activeTab + ']');
+                    var $activeTab = $('a[href=' + sessionStorage.activeTab + ']');
                     if ($activeTab.length && !$('.loading-mask').is(':visible')) {
                         $activeTab.tab('show');
                         sessionStorage.removeItem('activeTab');
@@ -71,7 +71,7 @@ require(
                 }
 
                 if (sessionStorage.activeGroup) {
-                    var $activeGroup = $('[href=' + sessionStorage.activeGroup + ']');
+                    var $activeGroup = $('a[href=' + sessionStorage.activeGroup + ']');
                     if ($activeGroup.length && !$('.loading-mask').is(':visible')) {
                         $activeGroup.tab('show');
                         sessionStorage.removeItem('activeGroup');
@@ -83,7 +83,7 @@ require(
                 restoreFormState();
 
                 $('form.form-horizontal').on('submit', saveFormState);
-                $('#locale-switcher a').on('click', saveFormState);
+                $('#locale-switcher').find('a').on('click', saveFormState);
             }
 
             // Initialize slimbox
@@ -104,7 +104,7 @@ require(
                 }
             });
             $('.attribute-field.translatable').each(function () {
-                $(this).find('div.controls .icons-container').append($localizableIcon.clone().tooltip());
+                $(this).find('div.controls').find('.icons-container').append($localizableIcon.clone().tooltip());
             });
 
             $('form').on('change', 'input[type="file"]', function () {

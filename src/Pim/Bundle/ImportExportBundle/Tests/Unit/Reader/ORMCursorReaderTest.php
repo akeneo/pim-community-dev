@@ -13,7 +13,7 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testInstanceOfItemReaderInterface()
     {
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\ItemReaderInterface', new ORMCursorReader);
+        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\ItemReaderInterface', new ORMCursorReader());
     }
 
     public function testRead()

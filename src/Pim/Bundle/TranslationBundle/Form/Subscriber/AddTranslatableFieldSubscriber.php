@@ -40,6 +40,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      * @var multitype:mixed
      */
     protected $options;
+    
 
     /**
      * Constructor
@@ -89,7 +90,6 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         if (null === $data) {
             return;
         }
-
         $translations = $this->bindTranslations($data);
         foreach ($translations as $binded) {
             $method = 'get'.Inflector::camelize($this->getOption('field'));
@@ -100,7 +100,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
                     $this->getOption('widget'),
                     $content !== null ? $content : '',
                     array(
-                        'label'           => $binded['locale'],
+                        'label'           => $this->options['locale_config']['locales'][$binded['locale']]['label'],
                         'required'        => in_array($binded['locale'], $this->getOption('required_locale')),
                         'mapped'          => false,
                         'auto_initialize' => false

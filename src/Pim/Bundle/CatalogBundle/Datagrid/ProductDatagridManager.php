@@ -9,6 +9,7 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\Ajax\DeleteMassAction;
 use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
+use Oro\Bundle\GridBundle\Builder\DatagridBuilderInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
@@ -338,7 +339,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $fieldCompleteness->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_HTML,
-                'label'       => $this->translate('Completed'),
+                'label'       => $this->translate('Complete'),
                 'field_name'  => 'completenesses',
                 'expression'  => 'pCompleteness',
                 'filter_type' => FilterInterface::TYPE_COMPLETENESS,
@@ -371,40 +372,32 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function getRowActions()
     {
-        $clickAction = array(
-            'name'         => 'rowClick',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label'         => $this->translate('Edit'),
-                'icon'          => 'edit',
-                'link'          => 'edit_link',
-                'backUrl'       => true,
-                'runOnRowClick' => true
-            )
-        );
-
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translate('Edit'),
+                'label'   => $this->translate('Edit attributes of the product'),
                 'icon'    => 'edit',
                 'link'    => 'edit_link',
                 'backUrl' => true
             )
         );
 
+        $clickAction = $editAction;
+        $clickAction['name'] = 'rowClick';
+        $clickAction['options']['runOnRowClick'] = true;
+
         $editCategoriesAction = array(
             'name'         => 'edit_categories',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translate('Edit categories'),
-                'icon'    => 'folder-close',
-                'link'    => 'edit_categories_link',
-                'backUrl' => true
+                'label'     => $this->translate('Classify the product'),
+                'icon'      => 'folder-close',
+                'className' => 'edit-categories-action',
+                'link'      => 'edit_categories_link',
+                'backUrl'   => true
             )
         );
 
@@ -413,7 +406,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translate('Delete'),
+                'label'   => $this->translate('Delete the product'),
                 'icon'    => 'trash',
                 'link'    => 'delete_link'
             )
@@ -435,7 +428,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $deleteMassActions = new DeleteMassAction(
             array(
                 'name'  => 'delete',
-                'label' => 'Delete',
+                'label' => $this->translate('Delete'),
                 'icon'  => 'trash'
             )
         );
@@ -443,7 +436,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $redirectMassAction = new RedirectMassAction(
             array(
                 'name'  => 'redirect',
-                'label' => 'Mass Edition',
+                'label' => $this->translate('Mass Edition'),
                 'icon' => 'edit',
                 'route' => 'pim_catalog_mass_edit_action_choose',
             )
@@ -464,7 +457,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'acl_resource' => 'root',
                 'baseUrl' => $this->router->generate('pim_catalog_product_index', array('_format' => 'csv')),
                 'name' =>  'exportCsv',
-                'label' => $this->translate('Quick export'),
+                'label' => $this->translate('CSV export'),
                 'icon'  => 'icon-download',
                 'keepParameters' => true
             )
@@ -491,11 +484,22 @@ class ProductDatagridManager extends FlexibleDatagridManager
     /**
      * {@inheritdoc}
      */
+    public function getDatagrid()
+    {
+        $datagrid = parent::getDatagrid();
+
+        $datagrid->removeFilter(DatagridBuilderInterface::SELECTED_ROW_FILTER_NAME);
+
+        return $datagrid;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setFlexibleManager(FlexibleManager $flexibleManager)
     {
         $this->flexibleManager = $flexibleManager;
         $this->flexibleManager->setScope($this->getScopeFilterValue());
-        $this->getRouteGenerator()->setRouteParameters(array('dataLocale' => $flexibleManager->getLocale()));
     }
 
     /**

@@ -131,8 +131,8 @@ class AttributeGroupController extends AbstractDoctrineController
      * @Template
      * @Acl(
      *      id="pim_catalog_attribute_group_edit",
-     *      name="Edit group",
-     *      description="Edit group",
+     *      name="Edit attribute groups",
+     *      description="Edit attribute groups",
      *      parent="pim_catalog_attribute_group"
      * )
      * @return array
@@ -248,8 +248,8 @@ class AttributeGroupController extends AbstractDoctrineController
         AvailableProductAttributes $availableAttributes = null
     ) {
         return $this->createForm(
-            new AvailableProductAttributesType,
-            $availableAttributes ?: new AvailableProductAttributes,
+            new AvailableProductAttributesType(),
+            $availableAttributes ?: new AvailableProductAttributes(),
             array('attributes' => $attributes)
         );
     }

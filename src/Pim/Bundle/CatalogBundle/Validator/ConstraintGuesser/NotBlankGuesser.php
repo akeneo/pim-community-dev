@@ -31,7 +31,7 @@ class NotBlankGuesser implements ConstraintGuesserInterface
         $constraints = array();
 
         if ($attribute->getRequired()) {
-            $constraints[] = new Assert\NotBlank;
+            $constraints[] = new Assert\NotBlank();
         }
 
         return $constraints;
