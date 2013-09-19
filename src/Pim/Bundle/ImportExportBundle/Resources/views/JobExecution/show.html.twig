@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    {% set title = "Execution details" | trans %}
+    {% set title = "execution details"|trans ~ ' - ' ~ execution.jobInstance.label %}
     {% set subtitle = execution.jobInstance.label  %}
     {% set isRunning = execution.exitStatus.exitCode != constant('Oro\\Bundle\\BatchBundle\\Job\\ExitStatus::COMPLETED') %}
 
