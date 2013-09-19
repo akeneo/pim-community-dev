@@ -12,17 +12,19 @@ Feature: Edit common attributes of many products at once
       | name    |
       | General |
     And the following product attributes:
-      | product | label  | group   | translatable | scopable | type        |
-      | lamp    | Name   | General | yes          | no       | text        |
-      | ceiling | Name   | General | yes          | no       | text        |
-      | torch   | Name   | General | yes          | no       | text        |
-      | lamp    | Colors | General | no           | no       | multiselect |
-      | ceiling | Colors | General | no           | no       | multiselect |
-      | torch   | Colors | General | no           | no       | multiselect |
-      | lamp    | Price  | General | no           | no       | prices      |
-      | torch   | Price  | General | no           | no       | prices      |
-      | ceiling | Visual | General | no           | no       | image       |
-      | torch   | Visual | General | no           | no       | image       |
+      | product | label  | group   | translatable | scopable | type        | metric family | default metric unit |
+      | lamp    | Name   | General | yes          | no       | text        |               |                     |
+      | ceiling | Name   | General | yes          | no       | text        |               |                     |
+      | torch   | Name   | General | yes          | no       | text        |               |                     |
+      | lamp    | Colors | General | no           | no       | multiselect |               |                     |
+      | ceiling | Colors | General | no           | no       | multiselect |               |                     |
+      | torch   | Colors | General | no           | no       | multiselect |               |                     |
+      | lamp    | Price  | General | no           | no       | prices      |               |                     |
+      | torch   | Price  | General | no           | no       | prices      |               |                     |
+      | ceiling | Visual | General | no           | no       | image       |               |                     |
+      | torch   | Visual | General | no           | no       | image       |               |                     |
+      | lamp    | Weight | General | no           | no       | metric      | Weight        | KILOGRAM            |
+      | torch   | Weight | General | no           | no       | metric      | Weight        | KILOGRAM            |
     And I am logged in as "Julia"
 
   Scenario: Allow editing only common attributes
@@ -84,3 +86,13 @@ Feature: Edit common attributes of many products at once
       | value |
       | Red   |
       | Blue  |
+
+  Scenario: Succesfully update many metric values at once
+    Given I am on the products page
+    When I mass-edit products lamp and torch
+    And I choose the "Edit attributes" operation
+    And I display the Weight attribute
+    And I change the "Weight" to "600"
+    And I move on to the next step
+    Then I should see "Product(s) attribute(s) have been updated"
+    And the metric "Weight" of products lamp and torch should be "600"

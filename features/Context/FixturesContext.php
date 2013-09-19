@@ -764,11 +764,22 @@ class FixturesContext extends RawMinkContext
     /**
      * @Given /^the file "([^"]*)" of products (.*) should be "([^"]*)"$/
      */
-    public function theFileOfTorchShouldBe($attribute, $products, $filename)
+    public function theFileOfShouldBe($attribute, $products, $filename)
     {
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             assertEquals($filename, $productValue->getMedia()->getOriginalFilename());
+        }
+    }
+
+    /**
+     * @Given /^the metric "([^"]*)" of products (.*) should be "([^"]*)"$/
+     */
+    public function theMetricOfProductsShouldBe($attribute, $products, $data)
+    {
+        foreach ($this->listToArray($products) as $identifier) {
+            $productValue = $this->getProductValue($identifier, strtolower($attribute));
+            assertEquals($data, $productValue->getMetric()->getData());
         }
     }
 

@@ -4,6 +4,8 @@ namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
@@ -13,7 +15,6 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 
 /**
  * Edit common attributes of given products
@@ -201,7 +202,6 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     protected function setProductValue(ProductInterface $product, ProductValueInterface $value)
     {
-
         $productValue = $product->getValue(
             $value->getAttribute()->getCode(),
             $value->getAttribute()->getTranslatable() ? $this->getLocale()->getCode() : null,
@@ -220,6 +220,10 @@ class EditCommonAttributes extends AbstractMassEditAction
             case 'pim_catalog_file':
             case 'pim_catalog_image':
                 $this->setProductFile($productValue, $value);
+                break;
+
+            case 'pim_catalog_metric':
+                $this->setProductMetric($productValue, $value);
                 break;
 
             default:
@@ -255,6 +259,16 @@ class EditCommonAttributes extends AbstractMassEditAction
             $productValue->setMedia($media);
         }
         $media->setFile($value->getMedia()->getFile());
+    }
+
+    private function setProductMetric(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        if (null === $metric = $productValue->getMetric()) {
+            $metric = new Metric();
+            $productValue->setMetric($metric);
+        }
+        $metric->setUnit($value->getMetric()->getUnit());
+        $metric->setData($value->getMetric()->getData());
     }
 
     /**

@@ -195,12 +195,20 @@
 {% endspaceless %}
 {% endblock checkbox_widget %}
 
-{% block oro_flexibleentity_metric_widget %}
+{% block oro_flexibleentity_metric_row %}
 {% spaceless %}
-    {{ form_widget(form.unit) }}
-    {{ form_widget(form.data) }}
+    <div class="control-group">
+        {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.data.vars.id} }) }}
+        <div class="controls">
+            {{ form_widget(form.unit) }}
+            {{ form_widget(form.data) }}
+            <div class="icons-container">
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    </div>
 {% endspaceless %}
-{% endblock oro_flexibleentity_metric_widget %}
+{% endblock oro_flexibleentity_metric_row %}
 
 {% block pim_catalog_price_collection_widget %}
     {% for child in form.children %}
