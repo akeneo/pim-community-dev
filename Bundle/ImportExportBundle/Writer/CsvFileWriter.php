@@ -90,7 +90,7 @@ class CsvFileWriter implements ItemWriterInterface, StepExecutionAwareInterface
     protected function getFile()
     {
         if (!$this->file) {
-            $this->file = fopen($this->fileInfo->getRealPath(), 'a');
+            $this->file = fopen($this->fileInfo->getPathname(), 'a');
         }
 
         return $this->file;
