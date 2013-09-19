@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
 use Oro\Bundle\PlatformBundle\Security\Encryptor\Mcrypt;
 
 class ConfigurationType extends AbstractType
@@ -33,23 +34,28 @@ class ConfigurationType extends AbstractType
             function (FormEvent $event) use ($encryptor) {
                 $data = $event->getData();
 
-                if (empty($data['host']) && empty($data['port'])) {
-                    // case when user does not fill any data to subform empty entity should not be created
-                    $data = array();
-                } else {
-                    $oldPassword = $event->getForm()->get('password')->getData();
-
-                    if (empty($data['password']) && $oldPassword) {
-                        // populate old password
-                        $password = $oldPassword;
-                    } else {
-                        $password = $encryptor->encryptData($data['password']);
-                    }
-
-                    $data['password'] = $password;
+                $oldPassword = $event->getForm()->get('password')->getData();
+                if (empty($data['password']) && $oldPassword) {
+                    // populate old password
+                    $data['password'] = $oldPassword;
+                } elseif (!empty($data['password'])) {
+                    $data['password'] = $encryptor->encryptData($data['password']);
                 }
 
                 $event->setData($data);
+
+                /** @var ImapEmailOrigin|null $entity */
+                $entity = $event->getForm()->getData();
+                if ($entity instanceof ImapEmailOrigin
+                    && ($entity->getHost() != $data['host'] || $entity->getUser() != $data['user'])
+                ) {
+                    // in case when critical fields were changed new entity should be created
+                    $newConfiguration = new ImapEmailOrigin();
+                    $event->getForm()->setData($newConfiguration);
+
+                    // deactivate old one
+                    $entity->setIsActive(false);
+                }
             }
         );
 

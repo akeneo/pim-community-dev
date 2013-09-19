@@ -40,14 +40,12 @@ class ConfigurationTypeTest extends FormIntegrationTestCase
         $type = new ConfigurationType($this->encryptor);
         $form = $this->factory->create($type);
         if ($expectedViewData) {
-            $entity = new ImapEmailOrigin();
-            $form->setData($entity);
-
             $form->submit($formData);
             foreach ($expectedViewData as $name => $value) {
                 $this->assertEquals($value, $form->get($name)->getData());
             }
 
+            $entity = $form->getData();
             foreach ($expectedModelData as $name => $value) {
                 if ($name == 'password') {
                     $encodedPass = $this->readAttribute($entity, $name);
@@ -104,6 +102,9 @@ class ConfigurationTypeTest extends FormIntegrationTestCase
         );
     }
 
+    /**
+     * If submitted empty password, it should be populated from old entity
+     */
     public function testBindEmptyPassword()
     {
         $type = new ConfigurationType($this->encryptor);
@@ -124,5 +125,35 @@ class ConfigurationTypeTest extends FormIntegrationTestCase
         );
 
         $this->assertEquals(self::TEST_PASSWORD, $entity->getPassword());
+    }
+
+    /**
+     * In case when user or host field was changed new configuration should be created
+     * and old one will be not active
+     */
+    public function testCreatingNewConfiguration()
+    {
+        $type = new ConfigurationType($this->encryptor);
+        $form = $this->factory->create($type);
+
+        $entity = new ImapEmailOrigin();
+        $this->assertTrue($entity->getIsActive());
+
+        $form->setData($entity);
+        $form->submit(
+            array(
+                'host'     => 'someHost',
+                'port'     => '123',
+                'ssl'      => 'ssl',
+                'user'     => 'someUser',
+                'password' => 'somPassword'
+            )
+        );
+
+        $this->assertNotSame($entity, $form->getData());
+        $this->assertFalse($entity->getIsActive());
+
+        $this->assertInstanceOf('Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin', $form->getData());
+        $this->assertTrue($form->getData()->getIsActive());
     }
 }
