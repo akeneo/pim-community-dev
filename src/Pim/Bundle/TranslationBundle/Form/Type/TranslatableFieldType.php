@@ -28,15 +28,22 @@ class TranslatableFieldType extends AbstractType
      * @var LocaleManager
      */
     protected $localeManager;
+    
+    /**
+     * @var array
+     */
+    protected $localeConfig;
 
     /**
      * @param ValidatorInterface $validator
      * @param LocaleManager      $localeManager
+     * @param array              $localeConfig
      */
-    public function __construct(ValidatorInterface $validator, LocaleManager $localeManager)
+    public function __construct(ValidatorInterface $validator, LocaleManager $localeManager, array $localeConfig)
     {
         $this->validator     = $validator;
         $this->localeManager = $localeManager;
+        $this->localeConfig = $localeConfig;
     }
 
     /**
@@ -71,28 +78,6 @@ class TranslatableFieldType extends AbstractType
 
     /**
      * {@inheritdoc}
-     *
-     * - translation_class    : FQCN of the translation class
-     * - entity_class         : FQCN of the based entity class
-     * - locales              : Locales you wish to edit
-     * - required_locale      : Fields are required or not
-     * - field                : Field name
-     * - widget               : Widget used by translations fields
-     */
-    public function getDefaultOptions(array $options = array())
-    {
-        $options['translation_class'] = false;
-        $options['entity_class']      = false;
-        $options['field']             = false;
-        $options['locales']           = $this->getActiveLocales();
-        $options['required_locale']   = array();
-        $options['widget']            = 'text';
-
-        return $options;
-    }
-
-    /**
-     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -104,6 +89,7 @@ class TranslatableFieldType extends AbstractType
                 'entity_class' => false,
                 'field' => false,
                 'locales' => $this->getActiveLocales(),
+                'locale_config' =>  $this->localeConfig,
                 'required_locale' => array(),
                 'widget' => 'text'
             )
