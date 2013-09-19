@@ -216,16 +216,20 @@ class ProductController extends AbstractDoctrineController
 
                         // get attribute lists
 //                         $qb = $datagrid->getQuery();
-//                         $attributesList = $gridManager->getAttributeAvailableIds($qb);
+                        $fieldsList = $datagrid->getAttributeAvailableIds();
+                        $fieldsList[] = 'family'; // @todo : use const
+                        $fieldsList[] = 'categories'; // @todo : use const
+
+                        $context['fields'] = $fieldsList;
 
                         // get values of all the defined attributes
-                        if (!empty($attributesList)) {
-                            $exprIn = $qb->expr()->in('values.attribute', $attributesList);
-                            $qb->andWhere($exprIn);
-                        }
+//                         if (!empty($attributesList)) {
+//                             $exprIn = $qb->expr()->in('values.attribute', $attributesList);
+//                             $qb->andWhere($exprIn);
+//                         }
 
                         // prepare serializer batching
-                        $limit = 10;
+                        $limit = 1;
                         $count = $datagrid->countResults();
                         $iterations = ceil($count/$limit);
 
@@ -233,7 +237,7 @@ class ProductController extends AbstractDoctrineController
                             $data = $datagrid->exportData('csv', $i*$limit, $limit, $context);
                             echo $data;
                             flush();
-                            $context['withHeader'] = false;
+//                             $context['withHeader'] = false;
                         }
                     }
                 );

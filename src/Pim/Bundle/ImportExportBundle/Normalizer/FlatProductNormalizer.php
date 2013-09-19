@@ -31,6 +31,17 @@ class FlatProductNormalizer implements NormalizerInterface
     protected $results;
 
     /**
+     * Fields to export if needed
+     * @var array
+     */
+    protected $fields = array();
+
+    protected function initializeFields($fields)
+    {
+        $this->fields = array_fill_keys($fields, '');
+    }
+
+    /**
      * Transforms an object into a flat array
      *
      * @param object $object
@@ -41,11 +52,16 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $this->results = array();
+        // initialize context
+        $scope  = isset($context['scope']) && is_string($context['scope']) ? $context['scope'] : null;
+        if (isset($context['fields']) && is_array($context['fields'])) {
+            $this->initializeFields($context['fields']);
+        }
 
-        $scope = (isset($context['scope'])) ? $context['scope'] : null;
+        $this->results = $this->fields;
 
-        $this->normalizeValue($identifier = $object->getIdentifier());
+        $identifier = $object->getIdentifier();
+        $this->normalizeValue($identifier);
 
         $this->normalizeFamily($object->getFamily());
 
@@ -85,30 +101,44 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizeValue($value)
     {
-        $suffix = '';
-        if ($value->getAttribute()->getTranslatable()) {
-            $suffix = sprintf('-%s', $value->getLocale());
-        }
-        $data = $value->getData();
 
-        if ($data instanceof \DateTime) {
-            $data = $data->format('r');
-        } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
-            $data = $data->getCode();
-        } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
-            $result = array();
-            foreach ($data as $item) {
-                if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
-                    $result[] = $item->getCode();
-                } else {
-                    $result[] = (string) $item;
+        if (empty($this->fields) || isset($this->fields[$value->getAttribute()->getCode()])) {
+            $data = $value->getData();
+
+            if ($data instanceof \DateTime) {
+                $data = $data->format('r');
+            } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
+                $data = $data->getCode();
+            } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
+                $result = array();
+                foreach ($data as $item) {
+                    if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
+                        $result[] = $item->getCode();
+                    } else {
+                        $result[] = (string) $item;
+                    }
                 }
+                $data = join(self::ITEM_SEPARATOR, $result);
             }
-            $data = join(self::ITEM_SEPARATOR, $result);
+        } else {
+            $data = '';
         }
 
-        $this->results[$value->getAttribute()->getCode().$suffix] = (string) $data;
+        $this->results[$this->getFieldValue($value)] = (string) $data;
+    }
 
+    /**
+     * @param ProductValueInterface $value
+     * @return string
+     */
+    protected function getFieldValue($value)
+    {
+        $suffix = '';
+//         if ($value->getAttribute()->getTranslatable()) {
+//             $suffix = $suffix = sprintf('-%s', $value->getLocale());
+//         }
+
+        return $value->getAttribute()->getCode() . $suffix;
     }
 
     /**
@@ -118,7 +148,9 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizeFamily(Family $family = null)
     {
-        $this->results['family'] = $family ? $family->getCode() : '';
+//         if (empty($this->fields) || isset($this->fields['family'])) {
+            $this->results['family'] = $family ? $family->getCode() : '';
+//         }
     }
 
     /**
@@ -128,6 +160,8 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizeCategories($categories = '')
     {
-        $this->results['categories'] = $categories;
+        if (empty($this->fields) || isset($this->fields['categories'])) {
+            $this->results['categories'] = $categories;
+        }
     }
 }

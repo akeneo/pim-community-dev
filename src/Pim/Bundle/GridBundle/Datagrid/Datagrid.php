@@ -122,15 +122,15 @@ class Datagrid extends OroDatagrid
             $this->query->leftJoin('o.categories', 'categories');
             $this->query->addSelect('categories');
 
-            $this->query->leftJoin('values.attribute', 'attribute');
-            $attributesList = $this->getAttributeAvailableIds();
-            $exprIn = $this->query->expr()->in('attribute', $attributesList);
-            $this->query->andWhere($exprIn);
+//             $this->query->leftJoin('values.attribute', 'attribute');
+//             $attributesList = $this->getAttributeAvailableIds();
+//             $exprIn = $this->query->expr()->in('attribute', $attributesList);
+//             $this->query->andWhere($exprIn);
 
 //             var_dump($this->query->getDQLPart('where')); die;
 //             var_dump($this->query->getDQLPart('join'));die;
 //             $this->query->leftJoin('values.attribute', 'attribute');
-            $this->query->addOrderBy('attribute.id');
+//             $this->query->addOrderBy('attribute.id');
 
             static::$applied = true;
         }
@@ -140,18 +140,18 @@ class Datagrid extends OroDatagrid
         return $this->query->execute();
     }
 
-    private function getAttributeAvailableIds()
+    public function getAttributeAvailableIds()
     {
         $qb = clone $this->query;
 
-//         $qb->leftJoin('values.attribute', 'attribute');
-        $qb->groupBy('attribute.id');
-        $qb->select('attribute.id');
+        $qb->leftJoin('values.attribute', 'attribute');
+        $qb->groupBy('attribute.code');
+        $qb->select(' attribute.code');
 
         $attributesList = array();
         $results = $qb->getQuery()->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
         foreach ($results as $attribute) {
-            $attributesList[] = current($attribute);
+            $attributesList[] = $attribute['code'];
         }
 
         return $attributesList;
