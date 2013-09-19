@@ -7,6 +7,7 @@ parameters:
     oro_imap.storage.gmail.class:                    Oro\Bundle\ImapBundle\Mail\Storage\GmailImap
     oro_imap.storage.other.class:                    Oro\Bundle\ImapBundle\Mail\Storage\Imap
     oro_imap.email_body_loader.class:                Oro\Bundle\ImapBundle\Provider\ImapEmailBodyLoader
+    oro_imap.email_synchronizer.class:               Oro\Bundle\ImapBundle\Sync\ImapEmailSynchronizer
 
     oro_imap.form.type.configuration.class:          Oro\Bundle\ImapBundle\Form\Type\ConfigurationType
 
@@ -32,8 +33,19 @@ services:
         class: %oro_imap.email_body_loader.class%
         arguments:
             - @oro_imap.connector.factory
+            - @oro_platform.security.encryptor.mcrypt
         tags:
             - { name: oro_email.email_body_loader }
+
+    oro_imap.email_synchronizer:
+        scope: prototype
+        class: %oro_imap.email_synchronizer.class%
+        arguments:
+            - @oro_imap.connector.factory
+            - @doctrine.orm.entity_manager
+            - @oro_email.email.entity.builder
+            - @oro_email.email.address.manager
+            - @oro_platform.security.encryptor.mcrypt
 
     oro_imap.form.type.configuration:
         class: %oro_imap.form.type.configuration.class%

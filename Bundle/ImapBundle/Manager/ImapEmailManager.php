@@ -23,13 +23,6 @@ class ImapEmailManager
     protected $connector;
 
     /**
-     * A mailbox name all email related actions are performed for
-     *
-     * @var string
-     */
-    protected $selectedFolder = 'inbox';
-
-    /**
      * Constructor
      *
      * @param ImapConnector $connector
@@ -46,7 +39,7 @@ class ImapEmailManager
      */
     public function getSelectedFolder()
     {
-        return $this->selectedFolder;
+        return $this->connector->getSelectedFolder();
     }
 
     /**
@@ -56,7 +49,7 @@ class ImapEmailManager
      */
     public function selectFolder($folder)
     {
-        $this->selectedFolder = $folder;
+        $this->connector->selectFolder($folder);
     }
 
     /**
@@ -99,12 +92,10 @@ class ImapEmailManager
      */
     public function getEmails(SearchQuery $query = null)
     {
-        $response = $this->connector->findItems(
-            $this->getSelectedFolder(),
-            $query
+        return new ImapEmailIterator(
+            $this->connector->findItems($query),
+            $this
         );
-
-        return new ImapEmailIterator($response, $this);
     }
 
     /**

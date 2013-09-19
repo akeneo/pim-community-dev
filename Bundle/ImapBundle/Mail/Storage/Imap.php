@@ -116,7 +116,8 @@ class Imap extends \Zend\Mail\Storage\Imap
                     array_push($stack, $parent);
                     $parent = $globalName . $data['delim'];
                     $folder = new Folder($localName, $globalName, $selectable);
-                    $folder->setFlags(!$data['flags'] ? array() : $data['flags']);
+                    $folder->setFlags(!isset($data['flags']) ? array() : $data['flags']);
+                    $this->postInitFolder($folder);
                     $parentFolder->$localName = $folder;
                     array_push($folderStack, $parentFolder);
                     $parentFolder = $folder;
@@ -132,6 +133,23 @@ class Imap extends \Zend\Mail\Storage\Imap
         }
 
         return $root;
+    }
+
+    /**
+     * Does a folder post initialization actions
+     *
+     * @param Folder $folder
+     */
+    protected function postInitFolder(Folder $folder)
+    {
+        if ($folder->getGlobalName() === 'INBOX') {
+            if (!$folder->hasFlag(Folder::FLAG_INBOX)) {
+                $folder->addFlag(Folder::FLAG_INBOX);
+            }
+        }
+        if ($folder->hasFlag('Junk')) {
+            $folder->addFlag(Folder::FLAG_SPAM);
+        }
     }
 
     /**
@@ -189,7 +207,7 @@ class Imap extends \Zend\Mail\Storage\Imap
      */
     public function selectFolder($globalName)
     {
-        if ((string)$this->currentFolder === (string)$globalName) {
+        if ((string)$this->currentFolder === (string)$globalName && $this->uidValidity !== null) {
             // The given folder already selected
             return;
         }

@@ -11,6 +11,7 @@ use Oro\Bundle\ImapBundle\Manager\ImapEmailManager;
 use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
+use Oro\Bundle\PlatformBundle\Security\Encryptor\Mcrypt;
 
 class ImapEmailSynchronizer
 {
@@ -38,27 +39,40 @@ class ImapEmailSynchronizer
      */
     protected $emailEntityBuilder;
 
+    /** @var Mcrypt */
+    protected $encryptor;
+
     /**
      * Constructor
      *
-     * @param LoggerInterface $log
      * @param ImapConnectorFactory $connectorFactory
      * @param EntityManager $em
      * @param EmailEntityBuilder $emailEntityBuilder
      * @param EmailAddressManager $emailAddressManager
+     * @param Mcrypt $encryptor
      */
     public function __construct(
-        LoggerInterface $log,
         ImapConnectorFactory $connectorFactory,
         EntityManager $em,
         EmailEntityBuilder $emailEntityBuilder,
-        EmailAddressManager $emailAddressManager
+        EmailAddressManager $emailAddressManager,
+        Mcrypt $encryptor
     ) {
-        $this->log = $log;
         $this->connectorFactory = $connectorFactory;
         $this->em = $em;
         $this->emailEntityBuilder = $emailEntityBuilder;
         $this->emailAddressManager = $emailAddressManager;
+        $this->encryptor = $encryptor;
+    }
+
+    /**
+     * Sets a logger
+     *
+     * @param LoggerInterface $log
+     */
+    public function setLogger(LoggerInterface $log)
+    {
+        $this->log = $log;
     }
 
     /**
@@ -86,7 +100,7 @@ class ImapEmailSynchronizer
             $origin->getPort(),
             $origin->getSsl(),
             $origin->getUser(),
-            $origin->getPassword()
+            $this->encryptor->decryptData($origin->getPassword())
         );
         $processor = new ImapEmailSynchronizationProcessor(
             $this->log,

@@ -136,12 +136,12 @@ class ImapEmailSynchronizationProcessor
     {
         $sqb = $this->manager->getSearchQueryBuilder();
         if ($origin->getSynchronizedAt()) {
-            $sqb->sent($sqb->formatDate($origin->getSynchronizedAt()));
+            $sqb->sent($origin->getSynchronizedAt());
         } else {
-            // this is the first synchronization of this folder; just load emails for last month
+            // this is the first synchronization of this folder; just load emails for last year
             $fromDate = new \DateTime('now');
-            $fromDate = $fromDate->sub(new \DateInterval('P1M'));
-            $sqb->sent($sqb->formatDate($fromDate));
+            $fromDate = $fromDate->sub(new \DateInterval('P1Y'));
+            $sqb->sent($fromDate);
         }
 
         return $sqb;
@@ -225,7 +225,7 @@ class ImapEmailSynchronizationProcessor
      */
     protected function ensureFoldersInitialized(array &$folders, ImapEmailOrigin $origin)
     {
-        if (!empty($folders)) {
+        if (!empty($folders) && count($folders) >= 2) {
             return;
         }
 
@@ -243,6 +243,9 @@ class ImapEmailSynchronizationProcessor
 
             if ($type !== null) {
                 $globalName = $srcFolder->getGlobalName();
+                if ($this->isFolderExist($folders, $type, $globalName)) {
+                    continue;
+                }
 
                 $this->log->info(sprintf('Persisting "%s" folder ...', $globalName));
 
@@ -264,6 +267,25 @@ class ImapEmailSynchronizationProcessor
         }
 
         $this->em->flush();
+    }
+
+    /**
+     * @param EmailFolder[] $folders
+     * @param string $folderType
+     * @param string $folderGlobalName
+     * @return bool
+     */
+    protected function isFolderExist(array &$folders, $folderType, $folderGlobalName)
+    {
+        $exists = false;
+        foreach ($folders as $folder) {
+            if ($folder->getType() === $folderType && $folder->getFullName() === $folderGlobalName) {
+                $exists = true;
+                break;
+            }
+        }
+
+        return $exists;
     }
 
     /**

@@ -58,17 +58,37 @@ class ImapConnector
     }
 
     /**
-     * @param Folder|string|null $parentFolder
-     * @param SearchQuery|null $query
-     * @return ImapMessageIterator
+     * Get selected folder
+     *
+     * @throws \RuntimeException
+     * @return string
      */
-    public function findItems($parentFolder = null, $query = null)
+    public function getSelectedFolder()
     {
         $this->ensureConnected();
 
-        if ($parentFolder !== null) {
-            $this->imap->selectFolder($parentFolder);
-        }
+        return (string)$this->imap->getCurrentFolder();
+    }
+
+    /**
+     * Set selected folder
+     *
+     * @param string $folder
+     */
+    public function selectFolder($folder)
+    {
+        $this->ensureConnected();
+
+        $this->imap->selectFolder($folder);
+    }
+
+    /**
+     * @param SearchQuery|null $query
+     * @return ImapMessageIterator
+     */
+    public function findItems($query = null)
+    {
+        $this->ensureConnected();
 
         $searchString = '';
         if ($query !== null) {

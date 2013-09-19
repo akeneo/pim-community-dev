@@ -12,6 +12,7 @@ use Oro\Bundle\ImapBundle\Connector\ImapConfig;
 use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
 use Oro\Bundle\ImapBundle\Manager\ImapEmailManager;
 use Oro\Bundle\ImapBundle\Entity\ImapEmail;
+use Oro\Bundle\PlatformBundle\Security\Encryptor\Mcrypt;
 
 class ImapEmailBodyLoader implements EmailBodyLoaderInterface
 {
@@ -20,14 +21,19 @@ class ImapEmailBodyLoader implements EmailBodyLoaderInterface
      */
     protected $connectorFactory;
 
+    /** @var Mcrypt */
+    protected $encryptor;
+
     /**
      * Constructor
      *
      * @param ImapConnectorFactory $connectorFactory
+     * @param Mcrypt $encryptor
      */
-    public function __construct(ImapConnectorFactory $connectorFactory)
+    public function __construct(ImapConnectorFactory $connectorFactory, Mcrypt $encryptor)
     {
         $this->connectorFactory = $connectorFactory;
+        $this->encryptor = $encryptor;
     }
 
     /**
@@ -51,7 +57,7 @@ class ImapEmailBodyLoader implements EmailBodyLoaderInterface
             $origin->getPort(),
             $origin->getSsl(),
             $origin->getUser(),
-            $origin->getPassword()
+            $this->encryptor->decryptData($origin->getPassword())
         );
         $manager = new ImapEmailManager($this->connectorFactory->createImapConnector($config));
         $manager->selectFolder($email->getFolder()->getFullName());

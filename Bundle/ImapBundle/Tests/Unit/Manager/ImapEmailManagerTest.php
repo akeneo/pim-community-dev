@@ -24,7 +24,13 @@ class ImapEmailManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testSelectFolder()
     {
-        $this->assertEquals('inbox', $this->manager->getSelectedFolder());
+        $this->connector->expects($this->once())
+            ->method('selectFolder')
+            ->with('test');
+        $this->connector->expects($this->once())
+            ->method('getSelectedFolder')
+            ->will($this->returnValue('test'));
+
         $this->manager->selectFolder('test');
         $this->assertEquals('test', $this->manager->getSelectedFolder());
     }
@@ -147,7 +153,7 @@ class ImapEmailManagerTest extends \PHPUnit_Framework_TestCase
         $messageIterator = new ImapMessageIterator($imap, array(1));
         $this->connector->expects($this->once())
             ->method('findItems')
-            ->with($this->equalTo('Test Folder'), $this->identicalTo($query))
+            ->with($this->identicalTo($query))
             ->will($this->returnValue($messageIterator));
 
         $this->manager->selectFolder('Test Folder');

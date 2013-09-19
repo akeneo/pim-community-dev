@@ -117,13 +117,49 @@ class GmailSearchStringManager extends AbstractSearchStringManager
     /**
      * {@inheritdoc}
      */
-    protected function normalizeValue($value, $match)
+    protected function normalizeValue($keyword, $value, $match)
     {
-        $result = parent::normalizeValue($value, $match);
+        if ($keyword === 'before' || $keyword === 'after') {
+            $value = $this->formatDate($value);
+        }
+
+        $result = parent::normalizeValue($keyword, $value, $match);
         if ($match === SearchQueryMatch::EXACT_MATCH) {
             $result = '+' . $result;
         }
 
         return str_replace('"', '\\"', $result);
+    }
+
+    /**
+     * Returns a string represents the given date in format required for search query criterion.
+     * Example: 2013/01/21
+     *
+     * @param mixed $value
+     * @return string
+     */
+    protected function formatDate($value)
+    {
+        if ($value instanceof \DateTime) {
+            return $value->format('Y/m/d');
+        }
+
+        return $value;
+    }
+
+    /**
+     * Returns a string represents the given date/time in format required for search query criterion.
+     * Example: "2013/01/21 23:05:40 +0007"
+     *
+     * @param mixed $value
+     * @return string
+     */
+    protected function formatDateTime($value)
+    {
+        if ($value instanceof \DateTime) {
+            return '"' . $value->format('Y/m/d H:i:s 0') . '"';
+        }
+
+        return $value;
     }
 }

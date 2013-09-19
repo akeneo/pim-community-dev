@@ -47,7 +47,6 @@ class EmailCacheManager
             ->select($email->getFolder()->getOrigin())
             ->loadEmailBody($email, $this->em);
 
-        $emailBody->setHeader($email);
         $email->setEmailBody($emailBody);
 
         $this->em->persist($email);
