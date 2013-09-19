@@ -57,13 +57,18 @@ class Opportunity extends AbstractEntity implements Entity
         $this->waitForAjax();
         $this->byXpath("//div[@id='select2-drop']/div/input")->value($contact);
         $this->waitForAjax();
-        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$contact}')]", "Contact autocoplete doesn't return search value");
+        $this->assertElementPresent(
+            "//div[@id='select2-drop']//div[contains(., '{$contact}')]",
+            "Contact autocoplete doesn't return search value"
+        );
         $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$contact}')]")->click();
     }
 
     public function getContact()
     {
-        return $this->byXpath("//div[@id='s2id_orocrm_sales_opportunity_form_contact']/a/span")->text();
+        return $this->byXpath(
+            "//div[@id='s2id_orocrm_sales_opportunity_form_contact']/a/span"
+        )->text();
     }
 
     public function setAccount($account)
@@ -72,7 +77,10 @@ class Opportunity extends AbstractEntity implements Entity
         $this->waitForAjax();
         $this->byXpath("//div[@id='select2-drop']/div/input")->value($account);
         $this->waitForAjax();
-        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$account}')]", "Account autocoplete doesn't return search value");
+        $this->assertElementPresent(
+            "//div[@id='select2-drop']//div[contains(., '{$account}')]",
+            "Account autocoplete doesn't return search value"
+        );
         $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$account}')]")->click();
     }
 
@@ -158,155 +166,6 @@ class Opportunity extends AbstractEntity implements Entity
     {
         return $this->closedate->value();
     }
-//
-//    public function setWebsite($website)
-//    {
-//        $this->website->clear();
-//        $this->website->value($website);
-//        return $this;
-//    }
-//
-//    public function getWebsite()
-//    {
-//        return $this->website->value();
-//    }
-//
-//    public function setEmployees($employees)
-//    {
-//        $this->employees->clear();
-//        $this->employees->value($employees);
-//        return $this;
-//    }
-//
-//    public function getEmployees()
-//    {
-//        return $this->employees->value();
-//    }
-//
-//    public function setAddressLabel($value)
-//    {
-//        $addresslabel = $this->byId("orocrm_sales_lead_form_address_label");
-//        $addresslabel->clear();
-//        $addresslabel->value($value);
-//
-//        return $this;
-//    }
-//
-//    public function getAddressLabel()
-//    {
-//        $addresslabel = $this->byId("orocrm_sales_lead_form_address_label");
-//        return $addresslabel->attribute('value');
-//    }
-//
-//    public function setAddressStreet($value)
-//    {
-//        $addressstreet = $this->byId("orocrm_sales_lead_form_address_street");
-//        $addressstreet->clear();
-//        $addressstreet->value($value);
-//
-//        return $this;
-//    }
-//
-//    public function getAddressStreet()
-//    {
-//        $addressstreet = $this->byId("orocrm_sales_lead_form_address_street");
-//        return $addressstreet->attribute('value');
-//    }
-//
-//    public function setAddressCity($value)
-//    {
-//        $addresscity = $this->byId("orocrm_sales_lead_form_address_city");
-//        $addresscity->clear();
-//        $addresscity->value($value);
-//
-//        return $this;
-//    }
-//
-//    public function getAddressCity()
-//    {
-//        $addresscity = $this->byId("orocrm_sales_lead_form_address_city");
-//        return $addresscity->attribute('value');
-//    }
-//
-//    public function setAddressZipCode($value)
-//    {
-//        $addresscity = $this->byId("orocrm_sales_lead_form_address_postalCode");
-//        $addresscity->clear();
-//        $addresscity->value($value);
-//
-//        return $this;
-//    }
-//
-//    public function getAddressZipCode()
-//    {
-//        $addresscity = $this->byId("orocrm_sales_lead_form_address_postalCode");
-//        return $addresscity->attribute('value');
-//    }
-//
-//    public function setAddressCountry($value)
-//    {
-//        $country = $this->byXpath("//div[@id='s2id_orocrm_sales_lead_form_address_country']/a");
-//        $country->click();
-//        $this->waitForAjax();
-//        $this->byXpath("//div[@id='select2-drop']/div/input")->value($value);
-//        $this->waitForAjax();
-//        $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$value}')]", "Country's autocoplete doesn't return search value");
-//        $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$value}')]")->click();
-//        $this->waitForAjax();
-//
-//        return $this;
-//    }
-//
-//    public function getAddressCountry()
-//    {
-//        return $this->byXpath("//div[@id = 's2id_orocrm_sales_lead_form_address_country']/a/span")->text();
-//    }
-//
-//    public function setAddressState($value)
-//    {
-//        if ($this->byId("orocrm_sales_lead_form_address_state_text")->displayed()) {
-//            $this->state = $this->byId("orocrm_sales_lead_form_address_state_text");
-//            $this->state->clear();
-//            $this->state->value($value);
-//        } else {
-//            $this->state = $this->byXpath("//div[@id='s2id_orocrm_sales_lead_form_address_state']/a");
-//            $this->state->click();
-//            $this->waitForAjax();
-//            $this->byXpath("//div[@id='select2-drop']/div/input")->value($value);
-//            $this->waitForAjax();
-//            $this->assertElementPresent("//div[@id='select2-drop']//div[contains(., '{$value}')]", "Country's autocoplete doesn't return search value");
-//            $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$value}')]")->click();
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function getAddressState()
-//    {
-//        return $this->byXpath("//div[@id = 's2id_orocrm_sales_lead_form_address_state']/a/span")->text();
-//    }
-//
-//    public function setAddress($data)
-//    {
-//        foreach ($data as $key => $value) {
-//            $method = 'setAddress' . ucfirst($key);
-//            $this->$method($value);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function getAddress(&$values)
-//    {
-//        $values['label'] = $this->getAddressLabel();
-//        $values['street'] = $this->getAddressStreet();
-//        $values['city'] = $this->getAddressCity();
-//        $values['zipCode'] = $this->getAddressZipCode();
-//        $values['country'] = $this->getAddressCountry();
-//        $values['state'] = $this->getAddressState();
-//
-//        return $this;
-//    }
 
     public function edit()
     {
