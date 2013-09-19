@@ -3,7 +3,7 @@
 
 {% oro_title_set({params : {"%entityName%": entity.id ? 'Item #'~entity.id : 'New '~entity_config.get('label') }}) %}
 
-{% set formAction = path('oro_entity_update', {'entity_id': entity_id, id: record.id}) %}
+{% set formAction = path('oro_entity_update', {'entity_id': entity_id, id: entity.id}) %}
 
 {% set entityClass = entity_config.getId.getClassName|replace('\\', '_') %}
 {% set audit_entity_id = entity.id %}
