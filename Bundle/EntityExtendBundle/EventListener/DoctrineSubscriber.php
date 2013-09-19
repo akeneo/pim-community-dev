@@ -3,84 +3,21 @@
 namespace Oro\Bundle\EntityExtendBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
-
-use Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface;
+use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
+use Oro\Bundle\EntityExtendBundle\Tools\Generator;
 
 class DoctrineSubscriber implements EventSubscriber
 {
     /**
-     * @var ExtendManager
-     */
-    protected $exm;
-
-    /**
-     * @param ExtendManager $extendManager
-     */
-    public function __construct(ExtendManager $extendManager)
-    {
-        $this->exm = $extendManager;
-    }
-
-    /**
-     * {@inheritdoc}
+     * @return array
      */
     public function getSubscribedEvents()
     {
         return array(
-            'preRemove',
-            'preUpdate',
-            'prePersist',
-            'postLoad',
             'loadClassMetadata'
         );
-    }
-
-    /**
-     * @param LifecycleEventArgs $event
-     */
-    public function preRemove(LifecycleEventArgs $event)
-    {
-        /*if ($event->getEntity() instanceof ExtendProxyInterface) {
-            $event->getEntityManager()->remove($event->getEntity()->__proxy__getExtend());
-        }*/
-    }
-
-    /**
-     * @param LifecycleEventArgs $event
-     */
-    public function preUpdate(LifecycleEventArgs $event)
-    {
-        if ($event->getEntity() instanceof ExtendProxyInterface) {
-            $event->getEntityManager()->remove($event->getEntity()->__proxy__getExtend());
-        }
-    }
-
-    /**
-     * @param LifecycleEventArgs $event
-     */
-    public function prePersist(LifecycleEventArgs $event)
-    {
-        /*if ($event->getEntity() instanceof ExtendProxyInterface
-            || $this->exm->isExtend($event->getEntity())
-        ) {
-            $this->exm->persist($event->getEntity());
-        }*/
-    }
-
-    /**
-     * @param LifecycleEventArgs $event
-     */
-    public function postLoad(LifecycleEventArgs $event)
-    {
-        /*if ($event->getEntity() instanceof ExtendProxyInterface
-            || $this->exm->isExtend($event->getEntity())
-        ) {
-            $this->exm->loadExtend($event->getEntity());
-        }*/
     }
 
     /**
@@ -88,11 +25,30 @@ class DoctrineSubscriber implements EventSubscriber
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $event)
     {
-        /*if ($this->exm->isExtend($event->getClassMetadata()->name)) {
-            $proxyRef = new \ReflectionClass($this->exm->getProxyClass($event->getClassMetadata()->name));
+        /** @var OroEntityManager $em */
+        $em = $event->getEntityManager();
 
-            $event->getClassMetadata()->name      = $proxyRef->getName();
-            $event->getClassMetadata()->namespace = $proxyRef->getNamespaceName();
-        }*/
+        $configProvider = $em->getExtendManager()->getConfigProvider();
+        $className      = $event->getClassMetadata()->getName();
+
+        if ($configProvider->hasConfig($className)) {
+            $config = $configProvider->getConfig($className);
+            if ($config->is('is_extend') && $config->is('index')) {
+                $index = isset($event->getClassMetadata()->table['indexes'])
+                    ? $event->getClassMetadata()->table['indexes']
+                    : array();
+
+                foreach ($config->get('index') as $columnName => $enabled) {
+                    if ($enabled) {
+                        $tableName = strtolower(str_replace('\\', '_', $event->getClassMetadata()->getName()));
+                        $indexName = 'oro_' . $tableName . '_' . $columnName;
+
+                        $index[$indexName] = array('columns' => array(Generator::PREFIX . $columnName));
+                    }
+                }
+
+                $event->getClassMetadata()->table['indexes'] = $index;
+            }
+        }
     }
 }

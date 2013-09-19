@@ -35,7 +35,7 @@ class ChangePasswordType extends AbstractType
             'currentPassword',
             'password',
             array(
-                'required' => true,
+                'required' => false,
                 'label' => 'Current password',
                 'constraints' => array(
                     new UserPassword()

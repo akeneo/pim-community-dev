@@ -193,3 +193,49 @@
         }
     };
 {% endblock %}
+
+{% block oro_multiple_entity_widget %}
+    {{ form_widget(form) }}
+
+    <style type="text/css">
+        #{{ id }}-container .entity-item {
+            padding: 5px 7px;
+            margin-left: 0;
+            margin-right: 1.5%;
+            margin-top: 15px;
+        }
+
+        #{{ id }}-container .entity-item h4 {
+            margin: 3px 0;
+        }
+    </style>
+
+    <div id="{{ id }}-container"></div>
+
+    <script type="text/javascript">
+        require(['jquery',
+            'oro/multiple-entity', 'oro/multiple-entity/collection', 'oro/multiple-entity/model',
+            'text!{{ asset('bundles/oroform/js/multiple-entity/templates/multiple-entities.html') }}',
+            'text!{{ asset('bundles/oroform/js/multiple-entity/templates/multiple-entity.html') }}'
+        ],
+        function($, MultipleEntity, MultipleEntityCollection, MultipleEntityModel, EntitiesTpl, EntityTpl) {
+            var widget = new MultipleEntity({
+                el: '#{{ id }}-container',
+                template: EntitiesTpl,
+                elementTemplate: EntityTpl,
+                addedElement: '#{{ id }}_added',
+                removedElement: '#{{ id }}_removed',
+                name: {{ id|json_encode|raw }},
+                defaultElement: {{ form.vars.default_element|json_encode|raw }},
+                selectionUrl: {{ form.vars.grid_url|json_encode|raw }},
+                collection: new MultipleEntityCollection(),
+                selectorWindowTitle: {{ form.vars.selector_window_title|trans|json_encode|raw }}
+            });
+            var data = [];
+            {% for element in initial_elements %}
+                data.push(new MultipleEntityModel({{ element|json_encode|raw }}));
+            {% endfor %}
+            widget.getCollection().reset(data);
+        });
+    </script>
+{% endblock %}

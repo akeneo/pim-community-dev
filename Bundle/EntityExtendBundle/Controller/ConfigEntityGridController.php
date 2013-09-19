@@ -2,26 +2,25 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
-use FOS\Rest\Util\Codes;
-
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+
+use FOS\Rest\Util\Codes;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
 
-use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-
-use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Form\Type\EntityType;
 use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
 
@@ -145,7 +144,11 @@ class ConfigEntityGridController extends Controller
 
         $className = '';
         if ($request->getMethod() == 'POST') {
-            $className = $request->request->get('oro_entity_config_type[model][className]', null, true);
+            $className = 'Extend\\Entity\\' . $request->request->get(
+                'oro_entity_config_type[model][className]',
+                null,
+                true
+            );
         }
 
         $entityModel  = $configManager->createConfigEntityModel($className);
@@ -187,7 +190,7 @@ class ConfigEntityGridController extends Controller
                         'parameters' => array('id' => $entityModel->getId()),
                     ),
                     array(
-                        'route' => 'oro_entityconfig_view',
+                        'route'      => 'oro_entityconfig_view',
                         'parameters' => array('id' => $entityModel->getId()),
                     )
                 );

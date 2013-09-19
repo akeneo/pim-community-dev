@@ -76,22 +76,23 @@ class RecordOwnerDataListener
             return;
         }
         $entity = $args->getEntity();
-        if ($this->configProvider->isConfigurable(get_class($entity))) {
-            if (!method_exists($entity, 'getOwner')) {
-                throw new \LogicException(
-                    sprintf('Method getOwner must be implemented for %s entity', get_class($entity))
-                );
-            }
-            if (!$entity->getOwner()) {
-                /** @var $config EntityConfig */
-                $config = $this->configProvider->getConfig(get_class($entity));
-                $ownerType = $config->get('owner_type');
-                /**
-                 * Automatically set current user as record owner
-                 */
-                if (OwnershipType::OWNERSHIP_TYPE_USER == $ownerType
-                    && method_exists($entity, 'setOwner')) {
-                        $entity->setOwner($user);
+        if ($this->configProvider->hasConfig(get_class($entity))) {
+            $config = $this->configProvider->getConfig(get_class($entity));
+            if ($config->has('owner_type') && !$config->get('owner_type') == OwnershipType::OWNER_TYPE_NONE) {
+                if (!method_exists($entity, 'getOwner')) {
+                    throw new \LogicException(
+                        sprintf('Method getOwner must be implemented for %s entity', get_class($entity))
+                    );
+                }
+                if (!$entity->getOwner()) {
+                    $ownerType = $config->get('owner_type');
+                    /**
+                     * Automatically set current user as record owner
+                     */
+                    if (OwnershipType::OWNER_TYPE_USER == $ownerType
+                        && method_exists($entity, 'setOwner')) {
+                            $entity->setOwner($user);
+                    }
                 }
             }
         }

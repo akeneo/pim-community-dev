@@ -1,11 +1,11 @@
 parameters:
     oro_form.type.date.class:                       Oro\Bundle\FormBundle\Form\Type\OroDateType
     oro_form.type.datetime.class:                   Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
-    oro_form.type.combobox_local.class:             Oro\Bundle\FormBundle\Form\Type\OroComboboxLocalType
     oro_form.type.entity_identifier.class:          Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
     oro_form.type.jqueryselect2_hidden.class:       Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
     oro_form.extension.data_block.class:            Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension
     oro_form.type.icon.class:                       Oro\Bundle\FormBundle\Form\Type\OroIconType
+    oro_form.type.multiple_entity.class:            Oro\Bundle\FormBundle\Form\Type\MultipleEntityType
 
 services:
     # Form types
@@ -42,3 +42,8 @@ services:
         class: %oro_form.extension.data_block.class%
         tags:
             - { name: form.type_extension, alias: form }
+
+    oro_form.type.multiple_entity:
+        class: %oro_form.type.multiple_entity.class%
+        tags:
+            - { name: form.type, alias: oro_multiple_entity }

@@ -1,0 +1,3 @@
+oro_titles:
+    oro_entity_view: %%entityName%%
+    oro_entity_update: %%entityName%%

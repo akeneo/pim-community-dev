@@ -1,0 +1,44 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+
+{% oro_title_set({params : {"%entityName%": 'Item #'~entity.id|default('N/A') }}) %}
+
+{% block navButtons %}
+    {% if resource_granted('oro_user_user_update') %}
+        {{ UI.button({'path' : path('oro_entity_update', { 'entity_id': parent, id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('oro_entityconfig_index'),
+        'indexLabel': 'Entities',
+        'entityTitle': 'Item #'~entity.id|default('N/A'),
+        'additional': [{
+            'indexPath'  : path('oro_entity_index', {id: parent}),
+            'indexLabel' : entity_config.get('label')|default('N/A')
+        }]
+    }%}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}
+{% endblock stats%}
+
+{% block content_data %}
+    {% set general_fields = [ ] %}
+    {% for key, value in entity_fields|default %}
+        {% set general_fields = general_fields|merge([UI.attibuteRow(key|capitalize, value)])%}
+    {% endfor %}
+
+    {% set data = { 'dataBlocks': [{
+        'title': 'General',
+        'class': 'active',
+        'subblocks': [
+            {'title': 'General Information', 'data': general_fields },
+        ]
+    } ]} %}
+
+    {{ parent() }}
+{% endblock content_data %}

@@ -3,7 +3,7 @@
 namespace Oro\Bundle\FormBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\FormBundle\Form\Type\OroIconType;
-use Symfony\Component\Form\Tests\FormIntegrationTestCase;
+use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
 use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
 
