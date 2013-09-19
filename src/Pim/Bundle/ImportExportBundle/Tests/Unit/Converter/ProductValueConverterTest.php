@@ -234,6 +234,20 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testConvertMalformedMetric()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'weight'))
+            ->will($this->returnValue($this->getAttributeMock('metric')));
+
+        $this->converter->convert(array('weight' => '60KILOGRAM'));
+    }
+
     protected function getAttributeMock($backendType, $translatable = false, $scopable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');

@@ -140,7 +140,9 @@ class ProductValueConverter
     public function convertMetricValue($value)
     {
         if (false === strpos($value, ' ')) {
-            continue;
+            throw new \InvalidArgumentException(
+                sprintf('Metric value "%s" is malformed, must match "<data> <unit>"', $value)
+            );
         }
         list($data, $unit) = explode(' ', $value);
 
