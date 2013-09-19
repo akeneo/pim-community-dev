@@ -138,4 +138,25 @@ class StepExecutionProxyContext implements ContextInterface
     {
         return $this->stepExecution->getJobExecution()->getJobInstance()->getRawConfiguration();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasOption($name)
+    {
+        $configuration = $this->getConfiguration();
+        return isset($configuration[$name]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOption($name)
+    {
+        if ($this->hasOption($name)) {
+            $configuration = $this->getConfiguration();
+            return $configuration[$name];
+        }
+        return null;
+    }
 }
