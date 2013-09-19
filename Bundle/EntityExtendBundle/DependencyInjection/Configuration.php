@@ -20,18 +20,10 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $treeBuilder->root('oro_entity_extend')
             ->children()
-                ->scalarNode('backend')
-                    ->isRequired()
-                    ->validate()
-                        ->ifNotInArray(array('Dynamic', 'EAV'))
-                        ->thenInvalid('Invalid mode value "%s"')
-                    ->end()
-                ->end()
                 ->scalarNode('cache_dir')->cannotBeEmpty()->defaultValue('%kernel.cache_dir%/oro_extend')->end()
-                #->scalarNode('extend_namespace')->cannotBeEmpty()->defaultValue('Extend\Entity')->end()
             ->end()
             ->children()
-                ->scalarNode('backup')->cannotBeEmpty()->defaultValue('%kernel.root_dir%/entities/Backup')->end()
+                ->scalarNode('backup')->cannotBeEmpty()->defaultValue('%kernel.root_dir%/entities/Extend/Backup')->end()
             ->end();
 
         return $treeBuilder;

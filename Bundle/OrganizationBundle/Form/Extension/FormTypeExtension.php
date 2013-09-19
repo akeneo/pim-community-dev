@@ -47,8 +47,14 @@ class FormTypeExtension extends AbstractTypeExtension
      */
     protected $translator;
 
+    /**
+     * @var string
+     */
     protected $fieldName;
 
+    /**
+     * @var bool
+     */
     protected $changeOwnerGranted;
 
     public function __construct(
@@ -92,15 +98,16 @@ class FormTypeExtension extends AbstractTypeExtension
         $user = $token->getUser();
         if ($user
             && $dataClassName
-            && $this->configProvider->isConfigurable($dataClassName)
+            && $this->configProvider->hasConfig($dataClassName)
         ) {
-            if (!method_exists($dataClassName, 'getOwner')) {
-                throw new \LogicException(
-                    sprintf('Method getOwner must be implemented for %s entity', $dataClassName)
-                );
-            }
             $config = $this->configProvider->getConfig($dataClassName);
-            if ($config->has('owner_type')) {
+            if ($config->has('owner_type') && $config->get('owner_type') != OwnershipType::OWNER_TYPE_NONE) {
+                if (!method_exists($dataClassName, 'getOwner')) {
+                    throw new \LogicException(
+                        sprintf('Method getOwner must be implemented for %s entity', $dataClassName)
+                    );
+                }
+
                 $ownerType = $config->get('owner_type');
                 /**
                  * Adding listener to hide owner field for update pages
@@ -110,7 +117,7 @@ class FormTypeExtension extends AbstractTypeExtension
                     FormEvents::POST_SET_DATA,
                     array($this, 'postSetData')
                 );
-                if (OwnershipType::OWNERSHIP_TYPE_USER == $ownerType && $this->changeOwnerGranted) {
+                if (OwnershipType::OWNER_TYPE_USER == $ownerType && $this->changeOwnerGranted) {
                     /**
                      * Showing user owner box for entities with owner type USER if change owner permission is
                      * granted.
@@ -123,9 +130,9 @@ class FormTypeExtension extends AbstractTypeExtension
                             'constraints' => array(new NotBlank())
                         )
                     );
-                } elseif (OwnershipType::OWNERSHIP_TYPE_BUSINESS_UNIT == $ownerType) {
+                } elseif (OwnershipType::OWNER_TYPE_BUSINESS_UNIT == $ownerType) {
                     $this->addBusinessUnitOwnerField($builder, $user, $dataClassName);
-                } elseif (OwnershipType::OWNERSHIP_TYPE_ORGANIZATION == $ownerType) {
+                } elseif (OwnershipType::OWNER_TYPE_ORGANIZATION == $ownerType) {
                     $this->addOrganizationOwnerField($builder, $user);
                 }
             }

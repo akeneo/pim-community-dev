@@ -1,6 +1,12 @@
 parameters:
+    oro_entity.listener.navigation_listener.class: Oro\Bundle\EntityBundle\EventListener\NavigationListener
 
 services:
-    oro_entity_config.link.provider_bag.method:
+    oro_entity.listener.navigation_listener:
+        class: %oro_entity.listener.navigation_listener.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @oro_entity_config.provider.entity
+            - @oro_entity_config.provider.extend
         tags:
-            - { name: oro_service_method,  service: oro_entity_config.provider_bag, method: testAction }
+            - { name: kernel.event_listener, event: oro_menu.configure.application_menu, method: onNavigationConfigure }

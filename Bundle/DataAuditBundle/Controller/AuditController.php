@@ -49,7 +49,7 @@ class AuditController extends Controller
      * @Route(
      *      "/history/{entity}/{id}/{_format}",
      *      name="oro_dataaudit_history",
-     *      requirements={"entity"="[a-zA-Z_]+", "id"="\d+"},
+     *      requirements={"entity"="[a-zA-Z0-9_]+", "id"="\d+"},
      *      defaults={"entity"="entity", "id"=0, "_format" = "html"}
      * )
      * @Template

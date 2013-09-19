@@ -28,7 +28,7 @@ class PropertyConfigContainer
     protected $container;
 
     /**
-     * @param $config
+     * @param                    $config
      * @param ContainerInterface $container
      */
     public function __construct($config, ContainerInterface $container)
@@ -121,7 +121,7 @@ class PropertyConfigContainer
         $result = array();
         foreach ($this->getItems($type) as $code => $item) {
             if (isset($item['options']['serializable'])) {
-                $result[$code] = (bool)$item['options']['serializable'];
+                $result[$code] = (bool) $item['options']['serializable'];
             }
         }
 
@@ -137,7 +137,7 @@ class PropertyConfigContainer
     {
         $type = $this->getConfigType($type);
 
-        return (boolean)$this->getFormItems($type, $fieldType);
+        return (boolean) $this->getFormItems($type, $fieldType);
     }
 
     /**
@@ -282,19 +282,6 @@ class PropertyConfigContainer
         }
 
         return $type;
-    }
-
-    /**
-     * @return array
-     */
-    public function getFieldLayoutActions()
-    {
-        $fieldLayoutActions = array();
-        if (isset($this->config['field']) && isset($this->config['field']['layout_action'])) {
-            $fieldLayoutActions = $this->config['field']['layout_action'];
-        }
-
-        return $fieldLayoutActions;
     }
 
     /**

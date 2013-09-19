@@ -75,18 +75,15 @@ oro_entity_config:
                             operator:       '!='
                             value:          true
 
-                extend_class:
-                    options:
-                        internal:           true
-
                 unique_key:
                     options:
                         internal:           true
                         serializable:       true
 
-                proxy_class:
+                index:
                     options:
                         internal:           true
+                        serializable:       true
 
         field:
             grid_action:
@@ -111,6 +108,7 @@ oro_entity_config:
                     name:                   'Manage unique keys'
                     route:                  'oro_entityextend_entity_unique_key'
                     entity_id:              true
+                    filter:                 { is_extend: true }
                 -
                     name:                   'Create field'
                     route:                  'oro_entityextend_field_create'

@@ -1,0 +1,25 @@
+TestClassExtend:
+    is_extend:                      true                    #default false
+    owner:                          'Custom'                #default 'System'
+    configs:                                                #config for entity
+        entity:
+            label:                  TestClassExtend
+    fields:
+        testStringField:
+            owner:                  'Custom'
+            type:                   string
+            configs:
+                entity:
+                    label:          testStringField
+            options:
+                length:             200
+        testIntegerField:
+            owner:                  'Custom'
+            type:                   smallint
+
+
+OroCRM\Bundle\ContactBundle\Entity\Contact:
+    fields:
+        testField:
+            owner:                  'Custom'                #default 'System'
+            type:                   string
