@@ -1,0 +1,4 @@
+{% import 'OroEmailBundle::macros.html.twig' as EA %}
+{% set format = oro_config_value('oro_user.name_format') %}
+
+{{ EA.email_address(value, record.getValue('fromName'), format) }}

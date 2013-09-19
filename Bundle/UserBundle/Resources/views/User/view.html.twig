@@ -1,6 +1,7 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroTagBundle::macros.html.twig' as _tag %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroEmailBundle::macros.html.twig' as Email %}
 
 {% set gridId = 'users-email-grid' %}
 {% block head_script %}
@@ -126,7 +127,7 @@
                             {
                                 'title': '',
                                 'useSpan': false,
-                                'data': [UI.gridBlock(gridId)]
+                                'data': [UI.gridBlock(gridId), Email.renderJs()]
                             }
                         ]
                     }]

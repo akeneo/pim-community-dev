@@ -44,12 +44,12 @@ class EmailDatagridManager extends DatagridManager
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
         $fieldName = new FieldDescription();
-        $fieldName->setName('fromName');
+        $fieldName->setName('id');
         $fieldName->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('oro.user.datagrid.email.column.from_name'),
-                'field_name'  => 'fromName',
+                'label'       => $this->translate('oro.user.datagrid.email.column.id'),
+                'field_name'  => 'id',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
@@ -60,10 +60,32 @@ class EmailDatagridManager extends DatagridManager
         $fieldsCollection->add($fieldName);
 
         $fieldName = new FieldDescription();
+        $fieldName->setName('fromEmailAddress');
+        $fieldName->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_HTML,
+                'label'       => $this->translate('oro.user.datagrid.email.column.from_name'),
+                'field_name'  => 'fromEmailAddress',
+                'filter_type' => FilterInterface::TYPE_STRING,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $templateDataProperty = new TwigTemplateProperty(
+            $fieldName,
+            'OroEmailBundle:Email:Datagrid/Property/from.html.twig'
+        );
+        $fieldName->setProperty($templateDataProperty);
+
+        $fieldsCollection->add($fieldName);
+
+        $fieldName = new FieldDescription();
         $fieldName->setName('subject');
         $fieldName->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'type'        => FieldDescriptionInterface::TYPE_HTML,
                 'label'       => $this->translate('oro.user.datagrid.email.column.subject'),
                 'field_name'  => 'subject',
                 'filter_type' => FilterInterface::TYPE_STRING,
@@ -73,15 +95,21 @@ class EmailDatagridManager extends DatagridManager
                 'show_filter' => true,
             )
         );
+        $templateDataProperty = new TwigTemplateProperty(
+            $fieldName,
+            'OroEmailBundle:Email:Datagrid/Property/subject.html.twig'
+        );
+        $fieldName->setProperty($templateDataProperty);
+
         $fieldsCollection->add($fieldName);
 
         $fieldName = new FieldDescription();
-        $fieldName->setName('received');
+        $fieldName->setName('sentAt');
         $fieldName->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_DATETIME,
-                'label'       => $this->translate('oro.user.datagrid.email.column.received'),
-                'field_name'  => 'received',
+                'label'       => $this->translate('oro.user.datagrid.email.column.sentAt'),
+                'field_name'  => 'sentAt',
                 'filter_type' => FilterInterface::TYPE_DATETIME,
                 'required'    => false,
                 'sortable'    => true,
@@ -91,9 +119,9 @@ class EmailDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($fieldName);
 
-        $fieldEntityName = new FieldDescription();
-        $fieldEntityName->setName('recipients');
-        $fieldEntityName->setOptions(
+        $fieldName = new FieldDescription();
+        $fieldName->setName('recipients');
+        $fieldName->setOptions(
             array(
                 'type'                => FieldDescriptionInterface::TYPE_HTML,
                 'label'               => $this->translate('oro.email.datagrid.recipients'),
@@ -108,10 +136,10 @@ class EmailDatagridManager extends DatagridManager
             )
         );
         $templateDataProperty = new TwigTemplateProperty(
-            $fieldEntityName,
+            $fieldName,
             'OroEmailBundle:Email:Datagrid/Property/recipients.html.twig'
         );
-        $fieldEntityName->setProperty($templateDataProperty);
-        $fieldsCollection->add($fieldEntityName);
+        $fieldName->setProperty($templateDataProperty);
+        $fieldsCollection->add($fieldName);
     }
 }

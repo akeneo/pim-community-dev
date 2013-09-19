@@ -294,7 +294,7 @@ function($, _, Backbone, mediator) {
                     this.actionsEl = null;
                     this.setElement($(content).filter('.widget-content'));
                     this._show();
-                    Oro.Events.trigger('hash_navigation_request:complete');
+                    mediator.trigger('hash_navigation_request:complete');
                 } catch (error) {
                     // Remove state with unrestorable content
                     this.trigger('contentLoadError', this);

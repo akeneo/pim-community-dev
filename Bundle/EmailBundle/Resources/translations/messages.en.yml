@@ -38,3 +38,7 @@ oro:
 "Cc": "Cc"
 "Bcc": "Bcc"
 "Attachments": "Attachments"
+oro.user.datagrid.email.column.sentAt: "Sent"
+oro.user.datagrid.email.column.subject: "Subject"
+oro.email.datagrid.recipients: "Recipients"
+oro.user.datagrid.email.column.id: "ID"
