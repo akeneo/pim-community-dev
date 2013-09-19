@@ -148,5 +148,5 @@ services:
         class: %oro_user.change_password.subscriber.class%
         arguments:
             - @form.factory
-            - @oro_user.acl_manager
+            - @oro_security.security_facade
             - @security.context
