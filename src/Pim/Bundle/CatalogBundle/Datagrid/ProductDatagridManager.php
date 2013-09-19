@@ -580,6 +580,13 @@ class ProductDatagridManager extends FlexibleDatagridManager
         return $dataScope;
     }
 
+    /**
+     * Get the product availables from the selected products (clause in proxy query)
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     *
+     * @return array
+     */
     protected function getAvailableAttributes(ProxyQueryInterface $proxyQuery)
     {
         $qb = clone $proxyQuery;
@@ -593,7 +600,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
     }
 
-    public function getAvailableAttributesList(ProxyQueryInterface $proxyQuery)
+    /**
+     * Get the available attribute codes
+     * @param ProxyQueryInterface $proxyQuery
+     * @return multitype:string unknown
+     */
+    public function getAvailableAttributeCodes(ProxyQueryInterface $proxyQuery)
     {
         $results = $this->getAvailableAttributes($proxyQuery);
 
@@ -614,7 +626,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         return $attributesList;
     }
 
-    protected function getAttributeAvailableIds(ProxyQueryInterface $proxyQuery)
+    protected function getAvailableAttributeIds(ProxyQueryInterface $proxyQuery)
     {
         $results = $this->getAvailableAttributes($proxyQuery);
 
@@ -628,7 +640,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
     public function prepareQueryForExport(ProxyQueryInterface $proxyQuery)
     {
-        $attributeIds = $this->getAttributeAvailableIds($proxyQuery);
+        $attributeIds = $this->getAvailableAttributeIds($proxyQuery);
 
         $proxyQuery
             ->resetDQLPart('groupBy')
