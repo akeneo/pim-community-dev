@@ -146,7 +146,7 @@ define(
             };
 
             this.bindEvents = function () {
-                $('#trees-list a').on('click', function () {
+                $('#trees-list').find('a').on('click', function () {
                     self.switchTree(this.id.replace('tree-link-', ''));
                 });
             };

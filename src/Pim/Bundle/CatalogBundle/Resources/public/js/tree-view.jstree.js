@@ -69,7 +69,7 @@
             function updateGrid(treeId, categoryId) {
                 var collection = Registry.getElement('datagrid', 'products').collection;
                 if (collection.setCategory(treeId, categoryId)) {
-                    $('.grid-toolbar .actions-panel .action.btn .icon-refresh').click();
+                    $('.grid-toolbar .icon-refresh').click();
                 }
             }
 
@@ -100,7 +100,7 @@
                                 : '';
                     }
                     var nodeId = getNodeId($.jstree._focused().get_selected()),
-                        treeId = getNodeId($('#tree li').first());
+                        treeId = getNodeId($('#tree').find('li').first());
                     updateGrid(treeId, nodeId);
                 });
             };
