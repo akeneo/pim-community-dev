@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueValue extends Constraint
 {
-    public $message = 'This value is already set on an other product.';
+    public $message = 'The value {{ value }} of attribute {{ attribute }} is already set on an other product.';
 
     public function validatedBy()
     {

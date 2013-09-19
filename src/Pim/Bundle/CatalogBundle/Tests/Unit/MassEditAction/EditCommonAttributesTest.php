@@ -106,7 +106,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         $foo = $this->getProductMock();
         $bar = $this->getProductMock();
 
-        $name        = $this->getProductAttributeMock('name');
+        $name        = $this->getProductAttributeMock('name', 'text', false, true);
         $description = $this->getProductAttributeMock('description', 'text', true);
         $price       = $this->getProductAttributeMock('price', 'pim_catalog_price_collection');
 
@@ -114,11 +114,17 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         $oldFooDescriptionMobileVal = $this->getProductValueMock($description, null, 'mobile');
         $oldFooDescriptionWebVal    = $this->getProductValueMock($description, null, 'web');
         $oldFooPriceVal             = $this->getProductValueMock($price, null);
+        $oldFooPriceVal->expects($this->any())
+            ->method('getPrice')
+            ->will($this->returnValue(false));
 
         $oldBarNameVal              = $this->getProductValueMock($name, null);
         $oldBarDescriptionMobileVal = $this->getProductValueMock($description, null, 'mobile');
         $oldBarDescriptionWebVal    = $this->getProductValueMock($description, null, 'web');
         $oldBarPriceVal             = $this->getProductValueMock($price, null);
+        $oldBarPriceVal->expects($this->any())
+            ->method('getPrice')
+            ->will($this->returnValue(false));
 
         $newNameVal              = $this->getProductValueMock($name, 'newName');
         $newDescriptionMobileVal = $this->getProductValueMock($description, 'newDescriptionMobile', 'mobile');
@@ -146,9 +152,9 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
                 $this->returnValueMap(
                     array(
                         array('name',         'en_US',  null,      $oldFooNameVal),
-                        array('description',  'en_US',  'mobile',  $oldFooDescriptionMobileVal),
-                        array('description',  'en_US',  'web',     $oldFooDescriptionWebVal),
-                        array('price',        'en_US',  null,      $oldFooPriceVal),
+                        array('description',  null,     'mobile',  $oldFooDescriptionMobileVal),
+                        array('description',  null,     'web',     $oldFooDescriptionWebVal),
+                        array('price',        null,     null,      $oldFooPriceVal),
                     )
                 )
             );
@@ -159,9 +165,9 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
                 $this->returnValueMap(
                     array(
                         array('name',         'en_US',  null,      $oldBarNameVal),
-                        array('description',  'en_US',  'mobile',  $oldBarDescriptionMobileVal),
-                        array('description',  'en_US',  'web',     $oldBarDescriptionWebVal),
-                        array('price',        'en_US',  null,      $oldBarPriceVal),
+                        array('description',  null,     'mobile',  $oldBarDescriptionMobileVal),
+                        array('description',  null,     'web',     $oldBarDescriptionWebVal),
+                        array('price',        null,     null,      $oldBarPriceVal),
                     )
                 )
             );

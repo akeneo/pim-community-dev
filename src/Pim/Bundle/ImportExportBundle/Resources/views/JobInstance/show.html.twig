@@ -18,11 +18,11 @@
 
 {% block content %}
 
-    {% set subtitle = jobInstance.label  %}
+    {% set title = entityName ~ ' - ' ~ jobInstance.label %}
 
     {% set left %}
         <ul class="inline">
-           <li>{{ 'Code'|trans }}: {{ jobInstance.code|upper }}</li>
+           <li>{{ 'Code'|trans }}: {{ jobInstance.code }}</li>
            <li>{{ 'Connector'|trans }}: {{ jobInstance.job.name|trans }}</li>
        </ul>
     {% endset %}
@@ -33,14 +33,14 @@
             {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
         {% endif %}
         {% if uploadAllowed and uploadViolations|length == 0 %}
-            {{ elements.link('Upload and '~action|lower, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
+            {{ elements.link('Upload and '~action, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
         {% endif %}
         {% if violations|length == 0 %}
             {{ elements.link(action~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
         {% endif %}
     {% endset %}
 
-    {{ elements.page_header(title, buttons, subtitle, left) }}
+    {{ elements.page_header(title, buttons, null, left) }}
 
     {% if form is defined and form is not empty and uploadAllowed and uploadViolations|length == 0 %}
         <form id="pim_importexport_import_upload" method="POST" class="form-horizontal form-upload hide" action="{{ path('pim_importexport_import_launch', { id: jobInstance.id }) }}" {{ form_enctype(form) }}>
@@ -48,7 +48,7 @@
             <div class="row-fluid">
                 {{ form_row(form.file) }}
                 {{ form_row(form._token) }}
-                {{ elements.submitBtn('Upload and '~action|lower~' now'|trans) }}
+                {{ elements.submitBtn('Upload and '~action~' now') }}
             </div>
         </form>
     {% endif %}

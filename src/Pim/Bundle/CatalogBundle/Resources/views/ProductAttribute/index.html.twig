@@ -1,6 +1,6 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
-{% set title = 'Attributes overview'|trans %}
+{% set title = 'attribute.overview'|trans %}
 
 {% block head_script %}
     {{ parent() }}
@@ -11,10 +11,7 @@
 
 {% block content %}
     <div>
-
-        {% set buttons %}
-            {{ elements.createBtn('New attribute', path('pim_catalog_productattribute_create')) }}
-        {% endset %}
+        {% set buttons = elements.createBtn('attribute', path('pim_catalog_productattribute_create')) %}
 
         {{ elements.page_header(title, buttons) }}
 
