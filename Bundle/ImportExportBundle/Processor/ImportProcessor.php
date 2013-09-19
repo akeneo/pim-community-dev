@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\ImportExContactBundle\Processor;
+namespace Oro\Bundle\ImportExportBundle\Processor;
 
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
