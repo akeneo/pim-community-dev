@@ -117,6 +117,68 @@ class ChangePasswordSubscriberTest extends FormIntegrationTestCase
     }
 
     /**
+     * Test preSubmit
+     *
+     * @dataProvider preSubmitProvider
+     */
+    public function testPreSubmit($mode, $data)
+    {
+        $eventMock = $this->getMockBuilder('Symfony\Component\Form\FormEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $formMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $eventMock->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($formMock));
+        $eventMock->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue($data));
+
+        if ($mode) {
+            $formMock->expects($this->once())
+                ->method('remove')
+                ->with('currentPassword');
+
+            $formMock->expects($this->once())
+                ->method('add')
+                ->with($this->isInstanceOf('Symfony\Component\Form\Form'));
+        } else {
+            $formMock->expects($this->never())
+                ->method('remove');
+
+            $formMock->expects($this->never())
+                ->method('add');
+        }
+
+        $this->subscriber->preSubmit($eventMock);
+    }
+
+    /**
+     * @return array
+     */
+    public function preSubmitProvider()
+    {
+        return array(
+            array(true, array(
+                'currentPassword' => null,
+                'plainPassword' => array(
+                    'first' => null
+                ),
+            )),
+            array(false, array(
+                'currentPassword' => '123123',
+                'plainPassword' => array(
+                    'first' => '32321'
+                ),
+            )),
+        );
+    }
+
+    /**
      * Test bad scenario for isCurrentUser
      */
     public function testIsCurrentUserFalse()
