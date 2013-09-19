@@ -72,7 +72,7 @@ class Datagrid extends OroDatagrid
         $this->applyParameters();
         $proxyQuery = clone $this->query;
 
-        $exprFieldId = sprintf('%s.id', $qb->getRootAlias());
+        $exprFieldId = sprintf('%s.id', $proxyQuery->getRootAlias());
         $proxyQuery
             ->select($exprFieldId)
             ->groupBy($exprFieldId)
