@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Normalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -99,6 +100,10 @@ class FlatProductNormalizer implements NormalizerInterface
                 }
             }
             $data = join(self::ITEM_SEPARATOR, $result);
+        } elseif ($data instanceof Media) {
+            // TODO Handle media export
+            // They are ignored for now (both file and image type)
+            return;
         }
 
         $this->results[$value->getAttribute()->getCode().$suffix] = (string) $data;
