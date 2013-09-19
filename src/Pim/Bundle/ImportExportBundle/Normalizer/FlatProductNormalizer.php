@@ -36,10 +36,15 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected $fields = array();
 
-    protected function initializeFields($fields)
-    {
-        $this->fields = array_fill_keys($fields, '');
-    }
+    /**
+     * @staticvar string
+     */
+    const FIELD_FAMILY = 'family';
+
+    /**
+     * @staticvar string
+     */
+    const FIELD_CATEGORY = 'categories';
 
     /**
      * Transforms an object into a flat array
@@ -55,7 +60,7 @@ class FlatProductNormalizer implements NormalizerInterface
         // initialize context
         $scope  = isset($context['scope']) && is_string($context['scope']) ? $context['scope'] : null;
         if (isset($context['fields']) && is_array($context['fields'])) {
-            $this->initializeFields($context['fields']);
+            $this->fields = array_fill_keys($context['fields'], '');
         }
 
         $this->results = $this->fields;
@@ -127,6 +132,8 @@ class FlatProductNormalizer implements NormalizerInterface
     }
 
     /**
+     * Normalize the field name for values
+     *
      * @param ProductValueInterface $value
      * @return string
      */
@@ -147,9 +154,9 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizeFamily(Family $family = null)
     {
-//         if (empty($this->fields) || isset($this->fields['family'])) {
-            $this->results['family'] = $family ? $family->getCode() : '';
-//         }
+        if (empty($this->fields) || isset($this->fields[self::FIELD_FAMILY])) {
+            $this->results[self::FIELD_FAMILY] = $family ? $family->getCode() : '';
+        }
     }
 
     /**
@@ -159,8 +166,8 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizeCategories($categories = '')
     {
-        if (empty($this->fields) || isset($this->fields['categories'])) {
-            $this->results['categories'] = $categories;
+        if (empty($this->fields) || isset($this->fields[self::FIELD_CATEGORY])) {
+            $this->results[self::FIELD_CATEGORY] = $categories;
         }
     }
 }
