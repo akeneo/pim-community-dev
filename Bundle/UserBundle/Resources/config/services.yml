@@ -21,6 +21,7 @@ parameters:
     oro_user.autocomplete.user.search_handler:    Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler
     oro_user.email.owner.provider.class: Oro\Bundle\UserBundle\Entity\Provider\EmailOwnerProvider
     oro_user.gender_provider.class:     Oro\Bundle\UserBundle\Provider\GenderProvider
+    oro_user.change_password.subscriber.class:  Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber
 
 services:
     oro_user.manager.flexible:
@@ -143,3 +144,9 @@ services:
         tags:
             - { name: oro_email.owner.provider, order: 1 }
 
+    oro_user.change_password.subscriber:
+        class: %oro_user.change_password.subscriber.class%
+        arguments:
+            - @form.factory
+            - @oro_user.acl_manager
+            - @security.context

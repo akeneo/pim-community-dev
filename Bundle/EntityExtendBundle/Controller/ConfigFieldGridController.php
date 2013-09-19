@@ -142,7 +142,7 @@ class ConfigFieldGridController extends Controller
         $extendFieldConfig = $configManager->getProvider('extend')->getConfig($entity->getClassName(), $fieldName);
         $extendFieldConfig->set('owner', ExtendManager::OWNER_CUSTOM);
         $extendFieldConfig->set('state', ExtendManager::STATE_NEW);
-        $extendFieldConfig->set('is_extend', true);
+        $extendFieldConfig->set('extend', true);
 
         $form = $this->createForm(
             'oro_entity_config_type',
@@ -229,7 +229,7 @@ class ConfigFieldGridController extends Controller
             $field->getFieldName()
         );
 
-        if (!$fieldConfig->is('is_extend')) {
+        if (!$fieldConfig->is('owner', ExtendManager::OWNER_CUSTOM)) {
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 
@@ -271,7 +271,7 @@ class ConfigFieldGridController extends Controller
             $field->getFieldName()
         );
 
-        if (!$fieldConfig->is('is_extend')) {
+        if (!$fieldConfig->is('owner', ExtendManager::OWNER_CUSTOM)) {
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 

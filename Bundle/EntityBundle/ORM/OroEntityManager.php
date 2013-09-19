@@ -4,10 +4,16 @@ namespace Oro\Bundle\EntityBundle\ORM;
 
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Connection;
+
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
+
+use Doctrine\ORM\ORMInvalidArgumentException;
 use Oro\Bundle\EntityBundle\ORM\Query\FilterCollection;
+
+use Oro\Bundle\EntityExtendBundle\Entity\ProxyEntityInterface;
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class OroEntityManager extends EntityManager
 {
@@ -17,6 +23,13 @@ class OroEntityManager extends EntityManager
      * @var FilterCollection
      */
     protected $filterCollection;
+
+    /**
+     * Manager for extend and custom entities
+     *
+     * @var ExtendManager
+     */
+    protected $extendManager;
 
     public static function create($conn, Configuration $config, EventManager $eventManager = null)
     {
@@ -35,6 +48,34 @@ class OroEntityManager extends EntityManager
         }
 
         return new OroEntityManager($conn, $config, $conn->getEventManager());
+    }
+
+    /**
+     * @param \Oro\Bundle\EntityExtendBundle\Extend\ExtendManager $extendManager
+     * @return $this
+     */
+    public function setExtendManager($extendManager)
+    {
+        $this->extendManager = $extendManager;
+
+        return $this;
+    }
+
+    /**
+     * @return ExtendManager
+     */
+    public function getExtendManager()
+    {
+        return $this->extendManager;
+    }
+
+    /**
+     * @param $entity
+     * @return bool
+     */
+    public function isExtendEntity($entity)
+    {
+        return $this->extendManager->isExtend($entity);
     }
 
     /**

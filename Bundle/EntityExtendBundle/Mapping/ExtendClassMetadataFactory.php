@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping\ClassMetadataFactory;
 
 class ExtendClassMetadataFactory extends ClassMetadataFactory
 {
-    public function getMetadataFor($className)
+    public function setMetadataFor($className, $class)
     {
-        if (is_subclass_of($className, 'Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface')) {
-            $className = get_parent_class($className);
-        }
+        $this->getCacheDriver()->save(
+            $className . $this->cacheSalt, $className, null
+        );
 
-        return parent::getMetadataFor($className);
+        parent::setMetadataFor($className, $class);
     }
 }

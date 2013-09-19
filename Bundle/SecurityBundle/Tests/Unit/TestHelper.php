@@ -32,8 +32,8 @@ class TestHelper
     }
 
     /**
-     * @param OwnershipMetadataProvider $metadataProvider
-     * @param OwnerTree $ownerTree
+     * @param  OwnershipMetadataProvider $metadataProvider
+     * @param  OwnerTree                 $ownerTree
      * @return AclExtensionSelector
      */
     public function createAclExtensionSelector(
@@ -61,10 +61,10 @@ class TestHelper
     }
 
     /**
-     * @param OwnershipMetadataProvider $metadataProvider
-     * @param OwnerTree $ownerTree
-     * @param EntityClassAccessor $classAccessor
-     * @param ObjectIdAccessor $idAccessor
+     * @param  OwnershipMetadataProvider $metadataProvider
+     * @param  OwnerTree                 $ownerTree
+     * @param  EntityClassAccessor       $classAccessor
+     * @param  ObjectIdAccessor          $idAccessor
      * @return EntityAclExtension
      */
     public function createEntityAclExtension(

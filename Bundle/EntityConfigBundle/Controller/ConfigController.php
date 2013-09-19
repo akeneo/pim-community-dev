@@ -28,6 +28,7 @@ use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
  */
 class ConfigController extends Controller
 {
+
     /**
      * Lists all Flexible entities.
      * @Route("/", name="oro_entityconfig_index")
@@ -52,7 +53,8 @@ class ConfigController extends Controller
             $view,
             array(
                 'buttonConfig' => $datagridManager->getLayoutActions(),
-                'datagrid'     => $datagrid->createView()
+                'require_js'   => $datagridManager->getRequireJsModules(),
+                'datagrid'     => $datagrid->createView(),
             )
         );
     }
@@ -235,6 +237,7 @@ class ConfigController extends Controller
                 'datagrid'     => $datagrid->createView(),
                 'entity_id'    => $id,
                 'entity_name'  => $entity->getClassName(),
+                'require_js'   => $datagridManager->getRequireJsModules(),
             )
         );
     }

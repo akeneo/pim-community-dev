@@ -47,6 +47,9 @@ class FormTypeExtension extends AbstractTypeExtension
      */
     protected $translator;
 
+    /**
+     * @var string
+     */
     protected $fieldName;
 
     protected $assignIsGranted;
@@ -91,10 +94,10 @@ class FormTypeExtension extends AbstractTypeExtension
         $user = $token->getUser();
         if ($user
             && $dataClassName
-            && $this->configProvider->isConfigurable($dataClassName)
+            && $this->configProvider->hasConfig($dataClassName)
         ) {
             $config = $this->configProvider->getConfig($dataClassName);
-            if ($config->has('owner_type')) {
+            if ($config->has('owner_type') && $config->get('owner_type') != OwnershipType::OWNER_TYPE_NONE) {
                 if (!method_exists($dataClassName, 'getOwner')) {
                     throw new \LogicException(
                         sprintf('Method getOwner must be implemented for %s entity', $dataClassName)
