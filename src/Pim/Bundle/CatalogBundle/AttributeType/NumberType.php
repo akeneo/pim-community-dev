@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\NumberType as OroNumberType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 
 /**
  * Number attribute type
@@ -14,6 +15,11 @@ use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
  */
 class NumberType extends OroNumberType
 {
+    /**
+     * @staticvar integer
+     */
+    const DECIMAL_PLACES = 4;
+
     /**
      * {@inheritdoc}
      */
@@ -81,6 +87,17 @@ class NumberType extends OroNumberType
         );
 
         return $properties;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareValueFormOptions(FlexibleValueInterface $value)
+    {
+        $options = parent::prepareValueFormOptions($value);
+        $options['precision'] = $value->getAttribute()->isDecimalsAllowed() ? self::DECIMAL_PLACES : 0;
+
+        return $options;
     }
 
     /**

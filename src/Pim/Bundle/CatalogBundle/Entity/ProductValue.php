@@ -61,7 +61,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      * Store decimal value
      * @var double $decimal
      *
-     * @ORM\Column(name="value_decimal", type="decimal", nullable=true)
+     * @ORM\Column(name="value_decimal", type="decimal", precision=14, scale=4, nullable=true)
      * @Oro\Versioned
      */
     protected $decimal;
@@ -239,6 +239,22 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     public function getPrices()
     {
         return $this->prices;
+    }
+
+    /**
+     * Get the price matching the given currency
+     *
+     * @param string $currency
+     *
+     * @return boolean|Price
+     */
+    public function getPrice($currency)
+    {
+        return $this->prices->filter(
+            function ($price) use ($currency) {
+                return $currency === $price->getCurrency();
+            }
+        )->first();
     }
 
     /**

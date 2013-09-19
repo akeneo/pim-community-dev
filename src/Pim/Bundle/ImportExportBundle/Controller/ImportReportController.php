@@ -64,4 +64,19 @@ class ImportReportController extends JobExecutionController
     {
         return parent::downloadLogFileAction($id);
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @Acl(
+     *      id="pim_importexport_import_report_download_files",
+     *      name="Download imported files ",
+     *      description="Download imported files",
+     *      parent="pim_importexport_export_report"
+     * )
+     */
+    public function downloadFilesAction($id)
+    {
+        return parent::downloadFilesAction($id);
+    }
 }

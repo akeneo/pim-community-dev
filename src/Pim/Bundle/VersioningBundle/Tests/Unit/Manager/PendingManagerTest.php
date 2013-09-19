@@ -2,11 +2,6 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\Manager;
 
-use Symfony\Component\Serializer\Serializer;
-use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
-use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 use Pim\Bundle\VersioningBundle\Manager\PendingManager;
 use Pim\Bundle\VersioningBundle\Entity\Pending;
 
@@ -29,13 +24,7 @@ class PendingManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $encoders = array(new CsvEncoder());
-        $normalizers = array(new GetSetMethodNormalizer());
-        $serializer = new Serializer($normalizers, $encoders);
-        $versionManager = new VersionManager($this->getEntityManagerMock(), $serializer);
-        $auditManager = new AuditManager($this->getEntityManagerMock());
-
-        $this->manager = new PendingManager($versionManager, $auditManager, $this->getEntityManagerMock());
+        $this->manager = new PendingManager($this->getEntityManagerMock());
     }
 
     /**

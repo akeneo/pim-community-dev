@@ -43,13 +43,13 @@ class ProductTypeTest extends AbstractFormTypeTest
         $type = $this->getMock(
             'Pim\Bundle\CatalogBundle\Form\Type\ProductType',
             array('addDynamicAttributesFields'),
-            array($flexibleManager, 'text', new ProductFormView) // use text as value form alias
+            array($flexibleManager, 'text', new ProductFormView()) // use text as value form alias
         );
 
         $type = $this->getMock(
             'Pim\Bundle\CatalogBundle\Form\Type\ProductType',
             array('addLocaleField'),
-            array($flexibleManager, 'text', new ProductFormView) // use text as value form alias
+            array($flexibleManager, 'text', new ProductFormView()) // use text as value form alias
         );
 
         $this->form = $this->factory->create($type, new Product());

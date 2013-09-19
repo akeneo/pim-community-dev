@@ -31,7 +31,7 @@ class EmailGuesser implements ConstraintGuesserInterface
         $constraints = array();
 
         if ('email' === $attribute->getValidationRule()) {
-            $constraints[] = new Assert\Email;
+            $constraints[] = new Assert\Email();
         }
 
         return $constraints;

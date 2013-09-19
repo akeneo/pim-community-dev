@@ -47,24 +47,22 @@
     {% endspaceless %}
 {% endblock form_info %}
 
-{% block form_errors %}
-    {% spaceless %}
-        {% if errors|length > 0 %}
-            {% if form.parent %}
-                {% set combinedError = '' %}
-                {% for error in errors %}
-                    {% set error = error.messagePluralization is null
-                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
-                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators') %}
-                    {% set combinedError = (combinedError != '') ? combinedError ~ '; ' ~ error : error %}
-                {% endfor %}
-                <i class="validation-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="{{ combinedError }}"></i>
-            {% else %}
-                {{ parent() }}
-            {% endif %}
+{% block form_errors %}{% spaceless %}
+    {% if errors|length > 0 %}
+        {% if form.parent %}
+            {% set combinedError = '' %}
+            {% for error in errors %}
+                {% set error = error.messagePluralization is null
+                    ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                    : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators') %}
+                {% set combinedError = (combinedError != '') ? combinedError ~ '; ' ~ error : error %}
+            {% endfor %}
+            <i class="validation-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="{{ combinedError }}"></i>
+        {% else %}
+            {{ parent() }}
         {% endif %}
-    {% endspaceless %}
-{% endblock form_errors %}
+    {% endif %}
+{% endspaceless %}{% endblock form_errors %}
 
 {% block pim_wysiwyg_widget %}
     {{ block('textarea_widget') }}
@@ -98,7 +96,7 @@
 
     {% set empty = not form.vars.value or not form.vars.value.filePath %}
     <div class="control-group">
-        {{ form_label(form, null, { 'label_attr': {'class': 'control-label'} }) }}
+        {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
         <div class="controls">
             <label class="upload-zone file{% if empty %} empty{% endif %}">
                 <div class="upload-info">
@@ -135,7 +133,7 @@
 
     {% set empty = not form.vars.value or not form.vars.value.filePath %}
     <div class="control-group">
-        {{ form_label(form, null, { 'label_attr': {'class': 'control-label'} }) }}
+        {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
         <div class="controls">
             <label class="upload-zone image{% if empty %} empty{% endif %}">
                 <div class="upload-info">
@@ -197,12 +195,20 @@
 {% endspaceless %}
 {% endblock checkbox_widget %}
 
-{% block oro_flexibleentity_metric_widget %}
+{% block oro_flexibleentity_metric_row %}
 {% spaceless %}
-    {{ form_widget(form.unit) }}
-    {{ form_widget(form.data) }}
+    <div class="control-group">
+        {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.data.vars.id} }) }}
+        <div class="controls">
+            {{ form_widget(form.unit) }}
+            {{ form_widget(form.data) }}
+            <div class="icons-container">
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    </div>
 {% endspaceless %}
-{% endblock oro_flexibleentity_metric_widget %}
+{% endblock oro_flexibleentity_metric_row %}
 
 {% block pim_catalog_price_collection_widget %}
     {% for child in form.children %}

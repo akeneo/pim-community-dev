@@ -22,7 +22,7 @@ class CategoryNormalizer implements NormalizerInterface
     /**
      * @var array()
      */
-    private $results;
+    protected $results;
 
     /**
      * Transforms an object into a flat array
@@ -39,9 +39,6 @@ class CategoryNormalizer implements NormalizerInterface
             'code'    => $object->getCode(),
             'parent'  => $object->getParent() ? $object->getParent()->getCode() : '',
             'dynamic' => (string) $object->isDynamic(),
-            'left'    => (string) $object->getLeft(),
-            'level'   => (string) $object->getLevel(),
-            'right'   => (string) $object->getRight(),
             'title'   => $this->normalizeTitle($object)
         );
 

@@ -23,7 +23,7 @@ class AttributeGroupNormalizer implements NormalizerInterface
     /**
      * @var array
      */
-    private $results;
+    protected $results;
 
     /**
      * {@inheritdoc}

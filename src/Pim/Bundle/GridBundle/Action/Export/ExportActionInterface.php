@@ -36,6 +36,7 @@ interface ExportActionInterface
      * Get specific option name
      *
      * @param string $name
+     *
      * @return mixed
      */
     public function getOption($name);

@@ -1,14 +1,11 @@
 require(
     ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'pim/dialog', 'pim/initselect2', 'bootstrap',
-        'jquery-ui', 'bootstrap.bootstrapswitch', 'bootstrap.tooltip', 'jquery.slimbox'],
+        'bootstrap.bootstrapswitch', 'bootstrap.tooltip', 'jquery.slimbox'],
     function ($, __, mediator, Navigation, Dialog, initSelect2) {
         'use strict';
 
         function init() {
             // Place code that we need to run on every page load here
-
-            // Disable the oro scrollable container
-            $('.scrollable-container').removeClass('scrollable-container').css('overflow', 'visible');
 
             $('.remove-attribute').each(function () {
                 var target = $(this).parent().find('.icons-container').first();
@@ -37,7 +34,7 @@ require(
                 $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-collapse-alt icon-expand-alt');
             });
 
-            $('#attribute-buttons .dropdown-menu').click(function (e) {
+            $('#attribute-buttons').find('.dropdown-menu').click(function (e) {
                 e.stopPropagation();
             });
 
@@ -52,8 +49,8 @@ require(
 
             // Save and restore activated form tabs and groups
             function saveFormState() {
-                var activeTab   = $('#form-navbar .nav li.active a').attr('href'),
-                    activeGroup = $('.tab-groups li.tab.active a').attr('href');
+                var activeTab   = $('#form-navbar').find('li.active').find('a').attr('href'),
+                    activeGroup = $('.tab-groups').find('li.tab.active').find('a').attr('href');
 
                 if (activeTab) {
                     sessionStorage.activeTab = activeTab;
@@ -66,19 +63,19 @@ require(
 
             function restoreFormState() {
                 if (sessionStorage.activeTab) {
-                    var $activeTab = $('[href=' + sessionStorage.activeTab + ']');
-                    if ($activeTab) {
+                    var $activeTab = $('a[href=' + sessionStorage.activeTab + ']');
+                    if ($activeTab.length && !$('.loading-mask').is(':visible')) {
                         $activeTab.tab('show');
+                        sessionStorage.removeItem('activeTab');
                     }
-                    sessionStorage.removeItem('activeTab');
                 }
 
                 if (sessionStorage.activeGroup) {
-                    var $activeGroup = $('[href=' + sessionStorage.activeGroup + ']');
-                    if ($activeGroup) {
+                    var $activeGroup = $('a[href=' + sessionStorage.activeGroup + ']');
+                    if ($activeGroup.length && !$('.loading-mask').is(':visible')) {
                         $activeGroup.tab('show');
+                        sessionStorage.removeItem('activeGroup');
                     }
-                    sessionStorage.removeItem('activeGroup');
                 }
             }
 
@@ -86,7 +83,7 @@ require(
                 restoreFormState();
 
                 $('form.form-horizontal').on('submit', saveFormState);
-                $('#locale-switcher a').on('click', saveFormState);
+                $('#locale-switcher').find('a').on('click', saveFormState);
             }
 
             // Initialize slimbox
@@ -107,7 +104,7 @@ require(
                 }
             });
             $('.attribute-field.translatable').each(function () {
-                $(this).find('div.controls .icons-container').append($localizableIcon.clone());
+                $(this).find('div.controls').find('.icons-container').append($localizableIcon.clone().tooltip());
             });
 
             $('form').on('change', 'input[type="file"]', function () {

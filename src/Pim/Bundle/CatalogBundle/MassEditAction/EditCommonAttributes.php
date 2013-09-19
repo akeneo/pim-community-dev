@@ -2,13 +2,19 @@
 
 namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Edit common attributes of given products
@@ -19,22 +25,49 @@ use Doctrine\Common\Collections\Collection;
  */
 class EditCommonAttributes extends AbstractMassEditAction
 {
+    /**
+     * @var ArrayCollection
+     */
     protected $values;
 
+    /**
+     * @var Locale
+     */
     protected $locale;
 
+    /**
+     * @var ProductManager
+     */
     protected $productManager;
 
+    /**
+     * @var LocaleManager
+     */
     protected $localeManager;
 
+    /**
+     * @var CurrencyManager
+     */
+    protected $currencyManager;
+
+    /**
+     * @var array
+     */
     protected $commonAttributes = array();
 
+    /**
+     * @var ArrayCollection
+     */
     protected $attributesToDisplay;
 
-    public function __construct(FlexibleManager $productManager, LocaleManager $localeManager)
-    {
+    public function __construct(
+        ProductManager $productManager,
+        LocaleManager $localeManager,
+        CurrencyManager $currencyManager
+    ) {
         $this->productManager      = $productManager;
         $this->localeManager       = $localeManager;
+        $this->currencyManager     = $currencyManager;
         $this->values              = new ArrayCollection();
         $this->attributesToDisplay = new ArrayCollection();
     }
@@ -67,6 +100,30 @@ class EditCommonAttributes extends AbstractMassEditAction
         return $this->localeManager->getLocaleByCode(
             $this->productManager->getLocale()
         );
+    }
+
+    public function setCommonAttributes(array $commonAttributes)
+    {
+        $this->commonAttributes = $commonAttributes;
+
+        return $this;
+    }
+
+    public function getCommonAttributes()
+    {
+        return $this->commonAttributes;
+    }
+
+    public function setAttributesToDisplay(Collection $attributesToDisplay)
+    {
+        $this->attributesToDisplay = $attributesToDisplay;
+
+        return $this;
+    }
+
+    public function getAttributesToDisplay()
+    {
+        return $this->attributesToDisplay;
     }
 
     /**
@@ -120,20 +177,106 @@ class EditCommonAttributes extends AbstractMassEditAction
     public function perform(array $products)
     {
         foreach ($products as $product) {
-            foreach ($this->values as $value) {
-                $product
-                    ->getValue(
-                        $value->getAttribute()->getCode(),
-                        $this->getLocale()->getCode(),
-                        $value->getScope()
-                    )
-                    ->setData($value->getData());
-            }
+            $this->setProductValues($product);
+            $this->productManager->save($product);
         }
-        $this->productManager->getStorageManager()->flush();
     }
 
-    private function addValues(ProductAttribute $attribute)
+    /**
+     * Set product values with the one stored inside $this->values
+     *
+     * @param ProductInterface $product
+     */
+    protected function setProductValues(ProductInterface $product)
+    {
+        foreach ($this->values as $value) {
+            $this->setProductValue($product, $value);
+        }
+    }
+
+    /**
+     * Set a product value
+     *
+     * @param ProductInterface      $product
+     * @param ProductValueInterface $value
+     */
+    protected function setProductValue(ProductInterface $product, ProductValueInterface $value)
+    {
+        $productValue = $product->getValue(
+            $value->getAttribute()->getCode(),
+            $value->getAttribute()->getTranslatable() ? $this->getLocale()->getCode() : null,
+            $value->getAttribute()->getScopable() ? $value->getScope() : null
+        );
+
+        switch ($value->getAttribute()->getAttributeType()) {
+            case 'pim_catalog_price_collection':
+                $this->setProductPrice($productValue, $value);
+                break;
+
+            case 'pim_catalog_multiselect':
+                $this->setProductOption($productValue, $value);
+                break;
+
+            case 'pim_catalog_file':
+            case 'pim_catalog_image':
+                $this->setProductFile($productValue, $value);
+                break;
+
+            case 'pim_catalog_metric':
+                $this->setProductMetric($productValue, $value);
+                break;
+
+            default:
+                $productValue->setData($value->getData());
+        }
+    }
+
+    private function setProductPrice(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        foreach ($value->getPrices() as $price) {
+            if (false === $productPrice = $productValue->getPrice($price->getCurrency())) {
+                // Add a new product price to the value if it wasn't defined before
+                $productPrice = $this->createProductPrice($price->getCurrency());
+                $productValue->addPrice($productPrice);
+            }
+            $productPrice->setData($price->getData());
+        }
+    }
+
+    private function setProductOption(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        $productValue->getOptions()->clear();
+        $this->productManager->getStorageManager()->flush();
+        foreach ($value->getOptions() as $option) {
+            $productValue->addOption($option);
+        }
+    }
+
+    private function setProductFile(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        if (null === $media = $productValue->getMedia()) {
+            $media = new Media();
+            $productValue->setMedia($media);
+        }
+        $media->setFile($value->getMedia()->getFile());
+    }
+
+    private function setProductMetric(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        if (null === $metric = $productValue->getMetric()) {
+            $metric = new Metric();
+            $productValue->setMetric($metric);
+        }
+        $metric->setUnit($value->getMetric()->getUnit());
+        $metric->setData($value->getMetric()->getData());
+    }
+
+    /**
+     * Add all the values required by the given attribute
+     *
+     * @param ProductAttribute $attribute
+     */
+    protected function addValues(ProductAttribute $attribute)
     {
         $locale = $this->getLocale();
         if ($attribute->getScopable()) {
@@ -146,7 +289,16 @@ class EditCommonAttributes extends AbstractMassEditAction
         }
     }
 
-    private function createValue(ProductAttribute $attribute, Locale $locale, Channel $channel = null)
+    /**
+     * Create a value
+     *
+     * @param ProductAttribute $attribute
+     * @param Locale           $locale
+     * @param Channel          $channel
+     *
+     * @return ProductValue
+     */
+    protected function createValue(ProductAttribute $attribute, Locale $locale, Channel $channel = null)
     {
         $value = $this->productManager->createFlexibleValue();
         $value->setAttribute($attribute);
@@ -159,30 +311,24 @@ class EditCommonAttributes extends AbstractMassEditAction
             $value->setScope($channel->getCode());
         }
 
+        if ('pim_catalog_price_collection' === $attribute->getAttributeType()) {
+            foreach ($this->currencyManager->getActiveCodes() as $code) {
+                $value->addPrice($this->createProductPrice($code));
+            }
+        }
+
         return $value;
     }
 
-    public function setCommonAttributes(array $commonAttributes)
+    /**
+     * Create a price
+     *
+     * @param string $currency
+     *
+     * @return ProductPrice
+     */
+    protected function createProductPrice($currency)
     {
-        $this->commonAttributes = $commonAttributes;
-
-        return $this;
-    }
-
-    public function getCommonAttributes()
-    {
-        return $this->commonAttributes;
-    }
-
-    public function setAttributesToDisplay(Collection $attributesToDisplay)
-    {
-        $this->attributesToDisplay = $attributesToDisplay;
-
-        return $this;
-    }
-
-    public function getAttributesToDisplay()
-    {
-        return $this->attributesToDisplay;
+        return new ProductPrice(null, $currency);
     }
 }

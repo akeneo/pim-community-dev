@@ -1,20 +1,22 @@
 <div class="tab-content">
     <div id="attribute-buttons"></div>
 
+    {% set columnWidth = 85/(channels|length) %}
+
     <table class="table groups">
         <thead>
-            <th width="8%">{{ 'Label'|upper }}</th>
+            <th width="10%">{{ 'Label'|upper }}</th>
             {% for channel in channels %}
-                <th class="channel" width="200">{{ channel.name|upper }}</th>
+                <th class="channel" width="{{ columnWidth }}%">{{ channel.name|upper }}</th>
             {% endfor %}
-            <th>&nbsp;</th>
+            <th width="5%">&nbsp;</th>
         </thead>
 
         {% set colspan = channels|length + 2 %}
         {% for groupName, attributes in family.groupedAttributes %}
         <tbody>
             <tr class="group">
-                <td colspan="{{ colspan }}"><i class="icon-collapse-alt"></i> {{ groupName }}</td>
+                <td colspan="{{ colspan }}"><i class="icon-collapse-alt"></i>{{ groupName }}</td>
             </tr>
             {% for attribute in attributes %}
             <tr>

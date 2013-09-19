@@ -17,7 +17,7 @@ Feature: Create an export
     And I select the channel "Mobile"
     And I check "With header"
     And I save the export
-    Then I should see "Export / Mobile product export"
+    Then I should see "Export profile / Mobile product export"
     And I should see "The export has been successfully created."
 
   Scenario: Fail to create an unknown product export

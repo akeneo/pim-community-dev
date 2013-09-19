@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Helper;
 
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Symfony\Component\Locale\Locale;
 
 /**
@@ -19,73 +18,25 @@ use Symfony\Component\Locale\Locale;
 class LocaleHelper
 {
     /**
-     * Array of locales codes and associated translations in the current user locale
-     *
-     * @var array $locales
-     *
-     * @static
-     */
-    protected static $locales = array();
-
-    /**
-     * @var \Pim\Bundle\CatalogBundle\Manager\LocaleManager
-     */
-    protected $localeManager;
-
-    /**
-     * Constructor
-     *
-     * @param LocaleManager $localeManager
-     */
-    public function __construct(LocaleManager $localeManager)
-    {
-        $this->localeManager = $localeManager;
-    }
-
-    /**
-     * Returns the list of displayed locales with the current user locale
-     * and initialized it if needed
-     *
-     * @return array
-     */
-    protected function getLocales()
-    {
-        if (empty(static::$locales)) {
-            static::$locales = Locale::getDisplayLocales($this->getUserLocale());
-        }
-
-        return static::$locales;
-    }
-
-    /**
      * Initialized the locales list (if needed) and get the localized label
      *
      * @param string $code
      *
      * @return string
      */
-    public function getLocalizedLabel($code)
+    public function getLocalizedLabel($code, $locale)
     {
-        $this->getLocales();
-        if (isset(static::$locales[$code])) {
-            return static::$locales[$code];
+        $locales = Locale::getDisplayLocales($locale);
+
+        if (isset($locales[$code])) {
+            return $locales[$code];
         }
 
         list($lang) = explode('_', $code);
-        if (isset(static::$locales[$lang])) {
-            return static::$locales[$lang];
+        if (isset($locales[$lang])) {
+            return $locales[$lang];
         }
 
         return $code;
-    }
-
-    /**
-     * Returns the current user locale
-     *
-     * @return string
-     */
-    public function getUserLocale()
-    {
-        return $this->localeManager->getUserLocaleCode();
     }
 }

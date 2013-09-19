@@ -64,6 +64,10 @@ define(
                             }
 
                             return data;
+                        },
+                        complete: function () {
+                            // Disable the root checkbox
+                            $('.jstree-root>input.jstree-real-checkbox').attr('disabled', 'disabled');
                         }
                     }
                 },
@@ -107,7 +111,7 @@ define(
             };
 
             this.bindEvents = function () {
-                $('#trees-list a').on('click', function () {
+                $('#trees-list').find('a').on('click', function () {
                     self.switchTree(this.id.replace('tree-link-', ''));
                 });
             };

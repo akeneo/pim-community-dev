@@ -8,11 +8,16 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionParametersParser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditActionOperatorType;
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractController;
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
+use Symfony\Component\Translation\TranslatorInterface;
+use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
 /**
  * Batch operation controller
@@ -28,7 +33,7 @@ use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
  *      parent="pim_catalog"
  * )
  */
-class MassEditActionController extends AbstractController
+class MassEditActionController extends AbstractDoctrineController
 {
     /**
      * @var MassEditActionOperator
@@ -36,15 +41,34 @@ class MassEditActionController extends AbstractController
     protected $batchOperator;
 
     /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
+     * @var DatagridWorkerInterface
+     */
+    private $datagridWorker;
+
+    /**
+     * @var MassActionParametersParser
+     */
+    private $parametersParser;
+
+    /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param MassEditActionOperator   $batchOperator
+     * @param Request                    $request
+     * @param EngineInterface            $templating
+     * @param RouterInterface            $router
+     * @param SecurityContextInterface   $securityContext
+     * @param FormFactoryInterface       $formFactory
+     * @param ValidatorInterface         $validator
+     * @param RegistryInterface          $doctrine
+     * @param MassEditActionOperator     $batchOperator
+     * @param TranslatorInterface        $translator
+     * @param DatagridWorkerInterface    $datagridWorker
+     * @param MassActionParametersParser $parametersParser
      */
     public function __construct(
         Request $request,
@@ -53,14 +77,23 @@ class MassEditActionController extends AbstractController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
-        MassEditActionOperator $batchOperator
+        RegistryInterface $doctrine,
+        MassEditActionOperator $batchOperator,
+        TranslatorInterface $translator,
+        DatagridWorkerInterface $datagridWorker,
+        MassActionParametersParser $parametersParser
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator);
+        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
 
-        $this->batchOperator = $batchOperator;
+        $this->batchOperator    = $batchOperator;
+        $this->translator       = $translator;
+        $this->datagridWorker   = $datagridWorker;
+        $this->parametersParser = $parametersParser;
     }
 
     /**
+     * @param Request $request
+     *
      * @Template
      * @Acl(
      *      id="pim_catalog_mass_edit_choose",
@@ -68,6 +101,7 @@ class MassEditActionController extends AbstractController
      *      description="Choose action",
      *      parent="pim_catalog_mass_edit"
      * )
+     * @return template|RedirectResponse
      */
     public function chooseAction(Request $request)
     {
@@ -100,12 +134,15 @@ class MassEditActionController extends AbstractController
     /**
      * @param Request $request
      * @param string  $operationAlias
+     *
      * @Acl(
      *      id="pim_catalog_mass_edit_configure",
      *      name="Configure action",
      *      description="Configure action",
      *      parent="pim_catalog_mass_edit"
      * )
+     * @throws NotFoundHttpException
+     * @return template|RedirectResponse
      */
     public function configureAction(Request $request, $operationAlias)
     {
@@ -140,15 +177,17 @@ class MassEditActionController extends AbstractController
     }
 
     /**
-     *
      * @param Request $request
-     * @param alis    $operationAlias
+     * @param string  $operationAlias
+     *
      * @Acl(
      *      id="pim_catalog_mass_edit_perform",
      *      name="Perform action",
      *      description="Perform action",
      *      parent="pim_catalog_mass_edit"
      * )
+     * @throws NotFoundHttpException
+     * @return template|RedirectResponse
      */
     public function performAction(Request $request, $operationAlias)
     {
@@ -212,10 +251,42 @@ class MassEditActionController extends AbstractController
      */
     private function getProductIds(Request $request)
     {
-        if ($values = $request->query->get('values')) {
+        $inset = $request->query->get('inset');
+        if ($inset === '0') {
+            /** @var $gridManager ProductDatagridManager */
+            $gridManager = $this->datagridWorker->getDatagridManager('product');
+            $gridManager->setFilterTreeId($request->get('treeId', 0));
+            $gridManager->setFilterCategoryId($request->get('categoryId', 0));
+            $parameters = $this->parametersParser->parse($request);
+            $filters = $parameters['filters'];
+            $datagrid = $gridManager->getDatagrid();
+            $datagrid->getParameters()->set(ParametersInterface::FILTER_PARAMETERS, $filters);
+            $ids = $datagrid->getAllIds();
+
+            return $ids;
+
+        } elseif ($values = $request->query->get('values')) {
             return explode(',', $values);
+
         } else {
             return $request->query->get('products');
         }
+    }
+
+    /**
+     * Manual flash translator
+     * Otherwise, flash messages are not translated...
+     *
+     * @param string $type
+     * @param string $message
+     *
+     * TODO Fix flash translation
+     */
+    protected function addFlash($type, $message)
+    {
+        parent::addFlash(
+            $type,
+            $this->translator->trans($message)
+        );
     }
 }

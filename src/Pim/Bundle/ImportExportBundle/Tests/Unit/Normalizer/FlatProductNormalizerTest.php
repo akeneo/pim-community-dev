@@ -42,7 +42,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function testNormalizeProduct()
     {
-        $now = new \DateTime;
+        $now = new \DateTime();
         $values = array(
             $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
             $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
@@ -76,7 +76,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function testNormalizeProductWithoutFamily()
     {
-        $now = new \DateTime;
+        $now = new \DateTime();
         $values = array(
             $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
             $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
@@ -112,7 +112,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testNormalizeProductWithoutIdentifier()
     {
-        $now = new \DateTime;
+        $now = new \DateTime();
         $values = array(
             $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
             $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),

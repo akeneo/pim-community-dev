@@ -322,7 +322,7 @@ class Edit extends Form
             ->find('css', 'div.progress-cell');
 
         // check message displayed bottom to the progress bar
-        $infoPassed = ($info === 'Completed')
+        $infoPassed = ($info === 'Complete')
             ? ($completenessCell->getText() === $info)
             : $completenessCell->find('css', sprintf('span.progress-info:contains("%s")', $info));
         if (!$infoPassed) {

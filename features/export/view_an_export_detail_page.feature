@@ -11,7 +11,7 @@ Feature: View an export detail page
     Given I am logged in as "admin"
     And I am on the exports page
     When I click on the "acme_product_export" row
-    Then I should see "Export / Product export for Acme.com"
+    Then I should see "Export profile / Product export for Acme.com"
 
   Scenario: Successfully display the validation errors
     Given the following job:

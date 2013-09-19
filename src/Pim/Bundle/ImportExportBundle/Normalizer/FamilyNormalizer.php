@@ -21,7 +21,7 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * @var array
      */
-    private $results;
+    protected $results;
 
     /**
      * Transforms an object into a flat array

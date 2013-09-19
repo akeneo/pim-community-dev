@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
-use Pim\Bundle\VersioningBundle\Entity\Version;
 
 /**
  * Audit manager
@@ -46,27 +45,14 @@ class AuditManager
     }
 
     /**
-     * Return first log entry
+     * Return the oldest log entry. A the log is order by date
+     * desc, it means the very last line of the log
      *
      * @param VersionableInterface $versionable
      *
      * @return Audit
      */
-    public function getFirstLogEntry(VersionableInterface $versionable)
-    {
-        $logs = $this->getLogEntries($versionable);
-
-        return (!empty($logs)) ? current($logs) : null;
-    }
-
-    /**
-     * Return last log entry
-     *
-     * @param VersionableInterface $versionable
-     *
-     * @return Audit
-     */
-    public function getLastLogEntry(VersionableInterface $versionable)
+    public function getOldestLogEntry(VersionableInterface $versionable)
     {
         $logs = $this->getLogEntries($versionable);
 
@@ -74,62 +60,17 @@ class AuditManager
     }
 
     /**
-     * Create a log entry from current and previous version
+     * Return the newest log entry. As the log is order by date
+     * desc, it means the first line of the log
      *
-     * @param Version $current
-     * @param Version $previous
+     * @param VersionableInterface $versionable
      *
      * @return Audit
      */
-    public function buildAudit(Version $current, Version $previous = null)
+    public function getNewestLogEntry(VersionableInterface $versionable)
     {
-        $newData = $current->getData();
-        if ($previous) {
-            $oldData = $previous->getData();
-        } else {
-            $oldData = array();
-        }
+        $logs = $this->getLogEntries($versionable);
 
-        $merge = array();
-        foreach ($newData as $field => $value) {
-            $merge[$field]= array('old' => '', 'new' => $value);
-        }
-        foreach ($oldData as $field => $value) {
-            if (!isset($merge[$field])) {
-                $merge[$field]= array('old' => $value, 'new' => '');
-            } else {
-                $merge[$field]['old'] = $value;
-            }
-        }
-
-        $diffData = array();
-        foreach ($merge as $changedField => $data) {
-            if ($data['old'] != $data['new']) {
-                $diffData[$changedField]= $data;
-            }
-        }
-
-        $previousAudit = $this->em->getRepository('Oro\Bundle\DataAuditBundle\Entity\Audit')
-            ->findOneBy(
-                array('objectId' => $current->getResourceId(), 'objectName' => $current->getResourceName()),
-                array('loggedAt' => 'desc')
-            );
-        if ($previousAudit) {
-            $versionNumber = $previousAudit->getVersion() + 1;
-        } else {
-            $versionNumber = 1;
-        }
-        $action = ($versionNumber > 1) ? 'update' : 'create';
-        $audit = new Audit();
-        $audit->setAction($action);
-        $audit->setObjectClass($current->getResourceName());
-        $audit->setLoggedAt();
-        $audit->setObjectName($current->getResourceName());
-        $audit->setObjectId($current->getResourceId());
-        $audit->setVersion($versionNumber);
-        $audit->setData($diffData);
-        $audit->setUser($current->getUser());
-
-        return $audit;
+        return (!empty($logs)) ? reset($logs) : null;
     }
 }

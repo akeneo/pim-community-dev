@@ -70,7 +70,7 @@ define(
              * @inheritDoc
              */
             popupCriteriaTemplate: _.template(
-                '<div class="currencyfilter">' +
+                '<div class="currencyfilter choicefilter">' +
                     '<div class="input-prepend input-append">' +
                         '<div class="btn-group">' +
                             '<button class="btn dropdown-toggle" data-toggle="dropdown">' +

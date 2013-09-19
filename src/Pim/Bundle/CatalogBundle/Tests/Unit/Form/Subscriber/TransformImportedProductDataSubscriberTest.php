@@ -17,7 +17,7 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
     {
         $this->assertInstanceOf(
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
-            new TransformImportedProductDataSubscriber
+            new TransformImportedProductDataSubscriber()
         );
     }
 
