@@ -5,7 +5,7 @@ namespace Oro\Bundle\ImportExportBundle\Serializer;
 use Symfony\Component\Serializer\Serializer as BaseSerializer;
 use Doctrine\Common\Collections\Collection;
 
-class Serializer extends BaseSerializer implements SerializerInterface
+class Serializer extends BaseSerializer
 {
     /**
      * {@inheritdoc}
