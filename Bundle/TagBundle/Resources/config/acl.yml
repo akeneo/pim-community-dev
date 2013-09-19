@@ -5,13 +5,13 @@ oro_tag_assign_unassign:
     bindings: ~
 
 oro_tag_unassign_global:
-    label: User can unassign all tags from entities
+    label: Unassign all tags from entities
     type: action
     group_name: ""
     bindings: ~
 
 oro_tag_view_tag_cloud:
-    label:  User can view tag cloud
+    label:  View tag cloud
     type: action
     group_name: ""
     bindings: ~

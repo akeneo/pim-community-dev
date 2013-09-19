@@ -65,7 +65,7 @@ class Configuration implements ConfigurationInterface
                             'show_default' => true,
                         ),
                         'action'=>array(
-                            'label' => 'Actions',
+                            'label' => 'Capabilities',
                             'view_type' => 'list',
                             'types' => array('action'),
                             'field_type' => 'checkbox',
