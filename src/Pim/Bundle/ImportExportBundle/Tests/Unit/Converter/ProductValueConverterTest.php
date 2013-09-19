@@ -211,6 +211,29 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testConvertMetricValue()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'weight'))
+            ->will($this->returnValue($this->getAttributeMock('metric')));
+
+        $this->assertEquals(
+            array(
+                'values' => array(
+                    'weight' => array(
+                        'metric' => array(
+                            'data' => '60',
+                            'unit' => 'KILOGRAM',
+                        ),
+                    )
+                )
+            ),
+            $this->converter->convert(array('weight' => '60 KILOGRAM'))
+        );
+    }
+
     protected function getAttributeMock($backendType, $translatable = false, $scopable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
