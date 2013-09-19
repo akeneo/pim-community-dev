@@ -13,7 +13,7 @@ class ContextRegistry
 
     /**
      * @param StepExecution $stepExecution
-     * @return mixed
+     * @return ContextInterface
      */
     public function getByStepExecution(StepExecution $stepExecution)
     {
@@ -28,7 +28,7 @@ class ContextRegistry
 
     /**
      * @param StepExecution $stepExecution
-     * @return ImportExportProxyContext
+     * @return StepExecutionProxyContext
      */
     protected function createByStepExecution(StepExecution $stepExecution)
     {

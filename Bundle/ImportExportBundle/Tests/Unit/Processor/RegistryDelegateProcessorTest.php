@@ -41,9 +41,7 @@ class RegistryDelegateProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $entityName = 'entity_name';
         $processorAlias = 'processor_alias';
-        $stepExecution = $this->getMockStepExecution(
-            array('entityName' => $entityName, 'processorAlias' => $processorAlias)
-        );
+        $stepExecution = $this->getMockStepExecution();
         $item = $this->getMock('MockItem');
 
         $delegateProcessor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ContextAwareProcessor');
@@ -57,6 +55,16 @@ class RegistryDelegateProcessorTest extends \PHPUnit_Framework_TestCase
             ->with($stepExecution)
             ->will($this->returnValue($context));
 
+        $context->expects($this->any())
+            ->method('getOption')
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array('entityName', null, $entityName),
+                        array('processorAlias', null, $processorAlias),
+                    )
+                )
+            );
 
         $delegateProcessor->expects($this->once())->method('setImportExportContext')->with($context);
         $delegateProcessor->expects($this->once())->method('process')->with($item);
@@ -69,12 +77,26 @@ class RegistryDelegateProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $entityName = 'entity_name';
         $processorAlias = 'processor_alias';
-        $stepExecution = $this->getMockStepExecution(
-            array('entityName' => $entityName, 'processorAlias' => $processorAlias)
-        );
+        $stepExecution = $this->getMockStepExecution();
         $item = $this->getMock('MockItem');
 
         $delegateProcessor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\StepExecutionAwareProcessor');
+
+        $context = $this->getMock('Oro\Bundle\ImportExportBundle\Context\ContextInterface');
+        $this->contextRegistry->expects($this->once())->method('getByStepExecution')
+            ->with($stepExecution)
+            ->will($this->returnValue($context));
+
+        $context->expects($this->any())
+            ->method('getOption')
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array('entityName', null, $entityName),
+                        array('processorAlias', null, $processorAlias),
+                    )
+                )
+            );
 
         $this->processorRegistry->expects($this->once())->method('getProcessor')
             ->with($entityName, $processorAlias)
@@ -91,12 +113,26 @@ class RegistryDelegateProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $entityName = 'entity_name';
         $processorAlias = 'processor_alias';
-        $stepExecution = $this->getMockStepExecution(
-            array('entityName' => $entityName, 'processorAlias' => $processorAlias)
-        );
+        $stepExecution = $this->getMockStepExecution();
         $item = $this->getMock('MockItem');
 
         $delegateProcessor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
+
+        $context = $this->getMock('Oro\Bundle\ImportExportBundle\Context\ContextInterface');
+        $this->contextRegistry->expects($this->once())->method('getByStepExecution')
+            ->with($stepExecution)
+            ->will($this->returnValue($context));
+
+        $context->expects($this->any())
+            ->method('getOption')
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array('entityName', null, $entityName),
+                        array('processorAlias', null, $processorAlias),
+                    )
+                )
+            );
 
         $this->processorRegistry->expects($this->once())->method('getProcessor')
             ->with($entityName, $processorAlias)
@@ -116,7 +152,25 @@ class RegistryDelegateProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcessFailsWhenNoConfigurationProvided()
     {
-        $this->processor->setStepExecution($this->getMockStepExecution(array()));
+        $context = $this->getMock('Oro\Bundle\ImportExportBundle\Context\ContextInterface');
+
+        $stepExecution = $this->getMockStepExecution(array());
+
+        $this->contextRegistry->expects($this->once())->method('getByStepExecution')
+            ->with($stepExecution)
+            ->will($this->returnValue($context));
+
+        $context->expects($this->any())
+            ->method('getOption')
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array('entityName', null, null),
+                        array('processorAlias', null, null),
+                    )
+                )
+            );
+        $this->processor->setStepExecution($stepExecution);
         $this->processor->process($this->getMock('MockItem'));
     }
 
@@ -130,31 +184,12 @@ class RegistryDelegateProcessorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array $jobInstanceRawConfiguration
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getMockStepExecution(array $jobInstanceRawConfiguration)
+    protected function getMockStepExecution()
     {
-        $jobInstance = $this->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobInstance')
+        return $this->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $jobInstance->expects($this->once())->method('getRawConfiguration')
-            ->will($this->returnValue($jobInstanceRawConfiguration));
-
-        $jobExecution = $this->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $jobExecution->expects($this->once())->method('getJobInstance')
-            ->will($this->returnValue($jobInstance));
-
-        $stepExecution = $this->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $stepExecution->expects($this->once())->method('getJobExecution')
-            ->will($this->returnValue($jobExecution));
-
-        return $stepExecution;
     }
 }
