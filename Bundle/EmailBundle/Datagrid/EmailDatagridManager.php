@@ -9,6 +9,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
+use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
 class EmailDatagridManager extends DatagridManager
 {
@@ -43,22 +44,6 @@ class EmailDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldName = new FieldDescription();
-        $fieldName->setName('id');
-        $fieldName->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('oro.user.datagrid.email.column.id'),
-                'field_name'  => 'id',
-                'filter_type' => FilterInterface::TYPE_STRING,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-            )
-        );
-        $fieldsCollection->add($fieldName);
-
         $fieldName = new FieldDescription();
         $fieldName->setName('fromEmailAddress');
         $fieldName->setOptions(
@@ -141,5 +126,10 @@ class EmailDatagridManager extends DatagridManager
         );
         $fieldName->setProperty($templateDataProperty);
         $fieldsCollection->add($fieldName);
+    }
+
+    public function getDefaultSorters()
+    {
+        return array('sentAt' => SorterInterface::DIRECTION_DESC);
     }
 }
