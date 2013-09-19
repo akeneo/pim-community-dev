@@ -163,7 +163,6 @@ abstract class AbstractConfigModel
             if ($configValue = $this->getValue($code, $scope)) {
                 $configValue->setValue($value);
             } else {
-
                 $configValue = new ConfigModelValue($code, $scope, $value, $serializable);
 
                 if ($this instanceof EntityConfigModel) {

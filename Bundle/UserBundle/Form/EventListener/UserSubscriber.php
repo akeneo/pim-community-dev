@@ -121,7 +121,7 @@ class UserSubscriber implements EventSubscriberInterface
             )
         );
 
-        if (!($entity->getId() && $this->isCurrentUser($entity))) {
+        if (!$this->isCurrentUser($entity)) {
             $form->remove('change_password');
         }
     }

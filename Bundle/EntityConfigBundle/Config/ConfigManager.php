@@ -214,11 +214,15 @@ class ConfigManager
      * @param string $fieldName
      * @return bool
      */
-    public function isConfigurable($className, $fieldName = null)
+    public function hasConfig($className, $fieldName = null)
     {
+        if (!$this->modelManager->checkDatabase()) {
+            return false;
+        }
+
         $result = $this->cache->getConfigurable($className, $fieldName);
         if ($result === null) {
-            $result = (bool)$this->modelManager->findModel($className, $fieldName);
+            $result = (bool) $this->modelManager->findModel($className, $fieldName);
 
             $this->cache->setConfigurable($result, $className, $fieldName);
         }
@@ -254,25 +258,6 @@ class ConfigManager
 
     /**
      * @param ConfigIdInterface $configId
-     * @return bool
-     */
-    public function hasConfig(ConfigIdInterface $configId)
-    {
-        if ($this->localCache->containsKey($configId->toString())) {
-            return true;
-        }
-
-        if (null !== $this->cache
-            && $config = $this->cache->loadConfigFromCache($configId)
-        ) {
-            return true;
-        }
-
-        return (bool)$this->modelManager->getModelByConfigId($configId);
-    }
-
-    /**
-     * @param ConfigIdInterface $configId
      * @throws RuntimeException
      * @throws LogicException
      * @return ConfigInterface
@@ -290,7 +275,7 @@ class ConfigManager
             );
         }
 
-        if (!$this->isConfigurable($configId->getClassName())) {
+        if (!$this->hasConfig($configId->getClassName())) {
             throw new RuntimeException(sprintf('Entity "%s" is not configurable', $configId->getClassName()));
         }
 
@@ -301,7 +286,7 @@ class ConfigManager
         if (!$resultConfig) {
             $model = $this->modelManager->getModelByConfigId($configId);
 
-            $config = new Config($configId);
+            $config = new Config($this->getConfigIdByModel($model, $configId->getScope()));
             $config->setValues($model->toArray($configId->getScope()));
 
             if (null !== $this->cache) {
@@ -342,6 +327,16 @@ class ConfigManager
     }
 
     /**
+     * Remove All Configurable cache
+     */
+    public function clearConfigurableCache()
+    {
+        if ($this->cache) {
+            $this->cache->removeAllConfigurable();
+        }
+    }
+
+    /**
      * @param ConfigInterface $config
      */
     public function persist(ConfigInterface $config)
@@ -370,7 +365,13 @@ class ConfigManager
 
             $this->eventDispatcher->dispatch(Events::PRE_PERSIST_CONFIG, new PersistConfigEvent($config, $this));
 
-            $models[] = $model = $this->modelManager->getModelByConfigId($config->getId());
+            if (isset($models[$config->getId()->toString()])) {
+                $model = $models[$config->getId()->toString()];
+            } else {
+                $model = $this->modelManager->getModelByConfigId($config->getId());
+
+                $models[$config->getId()->toString()] = $model;
+            }
 
             //TODO::refactoring
             $serializableValues = $this->getProvider($config->getId()->getScope())
@@ -471,6 +472,7 @@ class ConfigManager
 
     /**
      * TODO:: check class name for custom entity
+     *
      * @param string $className
      * @param string $mode
      * @return EntityConfigModel
@@ -482,7 +484,7 @@ class ConfigManager
 
             foreach ($this->getProviders() as $provider) {
 
-                $metadata = $this->getEntityMetadata($className);
+                $metadata      = $this->getEntityMetadata($className);
                 $defaultValues = array();
                 if ($metadata && isset($metadata->defaultValues[$provider->getScope()])) {
                     $defaultValues = $metadata->defaultValues[$provider->getScope()];
@@ -517,9 +519,9 @@ class ConfigManager
 
             foreach ($this->getProviders() as $provider) {
                 $defaultValues = array();
-                $metadata = $this->getFieldMetadata($className, $fieldName);
+                $metadata      = $this->getFieldMetadata($className, $fieldName);
                 if ($metadata && isset($metadata->defaultValues[$provider->getScope()])) {
-                    $defaultValues =  $metadata->defaultValues[$provider->getScope()];
+                    $defaultValues = $metadata->defaultValues[$provider->getScope()];
                 }
 
                 $fieldId = new FieldConfigId($className, $provider->getScope(), $fieldName, $fieldType);
@@ -552,5 +554,22 @@ class ConfigManager
         }
 
         return $config;
+    }
+
+    private function getConfigIdByModel(AbstractConfigModel $model, $scope)
+    {
+        if ($model instanceof FieldConfigModel) {
+            return new FieldConfigId(
+                $model->getEntity()->getClassName(),
+                $scope,
+                $model->getFieldName(),
+                $model->getType()
+            );
+        } else {
+            return new EntityConfigId(
+                $model->getClassName(),
+                $scope
+            );
+        }
     }
 }

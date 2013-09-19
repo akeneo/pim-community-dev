@@ -17,8 +17,6 @@ class FieldType extends AbstractType
         'boolean',
         'decimal',
         'date',
-        'time',
-        'datetime',
         'text',
         'float',
     );
@@ -48,6 +46,7 @@ class FieldType extends AbstractType
     {
         $resolver->setDefaults(
             array(
+                'require_js' => array(),
                 'block_config' => array(
                     'type' => array(
                         'title'    => 'General',
