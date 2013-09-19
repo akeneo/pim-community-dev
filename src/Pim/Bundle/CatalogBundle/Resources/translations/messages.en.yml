@@ -15,6 +15,7 @@ title:
     overview: %entity% overview
     create: create %entity%
     edit: edit %entity%
+    show: %entity%
 
 # Custom titles
 products: products

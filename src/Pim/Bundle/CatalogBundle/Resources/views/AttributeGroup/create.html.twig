@@ -4,7 +4,7 @@
 {{ JSFV(form) }}
 <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ path('pim_catalog_attributegroup_create') }}" method="POST">
 
-    {% set title = 'title.create'|trans({ '%entity%': 'group'|trans }) %}
+    {% set title = elements.title('group', 'create') %}
 
     {{ elements.page_header(title, elements.submitBtn) }}
 

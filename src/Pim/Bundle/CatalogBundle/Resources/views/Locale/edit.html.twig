@@ -5,7 +5,7 @@
     {{ JSFV(form) }}
     <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ path('pim_catalog_locale_edit', { id: form.vars.value.id }) }}" method="POST">
 
-        {% set title = 'title.edit'|trans({ '%entity%': 'locale'|trans }) ~ ' - ' ~ localizedLabel(form.vars.value.code) %}
+        {% set title = elements.title('locale', 'edit', localizedLabel(form.vars.value.code)) %}
 
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_locale_index')) }}

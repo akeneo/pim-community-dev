@@ -1,8 +1,16 @@
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+
 {% set actionRoute = form.vars.value.id ?
     path('pim_importexport_import_edit', { 'id': form.vars.value.id }) :
     path('pim_importexport_import_create', { 'connector': connector, 'alias': alias }) %}
 
-{% set title = form.vars.value.id ? 'Edit import profile'|trans : 'Create import profile'|trans %}
+{% if form.vars.value.id %}
+    {% set title = elements.title('import profile', 'edit', form.vars.value.label) %}
+{% else %}
+    {% set title = elements.title('import profile', 'create') %}
+{% endif %}
 
 {% set indexRoute = path('pim_importexport_import_index') %}
 {% if form.vars.value.id %}

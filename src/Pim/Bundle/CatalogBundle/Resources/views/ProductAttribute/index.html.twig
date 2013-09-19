@@ -1,6 +1,9 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
 
-{% set title = 'title.overview'|trans({ '%entity%': 'attribute'|trans }) %}
+{% set title = elements.title('attribute') %}
 
 {% block head_script %}
     {{ parent() }}
@@ -11,10 +14,7 @@
 
 {% block content %}
     <div>
-
-        {% set buttons %}
-            {{ elements.createBtn('attribute', path('pim_catalog_productattribute_create')) }}
-        {% endset %}
+        {% set buttons = elements.createBtn('attribute', path('pim_catalog_productattribute_create')) %}
 
         {{ elements.page_header(title, buttons) }}
 

@@ -7,10 +7,10 @@
         path('pim_catalog_channel_edit', { id: form.vars.value.id }) :
         path('pim_catalog_channel_create') }}" method="POST">
 
-        {% set title = (form.vars.value.id ? 'title.edit' : 'title.create')|trans({ '%entity%': 'channel'|trans }) %}
-
         {% if form.vars.value.id %}
-            {% set title = title ~ ' - ' ~ form.vars.value.code %}
+            {% set title = elements.title('channel', 'edit', form.vars.value.name) %}
+        {% else %}
+            {% set title = elements.title('channel', 'create') %}
         {% endif %}
 
         {% set buttons %}

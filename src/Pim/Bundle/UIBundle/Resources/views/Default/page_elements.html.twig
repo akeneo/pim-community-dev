@@ -1,6 +1,13 @@
+{% macro title(entity, type, name) %}
+{% spaceless %}
+    {% set type = 'title.' ~ type|default('overview') %}
+    {{ (type|trans({ '%entity%': entity|trans }) ~ ( name ? ' - ' ~ name : '' ))|raw }}
+{% endspaceless %}
+{% endmacro %}
+
 {% macro createBtn(entity, url, attr) %}
 {% spaceless %}
-    {% set title = 'title.create'|trans({ '%entity%': entity|trans })|capitalize %}
+    {% set title = 'btn.create'|trans({ '%entity%': entity|trans })|capitalize %}
     <a class="btn btn-primary pull-right{% if attr.class is defined %} {{ attr.class }}{% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>{{ title }}</a>
 {% endspaceless %}
 {% endmacro %}

@@ -9,7 +9,7 @@
 
 {% block content %}
 
-    {% set title = 'title.overview'|trans({ '%entity%': entityName|trans }) %}
+    {% set title = elements.title(entityName) %}
 
     {% set buttons %}
     <div class="btn-group">

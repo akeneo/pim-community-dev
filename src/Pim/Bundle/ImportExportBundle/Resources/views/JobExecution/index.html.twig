@@ -9,6 +9,7 @@
 
 {% block content %}
 
+    {% set title = elements.title(entityName) %}
     {{ elements.page_header(title) }}
 
     <div id="job-report-grid"></div>

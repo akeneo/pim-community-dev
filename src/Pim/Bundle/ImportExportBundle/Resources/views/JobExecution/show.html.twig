@@ -2,8 +2,8 @@
 
 {% block content %}
 
-    {% set title = "Execution details" | trans  %}
-    
+    {% set title = "execution details"|trans ~ ' - ' ~ execution.jobInstance.label %}
+
     {% set buttons %}
         {{ elements.backLink(indexRoute) }}
         {{ elements.link('Download file', path(download_file_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }) }}
@@ -26,7 +26,7 @@
         <tbody>
             {% for step in execution.stepExecutions %}
             <tr>
-                <td>{{ step.stepName | trans }}</td>
+                <td>{{ step.stepName|trans }}</td>
                 <td>{{ step.status }}</td>
                 <td>{{ step.readCount }}</td>
                 <td>{{ step.writeCount }}</td>

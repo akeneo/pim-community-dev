@@ -9,7 +9,7 @@
 
 {% block content %}
 
-    {% set title = 'title.overview'|trans({ '%entity%': 'locale' }) %}
+    {% set title = elements.title('locale') %}
 
     {{ elements.page_header(title) }}
 

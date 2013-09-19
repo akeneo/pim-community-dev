@@ -11,7 +11,7 @@
 
 <form id="{{ form.vars.id }}" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}" data-updated-message="{{ 'You will lose changes to the family if you leave the page.'|trans }}" action="{{ path('pim_catalog_family_edit', { id: family.id }) }}" method="POST">
 
-    {% set title = 'title.edit'|trans({ '%entity%': 'family'|trans }) ~ ' - ' ~ family.label %}
+    {% set title = elements.title('family', 'edit', family.label) %}
 
     {% set buttons %}
         {% if form.vars.value.id %}

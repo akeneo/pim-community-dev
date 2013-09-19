@@ -5,12 +5,12 @@
 
 {% set parentId = form.vars.value.parent ? form.vars.value.parent.id : null %}
 
-{% set entityName = (parentId ? 'category' : 'tree')|trans %}
-
-{% set title = (form.vars.value.id ? 'title.edit' : 'title.create')|trans({ '%entity%': entityName }) %}
+{% set entityName = parentId ? 'category' : 'tree' %}
 
 {% if form.vars.value.id %}
-    {% set title = title ~ ' - ' ~ form.vars.value.title %}
+    {% set title = elements.title(entityName, 'edit', form.vars.value.title) %}
+{% else %}
+    {% set title = elements.title(entityName, 'create') %}
 {% endif %}
 {% endspaceless %}
 

@@ -6,9 +6,10 @@
         path('pim_catalog_productattribute_edit', { id: form.vars.value.id }) :
         path('pim_catalog_productattribute_create') }}" method="POST">
 
-        {% set title = (form.vars.value.id ? 'title.edit' : 'title.create')|trans({ '%entity%': 'attribute'|trans }) %}
         {% if form.vars.value.id %}
-            {% set title = title ~ ' - ' ~ form.vars.value.code %}
+            {% set title = elements.title('attribute', 'edit', form.vars.value.label) %}
+        {% else %}
+            {% set title = elements.title('attribute', 'create') %}
         {% endif %}
 
         {% set buttons %}
@@ -22,8 +23,8 @@
         {% set left %}
             {% if form.vars.value.id %}
             <ul class="inline">
-                <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
-                <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by' | trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
+                <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
+                <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
             </ul>
             {% endif %}
         {% endset %}

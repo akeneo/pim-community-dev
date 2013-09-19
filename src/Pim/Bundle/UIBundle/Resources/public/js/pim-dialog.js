@@ -13,7 +13,7 @@ define(
          * @uses Backbone.BootstrapModal
          *
          * Example:
-         *      Dialog.alert('{{ 'MyMessage' | trans }}', 'MyTitle');
+         *      Dialog.alert('{{ 'MyMessage'|trans }}', 'MyTitle');
          */
         return {
             /**

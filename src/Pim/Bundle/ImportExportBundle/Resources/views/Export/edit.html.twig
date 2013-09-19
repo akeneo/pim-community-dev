@@ -1,12 +1,19 @@
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+
 {% set actionRoute = form.vars.value.id ?
     path('pim_importexport_export_edit', { 'id': form.vars.value.id }) :
     path('pim_importexport_export_create', { 'connector': connector, 'alias': alias }) %}
 
-{% set title = (form.vars.value.id ? 'title.edit': 'title.create')|trans({ '%entity%': 'export profile'|trans }) %}
+{% if form.vars.value.id %}
+    {% set title = elements.title('export profile', 'edit', form.vars.value.label) %}
+{% else %}
+    {% set title = elements.title('export profile', 'create') %}
+{% endif %}
 
 {% set indexRoute = path('pim_importexport_export_index') %}
 {% if form.vars.value.id %}
-    {% set title = title ~ ' - ' ~ form.vars.value.label %}
     {% set removeRoute = path('pim_importexport_export_remove', { 'id': form.vars.value.id }) %}
     {% set removeMessage = 'Are you sure you want to delete the export profile %export% ?'|trans({'%export%': form.vars.value.label}) %}
 {% endif %}
