@@ -7,11 +7,11 @@
     "license": "MIT",
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "2.1.*",
+        "symfony/symfony": "2.3.*",
         "stof/doctrine-extensions-bundle": "dev-master",
         "friendsofsymfony/rest-bundle": "0.11.*",
         "nelmio/api-doc-bundle": "dev-master",
-        "escapestudios/wsse-authentication-bundle": "2.1.x-dev",
+        "escapestudios/wsse-authentication-bundle": "2.3.x-dev",
         "oro/ui-bundle": "dev-master",
         "oro/flexible-entity-bundle": "dev-master",
         "oro/user-bundle": "dev-master",

@@ -57,14 +57,14 @@ class UserSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_SUBMIT => 'preBind',
+            FormEvents::PRE_SUBMIT => 'preSubmit',
         );
     }
 
     /**
      * @param FormEvent $event
      */
-    public function preBind(FormEvent $event)
+    public function preSubmit(FormEvent $event)
     {
         $submittedData = $event->getData();
 
@@ -100,9 +100,6 @@ class UserSubscriber implements EventSubscriberInterface
 
         if ($entity->getId()) {
             $form->remove('plainPassword');
-            $permission = 'EDIT';
-        } else {
-            $permission = 'CREATE';
         }
 
         if (!$this->securityFacade->isGranted('oro_user_role_view')) {
@@ -130,6 +127,10 @@ class UserSubscriber implements EventSubscriberInterface
                 )
             )
         );
+
+        if (!$this->isCurrentUser($entity)) {
+            $form->remove('change_password');
+        }
     }
 
     /**

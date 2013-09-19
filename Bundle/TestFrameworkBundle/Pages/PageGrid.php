@@ -40,7 +40,9 @@ class PageGrid extends Page
     public function changePage($page = 1)
     {
         $pager = $this->byXPath("{$this->filtersPath}//div[contains(@class,'pagination')]/ul//input");
-        $pagerLabel = $this->byXPath("{$this->filtersPath}//div[contains(@class,'pagination')]/label[@class = 'dib' and text() = 'Page:']");
+        $pagerLabel = $this->byXPath(
+            "{$this->filtersPath}//div[contains(@class,'pagination')]/label[@class = 'dib' and text() = 'Page:']"
+        );
         //set focus
         $pager->click();
         //clear field
@@ -94,7 +96,8 @@ class PageGrid extends Page
      */
     public function getPagesCount()
     {
-        $pager = $this->byXPath("{$this->gridPath}//div[contains(@class,'pagination')]//label[@class='dib'][2]")->text();
+        $pager = $this->byXPath("{$this->gridPath}//div[contains(@class,'pagination')]//label[@class='dib'][2]")
+            ->text();
         preg_match('/of\s+(\d+)\s+\|\s+(\d+)\s+records/i', $pager, $result);
         return intval($result[1]);
     }
@@ -106,7 +109,8 @@ class PageGrid extends Page
      */
     public function getRowsCount()
     {
-        $pager = $this->byXPath("{$this->gridPath}//div[contains(@class,'pagination')]//label[@class='dib'][2]")->text();
+        $pager = $this->byXPath("{$this->gridPath}//div[contains(@class,'pagination')]//label[@class='dib'][2]")
+            ->text();
         preg_match('/of\s+(\d+)\s+\|\s+(\d+)\s+records/i', $pager, $result);
         return intval($result[2]);
     }
@@ -185,7 +189,10 @@ class PageGrid extends Page
      */
     public function getHeaders()
     {
-        $records = $this->elements($this->using('xpath')->value("{$this->gridPath}//table/thead/tr/th[not(contains(@style, 'display: none;'))]"));
+        $records = $this->elements(
+            $this->using('xpath')
+                ->value("{$this->gridPath}//table/thead/tr/th[not(contains(@style, 'display: none;'))]")
+        );
         return $records;
     }
 
@@ -250,7 +257,8 @@ class PageGrid extends Page
         }
 
         //get current sort order status
-        $current = $this->byXPath("{$this->gridPath}//table/thead/tr/th[a[contains(., '{$columnName}')]]")->attribute('class');
+        $current = $this->byXPath("{$this->gridPath}//table/thead/tr/th[a[contains(., '{$columnName}')]]")
+            ->attribute('class');
         if ($current != $orderFull || $order == '') {
             $this->byXPath("{$this->gridPath}//table/thead/tr/th/a[contains(., '{$columnName}')]")->click();
             $this->waitForAjax();
@@ -272,7 +280,8 @@ class PageGrid extends Page
         $this->byXPath("{$this->gridPath}//div[@class='page-size pull-right form-horizontal']//button")->click();
         if (is_integer($pageSize)) {
             $this->byXPath(
-                "{$this->gridPath}//div[@class='page-size pull-right form-horizontal']//ul[contains(@class,'dropdown-menu')]/li/a[text() = '{$pageSize}']"
+                "{$this->gridPath}//div[@class='page-size pull-right form-horizontal']" .
+                "//ul[contains(@class,'dropdown-menu')]/li/a[text() = '{$pageSize}']"
             )->click();
         } elseif (is_string($pageSize)) {
             $command = '';
@@ -281,10 +290,11 @@ class PageGrid extends Page
                     $command = "last()";
                     break;
                 case 'first':
-                    $command = "first()";
+                    $command = "1";
                     break;
             }
-            $xpath = "{$this->gridPath}//div[@class='page-size pull-right form-horizontal']//ul[contains(@class,'dropdown-menu')]/li[{$command}]/a";
+            $xpath = "{$this->gridPath}//div[@class='page-size pull-right form-horizontal']" .
+                "//ul[contains(@class,'dropdown-menu')]/li[{$command}]/a";
             $this->byXPath($xpath)->click();
         }
 
@@ -294,7 +304,9 @@ class PageGrid extends Page
 
     public function assertNoDataMessage($message)
     {
-        PHPUnit_Framework_Assert::assertTrue($this->isElementPresent("//div[@class='no-data']/span[contains(., '{$message}')]"));
+        PHPUnit_Framework_Assert::assertTrue(
+            $this->isElementPresent("//div[@class='no-data']/span[contains(., '{$message}')]")
+        );
         return $this;
     }
 }

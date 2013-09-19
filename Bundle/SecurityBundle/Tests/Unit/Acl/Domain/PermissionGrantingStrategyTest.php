@@ -303,8 +303,8 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $permission
-     * @param object $object
+     * @param  string     $permission
+     * @param  object     $object
      * @return array|null may return null if permission/object combination is not supported
      */
     private function getMasks($permission, $object)
@@ -313,8 +313,8 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $permission
-     * @param mixed $object
+     * @param  string      $permission
+     * @param  mixed       $object
      * @return MaskBuilder
      */
     private function getMaskBuilder($permission, $object)

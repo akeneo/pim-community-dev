@@ -45,6 +45,16 @@
 
 {% set entityHint = datagrid.entityHint ? datagrid.entityHint : 'records' %}
 
+{% set dataGridCollectionState = {
+        currentPage:  datagrid.pager.page,
+        pageSize: datagrid.pager.maxPerPage,
+        totalRecords: datagrid.pager.nbResults,
+        filters: filterData|default({}),
+        sorters: sorterData|default({}),
+        gridView: currentView|default({})
+    }
+%}
+
 require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'oro/loading-mask',
     'oro/datagrid/grid', 'oro/datagrid/router', 'oro/pageable-collection', 'oro/datagrid/filter-list',
     'oro/datagrid/moment-cell', 'oro/datagrid/number-cell', 'oro/datagrid/integer-cell', 'oro/datagrid/boolean-cell',
@@ -143,14 +153,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
             collection: {
                 inputName: {{ datagrid.name|json_encode|raw }},
                 url: {{ datagrid.routeGenerator.generateUrl(null, {'_format': 'json'})|json_encode|raw }},
-                state: {
-                    currentPage:  {{ datagrid.pager.page|json_encode|raw }},
-                    pageSize:     {{ datagrid.pager.maxPerPage|json_encode|raw }},
-                    totalRecords: {{ datagrid.pager.nbResults|json_encode|raw }},
-                    filters:      {{ filterData ? filterData|json_encode|raw : '{}' }},
-                    sorters:      {{ sorterData ? sorterData|json_encode|raw : '{}' }},
-                    gridView:     {{ currentView ? currentView|json_encode|raw : '{}' }},
-                }
+                state: {{ dataGridCollectionState|json_encode|raw }}
             },
             results: {{ oro_grid_render_results_json(datagridView) }}
         };

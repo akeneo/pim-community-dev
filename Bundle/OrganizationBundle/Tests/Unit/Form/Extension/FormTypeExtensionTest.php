@@ -114,7 +114,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             ->with($this->entityClassName)
             ->will($this->returnValue($this->config));
         $this->configProvider->expects($this->any())
-            ->method('isConfigurable')
+            ->method('hasConfig')
             ->with($this->entityClassName)
             ->will($this->returnValue(true));
         $token->expects($this->any())
@@ -316,7 +316,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('has')
             ->with('owner_type')
             ->will($this->returnValue(true));
-        $this->config->expects($this->once())
+        $this->config->expects($this->exactly(2))
             ->method('get')
             ->with('owner_type')
             ->will($this->returnValue($values['owner_type']));

@@ -93,6 +93,23 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
      * @depends testUpdateUser
      * @param $username
      */
+    public function testHistoryWindow($username)
+    {
+        $login = new Login($this);
+        $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
+            ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
+            ->submit()
+            ->openUsers()
+            ->filterBy('Username', $username)
+            ->open(array($username))
+            ->checkHistoryWindow()
+            ->close();
+    }
+
+    /**
+     * @depends testUpdateUser
+     * @param $username
+     */
     public function testDeleteUser($username)
     {
         $this->markTestSkipped('BAP-726');

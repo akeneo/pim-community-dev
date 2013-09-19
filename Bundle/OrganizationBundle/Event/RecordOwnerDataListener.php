@@ -6,11 +6,6 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\Common\Persistence\ObjectManager;
-
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;

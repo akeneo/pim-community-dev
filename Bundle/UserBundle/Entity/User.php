@@ -45,7 +45,6 @@ use DateTime;
  *      routeName="oro_user_index",
  *      defaultValues={
  *          "entity"={"icon"="icon-user", "label"="User", "plural_label"="Users"},
- *          "extend"={"is_extend"=true},
  *          "ownership"={
  *              "owner_type"="BUSINESS_UNIT",
  *              "owner_field_name"="owner",
