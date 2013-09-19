@@ -142,10 +142,22 @@ abstract class AbstractSearchStringManager implements SearchStringManagerInterfa
      */
     protected function normalizeValue($keyword, $value, $match)
     {
+        if ($value instanceof \DateTime) {
+            $value = $this->formatDate($value);
+        }
+
         if (is_string($value) && strpos($value, ' ')) {
             return sprintf('"%s"', $value);
         }
 
         return $value;
     }
+
+    /**
+     * Returns a string represents the given date in format required for search query criterion.
+     *
+     * @param mixed $value
+     * @return string
+     */
+    abstract protected function formatDate($value);
 }

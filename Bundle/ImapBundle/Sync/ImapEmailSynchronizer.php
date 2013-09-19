@@ -172,9 +172,12 @@ class ImapEmailSynchronizer
         $this->log->info('Finding an email origin ...');
 
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
-        $border = $minExecPeriodInMin > 0
-            ? $now->sub(new \DateInterval('PT' . $minExecPeriodInMin . 'M'))
-            : $now;
+        $border = clone $now;
+        if ($minExecPeriodInMin > 0) {
+            $border->sub(new \DateInterval('PT' . $minExecPeriodInMin . 'M'));
+        }
+        $min = clone $now;
+        $min->sub(new \DateInterval('P1Y'));
 
         $repo = $this->em->getRepository('OroImapBundle:ImapEmailOrigin');
         $query = $repo->createQueryBuilder('o')
@@ -182,7 +185,8 @@ class ImapEmailSynchronizer
                 'o'
                 . ', CASE WHEN o.syncCode = :inProcess THEN 0 ELSE 1 END AS HIDDEN p1'
                 . ', (COALESCE(o.syncCode, 1000) * 100'
-                . ' + (:now - o.syncCodeUpdatedAt) / (CASE o.syncCode WHEN :success THEN 100 ELSE 1 END)) AS HIDDEN p2'
+                . ' + (:now - COALESCE(o.syncCodeUpdatedAt, :min))'
+                . ' / (CASE o.syncCode WHEN :success THEN 100 ELSE 1 END)) AS HIDDEN p2'
             )
             ->where('o.isActive = :isActive AND o.syncCodeUpdatedAt IS NULL OR o.syncCodeUpdatedAt <= :border')
             ->orderBy('p1, p2 DESC, o.syncCodeUpdatedAt')
@@ -190,6 +194,7 @@ class ImapEmailSynchronizer
             ->setParameter('success', self::SYNC_CODE_SUCCESS)
             ->setParameter('isActive', true)
             ->setParameter('now', $now)
+            ->setParameter('min', $min)
             ->setParameter('border', $border)
             ->setMaxResults($maxConcurrentTasks + 1)
             ->getQuery();
@@ -224,7 +229,8 @@ class ImapEmailSynchronizer
         $this->log->info('Resetting hanged email origins ...');
 
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
-        $border = $now->sub(new \DateInterval('P1D'));
+        $border = clone $now;
+        $border->sub(new \DateInterval('P1D'));
 
         $repo = $this->em->getRepository('OroImapBundle:ImapEmailOrigin');
         $query = $repo->createQueryBuilder('o')

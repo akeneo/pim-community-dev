@@ -197,18 +197,6 @@ class SearchStringManager extends AbstractSearchStringManager
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function normalizeValue($keyword, $value, $match)
-    {
-        if ($keyword === 'SENTBEFORE' || $keyword === 'SENTSINCE' || $keyword === 'BEFORE' || $keyword === 'SINCE') {
-            $value = $this->formatDate($value);
-        }
-
-        return parent::normalizeValue($keyword, $value, $match);
-    }
-
-    /**
      * Returns a string represents the given date in format required for search query criterion.
      * Example: 21-Jan-2013
      *
@@ -219,22 +207,6 @@ class SearchStringManager extends AbstractSearchStringManager
     {
         if ($value instanceof \DateTime) {
             return $value->format('j-M-Y');
-        }
-
-        return $value;
-    }
-
-    /**
-     * Returns a string represents the given date/time in format required for search query criterion.
-     * Example: "21-Jan-2013 23:05:40 +0007"
-     *
-     * @param mixed $value
-     * @return string
-     */
-    protected function formatDateTime($value)
-    {
-        if ($value instanceof \DateTime) {
-            return '"' . $value->format('d-M-Y H:i:s 0') . '"';
         }
 
         return $value;

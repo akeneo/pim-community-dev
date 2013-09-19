@@ -2,10 +2,10 @@
 
 {% set valueArray = value.toArray %}
 {% if value.first %}
-    {% set recipients = value.first.email.getRecipients('to') %}
+    {% set recipients = value.first.email.getRecipients() %}
 {% endif %}
 
-{{ EA.recipient_email_addresses(recipients, oro_config_value('oro_user.name_format')) }}
+{{ EA.recipient_email_addresses(recipients, oro_config_value('oro_user.name_format'), false, true) }}
 
 
 

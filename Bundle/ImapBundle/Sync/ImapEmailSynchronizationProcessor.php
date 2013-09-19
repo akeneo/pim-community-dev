@@ -97,15 +97,19 @@ class ImapEmailSynchronizationProcessor
             foreach ($emailAddressBatches as $emailAddressBatch) {
                 $sqb = $this->getSearchQueryBuilder($origin);
                 $sqb->openParenthesis();
-                if ($folder->getType() === EmailFolder::SENT) {
-                    $this->addEmailAddressesToSearchQueryBuilder($sqb, 'to', $emailAddressBatch);
-                    $sqb->orOperator();
-                    $this->addEmailAddressesToSearchQueryBuilder($sqb, 'cc', $emailAddressBatch);
-                    $sqb->orOperator();
-                    $this->addEmailAddressesToSearchQueryBuilder($sqb, 'bcc', $emailAddressBatch);
-                } else {
-                    $this->addEmailAddressesToSearchQueryBuilder($sqb, 'from', $emailAddressBatch);
-                }
+
+                $sqb->openParenthesis();
+                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'from', $emailAddressBatch);
+                $sqb->closeParenthesis();
+
+                $sqb->openParenthesis();
+                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'to', $emailAddressBatch);
+                $sqb->orOperator();
+                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'cc', $emailAddressBatch);
+                $sqb->orOperator();
+                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'bcc', $emailAddressBatch);
+                $sqb->closeParenthesis();
+
                 $sqb->closeParenthesis();
 
                 $this->loadEmails($folder, $sqb->get());
@@ -140,7 +144,7 @@ class ImapEmailSynchronizationProcessor
         } else {
             // this is the first synchronization of this folder; just load emails for last year
             $fromDate = new \DateTime('now');
-            $fromDate = $fromDate->sub(new \DateInterval('P1Y'));
+            $fromDate->sub(new \DateInterval('P1Y'));
             $sqb->sent($fromDate);
         }
 
