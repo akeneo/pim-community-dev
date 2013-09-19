@@ -37,6 +37,17 @@ class LoadProductData extends AbstractDemoFixture
      * @var AttributeOption[]
      */
     protected $manufacturerOptions = null;
+    
+    /**
+     * Number of products to load
+     * @staticvar int
+     */
+    const PRODUCT_COUNT = 100;
+    
+    /**
+     * @staticvar int
+     */
+    const BATCH_SIZE = 200;
 
     /**
      * Get product manager
@@ -64,14 +75,11 @@ class LoadProductData extends AbstractDemoFixture
             return;
         }
 
-        $nbProducts = 100;
-        $batchSize = 200;
-
         $pm = $this->getProductManager();
         $this->getAddVersionListener()->setRealTimeVersioning(false);
         $channels = $this->getChannels();
 
-        for ($ind= 0; $ind < $nbProducts; $ind++) {
+        for ($ind= 0; $ind < self::PRODUCT_COUNT; $ind++) {
 
             $product = $pm->createFlexible();
             $product->setSku('sku-'.str_pad($ind, 3, '0', STR_PAD_LEFT));
@@ -90,7 +98,7 @@ class LoadProductData extends AbstractDemoFixture
 
             $this->persist($product);
 
-            if (($ind % $batchSize) == 0) {
+            if (($ind % self::BATCH_SIZE) == 0) {
                 $pm->getStorageManager()->flush();
                 $pm->getStorageManager()->clear('Pim\\Bundle\\CatalogBundle\\Entity\\Product');
                 $pm->getStorageManager()->clear('Pim\\Bundle\\CatalogBundle\\Entity\\ProductValue');
