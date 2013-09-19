@@ -129,9 +129,12 @@ oro_batch:
 
     file_writer:
         title: 'File configuration'
-        path:
-            label: 'Path'
+        directoryName:
+            label: 'Directory path'
             help: 'Where to write the generated file on the file system'
+        fileName:
+            label: 'File name'
+            help: 'The name of the generated file.'
 
     orm_category_writer:
         title: Category storage

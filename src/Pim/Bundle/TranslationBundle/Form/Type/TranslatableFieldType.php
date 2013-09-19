@@ -39,7 +39,7 @@ class TranslatableFieldType extends AbstractType
      * @param LocaleManager      $localeManager
      * @param array              $localeConfig
      */
-    public function __construct(ValidatorInterface $validator, LocaleManager $localeManager, array $localeConfig)
+    public function __construct(ValidatorInterface $validator, LocaleManager $localeManager, $localeConfig)
     {
         $this->validator     = $validator;
         $this->localeManager = $localeManager;

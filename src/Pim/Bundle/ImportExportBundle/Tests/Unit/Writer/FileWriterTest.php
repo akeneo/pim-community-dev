@@ -11,24 +11,26 @@ use Pim\Bundle\ImportExportBundle\Writer\FileWriter;
  */
 class FileWriterTest extends \PHPUnit_Framework_TestCase
 {
-    const EXPORT_PATH = '/tmp/export';
+    const EXPORT_DIRECTORY = '/tmp';
+    const EXPORT_FILE = 'test';
     const EXPECT_PATH = '/tmp/constat';
 
     protected function tearDown()
     {
+        $filename=sprintf('%s/%s', self::EXPORT_DIRECTORY, self::EXPORT_FILE);
         @unlink(self::EXPECT_PATH);
-        @unlink(self::EXPORT_PATH);
+        @unlink($filename);
     }
 
     public function testWrite()
     {
         file_put_contents(self::EXPECT_PATH, 'foo');
-
         $writer = new FileWriter();
-        $writer->setPath(self::EXPORT_PATH);
+        $writer->setDirectoryName(self::EXPORT_DIRECTORY);
+        $writer->setFileName(self::EXPORT_FILE);
         $writer->write(array('foo'));
-
-        $this->assertFileExists(self::EXPORT_PATH);
-        $this->assertFileEquals(self::EXPECT_PATH, self::EXPORT_PATH);
+        $filename=sprintf('%s/%s', self::EXPORT_DIRECTORY, self::EXPORT_FILE);
+        $this->assertFileExists($filename);
+        $this->assertFileEquals(self::EXPECT_PATH, $filename);
     }
 }

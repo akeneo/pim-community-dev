@@ -17,6 +17,12 @@ use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
  */
 class TranslatableFieldTypeTest extends TypeTestCase
 {
+    protected $localeConfig = array(
+        'locales'=>array(
+            'fr_FR' => array('label'=>'Français'),
+            'en_US' => array('label'=>'English')
+        )
+    );
     /**
      * @var TranslatableFieldType
      */
@@ -65,7 +71,8 @@ class TranslatableFieldTypeTest extends TypeTestCase
             ->addType(
                 new TranslatableFieldType(
                     $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
-                    $this->getLocaleManagerMock()
+                    $this->getLocaleManagerMock(),
+                    $this->localeConfig
                 )
             )
             ->getFormFactory();
@@ -73,7 +80,8 @@ class TranslatableFieldTypeTest extends TypeTestCase
         // Create form type
         $this->type = new TranslatableFieldType(
             $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
-            $this->getLocaleManagerMock()
+            $this->getLocaleManagerMock(),
+            $this->localeConfig
         );
         $this->options = $this->buildOptions(self::OPT_ENTITY_CLASS, self::OPT_NAME, self::OPT_TRANSLATION_CLASS);
 
@@ -132,7 +140,6 @@ class TranslatableFieldTypeTest extends TypeTestCase
     public function testFormCreate()
     {
         // Assert default options
-        $options = $this->type->getDefaultOptions();
         $expectedOptions = array(
             'entity_class'      => false,
             'field'             => false,
@@ -141,10 +148,6 @@ class TranslatableFieldTypeTest extends TypeTestCase
             'translation_class' => false,
             'widget'            => 'text'
         );
-        foreach ($expectedOptions as $expectedKey => $expectedValue) {
-            $this->assertArrayHasKey($expectedKey, $options);
-            $this->assertEquals($expectedValue, $options[$expectedKey]);
-        }
 
         // Assert options
         $options = $this->form->getConfig()->getOptions();

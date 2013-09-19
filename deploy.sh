@@ -47,6 +47,3 @@ php app/console assets:install web
 php app/console assetic:dump
 php app/console oro:assetic:dump
 
-echo "--> Load acl"
-rm -rf app/cache/*
-php app/console oro:acl:load
