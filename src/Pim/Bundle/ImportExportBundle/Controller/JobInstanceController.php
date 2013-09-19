@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Symfony\Component\Process\Process;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -12,7 +13,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
-
 use Pim\Bundle\CatalogBundle\Form\Type\UploadType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -31,10 +31,41 @@ use Oro\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
  */
 class JobInstanceController extends AbstractDoctrineController
 {
+    /**
+     * @var DatagridWorkerInterface
+     */
     private $datagridWorker;
+
+    /**
+     * @var ConnectorRegistry
+     */
     private $connectorRegistry;
+
+    /**
+     * @var string
+     */
     private $jobType;
 
+    /**
+     * @var string
+     */
+    private $rootDir;
+
+    /**
+     * Constructor
+     *
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param RegistryInterface        $doctrine
+     * @param DatagridWorkerInterface  $datagridWorker
+     * @param ConnectorRegistry        $connectorRegistry
+     * @param string                   $jobType
+     * @param string                   $rootDir
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,
@@ -45,13 +76,15 @@ class JobInstanceController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         DatagridWorkerInterface $datagridWorker,
         ConnectorRegistry $connectorRegistry,
-        $jobType
+        $jobType,
+        $rootDir
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
 
         $this->datagridWorker    = $datagridWorker;
         $this->connectorRegistry = $connectorRegistry;
         $this->jobType           = $jobType;
+        $this->rootDir           = $rootDir;
     }
     /**
      * List the jobs instances
@@ -270,6 +303,7 @@ class JobInstanceController extends AbstractDoctrineController
             $jobExecution->setJobInstance($jobInstance);
             $job = $jobInstance->getJob();
 
+            $uploadMode = false;
             if ($request->isMethod('POST') && count($uploadViolations) === 0) {
                 $form = $this->createUploadForm();
                 $form->handleRequest($request);
@@ -294,18 +328,25 @@ class JobInstanceController extends AbstractDoctrineController
                             }
 
                             $reader->setUploadedFile($file);
+                            $uploadMode = true;
                         }
                     }
                 }
             }
 
-            $job->execute($jobExecution);
+            if ($uploadMode) {
+                $job->execute($jobExecution);
 
-            if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
-                $this->addFlash('success', sprintf('The %s has been successfully executed.', $this->getJobType()));
             } else {
-                $this->addFlash('error', sprintf('An error occured during the %s execution.', $this->getJobType()));
+                $this->getManager()->persist($jobExecution);
+                $this->getManager()->flush();
+                $instanceCode = $jobExecution->getJobInstance()->getCode();
+                $executionId = $jobExecution->getId();
+                $cmd = sprintf('php %s/console oro:batch:job %s %s', $this->rootDir, $instanceCode, $executionId);
+                $process = new Process($cmd);
+                $process->start();
             }
+            $this->addFlash('success', sprintf('The %s is running.', $this->getJobType()));
         }
 
         return $this->redirectToReportView($jobExecution->getId());
