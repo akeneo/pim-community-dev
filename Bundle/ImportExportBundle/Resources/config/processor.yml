@@ -2,8 +2,8 @@ parameters:
     oro_importexport.processor.registry.class: Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry
     oro_importexport.processor.registry_delegate_processor.class: Oro\Bundle\ImportExportBundle\Processor\RegistryDelegateProcessor
 
-    oro_importexport.processor.export_abstract: Oro\Bundle\ImportExportBundle\Processor\ExportProcessor
-    oro_importexport.processor.import_abstract: Oro\Bundle\ImportExportBundle\Processor\ImportProcessor
+    oro_importexport.processor.export_abstract.class: Oro\Bundle\ImportExportBundle\Processor\ExportProcessor
+    oro_importexport.processor.import_abstract.class: Oro\Bundle\ImportExportBundle\Processor\ImportProcessor
 
 services:
     # Import delegate processor, abstract import processor and registry
@@ -39,7 +39,7 @@ services:
             - [setSerializer, [@oro_importexport.serializer]]
 
     # Import validate processor and registry
-    oro_importexport.processor.validate_import:
+    oro_importexport.processor.validate_import_delegate:
         class: %oro_importexport.processor.registry_delegate_processor.class%
         arguments: [@oro_importexport.processor.validate_import_registry]
 
