@@ -101,8 +101,7 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizeValue($value)
     {
-
-        if (empty($this->fields) || isset($this->fields[$value->getAttribute()->getCode()])) {
+        if (empty($this->fields) || isset($this->fields[$this->getFieldValue($value)])) {
             $data = $value->getData();
 
             if ($data instanceof \DateTime) {
@@ -134,9 +133,9 @@ class FlatProductNormalizer implements NormalizerInterface
     protected function getFieldValue($value)
     {
         $suffix = '';
-//         if ($value->getAttribute()->getTranslatable()) {
-//             $suffix = $suffix = sprintf('-%s', $value->getLocale());
-//         }
+        if ($value->getAttribute()->getTranslatable()) {
+            $suffix = $suffix = sprintf('-%s', $value->getLocale());
+        }
 
         return $value->getAttribute()->getCode() . $suffix;
     }

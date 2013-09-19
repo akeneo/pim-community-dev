@@ -146,12 +146,20 @@ class Datagrid extends OroDatagrid
 
         $qb->leftJoin('values.attribute', 'attribute');
         $qb->groupBy('attribute.code');
-        $qb->select(' attribute.code');
+        $qb->select('attribute.code, attribute.translatable, attribute.attributeType');
 
         $attributesList = array();
-        $results = $qb->getQuery()->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        $results = $qb->getQuery()->execute();
         foreach ($results as $attribute) {
-            $attributesList[] = $attribute['code'];
+            if ($attribute['translatable'] == 1) {
+                $attributesList[] = $attribute['code'].'-fr_FR';
+                $attributesList[] = $attribute['code'].'-en_US';
+            } elseif ($attribute['attributeType'] === 'pim_catalog_identifier') {
+                array_unshift($attributesList, $attribute['code']);
+            } else {
+                $attributesList[] = $attribute['code'];
+            }
+
         }
 
         return $attributesList;
