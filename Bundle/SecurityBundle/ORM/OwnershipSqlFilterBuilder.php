@@ -42,11 +42,11 @@ class OwnershipSqlFilterBuilder
     /**
      * Constructor
      *
-     * @param SecurityContextInterface $securityContext
-     * @param AclVoter $aclVoter
-     * @param ObjectIdAccessor $objectIdAccessor
+     * @param SecurityContextInterface  $securityContext
+     * @param AclVoter                  $aclVoter
+     * @param ObjectIdAccessor          $objectIdAccessor
      * @param OwnershipMetadataProvider $metadataProvider
-     * @param OwnerTree $tree
+     * @param OwnerTree                 $tree
      */
     public function __construct(
         SecurityContextInterface $securityContext,
@@ -65,8 +65,8 @@ class OwnershipSqlFilterBuilder
     /**
      * Gets the SQL query part to add to a query.
      *
-     * @param string $targetEntityClassName
-     * @param string $targetTableAlias
+     * @param  string $targetEntityClassName
+     * @param  string $targetTableAlias
      * @return string The constraint SQL if there is available, empty string otherwise
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -145,7 +145,7 @@ class OwnershipSqlFilterBuilder
      * Adds all business unit ids within all subordinate business units the given user is associated
      *
      * @param int|string $userId
-     * @param array $result [output]
+     * @param array      $result [output]
      */
     protected function fillSubordinateBusinessUnitIds($userId, array &$result)
     {
@@ -163,7 +163,7 @@ class OwnershipSqlFilterBuilder
      * Adds all user ids within all business units the given user is associated
      *
      * @param int|string $userId
-     * @param array $result [output]
+     * @param array      $result [output]
      */
     protected function fillBusinessUnitUserIds($userId, array &$result)
     {
@@ -179,7 +179,7 @@ class OwnershipSqlFilterBuilder
      * Adds all user ids within all subordinate business units the given user is associated
      *
      * @param int|string $userId
-     * @param array $result [output]
+     * @param array      $result [output]
      */
     protected function fillSubordinateBusinessUnitUserIds($userId, array &$result)
     {
@@ -197,7 +197,7 @@ class OwnershipSqlFilterBuilder
      * Adds all user ids within all organizations the given user is associated
      *
      * @param int|string $userId
-     * @param array $result [output]
+     * @param array      $result [output]
      */
     protected function fillOrganizationUserIds($userId, array &$result)
     {
@@ -235,10 +235,10 @@ class OwnershipSqlFilterBuilder
     /**
      * Gets SQL condition for the given owner id or ids
      *
-     * @param int|int[]|null $idOrIds
-     * @param OwnershipMetadata $metadata
-     * @param string $targetTableAlias
-     * @return string|null A string represents SQL condition or null if the given owner id(s) is not provided
+     * @param  int|int[]|null    $idOrIds
+     * @param  OwnershipMetadata $metadata
+     * @param  string            $targetTableAlias
+     * @return string|null       A string represents SQL condition or null if the given owner id(s) is not provided
      */
     protected function getCondition($idOrIds, OwnershipMetadata $metadata, $targetTableAlias)
     {
@@ -265,8 +265,8 @@ class OwnershipSqlFilterBuilder
     /**
      * Gets the name of owner column
      *
-     * @param OwnershipMetadata $metadata
-     * @param string $targetTableAlias
+     * @param  OwnershipMetadata $metadata
+     * @param  string            $targetTableAlias
      * @return string
      */
     protected function getColumnName(OwnershipMetadata $metadata, $targetTableAlias)

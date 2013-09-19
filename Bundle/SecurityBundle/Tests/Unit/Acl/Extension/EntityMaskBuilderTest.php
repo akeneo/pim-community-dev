@@ -101,7 +101,7 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetPatternWithUndefinedMask()
     {
-        $builder = new EntityMaskBuilder((integer)2147483648);
+        $builder = new EntityMaskBuilder((integer) 2147483648);
         $delim = strpos(EntityMaskBuilder::PATTERN_ALL_OFF, ' ');
         $expected =
             substr(EntityMaskBuilder::PATTERN_ALL_OFF, 0, $delim + 1)

@@ -50,7 +50,7 @@ class ObjectIdentityFactory
      *     create('Entity:AcmeBundle:SomeEntity')
      *     create('Action:Some Action')
      *
-     * @param mixed $domainObjectOrDescriptor An domain object or the object identity descriptor
+     * @param  mixed                        $domainObjectOrDescriptor An domain object or the object identity descriptor
      * @return ObjectIdentity
      * @throws InvalidDomainObjectException
      */
@@ -64,7 +64,7 @@ class ObjectIdentityFactory
             if ($result === null) {
                 $objInfo = is_object($domainObjectOrDescriptor)
                     ? get_class($domainObjectOrDescriptor)
-                    : (string)$domainObjectOrDescriptor;
+                    : (string) $domainObjectOrDescriptor;
                 throw new \InvalidArgumentException(sprintf('Cannot create ObjectIdentity for: %s.', $objInfo));
             }
         } catch (\InvalidArgumentException $ex) {

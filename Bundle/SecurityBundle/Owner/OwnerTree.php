@@ -90,7 +90,7 @@ class OwnerTree
     /**
      * Gets the owning organization id for the given user id
      *
-     * @param int|string $userId
+     * @param  int|string      $userId
      * @return int|string|null
      */
     public function getUserOrganizationId($userId)
@@ -103,7 +103,7 @@ class OwnerTree
     /**
      * Gets all organization ids assigned to the given user id
      *
-     * @param int|string $userId
+     * @param  int|string      $userId
      * @return int|string|null
      */
     public function getUserOrganizationIds($userId)
@@ -116,7 +116,7 @@ class OwnerTree
     /**
      * Gets the owning business unit id for the given user id
      *
-     * @param int|string $userId
+     * @param  int|string      $userId
      * @return int|string|null
      */
     public function getUserBusinessUnitId($userId)
@@ -129,8 +129,8 @@ class OwnerTree
     /**
      * Gets all business unit ids assigned to the given user id
      *
-     * @param int|string $userId
-     * @return array of int|string
+     * @param  int|string $userId
+     * @return array      of int|string
      */
     public function getUserBusinessUnitIds($userId)
     {
@@ -142,8 +142,8 @@ class OwnerTree
     /**
      * Gets all users ids for the given business unit id
      *
-     * @param int|string $businessUnitId
-     * @return array of int|string
+     * @param  int|string $businessUnitId
+     * @return array      of int|string
      */
     public function getBusinessUnitUserIds($businessUnitId)
     {
@@ -155,7 +155,7 @@ class OwnerTree
     /**
      * Gets the owning organization id for the given business unit id
      *
-     * @param int|string $businessUnitId
+     * @param  int|string      $businessUnitId
      * @return int|string|null
      */
     public function getBusinessUnitOrganizationId($businessUnitId)
@@ -168,8 +168,8 @@ class OwnerTree
     /**
      * Gets all business unit ids for the given organization id
      *
-     * @param int|string $organizationId
-     * @return array of int|string
+     * @param  int|string $organizationId
+     * @return array      of int|string
      */
     public function getOrganizationBusinessUnitIds($organizationId)
     {
@@ -181,8 +181,8 @@ class OwnerTree
     /**
      * Gets all user ids for the given organization id
      *
-     * @param int|string $organizationId
-     * @return array of int|string
+     * @param  int|string $organizationId
+     * @return array      of int|string
      */
     public function getOrganizationUserIds($organizationId)
     {
@@ -200,8 +200,8 @@ class OwnerTree
     /**
      * Gets all subordinate business unit ids for the given business unit id
      *
-     * @param int|string $businessUnitId
-     * @return array of int|string
+     * @param  int|string $businessUnitId
+     * @return array      of int|string
      */
     public function getSubordinateBusinessUnitIds($businessUnitId)
     {
@@ -213,7 +213,7 @@ class OwnerTree
     /**
      * Add the given business unit to the tree
      *
-     * @param int|string $businessUnitId
+     * @param int|string      $businessUnitId
      * @param int|string|null $owningOrganizationId
      */
     public function addBusinessUnit($businessUnitId, $owningOrganizationId)
@@ -239,7 +239,7 @@ class OwnerTree
     /**
      * Add a business unit relation to the tree
      *
-     * @param int|string $businessUnitId
+     * @param int|string      $businessUnitId
      * @param int|string|null $parentBusinessUnitId
      */
     public function addBusinessUnitRelation($businessUnitId, $parentBusinessUnitId)
@@ -264,7 +264,7 @@ class OwnerTree
     /**
      * Add the given user to the tree
      *
-     * @param int|string $userId
+     * @param int|string      $userId
      * @param int|string|null $owningBusinessUnitId
      */
     public function addUser($userId, $owningBusinessUnitId)
@@ -294,14 +294,14 @@ class OwnerTree
     /**
      * Add a business unit to the given user
      *
-     * @param int|string $userId
-     * @param int|string $businessUnitId
+     * @param  int|string      $userId
+     * @param  int|string      $businessUnitId
      * @throws \LogicException
      */
     public function addUserBusinessUnit($userId, $businessUnitId)
     {
         if (!isset($this->userBusinessUnitIds[$userId])) {
-            throw new \LogicException(sprintf('First call addUser for userId: %s.', (string)$userId));
+            throw new \LogicException(sprintf('First call addUser for userId: %s.', (string) $userId));
         }
         if ($businessUnitId !== null) {
             $this->userBusinessUnitIds[$userId][] = $businessUnitId;

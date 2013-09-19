@@ -47,10 +47,10 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
     /**
      * Constructor
      *
-     * @param OwnerTree $ownerTree
-     * @param EntityClassAccessor $entityClassAccessor
-     * @param ObjectIdAccessor $objectIdAccessor
-     * @param EntityOwnerAccessor $entityOwnerAccessor
+     * @param OwnerTree                 $ownerTree
+     * @param EntityClassAccessor       $entityClassAccessor
+     * @param ObjectIdAccessor          $objectIdAccessor
+     * @param EntityOwnerAccessor       $entityOwnerAccessor
      * @param OwnershipMetadataProvider $metadataProvider
      */
     public function __construct(
@@ -223,9 +223,9 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
     /**
      * Determines whether the given user has a relation to the given business unit
      *
-     * @param int|string $userId
-     * @param int|string|null $businessUnitId
-     * @param bool $deep Specify whether subordinate business units should be checked. Defaults to false.
+     * @param  int|string      $userId
+     * @param  int|string|null $businessUnitId
+     * @param  bool            $deep           Specify whether subordinate business units should be checked. Defaults to false.
      * @return bool
      */
     protected function isUserBusinessUnit($userId, $businessUnitId, $deep = false)
@@ -249,7 +249,7 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
     /**
      * Check that the given object is a user
      *
-     * @param object $user
+     * @param  object                       $user
      * @throws InvalidDomainObjectException
      */
     protected function validateUserObject($user)
@@ -267,7 +267,7 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
     /**
      * Check that the given object is a domain object
      *
-     * @param object $domainObject
+     * @param  object                       $domainObject
      * @throws InvalidDomainObjectException
      */
     protected function validateObject($domainObject)
@@ -280,7 +280,7 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
     /**
      * Gets id for the given domain object
      *
-     * @param object $domainObject
+     * @param  object                       $domainObject
      * @return int|string
      * @throws InvalidDomainObjectException
      */
@@ -293,7 +293,7 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
      * Gets id for the given domain object.
      * Returns null when the given domain object is null
      *
-     * @param object|null $domainObject
+     * @param  object|null                  $domainObject
      * @return int|string|null
      * @throws InvalidDomainObjectException
      */
@@ -309,7 +309,7 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
     /**
      * Gets the real class name for the given domain object or the given class name that could be a proxy
      *
-     * @param object|string $domainObjectOrClassName
+     * @param  object|string $domainObjectOrClassName
      * @return string
      */
     protected function getObjectClass($domainObjectOrClassName)
@@ -320,7 +320,7 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
     /**
      * Gets metadata for the given domain object
      *
-     * @param object $domainObject
+     * @param  object            $domainObject
      * @return OwnershipMetadata
      */
     protected function getObjectMetadata($domainObject)
@@ -331,7 +331,7 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
     /**
      * Gets owner of the given domain object
      *
-     * @param object $domainObject
+     * @param  object                       $domainObject
      * @return object
      * @throws InvalidDomainObjectException
      */
