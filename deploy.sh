@@ -28,9 +28,6 @@ php app/console oro:acl:load
 php app/console oro:entity-config:update
 php app/console oro:entity-extend:create
 php app/console cache:clear
-php app/console doctrine:cache:clear-metadata
-php app/console doctrine:cache:clear-query
-php app/console doctrine:cache:clear-result
 php app/console doctrine:schema:update --force
 php app/console doctrine:fixtures:load --no-debug --no-interaction
 
