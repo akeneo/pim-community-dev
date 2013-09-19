@@ -1,18 +1,18 @@
 {
-    "name": "oro/importexport-bundle",
+    "name": "oro/batch-bundle",
     "type": "symfony-bundle",
-    "description": "BAP ImportExport Bundle",
-    "keywords": ["BAP", "Data", "Import", "Export"],
+    "description": "BAP Batch Bundle",
+    "keywords": ["BAP", "Batch", "Job", "Reader", "Writer", "Processor"],
     "license": "MIT",
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": ">=2.1",
-        "oro/batch-bundle": "dev-master"
+        "oro/form-bundle": "dev-master"
     },
     "autoload": {
-        "psr-0": { "Oro\\Bundle\\ImportExportBundle": "" }
+        "psr-0": { "Oro\\Bundle\\BatchBundle": "" }
     },
-    "target-dir": "Oro/Bundle/ImportExportBundle",
+    "target-dir": "Oro/Bundle/BatchBundle",
     "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
