@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\ImportExContactBundle\Processor;
+namespace Oro\Bundle\ImportExportBundle\Processor;
 
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -12,8 +12,7 @@ use Oro\Bundle\ImportExportBundle\Converter\QueryBuilderAwareInterface;
 use Oro\Bundle\ImportExportBundle\Converter\DataConverterInterface;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface;
 use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
-
-use OroCRM\Bundle\ContactBundle\Entity\Contact;
+use Oro\Bundle\ImportExportBundle\Exception\RuntimeException;
 
 class ExportProcessor implements ProcessorInterface, ContextAwareInterface
 {
@@ -28,13 +27,17 @@ class ExportProcessor implements ProcessorInterface, ContextAwareInterface
     protected $dataConverter;
 
     /**
-     * Processes Contact entity to export format
+     * Processes entity to export format
      *
-     * @param Contact $object
+     * @param mixed $object
      * @return array
+     * @throws RuntimeException
      */
     public function process($object)
     {
+        if (!$this->serializer) {
+            throw new RuntimeException('Serializer must be injected.');
+        }
         $data = $this->serializer->serialize($object, null);
         if ($this->dataConverter) {
             $data = $this->dataConverter->convertToExportFormat($data);
