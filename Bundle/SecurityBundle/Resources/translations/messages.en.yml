@@ -1,4 +1,4 @@
-(default): Default permission on new entities
+(default): Default permission on custom entities
 VIEW: View
 CREATE: Create
 EDIT: Edit
