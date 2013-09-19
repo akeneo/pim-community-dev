@@ -1,12 +1,93 @@
-# Product/Attribute
+# Entities
+attribute:       attribut
+attribute group: __attribute group
+category:        __category
+tree:            __tree
+channel:         __channel
+currency:        __currency
+export profile:  __export profile
+family:          __family
+import profile:  __import profile
+locale:          __locale
+product:         produit
+
+# Page header titles
+attribute:
+    overview: aperçu des attributs
+    create:   __create attribute
+    edit:     __edit attribute
+attribute group:
+    overview: __attribute group overview
+    create:   __create attribute group
+    edit:     __edit attribute group
+category:
+    overview: __category overview
+    create:   __create category
+    edit:     __edit category
+tree:
+    create:   __create tree
+    edit:     __edit tree
+channel:
+    overview: aperçu des canaux
+    create:   __create channel
+    edit:     modifier un canal
+currency:
+    overview: aperçu des monnaies
+    create:   créer une monnaie
+    edit:     modifier une monnaie
+export profile:
+    overview: __export profile overview
+    create:   __create export profile
+    edit:     __edit export profile
+family:
+    overview: __family overview
+    create:   __create family
+    edit:     __edit family
+import profile:
+    overview: __import profile overview
+    create:   __create import profile
+    edit:     __edit import profile
+locale:
+    overview: aperçu des locales
+    create:   __create locale
+    edit:     modifier une locale
+product:
+    overview: __product overview
+    create:   __create product
+    edit:     __edit product
+
+# Custom titles
+products: produits
+
+# Buttons
+btn:
+    create:
+        attribute:       __create attribute
+        attribute group: __create attribute group
+        category:        __create category
+        tree:            __create tree
+        channel:         __create channel
+        currency:        __create currency
+        export profile:  __create export profile
+        family:          __create family
+        import profile:  __create import profile
+        locale:          __create locale
+        product:         __create product
+    edit:   modifier
+    save:   sauvegarder
+    remove: __remove
+    cancel: __cancel
+    next:   __next
+    back:   __back
+
+# Form elements
 Options:                       Options
 Created at:                    Créé le
 Updated at:                    Mis à jour le
+Created:                       Créé
+Updated:                       Mis à jour
 N/A:                           N/A
-Save:                          Sauvegarder
 Add an option:                 Ajouter une option
-Attributes overview:           Aperçu des attributs
-New attribute:                 Nouvel attribut
 Manage products:               Gestion des produits
 Code:                          Code
 Name:                          Nom
@@ -19,8 +100,6 @@ Scopable:                      Scopable
 Unique value:                  __Unique value
 Attribute group:               __Attribute group
 Variants behavior when edited: __Variants behavior when edited
-Created:                       Créé
-Updated:                       Mis à jour
 Edit:                          Modifier
 Remove:                        Supprimer
 Delete:                        __Delete
@@ -46,7 +125,6 @@ default:                       __Default
 
 Create:                                    __Create
 Cancel:                                    __Cancel
-New product:                               __New product
 Create a new product:                      __Create a new product
 Choose a family:                           __Choose a family
 Attributes are added to the product form.: __Attributes are added to the product form.
@@ -89,20 +167,13 @@ Max file size:           __Max file size
 Allowed file extensions: __Allowed file extensions
 
 # Family
-Families overview: __Families overview
-New family:        __New family
-Attributes:        __Attributes
-Edit family:       __Edit family
-Add family:        __Add family
+Attributes: __Attributes
 
 # Category
 Category successfully saved:   __Category successfully saved
 Category successfully removed: __Category successfully removed
-New tree:                      __New tree
 Title:                         __Title
 Is dynamic:                    __Is dynamic
-Edit category:                 __Edit category
-Add category:                  __Add category
 
 # Export profiles
 Export profiles overview: __Export profiles overview
@@ -157,30 +228,10 @@ pim_catalog_date:             __Date
 pim_catalog_metric:           __Metric
 
 # Locales
-Locales overview: Aperçu des locales
-New locale:       Nouvelle locale
-Code:             Code
-Fallback:         Repli
-Activated:        Actif
-Edit:             Modifier
-Disable:          Désactiver
-Locales:          Locales
-Edit locale:      Modifier une locale
-Add locale:       Ajouter une locale
-
-# Currencies
-Currencies overview: Aperçu des monnaies
-New currency:        Nouvelle monnaie
-Add currency:        Ajouter une monnaie
-Edit currency:       Modifier une monnaie
-Currencies:          Monnaies
-
-# Channels
-Channels overview: Aperçu des canaux
-New channel:       Nouveau canal
-Add channel:       Ajouter un canal
-Edit channel:      Modifier un canal
-Channels:          Canaux
+Fallback:  Repli
+Activated: Actif
+Edit:      Modifier
+Disable:   Désactiver
 
 # Batch operations
 pim_catalog.mass_edit_action:
