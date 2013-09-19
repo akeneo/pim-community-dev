@@ -21,6 +21,8 @@ Feature: Edit common attributes of many products at once
       | torch   | Colors | General | no           | no       | multiselect |
       | lamp    | Price  | General | no           | no       | prices      |
       | torch   | Price  | General | no           | no       | prices      |
+      | ceiling | Visual | General | no           | no       | image       |
+      | torch   | Visual | General | no           | no       | image       |
     And I am logged in as "Julia"
 
   Scenario: Allow editing only common attributes
@@ -60,6 +62,14 @@ Feature: Edit common attributes of many products at once
       | 150    | EUR      |
 
   Scenario: Succesfully update many file values at once
+    Given I am on the products page
+    When I mass-edit products torch and ceiling
+    And I choose the "Edit attributes" operation
+    And I display the Visual attribute
+    And I attach file "akeneo.jpg" to "Visual"
+    And I move on to the next step
+    Then I should see "Product(s) attribute(s) have been updated"
+    And the file "Visual" of products torch and ceiling should be "akeneo.jpg"
 
   Scenario: Succesfully update many multi-valued values at once
     Given the following "Colors" attribute options: Red, Blue and White

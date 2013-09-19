@@ -36,6 +36,7 @@ class EditCommonAttributes extends Wizard
      */
     public function fillField($labelContent, $value, Element $element = null)
     {
+        $subLabelContent = null;
         $parsedField = str_word_count($labelContent, 1, '€$');
 
         if (2 === count($parsedField)) {

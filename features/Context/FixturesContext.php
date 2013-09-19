@@ -761,18 +761,29 @@ class FixturesContext extends RawMinkContext
         }
     }
 
+    /**
+     * @Given /^the file "([^"]*)" of products (.*) should be "([^"]*)"$/
+     */
+    public function theFileOfTorchShouldBe($attribute, $products, $filename)
+    {
+        foreach ($this->listToArray($products) as $identifier) {
+            $productValue = $this->getProductValue($identifier, strtolower($attribute));
+            assertEquals($filename, $productValue->getMedia()->getOriginalFilename());
+        }
+    }
+
     private function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {
         $product = $this->getProductManager()->findByIdentifier($identifier);
         if (!$product) {
-            throw $this->createExpectationException(
+            throw new \InvalidArgumentException(
                 sprintf('Could not find product with identifier "%s"', $identifier)
             );
         }
 
         $productValue = $product->getValue($attribute, $locale, $scope);
         if (!$productValue) {
-            throw $this->createExpectationException(
+            throw new \InvalidArgumentException(
                 sprintf('Could not find product value for attribute "%s" in locale "%s"', $attribute, $lang)
             );
         }

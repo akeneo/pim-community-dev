@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 
 /**
  * Edit common attributes of given products
@@ -216,6 +217,11 @@ class EditCommonAttributes extends AbstractMassEditAction
                 $this->setProductOption($productValue, $value);
                 break;
 
+            case 'pim_catalog_file':
+            case 'pim_catalog_image':
+                $this->setProductFile($productValue, $value);
+                break;
+
             default:
                 $productValue->setData($value->getData());
         }
@@ -240,6 +246,15 @@ class EditCommonAttributes extends AbstractMassEditAction
         foreach ($value->getOptions() as $option) {
             $productValue->addOption($option);
         }
+    }
+
+    private function setProductFile(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        if (null === $media = $productValue->getMedia()) {
+            $media = new Media();
+            $productValue->setMedia($media);
+        }
+        $media->setFile($value->getMedia()->getFile());
     }
 
     /**
