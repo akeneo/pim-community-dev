@@ -1,0 +1,32 @@
+connector:
+    name: oro_importexport
+    jobs:
+        entity_export_to_csv:
+            title: "Entity Export to CSV"
+            type: export
+            steps:
+                export:
+                    title:     ~
+                    reader:    oro_importexport.reader.entity
+                    processor: oro_importexport.processor.export_delegate
+                    writer:    oro_importexport.writer.csv
+
+        entity_import_validation_from_csv:
+            title: "Entity Import Validation from CSV"
+            type: import
+            steps:
+                import_validation:
+                    title:     ~
+                    reader:    oro_importexport.reader.csv
+                    processor: oro_importexport.processor.validate_import_delegate
+                    writer:    oro_importexport.writer.dummy
+
+        entity_import_from_csv:
+            title: "Entity Import from CSV"
+            type: import
+            steps:
+                import:
+                    title:     ~
+                    reader:    oro_importexport.reader.csv
+                    processor: oro_importexport.processor.import_delegate
+                    writer:    oro_importexport.writer.entity

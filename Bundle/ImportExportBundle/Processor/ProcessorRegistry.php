@@ -8,7 +8,7 @@ use Oro\Bundle\ImportExportBundle\Exception\LogicException;
 class ProcessorRegistry
 {
     /**
-     * Strategy storage format:
+     * Processor storage format:
      * array(
      *     '<entityName>' => array(
      *         '<processorAlias>' => <processorObject>
