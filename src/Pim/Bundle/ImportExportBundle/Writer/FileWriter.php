@@ -18,18 +18,55 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     /**
      * @Assert\NotBlank
      */
-    protected $path;
+    protected $directoryName;
+    
+    /**
+     * @Assert\NotBlank
+     */
+    protected $fileName;
 
     private $handler;
 
     /**
-     * Set the file path in which to write the data
+     * Set the filename 
+     *
+     * @param string 
+     */
+    public function setFileName($fileName)
+    {
+        $this->fileName = $fileName;
+        return $this;
+    }
+
+    /**
+     * Get the filename
+     *
+     * @return string
+     */
+    public function getFileName()
+    {
+        return $this->fileName;
+    }
+
+    /**
+     * Set the directory name 
      *
      * @param string $path
      */
-    public function setPath($path)
+    public function setDirectoryName($directoryName)
     {
-        $this->path = $path;
+        $this->directoryName = $directoryName;
+        return $this;
+    }
+
+    /**
+     * Get the directory name
+     *
+     * @return string
+     */
+    public function getDirectoryName()
+    {
+        return $this->directoryName;
     }
 
     /**
@@ -39,7 +76,16 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
      */
     public function getPath()
     {
-        return $this->path;
+        return sprintf(
+            '%s/%s',
+            $this->directoryName,
+            strtr(
+                $this->fileName,
+                array(
+                    '%datetime%' => date('Y-m-d_H:i:s')
+                )
+            )
+        );
     }
 
     /**
@@ -48,7 +94,7 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     public function write(array $data)
     {
         if (!$this->handler) {
-            $this->handler = fopen($this->path, 'w');
+            $this->handler = fopen($this->getPath(), 'w');
         }
 
         foreach ($data as $entry) {
@@ -72,8 +118,13 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     public function getConfigurationFields()
     {
         return array(
-            'path' => array(
+            'directoryName' => array(
                 'options' => array()
+            ),
+            'fileName'=>array(
+                'options'=>array(
+                    'data'=>'export_%datetime%.csv'
+                )
             )
         );
     }
