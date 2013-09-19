@@ -77,21 +77,22 @@ class RecordOwnerDataListener
         }
         $entity = $args->getEntity();
         if ($this->configProvider->isConfigurable(get_class($entity))) {
-            if (!method_exists($entity, 'getOwner')) {
-                throw new \LogicException(
-                    sprintf('Method getOwner must be implemented for %s entity', get_class($entity))
-                );
-            }
-            if (!$entity->getOwner()) {
-                /** @var $config EntityConfig */
-                $config = $this->configProvider->getConfig(get_class($entity));
-                $ownerType = $config->get('owner_type');
-                /**
-                 * Automatically set current user as record owner
-                 */
-                if (OwnershipType::OWNER_TYPE_USER == $ownerType
-                    && method_exists($entity, 'setOwner')) {
-                        $entity->setOwner($user);
+            $config = $this->configProvider->getConfig(get_class($entity));
+            $ownerType = $config->get('owner_type');
+            if ($ownerType && $ownerType !== OwnershipType::OWNER_TYPE_NONE) {
+                if (!method_exists($entity, 'getOwner')) {
+                    throw new \LogicException(
+                        sprintf('Method getOwner must be implemented for %s entity', get_class($entity))
+                    );
+                }
+                if (!$entity->getOwner()) {
+                    /**
+                     * Automatically set current user as record owner
+                     */
+                    if (OwnershipType::OWNER_TYPE_USER == $ownerType
+                        && method_exists($entity, 'setOwner')) {
+                            $entity->setOwner($user);
+                    }
                 }
             }
         }
