@@ -1,0 +1,12 @@
+parameters:
+    oro_importexport.writer.csv.class: Oro\Bundle\ImportExportBundle\Writer\CsvFileWriter
+    oro_importexport.writer.entity.class: Oro\Bundle\ImportExportBundle\Writer\EntityWriter
+
+services:
+    oro_importexport.writer.csv:
+        class: %oro_importexport.writer.csv.class%
+
+    oro_importexport.writer.entity:
+        class: %oro_importexport.writer.entity.class%
+        arguments:
+            - @doctrine.orm.entity_manager
