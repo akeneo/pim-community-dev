@@ -3,7 +3,6 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Acl\Model\EntryInterface;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
 
 /**

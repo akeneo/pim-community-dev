@@ -5,7 +5,6 @@ namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntityImplementsDomainObjectInterface;
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Oro\Bundle\SecurityBundle\Tests\Unit\TestHelper;
 
 class ObjectIdentityFactoryTest extends \PHPUnit_Framework_TestCase
