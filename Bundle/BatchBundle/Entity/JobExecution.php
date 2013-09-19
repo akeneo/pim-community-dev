@@ -313,6 +313,10 @@ class JobExecution
      */
     public function getExitStatus()
     {
+        if ($this->exitStatus === null and $this->exitCode !== null) {
+            $this->exitStatus = new ExitStatus($this->exitCode);
+        }
+
         return $this->exitStatus;
     }
 
