@@ -151,12 +151,12 @@ class StepExecutionProxyContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getOption($name)
+    public function getOption($name, $default = null)
     {
         if ($this->hasOption($name)) {
             $configuration = $this->getConfiguration();
             return $configuration[$name];
         }
-        return null;
+        return $default;
     }
 }

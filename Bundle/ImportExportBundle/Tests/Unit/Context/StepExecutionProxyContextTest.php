@@ -159,25 +159,45 @@ class StepExecutionProxyContextTest extends \PHPUnit_Framework_TestCase
 
     public function testGetConfiguration()
     {
-        $expectedConfiguration = array('name' => 'value');
+        $expectedConfiguration = array('foo' => 'value');
+        $this->expectGetRawConfiguration($expectedConfiguration);
+        $this->assertSame($expectedConfiguration, $this->context->getConfiguration());
+    }
 
+    public function testHasConfigurationOption()
+    {
+        $expectedConfiguration = array('foo' => 'value');
+        $this->expectGetRawConfiguration($expectedConfiguration, 2);
+        $this->assertTrue($this->context->hasOption('foo'));
+        $this->assertFalse($this->context->hasOption('unknown'));
+    }
+
+    public function testGetConfigurationOption()
+    {
+        $expectedConfiguration = array('foo' => 'value');
+        $this->expectGetRawConfiguration($expectedConfiguration, 4);
+        $this->assertEquals('value', $this->context->getOption('foo'));
+        $this->assertEquals('default', $this->context->getOption('unknown', 'default'));
+        $this->assertNull($this->context->getOption('unknown'));
+    }
+
+    protected function expectGetRawConfiguration(array $expectedConfiguration, $count = 1)
+    {
         $jobInstance = $this->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobInstance')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $jobInstance->expects($this->once())->method('getRawConfiguration')
+        $jobInstance->expects($this->exactly($count))->method('getRawConfiguration')
             ->will($this->returnValue($expectedConfiguration));
 
         $jobExecution = $this->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobExecution')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $jobExecution->expects($this->once())->method('getJobInstance')
+        $jobExecution->expects($this->exactly($count))->method('getJobInstance')
             ->will($this->returnValue($jobInstance));
 
-        $this->stepExecution->expects($this->once())->method('getJobExecution')
+        $this->stepExecution->expects($this->exactly($count))->method('getJobExecution')
             ->will($this->returnValue($jobExecution));
-
-        $this->assertSame($expectedConfiguration, $this->context->getConfiguration());
     }
 }

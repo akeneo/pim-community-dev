@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\ImportExportBundle\Tests\Unit\Reader;
+namespace Oro\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
 use Oro\Bundle\ImportExportBundle\Processor\RegistryDelegateProcessor;
 
