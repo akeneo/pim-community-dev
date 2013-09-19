@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Process\Process;
 
@@ -12,11 +10,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
 
-use Oro\Bundle\EntityConfigBundle\Config\Config;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
-use Oro\Bundle\EntityExtendBundle\Tools\Schema;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 /**
@@ -30,83 +27,6 @@ use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
  */
 class ApplyController extends Controller
 {
-    /**
-     * @Route(
-     *      "/apply/{id}",
-     *      name="oro_entityextend_apply",
-     *      requirements={"id"="\d+"},
-     *      defaults={"id"=0}
-     * )
-     * @Acl(
-     *      id="oro_entityextend_apply",
-     *      name="Validate changes",
-     *      description="Validate entityconfig changes",
-     *      parent="oro_entityextend"
-     * )
-     * @Template()
-     */
-    public function applyAction($id)
-    {
-        /** @var EntityConfigModel $entity */
-        $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
-
-        /** @var ConfigProvider $entityConfigProvider */
-        $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
-
-        /** @var ConfigProvider $extendConfigProvider */
-        $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
-        $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
-        $extendFieldConfigs   = $extendConfigProvider->getConfigs($entity->getClassName());
-
-        /** @var Schema $schemaTools */
-        $schemaTools = $this->get('oro_entity_extend.tools.schema');
-
-        /**
-         * do Validations
-         */
-        $validation = array();
-
-        /** @var Config $fieldConfig */
-        foreach ($extendFieldConfigs as $fieldConfig) {
-            $isSystem = $fieldConfig->get('owner') == 'System' ? true : false;
-            if ($isSystem) {
-                continue;
-            }
-
-            if (in_array($fieldConfig->get('state'), array('New', 'Requires update', 'To be deleted'))) {
-                if ($fieldConfig->get('state') == 'New') {
-                    $isValid = true;
-                } else {
-                    $isValid = $schemaTools->checkFieldCanDelete($fieldConfig->getId());
-                }
-
-                if ($isValid) {
-                    $validation['success'][] = sprintf(
-                        "Field '%s(%s)' is valid. State -> %s",
-                        $fieldConfig->getId()->getFieldName(),
-                        $fieldConfig->get('owner'),
-                        $fieldConfig->get('state')
-                    );
-                } else {
-                    $validation['error'][] = sprintf(
-                        "Warning. Field '%s(%s)' has data.",
-                        $fieldConfig->getId()->getFieldName(),
-                        $fieldConfig->get('owner')
-                    );
-                }
-            }
-        }
-
-        $entityConfig = $entityConfigProvider->getConfig($entity->getClassName());
-
-        return array(
-            'validations'   => $validation,
-            'entity'        => $entity,
-            'entity_config' => $entityConfig,
-            'entity_extend' => $extendConfig,
-        );
-    }
-
     /**
      * @Route(
      *      "/update/{id}",

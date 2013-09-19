@@ -1,13 +1,10 @@
 <?php
 namespace Oro\Bundle\OrganizationBundle\Tests\Unit\Event;
 
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Event\RecordOwnerDataListener;
-use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
 
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Tests\Unit\Fixture\Entity;
 
 class RecordOwnerDataListenerTest extends \PHPUnit_Framework_TestCase
@@ -56,7 +53,7 @@ class RecordOwnerDataListenerTest extends \PHPUnit_Framework_TestCase
         $this->entity = new Entity();
 
         $this->configProvider->expects($this->once())
-            ->method('isConfigurable')
+            ->method('hasConfig')
             ->will($this->returnValue(true));
 
         $this->config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface')
@@ -88,10 +85,16 @@ class RecordOwnerDataListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testPrePersistUser()
     {
-        $this->config->expects($this->once())
+        $this->config->expects($this->exactly(2))
             ->method('get')
             ->with('owner_type')
-            ->will($this->returnValue(OwnershipType::OWNERSHIP_TYPE_USER));
+            ->will($this->returnValue(OwnershipType::OWNER_TYPE_USER));
+
+        $this->config->expects($this->once())
+            ->method('has')
+            ->with('owner_type')
+            ->will($this->returnValue(true));
+
 
         $this->listener->prePersist($this->listenerArguments);
         $this->assertEquals($this->user, $this->entity->getOwner());

@@ -180,5 +180,6 @@ services:
     oro_user.change_password.subscriber:
         class: %oro_user.change_password.subscriber.class%
         arguments:
+            - @form.factory
             - @oro_user.acl_manager
             - @security.context

@@ -293,7 +293,7 @@ class Lead extends AbstractEntity implements Entity
 
     public function edit()
     {
-        $this->byXPath("//div[@class='pull-left btn-group icons-holder']/a[@title = 'Update Lead']")->click();
+        $this->byXPath("//div[@class='pull-left btn-group icons-holder']/a[@title = 'Update lead']")->click();
         $this->waitPageToLoad();
         $this->waitForAjax();
         $this->init();
