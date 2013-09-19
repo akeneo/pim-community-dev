@@ -71,7 +71,7 @@ class RecordOwnerDataListener
             return;
         }
         $entity = $args->getEntity();
-        if ($this->configProvider->isConfigurable(get_class($entity))) {
+        if ($this->configProvider->hasConfig(get_class($entity))) {
             $config = $this->configProvider->getConfig(get_class($entity));
             $ownerType = $config->get('owner_type');
             if ($ownerType && $ownerType !== OwnershipType::OWNER_TYPE_NONE) {
