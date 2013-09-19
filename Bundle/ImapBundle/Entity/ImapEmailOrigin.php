@@ -3,6 +3,7 @@
 namespace Oro\Bundle\ImapBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 
 /**
@@ -22,7 +23,7 @@ class ImapEmailOrigin extends EmailOrigin
     /**
      * @var string
      *
-     * @ORM\Column(name="imap_port", type="string", length=10, nullable=true)
+     * @ORM\Column(name="imap_port", type="integer", length=10, nullable=true)
      */
     protected $port;
 
@@ -98,22 +99,22 @@ class ImapEmailOrigin extends EmailOrigin
     /**
      * Gets the port of IMAP server
      *
-     * @return string
+     * @return int
      */
     public function getPort()
     {
-        return $this->port;
+        return (int)$this->port;
     }
 
     /**
      * Sets the port of IMAP server
      *
-     * @param string $port
+     * @param int $port
      * @return ImapEmailOrigin
      */
     public function setPort($port)
     {
-        $this->port = $port;
+        $this->port = (int)$port;
 
         return $this;
     }

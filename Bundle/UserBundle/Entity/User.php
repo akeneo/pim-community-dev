@@ -329,7 +329,7 @@ class User extends AbstractEntityFlexible implements
      * @ORM\OneToOne(
      *     targetEntity="Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin", orphanRemoval=true, cascade={"all"}
      * )
-     * @ORM\JoinColumn(name="imap_configuration_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="imap_configuration_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      * @Exclude
      */
     protected $imapConfiguration;

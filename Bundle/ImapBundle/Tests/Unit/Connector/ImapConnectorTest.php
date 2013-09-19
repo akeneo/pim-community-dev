@@ -89,12 +89,30 @@ class ImapConnectorTest extends \PHPUnit_Framework_TestCase
             ->method('search')
             ->with($this->equalTo(array('some query')))
             ->will($this->returnValue(array('1', '2')));
+        $this->storage->expects($this->never())
+            ->method('getMessage')
+            ->will($this->returnValue(new \stdClass()));
+
+        $result = $this->connector->findItems('SomeFolder', $this->connector->getSearchQueryBuilder()->get());
+        $this->assertCount(2, $result);
+    }
+
+    public function testFindItemsWithParentFolderAndSearchQueryGetMessages()
+    {
+        $this->storage->expects($this->at(0))
+            ->method('selectFolder')
+            ->with($this->equalTo('SomeFolder'));
+        $this->storage->expects($this->at(1))
+            ->method('search')
+            ->with($this->equalTo(array('some query')))
+            ->will($this->returnValue(array('1', '2')));
         $this->storage->expects($this->exactly(2))
             ->method('getMessage')
             ->will($this->returnValue(new \stdClass()));
 
         $result = $this->connector->findItems('SomeFolder', $this->connector->getSearchQueryBuilder()->get());
         $this->assertCount(2, $result);
+        foreach ($result as $r) { }
     }
 
     public function testFindFolders()

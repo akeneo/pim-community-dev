@@ -6,6 +6,7 @@ parameters:
     oro_imap.search_string_manager.other.class:      Oro\Bundle\ImapBundle\Connector\Search\SearchStringManager
     oro_imap.storage.gmail.class:                    Oro\Bundle\ImapBundle\Mail\Storage\GmailImap
     oro_imap.storage.other.class:                    Oro\Bundle\ImapBundle\Mail\Storage\Imap
+    oro_imap.email_body_loader.class:                Oro\Bundle\ImapBundle\Provider\ImapEmailBodyLoader
 
     oro_imap.form.type.configuration.class:          Oro\Bundle\ImapBundle\Form\Type\ConfigurationType
 
@@ -17,6 +18,7 @@ services:
         arguments:
             - @oro_imap.services.factory
             - %oro_imap.connector.class%
+
     oro_imap.services.factory:
         public: false
         class: %oro_imap.services.factory.class%
@@ -25,8 +27,18 @@ services:
                 "": [%oro_imap.storage.other.class%, %oro_imap.search_string_manager.other.class%]
                 X-GM-EXT-1: [%oro_imap.storage.gmail.class%, %oro_imap.search_string_manager.gmail.class%]
 
+    oro_imap.email_body_loader:
+        public: false
+        class: %oro_imap.email_body_loader.class%
+        arguments:
+            - @oro_imap.connector.factory
+        tags:
+            - { name: oro_email.email_body_loader }
+
     oro_imap.form.type.configuration:
         class: %oro_imap.form.type.configuration.class%
+        arguments:
+            - @oro_platform.security.encryptor.mcrypt
         tags:
              - { name: form.type, alias: oro_imap_configuration }
 

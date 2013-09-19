@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EmailBundle\Controller;
 
+use Oro\Bundle\EmailBundle\Decoder\ContentDecoder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -92,10 +93,13 @@ class EmailController extends Controller
         $response = new Response();
         $response->headers->set('Content-Type', $entity->getContentType());
         $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $entity->getFileName()));
-        $response->headers->set('Content-Transfer-Encoding', $entity->getContent()->getContentTransferEncoding());
         $response->headers->set('Pragma', 'no-cache');
         $response->headers->set('Expires', '0');
-        $response->setContent($entity->getContent()->getValue());
+        $content = ContentDecoder::decode(
+            $entity->getContent()->getValue(),
+            $entity->getContent()->getContentTransferEncoding()
+        );
+        $response->setContent($content);
 
         return $response;
     }

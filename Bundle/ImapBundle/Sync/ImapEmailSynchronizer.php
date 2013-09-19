@@ -10,6 +10,7 @@ use Oro\Bundle\ImapBundle\Connector\ImapConnectorFactory;
 use Oro\Bundle\ImapBundle\Manager\ImapEmailManager;
 use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
+use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 
 class ImapEmailSynchronizer
 {
@@ -44,17 +45,20 @@ class ImapEmailSynchronizer
      * @param ImapConnectorFactory $connectorFactory
      * @param EntityManager $em
      * @param EmailEntityBuilder $emailEntityBuilder
+     * @param EmailAddressManager $emailAddressManager
      */
     public function __construct(
         LoggerInterface $log,
         ImapConnectorFactory $connectorFactory,
         EntityManager $em,
-        EmailEntityBuilder $emailEntityBuilder
+        EmailEntityBuilder $emailEntityBuilder,
+        EmailAddressManager $emailAddressManager
     ) {
         $this->log = $log;
         $this->connectorFactory = $connectorFactory;
         $this->em = $em;
         $this->emailEntityBuilder = $emailEntityBuilder;
+        $this->emailAddressManager = $emailAddressManager;
     }
 
     /**
@@ -88,7 +92,8 @@ class ImapEmailSynchronizer
             $this->log,
             new ImapEmailManager($this->connectorFactory->createImapConnector($config)),
             $this->em,
-            $this->emailEntityBuilder
+            $this->emailEntityBuilder,
+            $this->emailAddressManager
         );
 
         try {
@@ -165,10 +170,11 @@ class ImapEmailSynchronizer
                 . ', (COALESCE(o.syncCode, 1000) * 100'
                 . ' + (:now - o.syncCodeUpdatedAt) / (CASE o.syncCode WHEN :success THEN 100 ELSE 1 END)) AS HIDDEN p2'
             )
-            ->where('o.syncCodeUpdatedAt IS NULL OR o.syncCodeUpdatedAt <= :border')
+            ->where('o.isActive = :isActive AND o.syncCodeUpdatedAt IS NULL OR o.syncCodeUpdatedAt <= :border')
             ->orderBy('p1, p2 DESC, o.syncCodeUpdatedAt')
             ->setParameter('inProcess', self::SYNC_CODE_IN_PROCESS)
             ->setParameter('success', self::SYNC_CODE_SUCCESS)
+            ->setParameter('isActive', true)
             ->setParameter('now', $now)
             ->setParameter('border', $border)
             ->setMaxResults($maxConcurrentTasks + 1)

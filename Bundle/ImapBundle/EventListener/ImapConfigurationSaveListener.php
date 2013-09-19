@@ -48,10 +48,12 @@ class ImapConfigurationSaveListener implements EventSubscriber
                     $oldConfiguration = $entity->getImapConfiguration();
                     $newConfiguration = clone $oldConfiguration;
 
-                    $em->detach($oldConfiguration);
+                    $em->refresh($oldConfiguration);
+                    $oldConfiguration->setIsActive(false);
+                    $em->persist($oldConfiguration);
+
                     $em->persist($newConfiguration);
 
-                    // @TODO set no active
                     $entity->setImapConfiguration($newConfiguration);
                     $uow->computeChangeSets();
                 }

@@ -36,6 +36,13 @@ abstract class EmailOrigin
     protected $folders;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="isActive", type="boolean")
+     */
+    protected $isActive = true;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -76,6 +83,29 @@ abstract class EmailOrigin
         $folder->setOrigin($this);
 
         return $this;
+    }
+
+    /**
+     * Set template is active or not
+     *
+     * @param boolean $isActive
+     * @return $this
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Getter for isActive property
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 
     /**

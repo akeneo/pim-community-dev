@@ -1,5 +1,6 @@
 parameters:
-    oro_platform.maintenance.class:           Oro\Bundle\PlatformBundle\Maintenance\Mode
+    oro_platform.maintenance.class:               Oro\Bundle\PlatformBundle\Maintenance\Mode
+    oro_platform.security.encryptor.mcrypt.class: Oro\Bundle\PlatformBundle\Security\Encryptor\Mcrypt
 
 services:
     oro_platform.maintenance:
@@ -7,3 +8,7 @@ services:
         arguments:
             - "@lexik_maintenance.driver.factory"
             - "@event_dispatcher"
+
+    oro_platform.security.encryptor.mcrypt:
+        class: %oro_platform.security.encryptor.mcrypt.class%
+        arguments: [ %kernel.secret% ]

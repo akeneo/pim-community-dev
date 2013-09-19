@@ -5,7 +5,7 @@ namespace Oro\Bundle\ImapBundle\Manager;
 use Oro\Bundle\ImapBundle\Connector\ImapMessageIterator;
 use Oro\Bundle\ImapBundle\Manager\DTO\Email;
 
-class ImapEmailIterator implements \Iterator
+class ImapEmailIterator implements \Iterator, \Countable
 {
     /**
      * @var ImapMessageIterator
@@ -42,13 +42,23 @@ class ImapEmailIterator implements \Iterator
     }
 
     /**
+     * The number of emails in this iterator
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return $this->iterator->count();
+    }
+
+    /**
      * Return the current element
      *
      * @return Email
      */
     public function current()
     {
-        return $this->manager->getEmail($this->iterator->current());
+        return $this->manager->convertToEmail($this->iterator->current());
     }
 
     /**
