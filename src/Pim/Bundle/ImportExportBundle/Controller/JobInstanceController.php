@@ -347,9 +347,11 @@ class JobInstanceController extends AbstractDoctrineController
                 $process->start();
             }
             $this->addFlash('success', sprintf('The %s is running.', $this->getJobType()));
+            
+            return $this->redirectToReportView($jobExecution->getId());
         }
 
-        return $this->redirectToReportView($jobExecution->getId());
+        return $this->redirectToShowView($jobInstance->getId());
     }
 
     /**
