@@ -1,0 +1,4 @@
+oro_importexport:
+    name: Import/export for entities
+    description: All actions that perform import/export for entities
+    parent: root
