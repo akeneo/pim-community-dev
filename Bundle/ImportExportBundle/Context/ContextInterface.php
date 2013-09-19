@@ -94,7 +94,8 @@ interface ContextInterface
      * Get configuration option.
      *
      * @param string $name
+     * @param mixed $default
      * @return mixed
      */
-    public function getOption($name);
+    public function getOption($name, $default = null);
 }

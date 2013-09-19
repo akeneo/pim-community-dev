@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\ImportExportBundle\Tests\Unit\Reader;
+namespace Oro\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
 use Oro\Bundle\ImportExportBundle\Processor\ExportProcessor;
 
@@ -67,14 +67,79 @@ class ExportProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedValue, $this->processor->process($entity));
     }
 
-    /*public function testSetImportExportContext()
+    public function testSetImportExportContextWithoutQueryBuilder()
     {
         $context = $this->getMock('Oro\Bundle\ImportExportBundle\Context\ContextInterface');
-        $context->expects($this->once())->method('getConfiguration')
-            ->will($this->returnValue())
+        $context->expects($this->once())->method('getOption')
+            ->will($this->returnValue(null));
 
-        $this->processor->setSerializer($serializer);
+        $dataConverter = $this->getMock('Oro\Bundle\ImportExportBundle\Converter\DataConverterInterface');
+        $dataConverter->expects($this->never())->method($this->anything());
 
-        $this->assertEquals($expectedValue, $this->processor->process($entity));
-    }*/
+        $this->processor->setDataConverter($dataConverter);
+
+        $this->processor->setImportExportContext($context);
+    }
+
+    public function testSetImportExportContextWithQueryBuilderIgnored()
+    {
+        $queryBuilder = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $context = $this->getMock('Oro\Bundle\ImportExportBundle\Context\ContextInterface');
+        $context->expects($this->once())->method('getOption')
+            ->will($this->returnValue($queryBuilder));
+
+        $dataConverter = $this->getMock('Oro\Bundle\ImportExportBundle\Converter\DataConverterInterface');
+        $dataConverter->expects($this->never())->method($this->anything());
+
+        $this->processor->setDataConverter($dataConverter);
+
+        $this->processor->setImportExportContext($context);
+    }
+
+    public function testSetImportExportContextWithQueryBuilder()
+    {
+        $queryBuilder = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $context = $this->getMock('Oro\Bundle\ImportExportBundle\Context\ContextInterface');
+        $context->expects($this->once())->method('getOption')
+            ->will($this->returnValue($queryBuilder));
+
+        $dataConverter = $this->getMock(
+            'Oro\Bundle\ImportExportBundle\Tests\Unit\Converter\Stub\QueryBuilderAwareDataConverter'
+        );
+        $dataConverter->expects($this->once())
+            ->method('setQueryBuilder')
+            ->will($this->returnValue($queryBuilder));
+
+        $this->processor->setDataConverter($dataConverter);
+
+        $this->processor->setImportExportContext($context);
+    }
+
+    // @codingStandardsIgnoreStart
+    /**
+     * @expectedException \Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException
+     * @expectedExceptionMessage Configuration of processor contains invalid "queryBuilder" option. "Doctrine\ORM\QueryBuilder" type is expected, but "stdClass" is given
+     */
+    // @codingStandardsIgnoreEnd
+    public function testSetImportExportContextFailsWithInvalidQueryBuilder()
+    {
+        $context = $this->getMock('Oro\Bundle\ImportExportBundle\Context\ContextInterface');
+        $context->expects($this->once())->method('getOption')
+            ->will($this->returnValue(new \stdClass()));
+
+        $dataConverter = $this->getMock(
+            'Oro\Bundle\ImportExportBundle\Tests\Unit\Converter\Stub\QueryBuilderAwareDataConverter'
+        );
+        $dataConverter->expects($this->never())->method($this->anything());
+
+        $this->processor->setDataConverter($dataConverter);
+
+        $this->processor->setImportExportContext($context);
+    }
 }

@@ -51,22 +51,18 @@ class ExportProcessor implements ProcessorInterface, ContextAwareInterface
      */
     public function setImportExportContext(ContextInterface $importExportContext)
     {
-        $configuration = $importExportContext->getConfiguration();
-        if (isset($configuration['queryBuilder']) && $this->dataConverter instanceof QueryBuilderAwareInterface) {
-            if (!$configuration['queryBuilder'] instanceof QueryBuilder) {
-                $actualType = is_object($configuration['queryBuilder'])
-                    ? get_class($configuration['queryBuilder'])
-                    : gettype($configuration['queryBuilder']);
-
+        $queryBuilder = $importExportContext->getOption('queryBuilder');
+        if (isset($queryBuilder) && $this->dataConverter instanceof QueryBuilderAwareInterface) {
+            if (!$queryBuilder instanceof QueryBuilder) {
                 throw new InvalidConfigurationException(
                     sprintf(
                         'Configuration of processor contains invalid "queryBuilder" option. '
                         . '"Doctrine\ORM\QueryBuilder" type is expected, but "%s" is given',
-                        $actualType
+                        is_object($queryBuilder) ? get_class($queryBuilder) : gettype($queryBuilder)
                     )
                 );
             }
-            $this->dataConverter->setQueryBuilder($configuration['queryBuilder']);
+            $this->dataConverter->setQueryBuilder($queryBuilder);
         }
     }
 
