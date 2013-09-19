@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
+use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
+
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -192,12 +194,7 @@ class ProductController extends AbstractDoctrineController
             case 'csv':
                 ini_set('max_execution_time', 100);
 
-                // prepare serializer context
-                $context = array(
-                    'withHeader' => true,
-                    'heterogeneous' => false,
-                    'scope' => $this->productManager->getScope()
-                );
+                $scope = $this->productManager->getScope();
 
                 // prepare response
                 $response = new StreamedResponse();
@@ -209,24 +206,23 @@ class ProductController extends AbstractDoctrineController
                 $response->headers->set('Content-Disposition', $attachment);
 
                 $response->setCallback(
-                    function () use ($gridManager, $context) {
+                    function () use ($gridManager, $scope) {
                         flush();
 
                         $datagrid = $gridManager->getDatagrid();
 
                         // get attribute lists
-//                         $qb = $datagrid->getQuery();
-                        $fieldsList = $datagrid->getAttributeAvailableIds();
-                        $fieldsList[] = 'family'; // @todo : use const
-                        $fieldsList[] = 'categories'; // @todo : use const
+                        $fieldsList = $datagrid->getAttributeAvailableIds(); // @todo : must be defined in product datagrid manager
+                        $fieldsList[] = FlatProductNormalizer::FIELD_FAMILY;
+                        $fieldsList[] = FlatProductNormalizer::FIELD_CATEGORY;
 
-                        $context['fields'] = $fieldsList;
-
-                        // get values of all the defined attributes
-//                         if (!empty($attributesList)) {
-//                             $exprIn = $qb->expr()->in('values.attribute', $attributesList);
-//                             $qb->andWhere($exprIn);
-//                         }
+                        // prepare serializer context
+                        $context = array(
+                            'withHeader' => true,
+                            'heterogeneous' => false,
+                            'scope' => $this->productManager->getScope(),
+                            'fields' => $fieldsList
+                        );
 
                         // prepare serializer batching
                         $limit = 1;
@@ -237,7 +233,6 @@ class ProductController extends AbstractDoctrineController
                             $data = $datagrid->exportData('csv', $i*$limit, $limit, $context);
                             echo $data;
                             flush();
-//                             $context['withHeader'] = false;
                         }
                     }
                 );
