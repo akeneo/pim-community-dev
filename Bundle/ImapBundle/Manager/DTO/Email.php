@@ -411,10 +411,10 @@ class Email
 
             $body = $this->message->getBody();
             try {
-                $this->body->setContent($body->getContent(Body::FORMAT_HTML)->getContent());
+                $this->body->setContent($body->getContent(Body::FORMAT_HTML)->getDecodedContent());
                 $this->body->setBodyIsText(false);
             } catch (InvalidBodyFormatException $ex) {
-                $this->body->setContent($body->getContent(Body::FORMAT_TEXT)->getContent());
+                $this->body->setContent($body->getContent(Body::FORMAT_TEXT)->getDecodedContent());
                 $this->body->setBodyIsText(true);
             }
         }
@@ -436,7 +436,7 @@ class Email
                 $content = $a->getContent();
                 $attachment = new EmailAttachment();
                 $attachment
-                    ->setFileName($a->getFileName()->getValue())
+                    ->setFileName($a->getFileName()->getDecodedValue())
                     ->setContent($content->getContent())
                     ->setContentType($content->getContentType())
                     ->setContentTransferEncoding($content->getContentTransferEncoding());

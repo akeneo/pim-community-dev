@@ -11,6 +11,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 
 use Oro\Bundle\EmailBundle\DependencyInjection\Compiler\EmailOwnerConfigurationPass;
+use Oro\Bundle\EmailBundle\DependencyInjection\Compiler\EmailBodyLoaderPass;
 
 class OroEmailBundle extends Bundle
 {
@@ -23,6 +24,7 @@ class OroEmailBundle extends Bundle
 
         $container->addCompilerPass(new EmailOwnerConfigurationPass());
         $this->addDoctrineOrmMappingsPass($container);
+        $container->addCompilerPass(new EmailBodyLoaderPass());
     }
 
     /**

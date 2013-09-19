@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
 use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\EntryInterface;
@@ -138,13 +137,13 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      * This process is repeated until either a granting ACE is found, or no
      * permission/identity combinations are left.
      *
-     * @param AclInterface $acl
-     * @param EntryInterface[] $aces An array of ACE to check against
-     * @param array $masks An array of permission masks
-     * @param SecurityIdentityInterface[] $sids An array of SecurityIdentityInterface implementations
-     * @param boolean $administrativeMode True turns off audit logging
+     * @param AclInterface                $acl
+     * @param EntryInterface[]            $aces               An array of ACE to check against
+     * @param array                       $masks              An array of permission masks
+     * @param SecurityIdentityInterface[] $sids               An array of SecurityIdentityInterface implementations
+     * @param boolean                     $administrativeMode True turns off audit logging
      *
-     * @return boolean|null true if granting access; false if denying access; null if ACE was not found.
+     * @return boolean|null        true if granting access; false if denying access; null if ACE was not found.
      * @throws NoAceFoundException
      */
     protected function hasSufficientPermissions(
@@ -226,8 +225,8 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      * Strategy EQUAL:
      *     The ACE will be considered applicable when the bitmasks are equal.
      *
-     * @param integer $requiredMask
-     * @param EntryInterface $ace
+     * @param  integer           $requiredMask
+     * @param  EntryInterface    $ace
      * @return bool
      * @throws \RuntimeException if the ACE strategy is not supported
      */

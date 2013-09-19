@@ -100,23 +100,11 @@ class Body
 
         if ($part->getHeaders()->has('Content-Transfer-Encoding')) {
             $contentTransferEncoding = $part->getHeader('Content-Transfer-Encoding')->getFieldValue();
-            switch (strtolower($contentTransferEncoding)) {
-                case 'base64':
-                    $content = base64_decode($part->getContent());
-                    break;
-                case 'quoted-printable':
-                    $content = quoted_printable_decode($part->getContent());
-                    break;
-                default:
-                    $content = $part->getContent();
-                    break;
-            }
         } else {
             $contentTransferEncoding = 'BINARY';
-            $content = $part->getContent();
         }
 
-        return new Content($content, $contentType, $contentTransferEncoding, $encoding);
+        return new Content($part->getContent(), $contentType, $contentTransferEncoding, $encoding);
     }
 
     /**

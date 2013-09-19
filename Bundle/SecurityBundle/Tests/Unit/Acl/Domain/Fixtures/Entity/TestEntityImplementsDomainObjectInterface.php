@@ -18,6 +18,7 @@ class TestEntityImplementsDomainObjectInterface implements DomainObjectInterface
         if ($this->id === null) {
             throw new \InvalidArgumentException();
         }
+
         return $this->id;
     }
 }

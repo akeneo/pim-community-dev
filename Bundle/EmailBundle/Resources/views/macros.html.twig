@@ -187,3 +187,12 @@
         <iframe class="email-body{% if cssClass is defined %} {{ cssClass }}{% endif %}" src="{{ path('oro_email_body', {id:emailBody.id}) }}"></iframe>
     {%- endif %}
 {%- endmacro %}
+
+{% macro renderJs() %}
+    <script type="text/javascript">
+        !function() {
+            /* global:require */
+            require(['oro/init-email']);
+        }();
+    </script>
+{% endmacro %}

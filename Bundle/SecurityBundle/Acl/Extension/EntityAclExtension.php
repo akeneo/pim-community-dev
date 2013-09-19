@@ -64,10 +64,10 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * Constructor
      *
-     * @param EntityClassAccessor $entityClassAccessor
-     * @param ObjectIdAccessor $objectIdAccessor
-     * @param EntityClassResolver $entityClassResolver
-     * @param OwnershipMetadataProvider $metadataProvider
+     * @param EntityClassAccessor             $entityClassAccessor
+     * @param ObjectIdAccessor                $objectIdAccessor
+     * @param EntityClassResolver             $entityClassResolver
+     * @param OwnershipMetadataProvider       $metadataProvider
      * @param OwnershipDecisionMakerInterface $decisionMaker
      */
     public function __construct(
@@ -298,7 +298,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * Constructs an ObjectIdentity for the given domain object
      *
-     * @param string $descriptor
+     * @param  string                    $descriptor
      * @return ObjectIdentity
      * @throws \InvalidArgumentException
      */
@@ -322,7 +322,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * Constructs an ObjectIdentity for the given domain object
      *
-     * @param object $domainObject
+     * @param  object                       $domainObject
      * @return ObjectIdentity
      * @throws InvalidDomainObjectException
      */
@@ -345,9 +345,9 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * Checks that the given mask represents only one access level
      *
-     * @param string $permission
-     * @param int $mask
-     * @param mixed $object
+     * @param  string                  $permission
+     * @param  int                     $mask
+     * @param  mixed                   $object
      * @throws InvalidAclMaskException
      */
     protected function validateMaskAccessLevel($permission, $mask, $object)
@@ -374,8 +374,8 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * Gets all valid bitmasks for the given object
      *
-     * @param string $permission
-     * @param mixed $object
+     * @param  string $permission
+     * @param  mixed  $object
      * @return int
      */
     protected function getValidMasks($permission, $object)
@@ -415,7 +415,7 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * Gets metadata for the given object
      *
-     * @param mixed $object
+     * @param  mixed             $object
      * @return OwnershipMetadata
      */
     protected function getMetadata($object)
@@ -435,8 +435,8 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * Gets the constant value defined in the given permission mask builder
      *
-     * @param int $maskBuilderIdentity The permission mask builder identity
-     * @param string $constName
+     * @param  int    $maskBuilderIdentity The permission mask builder identity
+     * @param  string $constName
      * @return int
      */
     protected function getMaskBuilderConst($maskBuilderIdentity, $constName)
@@ -449,8 +449,8 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * Gets a human-readable representation of the given mask using the given permission mask builder
      *
-     * @param int $maskBuilderIdentity The permission mask builder identity
-     * @param int $mask
+     * @param  int    $maskBuilderIdentity The permission mask builder identity
+     * @param  int    $mask
      * @return string
      */
     protected function getMaskPattern($maskBuilderIdentity, $mask)

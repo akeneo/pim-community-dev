@@ -10,7 +10,6 @@ use Oro\Bundle\EmailBundle\Entity\Email;
  *
  * @ORM\Table(name="oro_email_imap")
  * @ORM\Entity
- * @ORM\Entity(repositoryClass="Oro\Bundle\ImapBundle\Entity\Repository\ImapEmailRepository")
  */
 class ImapEmail
 {
@@ -29,13 +28,6 @@ class ImapEmail
      * @ORM\Column(name="uid", type="integer")
      */
     protected $uid;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="uid_validity", type="integer")
-     */
-    protected $uidValidity;
 
     /**
      * @var Email
@@ -74,29 +66,6 @@ class ImapEmail
     public function setUid($uid)
     {
         $this->uid = $uid;
-
-        return $this;
-    }
-
-    /**
-     * Get email UIDVALIDITY
-     *
-     * @return int
-     */
-    public function getUidValidity()
-    {
-        return $this->uidValidity;
-    }
-
-    /**
-     * Set email UIDVALIDITY
-     *
-     * @param int $uidValidity
-     * @return ImapEmail
-     */
-    public function setUidValidity($uidValidity)
-    {
-        $this->uidValidity = $uidValidity;
 
         return $this;
     }

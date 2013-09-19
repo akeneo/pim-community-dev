@@ -73,7 +73,7 @@ class EmailTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(Body::FORMAT_TEXT))
             ->will($this->returnValue($srcBodyContent));
         $srcBodyContent->expects($this->once())
-            ->method('getContent')
+            ->method('getDecodedContent')
             ->will($this->returnValue('testContent'));
         $body = new EmailBody();
         $body->setContent('testContent')->setBodyIsText(true);
@@ -98,7 +98,7 @@ class EmailTest extends \PHPUnit_Framework_TestCase
             ->method('getContent')
             ->will($this->returnValue($srcAttachmentContent));
         $srcAttachmentFileName->expects($this->once())
-            ->method('getValue')
+            ->method('getDecodedValue')
             ->will($this->returnValue('fileName'));
         $srcAttachmentContent->expects($this->once())
             ->method('getContent')

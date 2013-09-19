@@ -6,11 +6,6 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\Common\Persistence\ObjectManager;
-
-use Oro\Bundle\EntityConfigBundle\Config\EntityConfig;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
@@ -78,7 +73,7 @@ class RecordOwnerDataListener
         $entity = $args->getEntity();
         if ($this->configProvider->hasConfig(get_class($entity))) {
             $config = $this->configProvider->getConfig(get_class($entity));
-            if ($config->has('owner_type') && !$config->get('owner_type') == OwnershipType::OWNER_TYPE_NONE) {
+            if ($config->has('owner_type') && $config->get('owner_type') != OwnershipType::OWNER_TYPE_NONE) {
                 if (!method_exists($entity, 'getOwner')) {
                     throw new \LogicException(
                         sprintf('Method getOwner must be implemented for %s entity', get_class($entity))

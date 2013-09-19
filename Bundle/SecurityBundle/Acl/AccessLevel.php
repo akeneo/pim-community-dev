@@ -50,7 +50,7 @@ final class AccessLevel
     /**
      * Gets constant value by its name
      *
-     * @param string $name
+     * @param  string $name
      * @return mixed
      */
     public static function getConst($name)

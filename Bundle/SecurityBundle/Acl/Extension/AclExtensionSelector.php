@@ -44,7 +44,7 @@ class AclExtensionSelector
     /**
      * Gets ACL extension responsible for work with the given domain object
      *
-     * @param mixed $object A domain object, ObjectIdentity or descriptor (type:id)
+     * @param  mixed                                                                  $object A domain object, ObjectIdentity or descriptor (type:id)
      * @throws \Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException
      * @return AclExtensionInterface
      */
@@ -95,19 +95,19 @@ class AclExtensionSelector
     /**
      * Creates an exception indicates that ACL extension was not found for the given domain object
      *
-     * @param mixed $object
-     * @param string $type
-     * @param int|string $id
+     * @param  mixed                        $object
+     * @param  string                       $type
+     * @param  int|string                   $id
      * @return InvalidDomainObjectException
      */
     protected function createAclExtensionNotFoundException($object, $type, $id)
     {
         $objInfo = is_object($object) && !($object instanceof ObjectIdentityInterface)
             ? get_class($object)
-            : (string)$object;
+            : (string) $object;
 
         return new InvalidDomainObjectException(
-            sprintf('An ACL extension was not found for: %s. Type: %s. Id: %s', $objInfo, $type, (string)$id)
+            sprintf('An ACL extension was not found for: %s. Type: %s. Id: %s', $objInfo, $type, (string) $id)
         );
     }
 }
