@@ -139,20 +139,22 @@ class ProductValueConverter
      */
     public function convertMetricValue($value)
     {
-        if (false === strpos($value, ' ')) {
-            throw new \InvalidArgumentException(
-                sprintf('Metric value "%s" is malformed, must match "<data> <unit>"', $value)
-            );
-        }
-        list($data, $unit) = explode(' ', $value);
-
-        return $this->convertValue(
-            'metric',
-            array(
+        if (empty($value)) {
+            $metric = array();
+        } else {
+            if (false === strpos($value, ' ')) {
+                throw new \InvalidArgumentException(
+                    sprintf('Metric value "%s" is malformed, must match "<data> <unit>"', $value)
+                );
+            }
+            list($data, $unit) = explode(' ', $value);
+            $metric = array(
                 'data' => $data,
                 'unit' => $unit,
-            )
-        );
+            );
+        }
+
+        return $this->convertValue('metric', $metric);
     }
 
     /**

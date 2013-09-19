@@ -234,6 +234,26 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testConvertEmptyMetricValue()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'weight'))
+            ->will($this->returnValue($this->getAttributeMock('metric')));
+
+        $this->assertEquals(
+            array(
+                'values' => array(
+                    'weight' => array(
+                        'metric' => array(),
+                    )
+                )
+            ),
+            $this->converter->convert(array('weight' => ''))
+        );
+    }
+
     /**
      * @expectedException \InvalidArgumentException
      */
