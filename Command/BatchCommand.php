@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManager;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Oro\Bundle\BatchBundle\Job\ExitStatus;
+use Oro\Bundle\BatchBundle\Job\BatchStatus;
 
 /**
  * Batch command
@@ -28,7 +29,8 @@ class BatchCommand extends ContainerAwareCommand
         $this
             ->setName('oro:batch:job')
             ->setDescription('Launch a registered job instance')
-            ->addArgument('code', InputArgument::REQUIRED, 'Job instance code');
+            ->addArgument('code', InputArgument::REQUIRED, 'Job instance code')
+            ->addArgument('execution', InputArgument::OPTIONAL, 'Job execution id');
     }
 
     /**
@@ -37,7 +39,6 @@ class BatchCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $noDebug = $input->getOption('no-debug');
-
         if (!$noDebug) {
             $logger = $this->getContainer()->get('logger');
             // Fixme: Use ConsoleHandler available on next Symfony version (2.4 ?)
@@ -57,10 +58,24 @@ class BatchCommand extends ContainerAwareCommand
         if (count($errors) > 0) {
             throw new \RuntimeException(sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors)));
         }
-        $jobExecution = new JobExecution();
+
+        $executionId = $input->getArgument('execution');
+        if ($executionId) {
+            $jobExecution = $this->getEntityManager()->getRepository('OroBatchBundle:JobExecution')->find($executionId);
+            if (!$jobExecution) {
+                throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $id));
+                }
+            if (!$jobExecution->getStatus()->isStarting()) {
+                throw new \RuntimeException(
+                    sprintf('Job execution "%s" has invalid status: %s', $executionId, $jobExecution->getStatus())
+                );
+            }
+        } else {
+            $jobExecution = new JobExecution();
+        }
         $jobExecution->setJobInstance($jobInstance);
         $job->execute($jobExecution);
-
+        
         if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
             $output->writeln(
                 sprintf(
