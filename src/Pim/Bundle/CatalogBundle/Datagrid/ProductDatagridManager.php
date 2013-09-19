@@ -20,6 +20,7 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
 
@@ -53,6 +54,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected $categoryManager;
 
     /**
+     * @var Pim\Bundle\CatalogBundle\Manager\LocaleManager
+     */
+    protected $localeManager;
+
+    /**
      * Filter by tree id, 0 means not tree selected
      * @var integer
      */
@@ -82,6 +88,16 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function setCategoryManager(CategoryManager $manager)
     {
         $this->categoryManager = $manager;
+    }
+
+    /**
+     * Configure the locale manager
+     *
+     * @param LocaleManager $manager
+     */
+    public function setLocaleManager(LocaleManager $manager)
+    {
+        $this->localeManager = $manager;
     }
 
     /**
@@ -584,9 +600,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $attributesList = array();
         foreach ($results as $attribute) {
             if ($attribute['translatable'] == 1) {
-                // @TODO : Clean up with locale manager
-                $attributesList[] = $attribute['code'].'-fr_FR';
-                $attributesList[] = $attribute['code'].'-en_US';
+                foreach ($this->localeManager->getActiveCodes() as $code) {
+                    $attributesList[] = sprintf('%s-%s', $attribute['code'], $code);
+                }
                 // @todo : Use constant for pim_catalog_identifier
             } elseif ($attribute['attributeType'] === 'pim_catalog_identifier') {
                 array_unshift($attributesList, $attribute['code']);
