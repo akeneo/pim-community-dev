@@ -44,6 +44,9 @@ class ProductValueConverter
                     case 'options':
                         $value = $this->convertOptionsValue($value);
                         break;
+                    case 'metric':
+                        $value = $this->convertMetricValue($value);
+                        break;
                     default:
                         $value = $this->convertValue($attribute->getBackendType(), $value);
                 }
@@ -115,7 +118,7 @@ class ProductValueConverter
      *
      * @return array
      */
-    public function convertOptionsValue($value)
+    private function convertOptionsValue($value)
     {
         $options = array();
         foreach (explode(',', $value) as $val) {
@@ -125,6 +128,31 @@ class ProductValueConverter
         }
 
         return $this->convertValue('options', $options);
+    }
+
+    /**
+     * Convert metric value
+     *
+     * @param string $value
+     *
+     * @return array
+     */
+    public function convertMetricValue($value)
+    {
+        if (false === strpos($value, ' ')) {
+            throw new \InvalidArgumentException(
+                sprintf('Metric value "%s" is malformed, must match "<data> <unit>"', $value)
+            );
+        }
+        list($data, $unit) = explode(' ', $value);
+
+        return $this->convertValue(
+            'metric',
+            array(
+                'data' => $data,
+                'unit' => $unit,
+            )
+        );
     }
 
     /**
@@ -167,7 +195,7 @@ class ProductValueConverter
             ->findOneBy(array('code' => $code));
     }
 
-    public function getOption($code)
+    private function getOption($code)
     {
         return $this->entityManager
             ->getRepository('PimCatalogBundle:AttributeOption')

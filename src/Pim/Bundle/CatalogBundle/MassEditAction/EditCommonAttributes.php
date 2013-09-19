@@ -4,6 +4,8 @@ namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
@@ -202,19 +204,71 @@ class EditCommonAttributes extends AbstractMassEditAction
     {
         $productValue = $product->getValue(
             $value->getAttribute()->getCode(),
-            $this->getLocale()->getCode(),
-            $value->getScope()
+            $value->getAttribute()->getTranslatable() ? $this->getLocale()->getCode() : null,
+            $value->getAttribute()->getScopable() ? $value->getScope() : null
         );
 
-        if ('pim_catalog_price_collection' === $value->getAttribute()->getAttributeType()) {
-            foreach ($value->getPrices() as $price) {
-                if ($productPrice = $productValue->getPrice($price->getCurrency())) {
-                    $productPrice->setData($price->getData());
-                }
-            }
-        } else {
-            $productValue->setData($value->getData());
+        switch ($value->getAttribute()->getAttributeType()) {
+            case 'pim_catalog_price_collection':
+                $this->setProductPrice($productValue, $value);
+                break;
+
+            case 'pim_catalog_multiselect':
+                $this->setProductOption($productValue, $value);
+                break;
+
+            case 'pim_catalog_file':
+            case 'pim_catalog_image':
+                $this->setProductFile($productValue, $value);
+                break;
+
+            case 'pim_catalog_metric':
+                $this->setProductMetric($productValue, $value);
+                break;
+
+            default:
+                $productValue->setData($value->getData());
         }
+    }
+
+    private function setProductPrice(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        foreach ($value->getPrices() as $price) {
+            if (false === $productPrice = $productValue->getPrice($price->getCurrency())) {
+                // Add a new product price to the value if it wasn't defined before
+                $productPrice = $this->createProductPrice($price->getCurrency());
+                $productValue->addPrice($productPrice);
+            }
+            $productPrice->setData($price->getData());
+        }
+    }
+
+    private function setProductOption(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        $productValue->getOptions()->clear();
+        $this->productManager->getStorageManager()->flush();
+        foreach ($value->getOptions() as $option) {
+            $productValue->addOption($option);
+        }
+    }
+
+    private function setProductFile(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        if (null === $media = $productValue->getMedia()) {
+            $media = new Media();
+            $productValue->setMedia($media);
+        }
+        $media->setFile($value->getMedia()->getFile());
+    }
+
+    private function setProductMetric(ProductValueInterface $productValue, ProductValueInterface $value)
+    {
+        if (null === $metric = $productValue->getMetric()) {
+            $metric = new Metric();
+            $productValue->setMetric($metric);
+        }
+        $metric->setUnit($value->getMetric()->getUnit());
+        $metric->setData($value->getMetric()->getData());
     }
 
     /**
