@@ -563,4 +563,79 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
         return $dataScope;
     }
+
+    protected function getAvailableAttributes(ProxyQueryInterface $proxyQuery)
+    {
+        $qb = clone $proxyQuery;
+        $qb
+            ->leftJoin('values.attribute', 'attribute')
+            ->groupBy('attribute.id')
+            ->select('attribute.id, attribute.code, attribute.translatable, attribute.attributeType');
+
+        return $qb
+            ->getQuery()
+            ->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+    }
+
+    public function getAvailableAttributesList(ProxyQueryInterface $proxyQuery)
+    {
+        $results = $this->getAvailableAttributes($proxyQuery);
+
+        $attributesList = array();
+        foreach ($results as $attribute) {
+            if ($attribute['translatable'] == 1) {
+                // @TODO : Clean up with locale manager
+                $attributesList[] = $attribute['code'].'-fr_FR';
+                $attributesList[] = $attribute['code'].'-en_US';
+                // @todo : Use constant for pim_catalog_identifier
+            } elseif ($attribute['attributeType'] === 'pim_catalog_identifier') {
+                array_unshift($attributesList, $attribute['code']);
+            } else {
+                $attributesList[] = $attribute['code'];
+            }
+        }
+
+        return $attributesList;
+    }
+
+    protected function getAttributeAvailableIds(ProxyQueryInterface $proxyQuery)
+    {
+        $results = $this->getAvailableAttributes($proxyQuery);
+
+        $attributeIds = array();
+        foreach ($results as $attribute) {
+            $attributeIds[] = $attribute['id'];
+        }
+
+        return $attributeIds;
+    }
+
+    public function prepareQueryForExport(ProxyQueryInterface $proxyQuery)
+    {
+        $attributeIds = $this->getAttributeAvailableIds($proxyQuery);
+
+        $proxyQuery
+            ->resetDQLPart('groupBy')
+            ->resetDQLPart('orderBy');
+
+        // join tables
+        $proxyQuery
+            ->leftJoin('values.options', 'valueOptions')
+            ->leftJoin('o.categories', 'categories');
+
+        // select datas
+        $proxyQuery
+            ->select($proxyQuery->getRootAlias())
+            ->addSelect('values')
+            ->addSelect('family')
+            ->addSelect('valuePrices')
+            ->addSelect('valueOptions')
+            ->addSelect('categories');
+
+        // where clause on attributes
+        $exprIn = $proxyQuery->expr()->in('attribute', $attributeIds);
+        $proxyQuery
+            ->leftJoin('values.attribute', 'attribute')
+            ->andWhere($exprIn);
+    }
 }
