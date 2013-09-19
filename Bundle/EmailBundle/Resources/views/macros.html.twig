@@ -126,17 +126,17 @@
 #}
 {% macro email_address(emailAddress, emailAddressName, nameFormat, noLink) -%}
     {% macro email_address_text(emailAddress, nameFormat) -%}
-        {{ emailAddress.owner.fullname(nameFormat)|default('N/A')|raw }}
+        {{ emailAddress.owner.fullname(nameFormat)|default('N/A') }}
     {%- endmacro -%}
     {% macro email_address_link(emailAddress, nameFormat) -%}
         {#- TODO: we need EntityConfig to get view url for an entity -#}
         <a href="{{ path(emailAddress.owner.class|split('\\')|first|lower ~ '_' ~ emailAddress.owner.class|split('\\')|last|lower ~ '_view', {id:emailAddress.owner.id}) }}">{{ _self.email_address_text(emailAddress, nameFormat) }}</a>
     {%- endmacro -%}
     {% if emailAddress.owner is null -%}
-        {{ emailAddressName|raw }}
+        {{ emailAddressName }}
     {%- else -%}
         {% if noLink|default(false) -%}
-            {{ _self.email_address_text(emailAddress, nameFormat)|raw }}
+            {{ _self.email_address_text(emailAddress, nameFormat) }}
         {%- else -%}
             {{ _self.email_address_link(emailAddress, nameFormat)|raw }}
         {%- endif %}
