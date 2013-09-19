@@ -54,6 +54,22 @@ class StepExecutionProxyContext implements ContextInterface
     /**
      * {@ineritdoc}
      */
+    public function incrementAddCount()
+    {
+        $this->setValue('add_count', (int)$this->getValue('add_count') + 1);
+    }
+
+    /**
+     * {@ineritdoc}
+     */
+    public function getAddCount()
+    {
+        return $this->getValue('add_count');
+    }
+
+    /**
+     * {@ineritdoc}
+     */
     public function incrementUpdateCount()
     {
         $this->setValue('update_count', (int)$this->getValue('update_count') + 1);
