@@ -602,8 +602,10 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
     /**
      * Get the available attribute codes
+     *
      * @param ProxyQueryInterface $proxyQuery
-     * @return multitype:string unknown
+     *
+     * @return string[]
      */
     public function getAvailableAttributeCodes(ProxyQueryInterface $proxyQuery)
     {
@@ -626,6 +628,13 @@ class ProductDatagridManager extends FlexibleDatagridManager
         return $attributesList;
     }
 
+    /**
+     * Get the available attribute ids
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     *
+     * @return int[]
+     */
     protected function getAvailableAttributeIds(ProxyQueryInterface $proxyQuery)
     {
         $results = $this->getAvailableAttributes($proxyQuery);
@@ -638,6 +647,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
         return $attributeIds;
     }
 
+    /**
+     * Optimize the query for the export
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     */
     public function prepareQueryForExport(ProxyQueryInterface $proxyQuery)
     {
         $attributeIds = $this->getAvailableAttributeIds($proxyQuery);
