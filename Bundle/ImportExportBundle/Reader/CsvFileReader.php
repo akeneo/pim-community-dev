@@ -159,7 +159,7 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
         if (!$this->fileInfo->isFile()) {
             throw new InvalidArgumentException(sprintf('File "%s" does not exists.', $filePath));
         } elseif (!$this->fileInfo->isReadable()) {
-            throw new InvalidArgumentException(sprintf('File "%s" is not readable.', $this->fileInfo->getPath()));
+            throw new InvalidArgumentException(sprintf('File "%s" is not readable.', $this->fileInfo->getRealPath()));
         }
     }
 }

@@ -146,11 +146,12 @@ class CsvFileWriter implements ItemWriterInterface, StepExecutionAwareInterface
     public function setFilePath($filePath)
     {
         $this->fileInfo = new \SplFileInfo($filePath);
+        $dirInfo = new \SplFileInfo($this->fileInfo->getPath());
 
-        if (!$this->fileInfo->isFile()) {
-            throw new InvalidArgumentException(sprintf('File "%s" does not exists.', $filePath));
-        } elseif (!$this->fileInfo->isWritable()) {
-            throw new InvalidArgumentException(sprintf('File "%s" is not writable.', $this->fileInfo->getPath()));
+        if (!$dirInfo->isDir()) {
+            throw new InvalidArgumentException(sprintf('Directory "%s" does not exists.', $this->fileInfo->getPath()));
+        } elseif (!$dirInfo->isWritable()) {
+            throw new InvalidArgumentException(sprintf('Directory "%s" is not writable.', $dirInfo->getRealPath()));
         }
     }
 }
