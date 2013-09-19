@@ -1,3 +1,34 @@
+# Entities
+attribute:       attribute
+attribute group: attribute group
+category:        category
+channel:         channel
+currency:        currency
+export profile:  export profile
+family:          family
+import profile:  import profile
+locale:          locale
+product:         product
+
+# Titles
+title:
+    overview: %entity% overview
+    create: create %entity%
+    edit: edit %entity%
+
+# Custom titles
+products: products
+
+# Buttons
+btn:
+    create: create %entity%
+    edit: edit
+    save: save
+    remove: remove
+    cancel: cancel
+    next: next
+    back: back
+
 # Product/Attribute
 Options:                       Options
 Created at:                    Created at

@@ -1,17 +1,18 @@
-{% macro createBtn(text, url, id, attr) %}
+{% macro createBtn(entity, url, attr) %}
 {% spaceless %}
-    <a{% if id %} id="{{ id }}"{% endif %} class="btn btn-primary pull-right{% if attr.class is defined %} {{ attr.class }}{% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ text|trans }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>{{ text|trans }}</a>
+    {% set title = 'title.create'|trans({ '%entity%': entity|trans })|capitalize %}
+    <a class="btn btn-primary pull-right{% if attr.class is defined %} {{ attr.class }}{% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>{{ title }}</a>
 {% endspaceless %}
 {% endmacro %}
 
 {% macro submitBtn(text, icon) %}
 {% spaceless %}
-    {% set text = text ? text : 'Save' %}
-    <button type="submit" class="btn btn-primary" title="{{ text|trans }}">
+    {% set text = text|default('btn.save')|trans|capitalize %}
+    <button type="submit" class="btn btn-primary" title="{{ text }}">
         {% if icon %}
             <i class="icon-{{ icon }}"></i>
         {% endif %}
-        {{ text|trans }}
+        {{ text }}
     </button>
 {% endspaceless %}
 {% endmacro %}
@@ -38,9 +39,9 @@
 {% spaceless %}
     {% set title = opts.title is defined ? opts.title : text %}
     {% set icon = opts.icon is defined ? opts.icon : null %}
-    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="btn {{ opts.class is defined ? opts.class|join(' ') }}{% if text and icon %} icons-holder-text{% elseif icon %} icons-holder{% endif %}" href="{{ url ? url : 'javascript:void(0);' }}"{% if title %} title="{{ title|trans }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
+    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="btn {{ opts.class is defined ? opts.class|join(' ') }}{% if text and icon %} icons-holder-text{% elseif icon %} icons-holder{% endif %}" href="{{ url ? url : 'javascript:void(0);' }}"{% if title %} title="{{ title|trans|capitalize }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
         {% if icon %}<i class="icon-{{ icon }}"></i>{% endif %}
-        {{ text|trans }}
+        {{ text|trans|capitalize }}
     </a>
 {% endspaceless %}
 {% endmacro %}
@@ -55,7 +56,7 @@
             {% endif %}
             <div class="navbar-content pull-left">
                 <div class="navbar-title clearfix-oro">
-                    <div class="sub-title">{{ title }}</div>
+                    <div class="sub-title">{{ title|first|capitalize ~ title[1:] }}</div>
                     {% if subtitle is not empty %}
                         <span class="separator">/</span>
                         <div class="sub-title">{{ subtitle }}</div>

@@ -9,14 +9,16 @@
 
 {% block content %}
 
+    {% set title = 'title.overview'|trans({ '%entity%': entityName|trans }) %}
+
     {% set buttons %}
     <div class="btn-group">
-        {{ elements.createBtn(createBtnLbl, null, null, { 'data-toggle': 'dropdown', 'class': 'dropdown-toggle' }) }}
+        {{ elements.createBtn(entityName, null, { 'data-toggle': 'dropdown', 'class': 'dropdown-toggle' }) }}
         <ul class="dropdown-menu pull-right">
             {% for connector, jobs in connectors %}
             <li class="disabled"><a href="javascript:void(0);"><b>{{ connector }}</b></a></li>
                 {% for alias, job in jobs %}
-                <li><a href="{{ path(createRouteName, { 'connector': connector, 'alias': alias }) }}">{{ job.name|trans }}</a></li>
+                <li><a href="{{ path(createRoute, { 'connector': connector, 'alias': alias }) }}">{{ job.name|trans }}</a></li>
                 {% endfor %}
             {% endfor %}
         </ul>

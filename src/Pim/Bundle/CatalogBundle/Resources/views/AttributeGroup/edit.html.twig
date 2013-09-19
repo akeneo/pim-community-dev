@@ -4,7 +4,7 @@
 {{ JSFV(form) }}
 <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ path('pim_catalog_attributegroup_edit', { id: form.vars.value.id }) }}" method="POST">
 
-    {% set title = 'Group'|trans ~ ' - ' ~ form.vars.data.name %}
+    {% set title = 'title.edit'|trans({ '%entity%': 'group'|trans }) ~ ' - ' ~ form.vars.data.name %}
 
     {% set buttons %}
         {{ elements.deleteLink(path('pim_catalog_attributegroup_remove', {'id': form.vars.value.id}), 'Are you sure you want to delete the group %group%?'|trans({'%group%': form.vars.data.name})) }}

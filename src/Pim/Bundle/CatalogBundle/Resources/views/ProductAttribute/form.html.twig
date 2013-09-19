@@ -6,7 +6,10 @@
         path('pim_catalog_productattribute_edit', { id: form.vars.value.id }) :
         path('pim_catalog_productattribute_create') }}" method="POST">
 
-        {% set title = 'Attributes'|trans %}
+        {% set title = (form.vars.value.id ? 'title.edit' : 'title.create')|trans({ '%entity%': 'attribute'|trans }) %}
+        {% if form.vars.value.id %}
+            {% set title = title ~ ' - ' ~ form.vars.value.code %}
+        {% endif %}
 
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_productattribute_index')) }}
@@ -15,8 +18,6 @@
             {% endif %}
             {{ elements.submitBtn }}
         {% endset %}
-
-        {% set subtitle = form.vars.value.id ? form.vars.value.code : 'New attribute'|trans %}
 
         {% set left %}
             {% if form.vars.value.id %}
@@ -27,7 +28,7 @@
             {% endif %}
         {% endset %}
 
-        {{ elements.page_header(title, buttons, subtitle, left) }}
+        {{ elements.page_header(title, buttons, null, left) }}
 
         {% set tabs = form.vars.value.id ? ['Parameters', 'Values', 'History'] : ['Parameters', 'Values'] %}
 

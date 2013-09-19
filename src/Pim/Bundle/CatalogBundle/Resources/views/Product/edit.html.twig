@@ -60,7 +60,7 @@
     {{ JSFV(form) }}
     <form id="{{ form.vars.id }}" method="POST" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}"  data-updated-message="{{ 'You will lose changes to the product if you leave the page.'|trans }}" action="{{ path('pim_catalog_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
-        {% set title = 'Products'|trans %}
+        {% set title = 'product'|trans %}
 
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_product_index')) }}

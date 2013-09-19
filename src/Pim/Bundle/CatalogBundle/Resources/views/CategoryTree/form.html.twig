@@ -5,7 +5,9 @@
 
 {% set parentId = form.vars.value.parent ? form.vars.value.parent.id : null %}
 
-{% set title = (form.vars.value.id ? 'Edit' : 'Create') ~ ' ' ~ (parentId ? 'category' : 'tree') %}
+{% set entityName = (parentId ? 'category' : 'tree')|trans %}
+
+{% set title = (form.vars.value.id ? 'title.edit' : 'title.create')|trans({ '%entity%': entityName }) %}
 
 {% if form.vars.value.id %}
     {% set title = title ~ ' - ' ~ form.vars.value.title %}
@@ -56,7 +58,7 @@
         </div>
     {% endset %}
 
-    {{ elements.page_header(title|trans, buttons, null, null, right) }}
+    {{ elements.page_header(title, buttons, null, null, right) }}
 
     {% include 'PimCatalogBundle:CategoryTree:_navbar.html.twig' %}
 

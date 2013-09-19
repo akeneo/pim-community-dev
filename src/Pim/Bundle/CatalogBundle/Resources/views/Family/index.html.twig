@@ -29,7 +29,7 @@
                         'href': '{{ path("pim_catalog_family_create") }}',
                         'data-toggle': 'tooltip',
                         'data-placement': 'right',
-                        'data-original-title': '{{ "Create a new family"|trans }}'
+                        'data-original-title': '{{ "btn.create"|trans({ "%entity%": "family"|trans })|capitalize }}'
                     }).html(
                         $('<i>', { 'class': 'icon-plus-sign' })
                     );

@@ -29,7 +29,7 @@ require(
                 'href': '{{ path("pim_catalog_attributegroup_create") }}',
                 'data-toggle': 'tooltip',
                 'data-placement': 'right',
-                'data-original-title': '{{ "Create a new group"|trans }}'
+                'data-original-title': '{{ "btn.create"|trans({ "%entity%": "group"|trans })|capitalize }}'
             }).html(
                 $('<i>', { 'class': 'icon-plus-sign' })
             );

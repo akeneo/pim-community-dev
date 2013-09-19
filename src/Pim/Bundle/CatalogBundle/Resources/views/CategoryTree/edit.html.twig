@@ -12,7 +12,7 @@
                         'href': '{{ path("pim_catalog_categorytree_create") }}',
                         'data-toggle': 'tooltip',
                         'data-placement': 'right',
-                        'data-original-title': '{{ "Create a new tree"|trans }}'
+                        'data-original-title': '{{ "btn.create"|trans({ "%entity%": "tree"|trans })|capitalize }}'
                     }).html(
                         $('<i>', { 'class': 'icon-plus-sign' })
                     );
