@@ -2,24 +2,37 @@
 
 {% block content %}
 
-    {% set title = "Execution details" | trans  %}
-    
+    {% set title = "Execution details" | trans %}
+    {% set subtitle = execution.jobInstance.label  %}
+    {% set isRunning = execution.exitStatus.exitCode != constant('Oro\\Bundle\\BatchBundle\\Job\\ExitStatus::COMPLETED') %}
+
     {% set buttons %}
         {{ elements.backLink(indexRoute) }}
-        {{ elements.link('Download file', path(download_file_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }) }}
-        {{ elements.link('Download log', path(download_log_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }) }}
+
+        {% if isRunning %}
+            {{ elements.link('Refresh', path(refresh_route, { 'id': execution.id }), { icon: 'refresh', class:'no-hash' }) }}
+        {% else %}
+            {{ elements.link('Download file', path(download_file_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }) }}
+            {{ elements.link('Download log', path(download_log_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }) }}
+        {% endif %}
         {{ elements.link('Show profile', path(show_profile_route, { 'id': execution.jobInstance.id })) }}
     {% endset %}
 
-    {{ elements.page_header(title, buttons) }}
+    {% set left %}
+        <ul class="inline">
+           <li>{{ 'Status'|trans }}: {{ execution.status|upper }}</li>
+       </ul>
+    {% endset %}
+
+    {{ elements.page_header(title, buttons, subtitle, left) }}
 
     <table class="table groups">
         <thead>
             <th>{{ 'Step'|upper }}</th>
             <th>{{ 'Status'|upper }}</th>
             <th>{{ 'Read count'|upper }}</th>
-            <th>{{ 'Write'|upper }}</th>
             <th>{{ 'Filter'|upper }}</th>
+            <th>{{ 'Write'|upper }}</th>
             <th>{{ 'Start'|upper }}</th>
             <th>{{ 'End'|upper }}</th>
         </thead>
@@ -29,8 +42,8 @@
                 <td>{{ step.stepName | trans }}</td>
                 <td>{{ step.status }}</td>
                 <td>{{ step.readCount }}</td>
-                <td>{{ step.writeCount }}</td>
                 <td>{{ step.filterCount }}</td>
+                <td>{{ step.writeCount }}</td>
                 <td>{{ step.startTime |date("Y-m-d h:i:s") }}</td>
                 <td>{{ step.endTime |date("Y-m-d h:i:s") }}</td>
             </tr>
