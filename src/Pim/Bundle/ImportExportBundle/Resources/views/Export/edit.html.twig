@@ -6,11 +6,7 @@
     path('pim_importexport_export_edit', { 'id': form.vars.value.id }) :
     path('pim_importexport_export_create', { 'connector': connector, 'alias': alias }) %}
 
-{% if form.vars.value.id %}
-    {% set title = elements.title('export profile', 'edit', form.vars.value.label) %}
-{% else %}
-    {% set title = elements.title('export profile', 'create') %}
-{% endif %}
+{% set title = form.vars.value.id ? 'export profile.edit'|trans ~ ' - ' ~ form.vars.value.label : 'export profile.create'|trans %}
 
 {% set indexRoute = path('pim_importexport_export_index') %}
 {% if form.vars.value.id %}

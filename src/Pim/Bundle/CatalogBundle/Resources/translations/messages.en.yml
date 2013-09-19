@@ -2,6 +2,7 @@
 attribute:       attribute
 attribute group: attribute group
 category:        category
+tree:            tree
 channel:         channel
 currency:        currency
 export profile:  export profile
@@ -10,35 +11,83 @@ import profile:  import profile
 locale:          locale
 product:         product
 
-# Titles
-title:
-    overview: %entity% overview
-    create: create %entity%
-    edit: edit %entity%
-    show: %entity%
+# Page header titles
+attribute:
+    overview: attribute overview
+    create:   create attribute
+    edit:     edit attribute
+attribute group:
+    overview: attribute group overview
+    create:   create attribute group
+    edit:     edit attribute group
+category:
+    overview: category overview
+    create:   create category
+    edit:     edit category
+tree:
+    create:   create tree
+    edit:     edit tree
+channel:
+    overview: channel overview
+    create:   create channel
+    edit:     edit channel
+currency:
+    overview: currency overview
+    create:   create currency
+    edit:     edit currency
+export profile:
+    overview: export profile overview
+    create:   create export profile
+    edit:     edit export profile
+family:
+    overview: family overview
+    create:   create family
+    edit:     edit family
+import profile:
+    overview: import profile overview
+    create:   create import profile
+    edit:     edit import profile
+locale:
+    overview: locale overview
+    create:   create locale
+    edit:     edit locale
+product:
+    overview: product overview
+    create:   create product
+    edit:     edit product
 
 # Custom titles
 products: products
 
 # Buttons
 btn:
-    create: create %entity%
-    edit: edit
-    save: save
+    create:
+        attribute:       create attribute
+        attribute group: create attribute group
+        category:        create category
+        tree:            create tree
+        channel:         create channel
+        currency:        create currency
+        export profile:  create export profile
+        family:          create family
+        import profile:  create import profile
+        locale:          create locale
+        product:         create product
+    edit:   edit
+    save:   save
     remove: remove
     cancel: cancel
-    next: next
-    back: back
+    next:   next
+    back:   back
 
-# Product/Attribute
+# Form elements
 Options:                       Options
 Created at:                    Created at
 Updated at:                    Updated at
+Created:                       Created
+Updated:                       Updated
 N/A:                           N/A
-Save:                          Save
 Add an option:                 Add an option
-Attributes overview:           Attributes overview
-New attribute:                 New attribute
 Manage products:               Manage products
 Code:                          Code
 Name:                          Name
@@ -51,8 +100,6 @@ Scopable:                      Scopable
 Unique value:                  Unique value
 Attribute group:               Attribute group
 Variants behavior when edited: Variants behavior when edited
-Created:                       Created
-Updated:                       Updated
 Edit:                          Edit
 Remove:                        Remove
 Delete:                        Delete
@@ -78,7 +125,6 @@ default:                       Default
 
 Create:                                    Create
 Cancel:                                    Cancel
-New product:                               New product
 Create a new product:                      Create a new product
 Choose a family:                           Choose a family
 Attributes are added to the product form.: Attributes are added to the product form.
@@ -121,20 +167,13 @@ Max file size:           Max file size
 Allowed file extensions: Allowed file extensions
 
 # Family
-Families overview: Families overview
-New family:        New family
-Attributes:        Attributes
-Edit family:       Edit family
-Add family:        Add family
+Attributes: Attributes
 
 # Category
 Category successfully saved:   Category successfully saved
 Category successfully removed: Category successfully removed
-New tree:                      New tree
 Title:                         Title
 Is dynamic:                    Is dynamic
-Edit category:                 Edit category
-Add category:                  Add category
 
 # Export profiles
 Export profiles overview: Export profiles overview
@@ -189,30 +228,10 @@ pim_catalog_date:             Date
 pim_catalog_metric:           Metric
 
 # Locales
-Locales overview: Locales overview
-New locale:       New locale
-Code:             Code
-Fallback:         Fallback
-Activated:        Activated
-Edit:             Edit
-Disable:          Disable
-Locales:          Locales
-Edit locale:      Edit locale
-Add locale:       Add locale
-
-# Currencies
-Currencies overview: Currencies overview
-New currency:        New currency
-Add currency:        Add currency
-Edit currency:       Edit currency
-Currencies:          Currencies
-
-# Channels
-Channels overview: Channels overview
-New channel:       New channel
-Add channel:       Add channel
-Edit channel:      Edit channel
-Channels:          Channels
+Fallback:  Fallback
+Activated: Activated
+Edit:      Edit
+Disable:   Disable
 
 # Batch operations
 pim_catalog.mass_edit_action:

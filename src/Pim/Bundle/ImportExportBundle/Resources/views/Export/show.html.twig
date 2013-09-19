@@ -1,4 +1,4 @@
-{% set entityName  = 'export profile' %}
+{% set entityName  = 'export profile'|trans %}
 {% set action      = 'export'|trans %}
 {% set indexRoute  = path('pim_importexport_export_index') %}
 {% set editRoute   = path('pim_importexport_export_edit', {'id': jobInstance.id}) %}

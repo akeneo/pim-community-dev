@@ -8,9 +8,9 @@
 {% set entityName = parentId ? 'category' : 'tree' %}
 
 {% if form.vars.value.id %}
-    {% set title = elements.title(entityName, 'edit', form.vars.value.title) %}
+    {% set title = (entityName ~ '.edit')|trans ~ ' - ' ~ form.vars.value.title %}
 {% else %}
-    {% set title = elements.title(entityName, 'create') %}
+    {% set title = (entityName ~ '.create')|trans %}
 {% endif %}
 {% endspaceless %}
 

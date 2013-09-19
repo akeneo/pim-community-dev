@@ -9,7 +9,7 @@
 
 {% block content %}
 
-    {% set title = elements.title('channel') %}
+    {% set title = 'channel.overview'|trans %}
 
     {% set buttons = elements.createBtn('channel', path('pim_catalog_channel_create')) %}
 

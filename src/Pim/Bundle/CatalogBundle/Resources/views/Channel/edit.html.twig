@@ -7,11 +7,7 @@
         path('pim_catalog_channel_edit', { id: form.vars.value.id }) :
         path('pim_catalog_channel_create') }}" method="POST">
 
-        {% if form.vars.value.id %}
-            {% set title = elements.title('channel', 'edit', form.vars.value.name) %}
-        {% else %}
-            {% set title = elements.title('channel', 'create') %}
-        {% endif %}
+        {% set title = form.vars.value.id ? 'channel.edit'|trans ~ ' - ' ~ form.vars.value.name : 'channel.create'|trans %}
 
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_channel_index')) }}
