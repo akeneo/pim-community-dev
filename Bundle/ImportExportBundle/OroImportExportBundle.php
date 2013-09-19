@@ -14,5 +14,5 @@ class OroImportExportBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new AddNormalizerCompilerPass());
-   }
+    }
 }

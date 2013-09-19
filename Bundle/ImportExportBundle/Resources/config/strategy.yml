@@ -1,0 +1,8 @@
+parameters:
+    oro_importexport.strategy.import.helper.class: Oro\Bundle\ImportExportBundle\Strategy\Import\ImportStrategyHelper
+
+services:
+    oro_importexport.strategy.import.helper:
+        class: %oro_importexport.strategy.import.helper.class%
+        arguments:
+            - @doctrine
