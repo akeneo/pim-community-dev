@@ -235,10 +235,27 @@ oro_entity_config:
                             code:           is_extend
                             value:          true
                     form:
-                        type:
+                        type:               oro_entity_target_type
                         options:
                             required:       true
-                            label:          'Target '
+                            label:          'Target entity'
+                            block:          entity
+                            subblock:       properties
+
+                target_field:
+                    options:
+                        allowed_type:       [ref-one-to-many, ref-many-to-one, ref-many-to-many]
+                        required_property:
+                            config_id:
+                                field_name:  null
+                                scope:      extend
+                            code:           is_extend
+                            value:          true
+                    form:
+                        type:               choice
+                        options:
+                            required:       true
+                            label:          'Target field'
                             block:          entity
                             subblock:       properties
 
