@@ -1,0 +1,6 @@
+parameters:
+    oro_importexport.context_registry.class: Oro\Bundle\ImportExportBundle\Context\ContextRegistry
+
+services:
+    oro_importexport.context_registry:
+        class: %oro_importexport.context_registry.class%

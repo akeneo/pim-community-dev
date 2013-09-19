@@ -4,20 +4,23 @@ namespace Oro\Bundle\ImportExportBundle\Processor;
 
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+
+use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
+use Oro\Bundle\ImportExportBundle\Context\ContextAwareInterface;
 use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\ImportExportBundle\Exception\LogicException;
 
 class RegistryDelegateProcessor implements ProcessorInterface, StepExecutionAwareInterface
 {
     /**
-     * @var ProcessorInterface
-     */
-    protected $delegateProcessor;
-
-    /**
      * @var ProcessorRegistry
      */
-    protected $registry;
+    protected $processorRegistry;
+
+    /**
+     * @var ContextRegistry
+     */
+    protected $contextRegistry;
 
     /**
      * @var StepExecution
@@ -25,11 +28,13 @@ class RegistryDelegateProcessor implements ProcessorInterface, StepExecutionAwar
     protected $stepExecution;
 
     /**
-     * @param ProcessorRegistry $registry
+     * @param ProcessorRegistry $processorRegistry
+     * @param ContextRegistry $contextRegistry
      */
-    public function __construct(ProcessorRegistry $registry)
+    public function __construct(ProcessorRegistry $processorRegistry, ContextRegistry $contextRegistry)
     {
-        $this->registry = $registry;
+        $this->processorRegistry = $processorRegistry;
+        $this->contextRegistry = $contextRegistry;
     }
 
     /**
@@ -47,27 +52,34 @@ class RegistryDelegateProcessor implements ProcessorInterface, StepExecutionAwar
      */
     protected function getDelegateProcessor()
     {
-        if (null === $this->delegateProcessor) {
-            if (!$this->stepExecution) {
-                throw new LogicException('Step execution entity must be injected to processor.');
-            }
-            $configuration = $this->stepExecution->getJobExecution()->getJobInstance()->getRawConfiguration();
-            if (isset($configuration['entityName']) && isset($configuration['processorAlias'])) {
-                $this->delegateProcessor = $this->registry->getProcessor(
-                    $configuration['entityName'],
-                    $configuration['processorAlias']
-                );
-                if ($this->delegateProcessor instanceof StepExecutionAwareInterface) {
-                    $this->delegateProcessor->setStepExecution($this->stepExecution);
-                }
-            } else {
-                throw new InvalidConfigurationException(
-                    'Configuration of processor must contain "entityName" and "processorAlias" options.'
-                );
-            }
+        if (!$this->stepExecution) {
+            throw new LogicException('Step execution entity must be injected to processor.');
+        }
+        $configuration = $this->stepExecution->getJobExecution()->getJobInstance()->getRawConfiguration();
+        if (empty($configuration['entityName']) || empty($configuration['processorAlias'])) {
+            throw new InvalidConfigurationException(
+                'Configuration of processor must contain "entityName" and "processorAlias" options.'
+            );
         }
 
-        return $this->delegateProcessor;
+        $result = $this->processorRegistry->getProcessor(
+            $configuration['entityName'],
+            $configuration['processorAlias']
+        );
+
+        if ($result instanceof ContextAwareInterface) {
+            $result->setImportExportContext(
+                $this->contextRegistry->getByStepExecution($this->stepExecution)
+            );
+        }
+
+        if ($result instanceof StepExecutionAwareInterface) {
+            $result->setStepExecution(
+                $this->stepExecution
+            );
+        }
+
+        return $result;
     }
 
     /**
