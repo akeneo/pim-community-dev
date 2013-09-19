@@ -41,16 +41,22 @@
                     $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function(e) {
                         $family.removeAttr('disabled');
                     });
+
+                    function setFullHeight() {
+                        $('.fullheight').each(function() {
+                            $(this).height($('.scrollable-container').height() - $(this).position().top + $('.scrollable-container').position().top);
+                        })
+                    }
+
+                    $('a[data-toggle="tab"]').on('shown', setFullHeight);
+                    setFullHeight();
                 });
             }
         );
     </script>
 {% endblock %}
 
-{% block page_container %}
-<div class="product-edit">
-
-    {% block content %}
+{% block content %}
 
     {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
         'form': attributesForm,
@@ -58,7 +64,7 @@
     } %}
 
     {{ JSFV(form) }}
-    <form id="{{ form.vars.id }}" method="POST" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}"  data-updated-message="{{ 'You will lose changes to the product if you leave the page.'|trans }}" action="{{ path('pim_catalog_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
+    <form id="{{ form.vars.id }}" method="POST" class="form-horizontal product-edit" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}"  data-updated-message="{{ 'You will lose changes to the product if you leave the page.'|trans }}" action="{{ path('pim_catalog_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
         {% set title = 'product'|trans %}
 
@@ -137,6 +143,4 @@
             </div>
         </div>
     </form>
-    {% endblock %}
-</div>
 {% endblock %}
