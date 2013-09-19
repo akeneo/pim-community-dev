@@ -22,4 +22,12 @@ abstract class AbstractLoader
             $this->bundleDirectories[] = dirname($reflection->getFilename());
         }
     }
+
+    /**
+     * @param array $bundleDirectories
+     */
+    public function setBundleDirectories(array $bundleDirectories)
+    {
+        $this->bundleDirectories = $bundleDirectories;
+    }
 }
