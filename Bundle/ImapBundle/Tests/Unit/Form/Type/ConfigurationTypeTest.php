@@ -49,7 +49,12 @@ class ConfigurationTypeTest extends FormIntegrationTestCase
             }
 
             foreach ($expectedModelData as $name => $value) {
-                $this->assertAttributeEquals($value, $name, $entity);
+                if ($name == 'password') {
+                    $encodedPass = $this->readAttribute($entity, $name);
+                    $this->assertEquals($this->encryptor->decryptData($encodedPass), $value);
+                } else {
+                    $this->assertAttributeEquals($value, $name, $entity);
+                }
             }
         } else {
             $form->submit($formData);
@@ -62,9 +67,6 @@ class ConfigurationTypeTest extends FormIntegrationTestCase
      */
     public function setDataProvider()
     {
-        $this->setUp();
-        $encodedPass = $this->encryptor->encryptData(self::TEST_PASSWORD);
-
         return array(
             'should bind correct data except password' => array(
                 array(
@@ -85,7 +87,7 @@ class ConfigurationTypeTest extends FormIntegrationTestCase
                     'port'     => '123',
                     'ssl'      => 'ssl',
                     'user'     => 'someUser',
-                    'password' => $encodedPass
+                    'password' => self::TEST_PASSWORD
                 ),
             ),
             'should not create empty entity'           => array(
@@ -96,8 +98,31 @@ class ConfigurationTypeTest extends FormIntegrationTestCase
                     'user'     => '',
                     'password' => ''
                 ),
+                false,
                 false
             )
         );
+    }
+
+    public function testBindEmptyPassword()
+    {
+        $type = new ConfigurationType($this->encryptor);
+        $form = $this->factory->create($type);
+
+        $entity = new ImapEmailOrigin();
+        $entity->setPassword(self::TEST_PASSWORD);
+
+        $form->setData($entity);
+        $form->submit(
+            array(
+                'host'     => 'someHost',
+                'port'     => '123',
+                'ssl'      => 'ssl',
+                'user'     => 'someUser',
+                'password' => ''
+            )
+        );
+
+        $this->assertEquals(self::TEST_PASSWORD, $entity->getPassword());
     }
 }
