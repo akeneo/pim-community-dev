@@ -24,19 +24,13 @@ function ($, _, Backbone, __, messenger) {
             }
             service = serv;
             var onConnectionEstablished = function(){
-                /**
-                 * @todo Fix reconnection problems in FF
-                 */
-                //messenger.notificationFlashMessage('success', __('sync.connection.established'));
+                messenger.notificationFlashMessage('success', __('sync.connection.established'));
             };
             service.on('connection_lost', function(data){
                 data = data || {};
                 var attempt = data.retries || 0;
-                /**
-                 * @todo Fix reconnection problems in FF
-                 */
-                //messenger.notificationMessage('error',
-                //    __('sync.connection.lost', data, attempt), {flash: Boolean(attempt)});
+                messenger.notificationMessage('error',
+                    __('sync.connection.lost', data, attempt), {flash: Boolean(attempt)});
                 service.off('connection_established', onConnectionEstablished)
                     .once('connection_established', onConnectionEstablished);
             });

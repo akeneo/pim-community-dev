@@ -53,7 +53,6 @@
 	text-align: center;
 }
 .ui-datepicker .ui-datepicker-title select {
-	font-size: 1em;
 	margin: 1px 0;
 }
 .ui-datepicker select.ui-datepicker-month-year {
@@ -174,17 +173,12 @@
 ----------------------------------*/
 .ui-widget {
 	font-family: Verdana,Arial,sans-serif;
-	font-size: 1.1em;
-}
-.ui-widget .ui-widget {
-	font-size: 1em;
 }
 .ui-widget input,
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
 	font-family: Verdana,Arial,sans-serif;
-	font-size: 1em;
 }
 .ui-widget-content {
 	border: 1px solid #aaaaaa;

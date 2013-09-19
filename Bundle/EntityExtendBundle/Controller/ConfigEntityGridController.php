@@ -8,8 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-use Doctrine\ORM\EntityManager;
-
 use FOS\Rest\Util\Codes;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -19,17 +17,12 @@ use Oro\Bundle\UserBundle\Annotation\Acl;
 
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
-use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-
 use Oro\Bundle\EntityExtendBundle\Form\Type\EntityType;
 use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
-use Oro\Bundle\EntityExtendBundle\Form\Type\RelationType;
 
 /**
  * Class ConfigGridController
@@ -131,113 +124,6 @@ class ConfigEntityGridController extends Controller
             'entity_config' => $entityConfigProvider->getConfig($entity->getClassName())
         );
     }
-
-    /**
-     * @Route(
-     *      "/relation/{id}",
-     *      name="oro_entityextend_entity_relation",
-     *      requirements={"id"="\d+"},
-     *      defaults={"id"=0}
-     * )
-     * @Acl(
-     *      id="oro_entityextend_entity_relation",
-     *      name="Create relation",
-     *      description="Create entity ralation field",
-     *      parent="oro_entityextend"
-     * )
-     * @Template
-     */
-    public function relationAction(EntityConfigModel $entity)
-    {
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
-
-        /** @var ConfigProvider */
-        $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
-
-        /** @var ConfigProvider $extendConfigProvider */
-        $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
-
-        //$entityConfig   = $configProvider->getConfig($entity->getClassName());
-        //$fieldConfigIds = $configProvider->getIds($entity->getClassName());
-
-        $entities = $em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
-
-        //$data = $entityConfig->has('unique_key') ? $entityConfig->get('unique_key') : array();
-
-
-        /** @var FieldConfigModel $newFieldModel */
-        $newFieldModel = new FieldConfigModel();
-        $newFieldModel
-            ->setEntity($entity)
-            ->setType('integer');
-
-        $form = $this->createForm(
-            new RelationType($entities),
-            null,
-            array('config_model' => $newFieldModel)
-        );
-
-        $request = $this->getRequest();
-        if ($request->getMethod() == 'POST') {
-            $form->submit($request);
-
-            if ($form->isValid()) {
-                $data = $form->getData();
-
-                var_dump($data);
-
-                $error = false;
-                $names = array();
-
-                /*
-                foreach ($data['keys'] as $key) {
-                    if (in_array($key['name'], $names)) {
-                        $error = true;
-                        $this->get('session')->getFlashBag()->add(
-                            'error',
-                            sprintf('Name for key should be unique, key "%s" is not unique.', $key['name'])
-                        );
-
-                        break;
-                    }
-
-                    if (empty($key['name'])) {
-                        $error = true;
-                        $this->get('session')->getFlashBag()->add('error', 'Name of key can\'t be empty.');
-
-                        break;
-                    }
-
-                    $names[] = $key['name'];
-                }
-                */
-
-                if (!$error) {
-                    /*
-                    $entityConfig->set('unique_key', $data);
-                    $configProvider->persist($entityConfig);
-                    $configProvider->flush();
-                    */
-
-//                    return $this->redirect(
-//                        $this->generateUrl('oro_entityconfig_view', array('id' => $entity->getId()))
-//                    );
-                }
-            }
-        }
-
-        $require_js = $extendConfigProvider->getPropertyConfig(PropertyConfigContainer::TYPE_FIELD)
-            ->getRequireJsModules();
-
-        return array(
-            'form'          => $form->createView(),
-            'entity_id'     => $entity->getId(),
-            'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
-            'require_js'    => $require_js
-        );
-    }
-
 
     /**
      * @Route("/create", name="oro_entityextend_entity_create")

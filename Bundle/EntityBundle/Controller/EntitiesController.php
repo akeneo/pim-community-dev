@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\EntityBundle\Controller;
 
-use BeSimple\SoapCommon\Type\KeyValue\DateTime;
-use Oro\Bundle\EntityExtendBundle\Tools\Generator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\QueryBuilder;
 
 use FOS\Rest\Util\Codes;
+use BeSimple\SoapCommon\Type\KeyValue\DateTime;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -21,7 +20,8 @@ use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Oro\Bundle\EntityBundle\Datagrid\CustomEntityDatagrid;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
+
+use Oro\Bundle\EntityExtendBundle\Tools\Generator;
 
 /**
  * Entities controller.
@@ -200,9 +200,10 @@ class EntitiesController extends Controller
                         ),
                     ),
                     array(
-                        'route'      => 'oro_entity_index',
+                        'route'      => 'oro_entity_view',
                         'parameters' => array(
-                            'id' => $entity_id,
+                            'entity_id' => $entity_id,
+                            'id'        => $id
                         )
                     )
                 );
@@ -210,7 +211,7 @@ class EntitiesController extends Controller
         }
 
         return array(
-            'record'        => $record,
+            'entity'        => $record,
             'entity_id'     => $entity_id,
             'entity_config' => $entityConfig,
             'form'          => $form->createView(),

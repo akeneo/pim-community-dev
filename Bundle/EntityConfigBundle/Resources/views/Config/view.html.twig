@@ -7,7 +7,6 @@
 {% set audit_path = 'oro_entityconfig_audit' %}
 
 {% block navButtons %}
-    {{ UI.button({'path' : path('oro_entityconfig_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Back', 'label' : 'Back'}) }}
     {% if resource_granted('oro_entityconfig_update') %}
         {{ UI.button({'path' : path('oro_entityconfig_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
     {% endif %}

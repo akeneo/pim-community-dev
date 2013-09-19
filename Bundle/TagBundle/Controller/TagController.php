@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 use Oro\Bundle\TagBundle\Datagrid\TagDatagridManager;
 use Oro\Bundle\TagBundle\Datagrid\ResultsDatagridManager;
@@ -95,6 +96,12 @@ class TagController extends Controller
 
     /**
      * @Route("/search/{id}", name="oro_tag_search", requirements={"id"="\d+"}, defaults={"id"=0})
+     * @Acl(
+     *      id="oro_tag_search",
+     *      name="Search tag",
+     *      description="User can search tags",
+     *      parent="oro_tag"
+     * )
      * @Template
      */
     public function searchAction(Tag $entity, Request $request)
@@ -117,6 +124,7 @@ class TagController extends Controller
      * Return search results in json for datagrid
      *
      * @Route("/ajax/{id}", name="oro_tag_search_ajax", requirements={"id"="\d+"}, defaults={"id"=0})
+     * @AclAncestor("oro_tag_search")
      */
     public function searchResultsAjaxAction(Tag $entity, Request $request)
     {

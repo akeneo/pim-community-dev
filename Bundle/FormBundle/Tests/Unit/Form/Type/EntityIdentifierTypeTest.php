@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
 
-use Symfony\Component\Form\Tests\FormIntegrationTestCase;
+use  Symfony\Component\Form\Test\FormIntegrationTestCase;
 
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer;
 use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
@@ -264,10 +264,15 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
         );
     }
 
-    public function testCreateEntitiesToIdsTransformer()
+    /**
+     * @dataProvider multipleTypeDataProvider
+     * @param bool $isMultiple
+     */
+    public function testCreateEntitiesToIdsTransformer($isMultiple)
     {
         $options = array(
             'em' => $this->getMockEntityManager(),
+            'multiple' => $isMultiple,
             'class' => 'TestClass',
             'property' => 'id',
             'queryBuilder' => function ($repository, array $ids) {
@@ -283,11 +288,18 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
             ->method('addViewTransformer')
             ->with(
                 $this->callback(
-                    function ($transformer) use ($options) {
-                        \PHPUnit_Framework_TestCase::assertInstanceOf(
-                            'Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer',
-                            $transformer
-                        );
+                    function ($transformer) use ($options, $isMultiple) {
+                        if ($isMultiple) {
+                            \PHPUnit_Framework_TestCase::assertInstanceOf(
+                                'Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer',
+                                $transformer
+                            );
+                        } else {
+                            \PHPUnit_Framework_TestCase::assertInstanceOf(
+                                'Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer',
+                                $transformer
+                            );
+                        }
                         \PHPUnit_Framework_TestCase::assertAttributeEquals(
                             $options['em'],
                             'em',
@@ -315,12 +327,22 @@ class EntityIdentifierTypeTest extends FormIntegrationTestCase
             )
             ->will($this->returnSelf());
 
-        $builder->expects($this->at(1))
-            ->method('addViewTransformer')
-            ->will($this->returnSelf());
+        if ($isMultiple) {
+            $builder->expects($this->at(1))
+                ->method('addViewTransformer')
+                ->will($this->returnSelf());
+        }
 
         $this->type = new EntityIdentifierType($this->getMockManagerRegistry());
         $this->type->buildForm($builder, $options);
+    }
+
+    public function multipleTypeDataProvider()
+    {
+        return array(
+            array(true),
+            array(false)
+        );
     }
 
     /**
