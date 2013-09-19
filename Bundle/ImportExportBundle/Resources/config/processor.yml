@@ -9,7 +9,9 @@ services:
     # Import delegate processor, abstract import processor and registry
     oro_importexport.processor.import_delegate:
         class: %oro_importexport.processor.registry_delegate_processor.class%
-        arguments: [@oro_importexport.processor.import_registry]
+        arguments:
+            - @oro_importexport.processor.import_registry
+            - @oro_importexport.context_registry
 
     oro_importexport.processor.import_registry:
         class: %oro_importexport.processor.registry.class%
@@ -25,7 +27,9 @@ services:
     # Export delegate processor, abstract import processor and registry
     oro_importexport.processor.export_delegate:
         class: %oro_importexport.processor.registry_delegate_processor.class%
-        arguments: [@oro_importexport.processor.export_registry]
+        arguments:
+            - @oro_importexport.processor.export_registry
+            - @oro_importexport.context_registry
 
     oro_importexport.processor.export_registry:
         class: %oro_importexport.processor.registry.class%
@@ -41,7 +45,9 @@ services:
     # Import validate processor and registry
     oro_importexport.processor.validate_import_delegate:
         class: %oro_importexport.processor.registry_delegate_processor.class%
-        arguments: [@oro_importexport.processor.validate_import_registry]
+        arguments:
+            - @oro_importexport.processor.validate_import_registry
+            - @oro_importexport.context_registry
 
     oro_importexport.processor.validate_import_registry:
         class: %oro_importexport.processor.registry.class%

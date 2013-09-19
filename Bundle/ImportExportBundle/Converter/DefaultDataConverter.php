@@ -16,17 +16,17 @@ class DefaultDataConverter implements DataConverterInterface
     /**
      * {@inheritDoc}
      */
-    public function convertToExportFormat(array $importedRecord)
+    public function convertToExportFormat(array $exportedRecord)
     {
-        return $this->convertToPlainData($importedRecord);
+        return $this->convertToPlainData($exportedRecord);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function convertToImportFormat(array $exportedRecord)
+    public function convertToImportFormat(array $importedRecord)
     {
-        return $this->convertToComplexData($exportedRecord);
+        return $this->convertToComplexData($importedRecord);
     }
 
     /**

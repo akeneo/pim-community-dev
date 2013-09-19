@@ -7,16 +7,16 @@ interface DataConverterInterface
     /**
      * Convert complex data to export plain format
      *
-     * @param array $importedRecord
+     * @param array $exportedRecord
      * @return array
      */
-    public function convertToExportFormat(array $importedRecord);
+    public function convertToExportFormat(array $exportedRecord);
 
     /**
      * Convert plain data to import complex representation
      *
-     * @param array $exportedRecord
+     * @param array $importedRecord
      * @return array
      */
-    public function convertToImportFormat(array $exportedRecord);
+    public function convertToImportFormat(array $importedRecord);
 }

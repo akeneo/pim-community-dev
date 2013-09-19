@@ -105,19 +105,17 @@ class ImportProcessor implements ContextAwareProcessor, SerializerAwareInterface
      */
     protected function isValid($object)
     {
-        $violations = null;
         if ($this->validator) {
             $violations = $this->validator->validate($object);
+            if (count($violations)) {
+                /** @var ConstraintViolationInterface $violation */
+                foreach ($violations as $violation) {
+                    $this->context->addError($violation->getMessage());
+                }
+                return false;
+            }
         }
 
-        if (count($violations)) {
-            /** @var ConstraintViolationInterface $violation */
-            foreach ($violations as $violation) {
-                $this->context->addError($violation->getMessage());
-            }
-            return false;
-        } else {
-            return true;
-        }
+        return true;
     }
 }
