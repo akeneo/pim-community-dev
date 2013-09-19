@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
+use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
+
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
 
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -204,40 +206,7 @@ class ProductController extends AbstractDoctrineController
                 );
                 $response->headers->set('Content-Type', 'text/csv');
                 $response->headers->set('Content-Disposition', $attachment);
-
-                $response->setCallback(
-                    function () use ($gridManager, $scope) {
-                        flush();
-
-                        $proxyQuery = $gridManager->getDatagrid()->getQueryWithParametersApplied();
-
-                        // get attribute lists
-                        $fieldsList = $gridManager->getAvailableAttributeCodes($proxyQuery);
-                        $fieldsList[] = FlatProductNormalizer::FIELD_FAMILY;
-                        $fieldsList[] = FlatProductNormalizer::FIELD_CATEGORY;
-
-                        // prepare serializer context
-                        $context = array(
-                            'withHeader' => true,
-                            'heterogeneous' => false,
-                            'scope' => $this->productManager->getScope(),
-                            'fields' => $fieldsList
-                        );
-
-                        // prepare serializer batching
-                        $limit = 250;
-                        $count = $gridManager->getDatagrid()->countResults();
-                        $iterations = ceil($count/$limit);
-
-                        $gridManager->prepareQueryForExport($proxyQuery, $fieldsList);
-
-                        for ($i=0; $i<$iterations; $i++) {
-                            $data = $gridManager->getDatagrid()->exportData($proxyQuery, 'csv', $context, $i*$limit, $limit);
-                            echo $data;
-                            flush();
-                        }
-                    }
-                );
+                $response->setCallback($this->quickExportCallback($gridManager, $scope));
 
                 return $response->send();
 
@@ -256,6 +225,49 @@ class ProductController extends AbstractDoctrineController
         );
 
         return $this->render($view, $params);
+    }
+
+    /**
+     * Quick export callback
+     *
+     * @param ProductDatagridManager $gridManager
+     * @param string $scope
+     *
+     * @return \Closure
+     */
+    protected function quickExportCallback(ProductDatagridManager $gridManager, $scope)
+    {
+        return function () use ($gridManager, $scope) {
+            flush();
+
+            $proxyQuery = $gridManager->getDatagrid()->getQueryWithParametersApplied();
+
+            // get attribute lists
+            $fieldsList = $gridManager->getAvailableAttributeCodes($proxyQuery);
+            $fieldsList[] = FlatProductNormalizer::FIELD_FAMILY;
+            $fieldsList[] = FlatProductNormalizer::FIELD_CATEGORY;
+
+            // prepare serializer context
+            $context = array(
+                    'withHeader' => true,
+                    'heterogeneous' => false,
+                    'scope' => $scope,
+                    'fields' => $fieldsList
+            );
+
+            // prepare serializer batching
+            $limit = 250;
+            $count = $gridManager->getDatagrid()->countResults();
+            $iterations = ceil($count/$limit);
+
+            $gridManager->prepareQueryForExport($proxyQuery, $fieldsList);
+
+            for ($i=0; $i<$iterations; $i++) {
+                $data = $gridManager->getDatagrid()->exportData($proxyQuery, 'csv', $context, $i*$limit, $limit);
+                echo $data;
+                flush();
+            }
+        };
     }
 
     /**
