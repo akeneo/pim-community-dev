@@ -377,10 +377,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
-                'label'   => $this->translate('Classify the product'),
-                'icon'    => 'folder-close',
-                'link'    => 'edit_categories_link',
-                'backUrl' => true
+                'label'     => $this->translate('Classify the product'),
+                'icon'      => 'folder-close',
+                'className' => 'edit-categories-action',
+                'link'      => 'edit_categories_link',
+                'backUrl'   => true
             )
         );
 
