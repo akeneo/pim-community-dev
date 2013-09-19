@@ -149,6 +149,21 @@ class AclAnnotationProvider
         $this->storage = null;
     }
 
+    /**
+     * @param array $bundleDirectories
+     * @return AclAnnotationStorage
+     */
+    public function getBundleAnnotations(array $bundleDirectories)
+    {
+        $data = new AclAnnotationStorage();
+        foreach ($this->loaders as $loader) {
+            $loader->setBundleDirectories($bundleDirectories);
+            $loader->load($data);
+        }
+
+        return $data;
+    }
+
     protected function ensureAnnotationsLoaded()
     {
         if ($this->storage === null) {

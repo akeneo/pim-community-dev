@@ -1,7 +1,8 @@
 <?php
 
-namespace Oro\Bundle\UserBundle\Command;
+namespace Oro\Bundle\SecurityBundle\Command;
 
+use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -9,6 +10,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Translation\MessageCatalogue;
+
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 class AclTranslationUpdateCommand extends ContainerAwareCommand
 {
@@ -44,8 +47,8 @@ class AclTranslationUpdateCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param \Symfony\Component\Console\Input\InputInterface   $input
-     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param InputInterface $input
+     * @param OutputInterface $output
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
@@ -68,11 +71,18 @@ class AclTranslationUpdateCommand extends ContainerAwareCommand
         // create catalogue
         $catalogue = new MessageCatalogue($input->getArgument('locale'));
         $output->writeln('Parsing templates');
-        $this->getContainer()->get('oro_user.acl_manager')->parseAclTokens(
-            $foundBundle->getPath(),
-            $catalogue,
-            $input->getOption('prefix')
+
+        $annotations = $this->getContainer()->get('oro_security.acl.annotation_provider')->getBundleAnnotations(
+            array($foundBundle->getPath())
         );
+
+        /** @var  $annotation Acl*/
+        /** @var  $annotations AclAnnotationStorage*/
+        foreach ($annotations->getAnnotations() as $annotation) {
+            if ($label = $annotation->getLabel()) {
+                $catalogue->set($label, $input->getOption('prefix') . $label);
+            }
+        }
 
         // load any existing messages from the translation files
         $output->writeln('Loading translation files');
