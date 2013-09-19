@@ -268,6 +268,17 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         $this->converter->convert(array('weight' => '60KILOGRAM'));
     }
 
+    public function testConvertMedia()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'image'))
+            ->will($this->returnValue($this->getAttributeMock('media')));
+
+        $this->assertEquals(array(), $this->converter->convert(array('image' => 'akeneo.jpg')));
+    }
+
     protected function getAttributeMock($backendType, $translatable = false, $scopable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');

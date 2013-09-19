@@ -30,7 +30,9 @@ class ProductValueConverter
         $result = array();
         foreach ($data as $key => $value) {
             $attribute = $this->getAttribute($key);
-            if ($attribute) {
+
+            // TODO Handle media import
+            if ($attribute && 'media' !== $attribute->getBackendType()) {
                 switch ($attribute->getBackendType()) {
                     case 'prices':
                         $value = $this->convertPricesValue($value);
