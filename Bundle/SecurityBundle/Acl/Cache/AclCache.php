@@ -11,7 +11,7 @@ class AclCache extends DoctrineAclCache
     /**
      * @var CacheProvider
      */
-    protected  $cache;
+    protected $cache;
 
     /**
      * @param CacheProvider $cache
