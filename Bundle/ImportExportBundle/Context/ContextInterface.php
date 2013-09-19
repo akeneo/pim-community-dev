@@ -81,4 +81,20 @@ interface ContextInterface
      * @return array
      */
     public function getConfiguration();
+
+    /**
+     * Has configuration option.
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function hasOption($name);
+
+    /**
+     * Get configuration option.
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function getOption($name);
 }

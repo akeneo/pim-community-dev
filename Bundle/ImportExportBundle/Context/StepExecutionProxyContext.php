@@ -18,7 +18,7 @@ class StepExecutionProxyContext implements ContextInterface
     }
 
     /**
-     * {@ineritdoc}
+     * {@inheritdoc}
      */
     public function addError($message, $severity = null)
     {
@@ -28,7 +28,7 @@ class StepExecutionProxyContext implements ContextInterface
     }
 
     /**
-     * {@ineritdoc}
+     * {@inheritdoc}
      */
     public function getErrors()
     {
@@ -36,7 +36,7 @@ class StepExecutionProxyContext implements ContextInterface
     }
 
     /**
-     * {@ineritdoc}
+     * {@inheritdoc}
      */
     public function incrementReadCount()
     {
@@ -44,7 +44,7 @@ class StepExecutionProxyContext implements ContextInterface
     }
 
     /**
-     * {@ineritdoc}
+     * {@inheritdoc}
      */
     public function getReadCount()
     {
@@ -52,7 +52,7 @@ class StepExecutionProxyContext implements ContextInterface
     }
 
     /**
-     * {@ineritdoc}
+     * {@inheritdoc}
      */
     public function incrementAddCount()
     {
@@ -60,7 +60,7 @@ class StepExecutionProxyContext implements ContextInterface
     }
 
     /**
-     * {@ineritdoc}
+     * {@inheritdoc}
      */
     public function getAddCount()
     {
@@ -68,7 +68,7 @@ class StepExecutionProxyContext implements ContextInterface
     }
 
     /**
-     * {@ineritdoc}
+     * {@inheritdoc}
      */
     public function incrementUpdateCount()
     {
@@ -76,7 +76,7 @@ class StepExecutionProxyContext implements ContextInterface
     }
 
     /**
-     * {@ineritdoc}
+     * {@inheritdoc}
      */
     public function getUpdateCount()
     {
@@ -84,7 +84,7 @@ class StepExecutionProxyContext implements ContextInterface
     }
 
     /**
-     * {@ineritdoc}
+     * {@inheritdoc}
      */
     public function incrementReplaceCount()
     {
@@ -92,7 +92,7 @@ class StepExecutionProxyContext implements ContextInterface
     }
 
     /**
-     * {@ineritdoc}
+     * {@inheritdoc}
      */
     public function getReplaceCount()
     {
@@ -100,7 +100,7 @@ class StepExecutionProxyContext implements ContextInterface
     }
 
     /**
-     * {@ineritdoc}
+     * {@inheritdoc}
      */
     public function incrementDeleteCount()
     {
@@ -108,7 +108,7 @@ class StepExecutionProxyContext implements ContextInterface
     }
 
     /**
-     * {@ineritdoc}
+     * {@inheritdoc}
      */
     public function getDeleteCount()
     {
@@ -116,7 +116,7 @@ class StepExecutionProxyContext implements ContextInterface
     }
 
     /**
-     * {@ineritdoc}
+     * {@inheritdoc}
      */
     public function setValue($name, $value)
     {
@@ -124,7 +124,7 @@ class StepExecutionProxyContext implements ContextInterface
     }
 
     /**
-     * {@ineritdoc}
+     * {@inheritdoc}
      */
     public function getValue($name)
     {
@@ -132,10 +132,31 @@ class StepExecutionProxyContext implements ContextInterface
     }
 
     /**
-     * {@ineritdoc}
+     * {@inheritdoc}
      */
     public function getConfiguration()
     {
         return $this->stepExecution->getJobExecution()->getJobInstance()->getRawConfiguration();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasOption($name)
+    {
+        $configuration = $this->getConfiguration();
+        return isset($configuration[$name]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOption($name)
+    {
+        if ($this->hasOption($name)) {
+            $configuration = $this->getConfiguration();
+            return $configuration[$name];
+        }
+        return null;
     }
 }
