@@ -83,6 +83,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
     /**
      * Configure the category manager
+     *
      * @param CategoryManager $manager
      */
     public function setCategoryManager(CategoryManager $manager)
@@ -121,8 +122,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * get properties
-     * @return array
+     * {@inheritdoc}
      */
     protected function getProperties()
     {
