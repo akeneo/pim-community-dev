@@ -38,6 +38,11 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
     protected $escape = '\\';
 
     /**
+     * @var bool
+     */
+    protected $firstLineIsHeader = true;
+
+    /**
      * @var array
      */
     protected $header;
@@ -56,21 +61,23 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
             }
             $stepExecution->incrementReadCount();
 
-            if (count($this->header) !== count($data)) {
-                $stepExecution->addReaderWarning(
-                    $this,
-                    sprintf(
-                        'Expecting to get %d columns, actually got %d',
-                        count($this->header),
-                        count($data)
-                    ),
-                    $data
-                );
+            if ($this->firstLineIsHeader) {
+                if (count($this->header) !== count($data)) {
+                    $stepExecution->addReaderWarning(
+                        $this,
+                        sprintf(
+                            'Expecting to get %d columns, actually got %d',
+                            count($this->header),
+                            count($data)
+                        ),
+                        $data
+                    );
 
-                return false;
+                    return false;
+                }
+
+                $data = array_combine($this->header, $data);
             }
-
-            $data = array_combine($this->header, $data);
         } else {
             throw new RuntimeException('An error occurred while reading the csv.');
         }
@@ -96,7 +103,7 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
                 $this->enclosure,
                 $this->escape
             );
-            if (!$this->header) {
+            if ($this->firstLineIsHeader && !$this->header) {
                 $this->header = $this->file->fgetcsv();
             }
         }
@@ -130,6 +137,10 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
 
         if (isset($configuration['escape'])) {
             $this->escape = $configuration['escape'];
+        }
+
+        if (isset($configuration['firstLineIsHeader'])) {
+            $this->firstLineIsHeader = (bool)$configuration['firstLineIsHeader'];
         }
 
         if (isset($configuration['header'])) {

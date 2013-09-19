@@ -181,7 +181,11 @@ abstract class AbstractTableDataConverter extends DefaultDataConverter
     protected function applyRegexpConvert(array $parameters, $value)
     {
         if (!empty($parameters[0]) && !empty($parameters[1])) {
-            return preg_replace('~^' . $parameters[0] . '$~', $parameters[1], $value);
+            if (is_array($parameters[1]) && is_callable($parameters[1], true) || $parameters[1] instanceof \Closure) {
+                $value = preg_replace_callback('~^' . $parameters[0] . '$~', $parameters[1], $value);
+            } else {
+                $value = preg_replace('~^' . $parameters[0] . '$~', $parameters[1], $value);
+            }
         }
 
         return $value;

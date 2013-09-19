@@ -41,12 +41,14 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
             'delimiter' => ',',
             'enclosure' => "'''",
             'escape' => ';',
+            'firstLineIsHeader' => false,
             'header' => array('one', 'two')
         );
 
         $this->assertAttributeEquals(';', 'delimiter', $this->reader);
         $this->assertAttributeEquals('"', 'enclosure', $this->reader);
         $this->assertAttributeEquals('\\', 'escape', $this->reader);
+        $this->assertAttributeEquals(true, 'firstLineIsHeader', $this->reader);
         $this->assertAttributeEmpty('header', $this->reader);
 
         $this->reader->setStepExecution($this->getMockStepExecution($options));
@@ -54,6 +56,7 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals($options['delimiter'], 'delimiter', $this->reader);
         $this->assertAttributeEquals($options['enclosure'], 'enclosure', $this->reader);
         $this->assertAttributeEquals($options['escape'], 'escape', $this->reader);
+        $this->assertAttributeEquals($options['firstLineIsHeader'], 'firstLineIsHeader', $this->reader);
         $this->assertAttributeEquals($options['header'], 'header', $this->reader);
     }
 
@@ -126,6 +129,18 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
                         'h2' => 'after_new2',
                         'h3' => 'after_new3',
                     )
+                )
+            ),
+            array(
+                array(
+                    'filePath' => __DIR__ . '/fixtures/import_correct.csv',
+                    'firstLineIsHeader' => false
+                ),
+                array(
+                    array('field_one', 'field_two', 'field_three'),
+                    array('1', '2', '3'),
+                    array('test1', 'test2', 'test3'),
+                    array('after_new1', 'after_new2', 'after_new3')
                 )
             )
         );
