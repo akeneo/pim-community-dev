@@ -21,11 +21,6 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 class UserType extends FlexibleType
 {
     /**
-     * @var AclManager
-     */
-    protected $aclManager;
-
-    /**
      * @var SecurityContextInterface
      */
     protected $security;
@@ -47,7 +42,6 @@ class UserType extends FlexibleType
     ) {
         parent::__construct($flexibleManager, '');
 
-        $this->aclManager = null;
         $this->security   = $security;
         $this->securityFacade = $securityFacade;
     }

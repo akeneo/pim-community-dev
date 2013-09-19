@@ -10,7 +10,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
-use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class UserSubscriber implements EventSubscriberInterface
@@ -78,11 +77,11 @@ class UserSubscriber implements EventSubscriberInterface
             }
         }
 
-        if (!$this->securityFacade->isGranted('oro_user_role_list')) {
+        if (!$this->securityFacade->isGranted('oro_user_role_view')) {
             unset($submittedData['rolesCollection']);
         }
 
-        if (!$this->securityFacade->isGranted('oro_user_group_list')) {
+        if (!$this->securityFacade->isGranted('oro_user_group_view')) {
             unset($submittedData['groups']);
         }
 
@@ -106,11 +105,11 @@ class UserSubscriber implements EventSubscriberInterface
             $permission = 'CREATE';
         }
 
-        if (!$this->securityFacade->isGranted('oro_user_role_list')) {
+        if (!$this->securityFacade->isGranted('oro_user_role_view')) {
             $form->remove('rolesCollection');
         }
 
-        if (!$this->securityFacade->isGranted('oro_user_group_list')) {
+        if (!$this->securityFacade->isGranted('oro_user_group_view')) {
             $form->remove('groups');
         }
 
