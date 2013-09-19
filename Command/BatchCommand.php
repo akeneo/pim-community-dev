@@ -75,7 +75,7 @@ class BatchCommand extends ContainerAwareCommand
         }
         $jobExecution->setJobInstance($jobInstance);
         $job->execute($jobExecution);
-        
+
         if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
             $output->writeln(
                 sprintf(
