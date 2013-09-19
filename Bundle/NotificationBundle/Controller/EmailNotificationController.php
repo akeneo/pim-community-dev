@@ -48,7 +48,7 @@ class EmailNotificationController extends Controller
      *      id="oro_notification_emailnotification_update",
      *      type="entity",
      *      class="OroNotificationBundle:EmailNotification",
-     *      permission="UPDATE"
+     *      permission="EDIT"
      * )
      * @Template()
      */

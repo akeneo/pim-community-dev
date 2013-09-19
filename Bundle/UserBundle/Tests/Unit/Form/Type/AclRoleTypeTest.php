@@ -32,7 +32,7 @@ class AclRoleTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('oro_user_role', $this->formType->getName());
+        $this->assertEquals('oro_user_role_form', $this->formType->getName());
     }
 
     public function testSetDefaultOptions()
