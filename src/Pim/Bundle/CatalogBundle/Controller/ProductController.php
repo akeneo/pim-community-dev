@@ -209,10 +209,10 @@ class ProductController extends AbstractDoctrineController
                     function () use ($gridManager, $scope) {
                         flush();
 
-                        $datagrid = $gridManager->getDatagrid();
+                        $proxyQuery = $gridManager->getDatagrid()->getQueryWithParametersApplied();
 
                         // get attribute lists
-                        $fieldsList = $datagrid->getAttributeAvailableIds(); // @todo : must be defined in product datagrid manager
+                        $fieldsList = $gridManager->getAvailableAttributesList($proxyQuery);
                         $fieldsList[] = FlatProductNormalizer::FIELD_FAMILY;
                         $fieldsList[] = FlatProductNormalizer::FIELD_CATEGORY;
 
@@ -225,12 +225,14 @@ class ProductController extends AbstractDoctrineController
                         );
 
                         // prepare serializer batching
-                        $limit = 1;
-                        $count = $datagrid->countResults();
+                        $limit = 250;
+                        $count = $gridManager->getDatagrid()->countResults();
                         $iterations = ceil($count/$limit);
 
+                        $gridManager->prepareQueryForExport($proxyQuery, $fieldsList);
+
                         for ($i=0; $i<$iterations; $i++) {
-                            $data = $datagrid->exportData('csv', $i*$limit, $limit, $context);
+                            $data = $gridManager->getDatagrid()->exportData($proxyQuery, 'csv', $context, $i*$limit, $limit);
                             echo $data;
                             flush();
                         }
