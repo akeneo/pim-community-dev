@@ -69,99 +69,54 @@ class Datagrid extends OroDatagrid
      */
     public function countResults()
     {
-        $this->pagerApplied = true;
+        $this->applyParameters();
+        $proxyQuery = clone $this->query;
+
+        $exprFieldId = sprintf('%s.id', $qb->getRootAlias());
+        $proxyQuery
+            ->select($exprFieldId)
+            ->groupBy($exprFieldId)
+            ->resetDQLPart('orderBy')
+            ->setFirstResult(null)
+            ->setMaxResults(null);
+
+        return count($proxyQuery->execute());
+    }
+
+    /**
+     * Returns the query with parameters applied
+     *
+     * @return \Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface
+     */
+    public function getQueryWithParametersApplied()
+    {
         $this->applyParameters();
 
-        $exprFieldId = sprintf('%s.id', $this->query->getRootAlias());
-        $this->query->select($exprFieldId);
-        $this->query->groupBy($exprFieldId);
-
-        return count($this->query->execute());
+        return $this->query;
     }
 
     /**
      * Serialize datagrid results in a specific format and with a specific context
-     * @param string $format
-     * @param array  $context
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     * @param string              $format
+     * @param array               $context
+     * @param int                 $offset
+     * @param int                 $limit
      *
      * @return string
      */
-    public function exportData($format, $offset = 0, $limit = 250, array $context = array())
+    public function exportData($proxyQuery, $format, array $context = array(), $offset = null, $limit = null)
     {
-        $results = $this->getBatchedResults($offset, $limit);
+        $proxyQuery
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
 
+        $results = $proxyQuery->execute();
         $data = $this->serializer->serialize($results, $format, $context);
 
-        $em = $this->query->getEntityManager();
-        $em->clear();
+        $proxyQuery->getEntityManager()->clear();
 
         return $data;
-    }
-
-    /**
-     * Get query result without pagination
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getBatchedResults($offset, $limit)
-    {
-        $this->pagerApplied = true;
-        $this->applyParameters();
-        if (!static::$applied) {
-            $this->query->resetDQLPart('groupBy');
-//             $this->query->resetDQLPart('orderBy');
-
-            $this->query->select($this->query->getRootAlias());
-            $this->query->addSelect('values');
-            $this->query->addSelect('family');
-            $this->query->addSelect('valuePrices');
-
-            $this->query->leftJoin('values.options', 'valueOptions');
-            $this->query->addSelect('valueOptions');
-
-            $this->query->leftJoin('o.categories', 'categories');
-            $this->query->addSelect('categories');
-
-//             $this->query->leftJoin('values.attribute', 'attribute');
-//             $attributesList = $this->getAttributeAvailableIds();
-//             $exprIn = $this->query->expr()->in('attribute', $attributesList);
-//             $this->query->andWhere($exprIn);
-
-//             var_dump($this->query->getDQLPart('where')); die;
-//             var_dump($this->query->getDQLPart('join'));die;
-//             $this->query->leftJoin('values.attribute', 'attribute');
-//             $this->query->addOrderBy('attribute.id');
-
-            static::$applied = true;
-        }
-        $this->query->setFirstResult($offset);
-        $this->query->setMaxResults($limit);
-
-        return $this->query->execute();
-    }
-
-    public function getAttributeAvailableIds()
-    {
-        $qb = clone $this->query;
-
-        $qb->leftJoin('values.attribute', 'attribute');
-        $qb->groupBy('attribute.code');
-        $qb->select('attribute.code, attribute.translatable, attribute.attributeType');
-
-        $attributesList = array();
-        $results = $qb->getQuery()->execute();
-        foreach ($results as $attribute) {
-            if ($attribute['translatable'] == 1) {
-                $attributesList[] = $attribute['code'].'-fr_FR';
-                $attributesList[] = $attribute['code'].'-en_US';
-            } elseif ($attribute['attributeType'] === 'pim_catalog_identifier') {
-                array_unshift($attributesList, $attribute['code']);
-            } else {
-                $attributesList[] = $attribute['code'];
-            }
-
-        }
-
-        return $attributesList;
     }
 }
