@@ -88,6 +88,27 @@ class CreateCommand extends ContainerAwareCommand
 
     /**
      * @param $className
+     * @throws \InvalidArgumentException
+     */
+    protected function checkExtend($className)
+    {
+        $error = false;
+        if (!$this->configManager->hasConfig($className)) {
+            $error = true;
+        } else {
+            $config = $this->configManager->getProvider('extend')->getConfig($className);
+            if (!$config->is('is_extend')) {
+                $error = true;
+            }
+        }
+
+        if ($error) {
+            throw new \InvalidArgumentException(sprintf('Class "%s" is not extended.', $className));
+        }
+    }
+
+    /**
+     * @param $className
      * @param $entityOptions
      * @throws \InvalidArgumentException
      */
@@ -98,21 +119,7 @@ class CreateCommand extends ContainerAwareCommand
         $configProvider = $extendManager->getConfigProvider();
 
         if (class_exists($className)) {
-            $error = false;
-            if (!$this->configManager->hasConfig($className)) {
-                $error = true;
-            } else {
-                $config = $this->configManager->getProvider('extend')->getConfig($className);
-                if (!$config->is('is_extend')) {
-                    $error = true;
-                }
-            }
-
-            if ($error) {
-                throw new \InvalidArgumentException(
-                    sprintf('Class "%s" is not extended.', $className)
-                );
-            }
+            $this->checkExtend($className);
         }
 
         if (!$this->configManager->hasConfig($className)) {
@@ -121,7 +128,10 @@ class CreateCommand extends ContainerAwareCommand
 
             $entityConfig = $configProvider->getConfig($className);
 
-            $owner = isset($entityOptions['owner']) ? $entityOptions['owner'] : ExtendManager::OWNER_SYSTEM;
+            $owner = ExtendManager::OWNER_SYSTEM;
+            if (isset($entityOptions['owner'])) {
+                $owner = $entityOptions['owner'];
+            }
             $entityConfig->set('owner', $owner);
 
             if (isset($entityOptions['is_extend'])) {
@@ -138,8 +148,16 @@ class CreateCommand extends ContainerAwareCommand
                 );
             }
 
-            $owner = isset($fieldConfig['owner']) ? $fieldConfig['owner'] : ExtendManager::OWNER_SYSTEM;
-            $mode  = isset($fieldConfig['mode']) ? $fieldConfig['mode'] : ConfigModelManager::MODE_DEFAULT;
+            $owner = ExtendManager::OWNER_SYSTEM;
+            if (isset($fieldConfig['owner'])) {
+                $owner = $fieldConfig['owner'];
+            }
+
+            $mode  = ConfigModelManager::MODE_DEFAULT;
+            if (isset($fieldConfig['mode'])) {
+                $mode = $fieldConfig['mode'];
+            }
+
             $extendManager->createField($className, $fieldName, $fieldConfig, $owner, $mode);
 
             $this->setDefaultConfig($entityOptions, $className, $fieldName);
