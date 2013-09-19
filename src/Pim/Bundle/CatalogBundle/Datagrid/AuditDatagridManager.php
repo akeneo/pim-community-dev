@@ -140,7 +140,7 @@ DQL;
     /**
      * @{inheritDoc}
      */
-    public function getToolbarOptions() 
+    public function getToolbarOptions()
     {
         $removeResetAction = array('addResetAction' => false);
         return array_merge($removeResetAction, $this->toolbarOptions);
