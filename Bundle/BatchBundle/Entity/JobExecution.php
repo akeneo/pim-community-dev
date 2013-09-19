@@ -119,6 +119,7 @@ class JobExecution
     {
         $this->setStatus(new BatchStatus(BatchStatus::STARTING));
         $this->setExitStatus(new ExitStatus(ExitStatus::UNKNOWN));
+        $this->executionContext = new ExecutionContext();
         $this->stepExecutions = new ArrayCollection();
         $this->createTime = new \DateTime();
         $this->failureExceptions = array();

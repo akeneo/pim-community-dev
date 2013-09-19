@@ -28,6 +28,16 @@ interface ContextInterface
     /**
      * @return void
      */
+    public function incrementAddCount();
+
+    /**
+     * @return int
+     */
+    public function getAddCount();
+
+    /**
+     * @return void
+     */
     public function incrementUpdateCount();
 
     /**

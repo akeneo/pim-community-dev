@@ -139,7 +139,7 @@ class StepExecution
         $this->stepName = $stepName;
         $this->jobExecution = $jobExecution;
         $jobExecution->addStepExecution($this);
-
+        $this->executionContext = new ExecutionContext();
         $this->setStatus(new BatchStatus(BatchStatus::STARTING));
         $this->setExitStatus(new ExitStatus(ExitStatus::EXECUTING));
 
