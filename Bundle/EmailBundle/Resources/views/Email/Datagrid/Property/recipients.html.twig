@@ -5,8 +5,10 @@
     {% set recipients = value.first.email.getRecipients('to') %}
 {% endif %}
 
-<ul>
-    {% for recipient in recipients if recipient is not empty %}
-        <li>{{ recipient.name }} &lt;{{ recipient.getEmailAddress.email }}&gt;</li>
-    {% endfor %}
-</ul>
+{% for recipient in recipients if recipient is not empty %}
+    <span>{{ EA.email_address(recipient.getEmailAddress, record.getValue('fromName'), oro_config_value('oro_user.name_format')) }}</span>
+{% endfor %}
+
+
+
+
