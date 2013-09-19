@@ -5,6 +5,8 @@ web/js/*
 app/bootstrap.php.cache
 app/cache/*
 app/logs/*
+app/import/*
+app/export/*
 app/config/*_local.yml
 build/
 vendor
