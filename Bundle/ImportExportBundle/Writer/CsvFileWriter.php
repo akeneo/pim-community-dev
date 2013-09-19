@@ -7,6 +7,7 @@ use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\ImportExportBundle\Exception\InvalidArgumentException;
 use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
+use Oro\Bundle\ImportExportBundle\Exception\RuntimeException;
 
 class CsvFileWriter implements ItemWriterInterface, StepExecutionAwareInterface
 {
@@ -75,11 +76,15 @@ class CsvFileWriter implements ItemWriterInterface, StepExecutionAwareInterface
      * Write CSV line.
      *
      * @param array $fields
+     * @throws \Oro\Bundle\ImportExportBundle\Exception\RuntimeException
      */
     protected function writeCsv(array $fields)
     {
         $this->firstLineWritten = true;
-        fputcsv($this->getFile(), $fields, $this->delimiter, $this->enclosure);
+        $result = fputcsv($this->getFile(), $fields, $this->delimiter, $this->enclosure);
+        if ($result === false) {
+            throw new RuntimeException('An error occurred while writing to the csv.');
+        }
     }
 
     /**
@@ -90,7 +95,7 @@ class CsvFileWriter implements ItemWriterInterface, StepExecutionAwareInterface
     protected function getFile()
     {
         if (!$this->file) {
-            $this->file = fopen($this->fileInfo->getRealPath(), 'a');
+            $this->file = fopen($this->fileInfo->getPathname(), 'a');
         }
 
         return $this->file;

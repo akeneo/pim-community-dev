@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\ImportExportBundle\Tests\Unit\Reader;
 
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\ImportExportBundle\Reader\CsvFileReader;
 
 class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
@@ -158,7 +159,7 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array $jobInstanceRawConfiguration
-     * @return \PHPUnit_Framework_MockObject_MockObject+
+     * @return \PHPUnit_Framework_MockObject_MockObject|StepExecution
      */
     protected function getMockStepExecution(array $jobInstanceRawConfiguration)
     {
