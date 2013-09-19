@@ -231,6 +231,12 @@ class ProductAttributeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template("PimCatalogBundle:ProductAttribute:_form_parameters.html.twig")
+     * @Acl(
+     *      id="pim_catalog_attribute_preprocess",
+     *      name="Preprocess an attribute",
+     *      description="Preprocess an attribute",
+     *      parent="pim_catalog_attribute"
+     * )
      * @return array
      */
     public function preProcessAction(Request $request)
@@ -310,6 +316,12 @@ class ProductAttributeController extends AbstractDoctrineController
      *
      * @param Request          $request
      * @param ProductAttribute $entity
+     * @Acl(
+     *      id="pim_catalog_attribute_remove",
+     *      name="Remove attribute",
+     *      description="Remove attribute",
+     *      parent="pim_catalog_attribute"
+     * )
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
