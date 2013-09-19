@@ -92,7 +92,8 @@ class ImapConnectorTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->connector->findItems($this->connector->getSearchQueryBuilder()->get());
         $this->assertCount(2, $result);
-        foreach ($result as $r) { }
+        foreach ($result as $r) {
+        }
     }
 
     public function testFindFolders()
