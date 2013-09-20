@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\ImportExportBundle\Processor;
 
+use Oro\Bundle\ImportExportBundle\Context\ContextAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -45,6 +46,10 @@ class ImportProcessor implements ContextAwareProcessor, SerializerAwareInterface
     public function setImportExportContext(ContextInterface $context)
     {
         $this->context = $context;
+
+        if ($this->strategy && $this->strategy instanceof ContextAwareInterface) {
+            $this->strategy->setImportExportContext($this->context);
+        }
     }
 
     /**
