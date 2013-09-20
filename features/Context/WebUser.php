@@ -28,6 +28,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     private $password = null;
 
+    private $windowWidth;
+
+    private $windowHeight;
+
     private $pageMapping = array(
         'attributes'  => 'Attribute index',
         'channels'    => 'Channel index',
@@ -44,6 +48,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'home'        => 'Base index',
     );
 
+    public function __construct($windowWidth, $windowHeight)
+    {
+        $this->windowWidth  = $windowWidth;
+        $this->windowHeight = $windowHeight;
+    }
     /* -------------------- Page-related methods -------------------- */
 
     /**
@@ -52,7 +61,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function maximize()
     {
         try {
-            $this->getSession()->getDriver()->resizeWindow(1280, 720);
+            $this->getSession()->resizeWindow($this->windowWidth, $this->windowHeight);
         } catch (UnsupportedDriverActionException $e) {
         }
     }
@@ -1822,8 +1831,19 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iMoveOnToTheNextStep()
     {
+        $this->scrollContainerTo(900);
         $this->getCurrentPage()->next();
+        $this->scrollContainerTo(900);
+        $this->getCurrentPage()->confirm();
         $this->wait(10000);
+    }
+
+    private function scrollContainerTo($y)
+    {
+        $this->getSession()->executeScript(<<<JS
+document.getElementsByClassName('scrollable-container')[0].scrollTop = $y;
+JS
+);
     }
 
     /**

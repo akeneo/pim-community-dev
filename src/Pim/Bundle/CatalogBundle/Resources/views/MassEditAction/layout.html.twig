@@ -3,7 +3,7 @@
 {% block content %}
     <div class="row wizard-header">
         <ul class="wizard">
-            <li>{{ 'Choose products'|trans }}</li><li>{{ 'Choose operation'|trans }}</li><li>{{ 'Configure'|trans }}</li>
+            <li>{{ 'Choose products'|trans }}</li><li>{{ 'Choose operation'|trans }}</li><li>{{ 'Configure'|trans }}</li><li>{{ 'Confirm'|trans }}</li>
         </ul>
     </div>
 {% endblock %}
@@ -12,8 +12,8 @@
 
     <script type="text/javascript" charset="utf-8">
         require(
-            ['jquery.wizard'],
-            function() {
+            ['jquery', 'jquery.wizard'],
+            function($) {
                 $(document).ready(function() {
                     $('.wizard').wizard({
                         currentStep: {{ currentStep }}

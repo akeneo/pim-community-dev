@@ -23,4 +23,11 @@ class Wizard extends Form
 
         return $this->currentStep;
     }
+
+    public function confirm()
+    {
+        $this->pressButton('Confirm');
+
+        return $this->currentStep;
+    }
 }
