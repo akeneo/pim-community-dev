@@ -59,11 +59,12 @@ class StepExecutionProxyContextTest extends \PHPUnit_Framework_TestCase
 
     public function testGetErrors()
     {
-        $expected = array('message');
+        $exceptions = array(array('message' => 'testException'));
+        $expected = array('testException');
 
         $this->stepExecution->expects($this->once())
-            ->method('getFailureExceptionMessages')
-            ->will($this->returnValue($expected));
+            ->method('getFailureExceptions')
+            ->will($this->returnValue($exceptions));
 
         $this->assertEquals($expected, $this->context->getErrors());
     }

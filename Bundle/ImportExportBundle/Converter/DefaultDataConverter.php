@@ -16,25 +16,26 @@ class DefaultDataConverter implements DataConverterInterface
     /**
      * {@inheritDoc}
      */
-    public function convertToExportFormat(array $exportedRecord)
+    public function convertToExportFormat(array $exportedRecord, $skipNullValues = true)
     {
-        return $this->convertToPlainData($exportedRecord);
+        return $this->convertToPlainData($exportedRecord, $skipNullValues);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function convertToImportFormat(array $importedRecord)
+    public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
-        return $this->convertToComplexData($importedRecord);
+        return $this->convertToComplexData($importedRecord, $skipNullValues);
     }
 
     /**
      * @param array $complexData
+     * @param boolean $skipNullValues
      * @return array
      * @throws LogicException
      */
-    protected function convertToPlainData(array $complexData)
+    protected function convertToPlainData(array $complexData, $skipNullValues = true)
     {
         $plainData = array();
 
@@ -46,12 +47,12 @@ class DefaultDataConverter implements DataConverterInterface
 
             if (is_array($value)) {
                 // recursive invocation and setting
-                $result = $this->convertToPlainData($value);
+                $result = $this->convertToPlainData($value, $skipNullValues);
                 foreach ($result as $tmpKey => $tmpValue) {
                     $compositeKey = $key . $this->convertDelimiter . $tmpKey;
                     $plainData[$compositeKey] = $tmpValue;
                 }
-            } else {
+            } elseif ($value !== null || !$skipNullValues) {
                 $plainData[$key] = (string)$value;
             }
         }
@@ -61,15 +62,18 @@ class DefaultDataConverter implements DataConverterInterface
 
     /**
      * @param array $plainData
+     * @param boolean $skipNullValues
      * @return array
      */
-    protected function convertToComplexData(array $plainData)
+    protected function convertToComplexData(array $plainData, $skipNullValues = true)
     {
         $complexData = array();
 
         foreach ($plainData as $compositeKey => $value) {
-            $keys = explode($this->convertDelimiter, $compositeKey);
-            $complexData = $this->setValueByKeys($complexData, $keys, $value);
+            if ($value !== null || !$skipNullValues) {
+                $keys = explode($this->convertDelimiter, $compositeKey);
+                $complexData = $this->setValueByKeys($complexData, $keys, $value);
+            }
         }
 
         return $complexData;
