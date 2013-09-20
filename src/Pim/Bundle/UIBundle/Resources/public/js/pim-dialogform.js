@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'oro/navigation', 'jquery-ui', 'jquery.select2', 'bootstrap.tooltip'],
+    ['jquery', 'oro/navigation', 'jquery-ui', 'jquery.select2', 'bootstrap-tooltip'],
     function ($, Navigation) {
         'use strict';
 
