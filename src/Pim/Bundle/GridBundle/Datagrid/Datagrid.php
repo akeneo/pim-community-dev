@@ -125,18 +125,18 @@ class Datagrid extends OroDatagrid
      *
      * @return integer[]
      */
-     public function getAllIds()
-     {
-         $this->pagerApplied = true;
-         $this->sorterApplied = true;
-         $this->applyParameters();
-         $this->query->select($this->query->getRootAlias());
-         $entities = $this->query->execute(array(), AbstractQuery::HYDRATE_ARRAY);
-         $func = function($entity) {
-             return $entity['id'];
-         };
-         $ids = array_unique(array_map($func, $entities));
+    public function getAllIds()
+    {
+        $this->pagerApplied = true;
+        $this->sorterApplied = true;
+        $this->applyParameters();
+        $this->query->select($this->query->getRootAlias());
+        $entities = $this->query->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+        $func = function ($entity) {
+            return $entity['id'];
+        };
+        $ids = array_unique(array_map($func, $entities));
 
-         return $ids;
+        return $ids;
     }
 }

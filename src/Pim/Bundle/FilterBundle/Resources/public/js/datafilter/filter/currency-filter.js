@@ -127,13 +127,14 @@ define(
             },
 
             /**
-             * Check if all properties of the value have been specified
+             * Check if all properties of the value have been specified or all are empty (for reseting filter)
              *
              * @param value
              * @return boolean
              */
             _isValueValid: function(value) {
-                return value.currency && value.type && value.value;
+                return (value.currency && value.type && value.value) ||
+                       (!value.currency && !value.type && !value.value);
             },
 
             /**
