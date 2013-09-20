@@ -170,6 +170,43 @@ class Grid extends Index
     }
 
     /**
+     * Get the sorted columns
+     * @return Ambigous <\Behat\Mink\Element\Element, unknown, multitype:unknown >
+     */
+    public function getSortedColumns()
+    {
+        $columns = $this->getColumnHeaders(false, false);
+
+        foreach ($columns as $key => $column) {
+            $columnName = $column->getText();
+            if (!$this->isSortedColumn($columnName)) {
+                unset($columns[$key]);
+            } else {
+                $columns[$key] = $columnName;
+            }
+        }
+
+        return $columns;
+    }
+
+    /**
+     * Remove a sort on a column with a loop
+     * Use a threshold to prevent against infine loop
+     * @param string $column
+     */
+    public function removeSortOnColumn($column)
+    {
+        $threshold = 0;
+        while ($this->isSortedColumn($column)) {
+            $this->getColumnSorter($column)->click();
+
+            if ($threshold++ === 3) {
+                return;
+            }
+        }
+    }
+
+    /**
      * Predicate to know if a column is sorted and ordered as we want
      *
      * @param string $column
