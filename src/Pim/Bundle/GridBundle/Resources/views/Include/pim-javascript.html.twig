@@ -197,13 +197,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                     loadingHint: {{ 'oro_grid.label_loading_mask'|trans|json_encode|raw }}
                 })
             }, datagridOptions.grid);
-
-            /*****************************/
-            /** Added code in this file **/
             var datagrid = new Grid(datagridParameters);
-            /** End of added code       **/
-            /*****************************/
-
             $(datagridBodySelector).html(datagrid.render().$el);
             registry.setElement('datagrid', {{ datagrid.name|json_encode|raw }}, datagrid);
 

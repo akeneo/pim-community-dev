@@ -6,7 +6,6 @@ parameters:
     pim_catalog.datagrid.manager.locale_datagrid.class:   Pim\Bundle\CatalogBundle\Datagrid\LocaleDatagridManager
     pim_catalog.datagrid.worker.class:                    Pim\Bundle\CatalogBundle\Datagrid\DatagridWorker
 
-
 services:
     # Product attribute grid manager
     pim_catalog.datagrid.manager.productattribute:
@@ -32,6 +31,7 @@ services:
         calls:
             - [ setCategoryManager, ['@pim_catalog.manager.category'] ]
             - [ setDatagridBuilder, ['@pim_grid.builder.datagrid'] ]
+            - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
 
     pim_catalog.datagrid.manager.history:
         class: Pim\Bundle\CatalogBundle\Datagrid\AuditDatagridManager

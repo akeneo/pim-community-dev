@@ -11,23 +11,30 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
+
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ProductCreateHandler;
 use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
+use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
+use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
+use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 
 /**
  * Product Controller
@@ -104,6 +111,11 @@ class ProductController extends AbstractDoctrineController
      * @var AclManager
      */
     private $aclManager;
+
+    /**
+     * @staticvar int
+     */
+    const BATCH_SIZE = 250;
 
     /**
      * Constructor
@@ -186,17 +198,21 @@ class ProductController extends AbstractDoctrineController
                 $view = 'OroGridBundle:Datagrid:list.json.php';
                 break;
             case 'csv':
-                $content = $datagrid->exportData(
-                    $request->getRequestFormat(),
-                    array('withHeader' => true, 'heterogeneous' => true)
-                );
-                $headers = array(
-                    'Content-Type' => 'text/csv',
-                    'Content-Disposition' =>
-                        sprintf('inline; filename=quick_export_products.%s', $request->getRequestFormat())
-                );
+                ini_set('max_execution_time', 100);
 
-                return $this->returnResponse($content, 200, $headers);
+                $scope = $this->productManager->getScope();
+
+                // prepare response
+                $response = new StreamedResponse();
+                $attachment = $response->headers->makeDisposition(
+                    ResponseHeaderBag::DISPOSITION_INLINE,
+                    'quick_export_products.csv'
+                );
+                $response->headers->set('Content-Type', 'text/csv');
+                $response->headers->set('Content-Disposition', $attachment);
+                $response->setCallback($this->quickExportCallback($gridManager, $scope));
+
+                return $response->send();
 
                 break;
             case 'html':
@@ -213,6 +229,49 @@ class ProductController extends AbstractDoctrineController
         );
 
         return $this->render($view, $params);
+    }
+
+    /**
+     * Quick export callback
+     *
+     * @param ProductDatagridManager $gridManager
+     * @param string $scope
+     *
+     * @return \Closure
+     */
+    protected function quickExportCallback(ProductDatagridManager $gridManager, $scope)
+    {
+        return function () use ($gridManager, $scope) {
+            flush();
+
+            $proxyQuery = $gridManager->getDatagrid()->getQueryWithParametersApplied();
+
+            // get attribute lists
+            $fieldsList = $gridManager->getAvailableAttributeCodes($proxyQuery);
+            $fieldsList[] = FlatProductNormalizer::FIELD_FAMILY;
+            $fieldsList[] = FlatProductNormalizer::FIELD_CATEGORY;
+
+            // prepare serializer context
+            $context = array(
+                    'withHeader' => true,
+                    'heterogeneous' => false,
+                    'scope' => $scope,
+                    'fields' => $fieldsList
+            );
+
+            // prepare serializer batching
+            $limit = static::BATCH_SIZE;
+            $count = $gridManager->getDatagrid()->countResults();
+            $iterations = ceil($count/$limit);
+
+            $gridManager->prepareQueryForExport($proxyQuery, $fieldsList);
+
+            for ($i=0; $i<$iterations; $i++) {
+                $data = $gridManager->getDatagrid()->exportData($proxyQuery, 'csv', $context, $i*$limit, $limit);
+                echo $data;
+                flush();
+            }
+        };
     }
 
     /**
