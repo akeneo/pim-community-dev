@@ -1,7 +1,7 @@
 oro_entity_config:
     extend:
         entity:
-            require_js:                     ['oro/init-entity-extend-apply']
+            require_js:                     ['oro/init-entity-extend-apply', 'oro/init-entity-extend-relation']
             grid_action:
                 -
                     name:                   'Remove'
@@ -237,8 +237,10 @@ oro_entity_config:
                     form:
                         type:               oro_entity_target_type
                         options:
+                            attr:           {class: 'extend-rel-target-name'}
                             required:       true
                             label:          'Target entity'
+                            empty_value:    'Please choice target entity...'
                             block:          entity
                             subblock:       properties
 
@@ -254,8 +256,10 @@ oro_entity_config:
                     form:
                         type:               choice
                         options:
+                            attr:           {class: 'extend-rel-target-field'}
                             required:       true
                             label:          'Target field'
+                            empty_value:    'Please choice target field...'
                             block:          entity
                             subblock:       properties
 

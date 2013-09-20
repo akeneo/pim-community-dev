@@ -38,6 +38,12 @@
 {% endblock stats %}
 
 {% block content_data %}
+    {% if require_js|length %}
+        <script type="text/javascript">
+            require({{ require_js|json_encode|raw }})
+        </script>
+    {% endif %}
+
     {% set id = 'configfield-update' %}
     {% set dataBlocks = form_data_blocks(form) %}
     {% set data = {
