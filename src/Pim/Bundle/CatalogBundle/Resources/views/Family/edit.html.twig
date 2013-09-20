@@ -1,5 +1,7 @@
 {% extends 'PimCatalogBundle:Family:index.html.twig' %}
 
+{% oro_title_set({ params: { "%family.label%": form.vars.value.label } }) %}
+
 {% block familyTab %}
 
 {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
@@ -9,20 +11,20 @@
 
 {{ JSFV(form) }}
 
-<form id="{{ form.vars.id }}" class="form-horizontal" data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}" data-updated-message="{{ 'You will lose changes to the family if you leave the page.'|trans }}" action="{{ path('pim_catalog_family_edit', { id: family.id }) }}" method="POST">
+<form id="{{ form.vars.id }}" class="form-horizontal" data-updated-title="{{ 'confirmation.leave'|trans }}" data-updated-message="{{ 'confirmation.discard changes.'|trans({ '%entity%': 'family'|trans }) }}" action="{{ path('pim_catalog_family_edit', { id: family.id }) }}" method="POST">
 
     {% set title = 'family.edit'|trans ~ ' - ' ~ family.label %}
 
     {% set buttons %}
         {% if form.vars.value.id %}
-            {{ elements.deleteLink(path('pim_catalog_family_remove', {'id': family.id}), 'Are you sure you want to remove the family %family%?'|trans({'%family%': family.label})) }}
+            {{ elements.deleteLink(path('pim_catalog_family_remove', {'id': family.id}), 'confirmation.remove.family'|trans({ '%name%': family.label })) }}
         {% endif %}
         {{ elements.submitBtn() }}
     {% endset %}
 
     {% set right %}
         <div class="pull-right entity-updated">
-            <span id="updated" class="label label-warning hide">{{ 'There are unsaved changes.'|trans }}</span>
+            <span id="updated" class="label label-warning hide">{{ 'info.updated'|trans }}</span>
         </div>
     {% endset %}
 

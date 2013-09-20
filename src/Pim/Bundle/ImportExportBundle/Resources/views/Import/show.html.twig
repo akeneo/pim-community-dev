@@ -1,3 +1,5 @@
+{% oro_title_set({ params: {"%job.label%": jobInstance.label } }) %}
+
 {% set entityName  = 'import profile'|trans %}
 {% set action      = 'import'|trans %}
 {% set indexRoute  = path('pim_importexport_import_index') %}

@@ -34,7 +34,7 @@
                 {% endfor %}
                 <td>
                     {% if attribute.attributeType != 'pim_catalog_identifier' %}
-                        <a href="javascript:void(0);" data-url="{{ path('pim_catalog_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}" class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
+                        <a href="javascript:void(0);" data-url="{{ path('pim_catalog_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}" class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'confirmation.delete'|trans }}" data-message="{{ 'confirmation.remove.attribute'|trans({ '%name%': attribute.label }) }}">
                             <i class="icon-trash"></i>
                         </a>
                     {% endif %}
