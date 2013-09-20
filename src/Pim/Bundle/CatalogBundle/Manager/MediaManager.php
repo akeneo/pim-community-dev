@@ -115,7 +115,9 @@ class MediaManager
      */
     protected function delete(Media $media)
     {
-        $this->fileSystem->delete($media->getFilename());
+        if (($media->getFilename() != "") && $this->fileExists($media)) {
+            $this->fileSystem->delete($media->getFilename());
+        }
 
         $media->setOriginalFilename(null);
         $media->setFilename(null);

@@ -15,8 +15,8 @@ Feature: Display the product history
     And I create a new product
     And I fill in the following information:
       | SKU               | cam  |
-    And I press the "Create" button
-    And I should see "Product successfully saved."
+    And I press the "Save" button
+    And I should see "Product successfully created"
     And I edit the "cam" product
     When I visit the "History" tab
     Then there should be 1 update

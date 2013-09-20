@@ -13,14 +13,11 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-
 use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
-
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ProductCreateHandler;
 use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
@@ -235,7 +232,7 @@ class ProductController extends AbstractDoctrineController
      * Quick export callback
      *
      * @param ProductDatagridManager $gridManager
-     * @param string $scope
+     * @param string                 $scope
      *
      * @return \Closure
      */
@@ -313,7 +310,7 @@ class ProductController extends AbstractDoctrineController
 
         if ($this->productCreateHandler->process($entity)) {
 
-            $this->addFlash('success', 'Product successfully saved.');
+            $this->addFlash('success', 'flash.product.created');
 
             if ($dataLocale === null) {
                 $dataLocale = $this->getDataLocale();
@@ -385,20 +382,21 @@ class ProductController extends AbstractDoctrineController
                 $categoriesData = $this->getCategoriesData($request->request->all());
                 $categories = $this->categoryManager->getCategoriesByIds($categoriesData['categories']);
 
+                $this->productManager->handleMedia($product);
                 $this->productManager->save($product, $categories, $categoriesData['trees']);
                 // Call completeness calculator after validating data and saving product
                 // so all values for all locale are loaded now
                 $this->calculator->calculateForAProduct($product);
                 $this->productManager->save($product);
 
-                $this->addFlash('success', 'Product successfully saved');
+                $this->addFlash('success', 'flash.product.updated');
 
                 // TODO : Check if the locale exists and is activated
                 $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
 
                 return $this->redirectToRoute('pim_catalog_product_edit', $params);
             } else {
-                $this->addFlash('error', 'Please check your entry and try again.');
+                $this->addFlash('error', 'flash.product.invalid');
             }
         }
 
@@ -446,7 +444,7 @@ class ProductController extends AbstractDoctrineController
 
         $this->productManager->save($product);
 
-        $this->addFlash('success', 'Attributes are added to the product form.');
+        $this->addFlash('success', 'flash.product.attributes added');
 
         return $this->redirectToRoute('pim_catalog_product_edit', array('id' => $product->getId()));
     }
@@ -474,6 +472,8 @@ class ProductController extends AbstractDoctrineController
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
+            $this->addFlash('success', 'flash.product.removed');
+
             return $this->redirectToRoute('pim_catalog_product_index');
         }
     }
@@ -499,19 +499,13 @@ class ProductController extends AbstractDoctrineController
         $product   = $this->findOr404('PimCatalogBundle:Product', $productId);
         $attribute = $this->findOr404('PimCatalogBundle:ProductAttribute', $attributeId);
 
-        if (!$product->isAttributeRemovable($attribute)) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'Attribute %s can not be removed from the product %s',
-                    $attribute->getCode(),
-                    $product->getCode()
-                )
-            );
+        if ($product->isAttributeRemovable($attribute)) {
+            $this->productManager->removeAttributeFromProduct($product, $attribute);
+
+            $this->addFlash('success', 'flash.product.attribute removed');
+        } else {
+            $this->addFlash('error', 'flash.product.attribute not removable');
         }
-
-        $this->productManager->removeAttributeFromProduct($product, $attribute);
-
-        $this->addFlash('success', 'Attribute was successfully removed.');
 
         return $this->redirectToRoute('pim_catalog_product_edit', array('id' => $productId));
     }

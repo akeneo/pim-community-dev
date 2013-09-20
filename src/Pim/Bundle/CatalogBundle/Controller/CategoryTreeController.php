@@ -133,6 +133,7 @@ class CategoryTreeController extends AbstractDoctrineController
     /**
      * Move a node
      * @param Request $request
+     *
      * @Acl(
      *      id="pim_catalog_category_move",
      *      name="Move category",
@@ -287,10 +288,7 @@ class CategoryTreeController extends AbstractDoctrineController
                 $manager->persist($category);
                 $manager->flush();
 
-                $this->addFlash(
-                    'success',
-                    sprintf('%s successfully created.', $category->getParent() ? 'Category' : 'Tree')
-                );
+                $this->addFlash('success', sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree'));
 
                 return $this->redirectToRoute('pim_catalog_categorytree_edit', array('id' => $category->getId()));
             }
@@ -342,10 +340,7 @@ class CategoryTreeController extends AbstractDoctrineController
                 $manager->persist($category);
                 $manager->flush();
 
-                $this->addFlash(
-                    'success',
-                    sprintf('%s successfully updated.', $category->getParent() ? 'Category' : 'Tree')
-                );
+                $this->addFlash('success', sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree'));
             }
         }
 
@@ -362,6 +357,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * Remove category tree
      *
      * @param Category $category
+     *
      * @Acl(
      *      id="pim_catalog_category_remove",
      *      name="Remove a category",
@@ -378,7 +374,7 @@ class CategoryTreeController extends AbstractDoctrineController
         $this->categoryManager->remove($category);
         $this->categoryManager->getStorageManager()->flush();
 
-        $this->addFlash('success', 'Category successfully removed');
+        $this->addFlash('success', sprintf('flash.%s.removed', isset($params['node']) ? 'category' : 'tree'));
 
         return $this->redirectToRoute('pim_catalog_categorytree_create', $params);
     }
