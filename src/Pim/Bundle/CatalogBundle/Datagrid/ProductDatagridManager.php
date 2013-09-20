@@ -21,6 +21,7 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
 
@@ -54,6 +55,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected $categoryManager;
 
     /**
+     * @var Pim\Bundle\CatalogBundle\Manager\LocaleManager
+     */
+    protected $localeManager;
+
+    /**
      * Filter by tree id, 0 means not tree selected
      * @var integer
      */
@@ -78,11 +84,22 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
     /**
      * Configure the category manager
+     *
      * @param CategoryManager $manager
      */
     public function setCategoryManager(CategoryManager $manager)
     {
         $this->categoryManager = $manager;
+    }
+
+    /**
+     * Configure the locale manager
+     *
+     * @param LocaleManager $manager
+     */
+    public function setLocaleManager(LocaleManager $manager)
+    {
+        $this->localeManager = $manager;
     }
 
     /**
@@ -106,8 +123,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * get properties
-     * @return array
+     * {@inheritdoc}
      */
     protected function getProperties()
     {
@@ -505,29 +521,13 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias .'.family', 'family')
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
-            ->leftJoin('values.prices', 'valuePrices')
-            ->leftJoin(
-                $rootAlias .'.completenesses',
-                'pCompleteness',
-                'WITH',
-                'pCompleteness.locale = :locale AND pCompleteness.channel = :channel'
-            );
+            ->leftJoin('values.prices', 'valuePrices');
 
-        $channelCode = $this->flexibleManager->getScope();
-        $channel = $this->flexibleManager
-            ->getStorageManager()
-            ->getRepository('PimCatalogBundle:Channel')
-            ->findBy(array('code' => $channelCode));
+        // prepare query for completeness
+        $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
 
-        $localeCode = $this->flexibleManager->getLocale();
-        $locale = $this->flexibleManager
-            ->getStorageManager()
-            ->getRepository('PimCatalogBundle:Locale')
-            ->findBy(array('code' => $localeCode));
-
-        $proxyQuery->setParameter('localeCode', $localeCode);
-        $proxyQuery->setParameter('locale', $locale);
-        $proxyQuery->setParameter('channel', $channel);
+        $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
+        $proxyQuery->setParameter('channelCode', $this->flexibleManager->getScope());
 
         // prepare query for categories
         if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
@@ -548,6 +548,26 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
+     * Prepare query for completeness field
+     * @param ProxyQueryInterface $proxyQuery
+     * @param string              $rootAlias
+     */
+    protected function prepareQueryForCompleteness(ProxyQueryInterface $proxyQuery, $rootAlias)
+    {
+        $exprLocaleAndScope      = $proxyQuery->expr()->andX(
+            'locale.code = :localeCode',
+            'channel.code = :channelCode'
+        );
+        $exprWithoutCompleteness = $proxyQuery->expr()->isNull('pCompleteness');
+        $exprFamilyIsNull        = $proxyQuery->expr()->isNull($rootAlias .'.family');
+        $proxyQuery
+            ->leftJoin($rootAlias .'.completenesses', 'pCompleteness')
+            ->leftJoin('pCompleteness.locale', 'locale')
+            ->leftJoin('pCompleteness.channel', 'channel')
+            ->orWhere($exprLocaleAndScope, $exprWithoutCompleteness, $exprFamilyIsNull);
+    }
+
+    /**
      * Get scope value from parameters
      *
      * @return string
@@ -562,5 +582,106 @@ class ProductDatagridManager extends FlexibleDatagridManager
         }
 
         return $dataScope;
+    }
+
+    /**
+     * Get the product availables from the selected products (clause in proxy query)
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     *
+     * @return array
+     */
+    protected function getAvailableAttributes(ProxyQueryInterface $proxyQuery)
+    {
+        $qb = clone $proxyQuery;
+        $qb
+            ->leftJoin('values.attribute', 'attribute')
+            ->groupBy('attribute.id')
+            ->select('attribute.id, attribute.code, attribute.translatable, attribute.attributeType');
+
+        return $qb
+            ->getQuery()
+            ->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+    }
+
+    /**
+     * Get the available attribute codes
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     *
+     * @return string[]
+     */
+    public function getAvailableAttributeCodes(ProxyQueryInterface $proxyQuery)
+    {
+        $results = $this->getAvailableAttributes($proxyQuery);
+
+        $attributesList = array();
+        foreach ($results as $attribute) {
+            if ($attribute['translatable'] == 1) {
+                foreach ($this->localeManager->getActiveCodes() as $code) {
+                    $attributesList[] = sprintf('%s-%s', $attribute['code'], $code);
+                }
+                // @todo : Use constant for pim_catalog_identifier
+            } elseif ($attribute['attributeType'] === 'pim_catalog_identifier') {
+                array_unshift($attributesList, $attribute['code']);
+            } else {
+                $attributesList[] = $attribute['code'];
+            }
+        }
+
+        return $attributesList;
+    }
+
+    /**
+     * Get the available attribute ids
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     *
+     * @return int[]
+     */
+    protected function getAvailableAttributeIds(ProxyQueryInterface $proxyQuery)
+    {
+        $results = $this->getAvailableAttributes($proxyQuery);
+
+        $attributeIds = array();
+        foreach ($results as $attribute) {
+            $attributeIds[] = $attribute['id'];
+        }
+
+        return $attributeIds;
+    }
+
+    /**
+     * Optimize the query for the export
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     */
+    public function prepareQueryForExport(ProxyQueryInterface $proxyQuery)
+    {
+        $attributeIds = $this->getAvailableAttributeIds($proxyQuery);
+
+        $proxyQuery
+            ->resetDQLPart('groupBy')
+            ->resetDQLPart('orderBy');
+
+        // join tables
+        $proxyQuery
+            ->leftJoin('values.options', 'valueOptions')
+            ->leftJoin('o.categories', 'categories');
+
+        // select datas
+        $proxyQuery
+            ->select($proxyQuery->getRootAlias())
+            ->addSelect('values')
+            ->addSelect('family')
+            ->addSelect('valuePrices')
+            ->addSelect('valueOptions')
+            ->addSelect('categories');
+
+        // where clause on attributes
+        $exprIn = $proxyQuery->expr()->in('attribute', $attributeIds);
+        $proxyQuery
+            ->leftJoin('values.attribute', 'attribute')
+            ->andWhere($exprIn);
     }
 }
