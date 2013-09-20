@@ -128,7 +128,7 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
             options.columns.unshift(this._getMassActionsColumn());
 
             this.loadingMask = this._createLoadingMask();
-            this.toolbar = this._createToolbar(_.extend(this.toolbarOptions, options.toolbarOptions));
+            this.toolbar = this._createToolbar(this.toolbarOptions);
 
             Backgrid.Grid.prototype.initialize.apply(this, arguments);
 
