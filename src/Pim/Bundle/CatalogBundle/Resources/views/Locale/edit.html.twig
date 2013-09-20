@@ -1,5 +1,7 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
+{% oro_title_set({ params: { "%locale.code%": form.vars.value.code } }) %}
+
 {% block content %}
 
     {{ JSFV(form) }}

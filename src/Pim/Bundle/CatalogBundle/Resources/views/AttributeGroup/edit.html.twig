@@ -1,5 +1,7 @@
 {% extends 'PimCatalogBundle:AttributeGroup:index.html.twig' %}
 
+{% oro_title_set({ params: { "%group.name%": form.vars.value.name } }) %}
+
 {% block groupTab %}
 {{ JSFV(form) }}
 <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ path('pim_catalog_attributegroup_edit', { id: form.vars.value.id }) }}" method="POST">

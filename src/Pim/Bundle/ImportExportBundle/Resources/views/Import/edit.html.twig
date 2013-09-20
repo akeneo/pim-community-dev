@@ -1,3 +1,5 @@
+{% oro_title_set({ params: {"%job.label%": form.vars.value.label } }) %}
+
 {% set actionRoute = form.vars.value.id ?
     path('pim_importexport_import_edit', { 'id': form.vars.value.id }) :
     path('pim_importexport_import_create', { 'connector': connector, 'alias': alias }) %}
