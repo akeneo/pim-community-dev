@@ -9,6 +9,10 @@ class CheckStep extends ControllerStep
 {
     public function displayAction(ProcessContextInterface $context)
     {
+        if ($this->container->hasParameter('installed') && $this->container->getParameter('installed')) {
+            return $this->redirect($this->generateUrl('oro_default'));
+        }
+
         return $this->render(
             'OroInstallerBundle:Process/Step:check.html.twig',
             array(

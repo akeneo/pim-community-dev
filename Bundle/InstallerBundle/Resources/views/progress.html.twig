@@ -14,6 +14,10 @@
             <strong class="step">3</strong>
             <span>{{ 'process.step.setup.header'|trans }}</span>
         </li>
+        <li{% if step == 'final' %} class="active"{% endif %}>
+            <strong class="step">4</strong>
+            <span>{{ 'process.step.final.header'|trans }}</span>
+        </li>
     </ul>
 </div>
 {% endblock %}

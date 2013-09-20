@@ -49,11 +49,12 @@ process:
         setup:
             header:       Administration setup
         final:
-            content:      Oro Application successfully installed.
-            header:       Congratulations!
+            header:       Finish
+            greeting:     Success!!!
+            content:      You are now ready to start using Oro.<br>For help please join our community <a href="http://www.orocrm.com/forums">forums</a>.
     button:
         back:             Back
         next:             Next
         install:          Install
         refresh:          Refresh
-        finish:           Go to dashboard
+        finish:           Launch application

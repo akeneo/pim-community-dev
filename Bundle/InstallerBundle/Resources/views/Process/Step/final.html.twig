@@ -1,4 +1,7 @@
 {% extends 'OroInstallerBundle::layout.html.twig' %}
+{% use 'OroInstallerBundle::progress.html.twig' %}
+
+{% set step = 'final' %}
 
 {% block title %}{{ 'process.step.final.header'|trans }} - {{ parent() }}{% endblock %}
 
@@ -12,6 +15,6 @@
 </div>
 
 <div class="button-set">
-    <a href="{{ path('oro_default') }}" class="button primary">{{ 'process.button.finish'|trans }}</a>
+    <a href="{{ path('oro_default') }}" class="button primary" target="_blank">{{ 'process.button.finish'|trans }}</a>
 </div>
 {% endblock %}
