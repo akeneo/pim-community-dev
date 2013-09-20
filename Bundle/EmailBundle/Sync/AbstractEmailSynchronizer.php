@@ -225,7 +225,7 @@ abstract class AbstractEmailSynchronizer
                 ->setParameter('synchronized', $synchronizedAt);
         }
         if ($syncCode === self::SYNC_CODE_IN_PROCESS) {
-            $queryBuilder->andWhere('o.syncCode <> :code');
+            $queryBuilder->andWhere('(o.syncCode IS NULL OR o.syncCode <> :code)');
         }
         $affectedRows = $queryBuilder->getQuery()->execute();
 

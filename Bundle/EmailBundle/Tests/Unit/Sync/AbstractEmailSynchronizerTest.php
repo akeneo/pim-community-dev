@@ -304,7 +304,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
         if ($syncCode === AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS) {
             $qb->expects($this->at($index++))
                 ->method('andWhere')
-                ->with('o.syncCode <> :code')
+                ->with('(o.syncCode IS NULL OR o.syncCode <> :code)')
                 ->will($this->returnValue($qb));
         }
         $qb->expects($this->at($index++))
