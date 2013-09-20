@@ -47,6 +47,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /* -------------------- Page-related methods -------------------- */
 
     /**
+     * @BeforeStep
+     */
+    public function maximize()
+    {
+        $this->getSession()->getDriver()->resizeWindow(1280, 720);
+    }
+
+    /**
      * @BeforeScenario
      */
     public function resetCurrentPage()
