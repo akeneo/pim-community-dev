@@ -1,2 +1,2 @@
 oro_titles:
-    oro_workflow_step_edit: %%step%% - %%workflow%% - Workflows
+    oro_workflow_step_edit: %%workflow_data%% - %%entity%% - %%section%%

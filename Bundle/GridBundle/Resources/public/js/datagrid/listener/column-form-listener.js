@@ -30,12 +30,21 @@ function($, _, __, mediator, Modal, AbstractListener) {
             this.selectors = options.selectors;
 
             AbstractListener.prototype.initialize.apply(this, arguments);
+        },
 
-            this._clearState();
-            this._synchronizeState();
+        /**
+         * Set datagrid instance
+         *
+         * @param {oro.datagrid.Grid} datagrid
+         */
+        setDatagridAndSubscribe: function(datagrid) {
+            AbstractListener.prototype.setDatagridAndSubscribe.apply(this, arguments);
 
             this.listenTo(this.datagrid.getRefreshAction(), 'preExecute', this._onExecuteRefreshAction);
             this.listenTo(this.datagrid.getResetAction(), 'preExecute', this._onExecuteResetAction);
+
+            this._clearState();
+            this._restoreState();
 
             /**
              * Restore include/exclude state from pagestate
@@ -141,7 +150,7 @@ function($, _, __, mediator, Modal, AbstractListener) {
           *
           * @private
           */
-         _restoreState: function () {
+        _restoreState: function () {
             var included = '';
             var excluded = '';
             if (this.selectors.included && $(this.selectors.included).length) {

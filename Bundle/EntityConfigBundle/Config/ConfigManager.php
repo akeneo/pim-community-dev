@@ -216,7 +216,14 @@ class ConfigManager
      */
     public function isConfigurable($className, $fieldName = null)
     {
-        return (bool)$this->modelManager->findModel($className, $fieldName);
+        $result = $this->cache->getConfigurable($className, $fieldName);
+        if ($result === null) {
+            $result = (bool)$this->modelManager->findModel($className, $fieldName);
+
+            $this->cache->setConfigurable($result, $className, $fieldName);
+        }
+
+        return $result;
     }
 
     /**

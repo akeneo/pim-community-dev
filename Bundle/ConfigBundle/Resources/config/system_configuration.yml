@@ -1,7 +1,7 @@
 oro_system_configuration:
     groups:
         platform:
-            title: 'Platform'
+            title: 'System configuration'
             icon:  icon-hdd
 
         general_setup:

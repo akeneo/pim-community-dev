@@ -23,18 +23,6 @@
             font-weight: normal;
         }
 
-        .step-form-header li:first-child:before {
-            content: "...";
-            font-weight: normal;
-            font-size: 24px;
-            color: #c8c8c8;
-            top: -2px;
-            display: inline-block;
-            position: relative;
-            font-family: sans;
-            padding-right: 10px;
-        }
-
         .step-form-container {
             padding: 20px 0 20px;
         }
@@ -58,8 +46,6 @@
                             {% block step_label %}
                                 {% if step.name == currentStep.name %}
                                     <i class="icon icon-chevron-right"></i>
-                                {% else %}
-                                    <i class="icon icon-eye-close"></i>
                                 {% endif %}
                                 {{ step.label|trans }}
                             {% endblock %}

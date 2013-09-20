@@ -146,6 +146,13 @@ class ApplyController extends Controller
         // put system in maintenance mode
         $this->get('oro_platform.maintenance')->on();
 
+        register_shutdown_function(
+            function ($mode) {
+                $mode->off();
+            },
+            $this->get('oro_platform.maintenance')
+        );
+
         foreach ($commands as $command) {
             /** @var $command Process */
             $command->run();
@@ -186,8 +193,6 @@ class ApplyController extends Controller
 
         $extendConfigProvider->persist($extendConfig);
         $extendConfigProvider->flush();
-
-        $this->get('oro_platform.maintenance')->off();
 
         return $this->redirect($this->generateUrl('oro_entityconfig_index'));
     }

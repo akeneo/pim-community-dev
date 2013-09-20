@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'backbone', 'oro/registry'],
-function(_, Backbone, registry) {
+define(['underscore', 'backbone', 'oro/registry', 'oro/mediator'],
+function(_, Backbone, registry, mediator) {
     'use strict';
 
     /**
@@ -30,11 +30,7 @@ function(_, Backbone, registry) {
             if (!_.has(options, 'datagridName')) {
                 throw new Error('Datagrid name is not specified');
             }
-
-            this.datagrid = registry.getElement('datagrid', options.datagridName);
-            if (!this.datagrid) {
-                throw new Error('Datagrid with name "' + options.datagridName + '" is not exists');
-            }
+            this._assignDatagridAndSubscribe(options.datagridName);
 
             if (!_.has(options, 'columnName')) {
                 throw new Error('Data column name is not specified');
@@ -45,9 +41,32 @@ function(_, Backbone, registry) {
                 this.dataField = options.dataField;
             }
 
-            this.datagrid.on('cellEdited', this._onCellEdited, this);
-
             Backbone.Model.prototype.initialize.apply(this, arguments);
+        },
+
+        /**
+         * Subscribe to datagrid events
+         *
+         * @param {String} datagridName
+         * @private
+         */
+        _assignDatagridAndSubscribe: function(datagridName) {
+            var datagrid = registry.getElement('datagrid', datagridName);
+            if (datagrid) {
+                this.setDatagridAndSubscribe(datagrid);
+            } else {
+                mediator.once("datagrid:created:" + datagridName, this.setDatagridAndSubscribe, this);
+            }
+        },
+
+        /**
+         * Set datagrid instance
+         *
+         * @param {oro.datagrid.Grid} datagrid
+         */
+        setDatagridAndSubscribe: function(datagrid) {
+            this.datagrid = datagrid;
+            this.datagrid.on('cellEdited', this._onCellEdited, this);
         },
 
         /**

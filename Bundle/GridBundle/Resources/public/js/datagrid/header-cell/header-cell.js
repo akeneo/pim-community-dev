@@ -25,7 +25,7 @@ function ($, _, Backbone, Backgrid, PageableCollection) {
         ),
 
         /** @property {Boolean} */
-        allowNoSorting: false,
+        allowNoSorting: true,
 
         /**
          * Initialize.
@@ -33,10 +33,18 @@ function ($, _, Backbone, Backgrid, PageableCollection) {
          * Add listening "reset" event of collection to able catch situation when header cell should update it's sort state.
          */
         initialize: function() {
+            this.allowNoSorting = this.collection.multipleSorting;
             Backgrid.HeaderCell.prototype.initialize.apply(this, arguments);
             this._initCellDirection(this.collection);
             this.collection.on('reset', this._initCellDirection, this);
         },
+
+        /**
+         * There is no need to reset cell direction because of multiple sorting
+         *
+         * @private
+         */
+        _resetCellDirection: function () {},
 
         /**
          * Inits cell direction when collections loads first time.
@@ -127,7 +135,6 @@ function ($, _, Backbone, Backgrid, PageableCollection) {
          * @param {function(*, *): number} [comparator]
          */
         sort: function (columnName, direction, comparator) {
-
             comparator = comparator || this._cidComparator;
 
             var collection = this.collection;

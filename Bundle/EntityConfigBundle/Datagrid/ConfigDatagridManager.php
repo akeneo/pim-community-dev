@@ -4,48 +4,22 @@ namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 
 use Doctrine\ORM\Query;
 
-use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
-use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-
-use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
-
+use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
-
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
-
-use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
-use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\ActionConfigurationProperty;
+use Oro\Bundle\GridBundle\Property\UrlProperty;
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
-use Oro\Bundle\GridBundle\Action\ActionInterface;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 
-/**
- * @SuppressWarnings(PHPMD.NPathComplexity)
- * @SuppressWarnings(PHPMD.CyclomaticComplexity)
- */
-class ConfigDatagridManager extends DatagridManager
+class ConfigDatagridManager extends BaseDatagrid
 {
-    /**
-     * @var FieldDescriptionCollection
-     */
-    protected $fieldsCollection;
-
-    /**
-     * @var ConfigManager
-     */
-    protected $configManager;
-
-    public function __construct(ConfigManager $configManager)
-    {
-        $this->configManager = $configManager;
-    }
-
     /**
      * @return array
      */
@@ -63,6 +37,22 @@ class ConfigDatagridManager extends DatagridManager
     }
 
     /**
+     * @return array
+     */
+    public function getRequireJsModules()
+    {
+        $modules = array();
+        foreach ($this->configManager->getProviders() as $provider) {
+            $modules = array_merge(
+                $modules,
+                $provider->getPropertyConfig()->getRequireJsModules()
+            );
+        }
+
+        return $modules;
+    }
+
+    /**
      * {@inheritDoc}
      */
     protected function getProperties()
@@ -76,20 +66,9 @@ class ConfigDatagridManager extends DatagridManager
         $actions = array();
 
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getPropertyConfig()->getGridActions() as $config) {
-                $properties[] = new UrlProperty(
-                    strtolower($config['name']) . '_link',
-                    $this->router,
-                    $config['route'],
-                    (isset($config['args']) ? $config['args'] : array())
-                );
+            $gridActions = $provider->getPropertyConfig()->getGridActions();
 
-                if (isset($config['filter'])) {
-                    $filters[strtolower($config['name'])] = $config['filter'];
-                }
-
-                $actions[strtolower($config['name'])] = true;
-            }
+            $this->prepareProperties($gridActions, $properties, $actions, $filters);
 
             if ($provider->getPropertyConfig()->getUpdateActionFilter()) {
                 $filters['update']   = $provider->getPropertyConfig()->getUpdateActionFilter();
@@ -188,9 +167,9 @@ class ConfigDatagridManager extends DatagridManager
                 if (isset($item['grid'])) {
                     $item['grid']        = $provider->getPropertyConfig()->initConfig($item['grid']);
 
-                    $fieldObjectProvider = new FieldDescription();
-                    $fieldObjectProvider->setName($code);
-                    $fieldObjectProvider->setOptions(
+                    $fieldObject = new FieldDescription();
+                    $fieldObject->setName($code);
+                    $fieldObject->setOptions(
                         array_merge(
                             $item['grid'],
                             array(
@@ -205,16 +184,16 @@ class ConfigDatagridManager extends DatagridManager
                         && isset($item['grid']['template'])
                     ) {
                         $templateDataProperty = new TwigTemplateProperty(
-                            $fieldObjectProvider,
+                            $fieldObject,
                             $item['grid']['template']
                         );
-                        $fieldObjectProvider->setProperty($templateDataProperty);
+                        $fieldObject->setProperty($templateDataProperty);
                     }
 
                     if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
-                        $fields[$item['options']['priority']] = $fieldObjectProvider;
+                        $fields[$item['options']['priority']] = $fieldObject;
                     } else {
-                        $fields[] = $fieldObjectProvider;
+                        $fields[] = $fieldObject;
                     }
                 }
             }
@@ -342,37 +321,7 @@ class ConfigDatagridManager extends DatagridManager
 
         $actions = array($clickAction, $viewAction, $updateAction);
 
-        foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getPropertyConfig()->getGridActions() as $config) {
-                $configItem = array(
-                    'name'         => strtolower($config['name']),
-                    'acl_resource' => isset($config['acl_resource']) ? $config['acl_resource'] : 'root',
-                    'options'      => array(
-                        'label' => ucfirst($config['name']),
-                        'icon'  => isset($config['icon']) ? $config['icon'] : 'question-sign',
-                        'link'  => strtolower($config['name']) . '_link'
-                    )
-                );
-
-                if (isset($config['type'])) {
-                    switch ($config['type']) {
-                        case 'delete':
-                            $configItem['type'] = ActionInterface::TYPE_DELETE;
-                            break;
-                        case 'redirect':
-                            $configItem['type'] = ActionInterface::TYPE_REDIRECT;
-                            break;
-                        case 'ajax':
-                            $configItem['type'] = ActionInterface::TYPE_AJAX;
-                            break;
-                    }
-                } else {
-                    $configItem['type'] = ActionInterface::TYPE_REDIRECT;
-                }
-
-                $actions[] = $configItem;
-            }
-        }
+        $this->prepareRowActions($actions);
 
         return $actions;
     }

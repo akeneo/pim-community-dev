@@ -70,7 +70,7 @@ class WebSocket
         $header .= "\r\n";
         $header .= $key3;
 
-        $this->socket = stream_socket_client('tcp://' . $host . ':' . $port, $errno, $errstr, self::SOCKET_TIMEOUT);
+        $this->socket = @stream_socket_client('tcp://' . $host . ':' . $port, $errno, $errstr, self::SOCKET_TIMEOUT);
 
         if (!$this->socket) {
             throw new \RuntimeException(sprintf('WebSocket connection error (%u): %s', $errno, $errstr));

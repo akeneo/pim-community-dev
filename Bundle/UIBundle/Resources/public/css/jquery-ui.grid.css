@@ -104,8 +104,8 @@
 }
 .ui-datepicker select.ui-datepicker-month,
 .ui-datepicker select.ui-datepicker-year {
-    width: 49%;
-    height: 23px;
+    width: 45%;
+    height: 19px;
     padding: 1px 3px;
 }
 .ui-datepicker table {
@@ -143,7 +143,6 @@
     float: right;
     margin: .5em .2em .4em;
     cursor: pointer;
-    padding: .2em .6em .3em .6em;
     width: auto;
     overflow: visible;
 }

@@ -22,7 +22,7 @@ class ConfigModelValue
 
     /**
      * @var EntityConfigModel
-     * @ORM\ManyToOne(targetEntity="EntityConfigModel", inversedBy="values")
+     * @ORM\ManyToOne(targetEntity="EntityConfigModel", inversedBy="values", cascade={"persist"})
      * @ORM\JoinColumns({
      * @ORM\JoinColumn(name="entity_id", referencedColumnName="id")
      * })
@@ -31,7 +31,7 @@ class ConfigModelValue
 
     /**
      * @var FieldConfigModel
-     * @ORM\ManyToOne(targetEntity="FieldConfigModel", inversedBy="values")
+     * @ORM\ManyToOne(targetEntity="FieldConfigModel", inversedBy="values", cascade={"persist"})
      * @ORM\JoinColumns({
      * @ORM\JoinColumn(name="field_id", referencedColumnName="id")
      * })

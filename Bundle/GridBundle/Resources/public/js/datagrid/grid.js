@@ -80,6 +80,7 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
             rowClassName: '',
             toolbarOptions: {addResetAction: true, addRefreshAction: true},
             rowClickAction: undefined,
+            multipleSorting: true,
             rowActions: [],
             massActions: []
         },
@@ -116,6 +117,8 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
             _.extend(this, this.defaults, options);
             this.toolbarOptions = {};
             _.extend(this.toolbarOptions, this.defaults.toolbarOptions, options.toolbarOptions);
+
+            this.collection.multipleSorting = this.multipleSorting;
 
             this._initRowActions();
 

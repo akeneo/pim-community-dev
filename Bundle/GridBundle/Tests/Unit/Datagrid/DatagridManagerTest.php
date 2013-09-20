@@ -22,6 +22,7 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
      */
     const TEST_NAME                      = 'test_name';
     const TEST_HINT                      = 'test_hint';
+    const TEST_ENTITY_NAME               = 'test_entity_name';
     const TEST_FILTERABLE_SORTABLE_FIELD = 'test_filterable_sortable_field';
     const TEST_SORTABLE_FIELD            = 'test_sortable_field';
     const TEST_DOMAIN                    = 'someDomain';
@@ -192,6 +193,9 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals(self::TEST_HINT, 'entityHint', $this->model);
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public function testGetDatagrid()
     {
         $datagridMock       = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\DatagridInterface');
@@ -243,12 +247,32 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
             ->method('addRowAction')
             ->with($datagridMock, $this->testRowActions[2]);
 
+        $datagridMock->expects($this->at(0))
+            ->method('setToolbarOptions')
+            ->with(array());
+        $datagridMock->expects($this->at(1))
+            ->method('setIdentifierFieldName')
+            ->with(self::TEST_IDENTIFIER);
+        $datagridMock->expects($this->at(2))
+            ->method('setEntityName')
+            ->with(self::TEST_ENTITY_NAME);
+        $datagridMock->expects($this->at(3))
+            ->method('setName')
+            ->with(self::TEST_NAME);
+        $datagridMock->expects($this->at(4))
+            ->method('setEntityHint')
+            ->with(self::TEST_HINT);
+        $datagridMock->expects($this->at(5))
+            ->method('setMultipleSorting')
+            ->with(true);
+
         $this->model->setDatagridBuilder($datagridBuilderMock);
         $this->model->setListBuilder($listBuilderMock);
         $this->model->setQueryFactory($queryFactoryMock);
         $this->model->setRouteGenerator($routeGeneratorMock);
         $this->model->setParameters($parameters);
         $this->model->setName(self::TEST_NAME);
+        $this->model->setEntityName(self::TEST_ENTITY_NAME);
         $this->model->setQueryEntityAlias(self::TEST_ALIAS);
         $this->model->setEntityHint(self::TEST_HINT);
         $this->model->setIdentifierField(self::TEST_IDENTIFIER);

@@ -1,6 +1,6 @@
 /* jshint browser:true */
 /* global define */
-define(['jquery', 'oro/translator', 'bootstrap', 'jquery-ui', 'jquery-ui-timepicker'],
+define(['jquery', 'oro/translator', 'bootstrap-tooltip', 'jquery-ui', 'jquery-ui-timepicker'],
 function($, __) {
     'use strict';
 

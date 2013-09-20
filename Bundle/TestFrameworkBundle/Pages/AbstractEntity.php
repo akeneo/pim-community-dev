@@ -19,6 +19,15 @@ abstract class AbstractEntity extends Page
         return $this;
     }
 
+    public function toGrid()
+    {
+        $this->byXpath("//div[@class='customer-content pull-left']/div[1]//a")->click();
+        $this->waitPageToLoad();
+        $this->waitForAjax();
+
+        return $this;
+    }
+
     public function close($redirect = false)
     {
         $class = get_class($this) . 's';
