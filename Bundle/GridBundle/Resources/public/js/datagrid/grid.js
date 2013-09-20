@@ -243,12 +243,12 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
          */
         _getToolbarActions: function(toolbarOptions) {
             var result = [];
-            if (toolbarOptions.addRefreshAction) {
+            //if (toolbarOptions.addRefreshAction) {
                 result.push(this.getRefreshAction());
-            }
-            if (toolbarOptions.addResetAction) {
+            //}
+            //if (toolbarOptions.addResetAction) {
                 result.push(this.getResetAction());
-            }
+            //}
             return result;
         },
 
