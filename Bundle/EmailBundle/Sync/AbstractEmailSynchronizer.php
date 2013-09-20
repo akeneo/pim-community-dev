@@ -7,7 +7,7 @@ use Doctrine\ORM\Query;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
-use Oro\Bundle\CronBundle\Command\Logger\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 abstract class AbstractEmailSynchronizer
 {

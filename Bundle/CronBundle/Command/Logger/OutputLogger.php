@@ -3,8 +3,10 @@
 namespace Oro\Bundle\CronBundle\Command\Logger;
 
 use Symfony\Component\Console\Output\OutputInterface;
+use Psr\Log\AbstractLogger;
+use Psr\Log\LogLevel;
 
-class OutputLogger implements LoggerInterface
+class OutputLogger extends AbstractLogger
 {
     /**
      * @var OutputInterface
@@ -21,51 +23,27 @@ class OutputLogger implements LoggerInterface
         $this->output = $output;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function error($message)
+    public function log($level, $message, array $context = array())
     {
-        $this->output->writeln($message);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function warning($message)
-    {
-        if ($this->output->getVerbosity() > OutputInterface::VERBOSITY_QUIET) {
-            $this->output->writeln($message);
+        switch ($level) {
+            case LogLevel::WARNING:
+            case LogLevel::NOTICE:
+                if ($this->output->getVerbosity() < OutputInterface::VERBOSITY_NORMAL) {
+                    return;
+                }
+                break;
+            case LogLevel::INFO:
+                if ($this->output->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE) {
+                    return;
+                }
+                break;
+            case LogLevel::DEBUG:
+                if ($this->output->getVerbosity() < OutputInterface::VERBOSITY_DEBUG) {
+                    return;
+                }
+                break;
         }
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function notice($message)
-    {
-        if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
-            $this->output->writeln($message);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function info($message)
-    {
-        if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->output->writeln($message);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function debug($message)
-    {
-        if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_DEBUG) {
-            $this->output->writeln($message);
-        }
+        $this->output->writeln(sprintf('[%s] %s', $level, $message));
     }
 }

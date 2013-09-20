@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
-use Oro\Bundle\CronBundle\Command\Logger\LoggerInterface;
+use Psr\Log\LoggerInterface;
 use Oro\Bundle\EmailBundle\Sync\AbstractEmailSynchronizationProcessor;
 use Oro\Bundle\ImapBundle\Connector\Search\SearchQuery;
 use Oro\Bundle\ImapBundle\Connector\Search\SearchQueryBuilder;

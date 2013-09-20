@@ -3,7 +3,7 @@
 namespace Oro\Bundle\EmailBundle\Sync;
 
 use Doctrine\ORM\EntityManager;
-use Oro\Bundle\CronBundle\Command\Logger\LoggerInterface;
+use Psr\Log\LoggerInterface;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
@@ -40,7 +40,7 @@ abstract class AbstractEmailSynchronizationProcessor
      * @param EmailEntityBuilder $emailEntityBuilder
      * @param EmailAddressManager $emailAddressManager
      */
-    public function __construct(
+    protected function __construct(
         LoggerInterface $log,
         EntityManager $em,
         EmailEntityBuilder $emailEntityBuilder,

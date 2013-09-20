@@ -61,7 +61,7 @@ abstract class EmailAddress
      * @ORM\Column(name="has_owner", type="boolean")
      * @Type("boolean")
      */
-    protected $hasOwner;
+    protected $hasOwner = false;
 
     /**
      * Get id
