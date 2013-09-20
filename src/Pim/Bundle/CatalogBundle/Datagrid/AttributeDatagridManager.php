@@ -190,18 +190,6 @@ class AttributeDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-        $clickAction = array(
-            'name'         => 'rowClick',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label'         => $this->translate('Edit'),
-                'icon'          => 'edit',
-                'link'          => 'edit_link',
-                'runOnRowClick' => true
-            )
-        );
-
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
@@ -212,6 +200,10 @@ class AttributeDatagridManager extends DatagridManager
                 'link'    => 'edit_link'
             )
         );
+
+        $rowClick = $editAction;
+        $rowClick['name'] = 'rowClick';
+        $rowClick['options']['runOnRowClick'] = true;
 
         $deleteAction = array(
             'name'         => 'delete',
