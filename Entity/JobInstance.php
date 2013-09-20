@@ -279,7 +279,8 @@ class JobInstance
         $this->job = $job;
 
         if ($job) {
-            $this->setRawConfiguration($job->getConfiguration());
+            $jobConfiguration = $job->getConfiguration();
+            $this->rawConfiguration = array_merge_recursive($this->rawConfiguration, $jobConfiguration);
         }
 
         return $this;
