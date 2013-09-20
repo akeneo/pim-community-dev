@@ -1,5 +1,7 @@
 {% extends 'PimCatalogBundle:Family:index.html.twig' %}
 
+{% oro_title_set({ params: { "%family.label%": form.vars.value.label } }) %}
+
 {% block familyTab %}
 
 {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
