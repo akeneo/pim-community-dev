@@ -14,8 +14,8 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\Rest\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowNotFoundException;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -183,12 +183,7 @@ class WorkflowController extends FOSRestController
      * @Rest\Delete("/{workflowItemId}", requirements={"workflowItemId"="\d+"}, defaults={"_format"="json"})
      * @ParamConverter("workflowItem", options={"id"="workflowItemId"})
      * @ApiDoc(description="Delete workflow item", resource=true)
-     * @Acl(
-     *      id="oro_workflow_workflow_item_delete",
-     *      name="Delete workflow item",
-     *      description="Delete workflow item",
-     *      parent="oro_workflow"
-     * )
+     * @AclAncestor("oro_workflow")
      *
      * @param WorkflowItem $workflowItem
      * @return Response

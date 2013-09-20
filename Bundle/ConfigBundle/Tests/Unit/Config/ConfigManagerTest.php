@@ -288,10 +288,10 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
             )
             ->getFormFactory();
 
-        $aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\Manager')
-            ->disableOriginalConstructor()->getMock();
+        $securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+                    ->disableOriginalConstructor()->getMock();
 
-        $provider = new SystemConfigurationFormProvider($config, $factory, $aclManager);
+        $provider = new SystemConfigurationFormProvider($config, $factory, $securityFacade);
 
         return $provider;
     }

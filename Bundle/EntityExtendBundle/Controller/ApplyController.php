@@ -8,7 +8,7 @@ use Symfony\Component\Process\Process;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
@@ -19,11 +19,7 @@ use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 /**
  * EntityExtendBundle controller.
  * @Route("/entity/extend")
- * @Acl(
- *      id="oro_entityextend",
- *      name="Entity extend manipulation",
- *      description="Entity extend manipulation"
- * )
+ * TODO: Discuss ACL impl., currently acl is disabled
  */
 class ApplyController extends Controller
 {
@@ -34,11 +30,11 @@ class ApplyController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_update",
-     *      name="Apply changes",
-     *      description="Apply entityconfig changes",
-     *      parent="oro_entityextend"
+     *      label="Apply entityconfig changes",
+     *      type="action",
+     *      group_name=""
      * )
      * @Template()
      */

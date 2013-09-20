@@ -2,16 +2,26 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
-use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Metadata\ActionMetadataProvider;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
+use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 
 class ActionAclExtension extends AbstractAclExtension
 {
     /**
+     * @var ActionMetadataProvider
+     */
+    protected $actionMetadataProvider;
+
+    /**
      * Constructor
      */
-    public function __construct()
+    public function __construct(ActionMetadataProvider $actionMetadataProvider)
     {
+        $this->actionMetadataProvider = $actionMetadataProvider;
+
         $this->map = array(
             'EXECUTE' => array(
                 ActionMaskBuilder::MASK_EXECUTE,
@@ -24,13 +34,18 @@ class ActionAclExtension extends AbstractAclExtension
      */
     public function supports($type, $id)
     {
-        return $type === $this->getRootType();
+        if ($type === ObjectIdentityFactory::ROOT_IDENTITY_TYPE && $id === $this->getExtensionKey()) {
+            return true;
+        }
+
+        return $id === $this->getExtensionKey()
+            && $this->actionMetadataProvider->isKnownAction($type);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getRootType()
+    public function getExtensionKey()
     {
         return 'action';
     }
@@ -38,7 +53,7 @@ class ActionAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function validateMask($permission, $mask, $object)
+    public function validateMask($mask, $object, $permission = null)
     {
         if ($mask === 0) {
             return;
@@ -47,16 +62,21 @@ class ActionAclExtension extends AbstractAclExtension
             return;
         }
 
-        throw $this->createInvalidAclMaskException($permission, $mask, $object);
+        throw $this->createInvalidAclMaskException($mask, $object);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createObjectIdentity($object)
+    public function getObjectIdentity($val)
     {
         $type = $id = null;
-        $this->parseDescriptor($object, $type, $id);
+        if (is_string($val)) {
+            $this->parseDescriptor($val, $type, $id);
+        } elseif ($val instanceof AclAnnotation) {
+            $type = $val->getId();
+            $id = $val->getType();
+        }
 
         return new ObjectIdentity($id, $type);
     }
@@ -64,7 +84,7 @@ class ActionAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function createMaskBuilder($permission)
+    public function getMaskBuilder($permission)
     {
         return new ActionMaskBuilder();
     }
@@ -72,8 +92,63 @@ class ActionAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getAccessLevel($mask)
+    public function getAllMaskBuilders()
     {
-        return AccessLevel::SYSTEM_LEVEL;
+        return array(new ActionMaskBuilder());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMaskPattern($mask)
+    {
+        return ActionMaskBuilder::getPatternFor($mask);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAccessLevel($mask, $permission = null)
+    {
+        return $mask === 0
+            ? AccessLevel::NONE_LEVEL
+            : AccessLevel::SYSTEM_LEVEL;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPermissions($mask = null, $setOnly = false)
+    {
+        $result = array();
+        if ($mask === null || $setOnly || $mask !== 0) {
+            $result[] = 'EXECUTE';
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllowedPermissions(ObjectIdentity $oid)
+    {
+        return array('EXECUTE');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultPermission()
+    {
+        return 'EXECUTE';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClasses()
+    {
+        return $this->actionMetadataProvider->getActions();
     }
 }

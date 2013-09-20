@@ -68,6 +68,7 @@ final class EntityMaskBuilder extends BaseEntityMaskBuilder
     const GROUP_ASSIGN            = 272696336;  // 0x10410410 + IDENTITY
     const GROUP_SHARE             = 545392672;  // 0x20820820 + IDENTITY
     const GROUP_CRUD_SYSTEM       = 251658240;  // 0xF000000  + IDENTITY
+    const GROUP_NONE              = self::IDENTITY;
     const GROUP_ALL               = 1073741823; // 0x3FFFFFFF + IDENTITY
 
     const CODE_VIEW         = 'V';

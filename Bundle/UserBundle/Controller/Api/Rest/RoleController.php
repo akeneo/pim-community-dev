@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Controller\Api\Rest;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use FOS\Rest\Util\Codes;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Routing\ClassResourceInterface;
@@ -9,8 +10,8 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 
 /**
@@ -28,7 +29,7 @@ class RoleController extends RestController implements ClassResourceInterface
      * )
      * @QueryParam(name="page", requirements="\d+", nullable=true, description="Page number, starting from 1. Defaults to 1.")
      * @QueryParam(name="limit", requirements="\d+", nullable=true, description="Number of items per page. defaults to 10.")
-     * @AclAncestor("oro_user_role_list")
+     * @AclAncestor("oro_user_role_view")
      */
     public function cgetAction()
     {
@@ -51,12 +52,7 @@ class RoleController extends RestController implements ClassResourceInterface
      *          {"name"="id", "dataType"="integer"},
      *      }
      * )
-     * @Acl(
-     *      id="oro_user_role_show",
-     *      name="View role",
-     *      description="View role",
-     *      parent="oro_user_role"
-     * )
+     * @AclAncestor("oro_user_role_view")
      */
     public function getAction($id)
     {
@@ -113,9 +109,9 @@ class RoleController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_user_role_remove",
-     *      name="Remove role",
-     *      description="Remove role",
-     *      parent="oro_user_role"
+     *      type="entity",
+     *      class="OroUserBundle:Role",
+     *      permission="DELETE"
      * )
      */
     public function deleteAction($id)
@@ -136,7 +132,7 @@ class RoleController extends RestController implements ClassResourceInterface
      *          {"name"="name", "dataType"="string"},
      *      }
      * )
-     * @AclAncestor("oro_user_role_show")
+     * @AclAncestor("oro_user_role_view")
      */
     public function getBynameAction($name)
     {
@@ -148,148 +144,6 @@ class RoleController extends RestController implements ClassResourceInterface
                 $entity ? Codes::HTTP_OK : Codes::HTTP_NOT_FOUND
             )
         );
-    }
-
-    /**
-     * Get ACL resources granted by a role
-     *
-     * @param int $id User id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @ApiDoc(
-     *      description="Get ACL resources granted by a role",
-     *      resource=true,
-     *      requirements={
-     *          {"name"="id", "dataType"="integer"},
-     *      }
-     * )
-     * @AclAncestor("oro_user_acl_edit")
-     */
-    public function getAclAction($id)
-    {
-        $role = $this->getManager()->find($id);
-
-        if (!$role) {
-            return $this->handleView($this->view('', Codes::HTTP_NOT_FOUND));
-        }
-
-        return $this->handleView(
-            $this->view(
-                $this->get('oro_user.acl_manager')->getAllowedAclResourcesForRoles(array($role)),
-                Codes::HTTP_OK
-            )
-        );
-    }
-
-    /**
-     * Link ACL resource to role
-     *
-     * @param int    $id       Role id
-     * @param string $resource ACL resource id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @ApiDoc(
-     *      description="Link ACL resource to role",
-     *      requirements={
-     *          {"name"="id", "dataType"="integer"},
-     *          {"name"="resource", "dataType"="string"},
-     *      }
-     * )
-     *  @Acl(
-     *      id="oro_user_role_acl",
-     *      name="Role ACL manipulation",
-     *      description="Role ACL manipulation",
-     *      parent="oro_user_acl"
-     * )
-     */
-    public function postAclAction($id, $resource)
-    {
-        $this->getAclManager()->modifyAclForRole($id, $resource, true);
-
-        return $this->handleView($this->view('', Codes::HTTP_NO_CONTENT));
-    }
-
-    /**
-     * Unlink ACL resource from role
-     *
-     * @param int    $id       Role id
-     * @param string $resource ACL resource id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @ApiDoc(
-     *      description="Unlink ACL resource from role",
-     *      requirements={
-     *          {"name"="id", "dataType"="integer"},
-     *          {"name"="resource", "dataType"="string"},
-     *      }
-     * )
-     * @AclAncestor("oro_user_role_acl")
-     */
-    public function deleteAclAction($id, $resource)
-    {
-        $this->getAclManager()->modifyAclForRole($id, $resource, false);
-
-        return $this->handleView($this->view('', Codes::HTTP_NO_CONTENT));
-    }
-
-    /**
-     * Link ACL resources to role
-     *
-     * @param int $id Role id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @QueryParam(name="resources", nullable=false, description="Array of ACL resource ids")
-     * @ApiDoc(
-     *      description="Link ACL resources to role",
-     *      requirements={
-     *          {"name"="id", "dataType"="integer"}
-     *      }
-     * )
-     * @AclAncestor("oro_user_role_acl")
-     */
-    public function postAclArrayAction($id)
-    {
-        $this->getAclManager()->modifyAclsForRole(
-            $id,
-            $this->getRequest()->request->get('resources'),
-            true
-        );
-
-        return $this->handleView($this->view('', Codes::HTTP_CREATED));
-    }
-
-    /**
-     * Unlink ACL resources from role
-     *
-     * @param int $id Role id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @QueryParam(name="resources", nullable=false, description="Array of ACL resource ids")
-     * @ApiDoc(
-     *      description="Unlink ACL resources from roles",
-     *      requirements={
-     *          {"name"="id", "dataType"="integer"}
-     *      }
-     * )
-     * @AclAncestor("oro_user_role_acl")
-     */
-    public function deleteAclArrayAction($id)
-    {
-        $this->getAclManager()->modifyAclsForRole(
-            $id,
-            $this->getRequest()->request->get('resources'),
-            false
-        );
-
-        return $this->handleView($this->view('', Codes::HTTP_NO_CONTENT));
-    }
-
-    /**
-     * @return \Oro\Bundle\UserBundle\Acl\Manager
-     */
-    protected function getAclManager()
-    {
-        return $this->get('oro_user.acl_manager');
     }
 
     /**
@@ -314,5 +168,18 @@ class RoleController extends RestController implements ClassResourceInterface
     public function getFormHandler()
     {
         return $this->get('oro_user.form.handler.role.api');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function handleDelete($entity, ObjectManager $em)
+    {
+        parent::handleDelete($entity, $em);
+        /** @var \Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager $aclManager */
+        $aclManager = $this->get('oro_security.acl.manager');
+        if ($aclManager->isAclEnabled()) {
+            $aclManager->deleteSid($aclManager->getSid($entity));
+        }
     }
 }

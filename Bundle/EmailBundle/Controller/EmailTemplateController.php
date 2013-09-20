@@ -9,18 +9,13 @@ use Symfony\Component\Form\FormInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Datagrid\EmailTemplateDatagridManager;
 
 /**
  * @Route("/emailtemplate")
- * @Acl(
- *      id="oro_email_emailtemplate",
- *      name="Email templates",
- *      description="Email templates manipulation",
- *      parent="root"
- * )
  */
 class EmailTemplateController extends Controller
 {
@@ -32,9 +27,9 @@ class EmailTemplateController extends Controller
      * )
      * @Acl(
      *      id="oro_email_emailtemplate_index",
-     *      name="View List of email templates",
-     *      description="View List of email templates",
-     *      parent="oro_email_emailtemplate"
+     *      type="entity",
+     *      class="OroEmailBundle:EmailTemplate",
+     *      permission="VIEW"
      * )
      * @Template()
      */
@@ -55,9 +50,9 @@ class EmailTemplateController extends Controller
      * @Route("/update/{id}", requirements={"id"="\d+"}, defaults={"id"=0}))
      * @Acl(
      *      id="oro_email_emailtemplate_update",
-     *      name="Edit email template",
-     *      description="Edit email template",
-     *      parent="oro_email_emailtemplate"
+     *      type="entity",
+     *      class="OroEmailBundle:EmailTemplate",
+     *      permission="EDIT"
      * )
      * @Template()
      */
@@ -90,9 +85,9 @@ class EmailTemplateController extends Controller
      * @Route("/create")
      * @Acl(
      *      id="oro_email_emailtemplate_create",
-     *      name="Create email template",
-     *      description="Create email template",
-     *      parent="oro_email_emailtemplate"
+     *      type="entity",
+     *      class="OroEmailBundle:EmailTemplate",
+     *      permission="CREATE"
      * )
      * @Template("OroEmailBundle:EmailTemplate:update.html.twig")
      */
@@ -103,12 +98,7 @@ class EmailTemplateController extends Controller
 
     /**
      * @Route("/clone/{id}", requirements={"id"="\d+"}, defaults={"id"=0}))
-     * @Acl(
-     *      id="oro_email_emailtemplate_clone",
-     *      name="Clone email template",
-     *      description="Clone email template",
-     *      parent="oro_email_emailtemplate"
-     * )
+     * @AclAncestor("oro_email_emailtemplate_create")
      * @Template("OroEmailBundle:EmailTemplate:update.html.twig")
      */
     public function cloneAction(EmailTemplate $entity)
@@ -120,9 +110,9 @@ class EmailTemplateController extends Controller
      * @Route("/preview/{id}", requirements={"id"="\d+"}, defaults={"id"=0}))
      * @Acl(
      *      id="oro_email_emailtemplate_preview",
-     *      name="Preview email template",
-     *      description="Preview email template",
-     *      parent="oro_email_emailtemplate"
+     *      type="entity",
+     *      class="OroEmailBundle:EmailTemplate",
+     *      permission="VIEW"
      * )
      * @Template("OroEmailBundle:EmailTemplate:preview.html.twig")
      * @param bool|int $emailTemplateId

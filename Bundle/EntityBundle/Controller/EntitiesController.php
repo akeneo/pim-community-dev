@@ -14,7 +14,7 @@ use BeSimple\SoapCommon\Type\KeyValue\DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Oro\Bundle\EntityBundle\Datagrid\CustomEntityDatagrid;
@@ -26,11 +26,7 @@ use Oro\Bundle\EntityExtendBundle\Tools\Generator;
 /**
  * Entities controller.
  * @Route("/entity")
- * @Acl(
- *      id="oro_entity",
- *      name="Custom entity manipulation",
- *      description="Custom entity manipulation"
- * )
+ * todo: Discuss ACL permissions for controller
  */
 class EntitiesController extends Controller
 {
@@ -40,12 +36,6 @@ class EntitiesController extends Controller
      *      "/{id}",
      *      name="oro_entity_index",
      *      defaults={"id"=0}
-     * )
-     * @Acl(
-     *      id="oro_entity_index",
-     *      name="Grid custom entity",
-     *      description="Grid custom entity",
-     *      parent="oro_entity"
      * )
      * @Template()
      */
@@ -91,12 +81,6 @@ class EntitiesController extends Controller
      *      "/view/{entity_id}/item/{id}",
      *      name="oro_entity_view",
      *      defaults={"entity_id"=0, "id"=0}
-     * )
-     * @Acl(
-     *      id="oro_entity_view",
-     *      name="View custom entity",
-     *      description="View custom entity",
-     *      parent="oro_entity"
      * )
      * @Template()
      */
@@ -147,12 +131,6 @@ class EntitiesController extends Controller
      *      "/update/{entity_id}/item/{id}",
      *      name="oro_entity_update",
      *      defaults={"entity_id"=0, "id"=0}
-     * )
-     * @Acl(
-     *      id="oro_entity_update",
-     *      name="Update custom entity",
-     *      description="Update custom entity",
-     *      parent="oro_entity"
      * )
      * @Template()
      */
@@ -224,12 +202,6 @@ class EntitiesController extends Controller
      *      "/delete/{entity_id}/item/{id}",
      *      name="oro_entity_delete",
      *      defaults={"entity_id"=0, "id"=0}
-     * )
-     * @Acl(
-     *      id="oro_entity_delete",
-     *      name="Delete custom entity",
-     *      description="Delete custom entity",
-     *      parent="oro_entity"
      * )
      */
     public function deleteAction(Request $request, $entity_id, $id)

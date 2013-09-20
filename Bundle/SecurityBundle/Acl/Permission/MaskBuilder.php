@@ -61,17 +61,10 @@ abstract class MaskBuilder
 
     /**
      * Constructor
-     *
-     * @param  integer                   $mask optional; defaults to 0
-     * @throws \InvalidArgumentException
      */
-    public function __construct($mask = 0)
+    protected function __construct()
     {
-        if (!is_int($mask)) {
-            throw new \InvalidArgumentException('$mask must be an integer.');
-        }
-
-        $this->mask = $mask;
+        $this->reset();
     }
 
     /**
@@ -87,13 +80,17 @@ abstract class MaskBuilder
     /**
      * Adds a mask to the permission
      *
-     * @param  int|string                $mask
+     * @param int|string $mask
      * @return MaskBuilder
      * @throws \InvalidArgumentException
      */
     public function add($mask)
     {
-        if (is_string($mask) && defined($name = 'static::MASK_' . strtoupper($mask))) {
+        if (is_string($mask)) {
+            $name = 'static::MASK_' . strtoupper($mask);
+            if (!defined($name)) {
+                throw new \InvalidArgumentException(sprintf('Undefined mask: %s.', $mask));
+            }
             $mask = constant($name);
         } elseif (!is_int($mask)) {
             throw new \InvalidArgumentException('$mask must be a string or an integer.');
@@ -107,7 +104,7 @@ abstract class MaskBuilder
     /**
      * Removes a mask from the permission
      *
-     * @param  int|string                $mask
+     * @param int|string $mask
      * @return MaskBuilder
      * @throws \InvalidArgumentException
      */
@@ -151,7 +148,7 @@ abstract class MaskBuilder
     /**
      * Gets a human-readable representation of the given mask
      *
-     * @param int  $mask
+     * @param int $mask
      * @param bool $brief optional; defaults to false
      *                    Determine whether the representation should be in brief of full format
      * @return string
@@ -183,7 +180,7 @@ abstract class MaskBuilder
     /**
      * Gets the code for the passed mask
      *
-     * @param  integer $mask
+     * @param integer $mask
      * @return string
      */
     protected static function getCode($mask)
@@ -213,9 +210,20 @@ abstract class MaskBuilder
     }
 
     /**
+     * Checks whether a constant with the given name is defined in this mask builder
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public static function hasConst($name)
+    {
+        return defined('static::' . $name);
+    }
+
+    /**
      * Gets constant value by its name
      *
-     * @param  string $name
+     * @param string $name
      * @return mixed
      */
     public static function getConst($name)

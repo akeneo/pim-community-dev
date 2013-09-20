@@ -5,7 +5,7 @@ namespace Oro\Bundle\UserBundle\Controller\Api\Soap;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Oro\Bundle\SoapBundle\Controller\Api\Soap\SoapController;
 use Oro\Bundle\UserBundle\Entity\Group;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 class GroupController extends SoapController
 {
@@ -14,7 +14,7 @@ class GroupController extends SoapController
      * @Soap\Param("page", phpType="int")
      * @Soap\Param("limit", phpType="int")
      * @Soap\Result(phpType="Oro\Bundle\UserBundle\Entity\Group[]")
-     * @AclAncestor("oro_user_group_list")
+     * @AclAncestor("oro_user_group_view")
      */
     public function cgetAction($page = 1, $limit = 10)
     {
@@ -25,7 +25,7 @@ class GroupController extends SoapController
      * @Soap\Method("getGroup")
      * @Soap\Param("id", phpType="int")
      * @Soap\Result(phpType="Oro\Bundle\UserBundle\Entity\Group")
-     * @AclAncestor("oro_user_group_show")
+     * @AclAncestor("oro_user_group_view")
      */
     public function getAction($id)
     {
@@ -70,7 +70,7 @@ class GroupController extends SoapController
      * @Soap\Method("getGroupRoles")
      * @Soap\Param("id", phpType="int")
      * @Soap\Result(phpType="Oro\Bundle\UserBundle\Entity\Role[]")
-     * @AclAncestor("oro_user_group_roles")
+     * @AclAncestor("oro_user_role_view")
      */
     public function getRolesAction($id)
     {
