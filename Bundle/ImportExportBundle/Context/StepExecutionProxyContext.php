@@ -32,7 +32,15 @@ class StepExecutionProxyContext implements ContextInterface
      */
     public function getErrors()
     {
-        return $this->stepExecution->getFailureExceptionMessages();
+        $errors = array();
+
+        foreach ($this->stepExecution->getFailureExceptions() as $exceptionData) {
+            if (!empty($exceptionData['message'])) {
+                $errors[] = $exceptionData['message'];
+            }
+        }
+
+        return $errors;
     }
 
     /**

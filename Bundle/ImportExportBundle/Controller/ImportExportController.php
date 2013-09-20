@@ -4,10 +4,12 @@ namespace Oro\Bundle\ImportExportBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Routing\RouterInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -15,16 +17,12 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Oro\Bundle\BatchBundle\Job\BatchStatus;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
+use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 
 class ImportExportController extends Controller
 {
-    const CONNECTOR_NAME = 'oro_importexport';
-
-    const EXPORT_TO_CSV_JOB = 'entity_export_to_csv';
-
-
     /**
      * @Route("/import", name="oro_importexport_import_form")
      * @AclAncestor("oro_importexport_import")
@@ -49,72 +47,123 @@ class ImportExportController extends Controller
     }
 
     /**
-     * @Route("/export/instant/{entityName}/{processorAlias}", name="oro_importexport_export_instant")
-     * @AclAncestor("oro_importexport_export")
+     * @Route("/export/instant/{processorAlias}", name="oro_importexport_export_instant")
+     * @AclAncestor("oro_importexport_import")
      */
-    public function instantExportAction($entityName, $processorAlias)
+    public function instantExportAction($processorAlias)
     {
-        // TODO: transaction, result code processing
+        /** @var ProcessorRegistry $processorRegistry */
+        $processorRegistry = $this->get('oro_importexport.processor.registry');
+        /** @var JobExecutor $jobExecutor */
+        $jobExecutor = $this->get('oro_importexport.job_executor');
+        /** @var TranslatorInterface $translator */
+        $translator = $this->get('translator');
+        /** @var RouterInterface $router */
+        $router = $this->get('router');
 
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $exportLabel = $this->generateTranslationLabel(
-            self::CONNECTOR_NAME,
-            ProcessorRegistry::TYPE_EXPORT,
-            self::EXPORT_TO_CSV_JOB,
-            $processorAlias
-        );
         $fileName = $this->generateTmpFileName($processorAlias, 'csv');
+        $entityName = $processorRegistry->getProcessorEntityName(ProcessorRegistry::TYPE_EXPORT, $processorAlias);
         $configuration = array(
             'export' => array(
-                'entityName' => $entityName,
                 'processorAlias' => $processorAlias,
+                'entityName' => $entityName,
                 'filePath' => $fileName,
             ),
         );
 
-        $jobInstance = new JobInstance(self::CONNECTOR_NAME, ProcessorRegistry::TYPE_EXPORT, self::EXPORT_TO_CSV_JOB);
-        $jobInstance->setCode(uniqid($processorAlias, true));
-        $jobInstance->setLabel($exportLabel);
-        $jobInstance->setRawConfiguration($configuration);
-        $entityManager->persist($jobInstance);
+        $url = null;
+        $messages = array();
 
-        /** @var ConnectorRegistry $jobRegistry */
-        $jobRegistry = $this->get('oro_batch.connectors');
-        $job = $jobRegistry->getJob($jobInstance);
+        $jobResult = $jobExecutor->executeJob(
+            ProcessorRegistry::TYPE_EXPORT,
+            JobExecutor::JOB_EXPORT_TO_CSV,
+            $configuration
+        );
 
-        $jobExecution = new JobExecution();
-        $jobExecution->setJobInstance($jobInstance);
-        $entityManager->persist($jobExecution);
+        if ($jobResult->isSuccessful()) {
+            $url = $router->generate(
+                'oro_importexport_export_download',
+                array('fileName' => basename($fileName))
+            );
+            foreach ($jobResult->getContexts() as $context) {
+                $messages[] = array(
+                    'type' => 'success',
+                    'message' => $translator->trans(
+                        'oro_importexport.export.exported_entities_count %count%',
+                        array('%count%' => $context->getReadCount())
+                    ),
+                );
+            }
+        } else {
+            foreach ($jobResult->getErrors() as $error) {
+                $messages[] = array('type' => 'error', 'message' => $error);
+            }
+        }
 
-        $job->execute($jobExecution);
+        return new JsonResponse(
+            array(
+                'successful' => $jobResult->isSuccessful(),
+                'url' => $url,
+                'messages' => $messages
+            )
+        );
+    }
 
-        $entityManager->flush();
+    /**
+     * @Route("/export/download/{fileName}", name="oro_importexport_export_download")
+     * @AclAncestor("oro_importexport_export")
+     */
+    public function downloadExportResultAction($fileName)
+    {
+        $fullFileName = $this->getFullFileName($fileName);
 
-        $responseFileName = $this->generateResponseFileName($processorAlias, 'csv');
-
-        $response = new BinaryFileResponse($fileName, 200, array('Content-Type' => 'text/csv'));
-        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $responseFileName);
+        $response = new BinaryFileResponse($fullFileName, 200, array('Content-Type' => 'text/csv'));
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
 
         return $response;
     }
 
-    protected function generateTranslationLabel($connector, $type, $job, $alias)
+    protected function generateTranslationLabel($type, $job, $alias)
     {
         /** @var TranslatorInterface $translator */
         $translator = $this->get('translator');
-        $actionId = sprintf('%s.%s.%s.%s', $connector, $type, $job, $alias);
+        $actionId = sprintf('%s.%s.%s.%s', JobExecutor::CONNECTOR_NAME, $type, $job, $alias);
 
         return $translator->trans($actionId);
     }
 
-    protected function generateTmpFileName($filePrefix, $fileExtension = 'tmp', $directory = 'import_export')
+    protected function getImportExportTmpDir()
     {
         $cacheDir = rtrim($this->container->getParameter("kernel.cache_dir"), DIRECTORY_SEPARATOR);
-        $importExportDir = $cacheDir . DIRECTORY_SEPARATOR . $directory;
+        $importExportDir = $cacheDir . DIRECTORY_SEPARATOR . 'import_export';
         if (!file_exists($importExportDir) && !is_dir($importExportDir)) {
-            mkdir($importExportDir, 0755);
+            mkdir($importExportDir);
         }
+
+        if (!is_readable($importExportDir)) {
+            throw new \LogicException('Import/export directory is not readable');
+        }
+        if (!is_writable($importExportDir)) {
+            throw new \LogicException('Import/export directory is not writeable');
+        }
+
+        return $importExportDir;
+    }
+
+    protected function getFullFileName($fileName)
+    {
+        $importExportDir = $this->getImportExportTmpDir();
+        $fullFileName = $importExportDir . DIRECTORY_SEPARATOR . $fileName;
+        if (!file_exists($fullFileName) || !is_file($fullFileName) || !is_readable($fullFileName)) {
+            throw new \LogicException(sprintf('Can\'t read file %s', $fileName));
+        }
+
+        return $fullFileName;
+    }
+
+    protected function generateTmpFileName($filePrefix, $fileExtension = 'tmp')
+    {
+        $importExportDir = $this->getImportExportTmpDir();
 
         do {
             $fileName = sprintf(
@@ -127,10 +176,5 @@ class ImportExportController extends Controller
         } while (file_exists($fileName));
 
         return $fileName;
-    }
-
-    protected function generateResponseFileName($fileName, $fileExtension)
-    {
-        return sprintf('%s.%s', preg_replace('~\W~', '_', $fileName), $fileExtension);
     }
 }

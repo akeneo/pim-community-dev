@@ -26,5 +26,6 @@ class OroImportExportExtension extends Extension
         $loader->load('writer.yml');
         $loader->load('processor.yml');
         $loader->load('form_types.yml');
+        $loader->load('executor.yml');
     }
 }

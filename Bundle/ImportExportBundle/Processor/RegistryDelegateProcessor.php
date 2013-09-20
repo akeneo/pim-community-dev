@@ -71,7 +71,6 @@ class RegistryDelegateProcessor implements ProcessorInterface, StepExecutionAwar
 
         $result = $this->processorRegistry->getProcessor(
             $this->delegateType,
-            $context->getOption('entityName'),
             $context->getOption('processorAlias')
         );
 

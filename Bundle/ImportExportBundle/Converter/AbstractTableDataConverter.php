@@ -22,9 +22,9 @@ abstract class AbstractTableDataConverter extends DefaultDataConverter
     /**
      * {@inheritDoc}
      */
-    public function convertToExportFormat(array $exportedRecord)
+    public function convertToExportFormat(array $exportedRecord, $skipNullValues = true)
     {
-        $plainDataWithBackendHeader = parent::convertToExportFormat($exportedRecord);
+        $plainDataWithBackendHeader = parent::convertToExportFormat($exportedRecord, $skipNullValues);
         $filledPlainDataWithBackendHeader = $this->fillEmptyColumns(
             $this->receiveBackendHeader(),
             $plainDataWithBackendHeader
@@ -40,9 +40,9 @@ abstract class AbstractTableDataConverter extends DefaultDataConverter
     /**
      * {@inheritDoc}
      */
-    public function convertToImportFormat(array $importedRecord)
+    public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
-        $plainDataWithFrontendHeader = $this->removeEmptyColumns($importedRecord);
+        $plainDataWithFrontendHeader = $this->removeEmptyColumns($importedRecord, $skipNullValues);
         $frontendHeader = array_keys($plainDataWithFrontendHeader);
         $frontendToBackendHeader = $this->convertHeaderToBackend($frontendHeader);
         $plainDataWithBackendHeader = $this->replaceKeys(
