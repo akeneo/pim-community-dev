@@ -1,41 +1,41 @@
 parameters:
     oro_entity_extend.extend.extend_manager.class:          Oro\Bundle\EntityExtendBundle\Extend\ExtendManager
-    oro_entity_extend.listener.doctrine_subscriber.class:   Oro\Bundle\EntityExtendBundle\EventListener\DoctrineSubscriber
-    oro_entity_extend.listener.config_subscriber.class:     Oro\Bundle\EntityExtendBundle\EventListener\ConfigSubscriber
-    oro_entity_extend.tools.schema.class:                   Oro\Bundle\EntityExtendBundle\Tools\Schema
     oro_entity_extend.extension.extend_entity.class:        Oro\Bundle\EntityExtendBundle\Form\Extension\ExtendEntityExtension
-
+    oro_entity_extend.tools.generator.class:                Oro\Bundle\EntityExtendBundle\Tools\Generator
+    oro_entity_extend.listener.config_subscriber.class:     Oro\Bundle\EntityExtendBundle\EventListener\ConfigSubscriber
+    oro_entity_extend.listener.entity_subscriber.class:     Oro\Bundle\EntityExtendBundle\EventListener\DoctrineSubscriber
     oro_entity_extend.command.backup.class:                 Oro\Bundle\EntityExtendBundle\Command\BackupCommand
-    oro_entity_extend.command.generate.class:               Oro\Bundle\EntityExtendBundle\Command\GenerateCommand
+    oro_entity_extend.command.generate.class:               Oro\Bundle\EntityExtendBundle\Command\UpdateCommand
 
 services:
     oro_entity_extend.extend.extend_manager:
         class:                                              %oro_entity_extend.extend.extend_manager.class%
         arguments:
-            - @oro_entity_config.link.entity_manager
             - @oro_entity_config.provider.extend
-            - %oro_entity_extend.backend%
-            - %kernel.root_dir%/entities
 
-    oro_entity_extend.tools.schema:
-        class:                                              %oro_entity_extend.tools.schema.class%
-        arguments:
-            - @doctrine.orm.default_entity_manager
-            - %oro_entity_extend.backend%
-            - @oro_entity_extend.extend.extend_manager
-
-    oro_entity_extend.listener.doctrine_subscriber:
-        class:                                              %oro_entity_extend.listener.doctrine_subscriber.class%
+    oro_entity_extend.extension.extend_entity:
+        class:                                              %oro_entity_extend.extension.extend_entity.class%
         arguments:                                          [@oro_entity_extend.extend.extend_manager]
         tags:
-            - { name: doctrine.event_subscriber, connection: default }
+            - { name: form.type_extension, alias: form }
+
+    oro_entity_extend.tools.generator:
+        class:                                              %oro_entity_extend.tools.generator.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - %kernel.root_dir%/entities
 
     oro_entity_extend.listener.config_subscriber:
         class:                                              %oro_entity_extend.listener.config_subscriber.class%
         arguments:
-            - @oro_entity_extend.extend.extend_manager
+            - @oro_entity_config.provider.extend
         tags:
             - { name: kernel.event_subscriber}
+
+    oro_entity_extend.listener.entity_subscriber:
+        class:                                      %oro_entity_extend.listener.entity_subscriber.class%
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
 
     oro_entity_extend.command.backup:
         class:                                              %oro_entity_extend.command.backup.class%
@@ -46,9 +46,3 @@ services:
         class:                                              %oro_entity_extend.command.generate.class%
         calls:
             - [setContainer, ["@service_container"]]
-
-#    oro_entity_extend.extension.extend_entity:
-#        class:                                              %oro_entity_extend.extension.extend_entity.class%
-#        arguments:                                          [@oro_entity_extend.extend.extend_manager]
-#        tags:
-#            - { name: form.type_extension, alias: form }

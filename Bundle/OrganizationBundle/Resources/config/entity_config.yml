@@ -3,6 +3,12 @@ oro_entity_config:
         entity:
             items:
                 owner_type:
+                    options:
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          System
                     grid:
                         type:               options
                         label:              'Ownership Type'
@@ -18,4 +24,3 @@ oro_entity_config:
                             block:          other
                             required:       true
                             label:          'Ownership Type'
-

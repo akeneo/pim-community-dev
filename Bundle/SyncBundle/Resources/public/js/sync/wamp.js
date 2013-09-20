@@ -50,7 +50,9 @@ function ($, _, Backbone, ab) {
          * @param {number} details.retries number of scheduled attempt
          */
         onHangup = function(code, msg, details) {
-            this.trigger('connection_lost', _.extend({code: code}, details || {}));
+            if (code !== 0) {
+                this.trigger('connection_lost', _.extend({code: code}, details || {}));
+            }
             this.session = null;
         },
 
@@ -80,6 +82,10 @@ function ($, _, Backbone, ab) {
                 ab.debug(true, true, true);
             }
             this.connect();
+            // fixes premature connection close in FF on page reload
+            $(window).on('beforeunload', _.bind(function() {
+                this.session.close();
+            }, this));
         };
 
     Wamp.prototype = {

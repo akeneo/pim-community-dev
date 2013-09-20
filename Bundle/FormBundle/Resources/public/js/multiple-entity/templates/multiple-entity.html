@@ -1,0 +1,28 @@
+<div class="clearfix">
+    <div class="clearfix">
+        <% if (hasDefault) { %>
+        <div class="pull-left" style="margin-right: 10px;">
+            <input type="radio" class="default-selector"
+                   name="<%= name %>_default"
+                   title="<%= _.__('Default') %>"
+                   value="<%= id %>"
+            <% if(isDefault) { %>
+            checked="checked"
+            <% } %>
+            />
+        </div>
+        <% } %>
+        <div class="pull-left">
+            <h4><a href="<%= link %>" class="entity-info"><%= label %></a></h4>
+        </div>
+        <div class="pull-right">
+            <a href="javascript:void(0)" class="remove-btn" title="<%= _.__('Remove') %>"><i class="icon-remove"></i></a>
+        </div>
+    </div>
+    <div class="extra-info">
+        <% _.each(extraData, function(item) { %>
+        <% if (item.value.length == 0) { item.value = _.__('N/A'); }%>
+        <div><%= _.__(item.label) %>: <%= item.value %></div>
+        <% }); %>
+    </div>
+</div>

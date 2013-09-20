@@ -1,6 +1,6 @@
 <script type="text/javascript">
 var require = {
-    baseUrl: '/bundles',
+    baseUrl: '{{ asset('bundles') }}',
     waitSeconds: 0,
     shim: {
         'jquery': {
@@ -115,6 +115,7 @@ var require = {
         }
     },
     paths: {
+        'text': 'oroui/lib/text',
         'json': 'oroui/lib/json2',
         'base64': 'oroui/lib/base64',
         'jquery': 'oroui/lib/jquery-1.10.2',
@@ -169,6 +170,7 @@ var require = {
         'oro/email/variable/view': 'oroemail/js/email/variable/view',
         'oro/init-email': 'oroemail/js/init-email',
         'oro/init-entity-extend-apply': 'oroentityextend/js/init-entity-extend-apply',
+        'oro/init-entity-extend-relation': 'oroentityextend/js/init-entity-extend-relation',
         'oro/datafilter/abstract-filter': 'orofilter/js/datafilter/filter/abstract-filter',
         'oro/datafilter/choice-filter': 'orofilter/js/datafilter/filter/choice-filter',
         'oro/datafilter/date-filter': 'orofilter/js/datafilter/filter/date-filter',
@@ -215,6 +217,7 @@ var require = {
         'oro/datagrid/header': 'orogrid/js/datagrid/header',
         'oro/datagrid/abstract-listener': 'orogrid/js/datagrid/listener/abstract-listener',
         'oro/datagrid/column-form-listener': 'orogrid/js/datagrid/listener/column-form-listener',
+        'oro/datagrid/callback-listener': 'orogrid/js/datagrid/listener/callback-listener',
         'oro/datagrid/page-size': 'orogrid/js/datagrid/page-size',
         'oro/datagrid/grid-views/view': 'orogrid/js/datagrid/grid-views/view',
         'oro/datagrid/grid-views/model': 'orogrid/js/datagrid/grid-views/model',
@@ -240,6 +243,12 @@ var require = {
         'oro/navigation/pinbar/model': 'oronavigation/js/navigation/pinbar/model',
         'oro/navigation/pinbar/view': 'oronavigation/js/navigation/pinbar/view',
         'oro/navigation/shortcuts/view': 'oronavigation/js/navigation/shortcuts/view',
+
+        'oro/multiple-entity': 'oroform/js/multiple-entity',
+        'oro/multiple-entity/view': 'oroform/js/multiple-entity/view',
+        'oro/multiple-entity/model': 'oroform/js/multiple-entity/model',
+        'oro/multiple-entity/collection': 'oroform/js/multiple-entity/collection',
+
         'oro/init-search-bar': 'orosearch/js/init-search-bar',
         'oro/sync': 'orosync/js/sync',
         'oro/sync/wamp': 'orosync/js/sync/wamp',
