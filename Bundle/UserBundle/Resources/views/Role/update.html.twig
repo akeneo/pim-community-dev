@@ -17,23 +17,6 @@
     } %}
 
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId, 'parameters': listenerParameters} %}
-
-    <script type="text/javascript">
-        require(['jquery', 'jquery.jstree', 'jstree/jquery.hotkeys'],
-                function($){
-                    $(function() {
-                        $('#acl_tree').jstree({
-                            "checkbox": {
-                                real_checkboxes: true,
-                                real_checkboxes_names: function (n) {
-                                    return ['resource[' + n.data('id') + ']', 1]
-                                }
-                            },
-                            "plugins": ["themes", "html_data", "ui", "checkbox", "hotkeys"]
-                        });
-                    });
-                });
-    </script>
 {% endblock %}
 
 {% block navButtons %}

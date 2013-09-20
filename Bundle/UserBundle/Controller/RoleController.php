@@ -28,7 +28,7 @@ class RoleController extends Controller
      * @Route("/create", name="oro_user_role_create")
      * @Template("OroUserBundle:Role:update.html.twig")
      */
-    public function createNewAction()
+    public function createAction()
     {
         return $this->updateAction(new Role());
     }
