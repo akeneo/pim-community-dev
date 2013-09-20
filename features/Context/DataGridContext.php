@@ -201,11 +201,20 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             if ($this->datagrid->isSortedColumn($columnName)) {
                 $this->sortByColumn($columnName);
             } else {
+                // get the actual sorted columns
+                $sortedColumns = $this->datagrid->getSortedColumns();
+
                 // if we ask sorting by descending we must sort twice
                 if ($order === 'descending') {
                     $this->sortByColumn($columnName);
                 }
                 $this->sortByColumn($columnName);
+
+                // And we must remove the default sorted column
+                foreach ($sortedColumns as $column) {
+                    $this->datagrid->removeSortOnColumn($column);
+                    $this->wait();
+                }
             }
         }
     }

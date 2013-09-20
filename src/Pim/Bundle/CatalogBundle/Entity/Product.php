@@ -248,13 +248,13 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
                 if ($value = $this->getValue($attributeAsLabel->getCode())) {
                     $data = $value->getData();
                     if (!empty($data)) {
-                        return $data;
+                        return (string) $data;
                     }
                 }
             }
         }
 
-        return $this->id;
+        return (string) $this->id;
     }
 
     /**

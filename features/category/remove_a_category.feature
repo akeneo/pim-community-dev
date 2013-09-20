@@ -63,7 +63,7 @@ Feature: Remove a category
     Given I am on the "master" category page
     When I press the "Delete" button
     And I confirm the deletion
-    Then I should see "Category successfully removed"
+    Then I should see "Tree successfully removed"
 
   Scenario: Cancel the remove of a category
     Given I am on the "shoes" category page
