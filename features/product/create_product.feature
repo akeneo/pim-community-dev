@@ -24,4 +24,4 @@ Feature: Product creation
       | SKU               | barbecue  |
       | Reference         | BBQ       |
     And I press the "Save" button
-    Then I should see "Product successfully saved."
+    Then I should see "Product successfully created"
