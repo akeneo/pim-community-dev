@@ -34,6 +34,14 @@ class ConfigurationType extends AbstractType
             function (FormEvent $event) use ($encryptor) {
                 $data = $event->getData();
 
+                $filtered = array_filter(
+                    $data,
+                    function ($item) {
+                        return !empty($item);
+                    }
+                );
+                $data     = empty($filtered) ? null : $data;
+
                 $oldPassword = $event->getForm()->get('password')->getData();
                 if (empty($data['password']) && $oldPassword) {
                     // populate old password
