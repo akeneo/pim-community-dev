@@ -6,7 +6,6 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
-use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\Ajax\DeleteMassAction;
 use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
 use Oro\Bundle\GridBundle\Builder\DatagridBuilderInterface;
@@ -20,6 +19,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
+use Pim\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
@@ -389,10 +389,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
         $editCategoriesAction = array(
             'name'         => 'edit_categories',
-            'type'         => ActionInterface::TYPE_REDIRECT,
+            'type'         => ActionInterface::TYPE_TAB_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
                 'label'     => $this->translate('Classify the product'),
+                'tab'       => '#categories',
                 'icon'      => 'folder-close',
                 'className' => 'edit-categories-action',
                 'link'      => 'edit_categories_link'

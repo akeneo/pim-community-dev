@@ -1,16 +1,22 @@
 parameters:
     pim_grid.datagrid.class:         Pim\Bundle\GridBundle\Datagrid\Datagrid
     pim_grid.builder.datagrid.class: Pim\Bundle\GridBundle\Builder\ORM\DatagridBuilder
+    pim_grid.action.tab_redirect.class: Pim\Bundle\GridBundle\Action\TabRedirectAction
 
 services:
     pim_grid.builder.datagrid:
         class:     %pim_grid.builder.datagrid.class%
         arguments:
-            - @form.factory
-            - @event_dispatcher
-            - @oro_user.acl_manager
-            - @oro_grid.filter.factory
-            - @oro_grid.sorter.factory
-            - @oro_grid.action.factory
-            - %pim_grid.datagrid.class%
-            - @pim_serializer
+            - '@form.factory'
+            - '@event_dispatcher'
+            - '@oro_user.acl_manager'
+            - '@oro_grid.filter.factory'
+            - '@oro_grid.sorter.factory'
+            - '@oro_grid.action.factory'
+            - '%pim_grid.datagrid.class%'
+            - '@pim_serializer'
+    
+    pim_grid.action.tab_redirect:
+        class: '%pim_grid.action.tab_redirect.class%'
+        tags:
+            - { name: oro_grid.action.type, alias: pim_grid_action_tab_redirect }
