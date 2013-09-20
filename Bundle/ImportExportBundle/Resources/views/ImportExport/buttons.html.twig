@@ -24,7 +24,7 @@
 
             var widget = new DialogWidget({
                 'url': this.href,
-                'title': {{ 'Import Contacts'|trans|json_encode|raw }},
+                'title': {{ imortTitle|default('Import'|trans)|json_encode|raw }},
                 'stateEnabled': false,
                 'dialogOptions': {
                     'width': 550,
@@ -41,12 +41,13 @@
             e.preventDefault();
 
             $.getJSON(this.href, function(data) {
+                if (data.messages.length) {
+                    for (var i = 0; i < data.messages.length; i++) {
+                        Messanger.notificationFlashMessage(data.messages[i].type, data.messages[i].message);
+                    }
+                }
                 if (data.success) {
                     $('<iframe/>', {src: data.url}).hide().appendTo('body');
-                } else {
-                    for (var i = 0; i < data.messages.length; i++) {
-                        Messanger.notificationFlashMessage('error', data.messages[i]);
-                    }
                 }
             });
         });
