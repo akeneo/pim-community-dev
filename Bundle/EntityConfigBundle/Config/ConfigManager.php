@@ -199,17 +199,6 @@ class ConfigManager
     }
 
     /**
-     * @return bool
-     */
-    public function checkDatabase()
-    {
-        $tables = $this->getEntityManager()->getConnection()->getSchemaManager()->listTableNames();
-        $table  = $this->getEntityManager()->getClassMetadata(EntityConfigModel::ENTITY_NAME)->getTableName();
-
-        return in_array($table, $tables);
-    }
-
-    /**
      * @param string $className
      * @param string $fieldName
      * @return bool
@@ -237,6 +226,10 @@ class ConfigManager
      */
     public function getIds($scope, $className = null)
     {
+        if (!$this->modelManager->checkDatabase()) {
+            return array();
+        }
+
         $entityModels = $this->modelManager->getModels($className);
 
         return array_map(
