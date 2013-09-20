@@ -39,9 +39,9 @@ services:
             - [setSerializer, [@oro_importexport.serializer]]
 
     # Import validate processor
-    oro_importexport.processor.validate_import_delegate:
+    oro_importexport.processor.import_validation_delegate:
         class: %oro_importexport.processor.registry_delegate_processor.class%
         arguments:
             - @oro_importexport.processor.registry
-            - "validate_import"
+            - "import_validation"
             - @oro_importexport.context_registry

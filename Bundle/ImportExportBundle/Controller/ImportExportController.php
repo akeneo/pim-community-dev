@@ -2,8 +2,10 @@
 
 namespace Oro\Bundle\ImportExportBundle\Controller;
 
+use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,10 +13,16 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\RouterInterface;
 
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\Rest\Util\Codes;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\UserBundle\Annotation\AclAncestor;
 
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
@@ -22,7 +30,7 @@ use Oro\Bundle\BatchBundle\Job\BatchStatus;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
 use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 
-class ImportExportController extends Controller
+class ImportExportController extends FOSRestController
 {
     /**
      * @Route("/import", name="oro_importexport_import_form")
@@ -46,9 +54,105 @@ class ImportExportController extends Controller
             array('entityName' => $entityName)
         );
 
+        if ($this->getRequest()->isMethod('POST')) {
+            $importForm->submit($this->getRequest());
+
+            if ($importForm->isValid()) {
+                $data = $importForm->getData();
+                /** @var UploadedFile $uploadedFile */
+                $uploadedFile = $data['file'];
+                $processorAlias = $data['processor'];
+
+                $tmpFileName = $this->generateTmpFileName($processorAlias, 'csv');
+                $uploadedFile->move(dirname($tmpFileName), basename($tmpFileName));
+
+                $this->get('session')->set($this->getImportFileSessionKey($processorAlias), $tmpFileName);
+                return $this->forward(
+                    'OroImportExportBundle:ImportExport:importValidate',
+                    array('processorAlias' => $processorAlias)
+                );
+            } else {
+                $this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('Invalid data'));
+            }
+        }
+
         return array(
             'entityName' => $entityName,
             'form' => $importForm->createView()
+        );
+    }
+
+    protected function getImportFileSessionKey($alias)
+    {
+        return 'oro_importexport_import_' . $alias;
+    }
+
+//    /**
+//     * @Rest\Get("/import/validate/{processorAlias}", defaults={"_format"="json"})
+//     * @ApiDoc(description="Validate entity import", resource=true)
+//     * @AclAncestor("oro_importexport_import")
+//     *
+//     * @param string $processorAlias
+//     * @return Response
+//     */
+    /**
+     * @Route("/import/validate/{processorAlias}", name="oro_importexport_import_validate")
+     * @AclAncestor("oro_importexport_import")
+     * @Template
+     */
+    public function importValidateAction($processorAlias)
+    {
+        /** @var ProcessorRegistry $processorRegistry */
+        $processorRegistry = $this->get('oro_importexport.processor.registry');
+        /** @var JobExecutor $jobExecutor */
+        $jobExecutor = $this->get('oro_importexport.job_executor');
+
+        $fileName = $this->get('session')->get($this->getImportFileSessionKey($processorAlias));
+        if (!$fileName || !file_exists($fileName)) {
+            throw new \Exception('No file in session');
+        }
+
+        $entityName = $processorRegistry->getProcessorEntityName(
+            ProcessorRegistry::TYPE_IMPORT_VALIDATION,
+            $processorAlias
+        );
+        $configuration = array(
+            'import_validation' => array(
+                'processorAlias' => $processorAlias,
+                'entityName' => $entityName,
+                'filePath' => $fileName,
+            ),
+        );
+
+        $jobResult = $jobExecutor->executeJob(
+            ProcessorRegistry::TYPE_IMPORT_VALIDATION,
+            JobExecutor::JOB_VALIDATE_IMPORT_FROM_CSV,
+            $configuration
+        );
+
+        $errors = array();
+        if (!$jobResult->isSuccessful()) {
+            foreach ($jobResult->getErrors() as $error) {
+                $errors[] = array('type' => 'error', 'message' => $error);
+            }
+        }
+
+        /** @var ContextInterface[] $contexts */
+        $contexts = $jobResult->getContexts();
+        $counts = array();
+        if (isset($contexts[0])) {
+            $counts['read'] = $contexts[0]->getReadCount();
+            $counts['add'] = $contexts[0]->getAddCount();
+            $counts['replace'] = $contexts[0]->getReplaceCount();
+            $counts['update'] = $contexts[0]->getUpdateCount();
+            $counts['delete'] = $contexts[0]->getDeleteCount();
+        }
+
+        return array(
+            'isSuccessful' => $jobResult->isSuccessful(),
+            'processorAlias' => $processorAlias,
+            'counts' => $counts,
+            'errors' => $errors
         );
     }
 
@@ -148,6 +252,23 @@ class ImportExportController extends Controller
         return $translator->trans($actionId);
     }
 
+    protected function generateTmpFileName($filePrefix, $fileExtension = 'tmp')
+    {
+        $importExportDir = $this->getImportExportTmpDir();
+
+        do {
+            $fileName = sprintf(
+                '%s%s%s.%s',
+                $importExportDir,
+                DIRECTORY_SEPARATOR,
+                preg_replace('~\W~', '_', uniqid($filePrefix . '_', true)),
+                $fileExtension
+            );
+        } while (file_exists($fileName));
+
+        return $fileName;
+    }
+
     protected function getImportExportTmpDir()
     {
         $cacheDir = rtrim($this->container->getParameter("kernel.cache_dir"), DIRECTORY_SEPARATOR);
@@ -175,22 +296,5 @@ class ImportExportController extends Controller
         }
 
         return $fullFileName;
-    }
-
-    protected function generateTmpFileName($filePrefix, $fileExtension = 'tmp')
-    {
-        $importExportDir = $this->getImportExportTmpDir();
-
-        do {
-            $fileName = sprintf(
-                '%s%s%s.%s',
-                $importExportDir,
-                DIRECTORY_SEPARATOR,
-                preg_replace('~\W~', '_', uniqid($filePrefix . '_', true)),
-                $fileExtension
-            );
-        } while (file_exists($fileName));
-
-        return $fileName;
     }
 }

@@ -1,0 +1,10 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+<div class="widget-content">
+    <div class="form-container">
+        <p>Read: {{ counts.read|default(0) }}</p>
+        <p>Add: {{ counts.add|default(0) }}</p>
+        <p>Replace: {{ counts.replace|default(0) }}</p>
+        <p>Update: {{ counts.update|default(0) }}</p>
+        <p>Delete: {{ counts.delete|default(0) }}</p>
+    </div>
+</div>

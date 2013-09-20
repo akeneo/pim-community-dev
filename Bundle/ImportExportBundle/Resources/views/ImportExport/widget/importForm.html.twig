@@ -5,7 +5,8 @@
               data-nohash="true"
               id="{{ form.vars.name }}"
               action="{{ path('oro_importexport_import_form', {entity: entityName}) }}"
-              class="form-horizontal">
+              class="form-horizontal"
+              {{ form_enctype(form) }}>
 
             <fieldset>
                 {{ form_row(form.file, {'label': 'File'}) }}
@@ -16,6 +17,8 @@
                 <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
                 <button class="btn btn-primary" type="submit">{{ 'Validate'|trans }}</button>
             </div>
+
+            {{ form_rest(form) }}
         </form>
     </div>
 </div>

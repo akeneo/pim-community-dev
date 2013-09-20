@@ -9,7 +9,7 @@ class ProcessorRegistry
 {
     const TYPE_EXPORT = 'export';
     const TYPE_IMPORT = 'import';
-    const TYPE_VALIDATE_IMPORT = 'validate_import';
+    const TYPE_IMPORT_VALIDATION = 'import_validation';
 
     /**
      * Processor storage format:

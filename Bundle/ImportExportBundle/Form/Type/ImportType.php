@@ -40,26 +40,16 @@ class ImportType extends AbstractType
         );
 
         $processorChoices = $this->getImportProcessorsChoices($options['entityName']);
-        if (count($processorChoices) > 1) {
-            $builder->add(
-                'processor',
-                'choice',
-                array(
-                    'choices' => $processorChoices,
-                    'required' => true,
-                    'preferred_choices' => array(reset($processorChoices)),
-                )
-            );
-        } else {
-            $builder->add(
-                'processor',
-                'text', // TODO: make it hidden
-                array(
-                    'disabled' => true,
-                    'data' => $processorChoices ? reset($processorChoices) : ''
-                )
-            );
-        }
+
+        $builder->add(
+            'processor',
+            'choice',
+            array(
+                'choices' => $processorChoices,
+                'required' => true,
+                'preferred_choices' => $processorChoices ? array(reset($processorChoices)) : array(),
+            )
+        );
     }
 
     protected function getImportProcessorsChoices($entityName)

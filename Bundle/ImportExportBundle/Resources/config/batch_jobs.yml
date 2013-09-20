@@ -10,7 +10,6 @@ connector:
                     reader:    oro_importexport.reader.entity
                     processor: oro_importexport.processor.export_delegate
                     writer:    oro_importexport.writer.csv
-
         entity_import_validation_from_csv:
             title: "Entity Import Validation from CSV"
             type: import_validation
@@ -18,7 +17,7 @@ connector:
                 import_validation:
                     title:     import_validation
                     reader:    oro_importexport.reader.csv
-                    processor: oro_importexport.processor.validate_import_delegate
+                    processor: oro_importexport.processor.import_validation_delegate
                     writer:    oro_importexport.writer.dummy
 
         entity_import_from_csv:
