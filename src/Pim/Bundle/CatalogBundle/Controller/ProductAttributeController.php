@@ -129,6 +129,7 @@ class ProductAttributeController extends AbstractDoctrineController
     /**
      * List product attributes
      * @param Request $request
+     *
      * @Acl(
      *      id="pim_catalog_attribute_index",
      *      name="View attribute list",
@@ -167,7 +168,7 @@ class ProductAttributeController extends AbstractDoctrineController
         $attribute = $this->productManager->createAttribute('pim_catalog_text');
 
         if ($this->attributeHandler->process($attribute)) {
-            $this->addFlash('success', 'Attribute successfully created');
+            $this->addFlash('success', 'flash.attribute.created');
 
             return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id' => $attribute->getId()));
         }
@@ -198,7 +199,7 @@ class ProductAttributeController extends AbstractDoctrineController
     public function editAction(Request $request, ProductAttribute $attribute)
     {
         if ($this->attributeHandler->process($attribute)) {
-            $this->addFlash('success', 'Attribute successfully saved');
+            $this->addFlash('success', 'flash.attribute.updated');
 
             return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id' => $attribute->getId()));
         }
@@ -279,6 +280,7 @@ class ProductAttributeController extends AbstractDoctrineController
      * Edit ProductAttribute sort order
      *
      * @param Request $request
+     *
      * @Acl(
      *      id="pim_catalog_attribute_sort",
      *      name="Sort attribute options",
@@ -316,6 +318,7 @@ class ProductAttributeController extends AbstractDoctrineController
      *
      * @param Request          $request
      * @param ProductAttribute $entity
+     *
      * @Acl(
      *      id="pim_catalog_attribute_remove",
      *      name="Remove attribute",
@@ -331,6 +334,8 @@ class ProductAttributeController extends AbstractDoctrineController
             if ($request->isXmlHttpRequest()) {
                 return new Response('', 403);
             } else {
+                $this->addFlash('error', 'flash.attribute.identifier not removable');
+
                 return $this->redirectToRoute('pim_catalog_productattribute_index');
             }
         }
@@ -341,6 +346,8 @@ class ProductAttributeController extends AbstractDoctrineController
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
+            $this->addFlash('success', 'flash.attribute.removed');
+
             return $this->redirectToRoute('pim_catalog_productattribute_index');
         }
     }

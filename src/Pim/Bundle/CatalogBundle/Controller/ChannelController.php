@@ -148,7 +148,7 @@ class ChannelController extends AbstractDoctrineController
     public function editAction(Channel $channel)
     {
         if ($this->channelHandler->process($channel)) {
-            $this->addFlash('success', 'Channel successfully saved');
+            $this->addFlash('success', 'flash.channel.saved');
 
             return $this->redirect(
                 $this->generateUrl('pim_catalog_channel_index')
@@ -165,6 +165,7 @@ class ChannelController extends AbstractDoctrineController
      *
      * @param Request $request
      * @param Channel $channel
+     *
      * @Acl(
      *      id="pim_catalog_channel_remove",
      *      name="Remove a channel",
@@ -181,7 +182,7 @@ class ChannelController extends AbstractDoctrineController
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            $this->addFlash('success', 'Channel successfully removed');
+            $this->addFlash('success', 'flash.channel.removed');
 
             return $this->redirect($this->generateUrl('pim_catalog_channel_index'));
         }
