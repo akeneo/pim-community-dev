@@ -2,7 +2,10 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Process\Process;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -48,20 +51,8 @@ class ApplyController extends Controller
         $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
         $env    = $this->get('kernel')->getEnvironment();
 
-        $commands = array(
-            'backup'       => new Process(
-                'php ../app/console oro:entity-extend:backup ' . str_replace(
-                    '\\',
-                    '\\\\',
-                    $entity->getClassName()
-                ) . ' --env ' . $env
-            ),
-            'update'       => new Process('php ../app/console oro:entity-extend:update' . ' --env ' . $env),
-            'cacheClear'   => new Process('php ../app/console cache:clear --no-warmup' . ' --env ' . $env),
-            'schemaUpdate' => new Process('php ../app/console doctrine:schema:update --force' . ' --env ' . $env),
-            'searchIndex'  => new Process('php ../app/console oro:search:create-index --env ' . $env),
-            'cacheWarmup'  => new Process('php ../app/console cache:warmup' . ' --env ' . $env),
-        );
+        $application = new Application($this->get('kernel'));
+        $application->setAutoExit(false);
 
         // put system in maintenance mode
         $this->get('oro_platform.maintenance')->on();
@@ -73,14 +64,42 @@ class ApplyController extends Controller
             $this->get('oro_platform.maintenance')
         );
 
-        foreach ($commands as $command) {
-            /** @var $command Process */
-            $command->run();
+//        $application->run(
+//            new ArrayInput(
+//                array(
+//                    'command' => 'oro:entity-extend:backup',
+//                    'entity'  => str_replace('\\', '\\\\', $entity->getClassName()),
+//                    '--env'   => $env
+//                )
+//            )
+//        );
+        $application->run(
+            new ArrayInput(
+                array(
+                    'command' => 'oro:entity-extend:update',
+                )
+            )
+        );
 
-            while ($command->isRunning()) {
-                /** wait for previous process */
-            }
-        }
+        $application->run(
+            new ArrayInput(
+                array(
+                    'command' => 'doctrine:schema:update',
+                    '--env'   => $env,
+                    '--force' => true
+                )
+            ),new StreamOutput(
+                fopen($this->get('kernel')->getLogDir() . DIRECTORY_SEPARATOR . 'bap_install.log', 'w')
+            )
+        );
+        $application->run(
+            new ArrayInput(
+                array(
+                    'command' => 'oro:search:create-index',
+                    '--env'   => $env,
+                )
+            )
+        );
 
         /** @var ConfigProvider $extendConfigProvider */
         $extendConfigProvider = $this->get('oro_entity_config.provider.extend');

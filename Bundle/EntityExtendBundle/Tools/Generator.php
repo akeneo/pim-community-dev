@@ -15,6 +15,8 @@ use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
+
+use Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory;
 use Oro\Bundle\EntityExtendBundle\Exception\RuntimeException;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
@@ -120,6 +122,18 @@ class Generator
         }
 
         $this->generateValidation($className);
+    }
+
+    public function generateAll()
+    {
+        $configIds = $this->extendManager->getConfigProvider()->getIds();
+        foreach ($configIds as $configId) {
+            $this->generate($configId->getClassName());
+        }
+
+        /** @var ExtendClassMetadataFactory $metadataFactory */
+        $metadataFactory = $this->em->getMetadataFactory();
+        $metadataFactory->clearCache();
     }
 
     protected function generateExtendClass($className)

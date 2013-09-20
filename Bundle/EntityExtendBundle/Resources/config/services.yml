@@ -6,6 +6,7 @@ parameters:
     oro_entity_extend.listener.entity_subscriber.class:     Oro\Bundle\EntityExtendBundle\EventListener\DoctrineSubscriber
     oro_entity_extend.command.backup.class:                 Oro\Bundle\EntityExtendBundle\Command\BackupCommand
     oro_entity_extend.command.generate.class:               Oro\Bundle\EntityExtendBundle\Command\UpdateCommand
+    oro_entity_extend.cache.warmer.class:                   Oro\Bundle\EntityExtendBundle\Cache\ExtendCacheWarmer
 
 services:
     oro_entity_extend.extend.extend_manager:
@@ -23,7 +24,7 @@ services:
         class:                                              %oro_entity_extend.tools.generator.class%
         arguments:
             - @doctrine.orm.entity_manager
-            - %kernel.root_dir%/entities
+            - %kernel.cache_dir%/entities
 
     oro_entity_extend.listener.config_subscriber:
         class:                                              %oro_entity_extend.listener.config_subscriber.class%
@@ -46,3 +47,11 @@ services:
         class:                                              %oro_entity_extend.command.generate.class%
         calls:
             - [setContainer, ["@service_container"]]
+
+    oro_entity_extend.cache.warmer:
+        public: false
+        class: %oro_entity_extend.cache.warmer.class%
+        arguments:
+            - @oro_entity_extend.tools.generator
+        tags:
+            - { name: kernel.cache_warmer, priority: 25 }
