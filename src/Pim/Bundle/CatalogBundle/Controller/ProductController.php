@@ -326,6 +326,7 @@ class ProductController extends AbstractDoctrineController
                 $categoriesData = $this->getCategoriesData($request->request->all());
                 $categories = $this->categoryManager->getCategoriesByIds($categoriesData['categories']);
 
+                $this->productManager->handleMedia($product);
                 $this->productManager->save($product, $categories, $categoriesData['trees']);
                 // Call completeness calculator after validating data and saving product
                 // so all values for all locale are loaded now
