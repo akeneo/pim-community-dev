@@ -6,6 +6,8 @@ parameters:
 services:
     oro_importexport.writer.csv:
         class: %oro_importexport.writer.csv.class%
+        arguments:
+            - @oro_importexport.context_registry
 
     oro_importexport.writer.entity:
         class: %oro_importexport.writer.entity.class%

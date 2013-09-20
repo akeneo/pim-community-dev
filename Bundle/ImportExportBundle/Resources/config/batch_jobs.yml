@@ -6,17 +6,17 @@ connector:
             type: export
             steps:
                 export:
-                    title:     ~
+                    title:     export
                     reader:    oro_importexport.reader.entity
                     processor: oro_importexport.processor.export_delegate
                     writer:    oro_importexport.writer.csv
 
         entity_import_validation_from_csv:
             title: "Entity Import Validation from CSV"
-            type: import
+            type: import_validation
             steps:
                 import_validation:
-                    title:     ~
+                    title:     import_validation
                     reader:    oro_importexport.reader.csv
                     processor: oro_importexport.processor.validate_import_delegate
                     writer:    oro_importexport.writer.dummy
@@ -26,7 +26,7 @@ connector:
             type: import
             steps:
                 import:
-                    title:     ~
+                    title:     import
                     reader:    oro_importexport.reader.csv
                     processor: oro_importexport.processor.import_delegate
                     writer:    oro_importexport.writer.entity

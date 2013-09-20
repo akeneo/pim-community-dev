@@ -49,7 +49,7 @@ class RegistryDelegateProcessor implements ProcessorInterface, StepExecutionAwar
      */
     public function process($item)
     {
-        $this->getDelegateProcessor()->process($item);
+        return $this->getDelegateProcessor()->process($item);
     }
 
     /**

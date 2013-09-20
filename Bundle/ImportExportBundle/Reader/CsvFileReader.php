@@ -5,6 +5,7 @@ namespace Oro\Bundle\ImportExportBundle\Reader;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 
 use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\ImportExportBundle\Exception\InvalidArgumentException;
@@ -12,6 +13,11 @@ use Oro\Bundle\ImportExportBundle\Exception\RuntimeException;
 
 class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
 {
+    /**
+     * @var ContextRegistry
+     */
+    protected $contextRegistry;
+
     /**
      * @var \SplFileInfo
      */
@@ -46,6 +52,11 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
      * @var array
      */
     protected $header;
+
+    public function __construct(ContextRegistry $contextRegistry)
+    {
+        $this->contextRegistry = $contextRegistry;
+    }
 
     /**
      * @param StepExecution $stepExecution
@@ -117,34 +128,34 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
      */
     public function setStepExecution(StepExecution $stepExecution)
     {
-        $configuration = $stepExecution->getJobExecution()->getJobInstance()->getRawConfiguration();
+        $context = $this->contextRegistry->getByStepExecution($stepExecution);
 
-        if (!isset($configuration['filePath'])) {
+        if (!$context->hasOption('filePath')) {
             throw new InvalidConfigurationException(
                 'Configuration of CSV reader must contain "filePath".'
             );
         } else {
-            $this->setFilePath($configuration['filePath']);
+            $this->setFilePath($context->getOption('filePath'));
         }
 
-        if (isset($configuration['delimiter'])) {
-            $this->delimiter = $configuration['delimiter'];
+        if ($context->hasOption('delimiter')) {
+            $this->delimiter = $context->getOption('delimiter');
         }
 
-        if (isset($configuration['enclosure'])) {
-            $this->enclosure = $configuration['enclosure'];
+        if ($context->hasOption('enclosure')) {
+            $this->enclosure = $context->getOption('enclosure');
         }
 
-        if (isset($configuration['escape'])) {
-            $this->escape = $configuration['escape'];
+        if ($context->hasOption('escape')) {
+            $this->escape = $context->getOption('escape');
         }
 
-        if (isset($configuration['firstLineIsHeader'])) {
-            $this->firstLineIsHeader = (bool)$configuration['firstLineIsHeader'];
+        if ($context->hasOption('firstLineIsHeader')) {
+            $this->firstLineIsHeader = (bool)$context->getOption('firstLineIsHeader');
         }
 
-        if (isset($configuration['header'])) {
-            $this->header = $configuration['header'];
+        if ($context->hasOption('header')) {
+            $this->header = $context->getOption('header');
         }
     }
 

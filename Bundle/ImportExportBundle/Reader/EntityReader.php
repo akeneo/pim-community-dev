@@ -8,6 +8,7 @@ use Doctrine\ORM\Query;
 
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator;
+use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 
 use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\ImportExportBundle\Exception\LogicException;
@@ -29,9 +30,15 @@ class EntityReader implements ReaderInterface
      */
     protected $registry;
 
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @var ContextRegistry
+     */
+    protected $contextRegistry;
+
+    public function __construct(ManagerRegistry $registry, ContextRegistry $contextRegistry)
     {
         $this->registry = $registry;
+        $this->contextRegistry = $contextRegistry;
     }
 
     /**
@@ -74,14 +81,14 @@ class EntityReader implements ReaderInterface
      */
     public function setStepExecution(StepExecution $stepExecution)
     {
-        $configuration = $stepExecution->getJobExecution()->getJobInstance()->getRawConfiguration();
+        $context = $this->contextRegistry->getByStepExecution($stepExecution);
 
-        if (isset($configuration['entityName'])) {
-            $this->setSourceEntityName($configuration['entityName']);
-        } elseif (isset($configuration['queryBuilder'])) {
-            $this->setSourceQueryBuilder($configuration['queryBuilder']);
-        } elseif (isset($configuration['query'])) {
-            $this->setSourceQuery($configuration['query']);
+        if ($context->hasOption('entityName')) {
+            $this->setSourceEntityName($context->getOption('entityName'));
+        } elseif ($context->hasOption('queryBuilder')) {
+            $this->setSourceQueryBuilder($context->getOption('queryBuilder'));
+        } elseif ($context->hasOption('query')) {
+            $this->setSourceQuery($context->getOption('query'));
         } else {
             throw new InvalidConfigurationException(
                 'Configuration of entity reader must contain either "entityName", "queryBuilder" or "query".'

@@ -5,8 +5,11 @@ parameters:
 services:
     oro_importexport.reader.csv:
         class: %oro_importexport.reader.csv.class%
+        arguments:
+            - @oro_importexport.context_registry
 
     oro_importexport.reader.entity:
         class: %oro_importexport.reader.entity.class%
         arguments:
             - @doctrine
+            - @oro_importexport.context_registry
