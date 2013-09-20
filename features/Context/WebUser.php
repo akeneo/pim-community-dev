@@ -51,7 +51,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function maximize()
     {
-        $this->getSession()->getDriver()->resizeWindow(1280, 720);
+        try {
+            $this->getSession()->getDriver()->resizeWindow(1280, 720);
+        } catch (UnsupportedDriverActionException $e) {
+        }
     }
 
     /**
