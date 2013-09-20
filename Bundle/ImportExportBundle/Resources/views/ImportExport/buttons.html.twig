@@ -3,7 +3,7 @@
     <a type="button"
         class="btn import-btn no-hash"
         href="{{ path('oro_importexport_import_form', {'entity': entityClass}) }}">
-        <i class="icon-signin"></i>Import
+        <i class="icon-signin"></i>{{ 'Import'|trans }}
     </a>
     {% endif %}
 
@@ -11,7 +11,7 @@
     <a type="button"
        class="btn export-btn no-hash"
        href="{{ path('oro_importexport_export_instant', {'entityName': entityClass, 'processorAlias': exportProcessor}) }}">
-        <i class="icon-signout"></i>Export
+        <i class="icon-signout"></i>{{ 'Export'|trans }}
     </a>
     {% endif %}
 </div>
