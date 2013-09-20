@@ -5,8 +5,6 @@ namespace Oro\Bundle\ImportExportBundle\Processor;
 use Oro\Bundle\ImportExportBundle\Context\ContextAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\ConstraintViolationInterface;
-use Symfony\Component\Validator\Validator;
 
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Processor\ContextAwareProcessor;
@@ -34,11 +32,6 @@ class ImportProcessor implements ProcessorInterface, ContextAwareProcessor, Seri
      * @var StrategyInterface
      */
     protected $strategy;
-
-    /**
-     * @var Validator
-     */
-    protected $validator;
 
     /**
      * {@inheritdoc}
@@ -77,14 +70,6 @@ class ImportProcessor implements ProcessorInterface, ContextAwareProcessor, Seri
     }
 
     /**
-     * @param Validator $validator
-     */
-    public function setValidator($validator)
-    {
-        $this->validator = $validator;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function process($item)
@@ -99,28 +84,6 @@ class ImportProcessor implements ProcessorInterface, ContextAwareProcessor, Seri
             $object = $this->strategy->process($object);
         }
 
-        return $this->isValid($object) ? $object : null;
-    }
-
-    /**
-     * Validate object.
-     *
-     * @param object $object
-     * @return bool
-     */
-    protected function isValid($object)
-    {
-        if ($this->validator) {
-            $violations = $this->validator->validate($object);
-            if (count($violations)) {
-                /** @var ConstraintViolationInterface $violation */
-                foreach ($violations as $violation) {
-                    $this->context->addError($violation->getMessage());
-                }
-                return false;
-            }
-        }
-
-        return true;
+        return $object ?: null;
     }
 }
