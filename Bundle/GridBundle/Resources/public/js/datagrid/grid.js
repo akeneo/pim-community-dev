@@ -222,33 +222,31 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
         /**
          * Creates instance of toolbar
          *
-         * @param {Object} toolbarOptions
          * @return {oro.datagrid.Toolbar}
          * @private
          */
-        _createToolbar: function(toolbarOptions) {
-            return new this.toolbar(_.extend({}, toolbarOptions, {
+        _createToolbar: function() {
+            return new this.toolbar({
                 collection: this.collection,
-                actions: this._getToolbarActions(toolbarOptions),
+                actions: this._getToolbarActions(),
                 massActions: this._getToolbarMassActions()
-            }));
+            });
         },
 
         /**
          * Get actions of toolbar
          *
-         * @param {Object} toolbarOptions
          * @return {Array}
          * @private
          */
-        _getToolbarActions: function(toolbarOptions) {
+        _getToolbarActions: function() {
             var result = [];
-            //if (toolbarOptions.addRefreshAction) {
+            if (this.toolbarOptions.addRefreshAction) {
                 result.push(this.getRefreshAction());
-            //}
-            //if (toolbarOptions.addResetAction) {
+            }
+            if (this.toolbarOptions.addResetAction) {
                 result.push(this.getResetAction());
-            //}
+            }
             return result;
         },
 
