@@ -17,10 +17,20 @@ class CsvFileWriterTest extends \PHPUnit_Framework_TestCase
      */
     protected $filePath;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $contextRegistry;
+
     protected function setUp()
     {
+        $this->contextRegistry = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\ContextRegistry')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getByStepExecution'))
+            ->getMock();
+
         $this->filePath = __DIR__ . '/fixtures/new_file.csv';
-        $this->writer = new CsvFileWriter();
+        $this->writer = new CsvFileWriter($this->contextRegistry);
     }
 
     protected function tearDown()
@@ -145,25 +155,22 @@ class CsvFileWriterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMockStepExecution(array $jobInstanceRawConfiguration)
     {
-        $jobInstance = $this->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobInstance')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $jobInstance->expects($this->once())->method('getRawConfiguration')
-            ->will($this->returnValue($jobInstanceRawConfiguration));
-
-        $jobExecution = $this->getMockBuilder('Oro\Bundle\BatchBundle\Entity\JobExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $jobExecution->expects($this->once())->method('getJobInstance')
-            ->will($this->returnValue($jobInstance));
-
         $stepExecution = $this->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
-        $stepExecution->expects($this->once())->method('getJobExecution')
-            ->will($this->returnValue($jobExecution));
+
+        $context = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\StepExecutionProxyContext')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getConfiguration'))
+            ->getMock();
+        $context->expects($this->any())
+            ->method('getConfiguration')
+            ->will($this->returnValue($jobInstanceRawConfiguration));
+
+        $this->contextRegistry->expects($this->any())
+            ->method('getByStepExecution')
+            ->with($stepExecution)
+            ->will($this->returnValue($context));
 
         return $stepExecution;
     }
