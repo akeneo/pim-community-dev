@@ -55,7 +55,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(
                 array(
                     'resetHangedOrigins',
-                    'getOriginToSync',
+                    'findOriginToSync',
                     'createSynchronizationProcessor',
                     'changeOriginSyncState'
                 )
@@ -66,7 +66,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
         $sync->expects($this->once())
             ->method('resetHangedOrigins');
         $sync->expects($this->once())
-            ->method('getOriginToSync')
+            ->method('findOriginToSync')
             ->with($maxConcurrentTasks, $minExecPeriodInMin)
             ->will($this->returnValue(null));
         $sync->expects($this->never())
@@ -75,10 +75,8 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
         $sync->sync($maxConcurrentTasks, $minExecPeriodInMin);
     }
 
-    public function testSync()
+    public function testDoSyncOrigin()
     {
-        $maxConcurrentTasks = 3;
-        $minExecPeriodInMin = 1;
         $origin = new TestEmailOrigin(123);
 
         $processor =
@@ -90,8 +88,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods(
                 array(
-                    'resetHangedOrigins',
-                    'getOriginToSync',
+                    'findOriginToSync',
                     'createSynchronizationProcessor',
                     'changeOriginSyncState'
                 )
@@ -100,22 +97,17 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
         $sync->setLogger($this->log);
 
         $sync->expects($this->once())
-            ->method('resetHangedOrigins');
-        $sync->expects($this->once())
-            ->method('getOriginToSync')
-            ->with($maxConcurrentTasks, $minExecPeriodInMin)
-            ->will($this->returnValue($origin));
-        $sync->expects($this->once())
             ->method('createSynchronizationProcessor')
             ->with($this->identicalTo($origin))
             ->will($this->returnValue($processor));
-        $sync->expects($this->at(3))
+        $sync->expects($this->at(1))
             ->method('changeOriginSyncState')
-            ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS);
+            ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS)
+            ->will($this->returnValue(true));
         $processor->expects($this->once())
             ->method('process')
             ->with($this->identicalTo($origin));
-        $sync->expects($this->at(4))
+        $sync->expects($this->at(2))
             ->method('changeOriginSyncState')
             ->with(
                 $this->identicalTo($origin),
@@ -123,16 +115,49 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
                 $this->lessThanOrEqual(new \DateTime('now', new \DateTimeZone('UTC')))
             );
 
-        $sync->sync($maxConcurrentTasks, $minExecPeriodInMin);
+        $sync->callDoSyncOrigin($origin);
+    }
+
+    public function testDoSyncOriginForInProcessItem()
+    {
+        $origin = new TestEmailOrigin(123);
+
+        $processor =
+            $this->getMockBuilder('Oro\Bundle\EmailBundle\Tests\Unit\Sync\Fixtures\TestEmailSynchronizationProcessor')
+                ->disableOriginalConstructor()
+                ->getMock();
+
+        $sync = $this->getMockBuilder('Oro\Bundle\EmailBundle\Tests\Unit\Sync\Fixtures\TestEmailSynchronizer')
+            ->disableOriginalConstructor()
+            ->setMethods(
+                array(
+                    'findOriginToSync',
+                    'createSynchronizationProcessor',
+                    'changeOriginSyncState'
+                )
+            )
+            ->getMock();
+        $sync->setLogger($this->log);
+
+        $sync->expects($this->once())
+            ->method('createSynchronizationProcessor')
+            ->with($this->identicalTo($origin))
+            ->will($this->returnValue($processor));
+        $sync->expects($this->once())
+            ->method('changeOriginSyncState')
+            ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS)
+            ->will($this->returnValue(false));
+        $processor->expects($this->never())
+            ->method('process');
+
+        $sync->callDoSyncOrigin($origin);
     }
 
     /**
      * @expectedException \Exception
      */
-    public function testSyncProcessFailed()
+    public function testDoSyncOriginProcessFailed()
     {
-        $maxConcurrentTasks = 3;
-        $minExecPeriodInMin = 1;
         $origin = new TestEmailOrigin(123);
 
         $processor =
@@ -144,8 +169,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods(
                 array(
-                    'resetHangedOrigins',
-                    'getOriginToSync',
+                    'findOriginToSync',
                     'createSynchronizationProcessor',
                     'changeOriginSyncState'
                 )
@@ -154,36 +178,29 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
         $sync->setLogger($this->log);
 
         $sync->expects($this->once())
-            ->method('resetHangedOrigins');
-        $sync->expects($this->once())
-            ->method('getOriginToSync')
-            ->with($maxConcurrentTasks, $minExecPeriodInMin)
-            ->will($this->returnValue($origin));
-        $sync->expects($this->once())
             ->method('createSynchronizationProcessor')
             ->with($this->identicalTo($origin))
             ->will($this->returnValue($processor));
-        $sync->expects($this->at(3))
+        $sync->expects($this->at(1))
             ->method('changeOriginSyncState')
-            ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS);
+            ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS)
+            ->will($this->returnValue(true));
         $processor->expects($this->once())
             ->method('process')
             ->with($this->identicalTo($origin))
             ->will($this->throwException(new \Exception()));
-        $sync->expects($this->at(4))
+        $sync->expects($this->at(2))
             ->method('changeOriginSyncState')
             ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_FAILURE);
 
-        $sync->sync($maxConcurrentTasks, $minExecPeriodInMin);
+        $sync->callDoSyncOrigin($origin);
     }
 
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testSyncSetFailureFailed()
+    public function testDoSyncOriginSetFailureFailed()
     {
-        $maxConcurrentTasks = 3;
-        $minExecPeriodInMin = 1;
         $origin = new TestEmailOrigin(123);
 
         $processor =
@@ -195,8 +212,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods(
                 array(
-                    'resetHangedOrigins',
-                    'getOriginToSync',
+                    'findOriginToSync',
                     'createSynchronizationProcessor',
                     'changeOriginSyncState'
                 )
@@ -205,28 +221,23 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
         $sync->setLogger($this->log);
 
         $sync->expects($this->once())
-            ->method('resetHangedOrigins');
-        $sync->expects($this->once())
-            ->method('getOriginToSync')
-            ->with($maxConcurrentTasks, $minExecPeriodInMin)
-            ->will($this->returnValue($origin));
-        $sync->expects($this->once())
             ->method('createSynchronizationProcessor')
             ->with($this->identicalTo($origin))
             ->will($this->returnValue($processor));
-        $sync->expects($this->at(3))
+        $sync->expects($this->at(1))
             ->method('changeOriginSyncState')
-            ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS);
+            ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS)
+            ->will($this->returnValue(true));
         $processor->expects($this->once())
             ->method('process')
             ->with($this->identicalTo($origin))
             ->will($this->throwException(new \InvalidArgumentException()));
-        $sync->expects($this->at(4))
+        $sync->expects($this->at(2))
             ->method('changeOriginSyncState')
             ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_FAILURE)
             ->will($this->throwException(new \Exception()));
 
-        $sync->sync($maxConcurrentTasks, $minExecPeriodInMin);
+        $sync->callDoSyncOrigin($origin);
     }
 
     /**
@@ -290,21 +301,32 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
                 ->with('synchronized', $synchronizedAt)
                 ->will($this->returnValue($qb));
         }
+        if ($syncCode === AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS) {
+            $qb->expects($this->at($index++))
+                ->method('andWhere')
+                ->with('o.syncCode <> :code')
+                ->will($this->returnValue($qb));
+        }
         $qb->expects($this->at($index++))
             ->method('getQuery')
             ->will($this->returnValue($q));
         $q->expects($this->once())
-            ->method('execute');
+            ->method('execute')
+            ->will($this->returnValue(1));
 
         $this->em->expects($this->once())
             ->method('getRepository')
             ->with(TestEmailSynchronizer::EMAIL_ORIGIN_ENTITY)
             ->will($this->returnValue($repo));
 
-        $this->sync->callChangeOriginSyncState($origin, $syncCode, $synchronizedAt);
+        $result = $this->sync->callChangeOriginSyncState($origin, $syncCode, $synchronizedAt);
+        $this->assertTrue($result);
     }
 
-    public function testGetOriginToSync()
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
+    public function testFindOriginToSync()
     {
         $maxConcurrentTasks = 2;
         $minExecPeriodInMin = 1;
@@ -402,7 +424,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
             ->with(TestEmailSynchronizer::EMAIL_ORIGIN_ENTITY)
             ->will($this->returnValue($repo));
 
-        $result = $this->sync->callGetOriginToSync($maxConcurrentTasks, $minExecPeriodInMin);
+        $result = $this->sync->callFindOriginToSync($maxConcurrentTasks, $minExecPeriodInMin);
 
         $this->assertEquals($origin2, $result);
     }
@@ -470,6 +492,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(AbstractEmailSynchronizer::SYNC_CODE_FAILURE, null),
+            array(AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS, null),
             array(AbstractEmailSynchronizer::SYNC_CODE_SUCCESS, new \DateTime('now', new \DateTimeZone('UTC'))),
         );
     }

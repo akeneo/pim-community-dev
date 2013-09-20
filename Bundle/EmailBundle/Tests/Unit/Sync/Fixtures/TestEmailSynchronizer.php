@@ -36,14 +36,19 @@ class TestEmailSynchronizer extends AbstractEmailSynchronizer
         );
     }
 
-    public function callChangeOriginSyncState(EmailOrigin $origin, $syncCode, $synchronizedAt)
+    public function callDoSyncOrigin(EmailOrigin $origin)
     {
-        $this->changeOriginSyncState($origin, $syncCode, $synchronizedAt);
+        $this->doSyncOrigin($origin);
     }
 
-    public function callGetOriginToSync($maxConcurrentTasks, $minExecPeriodInMin)
+    public function callChangeOriginSyncState(EmailOrigin $origin, $syncCode, $synchronizedAt)
     {
-        return $this->getOriginToSync($maxConcurrentTasks, $minExecPeriodInMin);
+        return $this->changeOriginSyncState($origin, $syncCode, $synchronizedAt);
+    }
+
+    public function callFindOriginToSync($maxConcurrentTasks, $minExecPeriodInMin)
+    {
+        return $this->findOriginToSync($maxConcurrentTasks, $minExecPeriodInMin);
     }
 
     public function callResetHangedOrigins()
