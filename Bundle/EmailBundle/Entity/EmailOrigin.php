@@ -43,6 +43,27 @@ abstract class EmailOrigin
     protected $isActive = true;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="sync_code_updated", type="datetime", nullable=true)
+     */
+    protected $syncCodeUpdatedAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="synchronized", type="datetime", nullable=true)
+     */
+    protected $synchronizedAt;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="sync_code", type="integer", nullable=true)
+     */
+    protected $syncCode;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -74,7 +95,7 @@ abstract class EmailOrigin
      * Add folder
      *
      * @param  EmailFolder $folder
-     * @return $this
+     * @return EmailOrigin
      */
     public function addFolder(EmailFolder $folder)
     {
@@ -86,10 +107,20 @@ abstract class EmailOrigin
     }
 
     /**
-     * Set template is active or not
+     * Indicate whether this email origin is in active state or not
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set this email origin in active/inactive state
      *
      * @param boolean $isActive
-     * @return $this
+     * @return EmailOrigin
      */
     public function setIsActive($isActive)
     {
@@ -99,13 +130,59 @@ abstract class EmailOrigin
     }
 
     /**
-     * Getter for isActive property
+     * Get date/time when this object was changed
      *
-     * @return boolean
+     * @return \DateTime
      */
-    public function getIsActive()
+    public function getSyncCodeUpdatedAt()
     {
-        return $this->isActive;
+        return $this->syncCodeUpdatedAt;
+    }
+
+    /**
+     * Get date/time when emails from this origin were synchronized
+     *
+     * @return \DateTime
+     */
+    public function getSynchronizedAt()
+    {
+        return $this->synchronizedAt;
+    }
+
+    /**
+     * Set date/time when emails from this origin were synchronized
+     *
+     * @param \DateTime $synchronizedAt
+     * @return EmailOrigin
+     */
+    public function setSynchronizedAt($synchronizedAt)
+    {
+        $this->synchronizedAt = $synchronizedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get the last synchronization result code
+     *
+     * @return int
+     */
+    public function getSyncCode()
+    {
+        return $this->syncCode;
+    }
+
+    /**
+     * Set the last synchronization result code
+     *
+     * @param int $syncCode
+     * @return EmailOrigin
+     */
+    public function setSyncCode($syncCode)
+    {
+        $this->syncCode = $syncCode;
+
+        return $this;
     }
 
     /**

@@ -39,10 +39,10 @@ services:
         scope: prototype
         class: %oro_imap.email_synchronizer.class%
         arguments:
-            - @oro_imap.connector.factory
             - @doctrine.orm.entity_manager
             - @oro_email.email.entity.builder
             - @oro_email.email.address.manager
+            - @oro_imap.connector.factory
             - @oro_platform.security.encryptor.mcrypt
 
     oro_imap.form.type.configuration:

@@ -53,27 +53,6 @@ class ImapEmailOrigin extends EmailOrigin
     protected $password;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="sync_code_updated", type="datetime", nullable=true)
-     */
-    protected $syncCodeUpdatedAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="synchronized", type="datetime", nullable=true)
-     */
-    protected $synchronizedAt;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="sync_code", type="integer", nullable=true)
-     */
-    protected $syncCode;
-
-    /**
      * Gets the host name of IMAP server
      *
      * @return string
@@ -184,62 +163,6 @@ class ImapEmailOrigin extends EmailOrigin
     public function setPassword($password)
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get date/time when this object was changed
-     *
-     * @return \DateTime
-     */
-    public function getSyncCodeUpdatedAt()
-    {
-        return $this->syncCodeUpdatedAt;
-    }
-
-    /**
-     * Get date/time when emails from this origin were synchronized
-     *
-     * @return \DateTime
-     */
-    public function getSynchronizedAt()
-    {
-        return $this->synchronizedAt;
-    }
-
-    /**
-     * Set date/time when emails from this origin were synchronized
-     *
-     * @param \DateTime $synchronizedAt
-     * @return ImapEmailOrigin
-     */
-    public function setSynchronizedAt($synchronizedAt)
-    {
-        $this->synchronizedAt = $synchronizedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get the last synchronization result code
-     *
-     * @return int
-     */
-    public function getSyncCode()
-    {
-        return $this->syncCode;
-    }
-
-    /**
-     * Set the last synchronization result code
-     *
-     * @param int $syncCode
-     * @return ImapEmailOrigin
-     */
-    public function setSyncCode($syncCode)
-    {
-        $this->syncCode = $syncCode;
 
         return $this;
     }

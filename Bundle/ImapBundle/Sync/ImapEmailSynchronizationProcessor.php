@@ -7,27 +7,25 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query;
 use Oro\Bundle\CronBundle\Command\Logger\LoggerInterface;
+use Oro\Bundle\EmailBundle\Sync\AbstractEmailSynchronizationProcessor;
 use Oro\Bundle\ImapBundle\Connector\Search\SearchQuery;
 use Oro\Bundle\ImapBundle\Connector\Search\SearchQueryBuilder;
 use Oro\Bundle\ImapBundle\Entity\ImapEmail;
 use Oro\Bundle\ImapBundle\Entity\ImapEmailFolder;
 use Oro\Bundle\ImapBundle\Manager\ImapEmailManager;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
-use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
+use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\ImapBundle\Mail\Storage\Folder;
 use Oro\Bundle\ImapBundle\Manager\DTO\Email;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 
-class ImapEmailSynchronizationProcessor
+/**
+ * @todo the implemented synchronization algorithm is just a demo and it will be fixed soon
+ */
+class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProcessor
 {
-    const DB_BATCH_SIZE = 30;
     const EMAIL_ADDRESS_BATCH_SIZE = 10;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $log;
 
     /**
      * @var ImapEmailManager
@@ -35,56 +33,49 @@ class ImapEmailSynchronizationProcessor
     protected $manager;
 
     /**
-     * @var EntityManager
-     */
-    protected $em;
-
-    /**
-     * @var EmailEntityBuilder
-     */
-    protected $emailEntityBuilder;
-
-    /**
      * Constructor
      *
      * @param LoggerInterface $log
-     * @param ImapEmailManager $manager
      * @param EntityManager $em
      * @param EmailEntityBuilder $emailEntityBuilder
      * @param EmailAddressManager $emailAddressManager
+     * @param ImapEmailManager $manager
      */
     public function __construct(
         LoggerInterface $log,
-        ImapEmailManager $manager,
         EntityManager $em,
         EmailEntityBuilder $emailEntityBuilder,
-        EmailAddressManager $emailAddressManager
+        EmailAddressManager $emailAddressManager,
+        ImapEmailManager $manager
     ) {
-        $this->log = $log;
+        parent::__construct($log, $em, $emailEntityBuilder, $emailAddressManager);
         $this->manager = $manager;
-        $this->em = $em;
-        $this->emailEntityBuilder = $emailEntityBuilder;
-        $this->emailAddressManager = $emailAddressManager;
     }
 
     /**
      * Performs a synchronization of emails for the given email origin.
      *
-     * @param ImapEmailOrigin $origin
+     * @param EmailOrigin $origin
      */
-    public function process(ImapEmailOrigin $origin)
+    public function process(EmailOrigin $origin)
     {
+        // make sure that the entity builder is empty
         $this->emailEntityBuilder->clear();
 
+        // get a list of emails belong to any object, for example an user or a contacts
         $emailAddressBatches = $this->getKnownEmailAddressBatches();
-        $folders = $this->getFolders($origin);
 
+        // iterate through all folders and do a synchronization of emails for each one
+        $folders = $this->getFolders($origin);
         foreach ($folders as $folder) {
+            // register the current folder in the entity builder
             $this->emailEntityBuilder->setFolder($folder);
 
+            // ask an email server to select the current folder
             $folderName = $folder->getFullName();
             $this->manager->selectFolder($folderName);
 
+            // check that a state of the current folder is valid
             $imapFolder = $this->getImapFolder($folder);
             if ($imapFolder->getUidValidity() !== $this->manager->getUidValidity()) {
                 $imapFolder->setUidValidity($this->manager->getUidValidity());
@@ -93,9 +84,18 @@ class ImapEmailSynchronizationProcessor
             }
 
             $this->log->info(sprintf('Loading emails from "%s" folder ...', $folderName));
-
             foreach ($emailAddressBatches as $emailAddressBatch) {
-                $sqb = $this->getSearchQueryBuilder($origin);
+                // build a search query
+                $sqb = $this->manager->getSearchQueryBuilder();
+                if ($origin->getSynchronizedAt()) {
+                    $sqb->sent($origin->getSynchronizedAt());
+                } else {
+                    // this is the first synchronization of this folder; just load emails for last year
+                    $fromDate = new \DateTime('now');
+                    $fromDate->sub(new \DateInterval('P1Y'));
+                    $sqb->sent($fromDate);
+                }
+
                 $sqb->openParenthesis();
 
                 $sqb->openParenthesis();
@@ -112,12 +112,16 @@ class ImapEmailSynchronizationProcessor
 
                 $sqb->closeParenthesis();
 
+                // load emails using this search query
                 $this->loadEmails($folder, $sqb->get());
             }
         }
     }
 
     /**
+     * Adds the given email addresses to the search query.
+     * Addresses are delimited by OR operator.
+     *
      * @param SearchQueryBuilder $sqb
      * @param string $addressType
      * @param string[] $addresses
@@ -133,26 +137,7 @@ class ImapEmailSynchronizationProcessor
     }
 
     /**
-     * @param ImapEmailOrigin $origin
-     * @return SearchQueryBuilder
-     */
-    protected function getSearchQueryBuilder(ImapEmailOrigin $origin)
-    {
-        $sqb = $this->manager->getSearchQueryBuilder();
-        if ($origin->getSynchronizedAt()) {
-            $sqb->sent($origin->getSynchronizedAt());
-        } else {
-            // this is the first synchronization of this folder; just load emails for last year
-            $fromDate = new \DateTime('now');
-            $fromDate->sub(new \DateInterval('P1Y'));
-            $sqb->sent($fromDate);
-        }
-
-        return $sqb;
-    }
-
-    /**
-     * Gets a list of email addresses which have an owner split into batches
+     * Gets a list of email addresses which have an owner and splits them into batches
      *
      * @return string[][]
      */
@@ -174,37 +159,12 @@ class ImapEmailSynchronizationProcessor
     }
 
     /**
-     * Gets a list of email addresses which have an owner
+     * Gets a list of folders to be synchronized
      *
-     * @return string[]
-     */
-    protected function getKnownEmailAddresses()
-    {
-        $this->log->info('Loading known email addresses ...');
-
-        $repo = $this->emailAddressManager->getEmailAddressRepository($this->em);
-        $query = $repo->createQueryBuilder('a')
-            ->select('a.email')
-            ->where('a.hasOwner = ?1')
-            ->setParameter(1, true)
-            ->getQuery();
-        $emailAddresses = $query->getArrayResult();
-
-        $this->log->info(sprintf('Loaded %d email address(es).', count($emailAddresses)));
-
-        return array_map(
-            function ($el) {
-                return $el['email'];
-            },
-            $emailAddresses
-        );
-    }
-
-    /**
-     * @param ImapEmailOrigin $origin
+     * @param EmailOrigin $origin
      * @return EmailFolder[]
      */
-    protected function getFolders(ImapEmailOrigin $origin)
+    protected function getFolders(EmailOrigin $origin)
     {
         $this->log->info('Loading folders ...');
 
@@ -224,10 +184,12 @@ class ImapEmailSynchronizationProcessor
     }
 
     /**
+     * Check the given folders and if needed correct them
+     *
      * @param EmailFolder[] $folders
-     * @param ImapEmailOrigin $origin
+     * @param EmailOrigin $origin
      */
-    protected function ensureFoldersInitialized(array &$folders, ImapEmailOrigin $origin)
+    protected function ensureFoldersInitialized(array &$folders, EmailOrigin $origin)
     {
         if (!empty($folders) && count($folders) >= 2) {
             return;
@@ -274,6 +236,8 @@ class ImapEmailSynchronizationProcessor
     }
 
     /**
+     * Checks if the folder exists in the given list
+     *
      * @param EmailFolder[] $folders
      * @param string $folderType
      * @param string $folderGlobalName
@@ -293,7 +257,7 @@ class ImapEmailSynchronizationProcessor
     }
 
     /**
-     * Gets ImapEmailFolder entity related with the given EmailFolder entity
+     * Gets ImapEmailFolder entity connected to the given EmailFolder entity
      *
      * @param EmailFolder $folder
      * @return ImapEmailFolder
@@ -319,6 +283,12 @@ class ImapEmailSynchronizationProcessor
         return $imapFolder;
     }
 
+    /**
+     * Loads emails from an email server and save them into the database
+     *
+     * @param EmailFolder $folder
+     * @param SearchQuery $searchQuery
+     */
     protected function loadEmails(EmailFolder $folder, SearchQuery $searchQuery)
     {
         $this->log->info(sprintf('Query: "%s".', $searchQuery->convertToSearchString()));
@@ -341,6 +311,8 @@ class ImapEmailSynchronizationProcessor
     }
 
     /**
+     * Saves emails into the database
+     *
      * @param Email[] $emails
      * @param EmailFolder $folder
      */

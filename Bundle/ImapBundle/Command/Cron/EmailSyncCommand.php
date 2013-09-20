@@ -11,6 +11,9 @@ use Oro\Bundle\CronBundle\Command\Logger\OutputLogger;
 
 class EmailSyncCommand extends ContainerAwareCommand implements CronCommandInterface
 {
+    const MAX_CONCURRENT_TASKS = 5;
+    const MIN_EXEC_PERIOD_IN_MIN = 0;
+
     /**
      * {@internaldoc}
      */
@@ -37,6 +40,6 @@ class EmailSyncCommand extends ContainerAwareCommand implements CronCommandInter
         /** @var ImapEmailSynchronizer $synchronizer */
         $synchronizer = $this->getContainer()->get('oro_imap.email_synchronizer');
         $synchronizer->setLogger(new OutputLogger($output));
-        $synchronizer->sync(5, 0);
+        $synchronizer->sync(self::MAX_CONCURRENT_TASKS, self::MIN_EXEC_PERIOD_IN_MIN);
     }
 }
