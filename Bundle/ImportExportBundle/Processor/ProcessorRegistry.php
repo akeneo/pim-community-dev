@@ -7,6 +7,10 @@ use Oro\Bundle\ImportExportBundle\Exception\LogicException;
 
 class ProcessorRegistry
 {
+    const TYPE_EXPORT = 'export';
+    const TYPE_IMPORT = 'import';
+    const TYPE_VALIDATE_IMPORT = 'validate_import';
+
     /**
      * Processor storage format:
      * array(

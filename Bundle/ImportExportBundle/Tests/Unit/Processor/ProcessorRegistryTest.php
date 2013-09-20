@@ -18,7 +18,7 @@ class ProcessorRegistryTest extends \PHPUnit_Framework_TestCase
 
     public function testRegisterProcessor()
     {
-        $type = 'import';
+        $type = ProcessorRegistry::TYPE_IMPORT;
         $entityName = 'entity_name';
         $alias = 'processor_alias';
         $processor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
@@ -39,7 +39,7 @@ class ProcessorRegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testRegisterProcessorFails()
     {
-        $type = 'import';
+        $type = ProcessorRegistry::TYPE_IMPORT;
         $entityName = 'entity_name';
         $alias = 'processor_alias';
         $processor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
@@ -50,7 +50,7 @@ class ProcessorRegistryTest extends \PHPUnit_Framework_TestCase
 
     public function testUnregisterProcessor()
     {
-        $type = 'import';
+        $type = ProcessorRegistry::TYPE_IMPORT;
         $entityName = 'entity_name';
         $alias = 'processor_alias';
         $processor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
@@ -66,7 +66,7 @@ class ProcessorRegistryTest extends \PHPUnit_Framework_TestCase
 
     public function testHasProcessor()
     {
-        $type = 'import';
+        $type = ProcessorRegistry::TYPE_IMPORT;
         $entityName = 'entity_name';
         $alias = 'processor_alias';
         $processor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
@@ -80,7 +80,7 @@ class ProcessorRegistryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetProcessor()
     {
-        $type = 'import';
+        $type = ProcessorRegistry::TYPE_IMPORT;
         $entityName = 'entity_name';
         $alias = 'processor_alias';
         $processor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
@@ -100,7 +100,7 @@ class ProcessorRegistryTest extends \PHPUnit_Framework_TestCase
 
     public function testGetProcessorsByEntity()
     {
-        $type = 'import';
+        $type = ProcessorRegistry::TYPE_IMPORT;
         $entityName = 'entity_name';
         $fooAlias = 'foo_alias';
         $fooProcessor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
