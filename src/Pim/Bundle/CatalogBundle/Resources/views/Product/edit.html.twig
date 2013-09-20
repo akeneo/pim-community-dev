@@ -1,6 +1,6 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
-{% oro_title_set({ params: { "%product.sku%": product.sku } }) %}
+{% oro_title_set({ params: { "%product.sku%": product.label } }) %}
 
 {% block head_script %}
     {{ parent() }}
