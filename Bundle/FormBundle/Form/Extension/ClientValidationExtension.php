@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ClientValidationExtension extends AbstractTypeExtension
 {
     /**
-     * Add the image_path option
+     * Add the client_validation option
      *
      * @param OptionsResolverInterface $resolver
      */
@@ -28,7 +28,7 @@ class ClientValidationExtension extends AbstractTypeExtension
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        // set an "image_url" variable that will be available when rendering this field
+        // set an "client_validation" variable that will be available when rendering this field
         $view->vars['client_validation'] = isset($options['client_validation'])
             ? (bool) $options['client_validation']
             : true;
