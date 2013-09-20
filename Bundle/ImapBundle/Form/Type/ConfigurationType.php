@@ -33,6 +33,8 @@ class ConfigurationType extends AbstractType
             FormEvents::PRE_SUBMIT,
             function (FormEvent $event) use ($encryptor) {
                 $data = $event->getData();
+                /** @var ImapEmailOrigin|null $entity */
+                $entity = $event->getForm()->getData();
 
                 $filtered = array_filter(
                     $data,
@@ -40,29 +42,32 @@ class ConfigurationType extends AbstractType
                         return !empty($item);
                     }
                 );
-                $data     = empty($filtered) ? null : $data;
 
-                $oldPassword = $event->getForm()->get('password')->getData();
-                if (empty($data['password']) && $oldPassword) {
-                    // populate old password
-                    $data['password'] = $oldPassword;
-                } elseif (!empty($data['password'])) {
-                    $data['password'] = $encryptor->encryptData($data['password']);
-                }
+                if (!empty($filtered)) {
+                    $oldPassword = $event->getForm()->get('password')->getData();
+                    if (empty($data['password']) && $oldPassword) {
+                        // populate old password
+                        $data['password'] = $oldPassword;
+                    } else {
+                        $data['password'] = $encryptor->encryptData($data['password']);
+                    }
 
-                $event->setData($data);
+                    $event->setData($data);
 
-                /** @var ImapEmailOrigin|null $entity */
-                $entity = $event->getForm()->getData();
-                if ($entity instanceof ImapEmailOrigin
-                    && ($entity->getHost() != $data['host'] || $entity->getUser() != $data['user'])
-                ) {
-                    // in case when critical fields were changed new entity should be created
-                    $newConfiguration = new ImapEmailOrigin();
-                    $event->getForm()->setData($newConfiguration);
+                    if ($entity instanceof ImapEmailOrigin
+                        && ($entity->getHost() != $data['host'] || $entity->getUser() != $data['user'])
+                    ) {
+                        // in case when critical fields were changed new entity should be created
+                        $newConfiguration = new ImapEmailOrigin();
+                        $event->getForm()->setData($newConfiguration);
 
+                        // deactivate old one
+                        $entity->setIsActive(false);
+                    }
+                } elseif ($entity instanceof ImapEmailOrigin) {
                     // deactivate old one
                     $entity->setIsActive(false);
+                    $event->getForm()->setData(null);
                 }
             }
         );

@@ -156,4 +156,34 @@ class ConfigurationTypeTest extends FormIntegrationTestCase
         $this->assertInstanceOf('Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin', $form->getData());
         $this->assertTrue($form->getData()->getIsActive());
     }
+
+    /**
+     * Case when user submit empty form but have configuration
+     * configuration should be not active and relation should be broken
+     */
+    public function testSubmitEmptyForm()
+    {
+        $type = new ConfigurationType($this->encryptor);
+        $form = $this->factory->create($type);
+
+        $entity = new ImapEmailOrigin();
+        $this->assertTrue($entity->getIsActive());
+
+        $form->setData($entity);
+        $form->submit(
+            array(
+                'host'     => '',
+                'port'     => '',
+                'ssl'      => '',
+                'user'     => '',
+                'password' => ''
+            )
+        );
+
+        $this->assertNotSame($entity, $form->getData());
+        $this->assertFalse($entity->getIsActive());
+
+        $this->assertNotInstanceOf('Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin', $form->getData());
+        $this->assertNull($form->getData());
+    }
 }

@@ -1289,7 +1289,7 @@ class User extends AbstractEntityFlexible implements
     /**
      * {@inheritDoc}
      */
-    public function setImapConfiguration(ImapEmailOrigin $imapConfiguration)
+    public function setImapConfiguration(ImapEmailOrigin $imapConfiguration = null)
     {
         $this->imapConfiguration = $imapConfiguration;
 

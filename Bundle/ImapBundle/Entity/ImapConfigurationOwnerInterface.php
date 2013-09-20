@@ -18,5 +18,5 @@ interface ImapConfigurationOwnerInterface
      *
      * @return $this
      */
-    public function setImapConfiguration(ImapEmailOrigin $imapConfiguration);
+    public function setImapConfiguration(ImapEmailOrigin $imapConfiguration = null);
 }
