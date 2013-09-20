@@ -24,25 +24,32 @@
 
                     $('#default_channel').select2('destroy').css('padding', '0');
 
-                    var $family = $('#{{ form.vars.id }}_family').removeClass('input-large').addClass('input-inline');
-                    $family.select2('enable', false);
+                    {% if resource_granted('pim_catalog_product_change_family') %}
+                        {% set familyWidget %}
+                            {{ 'info.product.change family to'|trans }}:
+                            {{ form_widget(form.family) }}</br>
+                            {{ 'info.product.merge attributes'|trans }}</br>
+                            {{ 'info.product.keep attributes'|trans }}
+                        {% endset %}
 
-                    $('#edit-family').on('click', function () {
-                        var message = '{{ ("info.product.merge attributes"|trans
-                                ~ "</br>" ~ "info.product.keep attributes"|trans)|raw }}',
-                            title   = '{{ "confirmation.product.change family"|trans }}',
+                        var message = '{{ familyWidget|e("js")|raw }}',
+                            title   = '{{ "info.product.change family"|trans }}',
                             doAction = function () {
-                                $('#edit-family').off('click').remove();
-                                $family.select2('enable', true);
-                                $family.select2('open');
+                                $('#{{ form.vars.id }}').append($('#{{ form.family.vars.id }}'));
+                                $('#{{ form.vars.id }}').submit();
                             };
 
-                        Dialog.confirm(message, title, doAction);
-                    })
+                        $('#edit-family').on('click', function () {
+                            Dialog.confirm(message, title, doAction);
+                            $('#{{ form.family.vars.id }}').prepend('<option></option>')
+                                .attr('data-placeholder', '{{ "Choose a family"|trans }}')
+                                .select2({ allowClear: true });
+                        })
 
-                    $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function(e) {
-                        $family.removeAttr('disabled');
-                    });
+                        $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function() {
+                            $('#{{ form.vars.id }}').append($('<div class="hide"/>').html(message));
+                        });
+                    {% endif %}
 
                     function setFullHeight() {
                         $('.fullheight').each(function() {
@@ -111,12 +118,9 @@
         {% set left %}
             <ul class="inline">
                <li>
-                    {{ 'Family'|trans }}:
+                    {{ 'family'|trans|capitalize }}: {{ form.vars.value.family|capitalize|default('N/A'|trans) }}
                     {% if resource_granted('pim_catalog_product_change_family') %}
-                        {{ form_widget(form.family) }}
                         <i id="edit-family" class="icon-pencil"></i>
-                    {% else %}
-                        {{ form.vars.value.family|capitalize|default('N/A'|trans) }}
                     {% endif %}
                 </li>
                <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>

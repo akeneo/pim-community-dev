@@ -4,7 +4,7 @@ define(
         'use strict';
 
         return function () {
-            var $form = $('form')
+            var $form = $('form');
             $form.find('input.multiselect').each(function () {
                 var $el   = $(this),
                     value = _.map(_.compact($el.val().split(',')), $.trim),

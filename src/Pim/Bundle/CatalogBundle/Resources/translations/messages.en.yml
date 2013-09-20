@@ -98,8 +98,6 @@ confirmation:
         product:         Are you sure you want to delete the product %name%?
         export profile:  Are you sure you want to delete the export profile %name%?
         import profile:  Are you sure you want to delete the import profile %name%?
-    product:
-        change family: Are you sure you want to change the family?
 
 # Flash messages
 flash:
@@ -154,6 +152,8 @@ info:
         keep products:   Products in these categories will not be deleted.
     product:
         no available attributes: There are no more attributes to add
+        change family:           Change the product family
+        change family to:        Change the family to
         merge attributes:        Current attributes will be merged with the ones in the new family.
         keep attributes:         No attributes will be removed.
 
