@@ -83,7 +83,7 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
                 $this->em->flush();
             }
 
-            $this->log->info(sprintf('Loading emails from "%s" folder ...', $folderName));
+            $this->log->notice(sprintf('Loading emails from "%s" folder ...', $folderName));
             foreach ($emailAddressBatches as $emailAddressBatch) {
                 // build a search query
                 $sqb = $this->manager->getSearchQueryBuilder();
@@ -166,7 +166,7 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
      */
     protected function getFolders(EmailOrigin $origin)
     {
-        $this->log->info('Loading folders ...');
+        $this->log->notice('Loading folders ...');
 
         $repo = $this->em->getRepository('OroEmailBundle:EmailFolder');
         $query = $repo->createQueryBuilder('f')
@@ -176,7 +176,7 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
             ->getQuery();
         $folders = $query->getResult();
 
-        $this->log->info(sprintf('Loaded %d folder(s).', count($folders)));
+        $this->log->notice(sprintf('Loaded %d folder(s).', count($folders)));
 
         $this->ensureFoldersInitialized($folders, $origin);
 
@@ -195,9 +195,9 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
             return;
         }
 
-        $this->log->info('Retrieving folders from an email server ...');
+        $this->log->notice('Retrieving folders from an email server ...');
         $srcFolders = $this->manager->getFolders(null, true);
-        $this->log->info(sprintf('Retrieved %d folder(s).', count($srcFolders)));
+        $this->log->notice(sprintf('Retrieved %d folder(s).', count($srcFolders)));
 
         foreach ($srcFolders as $srcFolder) {
             $type = null;
@@ -213,7 +213,7 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
                     continue;
                 }
 
-                $this->log->info(sprintf('Persisting "%s" folder ...', $globalName));
+                $this->log->notice(sprintf('Persisting "%s" folder ...', $globalName));
 
                 $folder = new EmailFolder();
                 $folder
@@ -228,7 +228,7 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
 
                 $folders[] = $folder;
 
-                $this->log->info(sprintf('The "%s" folder was persisted.', $globalName));
+                $this->log->notice(sprintf('The "%s" folder was persisted.', $globalName));
             }
         }
 
@@ -264,7 +264,7 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
      */
     protected function getImapFolder(EmailFolder $folder)
     {
-        $this->log->info(sprintf('Load IMAP folder for "%s".', $folder->getFullName()));
+        $this->log->notice(sprintf('Load IMAP folder for "%s".', $folder->getFullName()));
 
         $repo = $this->em->getRepository('OroImapBundle:ImapEmailFolder');
         $query = $repo->createQueryBuilder('f')
@@ -275,7 +275,7 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
         try {
             $imapFolder = $query->getSingleResult();
         } catch (NoResultException $ex) {
-            $this->log->info('IMAP folder does not exist. Create a new one.');
+            $this->log->notice('IMAP folder does not exist. Create a new one.');
             $imapFolder = new ImapEmailFolder();
             $imapFolder->setFolder($folder);
         }
@@ -291,7 +291,7 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
      */
     protected function loadEmails(EmailFolder $folder, SearchQuery $searchQuery)
     {
-        $this->log->info(sprintf('Query: "%s".', $searchQuery->convertToSearchString()));
+        $this->log->notice(sprintf('Query: "%s".', $searchQuery->convertToSearchString()));
         $emails = $this->manager->getEmails($searchQuery);
 
         $count = 0;
@@ -346,7 +346,7 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
 
         foreach ($emails as $src) {
             if (!in_array($src->getId()->getUid(), $existingUids)) {
-                $this->log->info(
+                $this->log->notice(
                     sprintf('Persisting "%s" email (UID: %d) ...', $src->getSubject(), $src->getId()->getUid())
                 );
 
@@ -368,9 +368,9 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
                     ->setEmail($email);
                 $this->em->persist($imapEmail);
 
-                $this->log->info(sprintf('The "%s" email was persisted.', $src->getSubject()));
+                $this->log->notice(sprintf('The "%s" email was persisted.', $src->getSubject()));
             } else {
-                $this->log->info(
+                $this->log->notice(
                     sprintf(
                         'Skip "%s" (UID: %d) email, because it is already synchronised.',
                         $src->getSubject(),

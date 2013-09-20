@@ -66,7 +66,7 @@ abstract class AbstractEmailSynchronizationProcessor
      */
     protected function getKnownEmailAddresses()
     {
-        $this->log->info('Loading known email addresses ...');
+        $this->log->notice('Loading known email addresses ...');
 
         $repo = $this->emailAddressManager->getEmailAddressRepository($this->em);
         $query = $repo->createQueryBuilder('a')
@@ -76,7 +76,7 @@ abstract class AbstractEmailSynchronizationProcessor
             ->getQuery();
         $emailAddresses = $query->getArrayResult();
 
-        $this->log->info(sprintf('Loaded %d email address(es).', count($emailAddresses)));
+        $this->log->notice(sprintf('Loaded %d email address(es).', count($emailAddresses)));
 
         return array_map(
             function ($el) {

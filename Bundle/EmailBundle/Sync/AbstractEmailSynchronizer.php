@@ -158,7 +158,7 @@ abstract class AbstractEmailSynchronizer
      */
     protected function getOriginToSync($maxConcurrentTasks, $minExecPeriodInMin)
     {
-        $this->log->info('Finding an email origin ...');
+        $this->log->notice('Finding an email origin ...');
 
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $border = clone $now;
@@ -200,11 +200,11 @@ abstract class AbstractEmailSynchronizer
 
         if ($result === null) {
             if (!empty($origins)) {
-                $this->log->info('The maximum number of concurrent tasks is reached.');
+                $this->log->notice('The maximum number of concurrent tasks is reached.');
             }
-            $this->log->info('An email origin was not found.');
+            $this->log->notice('An email origin was not found.');
         } else {
-            $this->log->info(sprintf('Found email origin id: %d.', $result->getId()));
+            $this->log->notice(sprintf('Found email origin id: %d.', $result->getId()));
         }
 
         return $result;
@@ -215,7 +215,7 @@ abstract class AbstractEmailSynchronizer
      */
     protected function resetHangedOrigins()
     {
-        $this->log->info('Resetting hanged email origins ...');
+        $this->log->notice('Resetting hanged email origins ...');
 
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $border = clone $now;
@@ -232,6 +232,6 @@ abstract class AbstractEmailSynchronizer
             ->getQuery();
 
         $affectedRows = $query->execute();
-        $this->log->info(sprintf('Updated %d row(s).', $affectedRows));
+        $this->log->notice(sprintf('Updated %d row(s).', $affectedRows));
     }
 }

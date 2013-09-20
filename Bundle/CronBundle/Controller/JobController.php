@@ -73,7 +73,7 @@ class JobController extends Controller
             : array();
 
         return array(
-            'job'             => $job,
+            'entity'          => $job,
             'pid'             => $this->get('oro_cron.job_daemon')->getPid(),
             'relatedEntities' => $manager->getRelatedEntities($job),
             'statistics'      => $statistics,
