@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -10,10 +9,14 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
-use Oro\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
+use Oro\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
+
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver;
 
 /**
@@ -53,6 +56,7 @@ class JobExecutionController extends AbstractDoctrineController
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      * @param DatagridWorkerInterface  $dataGridWorker
      * @param BatchLogHandler          $batchLogHandler
@@ -66,13 +70,23 @@ class JobExecutionController extends AbstractDoctrineController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        TranslatorInterface $translator,
         RegistryInterface $doctrine,
         DatagridWorkerInterface $dataGridWorker,
         BatchLogHandler $batchLogHandler,
         JobExecutionArchiver $archiver,
         $jobType
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $securityContext,
+            $formFactory,
+            $validator,
+            $translator,
+            $doctrine
+        );
 
         $this->dataGridWorker       = $dataGridWorker;
         $this->batchLogHandler      = $batchLogHandler;

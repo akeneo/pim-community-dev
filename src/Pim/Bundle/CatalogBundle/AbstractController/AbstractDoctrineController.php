@@ -8,6 +8,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -35,6 +36,7 @@ abstract class AbstractDoctrineController extends AbstractController
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      */
     public function __construct(
@@ -44,9 +46,10 @@ abstract class AbstractDoctrineController extends AbstractController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        TranslatorInterface $translator,
         RegistryInterface $doctrine
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator);
+        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $translator);
 
         $this->doctrine = $doctrine;
     }
