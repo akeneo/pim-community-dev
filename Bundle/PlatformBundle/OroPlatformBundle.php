@@ -10,6 +10,7 @@ class OroPlatformBundle extends Bundle
     public static function registeredBundles(Kernel $kernel)
     {
         return array(
+            new \Oro\Bundle\SecurityBundle\OroSecurityBundle(),
             new \Oro\Bundle\FlexibleEntityBundle\OroFlexibleEntityBundle(),
             new \Oro\Bundle\UIBundle\OroUIBundle(),
             new \Oro\Bundle\FormBundle\OroFormBundle(),
