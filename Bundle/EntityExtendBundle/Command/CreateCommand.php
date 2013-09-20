@@ -3,25 +3,19 @@
 namespace Oro\Bundle\EntityExtendBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\HttpKernel\Kernel;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class CreateCommand extends ContainerAwareCommand
 {
-    /**
-     * @var ExtendManager
-     */
-    protected $extendManager;
-
     /**
      * @var ConfigManager
      */
@@ -39,6 +33,7 @@ class CreateCommand extends ContainerAwareCommand
 
     /**
      * Runs command
+     *
      * @param  InputInterface  $input
      * @param  OutputInterface $output
      * @throws \InvalidArgumentException
@@ -48,7 +43,9 @@ class CreateCommand extends ContainerAwareCommand
     {
         $output->writeln($this->getDescription());
 
-        $this->extendManager = $this->getContainer()->get('oro_entity_extend.extend.extend_manager');
+        /** @var ConfigProvider $configProvider */
+        $configProvider = $this->getContainer()->get('oro_entity_config.provider.extend');
+
         $this->configManager = $this->getContainer()->get('oro_entity_config.config_manager');
 
         /** @var Kernel $kernel */
@@ -58,21 +55,22 @@ class CreateCommand extends ContainerAwareCommand
             if (is_file($path)) {
                 $config = Yaml::parse(realpath($path));
 
-                foreach ($config as $entityName => $entityOptions) {
-                    $this->parseEntity($entityName, $entityOptions);
+                foreach ($config as $className => $entityOptions) {
+                    $className = class_exists($className) ? $className : 'Extend\\Entity\\' . $className;
+                    $this->parseEntity($className, $entityOptions);
                 }
 
                 $this->configManager->flush();
 
                 //fix state "Update" for existing class.
-                foreach ($config as $entityName => $entityOptions) {
-                    $entityConfigProvider = $this->extendManager->getConfigProvider();
-                    $entityConfig = $entityConfigProvider->getConfig($entityName);
+                foreach ($config as $className => $entityOptions) {
+                    $className    = class_exists($className) ? $className : 'Extend\\Entity\\' . $className;
+                    $entityConfig = $configProvider->getConfig($className);
                     $entityConfig->set('state', ExtendManager::STATE_ACTIVE);
 
                     $this->configManager->persist($entityConfig);
 
-                    foreach ($entityConfigProvider->getConfigs($entityName) as $fieldConfig) {
+                    foreach ($configProvider->getConfigs($className) as $fieldConfig) {
                         $fieldConfig->set('state', ExtendManager::STATE_ACTIVE);
                         $this->configManager->persist($fieldConfig);
                     }
@@ -83,40 +81,88 @@ class CreateCommand extends ContainerAwareCommand
             }
         }
 
+        $this->configManager->clearConfigurableCache();
+
         $this->getApplication()->find('oro:entity-extend:update')->run($input, $output);
     }
 
     /**
-     * @param $entityName
+     * @param $className
+     * @throws \InvalidArgumentException
+     */
+    protected function checkExtend($className)
+    {
+        $error = false;
+        if (!$this->configManager->hasConfig($className)) {
+            $error = true;
+        } else {
+            $config = $this->configManager->getProvider('extend')->getConfig($className);
+            if (!$config->is('is_extend')) {
+                $error = true;
+            }
+        }
+
+        if ($error) {
+            throw new \InvalidArgumentException(sprintf('Class "%s" is not extended.', $className));
+        }
+    }
+
+    /**
+     * @param $className
      * @param $entityOptions
      * @throws \InvalidArgumentException
      */
-    protected function parseEntity($entityName, $entityOptions)
+    protected function parseEntity($className, $entityOptions)
     {
-        if (!$this->configManager->isConfigurable($entityName)) {
-            $this->createEntityModel($entityName, $entityOptions);
-            $this->setDefaultConfig($entityOptions, $entityName);
+        /** @var ExtendManager $extendManager */
+        $extendManager  = $this->getContainer()->get('oro_entity_extend.extend.extend_manager');
+        $configProvider = $extendManager->getConfigProvider();
 
-            $entityConfig = $this->extendManager->getConfigProvider()->getConfig($entityName);
-            if (!class_exists($entityName)) {
-                $entityConfig->set('owner', ExtendManager::OWNER_CUSTOM);
+        if (class_exists($className)) {
+            $this->checkExtend($className);
+        }
+
+        if (!$this->configManager->hasConfig($className)) {
+            $this->createEntityModel($className, $entityOptions);
+            $this->setDefaultConfig($entityOptions, $className);
+
+            $entityConfig = $configProvider->getConfig($className);
+
+            $owner = ExtendManager::OWNER_SYSTEM;
+            if (isset($entityOptions['owner'])) {
+                $owner = $entityOptions['owner'];
             }
-            $entityConfig->set('is_extend', true);
+            $entityConfig->set('owner', $owner);
+
+            if (isset($entityOptions['is_extend'])) {
+                $entityConfig->set('is_extend', $entityOptions['is_extend']);
+            } else {
+                $entityConfig->set('is_extend', false);
+            }
         }
 
         foreach ($entityOptions['fields'] as $fieldName => $fieldConfig) {
-            if ($this->configManager->isConfigurable($entityName, $fieldName)) {
+            if ($this->configManager->hasConfig($className, $fieldName)) {
                 throw new \InvalidArgumentException(
-                    sprintf('Field "%s" for Entity "%s" already added', $entityName, $fieldName)
+                    sprintf('Field "%s" for Entity "%s" already added', $className, $fieldName)
                 );
             }
 
-            $mode = isset($fieldConfig['mode']) ? $fieldConfig['mode'] : ConfigModelManager::MODE_DEFAULT;
-            $this->extendManager->getExtendFactory()->createField($entityName, $fieldName, $fieldConfig, $mode);
+            $owner = ExtendManager::OWNER_SYSTEM;
+            if (isset($fieldConfig['owner'])) {
+                $owner = $fieldConfig['owner'];
+            }
 
-            $this->setDefaultConfig($entityOptions, $entityName, $fieldName);
+            $mode  = ConfigModelManager::MODE_DEFAULT;
+            if (isset($fieldConfig['mode'])) {
+                $mode = $fieldConfig['mode'];
+            }
 
-            $config = $this->extendManager->getConfigProvider()->getConfig($entityName, $fieldName);
+            $extendManager->createField($className, $fieldName, $fieldConfig, $owner, $mode);
+
+            $this->setDefaultConfig($entityOptions, $className, $fieldName);
+
+            $config = $configProvider->getConfig($className, $fieldName);
             $config->set('state', ExtendManager::STATE_ACTIVE);
             $this->configManager->persist($config);
         }

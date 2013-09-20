@@ -15,7 +15,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\OrganizationBundle\Event\RecordOwnerDataListener;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
-use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
@@ -38,32 +38,34 @@ class FormTypeExtension extends AbstractTypeExtension
     protected $manager;
 
     /**
-     * @var AclManager
+     * @var SecurityFacade
      */
-    protected $aclManager;
+    protected $securityFacade;
 
     /**
      * @var TranslatorInterface
      */
     protected $translator;
 
+    /**
+     * @var string
+     */
     protected $fieldName;
 
-    protected $changeOwnerGranted;
+    protected $assignIsGranted;
 
     public function __construct(
         SecurityContextInterface $securityContext,
         ConfigProvider $configProvider,
         BusinessUnitManager $manager,
-        AclManager $aclManager,
+        SecurityFacade $securityFacade,
         TranslatorInterface $translator
     ) {
         $this->securityContext = $securityContext;
         $this->configProvider = $configProvider;
         $this->manager = $manager;
-        $this->aclManager = $aclManager;
+        $this->securityFacade = $securityFacade;
         $this->translator = $translator;
-        $this->changeOwnerGranted = null;
         $this->fieldName = RecordOwnerDataListener::OWNER_FIELD_NAME;
     }
 
@@ -92,28 +94,31 @@ class FormTypeExtension extends AbstractTypeExtension
         $user = $token->getUser();
         if ($user
             && $dataClassName
-            && $this->configProvider->isConfigurable($dataClassName)
+            && $this->configProvider->hasConfig($dataClassName)
         ) {
-            if (!method_exists($dataClassName, 'getOwner')) {
-                throw new \LogicException(
-                    sprintf('Method getOwner must be implemented for %s entity', $dataClassName)
-                );
-            }
             $config = $this->configProvider->getConfig($dataClassName);
-            if ($config->has('owner_type')) {
+            if ($config->has('owner_type') && $config->get('owner_type') != OwnershipType::OWNER_TYPE_NONE) {
+                if (!method_exists($dataClassName, 'getOwner')) {
+                    throw new \LogicException(
+                        sprintf('Method getOwner must be implemented for %s entity', $dataClassName)
+                    );
+                }
                 $ownerType = $config->get('owner_type');
                 /**
+                 * TODO: Implement object-based assign check after access levels are supported
+                 */
+                $this->assignIsGranted = $this->securityFacade->isGranted('ASSIGN', 'Entity:' . $dataClassName);
+                /**
                  * Adding listener to hide owner field for update pages
-                 * if change owner permission is not granted
+                 * if assign permission is not granted
                  */
                 $builder->addEventListener(
                     FormEvents::POST_SET_DATA,
                     array($this, 'postSetData')
                 );
-
-                if (OwnershipType::OWNERSHIP_TYPE_USER == $ownerType && $this->changeOwnerGranted()) {
+                if (OwnershipType::OWNER_TYPE_USER == $ownerType && $this->assignIsGranted) {
                     /**
-                     * Showing user owner box for entities with owner type USER if change owner permission is
+                     * Showing user owner box for entities with owner type USER if assign permission is
                      * granted.
                      */
                     $builder->add(
@@ -124,9 +129,9 @@ class FormTypeExtension extends AbstractTypeExtension
                             'constraints' => array(new NotBlank())
                         )
                     );
-                } elseif (OwnershipType::OWNERSHIP_TYPE_BUSINESS_UNIT == $ownerType) {
+                } elseif (OwnershipType::OWNER_TYPE_BUSINESS_UNIT == $ownerType) {
                     $this->addBusinessUnitOwnerField($builder, $user, $dataClassName);
-                } elseif (OwnershipType::OWNERSHIP_TYPE_ORGANIZATION == $ownerType) {
+                } elseif (OwnershipType::OWNER_TYPE_ORGANIZATION == $ownerType) {
                     $this->addOrganizationOwnerField($builder, $user);
                 }
             }
@@ -149,7 +154,7 @@ class FormTypeExtension extends AbstractTypeExtension
         if (is_object($entity)
             && $entity->getId()
             && $form->has($this->fieldName)
-            && !$this->changeOwnerGranted()
+            && !$this->assignIsGranted
         ) {
             $owner = $form->get($this->fieldName)->getData();
             $form->remove($this->fieldName);
@@ -186,10 +191,9 @@ class FormTypeExtension extends AbstractTypeExtension
                 'required' => true,
             );
         }
-
-        if ($this->changeOwnerGranted()) {
+        if ($this->assignIsGranted) {
             /**
-             * If change owner permission is granted, showing all available business units
+             * If assign permission is granted, showing all available business units
              */
             $businessUnits = $this->getTreeOptions($this->manager->getBusinessUnitsTree());
             $builder->add(
@@ -238,8 +242,7 @@ class FormTypeExtension extends AbstractTypeExtension
             'required' => true,
             'constraints' => array(new NotBlank())
         );
-
-        if (!$this->changeOwnerGranted()) {
+        if (!$this->assignIsGranted) {
             $organizations = array();
             $bu = $user->getBusinessUnits();
             /** @var $businessUnit BusinessUnit */
@@ -270,19 +273,5 @@ class FormTypeExtension extends AbstractTypeExtension
         }
 
         return $choices;
-    }
-
-    /**
-     * Deferred ACL check
-     *
-     * @return bool Is resource granted
-     */
-    protected function changeOwnerGranted()
-    {
-        if (null === $this->changeOwnerGranted) {
-            $this->changeOwnerGranted = $this->aclManager->isResourceGranted('oro_change_record_owner');
-        }
-
-        return $this->changeOwnerGranted;
     }
 }

@@ -36,13 +36,13 @@ parameters:
 services:
     oro_grid.action.type.redirect:
         class: %oro_grid.action.type.redirect.class%
-        arguments: ["@oro_user.acl_manager"]
+        arguments: ["@oro_security.security_facade"]
         tags:
             - { name: oro_grid.action.type, alias: oro_grid_action_redirect }
 
     oro_grid.action.type.delete:
         class: %oro_grid.action.type.delete.class%
-        arguments: ["@oro_user.acl_manager"]
+        arguments: ["@oro_security.security_facade"]
         tags:
             - { name: oro_grid.action.type, alias: oro_grid_action_delete }
 ```

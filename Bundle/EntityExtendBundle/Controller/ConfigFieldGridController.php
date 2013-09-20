@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use FOS\Rest\Util\Codes;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
@@ -30,11 +30,7 @@ use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
  *
  * @package Oro\Bundle\EntityExtendBundle\Controller
  * @Route("/entity/extend/field")
- * @Acl(
- *      id="oro_entityextend",
- *      name="Entity extend manipulation",
- *      description="Entity extend manipulation"
- * )
+ * TODO: Discuss ACL impl., currently acl is disabled
  */
 class ConfigFieldGridController extends Controller
 {
@@ -44,11 +40,11 @@ class ConfigFieldGridController extends Controller
 
     /**
      * @Route("/create/{id}", name="oro_entityextend_field_create", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_field_create",
-     *      name="Create custom field",
-     *      description="Update entity create custom field",
-     *      parent="oro_entityextend"
+     *      label="Create custom field",
+     *      type="action",
+     *      group_name=""
      * )
      *
      * @Template
@@ -114,11 +110,11 @@ class ConfigFieldGridController extends Controller
 
     /**
      * @Route("/update/{id}", name="oro_entityextend_field_update", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_field_update",
-     *      name="Update custom field",
-     *      description="Update entity update custom field",
-     *      parent="oro_entityextend"
+     *      label="Update custom field",
+     *      type="action",
+     *      group_name=""
      * )
      */
     public function updateAction(EntityConfigModel $entity)
@@ -146,7 +142,7 @@ class ConfigFieldGridController extends Controller
         $extendFieldConfig = $configManager->getProvider('extend')->getConfig($entity->getClassName(), $fieldName);
         $extendFieldConfig->set('owner', ExtendManager::OWNER_CUSTOM);
         $extendFieldConfig->set('state', ExtendManager::STATE_NEW);
-        $extendFieldConfig->set('is_extend', true);
+        $extendFieldConfig->set('extend', true);
 
         $form = $this->createForm(
             'oro_entity_config_type',
@@ -210,11 +206,11 @@ class ConfigFieldGridController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_field_remove",
-     *      name="Remove custom field",
-     *      description="Update entity remove custom field",
-     *      parent="oro_entityextend"
+     *      label="Remove custom field",
+     *      type="action",
+     *      group_name=""
      * )
      */
     public function removeAction(FieldConfigModel $field)
@@ -233,7 +229,7 @@ class ConfigFieldGridController extends Controller
             $field->getFieldName()
         );
 
-        if (!$fieldConfig->is('is_extend')) {
+        if (!$fieldConfig->is('owner', ExtendManager::OWNER_CUSTOM)) {
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 
@@ -252,11 +248,11 @@ class ConfigFieldGridController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_field_unremove",
-     *      name="UnRemove custom field",
-     *      description="Update entity Unremove custom field",
-     *      parent="oro_entityextend"
+     *      label="UnRemove custom field",
+     *      type="action",
+     *      group_name=""
      * )
      */
     public function unremoveAction(FieldConfigModel $field)
@@ -275,7 +271,7 @@ class ConfigFieldGridController extends Controller
             $field->getFieldName()
         );
 
-        if (!$fieldConfig->is('is_extend')) {
+        if (!$fieldConfig->is('owner', ExtendManager::OWNER_CUSTOM)) {
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 

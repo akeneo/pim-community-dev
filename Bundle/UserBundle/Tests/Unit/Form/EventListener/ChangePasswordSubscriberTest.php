@@ -3,12 +3,14 @@
 namespace Oro\Bundle\UserBundle\Tests\Unit\Type;
 
 use Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber;
-use Symfony\Component\Form\FormEvents;
 
-class ChangePasswordSubscriberTest extends \PHPUnit_Framework_TestCase
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\Test\FormIntegrationTestCase;
+
+class ChangePasswordSubscriberTest extends FormIntegrationTestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
-    protected $aclManager;
+    protected $securityFacade;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $securityContext;
@@ -21,7 +23,9 @@ class ChangePasswordSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\Manager')
+        parent::setUp();
+
+        $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -34,7 +38,7 @@ class ChangePasswordSubscriberTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->subscriber = new ChangePasswordSubscriber($this->aclManager, $this->securityContext);
+        $this->subscriber = new ChangePasswordSubscriber($this->factory, $this->securityFacade, $this->securityContext);
     }
 
     /**
@@ -45,6 +49,7 @@ class ChangePasswordSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 FormEvents::POST_SUBMIT => 'onSubmit',
+                FormEvents::PRE_SUBMIT   => 'preSubmit'
             ),
             $this->subscriber->getSubscribedEvents()
         );
@@ -104,11 +109,73 @@ class ChangePasswordSubscriberTest extends \PHPUnit_Framework_TestCase
             ->method('getData')
             ->will($this->returnValue($userMock));
 
-        $eventMock->expects($this->exactly(2))
+        $eventMock->expects($this->once())
             ->method('getForm')
             ->will($this->returnValue($formMock));
 
         $this->subscriber->onSubmit($eventMock);
+    }
+
+    /**
+     * Test preSubmit
+     *
+     * @dataProvider preSubmitProvider
+     */
+    public function testPreSubmit($mode, $data)
+    {
+        $eventMock = $this->getMockBuilder('Symfony\Component\Form\FormEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $formMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $eventMock->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($formMock));
+        $eventMock->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue($data));
+
+        if ($mode) {
+            $formMock->expects($this->once())
+                ->method('remove')
+                ->with('currentPassword');
+
+            $formMock->expects($this->once())
+                ->method('add')
+                ->with($this->isInstanceOf('Symfony\Component\Form\Form'));
+        } else {
+            $formMock->expects($this->never())
+                ->method('remove');
+
+            $formMock->expects($this->never())
+                ->method('add');
+        }
+
+        $this->subscriber->preSubmit($eventMock);
+    }
+
+    /**
+     * @return array
+     */
+    public function preSubmitProvider()
+    {
+        return array(
+            array(true, array(
+                'currentPassword' => null,
+                'plainPassword' => array(
+                    'first' => null
+                ),
+            )),
+            array(false, array(
+                'currentPassword' => '123123',
+                'plainPassword' => array(
+                    'first' => '32321'
+                ),
+            )),
+        );
     }
 
     /**

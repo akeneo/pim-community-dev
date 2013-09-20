@@ -12,25 +12,44 @@ use Oro\Bundle\UserBundle\Entity\User;
 class ChangePasswordSubscriber extends UserSubscriber
 {
     /**
-     * @param AclManager               $aclManager ACL manager
-     * @param SecurityContextInterface $security   Security context
-     */
-    public function __construct(
-        AclManager $aclManager,
-        SecurityContextInterface $security
-    ) {
-        $this->aclManager = $aclManager;
-        $this->security   = $security;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return array(
             FormEvents::POST_SUBMIT => 'onSubmit',
+            FormEvents::PRE_SUBMIT   => 'preSubmit'
         );
+    }
+
+    /**
+     * Re-create current password field in case of user don't filled any password field
+     *
+     * @param FormEvent $event
+     */
+    public function preSubmit(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $data = $event->getData();
+
+        $isEmptyPassword = $data['currentPassword'] . $data['plainPassword']['first'];
+        $isEmptyPassword = empty($isEmptyPassword);
+
+        if ($isEmptyPassword) {
+            $form->remove('currentPassword');
+
+            $form->add(
+                $this->factory->createNamed(
+                    'currentPassword',
+                    'password',
+                    null,
+                    array(
+                        'auto_initialize' => false,
+                        'mapped' => false,
+                    )
+                )
+            );
+        }
     }
 
     /**
@@ -38,9 +57,10 @@ class ChangePasswordSubscriber extends UserSubscriber
      */
     public function onSubmit(FormEvent $event)
     {
+        $form = $event->getForm();
         /** @var User $user */
-        $user = $event->getForm()->getParent()->getData();
-        $plainPassword = $event->getForm()->get('plainPassword');
+        $user = $form->getParent()->getData();
+        $plainPassword = $form->get('plainPassword');
 
         if ($this->isCurrentUser($user)) {
             $user->setPlainPassword($plainPassword->getData());

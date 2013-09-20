@@ -12,20 +12,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 
 use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
 
-/**
- * @Acl(
- *      id="oro_user_user",
- *      name="User manipulation",
- *      description="User manipulation",
- *      parent="oro_user"
- * )
- */
 class UserController extends Controller
 {
     /**
@@ -33,9 +26,9 @@ class UserController extends Controller
      * @Template
      * @Acl(
      *      id="oro_user_user_view",
-     *      name="View user user",
-     *      description="View user user",
-     *      parent="oro_user_user"
+     *      type="entity",
+     *      class="OroUserBundle:User",
+     *      permission="VIEW"
      * )
      */
     public function viewAction(User $user)
@@ -47,12 +40,7 @@ class UserController extends Controller
 
     /**
      * @Route("/apigen/{id}", name="oro_user_apigen", requirements={"id"="\d+"})
-     * @Acl(
-     *      id="oro_user_user_apigen",
-     *      name="Generate new API key",
-     *      description="Generate new API key",
-     *      parent="oro_user_user"
-     * )
+     * @AclAncestor("oro_user_user_update")
      */
     public function apigenAction(User $user)
     {
@@ -80,9 +68,9 @@ class UserController extends Controller
      * @Template("OroUserBundle:User:update.html.twig")
      * @Acl(
      *      id="oro_user_user_create",
-     *      name="Create user",
-     *      description="Create user",
-     *      parent="oro_user_user"
+     *      type="entity",
+     *      class="OroUserBundle:User",
+     *      permission="CREATE"
      * )
      */
     public function createAction()
@@ -99,9 +87,9 @@ class UserController extends Controller
      * @Template
      * @Acl(
      *      id="oro_user_user_update",
-     *      name="Edit user",
-     *      description="Edit user",
-     *      parent="oro_user_user"
+     *      type="entity",
+     *      class="OroUserBundle:User",
+     *      permission="EDIT"
      * )
      */
     public function updateAction(User $entity)
@@ -134,12 +122,7 @@ class UserController extends Controller
      *      requirements={"_format"="html|json"},
      *      defaults={"_format" = "html"}
      * )
-     * @Acl(
-     *      id="oro_user_user_list",
-     *      name="View list of users",
-     *      description="View list of users",
-     *      parent="oro_user_user"
-     * )
+     * @AclAncestor("oro_user_user_view")
      */
     public function indexAction()
     {

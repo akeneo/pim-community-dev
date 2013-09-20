@@ -2,13 +2,10 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
-use Symfony\Component\Security\Core\Role\RoleInterface;
+use Symfony\Component\Security\Core\Role\Role as BaseRole;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
-use Oro\Bundle\UserBundle\Entity\Acl;
 
 use JMS\Serializer\Annotation\Type;
 
@@ -25,11 +22,19 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  * @Config(
  *  defaultValues={
  *      "entity"={"label"="Role", "plural_label"="Roles"},
- *      "ownership"={"owner_type"="BUSINESS_UNIT"}
+ *      "ownership"={
+ *          "owner_type"="BUSINESS_UNIT",
+ *          "owner_field_name"="owner",
+ *          "owner_column_name"="business_unit_owner_id"
+ *      },
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
  *  }
  * )
  */
-class Role implements RoleInterface
+class Role extends BaseRole
 {
     /**
      * @var int
@@ -69,11 +74,6 @@ class Role implements RoleInterface
     protected $owner;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Acl", mappedBy="accessRoles")
-     */
-    protected $aclResources;
-
-    /**
      * Populate the role field
      *
      * @param string $role ROLE_FOO etc
@@ -82,7 +82,6 @@ class Role implements RoleInterface
     {
         $this->role  =
         $this->label = $role;
-        $this->aclResources = new ArrayCollection();
     }
 
     /**
@@ -155,44 +154,6 @@ class Role implements RoleInterface
     public function __toString()
     {
         return (string) $this->role;
-    }
-
-    /**
-     * Add aclResources
-     *
-     * @param  Acl  $aclResources
-     * @return Role
-     */
-    public function addAclResource(Acl $aclResources)
-    {
-        $this->aclResources[] = $aclResources;
-
-        return $this;
-    }
-
-    /**
-     * Remove aclResources
-     *
-     * @param Acl $aclResources
-     */
-    public function removeAclResource(Acl $aclResources)
-    {
-        $this->aclResources->removeElement($aclResources);
-    }
-
-    /**
-     * Get aclResources
-     *
-     * @return ArrayCollection
-     */
-    public function getAclResources()
-    {
-        return $this->aclResources;
-    }
-
-    public function setAclResources($resources)
-    {
-        $this->aclResources = $resources;
     }
 
     /**

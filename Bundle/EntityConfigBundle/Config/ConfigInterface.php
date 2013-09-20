@@ -32,9 +32,10 @@ interface ConfigInterface extends \Serializable
 
     /**
      * @param string $code
+     * @param bool   $value
      * @return bool
      */
-    public function is($code);
+    public function is($code, $value = true);
 
     /**
      * @param callable $filter

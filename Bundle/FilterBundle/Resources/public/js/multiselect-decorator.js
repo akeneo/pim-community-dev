@@ -67,8 +67,10 @@ function($, _, mediator) {
 
             // destroy DOM garbage after change page via hash-navigation
             mediator.once('hash_navigation_request:start', function() {
-                this.multiselect("destroy");
-                this.element.hide();
+                if (this.element.closest('body').length) {
+                    this.multiselect("destroy");
+                    this.element.hide();
+                }
             }, this);
         },
 

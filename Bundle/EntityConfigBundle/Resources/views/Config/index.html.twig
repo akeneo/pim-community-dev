@@ -4,6 +4,11 @@
 {% set gridId = 'entityconfig-grid' %}
 
 {% block content %}
+    {% if require_js|length %}
+        <script type="text/javascript">
+            require({{ require_js|json_encode|raw }})
+        </script>
+    {% endif %}
     {% set pageTitle = 'Entities' %}
 
     {% set buttons = [] %}

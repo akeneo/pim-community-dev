@@ -5,19 +5,22 @@ namespace Oro\Bundle\AddressBundle\Controller\Api\Soap;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Doctrine\Common\Persistence\ObjectManager;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Oro\Bundle\AddressBundle\Entity\Address;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
 use Oro\Bundle\AddressBundle\Entity\Repository\RegionRepository;
 
+/**
+ * TODO: Discuss ACL impl.
+ */
 class RegionController extends ContainerAware
 {
     /**
      * @Soap\Method("getRegions")
      * @Soap\Result(phpType = "Oro\Bundle\AddressBundle\Entity\Region[]")
-     * @AclAncestor("oro_address")
+     * AclAncestor("oro_address")
      */
     public function cgetAction()
     {
@@ -28,7 +31,7 @@ class RegionController extends ContainerAware
      * @Soap\Method("getRegion")
      * @Soap\Param("combinedCode", phpType = "string")
      * @Soap\Result(phpType = "Oro\Bundle\AddressBundle\Entity\Region")
-     * @AclAncestor("oro_address")
+     * AclAncestor("oro_address")
      */
     public function getAction($combinedCode)
     {
@@ -39,7 +42,7 @@ class RegionController extends ContainerAware
      * @Soap\Method("getRegionByCountry")
      * @Soap\Param("country", phpType = "string")
      * @Soap\Result(phpType = "Oro\Bundle\AddressBundle\Entity\Region[]")
-     * @AclAncestor("oro_address")
+     * AclAncestor("oro_address")
      */
     public function getByCountryAction(Country $country)
     {

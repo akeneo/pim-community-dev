@@ -5,14 +5,17 @@ namespace Oro\Bundle\AddressBundle\Controller\Api\Soap;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
+/**
+ * TODO: Discuss ACL impl.
+ */
 class AddressTypeController extends Controller
 {
     /**
      * @Soap\Method("getAddressTypes")
      * @Soap\Result(phpType = "Oro\Bundle\AddressBundle\Entity\AddressType[]")
-     * @AclAncestor("oro_address_type_list")
+     * AclAncestor("oro_address_type_list")
      */
     public function cgetAction()
     {
@@ -23,7 +26,7 @@ class AddressTypeController extends Controller
      * @Soap\Method("getAddressType")
      * @Soap\Param("name", phpType = "string")
      * @Soap\Result(phpType = "Oro\Bundle\AddressBundle\Entity\AddressType")
-     * @AclAncestor("oro_address_type_show")
+     * AclAncestor("oro_address_type_show")
      */
     public function getAction($name)
     {
