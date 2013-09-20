@@ -15,7 +15,7 @@ class TabRedirectAction extends AbstractAction implements ActionInterface
     /**
      * @var string
      */
-    protected $type = self::TYPE_REDIRECT;
+    protected $type = self::TYPE_TAB_REDIRECT;
 
     /**
      * @var array

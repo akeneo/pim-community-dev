@@ -13,17 +13,10 @@ function(NavigateAction) {
      */
     var parent = NavigateAction.prototype,
         TabRedirectAction = NavigateAction.extend({
-        initialize: function(options) {
-            parent.initialize.call(this, options);
-            if (!options.tab) {
-                throw new TypeError("'tab' is required");
+            run: function() {
+                sessionStorage.activeTab = this.tab;
+                parent.run.call(this);
             }
-            this.tab = options.tab;
-        }, 
-        execute: function() {
-            sessionStorage.activeTab = this.tab;
-            parent.execute.call(this);
-        }
-    });
+        });
     return TabRedirectAction;
 });
