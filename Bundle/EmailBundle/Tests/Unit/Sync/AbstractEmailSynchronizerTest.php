@@ -45,6 +45,190 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
         $this->sync->setLogger($this->log);
     }
 
+    public function testSyncNoOrigin()
+    {
+        $maxConcurrentTasks = 3;
+        $minExecPeriodInMin = 1;
+
+        $sync = $this->getMockBuilder('Oro\Bundle\EmailBundle\Tests\Unit\Sync\Fixtures\TestEmailSynchronizer')
+            ->disableOriginalConstructor()
+            ->setMethods(
+                array(
+                    'resetHangedOrigins',
+                    'getOriginToSync',
+                    'createSynchronizationProcessor',
+                    'changeOriginSyncState'
+                )
+            )
+            ->getMock();
+        $sync->setLogger($this->log);
+
+        $sync->expects($this->once())
+            ->method('resetHangedOrigins');
+        $sync->expects($this->once())
+            ->method('getOriginToSync')
+            ->with($maxConcurrentTasks, $minExecPeriodInMin)
+            ->will($this->returnValue(null));
+        $sync->expects($this->never())
+            ->method('createSynchronizationProcessor');
+
+        $sync->sync($maxConcurrentTasks, $minExecPeriodInMin);
+    }
+
+    public function testSync()
+    {
+        $maxConcurrentTasks = 3;
+        $minExecPeriodInMin = 1;
+        $origin = new TestEmailOrigin(123);
+
+        $processor =
+            $this->getMockBuilder('Oro\Bundle\EmailBundle\Tests\Unit\Sync\Fixtures\TestEmailSynchronizationProcessor')
+                ->disableOriginalConstructor()
+                ->getMock();
+
+        $sync = $this->getMockBuilder('Oro\Bundle\EmailBundle\Tests\Unit\Sync\Fixtures\TestEmailSynchronizer')
+            ->disableOriginalConstructor()
+            ->setMethods(
+                array(
+                    'resetHangedOrigins',
+                    'getOriginToSync',
+                    'createSynchronizationProcessor',
+                    'changeOriginSyncState'
+                )
+            )
+            ->getMock();
+        $sync->setLogger($this->log);
+
+        $sync->expects($this->once())
+            ->method('resetHangedOrigins');
+        $sync->expects($this->once())
+            ->method('getOriginToSync')
+            ->with($maxConcurrentTasks, $minExecPeriodInMin)
+            ->will($this->returnValue($origin));
+        $sync->expects($this->once())
+            ->method('createSynchronizationProcessor')
+            ->with($this->identicalTo($origin))
+            ->will($this->returnValue($processor));
+        $sync->expects($this->at(3))
+            ->method('changeOriginSyncState')
+            ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS);
+        $processor->expects($this->once())
+            ->method('process')
+            ->with($this->identicalTo($origin));
+        $sync->expects($this->at(4))
+            ->method('changeOriginSyncState')
+            ->with(
+                $this->identicalTo($origin),
+                AbstractEmailSynchronizer::SYNC_CODE_SUCCESS,
+                $this->lessThanOrEqual(new \DateTime('now', new \DateTimeZone('UTC')))
+            );
+
+        $sync->sync($maxConcurrentTasks, $minExecPeriodInMin);
+    }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testSyncProcessFailed()
+    {
+        $maxConcurrentTasks = 3;
+        $minExecPeriodInMin = 1;
+        $origin = new TestEmailOrigin(123);
+
+        $processor =
+            $this->getMockBuilder('Oro\Bundle\EmailBundle\Tests\Unit\Sync\Fixtures\TestEmailSynchronizationProcessor')
+                ->disableOriginalConstructor()
+                ->getMock();
+
+        $sync = $this->getMockBuilder('Oro\Bundle\EmailBundle\Tests\Unit\Sync\Fixtures\TestEmailSynchronizer')
+            ->disableOriginalConstructor()
+            ->setMethods(
+                array(
+                    'resetHangedOrigins',
+                    'getOriginToSync',
+                    'createSynchronizationProcessor',
+                    'changeOriginSyncState'
+                )
+            )
+            ->getMock();
+        $sync->setLogger($this->log);
+
+        $sync->expects($this->once())
+            ->method('resetHangedOrigins');
+        $sync->expects($this->once())
+            ->method('getOriginToSync')
+            ->with($maxConcurrentTasks, $minExecPeriodInMin)
+            ->will($this->returnValue($origin));
+        $sync->expects($this->once())
+            ->method('createSynchronizationProcessor')
+            ->with($this->identicalTo($origin))
+            ->will($this->returnValue($processor));
+        $sync->expects($this->at(3))
+            ->method('changeOriginSyncState')
+            ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS);
+        $processor->expects($this->once())
+            ->method('process')
+            ->with($this->identicalTo($origin))
+            ->will($this->throwException(new \Exception()));
+        $sync->expects($this->at(4))
+            ->method('changeOriginSyncState')
+            ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_FAILURE);
+
+        $sync->sync($maxConcurrentTasks, $minExecPeriodInMin);
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testSyncSetFailureFailed()
+    {
+        $maxConcurrentTasks = 3;
+        $minExecPeriodInMin = 1;
+        $origin = new TestEmailOrigin(123);
+
+        $processor =
+            $this->getMockBuilder('Oro\Bundle\EmailBundle\Tests\Unit\Sync\Fixtures\TestEmailSynchronizationProcessor')
+                ->disableOriginalConstructor()
+                ->getMock();
+
+        $sync = $this->getMockBuilder('Oro\Bundle\EmailBundle\Tests\Unit\Sync\Fixtures\TestEmailSynchronizer')
+            ->disableOriginalConstructor()
+            ->setMethods(
+                array(
+                    'resetHangedOrigins',
+                    'getOriginToSync',
+                    'createSynchronizationProcessor',
+                    'changeOriginSyncState'
+                )
+            )
+            ->getMock();
+        $sync->setLogger($this->log);
+
+        $sync->expects($this->once())
+            ->method('resetHangedOrigins');
+        $sync->expects($this->once())
+            ->method('getOriginToSync')
+            ->with($maxConcurrentTasks, $minExecPeriodInMin)
+            ->will($this->returnValue($origin));
+        $sync->expects($this->once())
+            ->method('createSynchronizationProcessor')
+            ->with($this->identicalTo($origin))
+            ->will($this->returnValue($processor));
+        $sync->expects($this->at(3))
+            ->method('changeOriginSyncState')
+            ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS);
+        $processor->expects($this->once())
+            ->method('process')
+            ->with($this->identicalTo($origin))
+            ->will($this->throwException(new \InvalidArgumentException()));
+        $sync->expects($this->at(4))
+            ->method('changeOriginSyncState')
+            ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_FAILURE)
+            ->will($this->throwException(new \Exception()));
+
+        $sync->sync($maxConcurrentTasks, $minExecPeriodInMin);
+    }
+
     /**
      * @dataProvider changeOriginSyncStateProvider
      */
@@ -221,6 +405,65 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
         $result = $this->sync->callGetOriginToSync($maxConcurrentTasks, $minExecPeriodInMin);
 
         $this->assertEquals($origin2, $result);
+    }
+
+    public function testResetHangedOrigins()
+    {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+
+        $q = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
+            ->disableOriginalConstructor()
+            ->setMethods(array('execute'))
+            ->getMockForAbstractClass();
+        $qb = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $repo = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $repo->expects($this->once())
+            ->method('createQueryBuilder')
+            ->with('o')
+            ->will($this->returnValue($qb));
+
+        $index = 0;
+        $qb->expects($this->at($index++))
+            ->method('update')
+            ->will($this->returnValue($qb));
+        $qb->expects($this->at($index++))
+            ->method('set')
+            ->with('o.syncCode', ':failure')
+            ->will($this->returnValue($qb));
+        $qb->expects($this->at($index++))
+            ->method('where')
+            ->with('o.syncCode = :inProcess AND o.syncCodeUpdatedAt <= :border')
+            ->will($this->returnValue($qb));
+        $qb->expects($this->at($index++))
+            ->method('setParameter')
+            ->with('inProcess', AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS)
+            ->will($this->returnValue($qb));
+        $qb->expects($this->at($index++))
+            ->method('setParameter')
+            ->with('failure', AbstractEmailSynchronizer::SYNC_CODE_FAILURE)
+            ->will($this->returnValue($qb));
+        $qb->expects($this->at($index++))
+            ->method('setParameter')
+            ->with('border', $this->lessThanOrEqual($now))
+            ->will($this->returnValue($qb));
+        $qb->expects($this->at($index++))
+            ->method('getQuery')
+            ->will($this->returnValue($q));
+
+        $q->expects($this->once())
+            ->method('execute');
+
+        $this->em->expects($this->once())
+            ->method('getRepository')
+            ->with(TestEmailSynchronizer::EMAIL_ORIGIN_ENTITY)
+            ->will($this->returnValue($repo));
+
+        $this->sync->callResetHangedOrigins();
     }
 
     public function changeOriginSyncStateProvider()
