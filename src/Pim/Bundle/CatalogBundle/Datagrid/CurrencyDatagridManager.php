@@ -84,8 +84,7 @@ class CurrencyDatagridManager extends DatagridManager
             'options'      => array(
                 'label'         => $this->translate('Change status'),
                 'icon'          => 'random',
-                'link'          => 'toggle_link',
-                'backUrl'       => true
+                'link'          => 'toggle_link'
             )
         ));
     }

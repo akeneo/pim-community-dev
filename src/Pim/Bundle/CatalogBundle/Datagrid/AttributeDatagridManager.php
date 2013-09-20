@@ -198,8 +198,7 @@ class AttributeDatagridManager extends DatagridManager
                 'label'         => $this->translate('Edit'),
                 'icon'          => 'edit',
                 'link'          => 'edit_link',
-                'runOnRowClick' => true,
-                'backUrl'       => true
+                'runOnRowClick' => true
             )
         );
 
@@ -210,8 +209,7 @@ class AttributeDatagridManager extends DatagridManager
             'options'      => array(
                 'label'   => $this->translate('Edit'),
                 'icon'    => 'edit',
-                'link'    => 'edit_link',
-                'backUrl' => true
+                'link'    => 'edit_link'
             )
         );
 
@@ -222,8 +220,7 @@ class AttributeDatagridManager extends DatagridManager
             'options'      => array(
                 'label'   => $this->translate('Delete'),
                 'icon'    => 'trash',
-                'link'    => 'delete_link',
-                'backUrl' => true
+                'link'    => 'delete_link'
             )
         );
 
