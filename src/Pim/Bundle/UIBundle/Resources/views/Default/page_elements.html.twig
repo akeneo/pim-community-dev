@@ -19,18 +19,18 @@
 
 {% macro backLink(url, title) %}
 {% spaceless %}
-    {% set title = title ? title : 'Back to grid' %}
-    <a class="btn icons-holder back-link" href="{{ url }}" title="{{ title|trans }}"><i class="icon-chevron-left"></i></a>
+    {% set title = title|default('btn.to grid') %}
+    <a class="btn icons-holder back-link" href="{{ url }}" title="{{ title|trans|capitalize }}"><i class="icon-chevron-left"></i></a>
 {% endspaceless %}
 {% endmacro %}
 
 {% macro deleteLink(url, message, title) %}
 {% spaceless %}
-    {% set message = message ? message : 'Are you sure you want to delete this item?' %}
-    {% set title = title ? title : 'Delete confirmation' %}
-    <a class="btn icons-holder-text no-hash" href="javascript:void(0);" title="{{ 'Delete'|trans }}" data-dialog="confirm" data-title="{{ title|trans }}" data-message="{{ message|trans }}" data-url="{{ url }}" data-method="DELETE">
+    {% set message = message|default('confirmation.remove.item') %}
+    {% set title = title|default('confirmation.delete') %}
+    <a class="btn icons-holder-text no-hash" href="javascript:void(0);" title="{{ 'btn.delete'|trans|capitalize }}" data-dialog="confirm" data-title="{{ title|trans }}" data-message="{{ message|trans }}" data-url="{{ url }}" data-method="DELETE">
         <i class="icon-trash"></i>
-        {{ 'Delete'|trans }}
+        {{ 'btn.delete'|trans|capitalize }}
     </a>
 {% endspaceless %}
 {% endmacro %}

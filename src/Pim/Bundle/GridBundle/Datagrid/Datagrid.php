@@ -22,8 +22,10 @@ class Datagrid extends OroDatagrid
      */
     protected $serializer;
 
+    static private $applied = false;
+
     /**
-     * @var array
+     * @var ExportActionInterface[]
      */
     protected $exportActions = array();
 
@@ -38,6 +40,7 @@ class Datagrid extends OroDatagrid
 
     /**
      * Get list of export actions
+     *
      * @return ExportActionInterface[]
      */
     public function getExportActions()
@@ -60,54 +63,60 @@ class Datagrid extends OroDatagrid
     }
 
     /**
+     * Returns the results count of the query
+     *
+     * @return integer
+     */
+    public function countResults()
+    {
+        $this->applyParameters();
+        $proxyQuery = clone $this->query;
+
+        $exprFieldId = sprintf('%s.id', $proxyQuery->getRootAlias());
+        $proxyQuery
+            ->select($exprFieldId)
+            ->groupBy($exprFieldId)
+            ->resetDQLPart('orderBy')
+            ->setFirstResult(null)
+            ->setMaxResults(null);
+
+        return count($proxyQuery->execute());
+    }
+
+    /**
+     * Returns the query with parameters applied
+     *
+     * @return \Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface
+     */
+    public function getQueryWithParametersApplied()
+    {
+        $this->applyParameters();
+
+        return $this->query;
+    }
+
+    /**
      * Serialize datagrid results in a specific format and with a specific context
-     * @param string $format
-     * @param array  $context
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     * @param string              $format
+     * @param array               $context
+     * @param int                 $offset
+     * @param int                 $limit
      *
      * @return string
      */
-    public function exportData($format, array $context = array())
+    public function exportData($proxyQuery, $format, array $context = array(), $offset = null, $limit = null)
     {
-        return $this->serializer->serialize(
-            $this->getResultsWithoutPaging(),
-            $format,
-            $context
-        );
-    }
+        $proxyQuery
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
 
-    /**
-     * Get query result without pagination
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getResultsWithoutPaging()
-    {
-        $this->pagerApplied = true;
-        $this->applyParameters();
+        $results = $proxyQuery->execute();
+        $data = $this->serializer->serialize($results, $format, $context);
 
-        // allow to get all the columns
-        $this->query->select($this->query->getRootAlias());
+        $proxyQuery->getEntityManager()->clear();
 
-        return $this->getQuery()->execute();
-    }
-
-    /**
-     * Get all query result ids
-     *
-     * @return integer[]
-     */
-    public function getAllIds()
-    {
-        $this->pagerApplied = true;
-        $this->sorterApplied = true;
-        $this->applyParameters();
-        $this->query->select($this->query->getRootAlias());
-        $entities = $this->query->execute(array(), AbstractQuery::HYDRATE_ARRAY);
-        $func = function ($entity) {
-            return $entity['id'];
-        };
-        $ids = array_unique(array_map($func, $entities));
-
-        return $ids;
+        return $data;
     }
 }

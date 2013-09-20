@@ -1,5 +1,7 @@
 {% extends 'PimCatalogBundle:AttributeGroup:index.html.twig' %}
 
+{% oro_title_set({ params: { "%group.name%": form.vars.value.name } }) %}
+
 {% block groupTab %}
 {{ JSFV(form) }}
 <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ path('pim_catalog_attributegroup_edit', { id: form.vars.value.id }) }}" method="POST">
@@ -7,7 +9,7 @@
     {% set title = 'attribute group.edit'|trans ~ ' - ' ~ form.vars.data.name %}
 
     {% set buttons %}
-        {{ elements.deleteLink(path('pim_catalog_attributegroup_remove', {'id': form.vars.value.id}), 'Are you sure you want to delete the group %group%?'|trans({'%group%': form.vars.data.name})) }}
+        {{ elements.deleteLink(path('pim_catalog_attributegroup_remove', {'id': form.vars.value.id}), 'confiration.remove.attribute group'|trans({'%name%': form.vars.data.name})) }}
         {{ elements.submitBtn() }}
     {% endset %}
 
@@ -56,7 +58,7 @@
                                     <input type="checkbox" disabled="disabled"{% if attribute.translatable %} checked="checked"{% endif %}>
                                 </td>
                                 <td>
-                                    <a href="javascript:void(0);" class="remove-attribute" data-url="{{ path('pim_catalog_attributegroup_removeproductattribute', {'groupId': group.id, 'attributeId': attribute.id}) }}" data-dialog="confirm" data-method="DELETE" data-title="{{ 'Delete confirmation'|trans }}" data-message="{{ 'Are you sure you want to remove attribute %attribute%?'|trans({'%attribute%': attribute.label}) }}">
+                                    <a href="javascript:void(0);" class="remove-attribute" data-url="{{ path('pim_catalog_attributegroup_removeproductattribute', {'groupId': group.id, 'attributeId': attribute.id}) }}" data-dialog="confirm" data-method="DELETE" data-title="{{ 'confirmation.delete'|trans }}" data-message="{{ 'confirmation.remove.attribute'|trans({'%name%': attribute.label}) }}">
                                         <i class="icon-trash"></i>
                                     </a>
                                 </td>

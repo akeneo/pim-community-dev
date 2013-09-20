@@ -9,7 +9,10 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+
 use Oro\Bundle\UserBundle\Annotation\Acl;
+
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
@@ -44,6 +47,7 @@ class CurrencyController extends AbstractDoctrineController
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      * @param DatagridWorkerInterface  $datagridWorker
      */
@@ -54,10 +58,20 @@ class CurrencyController extends AbstractDoctrineController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        TranslatorInterface $translator,
         RegistryInterface $doctrine,
         DatagridWorkerInterface $datagridWorker
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $securityContext,
+            $formFactory,
+            $validator,
+            $translator,
+            $doctrine
+        );
 
         $this->datagridWorker = $datagridWorker;
     }
@@ -65,6 +79,7 @@ class CurrencyController extends AbstractDoctrineController
      * List currencies
      *
      * @param Request $request
+     *
      * @Acl(
      *      id="pim_catalog_currency_index",
      *      name="View currency list",
@@ -93,6 +108,7 @@ class CurrencyController extends AbstractDoctrineController
      * Activate/Desactivate a currency
      *
      * @param Currency $currency
+     *
      * @Acl(
      *      id="pim_catalog_currency_toggle",
      *      name="Change currency status",
@@ -107,9 +123,9 @@ class CurrencyController extends AbstractDoctrineController
             $currency->toggleActivation();
             $this->getManager()->flush();
 
-            $this->addFlash('success', 'Currency is successfully updated.');
+            $this->addFlash('success', 'flash.currency.updated');
         } catch (\Exception $e) {
-            $this->addFlash('error', 'Action failed. Please retry.');
+            $this->addFlash('error', 'flash.error ocurred');
         }
 
         return $this->redirect($this->generateUrl('pim_catalog_currency_index'));

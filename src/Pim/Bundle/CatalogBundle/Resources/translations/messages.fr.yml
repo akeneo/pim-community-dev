@@ -73,12 +73,88 @@ btn:
         import profile:  __create import profile
         locale:          __create locale
         product:         __create product
-    edit:   modifier
-    save:   sauvegarder
-    remove: __remove
-    cancel: __cancel
-    next:   __next
-    back:   __back
+    edit:      modifier
+    save:      sauvegarder
+    remove:    __remove
+    delete:    __delete
+    cancel:    __cancel
+    next:      __next
+    back:      __back
+    to grid:   __back to grid
+    to parent: __back to parent
+
+# Confirmation messages
+confirmation:
+    delete:          __Delete confirmation
+    leave:           __Are you sure you want to leave this page?
+    discard changes: __You will lose changes to the %entity% if you leave the page.
+    remove:
+        item:            __Are you sure you want to delete this item?
+        attribute:       __Are you sure you want to remove the attribute %name%?
+        attribute group: __Are you sure you want to delete the attribute group %name%?
+        category:        __Are you sure you want to delete the category %name%?
+        family:          __Are you sure you want to remove the family %name%?
+        product:         __Are you sure you want to delete the product %name%?
+        export profile:  __Are you sure you want to delete the export profile %name%?
+        import profile:  __Are you sure you want to delete the import profile %name%?
+    product:
+        change family: __Are you sure you want to change the family?
+
+# Flash messages
+flash:
+    attribute:
+        created:                  __Attribute successfully created
+        updated:                  __Attribute successfully updated
+        removed:                  __Attribute successfully removed
+        identifier not removable: __Identifier attribute can not be removed
+    attribute group:
+        created:           __Attribute group successfully created
+        updated:           __Attribute group successfully updated
+        removed:           __Attribute group successfully removed
+        attributes added:  __Attributes successfully added to the attribute group
+        attribute removed: __Attribute successfully removed from the attribute group
+    category:
+        created: __Category successfully created
+        updated: __Category successfully updated
+        removed: __Category successfully removed
+    tree:
+        created: __Tree successfully created
+        updated: __Tree successfully updated
+        removed: __Tree successfully removed
+    channel:
+        saved:   __Channel successfully saved
+        removed: __Channel successfully removed
+    currency:
+        updated: __Currency successfully updated
+    family:
+        created:                       __Family successfully created
+        updated:                       __Family successfully updated
+        removed:                       __Family successfully removed
+        identifier not removable:      __Identifier attribute can not be removed from a family
+        label attribute not removable: __This attribute can not be removed because it is used as the label of the family
+        attribute not found:           __The attribute does not belong to this family
+        attributes added:              __Attributes successfully added to the family
+        attribute removed:             __Attribute successfully removed from the family
+    product:
+        created:                  __Product successfully created
+        updated:                  __Product successfully updated
+        removed:                  __Product successfully removed
+        invalid:                  __Please check your entry and try again
+        attributes added:         __Attributes successfully added to the product
+        attribute removed:        __Attribute successfully removed from the product
+        attribute not removable:  __The attribute can not be removed from this product
+    error ocurred: __Action failed. Please retry.
+
+# Info messages
+info:
+    updated: __There are unsaved changes.
+    category:
+        remove children: __All sub-categories will be deleted.
+        keep products:   __Products in these categories will not be deleted.
+    product:
+        no available attributes: __There are no more attributes to add
+        merge attributes:        __Current attributes will be merged with the ones in the new family.
+        keep attributes:         __No attributes will be removed.
 
 # Form elements
 Options:                       Options
@@ -123,13 +199,10 @@ Locale specific:               __Locale specific
 Label translations:            __Label translations
 default:                       __Default
 
-Create:                                    __Create
-Cancel:                                    __Cancel
-Create a new product:                      __Create a new product
-Choose a family:                           __Choose a family
-Attributes are added to the product form.: __Attributes are added to the product form.
-Product successfully saved:                __Product successfully saved
-There are unsaved changes.:                __There are unsaved changes.
+Create:               __Create
+Cancel:               __Cancel
+Create a new product: __Create a new product
+Choose a family:      __Choose a family
 
 # Scopes
 Global:  Global
@@ -170,49 +243,42 @@ Allowed file extensions: __Allowed file extensions
 Attributes: __Attributes
 
 # Category
-Category successfully saved:   __Category successfully saved
-Category successfully removed: __Category successfully removed
-Title:                         __Title
-Is dynamic:                    __Is dynamic
-
-# Export profiles
-Export profiles overview: __Export profiles overview
-New export profile:       __New export profile
-Edit export profile:      __Edit export profile
+Title:      __Title
+Is dynamic: __Is dynamic
 
 # Page titles
-Dashboard:                   __Dashboard
-Attribute groups:            __Attribute groups
-Attribute groups | Create:   __Attribute groups | Create
-Attribute groups | Edit:     __Attribute groups | Edit
-Attribute groups | Sort:     __Attribute groups | Sort
-Category trees:              __Category trees
-Category trees | List:       __Category trees | List
-Category trees | Manage:     __Category trees | Manage
-Category trees | View:       __Category trees | View
-Category trees | Create:     __Category trees | Create
-Category trees | Edit:       __Category trees | Edit
-Export profiles:             __Export profiles
-Export profiles | Create:    __Export profiles | Create
-Export profiles | Edit:      __Export profiles | Edit
-Product attributes:          __Product attributes
-Product attributes | Create: __Product attributes | Create
-Product attributes | Edit:   __Product attributes | Edit
-Products:                    __Products
-Products | Create:           __Products | Create
-Products | Edit:             __Products | Edit
-Families:                    __Families
-Families | Create:           __Families | Create
-Families | Edit:             __Families | Edit
-Channels:                    __Channels
-Channels | Create:           __Channels | Create
-Channels | Edit:             __Channels | Edit
-Currencies:                  __Currencies
-Currencies | Create:         __Currencies | Create
-Currencies | Edit:           __Currencies | Edit
-Locales:                     __Locales
-Locales | Create:            __Locales | Create
-Locales | Edit:              __Locales | Edit
+Dashboard:                                   __Dashboard
+Attribute groups:                            __Attribute groups
+Attribute groups | Create:                   __Attribute groups | Create
+Attribute groups %group.name% | Edit:        __Attribute groups %group.name% | Edit
+Attribute groups | Sort:                     __Attribute groups | Sort
+Category trees:                              __Category trees
+Category trees | List:                       __Category trees | List
+Category trees | Manage:                     __Category trees | Manage
+Category trees | View:                       __Category trees | View
+Category trees | Create:                     __Category trees | Create
+Category trees | Edit:                       __Category trees | Edit
+Export profiles:                             __Export profiles
+Export profiles | Create:                    __Export profiles | Create
+Export profiles %export.label% | Edit:       __Export profiles %export.label% | Edit
+Import profiles:                             __Import profiles
+Import profiles | Create:                    __Import profiles | Create
+Import profiles %import.label% | Edit:       __Import profiles %import.label% | Edit
+Product attributes:                          __Product attributes
+Product attributes | Create:                 __Product attributes | Create
+Product attributes %attribute.label% | Edit: __Product attributes %attribute.label% | Edit
+Products:                                    __Products
+Products | Create:                           __Products | Create
+Products %product.sku% | Edit:               __Products %product.sku% | Edit
+Families:                                    __Families
+Families | Create:                           __Families | Create
+Families %family.label% | Edit:              __Families %family.label% | Edit
+Channels:                                    __Channels
+Channels | Create:                           __Channels | Create
+Channels %channel.name% | Edit:              __Channels %channel.name% | Edit
+Currencies:                                  __Currencies
+Locales:                                     __Locales
+Locales %locale.code% | Edit:                __Locales %locale.code% | Edit
 
 pim_catalog_identifier:       __Identifier
 pim_catalog_text:             __Text

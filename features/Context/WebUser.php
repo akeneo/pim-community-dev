@@ -47,6 +47,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /* -------------------- Page-related methods -------------------- */
 
     /**
+     * @BeforeStep
+     */
+    public function maximize()
+    {
+        try {
+            $this->getSession()->getDriver()->resizeWindow(1280, 720);
+        } catch (UnsupportedDriverActionException $e) {
+        }
+    }
+
+    /**
      * @BeforeScenario
      */
     public function resetCurrentPage()
@@ -1896,7 +1907,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return void
      */
-    private function wait($time = 4000, $condition = null)
+    private function wait($time = 5000, $condition = null)
     {
         $condition = $condition ?: <<<JS
         document.readyState == "complete"                   // Page is ready

@@ -2,7 +2,7 @@
  * Custom javascript form validation for PIM
  */
 
-require(['jquery', 'oro/translator', 'jquery.bind-first', 'bootstrap.tooltip'],
+require(['jquery', 'oro/translator', 'jquery.bind-first', 'bootstrap-tooltip'],
 function($, __){
 {% block before %}{% endblock %}
 
@@ -178,6 +178,7 @@ var jsfv = new function () {
 {% block removeErrors_method %}
         removeErrors: function (field) {
             $(field).removeClass('error').parent().filter('.controls').removeClass('validation-error');
+            $(field).siblings('.icons-container').find('.validation-tooltip').remove();
         },
 {% endblock %}
 {% block addError_method %}

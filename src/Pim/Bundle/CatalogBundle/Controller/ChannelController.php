@@ -9,10 +9,14 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 use Oro\Bundle\UserBundle\Annotation\Acl;
+
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ChannelHandler;
@@ -58,6 +62,7 @@ class ChannelController extends AbstractDoctrineController
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      * @param DatagridWorkerInterface  $datagridWorker
      * @param ChannelHandler           $channelHandler
@@ -70,12 +75,22 @@ class ChannelController extends AbstractDoctrineController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        TranslatorInterface $translator,
         RegistryInterface $doctrine,
         DatagridWorkerInterface $datagridWorker,
         ChannelHandler $channelHandler,
         Form $channelForm
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $securityContext,
+            $formFactory,
+            $validator,
+            $translator,
+            $doctrine
+        );
 
         $this->datagridWorker = $datagridWorker;
         $this->channelForm    = $channelForm;
@@ -148,7 +163,7 @@ class ChannelController extends AbstractDoctrineController
     public function editAction(Channel $channel)
     {
         if ($this->channelHandler->process($channel)) {
-            $this->addFlash('success', 'Channel successfully saved');
+            $this->addFlash('success', 'flash.channel.saved');
 
             return $this->redirect(
                 $this->generateUrl('pim_catalog_channel_index')
@@ -165,6 +180,7 @@ class ChannelController extends AbstractDoctrineController
      *
      * @param Request $request
      * @param Channel $channel
+     *
      * @Acl(
      *      id="pim_catalog_channel_remove",
      *      name="Remove a channel",
@@ -181,7 +197,7 @@ class ChannelController extends AbstractDoctrineController
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            $this->addFlash('success', 'Channel successfully removed');
+            $this->addFlash('success', 'flash.channel.removed');
 
             return $this->redirect($this->generateUrl('pim_catalog_channel_index'));
         }

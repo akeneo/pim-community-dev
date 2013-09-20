@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Base abstract controller
@@ -44,6 +45,21 @@ abstract class AbstractController
     private $securityContext;
 
     /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -52,6 +68,7 @@ abstract class AbstractController
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
      */
     public function __construct(
         Request $request,
@@ -59,7 +76,8 @@ abstract class AbstractController
         RouterInterface $router,
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        TranslatorInterface $translator
     ) {
         $this->request         = $request;
         $this->templating      = $templating;
@@ -67,6 +85,7 @@ abstract class AbstractController
         $this->securityContext = $securityContext;
         $this->formFactory     = $formFactory;
         $this->validator       = $validator;
+        $this->translator      = $translator;
     }
 
     /**
@@ -110,6 +129,16 @@ abstract class AbstractController
     }
 
     /**
+     * Returns the form factory service.
+     *
+     * @return FormFactoryInterface
+     */
+    protected function getFormFactory()
+    {
+        return $this->formFactory;
+    }
+
+    /**
      * Returns the validator service.
      *
      * @return ValidatorInterface
@@ -120,15 +149,14 @@ abstract class AbstractController
     }
 
     /**
-     * Returns the form factory service.
+     * Returns the translator service.
      *
-     * @return FormFactoryInterface
+     * @return TranslatorInterface
      */
-    protected function getFormFactory()
+    protected function getTranslator()
     {
-        return $this->formFactory;
+        return $this->translator;
     }
-
     /**
      * Generates a URL from the given parameters.
      *
@@ -215,7 +243,7 @@ abstract class AbstractController
      */
     protected function addFlash($type, $message)
     {
-        $this->request->getSession()->getFlashBag()->add($type, $message);
+        $this->request->getSession()->getFlashBag()->add($type, $this->translator->trans($message));
     }
 
     /**

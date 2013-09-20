@@ -32,7 +32,7 @@ Feature: Remove an attribute from a product
     And I am logged in as "admin"
     And I am on the "kangoo" product page
     When I remove the "Color" attribute
-    Then I should see "Attribute was successfully removed."
+    Then I should see "Attribute successfully removed from the product"
     And attributes in group "Other" should be Model and SKU
 
   @skip @javascript
@@ -54,5 +54,5 @@ Feature: Remove an attribute from a product
     And I am logged in as "admin"
     And I am on the "kangoo" product page
     When I remove the "Color" attribute
-    Then I should see "Attribute was successfully removed."
+    Then I should see "Attribute successfully removed from the product"
     And attributes in group "Other" should be Model and SKU

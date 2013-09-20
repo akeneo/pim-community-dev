@@ -12,6 +12,7 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\BatchBundle\Job\BatchStatus;
+use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
 /**
  * Report datagrid manager
@@ -139,29 +140,20 @@ class ReportDatagridManager extends DatagridManager
     {
         $acl = sprintf('pim_importexport_%s_report_show', $this->jobType);
 
-        $clickAction = array(
-            'name'         => 'rowClick',
+        $showAction = array(
+            'name'         => 'show',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => $acl,
             'options'      => array(
-                'label'         => $this->translate('Show'),
-                'link'          => 'show_link',
-                'backUrl'       => true,
-                'runOnRowClick' => true
+                'label'   => $this->translate('Show'),
+                'icon'    => 'list-alt',
+                'link'    => 'show_link'
             )
         );
 
-        $showAction = array(
-            'name'         => 'download',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => $acl,
-            'options'      => array(
-                'label'   => $this->translate('download'),
-                'icon'    => 'download',
-                'link'    => 'show_link',
-                'backUrl' => true
-            )
-        );
+        $clickAction = $showAction;
+        $clickAction['name'] = 'rowClick';
+        $clickAction['options']['runOnRowClick'] = true;
 
         return array($clickAction, $showAction);
     }
@@ -232,5 +224,13 @@ class ReportDatagridManager extends DatagridManager
         );
 
         return $field;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getDefaultSorters()
+    {
+        return array('startTime' => SorterInterface::DIRECTION_DESC);
     }
 }

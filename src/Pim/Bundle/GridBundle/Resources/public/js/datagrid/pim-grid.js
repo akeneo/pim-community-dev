@@ -1,6 +1,6 @@
 define(
-    ['underscore', 'oro/datagrid/grid', 'pim/datagrid/export-action'],
-    function (_, Grid, ExportCollectionAction) {
+    ['underscore', 'oro/datagrid/grid', 'pim/datagrid/export-action', 'pim/datagrid/toolbar'],
+    function (_, Grid, ExportCollectionAction, Toolbar) {
         'use strict';
 
         /**
@@ -20,32 +20,46 @@ define(
                 noResultsHint: 'No items found during search.',
                 rowClickActionClass: 'row-click-action',
                 rowClassName: '',
-                toolbarOptions: {},
-                addResetAction: true,
-                addRefreshAction: true,
-                addExportAction: true,
+                toolbarOptions: {addResetAction: true, addRefreshAction: true},
                 rowClickAction: undefined,
                 rowActions: [],
                 massActions: [],
                 exportActions: []
             },
 
+            /** @property {pim.datagrid.Toolbar} */
+            toolbar: Toolbar,
+            
             /**
-             * Override get mass actions of toolbar adding export actions
-             *
+             * @override
+             * Add export actions in toolbar
+             * 
+             * @param {Object} toolbarOptions
+             * @return {pim.datagrid.Toolbar}
+             * @private
+             */
+            _createToolbar:function(toolbarOptions) {
+                return new this.toolbar(_.extend({}, toolbarOptions, {
+                    collection: this.collection,
+                    actions: this._getToolbarActions(),
+                    massActions: this._getToolbarMassActions(),
+                    exportActions: this._getToolbarExportActions()
+                }));
+            },
+            
+            /**
+             * Get toolbar export actions
+             * 
              * @return {Array}
              * @private
              */
-            _getToolbarMassActions: function() {
+            _getToolbarExportActions: function() {
                 var result = [];
-                _.each(this.massActions, function(action) {
-                    result.push(this.createMassAction(action));
-                }, this);
                 
                 _.each(this.exportActions, function(action) {
                     result.push(this.createExportAction(action.prototype));
                 }, this);
-
+                
                 return result;
             },
             
@@ -71,4 +85,3 @@ define(
         });
     }
 );
-
