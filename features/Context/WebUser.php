@@ -179,7 +179,10 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             $currentUrl = explode('#url=', $currentUrl);
             $currentUrl = end($currentUrl);
 
-            assertEquals($url, $currentUrl, sprintf('Error ocurred on page "%s"', $data['page']));
+            assertTrue(
+                (bool) (($url === $currentUrl) || ($url ."|g/" === $currentUrl)),
+                sprintf('Error ocurred on page "%s"', $data['page'])
+            );
 
             $loadedCorrectly = (bool) $this->getSession()->evaluateScript('return $(\'img[alt="Akeneo"]\').length;');
             assertTrue($loadedCorrectly, sprintf('Javascript error ocurred on page "%s"', $data['page']));
