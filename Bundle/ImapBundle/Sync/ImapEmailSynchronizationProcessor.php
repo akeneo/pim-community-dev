@@ -106,8 +106,9 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
                 $this->addEmailAddressesToSearchQueryBuilder($sqb, 'to', $emailAddressBatch);
                 $sqb->orOperator();
                 $this->addEmailAddressesToSearchQueryBuilder($sqb, 'cc', $emailAddressBatch);
-                $sqb->orOperator();
-                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'bcc', $emailAddressBatch);
+                // not all IMAP servers support search by BCC, for example imap-mail.outlook.com does not
+                //$sqb->orOperator();
+                //$this->addEmailAddressesToSearchQueryBuilder($sqb, 'bcc', $emailAddressBatch);
                 $sqb->closeParenthesis();
 
                 $sqb->closeParenthesis();
