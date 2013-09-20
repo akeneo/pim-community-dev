@@ -74,7 +74,7 @@ class ImportExportController extends Controller
         );
     }
 
-	protected function getImportFileSessionKey($alias)
+    protected function getImportFileSessionKey($alias)
     {
         return 'oro_importexport_import_' . $alias;
     }
@@ -148,14 +148,6 @@ class ImportExportController extends Controller
         );
     }
 
-//    /**
-//     * @Rest\Get("/import/validate/{processorAlias}", defaults={"_format"="json"})
-//     * @ApiDoc(description="Validate entity import", resource=true)
-//     * @AclAncestor("oro_importexport_import")
-//     *
-//     * @param string $processorAlias
-//     * @return Response
-//     */
     /**
      * @Route("/export/instant/{processorAlias}", name="oro_importexport_export_instant")
      * @AclAncestor("oro_importexport_import")
