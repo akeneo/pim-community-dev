@@ -379,8 +379,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'options'      => array(
                 'label'   => $this->translate('Edit attributes of the product'),
                 'icon'    => 'edit',
-                'link'    => 'edit_link',
-                'backUrl' => true
+                'link'    => 'edit_link'
             )
         );
 
@@ -397,8 +396,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'tab'       => '#categories',
                 'icon'      => 'folder-close',
                 'className' => 'edit-categories-action',
-                'link'      => 'edit_categories_link',
-                'backUrl'   => true
+                'link'      => 'edit_categories_link'
             )
         );
 

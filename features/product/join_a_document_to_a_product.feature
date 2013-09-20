@@ -13,7 +13,7 @@ Feature: Join a document to a product
 
   Scenario: Succesfully leave the document empty
     When I save the product
-    Then I should see "Product successfully saved"
+    Then I should see "Product successfully updated"
 
   Scenario: Succesfully upload a document
     When I attach file "akeneo.txt" to "Description"

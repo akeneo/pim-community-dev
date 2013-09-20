@@ -3468,16 +3468,16 @@
         },
         {
             "name": "oro/platform",
-            "version": "dev-maintenance/pim_alpha5",
+            "version": "dev-maintenance/pim_alpha6",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "1bf419341809bea59455b3372cc596d4929ebcb1"
+                "reference": "a2e910e9d18f6825fa011bcf244bfe046165dd0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/1bf419341809bea59455b3372cc596d4929ebcb1",
-                "reference": "1bf419341809bea59455b3372cc596d4929ebcb1",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/a2e910e9d18f6825fa011bcf244bfe046165dd0a",
+                "reference": "a2e910e9d18f6825fa011bcf244bfe046165dd0a",
                 "shasum": ""
             },
             "require": {

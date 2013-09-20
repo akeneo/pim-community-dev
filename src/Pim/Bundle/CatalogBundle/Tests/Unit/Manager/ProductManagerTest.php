@@ -46,35 +46,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
                      ->method('handle')
                      ->with($this->equalTo($media), $this->stringContains('foobar'));
 
-        $target->save($product);
-    }
-
-    /**
-     * @test
-     */
-    public function itShouldDelegateTheMediaHandlingToTheTheMediaManager()
-    {
-        $mediaManager       = $this->getMediaManagerMock();
-        $flexibleRepository = $this->getEntityRepositoryMock();
-        $objectManager      = $this->getObjectManagerMock($flexibleRepository);
-        $target             = $this->getProductManager($mediaManager, $objectManager);
-        $media              = $this->getMediaMock('foo.jpg');
-        $value              = $this->getValueMock(null, null, $media, 'baz');
-        $product            = $this->getProductMock(array($value), 'foobar');
-
-        $mediaManager->expects($this->once())
-            ->method('handle')
-            ->with(
-                $media,
-                $this->callback(
-                    function ($subject) {
-                        return false !== strpos($subject, 'foobar')
-                            && false !== strpos($subject, 'baz');
-                    }
-                )
-            );
-
-        $target->save($product);
+        $target->handleMedia($product);
     }
 
     /**

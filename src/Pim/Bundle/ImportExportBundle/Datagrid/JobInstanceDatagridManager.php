@@ -60,18 +60,6 @@ class JobInstanceDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-        $clickAction = array(
-            'name'         => 'rowClick',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label'         => $this->translate('Show'),
-                'link'          => 'show_link',
-                'backUrl'       => true,
-                'runOnRowClick' => true
-            )
-        );
-
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
@@ -79,10 +67,13 @@ class JobInstanceDatagridManager extends DatagridManager
             'options'      => array(
                 'label'   => $this->translate('Edit'),
                 'icon'    => 'edit',
-                'link'    => 'edit_link',
-                'backUrl' => true
+                'link'    => 'edit_link'
             )
         );
+
+        $clickAction = $editAction;
+        $clickAction['name'] = 'rowClick';
+        $clickAction['options']['runOnRowClick'] = true;
 
         $deleteAction = array(
             'name'         => 'delete',
@@ -102,8 +93,7 @@ class JobInstanceDatagridManager extends DatagridManager
             'options'      => array(
                 'label'   => $this->translate('Launch'),
                 'icon'    => 'play',
-                'link'    => 'show_link',
-                'backUrl' => true
+                'link'    => 'show_link'
             )
         );
 

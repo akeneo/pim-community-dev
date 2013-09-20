@@ -110,7 +110,7 @@ class AttributeGroupController extends AbstractDoctrineController
         $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToNameOrderedBySortOrder();
 
         if ($this->formHandler->process($group)) {
-            $this->addFlash('success', 'Attribute group successfully created');
+            $this->addFlash('success', 'flash.attribute group.created');
 
             return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
         }
@@ -153,7 +153,7 @@ class AttributeGroupController extends AbstractDoctrineController
         }
 
         if ($this->formHandler->process($group)) {
-            $this->addFlash('success', 'Attribute group successfully saved');
+            $this->addFlash('success', 'flash.attribute group.updated');
 
             return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
         }
@@ -223,7 +223,7 @@ class AttributeGroupController extends AbstractDoctrineController
         $this->getManager()->remove($group);
         $this->getManager()->flush();
 
-        $this->addFlash('success', 'Attribute group successfully removed');
+        $this->addFlash('success', 'flash.attribute group.removed');
 
         if ($request->get('_redirectBack')) {
             $referer = $request->headers->get('referer');
@@ -288,7 +288,7 @@ class AttributeGroupController extends AbstractDoctrineController
 
         $this->getManager()->flush();
 
-        $this->addFlash('success', 'Attribute successfully added to the group');
+        $this->addFlash('success', 'flash.attribute group.attributes added');
 
         return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
     }
@@ -321,7 +321,7 @@ class AttributeGroupController extends AbstractDoctrineController
         $group->removeAttribute($attribute);
         $this->getManager()->flush();
 
-        $this->addFlash('success', 'Attribute successfully removed from the group');
+        $this->addFlash('success', 'flash.attribute group.attribute removed');
 
         return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
 

@@ -78,14 +78,13 @@ class CurrencyDatagridManager extends DatagridManager
     protected function getRowActions()
     {
         return array(array(
-            'name'         => 'edit',
+            'name'         => 'toggle',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
             'options'      => array(
                 'label'         => $this->translate('Change status'),
                 'icon'          => 'random',
-                'link'          => 'toggle_link',
-                'backUrl'       => true
+                'link'          => 'toggle_link'
             )
         ));
     }

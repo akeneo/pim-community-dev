@@ -78,8 +78,13 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
               ->method('isRemoved')
               ->will($this->returnValue(true));
 
+        $media->expects($this->any())
+            ->method('getFilename')
+            ->will($this->returnValue('foo.jpg'));
+
         $filesystem->expects($this->once())
                    ->method('delete');
+
 
         $target->handle($media, '');
     }

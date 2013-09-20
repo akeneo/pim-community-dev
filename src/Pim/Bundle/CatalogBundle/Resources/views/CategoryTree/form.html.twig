@@ -43,7 +43,7 @@
             {{ elements.deleteLink(
                 path('pim_catalog_categorytree_remove', { id: form.vars.value.id }),
                 'confirmation.remove.category'|trans({ '%name%': form.vars.value.title }) ~ '<br />'
-                ~ 'info.category.remmove children'|trans ~ '<br />'
+                ~ 'info.category.remove children'|trans ~ '<br />'
                 ~ 'info.category.keep products'|trans
             ) }}
         {% elseif parentId %}

@@ -100,6 +100,51 @@ confirmation:
     product:
         change family: Are you sure you want to change the family?
 
+# Flash messages
+flash:
+    attribute:
+        created:                  Attribute successfully created
+        updated:                  Attribute successfully updated
+        removed:                  Attribute successfully removed
+        identifier not removable: Identifier attribute can not be removed
+    attribute group:
+        created:           Attribute group successfully created
+        updated:           Attribute group successfully updated
+        removed:           Attribute group successfully removed
+        attributes added:  Attributes successfully added to the attribute group
+        attribute removed: Attribute successfully removed from the attribute group
+    category:
+        created: Category successfully created
+        updated: Category successfully updated
+        removed: Category successfully removed
+    tree:
+        created: Tree successfully created
+        updated: Tree successfully updated
+        removed: Tree successfully removed
+    channel:
+        saved:   Channel successfully saved
+        removed: Channel successfully removed
+    currency:
+        updated: Currency successfully updated
+    family:
+        created:                       Family successfully created
+        updated:                       Family successfully updated
+        removed:                       Family successfully removed
+        identifier not removable:      Identifier attribute can not be removed from a family
+        label attribute not removable: This attribute can not be removed because it is used as the label of the family
+        attribute not found:           The attribute does not belong to this family
+        attributes added:              Attributes successfully added to the family
+        attribute removed:             Attribute successfully removed from the family
+    product:
+        created:                  Product successfully created
+        updated:                  Product successfully updated
+        removed:                  Product successfully removed
+        invalid:                  Please check your entry and try again
+        attributes added:         Attributes successfully added to the product
+        attribute removed:        Attribute successfully removed from the product
+        attribute not removable:  The attribute can not be removed from this product
+    error ocurred: Action failed. Please retry.
+
 # Info messages
 info:
     updated: There are unsaved changes.
@@ -154,12 +199,10 @@ Locale specific:               Locale specific
 Label translations:            Label translations
 default:                       Default
 
-Create:                                    Create
-Cancel:                                    Cancel
-Create a new product:                      Create a new product
-Choose a family:                           Choose a family
-Attributes are added to the product form.: Attributes are added to the product form.
-Product successfully saved:                Product successfully saved
+Create:               Create
+Cancel:               Cancel
+Create a new product: Create a new product
+Choose a family:      Choose a family
 
 # Scopes
 Global:  Global
@@ -200,49 +243,42 @@ Allowed file extensions: Allowed file extensions
 Attributes: Attributes
 
 # Category
-Category successfully saved:   Category successfully saved
-Category successfully removed: Category successfully removed
-Title:                         Title
-Is dynamic:                    Is dynamic
-
-# Export profiles
-Export profiles overview: Export profiles overview
-New export profile:       New export profile
-Edit export profile:      Edit export profile
+Title:      Title
+Is dynamic: Is dynamic
 
 # Page titles
-'Dashboard'                    : 'Dashboard'
-'Attribute groups'             : 'Attribute groups'
-'Attribute groups | Create'    : 'Attribute groups | Create'
-'Attribute groups %group.name% | Edit'      : 'Attribute groups %group.name% | Edit'
-'Attribute groups | Sort'      : 'Attribute groups | Sort'
-'Category trees'               : 'Category trees'
-'Category trees | List'        : 'Category trees | List'
-'Category trees | Manage'      : 'Category trees | Manage'
-'Category trees | View'        : 'Category trees | View'
-'Category trees | Create'      : 'Category trees | Create'
-'Category trees | Edit'        : 'Category trees | Edit'
-'Export profiles'              : 'Export profiles'
-'Export profiles | Create'     : 'Export profiles | Create'
-'Export profiles %export.label% | Edit'       : 'Export profiles %export.label% | Edit'
-'Import profiles'              : 'Import profiles'
-'Import profiles | Create'     : 'Import profiles | Create'
-'Import profiles %import.label% | Edit'       : 'Import profiles %import.label% | Edit'
-'Product attributes'           : 'Product attributes'
-'Product attributes | Create'  : 'Product attributes | Create'
-'Product attributes %attribute.label% | Edit'    : 'Product attributes %attribute.label% | Edit'
-'Products'                     : 'Products'
-'Products | Create'            : 'Products | Create'
-'Products %product.sku% | Edit'              : 'Products %product.sku% | Edit'
-'Families'                     : 'Families'
-'Families | Create'            : 'Families | Create'
-'Families %family.label% | Edit'              : 'Families %family.label% | Edit'
-'Channels'                     : 'Channels'
-'Channels | Create'            : 'Channels | Create'
-'Channels %channel.name% | Edit'              : 'Channels %channel.name% | Edit'
-'Currencies'                   : 'Currencies'
-'Locales'                      : 'Locales'
-'Locales %locale.code% | Edit'               : 'Locales %locale.code% | Edit'
+Dashboard:                                   Dashboard
+Attribute groups:                            Attribute groups
+Attribute groups | Create:                   Attribute groups | Create
+Attribute groups %group.name% | Edit:        Attribute groups %group.name% | Edit
+Attribute groups | Sort:                     Attribute groups | Sort
+Category trees:                              Category trees
+Category trees | List:                       Category trees | List
+Category trees | Manage:                     Category trees | Manage
+Category trees | View:                       Category trees | View
+Category trees | Create:                     Category trees | Create
+Category trees | Edit:                       Category trees | Edit
+Export profiles:                             Export profiles
+Export profiles | Create:                    Export profiles | Create
+Export profiles %export.label% | Edit:       Export profiles %export.label% | Edit
+Import profiles:                             Import profiles
+Import profiles | Create:                    Import profiles | Create
+Import profiles %import.label% | Edit:       Import profiles %import.label% | Edit
+Product attributes:                          Product attributes
+Product attributes | Create:                 Product attributes | Create
+Product attributes %attribute.label% | Edit: Product attributes %attribute.label% | Edit
+Products:                                    Products
+Products | Create:                           Products | Create
+Products %product.sku% | Edit:               Products %product.sku% | Edit
+Families:                                    Families
+Families | Create:                           Families | Create
+Families %family.label% | Edit:              Families %family.label% | Edit
+Channels:                                    Channels
+Channels | Create:                           Channels | Create
+Channels %channel.name% | Edit:              Channels %channel.name% | Edit
+Currencies:                                  Currencies
+Locales:                                     Locales
+Locales %locale.code% | Edit:                Locales %locale.code% | Edit
 
 pim_catalog_identifier:       Identifier
 pim_catalog_text:             Text
