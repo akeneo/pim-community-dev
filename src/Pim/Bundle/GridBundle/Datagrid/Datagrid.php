@@ -132,7 +132,7 @@ class Datagrid extends OroDatagrid
          $this->applyParameters();
          $this->query->select($this->query->getRootAlias());
          $entities = $this->query->execute(array(), AbstractQuery::HYDRATE_ARRAY);
-         $func = function($entity) {
+         $func = function ($entity) {
              return $entity['id'];
          };
          $ids = array_unique(array_map($func, $entities));
