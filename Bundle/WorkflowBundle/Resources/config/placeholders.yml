@@ -1,5 +1,5 @@
 placeholders:
-    navButtons_before:
+    view_navButtons_before:
         label: Entity Workflow Buttons
         items:
             workflow_buttons_entity:
