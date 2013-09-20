@@ -32,8 +32,8 @@
 
 {{ JSFV(form) }}
 <form id="{{ form.vars.id }}" class="form-horizontal"
-    data-updated-title="{{ 'Are you sure you want to leave this page?'|trans }}"
-    data-updated-message="{{ 'You will lose changes to the category if you leave the page.'|trans }}"
+    data-updated-title="{{ 'confirmation.leave'|trans }}"
+    data-updated-message="{{ 'confirmation.discard changes'|trans({ '%entity%': entityName|trans }) }}"
     action="{{ form.vars.value.id ?
     path('pim_catalog_categorytree_edit', { id: form.vars.value.id }) :
     path('pim_catalog_categorytree_create', { parent: parentId }) }}" method="POST" {{ form_enctype(form) }}>
@@ -42,19 +42,19 @@
         {% if form.vars.value.id %}
             {{ elements.deleteLink(
                 path('pim_catalog_categorytree_remove', { id: form.vars.value.id }),
-                'Are you sure you want to delete this category?'|trans ~ '<br />'
-                ~ 'All sub-categories will be deleted.'|trans ~ '<br />'
-                ~ 'Products in these categories will not be deleted.'|trans
+                'confirmation.remove.category'|trans({ '%name%': form.vars.value.title }) ~ '<br />'
+                ~ 'info.category.remmove children'|trans ~ '<br />'
+                ~ 'info.category.keep products'|trans
             ) }}
         {% elseif parentId %}
-            {{ elements.backLink(path('pim_catalog_categorytree_edit', { id: parentId }), 'Back to parent') }}
+            {{ elements.backLink(path('pim_catalog_categorytree_edit', { id: parentId }), 'btn.to parent') }}
         {% endif %}
         {{ elements.submitBtn() }}
     {% endset %}
 
     {% set right %}
         <div class="pull-right entity-updated">
-            <span id="updated" class="label label-warning hide">{{ 'There are unsaved changes.'|trans }}</span>
+            <span id="updated" class="label label-warning hide">{{ 'info.updated'|trans }}</span>
         </div>
     {% endset %}
 
