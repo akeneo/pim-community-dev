@@ -18,6 +18,11 @@ class RegistryDelegateProcessor implements ProcessorInterface, StepExecutionAwar
     protected $processorRegistry;
 
     /**
+     * @var string
+     */
+    protected $delegateType;
+
+    /**
      * @var ContextRegistry
      */
     protected $contextRegistry;
@@ -29,11 +34,13 @@ class RegistryDelegateProcessor implements ProcessorInterface, StepExecutionAwar
 
     /**
      * @param ProcessorRegistry $processorRegistry
+     * @param string $delegateType
      * @param ContextRegistry $contextRegistry
      */
-    public function __construct(ProcessorRegistry $processorRegistry, ContextRegistry $contextRegistry)
+    public function __construct(ProcessorRegistry $processorRegistry, $delegateType, ContextRegistry $contextRegistry)
     {
         $this->processorRegistry = $processorRegistry;
+        $this->delegateType = $delegateType;
         $this->contextRegistry = $contextRegistry;
     }
 
@@ -63,6 +70,7 @@ class RegistryDelegateProcessor implements ProcessorInterface, StepExecutionAwar
         }
 
         $result = $this->processorRegistry->getProcessor(
+            $this->delegateType,
             $context->getOption('entityName'),
             $context->getOption('processorAlias')
         );

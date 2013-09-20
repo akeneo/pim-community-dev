@@ -20,40 +20,32 @@ class ProcessorRegistryCompilerPassTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider processDataProvider
      *
-     * @param array $taggedRegistryIds
      * @param array $taggedProcessorIds
      * @param array $definitionsExpectations
      */
-    public function testProcess(array $taggedRegistryIds, array $taggedProcessorIds, array $definitionsExpectations)
+    public function testProcess(array $taggedProcessorIds, array $definitionsExpectations)
     {
         $containerBuilder = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
             ->disableOriginalConstructor()
             ->setMethods(array('getDefinition', 'findTaggedServiceIds'))
             ->getMock();
 
-        $index = 0;
-        $containerBuilder->expects($this->at($index++))
+        $containerBuilder->expects($this->at(0))
             ->method('findTaggedServiceIds')
             ->with(ProcessorRegistryCompilerPass::PROCESSOR_TAG)
             ->will($this->returnValue($taggedProcessorIds));
-        $containerBuilder->expects($this->at($index++))
-            ->method('findTaggedServiceIds')
-            ->with(ProcessorRegistryCompilerPass::PROCESSOR_REGISTRY_TAG)
-            ->will($this->returnValue($taggedRegistryIds));
 
-        foreach ($definitionsExpectations as $serviceId => $expectations) {
-            $definition = $this->getMock('Symfony\Component\DependencyInjection\Definition');
-            $containerBuilder->expects($this->at($index++))
-                ->method('getDefinition')
-                ->with($serviceId)
-                ->will($this->returnValue($definition));
+        $registryDefinition = $this->getMock('Symfony\Component\DependencyInjection\Definition');
+        $containerBuilder->expects($this->at(1))
+            ->method('getDefinition')
+            ->with(ProcessorRegistryCompilerPass::PROCESSOR_REGISTRY_SERVICE)
+            ->will($this->returnValue($registryDefinition));
 
-            $definitionIndex = 0;
-            foreach ($expectations as $expectation) {
-                list($method, $withArguments) = $expectation;
-                $mock = $definition->expects($this->at($definitionIndex++))->method($method);
-                call_user_func_array(array($mock, 'with'), $withArguments);
-            }
+        $callIndex = 0;
+        foreach ($definitionsExpectations as $expectation) {
+            list($method, $withArguments) = $expectation;
+            $mock = $registryDefinition->expects($this->at($callIndex++))->method($method);
+            call_user_func_array(array($mock, 'with'), $withArguments);
         }
 
         $this->compiler->process($containerBuilder);
@@ -63,20 +55,6 @@ class ProcessorRegistryCompilerPassTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'register_processors' => array(
-                'taggedRegistryIds' => array(
-                    'oro_importexport.import_processor' => array(
-                        array(
-                            'name' => ProcessorRegistryCompilerPass::PROCESSOR_REGISTRY_TAG,
-                            'type' => 'import'
-                        )
-                    ),
-                    'oro_importexport.export_processor' => array(
-                        array(
-                            'name' => ProcessorRegistryCompilerPass::PROCESSOR_REGISTRY_TAG,
-                            'type' => 'export'
-                        )
-                    ),
-                ),
                 'taggedProcessorIds' => array(
                     'oro_test.foo_import_processor' => array(
                         array(
@@ -107,39 +85,39 @@ class ProcessorRegistryCompilerPassTest extends \PHPUnit_Framework_TestCase
                             'name' => ProcessorRegistryCompilerPass::PROCESSOR_TAG,
                             'type' => 'export',
                             'entity' => 'BarEntity',
-                            'alias' => 'bar_import'
+                            'alias' => 'bar_export'
                         )
                     ),
                 ),
                 'definitionsExpectations' => array(
-                    'oro_importexport.import_processor' => array(
+                    array(
+                        'addMethodCall',
                         array(
-                            'addMethodCall',
-                            array(
-                                'registerProcessor',
-                                array(new Reference('oro_test.foo_import_processor'), 'FooEntity', 'foo_import')
-                            ),
-                            'addMethodCall',
-                            array(
-                                'registerProcessor',
-                                array(new Reference('oro_test.bar_import_processor'), 'BarEntity', 'bar_import')
-                            ),
-                        )
+                            'registerProcessor',
+                            array(new Reference('oro_test.foo_import_processor'), 'import', 'FooEntity', 'foo_import')
+                        ),
                     ),
-                    'oro_importexport.export_processor' => array(
+                    array(
+                        'addMethodCall',
                         array(
-                            'addMethodCall',
-                            array(
-                                'registerProcessor',
-                                array(new Reference('oro_test.foo_export_processor'), 'FooEntity', 'foo_export')
-                            ),
-                            'addMethodCall',
-                            array(
-                                'registerProcessor',
-                                array(new Reference('oro_test.bar_export_processor'), 'BarEntity', 'bar_export')
-                            )
-                        )
+                            'registerProcessor',
+                            array(new Reference('oro_test.foo_export_processor'), 'export', 'FooEntity', 'foo_export')
+                        ),
                     ),
+                    array(
+                        'addMethodCall',
+                        array(
+                            'registerProcessor',
+                            array(new Reference('oro_test.bar_import_processor'), 'import', 'BarEntity', 'bar_import')
+                        ),
+                    ),
+                    array(
+                        'addMethodCall',
+                        array(
+                            'registerProcessor',
+                            array(new Reference('oro_test.bar_export_processor'), 'export', 'BarEntity', 'bar_export')
+                        )
+                    )
                 )
             ),
         );
@@ -148,13 +126,11 @@ class ProcessorRegistryCompilerPassTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider processFailsDataProvider
      *
-     * @param array $taggedRegistryIds
      * @param array $taggedProcessorIds
      * @param string $expectedException
      * @param string $expectedExceptionMessage
      */
     public function testProcessFails(
-        array $taggedRegistryIds,
         array $taggedProcessorIds,
         $expectedException,
         $expectedExceptionMessage = null
@@ -166,14 +142,8 @@ class ProcessorRegistryCompilerPassTest extends \PHPUnit_Framework_TestCase
 
         $containerBuilder->expects($this->atLeastOnce())
             ->method('findTaggedServiceIds')
-            ->will(
-                $this->returnValueMap(
-                    array(
-                        array(ProcessorRegistryCompilerPass::PROCESSOR_TAG, $taggedProcessorIds),
-                        array(ProcessorRegistryCompilerPass::PROCESSOR_REGISTRY_TAG, $taggedRegistryIds)
-                    )
-                )
-            );
+            ->with(ProcessorRegistryCompilerPass::PROCESSOR_TAG)
+            ->will($this->returnValue($taggedProcessorIds));
 
         $containerBuilder->expects($this->never())->method('getDefinition');
 
@@ -185,28 +155,21 @@ class ProcessorRegistryCompilerPassTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'type attribute required' => array(
-                'taggedRegistryIds' => array(
-                        'oro_importexport.import_processor' => array(
+                'taggedProcessorIds' => array(
+                    'oro_test.foo_import_processor' => array(
                         array(
-                            'name' => ProcessorRegistryCompilerPass::PROCESSOR_REGISTRY_TAG,
+                            'name' => ProcessorRegistryCompilerPass::PROCESSOR_TAG,
+                            'alias' => 'foo_import',
+                            'entity' => 'FooEntity'
                         )
                     )
                 ),
-                'taggedProcessorIds' => array(),
                 'Symfony\Component\DependencyInjection\Exception\LogicException',
                 // @codingStandardsIgnoreStart
-                'Tag "oro_importexport.processor_registry" for service "oro_importexport.import_processor" must have attribute "type"'
+                'Tag "oro_importexport.processor" for service "oro_test.foo_import_processor" must have attribute "type"'
                 // @codingStandardsIgnoreEnd
             ),
             'entity attribute required' => array(
-                'taggedRegistryIds' => array(
-                        'oro_importexport.import_processor' => array(
-                        array(
-                            'name' => ProcessorRegistryCompilerPass::PROCESSOR_REGISTRY_TAG,
-                            'type' => 'import'
-                        )
-                    )
-                ),
                 'taggedProcessorIds' => array(
                     'oro_test.foo_import_processor' => array(
                         array(
@@ -222,14 +185,6 @@ class ProcessorRegistryCompilerPassTest extends \PHPUnit_Framework_TestCase
                 // @codingStandardsIgnoreEnd
             ),
             'alias attribute required' => array(
-                'taggedRegistryIds' => array(
-                        'oro_importexport.import_processor' => array(
-                        array(
-                            'name' => ProcessorRegistryCompilerPass::PROCESSOR_REGISTRY_TAG,
-                            'type' => 'import'
-                        )
-                    )
-                ),
                 'taggedProcessorIds' => array(
                     'oro_test.foo_import_processor' => array(
                         array(

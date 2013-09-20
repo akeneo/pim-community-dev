@@ -18,13 +18,14 @@ class ProcessorRegistryTest extends \PHPUnit_Framework_TestCase
 
     public function testRegisterProcessor()
     {
+        $type = 'import';
         $entityName = 'entity_name';
         $alias = 'processor_alias';
         $processor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
 
-        $this->registry->registerProcessor($processor, $entityName, $alias);
+        $this->registry->registerProcessor($processor, $type, $entityName, $alias);
         $this->assertAttributeEquals(
-            array($entityName => array($alias => $processor)),
+            array($type => array($entityName => array($alias => $processor))),
             'processors',
             $this->registry
         );
@@ -34,28 +35,30 @@ class ProcessorRegistryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Oro\Bundle\ImportExportBundle\Exception\LogicException
-     * @expectedExceptionMessage Processor "processor_alias" for entity "entity_name" already exist
+     * @expectedExceptionMessage "import" processor "processor_alias" for entity "entity_name" already exists
      */
     public function testRegisterProcessorFails()
     {
+        $type = 'import';
         $entityName = 'entity_name';
         $alias = 'processor_alias';
         $processor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
 
-        $this->registry->registerProcessor($processor, $entityName, $alias);
-        $this->registry->registerProcessor($processor, $entityName, $alias);
+        $this->registry->registerProcessor($processor, $type, $entityName, $alias);
+        $this->registry->registerProcessor($processor, $type, $entityName, $alias);
     }
 
     public function testUnregisterProcessor()
     {
+        $type = 'import';
         $entityName = 'entity_name';
         $alias = 'processor_alias';
         $processor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
 
-        $this->registry->registerProcessor($processor, $entityName, $alias);
-        $this->registry->unregisterProcessor($entityName, $alias);
+        $this->registry->registerProcessor($processor, $type, $entityName, $alias);
+        $this->registry->unregisterProcessor($type, $entityName, $alias);
         $this->assertAttributeEquals(
-            array($entityName => array()),
+            array($type => array($entityName => array())),
             'processors',
             $this->registry
         );
@@ -63,48 +66,53 @@ class ProcessorRegistryTest extends \PHPUnit_Framework_TestCase
 
     public function testHasProcessor()
     {
+        $type = 'import';
         $entityName = 'entity_name';
         $alias = 'processor_alias';
         $processor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
 
-        $this->assertFalse($this->registry->hasProcessor($entityName, $alias));
-        $this->registry->registerProcessor($processor, $entityName, $alias);
-        $this->assertTrue($this->registry->hasProcessor($entityName, $alias));
+        $this->assertFalse($this->registry->hasProcessor($type, $entityName, $alias));
+        $this->assertFalse($this->registry->hasProcessor($type, $entityName));
+        $this->registry->registerProcessor($processor, $type, $entityName, $alias);
+        $this->assertTrue($this->registry->hasProcessor($type, $entityName, $alias));
+        $this->assertTrue($this->registry->hasProcessor($type, $entityName));
     }
 
     public function testGetProcessor()
     {
+        $type = 'import';
         $entityName = 'entity_name';
         $alias = 'processor_alias';
         $processor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
 
-        $this->registry->registerProcessor($processor, $entityName, $alias);
-        $this->assertSame($processor, $this->registry->getProcessor($entityName, $alias));
+        $this->registry->registerProcessor($processor, $type, $entityName, $alias);
+        $this->assertSame($processor, $this->registry->getProcessor($type, $entityName, $alias));
     }
 
     /**
      * @expectedException \Oro\Bundle\ImportExportBundle\Exception\UnexpectedValueException
-     * @expectedExceptionMessage Processor "processor_alias" for entity "entity_name" is not exist
+     * @expectedExceptionMessage "import" processor "processor_alias" for entity "entity_name" is not exist
      */
     public function testGetProcessorFails()
     {
-        $this->registry->getProcessor('entity_name', 'processor_alias');
+        $this->registry->getProcessor('import', 'entity_name', 'processor_alias');
     }
 
-    public function testRegisterProcessors()
+    public function testGetProcessorsByEntity()
     {
+        $type = 'import';
         $entityName = 'entity_name';
         $fooAlias = 'foo_alias';
         $fooProcessor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
         $barAlias = 'bar_alias';
         $barProcessor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
 
-        $this->registry->registerProcessor($fooProcessor, $entityName, $fooAlias);
-        $this->registry->registerProcessor($barProcessor, $entityName, $barAlias);
+        $this->registry->registerProcessor($fooProcessor, $type, $entityName, $fooAlias);
+        $this->registry->registerProcessor($barProcessor, $type, $entityName, $barAlias);
 
         $this->assertEquals(
             array($fooAlias => $fooProcessor, $barAlias => $barProcessor),
-            $this->registry->getProcessorsByEntity($entityName)
+            $this->registry->getProcessorsByEntity($type, $entityName)
         );
     }
 }

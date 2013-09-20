@@ -6,17 +6,17 @@ parameters:
     oro_importexport.processor.import_abstract.class: Oro\Bundle\ImportExportBundle\Processor\ImportProcessor
 
 services:
-    # Import delegate processor, abstract import processor and registry
+    # Processor registry
+    oro_importexport.processor.registry:
+        class: %oro_importexport.processor.registry.class%
+
+    # Import delegate processor, abstract import processor
     oro_importexport.processor.import_delegate:
         class: %oro_importexport.processor.registry_delegate_processor.class%
         arguments:
-            - @oro_importexport.processor.import_registry
+            - @oro_importexport.processor.registry
+            - "import"
             - @oro_importexport.context_registry
-
-    oro_importexport.processor.import_registry:
-        class: %oro_importexport.processor.registry.class%
-        tags:
-            - { name: oro_importexport.processor_registry, type: import }
 
     oro_importexport.processor.import_abstract:
         class: %oro_importexport.processor.import_abstract.class%
@@ -24,17 +24,13 @@ services:
         calls:
             - [setSerializer, [@oro_importexport.serializer]]
 
-    # Export delegate processor, abstract import processor and registry
+    # Export delegate processor, abstract import processor
     oro_importexport.processor.export_delegate:
         class: %oro_importexport.processor.registry_delegate_processor.class%
         arguments:
-            - @oro_importexport.processor.export_registry
+            - @oro_importexport.processor.registry
+            - "export"
             - @oro_importexport.context_registry
-
-    oro_importexport.processor.export_registry:
-        class: %oro_importexport.processor.registry.class%
-        tags:
-            - { name: oro_importexport.processor_registry, type: export }
 
     oro_importexport.processor.export_abstract:
         class: %oro_importexport.processor.export_abstract.class%
@@ -42,14 +38,10 @@ services:
         calls:
             - [setSerializer, [@oro_importexport.serializer]]
 
-    # Import validate processor and registry
+    # Import validate processor
     oro_importexport.processor.validate_import_delegate:
         class: %oro_importexport.processor.registry_delegate_processor.class%
         arguments:
-            - @oro_importexport.processor.validate_import_registry
+            - @oro_importexport.processor.registry
+            - "validate_import"
             - @oro_importexport.context_registry
-
-    oro_importexport.processor.validate_import_registry:
-        class: %oro_importexport.processor.registry.class%
-        tags:
-            - { name: oro_importexport.processor_registry, type: validate_import }
