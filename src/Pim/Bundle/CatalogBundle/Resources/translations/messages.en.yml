@@ -94,6 +94,9 @@ confirmation:
         attribute group: Are you sure you want to delete the attribute group %name%?
         category:        Are you sure you want to delete the category %name%?
         family:          Are you sure you want to remove the family %name%?
+        product:         Are you sure you want to delete the product %name%?
+        export profile:  Are you sure you want to delete the export profile %name%?
+        import profile:  Are you sure you want to delete the import profile %name%?
     product:
         change family: Are you sure you want to change the family?
 
@@ -104,8 +107,9 @@ info:
         remove children: All sub-categories will be deleted.
         keep products:   Products in these categories will not be deleted.
     product:
-        merge attributes: Current attributes will be merged with the ones in the new family.
-        keep attributes:  No attributes will be removed.
+        no available attributes: There are no more attributes to add
+        merge attributes:        Current attributes will be merged with the ones in the new family.
+        keep attributes:         No attributes will be removed.
 
 # Form elements
 Options:                       Options
