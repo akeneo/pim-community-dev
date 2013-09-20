@@ -41,7 +41,7 @@ abstract class AbstractStep extends ControllerStep
         if (!$this->application) {
             $this->application = new Application($this->get('kernel'));
             $this->output      = new StreamOutput(
-                fopen(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'bap_install.log', 'w')
+                fopen($this->container->getParameter('kernel.logs_dir') . DIRECTORY_SEPARATOR . 'oro_install.log', 'a+')
             );
 
             $this->application->setAutoExit(false);

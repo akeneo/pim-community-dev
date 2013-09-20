@@ -18,16 +18,17 @@ class FinalStep extends AbstractStep
 
         $this->get('oro_installer.yaml_persister')->dump($params);
 
-        $this->runCommand('oro:acl:load');
         $this->runCommand('oro:navigation:init');
         $this->runCommand('oro:entity-config:update');
+        $this->runCommand('oro:entity-extend:init');
         $this->runCommand('oro:entity-extend:create');
         $this->runCommand('cache:clear');
         $this->runCommand('doctrine:schema:update', array('--force' => true));
         $this->runCommand('oro:search:create-index');
-        $this->runCommand('assets:install');
+        $this->runCommand('assets:install', array('.' => true));
         $this->runCommand('assetic:dump');
         $this->runCommand('oro:assetic:dump');
+        $this->runCommand('oro:translation:dump');
 
         $this->complete();
 

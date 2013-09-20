@@ -26,15 +26,15 @@ class SettingsRequirements extends RequirementCollection
             ))
             ->add(new Requirement(
                 $translator->trans('settings.version_recommended', array(), 'requirements'),
-                version_compare(phpversion(), '5.3.8', '>='),
-                '>=5.3.8',
+                version_compare(phpversion(), '5.4.11', '>'),
+                '>5.4.11',
                 phpversion(),
                 false
             ))
             ->add(new Requirement(
                 $translator->trans('settings.memory_limit', array(), 'requirements'),
-                $this->getBytes(ini_get('memory_limit')) >= 128 * 1024 * 1024,
-                '128M',
+                $this->getBytes(ini_get('memory_limit')) >= 256 * 1024 * 1024,
+                '256M',
                 ini_get('memory_limit')
             ))
             ->add(new Requirement(
@@ -58,46 +58,74 @@ class SettingsRequirements extends RequirementCollection
         $this
             ->add(new Requirement(
                 'detect_unicode',
-                !$this->isOn('detect_unicode'),
-                $on,
-                ini_get('detect_unicode'),
+                !$status = $this->isOn('detect_unicode'),
+                $off,
+                $this->isOn('detect_unicode') ? $on : $off,
                 false
             ))
             ->add(new Requirement(
                 'short_open_tag',
-                !$this->isOn('short_open_tag'),
+                !$status = $this->isOn('short_open_tag'),
                 $off,
-                ini_get('short_open_tag'),
+                $status ? $on : $off,
                 false
             ))
             ->add(new Requirement(
                 'magic_quotes_gpc',
-                !$this->isOn('magic_quotes_gpc'),
+                !$status = $this->isOn('magic_quotes_gpc'),
                 $off,
-                ini_get('magic_quotes_gpc'),
+                $status ? $on : $off,
                 false
             ))
             ->add(new Requirement(
                 'register_globals',
-                !$this->isOn('register_globals'),
+                !$status = $this->isOn('register_globals'),
                 $off,
-                ini_get('register_globals'),
+                $status ? $on : $off,
                 false
             ))
             ->add(new Requirement(
                 'session.auto_start',
-                !$this->isOn('session.auto_start'),
+                !$status = $this->isOn('session.auto_start'),
                 $off,
-                ini_get('session.auto_start'),
+                $status ? $on : $off,
                 false
             ));
+
+        if (extension_loaded('xdebug')) {
+            $this
+                ->add(new Requirement(
+                    'xdebug.exception',
+                    !$status = $this->isOn('xdebug.show_exception_trace'),
+                    $off,
+                    $status ? $on : $off
+                ))
+                ->add(new Requirement(
+                    'xdebug.scream',
+                    !$status = $this->isOn('xdebug.scream'),
+                    $off,
+                    $status ? $on : $off
+                ))
+                ->add(new Requirement(
+                    $translator->trans('xdebug.max_nesting_level', array(), 'requirements'),
+                    ($level = (int) ini_get('xdebug.max_nesting_level')) > 100,
+                    '>100',
+                    $level,
+                    true,
+                    $translator->trans('settings.xdebug.max_nesting_level.help', array(), 'requirements')
+                ));
+        }
     }
 
+    /**
+     * @param  string $key Ini setting key
+     * @return bool True if setting switched on, false otherwise
+     */
     protected function isOn($key)
     {
         $value = ini_get($key);
 
-        return false != $value && 'off' !== $value;
+        return false != $value && 'off' !== strtolower((string) $value);
     }
 
     /**

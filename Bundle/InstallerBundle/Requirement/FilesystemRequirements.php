@@ -6,7 +6,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class FilesystemRequirements extends RequirementCollection
 {
-    public function __construct(TranslatorInterface $translator, $rootDir, $cacheDir, $logsDir)
+    public function __construct(TranslatorInterface $translator, $rootDir, $cacheDir, $logsDir, $uploadsDir)
     {
         parent::__construct($translator->trans('filesystem.header', array(), 'requirements'));
 
@@ -37,6 +37,14 @@ class FilesystemRequirements extends RequirementCollection
                 $status ? $writable : $notWritable,
                 true,
                 $translator->trans('filesystem.logs.help', array('%path%' => $logsDir), 'requirements')
+            ))
+            ->add(new Requirement(
+                $translator->trans('filesystem.uploads.header', array(), 'requirements'),
+                $status = is_writable($uploadsDir),
+                $writable,
+                $status ? $writable : $notWritable,
+                true,
+                $translator->trans('filesystem.uploads.help', array('%path%' => $uploadsDir), 'requirements')
             ))
             ->add(new Requirement(
                 $translator->trans('filesystem.parameters.header', array(), 'requirements'),

@@ -40,6 +40,7 @@ services:
             - %kernel.root_dir%
             - %kernel.cache_dir%
             - %kernel.logs_dir%
+            - "%kernel.root_dir%/../web/uploads"
 
     oro_installer.yaml_persister:
         class:                                    %oro_installer.yaml_persister.class%

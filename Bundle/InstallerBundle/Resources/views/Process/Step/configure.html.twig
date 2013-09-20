@@ -1,49 +1,54 @@
-{% extends bap.layout %}
+{% extends 'OroInstallerBundle::layout.html.twig' %}
+{% use 'OroInstallerBundle::progress.html.twig' %}
 
-{% block header %}{% endblock %}
-{% block before_content %}{% endblock %}
+{% set step = 'configure' %}
+
+{% block title %}{{ 'process.step.configure.header'|trans }} - {{ parent() }}{% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1>{{ 'process.step.configure.header'|trans }}</h1>
+<div class="page-title">
+    <h2>{{ 'process.step.configure.header'|trans }}</h2>
 </div>
 
-<form action="{{ path('sylius_flow_forward', { scenarioAlias: 'oro_installer', stepName: 'configure'}) }}" method="post">
-    {{ form_errors(form) }}
+<div class="well horizontal-form">
+    <form action="{{ path('sylius_flow_forward', { scenarioAlias: 'oro_installer', stepName: 'configure'}) }}" method="post">
+        <div class="validation-error">
+            {{ form_errors(form) }}
+        </div>
 
-    <fieldset class="form-horizontal form-container">
-        <div class="row-fluid row-fluid-divider">
-            <span class="span6">
-                <h4 class="scrollspy-title"><i class="icon-wrench"></i> {{ form.database.vars.label|trans }}</h4>
+        <div class="row">
+            <div class="box">
+                <h3 class="sub-title">{{ form.database.vars.label|trans }}</h3>
 
                 {{ form_widget(form.database) }}
-            </span>
-            <span class="span6">
-                <h4 class="scrollspy-title"><i class="icon-envelope"></i> {{ form.mailer.vars.label|trans }}</h4>
+            </div>
+            <div class="box">
+                <h3 class="sub-title">{{ form.mailer.vars.label|trans }}</h3>
 
                 {{ form_widget(form.mailer) }}
-            </span>
+            </div>
         </div>
-        <div class="row-fluid row-fluid-divider">
-            <span class="span6">
-                <h4 class="scrollspy-title"><i class="icon-list-alt"></i> {{ form.system.vars.label|trans }}</h4>
+        <div class="row">
+            <div class="box">
+                <h3 class="sub-title">{{ form.system.vars.label|trans }}</h3>
 
                 {{ form_widget(form.system) }}
-            </span>
-            <span class="span6">
-                <h4 class="scrollspy-title"><i class="icon-random"></i> {{ form.websocket.vars.label|trans }}</h4>
+            </div>
+            <div class="box">
+                <h3 class="sub-title">{{ form.websocket.vars.label|trans }}</h3>
 
                 {{ form_widget(form.websocket) }}
-            </span>
-        </div>
-        {{ form_rest(form) }}
-    </fieldset>
+            </div>
 
-    <div class="form-actions">
-        <a href="{{ path('sylius_flow_display', { scenarioAlias: 'oro_installer', stepName: 'check' }) }}" class="btn btn-large"><i class="icon-chevron-left"></i> {{ 'process.button.back'|trans }}</a> &nbsp;
-        <button class="btn btn-large btn-primary" type="submit">
-            {{ 'process.button.next'|trans }} <i class="icon-chevron-right"></i>
-        </button>
-    </div>
-</form>
+            {{ form_rest(form) }}
+        </div>
+
+        <div class="button-set">
+            <div class="pull-right">
+                <a href="{{ path('sylius_flow_display', { scenarioAlias: 'oro_installer', stepName: 'check' }) }}" class="button back"><span>{{ 'process.button.back'|trans }}</span></a>
+                <button class="primary button next" type="submit"><span>{{ 'process.button.next'|trans }}</span></button>
+            </div>
+        </div>
+    </form>
+</div>
 {% endblock %}

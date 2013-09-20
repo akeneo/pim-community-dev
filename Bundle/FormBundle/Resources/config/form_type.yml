@@ -5,6 +5,7 @@ parameters:
     oro_form.type.entity_identifier.class:          Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
     oro_form.type.jqueryselect2_hidden.class:       Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
     oro_form.extension.data_block.class:            Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension
+    oro_form.extension.client_validation.class:     Oro\Bundle\FormBundle\Form\Extension\ClientValidationExtension
     oro_form.type.icon.class:                       Oro\Bundle\FormBundle\Form\Type\OroIconType
 
 services:
@@ -40,5 +41,10 @@ services:
 
     oro_form.extension.data_block:
         class: %oro_form.extension.data_block.class%
+        tags:
+            - { name: form.type_extension, alias: form }
+
+    oro_form.extension.client_validation:
+        class: %oro_form.extension.client_validation.class%
         tags:
             - { name: form.type_extension, alias: form }

@@ -55,7 +55,7 @@ class SetupType extends AbstractType
                     'label' => 'form.setup.lastname',
                 )
             )
-            ->add(
+            /*->add(
                 'load_fixtures',
                 'checkbox',
                 array(
@@ -63,7 +63,7 @@ class SetupType extends AbstractType
                     'required' => false,
                     'mapped'   => false,
                 )
-            );
+            )*/;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

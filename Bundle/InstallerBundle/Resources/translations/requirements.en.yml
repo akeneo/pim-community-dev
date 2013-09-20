@@ -9,6 +9,9 @@ settings:
     version:              PHP version
     version_recommended:  Recommended PHP version
     memory_limit:         Memory limit
+    xdebug:
+        max_nesting_level:
+            help:         "Set \"<strong>xdebug.max_nesting_level</strong>\" to e.g. \"<strong>250</strong>\" in php.ini to stop Xdebug's infinite recursion protection erroneously throwing a fatal error in your project."
 
 extensions:
     header:               Extensions
@@ -17,6 +20,7 @@ extensions:
         help:             Install and enable a PHP accelerator like APC (highly recommended)
     apc:                  APC
     help:                 Install and enable the %extension% extension
+    ctype:                ctype
     iconv:                Iconv
     icu:                  ICU
     intl:                 Intl
@@ -28,6 +32,12 @@ extensions:
     session_start:        Session
     simplexml_import_dom: SimpleXML
     token_get_all:        Tokenizer
+    fileinfo:             Fileinfo
+    gd:                   GD
+    soap:                 SOAP
+    curl:                 cURL
+    com:                  COM
+    mcrypt:               Mcrypt
 
 filesystem:
     header:               File system
@@ -36,6 +46,9 @@ filesystem:
         help:             "<![CDATA[To set permissions run: sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX %path% & sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx %path%]]>"
     logs:
         header:           Logs directory
+        help:             "<![CDATA[To set permissions run: sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX %path% & sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx %path%]]>"
+    uploads:
+        header:           Uploads directory
         help:             "<![CDATA[To set permissions run: sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX %path% & sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx %path%]]>"
     exists:               exists
     not_exists:           not exists

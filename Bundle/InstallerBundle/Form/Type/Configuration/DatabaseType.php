@@ -26,6 +26,7 @@ class DatabaseType extends AbstractType
                     'constraints'   => array(
                         new Assert\NotBlank(),
                     ),
+                   'client_validation' => false,
                 )
             )
             ->add(

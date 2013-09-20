@@ -16,8 +16,18 @@ class ExtensionsRequirements extends RequirementCollection
         $off = $translator->trans('switch.off');
 
         $pcreVersion = defined('PCRE_VERSION') ? (float) PCRE_VERSION : null;
+        $gdVersion   = defined('GD_VERSION') ? (float) GD_VERSION : null;
+        $curlVersion = function_exists('curl_version') ? curl_version() : null;
 
         $this
+            ->add(new Requirement(
+                $translator->trans('extensions.ctype', array(), 'requirements'),
+                $status = function_exists('ctype_alpha'),
+                $on,
+                $status ? $on : $off,
+                true,
+                $translator->trans('extensions.help', array('%extension%' => 'ctype'), 'requirements')
+            ))
             ->add(new Requirement(
                 $translator->trans('extensions.json_encode', array(), 'requirements'),
                 $status = function_exists('json_encode'),
@@ -40,7 +50,7 @@ class ExtensionsRequirements extends RequirementCollection
                 $on,
                 $status ? $on : $off,
                 true,
-                $translator->trans('extensions.help', array('%extension%' => 'JSON'), 'requirements')
+                $translator->trans('extensions.help', array('%extension%' => 'Tokenizer'), 'requirements')
             ))
             ->add(new Requirement(
                 $translator->trans('extensions.simplexml_import_dom', array(), 'requirements'),
@@ -60,7 +70,7 @@ class ExtensionsRequirements extends RequirementCollection
             ))
             ->add(new Requirement(
                 $translator->trans('extensions.pcre', array(), 'requirements'),
-                null !== $pcreVersion && $pcreVersion > 8.0,
+                null !== $pcreVersion && $pcreVersion >= 8.0,
                 '>=8.0',
                 $pcreVersion,
                 true,
@@ -97,8 +107,7 @@ class ExtensionsRequirements extends RequirementCollection
                 $status ? $on : $off,
                 false,
                 $translator->trans('extensions.help', array('%extension%' => 'intl'), 'requirements')
-            ))
-        ;
+            ));
 
         if (class_exists('Locale')) {
             if (defined('INTL_ICU_VERSION')) {
@@ -126,8 +135,7 @@ class ExtensionsRequirements extends RequirementCollection
 
         $status = (function_exists('apc_store') && ini_get('apc.enabled'))
             || function_exists('eaccelerator_put') && ini_get('eaccelerator.enable')
-            || function_exists('xcache_set')
-        ;
+            || function_exists('xcache_set');
 
         $this
             ->add(new Requirement(
@@ -146,6 +154,58 @@ class ExtensionsRequirements extends RequirementCollection
                 false,
                 $translator->trans('extensions.help', array('%extension%' => 'PDO'), 'requirements')
             ))
-        ;
+           ->add(new Requirement(
+                $translator->trans('extensions.gd', array(), 'requirements'),
+                null !== $gdVersion && $gdVersion >= 2.0,
+                '>=2.0',
+                $gdVersion,
+                true,
+                $translator->trans('extensions.help', array('%extension%' => 'GD (>=2.0)'), 'requirements')
+            ))
+            ->add(new Requirement(
+                $translator->trans('extensions.soap', array(), 'requirements'),
+                $status = class_exists('SoapClient'),
+                $on,
+                $status ? $on : $off,
+                false,
+                $translator->trans('extensions.help', array('%extension%' => 'SOAP'), 'requirements')
+            ))
+            ->add(new Requirement(
+                $translator->trans('extensions.curl', array(), 'requirements'),
+                null !== $curlVersion && (float) $curlVersion['version'] >= 7.0,
+                '>=7.0',
+                null !== $curlVersion ? (float) $curlVersion['version'] : '',
+                false,
+                $translator->trans('extensions.help', array('%extension%' => 'cURL (>=7.0)'), 'requirements')
+            ))
+            ->add(new Requirement(
+                $translator->trans('extensions.mcrypt', array(), 'requirements'),
+                $status = function_exists('mcrypt_encrypt'),
+                $on,
+                $status ? $on : $off,
+                true,
+                $translator->trans('extensions.help', array('%extension%' => 'Mcrypt'), 'requirements')
+            ));
+
+        // Windows specific checks
+        if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+            $this
+                ->add(new Requirement(
+                    $translator->trans('extensions.fileinfo', array(), 'requirements'),
+                    $status = function_exists('finfo_open'),
+                    $on,
+                    $status ? $on : $off,
+                    false,
+                    $translator->trans('extensions.help', array('%extension%' => 'Fileinfo'), 'requirements')
+                ))
+                ->add(new Requirement(
+                    $translator->trans('extensions.com', array(), 'requirements'),
+                    $status = class_exists('COM'),
+                    $on,
+                    $status ? $on : $off,
+                    false,
+                    $translator->trans('extensions.help', array('%extension%' => 'COM'), 'requirements')
+                ));
+        }
     }
 }

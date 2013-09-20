@@ -1,5 +1,4 @@
-flash:
-    installed:            Oro Application has been successfully installed!
+title:                    Oro Application installation
 
 switch:
     off:                  off
@@ -45,14 +44,10 @@ process:
             table:
                 current:  Current
                 required: Required
-                status:   Status
         configure:
             header:       Configuration
         setup:
             header:       Administration setup
-        welcome:
-            content:      This will guide you through the setup process.
-            header:       Welcome to Oro Application installer
         final:
             content:      Oro Application successfully installed.
             header:       Congratulations!
@@ -60,4 +55,5 @@ process:
         back:             Back
         next:             Next
         install:          Install
+        refresh:          Refresh
         finish:           Go to dashboard
