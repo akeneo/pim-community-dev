@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\SoapBundle\Controller\Api\Rest;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestApiCrudInterface;
 use Oro\Bundle\SoapBundle\Controller\Api\FormAwareInterface;
 use Oro\Bundle\SoapBundle\Controller\Api\FormHandlerAwareInterface;
@@ -71,8 +72,9 @@ abstract class RestController extends RestGetController implements
             return $this->handleView($this->view(null, Codes::HTTP_NOT_FOUND));
         }
 
+
         $em = $this->getManager()->getObjectManager();
-        $em->remove($entity);
+        $this->handleDelete($entity, $em);
         $em->flush();
 
         return $this->handleView($this->view(null, Codes::HTTP_NO_CONTENT));
@@ -87,5 +89,17 @@ abstract class RestController extends RestGetController implements
     protected function processForm($entity)
     {
         return $this->getFormHandler()->process($entity);
+    }
+
+
+    /**
+     * Handle delete entity object.
+     *
+     * @param object $entity
+     * @param ObjectManager $em
+     */
+    protected function handleDelete($entity, ObjectManager $em)
+    {
+        $em->remove($entity);
     }
 }

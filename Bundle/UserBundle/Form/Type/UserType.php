@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\UserBundle\Form\Type;
 
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -19,29 +21,29 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 class UserType extends FlexibleType
 {
     /**
-     * @var AclManager
-     */
-    protected $aclManager;
-
-    /**
      * @var SecurityContextInterface
      */
     protected $security;
 
     /**
+     * @var SecurityFacade
+     */
+    protected $securityFacade;
+
+    /**
      * @param FlexibleManager          $flexibleManager flexible manager
-     * @param AclManager               $aclManager      ACL manager
      * @param SecurityContextInterface $security        Security context
+     * @param SecurityFacade           $securityFacade      ACL manager
      */
     public function __construct(
         FlexibleManager $flexibleManager,
-        AclManager $aclManager,
-        SecurityContextInterface $security
+        SecurityContextInterface $security,
+        SecurityFacade $securityFacade
     ) {
         parent::__construct($flexibleManager, '');
 
-        $this->aclManager = $aclManager;
         $this->security   = $security;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -54,7 +56,7 @@ class UserType extends FlexibleType
 
         // user fields
         $builder->addEventSubscriber(
-            new UserSubscriber($builder->getFormFactory(), $this->aclManager, $this->security)
+            new UserSubscriber($builder->getFormFactory(), $this->securityFacade, $this->security)
         );
         $this->setDefaultUserFields($builder);
         $builder

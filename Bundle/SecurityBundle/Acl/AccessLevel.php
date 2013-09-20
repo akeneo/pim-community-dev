@@ -15,9 +15,14 @@ final class AccessLevel
     public static $allAccessLevelNames = array('BASIC', 'LOCAL', 'DEEP', 'GLOBAL', 'SYSTEM');
 
     /**
-     * Undefined access level.
+     * Unknown access level.
      */
-    const UNDEFINED = 0;
+    const UNKNOWN = -1;
+
+    /**
+     * Deny access.
+     */
+    const NONE_LEVEL = 0;
 
     /**
      * This access level gives a user access to own records and objects that are shared with the user.
@@ -50,11 +55,26 @@ final class AccessLevel
     /**
      * Gets constant value by its name
      *
-     * @param  string $name
-     * @return mixed
+     * @param string $name
+     * @return int
      */
     public static function getConst($name)
     {
         return constant('self::' . $name);
+    }
+
+    /**
+     * Gets the name of an access level by the given value of the constant
+     *
+     * @param int $value
+     * @return string|null
+     */
+    public static function getAccessLevelName($value)
+    {
+        if ($value > self::NONE_LEVEL) {
+            return self::$allAccessLevelNames[$value - 1];
+        }
+
+        return null;
     }
 }

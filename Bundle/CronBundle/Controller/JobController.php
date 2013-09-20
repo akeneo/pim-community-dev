@@ -11,17 +11,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\DiExtraBundle\Annotation as DI;
 use JMS\JobQueueBundle\Entity\Job;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * @Route("/job")
- * @Acl(
- *      id="oro_cron_job",
- *      name="Cron job",
- *      description="Cron job management",
- *      parent="root"
- * )
  */
 class JobController extends Controller
 {
@@ -36,12 +30,7 @@ class JobController extends Controller
      *      defaults={"page"=1, "limit"=20}
      * )
      * @Template
-     * @Acl(
-     *      id="oro_cron_job_list",
-     *      name="View job list",
-     *      description="View job list",
-     *      parent="oro_cron_job"
-     * )
+     * @AclAncestor("oro_jobs")
      */
     public function indexAction($page, $limit)
     {
@@ -58,12 +47,7 @@ class JobController extends Controller
     /**
      * @Route("/view/{id}", name="oro_cron_job_view", requirements={"id"="\d+"})
      * @Template
-     * @Acl(
-     *      id="oro_cron_job_view",
-     *      name="View job",
-     *      description="View job details",
-     *      parent="oro_cron_job"
-     * )
+     * @AclAncestor("oro_jobs")
      */
     public function viewAction(Job $job)
     {
@@ -85,12 +69,7 @@ class JobController extends Controller
 
     /**
      * @Route("/run-daemon", name="oro_cron_job_run_daemon")
-     * @Acl(
-     *      id="oro_cron_job_run",
-     *      name="Run daemon",
-     *      description="Run job queue daemon in background",
-     *      parent="oro_cron_job"
-     * )
+     * @AclAncestor("oro_jobs")
      */
     public function runDaemonAction()
     {
@@ -124,12 +103,7 @@ class JobController extends Controller
 
     /**
      * @Route("/stop-daemon", name="oro_cron_job_stop_daemon")
-     * @Acl(
-     *      id="oro_cron_job_stop",
-     *      name="Stop daemon",
-     *      description="Stop job queue daemon",
-     *      parent="oro_cron_job"
-     * )
+     * @AclAncestor("oro_jobs")
      */
     public function stopDaemonAction()
     {
@@ -159,7 +133,7 @@ class JobController extends Controller
 
     /**
      * @Route("/status", name="oro_cron_job_status")
-     * @AclAncestor("oro_cron_job_list")
+     * @AclAncestor("oro_jobs")
      */
     public function statusAction()
     {

@@ -16,7 +16,7 @@ use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDec
 class SystemConfigurationFormProviderTest extends FormIntegrationTestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
-    protected $aclManager;
+    protected $securityFacade;
 
     public function setUp()
     {
@@ -29,14 +29,14 @@ class SystemConfigurationFormProviderTest extends FormIntegrationTestCase
             )
             ->getFormFactory();
 
-        $this->aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\Manager')
+        $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
             ->disableOriginalConstructor()->getMock();
     }
 
     public function tearDown()
     {
         parent::tearDown();
-        unset($this->aclManager);
+        unset($this->securityFacade);
     }
 
     public function testTreeProcessing()
@@ -110,9 +110,9 @@ class SystemConfigurationFormProviderTest extends FormIntegrationTestCase
             __DIR__ . '/../Fixtures/Provider/good_definition_with_acl_check.yml'
         );
 
-        $this->aclManager->expects($this->at(0))->method('isResourceGranted')->with($this->equalTo('ALLOWED'))
+        $this->securityFacade->expects($this->at(0))->method('isGranted')->with($this->equalTo('ALLOWED'))
             ->will($this->returnValue(true));
-        $this->aclManager->expects($this->at(1))->method('isResourceGranted')->with($this->equalTo('DENIED'))
+        $this->securityFacade->expects($this->at(1))->method('isGranted')->with($this->equalTo('DENIED'))
             ->will($this->returnValue(false));
 
         $form = $provider->getForm('third_group');
@@ -190,7 +190,7 @@ class SystemConfigurationFormProviderTest extends FormIntegrationTestCase
     protected function getProviderWithConfigLoaded($configPath)
     {
         $config = $this->getConfig($configPath);
-        $provider = new SystemConfigurationFormProvider($config, $this->factory, $this->aclManager);
+        $provider = new SystemConfigurationFormProvider($config, $this->factory, $this->securityFacade);
 
         return $provider;
     }

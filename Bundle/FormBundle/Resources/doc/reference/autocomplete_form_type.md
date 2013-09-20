@@ -239,4 +239,4 @@ your entity should be properly configured in the way that OroSearchBundle allows
 
 #### Dependency on OroUserBundle
 
-As each autocomplete could be protected using ACL-resource, there is a dependency on OroUserBundle, particularly on "oro_user.acl_manager" service.
+As each autocomplete could be protected using ACL-resource, there is a dependency on OroSecurityBundle, particularly on "oro_security.security_facade" service.

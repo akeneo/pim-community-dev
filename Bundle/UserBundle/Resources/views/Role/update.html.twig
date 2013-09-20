@@ -4,35 +4,19 @@
 {% oro_title_set({params : { "%role%": form.vars.value.label } }) %}
 {% set gridId = 'users-grid' %}
 {% set formAction = form.vars.value.id ? path('oro_user_role_update', { 'id': form.vars.value.id}) : path('oro_user_role_create') %}
+
 {% block head_script %}
     {{ parent() }}
 
     {% set listenerParameters = {
-        'columnName': 'has_role',
-        'selectors': {
-            'included': '#roleAppendUsers',
-            'excluded': '#roleRemoveUsers'
-        }
+    'columnName': 'has_role',
+    'selectors': {
+    'included': '#roleAppendUsers',
+    'excluded': '#roleRemoveUsers'
+    }
     } %}
 
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId, 'parameters': listenerParameters} %}
-
-    <script type="text/javascript">
-        require(['jquery', 'jquery.jstree', 'jstree/jquery.hotkeys'],
-        function($){
-            $(function() {
-                $('#acl_tree').jstree({
-                    "checkbox": {
-                        real_checkboxes: true,
-                        real_checkboxes_names: function (n) {
-                            return ['resource[' + n.data('id') + ']', 1]
-                        }
-                    },
-                    "plugins": ["themes", "html_data", "ui", "checkbox", "hotkeys"]
-                });
-            });
-        });
-    </script>
 {% endblock %}
 
 {% block navButtons %}
@@ -73,15 +57,14 @@
 {% block content_data %}
     {% set id = 'role-profile' %}
 
-    {% set dataBlocks = [{
+    {% set dataBlocks = [
+        {
             'title': 'General',
             'class': 'active',
             'subblocks': [
                 {
                     'title': '',
                     'data': [
-                        form_widget(form.appendUsers, {'id': 'roleAppendUsers'}),
-                        form_widget(form.removeUsers, {'id': 'roleRemoveUsers'}),
                         form_row(form.role),
                         form_row(form.label)
                     ]
@@ -90,25 +73,23 @@
         }]
     %}
 
-    {% macro aclTree(form, resources) %}
-        <div id="acl_tree">
-            {% include 'OroUserBundle:Role:_aclSubTree.html.twig' with {'resources': resources, 'hasId': form.vars.value.id ? true : false} %}
-        </div>
-    {% endmacro %}
-    {% set dataBlocks = dataBlocks|merge(
-        [{
-            'title': 'Acl',
-            'subblocks': [
-                {
-                    'title': '',
-                    'data': [
-                        _self.aclTree(form, resources)
-                    ]
-                }
-            ]
-        }]
-        )
-    %}
+    {% for privilegeBlock, privilegeConfig in  privilegesConfig %}
+        {% set dataBlocks = dataBlocks|merge(
+            [{
+                'title': privilegeConfig.label,
+                'subblocks': [
+                    {
+                        'title': '',
+                        'useSpan': false,
+                        'data': [
+                            form_widget(form.children[privilegeBlock])
+                        ]
+                    }
+                ]
+            }]
+            )
+        %}
+    {% endfor %}
 
     {% set dataBlocks = dataBlocks|merge(
         [{

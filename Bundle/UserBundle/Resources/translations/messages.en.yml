@@ -82,8 +82,6 @@ Login: Login
 "View role": "View role"
 "Remove role": "Remove role"
 "Template controller": "Template controller"
-"Actions from template controller": "Actions from template controller"
-"User manipulation": "User manipulation"
 oro.user.datagrid.email.column.from_name: "From"
 oro.user.datagrid.email.column.subject: "Subject"
 oro.user.datagrid.email.column.received: "Received at"

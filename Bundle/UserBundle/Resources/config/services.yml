@@ -7,15 +7,8 @@ parameters:
     oro_user.entity.value.class:        Oro\Bundle\UserBundle\Entity\UserValue
     oro_user.group.entity.class:        Oro\Bundle\UserBundle\Entity\Group
     oro_user.role.entity.class:         Oro\Bundle\UserBundle\Entity\Role
-    oro_user.acl.entity.class:          Oro\Bundle\UserBundle\Entity\Acl
     oro_user.security.provider.class:   Oro\Bundle\UserBundle\Security\UserProvider
     oro_user.security.login.class:      Oro\Bundle\UserBundle\EventListener\LoginSubscriber
-    oro_user.acl.reader.class:          Oro\Bundle\UserBundle\Acl\ResourceReader\Reader
-    oro_user.acl.config_reader.class:   Oro\Bundle\UserBundle\Acl\ResourceReader\ConfigReader
-    oro_user.acl.pointcut.class:        Oro\Bundle\UserBundle\Acl\AclPointcut
-    oro_user.acl.interceptor.class:     Oro\Bundle\UserBundle\Acl\AclInterceptor
-    oro_user.acl.manager.class:         Oro\Bundle\UserBundle\Acl\Manager
-    oro_user.acl.manager.api.class:     Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_user.acl.twig.class:            Oro\Bundle\UserBundle\Twig\OroUserExtension
     oro_user.user_menu.builder.class:   Oro\Bundle\UserBundle\Menu\UserMenuBuilder
     oro_user.role.listener.class:       Oro\Bundle\UserBundle\EventListener\RoleListener
@@ -66,36 +59,10 @@ services:
         tags:
             - { name: kernel.event_listener, event: security.interactive_login, method: onLogin }
 
-    oro_user.acl_reader:
-        class:                        %oro_user.acl.reader.class%
-        arguments:                    ["@kernel", "@annotation_reader"]
-
-    oro_user.acl_config_reader:
-        class:                        %oro_user.acl.config_reader.class%
-        arguments:                    ["%kernel.bundles%"]
-
-    oro_user.acl_pointcut:
-        class:                        %oro_user.acl.pointcut.class%
-        arguments:                    ["@annotation_reader", "@logger"]
-        tags:
-            - { name: jms_aop.pointcut, interceptor: oro_user.acl_interceptor }
-
-    oro_user.acl_interceptor:
-        class:                        %oro_user.acl.interceptor.class%
-        arguments:                    ["@service_container"]
-
     oro_user.cache:
         parent: oro.cache.abstract
         calls:
             - [ setNamespace, [ "oro_user.cache" ] ]
-
-    oro_user.acl_manager:
-        class:                        %oro_user.acl.manager.class%
-        arguments:                    ["@doctrine.orm.entity_manager", "@oro_user.acl_reader", "@oro_user.cache", "@security.context", "@oro_user.acl_config_reader"]
-
-    oro_user.acl_manager.api:
-        class:                        %oro_user.acl.manager.api.class%
-        arguments:                    [%oro_user.acl.entity.class%, @doctrine.orm.entity_manager]
 
     oro_user.user_menu:
         class:                        %oro_user.user_menu.builder.class%
@@ -111,7 +78,7 @@ services:
 
     oro_user.twig.user_extension:
         class:                        %oro_user.acl.twig.class%
-        arguments:                    ["@oro_user.acl_manager", "@oro_user.gender_provider"]
+        arguments:                    ["@oro_user.gender_provider"]
         tags:
             - { name: twig.extension }
 
@@ -165,7 +132,7 @@ services:
             - %oro_user.entity.class%
             - ["username", "firstName", "lastName", "email"]
         tags:
-            - { name: oro_form.autocomplete.search_handler, alias: users, acl_resource: oro_user_user_list }
+            - { name: oro_form.autocomplete.search_handler, alias: users, acl_resource: oro_user_user_view }
 
     oro_user.gender_provider:
         class: %oro_user.gender_provider.class%
@@ -181,5 +148,5 @@ services:
         class: %oro_user.change_password.subscriber.class%
         arguments:
             - @form.factory
-            - @oro_user.acl_manager
+            - @oro_security.security_facade
             - @security.context
