@@ -18,6 +18,10 @@ security:
             pattern:                        ^/(_(profiler|wdt)|css|images|js)/
             security:                       false
 
+        liip_imagine:
+            pattern:                        ^/media
+            security:                       false
+
         wsse_secured:
             pattern:                        ^/api/(rest|soap).*
             wsse:

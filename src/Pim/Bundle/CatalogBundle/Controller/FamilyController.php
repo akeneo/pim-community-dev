@@ -119,7 +119,7 @@ class FamilyController extends AbstractDoctrineController
                 $family->addAttribute($identifier);
                 $this->getManager()->persist($family);
                 $this->getManager()->flush();
-                $this->addFlash('success', 'Family successfully created');
+                $this->addFlash('success', 'flash.family.created');
 
                 return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
             }
@@ -175,7 +175,7 @@ class FamilyController extends AbstractDoctrineController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $this->getManager()->flush();
-                $this->addFlash('success', 'Family successfully updated.');
+                $this->addFlash('success', 'flash.family.updated');
 
                 return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $id));
             }
@@ -197,6 +197,7 @@ class FamilyController extends AbstractDoctrineController
      * Remove a family
      *
      * @param Family $entity
+     *
      * @Acl(
      *      id="pim_catalog_family_remove",
      *      name="Remove a family",
@@ -210,7 +211,7 @@ class FamilyController extends AbstractDoctrineController
         $this->getManager()->remove($entity);
         $this->getManager()->flush();
 
-        $this->addFlash('success', 'Family successfully removed');
+        $this->addFlash('success', 'flash.family.removed');
 
         return $this->redirectToRoute('pim_catalog_family_create');
     }
@@ -220,6 +221,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @param Request $request The request object
      * @param integer $id      The family id to which add attributes
+     *
      * @Acl(
      *      id="pim_catalog_family_add_attribute",
      *      name="Add attribute to a family",
@@ -245,6 +247,8 @@ class FamilyController extends AbstractDoctrineController
 
         $this->getManager()->flush();
 
+        $this->addFlash('success', 'flash.family.attributes added');
+
         return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
     }
 
@@ -253,6 +257,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @param integer $familyId
      * @param integer $attributeId
+     *
      * @Acl(
      *      id="pim_catalog_family_remove_atribute",
      *      name="Remove attribute from a family",
@@ -267,16 +272,16 @@ class FamilyController extends AbstractDoctrineController
         $attribute = $this->findOr404('PimCatalogBundle:ProductAttribute', $attributeId);
 
         if (false === $family->hasAttribute($attribute)) {
-            $this->addFlash('error', sprintf('Attribute "%s" is not attached to "%s" family', $attribute, $family));
+            $this->addFlash('error', 'flash.family.attribute not found');
         } elseif ($attribute->getAttributeType() === 'pim_catalog_identifier') {
-            $this->addFlash('error', 'Identifier attribute can not be removed from a family.');
+            $this->addFlash('error', 'flash.family.identifier not removable');
         } elseif ($attribute === $family->getAttributeAsLabel()) {
-            $this->addFlash('error', 'You cannot remove this attribute because it is used as label for the family.');
+            $this->addFlash('error', 'flash.family.label attribute not removable');
         } else {
             $family->removeAttribute($attribute);
             $this->getManager()->flush();
 
-            $this->addFlash('success', 'The family is successfully updated.');
+            $this->addFlash('success', 'flash.family.attribute removed');
         }
 
         return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));

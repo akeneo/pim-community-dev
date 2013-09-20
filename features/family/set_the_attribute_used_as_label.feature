@@ -23,7 +23,7 @@ Feature: Set the attribute used as label
     Given I am logged in as "admin"
     When I am on the "Bags" family page
     And I choose "Brand" as the label of the family
-    Then I should see "Family successfully updated."
+    Then I should see "Family successfully updated"
 
   Scenario: Succesfully display the chosen attribute as the title of the product
     Given the attribute "Brand" has been chosen as the family "Bags" label
@@ -52,4 +52,4 @@ Feature: Set the attribute used as label
     When I am on the "Bags" family page
     And I visit the "Attributes" tab
     And I remove the "Brand" attribute
-    Then I should see "You cannot remove this attribute because it is used as label for the family."
+    Then I should see "This attribute can not be removed because it is used as the label of the family"

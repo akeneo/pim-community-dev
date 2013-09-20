@@ -190,8 +190,6 @@ class ProductManager extends FlexibleManager
      */
     public function save(ProductInterface $product, ArrayCollection $categories = null, array $onlyTree = null)
     {
-        $this->handleMedia($product);
-
         if ($categories != null) {
             $this->setCategories($product, $categories, $onlyTree);
         }
@@ -445,7 +443,7 @@ class ProductManager extends FlexibleManager
      *
      * @return null
      */
-    protected function handleMedia(ProductInterface $product)
+    public function handleMedia(ProductInterface $product)
     {
         foreach ($product->getValues() as $value) {
             if ($media = $value->getMedia()) {
