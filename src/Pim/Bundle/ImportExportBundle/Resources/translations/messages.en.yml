@@ -129,12 +129,23 @@ oro_batch:
 
     file_writer:
         title: 'File configuration'
-        path:
-            label: 'Path'
+        directoryName:
+            label: 'Directory path'
             help: 'Where to write the generated file on the file system'
+        fileName:
+            label: 'File name'
+            help: 'The name of the generated file.'
 
     orm_category_writer:
         title: Category storage
 
     orm_product_writer:
         title: Product storage
+
+# Page titles:
+'Import management': 'Import management'
+'Import %job.name% | Edit': 'Import %job.name% | Edit'
+'Import %job.name% | Show': 'Import %job.name% | Show'
+'Export management': 'Export management'
+'Export %job.name% | Edit': 'Export %job.name% | Edit'
+'Export %job.name% | Show': 'Export %job.name% | Show'

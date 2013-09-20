@@ -35,7 +35,7 @@ Feature: Set the attribute used as label
       | bag-jean | Brand     | Levis |
     And I am logged in as "admin"
     When I am on the "bag-jean" product page
-    Then the title of the product should be "Products/en Levis"
+    Then the title of the product should be "Product/en Levis"
 
   Scenario: Succesfully display the id as the title of the product
     Given the following products:
@@ -43,7 +43,7 @@ Feature: Set the attribute used as label
       | bag-jean |
     And I am logged in as "admin"
     When I am on the "bag-jean" product page
-    Then the title of the product should match "#^Products/en \d+$#"
+    Then the title of the product should match "#^Product/en \d+$#"
 
   @javascript
   Scenario: Fail to remove an attribute that is used as the family label

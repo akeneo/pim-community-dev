@@ -37,12 +37,4 @@ class Index extends Grid
     {
         return $this->getRow($locale)->find('css', 'span.label-important');
     }
-
-    /**
-     * Click on the link to create a new locale
-     */
-    public function clickNewLocaleLink()
-    {
-        $this->clickLink('New locale');
-    }
 }

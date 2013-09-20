@@ -33,7 +33,7 @@
     </div>
 
     {% for groupId, groupView in form.vars.groups %}
-    <div id="tabs-{{ groupId }}" class="tab-pane">
+    <div id="tabs-{{ groupId }}" class="tab-pane fullheight">
         <h3>{{ groupView.name }}</h3>
         {% for attributeId, attributeView in groupView.attributes %}
             <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">

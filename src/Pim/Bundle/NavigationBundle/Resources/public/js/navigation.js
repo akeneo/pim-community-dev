@@ -24,18 +24,22 @@ define(
                     }
                     if (this.url.match(GRID_URL_REGEX)) {
                         var qs = this.url.replace(QUERY_STRING_REGEX, ''),
-                            args = qs ? app.unpackFromQueryString(qs) : {}
+                            args = qs ? app.unpackFromQueryString(qs) : {};
                         if (!encodedStateData && sessionStorage && sessionStorage.gridURL_products) {
-                            this.encodedStateData = sessionStorage.gridURL_products
+                            this.encodedStateData = sessionStorage.gridURL_products;
+                            this.skipAjaxCall = false;
                         } else if (!this.encodedStateData) {
-                            this.encodedStateData = ""
+                            this.encodedStateData = "";
                         }
                         if (args.dataLocale) {
                             this.encodedStateData += (this.encodedStateData ? '&' : '') +
                                     'dataLocale=' + args.dataLocale;
-                            sessionStorage.gridURL_products = this.encodedStateData
+                            sessionStorage.gridURL_products = this.encodedStateData;
+                            this.skipAjaxCall = false;
                         }
-                        this.navigate("url=" + this.url.split("?").shift() + "|g/" + this.encodedStateData, { trigger: false, replace: true});
+                        if (!this.skipAjaxCall) {
+                            this.navigate("url=" + this.url.split("?").shift() + "|g/" + this.encodedStateData, { trigger: false, replace: true});
+                        }
                     }
                     if (!this.skipAjaxCall) {
                         this.loadPage();

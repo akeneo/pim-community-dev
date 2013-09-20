@@ -9,9 +9,7 @@
         path('pim_catalog_channel_edit', { id: form.vars.value.id }) :
         path('pim_catalog_channel_create') }}" method="POST">
 
-        {% set title = 'Channels'|trans %}
-
-        {% set subtitle = form.vars.value.id ? form.vars.value.code : 'New channel'|trans %}
+        {% set title = form.vars.value.id ? 'channel.edit'|trans ~ ' - ' ~ form.vars.value.name : 'channel.create'|trans %}
 
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_channel_index')) }}
@@ -21,7 +19,7 @@
             {{ elements.submitBtn() }}
         {% endset %}
 
-        {{ elements.page_header(title, buttons, subtitle) }}
+        {{ elements.page_header(title, buttons) }}
 
         <div class="row-fluid">
             {{ elements.form_errors(form) }}

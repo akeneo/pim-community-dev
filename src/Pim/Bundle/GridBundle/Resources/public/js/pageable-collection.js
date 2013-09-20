@@ -6,12 +6,11 @@
  * @returns {unresolved}
  */
 define(
-    ["oro/pageable-collection-orig", "oro/app"], 
-    function(OroPageableCollection, app){
+    ["oro/pageable-collection-orig", "oro/app", "underscore"], 
+    function(OroPageableCollection, app, _){
         var parent = OroPageableCollection.prototype,
-            TREE_REGEX = /(&treeId=(\d+))/,
-            CATEGORY_REGEX = /(&categoryId=(\d+))/,
-            QUERY_STRING_REGEX = /^[^\?]+\??/,
+            TREE_REGEX = /(&?treeId=(\d+))/,
+            CATEGORY_REGEX = /(&?categoryId=(\d+))/,
             PageableCollection = OroPageableCollection.extend({
                 /**
                  * @inheritdoc
@@ -37,32 +36,36 @@ define(
                     }
                 },
                 setCategoryInUrl: function(url) {
-                    var treeString = this.state.categoryId === '' ? '' : '&treeId=' + this.state.treeId,
-                        categoryString = this.state.categoryId === '' ? '' : '&categoryId=' + this.state.categoryId;
-
-                    if (url.match(TREE_REGEX)) {
-                        url = url.replace(TREE_REGEX, treeString);
+                    url = url.replace(CATEGORY_REGEX, '').replace(TREE_REGEX, '');
+                    var qs = app.packToQueryString({
+                                categoryId: this.state.categoryId,
+                                treeId: this.state.treeId
+                            });
+                    if ("?" === _.last(url)) {
+                        url += qs
+                    } else if (-1 === url.indexOf("?")) {
+                        url += "?" + qs;
                     } else {
-                        url += treeString;
+                        url += "&" + qs;
                     }
-
-                    if (url.match(CATEGORY_REGEX)) {
-                        url = url.replace(CATEGORY_REGEX, categoryString);
-                    } else {
-                        url += categoryString;
-                    }
-                    return url
+                    return url;
                 },
                 /**
                  * @inheritdoc
                  */
                 encodeStateData: function(stateObject) {
-                    var encodedStateData = parent.encodeStateData.call(this, stateObject);
+                    var encodedStateData = parent.encodeStateData.call(this, stateObject)
                     if (stateObject.treeId) {
                         encodedStateData += "&treeId=" + stateObject.treeId;
                     }
                     if (stateObject.categoryId) {
                         encodedStateData += "&categoryId=" + stateObject.categoryId;
+                    }
+                    if (stateObject.dataLocale) {
+                        encodedStateData += "&dataLocale=" + stateObject.dataLocale;
+                    }
+                    if ("&" === encodedStateData[0]) {
+                        encodedStateData = encodedStateData.substr(1);
                     }
                     return encodedStateData;
                 },
@@ -79,7 +82,7 @@ define(
                         data.categoryId = QSData.categoryId;
                     }
                     if (QSData.dataLocale) {
-                        data.dataLocale = QSData.dataLocale
+                        data.dataLocale = QSData.dataLocale;
                     }
                     return data;
                 },
@@ -97,17 +100,10 @@ define(
                     if (state.treeId) {
                         queryParams.treeId = state.treeId;
                     }
-                    return queryParams;
-                },
-                /**
-                 * @inheritdoc
-                 */
-                processQueryParams: function(data, state) {
-                    var params = OroPageableCollection.prototype.processQueryParams(data, state)
                     if (state.dataLocale) {
-                        params.dataLocale = state.dataLocale;
+                        queryParams.dataLocale = state.dataLocale;
                     }
-                    return params;
+                    return queryParams;
                 },
                 /**
                 * Clone collection

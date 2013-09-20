@@ -4,26 +4,24 @@ namespace Pim\Bundle\GridBundle\Builder\ORM;
 
 use Pim\Bundle\GridBundle\Action\Export\ExportActionInterface;
 
-use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
-
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Serializer\Serializer;
-
 use Oro\Bundle\GridBundle\Action\ActionFactoryInterface;
+use Oro\Bundle\UserBundle\Acl\ManagerInterface;
+use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Filter\FilterFactoryInterface;
 use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Sorter\SorterFactoryInterface;
-use Oro\Bundle\UserBundle\Acl\ManagerInterface;
 use Oro\Bundle\GridBundle\Builder\ORM\DatagridBuilder as OroDatagridBuilder;
+
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * Override of OroPlatform datagrid builder
- * Inject serializer in datagrid builder
- * The serializer is passed to the datagrid and allow quick export
+ * Inject serializer in datagrid builder allowing export
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -90,6 +88,12 @@ class DatagridBuilder extends OroDatagridBuilder
         return $datagrid;
     }
 
+    /**
+     * Add export action
+     *
+     * @param DatagridInterface $datagrid
+     * @param ExportActionInterface $exportAction
+     */
     public function addExportAction(DatagridInterface $datagrid, ExportActionInterface $exportAction)
     {
         $aclResource = $exportAction->getAclResource();

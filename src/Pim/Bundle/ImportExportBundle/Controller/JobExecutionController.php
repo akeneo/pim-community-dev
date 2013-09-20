@@ -12,9 +12,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Oro\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
-
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver;
 
 /**
  * Job execution controller
@@ -36,6 +36,11 @@ class JobExecutionController extends AbstractDoctrineController
     private $batchLogHandler;
 
     /**
+     * @var JobExecutionArchiver
+     */
+    private $jobExecutionArchiver;
+
+    /**
      * @var string
      */
     private $jobType;
@@ -51,6 +56,7 @@ class JobExecutionController extends AbstractDoctrineController
      * @param RegistryInterface        $doctrine
      * @param DatagridWorkerInterface  $dataGridWorker
      * @param BatchLogHandler          $batchLogHandler
+     * @param JobExecutionArchiver     $archiver
      * @param string                   $jobType
      */
     public function __construct(
@@ -63,13 +69,15 @@ class JobExecutionController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         DatagridWorkerInterface $dataGridWorker,
         BatchLogHandler $batchLogHandler,
+        JobExecutionArchiver $archiver,
         $jobType
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
 
-        $this->dataGridWorker  = $dataGridWorker;
-        $this->batchLogHandler = $batchLogHandler;
-        $this->jobType         = $jobType;
+        $this->dataGridWorker       = $dataGridWorker;
+        $this->batchLogHandler      = $batchLogHandler;
+        $this->jobExecutionArchiver = $archiver;
+        $this->jobType              = $jobType;
     }
     /**
      * List the reports
@@ -110,6 +118,23 @@ class JobExecutionController extends AbstractDoctrineController
         $jobExecution = $this->findOr404('OroBatchBundle:JobExecution', $id);
 
         $response = new BinaryFileResponse($this->batchLogHandler->getRealPath($jobExecution->getLogFile()));
+        $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+
+        return $response;
+    }
+
+    /**
+     * Download the input / output files of the job execution
+     *
+     * @param integer $id
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function downloadFilesAction($id)
+    {
+        $jobExecution = $this->findOr404('OroBatchBundle:JobExecution', $id);
+        $path = $this->jobExecutionArchiver->getDownloadPath($jobExecution);
+        $response = new BinaryFileResponse($path);
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
 
         return $response;

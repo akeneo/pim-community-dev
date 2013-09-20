@@ -1,4 +1,4 @@
-define(
+    define(
     ['jquery', 'underscore', 'routing', 'oro/registry', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector'],
     function ($, _, Routing, Registry) {
         'use strict';
@@ -69,7 +69,7 @@ define(
             function updateGrid(treeId, categoryId) {
                 var collection = Registry.getElement('datagrid', 'products').collection;
                 if (collection.setCategory(treeId, categoryId)) {
-                    $('.grid-toolbar .actions-panel .action.btn .icon-refresh').click();
+                    $('.grid-toolbar .icon-refresh').click();
                 }
             }
 
@@ -94,8 +94,13 @@ define(
                         }, null, true);
                     });
                 }).on('select_node.jstree', function () {
-                    var nodeId = $.jstree._focused().get_selected().attr('id').replace('node_', ''),
-                        treeId = $('#tree li').first().attr('id').replace('node_', '');
+                    function getNodeId(node) {
+                        return (node && node.attr("id")) 
+                                ? node.attr('id').replace('node_','') 
+                                : '';
+                    }
+                    var nodeId = getNodeId($.jstree._focused().get_selected()),
+                        treeId = getNodeId($('#tree').find('li').first());
                     updateGrid(treeId, nodeId);
                 });
             };
