@@ -383,8 +383,11 @@ class EntityAclExtension extends AbstractAclExtension
         if ($oid->getType() !== ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
             $metadata = $this->getMetadata($oid);
             if (!$metadata->hasOwner()) {
-                unset($result['ASSIGN']);
-                unset($result['SHARE']);
+                foreach ($result as $key => $value) {
+                    if (in_array($value, array('ASSIGN', 'SHARE'))) {
+                        unset($result[$key]);
+                    }
+                }
             }
         }
 
