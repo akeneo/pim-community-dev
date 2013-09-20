@@ -11,16 +11,32 @@ class DateTimeNormalizer implements NormalizerInterface, DenormalizerInterface
     /**
      * @var string
      */
-    protected $defaultFormat;
+    protected $defaultDateTimeFormat;
+
+    /**
+     * @var string
+     */
+    protected $defaultDateFormat;
+
+    /**
+     * @var string
+     */
+    protected $defaultTimeFormat;
 
     /**
      * @var \DateTimeZone
      */
     protected $defaultTimezone;
 
-    public function __construct($defaultFormat = \DateTime::ISO8601, $defaultTimezone = 'UTC')
-    {
-        $this->defaultFormat = $defaultFormat;
+    public function __construct(
+        $defaultDateTimeFormat = \DateTime::ISO8601,
+        $defaultDateFormat = 'Y-m-d',
+        $defaultTimeFormat = 'H:i:s',
+        $defaultTimezone = 'UTC'
+    ) {
+        $this->defaultDateTimeFormat = $defaultDateTimeFormat;
+        $this->defaultDateFormat = $defaultDateFormat;
+        $this->defaultTimeFormat = $defaultTimeFormat;
         $this->defaultTimezone = new \DateTimeZone($defaultTimezone);
     }
 
@@ -47,7 +63,7 @@ class DateTimeNormalizer implements NormalizerInterface, DenormalizerInterface
     {
         $timezone = $this->getTimezone($context);
         $format = $this->getFormat($context);
-        $datetime = \DateTime::createFromFormat($format, (string) $data, $timezone);
+        $datetime = \DateTime::createFromFormat($format . '|', (string) $data, $timezone);
         if (false === $datetime) {
             throw new RuntimeException(sprintf('Invalid datetime "%s", expected format %s.', $data, $format));
         }
@@ -77,7 +93,22 @@ class DateTimeNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     protected function getFormat(array $context)
     {
-        return isset($context['format']) ? $context['format'] : $this->defaultFormat;
+        if (!empty($context['format'])) {
+            return $context['format'];
+        }
+
+        if (!empty($context['type'])) {
+            switch ($context['type']) {
+                case 'date':
+                    return $this->defaultDateFormat;
+                case 'time':
+                    return $this->defaultTimeFormat;
+                default:
+                    return $this->defaultDateTimeFormat;
+            }
+        }
+
+        return $this->defaultDateTimeFormat;
     }
 
     /**
