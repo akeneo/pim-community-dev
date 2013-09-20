@@ -100,7 +100,7 @@ class Completeness
      *     name="pim_catalog_completenesses_attributes",
      *     joinColumns={@ORM\JoinColumn(name="completeness_id", referencedColumnName="id", onDelete="CASCADE")},
      *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="attribute_id", referencedColumnName="id")
+     *         @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
      *     }
      * )
      */
