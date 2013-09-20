@@ -1,15 +1,27 @@
 /* jshint browser:true */
 /* global require */
-require(['jquery', 'underscore'],
-function($, _) {
+require(['jquery', 'underscore', 'routing'],
+function($, _, routing) {
     'use strict';
     $(function() {
         $(document).on('change', 'form select.extend-rel-target-name', function (e) {
             var el     = $(this),
-                target = el.find('option:selected').attr('value');
+                target = el.find('option:selected').attr('value'),
+                query =  routing.generate.apply(routing, ['oro_entityconfig_field_search', {id: target}]),
+                fields = $('form select.extend-rel-target-field');
 
-            console.log ( target );
+            $(fields).prev('span').text('loading...');
 
+            $.getJSON(query, function(response) {
+                var items = [];
+                items.push('<option value="" selected="selected">Please choice target field...</option>');
+                $.each( response, function( key, val ) {
+                    items.push("<option value='" + key + "'>" + val + "</option>");
+                });
+                fields.empty().append(items.join(''));
+
+                $(fields).prev('span').text('Please choice target field...');
+            });
 
             return false;
         });

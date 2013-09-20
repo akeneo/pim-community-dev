@@ -38,7 +38,7 @@
 {% endblock stats %}
 
 {% block content_data %}
-    {% if require_js|length %}
+    {% if require_js is defined and require_js|length %}
         <script type="text/javascript">
             require({{ require_js|json_encode|raw }})
         </script>

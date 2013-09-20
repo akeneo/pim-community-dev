@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Form\Type;
 
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\AbstractType;
 
@@ -33,7 +34,16 @@ class TargetType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $entityClassName = $this->request->get('entity')->getClassName();
+        if (null === $this->request->get('entity')) {
+            /** @var FieldConfigModel $entity */
+            $entity = $this->configManager->getEntityManager()
+                ->getRepository(FieldConfigModel::ENTITY_NAME)
+                ->find($this->request->get('id'));
+
+            $entityClassName = $entity->getEntity()->getClassName();
+        } else {
+            $entityClassName = $this->request->get('entity')->getClassName();
+        }
 
         $options = array();
 
@@ -43,7 +53,7 @@ class TargetType extends AbstractType
 
             if ($entity->getClassName() != $entityClassName) {
 
-                $className  = explode('\\', $entity->getClassName());
+                $className = explode('\\', $entity->getClassName());
                 if (count($className) > 1) {
                     foreach ($className as $i => $name) {
                         if (count($className) - 1 == $i) {
@@ -60,8 +70,8 @@ class TargetType extends AbstractType
 
         $resolver->setDefaults(
             array(
-                'required'    => true,
-                'choices'     => $options,
+                'required' => true,
+                'choices'  => $options,
             )
         );
     }

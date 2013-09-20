@@ -136,10 +136,6 @@ oro_entity_config:
                         filterable:         false
                         show_filter:        false
 
-                constraint:
-                    options:
-                        internal:           true
-
                 state:
                     options:
                         priority:           25
@@ -254,10 +250,10 @@ oro_entity_config:
                             code:           is_extend
                             value:          true
                     form:
-                        type:               choice
+                        type:               oro_entity_target_field_type
                         options:
                             attr:           {class: 'extend-rel-target-field'}
-                            required:       true
+                            required:       false
                             label:          'Target field'
                             empty_value:    'Please choice target field...'
                             block:          entity

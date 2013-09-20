@@ -1,5 +1,6 @@
 parameters:
     oro_entity_extend.type.target.class:                        Oro\Bundle\EntityExtendBundle\Form\Type\TargetType
+    oro_entity_extend.type.target_field.class:                  Oro\Bundle\EntityExtendBundle\Form\Type\TargetFieldType
 
 services:
     oro_entity_extend.type.target:
@@ -10,3 +11,12 @@ services:
             - @request
         tags:
             - { name: form.type, alias: oro_entity_target_type }
+
+    oro_entity_extend.type.target_field:
+        class:                                                  %oro_entity_extend.type.target_field.class%
+        scope: request
+        arguments:
+            - @oro_entity_config.config_manager
+            - @request
+        tags:
+            - { name: form.type, alias: oro_entity_target_field_type }
