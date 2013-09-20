@@ -13,7 +13,7 @@ use Oro\Bundle\ImportExportBundle\Processor\ContextAwareProcessor;
 use Oro\Bundle\ImportExportBundle\Converter\DataConverterInterface;
 use Oro\Bundle\ImportExportBundle\Strategy\StrategyInterface;
 
-class ImportProcessor implements ContextAwareProcessor, SerializerAwareInterface
+class ImportProcessor implements ProcessorInterface, ContextAwareProcessor, SerializerAwareInterface
 {
     /**
      * @var ContextInterface

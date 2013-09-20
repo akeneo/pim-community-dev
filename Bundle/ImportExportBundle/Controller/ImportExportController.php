@@ -25,6 +25,35 @@ class ImportExportController extends Controller
 
     const EXPORT_TO_CSV_JOB = 'entity_export_to_csv';
 
+
+    /**
+     * @Route("/import", name="oro_importexport_import_form")
+     * @Acl(
+     *      id="oro_importexport_import",
+     *      name="Entity import form",
+     *      description="Entity import form",
+     *      parent="oro_importexport"
+     * )
+     * @Template
+     */
+    public function importFormAction()
+    {
+        $entityName = $this->getRequest()->get('entity');
+
+        $data = array();
+
+        $importForm = $this->createForm(
+            'oro_importexport_import',
+            $data,
+            array('entityName' => $entityName)
+        );
+
+        return array(
+            'entityName' => $entityName,
+            'form' => $importForm->createView()
+        );
+    }
+
     /**
      * @Route("/export/instant/{entityName}/{processorAlias}", name="oro_importexport_export_instant")
      * @Acl(

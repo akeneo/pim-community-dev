@@ -115,4 +115,22 @@ class ProcessorRegistryTest extends \PHPUnit_Framework_TestCase
             $this->registry->getProcessorsByEntity($type, $entityName)
         );
     }
+
+    public function testGetProcessorAliasesByEntity()
+    {
+        $type = ProcessorRegistry::TYPE_IMPORT;
+        $entityName = 'entity_name';
+        $fooAlias = 'foo_alias';
+        $fooProcessor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
+        $barAlias = 'bar_alias';
+        $barProcessor = $this->getMock('Oro\Bundle\ImportExportBundle\Processor\ProcessorInterface');
+
+        $this->registry->registerProcessor($fooProcessor, $type, $entityName, $fooAlias);
+        $this->registry->registerProcessor($barProcessor, $type, $entityName, $barAlias);
+
+        $this->assertEquals(
+            array($fooAlias, $barAlias),
+            $this->registry->getProcessorAliasesByEntity($type, $entityName)
+        );
+    }
 }

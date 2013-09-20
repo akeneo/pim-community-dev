@@ -109,4 +109,20 @@ class ProcessorRegistry
 
         return $this->processors[$type][$entityName];
     }
+
+    /**
+     * Get all processors by entity name
+     *
+     * @param string $type
+     * @param string $entityName
+     * @return array
+     */
+    public function getProcessorAliasesByEntity($type, $entityName)
+    {
+        if (empty($this->processors[$type][$entityName])) {
+            return array();
+        }
+
+        return array_keys($this->processors[$type][$entityName]);
+    }
 }
