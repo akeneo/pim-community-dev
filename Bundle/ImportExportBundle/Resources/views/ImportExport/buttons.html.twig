@@ -40,6 +40,8 @@
         $('.export-btn').on('click', function(e) {
             e.preventDefault();
 
+            Messanger.notificationFlashMessage('info', '{{ 'Export started, please wait...'|trans }}');
+
             $.getJSON(this.href, function(data) {
                 if (data.messages.length) {
                     for (var i = 0; i < data.messages.length; i++) {

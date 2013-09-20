@@ -36,14 +36,29 @@ class DateTimeNormalizerTest extends \PHPUnit_Framework_TestCase
             '2013-12-31T23:59:59+0200',
             $this->normalizer->normalize($date, null)
         );
+        $this->assertEquals(
+            '2013-12-31',
+            $this->normalizer->normalize($date, null, array('type' => 'date'))
+        );
+        $this->assertEquals(
+            '23:59:59',
+            $this->normalizer->normalize($date, null, array('type' => 'time'))
+        );
     }
 
     public function testDenormalize()
     {
-        $date = new \DateTime('2013-12-31 23:59:59+0200');
         $this->assertEquals(
-            $date,
+            new \DateTime('2013-12-31 23:59:59+0200'),
             $this->normalizer->denormalize('2013-12-31T23:59:59+0200', 'DateTime', null)
+        );
+        $this->assertEquals(
+            new \DateTime('2013-12-31 00:00:00', new \DateTimeZone('UTC')),
+            $this->normalizer->denormalize('2013-12-31', 'DateTime', null, array('type' => 'date'))
+        );
+        $this->assertEquals(
+            new \DateTime('1970-01-01 23:59:58', new \DateTimeZone('UTC')),
+            $this->normalizer->denormalize('23:59:58', 'DateTime', null, array('type' => 'time'))
         );
     }
 }
