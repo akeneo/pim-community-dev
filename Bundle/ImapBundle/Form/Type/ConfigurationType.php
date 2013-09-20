@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
-use Oro\Bundle\PlatformBundle\Security\Encryptor\Mcrypt;
+use Oro\Bundle\SecurityBundle\Encoder\Mcrypt;
 
 class ConfigurationType extends AbstractType
 {

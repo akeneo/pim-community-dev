@@ -14,6 +14,8 @@ parameters:
     oro_security.owner.decision_maker.class:                   Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker
     oro_security.orm.ownership_sql_filter.class:               Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilter
 
+    oro_security.encoder.mcrypt.class:                         Oro\Bundle\SecurityBundle\Encoder\Mcrypt
+
 services:
     oro_security.acl.extension_selector:
         public: false
@@ -91,3 +93,7 @@ services:
         arguments:       ["@doctrine.orm.entity_manager"]
         tags:
             - { name: oro_entity.orm.sql_filter, filter_name: ownershipFilter, enabled: true }
+
+    oro_security.encoder.mcrypt:
+        class: %oro_security.encoder.mcrypt.class%
+        arguments: [ %kernel.secret% ]

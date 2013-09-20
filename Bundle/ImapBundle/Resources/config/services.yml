@@ -31,7 +31,7 @@ services:
         class: %oro_imap.email_body_loader.class%
         arguments:
             - @oro_imap.connector.factory
-            - @oro_platform.security.encryptor.mcrypt
+            - @oro_security.encoder.mcrypt
         tags:
             - { name: oro_email.email_body_loader }
 
@@ -43,11 +43,11 @@ services:
             - @oro_email.email.entity.builder
             - @oro_email.email.address.manager
             - @oro_imap.connector.factory
-            - @oro_platform.security.encryptor.mcrypt
+            - @oro_security.encoder.mcrypt
 
     oro_imap.form.type.configuration:
         class: %oro_imap.form.type.configuration.class%
         arguments:
-            - @oro_platform.security.encryptor.mcrypt
+            - @oro_security.encoder.mcrypt
         tags:
              - { name: form.type, alias: oro_imap_configuration }

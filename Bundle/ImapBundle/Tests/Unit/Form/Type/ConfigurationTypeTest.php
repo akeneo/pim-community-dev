@@ -6,7 +6,7 @@ use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
 use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
 use Oro\Bundle\ImapBundle\Form\Type\ConfigurationType;
-use Oro\Bundle\PlatformBundle\Security\Encryptor\Mcrypt;
+use Oro\Bundle\SecurityBundle\Encoder\Mcrypt;
 
 class ConfigurationTypeTest extends FormIntegrationTestCase
 {

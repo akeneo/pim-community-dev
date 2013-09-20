@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\PlatformBundle\Tests\Unit\Security\Encryptor;
+namespace Oro\Bundle\SecurityBundle\Tests\Unit\Encoder;
 
-use Oro\Bundle\PlatformBundle\Security\Encryptor\Mcrypt;
+use Oro\Bundle\SecurityBundle\Encoder\Mcrypt;
 
 class McryptTest extends \PHPUnit_Framework_TestCase
 {
