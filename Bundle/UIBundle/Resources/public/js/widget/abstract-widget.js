@@ -1,8 +1,10 @@
 /* jshint devel:true*/
 /* global define, require */
-define(['jquery', 'underscore', 'backbone', 'oro/mediator'],
-function($, _, Backbone, mediator) {
+define(['underscore', 'backbone', 'oro/mediator', 'jquery.form'],
+function(_, Backbone, mediator) {
     'use strict';
+
+    var $ = Backbone.$;
 
     /**
      * @export  oro/abstract-widget
@@ -80,6 +82,7 @@ function($, _, Backbone, mediator) {
          */
         _adoptWidgetActions: function() {
             this.actions['adopted'] = {};
+            this.form = null;
             var adoptedActionsContainer = this._getAdoptedActionsContainer();
             if (adoptedActionsContainer.length > 0) {
                 var self = this;
@@ -132,7 +135,17 @@ function($, _, Backbone, mediator) {
         },
 
         _onAdoptedFormSubmit: function(form) {
-            this.loadContent(form.serialize(), form.attr('method'));
+            if (form.find('[type="file"]').length) {
+                form.ajaxSubmit({
+                    data: {
+                        '_widgetContainer': this.options.type,
+                        '_wid': this.getWid()
+                    },
+                    success: _.bind(this.onContentLoad, this)
+                });
+            } else {
+                this.loadContent(form.serialize(), form.attr('method'));
+            }
         },
 
         _onAdoptedFormResetClick: function(form) {
@@ -288,18 +301,25 @@ function($, _, Backbone, mediator) {
             options.data = (options.data !== undefined ? options.data + '&' : '') +
                 '_widgetContainer=' + this.options.type + '&_wid=' + this.getWid();
 
-            Backbone.$.ajax(options).done(_.bind(function(content) {
-                try {
-                    this.trigger('contentLoad', content, this);
-                    this.actionsEl = null;
-                    this.setElement($(content).filter('.widget-content'));
-                    this._show();
-                    Oro.Events.trigger('hash_navigation_request:complete');
-                } catch (error) {
-                    // Remove state with unrestorable content
-                    this.trigger('contentLoadError', this);
-                }
-            }, this));
+            Backbone.$.ajax(options).done(_.bind(this.onContentLoad, this));
+        },
+
+        /**
+         * Handle loaded content.
+         *
+         * @param {String} content
+         */
+        onContentLoad: function(content) {
+            try {
+                this.trigger('contentLoad', content, this);
+                this.actionsEl = null;
+                this.setElement($(content).filter('.widget-content'));
+                this._show();
+                Oro.Events.trigger('hash_navigation_request:complete');
+            } catch (error) {
+                // Remove state with unrestorable content
+                this.trigger('contentLoadError', this);
+            }
         },
 
         _show: function() {
