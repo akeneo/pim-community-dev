@@ -25,7 +25,7 @@ class FinalStep extends AbstractStep
         $this->runCommand('cache:clear');
         $this->runCommand('doctrine:schema:update', array('--force' => true));
         $this->runCommand('oro:search:create-index');
-        $this->runCommand('assets:install', array('.' => true));
+        $this->runCommand('assets:install', array('target' => './'));
         $this->runCommand('assetic:dump');
         $this->runCommand('oro:assetic:dump');
         $this->runCommand('oro:translation:dump');

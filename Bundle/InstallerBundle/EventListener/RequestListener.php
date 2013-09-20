@@ -38,11 +38,10 @@ class RequestListener
 
         $allowedRoutes = array(
             'oro_installer_flow',
-            'oro_translation_jstranslation',
             'sylius_flow_display',
             'sylius_flow_forward',
-            'fos_js_routing_js',
             '_wdt',
+            '_profiler'
         );
 
         if (!$this->installed) {

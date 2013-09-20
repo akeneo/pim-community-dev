@@ -52,5 +52,3 @@ services:
         arguments:
             - %installed%
             - "@router"
-        tags:
-            - { name: kernel.event_listener, priority: 10, event: kernel.request, method: onRequest }

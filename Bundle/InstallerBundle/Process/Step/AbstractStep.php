@@ -28,7 +28,7 @@ abstract class AbstractStep extends ControllerStep
      */
     protected function runCommand($command, $params = array())
     {
-        $params = array_merge($params, array('command' => $command, '--no-debug' => true));
+        $params = array_merge(array('command' => $command, '--no-debug' => true), $params);
 
         $this->getApplication()->run(new ArrayInput($params), $this->output);
     }

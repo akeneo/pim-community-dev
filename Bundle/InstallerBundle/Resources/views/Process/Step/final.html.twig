@@ -1,18 +1,17 @@
-{% extends bap.layout %}
+{% extends 'OroInstallerBundle::layout.html.twig' %}
 
-{% block header %}{% endblock %}
-{% block before_content %}{% endblock %}
+{% block title %}{{ 'process.step.final.header'|trans }} - {{ parent() }}{% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1>{{ 'process.step.final.header'|trans }}</h1>
+<div class="page-title">
+    <h2>{{ 'process.step.final.header'|trans }}</h2>
 </div>
 
-{{ 'process.step.final.content'|trans }}
+<div class="well">
+    <p>{{ 'process.step.final.content'|trans }}</p>
+</div>
 
-<div class="form-actions">
-    <a href="{{ path('oro_default') }}" class="btn btn-large btn-primary btn-success">
-        {{ 'process.button.finish'|trans }}
-    </a>
+<div class="button-set">
+    <a href="{{ path('oro_default') }}" class="button primary">{{ 'process.button.finish'|trans }}</a>
 </div>
 {% endblock %}
