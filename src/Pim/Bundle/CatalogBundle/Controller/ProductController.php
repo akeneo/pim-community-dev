@@ -113,6 +113,11 @@ class ProductController extends AbstractDoctrineController
     private $aclManager;
 
     /**
+     * @staticvar int
+     */
+    const BATCH_SIZE = 250;
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -255,7 +260,7 @@ class ProductController extends AbstractDoctrineController
             );
 
             // prepare serializer batching
-            $limit = 250;
+            $limit = static::BATCH_SIZE;
             $count = $gridManager->getDatagrid()->countResults();
             $iterations = ceil($count/$limit);
 

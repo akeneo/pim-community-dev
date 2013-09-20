@@ -112,8 +112,8 @@ class FlatProductNormalizer implements NormalizerInterface
                         $result[] = (string) $item;
                     }
                 }
+                $data = join(self::ITEM_SEPARATOR, $result);
             }
-            $data = join(self::ITEM_SEPARATOR, $result);
         } elseif ($data instanceof Media) {
             // TODO Handle media export
             // They are ignored for now (both file and image type)
