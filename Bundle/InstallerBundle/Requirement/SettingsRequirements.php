@@ -119,7 +119,7 @@ class SettingsRequirements extends RequirementCollection
 
     /**
      * @param  string $key Ini setting key
-     * @return bool True if setting switched on, false otherwise
+     * @return bool   True if setting switched on, false otherwise
      */
     protected function isOn($key)
     {
