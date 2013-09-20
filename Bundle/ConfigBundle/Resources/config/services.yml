@@ -28,6 +28,7 @@ services:
             - []
             - @form.factory
             - @oro_grid.filter.factory
+            - @oro_security.security_facade
         tags:
             -  { name: oro_config.configuration_form_provider }
 
