@@ -4,7 +4,7 @@ function(AbstractAction) {
     'use strict';
 
     /**
-     * Resets collection to initial state
+     * Resets collection to initial state (corrects buggy ORO implementation)
      *
      * @export  oro/datagrid/reset-collection-action
      * @class   oro.datagrid.ResetCollectionAction
