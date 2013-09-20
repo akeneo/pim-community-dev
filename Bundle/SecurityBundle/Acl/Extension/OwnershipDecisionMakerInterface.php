@@ -13,7 +13,7 @@ interface OwnershipDecisionMakerInterface
     /**
      * Determines whether the given domain object is an organization
      *
-     * @param object $domainObject
+     * @param  object $domainObject
      * @return bool
      */
     public function isOrganization($domainObject);
@@ -21,7 +21,7 @@ interface OwnershipDecisionMakerInterface
     /**
      * Determines whether the given domain object is a business unit
      *
-     * @param object $domainObject
+     * @param  object $domainObject
      * @return bool
      */
     public function isBusinessUnit($domainObject);
@@ -29,7 +29,7 @@ interface OwnershipDecisionMakerInterface
     /**
      * Determines whether the given domain object is an user
      *
-     * @param object $domainObject
+     * @param  object $domainObject
      * @return bool
      */
     public function isUser($domainObject);
@@ -38,8 +38,8 @@ interface OwnershipDecisionMakerInterface
      * Determines whether the given domain object is associated with
      * an any organization of the given user
      *
-     * @param object $user
-     * @param object $domainObject
+     * @param  object                       $user
+     * @param  object                       $domainObject
      * @return bool
      * @throws InvalidDomainObjectException
      */
@@ -49,9 +49,9 @@ interface OwnershipDecisionMakerInterface
      * Determines whether the given domain object is associated with
      * an any business unit of the given user
      *
-     * @param object $user
-     * @param object $domainObject
-     * @param boolean $deep Specify whether subordinate business units should be checked. Defaults to false.
+     * @param  object                       $user
+     * @param  object                       $domainObject
+     * @param  boolean                      $deep         Specify whether subordinate business units should be checked. Defaults to false.
      * @return bool
      * @throws InvalidDomainObjectException
      */
@@ -60,8 +60,8 @@ interface OwnershipDecisionMakerInterface
     /**
      * Determines whether the given domain object is associated with the given user
      *
-     * @param object $user
-     * @param object $domainObject
+     * @param  object                       $user
+     * @param  object                       $domainObject
      * @return bool
      * @throws InvalidDomainObjectException
      */

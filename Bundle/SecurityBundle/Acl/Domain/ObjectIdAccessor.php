@@ -13,7 +13,7 @@ class ObjectIdAccessor
     /**
      * Gets id for the given domain object
      *
-     * @param object $domainObject
+     * @param  object                       $domainObject
      * @return int|string
      * @throws InvalidDomainObjectException
      */

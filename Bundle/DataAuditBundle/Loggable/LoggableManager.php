@@ -89,23 +89,15 @@ class LoggableManager
     protected $auditConfigProvider;
 
     /**
-     * @var EntityClassAccessor
-     */
-    protected $classAccessor;
-
-    /**
      * @param                     $logEntityClass
      * @param ConfigProvider      $auditConfigProvider
-     * @param EntityClassAccessor $classAccessor
      */
     public function __construct(
         $logEntityClass,
-        ConfigProvider $auditConfigProvider,
-        EntityClassAccessor $classAccessor
+        ConfigProvider $auditConfigProvider
     ) {
         $this->auditConfigProvider = $auditConfigProvider;
         $this->logEntityClass      = $logEntityClass;
-        $this->classAccessor       = $classAccessor;
     }
 
     /**
@@ -572,14 +564,15 @@ class LoggableManager
     }
 
     /**
-     * Get real entity class name
-     * filtered proxy classes
-     *
      * @param $entity
      * @return string
      */
     private function getEntityClassName($entity)
     {
-        return $this->classAccessor->getClass($entity);
+        if (is_object($entity)) {
+            return get_class($entity);
+        }
+
+        return $entity;
     }
 }

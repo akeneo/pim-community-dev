@@ -55,9 +55,9 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     /**
      * Split the given object identity descriptor
      *
-     * @param string $descriptor
-     * @param string $type [output]
-     * @param string $id [output]
+     * @param  string                    $descriptor
+     * @param  string                    $type       [output]
+     * @param  string                    $id         [output]
      * @throws \InvalidArgumentException
      */
     protected function parseDescriptor($descriptor, &$type, &$id)
@@ -79,17 +79,17 @@ abstract class AbstractAclExtension implements AclExtensionInterface
     /**
      * Builds InvalidAclMaskException object
      *
-     * @param string $permission
-     * @param int $mask
-     * @param mixed $object
-     * @param string|null $errorDescription
+     * @param  string                  $permission
+     * @param  int                     $mask
+     * @param  mixed                   $object
+     * @param  string|null             $errorDescription
      * @return InvalidAclMaskException
      */
     protected function createInvalidAclMaskException($permission, $mask, $object, $errorDescription = null)
     {
         $objectDescription = is_object($object) && !($object instanceof ObjectIdentityInterface)
             ? get_class($object)
-            : (string)$object;
+            : (string) $object;
         $msg = sprintf(
             'Invalid ACL mask "%s" for %s.',
             $this->createMaskBuilder($permission)->getPatternFor($mask),
