@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\DataAuditBundle\Controller\Api\Rest;
 
+use Symfony\Component\Validator\Constraints\True;
+
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Routing\ClassResourceInterface;
@@ -10,10 +12,17 @@ use FOS\Rest\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
-use Symfony\Component\Validator\Constraints\True;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 
 /**
  * @NamePrefix("oro_api_")
+ *
+ * @Acl(
+ *      id="oro_dataaudit_api_rest",
+ *      name="Rest API for data audit",
+ *      description="Rest API for data audit",
+ *      parent="oro_dataaudit"
+ * )
  */
 class AuditController extends FOSRestController implements ClassResourceInterface
 {
@@ -26,6 +35,13 @@ class AuditController extends FOSRestController implements ClassResourceInterfac
      * )
      *
      * @return Response
+     *
+     * @Acl(
+     *      id="oro_dataaudit_api_rest_list",
+     *      name="Get logged entities",
+     *      description="Get list of all logged entities",
+     *      parent="oro_dataaudit_api_rest"
+     * )
      */
     public function cgetAction()
     {
@@ -51,6 +67,13 @@ class AuditController extends FOSRestController implements ClassResourceInterfac
      * )
      *
      * @return Response
+     *
+     * @Acl(
+     *      id="oro_dataaudit_api_rest_get",
+     *      name="Get audit entity",
+     *      description="Get audit entity",
+     *      parent="oro_dataaudit_api_rest"
+     * )
      */
     public function getAction($id)
     {
@@ -72,6 +95,13 @@ class AuditController extends FOSRestController implements ClassResourceInterfac
      *  requirements={
      *      {"name"="id", "dataType"="integer"},
      *  }
+     * )
+     *
+     * @Acl(
+     *      id="oro_dataaudit_api_rest_delete",
+     *      name="Delete audit entity",
+     *      description="Delete audit entity",
+     *      parent="oro_dataaudit_api_rest"
      * )
      */
     public function deleteAction($id)

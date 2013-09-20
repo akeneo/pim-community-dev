@@ -78,9 +78,7 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
             noResultsHint: 'No items found during search.',
             rowClickActionClass: 'row-click-action',
             rowClassName: '',
-            toolbarOptions: {},
-            addResetAction: true,
-            addRefreshAction: true,
+            toolbarOptions: {addResetAction: true, addRefreshAction: true},
             rowClickAction: undefined,
             multipleSorting: true,
             rowActions: [],
@@ -97,8 +95,6 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
          * @param {String} [options.rowClickActionClass] CSS class for row with click action
          * @param {String} [options.rowClassName] CSS class for row
          * @param {Object} [options.toolbarOptions] Options for toolbar
-         * @param {Boolean} [options.addResetAction] If TRUE reset action will be added in toolbar
-         * @param {Boolean} [options.addRefreshAction] If TRUE refresh action will be added in toolbar
          * @param {Array<oro.datagrid.AbstractAction>} [options.rowActions] Array of row actions prototypes
          * @param {Array<oro.datagrid.AbstractAction>} [options.massActions] Array of mass actions prototypes
          * @param {oro.datagrid.AbstractAction} [options.rowClickAction] Prototype for action that handles row click
@@ -119,6 +115,8 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
 
             // Init properties values based on options and defaults
             _.extend(this, this.defaults, options);
+            this.toolbarOptions = {};
+            _.extend(this.toolbarOptions, this.defaults.toolbarOptions, options.toolbarOptions);
 
             this.collection.multipleSorting = this.multipleSorting;
 
@@ -133,7 +131,7 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
             options.columns.unshift(this._getMassActionsColumn());
 
             this.loadingMask = this._createLoadingMask();
-            this.toolbar = this._createToolbar(_.extend(this.toolbarOptions, options.toolbarOptions));
+            this.toolbar = this._createToolbar(this.toolbarOptions);
 
             Backgrid.Grid.prototype.initialize.apply(this, arguments);
 
@@ -234,7 +232,7 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
         _createToolbar: function(toolbarOptions) {
             return new this.toolbar(_.extend({}, toolbarOptions, {
                 collection: this.collection,
-                actions: this._getToolbarActions(),
+                actions: this._getToolbarActions(toolbarOptions),
                 massActions: this._getToolbarMassActions()
             }));
         },
@@ -242,17 +240,18 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
         /**
          * Get actions of toolbar
          *
+         * @param {Object} toolbarOptions
          * @return {Array}
          * @private
          */
-        _getToolbarActions: function() {
+        _getToolbarActions: function(toolbarOptions) {
             var result = [];
-            if (this.addRefreshAction) {
+            //if (toolbarOptions.addRefreshAction) {
                 result.push(this.getRefreshAction());
-            }
-            if (this.addResetAction) {
+            //}
+            //if (toolbarOptions.addResetAction) {
                 result.push(this.getResetAction());
-            }
+            //}
             return result;
         },
 

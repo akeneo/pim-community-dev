@@ -3,20 +3,29 @@
 namespace Oro\Bundle\NavigationBundle\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatorInterface;
+
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\Rest\Util\Codes;
-
-use Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider;
 use Knp\Menu\Iterator\RecursiveItemIterator;
 use Knp\Menu\ItemInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+
+use Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 
 /**
  * @RouteResource("shortcuts")
  * @NamePrefix("oro_api_")
+ *
+ * @Acl(
+ *     id="oro_shortcut_api",
+ *     name="Shortcut API",
+ *     description="Shortcut API",
+ *     parent="oro_shortcut"
+ * )
  */
 class ShortcutsController extends FOSRestController
 {
@@ -32,6 +41,13 @@ class ShortcutsController extends FOSRestController
      *  resource=true
      * )
      * @return Response
+     *
+     * @Acl(
+     *     id="oro_shortcut_api_list",
+     *     name="List shortcuts",
+     *     description="List shortcuts",
+     *     parent="oro_shortcut_api"
+     * )
      */
     public function getAction($query)
     {

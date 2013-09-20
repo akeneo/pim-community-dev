@@ -3,19 +3,28 @@
 namespace Oro\Bundle\NavigationBundle\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Response;
+
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\Rest\Util\Codes;
-use Oro\Bundle\UserBundle\Entity\User;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory;
 use Oro\Bundle\NavigationBundle\Entity\Repository\NavigationRepositoryInterface;
+use Oro\Bundle\UserBundle\Annotation\Acl;
 
 /**
  * @RouteResource("navigationitems")
  * @NamePrefix("oro_api_")
+ *
+ * @Acl(
+ *     id="oro_navigation_item_api",
+ *     name="Navigation item API",
+ *     description="Navigation item API",
+ *     parent="root"
+ * )
  */
 class NavigationItemController extends FOSRestController
 {
@@ -29,6 +38,13 @@ class NavigationItemController extends FOSRestController
      *  resource=true
      * )
      * @return Response
+     *
+     * @Acl(
+     *     id="oro_navigation_item_api_list",
+     *     name="List navigation items",
+     *     description="Get list of navigation items",
+     *     parent="oro_navigation_item_api"
+     * )
      */
     public function getAction($type)
     {
@@ -54,6 +70,13 @@ class NavigationItemController extends FOSRestController
      *  resource=true
      * )
      * @return Response
+     *
+     * @Acl(
+     *     id="oro_navigation_item_api_post",
+     *     name="Create navigation item",
+     *     description="Create a navigation item",
+     *     parent="oro_navigation_item_api"
+     * )
      */
     public function postAction($type)
     {
@@ -99,6 +122,13 @@ class NavigationItemController extends FOSRestController
      *  resource=true
      * )
      * @return Response
+     *
+     * @Acl(
+     *     id="oro_navigation_item_api_put",
+     *     name="Update navigation item",
+     *     description="Update a navigation item",
+     *     parent="oro_navigation_item_api"
+     * )
      */
     public function putIdAction($type, $itemId)
     {
@@ -149,6 +179,13 @@ class NavigationItemController extends FOSRestController
      *  resource=true
      * )
      * @return Response
+     *
+     * @Acl(
+     *     id="oro_navigation_item_api_delete",
+     *     name="Delete navigation item",
+     *     description="Delete a navigation item",
+     *     parent="oro_navigation_item_api"
+     * )
      */
     public function deleteIdAction($type, $itemId)
     {

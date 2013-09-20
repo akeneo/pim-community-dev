@@ -2,15 +2,25 @@
 
 namespace Oro\Bundle\SearchBundle\Controller\Api;
 
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
+
+use Oro\Bundle\UserBundle\Annotation\Acl;
 
 /**
  * @RouteResource("search_advanced")
  * @NamePrefix("oro_api_")
+ *
+ * @Acl(
+ *     id="oro_search_api_advanced",
+ *     name="Advanced search API",
+ *     description="Advanced search API",
+ *     parent="oro_search"
+ * )
  */
 class SearchAdvancedController extends FOSRestController
 {
@@ -76,6 +86,12 @@ class SearchAdvancedController extends FOSRestController
      *  filters={
      *      {"name"="query", "dataType"="string"}
      *  }
+     * )
+     * @Acl(
+     *     id="oro_search_api_advanced_feature",
+     *     name="API for advanced search",
+     *     description="API for advanced search",
+     *     parent="oro_search_api_advanced"
      * )
      */
     public function getAction()

@@ -9,9 +9,18 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 
+use Oro\Bundle\UserBundle\Annotation\Acl;
+
 /**
  * @RouteResource("search")
  * @NamePrefix("oro_api_")
+ *
+ * @Acl(
+ *     id="oro_search_api",
+ *     name="Search API",
+ *     description="Search API",
+ *     parent="oro_search"
+ * )
  */
 class SearchController extends FOSRestController
 {
@@ -25,6 +34,13 @@ class SearchController extends FOSRestController
      *      {"name"="max_results", "dataType"="integer"},
      *      {"name"="from", "dataType"="string"}
      *  }
+     * )
+     *
+     * @Acl(
+     *     id="oro_search_api_feature",
+     *     name="API for search",
+     *     description="API for search",
+     *     parent="oro_search_api"
      * )
      */
     public function getAction()
