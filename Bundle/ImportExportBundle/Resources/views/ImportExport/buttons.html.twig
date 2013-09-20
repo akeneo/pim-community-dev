@@ -1,0 +1,54 @@
+<div class="btn-group">
+    {% if resource_granted('oro_importexport_import') %}
+    <a type="button"
+        class="btn import-btn no-hash"
+        href="{{ path('oro_importexport_import_form', {'entity': entityClass}) }}">
+        <i class="icon-signin"></i>Import
+    </a>
+    {% endif %}
+
+    {% if resource_granted('oro_importexport_export_instant') %}
+    <a type="button"
+       class="btn export-btn no-hash"
+       href="{{ path('oro_importexport_export_instant', {'entityName': entityClass, 'processorAlias': exportProcessor}) }}">
+        <i class="icon-signout"></i>Export
+    </a>
+    {% endif %}
+</div>
+
+<script type="text/javascript">
+    require(['jquery', 'oro/widget-manager', 'oro/dialog-widget', 'oro/messenger'],
+    function($, WidgetManager, DialogWidget, Messanger) {
+        $('.import-btn').on('click', function(e) {
+            e.preventDefault();
+
+            var widget = new DialogWidget({
+                'url': this.href,
+                'title': {{ 'Import Contacts'|trans|json_encode|raw }},
+                'stateEnabled': false,
+                'dialogOptions': {
+                    'width': 550,
+                    'autoResize': true,
+                    'modal': true,
+                    'allowMinimize': true
+                }
+            });
+            WidgetManager.addWidgetInstance(widget);
+            widget.render();
+        });
+
+        $('.export-btn').on('click', function(e) {
+            e.preventDefault();
+
+            $.getJSON(this.href, function(data) {
+                if (data.success) {
+                    $('<iframe/>', {src: data.url}).hide().appendTo('body');
+                } else {
+                    for (var i = 0; i < data.messages.length; i++) {
+                        Messanger.notificationFlashMessage('error', data.messages[i]);
+                    }
+                }
+            });
+        });
+    });
+</script>

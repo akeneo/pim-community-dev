@@ -1,9 +1,0 @@
-placeholders:
-    navButtons_before:
-        label: Entity Import/Export Buttons
-        items:
-            import_export_buttons_entity:
-                order: 200
-items:
-   import_export_buttons_entity:
-        template: OroImportExportBundle:Widget:entityButtons.html.twig

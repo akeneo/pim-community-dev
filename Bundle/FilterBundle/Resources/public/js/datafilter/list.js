@@ -73,7 +73,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
         selectWidget: null,
 
         /**
-         * Widget button selector
+         * ImportExport button selector
          *
          * @property
          */

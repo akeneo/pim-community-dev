@@ -1,0 +1,21 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+<div class="widget-content">
+    <div class="form-container">
+        <form method="post"
+              data-nohash="true"
+              id="{{ form.vars.name }}"
+              action="{{ path('oro_importexport_import_form', {entity: entityName}) }}"
+              class="form-horizontal">
+
+            <fieldset>
+                {{ form_row(form.file, {'label': 'File'}) }}
+                {{ form_row(form.processor, {'label': 'Strategy'}) }}
+            </fieldset>
+
+            <div class="widget-actions">
+                <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                <button class="btn btn-primary" type="submit">{{ 'Validate'|trans }}</button>
+            </div>
+        </form>
+    </div>
+</div>
