@@ -37,6 +37,7 @@ class AttributeRequirement
      * @var ProductAttribute $attribute
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttribute")
+     * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $attribute;
 

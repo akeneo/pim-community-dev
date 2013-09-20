@@ -1,6 +1,6 @@
 define(
     ['underscore', 'oro/datagrid/grid', 'pim/datagrid/export-action', 'pim/datagrid/toolbar'],
-    function (_, Grid, ExportCollectionAction, Toolbar) {
+    function (_, OroGrid, ExportCollectionAction, Toolbar) {
         'use strict';
 
         /**
@@ -11,7 +11,7 @@ define(
          * @extends Oro.Datagrid.Grid
          * @see     Backgrid.Grid
          */
-        return Grid.extend({
+        var Grid = OroGrid.extend({
             /**
              * @property {Object} Default properties values
              */
@@ -26,7 +26,6 @@ define(
                 massActions: [],
                 exportActions: []
             },
-
             /** @property {pim.datagrid.Toolbar} */
             toolbar: Toolbar,
             
@@ -83,5 +82,6 @@ define(
                 });
             }
         });
+        return Grid;
     }
 );

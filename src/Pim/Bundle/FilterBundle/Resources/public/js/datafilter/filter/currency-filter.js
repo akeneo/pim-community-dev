@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'oro/datafilter/number-filter'],
-    function ($, _, NumberFilter) {
+    ['jquery', 'underscore', 'oro/datafilter/number-filter', 'oro/app'],
+    function ($, _, NumberFilter, app) {
         'use strict';
 
         /**
@@ -124,6 +124,33 @@ define(
                 currency: '',
                 type:     '',
                 value:    ''
+            },
+
+            /**
+             * Check if all properties of the value have been specified or all are empty (for reseting filter)
+             *
+             * @param value
+             * @return boolean
+             */
+            _isValueValid: function(value) {
+                return (value.currency && value.type && value.value) ||
+                       (!value.currency && !value.type && !value.value);
+            },
+
+            /**
+             * @inheritDoc
+             */
+            setValue: function(value) {
+                value = this._formatRawValue(value);
+                if (this._isValueValid(value)) {
+                    if (this._isNewValueUpdated(value)) {
+                        var oldValue = this.value;
+                        this.value = app.deepClone(value);
+                        this._updateDOMValue();
+                        this._onValueUpdated(this.value, oldValue);
+                    }
+                }
+                return this;
             }
         });
     }
