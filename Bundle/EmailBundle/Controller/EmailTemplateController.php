@@ -52,7 +52,7 @@ class EmailTemplateController extends Controller
      *      id="oro_email_emailtemplate_update",
      *      type="entity",
      *      class="OroEmailBundle:EmailTemplate",
-     *      permission="UPDATE"
+     *      permission="EDIT"
      * )
      * @Template()
      */
