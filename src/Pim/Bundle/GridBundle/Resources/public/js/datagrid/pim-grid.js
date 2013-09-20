@@ -1,6 +1,6 @@
 define(
     ['underscore', 'oro/datagrid/grid', 'pim/datagrid/export-action', 'pim/datagrid/toolbar'],
-    function (_, Grid, ExportCollectionAction, Toolbar) {
+    function (_, OroGrid, ExportCollectionAction, Toolbar) {
         'use strict';
 
         /**
