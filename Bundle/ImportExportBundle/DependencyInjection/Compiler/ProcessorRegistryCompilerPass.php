@@ -10,46 +10,28 @@ use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 class ProcessorRegistryCompilerPass implements CompilerPassInterface
 {
-    const PROCESSOR_REGISTRY_TAG = 'oro_importexport.processor_registry';
-    const PROCESSOR_TAG          = 'oro_importexport.processor';
+    const PROCESSOR_REGISTRY_SERVICE = 'oro_importexport.processor.registry';
+    const PROCESSOR_TAG              = 'oro_importexport.processor';
 
     /**
      * {@inheritDoc}
      */
     public function process(ContainerBuilder $container)
     {
-        $processorsByTypes = $this->findProcessorTaggedServiceIdsByTypes($container);
-        $registries = $this->findTaggedProcessorRegistryServiceIds($container);
+        $processors = $this->findProcessorTaggedServiceIds($container);
 
-        foreach ($registries as $registryId => $registryTags) {
-            foreach ($registryTags as $registryTag) {
-                $registry = $container->getDefinition($registryId);
-                $this->addRegistryProcessors($registry, $registryTag, $processorsByTypes);
-            }
-        }
-    }
+        $registryDefinition = $container->getDefinition(self::PROCESSOR_REGISTRY_SERVICE);
 
-    /**
-     * @param Definition $registryDefinition
-     * @param array $registryTag
-     * @param array $processorsByTypes
-     */
-    protected function addRegistryProcessors(
-        Definition $registryDefinition,
-        array $registryTag,
-        array $processorsByTypes
-    ) {
-        $type = $registryTag['type'];
-
-        if (empty($processorsByTypes[$type])) {
-            return;
-        }
-
-        foreach ($processorsByTypes[$type] as $processorId => $processorTags) {
+        foreach ($processors as $processorId => $processorTags) {
             foreach ($processorTags as $processorTag) {
                 $registryDefinition->addMethodCall(
                     'registerProcessor',
-                    array(new Reference($processorId), $processorTag['entity'], $processorTag['alias'])
+                    array(
+                        new Reference($processorId),
+                        $processorTag['type'],
+                        $processorTag['entity'],
+                        $processorTag['alias']
+                    )
                 );
             }
         }
@@ -59,27 +41,8 @@ class ProcessorRegistryCompilerPass implements CompilerPassInterface
      * @param ContainerBuilder $container
      * @return array
      */
-    protected function findTaggedProcessorRegistryServiceIds(ContainerBuilder $container)
+    protected function findProcessorTaggedServiceIds(ContainerBuilder $container)
     {
-        $registries = $container->findTaggedServiceIds(self::PROCESSOR_REGISTRY_TAG);
-
-        foreach ($registries as $serviceId => $tags) {
-            foreach ($tags as $tag) {
-                $this->assertTagHasAttributes($serviceId, self::PROCESSOR_REGISTRY_TAG, $tag, array('type'));
-            }
-        }
-
-        return $registries;
-    }
-
-    /**
-     * @param ContainerBuilder $container
-     * @return array
-     */
-    protected function findProcessorTaggedServiceIdsByTypes(ContainerBuilder $container)
-    {
-        $result = array();
-
         $processors = $container->findTaggedServiceIds(self::PROCESSOR_TAG);
 
         foreach ($processors as $serviceId => $tags) {
@@ -104,7 +67,7 @@ class ProcessorRegistryCompilerPass implements CompilerPassInterface
             }
         }
 
-        return $result;
+        return $processors;
     }
 
     /**
