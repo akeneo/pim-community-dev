@@ -175,38 +175,24 @@ class OwnershipMetadataProviderTest extends \PHPUnit_Framework_TestCase
         $cache->expects($this->at(2))
             ->method('fetch')
             ->with($this->equalTo('UndefinedClass'))
-            ->will($this->returnValue($metadata));
+            ->will($this->returnValue(true));
         $cache->expects($this->once())
             ->method('save')
-            ->with($this->equalTo('UndefinedClass'), $this->equalTo($metadata));
+            ->with($this->equalTo('UndefinedClass'), $this->equalTo(true));
 
+        // no cache
         $this->assertEquals(
             $metadata,
             $provider->getMetadata('UndefinedClass')
         );
 
-        // One another call of getMetadata to check that cache is used
+        // local cache
         $this->assertEquals(
             $metadata,
             $provider->getMetadata('UndefinedClass')
         );
-    }
 
-    public function testGetMetadataWithCache()
-    {
-        $configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $cache = $this->getMockForAbstractClass(
-            'Doctrine\Common\Cache\CacheProvider',
-            array(),
-            '',
-            false,
-            true,
-            true,
-            array('fetch', 'save')
-        );
-
+        // cache
         $provider = new OwnershipMetadataProvider(
             array(
                 'organization' => 'AcmeBundle\Entity\Organization',
@@ -217,45 +203,9 @@ class OwnershipMetadataProviderTest extends \PHPUnit_Framework_TestCase
             null,
             $cache
         );
-
-        $config = new Config(new EntityConfigId('SomeClass', 'ownership'));
-        $config->set('owner_type', 'USER');
-        $config->set('owner_field_name', 'test_field');
-        $config->set('owner_column_name', 'test_column');
-
-        $metadata = new OwnershipMetadata('USER', 'test_field', 'test_column');
-
-        $configProvider->expects($this->once())
-            ->method('hasConfig')
-            ->with($this->equalTo('SomeClass'))
-            ->will($this->returnValue(true));
-
-        $configProvider->expects($this->once())
-            ->method('getConfig')
-            ->with($this->equalTo('SomeClass'))
-            ->will($this->returnValue($config));
-
-        $cache->expects($this->at(0))
-            ->method('fetch')
-            ->with($this->equalTo('SomeClass'))
-            ->will($this->returnValue(false));
-        $cache->expects($this->at(2))
-            ->method('fetch')
-            ->with($this->equalTo('SomeClass'))
-            ->will($this->returnValue($metadata));
-        $cache->expects($this->once())
-            ->method('save')
-            ->with($this->equalTo('SomeClass'), $this->equalTo($metadata));
-
         $this->assertEquals(
             $metadata,
-            $provider->getMetadata('SomeClass')
-        );
-
-        // One another call of getMetadata to check that cache is used
-        $this->assertEquals(
-            $metadata,
-            $provider->getMetadata('SomeClass')
+            $provider->getMetadata('UndefinedClass')
         );
     }
 

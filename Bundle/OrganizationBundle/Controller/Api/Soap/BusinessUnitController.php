@@ -7,7 +7,7 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Oro\Bundle\SoapBundle\Controller\Api\Soap\SoapController;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiFlexibleEntityManager;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 class BusinessUnitController extends SoapController
 {
@@ -16,7 +16,7 @@ class BusinessUnitController extends SoapController
      * @Soap\Param("page", phpType="int")
      * @Soap\Param("limit", phpType="int")
      * @Soap\Result(phpType = "Oro\Bundle\OrganizationBundle\Entity\BusinessUnit[]")
-     * @AclAncestor("oro_business_unit_list")
+     * @AclAncestor("oro_business_unit_view")
      */
     public function cgetAction($page = 1, $limit = 10)
     {

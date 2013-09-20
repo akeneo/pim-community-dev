@@ -7,7 +7,7 @@
     </a>
     {% endif %}
 
-    {% if resource_granted('oro_importexport_export_instant') %}
+    {% if resource_granted('oro_importexport_export') %}
     <a type="button"
        class="btn export-btn no-hash"
        href="{{ path('oro_importexport_export_instant', {'entityName': entityClass, 'processorAlias': exportProcessor}) }}">

@@ -10,7 +10,7 @@ use Gedmo\Translatable\Translatable;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
  * EmailTemplate
@@ -22,6 +22,15 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
  *          @ORM\Index(name="email_entity_name_idx", columns={"entityName"})})
  * @ORM\Entity(repositoryClass="Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository")
  * @Gedmo\TranslationEntity(class="Oro\Bundle\EmailBundle\Entity\EmailTemplateTranslation")
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Email Template", "plural_label"="Email Templates"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
 class EmailTemplate implements Translatable
 {

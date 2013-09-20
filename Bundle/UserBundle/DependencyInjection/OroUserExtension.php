@@ -30,5 +30,6 @@ class OroUserExtension extends Extension
 
         $container->setParameter('oro_user.reset.ttl', $config['reset']['ttl']);
         $container->setParameter('oro_user.email', array($config['email']['address'] => $config['email']['name']));
+        $container->setParameter('oro_user.privileges', $config['privileges']);
     }
 }

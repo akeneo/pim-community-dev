@@ -9,6 +9,8 @@ oro_entity_config:
                                 scope:      extend
                             code:           owner
                             value:          System
+                    constraints:
+                        - NotBlank:         ~
                     grid:
                         type:               options
                         label:              'Ownership Type'
@@ -24,3 +26,4 @@ oro_entity_config:
                             block:          other
                             required:       true
                             label:          'Ownership Type'
+

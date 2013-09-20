@@ -1,4 +1,5 @@
 oro_workflow:
-    name: Workflow manipulations
-    description: All actions with workflows and workflow items
-    parent: root
+    label: Workflow manipulations
+    type: action
+    group_name: ""
+    bindings: ~

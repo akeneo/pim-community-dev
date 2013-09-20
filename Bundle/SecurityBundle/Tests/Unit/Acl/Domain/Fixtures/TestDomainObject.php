@@ -13,4 +13,9 @@ class TestDomainObject
     {
         return 'getId()';
     }
+
+    protected function someProtectedMethod()
+    {
+        return 'someProtectedMethod()';
+    }
 }

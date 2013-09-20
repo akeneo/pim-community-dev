@@ -83,7 +83,16 @@ class AclVoter extends BaseAclVoter implements PermissionGrantingStrategyContext
             ? $object->getDomainObject()
             : $object;
         $this->extension = $this->extensionSelector->select($object);
+
+        // replace empty permissions with default ones
+        for ($i = 0; $i < count($attributes); $i++) {
+            if (empty($attributes[$i])) {
+                $attributes[$i] = $this->extension->getDefaultPermission();
+            }
+        }
+
         $result = parent::vote($token, $object, $attributes);
+
         $this->extension = null;
         $this->object = null;
         $this->securityToken = null;

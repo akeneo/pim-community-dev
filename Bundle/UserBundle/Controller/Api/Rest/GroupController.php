@@ -9,8 +9,8 @@ use FOS\RestBundle\Controller\Annotations\NamePrefix;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 
 /**
@@ -27,7 +27,7 @@ class GroupController extends RestController implements ClassResourceInterface
      * )
      * @QueryParam(name="page", requirements="\d+", nullable=true, description="Page number, starting from 1. Defaults to 1.")
      * @QueryParam(name="limit", requirements="\d+", nullable=true, description="Number of items per page. defaults to 10.")
-     * @AclAncestor("oro_user_group_list")
+     * @AclAncestor("oro_user_group_view")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function cgetAction()
@@ -50,12 +50,7 @@ class GroupController extends RestController implements ClassResourceInterface
      *          {"name"="id", "dataType"="integer"},
      *      }
      * )
-     * @Acl(
-     *      id="oro_user_group_show",
-     *      name="View user group",
-     *      description="View user group",
-     *      parent="oro_user_group"
-     * )
+     * @AclAncestor("oro_user_group_view")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getAction($id)
@@ -112,9 +107,9 @@ class GroupController extends RestController implements ClassResourceInterface
      * )
      * @Acl(
      *      id="oro_user_group_remove",
-     *      name="Remove group",
-     *      description="Remove group",
-     *      parent="oro_user_group"
+     *      type="entity",
+     *      class="OroUserBundle:Group",
+     *      permission="DELETE"
      * )
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -135,12 +130,7 @@ class GroupController extends RestController implements ClassResourceInterface
      *          {"name"="id", "dataType"="integer"},
      *      }
      * )
-     * @Acl(
-     *      id="oro_user_group_roles",
-     *      name="View group roles",
-     *      description="View group roles",
-     *      parent="oro_user_group"
-     * )
+     * @AclAncestor("oro_user_group_view")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getRolesAction($id)

@@ -11,8 +11,8 @@ use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiFlexibleEntityManager;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\FlexibleRestController;
@@ -36,7 +36,7 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      *          {"name"="limit", "dataType"="integer"}
      *      }
      * )
-     * @AclAncestor("oro_user_user_list")
+     * @AclAncestor("oro_user_user_view")
      */
     public function cgetAction()
     {
@@ -116,9 +116,9 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      * )
      * @Acl(
      *      id="oro_user_user_delete",
-     *      name="Remove user user",
-     *      description="Remove user user",
-     *      parent="oro_user_user"
+     *      type="entity",
+     *      class="OroUserBundle:User",
+     *      permission="DELETE"
      * )
      */
     public function deleteAction($id)
@@ -145,12 +145,7 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      *          {"name"="id", "dataType"="integer"},
      *      }
      * )
-     * @Acl(
-     *      id="oro_user_user_roles",
-     *      name="View user roles",
-     *      description="View user roles",
-     *      parent="oro_user"
-     * )
+     * @AclAncestor("oro_user_role_view")
      */
     public function getRolesAction($id)
     {
@@ -176,12 +171,7 @@ class UserController extends FlexibleRestController implements ClassResourceInte
      *          {"name"="id", "dataType"="integer"},
      *      }
      * )
-     * @Acl(
-     *      id="oro_user_user_groups",
-     *      name="View user groups",
-     *      description="View user groups",
-     *      parent="oro_user"
-     * )
+     * @AclAncestor("oro_user_group_view")
      */
     public function getGroupsAction($id)
     {
@@ -192,37 +182,6 @@ class UserController extends FlexibleRestController implements ClassResourceInte
         }
 
         return $this->handleView($this->view($entity->getGroups(), Codes::HTTP_OK));
-    }
-
-    /**
-     * Get user's ACL list
-     *
-     * @param int $id User id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @ApiDoc(
-     *      description="Get user's granted ACL resources",
-     *      resource=true,
-     *      requirements={
-     *          {"name"="id", "dataType"="integer"},
-     *      }
-     * )
-     * @Acl(
-     *      id="oro_user_user_acl",
-     *      name="View user ACL",
-     *      description="View user's granted ACL resources",
-     *      parent="oro_user"
-     * )
-     */
-    public function getAclAction($id)
-    {
-        $user = $this->getManager()->find($id);
-
-        if (!$user) {
-            return $this->handleView($this->view('', Codes::HTTP_NOT_FOUND));
-        }
-
-        return $this->handleView($this->view($this->getAclManager()->getAclForUser($user), Codes::HTTP_OK));
     }
 
     /**
@@ -257,14 +216,6 @@ class UserController extends FlexibleRestController implements ClassResourceInte
                 $entity ? Codes::HTTP_OK : Codes::HTTP_NOT_FOUND
             )
         );
-    }
-
-    /**
-     * @return \Oro\Bundle\UserBundle\Acl\Manager
-     */
-    protected function getAclManager()
-    {
-        return $this->get('oro_user.acl_manager');
     }
 
     /**

@@ -11,8 +11,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
@@ -28,12 +27,7 @@ class ImportExportController extends Controller
 
     /**
      * @Route("/import", name="oro_importexport_import_form")
-     * @Acl(
-     *      id="oro_importexport_import",
-     *      name="Entity import form",
-     *      description="Entity import form",
-     *      parent="oro_importexport"
-     * )
+     * @AclAncestor("oro_importexport_import")
      * @Template
      */
     public function importFormAction()
@@ -56,12 +50,7 @@ class ImportExportController extends Controller
 
     /**
      * @Route("/export/instant/{entityName}/{processorAlias}", name="oro_importexport_export_instant")
-     * @Acl(
-     *      id="oro_importexport_export_instant",
-     *      name="Instant entity export",
-     *      description="Instant entity export",
-     *      parent="oro_importexport"
-     * )
+     * @AclAncestor("oro_importexport_export")
      */
     public function instantExportAction($entityName, $processorAlias)
     {

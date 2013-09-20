@@ -13,18 +13,12 @@ use FOS\Rest\Util\Codes;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Oro\Bundle\WindowsBundle\Entity\WindowsState;
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * @RouteResource("windows")
  * @NamePrefix("oro_api_")
- *
- * @Acl(
- *     id="oro_windows_state_api_rest",
- *     name="Windows state",
- *     description="Windows state",
- *     parent="root"
- * )
  */
 class WindowsStateController extends FOSRestController
 {
@@ -36,13 +30,6 @@ class WindowsStateController extends FOSRestController
      *  resource=true
      * )
      * @return Response
-     *
-     * @Acl(
-     *     id="oro_windows_state_api_rest_get",
-     *     name="Get windows state",
-     *     description="Get windows state",
-     *     parent="oro_windows_state_api_rest"
-     * )
      */
     public function cgetAction()
     {
@@ -61,13 +48,6 @@ class WindowsStateController extends FOSRestController
      *  resource=true
      * )
      * @return Response
-     *
-     * @Acl(
-     *     id="oro_windows_state_api_rest_post",
-     *     name="Create windows state",
-     *     description="Create windows state item",
-     *     parent="oro_windows_state_api_rest"
-     * )
      */
     public function postAction()
     {
@@ -101,13 +81,6 @@ class WindowsStateController extends FOSRestController
      *  resource=true
      * )
      * @return Response
-     *
-     * @Acl(
-     *     id="oro_windows_state_api_rest_put",
-     *     name="Update windows state",
-     *     description="Update windows state item",
-     *     parent="oro_windows_state_api_rest"
-     * )
      */
     public function putAction($windowId)
     {
@@ -141,13 +114,6 @@ class WindowsStateController extends FOSRestController
      *  resource=true
      * )
      * @return Response
-     *
-     * @Acl(
-     *     id="oro_windows_state_api_rest_delete",
-     *     name="Delete windows state item",
-     *     description="Delete windows state item",
-     *     parent="oro_windows_state_api_rest"
-     * )
      */
     public function deleteAction($windowId)
     {
