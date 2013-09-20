@@ -19,7 +19,7 @@ Feature: Order product attributes
     And I visit the "Attributes" tab
     Then the attribute "Price" should be in position 3
     And I change the attribute "Price" position to 1
-    Then I should see "Group successfully saved"
+    Then I should see "Attribute group successfully updated"
     And I visit the "Attributes" tab
     Then the attribute "Price" should be in position 1
     And the attribute "Color" should be in position 3

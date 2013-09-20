@@ -16,7 +16,7 @@ Feature: Remove attribute from a family
     And I am on the "Bags" family page
     And I visit the "Attributes" tab
     When I remove the "Manufacturer" attribute
-    Then I should see "The family is successfully updated."
+    Then I should see "Attribute successfully removed from the family"
     And I should see attribute "Long Description" in group "Other"
 
   Scenario: Successfully display an attribute as removable on a product when it has been removed from the family

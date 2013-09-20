@@ -13,7 +13,7 @@ Feature: Join an image to a product
 
   Scenario: Succesfully leave the image empty
     When I save the product
-    Then I should see "Product successfully saved"
+    Then I should see "Product successfully updated"
 
   Scenario: Succesfully upload an image
     When I attach file "akeneo.jpg" to "Visual"
