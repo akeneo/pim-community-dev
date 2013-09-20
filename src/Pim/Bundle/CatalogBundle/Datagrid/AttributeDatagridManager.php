@@ -201,9 +201,9 @@ class AttributeDatagridManager extends DatagridManager
             )
         );
 
-        $rowClick = $editAction;
-        $rowClick['name'] = 'rowClick';
-        $rowClick['options']['runOnRowClick'] = true;
+        $clickAction = $editAction;
+        $clickAction['name'] = 'rowClick';
+        $clickAction['options']['runOnRowClick'] = true;
 
         $deleteAction = array(
             'name'         => 'delete',
