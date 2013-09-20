@@ -12,10 +12,15 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+
 use Doctrine\Common\Collections\ArrayCollection;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Oro\Bundle\UserBundle\Annotation\Acl;
+
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
@@ -68,6 +73,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      * @param GridRenderer             $gridRenderer
      * @param DatagridWorkerInterface  $dataGridWorker
@@ -81,13 +87,23 @@ class CategoryTreeController extends AbstractDoctrineController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        TranslatorInterface $translator,
         RegistryInterface $doctrine,
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $dataGridWorker,
         CategoryManager $categoryManager,
         CategoryType $categoryType
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $securityContext,
+            $formFactory,
+            $validator,
+            $translator,
+            $doctrine
+        );
 
         $this->gridRenderer    = $gridRenderer;
         $this->dataGridWorker  = $dataGridWorker;

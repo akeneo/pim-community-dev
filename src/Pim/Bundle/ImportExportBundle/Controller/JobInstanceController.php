@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Symfony\Component\Process\Process;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -11,16 +10,19 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
-use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Pim\Bundle\CatalogBundle\Form\Type\UploadType;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
+
+use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Oro\Bundle\BatchBundle\Job\ExitStatus;
 use Oro\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\CatalogBundle\Form\Type\UploadType;
+use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 
 /**
  * Job Instance controller
@@ -60,6 +62,7 @@ class JobInstanceController extends AbstractDoctrineController
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      * @param DatagridWorkerInterface  $datagridWorker
      * @param ConnectorRegistry        $connectorRegistry
@@ -73,13 +76,23 @@ class JobInstanceController extends AbstractDoctrineController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        TranslatorInterface $translator,
         RegistryInterface $doctrine,
         DatagridWorkerInterface $datagridWorker,
         ConnectorRegistry $connectorRegistry,
         $jobType,
         $rootDir
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $securityContext,
+            $formFactory,
+            $validator,
+            $translator,
+            $doctrine
+        );
 
         $this->datagridWorker    = $datagridWorker;
         $this->connectorRegistry = $connectorRegistry;
@@ -347,7 +360,7 @@ class JobInstanceController extends AbstractDoctrineController
                 $process->start();
             }
             $this->addFlash('success', sprintf('The %s is running.', $this->getJobType()));
-            
+
             return $this->redirectToReportView($jobExecution->getId());
         }
 

@@ -9,12 +9,16 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\Form;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\GridBundle\Renderer\GridRenderer;
+
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler;
@@ -88,6 +92,7 @@ class ProductAttributeController extends AbstractDoctrineController
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      * @param GridRenderer             $gridRenderer
      * @param DatagridWorkerInterface  $datagridWorker
@@ -105,6 +110,7 @@ class ProductAttributeController extends AbstractDoctrineController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        TranslatorInterface $translator,
         RegistryInterface $doctrine,
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $datagridWorker,
@@ -115,7 +121,16 @@ class ProductAttributeController extends AbstractDoctrineController
         AuditManager $auditManager,
         $measuresConfig
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $securityContext,
+            $formFactory,
+            $validator,
+            $translator,
+            $doctrine
+        );
 
         $this->gridRenderer     = $gridRenderer;
         $this->datagridWorker   = $datagridWorker;

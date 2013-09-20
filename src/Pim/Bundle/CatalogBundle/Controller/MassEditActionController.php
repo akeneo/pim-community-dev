@@ -8,16 +8,19 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 use Oro\Bundle\UserBundle\Annotation\Acl;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionParametersParser;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
+
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
-use Symfony\Component\Translation\TranslatorInterface;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
-use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
 /**
  * Batch operation controller
@@ -41,11 +44,6 @@ class MassEditActionController extends AbstractDoctrineController
     protected $batchOperator;
 
     /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
      * @var DatagridWorkerInterface
      */
     private $datagridWorker;
@@ -64,9 +62,9 @@ class MassEditActionController extends AbstractDoctrineController
      * @param SecurityContextInterface   $securityContext
      * @param FormFactoryInterface       $formFactory
      * @param ValidatorInterface         $validator
+     * @param TranslatorInterface        $translator
      * @param RegistryInterface          $doctrine
      * @param MassEditActionOperator     $batchOperator
-     * @param TranslatorInterface        $translator
      * @param DatagridWorkerInterface    $datagridWorker
      * @param MassActionParametersParser $parametersParser
      */
@@ -77,16 +75,24 @@ class MassEditActionController extends AbstractDoctrineController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        TranslatorInterface $translator,
         RegistryInterface $doctrine,
         MassEditActionOperator $batchOperator,
-        TranslatorInterface $translator,
         DatagridWorkerInterface $datagridWorker,
         MassActionParametersParser $parametersParser
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $securityContext,
+            $formFactory,
+            $validator,
+            $translator,
+            $doctrine
+        );
 
         $this->batchOperator    = $batchOperator;
-        $this->translator       = $translator;
         $this->datagridWorker   = $datagridWorker;
         $this->parametersParser = $parametersParser;
     }
@@ -271,22 +277,5 @@ class MassEditActionController extends AbstractDoctrineController
         } else {
             return $request->query->get('products');
         }
-    }
-
-    /**
-     * Manual flash translator
-     * Otherwise, flash messages are not translated...
-     *
-     * @param string $type
-     * @param string $message
-     *
-     * TODO Fix flash translation
-     */
-    protected function addFlash($type, $message)
-    {
-        parent::addFlash(
-            $type,
-            $this->translator->trans($message)
-        );
     }
 }

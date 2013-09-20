@@ -9,7 +9,10 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+
 use Oro\Bundle\UserBundle\Annotation\Acl;
+
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
@@ -44,6 +47,7 @@ class CurrencyController extends AbstractDoctrineController
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      * @param DatagridWorkerInterface  $datagridWorker
      */
@@ -54,10 +58,20 @@ class CurrencyController extends AbstractDoctrineController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        TranslatorInterface $translator,
         RegistryInterface $doctrine,
         DatagridWorkerInterface $datagridWorker
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $securityContext,
+            $formFactory,
+            $validator,
+            $translator,
+            $doctrine
+        );
 
         $this->datagridWorker = $datagridWorker;
     }

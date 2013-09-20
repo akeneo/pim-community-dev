@@ -9,14 +9,15 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
 use Oro\Bundle\UserBundle\Annotation\Acl;
+
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
-use Pim\Bundle\CatalogBundle\Form\Handler\LocaleHandler;
 
 /**
  * Locale controller for configuration
@@ -48,6 +49,7 @@ class LocaleController extends AbstractDoctrineController
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      * @param DatagridWorkerInterface  $datagridWorker
      */
@@ -58,10 +60,20 @@ class LocaleController extends AbstractDoctrineController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        TranslatorInterface $translator,
         RegistryInterface $doctrine,
         DatagridWorkerInterface $datagridWorker
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $doctrine);
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $securityContext,
+            $formFactory,
+            $validator,
+            $translator,
+            $doctrine
+        );
 
         $this->datagridWorker = $datagridWorker;
     }
@@ -70,6 +82,7 @@ class LocaleController extends AbstractDoctrineController
      * List locales
      *
      * @param Request $request
+     *
      * @Acl(
      *      id="pim_catalog_locale_index",
      *      name="View locale list",
