@@ -1,0 +1,10 @@
+parameters:
+    oro_importexport.job_executor.class: Oro\Bundle\ImportExportBundle\Job\JobExecutor
+
+services:
+    oro_importexport.job_executor:
+        class: %oro_importexport.job_executor.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @oro_batch.connectors
+            - @oro_importexport.context_registry

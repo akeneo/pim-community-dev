@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\RouterInterface;
-use Doctrine\ORM\EntityManager;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -19,19 +18,12 @@ use Oro\Bundle\UserBundle\Annotation\Acl;
 
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Oro\Bundle\BatchBundle\Job\BatchStatus;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
-use Oro\Bundle\ImportExportBundle\Exception\RuntimeException;
-use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
+use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 
 class ImportExportController extends Controller
 {
-    const CONNECTOR_NAME = 'oro_importexport';
-
-    const EXPORT_TO_CSV_JOB = 'entity_export_to_csv';
-
-
     /**
      * @Route("/import", name="oro_importexport_import_form")
      * @Acl(
@@ -61,7 +53,7 @@ class ImportExportController extends Controller
     }
 
     /**
-     * @Route("/export/instant/{entityName}/{processorAlias}", name="oro_importexport_export_instant")
+     * @Route("/export/instant/{processorAlias}", name="oro_importexport_export_instant")
      * @Acl(
      *      id="oro_importexport_export_instant",
      *      name="Instant entity export",
@@ -69,96 +61,59 @@ class ImportExportController extends Controller
      *      parent="oro_importexport"
      * )
      */
-    public function instantExportAction($entityName, $processorAlias)
+    public function instantExportAction($processorAlias)
     {
-        /** @var EntityManager $entityManager */
-        $entityManager = $this->getDoctrine()->getManager();
-        /** @var ConnectorRegistry $jobRegistry */
-        $jobRegistry = $this->get('oro_batch.connectors');
-        /** @var ContextRegistry $contextRegistry */
-        $contextRegistry = $this->get('oro_importexport.context_registry');
+        /** @var ProcessorRegistry $processorRegistry */
+        $processorRegistry = $this->get('oro_importexport.processor.registry');
+        /** @var JobExecutor $jobExecutor */
+        $jobExecutor = $this->get('oro_importexport.job_executor');
         /** @var TranslatorInterface $translator */
         $translator = $this->get('translator');
         /** @var RouterInterface $router */
         $router = $this->get('router');
 
-        $exportLabel = $this->generateTranslationLabel(
-            ProcessorRegistry::TYPE_EXPORT,
-            self::EXPORT_TO_CSV_JOB,
-            $processorAlias
-        );
         $fileName = $this->generateTmpFileName($processorAlias, 'csv');
+        $entityName = $processorRegistry->getProcessorEntityName(ProcessorRegistry::TYPE_EXPORT, $processorAlias);
         $configuration = array(
             'export' => array(
-                'entityName' => $entityName,
                 'processorAlias' => $processorAlias,
+                'entityName' => $entityName,
                 'filePath' => $fileName,
             ),
         );
 
-        $messages = array();
-        $successful = false;
         $url = null;
+        $messages = array();
 
-        $entityManager->beginTransaction();
-        try {
-            $jobInstance = new JobInstance(
-                self::CONNECTOR_NAME,
-                ProcessorRegistry::TYPE_EXPORT,
-                self::EXPORT_TO_CSV_JOB
+        $jobResult = $jobExecutor->executeJob(
+            ProcessorRegistry::TYPE_EXPORT,
+            JobExecutor::JOB_EXPORT_TO_CSV,
+            $configuration
+        );
+
+        if ($jobResult->isSuccessful()) {
+            $url = $router->generate(
+                'oro_importexport_export_download',
+                array('fileName' => basename($fileName))
             );
-            $jobInstance->setCode(uniqid($processorAlias, true));
-            $jobInstance->setLabel($exportLabel);
-            $jobInstance->setRawConfiguration($configuration);
-            $entityManager->persist($jobInstance);
-
-            $job = $jobRegistry->getJob($jobInstance);
-            if (!$job) {
-                throw new RuntimeException(sprintf('Can\'t find job "%s"', self::EXPORT_TO_CSV_JOB));
-            }
-
-            $jobExecution = new JobExecution();
-            $jobExecution->setJobInstance($jobInstance);
-            $entityManager->persist($jobExecution);
-
-            $job->execute($jobExecution);
-
-            $entityManager->flush();
-
-            if ($jobExecution->getStatus()->getValue() == BatchStatus::COMPLETED) {
-                $entityManager->commit();
-                $successful = true;
-                $url = $router->generate(
-                    'oro_importexport_export_download',
-                    array('fileName' => basename($fileName))
+            foreach ($jobResult->getContexts() as $context) {
+                $messages[] = array(
+                    'type' => 'success',
+                    'message' => $translator->trans(
+                        'oro_importexport.export.exported_entities_count %count%',
+                        array('%count%' => $context->getReadCount())
+                    ),
                 );
-                foreach ($jobExecution->getStepExecutions() as $stepExecution) {
-                    $context = $contextRegistry->getByStepExecution($stepExecution);
-                    $messages[] = array(
-                        'type' => 'success',
-                        'message' => $translator->trans(
-                            'oro_importexport.export.exported_entities_count %count%',
-                            array('%count%' => $context->getReadCount())
-                        ),
-                    );
-                }
-            } else {
-                $entityManager->rollback();
-                foreach ($jobExecution->getStepExecutions() as $stepExecution) {
-                    $context = $contextRegistry->getByStepExecution($stepExecution);
-                    foreach ($context->getErrors() as $error) {
-                        $messages[] = array('type' => 'error', 'message' => $error);
-                    }
-                }
             }
-        } catch (\Exception $e) {
-            $entityManager->rollback();
-            $messages[] = array('type' => 'error', 'message' => $e->getMessage());
+        } else {
+            foreach ($jobResult->getErrors() as $error) {
+                $messages[] = array('type' => 'error', 'message' => $error);
+            }
         }
 
         return new JsonResponse(
             array(
-                'successful' => $successful,
+                'successful' => $jobResult->isSuccessful(),
                 'url' => $url,
                 'messages' => $messages
             )
@@ -188,7 +143,7 @@ class ImportExportController extends Controller
     {
         /** @var TranslatorInterface $translator */
         $translator = $this->get('translator');
-        $actionId = sprintf('%s.%s.%s.%s', self::CONNECTOR_NAME, $type, $job, $alias);
+        $actionId = sprintf('%s.%s.%s.%s', JobExecutor::CONNECTOR_NAME, $type, $job, $alias);
 
         return $translator->trans($actionId);
     }
@@ -237,10 +192,5 @@ class ImportExportController extends Controller
         } while (file_exists($fileName));
 
         return $fileName;
-    }
-
-    protected function generateResponseFileName($fileName, $fileExtension)
-    {
-        return sprintf('%s.%s', preg_replace('~\W~', '_', $fileName), $fileExtension);
     }
 }
