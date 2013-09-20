@@ -23,5 +23,5 @@ Feature: Product creation
     And I fill in the following information:
       | SKU               | barbecue  |
       | Reference         | BBQ       |
-    And I press the "Create" button
+    And I press the "Save" button
     Then I should see "Product successfully saved."

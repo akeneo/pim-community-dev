@@ -141,3 +141,11 @@ oro_batch:
 
     orm_product_writer:
         title: Product storage
+
+# Page titles:
+'Import management': 'Import management'
+'Import %job.name% | Edit': 'Import %job.name% | Edit'
+'Import %job.name% | Show': 'Import %job.name% | Show'
+'Export management': 'Export management'
+'Export %job.name% | Edit': 'Export %job.name% | Edit'
+'Export %job.name% | Show': 'Export %job.name% | Show'

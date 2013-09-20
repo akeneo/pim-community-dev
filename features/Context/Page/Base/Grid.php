@@ -189,7 +189,7 @@ class Grid extends Index
      */
     public function countColumns()
     {
-        return count($this->getColumnHeaders());
+        return count($this->getColumnHeaders(false, false));
     }
 
     /**
@@ -454,9 +454,18 @@ class Grid extends Index
      *
      * @return \Behat\Mink\Element\Element
      */
-    protected function getColumnHeaders($withHidden = false)
+    protected function getColumnHeaders($withHidden = false, $withActions = true)
     {
         $headers = $this->getElement('Grid')->findAll('css', 'thead th');
+
+        if (!$withActions) {
+            foreach ($headers as $key => $header) {
+                if ($header->getAttribute('class') === 'action-column'
+                    || $header->getAttribute('class') === 'select-all-header-cell') {
+                    unset($headers[$key]);
+                }
+            }
+        }
 
         if ($withHidden) {
             return $headers;
@@ -469,6 +478,8 @@ class Grid extends Index
                 $visibleHeaders[] = $header;
             }
         }
+
+
 
         return $visibleHeaders;
     }

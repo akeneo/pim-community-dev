@@ -78,8 +78,6 @@ services:
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
             - '@pim_catalog.datagrid.worker'
-            - '@pim_catalog.form.handler.locale'
-            - '@pim_catalog.form.locale'
 
     pim_catalog.controller.product_attribute:
         scope: request

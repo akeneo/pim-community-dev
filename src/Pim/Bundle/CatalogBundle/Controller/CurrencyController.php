@@ -65,6 +65,7 @@ class CurrencyController extends AbstractDoctrineController
      * List currencies
      *
      * @param Request $request
+     *
      * @Acl(
      *      id="pim_catalog_currency_index",
      *      name="View currency list",
@@ -93,6 +94,7 @@ class CurrencyController extends AbstractDoctrineController
      * Activate/Desactivate a currency
      *
      * @param Currency $currency
+     *
      * @Acl(
      *      id="pim_catalog_currency_toggle",
      *      name="Change currency status",
@@ -107,9 +109,9 @@ class CurrencyController extends AbstractDoctrineController
             $currency->toggleActivation();
             $this->getManager()->flush();
 
-            $this->addFlash('success', 'Currency is successfully updated.');
+            $this->addFlash('success', 'flash.currency.updated');
         } catch (\Exception $e) {
-            $this->addFlash('error', 'Action failed. Please retry.');
+            $this->addFlash('error', 'flash.error ocurred');
         }
 
         return $this->redirect($this->generateUrl('pim_catalog_currency_index'));
