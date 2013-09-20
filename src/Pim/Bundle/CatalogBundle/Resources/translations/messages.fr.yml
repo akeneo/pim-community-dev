@@ -73,12 +73,39 @@ btn:
         import profile:  __create import profile
         locale:          __create locale
         product:         __create product
-    edit:   modifier
-    save:   sauvegarder
-    remove: __remove
-    cancel: __cancel
-    next:   __next
-    back:   __back
+    edit:      modifier
+    save:      sauvegarder
+    remove:    __remove
+    delete:    __delete
+    cancel:    __cancel
+    next:      __next
+    back:      __back
+    to grid:   __back to grid
+    to parent: __back to parent
+
+# Confirmation messages
+confirmation:
+    delete:          __Delete confirmation
+    leave:           __Are you sure you want to leave this page?
+    discard changes: __You will lose changes to the %entity% if you leave the page.
+    remove:
+        item:            __Are you sure you want to delete this item?
+        attribute:       __Are you sure you want to remove the attribute %name%?
+        attribute group: __Are you sure you want to delete the attribute group %name%?
+        category:        __Are you sure you want to delete the category %name%?
+        family:          __Are you sure you want to remove the family %name%?
+    product:
+        change family: __Are you sure you want to change the family?
+
+# Info messages
+info:
+    updated: __There are unsaved changes.
+    category:
+        remove children: __All sub-categories will be deleted.
+        keep products:   __Products in these categories will not be deleted.
+    product:
+        merge attributes: __Current attributes will be merged with the ones in the new family.
+        keep attributes:  __No attributes will be removed.
 
 # Form elements
 Options:                       Options
@@ -129,7 +156,6 @@ Create a new product:                      __Create a new product
 Choose a family:                           __Choose a family
 Attributes are added to the product form.: __Attributes are added to the product form.
 Product successfully saved:                __Product successfully saved
-There are unsaved changes.:                __There are unsaved changes.
 
 # Scopes
 Global:  Global

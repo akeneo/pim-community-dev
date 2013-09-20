@@ -94,6 +94,8 @@ confirmation:
         attribute group: Are you sure you want to delete the attribute group %name%?
         category:        Are you sure you want to delete the category %name%?
         family:          Are you sure you want to remove the family %name%?
+    product:
+        change family: Are you sure you want to change the family?
 
 # Info messages
 info:
@@ -154,7 +156,6 @@ Create a new product:                      Create a new product
 Choose a family:                           Choose a family
 Attributes are added to the product form.: Attributes are added to the product form.
 Product successfully saved:                Product successfully saved
-There are unsaved changes.:                There are unsaved changes.
 
 # Scopes
 Global:  Global
