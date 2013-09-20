@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\ImportExportBundle\Strategy\Import;
 
+use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
@@ -17,11 +19,18 @@ class ImportStrategyHelper
     protected $managerRegistry;
 
     /**
-     * @param ManagerRegistry $managerRegistry
+     * @var ValidatorInterface
      */
-    public function __construct(ManagerRegistry $managerRegistry)
+    protected $validator;
+
+    /**
+     * @param ManagerRegistry $managerRegistry
+     * @param ValidatorInterface $validator
+     */
+    public function __construct(ManagerRegistry $managerRegistry, ValidatorInterface $validator)
     {
         $this->managerRegistry = $managerRegistry;
+        $this->validator = $validator;
     }
 
     /**
@@ -70,5 +79,26 @@ class ImportStrategyHelper
             $importedValue = $reflectionProperty->getValue($importedEntity);
             $reflectionProperty->setValue($basicEntity, $importedValue);
         }
+    }
+
+    /**
+     * Validate entity, returns list of errors or null
+     *
+     * @param object $entity
+     * @return array|null
+     */
+    public function validateEntity($entity)
+    {
+        $violations = $this->validator->validate($entity);
+        if (count($violations)) {
+            $errors = array();
+            /** @var ConstraintViolationInterface $violation */
+            foreach ($violations as $violation) {
+                $errors[] = $violation->getMessage();
+            }
+            return $errors;
+        }
+
+        return null;
     }
 }

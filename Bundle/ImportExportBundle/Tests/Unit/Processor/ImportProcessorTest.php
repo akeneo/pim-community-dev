@@ -60,38 +60,8 @@ class ImportProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->object, $this->processor->process($this->item));
     }
 
-    public function testProcessInvalidObject()
-    {
-        $violation = $this->getMockBuilder('Symfony\Component\Validator\ConstraintViolation')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $violation->expects($this->once())
-            ->method('getMessage')
-            ->will($this->returnValue('Error'));
-        $validator = $this->getMockBuilder('Symfony\Component\Validator\Validator')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $validator->expects($this->once())
-            ->method('validate')
-            ->with($this->object)
-            ->will($this->returnValue(array($violation)));
-        $this->context->expects($this->once())
-            ->method('addError')
-            ->with('Error');
-
-        $this->processor->setValidator($validator);
-        $this->assertNull($this->processor->process($this->item));
-    }
-
     public function testProcess()
     {
-        $validator = $this->getMockBuilder('Symfony\Component\Validator\Validator')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $validator->expects($this->once())
-            ->method('validate')
-            ->with($this->object)
-            ->will($this->returnValue(array()));
         $this->context->expects($this->never())
             ->method('addError');
 
@@ -111,7 +81,6 @@ class ImportProcessorTest extends \PHPUnit_Framework_TestCase
             ->with($this->object)
             ->will($this->returnArgument(0));
 
-        $this->processor->setValidator($validator);
         $this->processor->setDataConverter($converter);
         $this->processor->setStrategy($strategy);
         $this->assertEquals($this->object, $this->processor->process($this->item));

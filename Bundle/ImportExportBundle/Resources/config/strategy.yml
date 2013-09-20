@@ -6,3 +6,4 @@ services:
         class: %oro_importexport.strategy.import.helper.class%
         arguments:
             - @doctrine
+            - @validator
