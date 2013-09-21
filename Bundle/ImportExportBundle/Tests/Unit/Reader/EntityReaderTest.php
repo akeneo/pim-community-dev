@@ -11,7 +11,7 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $registry;
+    protected $managerRegistry;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -30,14 +30,14 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('getByStepExecution'))
             ->getMock();
 
-        $this->registry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $this->reader = new EntityReader($this->registry, $this->contextRegistry);
+        $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $this->reader = new EntityReader($this->managerRegistry, $this->contextRegistry);
     }
 
     public function testReadMockIterator()
     {
         $iterator = $this->getMock('\Iterator');
-        $this->registry->expects($this->never())->method($this->anything());
+        $this->managerRegistry->expects($this->never())->method($this->anything());
 
         $fooEntity = $this->getMock('FooEntity');
         $barEntity = $this->getMock('BarEntity');
@@ -62,10 +62,11 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
 
         $this->reader->setSourceIterator($iterator);
 
-        $stepExecution = $this->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $stepExecution->expects($this->exactly(3))->method('incrementReadCount');
+        $context = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\ContextInterface')->getMock();
+        $context->expects($this->exactly(3))->method('incrementReadOffset');
+        $context->expects($this->exactly(3))->method('incrementReadCount');
+
+        $stepExecution = $this->getMockStepExecution($context);
 
         $this->assertEquals($fooEntity, $this->reader->read($stepExecution));
         $this->assertEquals($barEntity, $this->reader->read($stepExecution));
@@ -76,7 +77,7 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testReadRealIterator()
     {
-        $this->registry->expects($this->never())->method($this->anything());
+        $this->managerRegistry->expects($this->never())->method($this->anything());
 
         $fooEntity = $this->getMock('FooEntity');
         $barEntity = $this->getMock('BarEntity');
@@ -86,10 +87,11 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
 
         $this->reader->setSourceIterator($iterator);
 
-        $stepExecution = $this->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $stepExecution->expects($this->exactly(3))->method('incrementReadCount');
+        $context = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\ContextInterface')->getMock();
+        $context->expects($this->exactly(3))->method('incrementReadOffset');
+        $context->expects($this->exactly(3))->method('incrementReadCount');
+
+        $stepExecution = $this->getMockStepExecution($context);
 
         $this->assertEquals($fooEntity, $this->reader->read($stepExecution));
         $this->assertEquals($barEntity, $this->reader->read($stepExecution));
@@ -104,7 +106,7 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testReadFailsWhenNoSourceIterator()
     {
-        $this->registry->expects($this->never())->method($this->anything());
+        $this->managerRegistry->expects($this->never())->method($this->anything());
 
         $stepExecution = $this->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
@@ -115,10 +117,18 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testSetStepExecutionWithQueryBuilder()
     {
-        $this->registry->expects($this->never())->method($this->anything());
+        $this->managerRegistry->expects($this->never())->method($this->anything());
 
         $queryBuilder = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')->disableOriginalConstructor()->getMock();
-        $this->reader->setStepExecution($this->getMockStepExecution(array('queryBuilder' => $queryBuilder)));
+
+        $context = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\ContextInterface')->getMock();
+        $context->expects($this->at(0))->method('hasOption')->with('entityName')->will($this->returnValue(false));
+        $context->expects($this->at(1))->method('hasOption')->with('queryBuilder')->will($this->returnValue(true));
+        $context->expects($this->at(2))->method('getOption')
+            ->with('queryBuilder')
+            ->will($this->returnValue($queryBuilder));
+
+        $this->reader->setStepExecution($this->getMockStepExecution($context));
 
         $this->assertAttributeInstanceOf(
             'Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator',
@@ -135,12 +145,21 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testSetStepExecutionWithQuery()
     {
-        $this->registry->expects($this->never())->method($this->anything());
+        $this->managerRegistry->expects($this->never())->method($this->anything());
 
         $query = new Query(
             $this->getMockBuilder('Doctrine\ORM\EntityManager')->disableOriginalConstructor()->getMock()
         );
-        $this->reader->setStepExecution($this->getMockStepExecution(array('query' => $query)));
+
+        $context = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\ContextInterface')->getMock();
+        $context->expects($this->at(0))->method('hasOption')->with('entityName')->will($this->returnValue(false));
+        $context->expects($this->at(1))->method('hasOption')->with('queryBuilder')->will($this->returnValue(false));
+        $context->expects($this->at(2))->method('hasOption')->with('query')->will($this->returnValue(true));
+        $context->expects($this->at(3))->method('getOption')
+            ->with('query')
+            ->will($this->returnValue($query));
+
+        $this->reader->setStepExecution($this->getMockStepExecution($context));
 
         $this->assertAttributeInstanceOf(
             'Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator',
@@ -166,11 +185,17 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
             ->with('o')
             ->will($this->returnValue($queryBuilder));
 
-        $this->registry->expects($this->once())->method('getRepository')
+        $this->managerRegistry->expects($this->once())->method('getRepository')
             ->with($entityName)
             ->will($this->returnValue($repository));
 
-        $this->reader->setStepExecution($this->getMockStepExecution(array('entityName' => $entityName)));
+        $context = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\ContextInterface')->getMock();
+        $context->expects($this->at(0))->method('hasOption')->with('entityName')->will($this->returnValue(true));
+        $context->expects($this->at(1))->method('getOption')
+            ->with('entityName')
+            ->will($this->returnValue($entityName));
+
+        $this->reader->setStepExecution($this->getMockStepExecution($context));
 
         $this->assertAttributeInstanceOf(
             'Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator',
@@ -193,28 +218,23 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
     // @codingStandardsIgnoreEnd
     public function testSetStepExecutionFailsWhenHasNoRequiredOptions()
     {
-        $this->registry->expects($this->never())->method($this->anything());
+        $this->managerRegistry->expects($this->never())->method($this->anything());
 
-        $this->reader->setStepExecution($this->getMockStepExecution(array()));
+        $context = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\ContextInterface')->getMock();
+        $context->expects($this->exactly(3))->method('hasOption')->will($this->returnValue(false));
+
+        $this->reader->setStepExecution($this->getMockStepExecution($context));
     }
 
     /**
-     * @param array $jobInstanceRawConfiguration
+     * @param mixed $context
      * @return \PHPUnit_Framework_MockObject_MockObject+
      */
-    protected function getMockStepExecution(array $jobInstanceRawConfiguration)
+    protected function getMockStepExecution($context)
     {
         $stepExecution = $this->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $context = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\StepExecutionProxyContext')
-            ->disableOriginalConstructor()
-            ->setMethods(array('getConfiguration'))
-            ->getMock();
-        $context->expects($this->any())
-            ->method('getConfiguration')
-            ->will($this->returnValue($jobInstanceRawConfiguration));
 
         $this->contextRegistry->expects($this->any())
             ->method('getByStepExecution')
