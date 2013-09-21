@@ -1,7 +1,7 @@
 /* global define */
 define(['underscore', 'backbone', 'oro/app', 'oro/error', 'oro/abstract-widget', 'oro/dialog/state/model',
-    'jquery.dialog.extended'],
-function(_, Backbone, app, error, AbstractWidget, StateModel) {
+    'oro/loading-mask', 'jquery.dialog.extended'],
+function(_, Backbone, app, error, AbstractWidget, StateModel, LoadingMask) {
     'use strict';
 
     /**
@@ -60,7 +60,22 @@ function(_, Backbone, app, error, AbstractWidget, StateModel) {
 
             this.options.dialogOptions.close = runner(closeHandlers);
 
+            this.on('beforeContentLoad', _.bind(this._beforeContentLoad, this));
+            this.on('contentLoad', _.bind(this._onContentLoad, this));
             this.on('contentLoadError', _.bind(this.loadErrorHandler, this));
+        },
+
+        _beforeContentLoad: function() {
+            this.loading = new LoadingMask();
+            this.$el.append(this.loading.render().$el);
+            this.loading.show();
+        },
+
+        _onContentLoad: function() {
+            if (this.loading) {
+                this.loading.remove();
+                this.loading = null;
+            }
         },
 
         setTitle: function(title) {

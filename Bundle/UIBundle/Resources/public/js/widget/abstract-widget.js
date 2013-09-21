@@ -136,6 +136,7 @@ function(_, Backbone, mediator) {
 
         _onAdoptedFormSubmit: function(form) {
             if (form.find('[type="file"]').length) {
+                this.trigger('beforeContentLoad', this);
                 form.ajaxSubmit({
                     data: {
                         '_widgetContainer': this.options.type,
@@ -311,6 +312,7 @@ function(_, Backbone, mediator) {
             options.data = (options.data !== undefined ? options.data + '&' : '') +
                 '_widgetContainer=' + this.options.type + '&_wid=' + this.getWid();
 
+            this.trigger('beforeContentLoad', this);
             Backbone.$.ajax(options)
                 .done(_.bind(this.onContentLoad, this))
                 .fail(_.bind(this.onContentLoadFail, this))
