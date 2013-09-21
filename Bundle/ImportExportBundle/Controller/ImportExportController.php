@@ -129,7 +129,7 @@ class ImportExportController extends Controller
         /** @var ContextInterface $contexts */
         $context = $jobResult->getContext();
         $counts = array();
-        if (isset($contexts[0])) {
+        if ($context) {
             $counts['read'] = $context->getReadCount();
             $counts['add'] = $context->getAddCount();
             $counts['replace'] = $context->getReplaceCount();

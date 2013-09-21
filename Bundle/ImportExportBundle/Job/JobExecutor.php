@@ -80,16 +80,13 @@ class JobExecutor
             $context = $this->contextRegistry->getByStepExecution($stepExecutions->first());
             $jobResult->setContext($context);
 
-            if ($jobExecution->getStatus()->getValue() == BatchStatus::COMPLETED) {
+            if ($jobExecution->getStatus()->getValue() == BatchStatus::COMPLETED && !$context->getErrors()) {
                 $this->entityManager->commit();
                 $jobResult->setSuccessful(true);
             } else {
                 $this->entityManager->rollback();
-                foreach ($jobExecution->getStepExecutions() as $stepExecution) {
-                    $context = $this->contextRegistry->getByStepExecution($stepExecution);
-                    foreach ($context->getErrors() as $error) {
-                        $jobResult->addError($error);
-                    }
+                foreach ($context->getErrors() as $error) {
+                    $jobResult->addError($error);
                 }
             }
         } catch (\Exception $e) {
