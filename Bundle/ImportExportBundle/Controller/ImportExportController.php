@@ -221,7 +221,7 @@ class ImportExportController extends Controller
         } else {
             $url = $this->get('router')->generate(
                 'oro_importexport_error_log',
-                array('jobId' => $jobResult->getJobId())
+                array('jobCode' => $jobResult->getJobCode())
             );
             $errorsCount = count($jobResult->getErrors());
         }
@@ -251,12 +251,12 @@ class ImportExportController extends Controller
     }
 
     /**
-     * @Route("/import_export/error/import_export_log_{jobId}.log", name="oro_importexport_error_log")
+     * @Route("/import_export/error/{jobCode}.log", name="oro_importexport_error_log")
      * @AclAncestor("oro_importexport")
      */
-    public function errorLogAction($jobId)
+    public function errorLogAction($jobCode)
     {
-        $errors = $this->getJobExecutor()->getJobErrors($jobId);
+        $errors = $this->getJobExecutor()->getJobErrors($jobCode);
         $content = implode("\r\n", $errors);
 
         return new Response($content, 200, array('Content-Type' => 'text/x-log'));

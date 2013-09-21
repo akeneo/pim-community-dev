@@ -55,7 +55,7 @@ class JobExecutor
     {
         // create and persist job instance and job execution
         $jobInstance = new JobInstance(self::CONNECTOR_NAME, $jobType, $jobName);
-        $jobInstance->setCode(uniqid($jobType . $jobName, true));
+        $jobInstance->setCode($this->generateJobCode($jobName));
         $jobInstance->setLabel(sprintf('%s.%s', $jobType, $jobName));
         $jobInstance->setRawConfiguration($configuration);
         $jobExecution = new JobExecution();
@@ -102,27 +102,29 @@ class JobExecutor
         $this->entityManager->flush($jobInstance);
 
         $jobResult->setJobId($jobInstance->getId());
+        $jobResult->setJobCode($jobInstance->getCode());
 
         return $jobResult;
     }
 
     /**
-     * @param int $jobId
+     * @param string $jobCode
      * @return array
      * @throws LogicException
      */
-    public function getJobErrors($jobId)
+    public function getJobErrors($jobCode)
     {
+        $jobInstanceRepository = $this->entityManager->getRepository('OroBatchBundle:JobInstance');
         /** @var JobInstance $jobInstance */
-        $jobInstance = $this->entityManager->find('OroBatchBundle:JobInstance', $jobId);
-        if (!$jobId) {
-            throw new LogicException(sprintf('Can\'t find job instance with ID %s', $jobId));
+        $jobInstance = $jobInstanceRepository->findOneBy(array('code' => $jobCode));
+        if (!$jobInstance) {
+            throw new LogicException(sprintf('No job instance found with code %s', $jobCode));
         }
 
         /** @var JobExecution $jobExecution */
         $jobExecution = $jobInstance->getJobExecutions()->first();
         if (!$jobExecution) {
-            throw new LogicException(sprintf('No job execution found for job instance with ID %s', $jobId));
+            throw new LogicException(sprintf('No job execution found for job instance with code %s', $jobCode));
         }
 
         return $this->collectErrors($jobExecution);
@@ -173,5 +175,18 @@ class JobExecutor
         }
 
         return $errors;
+    }
+
+    /**
+     * @param string $prefix
+     * @return string
+     */
+    protected function generateJobCode($prefix = '')
+    {
+        if ($prefix) {
+            $prefix .= '_';
+        }
+
+        return preg_replace('~\W~', '_', uniqid($prefix, true));
     }
 }
