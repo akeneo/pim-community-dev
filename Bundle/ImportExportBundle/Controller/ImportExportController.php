@@ -3,17 +3,14 @@
 namespace Oro\Bundle\ImportExportBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-
-use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\Rest\Util\Codes;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -28,7 +25,7 @@ use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 use Oro\Bundle\ImportExportBundle\File\FileSystemOperator;
 use Oro\Bundle\ImportExportBundle\Form\Model\ImportData;
 
-class ImportExportController extends FOSRestController
+class ImportExportController extends Controller
 {
     const MAX_ERRORS_COUNT = 3;
 
@@ -55,7 +52,7 @@ class ImportExportController extends FOSRestController
                 $tmpFileName = $this->getFileSystemOperator()->generateTemporaryFileName($processorAlias, 'csv');
                 $file->move(dirname($tmpFileName), basename($tmpFileName));
 
-                $this->get('session')->set($this->getImportFileSessionKey($processorAlias), $tmpFileName);
+                $this->setImportFileName($processorAlias, $tmpFileName);
                 return $this->forward(
                     'OroImportExportBundle:ImportExport:importValidate',
                     array('processorAlias' => $processorAlias)
@@ -69,19 +66,6 @@ class ImportExportController extends FOSRestController
         );
     }
 
-    protected function getImportFileSessionKey($alias)
-    {
-        return 'oro_importexport_import_' . $alias;
-    }
-
-//    /**
-//     * @Rest\Get("/import/validate/{processorAlias}", defaults={"_format"="json"})
-//     * @ApiDoc(description="Validate entity import", resource=true)
-//     * @AclAncestor("oro_importexport_import")
-//     *
-//     * @param string $processorAlias
-//     * @return Response
-//     */
     /**
      * @Route("/import/validate/{processorAlias}", name="oro_importexport_import_validate")
      * @AclAncestor("oro_importexport_import")
@@ -89,11 +73,6 @@ class ImportExportController extends FOSRestController
      */
     public function importValidateAction($processorAlias)
     {
-        $fileName = $this->get('session')->get($this->getImportFileSessionKey($processorAlias));
-        if (!$fileName || !file_exists($fileName)) {
-            throw new \Exception('No file in session');
-        }
-
         $entityName = $this->getProcessorRegistry()->getProcessorEntityName(
             ProcessorRegistry::TYPE_IMPORT_VALIDATION,
             $processorAlias
@@ -102,7 +81,7 @@ class ImportExportController extends FOSRestController
             'import_validation' => array(
                 'processorAlias' => $processorAlias,
                 'entityName' => $entityName,
-                'filePath' => $fileName,
+                'filePath' => $this->getImportFileName($processorAlias),
             ),
         );
 
@@ -140,8 +119,53 @@ class ImportExportController extends FOSRestController
     }
 
     /**
+     * @Route("/import/process/{processorAlias}", name="oro_importexport_import_process")
+     * @AclAncestor("oro_importexport_export")
+     *
+     * @param string $processorAlias
+     * @return Response
+     */
+    public function importProcessAction($processorAlias)
+    {
+        $entityName = $this->getProcessorRegistry()->getProcessorEntityName(
+            ProcessorRegistry::TYPE_IMPORT,
+            $processorAlias
+        );
+        $configuration = array(
+            'import' => array(
+                'processorAlias' => $processorAlias,
+                'entityName' => $entityName,
+                'filePath' => $this->getImportFileName($processorAlias),
+            ),
+        );
+        //$this->removeImportFileName($processorAlias);
+
+        $jobResult = $this->getJobExecutor()->executeJob(
+            ProcessorRegistry::TYPE_IMPORT,
+            JobExecutor::JOB_IMPORT_FROM_CSV,
+            $configuration
+        );
+
+        if ($jobResult->isSuccessful()) {
+            $message = $this->get('translator')->trans('oro_importexport.import.import_success');
+        } else {
+            $message = $this->get('translator')->trans('oro_importexport.import.import_error');
+        }
+
+        return new JsonResponse(
+            array(
+                'success' => $jobResult->isSuccessful(),
+                'message' => $message
+            )
+        );
+    }
+
+    /**
      * @Route("/export/instant/{processorAlias}", name="oro_importexport_export_instant")
      * @AclAncestor("oro_importexport_export")
+     *
+     * @param string $processorAlias
+     * @return Response
      */
     public function instantExportAction($processorAlias)
     {
@@ -230,5 +254,45 @@ class ImportExportController extends FOSRestController
     protected function getFileSystemOperator()
     {
         return $this->get('oro_importexport.file.file_system_operator');
+    }
+
+    /**
+     * @param string $processorAlias
+     * @param string $fileName
+     */
+    protected function setImportFileName($processorAlias, $fileName)
+    {
+        $this->get('session')->set($this->getImportFileSessionKey($processorAlias), $fileName);
+    }
+
+    /**
+     * @param string $processorAlias
+     */
+    protected function removeImportFileName($processorAlias)
+    {
+        $this->get('session')->remove($this->getImportFileSessionKey($processorAlias));
+    }
+
+    /**
+     * @param string $processorAlias
+     * @return mixed
+     * @throws BadRequestHttpException
+     */
+    protected function getImportFileName($processorAlias)
+    {
+        $fileName = $this->get('session')->get($this->getImportFileSessionKey($processorAlias));
+        if (!$fileName || !file_exists($fileName)) {
+            throw new BadRequestHttpException('No file to import');
+        }
+        return $fileName;
+    }
+
+    /**
+     * @param string $alias
+     * @return string
+     */
+    protected function getImportFileSessionKey($alias)
+    {
+        return 'oro_importexport_import_' . $alias;
     }
 }

@@ -33,8 +33,12 @@
                             'info',
                             {{ 'Import started, please wait...'|trans|json_encode|raw }}
                         );
-                        widget.setUrl({{ path('oro_importexport_import_form', {entity: entityName})|json_encode|raw }});
-                        widget.loadContent();
+
+                        $.getJSON({{ path('oro_importexport_import_process', {processorAlias: processorAlias})|json_encode|raw }}, function(data) {
+                            Messanger.notificationFlashMessage(data.success ? 'success' : 'error', data.message);
+                            widget.remove();
+                        });
+
                     });
                     widget.addAction('import', importAction, 'adopted');
                 {% endif %}
