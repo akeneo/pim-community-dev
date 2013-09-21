@@ -14,32 +14,6 @@ use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 class EmailDatagridManager extends DatagridManager
 {
     /**
-     * @var
-     */
-    protected $entity;
-
-    /**
-     * @param $entity
-     */
-    public function setEntity($entity)
-    {
-        $this->entity = $entity;
-        $this->routeGenerator->setRouteParameters(array('id' => $entity->getId()));
-    }
-
-    /**
-     * @return ProxyQueryInterface
-     */
-    protected function createQuery()
-    {
-        $this->entityManager
-            ->getRepository('Oro\Bundle\EmailBundle\Entity\Email')
-            ->setEntity($this->entity);
-
-        return parent::createQuery();
-    }
-
-    /**
      * {@inheritDoc}
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
@@ -49,7 +23,7 @@ class EmailDatagridManager extends DatagridManager
         $fieldName->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_HTML,
-                'label'       => $this->translate('oro.user.datagrid.email.column.from_name'),
+                'label'       => $this->translate('oro.email.datagrid.email.from_name'),
                 'field_name'  => 'fromEmailAddress',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
@@ -71,7 +45,7 @@ class EmailDatagridManager extends DatagridManager
         $fieldName->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_HTML,
-                'label'       => $this->translate('oro.user.datagrid.email.column.subject'),
+                'label'       => $this->translate('oro.email.datagrid.email.subject'),
                 'field_name'  => 'subject',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
@@ -93,7 +67,7 @@ class EmailDatagridManager extends DatagridManager
         $fieldName->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_DATETIME,
-                'label'       => $this->translate('oro.user.datagrid.email.column.sentAt'),
+                'label'       => $this->translate('oro.email.datagrid.email.sentAt'),
                 'field_name'  => 'sentAt',
                 'filter_type' => FilterInterface::TYPE_DATETIME,
                 'required'    => false,
@@ -109,7 +83,7 @@ class EmailDatagridManager extends DatagridManager
         $fieldName->setOptions(
             array(
                 'type'                => FieldDescriptionInterface::TYPE_HTML,
-                'label'               => $this->translate('oro.email.datagrid.recipients'),
+                'label'               => $this->translate('oro.email.datagrid.email.recipients'),
                 'field_name'          => 'recipients',
                 'filter_type'         => FilterInterface::TYPE_CHOICE,
                 'choices'             => array(),
@@ -128,6 +102,9 @@ class EmailDatagridManager extends DatagridManager
         $fieldsCollection->add($fieldName);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getDefaultSorters()
     {
         return array('sentAt' => SorterInterface::DIRECTION_DESC);

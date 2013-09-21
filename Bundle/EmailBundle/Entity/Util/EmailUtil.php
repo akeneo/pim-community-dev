@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\EmailBundle\Entity\Util;
 
+use Oro\Bundle\EmailBundle\Entity\EmailInterface;
+
 class EmailUtil
 {
     /**
@@ -34,6 +36,41 @@ class EmailUtil
         }
 
         return substr($fullEmailAddress, $startPos + 1, $endPos - $startPos - 1);
+    }
+
+    /**
+     * Extract email addresses from the given argument.
+     * Always return an array, even if no any email is given.
+     *
+     * @param $emails
+     * @return string[]
+     * @throws \InvalidArgumentException
+     */
+    public static function extractEmailAddresses($emails)
+    {
+        if (is_string($emails)) {
+            return empty($emails)
+                ? array()
+                : array($emails);
+        }
+        if (!is_array($emails) && !($emails instanceof \Traversable)) {
+            throw new \InvalidArgumentException('The emails argument must be a string, array or collection.');
+        }
+
+        $result = array();
+        foreach ($emails as $email) {
+            if (is_string($email)) {
+                $result[] = $email;
+            } elseif ($email instanceof EmailInterface) {
+                $result[] = $email->getEmail();
+            } else {
+                throw new \InvalidArgumentException(
+                    'Each item of the emails collection must be a string or an object of EmailInterface.'
+                );
+            }
+        }
+
+        return $result;
     }
 
     /**

@@ -142,7 +142,7 @@ class Imap extends \Zend\Mail\Storage\Imap
      */
     protected function postInitFolder(Folder $folder)
     {
-        if ($folder->getGlobalName() === 'INBOX') {
+        if (strtoupper($folder->getGlobalName()) === 'INBOX') {
             if (!$folder->hasFlag(Folder::FLAG_INBOX)) {
                 $folder->addFlag(Folder::FLAG_INBOX);
             }
