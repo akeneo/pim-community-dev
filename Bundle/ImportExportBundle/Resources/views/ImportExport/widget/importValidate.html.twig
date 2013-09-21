@@ -1,10 +1,35 @@
-{% import 'OroUIBundle::macros.html.twig' as UI %}
 <div class="widget-content">
-    <div class="form-container">
-        <p>Read: {{ counts.read|default(0) }}</p>
-        <p>Add: {{ counts.add|default(0) }}</p>
-        <p>Replace: {{ counts.replace|default(0) }}</p>
-        <p>Update: {{ counts.update|default(0) }}</p>
-        <p>Delete: {{ counts.delete|default(0) }}</p>
-    </div>
+    <h4>{{ 'Validation results'|trans }}</h4>
+    <dl class="dl-horizontal">
+        <dt>{{ 'Read'|trans }}</dt><dd>{{ counts.read|default(0) }}</dd>
+        <dt>{{ 'Add'|trans }}</dt><dd>{{ counts.add|default(0) }}</dd>
+        <dt>{{ 'Replace'|trans }}</dt><dd>{{ counts.replace|default(0) }}</dd>
+        <dt>{{ 'Update'|trans }}</dt><dd>{{ counts.update|default(0) }}</dd>
+        <dt>{{ 'Delete'|trans }}</dt><dd>{{ counts.delete|default(0) }}</dd>
+    </dl>
+
+    <script type="text/javascript">
+        require(['jquery', 'oro/widget-manager', 'oro/messenger'],
+        function($, WidgetManager, Messanger) {
+            WidgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
+                var backAction = $('<button type="button" class="btn">{{ 'Back'|trans }}</button>');
+                backAction.on('click', function(e) {
+                    widget.setUrl({{ path('oro_importexport_import_form', {entity: entityName})|json_encode|raw }});
+                    widget.loadContent();
+                });
+                widget.addAction('back', backAction, 'adopted');
+
+                var importAction = $('<button type="button" class="btn btn-primary">{{ 'Import'|trans }}</button>');
+                importAction.on('click', function(e) {
+                    Messanger.notificationFlashMessage(
+                        'info',
+                        {{ 'Import started, please wait...'|trans|json_encode|raw }}
+                    );
+                    widget.setUrl({{ path('oro_importexport_import_form', {entity: entityName})|json_encode|raw }});
+                    widget.loadContent();
+                });
+                widget.addAction('import', importAction, 'adopted');
+            });
+        });
+    </script>
 </div>
