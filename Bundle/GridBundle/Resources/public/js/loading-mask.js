@@ -82,22 +82,22 @@ function($, _, Backbone) {
             var $loadingEl = this.$('.loading-frame');
 
             var loadingHeight = $loadingEl.height();
-            var containerTop = $containerEl.offset().top;
-            var containerHeight = $containerEl.outerHeight();
-
+            var loadingWidth = $loadingEl.width();
             if (loadingHeight > containerHeight) {
                 $containerEl.css('height', loadingHeight + 'px');
             }
 
-            var windowHeight = $(window).outerHeight();
-            var windowTop = $(window).scrollTop();
-            var loadingTop = windowTop - containerTop + windowHeight / 2 - loadingHeight / 2;
+            var containerWidth = $containerEl.outerWidth();
+            var containerHeight = $containerEl.outerHeight();
 
-            loadingTop = loadingTop < containerHeight - loadingHeight ? loadingTop : containerHeight - loadingHeight;
-            loadingTop = loadingTop > 0 ? loadingTop : 0;
-            loadingTop = Math.round(loadingTop);
+            var loadingTop = containerHeight/2 - loadingHeight / 2;
+            loadingTop = loadingTop > 0 ? Math.round(loadingTop) : 0;
+
+            var loadingLeft = containerWidth/2 - loadingWidth / 2;
+            loadingLeft = loadingLeft > 0 ? Math.round(loadingLeft) : 0;
 
             $loadingEl.css('top', loadingTop + 'px');
+            $loadingEl.css('left', loadingLeft + 'px');
             return this;
         },
 
