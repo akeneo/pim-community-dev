@@ -12,6 +12,11 @@ class JobResult
     protected $successful;
 
     /**
+     * @var int
+     */
+    protected $jobId;
+
+    /**
      * @var ContextInterface
      */
     protected $context;
@@ -73,5 +78,23 @@ class JobResult
     {
         $this->context = $context;
         return $this;
+    }
+
+    /**
+     * @param int $jobId
+     * @return JobResult
+     */
+    public function setJobId($jobId)
+    {
+        $this->jobId = $jobId;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getJobId()
+    {
+        return $this->jobId;
     }
 }

@@ -184,6 +184,7 @@ class ImportExportController extends Controller
 
         $url = null;
         $messages = array();
+        $errorsCount = 0;
 
         $jobResult = $this->getJobExecutor()->executeJob(
             ProcessorRegistry::TYPE_EXPORT,
@@ -204,16 +205,19 @@ class ImportExportController extends Controller
                 ),
             );
         } else {
-            foreach ($jobResult->getErrors() as $error) {
-                $messages[] = array('type' => 'error', 'message' => $error);
-            }
+            $url = $this->get('router')->generate(
+                'oro_importexport_error_log',
+                array('jobId' => $jobResult->getJobId())
+            );
+            $errorsCount = count($jobResult->getErrors());
         }
 
         return new JsonResponse(
             array(
                 'success' => $jobResult->isSuccessful(),
                 'url' => $url,
-                'messages' => $messages
+                'messages' => $messages,
+                'errorsCount' => $errorsCount,
             )
         );
     }
@@ -230,6 +234,18 @@ class ImportExportController extends Controller
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
 
         return $response;
+    }
+
+    /**
+     * @Route("/import_export/error/import_export_log_{jobId}.log", name="oro_importexport_error_log")
+     * @AclAncestor("oro_importexport")
+     */
+    public function errorLogAction($jobId)
+    {
+        $errors = $this->getJobExecutor()->getJobErrors($jobId);
+        $content = implode("\r\n", $errors);
+
+        return new Response($content, 200, array('Content-Type' => 'text/x-log'));
     }
 
     /**

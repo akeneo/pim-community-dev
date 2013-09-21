@@ -16,7 +16,7 @@ function($, _, Backbone) {
         showMessage = function(type, message, options) {
             var opt = _.extend({}, defaults, options || {}),
                 $el = $(opt.template({type: type, message: message})).appendTo(opt.container),
-                delay = opt.delay || (opt.flash && 5000),
+                delay = _.has(options, 'delay') ? options.delay : (opt.flash && 5000),
                 actions = {close: _.bind($el.alert, $el, 'close')};
             if (delay) {
                 _.delay(actions.close, delay);

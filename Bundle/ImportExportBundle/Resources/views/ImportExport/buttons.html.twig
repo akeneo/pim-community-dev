@@ -17,8 +17,8 @@
 </div>
 
 <script type="text/javascript">
-    require(['jquery', 'oro/widget-manager', 'oro/dialog-widget', 'oro/messenger'],
-    function($, WidgetManager, DialogWidget, Messanger) {
+    require(['jquery', 'oro/translator', 'oro/widget-manager', 'oro/dialog-widget', 'oro/messenger'],
+    function($, __, WidgetManager, DialogWidget, Messanger) {
         $('.import-btn').on('click', function(e) {
             e.preventDefault();
 
@@ -50,6 +50,15 @@
                 }
                 if (data.success) {
                     $('<iframe/>', {src: data.url}).hide().appendTo('body');
+                } else {
+                    var $errorMessage = __(
+                        'Export operation fails, {{'{{ count }}'}} error(s) found.',
+                        {'count': data.errorsCount}
+                    );
+                    var link = '<a href="' + data.url + '">' + __('Download error log') + '</a>';
+                    $errorMessage += ' ' + link;
+
+                    Messanger.notificationFlashMessage('error', $errorMessage, {delay: 0});
                 }
             });
         });

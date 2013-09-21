@@ -98,7 +98,7 @@ class JobInstance
     protected $job;
 
     /**
-     * @ORM\OneToMany(targetEntity="JobExecution", mappedBy="jobInstance")
+     * @ORM\OneToMany(targetEntity="JobExecution", mappedBy="jobInstance", cascade={"persist", "remove"})
      */
     protected $jobExecutions;
 
@@ -115,6 +115,15 @@ class JobInstance
         $this->type          = $type;
         $this->alias         = $alias;
         $this->jobExecutions = new ArrayCollection();
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
+
+        if ($this->jobExecutions) {
+            $this->jobExecutions = clone $this->jobExecutions;
+        }
     }
 
     /**
@@ -294,5 +303,39 @@ class JobInstance
     public function getJob()
     {
         return $this->job;
+    }
+
+    /**
+     * @return ArrayCollection|JobExecution[]
+     */
+    public function getJobExecutions()
+    {
+        return $this->jobExecutions;
+    }
+
+    /**
+     * @param JobExecution $jobExecution
+     * @return JobInstance
+     */
+    public function addJobExecution(JobExecution $jobExecution)
+    {
+        if (!$this->jobExecutions->contains($jobExecution)) {
+            $this->jobExecutions->add($jobExecution);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param JobExecution $jobExecution
+     * @return JobInstance
+     */
+    public function removeJobExecution(JobExecution $jobExecution)
+    {
+        if ($this->jobExecutions->contains($jobExecution)) {
+            $this->jobExecutions->removeElement($jobExecution);
+        }
+
+        return $this;
     }
 }
