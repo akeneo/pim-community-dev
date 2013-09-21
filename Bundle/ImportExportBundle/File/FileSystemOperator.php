@@ -72,21 +72,22 @@ class FileSystemOperator
     }
 
     /**
-     * @param string $filePrefix
-     * @param string $fileExtension
+     * @param string $prefix
+     * @param string $extension
      * @return string
      */
-    public function generateTemporaryFileName($filePrefix, $fileExtension = 'tmp')
+    public function generateTemporaryFileName($prefix, $extension = 'tmp')
     {
         $temporaryDirectory = $this->getTemporaryDirectory();
 
+        $filePrefix = sprintf('%s_%s', $prefix, date('Y_m_d_H_i_s'));
         do {
             $fileName = sprintf(
                 '%s%s%s.%s',
                 $temporaryDirectory,
                 DIRECTORY_SEPARATOR,
                 preg_replace('~\W~', '_', uniqid($filePrefix . '_')),
-                $fileExtension
+                $extension
             );
         } while (file_exists($fileName));
 

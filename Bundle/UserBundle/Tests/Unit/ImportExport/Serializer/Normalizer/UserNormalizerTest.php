@@ -58,22 +58,23 @@ class UserNormalizerTest extends \PHPUnit_Framework_TestCase
         return array(
             'not_empty' => array(
                 $this->createUser()
+                    ->setUsername('user')
                     ->setFirstName('first_name')
                     ->setLastName('last_name')
                 ,
                 array(
-                    'firstName' => 'first_name',
-                    'lastName' => 'last_name',
+                    'username' => 'user',
+                    'fullName' => 'first_name last_name',
                 ),
                 array(
                     'mode' => UserNormalizer::SHORT_MODE
-                )
+                ),
             ),
             'empty' => array(
                 $this->createUser(),
                 array(
-                    'firstName' => null,
-                    'lastName' => null,
+                    'username' => null,
+                    'fullName' => null,
                 ),
                 array(
                     'mode' => UserNormalizer::SHORT_MODE
@@ -96,7 +97,7 @@ class UserNormalizerTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Symfony\Component\Serializer\Exception\RuntimeException
      * @expectedExceptionMessage Denormalization with mode "full" is not supported
      */
-    public function testDeormalizeFullMode()
+    public function testDenormalizeFullMode()
     {
         $data = array();
         $this->normalizer->denormalize($data, self::USER_TYPE, null);
