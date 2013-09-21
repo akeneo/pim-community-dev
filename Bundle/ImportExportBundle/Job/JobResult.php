@@ -17,6 +17,11 @@ class JobResult
     protected $jobId;
 
     /**
+     * @var string
+     */
+    protected $jobCode;
+
+    /**
      * @var ContextInterface
      */
     protected $context;
@@ -96,5 +101,23 @@ class JobResult
     public function getJobId()
     {
         return $this->jobId;
+    }
+
+    /**
+     * @param string $jobCode
+     * @return JobResult
+     */
+    public function setJobCode($jobCode)
+    {
+        $this->jobCode = $jobCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getJobCode()
+    {
+        return $this->jobCode;
     }
 }
