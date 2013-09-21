@@ -60,12 +60,12 @@ function(_, Backbone, app, error, AbstractWidget, StateModel, LoadingMask) {
 
             this.options.dialogOptions.close = runner(closeHandlers);
 
-            this.on('beforeContentLoad', _.bind(this._beforeContentLoad, this));
-            this.on('contentLoad', _.bind(this._onContentLoad, this));
+            this.on('beforeContentLoad', _.bind(this._showLoading, this));
+            this.on('contentLoad', _.bind(this._hideLoading, this));
             this.on('contentLoadError', _.bind(this.loadErrorHandler, this));
         },
 
-        _beforeContentLoad: function() {
+        _showLoading: function() {
             var dialogContainer = this.$el.closest('.ui-dialog');
             if (dialogContainer.length) {
                 this.loading = new LoadingMask();
@@ -74,7 +74,7 @@ function(_, Backbone, app, error, AbstractWidget, StateModel, LoadingMask) {
             }
         },
 
-        _onContentLoad: function() {
+        _hideLoading: function() {
             if (this.loading) {
                 this.loading.remove();
                 this.loading = null;
@@ -121,6 +121,7 @@ function(_, Backbone, app, error, AbstractWidget, StateModel, LoadingMask) {
                     }, this)
                 });
             }
+            this._hideLoading();
             this.widget.remove();
             AbstractWidget.prototype.remove.call(this);
         },
