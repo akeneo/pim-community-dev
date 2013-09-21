@@ -104,11 +104,13 @@ class ImportExportController extends Controller
         }
 
         $errorsUrl = null;
+        $errors = array();
         if ($counts['errors']) {
             $errorsUrl = $this->get('router')->generate(
                 'oro_importexport_error_log',
                 array('jobId' => $jobResult->getJobId())
             );
+            $errors = array_slice($jobResult->getErrors(), 0, 100);
         }
 
         return array(
@@ -116,6 +118,7 @@ class ImportExportController extends Controller
             'processorAlias' => $processorAlias,
             'counts' => $counts,
             'errorsUrl' => $errorsUrl,
+            'errors' => $errors,
             'entityName' => $entityName
         );
     }
@@ -166,7 +169,7 @@ class ImportExportController extends Controller
             array(
                 'success' => $jobResult->isSuccessful(),
                 'message' => $message,
-                'url' => $errorsUrl
+                'errorsUrl' => $errorsUrl
             )
         );
     }

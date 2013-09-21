@@ -35,8 +35,8 @@
 
                         $.getJSON({{ path('oro_importexport_import_process', {processorAlias: processorAlias})|json_encode|raw }}, function(data) {
                             var message = data.message;
-                            if (!data.success && data.url) {
-                                var link = '<a target="_blank" href="' + data.url + '">' + __('Download error log') + '</a>';
+                            if (!data.success && data.errorsUrl) {
+                                var link = '<a target="_blank" href="' + data.errorsUrl + '">' + __('Download error log') + '</a>';
                                 message += ' ' + link;
                             }
 
