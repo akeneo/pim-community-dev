@@ -66,12 +66,16 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
      */
     public function read(StepExecution $stepExecution)
     {
+        if ($this->getFile()->eof()) {
+            return null;
+        }
+
         $data = $this->getFile()->fgetcsv();
         if (false !== $data) {
             $context = $this->getContext($stepExecution);
             $context->incrementReadOffset();
             if (null === $data || array(null) === $data) {
-                return null;
+                return false;
             }
             $context->incrementReadCount();
 

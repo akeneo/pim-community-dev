@@ -33,7 +33,8 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetStepExecutionNoFileException()
     {
-        $this->reader->setStepExecution($this->getMockStepExecution(array()));
+        $context = $this->getContextWithOptionsMock(array());
+        $this->reader->setStepExecution($this->getMockStepExecution($context));
     }
 
     /**
@@ -42,7 +43,8 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnknownFileException()
     {
-        $this->reader->setStepExecution($this->getMockStepExecution(array('filePath' => 'unknown_file.csv')));
+        $context = $this->getContextWithOptionsMock(array('filePath' => 'unknown_file.csv'));
+        $this->reader->setStepExecution($this->getMockStepExecution($context));
     }
 
     public function testSetStepExecution()
@@ -62,7 +64,8 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals(true, 'firstLineIsHeader', $this->reader);
         $this->assertAttributeEmpty('header', $this->reader);
 
-        $this->reader->setStepExecution($this->getMockStepExecution($options));
+        $context = $this->getContextWithOptionsMock($options);
+        $this->reader->setStepExecution($this->getMockStepExecution($context));
 
         $this->assertAttributeEquals($options['delimiter'], 'delimiter', $this->reader);
         $this->assertAttributeEquals($options['enclosure'], 'enclosure', $this->reader);
@@ -78,9 +81,12 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testRead($options, $expected)
     {
-        $stepExecution = $this->getMockStepExecution($options);
+        $context = $this->getContextWithOptionsMock($options);
+        $stepExecution = $this->getMockStepExecution($context);
         $this->reader->setStepExecution($stepExecution);
-        $stepExecution->expects($this->atLeastOnce())
+        $context->expects($this->atLeastOnce())
+            ->method('incrementReadOffset');
+        $context->expects($this->atLeastOnce())
             ->method('incrementReadCount');
         $stepExecution->expects($this->never())
             ->method('addReaderWarning');
@@ -107,11 +113,13 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
                         'field_two' => 'test2',
                         'field_three' => 'test3',
                     ),
+                    false,
                     array(
                         'field_one' => 'after_new1',
                         'field_two' => 'after_new2',
                         'field_three' => 'after_new3',
-                    )
+                    ),
+                    false
                 )
             ),
             array(
@@ -135,11 +143,13 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
                         'h2' => 'test2',
                         'h3' => 'test3',
                     ),
+                    false,
                     array(
                         'h1' => 'after_new1',
                         'h2' => 'after_new2',
                         'h3' => 'after_new3',
-                    )
+                    ),
+                    false
                 )
             ),
             array(
@@ -151,7 +161,9 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
                     array('field_one', 'field_two', 'field_three'),
                     array('1', '2', '3'),
                     array('test1', 'test2', 'test3'),
-                    array('after_new1', 'after_new2', 'after_new3')
+                    false,
+                    array('after_new1', 'after_new2', 'after_new3'),
+                    false
                 )
             )
         );
@@ -159,7 +171,8 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testReadError()
     {
-        $stepExecution = $this->getMockStepExecution(array('filePath' => __DIR__ . '/fixtures/import_incorrect.csv'));
+        $context = $this->getContextWithOptionsMock(array('filePath' => __DIR__ . '/fixtures/import_incorrect.csv'));
+        $stepExecution = $this->getMockStepExecution($context);
         $stepExecution->expects($this->once())
             ->method('addReaderWarning')
             ->with($this->reader, 'Expecting to get 3 columns, actually got 2');
@@ -168,22 +181,14 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array $jobInstanceRawConfiguration
+     * @param \PHPUnit_Framework_MockObject_MockObject $context
      * @return \PHPUnit_Framework_MockObject_MockObject|StepExecution
      */
-    protected function getMockStepExecution(array $jobInstanceRawConfiguration)
+    protected function getMockStepExecution($context)
     {
         $stepExecution = $this->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $context = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\StepExecutionProxyContext')
-            ->disableOriginalConstructor()
-            ->setMethods(array('getConfiguration'))
-            ->getMock();
-        $context->expects($this->any())
-            ->method('getConfiguration')
-            ->will($this->returnValue($jobInstanceRawConfiguration));
 
         $this->contextRegistry->expects($this->any())
             ->method('getByStepExecution')
@@ -191,5 +196,31 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($context));
 
         return $stepExecution;
+    }
+
+    protected function getContextWithOptionsMock($options)
+    {
+        $context = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Context\StepExecutionProxyContext')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $context->expects($this->any())
+            ->method('hasOption')
+            ->will(
+                $this->returnCallback(
+                    function($option) use ($options) {
+                        return isset($options[$option]);
+                    }
+                )
+            );
+        $context->expects($this->any())
+            ->method('getOption')
+            ->will(
+                $this->returnCallback(
+                    function($option) use ($options) {
+                        return $options[$option];
+                    }
+                )
+            );
+        return $context;
     }
 }
