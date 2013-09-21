@@ -313,6 +313,9 @@ label, input, button, select, textarea { font-size:13px;}
     }
     .controls {
       margin-left:170px;
+      .control-label {
+        width: auto;
+      }
     }
   }
 }
@@ -2715,6 +2718,9 @@ footer {
       }
       .controls {
         margin-left:0;
+        .control-label {
+          width: auto;
+        }
       }
     }
   }
@@ -4950,11 +4956,13 @@ disabled look for disabled choices in the results dropdown
 pre.email-body {
   width: 99%;
   min-height: 5em;
+  height: 200px;
+  overflow: scroll;
 }
 iframe.email-body {
   width: 99%;
   min-height: 5em;
-  height: 25em;
+  height: 200px;
   #font > #family > .monospace;
   color: @grayDark;
   padding: (@baseLineHeight - 1) / 2;
