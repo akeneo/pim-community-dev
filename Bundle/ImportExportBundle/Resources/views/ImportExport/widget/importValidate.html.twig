@@ -33,14 +33,16 @@
                             {{ 'Import started, please wait...'|trans|json_encode|raw }}
                         );
 
+                        widget.trigger('beforeContentLoad', widget);
                         $.getJSON({{ path('oro_importexport_import_process', {processorAlias: processorAlias})|json_encode|raw }}, function(data) {
+                            widget.trigger('contentLoad', '', widget);
+                            widget.trigger('importComplete', data);
                             var message = data.message;
                             if (!data.success && data.errorsUrl) {
                                 var link = '<a target="_blank" href="' + data.errorsUrl + '">' + __('Download error log') + '</a>';
                                 message += ' ' + link;
                             }
-
-                            Messanger.notificationFlashMessage(data.success ? 'success' : 'error', message);
+                            Messanger.notificationFlashMessage(data.success ? 'success' : 'error', data.message);
                             widget.remove();
                         });
 
