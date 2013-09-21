@@ -34,6 +34,9 @@ class TargetType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $options = array();
+        $config  = array();
+
         if (null === $this->request->get('entity')) {
             /** @var FieldConfigModel $entity */
             $entity = $this->configManager->getEntityManager()
@@ -41,11 +44,10 @@ class TargetType extends AbstractType
                 ->find($this->request->get('id'));
 
             $entityClassName = $entity->getEntity()->getClassName();
+            $config['disabled'] = true;
         } else {
             $entityClassName = $this->request->get('entity')->getClassName();
         }
-
-        $options = array();
 
         $entities = $this->configManager->getIds('entity');
         foreach ($entities as $entity) {
@@ -69,9 +71,12 @@ class TargetType extends AbstractType
         }
 
         $resolver->setDefaults(
-            array(
-                'required' => true,
-                'choices'  => $options,
+            array_merge_recursive(
+                $config,
+                array(
+                    'required' => true,
+                    'choices'  => $options,
+                )
             )
         );
     }

@@ -11,10 +11,11 @@ function($, _, routing) {
                 fields = $('form select.extend-rel-target-field');
 
             $(fields).prev('span').text('loading...');
+            fields.empty().append('<option value="">Please choice target field...</option>');
 
             $.getJSON(query, function(response) {
                 var items = [];
-                items.push('<option value="" selected="selected">Please choice target field...</option>');
+                items.push('<option value="">Please choice target field...</option>');
                 $.each( response, function( key, val ) {
                     items.push("<option value='" + key + "'>" + val + "</option>");
                 });

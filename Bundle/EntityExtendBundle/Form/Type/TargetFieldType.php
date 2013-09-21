@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TargetFieldType extends AbstractType
 {
@@ -32,36 +35,72 @@ class TargetFieldType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventListener(
-            FormEvents::PRE_SUBMIT,
-            function (FormEvent $event) {
-                $form = $event->getForm();
-                $data = $event->getData();
+        $ff            = $builder->getFormFactory();
+        $request       = $this->request;
+        $configManager = $this->configManager;
 
-                $targetEntityValue = $form->getParent()->get('target_entity')->getData();
-                $targetField  = $form->getParent()->get('target_field');
+        $event = function (FormEvent $event) use ($ff, $request, $configManager) {
+            $form = $event->getForm();
+            $data = $form->getParent()->getData();
 
-                //$form->getParent()->remove('target_field');
-                /*
-                $form->getParent()->add(
-                    'target_field',
-                    'oro_entity_target_field_type',
-                    array(
-                        //'class'       => 'extend-rel-target-field',
-                        'required'    => false,
-                        'label'       => 'Target field',
-                        'empty_value' => 'Please choice target field...',
-                        'choices'     => array(
-                            'label' => 'label'
-                        )
-                    )
-                )
-                ->setData($data);
-                */
+            $config = $form->getParent()->get('target_field')->getConfig()->getOptions();
+            if (array_key_exists('auto_initialize', $config)) {
+                $config['auto_initialize'] = false;
             }
-        );
-    }
 
+            $choices = array();
+
+            $className = $form->getParent()->get('target_entity')->getData();
+            if ($className) {
+                /** @var EntityConfigModel $entity */
+                $entity = $configManager->getEntityManager()
+                    ->getRepository(EntityConfigModel::ENTITY_NAME)
+                    ->findOneBy(array('className' => $className));
+
+                if ($entity) {
+                    /** @var ConfigProvider $entityConfigProvider */
+                    $entityConfigProvider = $configManager->getProvider('entity');
+
+                    $entityFields = $configManager->getEntityManager()
+                        ->getRepository(FieldConfigModel::ENTITY_NAME)
+                        ->findBy(
+                            array(
+                                'entity' => $entity->getId(),
+                                'type'   => 'string'
+                            ),
+                            array('fieldName' => 'ASC')
+                        );
+
+                    foreach ($entityFields as $field) {
+                        $label = $entityConfigProvider->getConfig($className, $field->getFieldName())->get('label');
+                        $choices[$field->getFieldName()] = $label ? : $field->getFieldName();
+                    }
+                }
+            }
+
+            unset($config['choice_list']);
+            unset($config['choices']);
+
+            $config['choices'] = $choices;
+
+            $form->getParent()->add('target_field', 'choice', $config);
+
+            if (isset($data['target_field']) && empty($data['target_field'])) {
+                $data['target_field'] = $request->request->get(
+                    'oro_entity_config_type[extend][target_field]',
+                    null,
+                    true
+                );
+                $form->getParent()->setData($data);
+            }
+        };
+
+        /**
+         * Register the function above as EventListener on PreSet and PreSubmit
+         */
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, $event);
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, $event);
+    }
 
     /**
      * {@inheritdoc}

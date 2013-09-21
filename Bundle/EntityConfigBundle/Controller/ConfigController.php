@@ -322,7 +322,7 @@ class ConfigController extends Controller
     }
 
     /**
-     * @Route("/field/search/{id}", name="oro_entityconfig_field_search")
+     * @Route("/field/search/{id}", name="oro_entityconfig_field_search", defaults={"id"=0})
      * @Acl(
      *      id="oro_entityconfig_field_search",
      *      name="Retrieve entity field(s)",
@@ -333,32 +333,33 @@ class ConfigController extends Controller
     public function fieldSearchAction($id)
     {
         $fields = array();
+        if ($id) {
+            /** @var EntityConfigModel $entity */
+            $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)
+                ->findOneBy(array('className' => $id));
 
-        /** @var EntityConfigModel $entity */
-        $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)
-            ->findOneBy(array('className' => $id));
+            if ($entity) {
+                /** @var ConfigProvider $entityConfigProvider */
+                $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
 
-        if ($entity) {
-            /** @var ConfigProvider $entityConfigProvider */
-            $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
+                /** @var FieldConfigModel $fields */
+                $entityFields = $this->getDoctrine()->getRepository(FieldConfigModel::ENTITY_NAME)
+                    ->findBy(
+                        array(
+                            'entity' => $entity->getId(),
+                            'type'   => 'string'
+                        ),
+                        array('fieldName' => 'ASC')
+                    );
 
-            /** @var FieldConfigModel $fields */
-            $entityFields = $this->getDoctrine()->getRepository(FieldConfigModel::ENTITY_NAME)
-                ->findBy(
-                    array(
-                        'entity' => $entity->getId(),
-                        'type'   => 'string'
-                    ),
-                    array('fieldName' => 'ASC')
-                );
+                foreach ($entityFields as $field) {
+                    $label = $entityConfigProvider->getConfig($id, $field->getFieldName())->get('label');
+                    if (!$label) {
+                        $label = $field->getFieldName();
+                    }
 
-            foreach ($entityFields as $field) {
-                $label = $entityConfigProvider->getConfig($id, $field->getFieldName())->get('label');
-                if (!$label) {
-                    $label = $field->getFieldName();
+                    $fields[$field->getFieldName()] = $label;
                 }
-
-                $fields[$field->getFieldName()] = $label;
             }
         }
 
