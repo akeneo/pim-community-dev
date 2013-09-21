@@ -76,10 +76,9 @@ class JobExecutor
 
             $this->entityManager->flush();
 
-            foreach ($jobExecution->getStepExecutions() as $stepExecution) {
-                $context = $this->contextRegistry->getByStepExecution($stepExecution);
-                $jobResult->addContext($context);
-            }
+            $stepExecutions = $jobExecution->getStepExecutions();
+            $context = $this->contextRegistry->getByStepExecution($stepExecutions->first());
+            $jobResult->setContext($context);
 
             if ($jobExecution->getStatus()->getValue() == BatchStatus::COMPLETED) {
                 $this->entityManager->commit();

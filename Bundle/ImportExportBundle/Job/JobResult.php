@@ -12,9 +12,9 @@ class JobResult
     protected $successful;
 
     /**
-     * @var ContextInterface[]
+     * @var ContextInterface
      */
-    protected $contexts = array();
+    protected $context;
 
     /**
      * @var array
@@ -22,11 +22,11 @@ class JobResult
     protected $errors = array();
 
     /**
-     * @return ContextInterface[]
+     * @return ContextInterface
      */
-    public function getContexts()
+    public function getContext()
     {
-        return $this->contexts;
+        return $this->context;
     }
 
     /**
@@ -69,9 +69,9 @@ class JobResult
      * @param ContextInterface $context
      * @return JobResult
      */
-    public function addContext(ContextInterface $context)
+    public function setContext(ContextInterface $context)
     {
-        $this->contexts[] = $context;
+        $this->context = $context;
         return $this;
     }
 }

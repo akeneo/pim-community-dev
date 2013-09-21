@@ -29,6 +29,8 @@ use Oro\Bundle\ImportExportBundle\File\FileSystemOperator;
 
 class ImportExportController extends Controller
 {
+    const MAX_ERRORS_COUNT = 3;
+
     /**
      * @Route("/import", name="oro_importexport_import_form")
      * @AclAncestor("oro_importexport_import")
@@ -94,17 +96,12 @@ class ImportExportController extends Controller
      */
     public function importValidateAction($processorAlias)
     {
-        /** @var ProcessorRegistry $processorRegistry */
-        $processorRegistry = $this->get('oro_importexport.processor.registry');
-        /** @var JobExecutor $jobExecutor */
-        $jobExecutor = $this->get('oro_importexport.job_executor');
-
         $fileName = $this->get('session')->get($this->getImportFileSessionKey($processorAlias));
         if (!$fileName || !file_exists($fileName)) {
             throw new \Exception('No file in session');
         }
 
-        $entityName = $processorRegistry->getProcessorEntityName(
+        $entityName = $this->getProcessorRegistry()->getProcessorEntityName(
             ProcessorRegistry::TYPE_IMPORT_VALIDATION,
             $processorAlias
         );
@@ -116,7 +113,7 @@ class ImportExportController extends Controller
             ),
         );
 
-        $jobResult = $jobExecutor->executeJob(
+        $jobResult = $this->getJobExecutor()->executeJob(
             ProcessorRegistry::TYPE_IMPORT_VALIDATION,
             JobExecutor::JOB_VALIDATE_IMPORT_FROM_CSV,
             $configuration
@@ -129,15 +126,15 @@ class ImportExportController extends Controller
             }
         }
 
-        /** @var ContextInterface[] $contexts */
-        $contexts = $jobResult->getContexts();
+        /** @var ContextInterface $contexts */
+        $context = $jobResult->getContext();
         $counts = array();
         if (isset($contexts[0])) {
-            $counts['read'] = $contexts[0]->getReadCount();
-            $counts['add'] = $contexts[0]->getAddCount();
-            $counts['replace'] = $contexts[0]->getReplaceCount();
-            $counts['update'] = $contexts[0]->getUpdateCount();
-            $counts['delete'] = $contexts[0]->getDeleteCount();
+            $counts['read'] = $context->getReadCount();
+            $counts['add'] = $context->getAddCount();
+            $counts['replace'] = $context->getReplaceCount();
+            $counts['update'] = $context->getUpdateCount();
+            $counts['delete'] = $context->getDeleteCount();
         }
 
         return array(
@@ -181,15 +178,13 @@ class ImportExportController extends Controller
                 'oro_importexport_export_download',
                 array('fileName' => basename($fileName))
             );
-            foreach ($jobResult->getContexts() as $context) {
-                $messages[] = array(
-                    'type' => 'success',
-                    'message' => $this->get('translator')->trans(
-                        'oro_importexport.export.exported_entities_count %count%',
-                        array('%count%' => $context->getReadCount())
-                    ),
-                );
-            }
+            $messages[] = array(
+                'type' => 'success',
+                'message' => $this->get('translator')->trans(
+                    'oro_importexport.export.exported_entities_count %count%',
+                    array('%count%' => $jobResult->getContext()->getReadCount())
+                ),
+            );
         } else {
             foreach ($jobResult->getErrors() as $error) {
                 $messages[] = array('type' => 'error', 'message' => $error);

@@ -6,3 +6,4 @@ services:
         class: %oro_importexport.file.file_system_operator.class%
         arguments:
             - %kernel.cache_dir%
+            - "import_export"

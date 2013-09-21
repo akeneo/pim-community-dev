@@ -10,16 +10,23 @@ class FileSystemOperator
     protected $cacheDirectory;
 
     /**
-     * @var
+     * @var string
+     */
+    protected $temporaryDirectoryName;
+
+    /**
+     * @var string
      */
     protected $temporaryDirectory;
 
     /**
-     * @param $cacheDirectory
+     * @param string $cacheDirectory
+     * @param string $temporaryDirectoryName
      */
-    public function __construct($cacheDirectory)
+    public function __construct($cacheDirectory, $temporaryDirectoryName)
     {
         $this->cacheDirectory = $cacheDirectory;
+        $this->temporaryDirectoryName = $temporaryDirectoryName;
     }
 
     /**
@@ -30,7 +37,7 @@ class FileSystemOperator
     {
         if (!$this->temporaryDirectory) {
             $cacheDirectory = rtrim($this->cacheDirectory, DIRECTORY_SEPARATOR);
-            $temporaryDirectory = $cacheDirectory . DIRECTORY_SEPARATOR . 'import_export';
+            $temporaryDirectory = $cacheDirectory . DIRECTORY_SEPARATOR . $this->temporaryDirectoryName;
             if (!file_exists($temporaryDirectory) && !is_dir($temporaryDirectory)) {
                 mkdir($temporaryDirectory);
             }
@@ -78,7 +85,7 @@ class FileSystemOperator
                 '%s%s%s.%s',
                 $temporaryDirectory,
                 DIRECTORY_SEPARATOR,
-                preg_replace('~\W~', '_', uniqid($filePrefix . '_', true)),
+                preg_replace('~\W~', '_', uniqid($filePrefix . '_')),
                 $fileExtension
             );
         } while (file_exists($fileName));
