@@ -105,7 +105,7 @@ class ImportExportController extends Controller
 
         $errorsUrl = null;
         $errors = array();
-        if ($counts['errors']) {
+        if (!empty($counts['errors'])) {
             $errorsUrl = $this->get('router')->generate(
                 'oro_importexport_error_log',
                 array('jobCode' => $jobResult->getJobCode())
