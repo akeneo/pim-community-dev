@@ -18,7 +18,7 @@ connector:
                     title:     import_validation
                     reader:    oro_importexport.reader.csv
                     processor: oro_importexport.processor.import_validation_delegate
-                    writer:    oro_importexport.writer.dummy
+                    writer:    oro_importexport.writer.doctrine_clear
 
         entity_import_from_csv:
             title: "Entity Import from CSV"
