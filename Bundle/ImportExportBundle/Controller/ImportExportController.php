@@ -108,7 +108,7 @@ class ImportExportController extends Controller
         if ($counts['errors']) {
             $errorsUrl = $this->get('router')->generate(
                 'oro_importexport_error_log',
-                array('jobId' => $jobResult->getJobId())
+                array('jobCode' => $jobResult->getJobCode())
             );
             $errors = array_slice($jobResult->getErrors(), 0, 100);
         }
@@ -161,7 +161,7 @@ class ImportExportController extends Controller
         if ($jobResult->getErrors()) {
             $errorsUrl = $this->get('router')->generate(
                 'oro_importexport_error_log',
-                array('jobId' => $jobResult->getJobId())
+                array('jobCode' => $jobResult->getJobCode())
             );
         }
 
