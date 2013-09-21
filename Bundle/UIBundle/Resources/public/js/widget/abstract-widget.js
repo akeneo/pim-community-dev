@@ -250,7 +250,7 @@ function(_, Backbone, mediator) {
 
         _initActionEvents: function(action) {
             var self = this;
-            switch (action.attr('type').toLowerCase()) {
+            switch ($(action).attr('type').toLowerCase()) {
                 case 'submit':
                     action.on('click', function() {
                         self.trigger('adoptedFormSubmitClick', self.form, self);
@@ -333,10 +333,12 @@ function(_, Backbone, mediator) {
             try {
                 this.trigger('contentLoad', content, this);
                 this.actionsEl = null;
+                this.actions = {};
                 this.setElement($(content).filter('.widget-content'));
                 this._show();
                 mediator.trigger('hash_navigation_request:complete');
             } catch (error) {
+                console.warn(error)
                 // Remove state with unrestorable content
                 this.trigger('contentLoadError', this);
             }
