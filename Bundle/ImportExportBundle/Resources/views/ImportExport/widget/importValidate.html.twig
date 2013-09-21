@@ -1,22 +1,76 @@
 <div class="widget-content">
-    <h4>{{ 'Validation results'|trans }}</h4>
-    <dl class="dl-horizontal">
-        <dt>{{ 'Read'|trans }}</dt><dd>{{ counts.read|default(0) }}</dd>
-        <dt>{{ 'Add'|trans }}</dt><dd>{{ counts.add|default(0) }}</dd>
-        <dt>{{ 'Replace'|trans }}</dt><dd>{{ counts.replace|default(0) }}</dd>
-        <dt>{{ 'Update'|trans }}</dt><dd>{{ counts.update|default(0) }}</dd>
-        <dt>{{ 'Delete'|trans }}</dt><dd>{{ counts.delete|default(0) }}</dd>
-        <dt>{{ 'Errors'|trans }}</dt>
-        <dd>{{ counts.errors }}
-            {% if counts.errors %}
-                (<a href="{{ errorsUrl }}" target="_blank">download in file</a>)
-            {% endif %}
-        </dd>
-    </dl>
+    <strong>{{ 'Import validation results'|trans }}</strong>
+    <table class="table table-condensed table-hover">
+        <thead>
+            <th></th>
+            <th>
+                <div class="pull-right">
+                    {{ 'Number of items'|trans }}
+                </div>
+            </th>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ 'Records to add'|trans }}</td>
+            <td>
+                <div class="pull-right">
+                    {{ counts.atd|default(0) }}
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>{{ 'Records to replace'|trans }}</td>
+            <td>
+                <div class="pull-right">
+                    {{ counts.replace|default(0) }}
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>{{ 'Records to update'|trans }}</td>
+            <td>
+                <div class="pull-right">
+                    {{ counts.update|default(0) }}
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>{{ 'Records to delete'|trans }}</td>
+            <td>
+                <div class="pull-right">
+                    {{ counts.delete|default(0) }}
+                </div>
+            </td>
+        </tr>
+
+        {% if errors|length > 0 %}
+            <tr class="error">
+                <td>
+                    {{ 'Total errors'|trans }}
+                    <a href="{{ errorsUrl }}" target="_blank"><i class="icon-download"></i></a>
+                </td>
+                <td>
+                    <div class="pull-right">
+                        {{ errors|length }}
+                    </div>
+                </td>
+            </tr>
+        {% endif %}
+
+        <tr class="info">
+            <td><strong>{{ 'Total number of records'|trans }}</strong></td>
+            <td>
+                <div class="pull-right">
+                    {{ counts.read|default(0) }}
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
     <script type="text/javascript">
-        require(['jquery', 'oro/translator', 'oro/widget-manager', 'oro/messenger'],
-        function($, __, WidgetManager, Messanger) {
+        require(['jquery', 'oro/widget-manager', 'oro/messenger'],
+        function($, WidgetManager, Messanger) {
             WidgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
                 var backAction = $('<button type="button" class="btn">{{ 'Back'|trans }}</button>');
                 backAction.on('click', function(e) {
@@ -39,7 +93,7 @@
                             widget.trigger('importComplete', data);
                             var message = data.message;
                             if (!data.success && data.errorsUrl) {
-                                var link = '<a target="_blank" href="' + data.errorsUrl + '">' + __('Download error log') + '</a>';
+                                var link = '<a target="_blank" href="' + data.errorsUrl + '">{{ 'Download error log'|trans}}</a>';
                                 message += ' ' + link;
                             }
                             Messanger.notificationFlashMessage(data.success ? 'success' : 'error', data.message);
