@@ -7,17 +7,16 @@
         <dt>{{ 'Update'|trans }}</dt><dd>{{ counts.update|default(0) }}</dd>
         <dt>{{ 'Delete'|trans }}</dt><dd>{{ counts.delete|default(0) }}</dd>
         <dt>{{ 'Errors'|trans }}</dt>
-        <dd>
-            {{ errors|length }}
-            {% if errors|length %}
-                (<a href="#">download in file</a>)
+        <dd>{{ counts.errors }}
+            {% if counts.errors %}
+                (<a href="{{ errorsUrl }}" target="_blank">download in file</a>)
             {% endif %}
         </dd>
     </dl>
 
     <script type="text/javascript">
-        require(['jquery', 'oro/widget-manager', 'oro/messenger'],
-        function($, WidgetManager, Messanger) {
+        require(['jquery', 'oro/translator', 'oro/widget-manager', 'oro/messenger'],
+        function($, __, WidgetManager, Messanger) {
             WidgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
                 var backAction = $('<button type="button" class="btn">{{ 'Back'|trans }}</button>');
                 backAction.on('click', function(e) {
@@ -35,7 +34,13 @@
                         );
 
                         $.getJSON({{ path('oro_importexport_import_process', {processorAlias: processorAlias})|json_encode|raw }}, function(data) {
-                            Messanger.notificationFlashMessage(data.success ? 'success' : 'error', data.message);
+                            var message = data.message;
+                            if (!data.success && data.url) {
+                                var link = '<a target="_blank" href="' + data.url + '">' + __('Download error log') + '</a>';
+                                message += ' ' + link;
+                            }
+
+                            Messanger.notificationFlashMessage(data.success ? 'success' : 'error', message);
                             widget.remove();
                         });
 

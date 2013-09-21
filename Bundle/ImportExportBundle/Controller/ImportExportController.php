@@ -91,13 +91,6 @@ class ImportExportController extends Controller
             $configuration
         );
 
-        $errors = array();
-        if (!$jobResult->isSuccessful()) {
-            foreach ($jobResult->getErrors() as $error) {
-                $errors[] = array('type' => 'error', 'message' => $error);
-            }
-        }
-
         /** @var ContextInterface $contexts */
         $context = $jobResult->getContext();
         $counts = array();
@@ -107,13 +100,22 @@ class ImportExportController extends Controller
             $counts['replace'] = $context->getReplaceCount();
             $counts['update'] = $context->getUpdateCount();
             $counts['delete'] = $context->getDeleteCount();
+            $counts['errors'] = count($jobResult->getErrors());
+        }
+
+        $errorsUrl = null;
+        if ($counts['errors']) {
+            $errorsUrl = $this->get('router')->generate(
+                'oro_importexport_error_log',
+                array('jobId' => $jobResult->getJobId())
+            );
         }
 
         return array(
             'isSuccessful' => $jobResult->isSuccessful(),
             'processorAlias' => $processorAlias,
             'counts' => $counts,
-            'errors' => $errors,
+            'errorsUrl' => $errorsUrl,
             'entityName' => $entityName
         );
     }
@@ -138,7 +140,7 @@ class ImportExportController extends Controller
                 'filePath' => $this->getImportFileName($processorAlias),
             ),
         );
-        //$this->removeImportFileName($processorAlias);
+        $this->removeImportFileName($processorAlias);
 
         $jobResult = $this->getJobExecutor()->executeJob(
             ProcessorRegistry::TYPE_IMPORT,
@@ -152,10 +154,19 @@ class ImportExportController extends Controller
             $message = $this->get('translator')->trans('oro_importexport.import.import_error');
         }
 
+        $errorsUrl = null;
+        if ($jobResult->getErrors()) {
+            $errorsUrl = $this->get('router')->generate(
+                'oro_importexport_error_log',
+                array('jobId' => $jobResult->getJobId())
+            );
+        }
+
         return new JsonResponse(
             array(
                 'success' => $jobResult->isSuccessful(),
-                'message' => $message
+                'message' => $message,
+                'url' => $errorsUrl
             )
         );
     }
