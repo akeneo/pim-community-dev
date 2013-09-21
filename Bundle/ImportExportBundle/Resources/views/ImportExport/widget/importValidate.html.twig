@@ -143,6 +143,9 @@
                             }
                             Messanger.notificationFlashMessage(data.success ? 'success' : 'error', data.message);
                             widget.remove();
+                        }).fail(function() {
+                            Messanger.notificationFlashMessage('error', {{ 'Import process failed'|trans|json_encode|raw }});
+                            widget.trigger('contentLoad', '', widget);
                         });
 
                     });
