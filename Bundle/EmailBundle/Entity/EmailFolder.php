@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EmailBundle\Entity;
 
+use Oro\Bundle\EmailBundle\Entity\Util\EmailUtil;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\Type;
@@ -13,6 +14,7 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
  *
  * @ORM\Table(name="oro_email_folder")
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
  */
 class EmailFolder
 {
@@ -31,6 +33,14 @@ class EmailFolder
      * @Type("integer")
      */
     protected $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime")
+     * @Type("dateTime")
+     */
+    protected $created;
 
     /**
      * @var string
@@ -89,6 +99,16 @@ class EmailFolder
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get entity created date/time
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->created;
     }
 
     /**
@@ -206,5 +226,15 @@ class EmailFolder
         $email->setFolder($this);
 
         return $this;
+    }
+
+    /**
+     * Pre persist event listener
+     *
+     * @ORM\PrePersist
+     */
+    public function beforeSave()
+    {
+        $this->created = EmailUtil::currentUTCDateTime();
     }
 }

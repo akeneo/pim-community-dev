@@ -129,7 +129,10 @@ abstract class AbstractEmailSynchronizer
 
         if (!empty($failedOriginIds)) {
             throw new \Exception(
-                sprintf('The email synchronization failed for the following origins: ', implode(', ', $failedOriginIds))
+                sprintf(
+                    'The email synchronization failed for the following origins: %s.',
+                    implode(', ', $failedOriginIds)
+                )
             );
         }
     }
@@ -159,7 +162,10 @@ abstract class AbstractEmailSynchronizer
         }
         if (!empty($failedOriginIds)) {
             throw new \Exception(
-                sprintf('The email synchronization failed for the following origins: ', implode(', ', $failedOriginIds))
+                sprintf(
+                    'The email synchronization failed for the following origins: %s.',
+                    implode(', ', $failedOriginIds)
+                )
             );
         }
     }

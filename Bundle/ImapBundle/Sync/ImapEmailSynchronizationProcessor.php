@@ -13,6 +13,7 @@ use Oro\Bundle\ImapBundle\Connector\Search\SearchQueryBuilder;
 use Oro\Bundle\ImapBundle\Entity\ImapEmail;
 use Oro\Bundle\ImapBundle\Entity\ImapEmailFolder;
 use Oro\Bundle\ImapBundle\Manager\ImapEmailManager;
+use Oro\Bundle\EmailBundle\Entity\EmailAddress;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\ImapBundle\Mail\Storage\Folder;
@@ -63,7 +64,7 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
         $this->emailEntityBuilder->clear();
 
         // get a list of emails belong to any object, for example an user or a contacts
-        $emailAddressBatches = $this->getKnownEmailAddressBatches();
+        $emailAddressBatches = $this->getKnownEmailAddressBatches($origin->getSynchronizedAt());
 
         // iterate through all folders and do a synchronization of emails for each one
         $folders = $this->getFolders($origin);
@@ -87,28 +88,26 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
             foreach ($emailAddressBatches as $emailAddressBatch) {
                 // build a search query
                 $sqb = $this->manager->getSearchQueryBuilder();
-                if ($origin->getSynchronizedAt()) {
+                if ($origin->getSynchronizedAt()
+                    && $folder->getCreatedAt() < $origin->getSynchronizedAt()
+                    && !$emailAddressBatch['needFullSync']
+                ) {
                     $sqb->sent($origin->getSynchronizedAt());
-                } else {
-                    // this is the first synchronization of this folder; just load emails for last year
-                    $fromDate = new \DateTime('now');
-                    $fromDate->sub(new \DateInterval('P1Y'));
-                    $sqb->sent($fromDate);
                 }
 
                 $sqb->openParenthesis();
 
                 $sqb->openParenthesis();
-                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'from', $emailAddressBatch);
+                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'from', $emailAddressBatch['items']);
                 $sqb->closeParenthesis();
 
                 $sqb->openParenthesis();
-                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'to', $emailAddressBatch);
+                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'to', $emailAddressBatch['items']);
                 $sqb->orOperator();
-                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'cc', $emailAddressBatch);
+                $this->addEmailAddressesToSearchQueryBuilder($sqb, 'cc', $emailAddressBatch['items']);
                 // not all IMAP servers support search by BCC, for example imap-mail.outlook.com does not
                 //$sqb->orOperator();
-                //$this->addEmailAddressesToSearchQueryBuilder($sqb, 'bcc', $emailAddressBatch);
+                //$this->addEmailAddressesToSearchQueryBuilder($sqb, 'bcc', $emailAddressBatch['items']);
                 $sqb->closeParenthesis();
 
                 $sqb->closeParenthesis();
@@ -125,7 +124,7 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
      *
      * @param SearchQueryBuilder $sqb
      * @param string $addressType
-     * @param string[] $addresses
+     * @param EmailAddress[] $addresses
      */
     protected function addEmailAddressesToSearchQueryBuilder(SearchQueryBuilder $sqb, $addressType, array $addresses)
     {
@@ -133,26 +132,37 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
             if ($i > 0) {
                 $sqb->orOperator();
             }
-            $sqb->{$addressType}($addresses[$i]);
+            $sqb->{$addressType}($addresses[$i]->getEmail());
         }
     }
 
     /**
      * Gets a list of email addresses which have an owner and splits them into batches
      *
-     * @return string[][]
+     * @param \DateTime|null $lastSyncTime
+     * @return array
+     *             key = index
+     *             value = array
+     *                 'needFullSync' => true/false
+     *                 'items' => EmailAddress[]
      */
-    protected function getKnownEmailAddressBatches()
+    protected function getKnownEmailAddressBatches($lastSyncTime)
     {
         $batches = array();
         $batchIndex = 0;
         $count = 0;
         foreach ($this->getKnownEmailAddresses() as $emailAddress) {
-            if ($count >= self::EMAIL_ADDRESS_BATCH_SIZE) {
+            $needFullSync = !$lastSyncTime || $emailAddress->getUpdatedAt() > $lastSyncTime;
+            if ($count >= self::EMAIL_ADDRESS_BATCH_SIZE
+                || (isset($batches[$batchIndex]) && $needFullSync !== $batches[$batchIndex]['needFullSync'])
+            ) {
                 $batchIndex++;
                 $count = 0;
             }
-            $batches[$batchIndex][$count] = $emailAddress;
+            if ($count === 0) {
+                $batches[$batchIndex] = array('needFullSync' => $needFullSync, 'items' => array());
+            }
+            $batches[$batchIndex]['items'][$count] = $emailAddress;
             $count++;
         }
 
