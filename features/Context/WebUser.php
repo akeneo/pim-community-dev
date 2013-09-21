@@ -48,6 +48,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'home'        => 'Base index',
     );
 
+    /**
+     * Constructor
+     *
+     * @param integer $windowWidth
+     * @param integer $windowHeight
+     */
     public function __construct($windowWidth, $windowHeight)
     {
         $this->windowWidth  = $windowWidth;
@@ -1838,12 +1844,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->wait(10000);
     }
 
+    /**
+     * @param integer $y
+     */
     private function scrollContainerTo($y)
     {
-        $this->getSession()->executeScript(<<<JS
-document.getElementsByClassName('scrollable-container')[0].scrollTop = $y;
-JS
-);
+        $this->getSession()->executeScript(sprintf('$(".scrollable-container").scrollTop(%d);', $y));
     }
 
     /**
