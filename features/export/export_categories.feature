@@ -15,8 +15,9 @@ Feature: Export categories
     | Akeneo CSV Connector | category_export | acme_category_export | Category export for Acme.com | export |
     | Akeneo CSV Connector | category_import | acme_category_import | Category import for Acme.com | import |
   And the following job "acme_category_export" configuration:
-    | element | property | value                    |
-    | writer  | path     | /tmp/category_export.csv |
+    | element | property      | value               |
+    | writer  | directoryName | /tmp/               |
+    | writer  | fileName      | category_export.csv |
   And the following job "acme_category_import" configuration:
     | element | property | value                    |
     | reader  | filePath | /tmp/category_import.csv |
@@ -25,7 +26,7 @@ Feature: Export categories
   Scenario: Successfully import and export categories
     Given I am on the "acme_category_export" export job page
     When I launch the export job
-    Then I should see "The export has been successfully executed."
+    Then I should see "The export is running."
     And file "/tmp/category_export.csv" should contain 5 rows
     And the category order in the file "/tmp/category_export.csv" should be following:
      | computers   |
@@ -36,7 +37,7 @@ Feature: Export categories
     And I move the row 2 to row 4 in the file "/tmp/category_export.csv"
     When I am on the "acme_category_import" import job page
     And I launch the import job
-    Then I should see "The import has been successfully executed."
+    Then I should see "The import is running."
     And file "/tmp/category_export.csv" should contain 5 rows
     And the category order in the file "/tmp/category_export.csv" should be following:
      | computers   |
