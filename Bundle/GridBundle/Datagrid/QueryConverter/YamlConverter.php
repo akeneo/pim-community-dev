@@ -37,7 +37,6 @@ class YamlConverter implements QueryConverterInterface
         }
 
         if (isset($value['select'])) {
-            $value['select'] = explode(',', $value['select']);
             foreach ($value['select'] as $select) {
                 $qb->add('select', new Expr\Select($select), true);
             }
