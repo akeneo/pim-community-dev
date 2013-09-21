@@ -123,7 +123,7 @@ public function viewAction()
 or check in code directly with [securityFacade service](#securityFacade)
 
 ``` php
-    $this->securityFacade->isGranted('myentity_view')
+$this->securityFacade->isGranted('myentity_view')
 ```
 
  **Capabilities**:
@@ -193,6 +193,7 @@ Current UI implementation allows to define permissions for user roles. For Entit
 
 If a user has several roles assigned, and we are checking user's permission to some resource, if **any** of user's roles grants access to this resource then access is also granted to this user.
 
+<a name="securityFacade"></a>
 #### Security Facade
 
 oro_security.security_facade is a public service that covers most of ACL check cases and it should be injected in case some custom ACL checks are required.
