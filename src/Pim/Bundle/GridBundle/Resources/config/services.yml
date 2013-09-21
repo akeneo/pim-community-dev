@@ -15,7 +15,7 @@ services:
             - '@oro_grid.action.factory'
             - '%pim_grid.datagrid.class%'
             - '@pim_serializer'
-    
+
     pim_grid.action.tab_redirect:
         class: '%pim_grid.action.tab_redirect.class%'
         tags:

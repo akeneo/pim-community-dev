@@ -49,7 +49,8 @@ class PimGridExtensionTest extends \PHPUnit_Framework_TestCase
             'pim_grid.orm.filter.type.currency',
             'pim_grid.orm.filter.type.scope',
             'pim_grid.orm.filter.type.completeness',
-            'pim_grid.builder.datagrid'
+            'pim_grid.builder.datagrid',
+            'pim_grid.action.tab_redirect'
         );
 
         $this->extension->load($this->configs, $this->containerBuilder);
