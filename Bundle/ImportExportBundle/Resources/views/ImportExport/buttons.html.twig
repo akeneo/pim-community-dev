@@ -17,8 +17,9 @@
 </div>
 
 <script type="text/javascript">
-    require(['jquery', 'oro/translator', 'oro/widget-manager', 'oro/dialog-widget', 'oro/messenger'],
-    function($, __, WidgetManager, DialogWidget, Messanger) {
+    require(['jquery', 'oro/translator', 'oro/widget-manager', 'oro/dialog-widget', 'oro/messenger',
+        'oro/registry', 'oro/mediator'],
+    function($, __, WidgetManager, DialogWidget, Messanger, registry, mediator) {
         $('.import-btn').on('click', function(e) {
             e.preventDefault();
 
@@ -35,6 +36,23 @@
             });
             WidgetManager.addWidgetInstance(widget);
             widget.render();
+
+            {% if dataGridName is defined %}
+            var datagridName = {{ dataGridName|json_encode|raw }};
+            var onGridAdd = function(datagrid) {
+                widget.on('importComplete', function(data) {
+                    if (data.success) {
+                        datagrid.collection.fetch();
+                    }
+                });
+            };
+            var datagrid = registry.getElement('datagrid', datagridName);
+            if (datagrid) {
+                onGridAdd(datagrid);
+            } else {
+                mediator.once("datagrid:created:" + datagridName, onGridAdd);
+            }
+            {% endif %}
         });
 
         $('.export-btn').on('click', function(e) {
