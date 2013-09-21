@@ -6,6 +6,13 @@
         <dt>{{ 'Replace'|trans }}</dt><dd>{{ counts.replace|default(0) }}</dd>
         <dt>{{ 'Update'|trans }}</dt><dd>{{ counts.update|default(0) }}</dd>
         <dt>{{ 'Delete'|trans }}</dt><dd>{{ counts.delete|default(0) }}</dd>
+        <dt>{{ 'Errors'|trans }}</dt>
+        <dd>
+            {{ errors|length }}
+            {% if errors|length %}
+                (<a href="#">download in file</a>)
+            {% endif %}
+        </dd>
     </dl>
 
     <script type="text/javascript">
@@ -19,16 +26,18 @@
                 });
                 widget.addAction('back', backAction, 'adopted');
 
-                var importAction = $('<button type="button" class="btn btn-primary">{{ 'Import'|trans }}</button>');
-                importAction.on('click', function(e) {
-                    Messanger.notificationFlashMessage(
-                        'info',
-                        {{ 'Import started, please wait...'|trans|json_encode|raw }}
-                    );
-                    widget.setUrl({{ path('oro_importexport_import_form', {entity: entityName})|json_encode|raw }});
-                    widget.loadContent();
-                });
-                widget.addAction('import', importAction, 'adopted');
+                {% if isSuccessful %}
+                    var importAction = $('<button type="button" class="btn btn-primary">{{ 'Import'|trans }}</button>');
+                    importAction.on('click', function(e) {
+                        Messanger.notificationFlashMessage(
+                            'info',
+                            {{ 'Import started, please wait...'|trans|json_encode|raw }}
+                        );
+                        widget.setUrl({{ path('oro_importexport_import_form', {entity: entityName})|json_encode|raw }});
+                        widget.loadContent();
+                    });
+                    widget.addAction('import', importAction, 'adopted');
+                {% endif %}
             });
         });
     </script>
