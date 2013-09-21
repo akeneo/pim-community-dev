@@ -2,12 +2,14 @@
 
 namespace Oro\Bundle\ImportExportBundle\Strategy\Import;
 
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
 
+use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Exception\LogicException;
 use Oro\Bundle\ImportExportBundle\Exception\InvalidArgumentException;
 
@@ -24,13 +26,23 @@ class ImportStrategyHelper
     protected $validator;
 
     /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
      * @param ManagerRegistry $managerRegistry
      * @param ValidatorInterface $validator
+     * @param TranslatorInterface $translator
      */
-    public function __construct(ManagerRegistry $managerRegistry, ValidatorInterface $validator)
-    {
+    public function __construct(
+        ManagerRegistry $managerRegistry,
+        ValidatorInterface $validator,
+        TranslatorInterface $translator
+    ) {
         $this->managerRegistry = $managerRegistry;
         $this->validator = $validator;
+        $this->translator = $translator;
     }
 
     /**
@@ -94,11 +106,31 @@ class ImportStrategyHelper
             $errors = array();
             /** @var ConstraintViolationInterface $violation */
             foreach ($violations as $violation) {
-                $errors[] = $violation->getMessage();
+                $errors[] = sprintf(sprintf('%s: %s', $violation->getPropertyPath(), $violation->getMessage()));
             }
             return $errors;
         }
 
         return null;
+    }
+
+    /**
+     * @param array $validationErrors
+     * @param ContextInterface $context
+     * @param string|null $errorPrefix
+     */
+    public function addValidationErrors(array $validationErrors, ContextInterface $context, $errorPrefix = null)
+    {
+        if (null === $errorPrefix) {
+            $errorPrefix = $this->translator->trans(
+                'oro.importexport.import_error %number%',
+                array(
+                    '%number%' => $context->getReadOffset()
+                )
+            );
+        }
+        foreach ($validationErrors as $validationError) {
+            $context->addError($errorPrefix . ' ' . $validationError);
+        }
     }
 }

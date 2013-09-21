@@ -7,3 +7,4 @@ services:
         arguments:
             - @doctrine
             - @validator
+            - @translator

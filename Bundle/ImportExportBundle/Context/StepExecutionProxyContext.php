@@ -30,6 +30,16 @@ class StepExecutionProxyContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
+    public function addErrors($messages, $severity = null)
+    {
+        foreach ($messages as $message) {
+            $this->addError($message, $severity);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getErrors()
     {
         $errors = array();
@@ -57,6 +67,22 @@ class StepExecutionProxyContext implements ContextInterface
     public function getReadCount()
     {
         return $this->stepExecution->getReadCount();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function incrementReadOffset()
+    {
+        $this->setValue('read_offset', (int)$this->getValue('read_offset') + 1);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReadOffset()
+    {
+        return $this->getValue('read_offset');
     }
 
     /**

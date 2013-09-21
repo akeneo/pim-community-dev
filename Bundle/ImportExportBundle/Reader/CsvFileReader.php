@@ -5,8 +5,9 @@ namespace Oro\Bundle\ImportExportBundle\Reader;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 
+use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
+use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\ImportExportBundle\Exception\InvalidArgumentException;
 use Oro\Bundle\ImportExportBundle\Exception\RuntimeException;
@@ -67,10 +68,12 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
     {
         $data = $this->getFile()->fgetcsv();
         if (false !== $data) {
+            $context = $this->getContext($stepExecution);
+            $context->incrementReadOffset();
             if (null === $data || array(null) === $data) {
                 return null;
             }
-            $stepExecution->incrementReadCount();
+            $context->incrementReadCount();
 
             if ($this->firstLineIsHeader) {
                 if (count($this->header) !== count($data)) {
@@ -106,7 +109,6 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
             $this->file->setFlags(
                 \SplFileObject::READ_CSV |
                 \SplFileObject::READ_AHEAD |
-                \SplFileObject::SKIP_EMPTY |
                 \SplFileObject::DROP_NEW_LINE
             );
             $this->file->setCsvControl(
@@ -128,7 +130,7 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
      */
     public function setStepExecution(StepExecution $stepExecution)
     {
-        $context = $this->contextRegistry->getByStepExecution($stepExecution);
+        $context = $this->getContext($stepExecution);
 
         if (!$context->hasOption('filePath')) {
             throw new InvalidConfigurationException(
@@ -157,6 +159,15 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
         if ($context->hasOption('header')) {
             $this->header = $context->getOption('header');
         }
+    }
+
+    /**
+     * @param StepExecution $stepExecution
+     * @return ContextInterface
+     */
+    protected function getContext(StepExecution $stepExecution)
+    {
+        return $this->contextRegistry->getByStepExecution($stepExecution);
     }
 
     /**

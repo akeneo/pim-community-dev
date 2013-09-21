@@ -8,6 +8,7 @@ use Doctrine\ORM\Query;
 
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator;
+use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 
 use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
@@ -56,7 +57,9 @@ class EntityReader implements ReaderInterface
         $result = null;
         if ($iterator->valid()) {
             $result = $iterator->current();
-            $stepExecution->incrementReadCount();
+            $context = $this->getContext($stepExecution);
+            $context->incrementReadOffset();
+            $context->incrementReadCount();
             $iterator->next();
         }
 
@@ -81,7 +84,7 @@ class EntityReader implements ReaderInterface
      */
     public function setStepExecution(StepExecution $stepExecution)
     {
-        $context = $this->contextRegistry->getByStepExecution($stepExecution);
+        $context = $this->getContext($stepExecution);
 
         if ($context->hasOption('entityName')) {
             $this->setSourceEntityName($context->getOption('entityName'));
@@ -94,6 +97,15 @@ class EntityReader implements ReaderInterface
                 'Configuration of entity reader must contain either "entityName", "queryBuilder" or "query".'
             );
         }
+    }
+
+    /**
+     * @param StepExecution $stepExecution
+     * @return ContextInterface
+     */
+    protected function getContext(StepExecution $stepExecution)
+    {
+        return $this->contextRegistry->getByStepExecution($stepExecution);
     }
 
     /**

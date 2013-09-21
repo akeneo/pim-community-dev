@@ -11,6 +11,12 @@ interface ContextInterface
     public function addError($message, $severity = null);
 
     /**
+     * @param array $message
+     * @param int|null $severity constant of ErrorException
+     */
+    public function addErrors($message, $severity = null);
+
+    /**
      * @return array
      */
     public function getErrors();
@@ -24,6 +30,16 @@ interface ContextInterface
      * @return int
      */
     public function getReadCount();
+
+    /**
+     * @return void
+     */
+    public function incrementReadOffset();
+
+    /**
+     * @return int
+     */
+    public function getReadOffset();
 
     /**
      * @return void

@@ -1,2 +1,3 @@
 oro_importexport.export.exported_entities_count %count%: Exported entities: %count%
 oro_importexport.errors_found %amount%: %amount% errors found
+oro.importexport.import_error %number%: "Error in row #%number%."

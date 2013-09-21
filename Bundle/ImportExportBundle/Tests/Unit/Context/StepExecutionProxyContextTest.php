@@ -91,11 +91,9 @@ class StepExecutionProxyContextTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider incrementCountDataProvider
      */
-    public function testIncrementCount($countName)
+    public function testIncrement($propertyName)
     {
         $expectedCount = 1;
-
-        $expectedPropertyName = $countName . '_count';
 
         $executionContext = $this->getMock('Oro\Bundle\BatchBundle\Item\ExecutionContext');
 
@@ -105,34 +103,33 @@ class StepExecutionProxyContextTest extends \PHPUnit_Framework_TestCase
 
         $executionContext->expects($this->at(0))
             ->method('get')
-            ->with($expectedPropertyName)
+            ->with($propertyName)
             ->will($this->returnValue($expectedCount));
 
         $executionContext->expects($this->at(1))
             ->method('put')
-            ->with($expectedPropertyName, $expectedCount + 1);
+            ->with($propertyName, $expectedCount + 1);
 
-        $method = 'increment' . ucfirst($countName) . 'Count';
+        $method = 'increment' . str_replace('_', '', $propertyName);
         $this->context->$method();
     }
 
     public function incrementCountDataProvider()
     {
         return array(
-            array('update'),
-            array('replace'),
-            array('delete'),
+            array('read_offset'),
+            array('update_count'),
+            array('replace_count'),
+            array('delete_count'),
         );
     }
 
     /**
      * @dataProvider getCountDataProvider
      */
-    public function testGetCount($countName)
+    public function testGetCount($propertyName)
     {
         $expectedCount = 1;
-
-        $expectedPropertyName = $countName . '_count';
 
         $executionContext = $this->getMock('Oro\Bundle\BatchBundle\Item\ExecutionContext');
 
@@ -142,19 +139,20 @@ class StepExecutionProxyContextTest extends \PHPUnit_Framework_TestCase
 
         $executionContext->expects($this->once())
             ->method('get')
-            ->with($expectedPropertyName)
+            ->with($propertyName)
             ->will($this->returnValue($expectedCount));
 
-        $method = 'get' . ucfirst($countName) . 'Count';
-        $this->assertEquals($expectedCount, $this->context->$method($countName));
+        $method = 'get' . str_replace('_', '', $propertyName);
+        $this->assertEquals($expectedCount, $this->context->$method());
     }
 
     public function getCountDataProvider()
     {
         return array(
-            array('update'),
-            array('replace'),
-            array('delete'),
+            array('read_offset'),
+            array('update_count'),
+            array('replace_count'),
+            array('delete_count'),
         );
     }
 
