@@ -67,8 +67,7 @@ class ImportType extends AbstractType
 
     protected function generateProcessorLabel($alias)
     {
-        // @TODO Remove hardcode of label parts
-        return sprintf('oro_importexport.import.entity_import_from_csv.%s', $alias);
+        return sprintf('oro.importexport.import.%s', $alias);
     }
 
     /**
