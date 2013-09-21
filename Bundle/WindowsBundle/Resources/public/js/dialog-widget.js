@@ -66,9 +66,12 @@ function(_, Backbone, app, error, AbstractWidget, StateModel, LoadingMask) {
         },
 
         _beforeContentLoad: function() {
-            this.loading = new LoadingMask();
-            this.$el.append(this.loading.render().$el);
-            this.loading.show();
+            var dialogContainer = this.$el.closest('.ui-dialog');
+            if (dialogContainer.length) {
+                this.loading = new LoadingMask();
+                dialogContainer.append(this.loading.render().$el);
+                this.loading.show();
+            }
         },
 
         _onContentLoad: function() {
