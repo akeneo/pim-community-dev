@@ -8,7 +8,7 @@ use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Process\Exception\ProcessFailedException;
+use Psr\Log\NullLogger;
 
 abstract class AbstractEmailSynchronizer
 {
@@ -19,7 +19,7 @@ abstract class AbstractEmailSynchronizer
     /**
      * @var LoggerInterface
      */
-    protected $log;
+    protected $log = null;
 
     /**
      * @var EntityManager
@@ -67,27 +67,30 @@ abstract class AbstractEmailSynchronizer
      * Performs a synchronization of emails for one email origin.
      * Algorithm how an email origin is selected see in findOriginToSync method.
      *
-     * @param int $maxConcurrentTasks  The maximum number of synchronization jobs running in the same time
-     * @param int $minExecPeriodInMin  The time interval (in minutes) a synchronization for
-     *                                 the same email origin can be executed
-     * @param int $maxExecTimeoutInMin The maximum time frame (in minutes) this synchronization tasks
-     *                                 can spend at one run
-     *                                 Set -1 to unlimited
-     *                                 Defaults to -1
-     * @param int $maxTasks            The maximum number of synchronization tasks to be executed
-     *                                 Set -1 to unlimited
-     *                                 Defaults to 1
+     * @param int $maxConcurrentTasks   The maximum number of synchronization jobs running in the same time
+     * @param int $minExecIntervalInMin The minimum time interval (in minutes) between two synchronizations
+     *                                  of the same email origin
+     * @param int $maxExecTimeInMin     The maximum execution time (in minutes)
+     *                                  Set -1 to unlimited
+     *                                  Defaults to -1
+     * @param int $maxTasks             The maximum number of email origins which can be synchronized
+     *                                  Set -1 to unlimited
+     *                                  Defaults to 1
      * @throws \Exception
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function sync($maxConcurrentTasks, $minExecPeriodInMin, $maxExecTimeoutInMin = -1, $maxTasks = 1)
+    public function sync($maxConcurrentTasks, $minExecIntervalInMin, $maxExecTimeInMin = -1, $maxTasks = 1)
     {
+        if ($this->log === null) {
+            $this->log = new NullLogger();
+        }
+
         $startTime = new \DateTime('now', new \DateTimeZone('UTC'));
         $this->resetHangedOrigins();
 
-        $maxExecTimeout = $maxExecTimeoutInMin > 0
-            ? new \DateInterval('PT' . $maxExecTimeoutInMin . 'M')
+        $maxExecTimeout = $maxExecTimeInMin > 0
+            ? new \DateInterval('PT' . $maxExecTimeInMin . 'M')
             : false;
         $processedOrigins = array();
         $failedOriginIds = array();
@@ -100,7 +103,7 @@ abstract class AbstractEmailSynchronizer
                 }
             }
 
-            $origin = $this->findOriginToSync($maxConcurrentTasks, $minExecPeriodInMin);
+            $origin = $this->findOriginToSync($maxConcurrentTasks, $minExecIntervalInMin);
             if ($origin === null) {
                 $this->log->notice('Exit because nothing to synchronise.');
                 break;
@@ -132,18 +135,32 @@ abstract class AbstractEmailSynchronizer
     }
 
     /**
-     * Performs a synchronization of emails for the given email origin.
+     * Performs a synchronization of emails for the given email origins.
      *
-     * @param int $originId
+     * @param int[] $originIds
      * @throws \Exception
      */
-    public function syncOrigin($originId)
+    public function syncOrigins(array $originIds)
     {
-        $origin = $this->findOrigin($originId);
-        if ($origin === null) {
-            $this->log->notice('Exit because nothing to synchronise.');
-        } else {
-            $this->doSyncOrigin($origin);
+        if ($this->log === null) {
+            $this->log = new NullLogger();
+        }
+
+        $failedOriginIds = array();
+        foreach ($originIds as $originId) {
+            $origin = $this->findOrigin($originId);
+            if ($origin !== null) {
+                try {
+                    $this->doSyncOrigin($origin);
+                } catch (\Exception $ex) {
+                    $failedOriginIds[] = $origin->getId();
+                }
+            }
+        }
+        if (!empty($failedOriginIds)) {
+            throw new \Exception(
+                sprintf('The email synchronization failed for the following origins: ', implode(', ', $failedOriginIds))
+            );
         }
     }
 
@@ -235,19 +252,19 @@ abstract class AbstractEmailSynchronizer
     /**
      * Finds an email origin to be synchronised
      *
-     * @param int $maxConcurrentTasks The maximum number of synchronization jobs running in the same time
-     * @param int $minExecPeriodInMin The time interval (in minutes) a synchronization for
-     *                                the same email origin can be executed
+     * @param int $maxConcurrentTasks   The maximum number of synchronization jobs running in the same time
+     * @param int $minExecIntervalInMin The minimum time interval (in minutes) between two synchronizations
+     *                                  of the same email origin
      * @return EmailOrigin
      */
-    protected function findOriginToSync($maxConcurrentTasks, $minExecPeriodInMin)
+    protected function findOriginToSync($maxConcurrentTasks, $minExecIntervalInMin)
     {
         $this->log->notice('Finding an email origin ...');
 
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $border = clone $now;
-        if ($minExecPeriodInMin > 0) {
-            $border->sub(new \DateInterval('PT' . $minExecPeriodInMin . 'M'));
+        if ($minExecIntervalInMin > 0) {
+            $border->sub(new \DateInterval('PT' . $minExecIntervalInMin . 'M'));
         }
         $min = clone $now;
         $min->sub(new \DateInterval('P1Y'));
@@ -302,7 +319,7 @@ abstract class AbstractEmailSynchronizer
      */
     protected function findOrigin($originId)
     {
-        $this->log->notice('Finding an email origin ...');
+        $this->log->notice(sprintf('Finding an email origin (id: %d) ...', $originId));
 
         $repo = $this->em->getRepository($this->getEmailOriginClass());
         $query = $repo->createQueryBuilder('o')
