@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Tools\Generator;
 
-class InitCommand extends ContainerAwareCommand
+class DumpCommand extends ContainerAwareCommand
 {
     /**
      * Console command configuration
@@ -17,8 +17,8 @@ class InitCommand extends ContainerAwareCommand
     public function configure()
     {
         $this
-            ->setName('oro:entity-extend:init')
-            ->setDescription('Initialize class aliases');
+            ->setName('oro:entity-extend:dump')
+            ->setDescription('Dump extend config to config and backup folder');
     }
 
     /**
@@ -34,7 +34,7 @@ class InitCommand extends ContainerAwareCommand
         /** @var Generator $generator */
         $generator = $this->getContainer()->get('oro_entity_extend.tools.generator');
 
-        $generator->initBase();
+        $generator->dump();
 
         $output->writeln('Done');
     }

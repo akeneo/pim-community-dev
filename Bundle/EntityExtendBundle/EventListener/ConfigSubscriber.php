@@ -6,9 +6,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
+use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
+
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 
+use Oro\Bundle\EntityExtendBundle\Tools\Generator;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class ConfigSubscriber implements EventSubscriberInterface
@@ -32,7 +35,8 @@ class ConfigSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Events::PRE_PERSIST_CONFIG => 'persistConfig',
+            Events::PRE_PERSIST_CONFIG      => 'persistConfig',
+            Events::NEW_ENTITY_CONFIG_MODEL => 'newEntity',
         );
     }
 
@@ -86,6 +90,28 @@ class ConfigSubscriber implements EventSubscriberInterface
             $extendConfig->set('index', $index);
 
             $event->getConfigManager()->persist($extendConfig);
+        }
+    }
+
+    public function newEntity(NewEntityConfigModelEvent $event)
+    {
+        $originalClassName       = $event->getClassName();
+        $originalParentClassName = get_parent_class($originalClassName);
+
+        $parentClassArray = explode('\\', $originalParentClassName);
+        $classArray       = explode('\\', $originalClassName);
+
+        $parentClassName = array_pop($parentClassArray);
+        $className       = array_pop($classArray);
+
+        if ($parentClassName == 'Extend' . $className) {
+
+            var_dump(1);
+            $config = $event->getConfigManager()->getProvider('extend')->getConfig($event->getClassName());
+            $config->set('is_extend', true);
+            $config->set('extend_class', Generator::ENTITY . $parentClassName);
+
+            $event->getConfigManager()->persist($config);
         }
     }
 }

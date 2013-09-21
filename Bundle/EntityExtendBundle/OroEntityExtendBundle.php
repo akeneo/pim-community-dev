@@ -3,10 +3,10 @@
 namespace Oro\Bundle\EntityExtendBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\ClassLoader\UniversalClassLoader;
+
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\HttpKernel\KernelInterface;
-
-use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 
@@ -24,6 +24,7 @@ class OroEntityExtendBundle extends Bundle
 
     public function boot()
     {
+        $this->checkCacheFolder();
         $this->checkCache();
         $this->loadAlias();
 
@@ -36,10 +37,9 @@ class OroEntityExtendBundle extends Bundle
         $loader->register();
     }
 
-
     public function build(ContainerBuilder $container)
     {
-        $this->checkCache();
+        $this->checkCacheFolder();
 
         $container->addCompilerPass(new EntityManagerPass());
         $container->addCompilerPass(
@@ -69,7 +69,7 @@ class OroEntityExtendBundle extends Bundle
         }
     }
 
-    private function checkCache()
+    private function checkCacheFolder()
     {
         $cacheDirs = array(
             $this->kernel->getCacheDir() . '/entities/Extend/Entity',
@@ -81,7 +81,15 @@ class OroEntityExtendBundle extends Bundle
                 if (false === @mkdir($dir, 0777, true)) {
                     throw new RuntimeException(sprintf('Could not create cache directory "%s".', $dir));
                 }
+
             }
+        }
+    }
+
+    private function checkCache()
+    {
+        if (count(scandir($this->kernel->getCacheDir() . '/entities/Extend/Entity')) == 2) {
+            $this->container->get('oro_entity_extend.tools.generator')->generateAll();
         }
     }
 }

@@ -15,6 +15,7 @@ use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
 use Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory;
 use Oro\Bundle\EntityExtendBundle\Exception\RuntimeException;
@@ -28,7 +29,17 @@ class Generator
     /**
      * @var string
      */
-    protected $entityCacheDir;
+    protected $cacheDir;
+
+    /**
+     * @var string
+     */
+    protected $configDir;
+
+    /**
+     * @var string
+     */
+    protected $backupDir;
 
     /**
      * @var ExtendManager
@@ -47,78 +58,166 @@ class Generator
 
     /**
      * @param OroEntityManager $em
-     * @param string           $entityCacheDir
+     * @param string           $cacheDir
+     * @param string           $configDir
+     * @param string           $backupDir
      */
-    public function __construct(OroEntityManager $em, $entityCacheDir)
+    public function __construct(OroEntityManager $em, $cacheDir, $configDir, $backupDir)
     {
-        $this->entityCacheDir = $entityCacheDir;
-        $this->em             = $em;
-        $this->extendManager  = $em->getExtendManager();
+        $this->cacheDir      = $cacheDir;
+        $this->configDir     = $configDir;
+        $this->backupDir     = $backupDir;
+        $this->em            = $em;
+        $this->extendManager = $em->getExtendManager();
     }
 
-    public function initBase()
+    public function dump()
     {
-        $aliases        = array();
-        $configProvider = $this->extendManager->getConfigProvider();
-
-        /** @var ClassMetadataInfo $metadata */
-        foreach ($this->em->getMetadataFactory()->getAllMetadata() as $metadata) {
-            $originalClassName       = $metadata->getName();
-            $originalParentClassName = get_parent_class($originalClassName);
-
-            $parentClassArray = explode('\\', $originalParentClassName);
-            $classArray       = explode('\\', $originalClassName);
-
-            $parentClassName = array_pop($parentClassArray);
-            $className       = array_pop($classArray);
-
-            if ($parentClassName == 'Extend' . $className) {
-                if (!$configProvider->hasConfig($originalClassName)) {
-                    throw new RuntimeException(sprintf('Class "%s" should be configurable.', $originalClassName));
-                }
-
-                $config = $configProvider->getConfig($originalClassName);
-
-                if ($inheritedClass = get_parent_class($originalParentClassName)) {
-                    $config->set('inheritance', $inheritedClass);
-                }
-
-                $config->set('is_extend', true);
-                $config->set('extend_class', self::ENTITY . $parentClassName);
-
-                $configProvider->persist($config);
-
-                $aliases[self::ENTITY . $parentClassName] = $originalParentClassName;
-
-                $this->writer = new Writer();
-                $class        = PhpClass::create(self::ENTITY . $parentClassName);
-
-                if ($inheritedClass) {
-                    $class->setParentClassName($inheritedClass);
-                }
-
-                $strategy = new DefaultGeneratorStrategy();
-
-                $filePath = $this->entityCacheDir . '/Extend/Entity/' . $parentClassName . '.php';
-                file_put_contents($filePath, "<?php\n\n" . $strategy->generate($class));
+        $yml     = array();
+        $configs = $this->extendManager->getConfigProvider()->getConfigs();
+        foreach ($configs as $config) {
+            if ($config->is('is_extend')) {
+                $yml[] = $this->dumpByConfig($config);
             }
         }
 
-        $configProvider->flush();
+        $this->extendManager->getConfigProvider()->flush();
 
-        file_put_contents($this->entityCacheDir . '/Extend/Entity/alias.yml', Yaml::dump($aliases));
+        file_put_contents(
+            $this->backupDir . '/dump.yml',
+            Yaml::dump($yml, 6)
+        );
+    }
+
+    protected function dumpByConfig(ConfigInterface $entityConfig)
+    {
+        $configProvider = $this->extendManager->getConfigProvider();
+        $className      = $entityConfig->getId()->getClassName();
+        if (strpos($className, self::ENTITY) !== false) {
+            $entityName = $className;
+            $type       = 'Custom';
+            $doctrine   = array(
+                $entityName => array(
+                    'type'       => 'entity',
+                    'table'      => 'oro_extend_' . strtolower(str_replace('\\', '', $entityName)),
+                    'fields'     => array(
+                        'id' => array(
+                            'type'      => 'integer',
+                            'id'        => true,
+                            'generator' => array(
+                                'strategy' => 'AUTO'
+                            )
+                        )
+                    ),
+                    'oneToMany'  => array(),
+                    'manyToOne'  => array(),
+                    'manyToMany' => array(),
+                )
+            );
+        } else {
+            $entityName = $entityConfig->get('extend_class');
+            $type       = 'Extend';
+            $doctrine   = array(
+                $entityName => array(
+                    'type'       => 'mappedSuperclass',
+                    'fields'     => array(),
+                    'oneToMany'  => array(),
+                    'manyToOne'  => array(),
+                    'manyToMany' => array(),
+                )
+            );
+        }
+
+        $entityState = $entityConfig->get('state');
+
+        if ($fieldConfigs = $configProvider->getConfigs($className)) {
+            foreach ($fieldConfigs as $fieldConfig) {
+                if ($fieldConfig->is('extend')) {
+                    $fieldName = self::PREFIX . $fieldConfig->getId()->getFieldName();
+                    $fieldType = self::PREFIX . $fieldConfig->getId()->getFieldType();
+
+                    $doctrine[$entityName]['fields'][$fieldName]['code']     = $fieldName;
+                    $doctrine[$entityName]['fields'][$fieldName]['type']     = $fieldType;
+                    $doctrine[$entityName]['fields'][$fieldName]['nullable'] = true;
+
+                    $doctrine[$entityName]['fields'][$fieldName]['length']    = $fieldConfig->get('length');
+                    $doctrine[$entityName]['fields'][$fieldName]['precision'] = $fieldConfig->get('precision');
+                    $doctrine[$entityName]['fields'][$fieldName]['scale']     = $fieldConfig->get('scale');
+                }
+
+                if ($fieldConfig->get('owner') != ExtendManager::OWNER_SYSTEM
+                    && $fieldConfig->get('state') != ExtendManager::STATE_DELETED
+                ) {
+                    $fieldConfig->set('state', ExtendManager::STATE_ACTIVE);
+                }
+
+                if ($fieldConfig->get('state') == ExtendManager::STATE_DELETED) {
+                    $fieldConfig->set('is_deleted', true);
+                }
+
+                $configProvider->persist($fieldConfig);
+            }
+        }
+
+        $entityConfig->set('state', $entityState);
+        if ($entityConfig->get('state') == ExtendManager::STATE_DELETED) {
+            $entityConfig->set('is_deleted', true);
+        } else {
+            $entityConfig->set('state', ExtendManager::STATE_ACTIVE);
+        }
+
+        $configProvider->persist($entityConfig);
+
+        $result = array(
+            'class'    => $className,
+            'entity'   => $entityName,
+            'type'     => $type,
+            'doctrine' => $doctrine,
+        );
+
+        return $result;
+    }
+
+    /**
+     * @param      $className
+     * @param bool $save
+     * @return array
+     */
+    protected function generateExtendYaml($className, $save = false)
+    {
+        $config      = $this->extendManager->getConfigProvider()->getConfig($className);
+        $extendClass = $config->get('extend_class');
+
+        $yml = array(
+            $extendClass => array(
+                'type'       => 'mappedSuperclass',
+                'fields'     => array(),
+                'oneToMany'  => array(),
+                'manyToOne'  => array(),
+                'manyToMany' => array(),
+            )
+        );
+
+        $this->generateYamlMethods($extendClass, $className, $yml);
+
+        if ($save) {
+            $ymlPathDist = $this->cacheDir . '/' . str_replace('\\', '/', $extendClass) . '.orm.yml';
+            file_put_contents($ymlPathDist, Yaml::dump($yml, 5));
+        }
+
+        return $yml;
     }
 
     public function generate($className)
     {
-        if (strpos($className, self::ENTITY) === false) {
+        if (strpos($className, self::ENTITY) !== false) {
+            $this->generateCustomClass($className);
+            $this->generateCustomYaml($className);
+        } else {
             if ($this->em->isExtendEntity($className)) {
                 $this->generateExtendClass($className);
                 $this->generateExtendYaml($className);
             }
-        } else {
-            $this->generateCustomClass($className);
-            $this->generateCustomYaml($className);
         }
 
         $this->generateValidation($className);
@@ -126,14 +225,37 @@ class Generator
 
     public function generateAll()
     {
-        $configIds = $this->extendManager->getConfigProvider()->getIds();
-        foreach ($configIds as $configId) {
-            $this->generate($configId->getClassName());
+        if (!file_exists($this->backupDir . '/dump.yml')) {
+            return;
         }
+
+        $data = Yaml::parse(file_get_contents($this->backupDir . '/dump.yml'));
+
+        //$this->generateAlias($data);
+
+        //var_dump($data);
+//        $configIds = $this->extendManager->getConfigProvider()->getIds();
+//        foreach ($configIds as $configId) {
+//            $this->generate($configId->getClassName());
+//        }
 
         /** @var ExtendClassMetadataFactory $metadataFactory */
         $metadataFactory = $this->em->getMetadataFactory();
         $metadataFactory->clearCache();
+    }
+
+
+    public function generateAlias($data)
+    {
+        $aliases = array();
+
+        foreach ($data as $item) {
+            if ($item['type'] == 'Extend') {
+                $aliases[$item['entity']] = get_parent_class($item['class']);
+            }
+        }
+
+        file_put_contents($this->cacheDir . '/Extend/Entity/alias.yml', Yaml::dump($aliases));
     }
 
     protected function generateExtendClass($className)
@@ -150,36 +272,11 @@ class Generator
 
         $this->generateClassMethods($className, $class);
 
-        $filePath = $this->entityCacheDir . '/' . str_replace('\\', '/', $extendClass) . '.php';
+        $filePath = $this->cacheDir . '/' . str_replace('\\', '/', $extendClass) . '.php';
 
         $strategy = new DefaultGeneratorStrategy();
 
         file_put_contents($filePath, "<?php\n\n" . $strategy->generate($class));
-    }
-
-    /**
-     * @param $className
-     */
-    protected function generateExtendYaml($className)
-    {
-        $config      = $this->extendManager->getConfigProvider()->getConfig($className);
-        $extendClass = $config->get('extend_class');
-
-        $yml = array(
-            $extendClass => array(
-                'type'       => 'mappedSuperclass',
-                'fields'     => array(),
-                'oneToMany'  => array(),
-                'manyToOne'  => array(),
-                'manyToMany' => array(),
-            )
-        );
-
-        $ymlPathDist = $this->entityCacheDir . '/' . str_replace('\\', '/', $extendClass) . '.orm.yml';
-
-        $this->generateYamlMethods($extendClass, $className, $yml);
-
-        file_put_contents($ymlPathDist, Yaml::dump($yml, 5));
     }
 
     /**
@@ -201,38 +298,8 @@ class Generator
 
         $classNameArray = explode('\\', $className);
         file_put_contents(
-            $this->entityCacheDir . '/Extend/Entity/' . array_pop($classNameArray) . '.php',
+            $this->cacheDir . '/Extend/Entity/' . array_pop($classNameArray) . '.php',
             "<?php\n\n" . $strategy->generate($class)
-        );
-    }
-
-    /**
-     * @param $className
-     */
-    protected function generateCustomYaml($className)
-    {
-        $yml = array(
-            $className => array(
-                'type'   => 'entity',
-                'table'  => 'oro_extend_' . strtolower(str_replace('\\', '', $className)),
-                'fields' => array(
-                    'id' => array(
-                        'type'      => 'integer',
-                        'id'        => true,
-                        'generator' => array(
-                            'strategy' => 'AUTO'
-                        )
-                    )
-                )
-            )
-        );
-
-        $this->generateYamlMethods($className, $className, $yml);
-
-        $classNameArray = explode('\\', $className);
-        file_put_contents(
-            $this->entityCacheDir . '/Extend/Entity/' . array_pop($classNameArray) . '.orm.yml',
-            Yaml::dump($yml, 5)
         );
     }
 
@@ -310,7 +377,7 @@ class Generator
         $validators[$className] = $yml;
 
         file_put_contents(
-            $this->entityCacheDir . '/Extend/Validator/' . str_replace('\\', '.', $className) . '.yml',
+            $this->cacheDir . '/Extend/Validator/' . str_replace('\\', '.', $className) . '.yml',
             Yaml::dump($validators, 5)
         );
 
@@ -337,13 +404,6 @@ class Generator
                     $yml[$extendClassName]['fields'][$fieldName]['length']    = $fieldConfig->get('length');
                     $yml[$extendClassName]['fields'][$fieldName]['precision'] = $fieldConfig->get('precision');
                     $yml[$extendClassName]['fields'][$fieldName]['scale']     = $fieldConfig->get('scale');
-
-                    if ($fieldConfig->get('is_indexable')
-                        && $fieldConfig->get('state') != ExtendManager::STATE_DELETED
-                        && !in_array($fieldConfig->getId()->getFieldType(), array('text'))
-                    ) {
-                        $yml[$extendClassName]['indexes'][$fieldName . '_index']['columns'] = array($fieldName);
-                    }
                 }
             }
         }

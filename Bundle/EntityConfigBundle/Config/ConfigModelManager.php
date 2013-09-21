@@ -71,7 +71,7 @@ class ConfigModelManager
     public function checkDatabase()
     {
         if ($this->dbCheckCache === null) {
-            $this->dbCheckCache = (bool) array_intersect(
+            $this->dbCheckCache = $this->getEntityManager()->getConnection()->connect() && (bool) array_intersect(
                 $this->requiredTables,
                 $this->getEntityManager()->getConnection()->getSchemaManager()->listTableNames()
             );

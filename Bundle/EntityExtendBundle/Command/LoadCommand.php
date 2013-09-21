@@ -14,7 +14,7 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
-class CreateCommand extends ContainerAwareCommand
+class LoadCommand extends ContainerAwareCommand
 {
     /**
      * @var ConfigManager
@@ -27,7 +27,7 @@ class CreateCommand extends ContainerAwareCommand
     public function configure()
     {
         $this
-            ->setName('oro:entity-extend:create')
+            ->setName('oro:entity-extend:load')
             ->setDescription('Find description about custom entities and fields');
     }
 
@@ -82,8 +82,6 @@ class CreateCommand extends ContainerAwareCommand
         }
 
         $this->configManager->clearConfigurableCache();
-
-        $this->getApplication()->find('oro:entity-extend:update')->run($input, $output);
     }
 
     /**
@@ -95,11 +93,14 @@ class CreateCommand extends ContainerAwareCommand
         $error = false;
         if (!$this->configManager->hasConfig($className)) {
             $error = true;
+            var_dump('hi');
         } else {
             $config = $this->configManager->getProvider('extend')->getConfig($className);
             if (!$config->is('is_extend')) {
                 $error = true;
             }
+
+            var_dump($config);
         }
 
         if ($error) {
@@ -128,11 +129,7 @@ class CreateCommand extends ContainerAwareCommand
 
             $entityConfig = $configProvider->getConfig($className);
 
-            $owner = ExtendManager::OWNER_SYSTEM;
-            if (isset($entityOptions['owner'])) {
-                $owner = $entityOptions['owner'];
-            }
-            $entityConfig->set('owner', $owner);
+            $entityConfig->set('owner', ExtendManager::OWNER_SYSTEM);
 
             if (isset($entityOptions['is_extend'])) {
                 $entityConfig->set('is_extend', $entityOptions['is_extend']);
@@ -148,17 +145,8 @@ class CreateCommand extends ContainerAwareCommand
                 );
             }
 
-            $owner = ExtendManager::OWNER_SYSTEM;
-            if (isset($fieldConfig['owner'])) {
-                $owner = $fieldConfig['owner'];
-            }
-
-            $mode  = ConfigModelManager::MODE_DEFAULT;
-            if (isset($fieldConfig['mode'])) {
-                $mode = $fieldConfig['mode'];
-            }
-
-            $extendManager->createField($className, $fieldName, $fieldConfig, $owner, $mode);
+            $mode = isset($fieldConfig['mode']) ? $fieldConfig['mode'] : ConfigModelManager::MODE_DEFAULT;
+            $extendManager->createField($className, $fieldName, $fieldConfig, ExtendManager::OWNER_SYSTEM, $mode);
 
             $this->setDefaultConfig($entityOptions, $className, $fieldName);
 

@@ -25,6 +25,8 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - %kernel.cache_dir%/entities
+            - %kernel.root_dir%/config
+            - %kernel.root_dir%/backup
 
     oro_entity_extend.listener.config_subscriber:
         class:                                              %oro_entity_extend.listener.config_subscriber.class%
