@@ -1,4 +1,14 @@
-<div class="widget-content">
+<div class="widget-content" id="import-validation">
+    <style type="text/css">
+        #import-errors {
+            display: none;
+        }
+        #import-errors ol {
+            height: 180px;
+            overflow: auto;
+            padding-left: 25px;
+        }
+    </style>
     <strong>{{ 'Import validation results'|trans }}</strong>
     <table class="table table-condensed table-hover">
         <thead>
@@ -46,8 +56,10 @@
         {% if errors|length > 0 %}
             <tr class="error">
                 <td>
-                    {{ 'Total errors'|trans }}
-                    <a href="{{ errorsUrl }}" target="_blank"><i class="icon-download"></i></a>
+                    <a href="javascript: void(0)" class="error-toggle">
+                        <i class="icon-expand"></i>
+                        {{ 'Total errors'|trans }}
+                   </a>
                 </td>
                 <td>
                     <div class="pull-right">
@@ -68,9 +80,42 @@
         </tbody>
     </table>
 
+    {% if errors|length > 0 %}
+    <div id="import-errors">
+        <ol>
+            {% for error in errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ol>
+        <div class="clearfix">
+            <div class="pull-right">
+                <a href="javascript:void(0);" class="error-toggle">{{ 'Hide'|trans }}</a>
+                <a href="{{ errorsUrl }}" target="_blank" class="btn btn-small"><i class="icon-download-alt"></i>{{ 'Download log'|trans }}</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <script type="text/javascript">
         require(['jquery', 'oro/widget-manager', 'oro/messenger'],
         function($, WidgetManager, Messanger) {
+            var container = $('#import-validation');
+            var toggleErrors = function(e) {
+                e.preventDefault();
+                $('#import-errors').toggle();
+                var errorTr = container.find('tr.error');
+                var icon = errorTr.find('i');
+                if (icon.hasClass('icon-collapse')) {
+                    icon.removeClass('icon-collapse');
+                    icon.addClass('icon-expand');
+                } else {
+                    icon.removeClass('icon-expand');
+                    icon.addClass('icon-collapse');
+                }
+                container.find('tr:not(.error)').toggle();
+            };
+            container.find('.error-toggle').on('click', toggleErrors);
+
             WidgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
                 var backAction = $('<button type="button" class="btn">{{ 'Back'|trans }}</button>');
                 backAction.on('click', function(e) {
