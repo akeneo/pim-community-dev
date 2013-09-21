@@ -153,6 +153,10 @@ function(_, Backbone, mediator) {
             $(form).trigger('reset');
         },
 
+        _createWidgetActionsSection: function(section) {
+            return $('<div id="' + section + '" class="widget-actions-section"/>');
+        },
+
         addAction: function(key, actionElement, section) {
             if (section === undefined) {
                 section = 'main';
@@ -161,7 +165,7 @@ function(_, Backbone, mediator) {
                 this.actions[key] = actionElement;
                 var sectionContainer = this.getActionsElement().find('#' + section);
                 if (!sectionContainer.length) {
-                    sectionContainer = $('<div id="' + section + '"/>');
+                    sectionContainer = this._createWidgetActionsSection(section);
                     sectionContainer.appendTo(this.getActionsElement());
                 }
                 sectionContainer.append(actionElement);
@@ -234,7 +238,7 @@ function(_, Backbone, mediator) {
 
             if (container) {
                 _.each(this.actions, function(actions, section) {
-                    var sectionContainer = $('<div id="' + section + '"/>');
+                    var sectionContainer = self._createWidgetActionsSection(section);
                     _.each(actions, function(action) {
                         self._initActionEvents(action);
                         sectionContainer.append(action);
