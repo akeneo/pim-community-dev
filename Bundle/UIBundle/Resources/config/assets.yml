@@ -57,3 +57,4 @@ css:
         - 'bundles/oroui/css/all.css'
         - 'bundles/oroui/lib/jstree/themes/default/style.css'
         - 'bundles/oroui/css/jquery-ui.grid.css'
+        - 'bundles/oroui/lib/font-awesome/css/font-awesome.css'
