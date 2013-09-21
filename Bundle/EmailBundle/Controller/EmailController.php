@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EmailBundle\Controller;
 
 use Oro\Bundle\EmailBundle\Decoder\ContentDecoder;
+use Oro\Bundle\EmailBundle\Entity\Util\EmailUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,10 +55,14 @@ class EmailController extends Controller
         /** @var $emailRepository EmailRepository */
         $emailRepository = $this->getDoctrine()->getRepository('OroEmailBundle:Email');
 
-        $emails = $emailRepository->extractEmailAddresses($emails);
-        $rows = empty($emails)
-            ? array()
-            : $emailRepository->getEmailListQueryBuilder($emails)->getQuery()->execute();
+        $emails = EmailUtil::extractEmailAddresses($emails);
+        if (empty($emails)) {
+            $qb = $emailRepository->createEmailListForAddressesQueryBuilder();
+            $qb->setParameter(EmailRepository::EMAIL_ADDRESSES, $emails);
+            $rows = $qb->getQuery()->execute();
+        } else {
+            $rows = array();
+        }
 
         return array(
             'entities' => $rows

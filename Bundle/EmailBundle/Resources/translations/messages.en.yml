@@ -26,6 +26,11 @@ oro:
                         no:  "No"
                 page_size:
                     all: "All"
+            email:
+                from_name: "From"
+                sentAt: "Sent"
+                subject: "Subject"
+                recipients: "Recipients"
         handler:
             attempt_save_system_template: "Overriding of system's templates is prohibited, clone it instead."
 "%subject% - Email": "%subject% - Email"
@@ -38,7 +43,3 @@ oro:
 "Cc": "Cc"
 "Bcc": "Bcc"
 "Attachments": "Attachments"
-oro.user.datagrid.email.column.sentAt: "Sent"
-oro.user.datagrid.email.column.subject: "Subject"
-oro.email.datagrid.recipients: "Recipients"
-oro.user.datagrid.email.column.id: "ID"

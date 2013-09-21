@@ -18,6 +18,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 
 use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
+use Oro\Bundle\UserBundle\Datagrid\UserEmailDatagridManager;
 
 class UserController extends Controller
 {
@@ -33,8 +34,9 @@ class UserController extends Controller
      */
     public function viewAction(User $user)
     {
-        $manager = $this->get('oro_email.email_datagrid_manager');
-        $manager->setEntity($user);
+        /** @var UserEmailDatagridManager $manager */
+        $manager = $this->get('oro_user.email.datagrid_manager');
+        $manager->setUser($user);
         $view = $manager->getDatagrid()->createView();
 
         return 'json' == $this->getRequest()->getRequestFormat()

@@ -82,6 +82,3 @@ Login: Login
 "View role": "View role"
 "Remove role": "Remove role"
 "Template controller": "Template controller"
-oro.user.datagrid.email.column.from_name: "From"
-oro.user.datagrid.email.column.subject: "Subject"
-oro.user.datagrid.email.column.received: "Received at"
