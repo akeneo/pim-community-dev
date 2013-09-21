@@ -31,7 +31,7 @@ class JobExecution
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="StepExecution", mappedBy="jobExecution")
+     * @ORM\OneToMany(targetEntity="StepExecution", mappedBy="jobExecution", cascade={"persist", "remove"})
      */
     private $stepExecutions;
 
@@ -39,7 +39,7 @@ class JobExecution
      * @var JobInstance
      *
      * @ORM\ManyToOne(targetEntity="JobInstance", inversedBy="jobExecutions")
-     * @ORM\JoinColumn(name="job_instance_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="job_instance_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $jobInstance;
 
@@ -123,6 +123,19 @@ class JobExecution
         $this->stepExecutions = new ArrayCollection();
         $this->createTime = new \DateTime();
         $this->failureExceptions = array();
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
+
+        if ($this->stepExecutions) {
+            $this->stepExecutions = clone $this->stepExecutions;
+        }
+
+        if ($this->executionContext) {
+            $this->executionContext = clone $this->executionContext;
+        }
     }
 
     /**
@@ -320,7 +333,7 @@ class JobExecution
     /**
      * Accessor for the step executions.
      *
-     * @return ArrayCollection the step executions that were registered
+     * @return ArrayCollection|StepExecution[] the step executions that were registered
      */
     public function getStepExecutions()
     {
@@ -447,6 +460,7 @@ class JobExecution
     public function setJobInstance(JobInstance $jobInstance)
     {
         $this->jobInstance = $jobInstance;
+        $this->jobInstance->addJobExecution($this);
 
         return $this;
     }

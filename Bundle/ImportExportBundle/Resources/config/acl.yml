@@ -1,3 +1,9 @@
+oro_importexport:
+    label: General import/action operations
+    type: action
+    group_name: ""
+    bindings: ~
+
 oro_importexport_import:
     label: Import entities
     type: action

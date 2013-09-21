@@ -35,7 +35,7 @@ class StepExecution
      * @var JobExecution
      *
      * @ORM\ManyToOne(targetEntity="JobExecution", inversedBy="stepExecutions")
-     * @ORM\JoinColumn(name="job_execution_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="job_execution_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $jobExecution = null;
 
@@ -146,6 +146,11 @@ class StepExecution
         $this->failureExceptions = array();
 
         $this->startTime = new \DateTime();
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
     }
 
     /**
@@ -423,6 +428,17 @@ class StepExecution
     public function getJobExecution()
     {
         return $this->jobExecution;
+    }
+
+    /**
+     * @param JobExecution $jobExecution
+     * @return StepExecution
+     */
+    public function setJobExecution(JobExecution $jobExecution)
+    {
+        $this->jobExecution = $jobExecution;
+
+        return $this;
     }
 
     /**
