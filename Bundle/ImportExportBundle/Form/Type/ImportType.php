@@ -42,7 +42,7 @@ class ImportType extends AbstractType
         $processorChoices = $this->getImportProcessorsChoices($options['entityName']);
 
         $builder->add(
-            'processor',
+            'processorAlias',
             'choice',
             array(
                 'choices' => $processorChoices,
@@ -76,6 +76,11 @@ class ImportType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $resolver->setDefaults(
+            array(
+                'data_class' => 'Oro\Bundle\ImportExportBundle\Form\Model\ImportData',
+            )
+        );
         $resolver->setRequired(array('entityName'));
         $resolver->setAllowedTypes(
             array(

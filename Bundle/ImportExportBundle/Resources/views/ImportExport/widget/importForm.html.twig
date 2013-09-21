@@ -9,13 +9,13 @@
 
             <fieldset>
                 {{ form_row(form.file, {'label': 'File'}) }}
-                {{ form_row(form.processor, {'label': 'Strategy'}) }}
+                {{ form_row(form.processorAlias, {'label': 'Strategy'}) }}
                 {{ form_rest(form) }}
             </fieldset>
 
             <div class="widget-actions">
                 <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
-                <button class="btn btn-primary" type="submit">{{ 'Validate'|trans }}</button>
+                <button class="btn btn-primary" type="submit">{{ 'Submit'|trans }}</button>
             </div>
         </form>
     </div>

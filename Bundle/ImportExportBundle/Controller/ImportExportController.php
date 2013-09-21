@@ -26,8 +26,9 @@ use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry;
 use Oro\Bundle\ImportExportBundle\Job\JobExecutor;
 use Oro\Bundle\ImportExportBundle\File\FileSystemOperator;
+use Oro\Bundle\ImportExportBundle\Form\Model\ImportData;
 
-class ImportExportController extends Controller
+class ImportExportController extends FOSRestController
 {
     const MAX_ERRORS_COUNT = 3;
 
@@ -40,33 +41,25 @@ class ImportExportController extends Controller
     {
         $entityName = $this->getRequest()->get('entity');
 
-        $data = array();
-
-        $importForm = $this->createForm(
-            'oro_importexport_import',
-            $data,
-            array('entityName' => $entityName)
-        );
+        $importForm = $this->createForm('oro_importexport_import', null, array('entityName' => $entityName));
 
         if ($this->getRequest()->isMethod('POST')) {
             $importForm->submit($this->getRequest());
 
             if ($importForm->isValid()) {
+                /** @var ImportData $data */
                 $data = $importForm->getData();
-                /** @var UploadedFile $uploadedFile */
-                $uploadedFile = $data['file'];
-                $processorAlias = $data['processor'];
+                $file = $data->getFile();
+                $processorAlias = $data->getProcessorAlias();
 
                 $tmpFileName = $this->getFileSystemOperator()->generateTemporaryFileName($processorAlias, 'csv');
-                $uploadedFile->move(dirname($tmpFileName), basename($tmpFileName));
+                $file->move(dirname($tmpFileName), basename($tmpFileName));
 
                 $this->get('session')->set($this->getImportFileSessionKey($processorAlias), $tmpFileName);
                 return $this->forward(
                     'OroImportExportBundle:ImportExport:importValidate',
                     array('processorAlias' => $processorAlias)
                 );
-            } else {
-                $this->get('session')->getFlashBag()->add('error', $this->get('translator')->trans('Invalid data'));
             }
         }
 
