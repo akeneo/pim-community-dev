@@ -3,6 +3,7 @@
 namespace Oro\Bundle\UserBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -37,6 +38,16 @@ class UserController extends Controller
         /** @var UserEmailDatagridManager $manager */
         $manager = $this->get('oro_user.email.datagrid_manager');
         $manager->setUser($user);
+        if (array_key_exists(
+            'refresh',
+            $manager->getDatagrid()->getParameters()->get(ParametersInterface::ADDITIONAL_PARAMETERS)
+        )) {
+            $synchronizer = $this->get('oro_imap.email_synchronizer');
+            if ($synchronizer) {
+                $originId = $user->getImapConfiguration()->getId();
+                $this->get('oro_imap.email_synchronizer')->syncOrigins(array($originId));
+            }
+        }
         $view = $manager->getDatagrid()->createView();
 
         return 'json' == $this->getRequest()->getRequestFormat()

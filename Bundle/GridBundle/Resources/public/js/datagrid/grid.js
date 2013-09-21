@@ -532,6 +532,18 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
             }
 
             state.parameters[name] = value;
+        },
+
+        /**
+         * Remove additional parameter
+         *
+         * @param {String} name
+         */
+        removeAdditionalParameter: function(name) {
+            var state = this.collection.state;
+            if (_.has(state, 'parameters')) {
+                delete state.parameters[name];
+            }
         }
     });
 });
