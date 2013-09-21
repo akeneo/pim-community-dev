@@ -1,4 +1,3 @@
-{% import 'OroUIBundle::macros.html.twig' as UI %}
 <div class="widget-content">
     <div class="form-container">
         <form method="post"
@@ -11,14 +10,27 @@
             <fieldset>
                 {{ form_row(form.file, {'label': 'File'}) }}
                 {{ form_row(form.processor, {'label': 'Strategy'}) }}
+                {{ form_rest(form) }}
             </fieldset>
 
             <div class="widget-actions">
                 <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
                 <button class="btn btn-primary" type="submit">{{ 'Validate'|trans }}</button>
             </div>
-
-            {{ form_rest(form) }}
         </form>
     </div>
+
+    <script type="text/javascript">
+        require(['oro/widget-manager', 'oro/messenger'],
+        function(WidgetManager, Messanger) {
+            WidgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
+                widget.getAction('form_submit', 'adopted').on('click', function() {
+                    Messanger.notificationFlashMessage(
+                        'info',
+                        {{ 'Import validation started, please wait...'|trans|json_encode|raw }}
+                    );
+                });
+            });
+        });
+    </script>
 </div>

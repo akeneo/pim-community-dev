@@ -141,7 +141,8 @@ function(_, Backbone, mediator) {
                         '_widgetContainer': this.options.type,
                         '_wid': this.getWid()
                     },
-                    success: _.bind(this.onContentLoad, this)
+                    success: _.bind(this.onContentLoad, this),
+                    error: _.bind(this.onContentLoadFail, this)
                 });
             } else {
                 this.loadContent(form.serialize(), form.attr('method'));
@@ -158,7 +159,12 @@ function(_, Backbone, mediator) {
             }
             if (!this.hasAction(key, section)) {
                 this.actions[key] = actionElement;
-                this.getActionsElement().append(actionElement);
+                var sectionContainer = this.getActionsElement().find('#' + section);
+                if (!sectionContainer.length) {
+                    sectionContainer = $('<div id="' + section + '"/>');
+                    sectionContainer.appendTo(this.getActionsElement());
+                }
+                sectionContainer.append(actionElement);
             }
         },
 
@@ -301,7 +307,17 @@ function(_, Backbone, mediator) {
             options.data = (options.data !== undefined ? options.data + '&' : '') +
                 '_widgetContainer=' + this.options.type + '&_wid=' + this.getWid();
 
-            Backbone.$.ajax(options).done(_.bind(this.onContentLoad, this));
+            Backbone.$.ajax(options)
+                .done(_.bind(this.onContentLoad, this))
+                .fail(_.bind(this.onContentLoadFail, this))
+            ;
+        },
+
+        onContentLoadFail: function() {
+            var failContent = '<div class="widget-content">' +
+                '<div class="alert alert-error">Widget content loading failed</div>' +
+                '</div>';
+            this.onContentLoad(failContent);
         },
 
         /**

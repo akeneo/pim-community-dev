@@ -27,7 +27,7 @@
                 'title': {{ imortTitle|default('Import'|trans)|json_encode|raw }},
                 'stateEnabled': false,
                 'dialogOptions': {
-                    'width': 550,
+                    'width': 500,
                     'autoResize': true,
                     'modal': true,
                     'allowMinimize': true
@@ -40,7 +40,7 @@
         $('.export-btn').on('click', function(e) {
             e.preventDefault();
 
-            Messanger.notificationFlashMessage('info', '{{ 'Export started, please wait...'|trans }}');
+            Messanger.notificationFlashMessage('info', {{ 'Export started, please wait...'|trans|json_encode|raw }});
 
             $.getJSON(this.href, function(data) {
                 if (data.messages.length) {

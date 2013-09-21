@@ -141,13 +141,14 @@ class ImportExportController extends Controller
             'isSuccessful' => $jobResult->isSuccessful(),
             'processorAlias' => $processorAlias,
             'counts' => $counts,
-            'errors' => $errors
+            'errors' => $errors,
+            'entityName' => $entityName
         );
     }
 
     /**
      * @Route("/export/instant/{processorAlias}", name="oro_importexport_export_instant")
-     * @AclAncestor("oro_importexport_import")
+     * @AclAncestor("oro_importexport_export")
      */
     public function instantExportAction($processorAlias)
     {
