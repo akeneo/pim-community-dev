@@ -14,7 +14,6 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
  *
  * @ORM\Table(name="oro_email_folder")
  * @ORM\Entity
- * @ORM\HasLifecycleCallbacks
  */
 class EmailFolder
 {
@@ -33,14 +32,6 @@ class EmailFolder
      * @Type("integer")
      */
     protected $id;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created", type="datetime")
-     * @Type("dateTime")
-     */
-    protected $created;
 
     /**
      * @var string
@@ -86,6 +77,13 @@ class EmailFolder
      */
     protected $emails;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="synchronized", type="datetime", nullable=true)
+     */
+    protected $synchronizedAt;
+
     public function __construct()
     {
         $this->emails = new ArrayCollection();
@@ -99,16 +97,6 @@ class EmailFolder
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get entity created date/time
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->created;
     }
 
     /**
@@ -229,12 +217,25 @@ class EmailFolder
     }
 
     /**
-     * Pre persist event listener
+     * Get date/time when emails in this folder were synchronized
      *
-     * @ORM\PrePersist
+     * @return \DateTime
      */
-    public function beforeSave()
+    public function getSynchronizedAt()
     {
-        $this->created = EmailUtil::currentUTCDateTime();
+        return $this->synchronizedAt;
+    }
+
+    /**
+     * Set date/time when emails in this folder were synchronized
+     *
+     * @param \DateTime $synchronizedAt
+     * @return EmailOrigin
+     */
+    public function setSynchronizedAt($synchronizedAt)
+    {
+        $this->synchronizedAt = $synchronizedAt;
+
+        return $this;
     }
 }

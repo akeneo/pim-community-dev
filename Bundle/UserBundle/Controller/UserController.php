@@ -42,10 +42,9 @@ class UserController extends Controller
             'refresh',
             $manager->getDatagrid()->getParameters()->get(ParametersInterface::ADDITIONAL_PARAMETERS)
         )) {
-            $synchronizer = $this->get('oro_imap.email_synchronizer');
-            if ($synchronizer) {
-                $originId = $user->getImapConfiguration()->getId();
-                $this->get('oro_imap.email_synchronizer')->syncOrigins(array($originId));
+            $origin = $user->getImapConfiguration();
+            if ($origin) {
+                $this->get('oro_imap.email_synchronizer')->syncOrigins(array($origin->getId()));
             }
         }
         $view = $manager->getDatagrid()->createView();

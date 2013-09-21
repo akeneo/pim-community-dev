@@ -3,7 +3,6 @@
 namespace Oro\Bundle\EmailBundle\Provider;
 
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class EmailBodyLoaderSelector
 {

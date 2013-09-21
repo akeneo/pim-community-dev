@@ -89,10 +89,10 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
                 // build a search query
                 $sqb = $this->manager->getSearchQueryBuilder();
                 if ($origin->getSynchronizedAt()
-                    && $folder->getCreatedAt() < $origin->getSynchronizedAt()
+                    && $folder->getSynchronizedAt()
                     && !$emailAddressBatch['needFullSync']
                 ) {
-                    $sqb->sent($origin->getSynchronizedAt());
+                    $sqb->sent($folder->getSynchronizedAt());
                 }
 
                 $sqb->openParenthesis();
@@ -303,8 +303,10 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
     protected function loadEmails(EmailFolder $folder, SearchQuery $searchQuery)
     {
         $this->log->notice(sprintf('Query: "%s".', $searchQuery->convertToSearchString()));
+        $folder->setSynchronizedAt(new \DateTime('now', new \DateTimeZone('UTC')));
         $emails = $this->manager->getEmails($searchQuery);
 
+        $needFolderFlush = true;
         $count = 0;
         $batch = array();
         foreach ($emails as $email) {
@@ -312,12 +314,18 @@ class ImapEmailSynchronizationProcessor extends AbstractEmailSynchronizationProc
             $batch[] = $email;
             if ($count === self::DB_BATCH_SIZE) {
                 $this->saveEmails($batch, $folder);
+                $needFolderFlush = false;
                 $count = 0;
                 $batch = array();
             }
         }
         if ($count > 0) {
             $this->saveEmails($batch, $folder);
+            $needFolderFlush = false;
+        }
+
+        if ($needFolderFlush) {
+            $this->em->flush();
         }
     }
 
