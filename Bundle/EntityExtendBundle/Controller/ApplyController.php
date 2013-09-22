@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -49,13 +50,18 @@ class ApplyController extends Controller
     {
         /** @var EntityConfigModel $entity */
         $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
-        $env    = $this->get('kernel')->getEnvironment();
 
+        /** @var KernelInterface $kernel */
+        $kernel = $this->get('kernel');
         $application = new Application($this->get('kernel'));
         $application->setAutoExit(false);
 
         // put system in maintenance mode
         $this->get('oro_platform.maintenance')->on();
+
+        $output = new StreamOutput(
+            fopen($kernel->getLogDir() . DIRECTORY_SEPARATOR . 'bap_install.log', 'w+')
+        );
 
         register_shutdown_function(
             function ($mode) {
@@ -64,30 +70,34 @@ class ApplyController extends Controller
             $this->get('oro_platform.maintenance')
         );
 
-        $application->run(
-            new ArrayInput(
-                array(
-                    'command' => 'oro:entity-extend:backup',
-                    'entity'  => str_replace('\\', '\\\\', $entity->getClassName()),
-                )
-            )
-        );
+//        $application->run(
+//            new ArrayInput(
+//                array(
+//                    'command' => 'oro:entity-extend:backup',
+//                    'entity'  => str_replace('\\', '\\\\', $entity->getClassName()),
+//                )
+//            ),
+//            $output
+//        );
         $application->run(
             new ArrayInput(
                 array(
                     'command' => 'oro:entity-extend:dump',
                 )
-            )
+            ),
+            $output
         );
+
+        $kernel->getBundle('OroEntityExtendBundle')->boot();
+
         $application->run(
             new ArrayInput(
                 array(
                     'command' => 'doctrine:schema:update',
                     '--force' => true
                 )
-            ),new StreamOutput(
-                fopen($this->get('kernel')->getLogDir() . DIRECTORY_SEPARATOR . 'bap_install.log', 'w')
-            )
+            ),
+            $output
         );
         $application->run(
             new ArrayInput(
@@ -95,39 +105,9 @@ class ApplyController extends Controller
                     'command' => 'oro:search:create-index',
                 )
             )
+            ,
+            $output
         );
-
-//        /** @var ConfigProvider $extendConfigProvider */
-//        $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
-//        $extendConfig         = $extendConfigProvider->getConfig($entity->getClassName());
-//        $extendFieldConfigs   = $extendConfigProvider->getConfigs($entity->getClassName());
-//        $entityState          = $extendConfig->get('state');
-//
-//        foreach ($extendFieldConfigs as $fieldConfig) {
-//            if ($fieldConfig->get('owner') != ExtendManager::OWNER_SYSTEM
-//                && $fieldConfig->get('state') != ExtendManager::STATE_DELETED
-//            ) {
-//                $fieldConfig->set('state', ExtendManager::STATE_ACTIVE);
-//            }
-//
-//            if ($fieldConfig->get('state') == ExtendManager::STATE_DELETED) {
-//                $fieldConfig->set('is_deleted', true);
-//            }
-//
-//            $extendConfigProvider->persist($fieldConfig);
-//        }
-//
-//        $extendConfigProvider->flush();
-//
-//        $extendConfig->set('state', $entityState);
-//        if ($extendConfig->get('state') == ExtendManager::STATE_DELETED) {
-//            $extendConfig->set('is_deleted', true);
-//        } else {
-//            $extendConfig->set('state', ExtendManager::STATE_ACTIVE);
-//        }
-//
-//        $extendConfigProvider->persist($extendConfig);
-//        $extendConfigProvider->flush();
 
         return $this->redirect($this->generateUrl('oro_entityconfig_index'));
     }

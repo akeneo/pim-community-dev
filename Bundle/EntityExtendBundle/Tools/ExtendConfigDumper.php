@@ -45,8 +45,9 @@ class ExtendConfigDumper
 
     public function dump()
     {
-        $yml = array();
+        $this->clear();
 
+        $yml     = array();
         $configs = $this->em->getExtendManager()->getConfigProvider()->getConfigs();
         foreach ($configs as $config) {
             if ($config->is('is_extend')) {
@@ -74,6 +75,8 @@ class ExtendConfigDumper
         if ($filesystem->exists($this->cacheDir)) {
             $filesystem->remove(array($this->cacheDir));
         }
+
+        $filesystem->mkdir($this->cacheDir . '/Extend/Entity');
 
         /** @var ExtendClassMetadataFactory $metadataFactory */
         $metadataFactory = $this->em->getMetadataFactory();
