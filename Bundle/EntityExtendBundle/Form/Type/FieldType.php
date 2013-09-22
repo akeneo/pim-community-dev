@@ -10,18 +10,18 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class FieldType extends AbstractType
 {
     protected $types = array(
-        'string',
-        'integer',
-        'smallint',
-        'bigint',
-        'boolean',
-        'decimal',
-        'date',
-        'text',
-        'float',
-        'ref-one-to-many',
-        'ref-many-to-one',
-        'ref-many-to-many',
+        'string'           => 'String',
+        'integer'          => 'Integer',
+        'smallint'         => 'SmallInt',
+        'bigint'           => 'BigInt',
+        'boolean'          => 'Boolean',
+        'decimal'          => 'Decimal',
+        'date'             => 'Date',
+        'text'             => 'Text',
+        'float'            => 'Float',
+        'ref-one-to-many'  => 'Relation one to many',
+        'ref-many-to-one'  => 'Relation many to one',
+        'ref-many-to-many' => 'Relation many to many',
     );
 
     /**
@@ -41,7 +41,7 @@ class FieldType extends AbstractType
             'type',
             'choice',
             array(
-                'choices'     => array_combine(array_values($this->types), $this->types),
+                'choices'     => $this->types,
                 'empty_value' => 'Please choice type...',
                 'block'       => 'type',
             )
@@ -55,7 +55,7 @@ class FieldType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'require_js' => array(),
+                'require_js'   => array(),
                 'block_config' => array(
                     'type' => array(
                         'title'    => 'General',

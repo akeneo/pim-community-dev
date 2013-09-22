@@ -13,7 +13,6 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TargetFieldType extends AbstractType
 {
@@ -51,6 +50,14 @@ class TargetFieldType extends AbstractType
             $choices = array();
 
             $className = $form->getParent()->get('target_entity')->getData();
+            if (null == $className) {
+                $className = $request->request->get(
+                    'oro_entity_config_type[extend][target_entity]',
+                    null,
+                    true
+                );
+            }
+
             if ($className) {
                 /** @var EntityConfigModel $entity */
                 $entity = $configManager->getEntityManager()
@@ -78,10 +85,12 @@ class TargetFieldType extends AbstractType
                 }
             }
 
-            unset($config['choice_list']);
-            unset($config['choices']);
+            if (count($choices)) {
+                unset($config['choice_list']);
+                unset($config['choices']);
 
-            $config['choices'] = $choices;
+                $config['choices'] = $choices;
+            }
 
             $form->getParent()->add('target_field', 'choice', $config);
 
