@@ -6,8 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-use Oro\Bundle\EntityExtendBundle\Tools\Generator;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 
 class DumpCommand extends ContainerAwareCommand
 {
@@ -31,10 +30,10 @@ class DumpCommand extends ContainerAwareCommand
     {
         $output->writeln($this->getDescription());
 
-        /** @var Generator $generator */
-        $generator = $this->getContainer()->get('oro_entity_extend.tools.generator');
+        /** @var ExtendConfigDumper $dumper */
+        $dumper = $this->getContainer()->get('oro_entity_extend.tools.dumper');
 
-        $generator->dump();
+        $dumper->dump();
 
         $output->writeln('Done');
     }
