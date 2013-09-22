@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Tools;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
@@ -21,6 +22,11 @@ class ExtendConfigDumper
     protected $backupDir;
 
     /**
+     * @var string
+     */
+    protected $cacheDir;
+
+    /**
      * @var OroEntityManager
      */
     protected $em;
@@ -28,10 +34,12 @@ class ExtendConfigDumper
     /**
      * @param OroEntityManager $em
      * @param string           $backupDir
+     * @param string           $cacheDir
      */
-    public function __construct(OroEntityManager $em, $backupDir)
+    public function __construct(OroEntityManager $em, $backupDir, $cacheDir)
     {
         $this->backupDir = $backupDir;
+        $this->cacheDir  = $cacheDir;
         $this->em        = $em;
     }
 
@@ -50,6 +58,22 @@ class ExtendConfigDumper
             $this->backupDir . '/dump.yml',
             Yaml::dump($yml, 6)
         );
+
+        /** @var ExtendClassMetadataFactory $metadataFactory */
+        $metadataFactory = $this->em->getMetadataFactory();
+        $metadataFactory->clearCache();
+    }
+
+    public function clear()
+    {
+        $filesystem = new Filesystem();
+        if ($filesystem->exists($this->backupDir . '/dump.yml')) {
+            $filesystem->remove(array($this->backupDir . '/dump.yml'));
+        }
+
+        if ($filesystem->exists($this->cacheDir)) {
+            $filesystem->remove(array($this->cacheDir));
+        }
 
         /** @var ExtendClassMetadataFactory $metadataFactory */
         $metadataFactory = $this->em->getMetadataFactory();
