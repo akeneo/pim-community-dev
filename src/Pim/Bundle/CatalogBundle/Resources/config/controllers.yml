@@ -118,4 +118,3 @@ services:
             - '@pim_catalog.mass_edit_action.operator'
             - '@pim_catalog.datagrid.worker'
             - '@oro_grid.mass_action.parameters_parser'
-

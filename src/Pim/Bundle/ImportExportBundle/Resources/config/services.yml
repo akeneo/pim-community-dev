@@ -64,6 +64,3 @@ services:
             - @pim_import_export.archiver.job_execution_archiver
         tags:
             - { name: kernel.event_subscriber }
-
-
-

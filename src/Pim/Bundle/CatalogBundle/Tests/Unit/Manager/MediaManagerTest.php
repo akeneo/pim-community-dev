@@ -85,7 +85,6 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         $filesystem->expects($this->once())
                    ->method('delete');
 
-
         $target->handle($media, '');
     }
 

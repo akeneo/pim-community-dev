@@ -91,7 +91,7 @@ class DatagridBuilder extends OroDatagridBuilder
     /**
      * Add export action
      *
-     * @param DatagridInterface $datagrid
+     * @param DatagridInterface     $datagrid
      * @param ExportActionInterface $exportAction
      */
     public function addExportAction(DatagridInterface $datagrid, ExportActionInterface $exportAction)

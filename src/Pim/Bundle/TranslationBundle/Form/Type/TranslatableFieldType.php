@@ -28,7 +28,7 @@ class TranslatableFieldType extends AbstractType
      * @var LocaleManager
      */
     protected $localeManager;
-    
+
     /**
      * @var array
      */

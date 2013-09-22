@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class UploadType extends AbstractType
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -22,7 +22,7 @@ class UploadType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getParent()
     {
@@ -30,7 +30,7 @@ class UploadType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

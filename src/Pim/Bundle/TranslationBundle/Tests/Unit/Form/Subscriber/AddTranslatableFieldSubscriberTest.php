@@ -22,7 +22,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
      * @var \Symfony\Component\Form\Form
      */
     protected $form;
-    
+
     protected $localeConfig = array(
         'locales'=>array(
             'fr_FR' => array('label'=>'Français'),
@@ -359,6 +359,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     protected function getTargetedClass(array $options)
     {
         $options['locale_config'] = $this->localeConfig;
+
         return new AddTranslatableFieldSubscriber(
             $this->formFactory,
             $this->getValidatorMock(),

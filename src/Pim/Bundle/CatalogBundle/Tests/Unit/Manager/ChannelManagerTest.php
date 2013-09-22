@@ -47,6 +47,7 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * Create a channel manager
      * @param string $userScope
+     *
      * @return \Pim\Bundle\CatalogBundle\Manager\ChannelManager
      */
     protected function createChannelManager($userScope = 'ecommerce')
@@ -70,6 +71,7 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
      * Create a channel
      * @param string $code
      * @param string $name
+     *
      * @return \Pim\Bundle\CatalogBundle\Entity\Channel
      */
     protected function createChannel($code, $name)
@@ -124,6 +126,7 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * Get security context mock
      * @param string $scope
+     *
      * @return \Symfony\Component\Security\Core\SecurityContext
      */
     protected function getSecurityContextMock($scope)
@@ -146,6 +149,7 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * Get token mock
      * @param string $scope
+     *
      * @return \Symfony\Component\Security\Core\Authentication\Token\TokenInterface
      */
     protected function getTokenMock($scope)
@@ -168,6 +172,7 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * Get user mock
      * @param string $scope
+     *
      * @return \Oro\Bundle\UserBundle\Entity\User
      */
     protected function getUserMock($scope)

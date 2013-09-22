@@ -21,4 +21,3 @@ pim_importexport_export_report_download_file:
     defaults: { _controller: pim_import_export.controller.export_report:downloadFilesAction }
     requirements:
         id: \d+
-

@@ -127,6 +127,7 @@ class FlatProductNormalizer implements NormalizerInterface
      * Normalize the field name for values
      *
      * @param ProductValueInterface $value
+     *
      * @return string
      */
     protected function getFieldValue($value)

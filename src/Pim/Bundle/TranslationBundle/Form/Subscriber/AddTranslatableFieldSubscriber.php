@@ -40,7 +40,6 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      * @var multitype:mixed
      */
     protected $options;
-    
 
     /**
      * Constructor

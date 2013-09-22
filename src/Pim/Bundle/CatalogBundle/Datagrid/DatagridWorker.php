@@ -29,7 +29,7 @@ class DatagridWorker implements DatagridWorkerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getDataAuditDatagrid($entity, $route, array $routeParams)
     {
@@ -50,7 +50,7 @@ class DatagridWorker implements DatagridWorkerInterface
         return $datagridManager->getDatagrid();
     }
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getDatagrid($name, QueryBuilder $queryBuilder = null, $namespace = 'pim_catalog')
     {
@@ -63,7 +63,7 @@ class DatagridWorker implements DatagridWorkerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getDatagridManager($name, $namespace = 'pim_catalog')
     {

@@ -19,7 +19,7 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
      * @Assert\NotBlank
      */
     protected $directoryName;
-    
+
     /**
      * @Assert\NotBlank
      */
@@ -28,13 +28,16 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     private $handler;
 
     /**
-     * Set the filename 
+     * Set the filename
      *
-     * @param string 
+     * @param string $fileName
+     *
+     * @return FileWriter
      */
     public function setFileName($fileName)
     {
         $this->fileName = $fileName;
+
         return $this;
     }
 
@@ -49,13 +52,16 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     }
 
     /**
-     * Set the directory name 
+     * Set the directory name
      *
-     * @param string $path
+     * @param string $directoryName
+     *
+     * @return FileWriter
      */
     public function setDirectoryName($directoryName)
     {
         $this->directoryName = $directoryName;
+
         return $this;
     }
 

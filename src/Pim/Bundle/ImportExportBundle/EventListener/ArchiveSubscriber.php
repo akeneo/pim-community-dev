@@ -5,8 +5,6 @@ namespace Pim\Bundle\ImportExportBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Oro\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Oro\Bundle\BatchBundle\Event\EventInterface;
-use Oro\Bundle\BatchBundle\Event\StepExecutionEvent;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver;
 
 /**
