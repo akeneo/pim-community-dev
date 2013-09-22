@@ -216,39 +216,39 @@ class AddVersionListener implements EventSubscriber
             if ($changeset and in_array('group', array_keys($changeset))) {
                 $groupChangeset = $changeset['group'];
                 if (isset($groupChangeset[0]) and $groupChangeset[0]) {
-                    $this->addPendingVersioning($em, $groupChangeset[0]);
+                    $this->addPendingVersioning($groupChangeset[0]);
                 }
                 if (isset($groupChangeset[1]) and $groupChangeset[1]) {
-                    $this->addPendingVersioning($em, $groupChangeset[1]);
+                    $this->addPendingVersioning($groupChangeset[1]);
                 }
             }
 
         } elseif ($entity instanceof VersionableInterface) {
-            $this->addPendingVersioning($em, $entity);
+            $this->addPendingVersioning($entity);
 
         } elseif ($entity instanceof ProductValueInterface) {
             $product = $entity->getEntity();
             if ($product) {
-                $this->addPendingVersioning($em, $product);
+                $this->addPendingVersioning($product);
             }
 
         } elseif ($entity instanceof ProductPrice) {
             $product = $entity->getValue()->getEntity();
-            $this->addPendingVersioning($em, $product);
+            $this->addPendingVersioning($product);
 
         } elseif ($entity instanceof AbstractTranslation) {
             $translatedEntity = $entity->getForeignKey();
             if ($translatedEntity instanceof VersionableInterface) {
-                $this->addPendingVersioning($em, $translatedEntity);
+                $this->addPendingVersioning($translatedEntity);
             }
 
         } elseif ($entity instanceof AttributeOption) {
             $attribute = $entity->getAttribute();
-            $this->addPendingVersioning($em, $attribute);
+            $this->addPendingVersioning($attribute);
 
         } elseif ($entity instanceof AttributeOptionValue) {
             $attribute = $entity->getOption()->getAttribute();
-            $this->addPendingVersioning($em, $attribute);
+            $this->addPendingVersioning($attribute);
         }
     }
 
@@ -262,7 +262,7 @@ class AddVersionListener implements EventSubscriber
     {
         if ($entity instanceof AttributeOption) {
             $attribute = $entity->getAttribute();
-            $this->addPendingVersioning($em, $attribute);
+            $this->addPendingVersioning($attribute);
         }
     }
 
@@ -275,7 +275,7 @@ class AddVersionListener implements EventSubscriber
     public function checkScheduledCollection($em, $entity)
     {
         if ($entity->getOwner() instanceof VersionableInterface) {
-            $this->addPendingVersioning($em, $entity->getOwner());
+            $this->addPendingVersioning($entity->getOwner());
 
         }
     }
@@ -283,10 +283,9 @@ class AddVersionListener implements EventSubscriber
     /**
      * Mark entity as to be versioned
      *
-     * @param EntityManager        $em
      * @param VersionableInterface $versionable
      */
-    protected function addPendingVersioning($em, VersionableInterface $versionable)
+    protected function addPendingVersioning(VersionableInterface $versionable)
     {
         $oid = spl_object_hash($versionable);
         if (!isset($this->versionableEntities[$oid]) and !in_array($oid, $this->versionedEntities)) {
