@@ -2,13 +2,14 @@
 
 namespace Oro\Bundle\UserBundle\Form\EventListener;
 
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
-use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class UserSubscriber implements EventSubscriberInterface
@@ -19,9 +20,9 @@ class UserSubscriber implements EventSubscriberInterface
     protected $factory;
 
     /**
-     * @var AclManager
+     * @var SecurityFacade
      */
-    protected $aclManager;
+    protected $securityFacade;
 
     /**
      * @var SecurityContextInterface
@@ -29,17 +30,23 @@ class UserSubscriber implements EventSubscriberInterface
     protected $security;
 
     /**
-     * @param FormFactoryInterface     $factory    Factory to add new form children
-     * @param AclManager               $aclManager ACL manager
-     * @param SecurityContextInterface $security   Security context
+     * @var ObjectIdentityFactory
+     */
+    protected $objectIdentityFactory;
+
+
+    /**
+     * @param FormFactoryInterface      $factory        Factory to add new form children
+     * @param SecurityFacade            $securityFacade Security facade service
+     * @param SecurityContextInterface  $security       Security context
      */
     public function __construct(
         FormFactoryInterface $factory,
-        AclManager $aclManager,
+        SecurityFacade $securityFacade,
         SecurityContextInterface $security
     ) {
         $this->factory    = $factory;
-        $this->aclManager = $aclManager;
+        $this->securityFacade = $securityFacade;
         $this->security   = $security;
     }
 
@@ -70,11 +77,11 @@ class UserSubscriber implements EventSubscriberInterface
             }
         }
 
-        if (!$this->aclManager->isResourceGranted('oro_user_role')) {
+        if (!$this->securityFacade->isGranted('oro_user_role_view')) {
             unset($submittedData['rolesCollection']);
         }
 
-        if (!$this->aclManager->isResourceGranted('oro_user_group')) {
+        if (!$this->securityFacade->isGranted('oro_user_group_view')) {
             unset($submittedData['groups']);
         }
 
@@ -95,11 +102,11 @@ class UserSubscriber implements EventSubscriberInterface
             $form->remove('plainPassword');
         }
 
-        if (!$this->aclManager->isResourceGranted('oro_user_role')) {
+        if (!$this->securityFacade->isGranted('oro_user_role_view')) {
             $form->remove('rolesCollection');
         }
 
-        if (!$this->aclManager->isResourceGranted('oro_user_group')) {
+        if (!$this->securityFacade->isGranted('oro_user_group_view')) {
             $form->remove('groups');
         }
 

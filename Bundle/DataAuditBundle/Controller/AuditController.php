@@ -9,16 +9,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 
-/**
- * @Acl(
- *      id="oro_dataaudit",
- *      name="Data audit",
- *      description="Data audit"
- * )
- */
 class AuditController extends Controller
 {
     /**
@@ -28,12 +22,7 @@ class AuditController extends Controller
      *      requirements={"_format"="html|json"},
      *      defaults={"_format" = "html"}
      * )
-     * @Acl(
-     *      id="oro_dataaudit_index",
-     *      name="View audit stream",
-     *      description="View audit stream",
-     *      parent="oro_dataaudit"
-     * )
+     * @AclAncestor("oro_dataaudit_history")
      */
     public function indexAction(Request $request)
     {
@@ -55,9 +44,9 @@ class AuditController extends Controller
      * @Template
      * @Acl(
      *      id="oro_dataaudit_history",
-     *      name="View entity history",
-     *      description="View entity history audit log",
-     *      parent="oro_dataaudit"
+     *      type="action",
+     *      label="Data Audit",
+     *      group_name=""
      * )
      */
     public function historyAction($entity, $id)

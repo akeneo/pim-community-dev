@@ -237,6 +237,10 @@ class ConfigManager
      */
     public function getIds($scope, $className = null)
     {
+        if (!$this->modelManager->checkDatabase()) {
+            return array();
+        }
+
         $entityModels = $this->modelManager->getModels($className);
 
         return array_map(

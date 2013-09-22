@@ -18,7 +18,7 @@ class OneShotIsGrantedObserver
     /**
      * @var int
      */
-    protected $accessLevel = AccessLevel::UNDEFINED;
+    protected $accessLevel = AccessLevel::UNKNOWN;
 
     /**
      * Gets a value indicates in which scope the access to a resource is granted or denied

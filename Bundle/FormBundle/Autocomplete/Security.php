@@ -2,23 +2,23 @@
 
 namespace Oro\Bundle\FormBundle\Autocomplete;
 
-use Oro\Bundle\UserBundle\Acl\ManagerInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 class Security
 {
     /**
-     * @var ManagerInterface
+     * @var SecurityFacade
      */
-    protected $manager;
+    protected $securityFacade;
 
     /**
      * @var array
      */
     protected $autocompleteAclResources;
 
-    public function __construct(ManagerInterface $manager)
+    public function __construct(SecurityFacade $securityFacade)
     {
-        $this->manager = $manager;
+        $this->securityFacade = $securityFacade;
         $this->autocompleteAclResources = array();
     }
 
@@ -47,6 +47,7 @@ class Security
     public function isAutocompleteGranted($name)
     {
         $aclResource = $this->getAutocompleteAclResource($name);
-        return $aclResource && $this->manager->isResourceGranted($aclResource);
+
+        return $aclResource && $this->securityFacade->isGranted($aclResource);
     }
 }

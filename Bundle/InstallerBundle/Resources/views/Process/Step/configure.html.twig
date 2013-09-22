@@ -1,0 +1,65 @@
+{% extends 'OroInstallerBundle::layout.html.twig' %}
+{% use 'OroInstallerBundle::progress.html.twig' %}
+
+{% set step = 'configure' %}
+
+{% block title %}{{ 'process.step.configure.header'|trans }} - {{ parent() }}{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var _width1= $('.progress-bar li:last-child').width()/2;
+            $('.progress-bar li:last-child em.fix-bg').width(_width1);
+            var _width2= $('.progress-bar li:first-child').width()/2;
+            $('.progress-bar li:first-child em.fix-bg').width(_width2);
+        });
+    </script>
+{% endblock javascript %}
+
+{% block content %}
+<div class="page-title">
+    <h2>{{ 'process.step.configure.header'|trans }}</h2>
+</div>
+
+<div class="well horizontal-form">
+    <form action="{{ path('sylius_flow_forward', { scenarioAlias: 'oro_installer', stepName: 'configure'}) }}" method="post">
+        <div class="validation-error">
+            {{ form_errors(form) }}
+        </div>
+
+        <div class="row">
+            <div class="box">
+                <h3 class="sub-title">{{ form.database.vars.label|trans }}</h3>
+
+                {{ form_widget(form.database) }}
+            </div>
+            <div class="box">
+                <h3 class="sub-title">{{ form.mailer.vars.label|trans }}</h3>
+
+                {{ form_widget(form.mailer) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="box">
+                <h3 class="sub-title">{{ form.system.vars.label|trans }}</h3>
+
+                {{ form_widget(form.system) }}
+            </div>
+            <div class="box">
+                <h3 class="sub-title">{{ form.websocket.vars.label|trans }}</h3>
+
+                {{ form_widget(form.websocket) }}
+            </div>
+
+            {{ form_rest(form) }}
+        </div>
+
+        <div class="button-set">
+            <div class="pull-right">
+                <a href="{{ path('sylius_flow_display', { scenarioAlias: 'oro_installer', stepName: 'check' }) }}" class="button back"><span>{{ 'process.button.back'|trans }}</span></a>
+                <button class="primary button next" type="submit"><span>{{ 'process.button.next'|trans }}</span></button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

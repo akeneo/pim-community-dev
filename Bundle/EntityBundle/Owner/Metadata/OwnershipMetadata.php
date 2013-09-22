@@ -47,6 +47,9 @@ class OwnershipMetadata implements \Serializable
             case 'USER':
                 $this->ownerType = self::OWNER_TYPE_USER;
                 break;
+            case 'NONE':
+                $this->ownerType = self::OWNER_TYPE_NONE;
+                break;
             default:
                 if (!empty($ownerType)) {
                     throw new \InvalidArgumentException(sprintf('Unknown owner type: %s.', $ownerType));
@@ -133,7 +136,7 @@ class OwnershipMetadata implements \Serializable
             array(
                 $this->ownerType,
                 $this->ownerFieldName,
-                $this->ownerColumnName,
+                $this->ownerColumnName
             )
         );
     }
@@ -146,7 +149,7 @@ class OwnershipMetadata implements \Serializable
         list(
             $this->ownerType,
             $this->ownerFieldName,
-            $this->ownerColumnName,
+            $this->ownerColumnName
             ) = unserialize($serialized);
     }
 }

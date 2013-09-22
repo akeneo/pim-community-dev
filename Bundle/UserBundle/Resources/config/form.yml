@@ -3,7 +3,6 @@ parameters:
     oro_user.form.type.user_value.class:        Oro\Bundle\UserBundle\Form\Type\UserValueType
     oro_user.form.type.user.api.class:          Oro\Bundle\UserBundle\Form\Type\UserApiType
     oro_user.form.type.reset.class:             Oro\Bundle\UserBundle\Form\Type\ResetType
-    oro_user.form.type.role.class:              Oro\Bundle\UserBundle\Form\Type\RoleType
     oro_user.form.type.role.api.class:          Oro\Bundle\UserBundle\Form\Type\RoleApiType
     oro_user.form.type.group.class:             Oro\Bundle\UserBundle\Form\Type\GroupType
     oro_user.form.type.group.api.class:         Oro\Bundle\UserBundle\Form\Type\GroupApiType
@@ -17,6 +16,7 @@ parameters:
     oro_user.form.handler.role.class:           Oro\Bundle\UserBundle\Form\Handler\RoleHandler
     oro_user.form.handler.group.class:          Oro\Bundle\UserBundle\Form\Handler\GroupHandler
     oro_user.form.handler.status.class:         Oro\Bundle\UserBundle\Form\Handler\StatusHandler
+    oro_user.form.handler.acl_role.class:       Oro\Bundle\UserBundle\Form\Handler\AclRoleHandler
 
 services:
     oro_user.form.user:
@@ -69,7 +69,7 @@ services:
 
     oro_user.form.type.user:
         class:                        %oro_user.form.type.user.class%
-        arguments:                    [@oro_user.manager.flexible, "@oro_user.acl_manager", "@security.context"]
+        arguments:                    [@oro_user.manager.flexible, "@security.context", "@oro_security.security_facade"]
         tags:
             - { name: form.type, alias: oro_user_user }
 
@@ -83,7 +83,7 @@ services:
 
     oro_user.form.type.user.api:
         class:                        %oro_user.form.type.user.api.class%
-        arguments:                    [@oro_user.manager.flexible, "@oro_user.acl_manager", "@security.context"]
+        arguments:                    [@oro_user.manager.flexible, "@security.context", "@oro_security.security_facade"]
         tags:
             - { name: form.type, alias: user }
 
@@ -92,11 +92,6 @@ services:
         arguments:                    ["@oro_user.change_password.subscriber"]
         tags:
              - { name: form.type, alias: oro_change_password }
-
-    oro_user.form.type.role:
-        class:                        %oro_user.form.type.role.class%
-        tags:
-            - { name: form.type, alias: oro_user_role }
 
     oro_user.form.type.role.api:
         class:                        %oro_user.form.type.role.api.class%
@@ -189,3 +184,11 @@ services:
         scope:                        request
         arguments:                    ["@oro_user.form.status", "@request", "@doctrine.orm.entity_manager", "@oro_user.manager"]
 
+    oro_user.form.handler.acl_role:
+        class:                        %oro_user.form.handler.acl_role.class%
+        scope:                        prototype
+        arguments:                    ["@form.factory", %oro_user.privileges%]
+        calls:
+                    - [setAclManager, ["@oro_security.acl.manager"]]
+                    - [setEntityManager, ["@doctrine.orm.entity_manager"]]
+                    - [setRequest, ["@request"]]
