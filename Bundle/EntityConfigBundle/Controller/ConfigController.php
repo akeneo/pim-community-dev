@@ -3,30 +3,27 @@
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Oro\Bundle\GridBundle\Datagrid\Datagrid;
-
+use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-
 use Oro\Bundle\EntityConfigBundle\Datagrid\EntityFieldsDatagridManager;
 use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
-
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
-use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * EntityConfig controller.
  * @Route("/entity/config")
- * TODO: Discuss ACL impl., currently acl is disabled
  */
 class ConfigController extends Controller
 {
@@ -35,7 +32,7 @@ class ConfigController extends Controller
      * Lists all Flexible entities.
      * @Route("/", name="oro_entityconfig_index")
      * Acl(
-     *      id="oro_entityconfig_index",
+     *      id="oro_entityconfig",
      *      label="View configurable entities",
      *      type="action",
      *      group_name=""
@@ -69,6 +66,7 @@ class ConfigController extends Controller
      *      type="action",
      *      group_name=""
      * )
+     * AclAncestor("oro_entityconfig")
      * @Template()
      */
     public function updateAction($id)
@@ -123,6 +121,7 @@ class ConfigController extends Controller
      *      type="action",
      *      group_name=""
      * )
+     * AclAncestor("oro_entityconfig")
      * @Template()
      */
     public function viewAction(EntityConfigModel $entity)
@@ -259,6 +258,7 @@ class ConfigController extends Controller
      *      type="action",
      *      group_name=""
      * )
+     * AclAncestor("oro_entityconfig")
      * @Template()
      */
     public function fieldUpdateAction($id)
@@ -319,12 +319,13 @@ class ConfigController extends Controller
 
     /**
      * @Route("/field/search/{id}", name="oro_entityconfig_field_search", defaults={"id"=0})
-     * @Acl(
+     * Acl(
      *      id="oro_entityconfig_field_search",
-     *      name="Retrieve entity field(s)",
-     *      description="Return varchar type field(s) in given entity",
-     *      parent="oro_entityconfig"
+     *      label="Return varchar type field(s) in given entity",
+     *      type="action",
+     *      group_name=""
      * )
+     * AclAncestor("oro_entityconfig")
      */
     public function fieldSearchAction($id)
     {
