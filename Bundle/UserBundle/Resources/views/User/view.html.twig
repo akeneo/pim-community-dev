@@ -17,8 +17,12 @@
 {% endmacro %}
 
 {% block navButtons %}
-    {% if resource_granted('oro_user_user_update') %}
-        {{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
+    {% if editRoute is defined %}
+        {{ UI.button({'path' : path(editRoute), 'iClass' : 'icon-edit ', 'title' : 'Edit profile', 'label' : 'Edit'}) }}
+    {% else %}
+        {% if resource_granted('oro_user_user_update') %}
+            {{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
+        {% endif %}
     {% endif %}
     {% if resource_granted('oro_user_user_delete') and entity.id!=app.user.id %}
         {{ UI.deleteButton({
