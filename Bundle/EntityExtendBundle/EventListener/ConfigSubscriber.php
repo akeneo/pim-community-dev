@@ -11,7 +11,7 @@ use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 
-use Oro\Bundle\EntityExtendBundle\Tools\Generator;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class ConfigSubscriber implements EventSubscriberInterface
@@ -64,7 +64,6 @@ class ConfigSubscriber implements EventSubscriberInterface
                 && !isset($change['state'])
             ) {
                 $event->getConfig()->set('state', ExtendManager::STATE_UPDATED);
-
                 $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
             }
 
@@ -74,6 +73,7 @@ class ConfigSubscriber implements EventSubscriberInterface
                 $event->getConfigManager()->persist($entityConfig);
             }
         }
+
         if ($scope == 'datagrid'
             && $event->getConfig()->getId() instanceof FieldConfigIdInterface
             && !in_array($event->getConfig()->getId()->getFieldType(), array('text'))
@@ -93,6 +93,9 @@ class ConfigSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @param NewEntityConfigModelEvent $event
+     */
     public function newEntity(NewEntityConfigModelEvent $event)
     {
         $originalClassName       = $event->getClassName();
@@ -105,11 +108,9 @@ class ConfigSubscriber implements EventSubscriberInterface
         $className       = array_pop($classArray);
 
         if ($parentClassName == 'Extend' . $className) {
-
-            var_dump(1);
             $config = $event->getConfigManager()->getProvider('extend')->getConfig($event->getClassName());
             $config->set('is_extend', true);
-            $config->set('extend_class', Generator::ENTITY . $parentClassName);
+            $config->set('extend_class', ExtendConfigDumper::ENTITY . $parentClassName);
 
             $event->getConfigManager()->persist($config);
         }

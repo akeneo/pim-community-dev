@@ -206,7 +206,6 @@ class ConfigManager
     public function hasConfig($className, $fieldName = null)
     {
         if (!$this->modelManager->checkDatabase()) {
-            var_dump('db');
             return false;
         }
 

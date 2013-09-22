@@ -43,9 +43,6 @@ class LoadCommand extends ContainerAwareCommand
     {
         $output->writeln($this->getDescription());
 
-        /** @var ConfigProvider $configProvider */
-        $configProvider = $this->getContainer()->get('oro_entity_config.provider.extend');
-
         $this->configManager = $this->getContainer()->get('oro_entity_config.config_manager');
 
         /** @var Kernel $kernel */
@@ -60,21 +57,6 @@ class LoadCommand extends ContainerAwareCommand
                     $this->parseEntity($className, $entityOptions);
                 }
 
-                $this->configManager->flush();
-
-                //fix state "Update" for existing class.
-                foreach ($config as $className => $entityOptions) {
-                    $className    = class_exists($className) ? $className : 'Extend\\Entity\\' . $className;
-                    $entityConfig = $configProvider->getConfig($className);
-                    $entityConfig->set('state', ExtendManager::STATE_ACTIVE);
-
-                    $this->configManager->persist($entityConfig);
-
-                    foreach ($configProvider->getConfigs($className) as $fieldConfig) {
-                        $fieldConfig->set('state', ExtendManager::STATE_ACTIVE);
-                        $this->configManager->persist($fieldConfig);
-                    }
-                }
                 $this->configManager->flush();
 
                 $output->writeln('Done');
@@ -93,14 +75,11 @@ class LoadCommand extends ContainerAwareCommand
         $error = false;
         if (!$this->configManager->hasConfig($className)) {
             $error = true;
-            var_dump('hi');
         } else {
             $config = $this->configManager->getProvider('extend')->getConfig($className);
             if (!$config->is('is_extend')) {
                 $error = true;
             }
-
-            var_dump($config);
         }
 
         if ($error) {
@@ -151,7 +130,7 @@ class LoadCommand extends ContainerAwareCommand
             $this->setDefaultConfig($entityOptions, $className, $fieldName);
 
             $config = $configProvider->getConfig($className, $fieldName);
-            $config->set('state', ExtendManager::STATE_ACTIVE);
+            $config->set('state', ExtendManager::STATE_NEW);
             $this->configManager->persist($config);
         }
     }

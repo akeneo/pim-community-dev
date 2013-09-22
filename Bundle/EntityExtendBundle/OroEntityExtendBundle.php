@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\EntityExtendBundle;
 
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -10,8 +12,11 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 
-use Oro\Bundle\EntityExtendBundle\DependencyInjection\Compiler\EntityManagerPass;
+use Oro\Bundle\EntityExtendBundle\Tools\Generator;
 use Oro\Bundle\EntityExtendBundle\Exception\RuntimeException;
+
+use Oro\Bundle\EntityExtendBundle\DependencyInjection\Compiler\ExtendCachePass;
+use Oro\Bundle\EntityExtendBundle\DependencyInjection\Compiler\EntityManagerPass;
 
 class OroEntityExtendBundle extends Bundle
 {
@@ -24,22 +29,12 @@ class OroEntityExtendBundle extends Bundle
 
     public function boot()
     {
-        $this->checkCacheFolder();
-        $this->checkCache();
-        $this->loadAlias();
-
-        $loader = new UniversalClassLoader();
-
-        $loader->registerNamespaces(
-            array('Extend\\' => $this->kernel->getCacheDir() . '/entities')
-        );
-
-        $loader->register();
+        $this->initExtend();
     }
 
     public function build(ContainerBuilder $container)
     {
-        $this->checkCacheFolder();
+        $this->initExtend();
 
         $container->addCompilerPass(new EntityManagerPass());
         $container->addCompilerPass(
@@ -49,6 +44,23 @@ class OroEntityExtendBundle extends Bundle
                 )
             )
         );
+    }
+
+    private function initExtend()
+    {
+        $this->checkCacheFolder();
+        $this->checkCache();
+        $this->registerAutoloader();
+        $this->loadAlias();
+    }
+
+    private function registerAutoloader()
+    {
+        $loader = new UniversalClassLoader();
+        $loader->registerNamespaces(
+            array('Extend\\' => $this->kernel->getCacheDir() . '/entities')
+        );
+        $loader->register();
     }
 
     private function loadAlias()
@@ -61,7 +73,7 @@ class OroEntityExtendBundle extends Bundle
 
             if (is_array($aliases)) {
                 foreach ($aliases as $className => $alias) {
-                    if (class_exists($className)) {
+                    if (class_exists($className) && !class_exists($alias, false)) {
                         class_alias($className, $alias);
                     }
                 }
@@ -81,15 +93,18 @@ class OroEntityExtendBundle extends Bundle
                 if (false === @mkdir($dir, 0777, true)) {
                     throw new RuntimeException(sprintf('Could not create cache directory "%s".', $dir));
                 }
-
             }
         }
     }
 
     private function checkCache()
     {
-        if (count(scandir($this->kernel->getCacheDir() . '/entities/Extend/Entity')) == 2) {
-            $this->container->get('oro_entity_extend.tools.generator')->generateAll();
+        $cacheDir  = $this->kernel->getCacheDir() . '/entities/Extend/Entity';
+        $backupDir = $this->kernel->getRootDir() . '/backup';
+
+        if (count(scandir($cacheDir)) == 2) {
+            $generator = new Generator($cacheDir, $backupDir);
+            $generator->generate();
         }
     }
 }

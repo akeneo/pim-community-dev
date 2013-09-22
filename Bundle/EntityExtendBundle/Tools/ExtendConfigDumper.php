@@ -144,8 +144,12 @@ class ExtendConfigDumper
             'type'     => $type,
             'property' => $properties,
             'doctrine' => $doctrine,
-
         );
+
+        if ($type == 'Extend') {
+            $result['parent']  = get_parent_class($className);
+            $result['inherit'] = get_parent_class($result['parent']);
+        }
 
         $configProvider->flush();
 
