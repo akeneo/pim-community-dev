@@ -234,7 +234,7 @@ class AttributeDatagridManager extends DatagridManager
     {
         $translator = $this->translator;
         $attributeTypes = $this->productManager->getAttributeTypes();
-        $fieldOptions = array_combine($attributeTypes, $attributeTypes);
+        $fieldOptions = empty($attributeTypes) ? array() : array_combine($attributeTypes, $attributeTypes);
         $fieldOptions = array_map(
             function ($type) use ($translator) {
                 return $translator->trans($type);
