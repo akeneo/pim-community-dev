@@ -18,11 +18,21 @@ class ProductValueConverter
 
     protected $entityManager;
 
+    /**
+     * Constructor
+     *
+     * @param EntityManager $entityManager
+     */
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
     public function convert($data)
     {
         $scope = $this->getScope($data);
@@ -162,7 +172,8 @@ class ProductValueConverter
     /**
      * Convert value
      *
-     * @param string $value
+     * @param string $type
+     * @param mixed  $value
      *
      * @return array
      */
@@ -188,6 +199,13 @@ class ProductValueConverter
         }
     }
 
+    /**
+     * Get ProductAttribute entity by code
+     *
+     * @param string $code
+     *
+     * @return ProductAttribute
+     */
     private function getAttribute($code)
     {
         if ($this->isLocalized($code)) {
@@ -199,6 +217,13 @@ class ProductValueConverter
             ->findOneBy(array('code' => $code));
     }
 
+    /**
+     * Get AttributeOption entity by code
+     *
+     * @param string $code
+     *
+     * @return AttributeOption
+     */
     private function getOption($code)
     {
         return $this->entityManager
