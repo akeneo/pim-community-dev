@@ -96,8 +96,6 @@ class ProductTest extends \PHPUnit_Framework_TestCase
             $this->product->addValue($this->getValueMock($this->getAttributeMock($group)));
         }
 
-        $this->markTestIncomplete('usort(): Array was modified by user comparison function is a false positive');
-
         $groups = $this->product->getOrderedGroups();
         $this->assertSame(4, count($groups));
         $this->assertSame($generalGroup, current($groups));
