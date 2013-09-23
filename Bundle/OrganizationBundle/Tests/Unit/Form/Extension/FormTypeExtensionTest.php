@@ -202,6 +202,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
                 'required' => true,
                 'attr' => array('is_safe' => true),
                 'constraints' => array(new NotBlank()),
+                'label' => 'Owner'
             )
         );
         $this->extension->buildForm($this->builder, array());
@@ -222,7 +223,8 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
                 'choices' => $this->businessUnits,
                 'mapped' => true,
                 'required' => true,
-                'constraints' => array(new NotBlank())
+                'constraints' => array(new NotBlank()),
+                'label' => 'Owner'
             )
         );
         $this->extension->buildForm($this->builder, array());
@@ -295,7 +297,8 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
                 'disabled' => true,
                 'data' => '',
                 'mapped' => false,
-                'required' => false
+                'required' => false,
+                'label' => 'Owner'
             )
         );
         $formEvent = $this->getMockBuilder('Symfony\Component\Form\FormEvent')

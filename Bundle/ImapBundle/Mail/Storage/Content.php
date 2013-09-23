@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\ImapBundle\Mail\Storage;
 
+use Oro\Bundle\EmailBundle\Decoder\ContentDecoder;
+
 class Content
 {
     /**
@@ -19,22 +21,52 @@ class Content
      */
     private $encoding;
 
-    public function __construct($content, $contentType, $encoding)
+    /**
+     * @var string
+     */
+    private $contentTransferEncoding;
+
+    /**
+     * Constructor
+     *
+     * @param string $content
+     * @param string $contentType
+     * @param string $contentTransferEncoding
+     * @param string $encoding
+     */
+    public function __construct($content, $contentType, $contentTransferEncoding, $encoding)
     {
         $this->content = $content;
         $this->contentType = $contentType;
+        $this->contentTransferEncoding = $contentTransferEncoding;
         $this->encoding = $encoding;
     }
 
     /**
      * Gets the content data
      *
-     * @return string|mixed
-     * @throws \Zend\Mail\Storage\Exception\RuntimeException
+     * @return string
      */
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * Gets the decoded content data
+     *
+     * @param string $toEncoding The type of encoding that the content is being converted to.
+     *                           Defaults to 'UTF-8'
+     * @return string
+     */
+    public function getDecodedContent($toEncoding = 'UTF-8')
+    {
+        return ContentDecoder::decode(
+            $this->content,
+            $this->contentTransferEncoding,
+            $this->encoding,
+            $toEncoding
+        );
     }
 
     /**
@@ -45,6 +77,16 @@ class Content
     public function getContentType()
     {
         return $this->contentType;
+    }
+
+    /**
+     * Gets Content-Transfer-Encoding
+     *
+     * @return string
+     */
+    public function getContentTransferEncoding()
+    {
+        return $this->contentTransferEncoding;
     }
 
     /**

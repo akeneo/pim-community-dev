@@ -3,6 +3,7 @@
 namespace Oro\Bundle\UserBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,6 +19,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 
 use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
+use Oro\Bundle\UserBundle\Datagrid\UserEmailDatagridManager;
 
 class UserController extends Controller
 {
@@ -33,9 +35,7 @@ class UserController extends Controller
      */
     public function viewAction(User $user)
     {
-        return array(
-            'entity' => $user,
-        );
+        return $this->view($user);
     }
 
     /**
@@ -44,10 +44,7 @@ class UserController extends Controller
      */
     public function viewProfileAction()
     {
-        return array(
-            'entity' => $this->getUser(),
-            'editRoute' => 'oro_user_profile_update'
-        );
+        return $this->view($this->getUser(), 'oro_user_profile_update');
     }
 
     /**
@@ -56,7 +53,7 @@ class UserController extends Controller
      */
     public function updateProfileAction()
     {
-        return $this->updateUser($this->getUser(), 'oro_user_profile_update', array('route' => 'oro_user_profile_view'));
+        return $this->update($this->getUser(), 'oro_user_profile_update', array('route' => 'oro_user_profile_view'));
     }
 
     /**
@@ -98,7 +95,7 @@ class UserController extends Controller
     {
         $user = $this->get('oro_user.manager')->createFlexible();
 
-        return $this->updateUser($user);
+        return $this->update($user);
     }
 
     /**
@@ -115,7 +112,7 @@ class UserController extends Controller
      */
     public function updateAction(User $entity)
     {
-        return $this->updateUser($entity);
+        return $this->update($entity);
     }
 
     /**
@@ -142,7 +139,7 @@ class UserController extends Controller
      * @param array $viewRoute
      * @return array
      */
-    protected function updateUser(User $entity, $updateRoute = '', $viewRoute = array())
+    protected function update(User $entity, $updateRoute = '', $viewRoute = array())
     {
         if ($this->get('oro_user.form.handler.user')->process($entity)) {
             $this->get('session')->getFlashBag()->add('success', 'User successfully saved');
@@ -169,6 +166,40 @@ class UserController extends Controller
             'businessUnits' => $this->getBusinessUnitManager()->getBusinessUnitsTree($entity),
             'editRoute' => $updateRoute
         );
+    }
+
+    /**
+     * @param User $user
+     * @param string $editRoute
+     * @return array
+     */
+    protected function view(User $user, $editRoute = '')
+    {
+        /** @var UserEmailDatagridManager $manager */
+        $manager = $this->get('oro_user.email.datagrid_manager');
+        $manager->setUser($user);
+        if (array_key_exists(
+            'refresh',
+            $manager->getDatagrid()->getParameters()->get(ParametersInterface::ADDITIONAL_PARAMETERS)
+        )) {
+            $origin = $user->getImapConfiguration();
+            if ($origin) {
+                $this->get('oro_imap.email_synchronizer')->syncOrigins(array($origin->getId()));
+            }
+        }
+        $view = $manager->getDatagrid()->createView();
+
+        $output = array(
+            'entity' => $user,
+            'datagrid' => $view
+        );
+
+        if ($editRoute) {
+            $output = array_merge($output, array('editRoute' => $editRoute));
+        }
+        return 'json' == $this->getRequest()->getRequestFormat()
+            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
+            : $output;
     }
 
     /**

@@ -7,6 +7,7 @@ class Imap extends \Zend\Mail\Storage\Imap
     const RFC822_HEADER = 'RFC822.HEADER';
     const FLAGS = 'FLAGS';
     const UID = 'UID';
+    const INTERNALDATE = 'INTERNALDATE';
 
     /**
      * UIDVALIDITY of currently selected folder
@@ -43,7 +44,12 @@ class Imap extends \Zend\Mail\Storage\Imap
 
         parent::__construct($params);
         $this->messageClass = 'Oro\Bundle\ImapBundle\Mail\Storage\Message';
-        $this->getMessageItems = array(self::FLAGS, self::RFC822_HEADER, self::UID);
+        $this->getMessageItems = array(
+            self::FLAGS,
+            self::RFC822_HEADER,
+            self::UID,
+            self::INTERNALDATE
+        );
     }
 
     /**
@@ -67,6 +73,86 @@ class Imap extends \Zend\Mail\Storage\Imap
     }
 
     /**
+     * get root folder or given folder
+     *
+     * @param  string $rootFolder get folder structure for given folder, else root
+     * @return Folder root or wanted folder
+     * @throws \Zend\Mail\Storage\Exception\RuntimeException
+     * @throws \Zend\Mail\Storage\Exception\InvalidArgumentException
+     * @throws \Zend\Mail\Protocol\Exception\RuntimeException
+     */
+    public function getFolders($rootFolder = null)
+    {
+        $folders = $this->protocol->listMailbox((string)$rootFolder);
+        if (!$folders) {
+            throw new \Zend\Mail\Storage\Exception\InvalidArgumentException('folder not found');
+        }
+
+        $decodedFolders = array();
+        foreach ($folders as $globalName => $data) {
+            $decodedGlobalName = mb_convert_encoding($globalName, 'UTF-8', 'UTF7-IMAP');
+            $decodedFolders[$decodedGlobalName] = $data;
+        }
+        $folders = $decodedFolders;
+
+        ksort($folders, SORT_STRING);
+        $root = new Folder('/', '/', false);
+        $stack = array(null);
+        $folderStack = array(null);
+        $parentFolder = $root;
+        $parent = '';
+
+        foreach ($folders as $globalName => $data) {
+            do {
+                if (!$parent || strpos($globalName, $parent) === 0) {
+                    $pos = strrpos($globalName, $data['delim']);
+                    if ($pos === false) {
+                        $localName = $globalName;
+                    } else {
+                        $localName = substr($globalName, $pos + 1);
+                    }
+                    $selectable = !$data['flags'] || !in_array('\\Noselect', $data['flags']);
+
+                    array_push($stack, $parent);
+                    $parent = $globalName . $data['delim'];
+                    $folder = new Folder($localName, $globalName, $selectable);
+                    $folder->setFlags(!isset($data['flags']) ? array() : $data['flags']);
+                    $this->postInitFolder($folder);
+                    $parentFolder->$localName = $folder;
+                    array_push($folderStack, $parentFolder);
+                    $parentFolder = $folder;
+                    break;
+                } elseif ($stack) {
+                    $parent = array_pop($stack);
+                    $parentFolder = array_pop($folderStack);
+                }
+            } while ($stack);
+            if (!$stack) {
+                throw new \Zend\Mail\Storage\Exception\RuntimeException('error while constructing folder tree');
+            }
+        }
+
+        return $root;
+    }
+
+    /**
+     * Does a folder post initialization actions
+     *
+     * @param Folder $folder
+     */
+    protected function postInitFolder(Folder $folder)
+    {
+        if (strtoupper($folder->getGlobalName()) === 'INBOX') {
+            if (!$folder->hasFlag(Folder::FLAG_INBOX)) {
+                $folder->addFlag(Folder::FLAG_INBOX);
+            }
+        }
+        if ($folder->hasFlag('Junk')) {
+            $folder->addFlag(Folder::FLAG_SPAM);
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getMessage($id)
@@ -80,12 +166,14 @@ class Imap extends \Zend\Mail\Storage\Imap
         }
 
         /** @var \Zend\Mail\Storage\Message $message */
-        $message = new $this->messageClass(array(
-            'handler' => $this,
-            'id' => $id,
-            'headers' => $header,
-            'flags' => $flags
-        ));
+        $message = new $this->messageClass(
+            array(
+                'handler' => $this,
+                'id' => $id,
+                'headers' => $header,
+                'flags' => $flags
+            )
+        );
 
         $headers = $message->getHeaders();
         $this->setExtHeaders($headers, $data);
@@ -119,13 +207,15 @@ class Imap extends \Zend\Mail\Storage\Imap
      */
     public function selectFolder($globalName)
     {
-        if ((string)$this->currentFolder === (string)$globalName) {
+        if ((string)$this->currentFolder === (string)$globalName && $this->uidValidity !== null) {
             // The given folder already selected
             return;
         }
 
         $this->currentFolder = $globalName;
-        $selectResponse = $this->protocol->select($this->currentFolder);
+        $selectResponse = $this->protocol->select(
+            mb_convert_encoding((string)$this->currentFolder, 'UTF7-IMAP', 'UTF-8')
+        );
         if (!$selectResponse) {
             $this->currentFolder = '';
             throw new \Zend\Mail\Storage\Exception\RuntimeException('cannot change folder, maybe it does not exist');
@@ -154,6 +244,7 @@ class Imap extends \Zend\Mail\Storage\Imap
      */
     protected function setExtHeaders(&$headers, array $data)
     {
-        $headers->addHeaderLine('UID', $data['UID']);
+        $headers->addHeaderLine(self::UID, $data[self::UID]);
+        $headers->addHeaderLine('InternalDate', $data[self::INTERNALDATE]);
     }
 }

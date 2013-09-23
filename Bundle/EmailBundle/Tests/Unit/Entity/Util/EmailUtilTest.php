@@ -21,6 +21,8 @@ class EmailUtilTest extends \PHPUnit_Framework_TestCase
             array('<john@example.com>', 'john@example.com'),
             array('John Smith <john@example.com>', 'john@example.com'),
             array('"John Smith" <john@example.com>', 'john@example.com'),
+            array('John Smith on behaf <john@example.com>', 'john@example.com'),
+            array('"john@example.com" <john@example.com>', 'john@example.com'),
         );
     }
 }

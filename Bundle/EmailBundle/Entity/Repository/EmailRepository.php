@@ -3,41 +3,28 @@
 namespace Oro\Bundle\EmailBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use \Doctrine\ORM\QueryBuilder;
+use \Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr;
-use Oro\Bundle\EmailBundle\Entity\Util\EmailUtil;
 
 class EmailRepository extends EntityRepository
 {
+    const EMAIL_ADDRESSES = 'email_addresses';
+
     /**
-     * Return a query builder for get a list of emails which were sent to or from given email addresses
+     * Return a query builder which may be used to get a list of emails
      * The emails are ordered by Sent date in reverse order
      *
-     * @param string[] $emails The list of email addresses
      * @param null|integer $firstResult The index of the first result to retrieve
      * @param null|integer $maxResults The maximum number of results to retrieve
-     * @return \Doctrine\ORM\QueryBuilder
-     * @throws \InvalidArgumentException
+     * @return QueryBuilder
      */
-    public function getEmailListQueryBuilder(array $emails, $firstResult = null, $maxResults = null)
+    public function createEmailListQueryBuilder($firstResult = null, $maxResults = null)
     {
-        $qbRecipients =
-            $this->getEntityManager()->createQueryBuilder()
-                ->select('re.id')
-                ->from('OroEmailBundle:Email', 're')
-                ->innerJoin('re.recipients', 'r')
-                ->innerJoin('r.emailAddress', 'ra');
-        $qbRecipients->where($qbRecipients->expr()->in('ra.email', $emails));
-
         $qb = $this->createQueryBuilder('e')
             ->select('partial e.{id, fromName, subject, sentAt}, a')
             ->innerJoin('e.fromEmailAddress', 'a')
             ->orderBy('e.sentAt', 'DESC');
-        $qb->where(
-            $qb->expr()->orX(
-                $qb->expr()->in('e.id', $qbRecipients->getDQL()),
-                $qb->expr()->in('a.email', $emails)
-            )
-        );
 
         if ($firstResult !== null) {
             $qb->setFirstResult($firstResult);
@@ -45,6 +32,31 @@ class EmailRepository extends EntityRepository
         if ($maxResults !== null) {
             $qb->setMaxResults($maxResults);
         }
+
+        return $qb;
+    }
+
+    /**
+     * Return a query builder which may be used to get a list of emails related to a list of email addresses
+     * The emails are ordered by Sent date in reverse order
+     *
+     * @param null|integer $firstResult The index of the first result to retrieve
+     * @param null|integer $maxResults The maximum number of results to retrieve
+     * @return QueryBuilder
+     */
+    public function createEmailListForAddressesQueryBuilder($firstResult = null, $maxResults = null)
+    {
+        $qbRecipients =
+            $this->getEntityManager()->createQueryBuilder()
+                ->select('re.id')
+                ->from('OroEmailBundle:Email', 're')
+                ->innerJoin('re.recipients', 'r')
+                ->innerJoin('r.emailAddress', 'ra');
+        $qbRecipients->where(sprintf('ra.email IN (:%s)', self::EMAIL_ADDRESSES));
+
+        $qb = $this->createEmailListQueryBuilder($firstResult, $maxResults);
+        $qb->where(sprintf('a.email IN (:%s)', self::EMAIL_ADDRESSES));
+        $qb->orWhere($qb->expr()->in('e.id', $qbRecipients->getDQL()));
 
         return $qb;
     }

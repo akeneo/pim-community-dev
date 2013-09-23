@@ -7,7 +7,7 @@ use Oro\Bundle\ImapBundle\Connector\Search\SearchQueryBuilder;
 use Oro\Bundle\ImapBundle\Connector\Search\SearchStringManagerInterface;
 use Oro\Bundle\ImapBundle\Mail\Storage\Imap;
 use Oro\Bundle\ImapBundle\Mail\Storage\Message;
-use Zend\Mail\Storage\Folder;
+use Oro\Bundle\ImapBundle\Mail\Storage\Folder;
 
 /**
  * A base class for connectors intended to work with email's servers through IMAP protocol.
@@ -58,32 +58,48 @@ class ImapConnector
     }
 
     /**
-     * @param Folder|string|null $parentFolder
-     * @param SearchQuery|null $query
-     * @return Message[]
+     * Get selected folder
+     *
+     * @throws \RuntimeException
+     * @return string
      */
-    public function findItems($parentFolder = null, $query = null)
+    public function getSelectedFolder()
     {
         $this->ensureConnected();
 
-        if ($parentFolder !== null) {
-            $this->imap->selectFolder($parentFolder);
-        }
+        return (string)$this->imap->getCurrentFolder();
+    }
+
+    /**
+     * Set selected folder
+     *
+     * @param string $folder
+     */
+    public function selectFolder($folder)
+    {
+        $this->ensureConnected();
+
+        $this->imap->selectFolder($folder);
+    }
+
+    /**
+     * @param SearchQuery|null $query
+     * @return ImapMessageIterator
+     */
+    public function findItems($query = null)
+    {
+        $this->ensureConnected();
 
         $searchString = '';
         if ($query !== null) {
             $searchString = $query->convertToSearchString();
         }
+
         if (empty($searchString)) {
-            // Return all messages
-            return iterator_to_array($this->imap);
-        }
-
-        $ids = $this->imap->search(array($searchString));
-
-        $result = array();
-        foreach ($ids as $messageId) {
-            $result[] = $this->imap->getMessage($messageId);
+            $result = new ImapMessageIterator($this->imap);
+        } else {
+            $ids = $this->imap->search(array($searchString));
+            $result = new ImapMessageIterator($this->imap, $ids);
         }
 
         return $result;
@@ -93,7 +109,7 @@ class ImapConnector
      * Finds folders.
      *
      * @param string|null $parentFolder The global name of a parent folder.
-     * @param bool $recursive Determines whether
+     * @param bool $recursive True to get all subordinate folders
      * @return Folder[]
      */
     public function findFolders($parentFolder = null, $recursive = false)
@@ -129,6 +145,19 @@ class ImapConnector
         $id = $this->imap->getNumberByUniqueId($uid);
 
         return $this->imap->getMessage($id);
+    }
+
+    /**
+     * Gets UIDVALIDITY of currently selected folder
+     *
+     * @return int
+     * @throws \LogicException
+     */
+    public function getUidValidity()
+    {
+        $this->ensureConnected();
+
+        return $this->imap->getUidValidity();
     }
 
     /**

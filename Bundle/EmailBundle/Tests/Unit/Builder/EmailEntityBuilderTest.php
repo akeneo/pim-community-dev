@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EmailBundle\Tests\Unit\Builder;
 
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
+use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailRecipient;
@@ -117,29 +118,25 @@ class EmailEntityBuilderTest extends \PHPUnit_Framework_TestCase
     public function testOrigin()
     {
         $storage = array();
+
+        $origin = $this->getMockBuilder('Oro\Bundle\EmailBundle\Entity\EmailOrigin')->getMock();
+        $origin->expects($this->any())->method('getId')->will($this->returnValue(1));
+
+        $this->batch->expects($this->never())->method('getOrigin');
         $this->batch->expects($this->exactly(2))
-            ->method('getOrigin')
-            ->will(
-                $this->returnCallback(
-                    function ($name) use (&$storage) {
-                        return isset($storage[$name]) ? $storage[$name] : null;
-                    }
-                )
-            );
-        $this->batch->expects($this->once())
             ->method('addOrigin')
             ->will(
                 $this->returnCallback(
-                    function ($obj) use (&$storage) {
-                        $storage[$obj->getName()] = $obj;
+                    function ($origin) use (&$storage) {
+                        $storage[$origin->getId()] = $origin;
                     }
                 )
             );
 
-        $result = $this->builder->origin('test');
+        $result = $this->builder->setOrigin($origin);
 
-        $this->assertEquals('test', $result->getName());
-        $this->assertTrue($result === $this->builder->origin('test'));
+        $this->assertEquals(1, $result->getId());
+        $this->assertTrue($result === $this->builder->setOrigin($origin));
     }
 
     public function testFolder()
@@ -159,27 +156,32 @@ class EmailEntityBuilderTest extends \PHPUnit_Framework_TestCase
             ->will(
                 $this->returnCallback(
                     function ($obj) use (&$storage) {
-                        $storage[$obj->getType() . $obj->getName()] = $obj;
+                        $storage[$obj->getType() . $obj->getFullName()] = $obj;
                     }
                 )
             );
 
-        $inbox = $this->builder->folderInbox('test');
-        $sent = $this->builder->folderSent('test');
-        $drafts = $this->builder->folderDrafts('test');
-        $trash = $this->builder->folderTrash('test');
-        $other = $this->builder->folderOther('test');
+        $inbox = $this->builder->folderInbox('test', 'test');
+        $sent = $this->builder->folderSent('test', 'test');
+        $drafts = $this->builder->folderDrafts('test', 'test');
+        $trash = $this->builder->folderTrash('test', 'test');
+        $other = $this->builder->folderOther('test', 'test');
 
         $this->assertEquals('test', $inbox->getName());
+        $this->assertEquals('test', $inbox->getFullName());
         $this->assertEquals('test', $sent->getName());
+        $this->assertEquals('test', $sent->getFullName());
         $this->assertEquals('test', $drafts->getName());
+        $this->assertEquals('test', $drafts->getFullName());
         $this->assertEquals('test', $trash->getName());
+        $this->assertEquals('test', $trash->getFullName());
         $this->assertEquals('test', $other->getName());
-        $this->assertTrue($inbox === $this->builder->folderInbox('test'));
-        $this->assertTrue($sent === $this->builder->folderSent('test'));
-        $this->assertTrue($drafts === $this->builder->folderDrafts('test'));
-        $this->assertTrue($trash === $this->builder->folderTrash('test'));
-        $this->assertTrue($other === $this->builder->folderOther('test'));
+        $this->assertEquals('test', $other->getFullName());
+        $this->assertTrue($inbox === $this->builder->folderInbox('test', 'test'));
+        $this->assertTrue($sent === $this->builder->folderSent('test', 'test'));
+        $this->assertTrue($drafts === $this->builder->folderDrafts('test', 'test'));
+        $this->assertTrue($trash === $this->builder->folderTrash('test', 'test'));
+        $this->assertTrue($other === $this->builder->folderOther('test', 'test'));
     }
 
     public function testBody()
