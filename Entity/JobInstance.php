@@ -5,6 +5,7 @@ namespace Oro\Bundle\BatchBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Oro\Bundle\BatchBundle\Job\Job;
 
@@ -98,7 +99,13 @@ class JobInstance
     protected $job;
 
     /**
-     * @ORM\OneToMany(targetEntity="JobExecution", mappedBy="jobInstance", cascade={"persist", "remove"})
+     * @var Collection|JobExecution[]
+     * @ORM\OneToMany(
+     *      targetEntity="JobExecution",
+     *      mappedBy="jobInstance",
+     *      cascade={"persist", "remove"},
+     *      orphanRemoval=true
+     * )
      */
     protected $jobExecutions;
 
