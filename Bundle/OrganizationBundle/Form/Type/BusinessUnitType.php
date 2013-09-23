@@ -12,6 +12,8 @@ use Doctrine\ORM\EntityRepository;
 
 class BusinessUnitType extends AbstractType
 {
+    const FORM_NAME = 'oro_business_unit';
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -54,7 +56,7 @@ class BusinessUnitType extends AbstractType
                 'organization',
                 'entity',
                 array(
-                    'label'    => 'Parent',
+                    'label'    => 'Organization',
                     'class'    => 'OroOrganizationBundle:Organization',
                     'property' => 'name',
                     'required' => true,
@@ -94,6 +96,6 @@ class BusinessUnitType extends AbstractType
 
     public function getName()
     {
-        return 'oro_business_unit';
+        return self::FORM_NAME;;
     }
 }

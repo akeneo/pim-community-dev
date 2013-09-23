@@ -19,6 +19,7 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\OrganizationBundle\Form\Type\BusinessUnitType;
 
 class FormTypeExtension extends AbstractTypeExtension
 {
@@ -51,6 +52,8 @@ class FormTypeExtension extends AbstractTypeExtension
      * @var string
      */
     protected $fieldName;
+
+    protected $fieldLabel = 'Owner';
 
     protected $assignIsGranted;
 
@@ -165,7 +168,8 @@ class FormTypeExtension extends AbstractTypeExtension
                     'disabled' => true,
                     'data' => $owner ? $owner->getName() : '',
                     'mapped' => false,
-                    'required' => false
+                    'required' => false,
+                    'label' => $this->fieldLabe
                 )
             );
         }
@@ -190,7 +194,10 @@ class FormTypeExtension extends AbstractTypeExtension
                 'constraints' => array(new NotBlank()),
                 'required' => true,
             );
+        } else {
+            $this->fieldLabel = 'Parent';
         }
+
         if ($this->assignIsGranted) {
             /**
              * If assign permission is granted, showing all available business units
@@ -205,6 +212,7 @@ class FormTypeExtension extends AbstractTypeExtension
                         'choices' => $businessUnits,
                         'mapped' => true,
                         'attr' => array('is_safe' => true),
+                        'label' => $this->fieldLabel
                     ),
                     $validation
                 )
@@ -221,6 +229,7 @@ class FormTypeExtension extends AbstractTypeExtension
                             'property' => 'name',
                             'choices' => $businessUnits,
                             'mapped' => true,
+                            'label' => $this->fieldLabel
                         ),
                         $validation
                     )
