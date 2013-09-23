@@ -12,14 +12,15 @@ class DataBlockExtensionTest extends \PHPUnit_Framework_TestCase
     /** @var  DataBlockExtension */
     private $formExtension;
 
-    private $manager;
+    private $securityFacade;
 
     private $options = array('block' => 1, 'subblock' => 1, 'block_config' => 1, 'tooltip' => 1);
 
     public function setUp()
     {
-        $this->manager = $this->getMockForAbstractClass('Oro\Bundle\UserBundle\Acl\ManagerInterface');
-        $this->formExtension = new DataBlockExtension($this->manager);
+        $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+            ->disableOriginalConstructor()->getMock();
+        $this->formExtension = new DataBlockExtension($this->securityFacade);
     }
 
     public function testSetDefaultOptions()

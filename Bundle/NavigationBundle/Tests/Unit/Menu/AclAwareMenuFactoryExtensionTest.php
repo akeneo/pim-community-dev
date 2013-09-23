@@ -5,7 +5,6 @@ namespace Oro\Bundle\NavigationBundle\Tests\Unit\Menu;
 use Knp\Menu\MenuFactory;
 use Oro\Bundle\NavigationBundle\Menu\AclAwareMenuFactoryExtension;
 use Symfony\Component\Routing\RouterInterface;
-use Oro\Bundle\UserBundle\Acl\Manager;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Doctrine\Common\Cache\CacheProvider;
 
@@ -17,9 +16,9 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
     protected $router;
 
     /**
-     * @var Manager
+     * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $aclManager;
+    protected $securityFacade;
 
     /**
      * @var MenuFactory
@@ -40,10 +39,9 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->router = $this->getMockBuilder('Symfony\Component\Routing\RouterInterface')
             ->getMock();
-        $this->aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\Manager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->factoryExtension = new AclAwareMenuFactoryExtension($this->router, $this->aclManager);
+        $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+            ->disableOriginalConstructor()->getMock();
+        $this->factoryExtension = new AclAwareMenuFactoryExtension($this->router, $this->securityFacade);
         $this->factory = new MenuFactory();
         $this->factory->addExtension($this->factoryExtension);
     }
@@ -55,8 +53,8 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildOptionsWithResourceId($options, $isAllowed)
     {
-        $this->aclManager->expects($this->once())
-            ->method('isResourceGranted')
+        $this->securityFacade->expects($this->once())
+            ->method('isGranted')
             ->with($options['aclResourceId'])
             ->will($this->returnValue($isAllowed));
 
@@ -114,7 +112,7 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getRouteCollection')
             ->will($this->returnValue($routeCollection));
 
-        $this->aclManager->expects($this->never())
+        $this->securityFacade->expects($this->never())
             ->method('isClassMethodGranted');
 
         $item = $this->factory->createItem('test', $options);
@@ -130,7 +128,7 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('match')
             ->will($this->throwException(new ResourceNotFoundException('Route not found')));
 
-        $this->aclManager->expects($this->never())
+        $this->securityFacade->expects($this->never())
             ->method('isClassMethodGranted');
 
         $item = $this->factory->createItem('test', $options);
@@ -194,7 +192,7 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getRouteCollection')
             ->will($this->returnValue($routeCollection));
 
-        $this->aclManager->expects($this->once())
+        $this->securityFacade->expects($this->once())
             ->method('isClassMethodGranted')
             ->with('controller', 'action')
             ->will($this->returnValue($isAllowed));
@@ -235,7 +233,7 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('match')
             ->will($this->returnValue(array('_controller' => $class . '::' . $method)));
 
-        $this->aclManager->expects($this->once())
+        $this->securityFacade->expects($this->once())
             ->method('isClassMethodGranted')
             ->with($class, $method)
             ->will($this->returnValue($isAllowed));
@@ -263,8 +261,8 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
     public function testAclCacheByResourceId()
     {
         $options = array('aclResourceId' => 'resource_id');
-        $this->aclManager->expects($this->once())
-            ->method('isResourceGranted')
+        $this->securityFacade->expects($this->once())
+            ->method('isGranted')
             ->with($options['aclResourceId'])
             ->will($this->returnValue(true));
 
@@ -334,7 +332,7 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue(array('_controller' => 'controller::action')));
         }
 
-        $this->aclManager->expects($this->once())
+        $this->securityFacade->expects($this->once())
             ->method('isClassMethodGranted')
             ->with('controller', 'action')
             ->will($this->returnValue(true));

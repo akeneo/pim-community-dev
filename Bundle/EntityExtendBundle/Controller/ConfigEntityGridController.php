@@ -13,7 +13,7 @@ use FOS\Rest\Util\Codes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
@@ -28,11 +28,7 @@ use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
  * Class ConfigGridController
  * @package Oro\Bundle\EntityExtendBundle\Controller
  * @Route("/entity/extend/entity")
- * @Acl(
- *      id="oro_entityextend",
- *      name="Entity extend manipulation",
- *      description="Entity extend manipulation"
- * )
+ * TODO: Discuss ACL impl., currently acl is disabled
  */
 class ConfigEntityGridController extends Controller
 {
@@ -43,11 +39,11 @@ class ConfigEntityGridController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_entity_unique_key",
-     *      name="Unique keys",
-     *      description="Update entity unique keys",
-     *      parent="oro_entityextend"
+     *      label="Unique entity unique keys",
+     *      type="action",
+     *      group_name=""
      * )
      * @Template
      */
@@ -127,11 +123,11 @@ class ConfigEntityGridController extends Controller
 
     /**
      * @Route("/create", name="oro_entityextend_entity_create")
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_entity_create",
-     *      name="Create custom entity",
-     *      description="Create custom entity",
-     *      parent="oro_entityextend"
+     *      label="Create custom entity",
+     *      type="action",
+     *      group_name=""
      * )
      * @Template
      */
@@ -209,11 +205,11 @@ class ConfigEntityGridController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_entity_remove",
-     *      name="Remove custom entity",
-     *      description="Remove custom entity",
-     *      parent="oro_entityextend"
+     *      label="Remove custom entity",
+     *      type="action",
+     *      group_name=""
      * )
      */
     public function removeAction(EntityConfigModel $entity)
@@ -248,11 +244,11 @@ class ConfigEntityGridController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_entity_unremove",
-     *      name="Unremove custom entity",
-     *      description="Unremove custom entity",
-     *      parent="oro_entityextend"
+     *      label="Unremove custom entity",
+     *      type="action",
+     *      group_name=""
      * )
      */
     public function unremoveAction(EntityConfigModel $entity)

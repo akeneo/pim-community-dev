@@ -45,6 +45,12 @@ class ConfigModelManager
         'Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel',
     );
 
+    private $requiredTables = array(
+        'oro_entity_config',
+        'oro_entity_config_field',
+        'oro_entity_config_value',
+    );
+
     public function __construct(ServiceLink $proxyEm)
     {
         $this->localCache = new ArrayCollection;
@@ -65,7 +71,8 @@ class ConfigModelManager
     public function checkDatabase()
     {
         if ($this->dbCheckCache === null) {
-            $this->dbCheckCache = (bool) count(
+            $this->dbCheckCache = (bool) array_intersect(
+                $this->requiredTables,
                 $this->getEntityManager()->getConnection()->getSchemaManager()->listTableNames()
             );
         }

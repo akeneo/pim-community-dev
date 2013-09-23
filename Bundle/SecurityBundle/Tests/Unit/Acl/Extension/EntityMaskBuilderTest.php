@@ -7,29 +7,6 @@ use Oro\Bundle\SecurityBundle\Acl\Extension\EntityMaskBuilder;
 class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \InvalidArgumentException
-     * @dataProvider constructorWithNonIntegerProvider
-     */
-    public function testConstructorWithNonInteger($invalidMask)
-    {
-        new EntityMaskBuilder($invalidMask);
-    }
-
-    public function testConstructorWithoutArguments()
-    {
-        $builder = new EntityMaskBuilder();
-
-        $this->assertEquals(0, $builder->get());
-    }
-
-    public function testConstructor()
-    {
-        $builder = new EntityMaskBuilder(123456);
-
-        $this->assertEquals(123456, $builder->get());
-    }
-
-    /**
      * @dataProvider maskConstantProvider
      */
     public function testMaskConstant($mask)
@@ -55,7 +32,7 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($mask, $builder->get());
 
         $builder->remove($maskName);
-        $this->assertEquals(0, $mask = $builder->get());
+        $this->assertEquals(EntityMaskBuilder::IDENTITY, $mask = $builder->get());
     }
 
     public function testGetPattern()
@@ -101,7 +78,6 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetPatternWithUndefinedMask()
     {
-        $builder = new EntityMaskBuilder((integer) 2147483648);
         $delim = strpos(EntityMaskBuilder::PATTERN_ALL_OFF, ' ');
         $expected =
             substr(EntityMaskBuilder::PATTERN_ALL_OFF, 0, $delim + 1)
@@ -111,19 +87,19 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
                 $delim + 2,
                 strlen(EntityMaskBuilder::PATTERN_ALL_OFF) - $delim - 2
             );
-        $this->assertEquals($expected, $builder->getPattern());
+        $this->assertEquals($expected, EntityMaskBuilder::getPatternFor((integer)2147483648));
     }
 
     public function testReset()
     {
         $builder = new EntityMaskBuilder();
-        $this->assertEquals(0, $builder->get());
+        $this->assertEquals(EntityMaskBuilder::IDENTITY, $builder->get());
 
         $builder->add('view_basic');
         $this->assertTrue($builder->get() > 0);
 
         $builder->reset();
-        $this->assertEquals(0, $builder->get());
+        $this->assertEquals(EntityMaskBuilder::IDENTITY, $builder->get());
     }
 
     /**
@@ -135,16 +111,6 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
             $expectedMask,
             $groupMask,
             'Actual: ' . EntityMaskBuilder::getPatternFor($groupMask)
-        );
-    }
-
-    public static function constructorWithNonIntegerProvider()
-    {
-        return array(
-            array(234.463),
-            array('asdgasdf'),
-            array(array()),
-            array(new \stdClass()),
         );
     }
 
@@ -280,6 +246,9 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public static function groupProvider()
     {
         return array(

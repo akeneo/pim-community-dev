@@ -200,6 +200,9 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          * @return {*}
          */
         enableFilters: function(filters) {
+            if (_.isEmpty(filters)) {
+                return this;
+            }
             var optionsSelectors = [];
 
             _.each(filters, function(filter) {
@@ -226,6 +229,9 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          * @return {*}
          */
         disableFilters: function(filters) {
+            if (_.isEmpty(filters)) {
+                return this;
+            }
             var optionsSelectors = [];
 
             _.each(filters, function(filter) {

@@ -1,0 +1,52 @@
+{% extends 'OroInstallerBundle::layout.html.twig' %}
+{% use 'OroInstallerBundle::progress.html.twig' %}
+
+{% set step = 'setup' %}
+
+{% block title %}{{ 'process.step.setup.header'|trans }} - {{ parent() }}{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var _width1= $('.progress-bar li:last-child').width()/2;
+            $('.progress-bar li:last-child em.fix-bg').width(_width1);
+            var _width2= $('.progress-bar li:first-child').width()/2;
+            $('.progress-bar li:first-child em.fix-bg').width(_width2);
+        });
+    </script>
+{% endblock javascript %}
+
+{% block content %}
+<div class="page-title">
+    <h2>{{ 'process.step.setup.header'|trans }}</h2>
+</div>
+
+<div class="well horizontal-form">
+    <form action="{{ path('sylius_flow_forward', { scenarioAlias: 'oro_installer', stepName: 'setup' }) }}" method="post">
+        <div class="validation-error">
+            {{ form_errors(form) }}
+        </div>
+
+        <div class="row">
+            <div class="box">
+                <h3 class="sub-title">{{ form.vars.label|trans }}</h3>
+
+                {{ form_row(form.username) }}
+                {{ form_row(form.plainPassword) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+            </div>
+
+            {{ form_rest(form) }}
+        </div>
+
+        <div class="button-set">
+            <div class="pull-right">
+                <a href="{{ path('sylius_flow_display', { scenarioAlias: 'oro_installer', stepName: 'configure' }) }}" class="button back"><span>{{ 'process.button.back'|trans }}</span></a>
+                <button class="primary button icon-settings" type="submit"><span>{{ 'process.button.install'|trans }}</span></button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

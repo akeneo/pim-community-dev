@@ -43,8 +43,15 @@ class TestHelper
         $classAccessor = new EntityClassAccessor();
         $idAccessor = new ObjectIdAccessor();
         $selector = new AclExtensionSelector($idAccessor);
+        $actionMetadataProvider =
+            $this->testCase->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\ActionMetadataProvider')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $actionMetadataProvider->expects($this->testCase->any())
+            ->method('isKnownAction')
+            ->will($this->testCase->returnValue(true));
         $selector->addAclExtension(
-            new ActionAclExtension()
+            new ActionAclExtension($actionMetadataProvider)
         );
         $selector->addAclExtension(
             $this->createEntityAclExtension($metadataProvider, $ownerTree, $classAccessor, $idAccessor)
@@ -127,10 +134,19 @@ class TestHelper
                 )
             );
 
+        $entityMetadataProvider =
+            $this->testCase->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\EntitySecurityMetadataProvider')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $entityMetadataProvider->expects($this->testCase->any())
+            ->method('isProtectedEntity')
+            ->will($this->testCase->returnValue(true));
+
         return new EntityAclExtension(
             $classAccessor,
             $idAccessor,
             new EntityClassResolver($doctrine),
+            $entityMetadataProvider,
             $metadataProvider,
             $decisionMaker
         );

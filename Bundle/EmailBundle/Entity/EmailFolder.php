@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EmailBundle\Entity;
 
+use Oro\Bundle\EmailBundle\Entity\Util\EmailUtil;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\Type;
@@ -44,6 +45,15 @@ class EmailFolder
     /**
      * @var string
      *
+     * @ORM\Column(name="full_name", type="string", length=255)
+     * @Soap\ComplexType("string")
+     * @Type("string")
+     */
+    protected $fullName;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="type", type="string", length=10)
      * @Soap\ComplexType("string")
      * @Type("string")
@@ -66,6 +76,13 @@ class EmailFolder
      * @Exclude
      */
     protected $emails;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="synchronized", type="datetime", nullable=true)
+     */
+    protected $synchronizedAt;
 
     public function __construct()
     {
@@ -101,6 +118,29 @@ class EmailFolder
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get full name of this folder
+     *
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->fullName;
+    }
+
+    /**
+     * Set full name of this folder
+     *
+     * @param string $fullName
+     * @return $this
+     */
+    public function setFullName($fullName)
+    {
+        $this->fullName = $fullName;
 
         return $this;
     }
@@ -172,6 +212,29 @@ class EmailFolder
         $this->emails[] = $email;
 
         $email->setFolder($this);
+
+        return $this;
+    }
+
+    /**
+     * Get date/time when emails in this folder were synchronized
+     *
+     * @return \DateTime
+     */
+    public function getSynchronizedAt()
+    {
+        return $this->synchronizedAt;
+    }
+
+    /**
+     * Set date/time when emails in this folder were synchronized
+     *
+     * @param \DateTime $synchronizedAt
+     * @return EmailOrigin
+     */
+    public function setSynchronizedAt($synchronizedAt)
+    {
+        $this->synchronizedAt = $synchronizedAt;
 
         return $this;
     }

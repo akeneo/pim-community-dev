@@ -15,6 +15,9 @@ class GroupType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /**
+         * Roles was commended due a task BAP-1675
+         */
         $builder
             ->add(
                 'name',
@@ -23,7 +26,7 @@ class GroupType extends AbstractType
                     'required' => true,
                 )
             )
-            ->add(
+            /*->add(
                 'roles',
                 'entity',
                 array(
@@ -38,7 +41,7 @@ class GroupType extends AbstractType
                     'required' => true,
                     'multiple' => true,
                 )
-            )
+            )*/
             ->add(
                 'appendUsers',
                 'oro_entity_identifier',

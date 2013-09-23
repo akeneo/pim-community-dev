@@ -375,6 +375,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                             this.showOutdatedMessage(url);
                         }
                     }, this);
+                    options.error = _.bind(this.showOutdatedMessage, this, url);
                     collection.fetch(options);
                 }
             }

@@ -37,7 +37,9 @@ function(AbstractAction) {
          * Execute refresh collection
          */
         execute: function() {
+            this.datagrid.setAdditionalParameter('refresh', true);
             this.collection.fetch();
+            this.datagrid.removeAdditionalParameter('refresh');
         }
     });
 });

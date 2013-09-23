@@ -9,7 +9,7 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
@@ -31,9 +31,9 @@ class EmailNotificationController extends RestController
      * )
      * @Acl(
      *      id="oro_notification_emailnotification_remove",
-     *      name="Delete notification rule",
-     *      description="Delete notification rule",
-     *      parent="oro_notification_emailnotification"
+     *      type="entity",
+     *      class="OroNotificationBundle:EmailNotification",
+     *      permission="DELETE"
      * )
      * @return Response
      */

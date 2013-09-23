@@ -7,6 +7,7 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.1.*",
+        "ass/xmlsecurity": "dev-master",
         "oro/entity-bundle": "dev-master",
         "oro/entity-config-bundle": "dev-master"
     },
