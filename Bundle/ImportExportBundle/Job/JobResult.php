@@ -32,7 +32,7 @@ class JobResult
     protected $errors = array();
 
     /**
-     * @return ContextInterface
+     * @return ContextInterface|null
      */
     public function getContext()
     {

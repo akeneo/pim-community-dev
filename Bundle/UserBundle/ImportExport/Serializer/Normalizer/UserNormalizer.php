@@ -26,9 +26,17 @@ class UserNormalizer extends AbstractContextModeAwareNormalizer
      */
     protected function normalizeShort($object, $format = null, array $context = array())
     {
+        $firstName = $object->getFirstname();
+        $lastName = $object->getLastname();
+
+        $fullName = null;
+        if ($firstName || $lastName) {
+            $fullName = trim(sprintf('%s %s', $object->getFirstname(), $object->getLastname()));
+        }
+
         return array(
-            'firstName' => $object->getFirstname(),
-            'lastName' => $object->getLastname(),
+            'username' => $object->getUsername(),
+            'fullName' => $fullName,
         );
     }
 
@@ -44,11 +52,13 @@ class UserNormalizer extends AbstractContextModeAwareNormalizer
     protected function denormalizeShort($data, $class, $format = null, array $context = array())
     {
         $result = new User();
-        if (!empty($data['firstName'])) {
-            $result->setFirstname($data['firstName']);
+        if (!empty($data['username'])) {
+            $result->setUsername($data['username']);
         }
-        if (!empty($data['lastName'])) {
-            $result->setLastname($data['lastName']);
+        if (!empty($data['fullName'])) {
+            list($firstName, $lastName) = explode(' ', $data['fullName'], 2);
+            $result->setFirstname($firstName);
+            $result->setLastname($lastName);
         }
         return $result;
     }
