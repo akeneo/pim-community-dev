@@ -199,9 +199,9 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         foreach ($this->getAttributes() as $attribute) {
             $group = $attribute->getVirtualGroup();
             if ($group->getSortOrder() < 0) {
-                $lastGroups[] = $group;
+                $lastGroups[$group->getId()] = $group;
             } else {
-                $firstGroups[] = $group;
+                $firstGroups[$group->getId()] = $group;
             }
         }
 
