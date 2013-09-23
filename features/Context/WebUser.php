@@ -1090,6 +1090,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iDisableTheProducts()
     {
         $this->getPage('Batch ChangeStatus')->disableProducts()->next();
+        $this->getPage('Batch ChangeStatus')->confirm();
         $this->wait();
     }
 
@@ -1107,6 +1108,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iEnableTheProducts()
     {
         $this->getPage('Batch ChangeStatus')->enableProducts()->next();
+        $this->getPage('Batch ChangeStatus')->confirm();
         $this->wait();
     }
 
