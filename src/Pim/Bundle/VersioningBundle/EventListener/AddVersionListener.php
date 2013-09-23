@@ -223,7 +223,8 @@ class AddVersionListener implements EventSubscriber
                 }
             }
 
-        } elseif ($entity instanceof VersionableInterface) {
+        }
+        if ($entity instanceof VersionableInterface) {
             $this->addPendingVersioning($entity);
 
         } elseif ($entity instanceof ProductValueInterface) {
