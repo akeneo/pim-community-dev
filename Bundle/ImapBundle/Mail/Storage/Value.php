@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\ImapBundle\Mail\Storage;
 
+use Oro\Bundle\EmailBundle\Decoder\ContentDecoder;
+
 class Value
 {
     /**
@@ -32,6 +34,23 @@ class Value
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * Gets the decoded value
+     *
+     * @param string $toEncoding The type of encoding that the content is being converted to.
+     *                           Defaults to 'UTF-8'
+     * @return string
+     */
+    public function getDecodedValue($toEncoding = 'UTF-8')
+    {
+        return ContentDecoder::decode(
+            $this->value,
+            null,
+            $this->encoding,
+            $toEncoding
+        );
     }
 
     /**

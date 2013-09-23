@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\EmailBundle\Controller;
 
+use Oro\Bundle\EmailBundle\Decoder\ContentDecoder;
+use Oro\Bundle\EmailBundle\Entity\Util\EmailUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,10 +55,14 @@ class EmailController extends Controller
         /** @var $emailRepository EmailRepository */
         $emailRepository = $this->getDoctrine()->getRepository('OroEmailBundle:Email');
 
-        $emails = $this->extractEmailAddresses($emails);
-        $rows = empty($emails)
-            ? array()
-            : $emailRepository->getEmailListQueryBuilder($emails)->getQuery()->execute();
+        $emails = EmailUtil::extractEmailAddresses($emails);
+        if (empty($emails)) {
+            $qb = $emailRepository->createEmailListForAddressesQueryBuilder();
+            $qb->setParameter(EmailRepository::EMAIL_ADDRESSES, $emails);
+            $rows = $qb->getQuery()->execute();
+        } else {
+            $rows = array();
+        }
 
         return array(
             'entities' => $rows
@@ -85,10 +91,13 @@ class EmailController extends Controller
         $response = new Response();
         $response->headers->set('Content-Type', $entity->getContentType());
         $response->headers->set('Content-Disposition', sprintf('attachment; filename="%s"', $entity->getFileName()));
-        $response->headers->set('Content-Transfer-Encoding', $entity->getContent()->getContentTransferEncoding());
         $response->headers->set('Pragma', 'no-cache');
         $response->headers->set('Expires', '0');
-        $response->setContent($entity->getContent()->getValue());
+        $content = ContentDecoder::decode(
+            $entity->getContent()->getValue(),
+            $entity->getContent()->getContentTransferEncoding()
+        );
+        $response->setContent($content);
 
         return $response;
     }
@@ -101,40 +110,5 @@ class EmailController extends Controller
     protected function getEmailCacheManager()
     {
         return $this->container->get('oro_email.email.cache.manager');
-    }
-
-    /**
-     * Extract email addresses from the given argument.
-     * Always return an array, even if no any email is given.
-     *
-     * @param $emails
-     * @return string[]
-     * @throws \InvalidArgumentException
-     */
-    protected function extractEmailAddresses($emails)
-    {
-        if (is_string($emails)) {
-            return empty($emails)
-                ? array()
-                : array($emails);
-        }
-        if (!is_array($emails) && !($emails instanceof \Traversable)) {
-            throw new \InvalidArgumentException('The emails argument must be a string, array or collection.');
-        }
-
-        $result = array();
-        foreach ($emails as $email) {
-            if (is_string($email)) {
-                $result[] = $email;
-            } elseif ($email instanceof EmailInterface) {
-                $result[] = $email->getEmail();
-            } else {
-                throw new \InvalidArgumentException(
-                    'Each item of the emails collection must be a string or an object of EmailInterface.'
-                );
-            }
-        }
-
-        return $result;
     }
 }
