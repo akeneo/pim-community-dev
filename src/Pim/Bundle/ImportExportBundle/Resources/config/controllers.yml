@@ -15,7 +15,7 @@ services:
             - '@oro_batch.connectors'
             - export
             - '%kernel.root_dir%'
-
+            - '%kernel.environment%'
 
     pim_import_export.controller.import:
         parent: pim_catalog.controller.abstract_doctrine
@@ -26,6 +26,7 @@ services:
             - '@oro_batch.connectors'
             - import
             - '%kernel.root_dir%'
+            - '%kernel.environment%'
 
     pim_import_export.controller.export_report:
         parent: pim_catalog.controller.abstract_doctrine
