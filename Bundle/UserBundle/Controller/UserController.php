@@ -56,7 +56,7 @@ class UserController extends Controller
      */
     public function updateProfileAction()
     {
-        return $this->updateUser($this->getUser(), 'oro_user_profile_update', array('route' => 'oro_user_profile_view'));
+        return $this->update($this->getUser(), 'oro_user_profile_update', array('route' => 'oro_user_profile_view'));
     }
 
     /**
@@ -98,7 +98,7 @@ class UserController extends Controller
     {
         $user = $this->get('oro_user.manager')->createFlexible();
 
-        return $this->updateUser($user);
+        return $this->update($user);
     }
 
     /**
@@ -115,7 +115,7 @@ class UserController extends Controller
      */
     public function updateAction(User $entity)
     {
-        return $this->updateUser($entity);
+        return $this->update($entity);
     }
 
     /**
@@ -142,7 +142,7 @@ class UserController extends Controller
      * @param array $viewRoute
      * @return array
      */
-    protected function updateUser(User $entity, $updateRoute = '', $viewRoute = array())
+    protected function update(User $entity, $updateRoute = '', $viewRoute = array())
     {
         if ($this->get('oro_user.form.handler.user')->process($entity)) {
             $this->get('session')->getFlashBag()->add('success', 'User successfully saved');

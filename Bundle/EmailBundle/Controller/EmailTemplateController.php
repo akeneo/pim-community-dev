@@ -58,27 +58,7 @@ class EmailTemplateController extends Controller
      */
     public function updateAction(EmailTemplate $entity, $isClone = false)
     {
-        if ($this->get('oro_email.form.handler.emailtemplate')->process($entity)) {
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                $this->get('translator')->trans('oro.email.controller.emailtemplate.saved.message')
-            );
-
-            return $this->get('oro_ui.router')->actionRedirect(
-                array(
-                    'route' => 'oro_email_emailtemplate_update',
-                    'parameters' => array('id' => $entity->getId()),
-                ),
-                array(
-                    'route' => 'oro_email_emailtemplate_index',
-                )
-            );
-        }
-
-        return array(
-            'form'    => $this->get('oro_email.form.emailtemplate')->createView(),
-            'isClone' => $isClone
-        );
+        return $this->update($entity, $isClone);
     }
 
     /**
@@ -93,7 +73,7 @@ class EmailTemplateController extends Controller
      */
     public function createAction()
     {
-        return $this->updateAction(new EmailTemplate());
+        return $this->update(new EmailTemplate());
     }
 
     /**
@@ -103,7 +83,7 @@ class EmailTemplateController extends Controller
      */
     public function cloneAction(EmailTemplate $entity)
     {
-        return $this->updateAction(clone $entity, true);
+        return $this->update(clone $entity, true);
     }
 
     /**
@@ -143,6 +123,36 @@ class EmailTemplateController extends Controller
         return array(
             'subject' => $subjectRendered,
             'content' => $templateRendered,
+        );
+    }
+
+    /**
+     * @param EmailTemplate $entity
+     * @param bool $isClone
+     * @return array
+     */
+    protected function update(EmailTemplate $entity, $isClone = false)
+    {
+        if ($this->get('oro_email.form.handler.emailtemplate')->process($entity)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('oro.email.controller.emailtemplate.saved.message')
+            );
+
+            return $this->get('oro_ui.router')->actionRedirect(
+                array(
+                    'route' => 'oro_email_emailtemplate_update',
+                    'parameters' => array('id' => $entity->getId()),
+                ),
+                array(
+                    'route' => 'oro_email_emailtemplate_index',
+                )
+            );
+        }
+
+        return array(
+            'form'    => $this->get('oro_email.form.emailtemplate')->createView(),
+            'isClone' => $isClone
         );
     }
 }
