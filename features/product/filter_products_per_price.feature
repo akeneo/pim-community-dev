@@ -41,7 +41,6 @@ Feature: Filter products per price
     And the grid should contain 2 elements
     And I should see products postit and book
 
-  @skip
   Scenario: Successfully filter per Price
     Given I am on the products page
     When I make visible the filter "Price"
