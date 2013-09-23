@@ -125,6 +125,7 @@ var jsfv = (function () {
             if (field.parent().filter('.error').length) {
                 field = field.parent();
             }
+            field.siblings('.validation-faled').remove();
             field.removeClass('error').parent().filter('.controls').removeClass('validation-error');
         },
 {% endblock %}
@@ -136,13 +137,10 @@ var jsfv = (function () {
             if (field.parent().filter('.selector').length || field.parent().filter('.uploader').length) {
                 target = field.parent();
             }
-            if (target.siblings('a.validation-tooltip').length == 0)  {
-                $('<a class="validation-tooltip" data-placement="top" data-toggle="tooltip"></a>').insertAfter(target);
+            if (!target.siblings('.validation-faled').length) {
+                $('<span class="validation-faled"></span>').insertAfter(target);
             }
-            target.siblings('a.validation-tooltip')
-                        .attr('data-original-title', errorMessage)
-                        .html('data-original-title')
-                        .tooltip();
+            target.siblings('.validation-faled').text(errorMessage);
             target.addClass('error').parent().filter('.controls').addClass('validation-error');
         },
 {% endblock %}
