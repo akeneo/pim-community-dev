@@ -39,6 +39,27 @@ class UserController extends Controller
     }
 
     /**
+     * @Route("/profile/view", name="oro_user_profile_view")
+     * @Template("OroUserBundle:User:view.html.twig")
+     */
+    public function viewProfileAction()
+    {
+        return array(
+            'entity' => $this->getUser(),
+            'editRoute' => 'oro_user_profile_update'
+        );
+    }
+
+    /**
+     * @Route("/profile/edit", name="oro_user_profile_update")
+     * @Template("OroUserBundle:User:update.html.twig")
+     */
+    public function updateProfileAction()
+    {
+        return $this->updateUser($this->getUser(), 'oro_user_profile_update', array('route' => 'oro_user_profile_view'));
+    }
+
+    /**
      * @Route("/apigen/{id}", name="oro_user_apigen", requirements={"id"="\d+"})
      * @AclAncestor("oro_user_user_update")
      */
@@ -77,7 +98,7 @@ class UserController extends Controller
     {
         $user = $this->get('oro_user.manager')->createFlexible();
 
-        return $this->updateAction($user);
+        return $this->updateUser($user);
     }
 
     /**
@@ -94,25 +115,7 @@ class UserController extends Controller
      */
     public function updateAction(User $entity)
     {
-        if ($this->get('oro_user.form.handler.user')->process($entity)) {
-            $this->get('session')->getFlashBag()->add('success', 'User successfully saved');
-
-            return $this->get('oro_ui.router')->actionRedirect(
-                array(
-                    'route' => 'oro_user_update',
-                    'parameters' => array('id' => $entity->getId()),
-                ),
-                array(
-                    'route' => 'oro_user_view',
-                    'parameters' => array('id' => $entity->getId())
-                )
-            );
-        }
-
-        return array(
-            'form' => $this->get('oro_user.form.user')->createView(),
-            'businessUnits' => $this->getBusinessUnitManager()->getBusinessUnitsTree($entity)
-        );
+        return $this->updateUser($entity);
     }
 
     /**
@@ -131,6 +134,41 @@ class UserController extends Controller
         return 'json' == $this->getRequest()->getRequestFormat()
             ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
             : $this->render('OroUserBundle:User:index.html.twig', array('datagrid' => $view));
+    }
+
+    /**
+     * @param User $entity
+     * @param string $updateRoute
+     * @param array $viewRoute
+     * @return array
+     */
+    protected function updateUser(User $entity, $updateRoute = '', $viewRoute = array())
+    {
+        if ($this->get('oro_user.form.handler.user')->process($entity)) {
+            $this->get('session')->getFlashBag()->add('success', 'User successfully saved');
+
+            if (count($viewRoute)) {
+                $closeButtonRoute = $viewRoute;
+            } else {
+                $closeButtonRoute = array(
+                    'route' => 'oro_user_view',
+                    'parameters' => array('id' => $entity->getId())
+                );
+            }
+            return $this->get('oro_ui.router')->actionRedirect(
+                array(
+                    'route' => 'oro_user_update',
+                    'parameters' => array('id' => $entity->getId()),
+                ),
+                $closeButtonRoute
+            );
+        }
+
+        return array(
+            'form' => $this->get('oro_user.form.user')->createView(),
+            'businessUnits' => $this->getBusinessUnitManager()->getBusinessUnitsTree($entity),
+            'editRoute' => $updateRoute
+        );
     }
 
     /**

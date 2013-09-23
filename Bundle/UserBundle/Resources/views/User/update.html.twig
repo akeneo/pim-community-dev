@@ -5,7 +5,11 @@
 {% set title = form.vars.value.id ? form.vars.value.fullname(format)|default('N/A') ~ ' - ' ~ 'Update User'|trans : 'New User'|trans %}
 {% oro_title_set({params : {"%username%": form.vars.value.fullname(format)|default('N/A') }}) %}
 {% set entityClass = 'Oro_Bundle_UserBundle_Entity_User' %}
-{% set formAction = form.vars.value.id ? path('oro_user_update', { id: form.vars.value.id}) : path('oro_user_create') %}
+{% if editRoute %}
+    {% set formAction = path(editRoute) %}
+{% else %}
+    {% set formAction = form.vars.value.id ? path('oro_user_update', { id: form.vars.value.id}) : path('oro_user_create') %}
+{% endif %}
 {% block head_script %}
     <script type="text/javascript">
         require(['jquery', 'jquery.jstree', 'jstree/jquery.hotkeys'],
