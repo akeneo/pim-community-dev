@@ -21,8 +21,10 @@
     </div>
     <div class="extra-info">
         <% _.each(extraData, function(item) { %>
-        <% if (item.value.length == 0) { item.value = _.__('N/A'); }%>
-        <div><%= _.__(item.label) %>: <%= item.value %></div>
+        <% if (!_.isUndefined(item.label)) { %>
+            <% if (!item.hasOwnProperty('value') || !item.value) { item.value = _.__('N/A'); } %>
+            <div><%= _.__(item.label) %>: <%= item.value %></div>
+        <% } %>
         <% }); %>
     </div>
 </div>
