@@ -169,7 +169,7 @@ class FormTypeExtension extends AbstractTypeExtension
                     'data' => $owner ? $owner->getName() : '',
                     'mapped' => false,
                     'required' => false,
-                    'label' => $this->fieldLabe
+                    'label' => $this->fieldLabel
                 )
             );
         }
