@@ -93,7 +93,7 @@ class JobExecutor
             $jobResult->addError($exception->getMessage());
         }
 
-        // update job execution
+        // update job instance
         $this->entityManager->detach($jobInstance);
         $jobInstance = $this->updateJobInstance($jobInstance);
         $this->entityManager->persist($jobInstance);
@@ -151,21 +151,24 @@ class JobExecutor
      */
     protected function updateJobInstance(JobInstance $jobInstance)
     {
-        /** @var JobInstance $persistedJobInstance */
-        $persistedJobInstance = $this->getJobInstanceRepository()->find($jobInstance->getId());
-        if ($persistedJobInstance) {
-            $jobExecutions = $jobInstance->getJobExecutions()->getValues();
-            $persistedJobInstance->getJobExecutions()->clear();
+        $jobInstanceId = $jobInstance->getId();
+        if ($jobInstanceId) {
+            /** @var JobInstance $persistedJobInstance */
+            $persistedJobInstance = $this->getJobInstanceRepository()->find($jobInstanceId);
+            if ($persistedJobInstance) {
+                $jobExecutions = $jobInstance->getJobExecutions()->getValues();
+                $persistedJobInstance->getJobExecutions()->clear();
 
-            foreach ($jobExecutions as $jobExecution) {
-                $clonedJobExecution = $this->cloneJobExecution($jobExecution);
-                $clonedJobExecution->setJobInstance($persistedJobInstance);
-                $persistedJobInstance->addJobExecution($clonedJobExecution);
+                foreach ($jobExecutions as $jobExecution) {
+                    $clonedJobExecution = $this->cloneJobExecution($jobExecution);
+                    $clonedJobExecution->setJobInstance($persistedJobInstance);
+                    $persistedJobInstance->addJobExecution($clonedJobExecution);
+                }
+
+                $jobInstance = $persistedJobInstance;
+            } else {
+                $jobInstance = $this->cloneJobInstance($jobInstance);
             }
-
-            $jobInstance = $persistedJobInstance;
-        } else {
-            $jobInstance = $this->cloneJobInstance($jobInstance);
         }
 
         return $jobInstance;
