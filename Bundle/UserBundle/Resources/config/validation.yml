@@ -41,7 +41,7 @@ Oro\Bundle\UserBundle\Entity\User:
 
 Oro\Bundle\UserBundle\Entity\Role:
     constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: role
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: label
     properties:
         label:
             - NotBlank:     ~

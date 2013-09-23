@@ -71,7 +71,6 @@ services:
             - %oro_security.acl.privilege_repository.class%
 
     oro_security.acl.sid_manager:
-        public: false
         class: %oro_security.acl.sid_manager.class%
         arguments:
             - @?security.acl.dbal.provider
