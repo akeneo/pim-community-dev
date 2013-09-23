@@ -95,6 +95,11 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
     protected $current = null;
 
     /**
+     * @var int
+     */
+    protected $firstResult = null;
+
+    /**
      * @param Query|QueryBuilder $source
      */
     public function __construct($source)
@@ -112,6 +117,17 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
             unset($this->source);
         }
         return $this->query;
+    }
+
+    /**
+     * @return int
+     */
+    protected function getFirstResult()
+    {
+        if (null === $this->firstResult) {
+            $this->firstResult = (int)$this->query->getFirstResult();
+        }
+        return $this->firstResult;
     }
 
     /**
@@ -223,7 +239,6 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
         $this->offset++;
 
         if (!isset($this->rows[$this->offset]) && !$this->loadNextPage()) {
-            $this->offset--;
             return $this->current = null;
         }
 
@@ -249,7 +264,7 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
         $this->offset = 0;
 
         $pageQuery = $this->getQuery();
-        $pageQuery->setFirstResult($this->bufferSize * $this->page + $this->getQuery()->getFirstResult());
+        $pageQuery->setFirstResult($this->bufferSize * $this->page + $this->getFirstResult());
         $pageQuery->setMaxResults($this->bufferSize);
 
         $this->rows = $pageQuery->execute($this->parameters, $this->hydrationMode);
