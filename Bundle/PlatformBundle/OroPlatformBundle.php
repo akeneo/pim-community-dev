@@ -38,6 +38,7 @@ class OroPlatformBundle extends Bundle
             new \Oro\Bundle\EntityBundle\OroEntityBundle(),
             new \Oro\Bundle\EntityConfigBundle\OroEntityConfigBundle(),
             new \Oro\Bundle\EntityExtendBundle\OroEntityExtendBundle(),
+            new \Oro\Bundle\ImapBundle\OroImapBundle(),
             new \Oro\Bundle\CronBundle\OroCronBundle(),
             new \Oro\Bundle\WorkflowBundle\OroWorkflowBundle(),
             new \Oro\Bundle\SyncBundle\OroSyncBundle(),
