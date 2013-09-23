@@ -21,9 +21,9 @@ Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel:
                         - date
                         - text
                         - float
-                        - ref-one-to-many
-                        - ref-many-to-one
-                        - ref-many-to-many
+                        - oneToMany
+                        - manyToOne
+                        - manyToMany
                     message:  Choose a valid Data Type.
 
 Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel:

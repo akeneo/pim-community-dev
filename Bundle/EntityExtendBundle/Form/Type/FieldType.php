@@ -10,18 +10,18 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class FieldType extends AbstractType
 {
     protected $types = array(
-        'string'           => 'String',
-        'integer'          => 'Integer',
-        'smallint'         => 'SmallInt',
-        'bigint'           => 'BigInt',
-        'boolean'          => 'Boolean',
-        'decimal'          => 'Decimal',
-        'date'             => 'Date',
-        'text'             => 'Text',
-        'float'            => 'Float',
-        'ref-one-to-many'  => 'Relation one to many',
-        'ref-many-to-one'  => 'Relation many to one',
-        'ref-many-to-many' => 'Relation many to many',
+        'string'     => 'String',
+        'integer'    => 'Integer',
+        'smallint'   => 'SmallInt',
+        'bigint'     => 'BigInt',
+        'boolean'    => 'Boolean',
+        'decimal'    => 'Decimal',
+        'date'       => 'Date',
+        'text'       => 'Text',
+        'float'      => 'Float',
+        'oneToMany'  => 'Relation one to many',
+        'manyToOne'  => 'Relation many to one',
+        //'manyToMany' => 'Relation many to many',
     );
 
     /**

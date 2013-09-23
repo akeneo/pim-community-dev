@@ -223,4 +223,17 @@ class EntitiesController extends Controller
 
         return new JsonResponse('', Codes::HTTP_OK);
     }
+
+    /**
+     * @Route(
+     *      "/search/",
+     *      name="oro_entity_search",
+     *      defaults={}
+     * )
+     * @return JsonResponse
+     */
+    public function searchAction()
+    {
+        return new JsonResponse(array(), Codes::HTTP_OK);
+    }
 }

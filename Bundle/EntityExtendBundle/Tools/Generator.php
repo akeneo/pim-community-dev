@@ -45,7 +45,7 @@ class Generator
 
     /**
      * @param OroEntityManager $em
-     * @param string           $entityCacheDir
+     * @param string $entityCacheDir
      */
     public function __construct(OroEntityManager $em, $entityCacheDir)
     {
@@ -151,19 +151,31 @@ class Generator
         $config      = $this->extendManager->getConfigProvider()->getConfig($className);
         $extendClass = $config->get('extend_class');
 
+        //var_dump($config, $extendClass);
+        //die;
+
         $yml = array(
             $extendClass => array(
                 'type'       => 'mappedSuperclass',
-                'fields'     => array(),
-                'oneToMany'  => array(),
-                'manyToOne'  => array(),
-                'manyToMany' => array(),
+                /*
+                'type'             => 'entity',
+                'table'            => null,
+                'inheritanceType'  => 'SINGLE_TABLE',
+                'discriminatorMap' => array(
+                ),
+                */
+
+                'fields'           => array(),
+                'oneToMany'        => array(),
+                'manyToOne'        => array(),
+                'manyToMany'       => array(),
             )
         );
 
         $ymlPathDist = $this->entityCacheDir . '/' . str_replace('\\', '/', $extendClass) . '.orm.yml';
 
         $this->generateYamlMethods($extendClass, $className, $yml);
+        $this->generateYamlRelations($extendClass, $className, $yml);
 
         file_put_contents($ymlPathDist, Yaml::dump($yml, 5));
     }
@@ -303,6 +315,30 @@ class Generator
     }
 
     /**
+     * @param $extendClassName
+     * @param $className
+     * @param $yml
+     */
+    protected function generateYamlRelations($extendClassName, $className, &$yml)
+    {
+        $configProvider = $this->extendManager->getConfigProvider();
+        if ($fieldIds = $configProvider->getIds($className)) {
+            foreach ($fieldIds as $fieldId) {
+                if (in_array($fieldId->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))) {
+
+                    $fieldName   = self::PREFIX . $fieldId->getFieldName();
+                    $fieldType   = $fieldId->getFieldType();
+                    $fieldConfig = $configProvider->getConfig($className, $fieldId->getFieldName());
+
+                    $yml[$extendClassName][$fieldType][$fieldName]['targetEntity'] = $fieldConfig->get('target_entity');
+                    $yml[$extendClassName][$fieldType][$fieldName]['mappedBy']     = $extendClassName;
+                }
+            }
+        }
+    }
+
+    /**
+     * @param $extendClassName
      * @param $className
      * @param $yml
      */
@@ -311,7 +347,9 @@ class Generator
         $configProvider = $this->extendManager->getConfigProvider();
         if ($fieldIds = $configProvider->getIds($className)) {
             foreach ($fieldIds as $fieldId) {
-                if ($configProvider->getConfigById($fieldId)->is('extend')) {
+                if ($configProvider->getConfigById($fieldId)->is('extend')
+                    && !in_array($fieldId->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))
+                ) {
                     $fieldName = self::PREFIX . $fieldId->getFieldName();
 
                     $yml[$extendClassName]['fields'][$fieldName]['code']     = $fieldName;

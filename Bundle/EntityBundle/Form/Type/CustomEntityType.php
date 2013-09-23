@@ -21,17 +21,22 @@ class CustomEntityType extends AbstractType
      */
     protected $configManager;
 
+    protected $converter;
+
     protected $typeMap = array(
-        'string'   => 'text',
-        'integer'  => 'integer',
-        'smallint' => 'integer',
-        'bigint'   => 'integer',
-        'boolean'  => 'choice',
-        'decimal'  => 'number',
-        'date'     => 'oro_date',
-        'datetime' => 'oro_datetime',
-        'text'     => 'textarea',
-        'float'    => 'number',
+        'string'     => 'text',
+        'integer'    => 'integer',
+        'smallint'   => 'integer',
+        'bigint'     => 'integer',
+        'boolean'    => 'choice',
+        'decimal'    => 'number',
+        'date'       => 'oro_date',
+        'datetime'   => 'oro_datetime',
+        'text'       => 'textarea',
+        'float'      => 'number',
+        'oneToMany'  => 'integer',
+        'manyToOne'  => 'oro_user_select',
+        'manyToMany' => 'integer',
     );
 
     /**
@@ -40,6 +45,9 @@ class CustomEntityType extends AbstractType
     public function __construct(ConfigManager $configManager)
     {
         $this->configManager = $configManager;
+        $this->converter     = function () {
+
+        };
     }
 
     /**
@@ -64,6 +72,8 @@ class CustomEntityType extends AbstractType
             if ($formConfig->get('is_enabled')
                 && !$extendConfig->is('is_deleted')
                 && $extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)
+                && !$extendConfig->is('state', ExtendManager::STATE_NEW)
+                && !$extendConfig->is('state', ExtendManager::STATE_DELETED)
                 && !in_array($formConfig->getId()->getFieldType(), array('ref-one', 'ref-many'))
                 && $builder->getForm()->getName() != $this->getName()
             ) {
@@ -86,11 +96,23 @@ class CustomEntityType extends AbstractType
                     $options['choices']     = array('No', 'Yes');
                 }
 
-                $builder->add(
-                    Inflector::camelize($fieldConfigId->getFieldName()),
-                    $this->typeMap[$fieldConfigId->getFieldType()],
-                    $options
-                );
+                if (in_array($fieldConfigId->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))) {
+//                    $builder->add(
+//                        $fieldConfigId->getFieldName(),
+//                        'oro_entity_select_type',
+//                        array(
+//                            'data_class' => $extendConfig->get('target_entity'),
+//                            'compound' => true
+//
+//                        )
+//                    );
+                } else {
+                    $builder->add(
+                        Inflector::camelize($fieldConfigId->getFieldName()),
+                        $this->typeMap[$fieldConfigId->getFieldType()],
+                        $options
+                    );
+                }
             }
         }
     }
