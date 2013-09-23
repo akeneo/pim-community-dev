@@ -297,6 +297,22 @@ label, input, button, select, textarea { font-size:13px;}
   text-align:left;
   line-height:1.2em;
 }
+.control-group .controls p.control-label{
+  width: auto;
+}
+.email-field a{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  display: block;
+}
+.opportunity-info .controls p.control-label{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
 .form-horizontal {
   .control-group {
     label.control-label {
@@ -4782,7 +4798,7 @@ disabled look for disabled choices in the results dropdown
           label.control-label { width:120px; }
           .controls {
             margin-left:130px;
-            .control-label { width:155px; }
+            .control-label { width:100%; }
             .tag-view { width:100%; }
           }
         }
@@ -5092,4 +5108,14 @@ iframe.email-body {
 
 .acl-table .a-center {
   text-align: center;
+}
+@media only screen and (max-width: 1340px) {
+  .contact-info-col-set > .row-fluid > .span6{
+    width: 100%;
+    margin-bottom: 13px;
+  }
+
+  .contact-info-col-set > .row-fluid > .span6:last-child{
+    margin-bottom: 0;
+  }
 }
