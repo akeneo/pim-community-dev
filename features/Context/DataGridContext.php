@@ -73,7 +73,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerCategory($code)
     {
-        $category = $this->getCategory($code);
+        $category = $this->getWebUserContext()->getCategory($code);
         $this->getPage('Product index')->clickCategoryFilterLink($category);
         $this->wait();
     }

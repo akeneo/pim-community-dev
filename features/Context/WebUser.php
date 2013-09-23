@@ -1932,7 +1932,7 @@ JS;
      *
      * @return Category
      */
-    private function getCategory($code)
+    public function getCategory($code)
     {
         return $this->getFixturesContext()->getCategory($code);
     }
