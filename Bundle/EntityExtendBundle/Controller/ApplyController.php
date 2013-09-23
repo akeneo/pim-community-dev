@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -48,20 +49,28 @@ class ApplyController extends Controller
      */
     public function updateAction($id)
     {
-        /** @var EntityConfigModel $entity */
-        $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
-
         /** @var KernelInterface $kernel */
         $kernel = $this->get('kernel');
-        $application = new Application($this->get('kernel'));
-        $application->setAutoExit(false);
+
+        $php     = escapeshellarg($this->getPhp());
+        $console = $php . ' ' . escapeshellarg($kernel->getRootDir() . '/console');
+        $env     = $kernel->getEnvironment();
+
+        $commands = array(
+//            'backup'       => new Process(
+//                $php . ' ' . $console . ' oro:entity-extend:backup ' . str_replace(
+//                    '\\',
+//                    '\\\\',
+//                    $entity->getClassName()
+//                ) . ' --env ' . $env
+//            ),
+            'update'       => new Process($console . ' oro:entity-extend:update-config --env ' . $env),
+            'schemaUpdate' => new Process($console . ' doctrine:schema:update --force --env ' . $env),
+            'searchIndex'  => new Process($console . ' oro:search:create-index --env ' . $env),
+        );
 
         // put system in maintenance mode
         $this->get('oro_platform.maintenance')->on();
-
-        $output = new StreamOutput(
-            fopen($kernel->getLogDir() . DIRECTORY_SEPARATOR . 'bap_install.log', 'w+')
-        );
 
         register_shutdown_function(
             function ($mode) {
@@ -70,45 +79,27 @@ class ApplyController extends Controller
             $this->get('oro_platform.maintenance')
         );
 
-//        $application->run(
-//            new ArrayInput(
-//                array(
-//                    'command' => 'oro:entity-extend:backup',
-//                    'entity'  => str_replace('\\', '\\\\', $entity->getClassName()),
-//                )
-//            ),
-//            $output
-//        );
-        $application->run(
-            new ArrayInput(
-                array(
-                    'command' => 'oro:entity-extend:dump',
-                )
-            ),
-            $output
-        );
+        foreach ($commands as $command) {
+            /** @var $command Process */
+            $command->run();
 
-        $kernel->getBundle('OroEntityExtendBundle')->boot();
+            while ($command->isRunning()) {
+                /** wait for previous process */
+            }
 
-        $application->run(
-            new ArrayInput(
-                array(
-                    'command' => 'doctrine:schema:update',
-                    '--force' => true
-                )
-            ),
-            $output
-        );
-        $application->run(
-            new ArrayInput(
-                array(
-                    'command' => 'oro:search:create-index',
-                )
-            )
-            ,
-            $output
-        );
+            $this->get('logger')->error($command->getErrorOutput());
+        }
 
         return $this->redirect($this->generateUrl('oro_entityconfig_index'));
+    }
+
+    protected function getPhp()
+    {
+        $phpFinder = new PhpExecutableFinder();
+        if (!$phpPath = $phpFinder->find()) {
+            throw new \RuntimeException('The php executable could not be found, add it to your PATH environment variable and try again');
+        }
+
+        return $phpPath;
     }
 }

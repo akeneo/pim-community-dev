@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateCommand extends BaseCommand
+class InitCommand extends BaseCommand
 {
     /**
      * Console command configuration
@@ -15,8 +15,8 @@ class UpdateCommand extends BaseCommand
     public function configure()
     {
         $this
-            ->setName('oro:entity-config:update')
-            ->setDescription('EntityConfig configurator updater');
+            ->setName('oro:entity-config:init')
+            ->setDescription('EntityConfig configurator init');
     }
 
     /**

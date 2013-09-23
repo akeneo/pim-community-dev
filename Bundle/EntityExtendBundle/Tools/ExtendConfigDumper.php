@@ -8,6 +8,9 @@ use Symfony\Component\Yaml\Yaml;
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
+use Oro\Bundle\EntityExtendBundle\Entity\EntityConfig;
+use Oro\Bundle\EntityExtendBundle\Entity\Repository\EntityConfigRepository;
+
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory;
 
@@ -15,11 +18,6 @@ class ExtendConfigDumper
 {
     const ENTITY = 'Extend\\Entity\\';
     const PREFIX = 'field_';
-
-    /**
-     * @var string
-     */
-    protected $backupDir;
 
     /**
      * @var string
@@ -33,17 +31,15 @@ class ExtendConfigDumper
 
     /**
      * @param OroEntityManager $em
-     * @param string           $backupDir
      * @param string           $cacheDir
      */
-    public function __construct(OroEntityManager $em, $backupDir, $cacheDir)
+    public function __construct(OroEntityManager $em, $cacheDir)
     {
-        $this->backupDir = $backupDir;
-        $this->cacheDir  = $cacheDir;
-        $this->em        = $em;
+        $this->cacheDir = $cacheDir;
+        $this->em       = $em;
     }
 
-    public function dump()
+    public function updateConfig()
     {
         $this->clear();
 
@@ -55,23 +51,32 @@ class ExtendConfigDumper
             }
         }
 
-        file_put_contents(
-            $this->backupDir . '/dump.yml',
-            Yaml::dump($yml, 6)
-        );
+        if (count($yml)) {
+            /** @var EntityConfigRepository $extendConfigRepository */
+            $extendConfigRepository = $this->em->getRepository(EntityConfig::ENTITY_NAME);
+            $extendConfigRepository->createConfig($yml);
+        }
 
-        /** @var ExtendClassMetadataFactory $metadataFactory */
-        $metadataFactory = $this->em->getMetadataFactory();
-        $metadataFactory->clearCache();
+        $this->clear();
+    }
+
+    public function dump()
+    {
+        /** @var EntityConfigRepository $extendConfigRepository */
+        $extendConfigRepository = $this->em->getRepository(EntityConfig::ENTITY_NAME);
+
+        $config = $extendConfigRepository->getActiveConfig();
+        if ($config) {
+            file_put_contents(
+                $this->cacheDir . '/entity_config.yml',
+                Yaml::dump($config, 6)
+            );
+        }
     }
 
     public function clear()
     {
         $filesystem = new Filesystem();
-        if ($filesystem->exists($this->backupDir . '/dump.yml')) {
-            $filesystem->remove(array($this->backupDir . '/dump.yml'));
-        }
-
         if ($filesystem->exists($this->cacheDir)) {
             $filesystem->remove(array($this->cacheDir));
         }

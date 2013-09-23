@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Tools\Generator;
 
-class UpdateCommand extends ContainerAwareCommand
+class UpdateConfigCommand extends ContainerAwareCommand
 {
     /**
      * Console command configuration
@@ -19,8 +19,8 @@ class UpdateCommand extends ContainerAwareCommand
     public function configure()
     {
         $this
-            ->setName('oro:entity-extend:update')
-            ->setDescription('Generate class and yml for doctrine');
+            ->setName('oro:entity-extend:update-config')
+            ->setDescription('Prepare entity config');
     }
 
     /**
@@ -34,8 +34,9 @@ class UpdateCommand extends ContainerAwareCommand
     {
         $output->writeln($this->getDescription());
 
-        $generator = $this->getContainer()->get('oro_entity_extend.tools.generator');
-        $generator->generateAll();
+        $dumper = $this->getContainer()->get('oro_entity_extend.tools.dumper');
+
+        $dumper->updateConfig();
 
         $output->writeln('Done');
     }

@@ -42,8 +42,7 @@ class DoctrineSubscriber implements EventSubscriber
                     $fieldConfig = $configProvider->getConfig($className, $columnName);
 
                     if ($enabled && $fieldConfig->is('state', ExtendManager::STATE_ACTIVE)) {
-                        $tableName = strtolower(str_replace('\\', '_', $event->getClassMetadata()->getName()));
-                        $indexName = 'oro_' . $tableName . '_' . $columnName;
+                        $indexName = 'oro_idx_' . $columnName;
 
                         $index[$indexName] = array('columns' => array(ExtendConfigDumper::PREFIX . $columnName));
                     }

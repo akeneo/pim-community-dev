@@ -21,7 +21,6 @@ services:
         class:                                              %oro_entity_extend.tools.dumper.class%
         arguments:
             - @doctrine.orm.entity_manager
-            - %kernel.root_dir%/backup
             - %kernel.cache_dir%/entities
 
     oro_entity_extend.listener.config_subscriber:

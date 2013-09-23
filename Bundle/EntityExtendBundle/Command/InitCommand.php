@@ -10,11 +10,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
-class LoadCommand extends ContainerAwareCommand
+class InitCommand extends ContainerAwareCommand
 {
     /**
      * @var ConfigManager
@@ -27,7 +26,7 @@ class LoadCommand extends ContainerAwareCommand
     public function configure()
     {
         $this
-            ->setName('oro:entity-extend:load')
+            ->setName('oro:entity-extend:init')
             ->setDescription('Find description about custom entities and fields');
     }
 
@@ -63,6 +62,7 @@ class LoadCommand extends ContainerAwareCommand
             }
         }
 
+        $this->getContainer()->get('oro_entity_extend.tools.dumper')->clear();
         $this->configManager->clearConfigurableCache();
     }
 
