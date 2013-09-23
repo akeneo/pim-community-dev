@@ -336,6 +336,7 @@ class Grid extends Index
     /**
      * Activate a filter
      * @param string $filterName
+     *
      * @throws \InvalidArgumentException
      */
     private function activateFilter($filterName)
@@ -352,6 +353,7 @@ class Grid extends Index
     /**
      * Deactivate filter
      * @param string $filterName
+     *
      * @throws \InvalidArgumentException
      */
     private function deactivateFilter($filterName)
@@ -368,6 +370,7 @@ class Grid extends Index
     /**
      * Click on a filter in filter management list
      * @param string $filterName
+     *
      * @throws \InvalidArgumentException
      */
     private function clickOnFilterToManage($filterName)
@@ -471,6 +474,7 @@ class Grid extends Index
      * Get column headers
      *
      * @param boolean $withHidden
+     * @param boolean $withActions
      *
      * @return \Behat\Mink\Element\Element
      */
@@ -498,8 +502,6 @@ class Grid extends Index
                 $visibleHeaders[] = $header;
             }
         }
-
-
 
         return $visibleHeaders;
     }

@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Oro\Bundle\UserBundle\Annotation\Acl;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 
 /**

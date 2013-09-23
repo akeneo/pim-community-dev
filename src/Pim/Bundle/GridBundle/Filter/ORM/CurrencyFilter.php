@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\GridBundle\Filter\ORM;
 
-use Oro\Bundle\GridBundle\Field\FieldDescription;
-
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
