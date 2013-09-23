@@ -191,15 +191,15 @@ class AddVersionListener implements EventSubscriber
         }
 
         foreach ($uow->getScheduledEntityDeletions() as $entity) {
-            $this->checkScheduledDeletion($em, $entity);
+            $this->checkScheduledDeletion($entity);
         }
 
         foreach ($uow->getScheduledCollectionDeletions() as $entity) {
-            $this->checkScheduledCollection($em, $entity);
+            $this->checkScheduledCollection($entity);
         }
 
         foreach ($uow->getScheduledCollectionUpdates() as $entity) {
-            $this->checkScheduledCollection($em, $entity);
+            $this->checkScheduledCollection($entity);
         }
     }
 
@@ -255,10 +255,9 @@ class AddVersionListener implements EventSubscriber
     /**
      * Check if a related entity must be versioned due to entity deletion
      *
-     * @param EntityManager $em
-     * @param object        $entity
+     * @param object $entity
      */
-    public function checkScheduledDeletion($em, $entity)
+    public function checkScheduledDeletion($entity)
     {
         if ($entity instanceof AttributeOption) {
             $attribute = $entity->getAttribute();
@@ -269,14 +268,12 @@ class AddVersionListener implements EventSubscriber
     /**
      * Check if an entity must be versioned due to collection changes
      *
-     * @param EntityManager $em
-     * @param object        $entity
+     * @param object $entity
      */
-    public function checkScheduledCollection($em, $entity)
+    public function checkScheduledCollection($entity)
     {
         if ($entity->getOwner() instanceof VersionableInterface) {
             $this->addPendingVersioning($entity->getOwner());
-
         }
     }
 
