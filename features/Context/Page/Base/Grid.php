@@ -390,10 +390,10 @@ class Grid extends Index
     private function clickOnFilterToManage($filterName)
     {
         try {
-            $filter = $this
-            ->getElement('Manage filters')
-            ->find('css', sprintf('label:contains("%s")', $filterName))
-            ->click();
+            $this
+                ->getElement('Manage filters')
+                ->find('css', sprintf('label:contains("%s")', $filterName))
+                ->click();
         } catch (\Exception $e) {
             throw new \InvalidArgumentException(
                 sprintf('Impossible to activate filter "%s"', $filterName)
