@@ -8,7 +8,7 @@ class EmailAddress extends OriginalEmailAddress
 {
     public function __construct($date = null)
     {
-        $this->createdAt = $date;
+        $this->created = $date;
         $this->updated = $date;
     }
 }

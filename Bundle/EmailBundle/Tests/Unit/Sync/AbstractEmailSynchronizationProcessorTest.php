@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EmailBundle\Tests\Unit\Sync;
 
 use Doctrine\ORM\Query;
+use Oro\Bundle\EmailBundle\Tests\Unit\Entity\TestFixtures\TestEmailAddressProxy;
 use Oro\Bundle\EmailBundle\Tests\Unit\Sync\Fixtures\TestEmailSynchronizationProcessor;
 
 class AbstractEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestCase
@@ -45,9 +46,12 @@ class AbstractEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestC
 
     public function testGetKnownEmailAddresses()
     {
+        $emailAddress = new TestEmailAddressProxy();
+        $emailAddress->setEmail('test@test.com');
+
         $q = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
             ->disableOriginalConstructor()
-            ->setMethods(array('getArrayResult'))
+            ->setMethods(array('getResult'))
             ->getMockForAbstractClass();
         $qb = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
             ->disableOriginalConstructor()
@@ -62,11 +66,15 @@ class AbstractEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestC
 
         $qb->expects($this->once())
             ->method('select')
-            ->with('a.email')
+            ->with('partial a.{id, email, updated}')
             ->will($this->returnValue($qb));
         $qb->expects($this->once())
             ->method('where')
             ->with('a.hasOwner = ?1')
+            ->will($this->returnValue($qb));
+        $qb->expects($this->once())
+            ->method('orderBy')
+            ->with('a.updated', 'DESC')
             ->will($this->returnValue($qb));
         $qb->expects($this->once())
             ->method('setParameter')
@@ -76,8 +84,8 @@ class AbstractEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestC
             ->method('getQuery')
             ->will($this->returnValue($q));
         $q->expects($this->once())
-            ->method('getArrayResult')
-            ->will($this->returnValue(array(array('email' => 'test@test.com'))));
+            ->method('getResult')
+            ->will($this->returnValue(array($emailAddress)));
 
         $this->emailAddressManager->expects($this->once())
             ->method('getEmailAddressRepository')
@@ -85,6 +93,7 @@ class AbstractEmailSynchronizationProcessorTest extends \PHPUnit_Framework_TestC
             ->will($this->returnValue($repo));
 
         $result = $this->processor->callGetKnownEmailAddresses();
-        $this->assertEquals(array('test@test.com'), $result);
+        $this->assertCount(1, $result);
+        $this->assertEquals('test@test.com', $result[0]->getEmail());
     }
 }
