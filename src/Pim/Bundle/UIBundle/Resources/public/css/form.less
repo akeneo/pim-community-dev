@@ -215,6 +215,10 @@ th label {
   background-color: @backgroundColor-white;
 }
 
+i.remove-attribute {
+  cursor: pointer;
+}
+
 /* bootstrapSwitch */
 .has-switch {
   margin-right: 3px;
@@ -973,9 +977,9 @@ button.pimmultiselect {
   height: @buttonHeight;
   padding: 0 10px;
   line-height: @buttonHeight;
-  color: @textColor;
+  color: @textColor + #222;
   &:hover {
-    color: @textColor;
+    color: @textColor + #222;
   }
 }
 .pimmultiselect.ui-multiselect-menu {
@@ -1023,6 +1027,9 @@ button.pimmultiselect {
       margin: 5px;
     }
   }
+}
+.ui-multiselect-optgroup-label a:hover {
+  color: @textColor;
 }
 
 ul.medias label.remove-media {
