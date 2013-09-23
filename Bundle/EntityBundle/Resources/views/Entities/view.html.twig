@@ -3,7 +3,7 @@
 {% oro_title_set({params : {"%entityName%": 'Item #'~entity.id|default('N/A') }}) %}
 
 {% block navButtons %}
-    {% if resource_granted('oro_user_user_update') %}
+    {% if resource_granted('EDIT', 'entity:'~entity_class) %}
         {{ UI.button({'path' : path('oro_entity_update', { 'entity_id': parent, id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
     {% endif %}
 {% endblock navButtons %}
