@@ -58,23 +58,30 @@
         $('.export-btn').on('click', function(e) {
             e.preventDefault();
 
-            Messanger.notificationFlashMessage('info', {{ 'Export started, please wait...'|trans|json_encode|raw }});
+            var exportStartedMessage = Messanger.notificationFlashMessage(
+                'info',
+                {{ 'Export started, please wait...'|trans|json_encode|raw }},
+                {delay: 0}
+            );
 
             $.getJSON(this.href, function(data) {
-                if (data.messages.length) {
-                    for (var i = 0; i < data.messages.length; i++) {
-                        Messanger.notificationFlashMessage(data.messages[i].type, data.messages[i].message);
-                    }
-                }
+                exportStartedMessage.close();
                 if (data.success) {
-                    $('<iframe/>', {src: data.url}).hide().appendTo('body');
+                    var $successMessage = __(
+                        'Export performed successfully, {{'{{ count }}'}} entities were exported.',
+                        {'count': data.readsCount}
+                    );
+                    var resultFileLink = '<a href="' + data.url + '" target="_blank">' + __('Download result file') + '</a>';
+                    $successMessage += ' ' + resultFileLink;
+
+                    Messanger.notificationFlashMessage('success', $successMessage, {delay: 0});
                 } else {
                     var $errorMessage = __(
                         'Export operation fails, {{'{{ count }}'}} error(s) found.',
                         {'count': data.errorsCount}
                     );
-                    var link = '<a href="' + data.url + '">' + __('Download error log') + '</a>';
-                    $errorMessage += ' ' + link;
+                    var errorLogLink = '<a href="' + data.url + '" target="_blank">' + __('Download error log') + '</a>';
+                    $errorMessage += ' ' + errorLogLink;
 
                     Messanger.notificationFlashMessage('error', $errorMessage, {delay: 0});
                 }

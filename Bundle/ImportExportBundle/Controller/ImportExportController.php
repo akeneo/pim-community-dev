@@ -197,8 +197,8 @@ class ImportExportController extends Controller
         );
 
         $url = null;
-        $messages = array();
         $errorsCount = 0;
+        $readsCount = 0;
 
         $jobResult = $this->getJobExecutor()->executeJob(
             ProcessorRegistry::TYPE_EXPORT,
@@ -211,13 +211,10 @@ class ImportExportController extends Controller
                 'oro_importexport_export_download',
                 array('fileName' => basename($fileName))
             );
-            $messages[] = array(
-                'type' => 'success',
-                'message' => $this->get('translator')->trans(
-                    'oro_importexport.export.exported_entities_count %count%',
-                    array('%count%' => $jobResult->getContext()->getReadCount())
-                ),
-            );
+            $context = $jobResult->getContext();
+            if ($context) {
+                $readsCount = $context->getReadCount();
+            }
         } else {
             $url = $this->get('router')->generate(
                 'oro_importexport_error_log',
@@ -230,7 +227,7 @@ class ImportExportController extends Controller
             array(
                 'success' => $jobResult->isSuccessful(),
                 'url' => $url,
-                'messages' => $messages,
+                'readsCount' => $readsCount,
                 'errorsCount' => $errorsCount,
             )
         );
