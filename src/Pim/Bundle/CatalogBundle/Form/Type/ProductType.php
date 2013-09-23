@@ -53,7 +53,8 @@ class ProductType extends FlexibleType
             'family',
             'entity',
             array(
-                'class' => 'PimCatalogBundle:Family'
+                'class'       => 'PimCatalogBundle:Family',
+                'empty_value' => ''
             )
         );
 
