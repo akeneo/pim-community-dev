@@ -31,7 +31,12 @@ class JobExecution
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="StepExecution", mappedBy="jobExecution", cascade={"persist", "remove"})
+     * @ORM\OneToMany(
+     *      targetEntity="StepExecution",
+     *      mappedBy="jobExecution",
+     *      cascade={"persist", "remove"},
+     *      orphanRemoval=true
+     * )
      */
     private $stepExecutions;
 
