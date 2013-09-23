@@ -181,6 +181,15 @@
         )
     %}
 
+    {% set dataBlocks = dataBlocks|merge([{
+            'title': 'Email synchronization settings',
+            'subblocks': [{
+                'title': '',
+                'data': [form_widget(form.imapConfiguration)]
+            }]
+        }])
+    %}
+
     {% set data =
         {
             'formErrors': form_errors(form)? form_errors(form) : null,

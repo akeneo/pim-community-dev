@@ -48,6 +48,8 @@ parameters:
     oro_user.acl.manager.api.class:     Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_security.twig.security_extension:                      Oro\Bundle\SecurityBundle\Twig\OroSecurityExtension
 
+    oro_security.encoder.mcrypt.class:                         Oro\Bundle\SecurityBundle\Encoder\Mcrypt
+
 services:
     oro_security.security_facade:
         class: %oro_security.security_facade.class%
@@ -325,3 +327,7 @@ services:
             - @oro_security.security_facade
         tags:
             - { name: twig.extension }
+
+    oro_security.encoder.mcrypt:
+        class: %oro_security.encoder.mcrypt.class%
+        arguments: [ %kernel.secret% ]

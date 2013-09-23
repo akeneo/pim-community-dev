@@ -3,6 +3,7 @@
 namespace Oro\Bundle\UserBundle\Controller;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -18,6 +19,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 
 use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
+use Oro\Bundle\UserBundle\Datagrid\UserEmailDatagridManager;
 
 class UserController extends Controller
 {
@@ -33,9 +35,26 @@ class UserController extends Controller
      */
     public function viewAction(User $user)
     {
-        return array(
-            'entity' => $user,
-        );
+        /** @var UserEmailDatagridManager $manager */
+        $manager = $this->get('oro_user.email.datagrid_manager');
+        $manager->setUser($user);
+        if (array_key_exists(
+            'refresh',
+            $manager->getDatagrid()->getParameters()->get(ParametersInterface::ADDITIONAL_PARAMETERS)
+        )) {
+            $origin = $user->getImapConfiguration();
+            if ($origin) {
+                $this->get('oro_imap.email_synchronizer')->syncOrigins(array($origin->getId()));
+            }
+        }
+        $view = $manager->getDatagrid()->createView();
+
+        return 'json' == $this->getRequest()->getRequestFormat()
+            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
+            : array(
+                'entity' => $user,
+                'datagrid' => $view,
+            );
     }
 
     /**

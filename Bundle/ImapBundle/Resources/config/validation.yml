@@ -1,0 +1,18 @@
+Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin:
+    properties:
+        host:
+            - NotBlank:     ~
+            - Length:
+                min:        3
+                max:        255
+        port:
+            - NotBlank:     ~
+            - Type:
+                type: integer
+        ssl:
+            - Choice:
+                choices:  [ssl, tsl]
+        user:
+            - NotBlank:     ~
+            - Type:
+                type: string

@@ -2,14 +2,14 @@
 {% import 'JMSJobQueueBundle:Job:macros.html.twig' as macros %}
 {% use 'OroCronBundle:Job:sidebar.html.twig' %}
 
-{% oro_title_set({ params: { '%command%': job.command, '%id%': job.id } }) %}
+{% oro_title_set({ params: { '%command%': entity.command, '%id%': entity.id } }) %}
 
 {% block pageHeader %}
     {% set breadcrumbs = {
-        entity:      job,
+        entity:      entity,
         indexPath:   path('oro_cron_job_index'),
         indexLabel:  'Jobs',
-        entityTitle: 'Job "' ~ job.command ~ '"'
+        entityTitle: 'Job "' ~ entity.command ~ '"'
     }
     %}
     {{ parent() }}
@@ -27,21 +27,21 @@
         <table class="table table-bordered table-striped">
             <tr>
                 <th width="20%">{{ 'oro.cron.header.command'|trans }}</th>
-                <td>{{ macros.command(job) }}</td>
+                <td>{{ macros.command(entity) }}</td>
             </tr>
             <tr>
                 <th>{{ 'oro.cron.header.state'|trans }}</th>
-                <td>{{ macros.state(job) }}</td>
+                <td>{{ macros.state(entity) }}</td>
             </tr>
             <tr>
                 <th>{{ 'oro.cron.header.created'|trans }}</th>
-                <td>{{ macros.ago(job.createdAt) }}</td>
+                <td>{{ macros.ago(entity.createdAt) }}</td>
             </tr>
 
-            {% if job.isRetryJob() %}
+            {% if entity.isRetryJob() %}
             <tr>
                 <th>{{ 'oro.cron.view.original'|trans }}</th>
-                <td><a href="{{ path('oro_cron_job_view', { id: job.originalJob.id }) }}">#{{ job.originalJob.id }}</a> {{ macros.state(job.originalJob) }}</td>
+                <td><a href="{{ path('oro_cron_job_view', { id: entity.originalJob.id }) }}">#{{ entity.originalJob.id }}</a> {{ macros.state(entity.originalJob) }}</td>
             </tr>
             {% endif %}
 
@@ -62,11 +62,11 @@
             </tr>
             {% endif %}
 
-            {% if job.dependencies|length > 0 %}
+            {% if entity.dependencies|length > 0 %}
             <tr>
                 <th>{{ 'oro.cron.view.deps'|trans }}</th>
                 <td>
-                    {%- for dep in job.dependencies -%}
+                    {%- for dep in entity.dependencies -%}
                     <a href="{{ path('oro_cron_job_view', { id: dep.id }) }}" title="{{ dep.command }}{% for arg in dep.args %} {{ arg }}{% endfor %} (ID {{ dep.id }})">{{ dep.command }}</a> {{ macros.state(dep) }}
                         {%- if not loop.last %}, {% endif -%}
                     {%- endfor -%}
@@ -86,7 +86,7 @@
             {% endif %}
         </table>
 
-        {% if job.retryJobs|length > 0 %}
+        {% if entity.retryJobs|length > 0 %}
         <h3>{{ 'oro.cron.header.retry'|trans }}</h3>
 
         <table class="table table-bordered table-striped table-condensed">
@@ -99,7 +99,7 @@
             </thead>
 
             <tbody>
-                {% for retryJob in job.retryJobs %}
+                {% for retryJob in entity.retryJobs %}
                 <tr>
                     <td><a href="{{ path('oro_cron_job_view', { id: retryJob.id }) }}">{{ retryJob.id }}</a></td>
                     <td>{{ macros.ago(retryJob.createdAt) }}</td>
@@ -110,19 +110,19 @@
         </table>
         {% endif %}
 
-        {% if job.output is not empty %}
+        {% if entity.output is not empty %}
         <h3>{{ 'oro.cron.header.output'|trans }}</h3>
-        <pre style="max-height:300px; overflow:auto;">{{ job.output }}</pre>
+        <pre style="max-height:300px; overflow:auto;">{{ entity.output }}</pre>
         {% endif %}
 
-        {% if job.errorOutput is not empty %}
+        {% if entity.errorOutput is not empty %}
         <h3>{{ 'oro.cron.header.error'|trans }}</h3>
-        <pre style="max-height:300px; overflow:auto;">{{ job.errorOutput }}</pre>
+        <pre style="max-height:300px; overflow:auto;">{{ entity.errorOutput }}</pre>
         {% endif %}
 
-        {% if job.stackTrace is not empty %}
+        {% if entity.stackTrace is not empty %}
         <h3>{{ 'oro.cron.header.trace'|trans }}</h3>
-            {% for position, ex in job.stackTrace.toarray %}
+            {% for position, ex in entity.stackTrace.toarray %}
             <div class="stack-trace">
                 <h4>
                     {{ ex.class|abbr_class }}: <small>{{ ex.message|nl2br|format_file_from_text }}</small>&nbsp;
