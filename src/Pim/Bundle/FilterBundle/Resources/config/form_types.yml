@@ -1,5 +1,4 @@
 parameters:
-    pim_filter.form.type.filter.completeness_class: Pim\Bundle\FilterBundle\Form\Type\Filter\CompletenessFilterType
     pim_filter.form.type.filter.currency_class:     Pim\Bundle\FilterBundle\Form\Type\Filter\CurrencyFilterType
     pim_filter.form.type.filter.scope_class:        Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType
 
