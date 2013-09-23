@@ -123,20 +123,23 @@
         emailAddressName - a string contains an email address. It is used if the email address has no owner
         nameFormat - a format string used to render the owner full name
         noLink - determines whether the rendering of a link to the owner view page is forbidden or not. Default value is false
+        knownOnly - if true renders only emails which have an owner; otherwise, all emails. Default value is false
 #}
-{% macro email_address(emailAddress, emailAddressName, nameFormat, noLink) -%}
+{% macro email_address(emailAddress, emailAddressName, nameFormat, noLink, knownOnly) -%}
     {% macro email_address_text(emailAddress, nameFormat) -%}
-        {{ emailAddress.owner.fullname(nameFormat)|default('N/A')|raw }}
+        {{ emailAddress.owner.fullname(nameFormat)|default('N/A') }}
     {%- endmacro -%}
     {% macro email_address_link(emailAddress, nameFormat) -%}
         {#- TODO: we need EntityConfig to get view url for an entity -#}
         <a href="{{ path(emailAddress.owner.class|split('\\')|first|lower ~ '_' ~ emailAddress.owner.class|split('\\')|last|lower ~ '_view', {id:emailAddress.owner.id}) }}">{{ _self.email_address_text(emailAddress, nameFormat) }}</a>
     {%- endmacro -%}
     {% if emailAddress.owner is null -%}
-        {{ emailAddressName|raw }}
+        {% if not knownOnly|default(false) -%}
+            {{ emailAddressName }}
+        {%- endif %}
     {%- else -%}
         {% if noLink|default(false) -%}
-            {{ _self.email_address_text(emailAddress, nameFormat)|raw }}
+            {{ _self.email_address_text(emailAddress, nameFormat) }}
         {%- else -%}
             {{ _self.email_address_link(emailAddress, nameFormat)|raw }}
         {%- endif %}
@@ -149,11 +152,18 @@
         recipients - an array of Oro\Bundle\EmailBundle\Entity\EmailRecipients
         nameFormat - a format string used to render the owner full name
         noLink - determines whether the rendering of a link to the owner view page is forbidden or not. Default value is false
+        knownOnly - if true renders only emails which have an owner; otherwise, all emails. Default value is false
 #}
-{% macro recipient_email_addresses(recipients, nameFormat, noLink) -%}
-    {% set addreses = {} -%}
+{% macro recipient_email_addresses(recipients, nameFormat, noLink, knownOnly) -%}
+    {% set addresses = {} -%}
     {% for recipient in recipients -%}
-        {{ _self.email_address(recipient.emailAddress, recipient.name, nameFormat, noLink) }}
+        {% set address = _self.email_address(recipient.emailAddress, recipient.name, nameFormat, noLink, knownOnly) %}
+        {%- if address|length > 0 -%}
+            {% set addresses = addresses|merge([address]) %}
+        {%- endif %}
+    {%- endfor -%}
+    {% for address in addresses -%}
+        {{ address }}
         {%- if not loop.last %}; {% endif %}
     {%- endfor %}
 {%- endmacro %}
@@ -187,3 +197,12 @@
         <iframe class="email-body{% if cssClass is defined %} {{ cssClass }}{% endif %}" src="{{ path('oro_email_body', {id:emailBody.id}) }}"></iframe>
     {%- endif %}
 {%- endmacro %}
+
+{% macro renderJs() %}
+    <script type="text/javascript">
+        !function() {
+            /* global:require */
+            require(['oro/init-email']);
+        }();
+    </script>
+{% endmacro %}

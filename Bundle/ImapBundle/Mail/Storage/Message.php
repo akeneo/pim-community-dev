@@ -65,7 +65,8 @@ class Message extends \Zend\Mail\Storage\Message
                         }
                     } else {
                         // The Content-Disposition may be missed, because it is introduced only in RFC 2183
-                        // In this case it is assumed that any part which has ;name= in the Content-Type is an attachment
+                        // In this case it is assumed that any part which has ";name="
+                        // in the Content-Type is an attachment
                         $result[] = new Attachment($part);
                     }
                 }

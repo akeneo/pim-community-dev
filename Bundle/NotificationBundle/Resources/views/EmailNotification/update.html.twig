@@ -32,7 +32,7 @@
         {{ UI.buttonSeparator() }}
     {% endif %}
     {{ UI.button({'path' : path('oro_notification_emailnotification_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
-    {{ UI.saveAndStayButton() }}
+    {{ UI.saveAndStayButton('oro_notification_emailnotification_update') }}
     {{ UI.saveAndCloseButton() }}
 {% endblock navButtons %}
 

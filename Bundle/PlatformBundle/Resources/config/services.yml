@@ -1,5 +1,5 @@
 parameters:
-    oro_platform.maintenance.class:           Oro\Bundle\PlatformBundle\Maintenance\Mode
+    oro_platform.maintenance.class:               Oro\Bundle\PlatformBundle\Maintenance\Mode
 
 services:
     oro_platform.maintenance:
@@ -7,3 +7,4 @@ services:
         arguments:
             - "@lexik_maintenance.driver.factory"
             - "@event_dispatcher"
+

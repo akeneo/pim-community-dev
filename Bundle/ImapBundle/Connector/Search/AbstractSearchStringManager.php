@@ -105,7 +105,7 @@ abstract class AbstractSearchStringManager implements SearchStringManagerInterfa
     protected function processSimpleValue($itemName, $itemValue, $match)
     {
         if ($itemName === null) {
-            return $this->normalizeValue($itemValue, $match);
+            return $this->normalizeValue(null, $itemValue, $match);
         }
 
         $keyword = $this->getKeyword($itemName);
@@ -117,7 +117,7 @@ abstract class AbstractSearchStringManager implements SearchStringManagerInterfa
             '%s%s%s',
             $keyword,
             $this->getNameValueDelimiter(),
-            $this->normalizeValue($itemValue, $match)
+            $this->normalizeValue($keyword, $itemValue, $match)
         );
     }
 
@@ -135,16 +135,29 @@ abstract class AbstractSearchStringManager implements SearchStringManagerInterfa
     }
 
     /**
+     * @param string $keyword
      * @param mixed $value The value to be normalized
      * @param int $match The match type. One of SearchQueryMatch::* values
      * @return string
      */
-    protected function normalizeValue($value, $match)
+    protected function normalizeValue($keyword, $value, $match)
     {
+        if ($value instanceof \DateTime) {
+            $value = $this->formatDate($value);
+        }
+
         if (is_string($value) && strpos($value, ' ')) {
             return sprintf('"%s"', $value);
         }
 
         return $value;
     }
+
+    /**
+     * Returns a string represents the given date in format required for search query criterion.
+     *
+     * @param mixed $value
+     * @return string
+     */
+    abstract protected function formatDate($value);
 }

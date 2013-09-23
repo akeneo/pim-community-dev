@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\TagBundle\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -57,7 +58,7 @@ class TagController extends Controller
      */
     public function createAction()
     {
-        return $this->updateAction(new Tag());
+        return $this->update(new Tag());
     }
 
     /**
@@ -72,18 +73,7 @@ class TagController extends Controller
      */
     public function updateAction(Tag $entity)
     {
-        if ($this->get('oro_tag.form.handler.tag')->process($entity)) {
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                $this->get('translator')->trans('oro.tag.controller.tag.saved.message')
-            );
-
-            return $this->redirect($this->generateUrl('oro_tag_index'));
-        }
-
-        return array(
-            'form' => $this->get('oro_tag.form.tag')->createView(),
-        );
+        return $this->update($entity);
     }
 
     /**
@@ -141,5 +131,25 @@ class TagController extends Controller
         );
 
         return $datagridManager->getDatagrid();
+    }
+
+    /**
+     * @param Tag $entity
+     * @return array|RedirectResponse
+     */
+    protected function update(Tag $entity)
+    {
+        if ($this->get('oro_tag.form.handler.tag')->process($entity)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('oro.tag.controller.tag.saved.message')
+            );
+
+            return $this->redirect($this->generateUrl('oro_tag_index'));
+        }
+
+        return array(
+            'form' => $this->get('oro_tag.form.tag')->createView(),
+        );
     }
 }

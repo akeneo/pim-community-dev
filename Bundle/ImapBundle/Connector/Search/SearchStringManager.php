@@ -157,7 +157,9 @@ class SearchStringManager extends AbstractSearchStringManager
             throw new \InvalidArgumentException('The new position of the operator must be greater than or equal zero.');
         }
         if ($current < $new) {
-            throw new \InvalidArgumentException('The current position of the operator must be greater than its new position.');
+            throw new \InvalidArgumentException(
+                'The current position of the operator must be greater than its new position.'
+            );
         }
 
         $operator = $expr[$current];
@@ -192,5 +194,21 @@ class SearchStringManager extends AbstractSearchStringManager
         }
 
         return $i + 1;
+    }
+
+    /**
+     * Returns a string represents the given date in format required for search query criterion.
+     * Example: 21-Jan-2013
+     *
+     * @param mixed $value
+     * @return string
+     */
+    protected function formatDate($value)
+    {
+        if ($value instanceof \DateTime) {
+            return $value->format('j-M-Y');
+        }
+
+        return $value;
     }
 }
