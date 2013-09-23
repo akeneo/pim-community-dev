@@ -21,6 +21,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
  */
 class AttributeDatagridManager extends DatagridManager
 {
+    protected $identifierField = 'id';
     /**
      * @var ProductManager
      */
@@ -122,7 +123,13 @@ class AttributeDatagridManager extends DatagridManager
         $field = $this->createGroupField();
         $fieldsCollection->add($field);
     }
-
+    /**
+     * @inheritdoc
+     */
+    public function getIdentifierField()
+    {
+        return 'id';
+    }
     /**
      * Create attribute type field description for datagrid
      *
