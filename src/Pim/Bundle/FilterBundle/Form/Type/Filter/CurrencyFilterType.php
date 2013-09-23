@@ -87,28 +87,16 @@ class CurrencyFilterType extends NumberFilterType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $operatorChoices = array(
-            self::TYPE_EQUAL         => $this->translator->trans('label_type_equal', array(), 'OroFilterBundle'),
-            self::TYPE_GREATER_EQUAL =>
-                $this->translator->trans('label_type_greater_equal', array(), 'OroFilterBundle'),
-            self::TYPE_GREATER_THAN  => $this->translator->trans('label_type_greater_than', array(), 'OroFilterBundle'),
-            self::TYPE_LESS_EQUAL    => $this->translator->trans('label_type_less_equal', array(), 'OroFilterBundle'),
-            self::TYPE_LESS_THAN     => $this->translator->trans('label_type_less_than', array(), 'OroFilterBundle')
-        );
+        parent::setDefaultOptions($resolver);
 
         $currencyChoices = $this->currencyManager->getActiveCodeChoices();
 
-        return $resolver->setDefaults(
+        $resolver->replaceDefaults(array('data_type' => self::DATA_DECIMAL));
+        $resolver->setDefaults(
             array(
-                'field_type'        => 'number',
-                'operator_choices'  => $operatorChoices,
-                'operator_type'     => 'choice',
-                'operator_options'  => array(),
-                'currency_choices'  => $currencyChoices,
-                'currency_type'     => 'choice',
-                'currency_options'  => array(),
-                'data_type'         => self::DATA_DECIMAL,
-                'formatter_options' => array()
+                'currency_choices' => $currencyChoices,
+                'currency_type' => 'choice',
+                'currency_options' => array()
             )
         );
     }
