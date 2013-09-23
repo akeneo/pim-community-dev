@@ -108,8 +108,10 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 
     public function testSkuLabel()
     {
-        $this->product->setId(5);
-        $this->assertEquals(5, $this->product->getLabel());
+        $sku = $this->getValueMock($this->getAttributeMock(null, 'pim_catalog_identifier'), 'foo-bar');
+        $this->product->addValue($sku);
+
+        $this->assertEquals('foo-bar', $this->product->getLabel());
     }
 
     public function testAttributeLabel()
@@ -132,11 +134,13 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $family           = $this->getFamilyMock($attributeAsLabel);
         $value            = $this->getValueMock($attributeAsLabel, null);
 
-        $this->product->setId(25);
+        $sku = $this->getValueMock($this->getAttributeMock(null, 'pim_catalog_identifier'), 'foo-bar');
+        $this->product->addValue($sku);
+
         $this->product->setFamily($family);
         $this->product->addValue($value);
 
-        $this->assertEquals(25, $this->product->getLabel());
+        $this->assertEquals('foo-bar', $this->product->getLabel());
     }
 
     public function testEmptyStringValuedAttributeLabel()
@@ -145,11 +149,13 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $family           = $this->getFamilyMock($attributeAsLabel);
         $value            = $this->getValueMock($attributeAsLabel, '');
 
-        $this->product->setId(38);
+        $sku = $this->getValueMock($this->getAttributeMock(null, 'pim_catalog_identifier'), 'foo-bar');
+        $this->product->addValue($sku);
+
         $this->product->setFamily($family);
         $this->product->addValue($value);
 
-        $this->assertEquals(38, $this->product->getLabel());
+        $this->assertEquals('foo-bar', $this->product->getLabel());
     }
 
     public function testNullAttributeLabel()
@@ -158,11 +164,13 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $family    = $this->getFamilyMock(null);
         $value     = $this->getValueMock($attribute, 'bar');
 
-        $this->product->setId(53);
+        $sku = $this->getValueMock($this->getAttributeMock(null, 'pim_catalog_identifier'), 'foo-bar');
+        $this->product->addValue($sku);
+
         $this->product->setFamily($family);
         $this->product->addValue($value);
 
-        $this->assertEquals(53, $this->product->getLabel());
+        $this->assertEquals('foo-bar', $this->product->getLabel());
     }
 
     public function testIsSetEnabled()
