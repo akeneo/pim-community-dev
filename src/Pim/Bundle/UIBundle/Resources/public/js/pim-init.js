@@ -1,6 +1,6 @@
 require(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'pim/dialog', 'pim/initselect2', 'bootstrap',
-        'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'pim/dialog', 'pim/initselect2', 
+     'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
     function ($, __, mediator, Navigation, Dialog, initSelect2) {
         'use strict';
 
@@ -170,16 +170,26 @@ require(
             });
 
             // DELETE request for delete buttons
-            $(document).on('click', '[data-dialog]', function () {
+            $(document).on('click', 'a[data-dialog]', function () {
                 var $el      = $(this),
                     message  = $el.data('message'),
                     title    = $el.data('title'),
                     doAction = function () {
-                        $el.off('click');
-                        var $form = $('<form>', { method: 'POST', action: $el.attr('data-url')});
-                        $('<input>', { type: 'hidden', name: '_method', value: $el.data('method')}).appendTo($form);
-                        $form.appendTo('body').submit();
+                        $.ajax({
+                            url: $el.attr('data-url'),
+                            type: 'POST',
+                            data: { _method: $el.data('method') },
+                            success: function() {
+                                var navigation = Navigation.getInstance();
+                                navigation.navigate("#url=" + $el.attr("data-redirect-url"), { trigger: true });
+                                navigation.addFlashMessage('success', $el.attr('data-success-message'));
+                            },
+                            error: function(xhr) {
+                                Dialog.alert($el.attr("data-error-message"), $el.attr("data-error-title"));
+                            }
+                        });
                     };
+                $el.off('click');
                 if ($el.data('dialog') ===  'confirm') {
                     Dialog.confirm(message, title, doAction);
                 } else {

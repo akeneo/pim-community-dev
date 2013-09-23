@@ -197,8 +197,6 @@ class ChannelController extends AbstractDoctrineController
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            $this->addFlash('success', 'flash.channel.removed');
-
             return $this->redirect($this->generateUrl('pim_catalog_channel_index'));
         }
     }

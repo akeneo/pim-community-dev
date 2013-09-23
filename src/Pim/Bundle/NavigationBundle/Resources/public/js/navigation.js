@@ -5,11 +5,13 @@
  * @returns {unresolved}
  */
 define(
-    ['oro/navigation-orig', 'oro/app'],
-    function(OroNavigation, app) {
+    ['oro/navigation-orig', 'oro/app', 'oro/messenger'],
+    function(OroNavigation, app, messenger) {
         
         var GRID_URL_REGEX = /enrich\/product\/(\?.*)?$/,
             QUERY_STRING_REGEX = /^[^\?]+\??/,
+            flashMessages = [],
+            parent = OroNavigation.prototype,
             instance,
             Navigation = OroNavigation.extend({
                 /**
@@ -45,7 +47,25 @@ define(
                         this.loadPage();
                     }
                     this.skipAjaxCall = false;
-                }});
+                },
+                /**
+                 * Adds a flash message to be displayed on next page load
+                 * @see oro/messenger
+                 */
+                addFlashMessage: function() {
+                    flashMessages.push(arguments);
+                },
+                /**
+                 * @inheritdoc
+                 */
+                afterRequest: function() {
+                    var message;
+                    parent.afterRequest.call(this)
+                    while (message = flashMessages.shift()) {
+                        messenger.notificationFlashMessage.apply(messenger, message)
+                    }
+                }
+            });
         /**
          * @inheritdoc
          */

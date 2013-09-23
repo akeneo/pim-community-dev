@@ -483,12 +483,9 @@ class ProductController extends AbstractDoctrineController
         $product = $this->findProductOr404($id);
         $this->getManager()->remove($product);
         $this->getManager()->flush();
-
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            $this->addFlash('success', 'flash.product.removed');
-
             return $this->redirectToRoute('pim_catalog_product_index');
         }
     }

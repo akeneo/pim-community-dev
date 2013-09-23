@@ -238,8 +238,6 @@ class AttributeGroupController extends AbstractDoctrineController
         $this->getManager()->remove($group);
         $this->getManager()->flush();
 
-        $this->addFlash('success', 'flash.attribute group.removed');
-
         if ($request->get('_redirectBack')) {
             $referer = $request->headers->get('referer');
             if ($referer) {
@@ -247,7 +245,11 @@ class AttributeGroupController extends AbstractDoctrineController
             }
         }
 
-        return $this->redirectToRoute('pim_catalog_attributegroup_create');
+        if ($request->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirectToRoute('pim_catalog_attributegroup_create');
+        }
     }
 
     /**
@@ -337,8 +339,11 @@ class AttributeGroupController extends AbstractDoctrineController
         $this->getManager()->flush();
 
         $this->addFlash('success', 'flash.attribute group.attribute removed');
-
-        return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
+        }
 
     }
 

@@ -281,9 +281,11 @@ class JobInstanceController extends AbstractDoctrineController
         try {
             $jobInstance = $this->getJobInstance($id);
         } catch (NotFoundHttpException $e) {
-            $this->addFlash('error', $e->getMessage());
-
-            return $this->redirectToIndexView();
+            if ($request->isXmlHttpRequest()) {
+                return new Response('', 404);
+            } else {
+                return $this->redirectToIndexView();
+            }
         }
 
         $this->getManager()->remove($jobInstance);
@@ -292,8 +294,6 @@ class JobInstanceController extends AbstractDoctrineController
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            $this->addFlash('success', sprintf('The %s has been successfully removed', $this->getJobType()));
-
             return $this->redirectToIndexView();
         }
     }
