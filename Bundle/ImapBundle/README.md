@@ -46,17 +46,23 @@ Usage
 
 ``` php
 <?php
+    // Preparing connection config
+    $imapConfig = new ImapConfig('imap.gmail.com', 993, 'ssl', 'user', 'pwd');
+
     // Accessing IMAP connector factory
     /** @var $factory \Oro\Bundle\ImapBundle\Connector\ImapConnectorFactory */
     $factory = $this->get('oro_imap.connector.factory');
 
     // Creating IMAP connector for the ORO user
     /** @var $imap \Oro\Bundle\ImapBundle\Connector\ImapConnector */
-    $imapConnector = $factory->createUserImapConnector($userId);
+    $imapConnector = $factory->createImapConnector($imapConfig);
+
+    // Creating IMAP manager
+    $imapManager = new ImapEmailManager($imapConnector);
 
     // Creating the search query builder
     /** @var $queryBuilder \Oro\Bundle\ImapBundle\Connector\Search\SearchQueryBuilder */
-    $queryBuilder = $imapConnector->getSearchQueryBuilder();
+    $queryBuilder = $imapManager->getSearchQueryBuilder();
 
     // Building a search query
     $query = $queryBuilder
@@ -65,5 +71,14 @@ Usage
         ->get();
 
     // Request an IMAP server for find emails
-    $emails = $imapConnector->findItems('INBOX', $query);
+    $imapManager->selectFolder('INBOX');
+    $emails = $imapManager->findItems($query);
 ```
+
+Synchronization with IMAP servers
+---------------------------------
+Email synchronization functionality is implemented in the following classes:
+
+ - ImapEmailSynchronizer
+ - ImapEmailSynchronizationProcessor
+ - EmailSyncCommand
