@@ -64,13 +64,11 @@ Feature: Sort attributes
     When I sort by "localizable" value descending
     Then I should see sorted attributes name, short_desc, sku and count
 
-  @skip
   Scenario: Successfully sort attributes by group ascending
     Given I am on the attributes page
     When I sort by "group" value ascending
     Then I should see sorted attributes sku, name, count and short_desc
 
-  @skip
   Scenario: Successfully sort attributes by group descending
     Given I am on the attributes page
     When I sort by "group" value descending
