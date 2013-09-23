@@ -32,7 +32,7 @@ class GroupController extends Controller
      */
     public function createAction()
     {
-        return $this->updateAction(new Group());
+        return $this->update(new Group());
     }
 
     /**
@@ -49,27 +49,7 @@ class GroupController extends Controller
      */
     public function updateAction(Group $entity)
     {
-        if ($this->get('oro_user.form.handler.group')->process($entity)) {
-            $this->get('session')->getFlashBag()->add('success', 'Group successfully saved');
-
-            if (!$this->getRequest()->get('_widgetContainer')) {
-
-                return $this->get('oro_ui.router')->actionRedirect(
-                    array(
-                        'route' => 'oro_user_group_update',
-                        'parameters' => array('id' => $entity->getId()),
-                    ),
-                    array(
-                        'route' => 'oro_user_group_index',
-                    )
-                );
-            }
-        }
-
-        return array(
-            'datagrid' => $this->getGroupUserDatagridManager($entity)->getDatagrid()->createView(),
-            'form'     => $this->get('oro_user.form.group')->createView(),
-        );
+        return $this->update($entity);
     }
 
     /**
@@ -131,6 +111,35 @@ class GroupController extends Controller
         return $this->render(
             $view,
             array('datagrid' => $datagrid->createView())
+        );
+    }
+
+    /**
+     * @param Group $entity
+     * @return array
+     */
+    protected function update(Group $entity)
+    {
+        if ($this->get('oro_user.form.handler.group')->process($entity)) {
+            $this->get('session')->getFlashBag()->add('success', 'Group successfully saved');
+
+            if (!$this->getRequest()->get('_widgetContainer')) {
+
+                return $this->get('oro_ui.router')->actionRedirect(
+                    array(
+                        'route' => 'oro_user_group_update',
+                        'parameters' => array('id' => $entity->getId()),
+                    ),
+                    array(
+                        'route' => 'oro_user_group_index',
+                    )
+                );
+            }
+        }
+
+        return array(
+            'datagrid' => $this->getGroupUserDatagridManager($entity)->getDatagrid()->createView(),
+            'form'     => $this->get('oro_user.form.group')->createView(),
         );
     }
 }

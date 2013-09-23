@@ -104,7 +104,7 @@ class EmailTemplateController extends RestController
      *     description="Get available variables by entity name",
      *     resource=true
      * )
-     * @AclAncestor("oro_email_emailtemplate_update")
+     * @AclAncestor("oro_email_emailtemplate_view")
      * @GetRoute(requirements={"entityName"="(.*)"})
      * @return Response
      */

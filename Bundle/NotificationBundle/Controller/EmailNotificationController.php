@@ -54,6 +54,30 @@ class EmailNotificationController extends Controller
      */
     public function updateAction(EmailNotification $entity)
     {
+        return $this->update($entity);
+    }
+
+    /**
+     * @Route("/create")
+     * @Acl(
+     *      id="oro_notification_emailnotification_create",
+     *      type="entity",
+     *      class="OroNotificationBundle:EmailNotification",
+     *      permission="CREATE"
+     * )
+     * @Template("OroNotificationBundle:EmailNotification:update.html.twig")
+     */
+    public function createAction()
+    {
+        return $this->update(new EmailNotification());
+    }
+
+    /**
+     * @param EmailNotification $entity
+     * @return array
+     */
+    protected function update(EmailNotification $entity)
+    {
         if ($this->get('oro_notification.form.handler.email_notification')->process($entity)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
@@ -74,20 +98,5 @@ class EmailNotificationController extends Controller
         return array(
             'form' => $this->get('oro_notification.form.email_notification')->createView(),
         );
-    }
-
-    /**
-     * @Route("/create")
-     * @Acl(
-     *      id="oro_notification_emailnotification_create",
-     *      type="entity",
-     *      class="OroNotificationBundle:EmailNotification",
-     *      permission="CREATE"
-     * )
-     * @Template("OroNotificationBundle:EmailNotification:update.html.twig")
-     */
-    public function createAction()
-    {
-        return $this->updateAction(new EmailNotification());
     }
 }
