@@ -38,7 +38,7 @@ class JobExecution
     /**
      * @var JobInstance
      *
-     * @ORM\ManyToOne(targetEntity="JobInstance", inversedBy="jobExecutions")
+     * @ORM\ManyToOne(targetEntity="JobInstance", inversedBy="jobExecutions", cascade={"persist"})
      * @ORM\JoinColumn(name="job_instance_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $jobInstance;

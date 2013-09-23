@@ -185,6 +185,7 @@ class ItemStep extends AbstractStep
 
         if (count($itemsToWrite) > 0) {
             $this->writer->write($itemsToWrite);
+            $itemsToWrite = array();
         }
     }
 

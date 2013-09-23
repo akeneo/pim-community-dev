@@ -52,9 +52,15 @@ class CsvFileWriter implements ItemWriterInterface, StepExecutionAwareInterface
      */
     protected $firstLineWritten = false;
 
-    public function __construct(ContextRegistry $contextRegistry)
+    /**
+     * @var DoctrineClearWriter
+     */
+    protected $clearWriter;
+
+    public function __construct(ContextRegistry $contextRegistry, DoctrineClearWriter $clearWriter)
     {
         $this->contextRegistry = $contextRegistry;
+        $this->clearWriter = $clearWriter;
     }
 
     /**
@@ -71,6 +77,7 @@ class CsvFileWriter implements ItemWriterInterface, StepExecutionAwareInterface
             $this->writeCsv($item);
         }
         $this->close();
+        $this->clearWriter->write($items);
     }
 
     /**

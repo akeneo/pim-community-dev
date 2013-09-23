@@ -22,6 +22,6 @@ class DoctrineClearWriter implements ItemWriterInterface
      */
     public function write(array $items)
     {
-        //$this->entityManager->clear();
+        $this->entityManager->clear();
     }
 }
