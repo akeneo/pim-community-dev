@@ -119,7 +119,8 @@ class ImportExportController extends Controller
             'counts' => $counts,
             'errorsUrl' => $errorsUrl,
             'errors' => $errors,
-            'entityName' => $entityName
+            'entityName' => $entityName,
+            'memory_usage' => memory_get_usage(true)
         );
     }
 
@@ -169,7 +170,8 @@ class ImportExportController extends Controller
             array(
                 'success' => $jobResult->isSuccessful(),
                 'message' => $message,
-                'errorsUrl' => $errorsUrl
+                'errorsUrl' => $errorsUrl,
+                'memory_usage' => memory_get_usage(true)
             )
         );
     }

@@ -114,6 +114,7 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
     {
         if (null === $this->query) {
             $this->query = $this->getQueryBy($this->source);
+            $this->initBufferSize();
             unset($this->source);
         }
         return $this->query;
@@ -167,10 +168,15 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
         if ($this->bufferSize <= 0) {
             throw new \InvalidArgumentException('$bufferSize must be greater than 0');
         }
+        $this->initBufferSize();
+        return $this;
+    }
+
+    protected function initBufferSize()
+    {
         if ($this->getQuery()->getMaxResults() && $this->getQuery()->getMaxResults() < $this->bufferSize) {
             $this->bufferSize = $this->getQuery()->getMaxResults();
         }
-        return $this;
     }
 
     /**

@@ -62,7 +62,6 @@ class JobExecutor
         $jobExecution = new JobExecution();
         $jobExecution->setJobInstance($jobInstance);
         $this->entityManager->persist($jobInstance);
-        $this->entityManager->flush($jobInstance);
 
         $jobResult = new JobResult();
         $jobResult->setSuccessful(false);
@@ -95,6 +94,7 @@ class JobExecutor
         }
 
         // update job execution
+        $this->entityManager->detach($jobInstance);
         $jobInstance = $this->updateJobInstance($jobInstance);
         $this->entityManager->persist($jobInstance);
         $this->entityManager->flush($jobInstance);

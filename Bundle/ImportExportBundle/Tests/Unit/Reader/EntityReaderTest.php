@@ -178,7 +178,20 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
     {
         $entityName = 'entityName';
 
+        $classMetadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')->disableOriginalConstructor()
+            ->getMock();
+
+        $classMetadata->expects($this->once())->method('getAssociationMappings')->will($this->returnValue(array()));
+
+        $entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')->disableOriginalConstructor()->getMock();
+        $entityManager->expects($this->once())->method('getClassMetadata')
+            ->with($entityName)
+            ->will($this->returnValue($classMetadata));
+
         $queryBuilder = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')->disableOriginalConstructor()->getMock();
+
+        $queryBuilder->expects($this->once())->method('getEntityManager')
+            ->will($this->returnValue($entityManager));
 
         $repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')->disableOriginalConstructor()->getMock();
         $repository->expects($this->once())->method('createQueryBuilder')

@@ -57,9 +57,16 @@ class CsvFileWriter implements ItemWriterInterface, StepExecutionAwareInterface
      */
     protected $clearWriter;
 
-    public function __construct(ContextRegistry $contextRegistry, DoctrineClearWriter $clearWriter)
+    public function __construct(ContextRegistry $contextRegistry)
     {
         $this->contextRegistry = $contextRegistry;
+    }
+
+    /**
+     * @param DoctrineClearWriter $clearWriter
+     */
+    public function setClearWriter(DoctrineClearWriter $clearWriter)
+    {
         $this->clearWriter = $clearWriter;
     }
 
@@ -77,7 +84,9 @@ class CsvFileWriter implements ItemWriterInterface, StepExecutionAwareInterface
             $this->writeCsv($item);
         }
         $this->close();
-        $this->clearWriter->write($items);
+        if ($this->clearWriter) {
+            $this->clearWriter->write($items);
+        }
     }
 
     /**

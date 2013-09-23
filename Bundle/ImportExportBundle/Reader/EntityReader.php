@@ -129,7 +129,17 @@ class EntityReader implements ReaderInterface
      */
     public function setSourceEntityName($entityName)
     {
-        $this->setSourceQueryBuilder($this->registry->getRepository($entityName)->createQueryBuilder('o'));
+        /** @var QueryBuilder $qb */
+        $qb = $this->registry->getRepository($entityName)->createQueryBuilder('o');
+
+        $metadata = $qb->getEntityManager()->getClassMetadata($entityName);
+        foreach ($metadata->getAssociationMappings() as $assocMapping) {
+            $alias = '_' . $assocMapping['fieldName'];
+            $qb->addSelect($alias);
+            $qb->leftJoin('o.' . $assocMapping['fieldName'], $alias);
+        }
+
+        $this->setSourceQueryBuilder($qb);
     }
 
     /**
