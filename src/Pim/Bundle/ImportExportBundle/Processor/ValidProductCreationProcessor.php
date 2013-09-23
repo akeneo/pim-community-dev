@@ -40,9 +40,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      */
     protected $channel;
 
-    private $categories = array();
-    private $attributes = array();
-
     /**
      * Constructor
      *
