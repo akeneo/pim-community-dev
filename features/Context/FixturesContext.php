@@ -705,6 +705,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     * @param string $options
+     *
      * @Given /^the following "([^"]*)" attribute options: (.*)$/
      */
     public function theFollowingAttributeOptions($attribute, $options)
@@ -718,6 +721,11 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $lang
+     * @param string $attribute
+     * @param string $identifier
+     * @param string $value
+     *
      * @Given /^the (\w+) (\w+) of (\w+) should be "([^"]*)"$/
      */
     public function theOfShouldBe($lang, $attribute, $identifier, $value)
@@ -728,6 +736,10 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string    $attribute
+     * @param string    $products
+     * @param TableNode $table
+     *
      * @Given /^the prices "([^"]*)" of products (.*) should be:$/
      */
     public function thePricesOfProductsShouldBe($attribute, $products, TableNode $table)
@@ -742,6 +754,11 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string    $attribute
+     * @param string    $products
+     * @param TableNode $table
+     *
+     * @return null
      * @Given /^the options "([^"]*)" of products (.*) should be:$/
      */
     public function theOptionsOfProductsShouldBe($attribute, $products, TableNode $table)
@@ -763,6 +780,10 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     * @param string $products
+     * @param string $filename
+     *
      * @Given /^the file "([^"]*)" of products (.*) should be "([^"]*)"$/
      */
     public function theFileOfShouldBe($attribute, $products, $filename)
@@ -774,6 +795,10 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     * @param string $products
+     * @param string $data
+     *
      * @Given /^the metric "([^"]*)" of products (.*) should be "([^"]*)"$/
      */
     public function theMetricOfProductsShouldBe($attribute, $products, $data)
@@ -784,6 +809,16 @@ class FixturesContext extends RawMinkContext
         }
     }
 
+    /**
+     * @param string $identifier
+     * @param string $attribute
+     * @param string $locale
+     * @param string $scope
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return ProductValue
+     */
     private function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {
         $product = $this->getProductManager()->findByIdentifier($identifier);
@@ -1053,6 +1088,7 @@ class FixturesContext extends RawMinkContext
         $tree = new Category();
         $tree->setCode($code);
         $this->persist($tree);
+
         return $tree;
     }
 
@@ -1061,7 +1097,7 @@ class FixturesContext extends RawMinkContext
      * @param array:string $locales
      * @param Category     $tree
      */
-    private function createChannel($code, $locales, $tree=null)
+    private function createChannel($code, $locales, $tree = null)
     {
         $channel = new Channel;
         $channel->setCode($code);
@@ -1330,9 +1366,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * Create an option with many values
+     * Create an attribute option entity
      *
-     * @param array $values
+     * @param string $code
      *
      * @return AttributeOption
      */
