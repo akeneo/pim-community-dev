@@ -1,5 +1,5 @@
-<div class="tab-content">
-    <table id="progress-table" class="table groups">
+<div class="tab-content container-fluid">
+    <table id="progress-table" class="table table-bordered groups">
         <thead>
             <th width="8%">{{ 'Locales'|upper }}</th>
             {% for channel in channels %}
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="pull-left progress-legend">
-                <span>{{ 'Locale non associated to this channel'|trans }}</span>
+                <span>{{ 'Locale not associated to this channel'|trans }}</span>
             </div>
         </div>
     </div>

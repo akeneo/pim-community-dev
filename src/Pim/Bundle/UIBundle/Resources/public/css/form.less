@@ -881,6 +881,15 @@ div.dropdown-menu.channel {
   min-width: 210px;
 }
 
+code {
+  color: @textColor;
+}
+
+.popover-title {
+  padding-left: 14px;
+  font-size: 12px;
+}
+
 #locale-switcher {
   span.dropdown-toggle {
     padding: 5px 6px 3px 6px;
@@ -1095,8 +1104,17 @@ table#progress-table {
       text-align: center;
     }
     span.progress-info {
+      padding: 5px;
+      cursor: default;
       color: #5e8dcb;
     }
+  }
+}
+
+.table-bordered.groups {
+  border-left: 1px solid #ddd;
+  td, th {
+    border-left: 0;
   }
 }
 

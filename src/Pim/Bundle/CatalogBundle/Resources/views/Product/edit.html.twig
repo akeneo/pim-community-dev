@@ -24,6 +24,8 @@
 
                     $('#default_channel').select2('destroy').css('padding', '0');
 
+                    $('[data-toggle="popover"]').popover();
+
                     {% if resource_granted('pim_catalog_product_change_family') %}
                         {% set familyWidget %}
                             {{ 'info.product.change family to'|trans }}:
