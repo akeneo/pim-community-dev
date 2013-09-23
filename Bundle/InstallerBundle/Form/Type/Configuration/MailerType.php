@@ -3,8 +3,10 @@
 namespace Oro\Bundle\InstallerBundle\Form\Type\Configuration;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MailerType extends AbstractType
 {
@@ -18,9 +20,8 @@ class MailerType extends AbstractType
                     'label'         => 'form.configuration.mailer.transport',
                     'preferred_choices' => array('mail'),
                     'choices'       => array(
-                        'smtp'      => 'SMTP',
-                        'gmail'     => 'Gmail',
                         'mail'      => 'PHP mail',
+                        'smtp'      => 'SMTP',
                         'sendmail'  => 'sendmail',
                     ),
                     'constraints'   => array(
@@ -35,7 +36,7 @@ class MailerType extends AbstractType
                 array(
                     'label'         => 'form.configuration.mailer.host',
                     'constraints'   => array(
-                        new Assert\NotBlank(),
+                        new Assert\NotBlank(array('groups' => array('SMTP'))),
                     ),
                 )
             )
@@ -55,6 +56,19 @@ class MailerType extends AbstractType
                     'required'      => false,
                 )
             );
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'validation_groups' => function(FormInterface $form) {
+                $data = $form->getData();
+
+                return 'smtp' == $data['oro_installer_mailer_transport']
+                    ? array('Default', 'SMTP')
+                    : array('Default');
+            },
+        ));
     }
 
     public function getName()
