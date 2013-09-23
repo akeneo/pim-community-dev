@@ -39,6 +39,8 @@ export profile:
     overview: export profile overview
     create:   create export profile
     edit:     edit export profile
+export report:
+    overview: export reports
 family:
     overview: family overview
     create:   create family
@@ -47,6 +49,8 @@ import profile:
     overview: import profile overview
     create:   create import profile
     edit:     edit import profile
+import report:
+    overview: import reports
 locale:
     overview: locale overview
     create:   create locale
