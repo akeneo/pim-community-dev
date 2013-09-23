@@ -173,33 +173,10 @@ function($, _, __, ChoiceFilter) {
             this.$(widgetSelector).datepicker(this.dateWidgetOptions);
             var widget = this.$(widgetSelector).datepicker('widget');
             widget.addClass(this.dateWidgetOptions.className);
+            $(this.dateWidgetSelector).on('click', function(e) {
+                e.stopImmediatePropagation();
+            });
             return widget;
-        },
-
-        /**
-         * @inheritDoc
-         */
-        _onClickOutsideCriteria: function(e) {
-            var elements = [this.$(this.criteriaSelector)];
-
-            var widget = $(this.dateWidgetSelector);
-            elements.push(widget);
-            widget.find('span').each(function(i, el) {
-                elements.push($(el));
-            });
-
-            var clickedElement = _.find(elements, function(elem) {
-                return elem.get(0) === e.target || elem.has(e.target).length;
-            });
-
-            if (!clickedElement && $(e.target).is(":button, .ui-icon, :has(.ui-icon)")) {
-                clickedElement = e.target;
-            }
-
-            if (!clickedElement) {
-                this._hideCriteria();
-                this.setValue(this._readDOMValue());
-            }
         },
 
         /**
