@@ -41,10 +41,11 @@ Feature: Filter products per price
     And the grid should contain 2 elements
     And I should see products postit and book
 
+  @skip
   Scenario: Successfully filter per Price
     Given I am on the products page
     When I make visible the filter "Price"
-    And I filter per price with value "20" and currency "Euro"
+    And I filter per price >= "20" and currency "EUR"
     Then the grid should contain 1 element
-    And I should see products book
-    And I should not see products postit
+    And I should see product book
+    And I should not see product postit
