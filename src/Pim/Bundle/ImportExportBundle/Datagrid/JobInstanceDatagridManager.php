@@ -216,7 +216,7 @@ class JobInstanceDatagridManager extends DatagridManager
     {
         // create choices
         $connectors = array_keys($this->getRegistryJobs());
-        $choices = empty($choices) ? array() : array_combine($connectors, $connectors);
+        $choices = empty($connectors) ? array() : array_combine($connectors, $connectors);
 
         // create field description
         $field = new FieldDescription();

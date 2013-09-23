@@ -190,23 +190,6 @@ class Grid extends Index
     }
 
     /**
-     * Remove a sort on a column with a loop
-     * Use a threshold to prevent against infine loop
-     * @param string $column
-     */
-    public function removeSortOnColumn($column)
-    {
-        $threshold = 0;
-        while ($this->isSortedColumn($column)) {
-            $this->getColumnSorter($column)->click();
-
-            if ($threshold++ === 3) {
-                return;
-            }
-        }
-    }
-
-    /**
      * Predicate to know if a column is sorted and ordered as we want
      *
      * @param string $column
@@ -353,6 +336,7 @@ class Grid extends Index
     /**
      * Activate a filter
      * @param string $filterName
+     *
      * @throws \InvalidArgumentException
      */
     private function activateFilter($filterName)
@@ -369,6 +353,7 @@ class Grid extends Index
     /**
      * Deactivate filter
      * @param string $filterName
+     *
      * @throws \InvalidArgumentException
      */
     private function deactivateFilter($filterName)
@@ -385,15 +370,16 @@ class Grid extends Index
     /**
      * Click on a filter in filter management list
      * @param string $filterName
+     *
      * @throws \InvalidArgumentException
      */
     private function clickOnFilterToManage($filterName)
     {
         try {
-            $filter = $this
-            ->getElement('Manage filters')
-            ->find('css', sprintf('label:contains("%s")', $filterName))
-            ->click();
+            $this
+                ->getElement('Manage filters')
+                ->find('css', sprintf('label:contains("%s")', $filterName))
+                ->click();
         } catch (\Exception $e) {
             throw new \InvalidArgumentException(
                 sprintf('Impossible to activate filter "%s"', $filterName)
@@ -488,6 +474,7 @@ class Grid extends Index
      * Get column headers
      *
      * @param boolean $withHidden
+     * @param boolean $withActions
      *
      * @return \Behat\Mink\Element\Element
      */
@@ -515,8 +502,6 @@ class Grid extends Index
                 $visibleHeaders[] = $header;
             }
         }
-
-
 
         return $visibleHeaders;
     }

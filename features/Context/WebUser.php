@@ -1113,6 +1113,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I validate the mass action$/
+     */
+    public function iValidateTheMassAction()
+    {
+        $this->getCurrentPage()->next();
+        $this->getCurrentPage()->confirm();
+        $this->wait();
+    }
+
+    /**
      * @param string $sku
      *
      * @Given /^product "([^"]*)" should be disabled$/
@@ -1138,6 +1148,26 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         if (!$product->isEnabled()) {
             throw $this->createExpectationException('Product was expected to be be enabled');
         }
+    }
+
+    /**
+     * @param string      $sku
+     * @param string|null $expectedFamily
+     *
+     * @Then /^the product "([^"]*)" should have no family$/
+     * @Then /^the family of (?:the )?product "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theFamilyOfProductShouldBe($sku, $expectedFamily = '')
+    {
+        $product = $this->getProduct($sku);
+        $this->getMainContext()->getEntityManager()->refresh($product);
+
+        $actualFamily = $product->getFamily() ? $product->getFamily()->getCode() : '';
+        assertEquals(
+            $expectedFamily,
+            $actualFamily,
+            sprintf('Expecting the family of "%s" to be "%s", not "%s".', $sku, $expectedFamily, $actualFamily)
+        );
     }
 
     /**
@@ -1932,7 +1962,7 @@ JS;
      *
      * @return Category
      */
-    private function getCategory($code)
+    public function getCategory($code)
     {
         return $this->getFixturesContext()->getCategory($code);
     }

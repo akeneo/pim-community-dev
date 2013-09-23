@@ -104,7 +104,7 @@ oro_batch:
             help: If yes, data will be processed to make sure that there are no circular references between the categories
 
     heterogeneous_csv_serializer_processor:
-        title: 'CSV configuration'
+        title: 'Settings'
         delimiter:
             label: 'Delimiter'
             help: 'One character used to set the field delimiter'
@@ -116,7 +116,7 @@ oro_batch:
             help: 'Whether or not to print the column name'
 
     homogeneous_csv_serializer_processor:
-        title: 'CSV configuration'
+        title: 'Settings'
         delimiter:
             label: 'Delimiter'
             help: 'One character used to set the field delimiter'
@@ -128,7 +128,7 @@ oro_batch:
             help: 'Whether or not to print the column name'
 
     file_writer:
-        title: 'File configuration'
+        title: 'Output'
         directoryName:
             label: 'Directory path'
             help: 'Where to write the generated file on the file system'

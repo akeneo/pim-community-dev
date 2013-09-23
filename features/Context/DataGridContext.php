@@ -73,7 +73,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerCategory($code)
     {
-        $category = $this->getCategory($code);
+        $category = $this->getWebUserContext()->getCategory($code);
         $this->getPage('Product index')->clickCategoryFilterLink($category);
         $this->wait();
     }
@@ -268,9 +268,30 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
                 // And we must remove the default sorted column
                 foreach ($sortedColumns as $column) {
-                    $this->datagrid->removeSortOnColumn($column);
+                    $this->removeSortOnColumn($column);
                     $this->wait();
                 }
+            }
+        }
+    }
+
+    /**
+     * Remove sort on a column with a loop but using a threshold to prevent
+     * against infinite loop
+     *
+     * @param string $column
+     *
+     * @return null
+     */
+    private function removeSortOnColumn($column)
+    {
+        $threshold = 0;
+        while ($this->datagrid->isSortedColumn($column)) {
+            $this->datagrid->getColumnSorter($column)->click();
+            $this->wait();
+
+            if ($threshold++ === 3) {
+                return;
             }
         }
     }

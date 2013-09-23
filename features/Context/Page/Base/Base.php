@@ -86,6 +86,10 @@ class Base extends Page
         $button = $this->find('xpath', sprintf("//button[text() = '%s']", $locator));
 
         if (!$button) {
+            $button = $this->find('xpath', sprintf("//a[text() = '%s']", $locator));
+        }
+
+        if (!$button) {
             # Use Mink search, which use "contains" xpath condition
             $button = $this->findButton($locator);
         }

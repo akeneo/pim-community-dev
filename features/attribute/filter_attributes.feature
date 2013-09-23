@@ -32,7 +32,6 @@ Feature: Filter attributes
     And I should see attributes short_descr, long_descr and count
     And I should not see attributes sku and name
 
-  @skip
   Scenario: Successfully filter by label
     Given I am on the attributes page
     When I filter by "Label" with value "descr"
@@ -75,19 +74,9 @@ Feature: Filter attributes
     And I should see attributes sku and count
     And I should not see attributes name, short_descr and long_descr
 
-  @skip
   Scenario: Successfully filter by group
     Given I am on the attributes page
     When I filter by "Group" with value "General"
     Then the grid should contain 3 elements
     And I should see attributes sku, name and count
     And I should not see attributes short_descr and long_descr
-
-  @skip
-  Scenario: Successfully filter by only one group
-    Given I am on the attributes page
-    And I filter by "Group" with value "General"
-    When I filter by "Group" with value "Master"
-    Then the grid should contain 2 elements
-    And I should see attributes short_descr and long_descr
-    And I should not see attributes sku, name and count

@@ -80,6 +80,7 @@ btn:
     cancel:    __cancel
     next:      __next
     back:      __back
+    confirm:   __confirm
     to grid:   __back to grid
     to parent: __back to parent
 
@@ -97,8 +98,6 @@ confirmation:
         product:         __Are you sure you want to delete the product %name%?
         export profile:  __Are you sure you want to delete the export profile %name%?
         import profile:  __Are you sure you want to delete the import profile %name%?
-    product:
-        change family: __Are you sure you want to change the family?
 
 # Flash messages
 flash:
@@ -153,6 +152,8 @@ info:
         keep products:   __Products in these categories will not be deleted.
     product:
         no available attributes: __There are no more attributes to add
+        change family:           __Change the product family
+        change family to:        __Change the family to
         merge attributes:        __Current attributes will be merged with the ones in the new family.
         keep attributes:         __No attributes will be removed.
 
@@ -303,8 +304,9 @@ Disable:   Désactiver
 pim_catalog.mass_edit_action:
     page_title:    __Products
     page_subtitle: __Mass Edit (1 product)|Mass Edit (%count% products)
-    title:         '__Choose operation'
-    subtitle:      '__Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products'
+    title:         __Choose operation
+    subtitle:      __Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products
+    confirm:       __You are about to update a product with the following information, please confirm.|You are about to update %count% products with the following information, please confirm.
 
     change-status:
         label:         __Change status (enable / disable)
@@ -321,3 +323,8 @@ pim_catalog.mass_edit_action:
         label:         __Classify products in categories
         description:   __The products will be positioned into following categories, the existing placement are kept.
         success_flash: __Product(s) have been classified into selected categories
+
+    change-family:
+        label:         __Change the family of products
+        description:   __The family of the selected products will be changed to the chosen family
+        success_flash: __The family of selected product(s) has been successfully changed

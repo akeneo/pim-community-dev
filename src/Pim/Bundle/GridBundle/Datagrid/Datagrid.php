@@ -22,8 +22,6 @@ class Datagrid extends OroDatagrid
      */
     protected $serializer;
 
-    private static $applied = false;
-
     /**
      * @var ExportActionInterface[]
      */
