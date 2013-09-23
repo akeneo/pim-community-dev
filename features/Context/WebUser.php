@@ -1178,61 +1178,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $code
-     *
-     * @Given /^I filter per category "([^"]*)"$/
-     */
-    public function iFilterPerCategory($code)
-    {
-        $category = $this->getCategory($code);
-        $this->getPage('Product index')->clickCategoryFilterLink($category);
-        $this->wait();
-    }
-
-    /**
-     * @param string $value
-     * @param string $currency
-     *
-     * @When /^I filter per price with value "([^"]*)" and currency "([^"]*)"$/
-     */
-    public function iFilterPerPrice($value, $currency)
-    {
-        $this->getPage('Product index')->filterPerPrice($value, $currency);
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I filter per unclassified category$/
-     */
-    public function iFilterPerUnclassifiedCategory()
-    {
-        $this->getPage('Product index')->clickUnclassifiedCategoryFilterLink();
-        $this->wait();
-    }
-
-    /**
-     * @param string $code
-     *
-     * @Given /^I filter per family ([^"]*)$/
-     */
-    public function iFilterPerFamily($code)
-    {
-        $this->getPage('Product index')->filterPerFamily($code);
-        $this->wait();
-    }
-
-    /**
-     * @param string $code
-     *
-     * @Given /^I filter per channel ([^"]*)$/
-     */
-    public function iFilterPerChannel($code)
-    {
-        $this->getPage('Product index')->filterPerChannel($code);
-        $this->wait();
-    }
-
-    /**
      * @param string $product
      * @param string $data
      *
