@@ -75,7 +75,7 @@
     } %}
 
     {{ JSFV(form) }}
-    <form id="{{ form.vars.id }}" method="POST" class="form-horizontal product-edit" data-updated-title="{{ 'confirmation.leave'|trans }}"  data-updated-message="{{ 'confirmation.discard changes'|trans({ '%entity': 'product'|trans }) }}" action="{{ path('pim_catalog_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
+    <form id="{{ form.vars.id }}" method="POST" class="form-horizontal product-edit" data-updated-title="{{ 'confirmation.leave'|trans }}"  data-updated-message="{{ 'confirmation.discard changes'|trans({ '%entity%': 'product'|trans }) }}" action="{{ path('pim_catalog_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
         {% set title = 'product'|trans %}
 
