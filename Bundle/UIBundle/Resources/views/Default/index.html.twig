@@ -8,10 +8,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             {% block head_style %}
                 <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
-                <link rel="stylesheet" media="all" href="{{ asset('bundles/oroui/css/jquery-ui.grid.css') }}" />
-                <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
-                {% placeholder head_style %}
-                <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+               {% placeholder head_style %}
             {% endblock %}
 
             {% block script %}
@@ -33,7 +30,7 @@
                     </script>
                 {% else %}
                     <script type="text/javascript">
-                        require(['routing'], function() { require(['/js/routes.js']); });
+                        require(['routing'], function() { require(['../js/routes']); });
                     </script>
                 {% endif %}
                 <!--[if lte IE 9]>

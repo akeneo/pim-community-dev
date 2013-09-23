@@ -297,6 +297,22 @@ label, input, button, select, textarea { font-size:13px;}
   text-align:left;
   line-height:1.2em;
 }
+.control-group .controls p.control-label{
+  width: auto;
+}
+.email-field a{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  display: block;
+}
+.opportunity-info .controls p.control-label{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
 .form-horizontal {
   .control-group {
     label.control-label {
@@ -313,6 +329,9 @@ label, input, button, select, textarea { font-size:13px;}
     }
     .controls {
       margin-left:170px;
+      .control-label {
+        width: auto;
+      }
     }
   }
 }
@@ -2715,6 +2734,9 @@ footer {
       }
       .controls {
         margin-left:0;
+        .control-label {
+          width: auto;
+        }
       }
     }
   }
@@ -4782,7 +4804,7 @@ disabled look for disabled choices in the results dropdown
           label.control-label { width:120px; }
           .controls {
             margin-left:130px;
-            .control-label { width:155px; }
+            .control-label { width:100%; }
             .tag-view { width:100%; }
           }
         }
@@ -4950,11 +4972,11 @@ disabled look for disabled choices in the results dropdown
 pre.email-body {
   width: 99%;
   min-height: 5em;
+  overflow: auto;
 }
 iframe.email-body {
   width: 99%;
   min-height: 5em;
-  height: 25em;
   #font > #family > .monospace;
   color: @grayDark;
   padding: (@baseLineHeight - 1) / 2;
@@ -4967,6 +4989,10 @@ iframe.email-body {
   .border-radius(@baseBorderRadius);
 }
 
+.ui-dialog pre.email-body,
+.ui-dialog iframe.email-body {
+  height: 200px;
+}
 
 // PER PAGE
 
@@ -5071,4 +5097,35 @@ iframe.email-body {
   border-radius:0 !important;
   -webkit-border-radius:0 !important;
   -moz-border-radius:0 !important;
+}
+
+.security-row {
+  display: inline-block;
+  width: 30%;
+  margin-bottom:25px;
+}
+
+.security-row > div {
+  display: inline-block;
+  margin-right: 20px;
+  text-align: right;
+  min-width: 250px;
+}
+
+.security-row input[type="checkbox"]{
+  margin: 0;
+}
+
+.acl-table .a-center {
+  text-align: center;
+}
+@media only screen and (max-width: 1340px) {
+  .contact-info-col-set > .row-fluid > .span6{
+    width: 100%;
+    margin-bottom: 13px;
+  }
+
+  .contact-info-col-set > .row-fluid > .span6:last-child{
+    margin-bottom: 0;
+  }
 }

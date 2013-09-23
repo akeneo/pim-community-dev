@@ -109,18 +109,4 @@ class SoapDataAuditApiTest extends WebTestCase
             $this->assertEquals($audit, $result);
         }
     }
-
-    /**
-     * @param array $response
-     * @depends testGetAudits
-     */
-    public function testDeleteAudit($response)
-    {
-        foreach ($response as $audit) {
-            $this->client->getSoap()->deleteAudit($audit['id']);
-        }
-        $result = $this->client->getSoap()->getAudits();
-        $result = ToolsAPI::classToArray($result);
-        $this->assertEmpty($result);
-    }
 }

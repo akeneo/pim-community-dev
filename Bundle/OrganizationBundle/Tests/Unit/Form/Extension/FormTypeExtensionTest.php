@@ -29,7 +29,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    private $aclManager;
+    private $securityFacade;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -53,6 +53,8 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
     private $businessUnits;
 
     private $fieldName;
+    
+    private $entityClassName;
 
     /**
      * @var FormTypeExtension
@@ -97,8 +99,8 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->user->expects($this->any())->method('getId')->will($this->returnValue(1));
         $this->user->expects($this->any())->method('getBusinessUnits')->will($this->returnValue($this->businessUnits));
-        $entityClassName = get_class($this->user);
-        $this->aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\Manager')
+        $this->entityClassName = get_class($this->user);
+        $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
             ->disableOriginalConstructor()
             ->getMock();
         $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
@@ -109,11 +111,11 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->configProvider->expects($this->any())
             ->method('getConfig')
-            ->with($entityClassName)
+            ->with($this->entityClassName)
             ->will($this->returnValue($this->config));
         $this->configProvider->expects($this->any())
             ->method('hasConfig')
-            ->with($entityClassName)
+            ->with($this->entityClassName)
             ->will($this->returnValue(true));
         $token->expects($this->any())
             ->method('getUser')
@@ -124,7 +126,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
         $config = $this->getMockBuilder('Symfony\Component\Form\FormConfigInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $config->expects($this->any())->method('getDataClass')->will($this->returnValue($entityClassName));
+        $config->expects($this->any())->method('getDataClass')->will($this->returnValue($this->entityClassName));
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
@@ -142,7 +144,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             $this->securityContext,
             $this->configProvider,
             $this->manager,
-            $this->aclManager,
+            $this->securityFacade,
             $this->tranlsator
         );
     }
@@ -200,6 +202,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
                 'required' => true,
                 'attr' => array('is_safe' => true),
                 'constraints' => array(new NotBlank()),
+                'label' => 'Owner'
             )
         );
         $this->extension->buildForm($this->builder, array());
@@ -220,7 +223,8 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
                 'choices' => $this->businessUnits,
                 'mapped' => true,
                 'required' => true,
-                'constraints' => array(new NotBlank())
+                'constraints' => array(new NotBlank()),
+                'label' => 'Owner'
             )
         );
         $this->extension->buildForm($this->builder, array());
@@ -293,7 +297,8 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
                 'disabled' => true,
                 'data' => '',
                 'mapped' => false,
-                'required' => false
+                'required' => false,
+                'label' => 'Owner'
             )
         );
         $formEvent = $this->getMockBuilder('Symfony\Component\Form\FormEvent')
@@ -307,8 +312,9 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function mockConfigs(array $values)
     {
-        $this->aclManager->expects($this->any())->method('isResourceGranted')->with('oro_change_record_owner')
-                ->will($this->returnValue($values['is_granted']));
+        $this->securityFacade->expects($this->any())->method('isGranted')
+            ->with('ASSIGN', 'Entity:' . $this->entityClassName)
+            ->will($this->returnValue($values['is_granted']));
         $this->config->expects($this->once())
             ->method('has')
             ->with('owner_type')
@@ -321,7 +327,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             $this->securityContext,
             $this->configProvider,
             $this->manager,
-            $this->aclManager,
+            $this->securityFacade,
             $this->tranlsator
         );
     }

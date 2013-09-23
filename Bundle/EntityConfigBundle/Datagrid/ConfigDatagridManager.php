@@ -285,13 +285,14 @@ class ConfigDatagridManager extends BaseDatagrid
 
     /**
      * {@inheritDoc}
+     * Todo: update acl resources after impl.
      */
     protected function getRowActions()
     {
         $clickAction = array(
             'name'         => 'rowClick',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            //'acl_resource' => '(root)',
             'options'      => array(
                 'label'         => 'View',
                 'link'          => 'view_link',
@@ -302,7 +303,7 @@ class ConfigDatagridManager extends BaseDatagrid
         $viewAction = array(
             'name'         => 'view',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            //'acl_resource' => 'root',
             'options'      => array(
                 'label' => 'View',
                 'icon'  => 'book',
@@ -313,7 +314,7 @@ class ConfigDatagridManager extends BaseDatagrid
         $updateAction = array(
             'name'         => 'update',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            //'acl_resource' => 'root',
             'options'      => array(
                 'label' => 'Edit',
                 'icon'  => 'edit',

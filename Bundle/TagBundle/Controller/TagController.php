@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\TagBundle\Controller;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -9,20 +10,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\TagBundle\Entity\Tag;
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 use Oro\Bundle\TagBundle\Datagrid\TagDatagridManager;
 use Oro\Bundle\TagBundle\Datagrid\ResultsDatagridManager;
 
-/**
- * @Acl(
- *      id="oro_tag",
- *      name="Tags",
- *      description="Tags",
- *      parent="root"
- * )
- */
 class TagController extends Controller
 {
     /**
@@ -33,10 +26,10 @@ class TagController extends Controller
      *      defaults={"_format" = "html"}
      * )
      * @Acl(
-     *      id="oro_tag_list",
-     *      name="View list of tags",
-     *      description="User can see grid of tags",
-     *      parent="oro_tag"
+     *      id="oro_tag_view",
+     *      type="entity",
+     *      class="OroTagBundle:Tag",
+     *      permission="VIEW"
      * )
      * @Template
      */
@@ -57,52 +50,36 @@ class TagController extends Controller
      * @Route("/create", name="oro_tag_create")
      * @Acl(
      *      id="oro_tag_create",
-     *      name="Create tag",
-     *      description="User can create tags from grid",
-     *      parent="oro_tag"
+     *      type="entity",
+     *      class="OroTagBundle:Tag",
+     *      permission="CREATE"
      * )
      * @Template("OroTagBundle:Tag:update.html.twig")
      */
     public function createAction()
     {
-        return $this->updateAction(new Tag());
+        return $this->update(new Tag());
     }
 
     /**
      * @Route("/update/{id}", name="oro_tag_update", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Acl(
      *      id="oro_tag_update",
-     *      name="Update tag",
-     *      description="User can edit tags",
-     *      parent="oro_tag"
+     *      type="entity",
+     *      class="OroTagBundle:Tag",
+     *      permission="EDIT"
      * )
      * @Template
      */
     public function updateAction(Tag $entity)
     {
-        if ($this->get('oro_tag.form.handler.tag')->process($entity)) {
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                $this->get('translator')->trans('oro.tag.controller.tag.saved.message')
-            );
-
-            return $this->redirect($this->generateUrl('oro_tag_index'));
-        }
-
-        return array(
-            'form' => $this->get('oro_tag.form.tag')->createView(),
-        );
+        return $this->update($entity);
     }
 
     /**
      * @Route("/search/{id}", name="oro_tag_search", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Acl(
-     *      id="oro_tag_search",
-     *      name="Search tag",
-     *      description="User can search tags",
-     *      parent="oro_tag"
-     * )
      * @Template
+     * @AclAncestor("oro_tag_view")
      */
     public function searchAction(Tag $entity, Request $request)
     {
@@ -124,7 +101,7 @@ class TagController extends Controller
      * Return search results in json for datagrid
      *
      * @Route("/ajax/{id}", name="oro_tag_search_ajax", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @AclAncestor("oro_tag_search")
+     * @AclAncestor("oro_tag_view")
      */
     public function searchResultsAjaxAction(Tag $entity, Request $request)
     {
@@ -154,5 +131,25 @@ class TagController extends Controller
         );
 
         return $datagridManager->getDatagrid();
+    }
+
+    /**
+     * @param Tag $entity
+     * @return array|RedirectResponse
+     */
+    protected function update(Tag $entity)
+    {
+        if ($this->get('oro_tag.form.handler.tag')->process($entity)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('oro.tag.controller.tag.saved.message')
+            );
+
+            return $this->redirect($this->generateUrl('oro_tag_index'));
+        }
+
+        return array(
+            'form' => $this->get('oro_tag.form.tag')->createView(),
+        );
     }
 }

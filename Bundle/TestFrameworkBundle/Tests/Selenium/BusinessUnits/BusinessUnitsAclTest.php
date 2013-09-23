@@ -33,7 +33,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setName('ROLE_NAME_' . $randomPrefix)
             ->setLabel('Label_' . $randomPrefix)
             ->setOwner('Main')
-            ->selectAcl('Root')
+            ->setEntity('Business Unit', array('Create', 'Edit', 'Delete', 'View', 'Assign'))
             ->save()
             ->assertMessage('Role successfully saved')
             ->close();
@@ -113,6 +113,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
      */
     public function testBusinessUnitAcl($aclcase, $username, $role, $unitname)
     {
+        $this->markTestSkipped('Skipped due bug BAP-1693');
         $rolename = 'ROLE_NAME_' . $role;
         $login = new Login($this);
         $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
@@ -142,7 +143,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $rolename)
             ->open(array($rolename))
-            ->selectAcl('Delete business unit')
+            ->setEntity('Business Unit', array('Delete'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -157,7 +158,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $rolename)
             ->open(array($rolename))
-            ->selectAcl('Edit business unit')
+            ->setEntity('Business Unit', array('Edit'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -172,7 +173,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $rolename)
             ->open(array($rolename))
-            ->selectAcl('Create business unit')
+            ->setEntity('Business Unit', array('Create'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -187,22 +188,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $rolename)
             ->open(array($rolename))
-            ->selectAcl('View business unit')
-            ->save()
-            ->logout()
-            ->setUsername($username)
-            ->setPassword('123123q')
-            ->submit()
-            ->openBusinessUnits()
-            ->checkContextMenu($unitname, 'View');
-    }
-
-    public function viewListAcl($login, $rolename, $username)
-    {
-        $login->openRoles()
-            ->filterBy('Role', $rolename)
-            ->open(array($rolename))
-            ->selectAcl('View business units list')
+            ->setEntity('Business Unit', array('View'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -224,7 +210,6 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             'update' => array('update'),
             'create' => array('create'),
             'view' => array('view'),
-            'view list' => array('view list'),
         );
     }
 }

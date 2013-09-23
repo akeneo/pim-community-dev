@@ -3,6 +3,7 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
@@ -23,7 +24,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getRootType()
+    public function getExtensionKey()
     {
         throw new \LogicException('Not supported by NullAclExtension.');
     }
@@ -31,7 +32,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function validateMask($permission, $mask, $object)
+    public function validateMask($mask, $object, $permission = null)
     {
         throw new InvalidAclMaskException('Not supported by NullAclExtension.');
     }
@@ -39,7 +40,7 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function createObjectIdentity($object)
+    public function getObjectIdentity($val)
     {
         throw new InvalidDomainObjectException('Not supported by NullAclExtension.');
     }
@@ -47,9 +48,25 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function createMaskBuilder($permission)
+    public function getMaskBuilder($permission)
     {
         throw new \LogicException('Not supported by NullAclExtension.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllMaskBuilders()
+    {
+        throw new \LogicException('Not supported by NullAclExtension.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMaskPattern($mask)
+    {
+        return 'NullAclExtension: ' . $mask;
     }
 
     /**
@@ -71,6 +88,14 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
+    public function adaptRootMask($rootMask, $object)
+    {
+        return $rootMask;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getServiceBits($mask)
     {
         return 0;
@@ -87,9 +112,41 @@ final class NullAclExtension implements AclExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getAccessLevel($mask)
+    public function getAccessLevel($mask, $permission = null)
     {
-        return AccessLevel::SYSTEM_LEVEL;
+        return AccessLevel::UNKNOWN;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPermissions($mask = null, $setOnly = false)
+    {
+        return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllowedPermissions(ObjectIdentity $oid)
+    {
+        return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultPermission()
+    {
+        return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClasses()
+    {
+        return array();
     }
 
     /**

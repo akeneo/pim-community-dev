@@ -12,8 +12,10 @@ use JMS\Serializer\Annotation\Exclude;
  *
  * @ORM\Table(name="oro_email_origin")
  * @ORM\Entity
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="name", type="string", length=30)
  */
-class EmailOrigin
+abstract class EmailOrigin
 {
     /**
      * @var integer
@@ -26,14 +28,6 @@ class EmailOrigin
     protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100)
-     * @Type("string")
-     */
-    protected $name;
-
-    /**
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="EmailFolder", mappedBy="origin", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -41,6 +35,37 @@ class EmailOrigin
      */
     protected $folders;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="isActive", type="boolean")
+     */
+    protected $isActive = true;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="sync_code_updated", type="datetime", nullable=true)
+     */
+    protected $syncCodeUpdatedAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="synchronized", type="datetime", nullable=true)
+     */
+    protected $synchronizedAt;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="sync_code", type="integer", nullable=true)
+     */
+    protected $syncCode;
+
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->folders = new ArrayCollection();
@@ -57,29 +82,6 @@ class EmailOrigin
     }
 
     /**
-     * Get email origin name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set email origin name
-     *
-     * @param string $name
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
      * Get email folders
      *
      * @return EmailFolder[]
@@ -93,7 +95,7 @@ class EmailOrigin
      * Add folder
      *
      * @param  EmailFolder $folder
-     * @return $this
+     * @return EmailOrigin
      */
     public function addFolder(EmailFolder $folder)
     {
@@ -102,5 +104,94 @@ class EmailOrigin
         $folder->setOrigin($this);
 
         return $this;
+    }
+
+    /**
+     * Indicate whether this email origin is in active state or not
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set this email origin in active/inactive state
+     *
+     * @param boolean $isActive
+     * @return EmailOrigin
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get date/time when this object was changed
+     *
+     * @return \DateTime
+     */
+    public function getSyncCodeUpdatedAt()
+    {
+        return $this->syncCodeUpdatedAt;
+    }
+
+    /**
+     * Get date/time when emails from this origin were synchronized
+     *
+     * @return \DateTime
+     */
+    public function getSynchronizedAt()
+    {
+        return $this->synchronizedAt;
+    }
+
+    /**
+     * Set date/time when emails from this origin were synchronized
+     *
+     * @param \DateTime $synchronizedAt
+     * @return EmailOrigin
+     */
+    public function setSynchronizedAt($synchronizedAt)
+    {
+        $this->synchronizedAt = $synchronizedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get the last synchronization result code
+     *
+     * @return int
+     */
+    public function getSyncCode()
+    {
+        return $this->syncCode;
+    }
+
+    /**
+     * Set the last synchronization result code
+     *
+     * @param int $syncCode
+     * @return EmailOrigin
+     */
+    public function setSyncCode($syncCode)
+    {
+        $this->syncCode = $syncCode;
+
+        return $this;
+    }
+
+    /**
+     * Get a human-readable representation of this object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('EmailOrigin(%d)', $this->id);
     }
 }

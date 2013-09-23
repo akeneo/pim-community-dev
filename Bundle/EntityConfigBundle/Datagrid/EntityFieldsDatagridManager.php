@@ -244,13 +244,14 @@ class EntityFieldsDatagridManager extends BaseDatagrid
 
     /**
      * {@inheritDoc}
+     * Todo: update acl resources after impl.
      */
     protected function getRowActions()
     {
         $clickAction = array(
             'name'         => 'rowClick',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            //'acl_resource' => 'root',
             'options'      => array(
                 'label'         => 'Edit',
                 'link'          => 'update_link',
@@ -261,7 +262,7 @@ class EntityFieldsDatagridManager extends BaseDatagrid
         $updateAction = array(
             'name'         => 'update',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            //'acl_resource' => 'root',
             'options'      => array(
                 'label' => 'Edit',
                 'icon'  => 'edit',

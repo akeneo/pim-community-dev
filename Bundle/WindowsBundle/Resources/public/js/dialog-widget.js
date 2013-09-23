@@ -25,6 +25,7 @@ function(_, Backbone, app, error, AbstractWidget, StateModel) {
         windowY: 0,
         defaultPos: 'center center',
         openedWindows: 0,
+        contentTop: null,
 
         /**
          * Initialize dialog
@@ -60,6 +61,7 @@ function(_, Backbone, app, error, AbstractWidget, StateModel) {
 
             this.options.dialogOptions.close = runner(closeHandlers);
 
+            this.on('widgetRender', _.bind(this._initAdjustHeight, this));
             this.on('contentLoadError', _.bind(this.loadErrorHandler, this));
         },
 
@@ -185,6 +187,27 @@ function(_, Backbone, app, error, AbstractWidget, StateModel) {
                 this.widget.html(this.$el);
             }
             AbstractWidget.prototype.show.apply(this);
+        },
+
+        _initAdjustHeight: function(content) {
+            this.widget.off("dialogresize dialogmaximize dialogrestore", _.bind(this._fixScrollableHeight, this));
+            var scrollableContent = content.find('.scrollable-container');
+            if (scrollableContent.length) {
+                scrollableContent.css('overflow', 'auto');
+                this.widget.on("dialogresize dialogmaximize dialogrestore", _.bind(this._fixScrollableHeight, this));
+                this._fixScrollableHeight();
+            }
+        },
+
+        _fixScrollableHeight: function() {
+            var widget = this.widget;
+            widget.find('.scrollable-container').each(_.bind(function(i, el){
+                var $el = $(el);
+                var height = widget.height() - $el.position().top;
+                if (height) {
+                    $el.height(height);
+                }
+            },this));
         },
 
         /**

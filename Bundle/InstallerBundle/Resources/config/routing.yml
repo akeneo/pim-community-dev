@@ -1,0 +1,7 @@
+oro_installer_flow:
+    pattern:  /installer
+    defaults: { _controller: sylius.controller.process:startAction, scenarioAlias: "oro_installer" }
+
+oro_flow_bundle:
+    resource: "@SyliusFlowBundle/Resources/config/routing.yml"
+    prefix:   /installer

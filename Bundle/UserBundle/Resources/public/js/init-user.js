@@ -1,8 +1,8 @@
 /* jshint browser:true */
 /* global require */
-require(['jquery', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger',
+require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger',
     'oro/widget-manager', 'oro/dialog-widget', 'jquery.dialog.extended'],
-function($, __, app, mediator, messenger, widgetManager, dialogWidget) {
+function($, _, __, app, mediator, messenger, widgetManager, DialogWidget) {
     'use strict';
 
     /* ============================================================
@@ -42,20 +42,27 @@ function($, __, app, mediator, messenger, widgetManager, dialogWidget) {
 
         $(document).on('click', '#view-activity-btn', function (e) {
             e.stopImmediatePropagation();
+            var $el = $(this),
+                dialog = /** @var oro.DialogWidget */ $el.data('dialog');
+            if (dialog) {
+                // dialog already is opened
+                return false;
+            }
 
-            var historyWindow = new dialogWidget({
-                url: $(this).attr('href'),
+            $el.data('dialog', dialog = new DialogWidget({
+                url: $el.attr('href'),
                 dialogOptions: {
                     allowMaximize: true,
                     allowMinimize: true,
                     dblclick: 'maximize',
                     maximizedHeightDecreaseBy: 'minimize-bar',
                     width : 1000,
-                    title: $(this).attr('title')
+                    title: $el.attr('title')
                 }
-            });
-            widgetManager.addWidgetInstance(historyWindow);
-            historyWindow.render();
+            }));
+            dialog.once('widgetRemove', _.bind($el.removeData, $el, 'dialog'));
+            widgetManager.addWidgetInstance(dialog);
+            dialog.render();
 
             return false;
         });

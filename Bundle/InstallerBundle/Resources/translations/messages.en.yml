@@ -1,0 +1,60 @@
+title:                    Oro Application installation
+
+switch:
+    off:                  off
+    on:                   on
+
+form:
+    configuration:
+        database:
+            header:       Database connection
+            driver:       Driver
+            host:         Host
+            port:         Port
+            user:         User
+            password:     Password
+            name:         Name
+        mailer:
+            header:       Mailer settings
+            host:         Host
+            user:         User
+            password:     Password
+            transport:    Transport
+        system:
+            header:       System settings
+            secret:       Secret
+            locale:       Locale
+        websocket:
+            header:       Websocket connection
+            host:         Host
+            port:         Port
+    setup:
+        email:            Email
+        username:         Username
+        firstname:        First name
+        lastname:         Last name
+        password:         Password
+        password_re:      Re-enter password
+        load_fixtures:    Load fixtures
+
+process:
+    step:
+        check:
+            header:       System requirements check
+            table:
+                current:  Current
+                required: Required
+        configure:
+            header:       Configuration
+        setup:
+            header:       Administration setup
+        final:
+            header:       Finish
+            greeting:     Success!!!
+            content:      You are now ready to start using Oro.<br>For help please join our community <a href="http://www.orocrm.com/forums">forums</a>.
+    button:
+        back:             Back
+        next:             Next
+        install:          Install
+        refresh:          Refresh
+        finish:           Launch application
