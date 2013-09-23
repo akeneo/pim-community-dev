@@ -141,4 +141,12 @@ class ChannelDatagridManager extends DatagridManager
 
         return array($clickAction, $editAction, $deleteAction);
     }
+    /**
+     * @inheritdoc
+     * 
+     */
+    public function getIdentifierField()
+    {
+        return 'id';
+    }
 }
