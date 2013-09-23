@@ -43,14 +43,8 @@ Oro\Bundle\UserBundle\Entity\Role:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: role
     properties:
-        role:
-            - NotBlank:     ~
-            - Length:
-                max:        30
-            - Regex:
-                pattern: "/^[a-zA-Z0-9_]+$/"
-                message: "Role must be an alphanumeric value"
         label:
+            - NotBlank:     ~
             - Length:
                 max:        30
 

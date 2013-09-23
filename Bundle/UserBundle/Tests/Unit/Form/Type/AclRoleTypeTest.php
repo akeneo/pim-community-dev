@@ -19,8 +19,7 @@ class AclRoleTypeTest extends \PHPUnit_Framework_TestCase
         $builder = $this->getMockBuilder('Symfony\Component\Form\FormBuilder')
             ->disableOriginalConstructor()
             ->getMock();
-        $builder->expects($this->at(0))->method('add')->with('role', 'text', array('required' => true));
-        $builder->expects($this->at(1))->method('add')->with('label', 'text', array('required' => false));
+        $builder->expects($this->at(1))->method('add')->with('label', 'text', array('required' => true));
         $builder->expects($this->at(2))->method('add')
             ->with(
                 'field',

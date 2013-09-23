@@ -38,9 +38,6 @@ class SoapRolesApiTest extends WebTestCase
      */
     public function testCreateRole($request, $response)
     {
-        if (is_null($request['role'])) {
-            $request['role'] ='';
-        }
         if (is_null($request['label'])) {
             $request['label'] = self::DEFAULT_VALUE;
         }
@@ -58,9 +55,6 @@ class SoapRolesApiTest extends WebTestCase
      */
     public function testUpdateRole($request, $response)
     {
-        if (is_null($request['role'])) {
-            $request['role'] ='';
-        }
         if (is_null($request['label'])) {
             $request['label'] = self::DEFAULT_VALUE;
         }

@@ -1,6 +1,7 @@
 parameters:
     oro_security.security_facade.class:                        Oro\Bundle\SecurityBundle\SecurityFacade
     oro_security.acl.manager.class:                            Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager
+    oro_security.acl.sid_manager.class:                        Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager
     oro_security.acl.cache.class:                              Oro\Bundle\SecurityBundle\Acl\Cache\FilesystemCache
     oro_security.acl.ace_provider.class:                       Oro\Bundle\SecurityBundle\Acl\Persistence\AceManipulationHelper
     oro_security.acl.privilege_repository.class:               Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository
@@ -68,6 +69,16 @@ services:
             - @?security.acl.dbal.provider
             - @oro_security.acl.ace_provider
             - %oro_security.acl.privilege_repository.class%
+
+    oro_security.acl.sid_manager:
+        public: false
+        class: %oro_security.acl.sid_manager.class%
+        arguments:
+            - @?security.acl.dbal.provider
+
+    oro_security.link.sid_manager:
+        tags:
+            - { name: oro_service_link,  service: oro_security.acl.sid_manager }
 
     security.acl.cache.doctrine.cache_impl:
         public: false

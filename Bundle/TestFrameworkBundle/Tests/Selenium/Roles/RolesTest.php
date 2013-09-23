@@ -90,7 +90,6 @@ class RolesTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->menu('Roles')
             ->openRoles(false)
             ->add()
-            ->setName($this->newRole['ROLE_NAME'] . $randomPrefix)
             ->setLabel($this->newRole['LABEL'])
             ->setOwner('Main')
             ->save()

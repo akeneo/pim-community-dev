@@ -6,7 +6,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Bundle\UserBundle\Form\EventListener\PatchSubscriber;
 
-class RoleApiType extends RoleType
+class RoleApiType extends AclRoleType
 {
     /**
      * {@inheritdoc}
