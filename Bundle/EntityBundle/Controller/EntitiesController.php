@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\QueryBuilder;
 
 use FOS\Rest\Util\Codes;
-use BeSimple\SoapCommon\Type\KeyValue\DateTime;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -19,9 +18,10 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Oro\Bundle\EntityBundle\Datagrid\CustomEntityDatagrid;
 
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
-use Oro\Bundle\EntityExtendBundle\Tools\Generator;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 
 /**
  * Entities controller.
@@ -93,35 +93,39 @@ class EntitiesController extends Controller
 
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
-        $entityConfig         = $entityConfigProvider->getConfig($extendEntityName);
+        /** @var ConfigProvider $entityConfigProvider */
+        $viewConfigProvider = $this->get('oro_entity_config.provider.view');
 
         $extendEntityRepository = $em->getRepository($extendEntityName);
 
         $record = $extendEntityRepository->find($id);
 
-        /** @var ConfigProvider $entityConfigProvider */
-        $viewConfigProvider = $this->get('oro_entity_config.provider.view');
 
-        $fields = array();
-        foreach ($record->__toArray() as $key => $value) {
-            $key = str_replace(Generator::PREFIX, '', $key);
-            $config = $viewConfigProvider->getConfig($extendEntityName, $key);
-            if ($config->is('is_displayable')) {
-                if ($value instanceof \DateTime) {
-                    $value = $value->format('Y-m-d');
-                }
-                $fieldConfig = $entityConfigProvider->getConfig($extendEntityName, $key);
+        $fields = $viewConfigProvider->filter(
+            function (ConfigInterface $config) {
+                return $config->is('is_displayable');
+            },
+            $extendEntityName
+        );
 
-                $fields[$fieldConfig->get('label') ?: $key] = $value;
+        $result = array();
+        foreach ($fields as $field) {
+            $value = $record->{'get' . $field->getId()->getFieldName()}();
+            if ($value instanceof \DateTime) {
+                $value = $value->format('Y-m-d');
             }
+
+            $fieldConfig = $entityConfigProvider->getConfigById($field->getId());
+
+            $result[$fieldConfig->get('label') ? : $field->getId()->getFieldName()] = $value;
         }
 
         return array(
             'parent'        => $entity_id,
             'entity'        => $record,
-            'entity_fields' => $fields,
+            'entity_fields' => $result,
             'id'            => $id,
-            'entity_config' => $entityConfig,
+            'entity_config' => $entityConfigProvider->getConfig($extendEntityName),
         );
     }
 

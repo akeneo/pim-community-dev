@@ -16,7 +16,7 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-use Oro\Bundle\EntityExtendBundle\Tools\Generator;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 
 class CustomEntityDatagrid extends DatagridManager
 {
@@ -183,7 +183,7 @@ class CustomEntityDatagrid extends DatagridManager
                     );
 
                     $label               = $entityConfig->get('label') ?: $fieldConfig->getFieldName();
-                    $code                = Generator::PREFIX . $fieldConfig->getFieldName();
+                    $code                = ExtendConfigDumper::PREFIX . $fieldConfig->getFieldName();
                     $this->queryFields[] = $code;
 
                     $fieldObject = new FieldDescription();
