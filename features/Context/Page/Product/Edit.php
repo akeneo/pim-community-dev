@@ -349,9 +349,9 @@ class Edit extends Form
         // check progress bar width
         $title = $completenessCell
             ->find('css', 'div.progress')
-            ->getAttribute('title');
+            ->getAttribute('data-original-title');
 
-        $pattern = sprintf('/^%s%% completed/', $ratio);
+        $pattern = sprintf('/^%s%% complete/', $ratio);
         if (!$title || preg_match($pattern, $title) !== 1) {
             throw new \InvalidArgumentException(
                 sprintf('Ratio %s not found for %s:%s', $ratio, $channelCode, $localeCode)
