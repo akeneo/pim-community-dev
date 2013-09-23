@@ -8,7 +8,7 @@ use DateTimeZone;
 
 class SettingsRequirements extends RequirementCollection
 {
-    const REQUIRED_PHP_VERSION = '5.3.3';
+    const REQUIRED_PHP_VERSION = '5.3.8';
 
     public function __construct(TranslatorInterface $translator)
     {
@@ -20,8 +20,8 @@ class SettingsRequirements extends RequirementCollection
         $this
             ->add(new Requirement(
                 $translator->trans('settings.version', array(), 'requirements'),
-                version_compare(phpversion(), self::REQUIRED_PHP_VERSION, '>='),
-                '>='.self::REQUIRED_PHP_VERSION,
+                version_compare(phpversion(), self::REQUIRED_PHP_VERSION, '>'),
+                '>'.self::REQUIRED_PHP_VERSION,
                 phpversion()
             ))
             ->add(new Requirement(
