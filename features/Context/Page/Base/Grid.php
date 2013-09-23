@@ -190,23 +190,6 @@ class Grid extends Index
     }
 
     /**
-     * Remove a sort on a column with a loop
-     * Use a threshold to prevent against infine loop
-     * @param string $column
-     */
-    public function removeSortOnColumn($column)
-    {
-        $threshold = 0;
-        while ($this->isSortedColumn($column)) {
-            $this->getColumnSorter($column)->click();
-
-            if ($threshold++ === 3) {
-                return;
-            }
-        }
-    }
-
-    /**
      * Predicate to know if a column is sorted and ordered as we want
      *
      * @param string $column
