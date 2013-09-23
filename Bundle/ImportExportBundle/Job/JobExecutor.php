@@ -3,6 +3,7 @@
 namespace Oro\Bundle\ImportExportBundle\Job;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
 use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
@@ -60,8 +61,8 @@ class JobExecutor
         $jobInstance->setRawConfiguration($configuration);
         $jobExecution = new JobExecution();
         $jobExecution->setJobInstance($jobInstance);
-
         $this->entityManager->persist($jobInstance);
+        $this->entityManager->flush($jobInstance);
 
         $jobResult = new JobResult();
         $jobResult->setSuccessful(false);
@@ -76,10 +77,6 @@ class JobExecutor
             // TODO: Refactor whole logic of job execution to perform actions in transactions
             $job->execute($jobExecution);
 
-            $stepExecutions = $jobExecution->getStepExecutions();
-            $context = $this->contextRegistry->getByStepExecution($stepExecutions->first());
-            $jobResult->setContext($context);
-
             $errors = $this->collectErrors($jobExecution);
 
             if ($jobExecution->getStatus()->getValue() == BatchStatus::COMPLETED && !$errors) {
@@ -90,19 +87,30 @@ class JobExecutor
                 foreach ($errors as $error) {
                     $jobResult->addError($error);
                 }
-                $jobInstance = $this->cloneJobInstance($jobInstance); // to save result to DB in any case
             }
         } catch (\Exception $exception) {
             $this->entityManager->rollback();
             $jobExecution->addFailureException($exception);
             $jobResult->addError($exception->getMessage());
-            $jobInstance = $this->cloneJobInstance($jobInstance); // to save result to DB in any case
         }
 
+        // update job execution
+        $jobInstance = $this->updateJobInstance($jobInstance);
+        $this->entityManager->persist($jobInstance);
         $this->entityManager->flush($jobInstance);
 
+        // set data to JobResult
         $jobResult->setJobId($jobInstance->getId());
         $jobResult->setJobCode($jobInstance->getCode());
+        /** @var JobExecution $jobExecution */
+        $jobExecution = $jobInstance->getJobExecutions()->first();
+        if ($jobExecution) {
+            $stepExecution = $jobExecution->getStepExecutions()->first();
+            if ($stepExecution) {
+                $context = $this->contextRegistry->getByStepExecution($stepExecution);
+                $jobResult->setContext($context);
+            }
+        }
 
         return $jobResult;
     }
@@ -114,9 +122,8 @@ class JobExecutor
      */
     public function getJobErrors($jobCode)
     {
-        $jobInstanceRepository = $this->entityManager->getRepository('OroBatchBundle:JobInstance');
         /** @var JobInstance $jobInstance */
-        $jobInstance = $jobInstanceRepository->findOneBy(array('code' => $jobCode));
+        $jobInstance = $this->getJobInstanceRepository()->findOneBy(array('code' => $jobCode));
         if (!$jobInstance) {
             throw new LogicException(sprintf('No job instance found with code %s', $jobCode));
         }
@@ -131,6 +138,40 @@ class JobExecutor
     }
 
     /**
+     * @return EntityRepository
+     */
+    protected function getJobInstanceRepository()
+    {
+        return $this->entityManager->getRepository('OroBatchBundle:JobInstance');
+    }
+
+    /**
+     * @param JobInstance $jobInstance
+     * @return JobInstance
+     */
+    protected function updateJobInstance(JobInstance $jobInstance)
+    {
+        /** @var JobInstance $persistedJobInstance */
+        $persistedJobInstance = $this->getJobInstanceRepository()->find($jobInstance->getId());
+        if ($persistedJobInstance) {
+            $jobExecutions = $jobInstance->getJobExecutions()->getValues();
+            $persistedJobInstance->getJobExecutions()->clear();
+
+            foreach ($jobExecutions as $jobExecution) {
+                $clonedJobExecution = $this->cloneJobExecution($jobExecution);
+                $clonedJobExecution->setJobInstance($persistedJobInstance);
+                $persistedJobInstance->addJobExecution($clonedJobExecution);
+            }
+
+            $jobInstance = $persistedJobInstance;
+        } else {
+            $jobInstance = $this->cloneJobInstance($jobInstance);
+        }
+
+        return $jobInstance;
+    }
+
+    /**
      * Deep clone of JobInstance object
      *
      * @param JobInstance $jobInstance
@@ -142,23 +183,30 @@ class JobExecutor
         $clonedJobInstance->getJobExecutions()->clear();
 
         foreach ($jobInstance->getJobExecutions() as $jobExecution) {
-            $clonedJobExecution = clone $jobExecution;
-            $clonedJobExecution->getStepExecutions()->clear();
-
+            $clonedJobExecution = $this->cloneJobExecution($jobExecution);
             $clonedJobExecution->setJobInstance($clonedJobInstance);
             $clonedJobInstance->addJobExecution($clonedJobExecution);
-
-            foreach ($jobExecution->getStepExecutions() as $stepExecution) {
-                $clonedStepExecution = clone $stepExecution;
-                $clonedStepExecution->setJobExecution($clonedJobExecution);
-                $clonedJobExecution->addStepExecution($clonedStepExecution);
-            }
         }
 
-        $this->entityManager->remove($jobInstance);
-        $this->entityManager->persist($clonedJobInstance);
-
         return $clonedJobInstance;
+    }
+
+    /**
+     * @param JobExecution $jobExecution
+     * @return JobExecution
+     */
+    protected function cloneJobExecution(JobExecution $jobExecution)
+    {
+        $clonedJobExecution = clone $jobExecution;
+        $clonedJobExecution->getStepExecutions()->clear();
+
+        foreach ($jobExecution->getStepExecutions() as $stepExecution) {
+            $clonedStepExecution = clone $stepExecution;
+            $clonedStepExecution->setJobExecution($clonedJobExecution);
+            $clonedJobExecution->addStepExecution($clonedStepExecution);
+        }
+
+        return $clonedJobExecution;
     }
 
     /**
@@ -186,6 +234,8 @@ class JobExecutor
         if ($prefix) {
             $prefix .= '_';
         }
+
+        $prefix .= date('Y_m_d_H_i_s') . '_';
 
         return preg_replace('~\W~', '_', uniqid($prefix, true));
     }
