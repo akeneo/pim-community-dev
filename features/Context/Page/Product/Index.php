@@ -99,12 +99,13 @@ class Index extends Grid
     }
 
     /**
-     * @param string $code
+     * @param string $action   Type of filtering (>, >=, etc.)
+     * @param number $value    Value to filter
+     * @param string $currency Currency on which filter
      */
-    public function filterPerPrice($value, $currency)
+    public function filterPerPrice($action, $value, $currency)
     {
         $filter = $this->getFilter('Price');
-
         if (!$filter) {
             throw new \Exception('Could not find filter for price.');
         }
@@ -112,14 +113,15 @@ class Index extends Grid
         $this->openFilter($filter);
 
         $criteriaElt = $filter->find('css', 'div.filter-criteria');
-
         $criteriaElt->fillField('value', $value);
 
-        // Open the dropdown menu with currency list
+        // Open the dropdown menu with currency list and click on $currency line
         $this->pressButton('Currency');
+        $this->pressButton($currency);
 
-        // Click on the Euro line in the currency menu
-        $this->pressButton('EUR');
+        // Open the dropdown menu with action list and click on $action line
+        $this->pressButton('Action');
+        $this->pressbutton($action);
 
         $filter->find('css', 'button.filter-update')->click();
     }
