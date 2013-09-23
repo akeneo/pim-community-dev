@@ -2,6 +2,7 @@ parameters:
     pim_grid.datagrid.class:         Pim\Bundle\GridBundle\Datagrid\Datagrid
     pim_grid.builder.datagrid.class: Pim\Bundle\GridBundle\Builder\ORM\DatagridBuilder
     pim_grid.action.tab_redirect.class: Pim\Bundle\GridBundle\Action\TabRedirectAction
+    oro_grid.mass_action.dispatcher.class: Pim\Bundle\GridBundle\Action\MassAction\MassActionDispatcher
 
 services:
     pim_grid.builder.datagrid:
