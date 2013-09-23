@@ -37,6 +37,9 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter'],
             this.$(widgetSelector).datetimepicker(this.dateWidgetOptions);
             var widget = this.$(widgetSelector).datetimepicker('widget');
             widget.addClass(this.dateWidgetOptions.className);
+            $(this.dateWidgetSelector).on('click', function(e) {
+                e.stopImmediatePropagation();
+            });
             return widget;
         },
 

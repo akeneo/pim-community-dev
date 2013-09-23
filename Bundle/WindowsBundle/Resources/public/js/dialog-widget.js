@@ -61,6 +61,7 @@ function(_, Backbone, app, error, AbstractWidget, StateModel) {
 
             this.options.dialogOptions.close = runner(closeHandlers);
 
+            this.on('widgetRender', _.bind(this._initAdjustHeight, this));
             this.on('contentLoadError', _.bind(this.loadErrorHandler, this));
         },
 
@@ -185,31 +186,27 @@ function(_, Backbone, app, error, AbstractWidget, StateModel) {
             } else {
                 this.widget.html(this.$el);
             }
-            this._adjustHeight();
             AbstractWidget.prototype.show.apply(this);
         },
 
-        _adjustHeight: function() {
-            var content = this.widget.find('.scrollable-container');
-            // first execute
-            if (_.isNull(this.contentTop)) {
-                content.css('overflow', 'auto');
-                var parentEl = content.parent();
-                var topPaddingOffset = parentEl.is(this.widget) ? 0 : parentEl.position().top;
-                this.contentTop = content.position().top + topPaddingOffset;
-                var widgetHeight = this.widget.height();
-                content.outerHeight(this.widget.height() - this.contentTop);
-                if (widgetHeight != this.widget.height()) {
-                    // there is some unpredictable offset
-                    this.contentTop += this.widget.height() - this.contentTop - content.outerHeight();
-                    content.outerHeight(this.widget.height() - this.contentTop);
-                }
-                this.widget.on("dialogresize dialogmaximize dialogrestore", _.bind(this._adjustHeight, this));
+        _initAdjustHeight: function(content) {
+            this.widget.off("dialogresize dialogmaximize dialogrestore", _.bind(this._fixScrollableHeight, this));
+            var scrollableContent = content.find('.scrollable-container');
+            if (scrollableContent.length) {
+                scrollableContent.css('overflow', 'auto');
+                this.widget.on("dialogresize dialogmaximize dialogrestore", _.bind(this._fixScrollableHeight, this));
+                this._fixScrollableHeight();
             }
+        },
 
-            content.each(_.bind(function(i, el){
+        _fixScrollableHeight: function() {
+            var widget = this.widget;
+            widget.find('.scrollable-container').each(_.bind(function(i, el){
                 var $el = $(el);
-                $el.outerHeight(this.widget.height() - this.contentTop);
+                var height = widget.height() - $el.position().top;
+                if (height) {
+                    $el.height(height);
+                }
             },this));
         },
 
