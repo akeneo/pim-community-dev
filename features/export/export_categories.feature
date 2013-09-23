@@ -27,19 +27,21 @@ Feature: Export categories
     Given I am on the "acme_category_export" export job page
     When I launch the export job
     Then I should see "The export is running."
-    And file "/tmp/category_export.csv" should contain 5 rows
+    And file "/tmp/category_export.csv" should contain 6 rows
     And the category order in the file "/tmp/category_export.csv" should be following:
+     | default     |
      | computers   |
      | laptops     |
      | hard_drives |
      | pc          |
     Then I copy the file "/tmp/category_export.csv" to "/tmp/category_import.csv"
-    And I move the row 2 to row 4 in the file "/tmp/category_export.csv"
+    And I move the row 3 to row 5 in the file "/tmp/category_export.csv"
     When I am on the "acme_category_import" import job page
     And I launch the import job
     Then I should see "The import is running."
-    And file "/tmp/category_export.csv" should contain 5 rows
+    And file "/tmp/category_export.csv" should contain 6 rows
     And the category order in the file "/tmp/category_export.csv" should be following:
+     | default     |
      | computers   |
      | hard_drives |
      | pc          |

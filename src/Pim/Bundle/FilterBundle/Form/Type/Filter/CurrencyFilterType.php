@@ -89,8 +89,7 @@ class CurrencyFilterType extends NumberFilterType
     {
         parent::setDefaultOptions($resolver);
 
-        $codes = $this->currencyManager->getActiveCodes();
-        $currencyChoices = array_combine($codes, $codes);
+        $currencyChoices = $this->currencyManager->getActiveCodeChoices();
 
         $resolver->replaceDefaults(array('data_type' => self::DATA_DECIMAL));
         $resolver->setDefaults(

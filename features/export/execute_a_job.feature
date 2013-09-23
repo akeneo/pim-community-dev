@@ -32,7 +32,7 @@ Feature: Execute a job
       | writer  | fileName      | export.csv |
     And I am logged in as "admin"
     And I am on the "acme_product_export" export job page
-    When I launch the export job
-    Then I should see "The export is running."
+    When I launch the "acme_product_export" export job
+    Then I should see "Execution details"
     And file "/tmp/export.csv" should exist
     And an email to "admin@example.com" should have been sent

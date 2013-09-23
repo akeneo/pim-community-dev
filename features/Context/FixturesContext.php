@@ -70,8 +70,9 @@ class FixturesContext extends RawMinkContext
      */
     public function resetChannels()
     {
+        $tree = $this->createTree('default');
         foreach ($this->channels as $code => $locales) {
-            $this->createChannel($code, $locales);
+            $this->createChannel($code, $locales, $tree);
         }
 
         $this->flush();
@@ -1033,8 +1034,6 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @param string $code
-     *
-     * @return Locale
      */
     private function createLocale($code)
     {
@@ -1045,16 +1044,29 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $code
+     *
+     * @return Category
+     */
+    private function createTree($code)
+    {
+        $tree = new Category();
+        $tree->setCode($code);
+        $this->persist($tree);
+        return $tree;
+    }
+
+    /**
      * @param string       $code
      * @param array:string $locales
-     *
-     * @return Channel
+     * @param Category     $tree
      */
-    private function createChannel($code, $locales)
+    private function createChannel($code, $locales, $tree=null)
     {
         $channel = new Channel;
         $channel->setCode($code);
         $channel->setName(ucfirst($code));
+        $channel->setCategory($tree);
 
         foreach ($locales as $localeCode) {
             $channel->addLocale($this->getLocale($localeCode));
