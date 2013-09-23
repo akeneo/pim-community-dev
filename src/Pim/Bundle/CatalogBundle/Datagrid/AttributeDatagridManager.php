@@ -21,7 +21,6 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
  */
 class AttributeDatagridManager extends DatagridManager
 {
-    protected $identifierField = 'id';
     /**
      * @var ProductManager
      */
