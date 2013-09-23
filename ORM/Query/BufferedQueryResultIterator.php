@@ -126,7 +126,7 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
     protected function getFirstResult()
     {
         if (null === $this->firstResult) {
-            $this->firstResult = (int)$this->query->getFirstResult();
+            $this->firstResult = (int)$this->getQuery()->getFirstResult();
         }
         return $this->firstResult;
     }
