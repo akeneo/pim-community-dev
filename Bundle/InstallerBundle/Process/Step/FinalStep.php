@@ -13,8 +13,7 @@ class FinalStep extends AbstractStep
         $params = $this->get('oro_installer.yaml_persister')->parse();
 
         // everything was fine - set %installed% flag to current date
-        $params['system']['installed']        = date('c');
-        $params['session']['session_handler'] = 'session.handler.pdo';
+        $params['system']['installed'] = date('c');
 
         $this->get('oro_installer.yaml_persister')->dump($params);
 
