@@ -54,6 +54,11 @@ class JobInstanceController extends AbstractDoctrineController
     private $rootDir;
 
     /**
+     * @var string
+     */
+    private $environment;
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -68,6 +73,7 @@ class JobInstanceController extends AbstractDoctrineController
      * @param ConnectorRegistry        $connectorRegistry
      * @param string                   $jobType
      * @param string                   $rootDir
+     * @param string                   $environment
      */
     public function __construct(
         Request $request,
@@ -81,7 +87,8 @@ class JobInstanceController extends AbstractDoctrineController
         DatagridWorkerInterface $datagridWorker,
         ConnectorRegistry $connectorRegistry,
         $jobType,
-        $rootDir
+        $rootDir,
+        $environment
     ) {
         parent::__construct(
             $request,
@@ -98,6 +105,7 @@ class JobInstanceController extends AbstractDoctrineController
         $this->connectorRegistry = $connectorRegistry;
         $this->jobType           = $jobType;
         $this->rootDir           = $rootDir;
+        $this->environment       = $environment;
     }
     /**
      * List the jobs instances
@@ -355,7 +363,14 @@ class JobInstanceController extends AbstractDoctrineController
                 $this->getManager()->flush();
                 $instanceCode = $jobExecution->getJobInstance()->getCode();
                 $executionId = $jobExecution->getId();
-                $cmd = sprintf('php %s/console oro:batch:job %s %s', $this->rootDir, $instanceCode, $executionId);
+                $cmd = sprintf(
+                    'php %s/console oro:batch:job --env=%s %s %s >> %s/logs/batch_execute.log 2>&1',
+                    $this->rootDir,
+                    $this->environment,
+                    $instanceCode,
+                    $executionId,
+                    $this->rootDir
+                );
                 $process = new Process($cmd);
                 $process->start();
             }
