@@ -43,7 +43,7 @@ Feature: Set the attribute used as label
       | bag-jean |
     And I am logged in as "admin"
     When I am on the "bag-jean" product page
-    Then the title of the product should match "#^Product/en \d+$#"
+    Then the title of the product should be "Product/en bag-jean"
 
   @javascript
   Scenario: Fail to remove an attribute that is used as the family label

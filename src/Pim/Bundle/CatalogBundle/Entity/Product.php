@@ -254,7 +254,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
             }
         }
 
-        return (string) $this->id;
+        return (string) $this->getIdentifier()->getData();
     }
 
     /**
