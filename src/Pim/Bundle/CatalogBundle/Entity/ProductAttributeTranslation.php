@@ -41,7 +41,7 @@ class ProductAttributeTranslation extends AbstractTranslation
      *
      * @param string $label
      *
-     * @return ProductAttribute
+     * @return ProductAttributeTranslation
      */
     public function setLabel($label)
     {

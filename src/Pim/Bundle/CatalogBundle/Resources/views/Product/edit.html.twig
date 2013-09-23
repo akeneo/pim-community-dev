@@ -43,7 +43,7 @@
 
                         $('#edit-family').on('click', function () {
                             Dialog.confirm(message, title, doAction);
-                            $('#{{ form.family.vars.id }}').prepend('<option></option>')
+                            $('#{{ form.family.vars.id }}')
                                 .attr('data-placeholder', '{{ "Choose a family"|trans }}')
                                 .select2({ allowClear: true });
                         })

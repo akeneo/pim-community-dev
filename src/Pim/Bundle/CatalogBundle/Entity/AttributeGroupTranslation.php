@@ -41,7 +41,7 @@ class AttributeGroupTranslation extends AbstractTranslation
      *
      * @param string $name
      *
-     * @return ProductAttribute
+     * @return AttributeGroupTranslation
      */
     public function setName($name)
     {

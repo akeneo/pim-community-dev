@@ -220,7 +220,8 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation",
      *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"}
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
      * )
      */
     protected $translations;
