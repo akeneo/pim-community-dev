@@ -12,3 +12,57 @@
         {% endif %}
     {% endspaceless %}
 {% endblock %}
+
+{% block oro_business_unit_tree_select_widget %}
+    {% set entityId = false %}
+    {% if "oro_business_unit_form" == form.parent.vars.name%}
+        {% set entityId = form.parent.vars.value.id %}
+    {% endif %}
+
+    {% if expanded %}
+        {{ block('choice_widget_expanded') }}
+    {% else %}
+        {{ block('choice_bu_widget_collapsed') }}
+    {% endif %}
+{% endblock %}
+
+{% block choice_bu_widget_collapsed %}
+    {% spaceless %}
+        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+            {% if empty_value is not none %}
+                <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ empty_value|trans({}, translation_domain) }}</option>
+            {% endif %}
+            {% if preferred_choices|length > 0 %}
+                {% set options = preferred_choices %}
+                {{ block('choice_widget_options') }}
+                {% if choices|length > 0 and separator is not none %}
+                    <option disabled="disabled">{{ separator }}</option>
+                {% endif %}
+            {% endif %}
+            {% set options = choices %}
+            {{ block('choice_bu_widget_options') }}
+        </select>
+    {% endspaceless %}
+{% endblock choice_bu_widget_collapsed %}
+
+{% block choice_bu_widget_options %}
+    {% spaceless %}
+        {% for group_label, choice in options %}
+            {% if choice is iterable %}
+                <optgroup label="{{ group_label|trans({}, translation_domain) }}">
+                    {% set options = choice %}
+                    {{ block('choice_widget_options') }}
+                </optgroup>
+            {% else %}
+                {% set disable = '' %}
+                {% if entityId and entityId == choice.value %}
+                    {% set disable = 'disabled="disabled"' %}
+                {% endif %}
+                <option {{ disable }} value="{{ choice.value }}"
+                {% if choice is selectedchoice(value) %} selected="selected"{% endif %}>
+                    {{ choice.label|trans({}, translation_domain)|raw }}
+                </option>
+            {% endif %}
+        {% endfor %}
+    {% endspaceless %}
+{% endblock choice_bu_widget_options %}
