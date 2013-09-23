@@ -18,8 +18,15 @@ class Operation extends Wizard
     private $steps = array(
         'Change status (enable / disable)' => 'Batch ChangeStatus',
         'Edit attributes'                  => 'Batch EditCommonAttributes',
+        'Change the family of products'    => 'Batch ChangeFamily',
     );
 
+    /**
+     * @param string $operation
+     *
+     * @throws ElementNotFoundException
+     * @return Operation
+     */
     public function chooseOperation($operation)
     {
         $choice = $this->findField($operation);
@@ -45,6 +52,12 @@ class Operation extends Wizard
         return $this;
     }
 
+    /**
+     * @param string $operation
+     *
+     * @throws \InvalidArgumentException
+     * @return string
+     */
     private function getStep($operation)
     {
         if (!array_key_exists($operation, $this->steps)) {
@@ -52,7 +65,7 @@ class Operation extends Wizard
                 sprintf(
                     'Unknown operation "%s" (available: "%s")',
                     $operation,
-                    join('", "', array_keys($this->aliases))
+                    join('", "', array_keys($this->steps))
                 )
             );
         }

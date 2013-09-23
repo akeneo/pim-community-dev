@@ -7,20 +7,28 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Form type of the ChangeStatus operation
+ * Form type of the ChangeFamily operation
  *
- * @author    Gildas Quemener <gildas.quemener@gmail.com>
+ * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChangeStatusType extends AbstractType
+class ChangeFamilyType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('enable', 'checkbox');
+        $builder->add(
+            'family',
+            'entity',
+            array(
+                'class'       => 'PimCatalogBundle:Family',
+                'empty_value' => 'None',
+                'required'    => false
+            )
+        );
     }
 
     /**
@@ -31,7 +39,7 @@ class ChangeStatusType extends AbstractType
 
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\\Bundle\\CatalogBundle\\MassEditAction\\ChangeStatus'
+                'data_class' => 'Pim\\Bundle\\CatalogBundle\\MassEditAction\\ChangeFamily'
             )
         );
     }
@@ -41,6 +49,6 @@ class ChangeStatusType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_catalog_mass_change_status';
+        return 'pim_catalog_mass_change_family';
     }
 }
