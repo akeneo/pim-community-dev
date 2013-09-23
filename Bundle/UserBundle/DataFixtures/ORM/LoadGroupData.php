@@ -11,12 +11,15 @@ class LoadGroupData extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        /**
+         * addRole was commented due a ticket BAP-1675
+         */
         $defaultBusinessUnit = null;
         if ($this->hasReference('default_business_unit')) {
             $defaultBusinessUnit = $this->getReference('default_business_unit');
         }
         $administrators = new Group('Administrators');
-        $administrators->addRole($this->getReference('administrator_role'));
+        //$administrators->addRole($this->getReference('administrator_role'));
         if ($defaultBusinessUnit) {
             $administrators->setOwner($defaultBusinessUnit);
         }
@@ -24,7 +27,7 @@ class LoadGroupData extends AbstractFixture implements OrderedFixtureInterface
         $this->setReference('oro_group_administrators', $administrators);
 
         $sales= new Group('Sales');
-        $sales->addRole($this->getReference('manager_role'));
+        //$sales->addRole($this->getReference('manager_role'));
         if ($defaultBusinessUnit) {
             $sales->setOwner($defaultBusinessUnit);
         }
@@ -32,7 +35,7 @@ class LoadGroupData extends AbstractFixture implements OrderedFixtureInterface
         $this->setReference('oro_group_sales', $sales);
 
         $marketing= new Group('Marketing');
-        $marketing->addRole($this->getReference('manager_role'));
+        //$marketing->addRole($this->getReference('manager_role'));
         if ($defaultBusinessUnit) {
             $marketing->setOwner($defaultBusinessUnit);
         }

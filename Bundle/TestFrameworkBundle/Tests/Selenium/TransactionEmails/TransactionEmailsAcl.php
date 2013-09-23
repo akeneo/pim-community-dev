@@ -33,7 +33,7 @@ class TransactionEmailsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             ->setName('ROLE_NAME_' . $randomPrefix)
             ->setLabel('Label_' . $randomPrefix)
             ->setOwner('Main')
-            ->selectAcl('Root')
+            ->setEntity('Email Notification', array('Create', 'Edit', 'Delete', 'View'))
             ->save()
             ->assertMessage('Role successfully saved')
             ->close();
@@ -68,6 +68,7 @@ class TransactionEmailsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             ->setRoles(array('Label_' . $role))
             ->save()
             ->assertMessage('User successfully saved')
+            ->toGrid()
             ->close()
             ->assertTitle('Users - System');
 
@@ -113,7 +114,7 @@ class TransactionEmailsAcl extends \PHPUnit_Extensions_Selenium2TestCase
      * @param string $aclcase
      * @dataProvider columnTitle
      */
-    public function testBusinessUnitAcl($aclcase, $username, $role, $email)
+    public function testTransactionEmailAcl($aclcase, $username, $role, $email)
     {
         $rolename = 'ROLE_NAME_' . $role;
         $login = new Login($this);
@@ -130,7 +131,7 @@ class TransactionEmailsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             case 'create':
                 $this->createAcl($login, $rolename, $username);
                 break;
-            case 'view list':
+            case 'view':
                 $this->viewListAcl($login, $rolename, $username);
                 break;
         }
@@ -141,7 +142,7 @@ class TransactionEmailsAcl extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $rolename)
             ->open(array($rolename))
-            ->selectAcl('Delete notification rule')
+            ->setEntity('Email Notification', array('Delete'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -156,7 +157,7 @@ class TransactionEmailsAcl extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $rolename)
             ->open(array($rolename))
-            ->selectAcl('Edit notification rule')
+            ->setEntity('Email Notification', array('Edit'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -171,7 +172,7 @@ class TransactionEmailsAcl extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $rolename)
             ->open(array($rolename))
-            ->selectAcl('Create notification rule')
+            ->setEntity('Email Notification', array('Create'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -186,7 +187,7 @@ class TransactionEmailsAcl extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $rolename)
             ->open(array($rolename))
-            ->selectAcl('View List of notification rules')
+            ->setEntity('Email Notification', array('View'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -207,7 +208,7 @@ class TransactionEmailsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             'delete' => array('delete'),
             'update' => array('update'),
             'create' => array('create'),
-            'view list' => array('view list'),
+            'view list' => array('view'),
         );
     }
 }

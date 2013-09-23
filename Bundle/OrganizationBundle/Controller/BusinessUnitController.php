@@ -34,7 +34,7 @@ class BusinessUnitController extends Controller
      */
     public function createAction()
     {
-        return $this->updateAction(new BusinessUnit());
+        return $this->update(new BusinessUnit());
     }
 
     /**
@@ -69,25 +69,7 @@ class BusinessUnitController extends Controller
      */
     public function updateAction(BusinessUnit $entity)
     {
-        if ($this->get('oro_organization.form.handler.business_unit')->process($entity)) {
-            $this->get('session')->getFlashBag()->add('success', 'Business Unit successfully saved');
-
-            return $this->get('oro_ui.router')->actionRedirect(
-                array(
-                    'route' => 'oro_business_unit_update',
-                    'parameters' => array('id' => $entity->getId()),
-                ),
-                array(
-                    'route' => 'oro_business_unit_view',
-                    'parameters' => array('id' => $entity->getId())
-                )
-            );
-        }
-
-        return array(
-            'datagrid' => $this->getBusinessUnitDatagridManager($entity, 'update')->getDatagrid()->createView(),
-            'form'     => $this->get('oro_organization.form.business_unit')->createView(),
-        );
+        return $this->update($entity);
     }
     
     /**
@@ -167,5 +149,32 @@ class BusinessUnitController extends Controller
         $result->getRouteGenerator()->setRouteParameters(array('id' => $businessUnit->getId()));
 
         return $result;
+    }
+
+    /**
+     * @param BusinessUnit $entity
+     * @return array
+     */
+    protected function update(BusinessUnit $entity)
+    {
+        if ($this->get('oro_organization.form.handler.business_unit')->process($entity)) {
+            $this->get('session')->getFlashBag()->add('success', 'Business Unit successfully saved');
+
+            return $this->get('oro_ui.router')->actionRedirect(
+                array(
+                    'route' => 'oro_business_unit_update',
+                    'parameters' => array('id' => $entity->getId()),
+                ),
+                array(
+                    'route' => 'oro_business_unit_view',
+                    'parameters' => array('id' => $entity->getId())
+                )
+            );
+        }
+
+        return array(
+            'datagrid' => $this->getBusinessUnitDatagridManager($entity, 'update')->getDatagrid()->createView(),
+            'form'     => $this->get('oro_organization.form.business_unit')->createView(),
+        );
     }
 }
