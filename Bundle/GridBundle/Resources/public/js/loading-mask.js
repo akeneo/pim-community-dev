@@ -83,18 +83,26 @@ function($, _, Backbone) {
 
             var loadingHeight = $loadingEl.height();
             var loadingWidth = $loadingEl.width();
+            var containerWidth = $containerEl.outerWidth();
+            var containerHeight = $containerEl.outerHeight();
             if (loadingHeight > containerHeight) {
                 $containerEl.css('height', loadingHeight + 'px');
             }
 
-            var containerWidth = $containerEl.outerWidth();
-            var containerHeight = $containerEl.outerHeight();
+            var halfLoadingHeight = loadingHeight / 2;
+            var loadingTop = containerHeight / 2  - halfLoadingHeight;
+            var loadingLeft = (containerWidth - loadingWidth) / 2;
 
-            var loadingTop = containerHeight/2 - loadingHeight / 2;
-            loadingTop = loadingTop > 0 ? Math.round(loadingTop) : 0;
+            // Move loading message to visible center of container if container is visible
+            var windowHeight = $(window).outerHeight();
+            var containerTop = $containerEl.offset().top;
+            if (containerTop < windowHeight && (containerTop + loadingTop + loadingHeight) > windowHeight) {
+                loadingTop = (windowHeight - containerTop) / 2 - halfLoadingHeight;
+            }
 
-            var loadingLeft = containerWidth/2 - loadingWidth / 2;
+            loadingTop = loadingTop < containerHeight - loadingHeight ? loadingTop : containerHeight - loadingHeight;
             loadingLeft = loadingLeft > 0 ? Math.round(loadingLeft) : 0;
+            loadingTop = loadingTop > 0 ? Math.round(loadingTop) : 0;
 
             $loadingEl.css('top', loadingTop + 'px');
             $loadingEl.css('left', loadingLeft + 'px');
