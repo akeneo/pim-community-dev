@@ -30,7 +30,6 @@ class RestApiGroupsTest extends WebTestCase
         $request = array(
             "group" => array(
                 "name" => 'Group_'.mt_rand(100, 500),
-                "roles" => array(2),
                 'owner' => '1'
             )
         );
@@ -71,14 +70,14 @@ class RestApiGroupsTest extends WebTestCase
      * @param  array $group
      * @return array $group
      */
-    public function testApiRolesGroup($request, $group)
+    /*public function testApiRolesGroup($request, $group)
     {
         $this->client->request('GET', $this->client->generate('oro_api_get_group_roles', array('id' => $group['id'])));
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
 
         return $group;
-    }
+    }*/
 
     /**
      * @depends testApiCreateGroup

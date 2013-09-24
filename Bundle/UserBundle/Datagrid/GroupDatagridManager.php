@@ -50,7 +50,7 @@ class GroupDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($fieldName);
 
-        $rolesLabel = new FieldDescription();
+        /*$rolesLabel = new FieldDescription();
         $rolesLabel->setName('roles');
         $rolesLabel->setProperty(new FixedProperty('roles', 'roleLabelsAsString'));
         $rolesLabel->setOptions(
@@ -75,7 +75,7 @@ class GroupDatagridManager extends DatagridManager
                 },
             )
         );
-        $fieldsCollection->add($rolesLabel);
+        $fieldsCollection->add($rolesLabel);*/
     }
 
     /**

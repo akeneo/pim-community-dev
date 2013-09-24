@@ -154,11 +154,6 @@ services:
         tags:
             - { name: oro_tag.tag_manager }
 
-    oro_user.form.handler.role:
-        class:                        %oro_user.form.handler.role.class%
-        scope:                        request
-        arguments:                    ["@oro_user.form.role", "@request", "@doctrine.orm.entity_manager"]
-
     oro_user.form.handler.role.api:
         class:                        %oro_user.form.handler.role.class%
         scope:                        request

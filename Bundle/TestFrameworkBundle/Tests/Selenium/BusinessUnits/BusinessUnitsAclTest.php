@@ -30,7 +30,6 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit()
             ->openRoles()
             ->add()
-            ->setName('ROLE_NAME_' . $randomPrefix)
             ->setLabel('Label_' . $randomPrefix)
             ->setOwner('Main')
             ->setEntity('Business Unit', array('Create', 'Edit', 'Delete', 'View', 'Assign'))
@@ -114,7 +113,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
     public function testBusinessUnitAcl($aclcase, $username, $role, $unitname)
     {
         $this->markTestSkipped('Skipped due bug BAP-1693');
-        $rolename = 'ROLE_NAME_' . $role;
+        $rolename = 'Label_' . $role;
         $login = new Login($this);
         $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
