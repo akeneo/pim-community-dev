@@ -23,7 +23,7 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     /**
      * @Assert\NotBlank
      */
-    protected $fileName;
+    protected $fileName = 'export_%datetime%.csv';
 
     private $handler;
 
@@ -124,14 +124,8 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     public function getConfigurationFields()
     {
         return array(
-            'directoryName' => array(
-                'options' => array()
-            ),
-            'fileName'=>array(
-                'options'=>array(
-                    'data'=>'export_%datetime%.csv'
-                )
-            )
+            'directoryName' => array(),
+            'fileName' => array()
         );
     }
 }

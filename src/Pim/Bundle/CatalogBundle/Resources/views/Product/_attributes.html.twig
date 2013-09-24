@@ -1,3 +1,6 @@
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
 <div class="tab-groups">
     <ul class="nav nav-list">
         {% for group in product.orderedGroups %}
@@ -49,7 +52,13 @@
                     </div>
             {% endif %}
             {% if attributeView.isRemovable %}
-                <i class="icon-remove remove-attribute" data-toggle="tooltip" data-placement="right" data-url="{{ path('pim_catalog_product_removeproductattribute', { 'productId': product.id, 'attributeId': attributeId, 'dataLocale': dataLocale }) }}" data-redirect-url="{{path('pim_catalog_product_edit', { 'id': product.id, 'dataLocale': dataLocale, 'boost': "now"|date('U') })}}" data-success-message="{{'flash.product.attribute removed'|trans}}" data-original-title="{{ 'Remove this attribute'|trans }}" data-dialog="confirm" data-method="DELETE" data-title="{{ 'confirmation.delete'|trans }}" data-message="{{ 'confirmation.remove.attribute'|trans({'%name%': attributeView.label}) }}"></i>
+                <i {{ elements.deleteLinkAttributes(
+                    path('pim_catalog_product_removeproductattribute', { 'productId': product.id, 'attributeId': attributeId, 'dataLocale': dataLocale }),
+                    path('pim_catalog_product_edit', { 'id': product.id, 'dataLocale': dataLocale, 'boost': "now"|date('U') }),
+                    'confirmation.remove.attribute'|trans({'%name%': attributeView.label}),
+                    '',
+                    'flash.product.attribute removed'|trans
+                )}} class="icon-remove remove-attribute" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
             {% endif %}
             </div>
         {% endfor %}

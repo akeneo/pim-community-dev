@@ -1,3 +1,6 @@
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
 <div class="tab-content">
     <div id="attribute-buttons"></div>
 
@@ -34,7 +37,13 @@
                 {% endfor %}
                 <td>
                     {% if attribute.attributeType != 'pim_catalog_identifier' %}
-                        <a href="javascript:void(0);" data-url="{{ path('pim_catalog_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}) }}" class="remove-attribute" data-dialog="confirm" data-method="DELETE" data-title="{{ 'confirmation.delete'|trans }}" data-message="{{ 'confirmation.remove.attribute'|trans({ '%name%': attribute.label }) }}">
+                        <a {{ elements.deleteLinkAttributes(
+                                path('pim_catalog_family_removeproductattribute', {'familyId': family.id, 'attributeId': attribute.id}),
+                                path('pim_catalog_family_edit', {'id': family.id, 'boost': 'now'|date('U') }),
+                                'confirmation.remove.attribute'|trans({ '%name%': attribute.label }),
+                                '',
+                                'flash.family.attribute removed'|trans
+                            )}} class="remove-attribute">
                             <i class="icon-trash"></i>
                         </a>
                     {% endif %}

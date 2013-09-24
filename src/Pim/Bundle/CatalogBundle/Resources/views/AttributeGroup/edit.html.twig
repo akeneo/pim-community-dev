@@ -1,4 +1,7 @@
 {% extends 'PimCatalogBundle:AttributeGroup:index.html.twig' %}
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
 
 {% oro_title_set({ params: { "%group.name%": form.vars.value.name } }) %}
 
@@ -58,7 +61,13 @@
                                     <input type="checkbox" disabled="disabled"{% if attribute.translatable %} checked="checked"{% endif %}>
                                 </td>
                                 <td>
-                                    <a href="javascript:void(0);" class="remove-attribute" data-url="{{ path('pim_catalog_attributegroup_removeproductattribute', {'groupId': group.id, 'attributeId': attribute.id}) }}" data-dialog="confirm" data-method="DELETE" data-title="{{ 'confirmation.delete'|trans }}" data-message="{{ 'confirmation.remove.attribute'|trans({'%name%': attribute.label}) }}">
+                                    <a {{ elements.deleteLinkAttributes(
+                                        path('pim_catalog_attributegroup_removeproductattribute', {'groupId': group.id, 'attributeId': attribute.id}),
+                                        path('pim_catalog_attributegroup_edit', {'id': group.id, 'boost': "now"|date("U") }),
+                                        'confirmation.remove.attribute'|trans({'%name%': attribute.label}),
+                                        '',
+                                        'flash.attribute group.attribute removed'|trans
+                                    ) }} class="remove-attribute">
                                         <i class="icon-trash"></i>
                                     </a>
                                 </td>
