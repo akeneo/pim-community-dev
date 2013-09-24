@@ -1,0 +1,6 @@
+parameters:
+    oro_importexport.data_converter.default.class: Oro\Bundle\ImportExportBundle\Converter\DefaultDataConverter
+
+services:
+    oro_importexport.data_converter.default:
+        class: %oro_importexport.data_converter.default.class%

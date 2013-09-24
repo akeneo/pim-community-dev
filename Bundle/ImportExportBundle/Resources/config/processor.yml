@@ -1,0 +1,47 @@
+parameters:
+    oro_importexport.processor.registry.class: Oro\Bundle\ImportExportBundle\Processor\ProcessorRegistry
+    oro_importexport.processor.registry_delegate_processor.class: Oro\Bundle\ImportExportBundle\Processor\RegistryDelegateProcessor
+
+    oro_importexport.processor.export_abstract.class: Oro\Bundle\ImportExportBundle\Processor\ExportProcessor
+    oro_importexport.processor.import_abstract.class: Oro\Bundle\ImportExportBundle\Processor\ImportProcessor
+
+services:
+    # Processor registry
+    oro_importexport.processor.registry:
+        class: %oro_importexport.processor.registry.class%
+
+    # Import delegate processor, abstract import processor
+    oro_importexport.processor.import_delegate:
+        class: %oro_importexport.processor.registry_delegate_processor.class%
+        arguments:
+            - @oro_importexport.processor.registry
+            - "import"
+            - @oro_importexport.context_registry
+
+    oro_importexport.processor.import_abstract:
+        class: %oro_importexport.processor.import_abstract.class%
+        abstract: true
+        calls:
+            - [setSerializer, [@oro_importexport.serializer]]
+
+    # Export delegate processor, abstract import processor
+    oro_importexport.processor.export_delegate:
+        class: %oro_importexport.processor.registry_delegate_processor.class%
+        arguments:
+            - @oro_importexport.processor.registry
+            - "export"
+            - @oro_importexport.context_registry
+
+    oro_importexport.processor.export_abstract:
+        class: %oro_importexport.processor.export_abstract.class%
+        abstract: true
+        calls:
+            - [setSerializer, [@oro_importexport.serializer]]
+
+    # Import validate processor
+    oro_importexport.processor.import_validation_delegate:
+        class: %oro_importexport.processor.registry_delegate_processor.class%
+        arguments:
+            - @oro_importexport.processor.registry
+            - "import_validation"
+            - @oro_importexport.context_registry
