@@ -19,7 +19,7 @@ class FieldType extends AbstractType
         'date'       => 'Date',
         'text'       => 'Text',
         'float'      => 'Float',
-        'oneToMany'  => 'Relation one to many',
+        //'oneToMany'  => 'Relation one to many',
         'manyToOne'  => 'Relation many to one',
         //'manyToMany' => 'Relation many to many',
     );
