@@ -45,7 +45,12 @@ class Channel
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Category", inversedBy="categories")
+     * @var Category $category
+     *
+     * @ORM\ManyToOne(
+     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Category",
+     *     inversedBy="channels"
+     * )
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
