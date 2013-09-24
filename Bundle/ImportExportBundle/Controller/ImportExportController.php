@@ -100,6 +100,7 @@ class ImportExportController extends Controller
             $counts['replace'] = $context->getReplaceCount();
             $counts['update'] = $context->getUpdateCount();
             $counts['delete'] = $context->getDeleteCount();
+            $counts['error_entries'] = $context->getErrorEntriesCount();
         }
         $counts['errors'] = count($jobResult->getErrors());
 

@@ -82,6 +82,16 @@ interface ContextInterface
     public function getDeleteCount();
 
     /**
+     * @return void
+     */
+    public function incrementErrorEntriesCount();
+
+    /**
+     * @return int
+     */
+    public function getErrorEntriesCount();
+
+    /**
      * @param string $name
      * @param mixed $value
      */

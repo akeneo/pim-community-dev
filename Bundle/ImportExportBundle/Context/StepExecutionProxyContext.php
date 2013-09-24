@@ -152,6 +152,22 @@ class StepExecutionProxyContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
+    public function incrementErrorEntriesCount()
+    {
+        $this->setValue('error_entries_count', (int)$this->getValue('error_entries_count') + 1);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getErrorEntriesCount()
+    {
+        return $this->getValue('error_entries_count');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setValue($name, $value)
     {
         $this->stepExecution->getExecutionContext()->put($name, $value);

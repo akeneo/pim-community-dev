@@ -121,6 +121,7 @@ class StepExecutionProxyContextTest extends \PHPUnit_Framework_TestCase
             array('update_count'),
             array('replace_count'),
             array('delete_count'),
+            array('error_entries_count'),
         );
     }
 
@@ -153,6 +154,7 @@ class StepExecutionProxyContextTest extends \PHPUnit_Framework_TestCase
             array('update_count'),
             array('replace_count'),
             array('delete_count'),
+            array('error_entries_count'),
         );
     }
 
