@@ -8,7 +8,7 @@ class SchemaStep extends AbstractStep
 {
     public function displayAction(ProcessContextInterface $context)
     {
-        set_time_limit(120);
+        set_time_limit(600);
 
         $this
             ->runCommand('doctrine:schema:drop', array('--force' => true, '--full-database' => true))
