@@ -13,7 +13,7 @@ use Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface;
 
 class DeleteMassActionHandler implements MassActionHandlerInterface
 {
-    const FLUSH_BATCH_SIZE = 20;
+    const FLUSH_BATCH_SIZE = 100;
 
     /**
      * @var EntityManager

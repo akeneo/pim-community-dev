@@ -144,7 +144,6 @@ class ImportExportController extends Controller
                 'filePath' => $this->getImportFileName($processorAlias),
             ),
         );
-        $this->removeImportFileName($processorAlias);
 
         $jobResult = $this->getJobExecutor()->executeJob(
             ProcessorRegistry::TYPE_IMPORT,
@@ -153,6 +152,7 @@ class ImportExportController extends Controller
         );
 
         if ($jobResult->isSuccessful()) {
+            $this->removeImportFileName($processorAlias);
             $message = $this->get('translator')->trans('oro_importexport.import.import_success');
         } else {
             $message = $this->get('translator')->trans('oro_importexport.import.import_error');

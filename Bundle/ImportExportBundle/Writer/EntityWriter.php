@@ -12,9 +12,15 @@ class EntityWriter implements ItemWriterInterface
      */
     protected $entityManager;
 
-    public function __construct(EntityManager $entityManager)
+    /**
+     * @var EntityDetachFixer
+     */
+    protected $detachFixer;
+
+    public function __construct(EntityManager $entityManager, EntityDetachFixer $detachFixer)
     {
         $this->entityManager = $entityManager;
+        $this->detachFixer = $detachFixer;
     }
 
     /**
@@ -24,6 +30,7 @@ class EntityWriter implements ItemWriterInterface
     {
         foreach ($items as $item) {
             $this->entityManager->persist($item);
+            $this->detachFixer->fixEntityAssociationFields($item, 1);
         }
         $this->entityManager->flush();
         $this->entityManager->clear();
