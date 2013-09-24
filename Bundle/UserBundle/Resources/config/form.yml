@@ -68,8 +68,9 @@ services:
         arguments:                    ["oro_user_status_form", "oro_user_status", null]
 
     oro_user.form.type.user:
+        scope: request
         class:                        %oro_user.form.type.user.class%
-        arguments:                    [@oro_user.manager.flexible, "@security.context", "@oro_security.security_facade"]
+        arguments:                    [@oro_user.manager.flexible, "@security.context", "@request"]
         tags:
             - { name: form.type, alias: oro_user_user }
 
@@ -82,8 +83,9 @@ services:
             - { name: form.type, alias: oro_user_user_value }
 
     oro_user.form.type.user.api:
+        scope: request
         class:                        %oro_user.form.type.user.api.class%
-        arguments:                    [@oro_user.manager.flexible, "@security.context", "@oro_security.security_facade"]
+        arguments:                    [@oro_user.manager.flexible, "@security.context", "@request"]
         tags:
             - { name: form.type, alias: user }
 

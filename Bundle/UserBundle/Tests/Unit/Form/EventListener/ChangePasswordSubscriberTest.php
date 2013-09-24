@@ -10,9 +10,6 @@ use Symfony\Component\Form\Test\FormIntegrationTestCase;
 class ChangePasswordSubscriberTest extends FormIntegrationTestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
-    protected $securityFacade;
-
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $securityContext;
 
     /** @var  ChangePasswordSubscriber */
@@ -25,10 +22,6 @@ class ChangePasswordSubscriberTest extends FormIntegrationTestCase
     {
         parent::setUp();
 
-        $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->securityContext = $this->getMockForAbstractClass(
             'Symfony\Component\Security\Core\SecurityContextInterface'
         );
@@ -38,7 +31,7 @@ class ChangePasswordSubscriberTest extends FormIntegrationTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->subscriber = new ChangePasswordSubscriber($this->factory, $this->securityFacade, $this->securityContext);
+        $this->subscriber = new ChangePasswordSubscriber($this->factory, $this->securityContext);
     }
 
     /**
