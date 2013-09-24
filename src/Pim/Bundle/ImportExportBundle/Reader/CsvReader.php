@@ -253,7 +253,8 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
             'escape'        => array(),
         );
     }
-    public function finish() {
+    public function finish()
+    {
         $this->csv = null;
         $this->fieldNames = null;
     }
