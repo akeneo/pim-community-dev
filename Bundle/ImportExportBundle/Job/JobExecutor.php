@@ -61,7 +61,6 @@ class JobExecutor
         $jobInstance->setRawConfiguration($configuration);
         $jobExecution = new JobExecution();
         $jobExecution->setJobInstance($jobInstance);
-        $this->entityManager->persist($jobInstance);
 
         $jobResult = new JobResult();
         $jobResult->setSuccessful(false);
@@ -94,8 +93,6 @@ class JobExecutor
         }
 
         // update job instance
-        $this->entityManager->detach($jobInstance);
-        $jobInstance = $this->updateJobInstance($jobInstance);
         $this->entityManager->persist($jobInstance);
         $this->entityManager->flush($jobInstance);
 
@@ -143,73 +140,6 @@ class JobExecutor
     protected function getJobInstanceRepository()
     {
         return $this->entityManager->getRepository('OroBatchBundle:JobInstance');
-    }
-
-    /**
-     * @param JobInstance $jobInstance
-     * @return JobInstance
-     */
-    protected function updateJobInstance(JobInstance $jobInstance)
-    {
-        $jobInstanceId = $jobInstance->getId();
-        if ($jobInstanceId) {
-            /** @var JobInstance $persistedJobInstance */
-            $persistedJobInstance = $this->getJobInstanceRepository()->find($jobInstanceId);
-            if ($persistedJobInstance) {
-                $jobExecutions = $jobInstance->getJobExecutions()->getValues();
-                $persistedJobInstance->getJobExecutions()->clear();
-
-                foreach ($jobExecutions as $jobExecution) {
-                    $clonedJobExecution = $this->cloneJobExecution($jobExecution);
-                    $clonedJobExecution->setJobInstance($persistedJobInstance);
-                    $persistedJobInstance->addJobExecution($clonedJobExecution);
-                }
-
-                $jobInstance = $persistedJobInstance;
-            } else {
-                $jobInstance = $this->cloneJobInstance($jobInstance);
-            }
-        }
-
-        return $jobInstance;
-    }
-
-    /**
-     * Deep clone of JobInstance object
-     *
-     * @param JobInstance $jobInstance
-     * @return JobInstance
-     */
-    protected function cloneJobInstance(JobInstance $jobInstance)
-    {
-        $clonedJobInstance = clone $jobInstance;
-        $clonedJobInstance->getJobExecutions()->clear();
-
-        foreach ($jobInstance->getJobExecutions() as $jobExecution) {
-            $clonedJobExecution = $this->cloneJobExecution($jobExecution);
-            $clonedJobExecution->setJobInstance($clonedJobInstance);
-            $clonedJobInstance->addJobExecution($clonedJobExecution);
-        }
-
-        return $clonedJobInstance;
-    }
-
-    /**
-     * @param JobExecution $jobExecution
-     * @return JobExecution
-     */
-    protected function cloneJobExecution(JobExecution $jobExecution)
-    {
-        $clonedJobExecution = clone $jobExecution;
-        $clonedJobExecution->getStepExecutions()->clear();
-
-        foreach ($jobExecution->getStepExecutions() as $stepExecution) {
-            $clonedStepExecution = clone $stepExecution;
-            $clonedStepExecution->setJobExecution($clonedJobExecution);
-            $clonedJobExecution->addStepExecution($clonedStepExecution);
-        }
-
-        return $clonedJobExecution;
     }
 
     /**
