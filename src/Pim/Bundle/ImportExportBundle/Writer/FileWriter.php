@@ -124,9 +124,7 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     public function getConfigurationFields()
     {
         return array(
-            'directoryName' => array(
-                'options' => array()
-            ),
+            'directoryName' => array(),
             'fileName' => array()
         );
     }
