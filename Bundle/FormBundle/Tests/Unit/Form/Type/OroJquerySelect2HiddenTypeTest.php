@@ -9,7 +9,6 @@ use Doctrine\ORM\AbstractQuery;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
 use Oro\Bundle\FormBundle\Autocomplete\SearchRegistry;
-use Oro\Bundle\FormBundle\Autocomplete\SearchHandler;
 use Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface;
 use Oro\Bundle\FormBundle\Autocomplete\ConverterInterface;
 
@@ -102,7 +101,7 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
 
         $form = $this->factory->create($this->type, null, $options);
 
-        $form->bind($bindData);
+        $form->submit($bindData);
 
         $this->assertTrue($form->isSynchronized());
         $this->assertEquals($formData, $form->getData());
@@ -281,7 +280,8 @@ class OroJquerySelect2HiddenTypeTest extends FormIntegrationTestCase
                 ),
                 'expectedCalls' => array(),
                 'expectedException' => 'Symfony\Component\Form\Exception\UnexpectedTypeException',
-                'expectedExceptionMessage' => 'Expected argument of type "Oro\Bundle\FormBundle\Autocomplete\ConverterInterface", "string" given'
+                'expectedExceptionMessage' =>
+                    'Expected argument of type "Oro\Bundle\FormBundle\Autocomplete\ConverterInterface", "string" given'
             ),
             'entity_class must be set' => array(
                 array(
