@@ -115,7 +115,7 @@ class RolesTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit()
             ->openRoles();
-        $roles->deleteEntity(array('name' => 'ROLE_' . $this->newRole['ROLE_NAME'] . strtoupper($randomPrefix)));
-        $this->assertFalse($roles->entityExists(array('name' => 'ROLE_' . $this->newRole['ROLE_NAME'] . strtoupper($randomPrefix))));
+        $roles->deleteEntity(array('name' => $this->newRole['LABEL'] . $randomPrefix));
+        $this->assertFalse($roles->entityExists(array('name' => $this->newRole['ROLE_NAME'] . $randomPrefix)));
     }
 }
