@@ -10,6 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Form\View\ProductFormView;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\IgnoreMissingProductPropertySubscriber;
 
 /**
  * Product form type
@@ -69,7 +70,8 @@ class ProductType extends FlexibleType
                         'by_reference' => false,
                     )
                 )
-                ->addEventSubscriber($this->transformer);
+                ->addEventSubscriber($this->transformer)
+                ->addEventSubscriber(new IgnoreMissingProductPropertySubscriber());
         }
     }
 

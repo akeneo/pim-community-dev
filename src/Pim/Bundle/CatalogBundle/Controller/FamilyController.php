@@ -232,7 +232,6 @@ class FamilyController extends AbstractDoctrineController
         } else {
             return $this->redirectToRoute('pim_catalog_family_create');
         }
-        
     }
 
     /**
