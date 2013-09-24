@@ -3,20 +3,63 @@
 namespace Oro\Bundle\ImportExportBundle\Tests\Unit\Writer;
 
 use Oro\Bundle\ImportExportBundle\Writer\EntityWriter;
+use Oro\Bundle\ImportExportBundle\Writer\EntityDetachFixer;
 
 class EntityWriterTest extends \PHPUnit_Framework_TestCase
 {
-    public function testWrite()
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $entityManager;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $detachFixer;
+
+    /**
+     * @var EntityWriter
+     */
+    protected $writer;
+
+    protected function setUp()
     {
-        $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+        $this->entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $em->expects($this->exactly(2))
-            ->method('persist');
-        $em->expects($this->once())
+
+        $this->detachFixer = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Writer\EntityDetachFixer')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->writer = new EntityWriter($this->entityManager, $this->detachFixer);
+    }
+
+    public function testWrite()
+    {
+        $fooItem = $this->getMock('FooItem');
+        $barItem = $this->getMock('BarItem');
+
+        $this->detachFixer->expects($this->at(0))
+            ->method('fixEntityAssociationFields')
+            ->with($fooItem, 1);
+
+        $this->detachFixer->expects($this->at(1))
+            ->method('fixEntityAssociationFields')
+            ->with($barItem, 1);
+
+        $this->entityManager->expects($this->at(0))
+            ->method('persist')
+            ->with($fooItem);
+
+        $this->entityManager->expects($this->at(1))
+            ->method('persist')
+            ->with($barItem);
+
+        $this->entityManager->expects($this->at(2))
             ->method('flush');
-        $writer = new EntityWriter($em);
-        $items = array(new \stdClass(), new \stdClass());
-        $writer->write($items);
+
+        $items = array($fooItem, $barItem);
+        $this->writer->write($items);
     }
 }

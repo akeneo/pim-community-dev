@@ -1,6 +1,7 @@
 parameters:
     oro_importexport.writer.csv.class: Oro\Bundle\ImportExportBundle\Writer\CsvFileWriter
     oro_importexport.writer.entity.class: Oro\Bundle\ImportExportBundle\Writer\EntityWriter
+    oro_importexport.writer.entity_detach_fixer.class: Oro\Bundle\ImportExportBundle\Writer\EntityDetachFixer
     oro_importexport.writer.dummy.class: Oro\Bundle\ImportExportBundle\Writer\DummyWriter
     oro_importexport.writer.doctrine_clear.class: Oro\Bundle\ImportExportBundle\Writer\DoctrineClearWriter
 
@@ -14,6 +15,12 @@ services:
 
     oro_importexport.writer.entity:
         class: %oro_importexport.writer.entity.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @oro_importexport.writer.entity_detach_fixer
+
+    oro_importexport.writer.entity_detach_fixer:
+        class: %oro_importexport.writer.entity_detach_fixer.class%
         arguments:
             - @doctrine.orm.entity_manager
 
