@@ -210,7 +210,9 @@ class ProductController extends AbstractDoctrineController
                 $view = 'OroGridBundle:Datagrid:list.json.php';
                 break;
             case 'csv':
-                ini_set('max_execution_time', 100);
+                // Export time execution depends on entities exported
+                ignore_user_abort(false);
+                set_time_limit(0);
 
                 $scope = $this->productManager->getScope();
 
