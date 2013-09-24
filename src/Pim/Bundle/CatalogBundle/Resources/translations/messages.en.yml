@@ -102,9 +102,12 @@ confirmation:
         product:         Are you sure you want to delete the product %name%?
         export profile:  Are you sure you want to delete the export profile %name%?
         import profile:  Are you sure you want to delete the import profile %name%?
+        channel:         Are you sure you want to delete the channel %name%?
 
 # Flash messages
 flash:
+    entity:
+        removed:          Item was deleted
     attribute:
         created:                  Attribute successfully created
         updated:                  Attribute successfully updated
@@ -146,6 +149,10 @@ flash:
         attributes added:         Attributes successfully added to the product
         attribute removed:        Attribute successfully removed from the product
         attribute not removable:  The attribute can not be removed from this product
+    import:
+        removed:                  The import has been removed
+    export:
+        removed:                  The export has been removed
     error ocurred: Action failed. Please retry.
 
 # Info messages
