@@ -80,7 +80,6 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append(
             $root,
             array(
-                'phone_format'        => array('value' => '(xxx) xxx-xx-xx'),
                 'date_format'         => array('value' => 'MM/dd/yy'),
                 'time_format'         => array('value' => 'H:mm'),
                 'locale'              => array('value' => 'en_US'),

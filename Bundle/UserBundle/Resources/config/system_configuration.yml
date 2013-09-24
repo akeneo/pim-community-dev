@@ -25,6 +25,7 @@ oro_system_configuration:
 
         oro_user.timezone:
             type: timezone
+            priority: 253
             options:
                 label: 'Timezone'
                 required: true
@@ -41,6 +42,7 @@ oro_system_configuration:
 
         oro_user.date_format:
             type: choice
+            priority: 255
             options:
                 label: 'Date format'
                 required: true
@@ -57,20 +59,13 @@ oro_system_configuration:
 
         oro_user.time_format:
             type: choice
+            priority: 254
             options:
                 label: 'Time format'
                 required: true
                 choices:
                       "H:mm":  "H:mm"
                       "HH:mm": "HH:mm"
-                constraints:
-                    - NotBlank: ~
-
-        oro_user.phone_format:
-            type: text
-            options:
-                label: 'Phone format'
-                required: true
                 constraints:
                     - NotBlank: ~
 
@@ -129,7 +124,6 @@ oro_system_configuration:
                                             - oro_user.default_currency
                                             - oro_user.date_format
                                             - oro_user.time_format
-                                            - oro_user.phone_format
                                     number_formats:
                                         children:
                                             - oro_user.decimal_symbol
