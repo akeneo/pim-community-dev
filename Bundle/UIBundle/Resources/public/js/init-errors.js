@@ -10,7 +10,7 @@ function($) {
     };
 
     $(function() {
-        errorPopupPosition();
+        $(document).ready(errorPopupPosition);
         $(window).resize(errorPopupPosition);
 
         setTimeout(function() {

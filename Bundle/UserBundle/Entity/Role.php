@@ -51,7 +51,6 @@ class Role extends BaseRole
      * @var string
      *
      * @ORM\Column(type="string", unique=true, length=30, nullable=false)
-     * @Soap\ComplexType("string")
      * @Type("string")
      */
     protected $role;

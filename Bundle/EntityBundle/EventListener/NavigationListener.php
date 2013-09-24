@@ -49,6 +49,7 @@ class NavigationListener
         $entitiesMenuItem = $menu->getChild('system_tab')->getChild('entities_list');
         if ($entitiesMenuItem) {
             $extendConfigs = $this->entityExtendProvider->getConfigs();
+
             foreach ($extendConfigs as $extendConfig) {
                 if ($extendConfig->is('is_extend')
                     && $extendConfig->get('owner') == ExtendManager::OWNER_CUSTOM
