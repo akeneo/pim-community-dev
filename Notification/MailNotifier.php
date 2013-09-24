@@ -33,21 +33,29 @@ class MailNotifier implements Notifier
     protected $mailer;
 
     /**
+     * @var string $senderEmail
+     */
+    protected $senderEmail;
+
+    /**
      * @param BatchLogHandler          $logger
      * @param SecurityContextInterface $securityContext
      * @param \Twig_Environment        $twig
      * @param \Swift_Mailer            $mailer
+     * @param string                   $senderEmail
      */
     public function __construct(
         BatchLogHandler $logger,
         SecurityContextInterface $securityContext,
         \Twig_Environment $twig,
-        \Swift_Mailer $mailer
+        \Swift_Mailer $mailer,
+        $senderEmail
     ) {
         $this->logger          = $logger;
         $this->securityContext = $securityContext;
         $this->twig            = $twig;
         $this->mailer          = $mailer;
+        $this->senderEmail     = $senderEmail;
     }
 
     /**
@@ -71,7 +79,7 @@ class MailNotifier implements Notifier
 
         $message = $this->mailer->createMessage();
         $message->setSubject('Job has been executed');
-        $message->setFrom('no-reply@akeneo.com');
+        $message->setFrom($this->senderEmail);
         $message->setTo($user->getEmail());
         $message->setBody($txtBody, 'text/plain');
         $message->addPart($htmlBody, 'text/html');
