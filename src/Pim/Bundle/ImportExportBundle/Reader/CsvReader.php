@@ -253,6 +253,10 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
             'escape'        => array(),
         );
     }
+
+    /**
+     * Used by demobundle to manually reinitialize reader between imports
+     */
     public function finish()
     {
         $this->csv = null;
