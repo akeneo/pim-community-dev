@@ -24,6 +24,7 @@ class ExtensionsRequirements extends RequirementCollection
         $pcreVersion = defined('PCRE_VERSION') ? (float) PCRE_VERSION : null;
         $gdVersion   = defined('GD_VERSION') ? (float) GD_VERSION : null;
         $curlVersion = function_exists('curl_version') ? curl_version() : null;
+        $apcVersion  = phpversion('apc');
 
         $this
             ->add(new Requirement(
@@ -68,10 +69,10 @@ class ExtensionsRequirements extends RequirementCollection
             ))
             ->add(new Requirement(
                 $translator->trans('extensions.apc', array(), 'requirements'),
-                !(function_exists('apc_store') && ini_get('apc.enabled')) || version_compare(phpversion('apc'), '3.0.17', '>='),
+                function_exists('apc_store') && ini_get('apc.enabled') && version_compare($apcVersion, '3.0.17', '>='),
                 '>=3.0.17',
-                phpversion('apc'),
-                true,
+                $apcVersion ? $apcVersion : $off,
+                false,
                 $translator->trans('extensions.help', array('%extension%' => 'APC (>=3.0.17)'), 'requirements')
             ))
             ->add(new Requirement(
