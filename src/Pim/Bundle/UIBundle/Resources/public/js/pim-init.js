@@ -1,5 +1,5 @@
 require(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'pim/initselect2', 
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'pim/initselect2',
      'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
     function ($, __, mediator, Navigation, messenger, Dialog, initSelect2) {
         'use strict';
@@ -32,19 +32,6 @@ require(
             // Toogle accordion icon
             $('.accordion').on('show hide', function (e) {
                 $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-collapse-alt icon-expand-alt');
-            });
-
-            $('#attribute-buttons').find('.dropdown-menu').click(function (e) {
-                e.stopPropagation();
-            });
-
-            $('#default_channel').change(function () {
-                mediator.trigger('scopablefield:changescope', $(this).val());
-            });
-
-            $('.dropdown-menu.channel a').click(function (e) {
-                e.preventDefault();
-                mediator.trigger('scopablefield:' + $(this).data('action'));
             });
 
             // Save and restore activated form tabs and groups

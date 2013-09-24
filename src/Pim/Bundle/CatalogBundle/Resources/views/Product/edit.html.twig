@@ -8,8 +8,8 @@
 
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'pim/dialog', 'jquery.currencyfield'],
-            function($, _, TreeAssociate, Scopable, FormUpdateListener, Dialog){
+            ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'pim/dialog', 'jquery.currencyfield'],
+            function($, _, mediator, TreeAssociate, Scopable, FormUpdateListener, Dialog){
                 'use strict';
                 $(function() {
                     new TreeAssociate('#trees');
@@ -22,7 +22,20 @@
 
                     new FormUpdateListener($('#{{ form.vars.id }}'));
 
-                    $('#default_channel').select2('destroy').css('padding', '0');
+                    $('#default_channel').select2('destroy').css('padding', '0').on('change', function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        mediator.trigger('scopablefield:changescope', $(this).val());
+                    });
+
+                    $('.dropdown-menu.channel').find('a').click(function (e) {
+                        e.preventDefault();
+                        mediator.trigger('scopablefield:' + $(this).data('action'));
+                    });
+
+                    $('#attribute-buttons').find('.dropdown-menu').click(function (e) {
+                        e.stopPropagation();
+                    });
 
                     $('[data-toggle="popover"]').popover();
 
