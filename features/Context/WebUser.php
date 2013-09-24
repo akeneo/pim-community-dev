@@ -806,6 +806,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
         $link->click();
         $this->getSession()->getPage()->clickLink('OK');
+        $this->wait();
     }
 
     /**

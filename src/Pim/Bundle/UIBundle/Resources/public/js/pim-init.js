@@ -170,7 +170,7 @@ require(
             });
 
             // DELETE request for delete buttons
-            $(document).on('click', 'a[data-dialog]', function () {
+            $(document).on('click', '[data-dialog]', function () {
                 var $el      = $(this),
                     message  = $el.data('message'),
                     title    = $el.data('title'),

@@ -513,13 +513,14 @@ class ProductController extends AbstractDoctrineController
 
         if ($product->isAttributeRemovable($attribute)) {
             $this->productManager->removeAttributeFromProduct($product, $attribute);
-
-            $this->addFlash('success', 'flash.product.attribute removed');
         } else {
-            $this->addFlash('error', 'flash.product.attribute not removable');
+            throw new \DomainException('Attribute is not removable');
         }
-
-        return $this->redirectToRoute('pim_catalog_product_edit', array('id' => $productId));
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirectToRoute('pim_catalog_product_edit', array('id' => $productId));
+        }
     }
 
     /**
