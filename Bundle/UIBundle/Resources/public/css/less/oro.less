@@ -5161,6 +5161,8 @@ span.validation-faled {
   display: block;
   margin: 5px 0 5px 14px;
   line-height: 1.1em;
+  display: block;
+  clear:both;
   &:before {
     content: "\f00d";
     color: @errorText;
@@ -5170,7 +5172,9 @@ span.validation-faled {
     margin-left: -14px;
   }
 }
-
+.ui-dialog .form-horizontal .control-group .controls .validation-faled{
+  margin-left: 127px;
+}
 @media only screen and (max-width: 1340px) {
   .contact-info-col-set > .row-fluid > .span6{
     width: 100%;
