@@ -5119,10 +5119,19 @@ iframe.email-body {
 .acl-table .a-center {
   text-align: center;
 }
-span.validation-faled{
+span.validation-faled {
   color: @errorText;
   display: block;
-  padding: 5px 0 0;
+  margin: 5px 0 5px 14px;
+  line-height: 1.1em;
+  &:before {
+    content: "\f00d";
+    color: @errorText;
+    font: normal 1.15em/1em 'FontAwesome';
+    display: inline-block;
+    width: 14px;
+    margin-left: -14px;
+  }
 }
 
 @media only screen and (max-width: 1340px) {
