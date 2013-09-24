@@ -21,7 +21,7 @@ Feature: Change family of many products at once
     When I mass-edit products coffee and hamburger
     And I choose the "Change the family of products" operation
     And I change the Family to "Food"
-    When I validate the mass action
+    When I move on to the next step
     Then the family of product "coffee" should be "Food"
     And the family of product "hamburger" should be "Food"
 
@@ -31,7 +31,7 @@ Feature: Change family of many products at once
     When I mass-edit products coffee, hamburger and jeans
     And I choose the "Change the family of products" operation
     And I change the Family to "None"
-    When I validate the mass action
+    When I move on to the next step
     Then the product "coffee" should have no family
     And the product "hamburger" should have no family
     And the product "jeans" should have no family

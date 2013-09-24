@@ -1114,16 +1114,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @Given /^I validate the mass action$/
-     */
-    public function iValidateTheMassAction()
-    {
-        $this->getCurrentPage()->next();
-        $this->getCurrentPage()->confirm();
-        $this->wait();
-    }
-
-    /**
      * @param string $sku
      *
      * @Given /^product "([^"]*)" should be disabled$/

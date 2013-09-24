@@ -36,7 +36,6 @@ class ChangeFamilyType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-
         $resolver->setDefaults(
             array(
                 'data_class' => 'Pim\\Bundle\\CatalogBundle\\MassEditAction\\ChangeFamily'
