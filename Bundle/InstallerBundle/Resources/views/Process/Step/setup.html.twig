@@ -5,17 +5,6 @@
 
 {% block title %}{{ 'process.step.setup.header'|trans }} - {{ parent() }}{% endblock %}
 
-{% block javascript %}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var _width1= $('.progress-bar li:last-child').width()/2;
-            $('.progress-bar li:last-child em.fix-bg').width(_width1);
-            var _width2= $('.progress-bar li:first-child').width()/2;
-            $('.progress-bar li:first-child em.fix-bg').width(_width2);
-        });
-    </script>
-{% endblock javascript %}
-
 {% block content %}
 <div class="page-title">
     <h2>{{ 'process.step.setup.header'|trans }}</h2>
