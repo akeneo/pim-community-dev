@@ -205,8 +205,8 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
             }
         }
 
-        $sortGroup = function (AttributeGroup $a, AttributeGroup $b) {
-            return $a->getSortOrder() - $b->getSortOrder();
+        $sortGroup = function (AttributeGroup $fst, AttributeGroup $snd) {
+            return $fst->getSortOrder() - $snd->getSortOrder();
         };
 
         @usort($firstGroups, $sortGroup);

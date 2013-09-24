@@ -14,7 +14,7 @@ use Context\Page\Base\Wizard;
 class ChangeStatus extends Wizard
 {
     protected $elements = array(
-        'Products status' => array('css' => '#pim_catalog_mass_edit_action_operation_enable')
+        'Products status' => array('css' => '#pim_catalog_mass_edit_action_operation_toEnable')
     );
 
     public function enableProducts()
