@@ -188,4 +188,3 @@ class ExtendConfigDumper
         return $result;
     }
 }
- 

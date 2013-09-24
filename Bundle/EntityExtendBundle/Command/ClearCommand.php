@@ -30,4 +30,3 @@ class ClearCommand extends ContainerAwareCommand
         $output->writeln('Done');
     }
 }
- 

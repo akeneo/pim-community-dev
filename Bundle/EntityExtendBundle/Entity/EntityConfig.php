@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="Oro\Bundle\EntityExtendBundle\Entity\Repository\EntityConfigRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class EntityConfig 
+class EntityConfig
 {
     const ENTITY_NAME = 'OroEntityExtendBundle:EntityConfig';
 
@@ -39,7 +39,7 @@ class EntityConfig
      */
     protected $active;
 
-    function __construct($config, $active)
+    public function __construct($config, $active)
     {
         $this->active = $active;
         $this->config = $config;
