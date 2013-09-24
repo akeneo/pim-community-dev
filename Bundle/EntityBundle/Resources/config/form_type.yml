@@ -1,6 +1,7 @@
 parameters:
     oro_entity.form.type.custom_entity.class:                  Oro\Bundle\EntityBundle\Form\Type\CustomEntityType
     oro_entity.form.type.entity_select.class:                  Oro\Bundle\EntityBundle\Form\Type\EntitySelectType
+    oro_entity.form.handler.entity_select.class:               Oro\Bundle\EntityBundle\Form\Handler\EntitySelectHandler
 
 services:
     oro_entity.form.type.custom_entity:
@@ -12,16 +13,19 @@ services:
 
     oro_entity.form.type.entity_select:
         class:                                                 %oro_entity.form.type.entity_select.class%
+        arguments:
+            - @doctrine.orm.entity_manager
         tags:
-            - { name: form.type, alias: oro_entity_select_type }
+            - { name: form.type, alias: oro_entity_select }
 
-
-#    orocrm_contact.form.autocomplete.contact.search_handler:
-#        parent: oro_form.autocomplete.search_handler
-#        arguments:
+    oro_entity.form.handler.entity_select:
+        class:                                                 %oro_entity.form.handler.entity_select.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @service_container
 #            - %orocrm_contact.entity.class%
 #            - ["first_name", "last_name"]
-#        tags:
-#            - { name: oro_form.autocomplete.search_handler, alias: contacts, acl_resource: orocrm_contact_view }
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: entity_select, acl_resource: oro_search }
 
 

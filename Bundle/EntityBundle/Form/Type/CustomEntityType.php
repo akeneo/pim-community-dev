@@ -35,7 +35,7 @@ class CustomEntityType extends AbstractType
         'text'       => 'textarea',
         'float'      => 'number',
         'oneToMany'  => 'integer',
-        'manyToOne'  => 'oro_user_select',
+        'manyToOne'  => 'oro_entity_select',
         'manyToMany' => 'integer',
     );
 
@@ -98,21 +98,14 @@ class CustomEntityType extends AbstractType
                 }
 
                 if (in_array($fieldConfigId->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))) {
-                    $builder->add(
-                        $fieldConfigId->getFieldName(),
-                        'oro_entity_select_type',
-                        array(
-                            'data_class' => $extendConfig->get('target_entity'),
-                            'compound' => true
-                        )
-                    );
-                } else {
-                    $builder->add(
-                        Inflector::camelize($fieldConfigId->getFieldName()),
-                        $this->typeMap[$fieldConfigId->getFieldType()],
-                        $options
-                    );
+                    $options['entity_class'] = $extendConfig->get('target_entity');
                 }
+
+                $builder->add(
+                    Inflector::camelize($fieldConfigId->getFieldName()),
+                    $this->typeMap[$fieldConfigId->getFieldType()],
+                    $options
+                );
             }
         }
     }
