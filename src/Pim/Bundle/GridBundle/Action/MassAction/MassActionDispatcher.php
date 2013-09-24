@@ -2,18 +2,11 @@
 
 namespace Pim\Bundle\GridBundle\Action\MassAction;
 
-use Symfony\Component\HttpFoundation\File\Exception\UnexpectedTypeException;
-use Doctrine\ORM\QueryBuilder;
-
-use Oro\Bundle\GridBundle\Datagrid\ORM\IterableResult;
-use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
-use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-use Oro\Bundle\GridBundle\Datagrid\IterableResultInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionMediator;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionResponseInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionDispatcher as OroMassActionDispatcher;
 use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
 /**
  * Extends Oro MassActionDispatcher to add category filters
@@ -54,10 +47,10 @@ class MassActionDispatcher extends OroMassActionDispatcher
 
         if ($datagridManager instanceof ProductDatagridManager) {
             if (isset($data['treeId'])) {
-                $datagridManager->setFilterTreeId($data['treeId']);
+                $datagridManager->setFilterTreeId(isset($data['treeId']) ? $data['treeId'] : 0);
             }
             if (isset($data['categoryId'])) {
-                $datagridManager->setFilterCategoryId($data['categoryId']);
+                $datagridManager->setFilterCategoryId(isset($data['categoryId']) ? $data['categoryId'] : 0);
             }
         }
         // create datagrid
