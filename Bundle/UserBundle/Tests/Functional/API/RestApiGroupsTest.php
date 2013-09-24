@@ -30,7 +30,6 @@ class RestApiGroupsTest extends WebTestCase
         $request = array(
             "group" => array(
                 "name" => 'Group_'.mt_rand(100, 500),
-                //"roles" => array(2),
                 'owner' => '1'
             )
         );
