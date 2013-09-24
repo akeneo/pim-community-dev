@@ -4,6 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Converter;
 
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 
 /**
  * Convert a basic representation of a value into a complex one bindable on a product form
@@ -16,16 +17,26 @@ class ProductValueConverter
 {
     const SCOPE_KEY = '[scope]';
 
+    /**
+     * @var EntityManager $entityManager
+     */
     protected $entityManager;
+
+    /**
+     * @var CurrencyManager $currencyManager
+     */
+    protected $currencyManager;
 
     /**
      * Constructor
      *
-     * @param EntityManager $entityManager
+     * @param EntityManager   $entityManager
+     * @param CurrencyManager $currencyManager
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, CurrencyManager $currencyManager)
     {
-        $this->entityManager = $entityManager;
+        $this->entityManager   = $entityManager;
+        $this->currencyManager = $currencyManager;
     }
 
     /**
@@ -84,12 +95,21 @@ class ProductValueConverter
     private function convertPricesValue($value)
     {
         $result = array();
-        foreach (explode(',', $value) as $price) {
-            list($data, $currency) = explode(' ', $price);
-            $result[] = array(
-                'data'     => $data,
-                'currency' => $currency,
-            );
+        if (strpos($value, ',') !== false) {
+            foreach (explode(',', $value) as $price) {
+                list($data, $currency) = explode(' ', $price);
+                $result[] = array(
+                    'data'     => $data,
+                    'currency' => $currency,
+                );
+            }
+        } else {
+            foreach ($this->currencyManager->getActiveCodes() as $currency) {
+                $result[] = array(
+                    'data'     => '',
+                    'currency' => $currency,
+                );
+            }
         }
 
         return $this->convertValue('prices', $result);

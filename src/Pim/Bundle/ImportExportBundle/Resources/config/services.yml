@@ -40,6 +40,7 @@ services:
         class: %pim_import_export.converter.product_value_converter.class%
         arguments:
             - @doctrine.orm.entity_manager
+            - @pim_catalog.manager.currency
 
     pim_import_export.converter.product_family_converter:
         public: false
