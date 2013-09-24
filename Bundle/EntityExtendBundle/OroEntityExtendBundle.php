@@ -104,7 +104,7 @@ class OroEntityExtendBundle extends Bundle
     {
         $cacheDir = $this->kernel->getCacheDir() . '/entities';
         if (!file_exists($cacheDir . '/entity_config.yml')
-            && !in_array('oro:entity-extend:dump', $_SERVER['argv'])
+            && (!isset($_SERVER['argv'])  || !in_array('oro:entity-extend:dump', $_SERVER['argv']))
         ) {
             if (file_exists($cacheDir . '/Extend/Entity/alias.yml')) {
                 unlink($cacheDir . '/Extend/Entity/alias.yml');

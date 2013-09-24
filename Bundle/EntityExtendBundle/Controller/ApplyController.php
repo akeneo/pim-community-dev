@@ -45,11 +45,12 @@ class ApplyController extends Controller
      */
     public function updateAction($id)
     {
+        set_time_limit(240);
+
         /** @var KernelInterface $kernel */
         $kernel = $this->get('kernel');
 
-        $php     = escapeshellarg($this->getPhp());
-        $console = $php . ' ' . escapeshellarg($kernel->getRootDir() . '/console');
+        $console = escapeshellarg($this->getPhp()) . ' ' . escapeshellarg($kernel->getRootDir() . '/console');
         $env     = $kernel->getEnvironment();
 
         $commands = array(
