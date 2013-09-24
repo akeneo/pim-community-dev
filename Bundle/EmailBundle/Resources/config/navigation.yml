@@ -1,7 +1,10 @@
 oro_menu_config:
     items:
+        emails:
+            label: 'Emails'
+            uri: '#'
         oro_email_emailtemplate_list:
-            label: 'Email Templates'
+            label: 'Templates'
             route: 'oro_email_emailtemplate_index'
             extras:
                 routes: ['oro_email_emailtemplate_*']
@@ -10,7 +13,9 @@ oro_menu_config:
             children:
                 system_tab:
                     children:
-                        oro_email_emailtemplate_list: ~
+                        emails:
+                            children:
+                                oro_email_emailtemplate_list: ~
 
 oro_titles:
     oro_email_view: "%%subject%% - Email"
