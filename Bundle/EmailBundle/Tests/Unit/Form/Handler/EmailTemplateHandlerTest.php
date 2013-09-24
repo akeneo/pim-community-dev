@@ -127,7 +127,7 @@ class EmailTemplateHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->form->expects($this->once())->method('setData')
             ->with($this->entity);
-        $this->form->expects($this->once())->method('addFailureException');
+        $this->form->expects($this->once())->method('addError');
 
         $this->request->setMethod('POST');
 
