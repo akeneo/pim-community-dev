@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
-use Oro\Bundle\TagBundle\Entity\Tag;
+
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -26,6 +26,9 @@ use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
+use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
+use Oro\Bundle\ImapBundle\Entity\ImapConfigurationOwnerInterface;
+use Oro\Bundle\TagBundle\Entity\Tag;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
@@ -62,7 +65,8 @@ class User extends AbstractEntityFlexible implements
     \Serializable,
     EntityUploadedImageInterface,
     Taggable,
-    EmailOwnerInterface
+    EmailOwnerInterface,
+    ImapConfigurationOwnerInterface
 {
     const ROLE_DEFAULT   = 'ROLE_USER';
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
@@ -325,6 +329,17 @@ class User extends AbstractEntityFlexible implements
      * @Oro\Versioned("getName")
      */
     protected $businessUnits;
+
+    /**
+     * @var ImapEmailOrigin
+     *
+     * @ORM\OneToOne(
+     *     targetEntity="Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin", cascade={"all"}
+     * )
+     * @ORM\JoinColumn(name="imap_configuration_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
+     * @Exclude
+     */
+    protected $imapConfiguration;
 
     public function __construct()
     {
@@ -1274,6 +1289,24 @@ class User extends AbstractEntityFlexible implements
         if ($this->getBusinessUnits()->contains($businessUnit)) {
             $this->getBusinessUnits()->removeElement($businessUnit);
         }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getImapConfiguration()
+    {
+        return $this->imapConfiguration;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setImapConfiguration(ImapEmailOrigin $imapConfiguration = null)
+    {
+        $this->imapConfiguration = $imapConfiguration;
 
         return $this;
     }

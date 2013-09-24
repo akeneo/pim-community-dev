@@ -30,7 +30,7 @@ class RoleController extends Controller
      */
     public function createAction()
     {
-        return $this->updateAction(new Role());
+        return $this->update(new Role());
     }
 
     /**
@@ -45,29 +45,7 @@ class RoleController extends Controller
      */
     public function updateAction(Role $entity)
     {
-        $aclRoleHandler = $this->get('oro_user.form.handler.acl_role');
-        $aclRoleHandler->createForm($entity);
-
-        if ($aclRoleHandler->process($entity)) {
-
-            $this->get('session')->getFlashBag()->add('success', 'Role successfully saved');
-
-            return $this->get('oro_ui.router')->actionRedirect(
-                array(
-                    'route' => 'oro_user_role_update',
-                    'parameters' => array('id' => $entity->getId()),
-                ),
-                array(
-                    'route' => 'oro_user_role_index',
-                )
-            );
-        }
-
-        return array(
-            'form'     => $aclRoleHandler->createView(),
-            'privilegesConfig' => $this->container->getParameter('oro_user.privileges'),
-            'datagrid' => $this->getRoleUserDatagridManager($entity)->getDatagrid()->createView(),
-        );
+        return $this->update($entity);
     }
 
     /**
@@ -129,6 +107,37 @@ class RoleController extends Controller
         return $this->render(
             $view,
             array('datagrid' => $datagrid->createView())
+        );
+    }
+
+    /**
+     * @param Role $entity
+     * @return array
+     */
+    protected function update(Role $entity)
+    {
+        $aclRoleHandler = $this->get('oro_user.form.handler.acl_role');
+        $aclRoleHandler->createForm($entity);
+
+        if ($aclRoleHandler->process($entity)) {
+
+            $this->get('session')->getFlashBag()->add('success', 'Role successfully saved');
+
+            return $this->get('oro_ui.router')->actionRedirect(
+                array(
+                    'route' => 'oro_user_role_update',
+                    'parameters' => array('id' => $entity->getId()),
+                ),
+                array(
+                    'route' => 'oro_user_role_index',
+                )
+            );
+        }
+
+        return array(
+            'form'     => $aclRoleHandler->createView(),
+            'privilegesConfig' => $this->container->getParameter('oro_user.privileges'),
+            'datagrid' => $this->getRoleUserDatagridManager($entity)->getDatagrid()->createView(),
         );
     }
 }

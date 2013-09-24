@@ -47,7 +47,10 @@ class EmailTemplateTest extends \PHPUnit_Framework_TestCase
 
             $translation = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailTemplateTranslation');
             $this->emailTemplate->setTranslations(new ArrayCollection(array($translation)));
-            $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $this->emailTemplate->getTranslations());
+            $this->assertInstanceOf(
+                'Doctrine\Common\Collections\ArrayCollection',
+                $this->emailTemplate->getTranslations()
+            );
             $this->assertCount(1, $this->emailTemplate->getTranslations());
         }
     }

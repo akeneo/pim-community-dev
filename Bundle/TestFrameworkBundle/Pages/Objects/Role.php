@@ -54,9 +54,35 @@ class Role extends AbstractEntity implements Entity
         return trim($this->owner->selectedLabel());
     }
 
-    public function selectAcl($aclName)
+    /**
+     * @param $entityName string of ACL resource name
+     * @param $aclaction array of actions such as create, edit, delete, view, assign
+     * @return $this
+     */
+    public function setEntity($entityName, $aclaction)
     {
-        $this->byXPath("//div[@id='acl_tree']//a[contains(., '$aclName')]/ins[@class='jstree-checkbox']")->click();
+        foreach ($aclaction as $action) {
+            $action = strtoupper($action);
+            $this->byXPath(
+                "//div[strong/text() = '{$entityName}']/ancestor::tr//input[contains(@name, '[$action][accessLevel')]"
+            )->click();
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $capabilityname array of Capability ACL resources
+     * @return $this
+     */
+    public function setCapability($capabilityname)
+    {
+        foreach ($capabilityname as $name) {
+            $this->byXpath(
+                "//div[strong/text() = '{$name}']/following-sibling::input[@type = 'checkbox']"
+            )->click();
+        }
+
         return $this;
     }
 }

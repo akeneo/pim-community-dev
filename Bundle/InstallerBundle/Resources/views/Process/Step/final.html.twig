@@ -1,0 +1,31 @@
+{% extends 'OroInstallerBundle::layout.html.twig' %}
+{% use 'OroInstallerBundle::progress.html.twig' %}
+
+{% set step = 'final' %}
+
+{% block title %}{{ 'process.step.final.header'|trans }} - {{ parent() }}{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var _width1= $('.progress-bar li:last-child').width()/2;
+            $('.progress-bar li:last-child em.fix-bg').width(_width1);
+            var _width2= $('.progress-bar li:first-child').width()/2;
+            $('.progress-bar li:first-child em.fix-bg').width(_width2);
+        });
+    </script>
+{% endblock javascript %}
+
+{% block content %}
+<div class="page-title">
+    <h2>{{ 'process.step.final.header'|trans }}</h2>
+</div>
+
+<div class="well">
+    <p>{{ 'process.step.final.content'|trans|raw }}</p>
+</div>
+
+<div class="button-set">
+    <a href="{{ path('oro_default') }}" class="button primary" target="_blank">{{ 'process.button.finish'|trans }}</a>
+</div>
+{% endblock %}

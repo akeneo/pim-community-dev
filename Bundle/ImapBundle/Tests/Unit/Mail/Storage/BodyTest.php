@@ -102,8 +102,14 @@ class BodyTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider extractContentProvider
      */
-    public function testExtractContent($contentTransferEncoding, $contentType, $contentCharset, $contentValue, $expected)
-    {
+    public function testExtractContent(
+        $contentTransferEncoding,
+        $contentType,
+        $contentCharset,
+        $contentValue,
+        $expected,
+        $decodedValue
+    ) {
         // Content-Type header
         $contentTypeHeader = $this->getMockBuilder('Zend\Mail\Header\ContentType')
             ->disableOriginalConstructor()
@@ -165,12 +171,14 @@ class BodyTest extends \PHPUnit_Framework_TestCase
         $result = $this->callProtectedMethod($this->body, 'extractContent', array($this->part));
 
         $this->assertEquals($expected, $result);
+        $this->assertEquals($decodedValue, $result->getDecodedContent());
     }
 
     public function testGetContentSinglePartText()
     {
         $contentValue = 'testContent';
         $contentType = 'testContentType';
+        $contentTransferEncoding = 'testContentTransferEncoding';
         $contentEncoding = 'testEncoding';
 
         $bodyPartialMock = $this->getMock(
@@ -180,7 +188,11 @@ class BodyTest extends \PHPUnit_Framework_TestCase
         );
         $bodyPartialMock->expects($this->once())
             ->method('extractContent')
-            ->will($this->returnValue(new Content($contentValue, $contentType, $contentEncoding)));
+            ->will(
+                $this->returnValue(
+                    new Content($contentValue, $contentType, $contentTransferEncoding, $contentEncoding)
+                )
+            );
 
         $this->part->expects($this->once())
             ->method('isMultipart')
@@ -189,13 +201,13 @@ class BodyTest extends \PHPUnit_Framework_TestCase
 
         $result = $bodyPartialMock->getContent(Body::FORMAT_TEXT);
 
-        $expected = new Content($contentValue, $contentType, $contentEncoding);
+        $expected = new Content($contentValue, $contentType, $contentTransferEncoding, $contentEncoding);
 
         $this->assertEquals($expected, $result);
     }
 
     /**
-     * @expectedException Oro\Bundle\ImapBundle\Mail\Storage\Exception\InvalidBodyFormatException
+     * @expectedException \Oro\Bundle\ImapBundle\Mail\Storage\Exception\InvalidBodyFormatException
      */
     public function testGetContentSinglePartHtml()
     {
@@ -243,7 +255,12 @@ class BodyTest extends \PHPUnit_Framework_TestCase
             ->will(
                 $this->returnCallback(
                     function () use (&$iteratorPos) {
-                        return new Content((string)$iteratorPos, 'SomeContentType', 'SomeEncoding');
+                        return new Content(
+                            (string)$iteratorPos,
+                            'SomeContentType',
+                            'SomeContentTransferEncoding',
+                            'SomeEncoding'
+                        );
                     }
                 )
             );
@@ -257,12 +274,18 @@ class BodyTest extends \PHPUnit_Framework_TestCase
         // Test to TEXT body
         $result = $bodyPartialMock->getContent(Body::FORMAT_TEXT);
         $this->assertEquals(1, $iteratorPos);
-        $this->assertEquals(new Content('1', 'SomeContentType', 'SomeEncoding'), $result);
+        $this->assertEquals(
+            new Content('1', 'SomeContentType', 'SomeContentTransferEncoding', 'SomeEncoding'),
+            $result
+        );
 
         // Test to HTML body
         $result = $bodyPartialMock->getContent(Body::FORMAT_HTML);
         $this->assertEquals(2, $iteratorPos);
-        $this->assertEquals(new Content('2', 'SomeContentType', 'SomeEncoding'), $result);
+        $this->assertEquals(
+            new Content('2', 'SomeContentType', 'SomeContentTransferEncoding', 'SomeEncoding'),
+            $result
+        );
     }
 
     private function mockIterator(\PHPUnit_Framework_MockObject_MockObject $obj, &$iteratorPos, &$maxIterationCount)
@@ -320,26 +343,77 @@ class BodyTest extends \PHPUnit_Framework_TestCase
     public static function extractContentProvider()
     {
         return array(
-            '7bit' => array('7Bit', 'SomeContentType', 'SomeCharset', 'A value', new Content('A value', 'SomeContentType', 'SomeCharset')),
-            '8bit' => array('8Bit', 'SomeContentType', 'SomeCharset', 'A value', new Content('A value', 'SomeContentType', 'SomeCharset')),
-            'binary' => array('Binary', 'SomeContentType', 'SomeCharset', 'A value', new Content('A value', 'SomeContentType', 'SomeCharset')),
-            'base64' => array('Base64', 'SomeContentType', 'SomeCharset', base64_encode('A value'), new Content('A value', 'SomeContentType', 'SomeCharset')),
+            '7bit' => array(
+                '7Bit',
+                'SomeContentType',
+                'ISO-8859-1',
+                'A value',
+                new Content('A value', 'SomeContentType', '7Bit', 'ISO-8859-1'),
+                'A value'
+            ),
+            '8bit' => array(
+                '8Bit',
+                'SomeContentType',
+                'ISO-8859-1',
+                'A value',
+                new Content('A value', 'SomeContentType', '8Bit', 'ISO-8859-1'),
+                'A value'
+            ),
+            'binary' => array(
+                'Binary',
+                'SomeContentType',
+                'ISO-8859-1',
+                'A value',
+                new Content('A value', 'SomeContentType', 'Binary', 'ISO-8859-1'),
+                'A value'
+            ),
+            'base64' => array(
+                'Base64',
+                'SomeContentType',
+                'ISO-8859-1',
+                base64_encode('A value'),
+                new Content(base64_encode('A value'), 'SomeContentType', 'Base64', 'ISO-8859-1'),
+                'A value'
+            ),
             'quoted-printable' => array(
                 'Quoted-Printable',
                 'SomeContentType',
-                'SomeCharset',
+                'ISO-8859-1',
                 quoted_printable_encode('A value='), // = symbol is added to test the 'quoted printable' decoding
-                new Content('A value=', 'SomeContentType', 'SomeCharset')
+                new Content(quoted_printable_encode('A value='), 'SomeContentType', 'Quoted-Printable', 'ISO-8859-1'),
+                'A value='
             ),
-            'Unknown' => array('Unknown', 'SomeContentType', 'SomeCharset', 'A value', new Content('A value', 'SomeContentType', 'SomeCharset')),
-            'no charset' => array('8Bit', 'SomeContentType', null, 'A value', new Content('A value', 'SomeContentType', 'ASCII')),
-            'no Content-Type' => array('8Bit', null, null, 'A value', new Content('A value', 'text/plain', 'ASCII')),
+            'Unknown' => array(
+                'Unknown',
+                'SomeContentType',
+                'ISO-8859-1',
+                'A value',
+                new Content('A value', 'SomeContentType', 'Unknown', 'ISO-8859-1'),
+                'A value'
+            ),
+            'no charset' => array(
+                '8Bit',
+                'SomeContentType',
+                null,
+                'A value',
+                new Content('A value', 'SomeContentType', '8Bit', 'ASCII'),
+                'A value'
+            ),
+            'no Content-Type' => array(
+                '8Bit',
+                null,
+                null,
+                'A value',
+                new Content('A value', 'text/plain', '8Bit', 'ASCII'),
+                'A value'
+            ),
             'no Content-Transfer-Encoding' => array(
                 null,
                 'SomeContentType',
-                'SomeCharset',
+                'ISO-8859-1',
                 'A value',
-                new Content('A value', 'SomeContentType', 'SomeCharset')
+                new Content('A value', 'SomeContentType', 'BINARY', 'ISO-8859-1'),
+                'A value'
             ),
         );
     }

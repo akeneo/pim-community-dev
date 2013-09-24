@@ -18,6 +18,8 @@ $.widget( "ui.dialog", $.ui.dialog, {
 
     _limitToEl: false,
 
+    _resizeTries: 0,
+
     options: $.extend($.ui.dialog.options, {
         minimizeTo: false,
         maximizedHeightDecreaseBy: false,
@@ -187,10 +189,11 @@ $.widget( "ui.dialog", $.ui.dialog, {
 
         this._trigger("beforeMaximize");
         this._saveSnapshot();
-        this._calculateNewMaximizedDimensions();
-        this._setState("maximized");
-        this._toggleButtons();
-        this._trigger("maximize");
+        this._calculateNewMaximizedDimensions($.proxy(function() {
+            this._setState("maximized");
+            this._toggleButtons();
+            this._trigger("maximize");
+        }, this));
 
         return this;
     },
@@ -251,18 +254,32 @@ $.widget( "ui.dialog", $.ui.dialog, {
         return $(this.options.minimizeTo);
     },
 
-    _calculateNewMaximizedDimensions: function() {
-        var newHeight = this._getContainerHeight();
-        var newWidth = this._limitTo().width();
-        var parentOffset = this._limitTo().offset();
-        this._setOptions({
-            resizable: false,
-            draggable : false,
-            height: newHeight,
-            width: newWidth,
-            position: [parentOffset.left, parentOffset.top]
-        });
-        this.widget().css('position', 'fixed'); // remove scroll when maximized
+    _calculateNewMaximizedDimensions: function(onResizeCallback) {
+        if (this._limitTo().is(':visible')) {
+            this._resizeTries = 0;
+            var newHeight = this._getContainerHeight();
+            var newWidth = this._limitTo().width();
+            var parentOffset = this._limitTo().offset();
+            this._setOptions({
+                resizable: false,
+                draggable : false,
+                height: newHeight,
+                width: newWidth,
+                position: [parentOffset.left, parentOffset.top]
+            });
+            this.widget().css('position', 'fixed'); // remove scroll when maximized
+            if ($.isFunction(onResizeCallback)) {
+                onResizeCallback();
+            }
+        } else {
+            this._resizeTries++;
+            if (this._resizeTries < 100) {
+                setTimeout($.proxy(function() {this._calculateNewMaximizedDimensions(onResizeCallback);}, this), 500);
+            } else {
+                this._resizeTries = 0;
+            }
+        }
+
         return this;
     },
 
