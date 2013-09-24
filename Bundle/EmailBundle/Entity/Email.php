@@ -492,6 +492,7 @@ class Email
     public function setEmailBody(EmailBody $emailBody)
     {
         $this->emailBody = $emailBody;
+        $this->emailBody->setHeader($this);
 
         return $this;
     }

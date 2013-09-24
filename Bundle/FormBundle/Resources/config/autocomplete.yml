@@ -6,7 +6,7 @@ parameters:
 services:
     oro_form.autocomplete.security:
         class: %oro_form.autocomplete.security.class%
-        arguments: [@oro_user.acl_manager]
+        arguments: [@oro_security.security_facade]
 
     oro_form.autocomplete.search_registry:
         class: %oro_form.autocomplete.search_registry.class%

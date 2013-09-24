@@ -6,13 +6,24 @@
 {% endblock %}
 {% block content %}
      <div class="container-fluid page-title">
-        <h1>{{ (pageTitle is defined ? pageTitle : '')|trans }}
-            {% if buttons is defined %}
-                {% for button in buttons %}
-                    {{ button }}
-                {% endfor %}
-            {% endif %}
-        </h1>
+         <div class="navigation clearfix navbar-extra">
+             <div class="row">
+                 <div class="pull-right title-buttons-container">
+                     {% if buttons is defined %}
+                         {% for button in buttons %}
+                             {{ button }}
+                         {% endfor %}
+                     {% endif %}
+                 </div>
+                 <div class="span9">
+                     <div class="pull-left">
+                         <div class="container-fluid">
+                             <h1 class="oro-subtitle">{{ (pageTitle is defined ? pageTitle : '')|trans }}</h1>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
      </div>
      {{ UI.gridBlock(gridId) }}
 {% endblock content %}

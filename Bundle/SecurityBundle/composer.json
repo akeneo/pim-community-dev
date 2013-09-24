@@ -1,0 +1,24 @@
+{
+    "name": "oro/security-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Security Bundle",
+    "keywords": ["BAP"],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*",
+        "ass/xmlsecurity": "dev-master",
+        "oro/entity-bundle": "dev-master",
+        "oro/entity-config-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\SecurityBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/SecurityBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

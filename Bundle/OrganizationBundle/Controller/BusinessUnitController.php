@@ -12,16 +12,11 @@ use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitUpdateUserDatagridManager;
 use Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitViewUserDatagridManager;
 use Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitDatagridManager;
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * @Route("/business_unit")
- * @Acl(
- *      id="oro_business_unit",
- *      name="Business Unit manipulation",
- *      description="Business Unit manipulation"
- * )
  */
 class BusinessUnitController extends Controller
 {
@@ -32,14 +27,14 @@ class BusinessUnitController extends Controller
      * @Template("OroOrganizationBundle:BusinessUnit:update.html.twig")
      * @Acl(
      *      id="oro_business_unit_create",
-     *      name="Create business unit",
-     *      description="Create new business unit",
-     *      parent="oro_business_unit"
+     *      type="entity",
+     *      class="OroOrganizationBundle:BusinessUnit",
+     *      permission="CREATE"
      * )
      */
     public function createAction()
     {
-        return $this->updateAction(new BusinessUnit());
+        return $this->update(new BusinessUnit());
     }
 
     /**
@@ -47,9 +42,9 @@ class BusinessUnitController extends Controller
      * @Template
      * @Acl(
      *      id="oro_business_unit_view",
-     *      name="View business unit",
-     *      description="View business unit",
-     *      parent="oro_business_unit"
+     *      type="entity",
+     *      class="OroOrganizationBundle:BusinessUnit",
+     *      permission="VIEW"
      * )
      */
     public function viewAction(BusinessUnit $entity)
@@ -67,32 +62,14 @@ class BusinessUnitController extends Controller
      * @Template
      * @Acl(
      *      id="oro_business_unit_update",
-     *      name="Edit business unit",
-     *      description="Edit business unit",
-     *      parent="oro_business_unit"
+     *      type="entity",
+     *      class="OroOrganizationBundle:BusinessUnit",
+     *      permission="EDIT"
      * )
      */
     public function updateAction(BusinessUnit $entity)
     {
-        if ($this->get('oro_organization.form.handler.business_unit')->process($entity)) {
-            $this->get('session')->getFlashBag()->add('success', 'Business Unit successfully saved');
-
-            return $this->get('oro_ui.router')->actionRedirect(
-                array(
-                    'route' => 'oro_business_unit_update',
-                    'parameters' => array('id' => $entity->getId()),
-                ),
-                array(
-                    'route' => 'oro_business_unit_view',
-                    'parameters' => array('id' => $entity->getId())
-                )
-            );
-        }
-
-        return array(
-            'datagrid' => $this->getBusinessUnitDatagridManager($entity, 'update')->getDatagrid()->createView(),
-            'form'     => $this->get('oro_organization.form.business_unit')->createView(),
-        );
+        return $this->update($entity);
     }
     
     /**
@@ -102,12 +79,7 @@ class BusinessUnitController extends Controller
      *      requirements={"_format"="html|json"},
      *      defaults={"_format" = "html"}
      * )
-     * @Acl(
-     *      id="oro_business_unit_list",
-     *      name="View business units list",
-     *      description="List of business units",
-     *      parent="oro_business_unit"
-     * )
+     * @AclAncestor("oro_business_unit_view")
      * @Template()
      */
     public function indexAction(Request $request)
@@ -132,7 +104,7 @@ class BusinessUnitController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0, "_format"="json"}
      * )
-     * @AclAncestor("oro_business_unit_list")
+     * @AclAncestor("oro_user_user_view")
      */
     public function updateGridDataAction(BusinessUnit $entity = null)
     {
@@ -154,7 +126,7 @@ class BusinessUnitController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"_format"="json"}
      * )
-     * @AclAncestor("oro_business_unit_list")
+     * @AclAncestor("oro_user_user_view")
      */
     public function viewGridDataAction(BusinessUnit $entity)
     {
@@ -177,5 +149,32 @@ class BusinessUnitController extends Controller
         $result->getRouteGenerator()->setRouteParameters(array('id' => $businessUnit->getId()));
 
         return $result;
+    }
+
+    /**
+     * @param BusinessUnit $entity
+     * @return array
+     */
+    protected function update(BusinessUnit $entity)
+    {
+        if ($this->get('oro_organization.form.handler.business_unit')->process($entity)) {
+            $this->get('session')->getFlashBag()->add('success', 'Business Unit successfully saved');
+
+            return $this->get('oro_ui.router')->actionRedirect(
+                array(
+                    'route' => 'oro_business_unit_update',
+                    'parameters' => array('id' => $entity->getId()),
+                ),
+                array(
+                    'route' => 'oro_business_unit_view',
+                    'parameters' => array('id' => $entity->getId())
+                )
+            );
+        }
+
+        return array(
+            'datagrid' => $this->getBusinessUnitDatagridManager($entity, 'update')->getDatagrid()->createView(),
+            'form'     => $this->get('oro_organization.form.business_unit')->createView(),
+        );
     }
 }

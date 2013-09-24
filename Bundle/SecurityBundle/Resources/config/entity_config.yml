@@ -1,0 +1,6 @@
+oro_entity_config:
+    security:
+        entity:
+            items:
+                type: ~
+                group_name: ~

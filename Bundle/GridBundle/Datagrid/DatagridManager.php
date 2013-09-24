@@ -18,6 +18,7 @@ use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
+use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 
 /**
@@ -107,6 +108,11 @@ abstract class DatagridManager implements DatagridManagerInterface
     private $identifierField;
 
     /**
+     * @var AbstractViewsList|null
+     */
+    private $viewsList;
+
+    /**
      * @var array
      */
     protected $toolbarOptions = array();
@@ -178,6 +184,14 @@ abstract class DatagridManager implements DatagridManagerInterface
     public function setRouteGenerator(RouteGeneratorInterface $routeGenerator)
     {
         $this->routeGenerator = $routeGenerator;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setViewsList(AbstractViewsList $list)
+    {
+        $this->viewsList = $list;
     }
 
     /**
@@ -346,6 +360,9 @@ abstract class DatagridManager implements DatagridManagerInterface
 
         // set multiple sorting flag
         $datagrid->setMultipleSorting($this->multipleSorting);
+
+        $views = $this->getViewsList();
+        $datagrid->setViewsList($views);
     }
 
     /**
@@ -636,6 +653,14 @@ abstract class DatagridManager implements DatagridManagerInterface
         }
 
         return $defaultPager;
+    }
+
+    /**
+     * @return null|AbstractViewsList
+     */
+    public function getViewsList()
+    {
+        return $this->viewsList;
     }
 
     /**

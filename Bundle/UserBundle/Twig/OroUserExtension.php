@@ -6,29 +6,21 @@ use Symfony\Component\Form\FormView;
 
 use Doctrine\Common\Collections\Collection;
 
-use Oro\Bundle\UserBundle\Acl\ManagerInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Oro\Bundle\UserBundle\Provider\GenderProvider;
 
 class OroUserExtension extends \Twig_Extension
 {
     /**
-     * @var ManagerInterface
-     */
-    protected $manager;
-
-    /**
      * @var GenderProvider
      */
     protected $genderProvider;
 
     /**
-     * @param ManagerInterface $manager
      * @param GenderProvider $genderProvider
      */
-    public function __construct(ManagerInterface $manager, GenderProvider $genderProvider)
+    public function __construct(GenderProvider $genderProvider)
     {
-        $this->manager = $manager;
         $this->genderProvider = $genderProvider;
     }
 
@@ -40,7 +32,6 @@ class OroUserExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'resource_granted' => new \Twig_Function_Method($this, 'checkResourceIsGranted'),
             'oro_gender'       => new \Twig_Function_Method($this, 'getGenderLabel'),
         );
     }
@@ -55,18 +46,6 @@ class OroUserExtension extends \Twig_Extension
         return array(
             'is_flexible' => new \Twig_Filter_Method($this, 'isFlexible'),
         );
-    }
-
-    /**
-     * Check if ACL resource is grant for current user
-     *
-     * @param string $aclId ACL Resource id
-     *
-     * @return bool
-     */
-    public function checkResourceIsGranted($aclId)
-    {
-        return $this->manager->isResourceGranted($aclId);
     }
 
     /**

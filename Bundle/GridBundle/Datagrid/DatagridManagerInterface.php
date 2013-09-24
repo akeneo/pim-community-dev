@@ -8,6 +8,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Translation\TranslatorInterface;
 
+use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 use Oro\Bundle\GridBundle\Builder\DatagridBuilderInterface;
 use Oro\Bundle\GridBundle\Builder\ListBuilderInterface;
 use Oro\Bundle\GridBundle\Datagrid\QueryFactoryInterface;
@@ -121,4 +122,10 @@ interface DatagridManagerInterface
      * @return void
      */
     public function setParameters(ParametersInterface $parameters);
+
+    /**
+     * @param AbstractViewsList $list
+     * @return void
+     */
+    public function setViewsList(AbstractViewsList $list);
 }

@@ -165,6 +165,20 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals($parametersMock, 'parameters', $this->model);
     }
 
+    public function testSetViewsList()
+    {
+        $translator = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
+        $list       = $this->getMockForAbstractClass(
+            'Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList',
+            array($translator)
+        );
+
+        $this->assertAttributeEmpty('viewsList', $this->model);
+        $this->model->setViewsList($list);
+        $this->assertAttributeEquals($list, 'viewsList', $this->model);
+        $this->assertEquals($list, $this->model->getViewsList());
+    }
+
     public function testSetName()
     {
         $this->assertAttributeEmpty('name', $this->model);
@@ -278,6 +292,16 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
         $this->model->setIdentifierField(self::TEST_IDENTIFIER);
 
         $translatorMock = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
+
+        $viewListMock = $this->getMockForAbstractClass(
+            'Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList',
+            array($translatorMock)
+        );
+        $this->model->setViewsList($viewListMock);
+        $datagridMock->expects($this->once())
+            ->method('setViewsList')
+            ->with($this->equalTo($viewListMock));
+
         $this->model->setTranslator($translatorMock);
         $translatorMock->expects($this->at(0))->method('trans')
             ->with(self::TEST_IDENTIFIER, array(), null)

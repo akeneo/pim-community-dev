@@ -620,4 +620,18 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $datagrid->setMultipleSorting(false);
         $this->assertFalse($datagrid->getMultipleSorting());
     }
+
+    public function testViewList()
+    {
+        $datagrid = $this->createDatagrid();
+
+        // default value
+        $this->assertAttributeSame(null, 'viewsList', $datagrid);
+
+        // custom value
+        $view = $this->getMockBuilder('Oro\Bundle\GridBundle\Datagrid\Views\View')
+            ->disableOriginalConstructor()->getMock();
+        $datagrid->setViewsList($view);
+        $this->assertEquals($view, $datagrid->getViewsList());
+    }
 }

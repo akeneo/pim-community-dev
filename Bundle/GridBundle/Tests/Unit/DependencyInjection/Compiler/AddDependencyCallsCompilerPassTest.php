@@ -181,6 +181,41 @@ class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTest
                     ),
                 )
             ),
+            'Optional tag attribute "views_list"' => array(
+                'containerData'       => array(
+                    'definitions' => array(
+                        'test.user_grid.manager' => $this->createStubDefinitionWithTags(
+                            array(
+                                AddDependencyCallsCompilerPass::DATAGRID_MANAGER_TAG => array(
+                                    'name'          => AddDependencyCallsCompilerPass::DATAGRID_MANAGER_TAG,
+                                    'datagrid_name' => 'users',
+                                    'entity_name'   => 'User',
+                                    'entity_hint'   => 'users',
+                                    'route_name'    => 'user_grid_route',
+                                    'views_list'    => 'some_service_name'
+                                )
+                            )
+                        ),
+                        AddDependencyCallsCompilerPass::REGISTRY_SERVICE
+                                                 => $this->createStubDefinition('DatagridManagerRegistry'),
+                    )
+                ),
+                'expectedDefinitions' => array(
+                    'test.user_grid.manager'                         => array(
+                        'methodCalls' => array(
+                            'setEntityHint' => array('users'),
+                            'setViewsList'  => array(
+                                new Reference('some_service_name')
+                            )
+                        )
+                    ),
+                    AddDependencyCallsCompilerPass::REGISTRY_SERVICE => array(
+                        'methodCalls' => array(
+                            'addDatagridManagerService' => array('users', 'test.user_grid.manager'),
+                        ),
+                    ),
+                )
+            ),
             'Tag attributes override services' => array(
                 'containerData' => array(
                     'definitions' => array(

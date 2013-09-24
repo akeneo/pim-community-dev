@@ -4,7 +4,6 @@ namespace Oro\Bundle\EntityExtendBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -24,22 +23,26 @@ class OroEntityExtendExtension extends Extension
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
 
-        $this->configBackend($container, $config);
+        $this->configCache($container, $config);
 
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
         $loader      = new Loader\YamlFileLoader($container, $fileLocator);
         $loader->load('services.yml');
     }
 
-    protected function configBackend(ContainerBuilder $container, $config)
+    protected function configCache(ContainerBuilder $container, $config)
     {
-        $backend = $container->getParameterBag()->resolveValue($config['backend']);
-        $path    = $container->getParameterBag()->resolveValue($config['backup']);
+        $cacheDir = $container->getParameterBag()->resolveValue($config['cache_dir']);
 
-        $container->setParameter('oro_entity_extend.backend', $backend);
-        $container->setParameter('oro_entity_extend.backup', $path);
+        $annotationCacheDir = $cacheDir . '/annotation';
+        if (!is_dir($annotationCacheDir)) {
+            if (false === @mkdir($annotationCacheDir, 0777, true)) {
+                throw new RuntimeException(
+                    sprintf('Could not create annotation cache directory "%s".', $annotationCacheDir)
+                );
+            }
+        }
+        $container->setParameter('oro_entity_extend.cache_dir.annotation', $annotationCacheDir);
 
-        // for DoctrineOrmMappingsPass end BackendCompilerPass. Detect with backend should be mapped and loaded
-        $container->setParameter('oro_entity_extend.backend.' . strtolower($backend), true);
     }
 }

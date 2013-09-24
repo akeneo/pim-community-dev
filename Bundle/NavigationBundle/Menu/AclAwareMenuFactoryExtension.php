@@ -5,9 +5,9 @@ namespace Oro\Bundle\NavigationBundle\Menu;
 use Doctrine\Common\Cache\CacheProvider;
 use Knp\Menu\Factory;
 use Knp\Menu\ItemInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Oro\Bundle\UserBundle\Acl\Manager;
 
 class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
 {
@@ -26,9 +26,9 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
     private $router;
 
     /**
-     * @var \Oro\Bundle\UserBundle\Acl\Manager
+     * @var SecurityFacade
      */
-    private $aclManager;
+    private $securityFacade;
 
     /**
      * @var \Doctrine\Common\Cache\CacheProvider
@@ -41,13 +41,13 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
     protected $aclCache = array();
 
     /**
-     * @param \Symfony\Component\Routing\RouterInterface $router
-     * @param \Oro\Bundle\UserBundle\Acl\Manager         $aclManager
+     * @param RouterInterface $router
+     * @param SecurityFacade $securityFacade
      */
-    public function __construct(RouterInterface $router, Manager $aclManager)
+    public function __construct(RouterInterface $router, SecurityFacade $securityFacade)
     {
         $this->router = $router;
-        $this->aclManager = $aclManager;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -98,12 +98,21 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
      */
     protected function processAcl(array &$options = array())
     {
+        if (isset($options['check_access']) && $options['check_access'] == false) {
+            $needCheck = false;
+        } else {
+            $needCheck = true;
+        }
+
         $isAllowed = self::DEFAULT_ACL_POLICY;
         if (array_key_exists(self::ACL_RESOURCE_ID_KEY, $options)) {
             if (array_key_exists($options[self::ACL_RESOURCE_ID_KEY], $this->aclCache)) {
                 $isAllowed = $this->aclCache[$options[self::ACL_RESOURCE_ID_KEY]];
             } else {
-                $isAllowed = $this->aclManager->isResourceGranted($options[self::ACL_RESOURCE_ID_KEY]);
+                if ($needCheck) {
+                    $isAllowed =  $this->securityFacade->isGranted($options[self::ACL_RESOURCE_ID_KEY]);
+                }
+
                 $this->aclCache[$options[self::ACL_RESOURCE_ID_KEY]] = $isAllowed;
             }
         } else {
@@ -112,8 +121,9 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
                 if (array_key_exists($routeInfo['key'], $this->aclCache)) {
                     $isAllowed = $this->aclCache[$routeInfo['key']];
                 } else {
-                    $isAllowed = $this->aclManager
-                        ->isClassMethodGranted($routeInfo['controller'], $routeInfo['action']);
+                    if ($needCheck) {
+                        $isAllowed = $this->securityFacade->isClassMethodGranted($routeInfo['controller'], $routeInfo['action']);
+                    }
                     $this->aclCache[$routeInfo['key']] = $isAllowed;
                 }
             }

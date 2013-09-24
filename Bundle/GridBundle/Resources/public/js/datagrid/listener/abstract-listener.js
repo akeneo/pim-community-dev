@@ -30,7 +30,6 @@ function(_, Backbone, registry, mediator) {
             if (!_.has(options, 'datagridName')) {
                 throw new Error('Datagrid name is not specified');
             }
-            this._assignDatagridAndSubscribe(options.datagridName);
 
             if (!_.has(options, 'columnName')) {
                 throw new Error('Data column name is not specified');
@@ -42,6 +41,8 @@ function(_, Backbone, registry, mediator) {
             }
 
             Backbone.Model.prototype.initialize.apply(this, arguments);
+
+            this._assignDatagridAndSubscribe(options.datagridName);
         },
 
         /**
