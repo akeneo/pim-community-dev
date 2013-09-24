@@ -10,8 +10,10 @@ class SchemaStep extends AbstractStep
     {
         set_time_limit(120);
 
-        $this->runCommand('doctrine:schema:create');
-        $this->runCommand('doctrine:fixtures:load');
+        $this
+            ->runCommand('doctrine:schema:drop', array('--force' => true, '--full-database' => true))
+            ->runCommand('doctrine:schema:create')
+            ->runCommand('doctrine:fixtures:load');
 
         return $this->complete();
     }
