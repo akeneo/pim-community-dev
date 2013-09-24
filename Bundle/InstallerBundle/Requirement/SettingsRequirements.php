@@ -16,6 +16,7 @@ class SettingsRequirements extends RequirementCollection
 
         $on  = $translator->trans('switch.on');
         $off = $translator->trans('switch.off');
+        $mem = ini_get('memory_limit');
 
         $this
             ->add(new Requirement(
@@ -33,7 +34,7 @@ class SettingsRequirements extends RequirementCollection
             ))
             ->add(new Requirement(
                 $translator->trans('settings.memory_limit', array(), 'requirements'),
-                $this->getBytes(ini_get('memory_limit')) >= 256 * 1024 * 1024,
+                $this->getBytes($mem) >= 256 * 1024 * 1024 || '-1' === $mem,
                 '256M',
                 ini_get('memory_limit')
             ))

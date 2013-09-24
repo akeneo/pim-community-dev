@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\ArrayInput;
 
 class InstallCommand extends ContainerAwareCommand
 {
@@ -14,11 +15,11 @@ class InstallCommand extends ContainerAwareCommand
         $this
             ->setName('oro:install')
             ->setDescription('Oro Application Installer.')
-            ->addOption('user-name', 'un', InputOption::VALUE_OPTIONAL, 'User name')
-            ->addOption('user-email', 'ue', InputOption::VALUE_OPTIONAL, 'User email')
-            ->addOption('user-firstname', 'ufn', InputOption::VALUE_OPTIONAL, 'User first name')
-            ->addOption('user-lastname', 'uln', InputOption::VALUE_OPTIONAL, 'User last name')
-            ->addOption('user-password', 'up', InputOption::VALUE_OPTIONAL, 'User password');
+            ->addOption('user-name', null, InputOption::VALUE_OPTIONAL, 'User name')
+            ->addOption('user-email', null, InputOption::VALUE_OPTIONAL, 'User email')
+            ->addOption('user-firstname', null, InputOption::VALUE_OPTIONAL, 'User first name')
+            ->addOption('user-lastname', null, InputOption::VALUE_OPTIONAL, 'User last name')
+            ->addOption('user-password', null, InputOption::VALUE_OPTIONAL, 'User password');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -28,7 +29,8 @@ class InstallCommand extends ContainerAwareCommand
 
         $this
             ->checkStep($input, $output)
-            ->setupStep($input, $output);
+            ->setupStep($input, $output)
+            ->finalStep($input, $output);
 
         $output->writeln('<info>Oro application has been successfully installed.</info>');
     }
@@ -77,6 +79,7 @@ class InstallCommand extends ContainerAwareCommand
         $input->setInteractive(false);
 
         $this
+//            ->runCommand('doctrine:schema:drop', new ArrayInput(array('--force' => true, '--full-database' => true)), $output)
             ->runCommand('doctrine:schema:create', $input, $output)
             ->runCommand('doctrine:fixtures:load', $input, $output);
 
@@ -137,13 +140,12 @@ class InstallCommand extends ContainerAwareCommand
         $input->setInteractive(false);
 
         $this
-            ->runCommand('oro:navigation:init', $input, $output)
-            ->runCommand('oro:entity-config:update', $input, $output)
+            ->runCommand('oro:entity-config:init', $input, $output)
             ->runCommand('oro:entity-extend:init', $input, $output)
-            ->runCommand('oro:entity-extend:create', $input, $output)
-            ->runCommand('cache:clear', $input, $output)
-//            ->runCommand('doctrine:schema:update', $input, $output) // array('--force' => true)
+            ->runCommand('oro:entity-extend:update-config', $input, $output)
+            ->runCommand('doctrine:schema:update', $input, $output)
             ->runCommand('oro:search:create-index', $input, $output)
+            ->runCommand('oro:navigation:init', $input, $output)
 //            ->runCommand('assets:install', $input, $output) // array('target' => './')
             ->runCommand('assetic:dump', $input, $output)
             ->runCommand('oro:assetic:dump', $input, $output)
