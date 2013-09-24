@@ -9,11 +9,11 @@
     {{ parent() }}
 
     {% set listenerParameters = {
-    'columnName': 'has_role',
-    'selectors': {
-    'included': '#roleAppendUsers',
-    'excluded': '#roleRemoveUsers'
-    }
+        'columnName': 'has_role',
+        'selectors': {
+            'included': '#roleAppendUsers',
+            'excluded': '#roleRemoveUsers'
+        }
     } %}
 
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId, 'parameters': listenerParameters} %}
@@ -65,7 +65,6 @@
                 {
                     'title': '',
                     'data': [
-                        form_row(form.role),
                         form_row(form.label)
                     ]
                 }
