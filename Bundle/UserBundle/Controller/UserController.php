@@ -142,7 +142,10 @@ class UserController extends Controller
     protected function update(User $entity, $updateRoute = '', $viewRoute = array())
     {
         if ($this->get('oro_user.form.handler.user')->process($entity)) {
-            $this->get('session')->getFlashBag()->add('success', 'User successfully saved');
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('oro.user.controller.user.message.saved')
+            );
 
             if (count($viewRoute)) {
                 $closeButtonRoute = $viewRoute;

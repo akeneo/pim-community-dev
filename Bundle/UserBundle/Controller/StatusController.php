@@ -56,7 +56,10 @@ class StatusController extends Controller
                 return new Response((string) $result);
             }
         } elseif ($result) {
-            $this->get('session')->getFlashBag()->add('success', 'Status saved');
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('oro.user.controller.status.message.saved')
+            );
 
             return $this->redirect($this->generateUrl('oro_user_status_list'));
         }

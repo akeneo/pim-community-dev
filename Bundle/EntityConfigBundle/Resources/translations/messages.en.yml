@@ -1,8 +1,5 @@
-"Your config changes will be applied to schema.": "Your config changes will be applied to schema."
-"It may take few minutes...": "It may take few minutes..."
-"Cancel": "Cancel"
 oro:
-    entity_extend:
+    entity_config:
         controller:
             config_entity:
                 message:
