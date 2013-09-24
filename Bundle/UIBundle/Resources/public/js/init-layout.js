@@ -260,7 +260,6 @@ function($, __, app, mediator, layout, Navigation, Modal, messenger) {
                         messenger.addMessage('success', el.data('success-message'), {'hashNavEnabled': Navigation.isEnabled()});
                         if (el.data('redirect')) {
                             var navigation = Navigation.getInstance();
-
                             if (navigation) {
                                 navigation.setLocation(el.data('redirect'));
                             } else {

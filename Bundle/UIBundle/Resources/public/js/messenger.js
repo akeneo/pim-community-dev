@@ -25,6 +25,9 @@ function($, _, Backbone) {
             return actions;
         },
 
+        /**
+         * Get flash messages from localStorage or cookie
+         */
         getStoredMessages = function() {
             var flashMessages = localStorage ? localStorage.getItem(defaults.flashMessageKey) : $.cookie(defaults.flashMessageKey);
             flashMessages = $.parseJSON(flashMessages);
@@ -36,6 +39,9 @@ function($, _, Backbone) {
             return flashMessages;
         },
 
+        /**
+         * Set stored messages to cookie or localStorage
+         */
         setStoredMessages = function(flashMessages) {
             var flashMessages = JSON.stringify(flashMessages);
             localStorage ?
@@ -44,8 +50,6 @@ function($, _, Backbone) {
 
             return true;
         };
-
-
 
         /**
          * @export oro/messenger
@@ -112,5 +116,5 @@ function($, _, Backbone) {
                     setStoredMessages(flashMessages);
                 }
             }
-        }
+        };
 });
