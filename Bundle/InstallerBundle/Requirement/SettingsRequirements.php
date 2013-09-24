@@ -10,6 +10,11 @@ class SettingsRequirements extends RequirementCollection
 {
     const REQUIRED_PHP_VERSION = '5.3.8';
 
+    /**
+     * @param TranslatorInterface $translator
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public function __construct(TranslatorInterface $translator)
     {
         parent::__construct($translator->trans('settings.header', array(), 'requirements'));

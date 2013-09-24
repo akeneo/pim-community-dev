@@ -8,6 +8,12 @@ use ReflectionExtension;
 
 class ExtensionsRequirements extends RequirementCollection
 {
+    /**
+     * @param TranslatorInterface $translator
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
     public function __construct(TranslatorInterface $translator)
     {
         parent::__construct($translator->trans('extensions.header', array(), 'requirements'));
@@ -133,7 +139,7 @@ class ExtensionsRequirements extends RequirementCollection
             ));
         }
 
-        $status = 
+        $status =
             (extension_loaded('eaccelerator') && ini_get('eaccelerator.enable'))
             ||
             (extension_loaded('apc') && ini_get('apc.enabled'))
