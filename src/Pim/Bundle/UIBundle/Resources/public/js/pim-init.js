@@ -1,7 +1,7 @@
 require(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'pim/dialog', 'pim/initselect2', 
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'pim/initselect2', 
      'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
-    function ($, __, mediator, Navigation, Dialog, initSelect2) {
+    function ($, __, mediator, Navigation, messenger, Dialog, initSelect2) {
         'use strict';
 
         function init() {
@@ -178,6 +178,7 @@ require(
                         $.ajax({
                             url: $el.attr('data-url'),
                             type: 'POST',
+                            headers: {accept:'application/json'},
                             data: { _method: $el.data('method') },
                             success: function() {
                                 var navigation = Navigation.getInstance();
@@ -185,7 +186,11 @@ require(
                                 navigation.addFlashMessage('success', $el.attr('data-success-message'));
                             },
                             error: function(xhr) {
-                                Dialog.alert($el.attr("data-error-message"), $el.attr("data-error-title"));
+                                messenger.notificationFlashMessage(
+                                    'error',
+                                    (xhr.responseJSON && xhr.responseJSON.message)
+                                        ? xhr.responseJSON.message
+                                        : $el.attr("data-error-message"));
                             }
                         });
                     };

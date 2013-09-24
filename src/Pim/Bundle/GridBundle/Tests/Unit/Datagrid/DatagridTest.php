@@ -2,13 +2,9 @@
 
 namespace Pim\Bundle\GridBundle\Tests\Unit\Datagrid;
 
-use Pim\Bundle\GridBundle\Tests\Unit\Action\Export\ExportActionTestCase;
-
-use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
-
-use Pim\Bundle\GridBundle\Datagrid\Datagrid;
-
 use Oro\Bundle\GridBundle\Tests\Unit\Datagrid\DatagridTest as OroDatagridTest;
+use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
+use Pim\Bundle\GridBundle\Datagrid\Datagrid;
 
 /**
  * Test related class

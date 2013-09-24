@@ -16,8 +16,9 @@ class MassActionDispatcher extends OroMassActionDispatcher
     /**
      * @param string $datagridName
      * @param string $actionName
-     * @param array $parameters
-     * @param array $data
+     * @param array  $parameters
+     * @param array  $data
+     *
      * @throws \LogicException
      *
      * @return MassActionResponseInterface

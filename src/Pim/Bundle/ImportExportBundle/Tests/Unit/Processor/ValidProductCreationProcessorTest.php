@@ -22,11 +22,13 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->formFactory    = $this->getFormFactoryMock();
         $this->productManager = $this->getProductManagerMock();
         $this->channelManager = $this->getChannelManagerMock();
+        $this->localeManager  = $this->getLocaleManagerMock();
 
         $this->processor = new ValidProductCreationProcessor(
             $this->formFactory,
             $this->productManager,
-            $this->channelManager
+            $this->channelManager,
+            $this->localeManager
         );
     }
 
@@ -37,6 +39,11 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('createFlexible')
             ->will($this->returnValue($product));
+
+        $this->productManager
+            ->expects($this->any())
+            ->method('getStorageManager')
+            ->will($this->returnValue($this->getStorageManagerMock()));
 
         $form = $this->getFormMock(true);
         $this->formFactory
@@ -74,7 +81,8 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
                     'name-en_US'  => 'car',
                     'name-fr_FR'  => 'voiture',
                     'description' => 'A foo product',
-                    'categories'  => 'cat_1,cat_2,cat_3'
+                    'categories'  => 'cat_1,cat_2,cat_3',
+                    'foo'         => ''
                 )
             )
         );
@@ -135,10 +143,46 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    protected function getStorageManagerMock()
+    {
+        $storageManager = $this
+            ->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $storageManager->expects($this->any())
+            ->method('getRepository')
+            ->will($this->returnValue($this->getFamilyRepositoryMock()));
+
+        return $storageManager;
+    }
+
+    protected function getFamilyRepositoryMock()
+    {
+        $repo = $this
+            ->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $repo
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->will($this->returnValue(null));
+
+        return $repo;
+    }
+
     protected function getChannelManagerMock()
     {
         return $this
             ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    protected function getLocaleManagerMock()
+    {
+        return $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
             ->disableOriginalConstructor()
             ->getMock();
     }

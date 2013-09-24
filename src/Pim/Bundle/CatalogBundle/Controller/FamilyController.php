@@ -24,6 +24,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Symfony\Component\HttpFoundation\Response;
+use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 
 /**
  * Family controller
@@ -290,11 +291,11 @@ class FamilyController extends AbstractDoctrineController
         $attribute = $this->findOr404('PimCatalogBundle:ProductAttribute', $attributeId);
 
         if (false === $family->hasAttribute($attribute)) {
-            throw new \DomainException('Family attribute not found');
+            throw new DeleteException($this->getTranslator()->trans('flash.family.attribute not found'));
         } elseif ($attribute->getAttributeType() === 'pim_catalog_identifier') {
-            throw new \DomainException('Family identifier not removable');
+            throw new DeleteException($this->getTranslator()->trans('flash.family.identifier not removable'));
         } elseif ($attribute === $family->getAttributeAsLabel()) {
-            throw new \DomainException('Family label not removable');
+            throw new DeleteException($this->getTranslator()->trans('flash.family.label attribute not removable'));
         } else {
             $family->removeAttribute($attribute);
             $this->getManager()->flush();
