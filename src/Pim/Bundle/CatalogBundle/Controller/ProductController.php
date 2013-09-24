@@ -224,7 +224,7 @@ class ProductController extends AbstractDoctrineController
                 );
                 $response->headers->set('Content-Type', 'text/csv');
                 $response->headers->set('Content-Disposition', $attachment);
-                $response->setCallback($this->quickExportCallback($gridManager, $scope));
+                $response->setCallback($this->quickExportCallback($gridManager, $scope, static::BATCH_SIZE));
 
                 return $response->send();
 
@@ -253,9 +253,9 @@ class ProductController extends AbstractDoctrineController
      *
      * @return \Closure
      */
-    protected function quickExportCallback(ProductDatagridManager $gridManager, $scope)
+    protected function quickExportCallback(ProductDatagridManager $gridManager, $scope, $limit)
     {
-        return function () use ($gridManager, $scope) {
+        return function () use ($gridManager, $scope, $limit) {
             flush();
 
             $proxyQuery = $gridManager->getDatagrid()->getQueryWithParametersApplied();
@@ -267,14 +267,13 @@ class ProductController extends AbstractDoctrineController
 
             // prepare serializer context
             $context = array(
-                    'withHeader' => true,
-                    'heterogeneous' => false,
-                    'scope' => $scope,
-                    'fields' => $fieldsList
+                'withHeader' => true,
+                'heterogeneous' => false,
+                'scope' => $scope,
+                'fields' => $fieldsList
             );
 
             // prepare serializer batching
-            $limit = static::BATCH_SIZE;
             $count = $gridManager->getDatagrid()->countResults();
             $iterations = ceil($count/$limit);
 
