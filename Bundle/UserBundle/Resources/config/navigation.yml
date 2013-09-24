@@ -3,6 +3,9 @@ oro_menu_config:
         system_tab:
             label: 'System'
             uri: '#'
+        users_management:
+            label: 'Users Management'
+            uri: '#'
         user_list:
             label: 'Users'
             route: 'oro_user_index'
@@ -52,9 +55,11 @@ oro_menu_config:
             children:
                 system_tab:
                     children:
-                        user_list: ~
-                        user_roles: ~
-                        user_groups: ~
+                        users_management:
+                            children:
+                                user_list: ~
+                                user_roles: ~
+                                user_groups: ~
 
         shortcuts:
             children:

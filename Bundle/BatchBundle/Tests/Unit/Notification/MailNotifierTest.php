@@ -25,7 +25,8 @@ class MailNotifierTest extends \PHPUnit_Framework_TestCase
             $this->handler,
             $this->securityContext,
             $this->twig,
-            $this->mailer
+            $this->mailer,
+            'no-reply@example.com'
         );
     }
 
@@ -78,7 +79,7 @@ class MailNotifierTest extends \PHPUnit_Framework_TestCase
 
         $message->expects($this->once())
             ->method('setFrom')
-            ->with('no-reply@akeneo.com');
+            ->with('no-reply@example.com');
 
         $user->expects($this->any())
             ->method('getEmail')

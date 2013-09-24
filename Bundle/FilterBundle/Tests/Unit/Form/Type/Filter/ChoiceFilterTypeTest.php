@@ -49,7 +49,8 @@ class ChoiceFilterTypeTest extends AbstractTypeTestCase
                     'operator_choices' => array(
                         ChoiceFilterType::TYPE_CONTAINS => 'label_type_contains',
                         ChoiceFilterType::TYPE_NOT_CONTAINS => 'label_type_not_contains',
-                    )
+                    ),
+                    'populate_default' => true
                 )
             )
         );
