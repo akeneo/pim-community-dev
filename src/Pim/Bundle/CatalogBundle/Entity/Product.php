@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
  * Flexible product
@@ -192,43 +193,26 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      */
     public function getOrderedGroups()
     {
-        $groups = array_map(
-            function ($attribute) {
-                return $attribute->getVirtualGroup();
-            },
-            $this->getAttributes()
-        );
-        array_map(
-            function ($group) {
-                return (string) $group;
-            },
-            $groups
-        );
-        $groups = array_unique($groups);
+        $firstGroups = array();
+        $lastGroups = array();
 
-        usort(
-            $groups,
-            function ($first, $second) {
-                $first  = $first->getSortOrder();
-                $second = $second->getSortOrder();
-
-                if ($first === $second) {
-                    return 0;
-                }
-
-                if ($first < $second && $first < 0) {
-                    return 1;
-                }
-
-                if ($first > $second && $second < 0) {
-                    return -1;
-                }
-
-                return $first < $second ? -1 : 1;
+        foreach ($this->getAttributes() as $attribute) {
+            $group = $attribute->getVirtualGroup();
+            if ($group->getSortOrder() < 0) {
+                $lastGroups[$group->getId()] = $group;
+            } else {
+                $firstGroups[$group->getId()] = $group;
             }
-        );
+        }
 
-        return $groups;
+        $sortGroup = function (AttributeGroup $a, AttributeGroup $b) {
+            return $a->getSortOrder() - $b->getSortOrder();
+        };
+
+        @usort($firstGroups, $sortGroup);
+        @usort($lastGroups, $sortGroup);
+
+        return array_merge($firstGroups, $lastGroups);
     }
 
     /**
