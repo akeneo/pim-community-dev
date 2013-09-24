@@ -10,8 +10,10 @@
                 <div class="row">
                     <div class="pull-right">
                         <div class="pull-right">
-                            {% block navButtons %}
-                            {% endblock navButtons %}
+                            {% placeholder update_navButtons_before with {entity: entity} %}
+                            {% block navButtons %}{% endblock navButtons %}
+                            {% placeholder update_navButtons_after with {entity: entity} %}
+
                             <input type="hidden" name="input_action" value="" data-form-id="{{ form.vars.name }}"/>
                         </div>
                         <div class="pull-right user-info-state">

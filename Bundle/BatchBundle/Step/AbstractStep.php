@@ -21,15 +21,22 @@ use Oro\Bundle\BatchBundle\Event\EventInterface;
  */
 abstract class AbstractStep implements StepInterface
 {
+    /**
+     * @var string
+     */
     private $name;
 
+    /**
+     * @var EventDispatcherInterface
+     */
     private $eventDispatcher;
 
-    /* @var JobRepositoryInterace */
+    /**
+     * @var JobRepositoryInterface
+     */
     private $jobRepository;
 
     /**
-     * Constructor
      * @param string $name
      */
     public function __construct($name)
@@ -41,6 +48,7 @@ abstract class AbstractStep implements StepInterface
      * Set the event dispatcher
      *
      * @param EventDispatcherInterface $eventDispatcher
+     * @return AbstractStep
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
@@ -53,8 +61,7 @@ abstract class AbstractStep implements StepInterface
      * Public setter for {@link JobRepositoryInterface}.
      *
      * @param JobRepositoryInterface $jobRepository jobRepository is a mandatory dependence (no default).
-     *
-     * @return $this
+     * @return AbstractStep
      */
     public function setJobRepository(JobRepositoryInterface $jobRepository)
     {
@@ -83,8 +90,7 @@ abstract class AbstractStep implements StepInterface
      * Set the name property
      *
      * @param string $name
-     *
-     * @return this
+     * @return AbstractStep
      */
     public function setName($name)
     {
@@ -98,8 +104,7 @@ abstract class AbstractStep implements StepInterface
      * {@link StepExecution} before returning.
      *
      * @param StepExecution $stepExecution the current step context
-     *
-     * @throws Exception
+     * @throws \Exception
      */
     abstract protected function doExecute(StepExecution $stepExecution);
 
@@ -122,8 +127,7 @@ abstract class AbstractStep implements StepInterface
      *
      * @param StepExecution $stepExecution
      *
-     * @throws JobInterruptException
-     * @throws UnexpectedJobExecutionException
+     * @throws JobInterruptedException
      */
     final public function execute(StepExecution $stepExecution)
     {
@@ -131,8 +135,6 @@ abstract class AbstractStep implements StepInterface
 
         $stepExecution->setStartTime(new \DateTime());
         $stepExecution->setStatus(new BatchStatus(BatchStatus::STARTED));
-
-        $this->getJobRepository()->updateStepExecution($stepExecution);
 
         // Start with a default value that will be trumped by anything
         $exitStatus = new ExitStatus(ExitStatus::EXECUTING);
@@ -167,15 +169,13 @@ abstract class AbstractStep implements StepInterface
         $stepExecution->setEndTime(new \DateTime());
         $stepExecution->setExitStatus($exitStatus);
 
-        $this->getJobRepository()->updateStepExecution($stepExecution);
         $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_COMPLETED, $stepExecution);
     }
 
     /**
      * Determine the step status based on the exception.
-     * @param Exception $e
-     *
-     * @return mixed
+     * @param \Exception $e
+     * @return int
      */
     private static function determineBatchStatus(\Exception $e)
     {
@@ -190,14 +190,11 @@ abstract class AbstractStep implements StepInterface
      * Default mapping from throwable to {@link ExitStatus}. Clients can modify the exit code using a
      * {@link StepExecutionListener}.
      *
-     * @param Exception $e the cause of the failure
-     *
-     * @return an {@link ExitStatus}
+     * @param \Exception $e the cause of the failure
+     * @return ExitStatus {@link ExitStatus}
      */
     private function getDefaultExitStatusForFailure(\Exception $e)
     {
-        $exitStatus = new ExitStatus();
-
         if ($e instanceof JobInterruptedException || $e->getPrevious() instanceof JobInterruptedException) {
             $exitStatus = new ExitStatus(ExitStatus::STOPPED);
             $exitStatus->addExitDescription(get_class(new JobInterruptedException()));
@@ -212,8 +209,8 @@ abstract class AbstractStep implements StepInterface
     /**
      * Trigger event linked to Step
      *
-     * @param string        $eventName Name of the event
-     * @param StepInterface $step      Step object
+     * @param string        $eventName     Name of the event
+     * @param StepExecution $stepExecution Step object
      */
     protected function dispatchStepExecutionEvent($eventName, StepExecution $stepExecution)
     {

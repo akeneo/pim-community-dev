@@ -2,18 +2,17 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 
 {% set gridId = 'custom_entity' %}
+{% set pageTitle = 'Entities' %}
 
 {% block content %}
-    {% set pageTitle = 'Entities' %}
-
     {% if resource_granted('CREATE', 'entity:'~entity_class) %}
-    {% set buttons = [
-        UI.addButton({
-            'path': path('oro_entity_update', {'entity_id': entity_id}),
-            'title': 'Create '~label,
-            'label': 'Create '~label,
-        })
-    ] %}
+		{% set buttons = [
+		    UI.addButton({
+		        'path': path('oro_entity_update', {'entity_id': entity_id}),
+		        'title': 'Create '~label,
+		        'label': 'Create '~label,
+		    })
+		] %}
     {% endif %}
 
     {{ parent() }}
