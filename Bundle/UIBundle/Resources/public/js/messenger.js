@@ -6,7 +6,8 @@ function($, _, Backbone) {
     var defaults = {
             container: '',
             delay: false,
-            template: $.noop
+            template: $.noop,
+            flashMessageKey: 'flash'
         },
         queue = [],
 
@@ -22,7 +23,29 @@ function($, _, Backbone) {
                 _.delay(actions.close, delay);
             }
             return actions;
+        },
+
+        getStoredMessages = function() {
+            var flashMessages = localStorage ? localStorage.getItem(defaults.flashMessageKey) : $.cookie(defaults.flashMessageKey);
+            flashMessages = $.parseJSON(flashMessages);
+
+            if (!(flashMessages instanceof Array)) {
+                flashMessages = [];
+            }
+
+            return flashMessages;
+        },
+
+        setStoredMessages = function(flashMessages) {
+            var flashMessages = JSON.stringify(flashMessages);
+            localStorage ?
+                localStorage.setItem(defaults.flashMessageKey, flashMessages) :
+                $.cookie(defaults.flashMessageKey, flashMessages);
+
+            return true;
         };
+
+
 
         /**
          * @export oro/messenger
@@ -64,10 +87,30 @@ function($, _, Backbone) {
 
             setup: function(options) {
                 _.extend(defaults, options);
+
+                var flashMessages = getStoredMessages();
+                $.each(flashMessages, function(index, message){
+                    queue.push(message);
+                });
+                setStoredMessages([]);
+
                 while (queue.length) {
                     var args = queue.shift();
                     _.extend(args[1], showMessage.apply(null, args[0]));
                 }
+            },
+
+            addMessage: function(type, message, options) {
+                var args = [type, message, _.extend({flash: true}, options)];
+                var actions = {close: $.noop};
+
+                if (options.hashNavEnabled) {
+                    queue.push([args, actions]);
+                } else { // add message to localStorage or cookie
+                    var flashMessages = getStoredMessages();
+                    flashMessages.push([args, actions]);
+                    setStoredMessages(flashMessages);
+                }
             }
-        };
+        }
 });
