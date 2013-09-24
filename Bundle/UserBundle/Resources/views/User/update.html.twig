@@ -4,7 +4,7 @@
 
 {% set title = form.vars.value.id ? form.vars.value.fullname(format)|default('N/A') ~ ' - ' ~ 'Update User'|trans : 'New User'|trans %}
 {% oro_title_set({params : {"%username%": form.vars.value.fullname(format)|default('N/A') }}) %}
-{% set entityClass = 'Oro_Bundle_UserBundle_Entity_User' %}
+{% set audit_entity_class = 'Oro_Bundle_UserBundle_Entity_User' %}
 {% if editRoute %}
     {% set formAction = path(editRoute) %}
 {% else %}
