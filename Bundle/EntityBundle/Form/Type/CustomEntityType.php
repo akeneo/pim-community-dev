@@ -16,6 +16,8 @@ use Oro\Bundle\EntityExtendBundle\Tools\Generator;
 
 class CustomEntityType extends AbstractType
 {
+    const NAME = 'custom_entity_type';
+
     /**
      * @var ConfigManager
      */
@@ -61,6 +63,9 @@ class CustomEntityType extends AbstractType
 
         foreach ($formConfigs as $formConfig) {
             $extendConfig = $extendConfigProvider->getConfig($className, $formConfig->getId()->getFieldName());
+
+            // TODO: Convert this check to method in separate helper service and reuse it in ExtendEntityExtension,
+            // TODO: should be done in scope of https://magecore.atlassian.net/browse/BAP-1721
             if ($formConfig->get('is_enabled')
                 && !$extendConfig->is('is_deleted')
                 && $extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)
@@ -108,6 +113,6 @@ class CustomEntityType extends AbstractType
      */
     public function getName()
     {
-        return 'custom_entity_type';
+        return self::NAME;
     }
 }
