@@ -47,7 +47,6 @@ class ExtendEntityExtension extends AbstractTypeExtension
         }
 
         if (!$this->extendManager->getConfigProvider()->hasConfig($className)) {
-            var_dump($className);
             return;
         }
 
