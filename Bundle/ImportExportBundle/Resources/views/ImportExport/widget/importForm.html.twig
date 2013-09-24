@@ -14,7 +14,9 @@
 
             <fieldset>
                 {{ form_row(form.file, {'label': 'File'}) }}
-                {{ form_row(form.processorAlias, {'label': 'Strategy'}) }}
+                <div style="display: none;">
+                    {{ form_row(form.processorAlias, {'label': 'Strategy'}) }}
+                </div>
                 {{ form_rest(form) }}
             </fieldset>
 
