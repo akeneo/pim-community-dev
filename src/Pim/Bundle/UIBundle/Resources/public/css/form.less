@@ -246,6 +246,9 @@ div.btn-group > .has-switch {
   display: block;
 }
 
+.select2-container.select2-container-disabled .select2-choice {
+  border: none;
+}
 .select2-container.input-large:not(.jstree-tree-select) {
   width: 250px!important;
 }
@@ -254,6 +257,16 @@ div.btn-group > .has-switch {
 }
 .select2-container-multi.select2-container-active .select2-choices {
   border: none;
+}
+.select2-allowclear abbr.select2-search-choice-close,
+.select2-container-multi .select2-search-choice-close {
+  line-height: 12px;
+  font-family: FontAwesome;
+  font-size: 12px;
+  color: @textColor + #333;
+  &:before {
+    content: "\f00d";
+  }
 }
 
 #attribute-buttons {

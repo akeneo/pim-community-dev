@@ -23,6 +23,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Family controller
@@ -226,9 +227,12 @@ class FamilyController extends AbstractDoctrineController
         $this->getManager()->remove($entity);
         $this->getManager()->flush();
 
-        $this->addFlash('success', 'flash.family.removed');
-
-        return $this->redirectToRoute('pim_catalog_family_create');
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirectToRoute('pim_catalog_family_create');
+        }
+        
     }
 
     /**

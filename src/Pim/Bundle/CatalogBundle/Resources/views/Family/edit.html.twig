@@ -17,7 +17,7 @@
 
     {% set buttons %}
         {% if form.vars.value.id %}
-            {{ elements.deleteLink(path('pim_catalog_family_remove', {'id': family.id}), 'confirmation.remove.family'|trans({ '%name%': family.label })) }}
+            {{ elements.deleteLink(path('pim_catalog_family_remove', {'id': family.id}), path('pim_catalog_family_index'), 'confirmation.remove.family'|trans({ '%name%': family.label }), "", "flash.family.removed"|trans) }}
         {% endif %}
         {{ elements.submitBtn() }}
     {% endset %}

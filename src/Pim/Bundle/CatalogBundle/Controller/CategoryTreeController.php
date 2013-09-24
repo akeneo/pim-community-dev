@@ -387,12 +387,17 @@ class CategoryTreeController extends AbstractDoctrineController
         $parent = $category->getParent();
         $params = ($parent !== null) ? array('node' => $parent->getId()) : array();
 
+        if (count($category->getChannels())) {
+            throw new \DomainException('Category is related to a channel.');
+        }
         $this->categoryManager->remove($category);
         $this->categoryManager->getStorageManager()->flush();
 
-        $this->addFlash('success', sprintf('flash.%s.removed', isset($params['node']) ? 'category' : 'tree'));
-
-        return $this->redirectToRoute('pim_catalog_categorytree_create', $params);
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirectToRoute('pim_catalog_categorytree_create', $params);
+        }
     }
 
     /**

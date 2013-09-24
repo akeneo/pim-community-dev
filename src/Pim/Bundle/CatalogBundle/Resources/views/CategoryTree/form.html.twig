@@ -42,9 +42,12 @@
         {% if form.vars.value.id %}
             {{ elements.deleteLink(
                 path('pim_catalog_categorytree_remove', { id: form.vars.value.id }),
+                path('pim_catalog_categorytree_create'),
                 'confirmation.remove.category'|trans({ '%name%': form.vars.value.title }) ~ '<br />'
                 ~ 'info.category.remove children'|trans ~ '<br />'
-                ~ 'info.category.keep products'|trans
+                ~ 'info.category.keep products'|trans,
+                "",
+                (form.vars.value.parent ? "flash.category.removed" : "flash.tree.removed")|trans
             ) }}
         {% elseif parentId %}
             {{ elements.backLink(path('pim_catalog_categorytree_edit', { id: parentId }), 'btn.to parent') }}
