@@ -13,7 +13,7 @@ class SchemaStep extends AbstractStep
         $this
             ->runCommand('doctrine:schema:drop', array('--force' => true, '--full-database' => true))
             ->runCommand('doctrine:schema:create')
-            ->runCommand('doctrine:fixtures:load');
+            ->runCommand('doctrine:fixtures:load', array('--no-interaction' => true));
 
         return $this->complete();
     }
