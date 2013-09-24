@@ -62,6 +62,8 @@ class CustomEntityType extends AbstractType
         $extendConfigProvider = $this->configManager->getProvider('extend');
 
         foreach ($formConfigs as $formConfig) {
+            // TODO: refactor ConfigIdInterface to allow extracting of field name,
+            // TODO: should be done in scope https://magecore.atlassian.net/browse/BAP-1722
             $extendConfig = $extendConfigProvider->getConfig($className, $formConfig->getId()->getFieldName());
 
             // TODO: Convert this check to method in separate helper service and reuse it in ExtendEntityExtension,
