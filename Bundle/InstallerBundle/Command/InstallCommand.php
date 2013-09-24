@@ -32,33 +32,42 @@ class InstallCommand extends ContainerAwareCommand
             ->setupStep($input, $output)
             ->finalStep($input, $output);
 
-        $output->writeln('<info>Oro application has been successfully installed.</info>');
+        $output->writeln('<info>Oro Application has been successfully installed.</info>');
     }
 
     protected function checkStep(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Checking system requirements:</info>');
 
+        $table     = $this->getHelperSet()->get('table');
         $fulfilled = true;
 
         foreach ($this->getContainer()->get('oro_installer.requirements') as $collection) {
-            $output->writeln(sprintf('<comment>%s</comment>', $collection->getLabel()));
+            $table->setHeaders(array(sprintf('%1$-30s', $collection->getLabel()), 'Check     '));
+
+            $rows = array();
 
             foreach ($collection as $requirement) {
-                $output->write($requirement->getLabel());
+                $row = array($requirement->getLabel());
 
                 if ($requirement->isFulfilled()) {
-                    $output->writeln(' <info>OK</info>');
+                    $row[] = 'OK';
                 } else {
                     if ($requirement->isRequired()) {
                         $fulfilled = false;
-                        $output->writeln(' <error>ERROR</error>');
-                        $output->writeln(sprintf('<comment>%s</comment>', $requirement->getHelp()));
+
+                        $row[] = 'ERROR'; // $requirement->getHelp()
                     } else {
-                        $output->writeln(' <comment>WARNING</comment>');
+                        $row[] = 'WARNING';
                     }
                 }
+
+                $rows[] = $row;
             }
+
+            $table
+                ->setRows($rows)
+                ->render($output);
         }
 
         if (!$fulfilled) {
@@ -79,21 +88,19 @@ class InstallCommand extends ContainerAwareCommand
         $input->setInteractive(false);
 
         $this
-//            ->runCommand('doctrine:schema:drop', new ArrayInput(array('--force' => true, '--full-database' => true)), $output)
-            ->runCommand('doctrine:schema:create', $input, $output)
-            ->runCommand('doctrine:fixtures:load', $input, $output);
-
-//        if ($dialog->askConfirmation($output, '<question>Load fixtures (Y/N)?</question>', false)) {
-//            $this->runCommand('doctrine:fixtures:load', $input, $output);
-//        }
+            ->runCommand('oro:entity-extend:clear', $output)
+            ->runCommand('doctrine:schema:drop', $output, array('--force' => true, '--full-database' => true))
+            ->runCommand('doctrine:schema:create', $output)
+            ->runCommand('doctrine:fixtures:load', $output, array('--no-interaction' => true));
 
         $output->writeln('');
         $output->writeln('<info>Administration setup.</info>');
 
         $options = $input->getOptions();
-        $user    = $this->get('oro_user.manager')->createUser();
+        $user    = $this->getContainer()->get('oro_user.manager')->createUser();
         $role    = $this
-            ->getDoctrine()
+            ->getContainer()
+            ->get('doctrine.orm.entity_manager')
             ->getRepository('OroUserBundle:Role')
             ->findOneBy(array('role' => 'ROLE_SUPER_ADMIN'));
 
@@ -101,32 +108,32 @@ class InstallCommand extends ContainerAwareCommand
             ->setUsername(
                 isset($options['user-name'])
                     ? $options['user-name']
-                    : $dialog->ask($output, '<question>Username:</question>')
+                    : $dialog->ask($output, '<question>Username:</question> ')
             )
             ->setEmail(
                 isset($options['user-email'])
                     ? $options['user-email']
-                    : $dialog->ask($output, '<question>Email:</question>')
+                    : $dialog->ask($output, '<question>Email:</question> ')
             )
             ->setFirstname(
                 isset($options['user-firstname'])
                     ? $options['user-firstname']
-                    : $dialog->ask($output, '<question>First name:</question>')
+                    : $dialog->ask($output, '<question>First name:</question> ')
             )
             ->setLastname(
                 isset($options['user-lastname'])
                     ? $options['user-lastname']
-                    : $dialog->ask($output, '<question>Last name:</question>')
+                    : $dialog->ask($output, '<question>Last name:</question> ')
             )
             ->setPlainPassword(
                 isset($options['user-password'])
                     ? $options['user-password']
-                    : $dialog->ask($output, '<question>Password:</question>')
+                    : $dialog->askHiddenResponse($output, '<question>Password:</question> ')
             )
             ->setEnabled(true)
             ->addRole($role);
 
-        $this->get('oro_user.manager')->updateUser($user);
+        $this->getContainer()->get('oro_user.manager')->updateUser($user);
 
         $output->writeln('');
 
@@ -140,34 +147,40 @@ class InstallCommand extends ContainerAwareCommand
         $input->setInteractive(false);
 
         $this
-            ->runCommand('oro:entity-config:init', $input, $output)
-            ->runCommand('oro:entity-extend:init', $input, $output)
-            ->runCommand('oro:entity-extend:update-config', $input, $output)
-            ->runCommand('doctrine:schema:update', $input, $output)
-            ->runCommand('oro:search:create-index', $input, $output)
-            ->runCommand('oro:navigation:init', $input, $output)
-//            ->runCommand('assets:install', $input, $output) // array('target' => './')
-            ->runCommand('assetic:dump', $input, $output)
-            ->runCommand('oro:assetic:dump', $input, $output)
-            ->runCommand('oro:translation:dump', $input, $output);
+            ->runCommand('oro:entity-config:init', $output)
+            ->runCommand('oro:entity-extend:init', $output)
+            ->runCommand('oro:entity-extend:update-config', $output)
+            ->runCommand('doctrine:schema:update', $output)
+            ->runCommand('oro:search:create-index', $output)
+            ->runCommand('oro:navigation:init', $output)
+            ->runCommand('assets:install', $output, array('target' => './'))
+            ->runCommand('assetic:dump', $output)
+            ->runCommand('oro:assetic:dump', $output)
+            ->runCommand('oro:translation:dump', $output);
 
-        $params = $this->get('oro_installer.yaml_persister')->parse();
+        $params = $this->getContainer()->get('oro_installer.yaml_persister')->parse();
 
         $params['system']['installed'] = date('c');
 
-        $this->get('oro_installer.yaml_persister')->dump($params);
+        $this->getContainer()->get('oro_installer.yaml_persister')->dump($params);
 
         $output->writeln('');
 
         return $this;
     }
 
-    private function runCommand($command, InputInterface $input, OutputInterface $output)
+    private function runCommand($command, OutputInterface $output, $params = array())
     {
-        $this
-            ->getApplication()
-            ->find($command)
-            ->run($input, $output);
+        $params = array_merge(
+            array(
+                'command'    => $command,
+                '--no-debug' => true,
+            ),
+            $params
+        );
+
+        $this->getApplication()->setAutoExit(false);
+        $this->getApplication()->run(new ArrayInput($params), $output);
 
         return $this;
     }
