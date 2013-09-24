@@ -1,87 +1,107 @@
 <div class="widget-content" id="import-validation">
     <style type="text/css">
-        #import-errors {
-            display: none;
-        }
-        #import-errors ol {
-            height: 180px;
+        .import-errors ol {
+            height: 198px;
             overflow: auto;
             padding-left: 25px;
         }
-    </style>
-    <strong>{{ 'Import validation results'|trans }}</strong>
-    <table class="table table-condensed table-hover">
-        <thead>
-            <th></th>
-            <th>
-                <div class="pull-right">
-                    {{ 'Number of items'|trans }}
-                </div>
-            </th>
-        </thead>
-        <tbody>
-        <tr>
-            <td>{{ 'Records to add'|trans }}</td>
-            <td>
-                <div class="pull-right">
-                    {{ counts.add|default(0) }}
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>{{ 'Records to replace'|trans }}</td>
-            <td>
-                <div class="pull-right">
-                    {{ counts.replace|default(0) }}
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>{{ 'Records to update'|trans }}</td>
-            <td>
-                <div class="pull-right">
-                    {{ counts.update|default(0) }}
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>{{ 'Records to delete'|trans }}</td>
-            <td>
-                <div class="pull-right">
-                    {{ counts.delete|default(0) }}
-                </div>
-            </td>
-        </tr>
 
-        {% if errors|length > 0 %}
-            <tr class="error">
-                <td>
-                    <a href="javascript: void(0)" class="error-toggle">
-                        <i class="icon-expand"></i>
-                        {{ 'Total errors'|trans }}
-                   </a>
-                </td>
+        .import-errors {
+            display: none;
+        }
+
+        .errors-visible .validation-info {
+            display: none;
+        }
+
+        .errors-visible .import-errors {
+            display: block;
+        }
+
+        .errors-visible .error-toggle-head {
+            display: block;
+            padding: 2px;
+            width: 100%;
+            margin: 0 0 5px 0;
+            background-color: #fafafa;
+            border-bottom: 1px solid #e5e5e5;
+        }
+    </style>
+    <div class="validation-info">
+        <strong>{{ 'Import validation results'|trans }}</strong>
+        <table class="table table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>
+                        <div class="pull-right">
+                            {{ 'Number of items'|trans }}
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ 'Records to add'|trans }}</td>
                 <td>
                     <div class="pull-right">
-                        {{ errors|length }}
+                        {{ counts.add|default(0) }}
                     </div>
                 </td>
             </tr>
-        {% endif %}
+            <tr>
+                <td>{{ 'Records to replace'|trans }}</td>
+                <td>
+                    <div class="pull-right">
+                        {{ counts.replace|default(0) }}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>{{ 'Records to update'|trans }}</td>
+                <td>
+                    <div class="pull-right">
+                        {{ counts.update|default(0) }}
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>{{ 'Records to delete'|trans }}</td>
+                <td>
+                    <div class="pull-right">
+                        {{ counts.delete|default(0) }}
+                    </div>
+                </td>
+            </tr>
 
-        <tr class="info">
-            <td><strong>{{ 'Total number of records'|trans }}</strong></td>
-            <td>
-                <div class="pull-right">
-                    {{ counts.read|default(0) }}
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+            <tr {% if counts.error_entries %}class="error"{% endif %}>
+                <td>
+                    <a href="javascript: void(0)" class="error-toggle">
+                        {{ 'Records with errors '|trans }}
+                    </a>
+                </td>
+                <td>
+                    <div class="pull-right">
+                        {{ counts.error_entries }}
+                    </div>
+                </td>
+            </tr>
+
+            <tr class="info">
+                <td><strong>{{ 'Total number of records'|trans }}</strong></td>
+                <td>
+                    <div class="pull-right">
+                        {{ counts.read|default(0) }}
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     {% if errors|length > 0 %}
-    <div id="import-errors">
+    <a href="javascript: void(0)" class="error-toggle error-toggle-head"><i class="icon-chevron-right"></i>{{ 'Errors found %errors%'|trans({'%errors%': errors|length}) }}</a>
+    <div class="import-errors">
         <ol>
             {% for error in errors %}
                 <li>{{ error }}</li>
@@ -102,17 +122,16 @@
             var container = $('#import-validation');
             var toggleErrors = function(e) {
                 e.preventDefault();
-                $('#import-errors').toggle();
-                var errorTr = container.find('tr.error');
-                var icon = errorTr.find('i');
-                if (icon.hasClass('icon-collapse')) {
-                    icon.removeClass('icon-collapse');
-                    icon.addClass('icon-expand');
+
+                container.toggleClass('errors-visible');
+                var icon = container.find('.error-toggle-head').find('i');
+                if (icon.hasClass('icon-chevron-right')) {
+                    icon.removeClass('icon-chevron-right');
+                    icon.addClass('icon-chevron-down');
                 } else {
-                    icon.removeClass('icon-expand');
-                    icon.addClass('icon-collapse');
+                    icon.removeClass('icon-chevron-down');
+                    icon.addClass('icon-chevron-right');
                 }
-                container.find('tr:not(.error)').toggle();
             };
             container.find('.error-toggle').on('click', toggleErrors);
 
