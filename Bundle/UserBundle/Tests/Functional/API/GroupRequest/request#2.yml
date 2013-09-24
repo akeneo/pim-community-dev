@@ -1,7 +1,6 @@
 # common test case
 request:
     name: Group_2_%str%
-#    roles: [2]
     owner: 1
 response:
     return: true

@@ -39,7 +39,7 @@ class JobExecution
      * @var JobInstance
      *
      * @ORM\ManyToOne(targetEntity="JobInstance", inversedBy="jobExecutions")
-     * @ORM\JoinColumn(name="job_instance_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="job_instance_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $jobInstance;
 
@@ -313,6 +313,10 @@ class JobExecution
      */
     public function getExitStatus()
     {
+        if ($this->exitStatus === null and $this->exitCode !== null) {
+            $this->exitStatus = new ExitStatus($this->exitCode);
+        }
+
         return $this->exitStatus;
     }
 

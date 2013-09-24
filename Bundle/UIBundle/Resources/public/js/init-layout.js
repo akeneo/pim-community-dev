@@ -9,9 +9,9 @@ function(mediator) {
         }, 50);
     });
 });
-require(['jquery', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout', 'oro/navigation', 'oro/modal',
+require(['jquery', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout', 'oro/navigation', 'oro/modal', 'oro/messenger',
     'bootstrap', 'jquery-ui', 'jquery-ui-timepicker'],
-function($, __, app, mediator, layout, Navigation, Modal) {
+function($, __, app, mediator, layout, Navigation, Modal, messenger) {
     'use strict';
 
     /* ============================================================
@@ -257,6 +257,7 @@ function($, __, app, mediator, layout, Navigation, Modal) {
                     type: 'DELETE',
                     success: function (data) {
                         el.trigger('removesuccess');
+                        messenger.addMessage('success', el.data('success-message'), {'hashNavEnabled': Navigation.isEnabled()});
                         if (el.data('redirect')) {
                             var navigation = Navigation.getInstance();
                             if (navigation) {

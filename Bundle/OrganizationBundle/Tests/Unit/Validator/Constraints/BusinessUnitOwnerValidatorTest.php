@@ -3,6 +3,7 @@
 namespace Oro\Bundle\OrganizationBundle\Tests\Unit\Validator\Constrains;
 
 use Oro\Bundle\OrganizationBundle\Validator\Constraints\BusinessUnitOwnerValidator;
+use Oro\Bundle\OrganizationBundle\Validator\Constraints\BusinessUnitOwner;
 use Oro\Bundle\OrganizationBundle\Tests\Unit\Fixtture\Entity\BusinessUnit;
 
 class BusinessUnitOwnerValidatorTest extends \PHPUnit_Framework_TestCase
@@ -25,7 +26,7 @@ class BusinessUnitOwnerValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->businessUnit = new BusinessUnit();
 
-        $this->constraint = $this->getMockForAbstractClass('Symfony\Component\Validator\Constraint');
+        $this->constraint = new BusinessUnitOwner();
         $this->context = $this->getMockForAbstractClass('Symfony\Component\Validator\ExecutionContextInterface');
 
         $this->businessUnitOwnerValidator = new BusinessUnitOwnerValidator();

@@ -24,6 +24,13 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 /**
  * EntityConfig controller.
  * @Route("/entity/config")
+ * TODO: Discuss ACL impl., currently management of configurable entities can be on or off only
+ * @Acl(
+ *      id="oro_entityconfig_manage",
+ *      label="Manage configurable entities",
+ *      type="action",
+ *      group_name=""
+ * )
  */
 class ConfigController extends Controller
 {

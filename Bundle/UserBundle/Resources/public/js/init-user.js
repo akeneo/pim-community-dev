@@ -14,6 +14,10 @@ function($, _, __, app, mediator, messenger, widgetManager, DialogWidget) {
             inputs.attr('required', inputs.filter(':checked').length > 0 ? null : 'required');
         }
 
+        function initFlashMessages() {
+            messenger.setup();
+        }
+
         $(document).on('click', '#btn-apigen', function () {
             var el = $(this);
 
@@ -34,6 +38,11 @@ function($, _, __, app, mediator, messenger, widgetManager, DialogWidget) {
          * Process role checkboxes after hash navigation request is completed
          */
         mediator.on("hash_navigation_request:complete", checkRoleInputs);
+
+        /**
+         * Process flash messages stored in queue or storage
+         */
+        mediator.on("hash_navigation_request:complete", initFlashMessages);
 
         $(document).on('change', '#btn-enable input', function(e) {
             $('.status-enabled').toggleClass('hide');

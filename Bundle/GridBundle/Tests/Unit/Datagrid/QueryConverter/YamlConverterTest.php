@@ -57,7 +57,7 @@ class YamlConverterTest extends \PHPUnit_Framework_TestCase
                     'alias' => 'u',
                 )
             ),
-            'select'   => 'u',
+            'select'   => array('u'),
             'distinct' => true,
             'join'     => array(
                 'inner' => array(
@@ -101,7 +101,8 @@ class YamlConverterTest extends \PHPUnit_Framework_TestCase
 
         $value = '
 name:   "Test Report"
-select: "u"
+select:
+    - "u"
 from:
     - { table: Doctrine\Tests\Models\CMS\CmsUser, alias: u }';
 
