@@ -91,7 +91,13 @@ class CustomEntityDatagrid extends DatagridManager
         $className = $this->entityClass;
 
         return function (ResultRecord $record) use ($router, $className, $route) {
-            return $router->generate($route, array('entity_id' => $className, 'id' => $record->getValue('id')));
+            return $router->generate(
+                $route,
+                array(
+                    'entity_id' => str_replace('\\', '_', $className),
+                    'id' => $record->getValue('id')
+                )
+            );
         };
     }
 
@@ -100,10 +106,12 @@ class CustomEntityDatagrid extends DatagridManager
      */
     protected function getRowActions()
     {
+        $aclDescriptor = 'entity:' . $this->entityName;
+
         $clickAction = array(
             'name'         => 'rowClick',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'oro_entity_view',
+            'acl_resource' => 'VIEW;' . $aclDescriptor,
             'options'      => array(
                 'label'         => 'View',
                 'link'          => 'view_link',
@@ -115,7 +123,7 @@ class CustomEntityDatagrid extends DatagridManager
         $viewAction = array(
             'name'         => 'view',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'oro_entity_view',
+            'acl_resource' => 'VIEW;' . $aclDescriptor,
             'options'      => array(
                 'label' => 'View',
                 'icon'  => 'file',
@@ -126,7 +134,7 @@ class CustomEntityDatagrid extends DatagridManager
         $updateAction = array(
             'name'         => 'update',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'oro_entity_update',
+            'acl_resource' => 'EDIT;' . $aclDescriptor,
             'options'      => array(
                 'label' => 'Update',
                 'icon'  => 'edit',
@@ -137,7 +145,7 @@ class CustomEntityDatagrid extends DatagridManager
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'oro_entity_delete',
+            'acl_resource' => 'DELETE;' . $aclDescriptor,
             'options'      => array(
                 'label' => 'Delete',
                 'icon'  => 'trash',

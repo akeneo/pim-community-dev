@@ -94,7 +94,7 @@ class SecurityFacade
      *
      * @param string|string[] $attributes Can be a role name(s), permission name(s), an ACL annotation id
      *                                    or something else, it depends on registered security voters
-     * @param mixed $object
+     * @param mixed $object               A domain object, object identity or object identity descriptor (id:type)
      * @return bool
      */
     public function isGranted($attributes, $object = null)
