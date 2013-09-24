@@ -12,8 +12,6 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
-use Oro\Bundle\EntityExtendBundle\Tools\Generator;
-
 class CustomEntityType extends AbstractType
 {
     const NAME = 'custom_entity_type';
@@ -73,7 +71,6 @@ class CustomEntityType extends AbstractType
                 && $extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)
                 && !$extendConfig->is('state', ExtendManager::STATE_NEW)
                 && !in_array($formConfig->getId()->getFieldType(), array('ref-one', 'ref-many'))
-                && $builder->getForm()->getName() != $this->getName()
             ) {
                 /** @var FieldConfigIdInterface $fieldConfigId */
                 $fieldConfigId = $formConfig->getId();
