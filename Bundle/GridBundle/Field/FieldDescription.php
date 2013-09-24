@@ -3,6 +3,7 @@
 namespace Oro\Bundle\GridBundle\Field;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Oro\Bundle\GridBundle\Property\AbstractProperty;
 use Oro\Bundle\GridBundle\Property\PropertyInterface;
 use Oro\Bundle\GridBundle\Property\FieldProperty;
 
@@ -54,6 +55,11 @@ class FieldDescription implements FieldDescriptionInterface
     protected $associationMapping;
 
     /**
+     * @var array
+     */
+    protected $formatters = array();
+
+    /**
      * {@inheritdoc}
      */
     public function setFieldName($fieldName)
@@ -95,7 +101,7 @@ class FieldDescription implements FieldDescriptionInterface
     public function getProperty()
     {
         if (!$this->property) {
-            $this->property = new FieldProperty($this);
+            $this->setProperty(new FieldProperty($this));
         }
         return $this->property;
     }
@@ -105,6 +111,9 @@ class FieldDescription implements FieldDescriptionInterface
      */
     public function setProperty(PropertyInterface $property)
     {
+        if ($property instanceof AbstractProperty) {
+            $property->setFormatters($this->formatters);
+        }
         $this->property = $property;
     }
 
@@ -378,5 +387,13 @@ class FieldDescription implements FieldDescriptionInterface
     public function isShown()
     {
         return $this->getOption('show_column', true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFormatters(array $formatters)
+    {
+        $this->formatters = $formatters;
     }
 }

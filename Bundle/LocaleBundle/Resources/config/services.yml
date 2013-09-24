@@ -1,0 +1,10 @@
+parameters:
+    oro_locale.datagrid.formatter.datetime.class: Oro\Bundle\LocaleBundle\Datagrid\Formatter\DateTime
+
+services:
+    oro_locale.datagrid.formatter.datetime:
+        class: %oro_locale.datagrid.formatter.datetime.class%
+        arguments:
+            - @oro_config.global
+        tags:
+          - { name: oro_grid.property.formatter, type: datetime }

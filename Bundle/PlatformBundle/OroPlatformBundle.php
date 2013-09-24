@@ -44,6 +44,7 @@ class OroPlatformBundle extends Bundle
             new \Oro\Bundle\SyncBundle\OroSyncBundle(),
             new \Oro\Bundle\PlatformBundle\OroPlatformBundle(),
             new \Oro\Bundle\InstallerBundle\OroInstallerBundle(),
+            new \Oro\Bundle\LocaleBundle\OroLocaleBundle(),
         );
     }
 }

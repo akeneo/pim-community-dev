@@ -16,6 +16,8 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
 {
     const REGISTRY_SERVICE             = 'oro_grid.datagrid_manager.registry';
 
+    const FORMATTER_TAG                = 'oro_grid.property.formatter';
+
     const QUERY_FACTORY_ATTRIBUTE      = 'query_factory';
     const ROUTE_GENERATOR_ATTRIBUTE    = 'route_generator';
     const DATAGRID_BUILDER_ATTRIBUTE   = 'datagrid_builder';
@@ -31,6 +33,7 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
     const QUERY_ENTITY_ALIAS_ATTRIBUTE = 'query_entity_alias';
     const IDENTIFIER_FIELD             = 'identifier_field';
     const VIEWS_ATTRIBUTE              = 'views_list';
+    const FORMATTERS_ATTRIBUTE         = 'formatter';
 
     /**
      * @var Definition
@@ -110,6 +113,19 @@ class AddDependencyCallsCompilerPass extends AbstractDatagridManagerCompilerPass
             }
 
             $this->definition->addMethodCall($method, array($this->getAttribute($key)));
+        }
+
+        // add formatters
+        $method = 'add' . $this->camelize(self::FORMATTERS_ATTRIBUTE);
+        foreach ($this->container->findTaggedServiceIds(self::FORMATTER_TAG) as $serviceId => $tags) {
+            foreach ($tags as $tag) {
+                if (isset($tag['type'])) {
+                    $this->definition->addMethodCall(
+                        $method,
+                        array($tag['type'], new Reference($serviceId))
+                    );
+                }
+            }
         }
     }
 
