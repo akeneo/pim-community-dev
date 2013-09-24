@@ -11,7 +11,7 @@ class SchemaStep extends AbstractStep
         set_time_limit(120);
 
         $this->runCommand('doctrine:schema:create');
-        $this->runCommand('doctrine:fixtures:load', array('--no-interaction' => true));
+        $this->runCommand('doctrine:fixtures:load');
 
         return $this->complete();
     }

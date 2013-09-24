@@ -133,9 +133,18 @@ class ExtensionsRequirements extends RequirementCollection
             ));
         }
 
-        $status = (function_exists('apc_store') && ini_get('apc.enabled'))
-            || function_exists('eaccelerator_put') && ini_get('eaccelerator.enable')
-            || function_exists('xcache_set');
+        $status = 
+            (extension_loaded('eaccelerator') && ini_get('eaccelerator.enable'))
+            ||
+            (extension_loaded('apc') && ini_get('apc.enabled'))
+            ||
+            (extension_loaded('Zend Optimizer+') && ini_get('zend_optimizerplus.enable'))
+            ||
+            (extension_loaded('Zend OPcache') && ini_get('opcache.enable'))
+            ||
+            (extension_loaded('xcache') && ini_get('xcache.cacher'))
+            ||
+            (extension_loaded('wincache') && ini_get('wincache.ocenabled'));
 
         $this
             ->add(new Requirement(

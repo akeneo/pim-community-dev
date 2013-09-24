@@ -18,6 +18,10 @@
         $(function() {
             $('.progress-bar li:last-child em.fix-bg').width($('.progress-bar li:last-child').width() / 2);
             $('.progress-bar li:first-child em.fix-bg').width($('.progress-bar li:first-child').width() / 2);
+
+            $('form').submit(function () {
+                $(this).find(':submit').attr('disabled', true).addClass('disabled');
+            });
         });
     </script>
     {% endblock javascript %}
