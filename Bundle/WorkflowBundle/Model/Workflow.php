@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowTransitionRecord;
 use Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownStepException;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException;
@@ -370,7 +371,9 @@ class Workflow
         $transition = $this->transitionManager->extractTransition($transition);
 
         if ($this->isTransitionAllowed($workflowItem, $transition)) {
+            $transitionRecord = $this->createTransitionRecord($workflowItem, $transition);
             $transition->transit($workflowItem);
+            $workflowItem->addTransitionRecord($transitionRecord);
         } else {
             throw new ForbiddenTransitionException(
                 sprintf('Transition "%s" is not allowed.', $transition->getName())
@@ -392,6 +395,26 @@ class Workflow
         $workflowItem->getData()->add($data);
 
         return $workflowItem;
+    }
+
+    /**
+     * @param WorkflowItem $workflowItem
+     * @param Transition $transition
+     * @return WorkflowTransitionRecord
+     */
+    protected function createTransitionRecord(WorkflowItem $workflowItem, Transition $transition)
+    {
+        $transitionName = $transition->getName();
+        $stepFrom = $workflowItem->getCurrentStepName();
+        $stepTo = $transition->getStepTo()->getName();
+
+        $transitionRecord = new WorkflowTransitionRecord();
+        $transitionRecord
+            ->setTransitionName($transitionName)
+            ->setStepFromName($stepFrom)
+            ->setStepToName($stepTo);
+
+        return $transitionRecord;
     }
 
     /**
