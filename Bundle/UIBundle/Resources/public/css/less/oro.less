@@ -5129,3 +5129,18 @@ iframe.email-body {
     margin-bottom: 0;
   }
 }
+li.dropdown{
+  ul{
+    display: none !important;
+    ul{
+      top: 0;
+    }
+  }
+  &:hover > .menu_level_1{
+    display: block !important;
+  }
+  .menu_level_2 li:hover > .menu_level_3,
+  .menu_level_1 li:hover > .menu_level_2{
+    display: block !important;
+  }
+}
