@@ -291,19 +291,20 @@ class FamilyController extends AbstractDoctrineController
         $attribute = $this->findOr404('PimCatalogBundle:ProductAttribute', $attributeId);
 
         if (false === $family->hasAttribute($attribute)) {
-            $this->addFlash('error', 'flash.family.attribute not found');
+            throw new \DomainException('Family attribute not found');
         } elseif ($attribute->getAttributeType() === 'pim_catalog_identifier') {
-            $this->addFlash('error', 'flash.family.identifier not removable');
+            throw new \DomainException('Family identifier not removable');
         } elseif ($attribute === $family->getAttributeAsLabel()) {
-            $this->addFlash('error', 'flash.family.label attribute not removable');
+            throw new \DomainException('Family label not removable');
         } else {
             $family->removeAttribute($attribute);
             $this->getManager()->flush();
-
-            $this->addFlash('success', 'flash.family.attribute removed');
         }
-
-        return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
+        }
     }
 
     /**

@@ -338,10 +338,11 @@ class AttributeGroupController extends AbstractDoctrineController
         $group->removeAttribute($attribute);
         $this->getManager()->flush();
 
-        $this->addFlash('success', 'flash.attribute group.attribute removed');
-
-        return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
-
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
+        }
     }
 
     /**
