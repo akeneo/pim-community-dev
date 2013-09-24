@@ -99,7 +99,7 @@ class RolesTest extends \PHPUnit_Extensions_Selenium2TestCase
         //verify new GROUP
         $roles->refresh();
 
-        $this->assertTrue($roles->entityExists(array('name' => 'ROLE_' . $this->newRole['ROLE_NAME'] . strtoupper($randomPrefix))));
+        $this->assertTrue($roles->entityExists(array('name' => $this->newRole['LABEL'] . $randomPrefix)));
 
         return $randomPrefix;
     }
