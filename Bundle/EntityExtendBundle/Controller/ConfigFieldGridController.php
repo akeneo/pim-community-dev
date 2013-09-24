@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -194,7 +195,8 @@ class ConfigFieldGridController extends Controller
                 'field_config'  => $fieldConfig,
                 'field'         => $newFieldModel,
                 'form'          => $form->createView(),
-                'formAction'    => $this->generateUrl('oro_entityextend_field_update', array('id' => $entity->getId()))
+                'formAction'    => $this->generateUrl('oro_entityextend_field_update', array('id' => $entity->getId())),
+                'require_js'    => $configManager->getProvider('extend')->getPropertyConfig()->getRequireJsModules()
             )
         );
     }

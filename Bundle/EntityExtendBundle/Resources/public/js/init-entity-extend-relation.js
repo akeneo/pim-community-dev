@@ -1,41 +1,28 @@
 /* jshint browser:true */
 /* global require */
-require(['jquery', 'underscore', 'oro/translator', 'oro/modal'],
-function($, _, __, Modal) {
+require(['jquery', 'underscore', 'routing'],
+function($, _, routing) {
     'use strict';
     $(function() {
-        $(document).on('change', 'form select.json-get-columns', function (e) {
+        $(document).on('change', 'form select.extend-rel-target-name', function (e) {
+            var el     = $(this),
+                target = el.find('option:selected').attr('value'),
+                query =  routing.generate.apply(routing, ['oro_entityconfig_field_search', {id: target}]),
+                fields = $('form select.extend-rel-target-field');
 
-//            var el = $(this),
-//                message = el.data('message'),
-//                doAction = function() {
-//                    confirmUpdate.preventClose(function(){});
-//
-//                    var url = $(el).attr('href').substr(21),
-//                        progressbar = $('#progressbar').clone();
-//                    progressbar
-//                        .attr('id', 'confirmUpdateLoading')
-//                        .css({'display':'block', 'margin': '0 auto'})
-//                        .find('h3').remove();
-//
-//                    confirmUpdate.$content.parent().find('a.cancel').hide();
-//                    confirmUpdate.$content.parent().find('a.close').hide();
-//                    confirmUpdate.$content.parent().find('a.btn-primary').replaceWith(progressbar);
-//
-//                    $('#confirmUpdateLoading').show();
-//                    window.location.href = url;
-//                },
-//                /** @type oro.Modal */
-//                confirmUpdate = new Modal({
-//                    allowCancel: true,
-//                    cancelText: __('Cancel'),
-//                    title: __('Schema update confirmation'),
-//                    content: '<p>' + __('Your config changes will be applied to schema.') +
-//                        '</p></p>' + __('It may take few minutes...') + '</p>',
-//                    okText: __('Yes, Proceed')
-//                });
-//            confirmUpdate.on('ok', doAction);
-//            confirmUpdate.open();
+            $(fields).prev('span').text('loading...');
+            fields.empty().append('<option value="">Please choice target field...</option>');
+
+            $.getJSON(query, function(response) {
+                var items = [];
+                items.push('<option value="">Please choice target field...</option>');
+                $.each( response, function( key, val ) {
+                    items.push("<option value='" + key + "'>" + val + "</option>");
+                });
+                fields.empty().append(items.join(''));
+
+                $(fields).prev('span').text('Please choice target field...');
+            });
 
             return false;
         });
