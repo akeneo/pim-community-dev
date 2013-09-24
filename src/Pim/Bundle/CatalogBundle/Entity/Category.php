@@ -110,7 +110,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      * )
      */
     protected $translations;
-    
+
     /**
      * @var ArrayCollection $channels
      *
@@ -343,7 +343,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
 
     /**
      * Returns the channels linked to the category
-     * 
+     *
      * @return ArrayCollection
      */
     public function getChannels()
