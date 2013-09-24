@@ -125,6 +125,13 @@ class StepExecution
 
     /**
      * @var array
+     *
+     * @ORM\Column(name="errors", type="array", nullable=true)
+     */
+    private $errors = null;
+
+    /**
+     * @var array
      */
     private $readerWarnings = array();
 
@@ -144,6 +151,7 @@ class StepExecution
         $this->setExitStatus(new ExitStatus(ExitStatus::EXECUTING));
 
         $this->failureExceptions = array();
+        $this->errors = array();
 
         $this->startTime = new \DateTime();
     }
@@ -479,6 +487,29 @@ class StepExecution
                 $this->failureExceptions
             )
         );
+    }
+
+    /**
+     * Get errors
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * Add an error
+     *
+     * @param string $errorMessage
+     * @return $this
+     */
+    public function addError($errorMessage)
+    {
+        $this->errors[] = $errorMessage;
+
+        return $this;
     }
 
     /**
