@@ -28,8 +28,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
                     )
                 )
             );
+        $currencyManager = $this->getCurrencyManagerMock();
 
-        $this->converter = new ProductValueConverter($em);
+        $this->converter = new ProductValueConverter($em, $currencyManager);
     }
 
     public function testConvertBasicType()
@@ -128,6 +129,35 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             $this->converter->convert(array('public_prices' => '99.90 EUR,59.90 USD'))
+        );
+    }
+
+    public function testConvertEmptyPricesValue()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'public_prices'))
+            ->will($this->returnValue($this->getAttributeMock('prices')));
+
+        $this->assertEquals(
+            array(
+                'values' => array(
+                    'public_prices' => array(
+                        'prices' => array(
+                            array(
+                                'data'     => '',
+                                'currency' => 'EUR',
+                            ),
+                            array(
+                                'data'     => '',
+                                'currency' => 'USD',
+                            )
+                        ),
+                    )
+                )
+            ),
+            $this->converter->convert(array('public_prices' => ''))
         );
     }
 
@@ -304,6 +334,21 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    protected function getCurrencyManagerMock()
+    {
+        $currencyManager = $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\CurrencyManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $currencyManager
+            ->expects($this->any())
+            ->method('getActiveCodes')
+            ->will($this->returnValue(array('EUR', 'USD')));
+
+        return $currencyManager;
     }
 
     protected function getRepositoryMock()

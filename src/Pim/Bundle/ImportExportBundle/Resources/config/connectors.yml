@@ -68,6 +68,7 @@ services:
             - @form.factory
             - @pim_catalog.manager.product
             - @pim_catalog.manager.channel
+            - @pim_catalog.manager.locale
 
     pim_import_export.processor.valid_category_creation:
         class: %pim_import_export.processor.valid_category_creation.class%
