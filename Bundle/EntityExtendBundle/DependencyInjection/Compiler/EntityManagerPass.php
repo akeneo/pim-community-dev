@@ -8,7 +8,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class EntityManagerPass implements CompilerPassInterface
 {
-
     const EXTEND_MANAGER_SERVICE_KEY = 'oro_entity_extend.extend.extend_manager';
 
     /**

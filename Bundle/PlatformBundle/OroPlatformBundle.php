@@ -37,7 +37,7 @@ class OroPlatformBundle extends Bundle
             new \Oro\Bundle\EmailBundle\OroEmailBundle(),
             new \Oro\Bundle\EntityBundle\OroEntityBundle(),
             new \Oro\Bundle\EntityConfigBundle\OroEntityConfigBundle(),
-            new \Oro\Bundle\EntityExtendBundle\OroEntityExtendBundle(),
+            new \Oro\Bundle\EntityExtendBundle\OroEntityExtendBundle($kernel),
             new \Oro\Bundle\ImapBundle\OroImapBundle(),
             new \Oro\Bundle\CronBundle\OroCronBundle(),
             new \Oro\Bundle\WorkflowBundle\OroWorkflowBundle(),

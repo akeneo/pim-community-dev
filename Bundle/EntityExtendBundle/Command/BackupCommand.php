@@ -68,7 +68,6 @@ class BackupCommand extends ContainerAwareCommand
         /** @var OroEntityManager $em */
         $em = $this->getContainer()->get('doctrine')->getManager('default');
 
-
         $tables[] = $em
             ->getClassMetadata($this->className)
             ->getTableName();

@@ -8,7 +8,7 @@ supported as a storage.
 
 -   *name* - report name, reserved for future use
 -   *distinct* - boolean, indicates that query should use DISTINCT keyword (false by default)
--   *select* - string representing column list to select
+-   *select* - array representing column list to select
 -   *from* - array of table/alias declarations. Each element is an array with the following keys:
     - *table* - entity declaration, for example "OroUserBundle:User"
     - *alias* - [optional] alias for the entity/table name
@@ -37,7 +37,12 @@ reports:
     -
         name:     DemoReport
         distinct: false
-        select:   "u.username, u.firstName, u.loginCount, a.apiKey, COUNT(u.firstName) AS cnt"
+        select:
+            - u.username
+            - u.firstName
+            - u.loginCount
+            - a.apiKey
+            - COUNT(u.firstName) AS cnt
         from:
             - { table: OroUserBundle:User, alias: u }
         join:

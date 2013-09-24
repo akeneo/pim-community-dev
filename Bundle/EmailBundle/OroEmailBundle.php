@@ -34,8 +34,8 @@ class OroEmailBundle extends Bundle
      */
     protected function addDoctrineOrmMappingsPass(ContainerBuilder $container)
     {
-        $cacheDir             = sprintf('%s/entities', $container->getParameter('kernel.root_dir'));
-        $entityCacheNamespace = 'Extend\Cache\OroEmailBundle\Entity';
+        $cacheDir = sprintf('%s/emails', $container->getParameter('kernel.root_dir'));
+        $entityCacheNamespace = 'OroEmail\Cache\OroEmailBundle\Entity';
 
         $container->setParameter('oro_email.entity.cache_dir', $cacheDir);
         $container->setParameter('oro_email.entity.cache_namespace', $entityCacheNamespace);

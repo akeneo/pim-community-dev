@@ -75,7 +75,7 @@ class RoleController extends SoapController
      */
     public function getBynameAction($name)
     {
-        $entity = $this->getManager()->getRepository()->findOneBy(array('role' => $name));
+        $entity = $this->getManager()->getRepository()->findOneBy(array('label' => $name));
 
         if (!$entity) {
             throw new \SoapFault('NOT_FOUND', sprintf('Role "%s" can not be found', $name));

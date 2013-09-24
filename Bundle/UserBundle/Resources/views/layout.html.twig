@@ -69,20 +69,21 @@
 <body class="{% block bodyClass %}{% endblock %}">
     <div id="page">
         <div id="top-page">
+            {% set messagesContent %}
             {% if app.session.flashbag.peekAll|length > 0 %}
-            <div class="row-fluid">
-                <div class="span12">
                 {% for type, messages in app.session.flashbag.all %}
                     {% for message in messages %}
-                    <div class="alert{{ type ? ' alert-'~type : '' }} fade in">
-                    <a class="close" data-dismiss="alert" href="javascript: void(0);">×</a>
+                    <div class="alert{{ type ? ' alert-'~type : '' }}">
                     {{ message|trans|raw }}
                     </div>
                     {% endfor %}
                 {% endfor %}
-                </div>
-            </div>
             {% endif %}
+            {% endset %}
+
+            {% block messages %}
+                {{ messagesContent }}
+            {% endblock %}
 
             {% block header %}
             {% endblock header %}

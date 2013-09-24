@@ -16,7 +16,7 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-use Oro\Bundle\EntityExtendBundle\Tools\Generator;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 
 class CustomEntityDatagrid extends DatagridManager
 {
@@ -91,7 +91,13 @@ class CustomEntityDatagrid extends DatagridManager
         $className = $this->entityClass;
 
         return function (ResultRecord $record) use ($router, $className, $route) {
-            return $router->generate($route, array('entity_id' => $className, 'id' => $record->getValue('id')));
+            return $router->generate(
+                $route,
+                array(
+                    'entity_id' => str_replace('\\', '_', $className),
+                    'id' => $record->getValue('id')
+                )
+            );
         };
     }
 
@@ -100,10 +106,12 @@ class CustomEntityDatagrid extends DatagridManager
      */
     protected function getRowActions()
     {
+        $aclDescriptor = 'entity:' . $this->entityName;
+
         $clickAction = array(
             'name'         => 'rowClick',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'oro_entity_view',
+            'acl_resource' => 'VIEW;' . $aclDescriptor,
             'options'      => array(
                 'label'         => 'View',
                 'link'          => 'view_link',
@@ -115,7 +123,7 @@ class CustomEntityDatagrid extends DatagridManager
         $viewAction = array(
             'name'         => 'view',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'oro_entity_view',
+            'acl_resource' => 'VIEW;' . $aclDescriptor,
             'options'      => array(
                 'label' => 'View',
                 'icon'  => 'file',
@@ -126,7 +134,7 @@ class CustomEntityDatagrid extends DatagridManager
         $updateAction = array(
             'name'         => 'update',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'oro_entity_update',
+            'acl_resource' => 'EDIT;' . $aclDescriptor,
             'options'      => array(
                 'label' => 'Update',
                 'icon'  => 'edit',
@@ -137,7 +145,7 @@ class CustomEntityDatagrid extends DatagridManager
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'oro_entity_delete',
+            'acl_resource' => 'DELETE;' . $aclDescriptor,
             'options'      => array(
                 'label' => 'Delete',
                 'icon'  => 'trash',
@@ -183,7 +191,7 @@ class CustomEntityDatagrid extends DatagridManager
                     );
 
                     $label               = $entityConfig->get('label') ?: $fieldConfig->getFieldName();
-                    $code                = Generator::PREFIX . $fieldConfig->getFieldName();
+                    $code                = ExtendConfigDumper::PREFIX . $fieldConfig->getFieldName();
                     $this->queryFields[] = $code;
 
                     $fieldObject = new FieldDescription();

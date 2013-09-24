@@ -12,7 +12,9 @@
 {% block navButtons %}
     {{ UI.button({'path' : path('oro_entity_index', {id: entity_id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
 
+    {% if resource_granted('EDIT', 'entity:'~entity_class) %}
     {{ UI.saveAndStayButton() }}
+    {% endif %}
     {{ UI.saveAndCloseButton() }}
 {% endblock navButtons %}
 

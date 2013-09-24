@@ -1,12 +1,10 @@
 <?php
 
-//@codingStandardsIgnoreFile
-
 namespace Oro\Bundle\EntityExtendBundle\Entity;
 
+/**
+ * Marker for extend entities
+ */
 interface ExtendEntityInterface
 {
-    public function __toArray();
-
-    public function __fromArray($values);
 }

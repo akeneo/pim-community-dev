@@ -16,7 +16,7 @@ use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-use Oro\Bundle\EntityExtendBundle\Tools\Generator;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 use Oro\Bundle\GridBundle\Property\FixedProperty;
 
 class AbstractDatagrid extends DatagridManager
@@ -49,7 +49,7 @@ class AbstractDatagrid extends DatagridManager
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => $fieldConfig->get('label') ? : $field->getFieldName(),
-                'field_name'  => Generator::PREFIX . $field->getFieldName(),
+                'field_name'  => ExtendConfigDumper::PREFIX . $field->getFieldName(),
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'sortable'    => true,
                 'filterable'  => true,

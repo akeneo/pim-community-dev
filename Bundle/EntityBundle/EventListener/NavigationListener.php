@@ -9,9 +9,15 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\NavigationBundle\Event\ConfigureMenuEvent;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 class NavigationListener
 {
+    /**
+     * @var SecurityFacade
+     */
+    protected $securityFacade;
+
     /**
      * @var EntityManager|null
      */
@@ -24,15 +30,18 @@ class NavigationListener
     protected $entityExtendProvider = null;
 
     /**
+     * @param SecurityFacade $securityFacade
      * @param EntityManager  $entityManager
      * @param ConfigProvider $entityConfigProvider
      * @param ConfigProvider $entityExtendProvider
      */
     public function __construct(
+        SecurityFacade $securityFacade,
         EntityManager $entityManager,
         ConfigProvider $entityConfigProvider,
         ConfigProvider $entityExtendProvider
     ) {
+        $this->securityFacade       = $securityFacade;
         $this->em                   = $entityManager;
         $this->entityConfigProvider = $entityConfigProvider;
         $this->entityExtendProvider = $entityExtendProvider;
@@ -49,6 +58,7 @@ class NavigationListener
         $entitiesMenuItem = $menu->getChild('system_tab')->getChild('entities_list');
         if ($entitiesMenuItem) {
             $extendConfigs = $this->entityExtendProvider->getConfigs();
+
             foreach ($extendConfigs as $extendConfig) {
                 if ($extendConfig->is('is_extend')
                     && $extendConfig->get('owner') == ExtendManager::OWNER_CUSTOM
@@ -58,6 +68,9 @@ class NavigationListener
                     )
                 ) {
                     $config = $this->entityConfigProvider->getConfig($extendConfig->getId()->getClassname());
+                    if (!$this->securityFacade->isGranted('VIEW', 'entity:' . $config->getId()->getClassName())) {
+                        continue;
+                    }
 
                     $children[$config->get('label')] = array(
                         'label'   => $config->get('label'),
