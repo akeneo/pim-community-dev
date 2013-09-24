@@ -470,7 +470,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
      * @param array $arguments
      * @return Datagrid
      */
-    private function createDatagrid($arguments = array())
+    protected function createDatagrid($arguments = array())
     {
         $arguments = $this->getDatagridMockArguments($arguments);
         return new Datagrid(
@@ -484,7 +484,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    private function getDatagridMockArguments(array $arguments = array())
+    protected function getDatagridMockArguments(array $arguments = array())
     {
         $defaultArguments = array(
             'query'           => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface'),

@@ -6,7 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-use Oro\Bundle\EntityExtendBundle\Tools\Generator;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 
 class DoctrineSubscriber implements EventSubscriber
 {
@@ -39,11 +39,12 @@ class DoctrineSubscriber implements EventSubscriber
                     : array();
 
                 foreach ($config->get('index') as $columnName => $enabled) {
-                    if ($enabled) {
-                        $tableName = strtolower(str_replace('\\', '_', $event->getClassMetadata()->getName()));
-                        $indexName = 'oro_' . $tableName . '_' . $columnName;
+                    $fieldConfig = $configProvider->getConfig($className, $columnName);
 
-                        $index[$indexName] = array('columns' => array(Generator::PREFIX . $columnName));
+                    if ($enabled && $fieldConfig->is('state', ExtendManager::STATE_ACTIVE)) {
+                        $indexName = 'oro_idx_' . $columnName;
+
+                        $index[$indexName] = array('columns' => array(ExtendConfigDumper::PREFIX . $columnName));
                     }
                 }
 

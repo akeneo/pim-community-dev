@@ -18,7 +18,7 @@ class ConfigureStep extends AbstractStep
 
     public function forwardAction(ProcessContextInterface $context)
     {
-        set_time_limit(60);
+        set_time_limit(600);
 
         $form = $this->createConfigurationForm();
 

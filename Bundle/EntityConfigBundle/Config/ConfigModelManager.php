@@ -71,10 +71,20 @@ class ConfigModelManager
     public function checkDatabase()
     {
         if ($this->dbCheckCache === null) {
-            $this->dbCheckCache = (bool) array_intersect(
-                $this->requiredTables,
-                $this->getEntityManager()->getConnection()->getSchemaManager()->listTableNames()
-            );
+            try {
+                $conn = $this->getEntityManager()->getConnection();
+
+                if (!$conn->isConnected()) {
+                    $this->getEntityManager()->getConnection()->connect();
+                }
+
+                $this->dbCheckCache = $conn->isConnected() && (bool) array_intersect(
+                    $this->requiredTables,
+                    $this->getEntityManager()->getConnection()->getSchemaManager()->listTableNames()
+                );
+            } catch (\PDOException $e) {
+                $this->dbCheckCache = false;
+            }
         }
 
         return $this->dbCheckCache;

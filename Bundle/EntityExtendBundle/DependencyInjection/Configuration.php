@@ -23,7 +23,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('cache_dir')->cannotBeEmpty()->defaultValue('%kernel.cache_dir%/oro_extend')->end()
             ->end()
             ->children()
-                ->scalarNode('backup')->cannotBeEmpty()->defaultValue('%kernel.root_dir%/entities/Extend/Backup')->end()
+                ->scalarNode('backup')->cannotBeEmpty()->defaultValue('%kernel.root_dir%/backup')->end()
             ->end();
 
         return $treeBuilder;

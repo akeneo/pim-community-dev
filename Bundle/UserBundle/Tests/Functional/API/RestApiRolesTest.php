@@ -28,7 +28,6 @@ class RestApiRolesTest extends WebTestCase
         $roleName = 'Role_'.mt_rand(100, 500);
         $request = array(
             "role" => array(
-                "role" => $roleName,
                 "label" => $roleName,
                 "owner" => "1"
             )
@@ -48,7 +47,7 @@ class RestApiRolesTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $this->client->generate('oro_api_get_role_byname', array('name' => $request['role']['role']))
+            $this->client->generate('oro_api_get_role_byname', array('name' => $request['role']['label']))
         );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
@@ -65,7 +64,7 @@ class RestApiRolesTest extends WebTestCase
         $result = $this->client->getResponse();
         $result = json_decode($result->getContent(), true);
         foreach ($result as $role) {
-            if ($role['role'] == strtoupper($request['role']['label'])) {
+            if ($role['label'] == $request['role']['label']) {
                 $roleId = $role['id'];
                 break;
             }
@@ -86,7 +85,6 @@ class RestApiRolesTest extends WebTestCase
     public function testApiUpdateRole($roleId, $request)
     {
         $request['role']['label'] .= '_Update';
-        $request['role']['role'] .= '_Update';
         $this->client->request('PUT', $this->client->generate('oro_api_put_role', array('id' => $roleId)), $request);
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 204);

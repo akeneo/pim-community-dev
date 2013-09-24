@@ -37,13 +37,15 @@ class OroPlatformBundle extends Bundle
             new \Oro\Bundle\EmailBundle\OroEmailBundle(),
             new \Oro\Bundle\EntityBundle\OroEntityBundle(),
             new \Oro\Bundle\EntityConfigBundle\OroEntityConfigBundle(),
-            new \Oro\Bundle\EntityExtendBundle\OroEntityExtendBundle(),
+            new \Oro\Bundle\EntityExtendBundle\OroEntityExtendBundle($kernel),
             new \Oro\Bundle\ImapBundle\OroImapBundle(),
             new \Oro\Bundle\CronBundle\OroCronBundle(),
             new \Oro\Bundle\WorkflowBundle\OroWorkflowBundle(),
             new \Oro\Bundle\SyncBundle\OroSyncBundle(),
             new \Oro\Bundle\PlatformBundle\OroPlatformBundle(),
             new \Oro\Bundle\InstallerBundle\OroInstallerBundle(),
+            new \Oro\Bundle\BatchBundle\OroBatchBundle(),
+            new \Oro\Bundle\ImportExportBundle\OroImportExportBundle(),
         );
     }
 }

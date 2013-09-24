@@ -73,7 +73,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
         selectWidget: null,
 
         /**
-         * Widget button selector
+         * ImportExport button selector
          *
          * @property
          */
@@ -215,7 +215,9 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                 options.attr('selected', true);
             }
 
-            this.selectWidget.multiselect('refresh');
+            if (optionsSelectors.length) {
+                this.selectWidget.multiselect('refresh');
+            }
 
             return this;
         },
@@ -242,7 +244,9 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                 options.removeAttr('selected');
             }
 
-            this.selectWidget.multiselect('refresh');
+            if (optionsSelectors.length) {
+                this.selectWidget.multiselect('refresh');
+            }
 
             return this;
         },

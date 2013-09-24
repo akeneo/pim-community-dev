@@ -34,13 +34,15 @@ class OroSecurityExtension extends \Twig_Extension
     /**
      * Check if ACL resource is granted for current user
      *
-     * @param string $aclId ACL Resource id
+     * @param string|string[] $attributes Can be a role name(s), permission name(s), an ACL annotation id
+     *                                    or something else, it depends on registered security voters
+     * @param mixed $object               A domain object, object identity or object identity descriptor (id:type)
      *
      * @return bool
      */
-    public function checkResourceIsGranted($aclId)
+    public function checkResourceIsGranted($attributes, $object = null)
     {
-        return $this->securityFacade->isGranted($aclId);
+        return $this->securityFacade->isGranted($attributes, $object);
     }
 
     /**

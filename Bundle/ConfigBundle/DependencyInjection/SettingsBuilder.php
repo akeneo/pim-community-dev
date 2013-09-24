@@ -36,6 +36,7 @@ class SettingsBuilder
 
                     break;
                 case 'boolean':
+                case 'bool':
                     $child->booleanNode('value')->defaultValue((bool)$setting['value']);
 
                     break;

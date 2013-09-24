@@ -1,0 +1,13 @@
+Oro\Bundle\UserBundle\Entity\User:
+    exclusion_policy: ALL
+    properties:
+        firstName:
+            expose: true
+            type: string
+            serialized_name: First Name
+            groups: [export, import]
+        lastName:
+            expose: true
+            type: string
+            serialized_name: Last Name
+            groups: [export, import]

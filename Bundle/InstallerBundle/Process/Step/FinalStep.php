@@ -8,27 +8,26 @@ class FinalStep extends AbstractStep
 {
     public function displayAction(ProcessContextInterface $context)
     {
-        set_time_limit(120);
+        set_time_limit(600);
 
         $params = $this->get('oro_installer.yaml_persister')->parse();
 
         // everything was fine - set %installed% flag to current date
-        $params['system']['installed']        = date('c');
-        $params['session']['session_handler'] = 'session.handler.pdo';
+        $params['system']['installed'] = date('c');
 
         $this->get('oro_installer.yaml_persister')->dump($params);
 
-        $this->runCommand('oro:navigation:init');
-        $this->runCommand('oro:entity-config:update');
-        $this->runCommand('oro:entity-extend:init');
-        $this->runCommand('oro:entity-extend:create');
-        $this->runCommand('cache:clear');
-        $this->runCommand('doctrine:schema:update', array('--force' => true));
-        $this->runCommand('oro:search:create-index');
-        $this->runCommand('assets:install', array('target' => './'));
-        $this->runCommand('assetic:dump');
-        $this->runCommand('oro:assetic:dump');
-        $this->runCommand('oro:translation:dump');
+        $this
+            ->runCommand('oro:entity-config:init')
+            ->runCommand('oro:entity-extend:init')
+            ->runCommand('oro:entity-extend:update-config')
+            ->runCommand('doctrine:schema:update', array('--force' => true))
+            ->runCommand('oro:search:create-index')
+            ->runCommand('oro:navigation:init')
+            ->runCommand('assets:install', array('target' => './'))
+            ->runCommand('assetic:dump')
+            ->runCommand('oro:assetic:dump')
+            ->runCommand('oro:translation:dump');
 
         $this->complete();
 

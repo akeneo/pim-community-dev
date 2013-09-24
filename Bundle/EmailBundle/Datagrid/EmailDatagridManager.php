@@ -25,11 +25,13 @@ class EmailDatagridManager extends DatagridManager
                 'type'        => FieldDescriptionInterface::TYPE_HTML,
                 'label'       => $this->translate('oro.email.datagrid.email.from_name'),
                 'field_name'  => 'fromEmailAddress',
+                'expression'  => $this->queryFactory->getFromEmailExpression(),
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
-                'sortable'    => true,
+                'sortable'    => false,
                 'filterable'  => true,
                 'show_filter' => true,
+                'filter_by_where' => true
             )
         );
         $templateDataProperty = new TwigTemplateProperty(
@@ -90,8 +92,8 @@ class EmailDatagridManager extends DatagridManager
                 'translation_domain'  => 'config',
                 'required'            => false,
                 'sortable'            => false,
-                'filterable'          => true,
-                'show_filter'         => true,
+                'filterable'          => false,
+                'show_filter'         => false,
             )
         );
         $templateDataProperty = new TwigTemplateProperty(

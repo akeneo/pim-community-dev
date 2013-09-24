@@ -72,3 +72,5 @@ services:
         arguments:
             - @doctrine
             - %oro_email.email.entity.class%
+            - @oro_email.email.owner.provider.storage
+            - @oro_config.user

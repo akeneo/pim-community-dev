@@ -151,7 +151,7 @@ class ControllersTest extends WebTestCase
 
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
-        $this->assertContains("testBU_Updated - Business Units - System", $crawler->html());
+        $this->assertContains("testBU_Updated - Business Units - Users Management - System", $crawler->html());
     }
 
     /**

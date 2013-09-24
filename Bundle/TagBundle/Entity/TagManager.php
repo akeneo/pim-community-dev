@@ -4,6 +4,7 @@ namespace Oro\Bundle\TagBundle\Entity;
 
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -254,7 +255,7 @@ class TagManager
 
                 $this->em->persist($tag);
 
-                $alias = $this->mapper->getEntityConfig(get_class($resource));
+                $alias = $this->mapper->getEntityConfig(ClassUtils::getClass($resource));
 
                 $tagging = $this->createTagging($tag, $resource)
                     ->setAlias($alias['alias']);

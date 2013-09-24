@@ -33,17 +33,11 @@ class AclRoleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
-            'role',
-            'text',
-            array(
-                'required' => true,
-            )
-        );
-        $builder->add(
             'label',
             'text',
             array(
-                'required' => false,
+                'required' => true,
+                'label' => 'Role'
             )
         );
 
@@ -84,35 +78,6 @@ class AclRoleType extends AbstractType
                 'mapped'   => false,
                 'multiple' => true,
             )
-        );
-
-        $factory = $builder->getFormFactory();
-
-        // disable role name edit after role has been created
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($factory) {
-                if ($event->getData() && $event->getData()->getId()) {
-                    $form = $event->getForm();
-
-                    $options = $form->get('role')->getConfig()->getOptions();
-                    if (array_key_exists('auto_initialize', $options)) {
-                        $options['auto_initialize'] = false;
-                    }
-
-                    $form->add(
-                        $factory->createNamed(
-                            'role',
-                            'text',
-                            null,
-                            array_merge(
-                                $options,
-                                array('disabled' => true)
-                            )
-                        )
-                    );
-                }
-            }
         );
     }
 

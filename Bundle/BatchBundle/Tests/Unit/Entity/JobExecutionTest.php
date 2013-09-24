@@ -103,9 +103,11 @@ class JobExecutionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSetExecutionContext()
     {
-        $this->assertNull($this->jobExecution->getExecutionContext());
+        $this->assertEquals(new ExecutionContext(), $this->jobExecution->getExecutionContext());
 
         $expectedExecutionContext = new ExecutionContext();
+        $expectedExecutionContext->put('key', 'value');
+
         $this->assertEntity($this->jobExecution->setExecutionContext($expectedExecutionContext));
         $this->assertEquals($expectedExecutionContext, $this->jobExecution->getExecutionContext());
     }
