@@ -6,6 +6,7 @@
 {% block content %}
     {% set pageTitle = 'Entities' %}
 
+    {% if resource_granted('CREATE', 'entity:'~entity_class) %}
     {% set buttons = [
         UI.addButton({
             'path': path('oro_entity_update', {'entity_id': entity_id}),
@@ -13,6 +14,7 @@
             'label': 'Create '~label,
         })
     ] %}
+    {% endif %}
 
     {{ parent() }}
 {% endblock %}
