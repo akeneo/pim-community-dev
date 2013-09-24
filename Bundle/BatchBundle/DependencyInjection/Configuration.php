@@ -18,7 +18,13 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder();
 
-        $treeBuilder->root('oro_batch');
+        $root = $treeBuilder->root('oro_batch');
+
+        $root
+            ->children()
+                ->scalarNode('sender_email')->defaultValue('mailer@bap.com')->end()
+            ->end()
+        ->end();
 
         return $treeBuilder;
     }
