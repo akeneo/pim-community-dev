@@ -26,12 +26,12 @@
 
 {% macro deleteLinkAttributes(url, redirectUrl, message, title, successMessage) %}{% spaceless %}
     {% set message = message|default('confirmation.remove.item') %}
-    {% set title = title|default('confirmation.delete'|trans) %}        
+    {% set title = title|default('confirmation.delete'|trans) %}
     {% set successMessage = successMessage|default('flash.entity.removed'|trans) %}
     href="javascript:void(0);" data-dialog="confirm" data-title="{{ title }}" data-message="{{ message }}" data-url="{{ url }}" data-redirect-url="{{ redirectUrl }}" data-method="DELETE" data-error-title="{% trans %}ERROR{% endtrans%}" data-error-message="{% trans %}The element could not be deleted{% endtrans %}" data-success-message="{{ successMessage }}"
 {% endspaceless %}{% endmacro %}
 
-        
+
 {% macro deleteLink(url, redirectUrl, message, title, successMessage) %}{% spaceless %}
     {% import _self as elements %}
     <a class="btn icons-holder-text no-hash" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, title, successMessage)}} >
