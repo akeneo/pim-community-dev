@@ -164,6 +164,6 @@ class ProductPrice
      */
     public function __toString()
     {
-        return ($this->data != null) ? $this->data.' '.$this->currency : '';
+        return ($this->data !== null) ? $this->data.' '.$this->currency : '';
     }
 }
