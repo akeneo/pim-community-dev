@@ -133,7 +133,7 @@ class GroupController extends RestController implements ClassResourceInterface
      * @AclAncestor("oro_user_group_view")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function getRolesAction($id)
+    /*public function getRolesAction($id)
     {
         $entity = $this->getManager()->find($id);
 
@@ -142,7 +142,7 @@ class GroupController extends RestController implements ClassResourceInterface
         }
 
         return $this->handleView($this->view($entity->getRoles(), Codes::HTTP_OK));
-    }
+    }*/
 
     /**
      * {@inheritdoc}
