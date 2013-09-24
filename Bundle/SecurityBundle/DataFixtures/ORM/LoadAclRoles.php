@@ -8,7 +8,6 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;
 
 class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
@@ -46,7 +45,7 @@ class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, C
 
     protected function loadSuperAdminRole(AclManager $manager)
     {
-        $sid = AclSidManager::getSid($this->getReference('admin_role'));
+        $sid = $manager->getSid($this->getReference('admin_role'));
 
         foreach ($manager->getAllExtensions() as $extension) {
             $rootOid = $manager->getRootOid($extension->getExtensionKey());
@@ -61,7 +60,7 @@ class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, C
 
     protected function loadAdminRole(AclManager $manager)
     {
-        $sid = AclSidManager::getSid($this->getReference('administrator_role'));
+        $sid = $manager->getSid($this->getReference('administrator_role'));
 
         foreach ($manager->getAllExtensions() as $extension) {
             $rootOid = $manager->getRootOid($extension->getExtensionKey());
@@ -90,7 +89,7 @@ class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, C
 
     protected function loadManagerRole(AclManager $manager)
     {
-        $sid = AclSidManager::getSid($this->getReference('manager_role'));
+        $sid = $manager->getSid($this->getReference('manager_role'));
 
         foreach ($manager->getAllExtensions() as $extension) {
             $rootOid = $manager->getRootOid($extension->getExtensionKey());
@@ -119,7 +118,7 @@ class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, C
 
     protected function loadUserRole(AclManager $manager)
     {
-        $sid = AclSidManager::getSid($this->getReference('user_role'));
+        $sid = $manager->getSid($this->getReference('user_role'));
 
         foreach ($manager->getAllExtensions() as $extension) {
             $rootOid = $manager->getRootOid($extension->getExtensionKey());

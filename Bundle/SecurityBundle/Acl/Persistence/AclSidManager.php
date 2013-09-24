@@ -10,8 +10,10 @@ use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class AclSidManager
+class AclSidManager extends AbstractAclManager
 {
+    const ROLE_DISABLED_FLAG = '-DISABLED-';
+
     /**
      * @var MutableAclProvider
      */
@@ -22,9 +24,8 @@ class AclSidManager
      *
      * @param MutableAclProvider $aclProvider
      */
-    public function __construct(
-        MutableAclProvider $aclProvider = null
-    ) {
+    public function __construct(MutableAclProvider $aclProvider = null)
+    {
         $this->aclProvider = $aclProvider;
     }
 
@@ -36,34 +37,6 @@ class AclSidManager
     public function isAclEnabled()
     {
         return $this->aclProvider !== null;
-    }
-
-    /**
-     * Constructs SID (an object implements SecurityIdentityInterface) based on the given identity
-     *
-     * @param string|RoleInterface|UserInterface|TokenInterface $identity
-     * @throws \InvalidArgumentException
-     * @return SID
-     */
-    public static function getSid($identity)
-    {
-        if (is_string($identity)) {
-            return new RoleSecurityIdentity($identity);
-        } elseif ($identity instanceof RoleInterface) {
-            return new RoleSecurityIdentity($identity->getRole());
-        } elseif ($identity instanceof UserInterface) {
-            return UserSecurityIdentity::fromAccount($identity);
-        } elseif ($identity instanceof TokenInterface) {
-            return UserSecurityIdentity::fromToken($identity);
-        }
-
-        throw new \InvalidArgumentException(
-            sprintf(
-                '$identity must be a string or implement one of RoleInterface, UserInterface, TokenInterface'
-                    . ' (%s given)',
-                is_object($identity) ? get_class($identity) : gettype($identity)
-            )
-        );
     }
 
     /**
@@ -89,7 +62,17 @@ class AclSidManager
     public function deleteSid(SID $sid)
     {
         if ($this->isAclEnabled()) {
-            $this->aclProvider->deleteSecurityIdentity($sid);
+            if ($sid instanceof RoleSecurityIdentity) {
+                /**
+                 * Marking removed Role as Disabled instead of delete, because straight deleting role identity breaks
+                 * ace indexes
+                 * TODO: Create a job to remove marked role identities and rebuild ace indexes
+                 */
+                $disabledSid = new RoleSecurityIdentity($sid->getRole() . uniqid(self::ROLE_DISABLED_FLAG));
+                $this->aclProvider->updateSecurityIdentity($disabledSid, $sid->getRole());
+            } else {
+                $this->aclProvider->deleteSecurityIdentity($sid);
+            }
         }
     }
 }

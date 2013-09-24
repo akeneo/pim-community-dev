@@ -12,7 +12,6 @@ use Oro\Bundle\UserBundle\Form\Type\AclRoleType;
 use Oro\Bundle\UserBundle\Entity\Role;
 
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
 
 class AclRoleHandler
@@ -148,7 +147,7 @@ class AclRoleHandler
     protected function setRolePrivileges(Role $role)
     {
         /** @var ArrayCollection $privileges */
-        $privileges = $this->aclManager->getPrivilegeRepository()->getPrivileges(AclSidManager::getSid($role));
+        $privileges = $this->aclManager->getPrivilegeRepository()->getPrivileges($this->aclManager->getSid($role));
 
         foreach ($this->privilegeConfig as $fieldName => $config) {
             $sortedPrivileges = $this->filterPrivileges($privileges, $config['types']);
@@ -186,7 +185,7 @@ class AclRoleHandler
         }
 
         $this->aclManager->getPrivilegeRepository()->savePrivileges(
-            AclSidManager::getSid($role),
+            $this->aclManager->getSid($role),
             new ArrayCollection($formPrivileges)
         );
     }

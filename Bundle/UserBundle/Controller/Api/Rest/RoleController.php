@@ -136,7 +136,7 @@ class RoleController extends RestController implements ClassResourceInterface
      */
     public function getBynameAction($name)
     {
-        $entity = $this->getManager()->getRepository()->findOneBy(array('role' => $name));
+        $entity = $this->getManager()->getRepository()->findOneBy(array('label' => $name));
 
         return $this->handleView(
             $this->view(
@@ -176,10 +176,10 @@ class RoleController extends RestController implements ClassResourceInterface
     protected function handleDelete($entity, ObjectManager $em)
     {
         parent::handleDelete($entity, $em);
-        /** @var \Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager $aclManager */
-        $aclManager = $this->get('oro_security.acl.sid_manager');
-        if ($aclManager->isAclEnabled()) {
-            $aclManager->deleteSid($aclManager->getSid($entity));
+        /** @var \Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager $aclSidManager */
+        $aclSidManager = $this->get('oro_security.acl.sid_manager');
+        if ($aclSidManager->isAclEnabled()) {
+            $aclSidManager->deleteSid($aclSidManager->getSid($entity));
         }
     }
 }

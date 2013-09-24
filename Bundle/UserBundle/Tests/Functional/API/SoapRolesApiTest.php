@@ -58,10 +58,10 @@ class SoapRolesApiTest extends WebTestCase
         if (is_null($request['label'])) {
             $request['label'] = self::DEFAULT_VALUE;
         }
-        $request['label'] .= '_Updated';
         //get role id
-        $roleId =  $this->client->getSoap()->getRoleByName($request['role']);
+        $roleId =  $this->client->getSoap()->getRoleByName($request['label']);
         $roleId = ToolsAPI::classToArray($roleId);
+        $request['label'] .= '_Updated';
         $result =  $this->client->getSoap()->updateRole($roleId['id'], $request);
         $result = ToolsAPI::classToArray($result);
         ToolsAPI::assertEqualsResponse($response, $result);
@@ -83,7 +83,7 @@ class SoapRolesApiTest extends WebTestCase
         $roles = array_filter(
             $roles['item'],
             function ($v) {
-                return $v['role']. '_UPDATED' == strtoupper($v['label']);
+                return strpos($v['label'], '_Updated') !== false;
             }
         );
         $this->assertEquals(3, count($roles));
@@ -108,7 +108,7 @@ class SoapRolesApiTest extends WebTestCase
             $roles = array_filter(
                 $roles['item'],
                 function ($v) {
-                    return $v['role']. '_UPDATED' == strtoupper($v['label']);
+                    return strpos($v['label'], '_Updated') !== false;
                 }
             );
         }

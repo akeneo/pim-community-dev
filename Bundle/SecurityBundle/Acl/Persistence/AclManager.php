@@ -26,7 +26,7 @@ use Symfony\Component\Security\Acl\Model\EntryInterface;
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class AclManager
+class AclManager extends AbstractAclManager
 {
     /**
      * We can not use BATCH_SIZE of Symfony ACL due to a bug check in the cache

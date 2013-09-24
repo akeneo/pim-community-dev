@@ -47,7 +47,7 @@ class RestApiRolesTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $this->client->generate('oro_api_get_role_byname', array('name' => $request['role']['role']))
+            $this->client->generate('oro_api_get_role_byname', array('name' => $request['role']['label']))
         );
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
@@ -64,7 +64,7 @@ class RestApiRolesTest extends WebTestCase
         $result = $this->client->getResponse();
         $result = json_decode($result->getContent(), true);
         foreach ($result as $role) {
-            if ($role['role'] == strtoupper($request['role']['label'])) {
+            if ($role['label'] == $request['role']['label']) {
                 $roleId = $role['id'];
                 break;
             }
