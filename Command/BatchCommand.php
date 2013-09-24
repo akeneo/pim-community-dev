@@ -59,7 +59,11 @@ class BatchCommand extends ContainerAwareCommand
         }
         $jobExecution = new JobExecution();
         $jobExecution->setJobInstance($jobInstance);
+
         $job->execute($jobExecution);
+
+        $this->getEntityManager()->persist($jobInstance);
+        $this->getEntityManager()->flush($jobInstance);
 
         if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
             $output->writeln(

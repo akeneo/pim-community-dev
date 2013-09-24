@@ -136,8 +136,6 @@ abstract class AbstractStep implements StepInterface
         $stepExecution->setStartTime(new \DateTime());
         $stepExecution->setStatus(new BatchStatus(BatchStatus::STARTED));
 
-        $this->getJobRepository()->updateStepExecution($stepExecution);
-
         // Start with a default value that will be trumped by anything
         $exitStatus = new ExitStatus(ExitStatus::EXECUTING);
 
@@ -171,7 +169,6 @@ abstract class AbstractStep implements StepInterface
         $stepExecution->setEndTime(new \DateTime());
         $stepExecution->setExitStatus($exitStatus);
 
-        $this->getJobRepository()->updateStepExecution($stepExecution);
         $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_COMPLETED, $stepExecution);
     }
 

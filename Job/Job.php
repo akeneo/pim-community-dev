@@ -220,8 +220,6 @@ class Job implements JobInterface
         }
 
         $jobExecution->setEndTime(new \DateTime());
-        $this->jobRepository->updateJobExecution($jobExecution);
-        $this->jobRepository->flush();
 
         $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
     }
@@ -261,7 +259,6 @@ class Job implements JobInterface
     private function updateStatus(JobExecution $jobExecution, $status)
     {
         $jobExecution->setStatus(new BatchStatus($status));
-        $this->jobRepository->updateJobExecution($jobExecution);
     }
 
     /**
