@@ -362,9 +362,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             );
 
             if ($family) {
-                foreach ($family->getAttributes() as $attribute) {
-                    $requiredAttributes[] = $attribute;
-                }
+                $requiredAttributes = $family->getAttributes()->toArray();
             }
         }
 
