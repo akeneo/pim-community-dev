@@ -72,11 +72,11 @@ class EmailQueryFactory extends EntityQueryFactory
 
     /**
      * @param string $nameFormat
-     * @param string $firstName
-     * @param string $lastName
+     * @param string $firstNameExpr
+     * @param string $lastNameExpr
      * @return string
      */
-    protected function buildFromEmailExpression($nameFormat, $firstName, $lastName)
+    protected function buildFromEmailExpression($nameFormat, $firstNameExpr, $lastNameExpr)
     {
         $parts = array();
         $isFirst = true;
@@ -84,7 +84,8 @@ class EmailQueryFactory extends EntityQueryFactory
         $pos = strpos($nameFormat, '%');
         while ($pos !== false) {
             if ($isFirst && $pos > $lastPos + 1) {
-                $parts[] = substr($nameFormat, $lastPos + 1, $pos - $lastPos - 1);
+                $val = substr($nameFormat, $lastPos + 1, $pos - $lastPos - 1);
+                $parts[] = sprintf('\'%s\'', str_replace('\'', '\\\'', $val));
             }
             $lastPos = $pos;
             $pos = strpos($nameFormat, '%', $pos + 1);
@@ -92,20 +93,31 @@ class EmailQueryFactory extends EntityQueryFactory
                 if ($isFirst) {
                     $name = substr($nameFormat, $lastPos + 1, $pos - $lastPos - 1);
                     if ($name === 'first') {
-                        $parts[] = $firstName;
+                        $parts[] = $firstNameExpr;
                     } elseif ($name === 'last') {
-                        $parts[] = $lastName;
+                        $parts[] = $lastNameExpr;
                     }
                 }
                 $isFirst = !$isFirst;
-            } else {
-                $parts[] = substr($nameFormat, $lastPos + 1);
+            } elseif ($lastPos + 1 < strlen($nameFormat)) {
+                $val = substr($nameFormat, $lastPos + 1);
+                $parts[] = sprintf('\'%s\'', str_replace('\'', '\\\'', $val));
             }
         }
-        for ($i = 0; $i < count($parts); $i++) {
-            $parts[$i] = sprintf('\'%s\'', str_replace('\'', '\\\'', $parts[$i]));
+
+        $stack = array();
+        for ($i = count($parts) - 1; $i >= 0; $i--) {
+            if (count($stack) === 0) {
+                array_push($stack, $parts[$i]);
+            } else {
+                array_push($stack, sprintf('CONCAT(%s, %s)', $parts[$i], array_pop($stack)));
+            }
         }
 
-        return sprintf('CONCAT(%s)', implode(', ', $parts));
+        if (empty($stack)) {
+            return '';
+        }
+
+        return array_pop($stack);
     }
 }

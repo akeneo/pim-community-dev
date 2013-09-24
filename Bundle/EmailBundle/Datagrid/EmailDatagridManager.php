@@ -92,8 +92,8 @@ class EmailDatagridManager extends DatagridManager
                 'translation_domain'  => 'config',
                 'required'            => false,
                 'sortable'            => false,
-                'filterable'          => true,
-                'show_filter'         => true,
+                'filterable'          => false,
+                'show_filter'         => false,
             )
         );
         $templateDataProperty = new TwigTemplateProperty(
