@@ -12,6 +12,7 @@ parameters:
     oro_flexibleentity.listener.has_required_value.class:             Oro\Bundle\FlexibleEntityBundle\EventListener\RequiredValueListener
     oro_flexibleentity.listener.default_value.class:                  Oro\Bundle\FlexibleEntityBundle\EventListener\DefaultValueListener
     oro_flexibleentity.listener.initialize_flexible.class:            Oro\Bundle\FlexibleEntityBundle\EventListener\InitializeValuesListener
+    oro_flexibleentity.listener.attribute_cache.class:                Oro\Bundle\FlexibleEntityBundle\EventListener\AttributeCacheListener
 
 services:
     oro_flexibleentity.value_form.value_subscriber:
@@ -64,6 +65,13 @@ services:
             - [ setContainer, [ @service_container ] ]
         tags:
             - { name: doctrine.event_subscriber }
+
+    # Clear attribute list cache when inserting or delete an attribute
+    oro_flexibleentity.listener.attribute_cache:
+        class: %oro_flexibleentity.listener.attribute_cache.class%
+        tags:
+            - { name: doctrine.event_subscriber }
+
 
     # add default value
     oro_flexibleentity.listener.listener.default_value:

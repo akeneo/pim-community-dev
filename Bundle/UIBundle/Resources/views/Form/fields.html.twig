@@ -57,6 +57,7 @@
 {% endblock form_row_flex %}
 
 {% block choice_widget_collapsed %}
+    {% if client_validation %}
     <script type="text/javascript">
         require(['jquery'],
         function($){
@@ -67,21 +68,22 @@
             });
         });
     </script>
+    {% endif %}
     {{ parent() }}
 {% endblock choice_widget_collapsed %}
 
 {% block form_widget_simple %}
-    {% if type is defined and type == 'file' %}
-        <script type="text/javascript">
-            require(['jquery'],
-            function($){
-                $(function() {
-                    $('#{{ id }}').on('uniformInit', function () {
-                        $(this).filter('.error').removeClass('error').closest('.uploader').addClass('error');
-                    });
+    {% if type is defined and type == 'file' and client_validation %}
+    <script type="text/javascript">
+        require(['jquery'],
+        function($){
+            $(function() {
+                $('#{{ id }}').on('uniformInit', function () {
+                    $(this).filter('.error').removeClass('error').closest('.uploader').addClass('error');
                 });
             });
-        </script>
+        });
+    </script>
     {% endif %}
     {{ parent() }}
 {% endblock form_widget_simple %}
@@ -111,7 +113,7 @@
                         : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators') %}
                     {% set combinedError = (combinedError != '') ? combinedError ~ '; ' ~ error : error %}
                 {% endfor %}
-                <a class="validation-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="{{ combinedError }}">{{ combinedError }}</a>
+                <span class="validation-faled">{{ combinedError }}</span>
             {% else %}
                 {{ parent() }}
             {% endif %}

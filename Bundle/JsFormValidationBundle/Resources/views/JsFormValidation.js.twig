@@ -6,11 +6,11 @@
  * Task for complete refactoring: BAP-859
  */
 
-require(['jquery', 'oro/translator', 'jquery.bind-first', 'bootstrap-tooltip'],
-function($, __){
+require(['jquery', 'underscore', 'oro/translator', 'jquery.bind-first', 'bootstrap-tooltip'],
+function($, _, __){
 {% block before %}{% endblock %}
 
-var jsfv = new function () {
+var jsfv = (function () {
     function getComputeMessage(key, placeholders, number) {
         var result = __('validators:'+key, placeholders, number);
         if (undefined == result && number != undefined) {
@@ -125,6 +125,7 @@ var jsfv = new function () {
             if (field.parent().filter('.error').length) {
                 field = field.parent();
             }
+            field.siblings('.validation-faled').remove();
             field.removeClass('error').parent().filter('.controls').removeClass('validation-error');
         },
 {% endblock %}
@@ -136,13 +137,10 @@ var jsfv = new function () {
             if (field.parent().filter('.selector').length || field.parent().filter('.uploader').length) {
                 target = field.parent();
             }
-            if (target.siblings('a.validation-tooltip').length == 0)  {
-                $('<a class="validation-tooltip" data-placement="top" data-toggle="tooltip"></a>').insertAfter(target);
+            if (!target.siblings('.validation-faled').length) {
+                $('<span class="validation-faled"></span>').insertAfter(target);
             }
-            target.siblings('a.validation-tooltip')
-                        .attr('data-original-title', errorMessage)
-                        .html('data-original-title')
-                        .tooltip();
+            target.siblings('.validation-faled').text(errorMessage);
             target.addClass('error').parent().filter('.controls').addClass('validation-error');
         },
 {% endblock %}
@@ -197,8 +195,12 @@ var jsfv = new function () {
                     form = jsfv.id('{{ formName }}__token').form;
                 }
 
+                form = $(form);
                 // Remove HTML5 validation
-                $(form).attr('novalidate', 'novalidate');
+                form.attr('novalidate', 'novalidate');
+                // autofocus on a first form input
+                form.find(':input:visible:not(.offscreen):not(button):not([disabled]):not([readonly])')
+                    .first().focus();
 
                 jsfv.onFirstEvent(form, 'submit', function(e) {
                     var gv, submitForm = true;
@@ -208,6 +210,7 @@ var jsfv = new function () {
 {% set resultvar = 'submitForm' %}{% set fieldName = '.' %}
 {% block getters_constraints_submit %}{{ block('getters_constraints_field') }}{% endblock %}
                     if (!submitForm) {
+                        form.find('.error>:input,:input.error').first().focus();
                         e.stopImmediatePropagation();
                     }
                     return submitForm;
@@ -218,7 +221,7 @@ var jsfv = new function () {
 {% if check_modes.blur %}
             // On blur checks
 {% for fieldName, constraints in fieldConstraints %}
-            jsfv.onEvent('{{ fieldName }}', 'blur', jsfv.check_{{ fieldName }});
+            jsfv.onEvent('{{ fieldName }}', 'blur select2-blur', jsfv.check_{{ fieldName }});
 {% endfor %}
 {% endif %}
 
@@ -230,10 +233,10 @@ var jsfv = new function () {
 {% endif %}
         }
     };
-}
+}());
 
 {% block onReady %}
-$(jsfv.onReady);
+$(_.debounce(jsfv.onReady, 50));
 {% endblock %}
 
 {% block after %}{% endblock %}
