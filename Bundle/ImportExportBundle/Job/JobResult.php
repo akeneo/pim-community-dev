@@ -29,7 +29,7 @@ class JobResult
     /**
      * @var array
      */
-    protected $errors = array();
+    protected $failureExceptions = array();
 
     /**
      * @return ContextInterface|null
@@ -42,9 +42,9 @@ class JobResult
     /**
      * @return array
      */
-    public function getErrors()
+    public function getFailureExceptions()
     {
-        return $this->errors;
+        return $this->failureExceptions;
     }
 
     /**
@@ -66,12 +66,12 @@ class JobResult
     }
 
     /**
-     * @param string $error
+     * @param string $failureException
      * @return JobResult
      */
-    public function addError($error)
+    public function addFailureException($failureException)
     {
-        $this->errors[] = $error;
+        $this->failureExceptions[] = $failureException;
         return $this;
     }
 

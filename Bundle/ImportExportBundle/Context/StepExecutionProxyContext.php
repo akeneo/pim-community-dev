@@ -3,7 +3,6 @@
 namespace Oro\Bundle\ImportExportBundle\Context;
 
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Oro\Bundle\ImportExportBundle\Exception\ErrorException;
 
 class StepExecutionProxyContext implements ContextInterface
 {
@@ -20,20 +19,18 @@ class StepExecutionProxyContext implements ContextInterface
     /**
      * {@inheritdoc}
      */
-    public function addError($message, $severity = null)
+    public function addError($message)
     {
-        $severity = (null === $severity) ? ErrorException::CRITICAL : $severity;
-        $exception = new ErrorException($message, 0, $severity);
-        $this->stepExecution->addFailureException($exception);
+        $this->stepExecution->addError($message);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addErrors($messages, $severity = null)
+    public function addErrors(array $messages)
     {
         foreach ($messages as $message) {
-            $this->addError($message, $severity);
+            $this->addError($message);
         }
     }
 
@@ -42,15 +39,20 @@ class StepExecutionProxyContext implements ContextInterface
      */
     public function getErrors()
     {
-        $errors = array();
+        return $this->stepExecution->getErrors();
+    }
 
-        foreach ($this->stepExecution->getFailureExceptions() as $exceptionData) {
-            if (!empty($exceptionData['message'])) {
-                $errors[] = $exceptionData['message'];
-            }
-        }
-
-        return $errors;
+    /**
+     * {@inheritdoc}
+     */
+    public function getFailureExceptions()
+    {
+        return array_map(
+            function ($e) {
+                return $e['message'];
+            },
+            $this->stepExecution->getFailureExceptions()
+        );
     }
 
     /**
@@ -111,6 +113,8 @@ class StepExecutionProxyContext implements ContextInterface
 
     /**
      * {@inheritdoc}
+
+        return $errors;
      */
     public function getUpdateCount()
     {

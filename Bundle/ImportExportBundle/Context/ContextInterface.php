@@ -6,20 +6,23 @@ interface ContextInterface
 {
     /**
      * @param string $message
-     * @param int|null $severity constant of ErrorException
      */
-    public function addError($message, $severity = null);
+    public function addError($message);
 
     /**
-     * @param array $message
-     * @param int|null $severity constant of ErrorException
+     * @param array $messages
      */
-    public function addErrors($message, $severity = null);
+    public function addErrors(array $messages);
 
     /**
      * @return array
      */
     public function getErrors();
+
+    /**
+     * @return array
+     */
+    public function getFailureExceptions();
 
     /**
      * @return void

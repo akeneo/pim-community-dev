@@ -75,21 +75,21 @@ class JobExecutor
             // TODO: Refactor whole logic of job execution to perform actions in transactions
             $job->execute($jobExecution);
 
-            $errors = $this->collectErrors($jobExecution);
+            $failureExceptions = $this->collectFailureExceptions($jobExecution);
 
-            if ($jobExecution->getStatus()->getValue() == BatchStatus::COMPLETED && !$errors) {
+            if ($jobExecution->getStatus()->getValue() == BatchStatus::COMPLETED && !$failureExceptions) {
                 $this->entityManager->commit();
                 $jobResult->setSuccessful(true);
             } else {
                 $this->entityManager->rollback();
-                foreach ($errors as $error) {
-                    $jobResult->addError($error);
+                foreach ($failureExceptions as $failureException) {
+                    $jobResult->addFailureException($failureException);
                 }
             }
         } catch (\Exception $exception) {
             $this->entityManager->rollback();
             $jobExecution->addFailureException($exception);
-            $jobResult->addError($exception->getMessage());
+            $jobResult->addFailureException($exception->getMessage());
         }
 
         // save job instance
@@ -115,9 +115,27 @@ class JobExecutor
     /**
      * @param string $jobCode
      * @return array
-     * @throws LogicException
      */
     public function getJobErrors($jobCode)
+    {
+        return $this->collectErrors($this->getJobExecutionByJobInstanceCode($jobCode));
+    }
+
+    /**
+     * @param string $jobCode
+     * @return array
+     */
+    public function getJobFailureExceptions($jobCode)
+    {
+        return $this->collectFailureExceptions($this->getJobExecutionByJobInstanceCode($jobCode));
+    }
+
+    /**
+     * @param string $jobCode
+     * @return JobExecution
+     * @throws LogicException
+     */
+    protected function getJobExecutionByJobInstanceCode($jobCode)
     {
         /** @var JobInstance $jobInstance */
         $jobInstance = $this->getJobInstanceRepository()->findOneBy(array('code' => $jobCode));
@@ -131,7 +149,7 @@ class JobExecutor
             throw new LogicException(sprintf('No job execution found for job instance with code %s', $jobCode));
         }
 
-        return $this->collectErrors($jobExecution);
+        return $jobExecution;
     }
 
     /**
@@ -146,13 +164,30 @@ class JobExecutor
      * @param JobExecution $jobExecution
      * @return array
      */
+    protected function collectFailureExceptions(JobExecution $jobExecution)
+    {
+        $failureExceptions = array();
+        foreach ($jobExecution->getAllFailureExceptions() as $exceptionData) {
+            if (!empty($exceptionData['message'])) {
+                $failureExceptions[] = $exceptionData['message'];
+            }
+        }
+
+        return $failureExceptions;
+    }
+
+    /**
+     * @param JobExecution $jobExecution
+     * @return array
+     */
     protected function collectErrors(JobExecution $jobExecution)
     {
         $errors = array();
-        foreach ($jobExecution->getAllFailureExceptions() as $exceptionData) {
-            if (!empty($exceptionData['message'])) {
-                $errors[] = $exceptionData['message'];
-            }
+        foreach ($jobExecution->getStepExecutions() as $stepExecution) {
+            $errors = array_merge(
+                $errors,
+                $this->contextRegistry->getByStepExecution($stepExecution)->getErrors()
+            );
         }
 
         return $errors;

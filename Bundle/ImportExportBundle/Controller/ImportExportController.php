@@ -93,35 +93,43 @@ class ImportExportController extends Controller
 
         /** @var ContextInterface $contexts */
         $context = $jobResult->getContext();
+        $hasItemsToProcess = false;
+
         $counts = array();
+        $counts['errors'] = count($jobResult->getFailureExceptions());
         if ($context) {
+            $counts['process'] = 0;
             $counts['read'] = $context->getReadCount();
-            $counts['add'] = $context->getAddCount();
-            $counts['replace'] = $context->getReplaceCount();
-            $counts['update'] = $context->getUpdateCount();
-            $counts['delete'] = $context->getDeleteCount();
-            $counts['error_entries'] = $context->getErrorEntriesCount();
+            $counts['process'] += $counts['add'] = $context->getAddCount();
+            $counts['process'] += $counts['replace'] = $context->getReplaceCount();
+            $counts['process'] += $counts['update'] = $context->getUpdateCount();
+            $counts['process'] += $counts['delete'] = $context->getDeleteCount();
+            $counts['process'] -= $counts['error_entries'] = $context->getErrorEntriesCount();
+            $counts['errors'] += count($context->getErrors());
         }
-        $counts['errors'] = count($jobResult->getErrors());
+
 
         $errorsUrl = null;
-        $errors = array();
+        $errorsAndExceptions = array();
         if (!empty($counts['errors'])) {
             $errorsUrl = $this->get('router')->generate(
                 'oro_importexport_error_log',
                 array('jobCode' => $jobResult->getJobCode())
             );
-            $errors = array_slice($jobResult->getErrors(), 0, 100);
+            $errorsAndExceptions = array_slice(
+                array_merge($jobResult->getFailureExceptions(), $context->getErrors()),
+                0,
+                100
+            );
         }
 
         return array(
-            'isSuccessful' => $jobResult->isSuccessful(),
+            'isSuccessful' => $jobResult->isSuccessful() && isset($counts['process']) && $counts['process'] > 0,
             'processorAlias' => $processorAlias,
             'counts' => $counts,
             'errorsUrl' => $errorsUrl,
-            'errors' => $errors,
+            'errors' => $errorsAndExceptions,
             'entityName' => $entityName,
-            'memory_usage' => memory_get_usage(true)
         );
     }
 
@@ -160,7 +168,7 @@ class ImportExportController extends Controller
         }
 
         $errorsUrl = null;
-        if ($jobResult->getErrors()) {
+        if ($jobResult->getFailureExceptions()) {
             $errorsUrl = $this->get('router')->generate(
                 'oro_importexport_error_log',
                 array('jobCode' => $jobResult->getJobCode())
@@ -172,7 +180,6 @@ class ImportExportController extends Controller
                 'success' => $jobResult->isSuccessful(),
                 'message' => $message,
                 'errorsUrl' => $errorsUrl,
-                'memory_usage' => memory_get_usage(true)
             )
         );
     }
@@ -223,7 +230,7 @@ class ImportExportController extends Controller
                 'oro_importexport_error_log',
                 array('jobCode' => $jobResult->getJobCode())
             );
-            $errorsCount = count($jobResult->getErrors());
+            $errorsCount = count($jobResult->getFailureExceptions());
         }
 
         return new JsonResponse(
@@ -256,7 +263,10 @@ class ImportExportController extends Controller
      */
     public function errorLogAction($jobCode)
     {
-        $errors = $this->getJobExecutor()->getJobErrors($jobCode);
+        $errors = array_merge(
+            $this->getJobExecutor()->getJobFailureExceptions($jobCode),
+            $this->getJobExecutor()->getJobErrors($jobCode)
+        );
         $content = implode("\r\n", $errors);
 
         return new Response($content, 200, array('Content-Type' => 'text/x-log'));

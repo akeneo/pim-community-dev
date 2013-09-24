@@ -39,7 +39,7 @@ class ImportProcessorTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('getOption'))
             ->getMockForAbstractClass();
         $this->context->expects($this->once())
-            ->method('getOption', 'addError')
+            ->method('getOption', 'addFailureException')
             ->with('entityName')
             ->will($this->returnValue('\stdClass'));
 
@@ -63,7 +63,7 @@ class ImportProcessorTest extends \PHPUnit_Framework_TestCase
     public function testProcess()
     {
         $this->context->expects($this->never())
-            ->method('addError');
+            ->method('addFailureException');
 
         $converter = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Converter\DataConverterInterface')
             ->setMethods(array('convertToImportFormat'))
