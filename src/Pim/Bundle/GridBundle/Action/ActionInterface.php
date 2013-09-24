@@ -13,5 +13,8 @@ use Oro\Bundle\GridBundle\Action\ActionInterface as OroActionInterface;
  */
 interface ActionInterface extends OroActionInterface
 {
-    const TYPE_TAB_REDIRECT="pim_grid_action_tab_redirect";
+    /**
+     * @staticvar string
+     */
+    const TYPE_TAB_REDIRECT = "pim_grid_action_tab_redirect";
 }
