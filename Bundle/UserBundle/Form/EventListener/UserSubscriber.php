@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\UserBundle\Form\EventListener;
 
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -20,33 +18,20 @@ class UserSubscriber implements EventSubscriberInterface
     protected $factory;
 
     /**
-     * @var SecurityFacade
-     */
-    protected $securityFacade;
-
-    /**
      * @var SecurityContextInterface
      */
     protected $security;
 
-    /**
-     * @var ObjectIdentityFactory
-     */
-    protected $objectIdentityFactory;
-
 
     /**
      * @param FormFactoryInterface      $factory        Factory to add new form children
-     * @param SecurityFacade            $securityFacade Security facade service
      * @param SecurityContextInterface  $security       Security context
      */
     public function __construct(
         FormFactoryInterface $factory,
-        SecurityFacade $securityFacade,
         SecurityContextInterface $security
     ) {
         $this->factory    = $factory;
-        $this->securityFacade = $securityFacade;
         $this->security   = $security;
     }
 
@@ -77,14 +62,6 @@ class UserSubscriber implements EventSubscriberInterface
             }
         }
 
-        if (!$this->securityFacade->isGranted('assign_roles_groups_to_user')) {
-            unset($submittedData['rolesCollection']);
-        }
-
-        if (!$this->securityFacade->isGranted('assign_roles_groups_to_user')) {
-            unset($submittedData['groups']);
-        }
-
         $event->setData($submittedData);
     }
 
@@ -100,14 +77,6 @@ class UserSubscriber implements EventSubscriberInterface
 
         if ($entity->getId()) {
             $form->remove('plainPassword');
-        }
-
-        if (!$this->securityFacade->isGranted('assign_roles_groups_to_user')) {
-            $form->remove('rolesCollection');
-        }
-
-        if (!$this->securityFacade->isGranted('assign_roles_groups_to_user')) {
-            $form->remove('groups');
         }
 
         // do not allow user to disable his own account

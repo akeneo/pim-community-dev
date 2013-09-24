@@ -395,19 +395,21 @@ body .select2-container {
   color:@linkColor;
 }
 
-li.dropdown{
-  ul{
-    display: none !important;
+#main-menu{
+  li.dropdown{
     ul{
-      top: 0;
+      display: none !important;
+      ul{
+        top: 0;
+      }
     }
-  }
-  &:hover > .menu_level_1{
-    display: block !important;
-  }
-  .menu_level_2 li:hover > .menu_level_3,
-  .menu_level_1 li:hover > .menu_level_2{
-    display: block !important;
+    &:hover > .menu_level_1{
+      display: block !important;
+    }
+    .menu_level_2 li:hover > .menu_level_3,
+    .menu_level_1 li:hover > .menu_level_2{
+      display: block !important;
+    }
   }
 }
 
@@ -5178,4 +5180,7 @@ span.validation-faled {
   .contact-info-col-set > .row-fluid > .span6:last-child{
     margin-bottom: 0;
   }
+}
+.default-field{
+  background: #C3C3C3;
 }
