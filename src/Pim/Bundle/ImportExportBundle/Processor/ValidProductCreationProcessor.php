@@ -11,6 +11,7 @@ use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
@@ -26,13 +27,40 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
  */
 class ValidProductCreationProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
 {
+    /**
+     * @var FormFactoryInterface $formFactory
+     */
     protected $formFactory;
+
+    /**
+     * @var ProductManager $productManager
+     */
     protected $productManager;
+
+    /**
+     * @var ChannelManager $channelManager
+     */
     protected $channelManager;
 
-    protected $enabled             = true;
-    protected $categoriesColumn    = 'categories';
-    protected $familyColumn        = 'family';
+    /**
+     * @var LocaleManager $localeManager
+     */
+    protected $localeManager;
+
+    /**
+     * @var boolean
+     */
+    protected $enabled = true;
+
+    /**
+     * @var string
+     */
+    protected $categoriesColumn = 'categories';
+
+    /**
+     * @var string
+     */
+    protected $familyColumn  = 'family';
 
     /**
      * @Assert\NotBlank
@@ -46,15 +74,18 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      * @param FormFactoryInterface $formFactory
      * @param ProductManager       $productManager
      * @param ChannelManager       $channelManager
+     * @param LocaleManager        $localeManager
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         ProductManager $productManager,
-        ChannelManager $channelManager
+        ChannelManager $channelManager,
+        LocaleManager $localeManager
     ) {
         $this->formFactory    = $formFactory;
         $this->productManager = $productManager;
         $this->channelManager = $channelManager;
+        $this->localeManager  = $localeManager;
     }
 
     /**
@@ -159,7 +190,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      *
      * @param mixed $item item to be processed
      *
-     * @return null|Product
+     * @return null|ProductInterface
      *
      * @throws Exception when validation errors happenned
      */
@@ -241,8 +272,8 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     /**
      * Create and submit the product form
      *
-     * @param Product $product the product to which bind the data
-     * @param array   $item    the processed item
+     * @param ProductInterface $product the product to which bind the data
+     * @param array            $item    the processed item
      *
      * @return FormInterface
      */
@@ -270,8 +301,99 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             unset($item[$this->categoriesColumn]);
         }
 
-        $form->submit($item);
+        $values = $this->filterValues($product, $item);
+
+        $form->submit($values);
 
         return $form;
+    }
+
+    /**
+     * Filter imported values to avoid creating empty values for attributes not linked to the product or family
+     *
+     * @param ProductInterface $product
+     * @param array            $values
+     *
+     * @return array
+     */
+    private function filterValues(ProductInterface $product, array $values)
+    {
+        if (array_key_exists(ProductFamilyConverter::FAMILY_KEY, $values)) {
+            $familyCode = $values[ProductFamilyConverter::FAMILY_KEY];
+        } else {
+            $familyCode = null;
+        }
+
+        $requiredValues = $this->getRequiredValues($product, $familyCode);
+
+        $excludedKeys = array(
+            ProductEnabledConverter::ENABLED_KEY,
+            ProductValueConverter::SCOPE_KEY,
+            ProductFamilyConverter::FAMILY_KEY,
+            ProductCategoriesConverter::CATEGORIES_KEY
+        );
+
+        foreach ($values as $key => $value) {
+            if (!in_array($value, $excludedKeys) && $value === '' && !in_array($key, $requiredValues)) {
+                unset($values[$key]);
+            }
+        }
+
+        return $values;
+    }
+
+    /**
+     * Get required values for a product based on the existing attributes and the family
+     *
+     * @param ProductInterface $product
+     * @param string           $familyCode
+     *
+     * @return array
+     */
+    private function getRequiredValues(ProductInterface $product, $familyCode = null)
+    {
+        $requiredAttributes = array();
+
+        if ($familyCode !== null) {
+            $family = $this->productManager->getStorageManager()->getRepository('PimCatalogBundle:Family')->findOneBy(
+                array(
+                    'code' => $familyCode
+                )
+            );
+
+            if ($family) {
+                foreach ($family->getAttributes() as $attribute) {
+                    $requiredAttributes[] = $attribute;
+                }
+            }
+        }
+
+        if ($product->getId()) {
+            foreach ($product->getValues() as $value) {
+                if ($value->getId()) {
+                    $requiredAttributes[] = $value->getAttribute();
+                }
+            }
+        }
+
+        if (empty($requiredAttributes)) {
+            return array();
+        }
+
+        $requiredValues = array();
+
+        $locales = $this->localeManager->getActiveCodes();
+
+        foreach ($requiredAttributes as $attribute) {
+            if ($attribute->getTranslatable()) {
+                foreach ($locales as $locale) {
+                    $requiredValues[] = sprintf('%s-%s', $attribute->getCode(), $locale);
+                }
+            } else {
+                $requiredValues[] = $attribute->getCode();
+            }
+        }
+
+        return array_unique($requiredValues);
     }
 }
