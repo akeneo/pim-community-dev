@@ -54,13 +54,13 @@ class ApplyController extends Controller
         $env     = $kernel->getEnvironment();
 
         $commands = array(
-//            'backup'       => new Process(
-//                $php . ' ' . $console . ' oro:entity-extend:backup ' . str_replace(
-//                    '\\',
-//                    '\\\\',
-//                    $entity->getClassName()
-//                ) . ' --env ' . $env
-//            ),
+            /*'backup'       => new Process(
+                $php . ' ' . $console . ' oro:entity-extend:backup ' . str_replace(
+                    '\\',
+                    '\\\\',
+                    $entity->getClassName()
+                ) . ' --env ' . $env
+            ),*/
             'update'       => new Process($console . ' oro:entity-extend:update-config --env ' . $env),
             'schemaUpdate' => new Process($console . ' doctrine:schema:update --force --env ' . $env),
             'searchIndex'  => new Process($console . ' oro:search:create-index --env ' . $env),
