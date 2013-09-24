@@ -57,7 +57,7 @@
     {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) %}
     <script type="text/javascript">
         require(
-            ['jquery', 'jquery.wizard'],
+            ['jquery', 'jquery.wizard', 'jquery.select2', 'bootstrap.bootstrapswitch', 'jquery.multiselect'],
             function ($) {
                 'use strict';
 
@@ -65,29 +65,33 @@
                     var disableForm = function() {
                         // Disable common fields
                         $('input, textarea').each(function() {
-                            $(this).attr('readonly', 'true');
+                            $(this).attr('readonly', 'true').attr('disabled', 'disabled');
                         });
 
                         // Disable select2
                         $('select').select2('readonly', true);
 
                         // Disable multiselect
+                        $('select.pimmultiselect').multiselect('disable');
 
                         // Disable switcher
+                        $('.has-switch').bootstrapSwitch('setActive', false);
                     }
 
                     var enableForm = function() {
                         // Enable common fields
                         $('input, textarea').each(function() {
-                            $(this).removeAttr('readonly');
+                            $(this).removeAttr('readonly').removeAttr('disabled');
                         });
 
                         // Enable select2
                         $('select').select2('readonly', false);
 
                         // Enable multiselect
+                        $('select.pimmultiselect').multiselect('enable');
 
                         // Enable switcher
+                        $('.has-switch').bootstrapSwitch('setActive', true);
                     };
 
                     $('select.operation-param').change(function () {
@@ -113,6 +117,10 @@
                         enableForm();
                         $('.configuration').removeClass('hide');
                         $('.confirmation').addClass('hide');
+                    });
+
+                    $('#{{ form.vars.id }} button[type="submit"]:last').on('click', function() {
+                        $('#{{ form.vars.id }} [disabled]').removeAttr('disabled');
                     });
                 });
             }
