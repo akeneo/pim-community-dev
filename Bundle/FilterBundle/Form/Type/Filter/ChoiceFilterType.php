@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\FilterBundle\Form\Type\Filter;
 
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ChoiceFilterType extends AbstractChoiceType
@@ -42,7 +44,19 @@ class ChoiceFilterType extends AbstractChoiceType
                 'field_type'       => 'choice',
                 'field_options'    => array('choices' => array()),
                 'operator_choices' => $choices,
+                'populate_default'  => true
             )
         );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        parent::finishView($view, $form, $options);
+        if (isset($options['populate_default'])) {
+            $view->vars['populate_default'] = $options['populate_default'];
+        }
     }
 }

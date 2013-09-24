@@ -278,8 +278,8 @@ abstract class DatagridManager implements DatagridManagerInterface
 
         // merge default parameters
         $parametersArray = $this->parameters->toArray();
-        if (empty($parametersArray[$this->name])) {
-            foreach ($this->getDefaultParameters() as $type => $value) {
+        foreach ($this->getDefaultParameters() as $type => $value) {
+            if (empty($parametersArray[$this->name][$type])) {
                 $this->parameters->set($type, $value);
             }
         }
