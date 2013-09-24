@@ -95,6 +95,7 @@ class Datagrid extends OroDatagrid
 
     /**
      * Serialize datagrid results in a specific format and with a specific context
+     * Offset and limit allow to batch the export result and streamed the response if needed
      *
      * @param ProxyQueryInterface $proxyQuery
      * @param string              $format
