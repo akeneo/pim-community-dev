@@ -3,7 +3,7 @@
 namespace Oro\Bundle\EntityBundle\Form\Type;
 
 use Doctrine\Common\Util\Inflector;
-use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -12,7 +12,7 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
-use Oro\Bundle\EntityExtendBundle\Tools\Generator;
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class CustomEntityType extends AbstractType
 {
