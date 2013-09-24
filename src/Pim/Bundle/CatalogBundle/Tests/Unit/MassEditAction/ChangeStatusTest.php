@@ -25,7 +25,7 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\MassEditAction\MassEditAction', $this->action);
     }
 
-    public function testPerform()
+    public function testEnableManyProducts()
     {
         $foo = $this->getProductMock();
         $foo->expects($this->once())
@@ -41,7 +41,28 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('flush');
 
-        $this->action->setEnable(false);
+        $this->action->setToEnable(false);
+
+        $this->action->perform(array($foo, $bar));
+    }
+
+    public function testDisableManyProducts()
+    {
+        $foo = $this->getProductMock();
+        $foo->expects($this->once())
+            ->method('setEnabled')
+            ->with(true);
+
+        $bar = $this->getProductMock();
+        $bar->expects($this->once())
+            ->method('setEnabled')
+            ->with(true);
+
+        $this->objectManager
+            ->expects($this->once())
+            ->method('flush');
+
+        $this->action->setToEnable(true);
 
         $this->action->perform(array($foo, $bar));
     }

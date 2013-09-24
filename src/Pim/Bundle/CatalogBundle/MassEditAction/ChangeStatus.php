@@ -20,9 +20,9 @@ class ChangeStatus extends AbstractMassEditAction
     protected $manager;
 
     /**
-     * @var boolean $enable Wether or not to enable products
+     * @var boolean Wether or not to enable products
      */
-    protected $enable = true;
+    protected $toEnable = true;
 
     /**
      * @param FlexibleManager $manager
@@ -33,13 +33,13 @@ class ChangeStatus extends AbstractMassEditAction
     }
 
     /**
-     * @param boolean $enable
+     * @param boolean $toEnable
      *
      * @return ChangeStatus
      */
-    public function setEnable($enable)
+    public function setToEnable($toEnable)
     {
-        $this->enable = $enable;
+        $this->toEnable = $toEnable;
 
         return $this;
     }
@@ -47,9 +47,9 @@ class ChangeStatus extends AbstractMassEditAction
     /**
      * @return boolean
      */
-    public function getEnable()
+    public function getToEnable()
     {
-        return $this->enable;
+        return $this->toEnable;
     }
 
     /**
@@ -66,7 +66,7 @@ class ChangeStatus extends AbstractMassEditAction
     public function perform(array $products)
     {
         foreach ($products as $product) {
-            $product->setEnabled($this->enable);
+            $product->setEnabled($this->toEnable);
         }
         $this->manager->getStorageManager()->flush();
     }
