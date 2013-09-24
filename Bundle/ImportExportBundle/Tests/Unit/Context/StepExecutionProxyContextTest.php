@@ -25,46 +25,24 @@ class StepExecutionProxyContextTest extends \PHPUnit_Framework_TestCase
         $this->context = new StepExecutionProxyContext($this->stepExecution);
     }
 
-    /**
-     * @dataProvider addErrorDataProvider
-     *
-     * @param string $message
-     * @param int $severity
-     * @param \Exception $expectedException
-     */
-    public function testAddError($message, $severity, \Exception $expectedException)
+    public function testAddError()
     {
+        $message = 'Error message';
+
         $this->stepExecution->expects($this->once())
-            ->method('addFailureException')
-            ->with($expectedException);
+            ->method('addError')
+            ->with($message);
 
-        $this->context->addError($message, $severity);
-    }
-
-    public function addErrorDataProvider()
-    {
-        return array(
-            array(
-                'message',
-                null,
-                new ErrorException('message', 0, ErrorException::CRITICAL)
-            ),
-            array(
-                'message',
-                ErrorException::WARNING,
-                new ErrorException('message', 0, ErrorException::WARNING)
-            ),
-        );
+        $this->context->addError($message);
     }
 
     public function testGetErrors()
     {
-        $exceptions = array(array('message' => 'testException'));
-        $expected = array('testException');
+        $expected = array('Error message');
 
         $this->stepExecution->expects($this->once())
-            ->method('getFailureExceptions')
-            ->will($this->returnValue($exceptions));
+            ->method('getErrors')
+            ->will($this->returnValue($expected));
 
         $this->assertEquals($expected, $this->context->getErrors());
     }
