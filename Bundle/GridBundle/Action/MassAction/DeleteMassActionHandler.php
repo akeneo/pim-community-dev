@@ -7,6 +7,9 @@ use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionMediatorInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionResponse;
+use Oro\Bundle\GridBundle\Datagrid\ORM\ConstantPagerIterableResult;
+use Oro\Bundle\GridBundle\Datagrid\IterableResultInterface;
+use Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface;
 
 class DeleteMassActionHandler implements MassActionHandlerInterface
 {
@@ -46,7 +49,8 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
         $entityName = null;
         $entityIdentifiedField = null;
 
-        $results = $mediator->getResults();
+        $results = $this->prepareIterableResult($mediator->getResults());
+        $results->setBufferSize(self::FLUSH_BATCH_SIZE);
 
         // batch remove should be processed in transaction
         $this->entityManager->beginTransaction();
@@ -70,12 +74,14 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
                     $iteration++;
                     if ($iteration % self::FLUSH_BATCH_SIZE == 0) {
                         $this->entityManager->flush();
+                        $this->entityManager->clear();
                     }
                 }
             }
 
             if ($iteration % self::FLUSH_BATCH_SIZE > 0) {
                 $this->entityManager->flush();
+                $this->entityManager->clear();
             }
 
             $this->entityManager->commit();
@@ -85,6 +91,15 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
         }
 
         return $this->getResponse($mediator, $iteration);
+    }
+
+    /**
+     * @param IterableResultInterface $result
+     * @return ConstantPagerIterableResult|ResultRecordInterface[]
+     */
+    protected function prepareIterableResult(IterableResultInterface $result)
+    {
+        return new ConstantPagerIterableResult($result->getSource());
     }
 
     /**

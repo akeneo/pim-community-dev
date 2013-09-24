@@ -270,16 +270,23 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
         $this->offset = 0;
 
         $pageQuery = $this->getQuery();
-        $pageQuery->setFirstResult($this->bufferSize * $this->page + $this->getFirstResult());
-        $pageQuery->setMaxResults($this->bufferSize);
+        $this->setPagerParameters($pageQuery);
 
         $this->rows = $pageQuery->execute($this->parameters, $this->hydrationMode);
-
         if (!count($this->rows)) {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * @param Query $pageQuery
+     */
+    protected function setPagerParameters(Query $pageQuery)
+    {
+        $pageQuery->setFirstResult($this->bufferSize * $this->page + $this->getFirstResult());
+        $pageQuery->setMaxResults($this->bufferSize);
     }
 
     /**

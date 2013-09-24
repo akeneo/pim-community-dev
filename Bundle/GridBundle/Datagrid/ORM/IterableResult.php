@@ -38,4 +38,12 @@ class IterableResult extends BufferedQueryResultIterator implements IterableResu
             $this->current = $result;
         }
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
 }

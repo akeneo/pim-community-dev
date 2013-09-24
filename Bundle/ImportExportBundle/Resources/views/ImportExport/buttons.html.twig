@@ -67,20 +67,30 @@
             $.getJSON(this.href, function(data) {
                 exportStartedMessage.close();
                 if (data.success) {
-                    var $successMessage = __(
-                        'Export performed successfully, {{'{{ count }}'}} entities were exported.',
-                        {'count': data.readsCount}
-                    );
-                    var resultFileLink = '<a href="' + data.url + '" target="_blank">' + __('Download result file') + '</a>';
-                    $successMessage += ' ' + resultFileLink;
+                    if (data.readsCount > 0) {
+                        var $successMessage = __(
+                            'Export performed successfully, {{'{{ count }}'}} entities were exported.',
+                            {'count': data.readsCount}
+                        );
+                        var resultFileLink
+                            = '<a href="' + data.url + '" target="_blank">{{ 'Download result file'|trans }}</a>';
+                        $successMessage += ' ' + resultFileLink;
 
-                    Messanger.notificationFlashMessage('success', $successMessage, {delay: 0});
+                        Messanger.notificationFlashMessage('success', $successMessage, {delay: 0});
+                    } else {
+                        Messanger.notificationFlashMessage(
+                            'info',
+                            {{ 'No entities found for export.'|trans|json_encode|raw }},
+                            {delay: 0}
+                        );
+                    }
                 } else {
                     var $errorMessage = __(
                         'Export operation fails, {{'{{ count }}'}} error(s) found.',
                         {'count': data.errorsCount}
                     );
-                    var errorLogLink = '<a href="' + data.url + '" target="_blank">' + __('Download error log') + '</a>';
+                    var errorLogLink
+                        = '<a href="' + data.url + '" target="_blank">{{ 'Download error log'|trans }}</a>';
                     $errorMessage += ' ' + errorLogLink;
 
                     Messanger.notificationFlashMessage('error', $errorMessage, {delay: 0});

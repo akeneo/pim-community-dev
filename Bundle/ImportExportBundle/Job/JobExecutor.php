@@ -92,7 +92,7 @@ class JobExecutor
             $jobResult->addError($exception->getMessage());
         }
 
-        // update job instance
+        // save job instance
         $this->entityManager->persist($jobInstance);
         $this->entityManager->flush($jobInstance);
 
