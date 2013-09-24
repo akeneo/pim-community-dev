@@ -26,9 +26,7 @@ class DatagridBuilderTest extends OroDatagridBuilderTest
      */
     protected function initializeDatagridBuilder($arguments = array())
     {
-        $defaultArguments = $this->defineDefaultArguments();
-
-        $arguments = array_merge($defaultArguments, $arguments);
+        $arguments = $this->getDatagridBuilderArguments($arguments);
 
         $this->model = new DatagridBuilder(
             $arguments['formFactory'],
@@ -45,9 +43,9 @@ class DatagridBuilderTest extends OroDatagridBuilderTest
     /**
      * @return array
      */
-    protected function defineDefaultArguments()
+    protected function getDatagridBuilderArguments(array $arguments = array())
     {
-        return array(
+        $defaultArguments = array(
             'formFactory'     => $this->getMockForAbstractClass('Symfony\Component\Form\FormFactoryInterface'),
             'eventDispatcher' => $this->getMockForAbstractClass(
                 'Symfony\Component\EventDispatcher\EventDispatcherInterface'
@@ -59,6 +57,8 @@ class DatagridBuilderTest extends OroDatagridBuilderTest
             'className'       => null,
             'serializer'      => $this->getMockForAbstractClass('Symfony\Component\Serializer\Serializer')
         );
+
+        return array_merge($defaultArguments, $arguments);
     }
 
     /**
