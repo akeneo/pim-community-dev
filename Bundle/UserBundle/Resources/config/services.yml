@@ -73,6 +73,7 @@ services:
 
     oro_user.role.listener:
         class:                        %oro_user.role.listener.class%
+        arguments:                    ["@oro_security.link.sid_manager"]
         tags:
             - { name: doctrine.event_listener, event: preUpdate }
 

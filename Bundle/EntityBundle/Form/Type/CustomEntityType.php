@@ -71,6 +71,7 @@ class CustomEntityType extends AbstractType
             if ($formConfig->get('is_enabled')
                 && !$extendConfig->is('is_deleted')
                 && $extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)
+                && !$extendConfig->is('state', ExtendManager::STATE_NEW)
                 && !in_array($formConfig->getId()->getFieldType(), array('ref-one', 'ref-many'))
                 && $builder->getForm()->getName() != $this->getName()
             ) {

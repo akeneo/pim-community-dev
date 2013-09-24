@@ -6,7 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Extend\Cache\OroEmailBundle\Entity\EmailAddressProxy;
+use OroEmail\Cache\OroEmailBundle\Entity\EmailAddressProxy;
 use Oro\Bundle\EmailBundle\Entity\Email;
 
 class LoadEmails extends AbstractFixture implements OrderedFixtureInterface
