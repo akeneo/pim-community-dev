@@ -46,12 +46,8 @@ class MassActionDispatcher extends OroMassActionDispatcher
         $datagridManager = $this->managerRegistry->getDatagridManager($datagridName);
 
         if ($datagridManager instanceof ProductDatagridManager) {
-            if (isset($data['treeId'])) {
-                $datagridManager->setFilterTreeId(isset($data['treeId']) ? $data['treeId'] : 0);
-            }
-            if (isset($data['categoryId'])) {
-                $datagridManager->setFilterCategoryId(isset($data['categoryId']) ? $data['categoryId'] : 0);
-            }
+            $datagridManager->setFilterTreeId(isset($data['treeId']) ? $data['treeId'] : 0);
+            $datagridManager->setFilterCategoryId(isset($data['categoryId']) ? $data['categoryId'] : 0);
         }
         // create datagrid
         $datagrid = $datagridManager->getDatagrid();
