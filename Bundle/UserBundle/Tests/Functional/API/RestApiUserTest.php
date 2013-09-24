@@ -28,6 +28,7 @@ class RestApiUserTest extends WebTestCase
     {
         $request = array(
             "role" => array (
+                "role" => "new_role_" . mt_rand(),
                 "label" => "new_label_" . mt_rand(),
                 "owner" => "1"
             )
@@ -110,7 +111,6 @@ class RestApiUserTest extends WebTestCase
         $requestGroup = array(
             "group" => array (
                 "name" => 'new_group_' . mt_rand(),
-                "roles" => array(2),
                 "owner" => "1"
             )
         );
@@ -148,7 +148,6 @@ class RestApiUserTest extends WebTestCase
         $requestUpdate = array(
             "group" => array (
                 "name" => 'new_group_' . mt_rand(),
-                "roles" => array(3),
                 "owner" => "1"
             )
         );
