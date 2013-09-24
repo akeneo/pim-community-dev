@@ -195,9 +195,9 @@ var jsfv = (function () {
                     form = jsfv.id('{{ formName }}__token').form;
                 }
 
-                form = $(form)
+                form = $(form);
                 // Remove HTML5 validation
-                form.attr('novalidate', 'novalidate')
+                form.attr('novalidate', 'novalidate');
                 // autofocus on a first form input
                 form.find(':input:visible:not(.offscreen):not(button):not([disabled]):not([readonly])')
                     .first().focus();
@@ -221,7 +221,7 @@ var jsfv = (function () {
 {% if check_modes.blur %}
             // On blur checks
 {% for fieldName, constraints in fieldConstraints %}
-            jsfv.onEvent('{{ fieldName }}', 'blur', jsfv.check_{{ fieldName }});
+            jsfv.onEvent('{{ fieldName }}', 'blur select2-blur', jsfv.check_{{ fieldName }});
 {% endfor %}
 {% endif %}
 
