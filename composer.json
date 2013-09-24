@@ -29,23 +29,18 @@
         "behat/mink-browserkit-driver":  "*",
         "behat/mink-selenium2-driver":   "*",
         "behat/common-contexts": "*",
-
         "sensiolabs/behat-page-object-extension": "*",
         "kriswallsmith/buzz": ">=0.5"
     },
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:laboro/platform.git",
+            "url": "git@github.com:akeneo/platform.git",
             "branch": "master"
         },
         {
             "type": "vcs",
             "url": "git@github.com:akeneo/DemoBundle.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laboro/SonataAdminBundle.git"
         }
     ],
     "scripts": {
