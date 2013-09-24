@@ -42,7 +42,7 @@ class EntitySelectType extends AbstractType
             $data = $form->getParent()->getData();
         };
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, $event);
+        //$builder->addEventListener(FormEvents::POST_SET_DATA, $event);
     }
 
 
@@ -52,17 +52,6 @@ class EntitySelectType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-//            array(
-//                'placeholder' => 'oro.form.choose_value',
-//                'allowClear'  => true,
-//                'configs'     => array(
-//                    'placeholder'        => 'oro.form.choose_value',
-//                    'extra_config'       => 'autocomplete',
-//                    'route_name'         => 'oro_entity_search',
-//                    'autocomplete_alias' => 'entity_select',
-//                    'properties'         => array('id', 'text')
-//                )
-//            )
             array(
                 'placeholder'        => 'oro.form.choose_value',
                 'allowClear'         => true,
@@ -70,8 +59,8 @@ class EntitySelectType extends AbstractType
                     'placeholder'             => 'oro.form.choose_value',
                     'extra_config'            => 'autocomplete',
                     'route_name'              => 'oro_entity_search',
-                    //'autocomplete_alias'      => 'entity_select',
-                    'properties'              => array('id', 'text')
+                    'autocomplete_alias'      => 'entity_select',
+                    //'properties'              => array('id', 'text')
                 )
             )
         );

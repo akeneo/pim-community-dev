@@ -97,15 +97,14 @@ class CustomEntityType extends AbstractType
                 }
 
                 if (in_array($fieldConfigId->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))) {
-//                    $builder->add(
-//                        $fieldConfigId->getFieldName(),
-//                        'oro_entity_select_type',
-//                        array(
-//                            'data_class' => $extendConfig->get('target_entity'),
-//                            'compound' => true
-//
-//                        )
-//                    );
+                    $builder->add(
+                        $fieldConfigId->getFieldName(),
+                        'oro_entity_select_type',
+                        array(
+                            'data_class' => $extendConfig->get('target_entity'),
+                            'compound' => true
+                        )
+                    );
                 } else {
                     $builder->add(
                         Inflector::camelize($fieldConfigId->getFieldName()),
