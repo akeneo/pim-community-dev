@@ -81,6 +81,7 @@ body.error-page {
 html {
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 body.error-page #main {
   background: none;
@@ -393,6 +394,23 @@ body .select2-container {
   background:#f3f3f3;
   color:@linkColor;
 }
+
+li.dropdown{
+  ul{
+    display: none !important;
+    ul{
+      top: 0;
+    }
+  }
+  &:hover > .menu_level_1{
+    display: block !important;
+  }
+  .menu_level_2 li:hover > .menu_level_3,
+  .menu_level_1 li:hover > .menu_level_2{
+    display: block !important;
+  }
+}
+
 .navbar .nav li.dropdown.open > .dropdown-toggle,
 .navbar .nav li.dropdown.active > .dropdown-toggle,
 .navbar .nav li.dropdown.open.active > .dropdown-toggle {
@@ -4997,9 +5015,22 @@ iframe.email-body {
 // PER PAGE
 
 /* Login + Forgot Password */
-.login-page { background:#f7f7f7; }
+.login-page {
+  background: #f7f7f7;
+  height: 100%;
+  min-height: 280px;
+  #page{
+    min-height: 100%;
+    position: relative;
+    top: 50%;
+    #top-page{
+      position: relative;
+      margin: -135px 0 0;
+    }
+  }
+}
 .form-signin {
-  margin: 125px auto 40px;
+  margin: 0 auto;
   max-width: 400px;
   padding: 0;
   background: #fff;
@@ -5119,6 +5150,21 @@ iframe.email-body {
 .acl-table .a-center {
   text-align: center;
 }
+span.validation-faled {
+  color: @errorText;
+  display: block;
+  margin: 5px 0 5px 14px;
+  line-height: 1.1em;
+  &:before {
+    content: "\f00d";
+    color: @errorText;
+    font: normal 1.15em/1em 'FontAwesome';
+    display: inline-block;
+    width: 14px;
+    margin-left: -14px;
+  }
+}
+
 @media only screen and (max-width: 1340px) {
   .contact-info-col-set > .row-fluid > .span6{
     width: 100%;

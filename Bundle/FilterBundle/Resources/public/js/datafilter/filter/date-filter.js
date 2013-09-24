@@ -132,14 +132,15 @@ function($, _, __, ChoiceFilter) {
             ChoiceFilter.prototype.initialize.apply(this, arguments);
         },
 
-        changeFilterType: function(e) {
+        changeFilterType: function (e) {
             var select = this.$el.find(e.currentTarget);
             var selectedValue = select.val();
 
-            if (_.indexOf([this.typeValues.moreThan, this.typeValues.lessThan], parseInt(selectedValue)) !== -1) {
+            this.$el.find('.filter-separator').show().end().find('input').show();
+            if (this.typeValues.moreThan == parseInt(selectedValue)) {
                 this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide();
-            } else {
-                this.$el.find('.filter-separator').show().end().find(this.criteriaValueSelectors.value.end).show();
+            } else if (this.typeValues.lessThan == parseInt(selectedValue)) {
+                this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.start).hide();
             }
         },
 
@@ -173,33 +174,10 @@ function($, _, __, ChoiceFilter) {
             this.$(widgetSelector).datepicker(this.dateWidgetOptions);
             var widget = this.$(widgetSelector).datepicker('widget');
             widget.addClass(this.dateWidgetOptions.className);
+            $(this.dateWidgetSelector).on('click', function(e) {
+                e.stopImmediatePropagation();
+            });
             return widget;
-        },
-
-        /**
-         * @inheritDoc
-         */
-        _onClickOutsideCriteria: function(e) {
-            var elements = [this.$(this.criteriaSelector)];
-
-            var widget = $(this.dateWidgetSelector);
-            elements.push(widget);
-            widget.find('span').each(function(i, el) {
-                elements.push($(el));
-            });
-
-            var clickedElement = _.find(elements, function(elem) {
-                return elem.get(0) === e.target || elem.has(e.target).length;
-            });
-
-            if (!clickedElement && $(e.target).is(":button, .ui-icon, :has(.ui-icon)")) {
-                clickedElement = e.target;
-            }
-
-            if (!clickedElement) {
-                this._hideCriteria();
-                this.setValue(this._readDOMValue());
-            }
         },
 
         /**
@@ -218,7 +196,7 @@ function($, _, __, ChoiceFilter) {
                         hint += [__('more than'), start].join(' ');
                         break;
                     case this.typeValues.lessThan.toString():
-                        hint += [__('less than'), start].join(' ');
+                        hint += [__('less than'), end].join(' ');
                         break;
                     case this.typeValues.notBetween.toString():
                         if (start && end) {

@@ -199,17 +199,6 @@ class ConfigManager
     }
 
     /**
-     * @return bool
-     */
-    public function checkDatabase()
-    {
-        $tables = $this->getEntityManager()->getConnection()->getSchemaManager()->listTableNames();
-        $table  = $this->getEntityManager()->getClassMetadata(EntityConfigModel::ENTITY_NAME)->getTableName();
-
-        return in_array($table, $tables);
-    }
-
-    /**
      * @param string $className
      * @param string $fieldName
      * @return bool
@@ -222,7 +211,7 @@ class ConfigManager
 
         $result = $this->cache->getConfigurable($className, $fieldName);
         if ($result === null) {
-            $result = (bool) $this->modelManager->findModel($className, $fieldName);
+            $result = (bool)$this->modelManager->findModel($className, $fieldName);
 
             $this->cache->setConfigurable($result, $className, $fieldName);
         }

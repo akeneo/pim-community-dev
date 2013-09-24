@@ -5,16 +5,6 @@ function($) {
     'use strict';
 
     $(function() {
-        $(window)
-            .resize(function() {
-                var form = $('form.form-signin'),
-                    thisHeight = $(window).height()/2 - form.height()/2;
-                if (thisHeight > 40) {
-                    thisHeight = thisHeight -40;
-                }
-                form.css('margin-top', thisHeight );
-            })
-            .trigger('resize');
 
         var hashUrl = window.location.hash,
             hashUrlTag = '#url=',

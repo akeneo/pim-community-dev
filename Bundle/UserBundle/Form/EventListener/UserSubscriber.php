@@ -77,11 +77,11 @@ class UserSubscriber implements EventSubscriberInterface
             }
         }
 
-        if (!$this->securityFacade->isGranted('oro_user_role_view')) {
+        if (!$this->securityFacade->isGranted('assign_roles_groups_to_user')) {
             unset($submittedData['rolesCollection']);
         }
 
-        if (!$this->securityFacade->isGranted('oro_user_group_view')) {
+        if (!$this->securityFacade->isGranted('assign_roles_groups_to_user')) {
             unset($submittedData['groups']);
         }
 
@@ -102,11 +102,11 @@ class UserSubscriber implements EventSubscriberInterface
             $form->remove('plainPassword');
         }
 
-        if (!$this->securityFacade->isGranted('oro_user_role_view')) {
+        if (!$this->securityFacade->isGranted('assign_roles_groups_to_user')) {
             $form->remove('rolesCollection');
         }
 
-        if (!$this->securityFacade->isGranted('oro_user_group_view')) {
+        if (!$this->securityFacade->isGranted('assign_roles_groups_to_user')) {
             $form->remove('groups');
         }
 

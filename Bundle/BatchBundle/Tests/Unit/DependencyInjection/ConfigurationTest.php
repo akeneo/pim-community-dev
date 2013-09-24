@@ -3,6 +3,7 @@
 namespace Oro\Bundle\BatchBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\Processor;
 use Oro\Bundle\BatchBundle\DependencyInjection\Configuration;
 
 /**
@@ -17,5 +18,30 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $configuration = new Configuration();
         $this->assertTrue($configuration->getConfigTreeBuilder() instanceof TreeBuilder);
+    }
+
+    public function testDefaultConfiguration()
+    {
+        $configuration = new Configuration();
+        $processor = new Processor();
+
+        $config = $processor->process($configuration->getConfigTreeBuilder()->buildTree(), array());
+        $this->assertEquals('mailer@bap.com', $config['sender_email']);
+    }
+
+    public function testCustomConfiguration()
+    {
+        $configuration = new Configuration();
+        $processor = new Processor();
+
+        $config = $processor->process(
+            $configuration->getConfigTreeBuilder()->buildTree(),
+            array(
+                'oro_batch' => array(
+                    'sender_email' => 'foo@example.com'
+                )
+            )
+        );
+        $this->assertEquals('foo@example.com', $config['sender_email']);
     }
 }

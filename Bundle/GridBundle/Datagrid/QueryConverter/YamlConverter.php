@@ -7,6 +7,7 @@ use Symfony\Component\Config\Definition\Processor;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\Expr;
 
 use Oro\Bundle\GridBundle\Datagrid\QueryConverterInterface;
 use Oro\Bundle\GridBundle\DependencyInjection\ReportConfiguration;
@@ -36,7 +37,9 @@ class YamlConverter implements QueryConverterInterface
         }
 
         if (isset($value['select'])) {
-            $qb->select($value['select']);
+            foreach ($value['select'] as $select) {
+                $qb->add('select', new Expr\Select($select), true);
+            }
         }
 
         if (isset($value['distinct'])) {

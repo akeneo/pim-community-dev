@@ -34,7 +34,7 @@ function($, _, Backbone, mediator) {
         },
 
         remove: function() {
-            // cause that's circular dependency
+            this.trigger('widgetRemove', this.$el);
             mediator.trigger('widget_remove', this.getWid());
             Backbone.View.prototype.remove.call(this);
         },

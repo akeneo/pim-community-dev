@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\NotificationBundle\Provider;
 
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
@@ -60,7 +61,7 @@ class NotificationManager
         $entity = $event->getEntity();
 
         // select rules by entity name and event name
-        $notificationRules = $this->getRulesByCriteria(get_class($entity), $event->getName());
+        $notificationRules = $this->getRulesByCriteria(ClassUtils::getClass($entity), $event->getName());
 
         if (!$notificationRules->isEmpty()) {
             /** @var EventHandlerInterface $handler */

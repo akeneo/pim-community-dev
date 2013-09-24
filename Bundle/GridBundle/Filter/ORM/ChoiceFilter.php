@@ -120,6 +120,11 @@ class ChoiceFilter extends AbstractFilter
             $formOptions['translation_domain'] = $translationDomain;
         }
 
+        $populateDefault = $this->getOption('populate_default');
+        if (null !== $populateDefault) {
+            $formOptions['populate_default'] = $populateDefault;
+        }
+
         return array($formType, $formOptions);
     }
 }

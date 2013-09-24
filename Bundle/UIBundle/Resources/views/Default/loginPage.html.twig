@@ -34,22 +34,5 @@
                 </div>
             </fieldset>
         </form>
-        <script type="text/javascript">
-            require(['jquery'],
-            function($){
-                $(document).ready(function() {
-                    function loginHeight(){
-                        var _myHeight = ($(window).height() - $('form.form-signin').height())/2 +"px";
-                        $('form.form-signin').css({
-                            'margin-top' : _myHeight
-                        })
-                    }
-                    loginHeight();
-                    $(window).resize(function() {
-                        loginHeight()
-                    });
-                });
-            });
-        </script>
     </div>
 {% endblock content %}

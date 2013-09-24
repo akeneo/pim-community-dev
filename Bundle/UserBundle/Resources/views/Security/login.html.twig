@@ -4,12 +4,6 @@
 
 {% block content %}
 <div class="container">
-    {% if error %}
-    <div class="alert alert-error">
-        <button data-dismiss="alert" class="close" type="button">&times;</button>
-        <div>{{ error|trans }}</div>
-    </div>
-    {% endif %}
 
     <form action="{{ path('oro_user_security_check') }}" method="post" class="form-signin">
         <div class="title-box">
@@ -18,6 +12,12 @@
             <h2 class="title">{{ 'Login'|trans }}</h2>
         </div>
         <fieldset>
+            {% if error %}
+                <div class="alert alert-error">
+                    <button data-dismiss="alert" class="close" type="button">&times;</button>
+                    <div>{{ error|trans }}</div>
+                </div>
+            {% endif %}
             <div class="input-prepend">
                 <span class="add-on">{{ 'Username'|trans }}</span>
                 <input type="text" id="prependedInput" class="span2" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Username or Email'|trans }}" autofocus/>
