@@ -79,9 +79,9 @@ class ConfigModelManager
                 }
 
                 $this->dbCheckCache = $conn->isConnected() && (bool) array_intersect(
-                        $this->requiredTables,
-                        $this->getEntityManager()->getConnection()->getSchemaManager()->listTableNames()
-                    );
+                    $this->requiredTables,
+                    $this->getEntityManager()->getConnection()->getSchemaManager()->listTableNames()
+                );
             } catch (\PDOException $e) {
                 $this->dbCheckCache = false;
             }
