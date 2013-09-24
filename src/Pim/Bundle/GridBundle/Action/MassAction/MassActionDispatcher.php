@@ -67,5 +67,4 @@ class MassActionDispatcher extends OroMassActionDispatcher
 
         return $result;
     }
-
 }
