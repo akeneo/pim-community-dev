@@ -550,14 +550,15 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
         if ($data instanceof \Doctrine\Common\Collections\Collection) {
             $items = array();
             foreach ($data as $item) {
-                $items[]= $item->__toString();
+                $value = (string) $item;
+                if (!empty($value)) {
+                    $items[] = $value;
+                }
             }
 
             return implode(', ', $items);
-
         } elseif (is_object($data)) {
-
-            return $data->__toString();
+            return (string) $data;
         }
 
         return (string) $data;

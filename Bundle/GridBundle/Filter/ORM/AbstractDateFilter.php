@@ -92,10 +92,10 @@ abstract class AbstractDateFilter extends AbstractFilter
             $data['type'] = DateRangeFilterType::TYPE_BETWEEN;
         }
 
-        if ($data['type'] == DateRangeFilterType::TYPE_MORE_THAN
-            || $data['type'] == DateRangeFilterType::TYPE_LESS_THAN
-        ) {
+        if ($data['type'] == DateRangeFilterType::TYPE_MORE_THAN) {
             $data['value']['end'] = null;
+        } elseif ($data['type'] == DateRangeFilterType::TYPE_LESS_THAN) {
+            $data['value']['start'] = null;
         }
 
         return array(
@@ -262,8 +262,8 @@ abstract class AbstractDateFilter extends AbstractFilter
             case DateRangeFilterType::TYPE_LESS_THAN:
                 $this->applyFilterLessMore(
                     $queryBuilder,
-                    $dateStartValue,
-                    $startDateParameterName,
+                    $dateEndValue,
+                    $endDateParameterName,
                     $alias,
                     $field,
                     true

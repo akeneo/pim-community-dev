@@ -183,8 +183,10 @@
     {{ _self.buttonType({'type': 'submit', 'class': 'btn-success', 'label': label}) }}
 {% endmacro %}
 
-{% macro saveAndStayButton(label = 'Save') %}
+{% macro saveAndStayButton(acl = '', label = 'Save') %}
+    {% if acl is empty or resource_granted(acl) %}
     {{ _self.buttonType({'type': 'button', 'class': 'btn-success', 'label': label, 'action': 'save_and_stay'}) }}
+    {% endif %}
 {% endmacro %}
 
 {#

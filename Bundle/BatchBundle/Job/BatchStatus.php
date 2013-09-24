@@ -90,6 +90,16 @@ class BatchStatus
     }
 
     /**
+     * Convenience method to decide if a status indicates work is starting.
+     *
+     * @return true if the status is STARTING
+     */
+    public function isStarting()
+    {
+        return $this->value == self::STARTING;
+    }
+
+    /**
      * Convenience method to decide if a status indicates work is in progress.
      *
      * @return true if the status is STARTING, STARTED

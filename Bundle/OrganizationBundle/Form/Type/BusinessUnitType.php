@@ -96,6 +96,6 @@ class BusinessUnitType extends AbstractType
 
     public function getName()
     {
-        return self::FORM_NAME;;
+        return self::FORM_NAME;
     }
 }
