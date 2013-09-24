@@ -50,6 +50,7 @@ services:
             - @security.context
             - @twig
             - @mailer
+            - %oro_batch.mail_notifier.sender_email%
         # There is no need to send email on each job
         # tags:
         #     - { name: oro_batch.notifier }
