@@ -9,7 +9,7 @@
     {% set title = 'attribute group.edit'|trans ~ ' - ' ~ form.vars.data.name %}
 
     {% set buttons %}
-        {{ elements.deleteLink(path('pim_catalog_attributegroup_remove', {'id': form.vars.value.id}), 'confiration.remove.attribute group'|trans({'%name%': form.vars.data.name})) }}
+        {{ elements.deleteLink(path('pim_catalog_attributegroup_remove', {'id': form.vars.value.id}), path('pim_catalog_attributegroup_index'), 'confirmation.remove.attribute group'|trans({'%name%': form.vars.data.name}), "", "flash.attribute group.removed"|trans) }}
         {{ elements.submitBtn() }}
     {% endset %}
 
