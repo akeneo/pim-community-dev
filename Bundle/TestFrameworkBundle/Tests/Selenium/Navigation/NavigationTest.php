@@ -32,16 +32,19 @@ class NavigationTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit()
             ->openNavigation()
             ->tab('System')
+            ->menu('Users Management')
             ->menu('Users')
             ->assertElementPresent("//table[@class='grid table-hover table table-bordered table-condensed']/tbody");
 
         $login->openNavigation()
             ->tab('System')
+            ->menu('Users Management')
             ->menu('Roles')
             ->assertElementPresent("//table[@class='grid table-hover table table-bordered table-condensed']/tbody");
 
         $login->openNavigation()
             ->tab('System')
+            ->menu('Users Management')
             ->menu('Groups')
             ->assertElementPresent("//table[@class='grid table-hover table table-bordered table-condensed']/tbody");
     }
@@ -141,7 +144,7 @@ class NavigationTest extends \PHPUnit_Extensions_Selenium2TestCase
         $login->byXPath("//div[@class='top-action-box']//button[@class='btn minimize-button']")->click();
         $login->waitForAjax();
         $login->assertElementPresent(
-            "//div[@class='list-bar']//a[text() = 'Users']",
+            "//div[@class='list-bar']//a[text() = 'Users - Users Management - System']",
             'Element does not minimised to pinbar tab'
         );
     }

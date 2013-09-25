@@ -21,14 +21,23 @@ class Navigation extends Page
 
     public function tab($tab)
     {
-        $this->test->moveto($this->tabs->element($this->using('xpath')->value("ul/li/a[contains(., '{$tab}')]")));
-        $this->menu = $this->tabs->element($this->using('xpath')->value("ul/li[a[contains(., '{$tab}')]]/ul"));
+        $this->test->moveto($this->tabs->element($this->using('xpath')->value("ul/li/a[normalize-space(.) = '{$tab}']")));
+        $this->menu = $this->tabs->element($this->using('xpath')->value("ul/li[a[normalize-space(.) = '{$tab}']]/ul"));
         return $this;
     }
 
     public function menu($menu)
     {
-        $this->menu->element($this->using('xpath')->value("li/a[contains(., '{$menu}')]"))->click();
+        $this->test->moveto($this->menu->element($this->using('xpath')->value("li/a[normalize-space(.) = '{$menu}']")));
+        $this->menu->element($this->using('xpath')->value("li/a[normalize-space(.) = '{$menu}']"))->click();
+
+        if ($this->menu->displayed()) {
+            if ($this->menu->elements($this->using('xpath')->value("li[a[normalize-space(.) = '{$menu}']]/ul"))) {
+                $this->menu = $this->menu->element($this->using('xpath')->value("li[a[normalize-space(.) = '{$menu}']]/ul"));
+            }
+
+        }
+
         $this->waitPageToLoad();
         $this->waitForAjax();
         return $this;
