@@ -76,7 +76,8 @@ if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     php app/console doctrine:database:create
     php app/console doctrine:schema:create
     php app/console doctrine:fixture:load --no-interaction
-    php app/console oro:acl:load
+    # Some segfault on cache purge from ACL load
+    php app/console oro:acl:load || true
     php app/console oro:entity-config:update
     php app/console oro:entity-extend:create
     php app/console cache:clear
