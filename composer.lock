@@ -1253,16 +1253,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.4.x-dev",
+            "version": "2.3.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "925a22b71dd2f8bfe2242cb34ae0a40d43f8f008"
+                "reference": "66d8b43f69105f3e3f0fb7d042f805eec1107e22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/925a22b71dd2f8bfe2242cb34ae0a40d43f8f008",
-                "reference": "925a22b71dd2f8bfe2242cb34ae0a40d43f8f008",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/66d8b43f69105f3e3f0fb7d042f805eec1107e22",
+                "reference": "66d8b43f69105f3e3f0fb7d042f805eec1107e22",
                 "shasum": ""
             },
             "require": {
@@ -3496,7 +3496,7 @@
                 "doctrine/data-fixtures": "@dev",
                 "doctrine/doctrine-bundle": "1.2.*",
                 "doctrine/doctrine-fixtures-bundle": "@dev",
-                "doctrine/orm": ">=2.2.3",
+                "doctrine/orm": ">=2.2.3,<2.4-dev",
                 "escapestudios/wsse-authentication-bundle": "2.3.x-dev",
                 "friendsofsymfony/jsrouting-bundle": "1.1.*@dev",
                 "friendsofsymfony/rest-bundle": "0.12.*",
