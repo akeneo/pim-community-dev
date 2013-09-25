@@ -2,14 +2,13 @@
 
 namespace Oro\Bundle\EntityBundle\Datagrid;
 
-use Doctrine\Common\Inflector\Inflector;
-
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
+use Oro\Bundle\GridBundle\Filter\FilterInterface;
+use Oro\Bundle\GridBundle\Property\FixedProperty;
 
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Oro\Bundle\GridBundle\Filter\FilterInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Config;
@@ -17,7 +16,6 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
-use Oro\Bundle\GridBundle\Property\FixedProperty;
 
 class AbstractDatagrid extends DatagridManager
 {

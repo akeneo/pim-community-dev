@@ -39,8 +39,8 @@
             'aCss': 'no-hash remove-button',
             'id': 'btn-remove-user',
             'dataId': entity.id,
-            'dataMessage': 'Are you sure you want to delete this user?',
-            'successMessage': 'User was successfully deleted',
+            'dataMessage': 'Are you sure you want to delete this user?'|trans,
+            'successMessage': 'User deleted'|trans,
             'title': 'Delete user',
             'label': 'Delete'
         }) }}
@@ -51,7 +51,7 @@
     {% set breadcrumbs = {
         'entity':      entity,
         'indexPath':   path('oro_user_index'),
-        'indexLabel': 'Users',
+        'indexLabel': 'Users'|trans,
         'entityTitle': entity.fullname(format)|default('N/A'),
         'hasAvatar':   true,
         'imagePath':   entity.imagePath,
@@ -86,36 +86,36 @@
 
     {% set id = 'user-profile' %}
 
-    {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'}, entity.emails|length ? {data: entity.emails, field:'email'} : {})] %}
+    {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'|trans}, entity.emails|length ? {data: entity.emails, field:'email'} : {})] %}
     {% if resource_granted('oro_tag_view_tag_cloud') %}
-        {% set dataSubBlocks = dataSubBlocks|merge([UI.renderAttribute('Tags', _tag.renderView(entity))]) %}
+        {% set dataSubBlocks = dataSubBlocks|merge([UI.renderAttribute('Tags'|trans, _tag.renderView(entity))]) %}
     {% endif %}
 
     {#{{ render(controller('OroEmailBundle:Email:activities', {'emails': entity.emails})) }}#}
 
     {% set dataBlocks = [
         {
-            'title': 'General',
+            'title': 'General'|trans,
             'class': 'active',
             'subblocks': [
                 {
-                    'title': 'Basic Information',
+                    'title': 'Basic Information'|trans,
                     'data': [
-                        UI.attibuteRow('User name', entity.username),
-                        UI.attibuteRow('First name', entity.firstname),
-                        UI.attibuteRow('Last name', entity.lastname),
-                        UI.attibuteRow('Birthday', entity.birthday ? UI.date(entity.birthday) : 'N/A'),
-                        UI.renderAttribute('API key', _self.api_data_block(entity))
+                        UI.attibuteRow('User name'|trans, entity.username),
+                        UI.attibuteRow('First name'|trans, entity.firstname),
+                        UI.attibuteRow('Last name'|trans, entity.lastname),
+                        UI.attibuteRow('Birthday'|trans, entity.birthday ? UI.date(entity.birthday) : 'N/A'),
+                        UI.renderAttribute('API key'|trans, _self.api_data_block(entity))
                     ]
                 },
                 {
-                'title': 'Contact Information',
+                'title': 'Contact Information'|trans,
                 'data': dataSubBlocks
                 }
             ]
         },
         {
-            'title': 'Additional data',
+            'title': 'Additional data'|trans,
             'subblocks': [
                 {'title': null, 'data': attributes}
             ]
@@ -127,7 +127,7 @@
         {% set dataBlocks = dataBlocks|merge
             (
                     [{
-                        'title': 'User emails',
+                        'title': 'User emails'|trans,
                         'subblocks': [
                             {
                                 'title': '',

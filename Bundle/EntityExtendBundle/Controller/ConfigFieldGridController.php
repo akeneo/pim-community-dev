@@ -157,7 +157,10 @@ class ConfigFieldGridController extends Controller
 
             if ($form->isValid()) {
                 //persist data inside the form
-                $this->get('session')->getFlashBag()->add('success', 'ConfigField successfully saved');
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('oro.entity_extend.controller.config_field.message.saved')
+                );
 
                 $extendEntityConfig = $configManager->getProvider('extend')->getConfig($entity->getClassName());
                 if ($extendEntityConfig->get('state') != ExtendManager::STATE_NEW) {

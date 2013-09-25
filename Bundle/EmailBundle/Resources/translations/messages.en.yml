@@ -3,7 +3,7 @@ oro:
         controller:
             emailtemplate:
                 saved:
-                    message: "Template sucessfully saved"
+                    message: "Template saved"
         form:
             choose_template: "Choose a template..."
         datagrid:

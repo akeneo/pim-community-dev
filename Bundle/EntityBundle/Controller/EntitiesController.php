@@ -176,7 +176,10 @@ class EntitiesController extends Controller
 
                 $id = $record->getId();
 
-                $this->get('session')->getFlashBag()->add('success', 'Entity successfully saved');
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('oro.entity.controller.message.saved')
+                );
 
                 return $this->get('oro_ui.router')->actionRedirect(
                     array(

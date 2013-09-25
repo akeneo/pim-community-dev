@@ -136,7 +136,7 @@ function(_, Backbone, __, mediator, messenger, dialogWidget,
                 );
                 this.addressEditDialog.on('formSave', _.bind(function() {
                     this.addressEditDialog.remove();
-                    messenger.notificationFlashMessage('success', __('Address successfully saved'));
+                    messenger.notificationFlashMessage('success', __('Address saved'));
                     this.reloadAddresses();
                 }, this));
                 widgetManager.addWidgetInstance(this.addressEditDialog);

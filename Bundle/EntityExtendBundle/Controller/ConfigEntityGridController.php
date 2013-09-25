@@ -178,7 +178,10 @@ class ConfigEntityGridController extends Controller
 
             if ($form->isValid()) {
                 //persist data inside the form
-                $this->get('session')->getFlashBag()->add('success', 'ConfigEntity successfully saved');
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('oro.entity_extend.controller.config_entity.message.saved')
+                );
 
                 return $this->get('oro_ui.router')->actionRedirect(
                     array(
