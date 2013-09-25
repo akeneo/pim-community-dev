@@ -71,9 +71,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected $filterCategoryId = self::UNCLASSIFIED_CATEGORY;
 
-    protected $familyExpression = "CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END";
-    //CASE WHEN ft.label IS NULL THEN family.code ELSE ft.label END
-
     /**
      * Define constructor to add new price type
      */
@@ -519,7 +516,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias.'.values', 'values')
             ->leftJoin('values.prices', 'valuePrices');
 
-        $proxyQuery->addSelect($this->familyExpression .' AS familyLabel', true);
+        $familyExpr = "(CASE WHEN ft.label IS NULL THEN CONCAT('[', CONCAT(productFamily.code, ']')) ELSE ft.label END)";
+        $proxyQuery->addSelect(sprintf("%s AS familyLabel", $familyExpr), true);
 
         // prepare query for completeness
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
