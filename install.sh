@@ -9,7 +9,7 @@
 #   - redeploy assets
 #
 # This script can be executed several times
-# 
+#
 # You can use the "db" and "assets" arguments to install only "db" or "assets"
 
 set -e
@@ -96,4 +96,4 @@ if [ $TASK = 'assets' ] || [ $TASK = 'all' ]; then
     php app/console cache:clear
 fi
 
-echo "Done !"
+echo "Done!"
