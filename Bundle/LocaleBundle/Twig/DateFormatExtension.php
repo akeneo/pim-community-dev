@@ -6,37 +6,6 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class DateFormatExtension extends \Twig_Extension
 {
-    /**
-    public function getFilters()
-    {
-        return array(
-            'convert_format' => new \Twig_SimpleFilter('convert_format', array($this, 'convertDateFormat'),
-     * array('needs_environment' => true))
-            //'localizeddate' => new Twig_Filter_Function('twig_localized_date_filter',
-     * array('needs_environment' => true)),
-        );
-    }
-
-    public function formatDateTime(Twig_Environment $env, $dateTimeFormat, $)
-    {
-        twig_escape_filter(
-            $this->env,
-            twig_localized_date_filter(
-                $this->env,
-                (isset($context["time"]) ? $context["time"] : $this->getContext($context, "time")),
-                "short",
-                "short"
-            ),
-            "html",
-            null,
-            true
-        );
-
-        return ;
-    }
-
-     **/
-
     const TIMEZONE_CONFIG_KEY = 'oro_locale.timezone';
 
     /** @var ConfigManager */
@@ -50,6 +19,17 @@ class DateFormatExtension extends \Twig_Extension
         $this->cm = $cm;
     }
 
+    public function getFilters()
+    {
+        return array(
+            'locale_date' => new \Twig_SimpleFilter(
+                'locale_date',
+                array($this, 'formatDateTime'),
+                array('needs_environment' => true)
+            ),
+        );
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -59,6 +39,53 @@ class DateFormatExtension extends \Twig_Extension
             'oro_config_timezone'  => new \Twig_Function_Method($this, 'getTimeZone')
         );
     }
+
+    /**
+     *
+     * @param \Twig_Environment $env
+     * @param $date
+     * @param $dateTimeFormat
+     * @param null $locale
+     * @param $timezone
+     * @return string
+     */
+    public function formatDateTime(\Twig_Environment $env, $date, $dateTimeFormat, $locale = null, $timezone = null)
+    {
+        $dateTimeFormat = $this->convertDateTimeToICUFormat($dateTimeFormat);
+
+        return twig_localized_date_filter(
+            $env,
+            $date,
+            "none",
+            "none",
+            $locale,
+            $timezone,
+            $dateTimeFormat
+        );
+    }
+
+    /**
+     * @param $dateTimeFormat
+     * @return string libICU format for IntlDateFormatter::create()
+     */
+    protected function convertDateTimeToICUFormat($dateTimeFormat)
+    {
+        return str_replace(
+            array(
+                'm', // month MM
+                'n',
+                'd', // day DD
+                'j', // day D
+                'y', // year YY
+                'Y', // year YYYY
+            ),
+            array(
+                'MM', 'M', 'dd', 'd', 'yy', 'yyyy'
+            ),
+            $dateTimeFormat
+        );
+    }
+
 
     /**
      * Get config time zone
