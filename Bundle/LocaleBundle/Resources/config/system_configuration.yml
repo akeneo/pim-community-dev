@@ -95,6 +95,15 @@ oro_system_configuration:
                     - Range:
                         min:    0
 
+        oro_locale.name_format:
+            type: text
+            options:
+                label: 'Name format'
+                required: true
+                #tooltip: 'Available variables:<br> %%firstname%%, %%lastname%%'
+                constraints:
+                    - NotBlank: ~
+
     tree:
         system_configuration:
             platform:
@@ -111,6 +120,7 @@ oro_system_configuration:
                                             - oro_locale.default_currency
                                             - oro_locale.date_format
                                             - oro_locale.time_format
+                                            - oro_locale.name_format
                                     number_formats:
                                         children:
                                             - oro_locale.decimal_symbol

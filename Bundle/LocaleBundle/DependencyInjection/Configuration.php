@@ -30,6 +30,7 @@ class Configuration implements ConfigurationInterface
                 'decimal_symbol'      => array('value' => '.'),
                 'thousands_separator' => array('value' => ','),
                 'number_of_decimals'  => array('value' => 2),
+                'name_format'         => array('value' => '%%first%% %%last%%'),
             )
         );
 

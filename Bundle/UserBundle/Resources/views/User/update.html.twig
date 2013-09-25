@@ -1,5 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% set format = oro_config_value('oro_user.name_format') %}
+{% set format = oro_config_value('oro_locale.name_format') %}
 {% form_theme form with ['OroUIBundle:Form:fields.html.twig', 'OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
 
 {% set title = form.vars.value.id ? form.vars.value.fullname(format)|default('N/A') ~ ' - ' ~ 'Update User'|trans : 'New User'|trans %}

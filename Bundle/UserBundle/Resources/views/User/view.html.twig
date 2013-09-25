@@ -9,7 +9,7 @@
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
 {% endblock %}
 
-{% set format = oro_config_value('oro_user.name_format') %}
+{% set format = oro_config_value('oro_locale.name_format') %}
 {% oro_title_set({params : {"%username%": entity.fullname(format)|default('N/A') }}) %}
 {% set audit_entity_class = 'Oro_Bundle_UserBundle_Entity_User' %}
 {% macro api_data_block(user) %}
