@@ -34,9 +34,8 @@ abstract class AbstractStep extends ControllerStep
         $output = $this->getOutput();
         $params = array_merge(
             array(
-                'command'             => $command,
-                '--no-debug'          => true,
-                '--process-isolation' => true
+                'command'    => $command,
+                '--no-debug' => true,
             ),
             $params
         );

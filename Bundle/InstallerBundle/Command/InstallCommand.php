@@ -150,7 +150,7 @@ class InstallCommand extends ContainerAwareCommand
             ->runCommand('oro:entity-config:init', $output)
             ->runCommand('oro:entity-extend:init', $output)
             ->runCommand('oro:entity-extend:update-config', $output)
-            ->runCommand('doctrine:schema:update', $output)
+            ->runCommand('doctrine:schema:update', $output, array('--no-interaction' => true))
             ->runCommand('oro:search:create-index', $output)
             ->runCommand('oro:navigation:init', $output)
             ->runCommand('assets:install', $output, array('target' => './'))
