@@ -29,7 +29,7 @@ class AttributeRequirement
     /**
      * @var Family $family
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Family", inversedBy="attributeRequirements")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Family", inversedBy="requirements")
      */
     protected $family;
 
