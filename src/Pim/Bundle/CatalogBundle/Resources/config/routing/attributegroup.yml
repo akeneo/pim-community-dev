@@ -1,5 +1,5 @@
 pim_catalog_attributegroup_index:
-    path: ""
+    path: ''
     defaults: { _controller: pim_catalog.controller.attribute_group:createAction }
 
 pim_catalog_attributegroup_create:

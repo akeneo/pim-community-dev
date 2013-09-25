@@ -1,4 +1,4 @@
 categories:
-    'default':
-        'code':    'default'
-        'label':   'Default'
+    default:
+        code:  default
+        label: Default

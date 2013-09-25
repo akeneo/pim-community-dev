@@ -1,9 +1,9 @@
 channels:
-    'default':
-        'code':  'default'
-        'label': 'Default'
-        'locales':
-            - 'en_US'
-        'currencies':
-            - 'USD'
-        'tree':  'default'
+    default:
+        code:  default
+        label: Default
+        locales:
+            - en_US
+        currencies:
+            - USD
+        tree: default
