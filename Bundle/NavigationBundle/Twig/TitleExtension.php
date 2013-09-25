@@ -30,6 +30,7 @@ class TitleExtension extends \Twig_Extension
     {
         return array(
             'oro_title_render' => new \Twig_Function_Method($this, 'render'),
+            'oro_title_render_short' => new \Twig_Function_Method($this, 'renderShort'),
             'oro_title_render_serialized' => new \Twig_Function_Method($this, 'renderSerialized'),
         );
     }
@@ -55,6 +56,17 @@ class TitleExtension extends \Twig_Extension
     public function render($titleData = null)
     {
         return $this->titleService->render(array(), $titleData, null, null, true);
+    }
+
+    /**
+     * Renders short title
+     *
+     * @param  null   $titleData
+     * @return string
+     */
+    public function renderShort($titleData = null)
+    {
+        return $this->titleService->render(array(), $titleData, null, null, true, true);
     }
 
     /**
