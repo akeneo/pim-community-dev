@@ -1121,20 +1121,24 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
          */
         processForms: function(selector) {
             $(selector).on('submit', _.bind(function (e) {
-                var target = e.currentTarget;
-                if ($(target).data('nohash')) {
+                var $form = $(e.currentTarget);
+                if ($form.data('nohash')) {
                     return;
                 }
                 e.preventDefault();
+                if ($form.data('sent')) {
+                    return;
+                }
+                $form.data('sent', true);
 
-                var url = $(target).attr('action');
-                this.method = $(target).attr('method') ? $(target).attr('method') : "get";
+                var url = $form.attr('action');
+                this.method = $form.attr('method') || "get";
 
                 if (url) {
                     registry.setElement('form_validate', true);
-                    mediator.trigger("hash_navigation_request:form-start", target);
+                    mediator.trigger("hash_navigation_request:form-start", $form.get(0));
                     if (registry.getElement('form_validate')) {
-                        var data = $(target).serialize();
+                        var data = $form.serialize();
                         if (this.method === 'get') {
                             if (data) {
                                 url += '?' + data;
@@ -1142,9 +1146,12 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                             this.setLocation(url);
                         } else {
                             this.beforeRequest();
-                            $(target).ajaxSubmit({
+                            $form.ajaxSubmit({
                                 data: this.headerObject,
                                 headers: this.headerObject,
+                                complete: function(){
+                                    $form.removeData('sent');
+                                },
                                 error: _.bind(this.processError, this),
                                 success: _.bind(function (data) {
                                     this.handleResponse(data, {'skipCache' : true}); //don't cache form submit response
