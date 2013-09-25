@@ -30,7 +30,7 @@ class AnnotationsReader extends Reader
     /**
      * Get Route/Title information from controller annotations
      *
-     * @param  array   $routes
+     * @param  array $routes
      * @return array()
      */
     public function getData(array $routes)
@@ -73,7 +73,8 @@ class AnnotationsReader extends Reader
                 foreach ($reflection->getMethods() as $reflectionMethod) {
                     $title = $this->reader->getMethodAnnotation($reflectionMethod, self::ANNOTATION_CLASS);
                     if (is_object($title)) {
-                        $titles[$this->getDefaultRouteName($reflection, $reflectionMethod)] = $title->getTitleTemplate();
+                        $titles[$this->getDefaultRouteName($reflection, $reflectionMethod)] = $title->getTitleTemplate(
+                        );
                     }
                 }
             }
@@ -98,7 +99,7 @@ class AnnotationsReader extends Reader
     /**
      * Gets the default route name for a class method.
      *
-     * @param \ReflectionClass  $class
+     * @param \ReflectionClass $class
      * @param \ReflectionMethod $method
      *
      * @throws \RuntimeException if route doesn't exist
@@ -128,7 +129,7 @@ class AnnotationsReader extends Reader
     {
         $src = file_get_contents($filename);
 
-        if (!preg_match('#'.str_replace("\\", "\\\\", self::ANNOTATION_CLASS).'#', $src)) {
+        if (!preg_match('#' . str_replace("\\", "\\\\", self::ANNOTATION_CLASS) . '#', $src)) {
             return null;
         }
 
@@ -156,8 +157,7 @@ class AnnotationsReader extends Reader
             ->files()
             ->name($filePattern)
             ->in($dirs)
-            ->ignoreVCS(true)
-        ;
+            ->ignoreVCS(true);
 
         return array_map('realpath', array_keys(iterator_to_array($finder)));
     }

@@ -103,7 +103,7 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
     protected function getClassName($fileName)
     {
         $src = $this->getFileContent($fileName);
-        if (!preg_match('#'.str_replace("\\", "\\\\", self::ANNOTATION_CLASS).'#', $src)) {
+        if (!preg_match('#' . str_replace("\\", "\\\\", self::ANNOTATION_CLASS) . '#', $src)) {
 
             return null;
         }
@@ -156,8 +156,7 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
             ->files()
             ->name($filePattern)
             ->in($dirs)
-            ->ignoreVCS(true)
-        ;
+            ->ignoreVCS(true);
 
         return array_map('realpath', array_keys(iterator_to_array($finder)));
     }
