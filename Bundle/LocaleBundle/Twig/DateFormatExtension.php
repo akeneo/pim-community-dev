@@ -6,7 +6,8 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class DateFormatExtension extends \Twig_Extension
 {
-    const TIMEZONE_CONFIG_KEY = 'oro_locale.timezone';
+    const CONFIG_TIMEZONE_KEY    = 'oro_locale.timezone';
+    const CONFIG_DATE_FORMAT_KEY = 'oro_locale.date_format';
 
     /** @var ConfigManager */
     protected $cm;
@@ -49,8 +50,18 @@ class DateFormatExtension extends \Twig_Extension
      * @param $timezone
      * @return string
      */
-    public function formatDateTime(\Twig_Environment $env, $date, $dateTimeFormat, $locale = null, $timezone = null)
-    {
+    public function formatDateTime(
+        \Twig_Environment $env,
+        $date,
+        $dateTimeFormat = null,
+        $locale = null,
+        $timezone = null
+    ) {
+        if (is_null($dateTimeFormat)) {
+            $dateTimeFormat = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY);
+        }
+
+        $dateTimeFormat = $dateTimeFormat === false ? 'd/m/Y H:i:s' : $dateTimeFormat;
         $dateTimeFormat = $this->convertDateTimeToICUFormat($dateTimeFormat);
 
         return twig_localized_date_filter(
@@ -77,10 +88,11 @@ class DateFormatExtension extends \Twig_Extension
                 'd', // day DD
                 'j', // day D
                 'y', // year YY
-                'Y', // year YYYY
+                'Y', // year YYYY,
+                'F', // month name
             ),
             array(
-                'MM', 'M', 'dd', 'd', 'yy', 'yyyy'
+                'MM', 'M', 'dd', 'd', 'yy', 'yyyy', 'MMMM'
             ),
             $dateTimeFormat
         );
@@ -94,7 +106,7 @@ class DateFormatExtension extends \Twig_Extension
      */
     public function getTimeZone()
     {
-        $timezone = $this->cm->get(self::TIMEZONE_CONFIG_KEY);
+        $timezone = $this->cm->get(self::CONFIG_TIMEZONE_KEY);
 
         $result = '+00:00';
         if ($timezone) {

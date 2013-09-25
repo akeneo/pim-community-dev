@@ -50,6 +50,7 @@ oro_system_configuration:
                       "d/m/y": "dd/mm/yy"
                       "y/m/d": "yy/mm/dd"
                       "Y-m-d": "yyyyy-mm-dd"
+                      "d F Y": "dd MONTH yyyy"
                 constraints:
                     - NotBlank: ~
 
