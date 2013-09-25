@@ -51,12 +51,13 @@ class BaseDatagrid extends DatagridManager
             );
 
             if (isset($config['filter'])) {
-                $keys             = array_map(
+                $keys = array_map(
                     function ($item) use ($scope) {
                         return $scope . '_' . $item;
                     },
                     array_keys($config['filter'])
                 );
+
                 $config['filter'] = array_combine($keys, $config['filter']);
 
                 $filters[strtolower($config['name'])] = $config['filter'];
