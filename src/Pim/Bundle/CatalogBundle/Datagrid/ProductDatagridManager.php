@@ -292,7 +292,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'expression'    => 'family',
                 'filter_type'   => FilterInterface::TYPE_ENTITY,
                 'required'      => false,
-                'sortable'      => true,
+                'sortable'      => false,
                 'filterable'    => true,
                 'show_filter'   => true,
                 'multiple'      => true,
