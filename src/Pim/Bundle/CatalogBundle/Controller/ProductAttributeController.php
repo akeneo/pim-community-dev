@@ -26,6 +26,7 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 
 /**
  * Product attribute controller
@@ -347,7 +348,7 @@ class ProductAttributeController extends AbstractDoctrineController
     {
         if ($entity->getAttributeType() === 'pim_catalog_identifier') {
             if ($request->isXmlHttpRequest()) {
-                return new Response('', 403);
+                throw new DeleteException($this->getTranslator()->trans('flash.attribute.identifier not removable'));
             } else {
                 return $this->redirectToRoute('pim_catalog_productattribute_index');
             }
