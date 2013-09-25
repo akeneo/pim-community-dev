@@ -11,5 +11,4 @@ namespace Pim\Bundle\CatalogBundle\Exception;
  */
 class LastAttributeOptionDeletedException extends \LogicException
 {
-    
 }
