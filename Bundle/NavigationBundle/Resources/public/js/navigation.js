@@ -794,10 +794,16 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
         },
 
         /**
-         * Clearing content area with native js, prevents freezing of firefox with firebug enabled
+         * Clearing content area with native js, prevents freezing of firefox with firebug enabled.
+         * If no container found, reload the page
          */
         clearContainer: function() {
-            document.getElementById('container').innerHTML = '';
+            var container = document.getElementById('container');
+            if (container) {
+                container.innerHTML = '';
+            } else {
+                location.reload();
+            }
         },
 
         /**
