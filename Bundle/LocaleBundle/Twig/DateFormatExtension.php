@@ -165,7 +165,7 @@ class DateFormatExtension extends \Twig_Extension
     {
         $format = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY);
 
-        return $this->convertDateTimeToMomentJSFormat($format);
+        return $this->convertDateTimeToJqueryDateFormat($format);
     }
 
     /**
@@ -177,7 +177,7 @@ class DateFormatExtension extends \Twig_Extension
     {
         $format = $this->cm->get(self::CONFIG_TIME_FORMAT_KEY);
 
-        return $this->convertDateTimeToMomentJSFormat($format);
+        return $this->convertDateTimeToJqueryTimeFormat($format);
     }
 
     /**
@@ -279,6 +279,76 @@ class DateFormatExtension extends \Twig_Extension
                 'h',
                 'mm',
                 'ss',
+            ),
+            $format
+        );
+    }
+
+    /**
+     * Format description
+     * http://api.jqueryui.com/datepicker/
+     *
+     * @param string $format
+     *
+     * @return string
+     */
+    protected function convertDateTimeToJqueryDateFormat($format)
+    {
+        return str_replace(
+            array(
+                'd',
+                'j',
+                'z',
+                'l',
+                'm',
+                'n',
+                'F',
+                'Y',
+            ),
+            array(
+                'dd', //day of month (two digit)
+                'd', //day of month (no leading zero)
+                'o', //day of the year (no leading zeros)
+                'DD', //day name long
+                'mm', //month of year (two digit)
+                'm', //month of year (no leading zero)
+                'MM', //month name long
+                'yy', //year (four digit)
+            ),
+            $format
+        );
+    }
+
+    /**
+     * Format description
+     * http://trentrichardson.com/examples/timepicker/#tp-formatting
+     *
+     * @param string $format
+     *
+     * @return string
+     */
+    protected function convertDateTimeToJqueryTimeFormat($format)
+    {
+        return str_replace(
+            array(
+                'H', // hour 24h with 0
+                'G', // hour 24h without 0
+                'h', // hour 12h with 0
+                'g', // hour 12h without 0
+                'i', // min
+                's', // sec
+                'a', // am/pm
+                'A', // AM/PM
+            ),
+            array(
+                'HH',
+                'H',
+                'hh',
+                'h',
+                'mm',
+                'ss',
+                'tt',
+                'TT',
             ),
             $format
         );

@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block oro_type_date_range_filter_js %}
-    {% set widgetOptions = formView.vars.widget_options|merge({dateFormat: 'mm/dd/yy' }) %}
+    {% set widgetOptions = formView.vars.widget_options|merge({dateFormat: oro_config_jquery_dateformat() }) %}
 
     new (DateFilter.extend({
         'name':    {{ formView.vars.name|json_encode|raw }},
@@ -31,7 +31,7 @@
 {% endblock %}
 
 {% block oro_type_datetime_range_filter_js %}
-    {% set widgetOptions = formView.vars.widget_options|merge({dateFormat: 'mm/dd/yy', timeFormat: 'hh:mm tt'}) %}
+    {% set widgetOptions = formView.vars.widget_options|merge({dateFormat: oro_config_jquery_dateformat(), timeFormat: oro_config_jquery_timeformat()}) %}
 
     new (DatetimeFilter.extend({
         'name':    {{ formView.vars.name|json_encode|raw }},
