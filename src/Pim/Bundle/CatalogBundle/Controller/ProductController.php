@@ -36,6 +36,7 @@ use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
+use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 
 /**
  * Product Controller
@@ -515,7 +516,7 @@ class ProductController extends AbstractDoctrineController
         if ($product->isAttributeRemovable($attribute)) {
             $this->productManager->removeAttributeFromProduct($product, $attribute);
         } else {
-            throw new \DomainException('Attribute is not removable');
+            throw new DeleteException($this->getTranslator()->trans('product.attribute not removable'));
         }
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
