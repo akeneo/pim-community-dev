@@ -27,7 +27,7 @@ class DateFormatExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'locale_date' => new \Twig_SimpleFilter(
+            'locale_date'     => new \Twig_SimpleFilter(
                 'locale_date',
                 array($this, 'formatDate'),
                 array('needs_environment' => true)
@@ -80,10 +80,11 @@ class DateFormatExtension extends \Twig_Extension
     /**
      *
      * @param \Twig_Environment $env
-     * @param $date
-     * @param $dateTimeFormat
-     * @param null $locale
-     * @param $timezone
+     * @param                   $date
+     * @param                   $dateTimeFormat
+     * @param null              $locale
+     * @param                   $timezone
+     *
      * @return string
      */
     public function formatDate(
@@ -144,7 +145,14 @@ class DateFormatExtension extends \Twig_Extension
                 'yy',
                 'yyyy',
                 'MMMM',
-                'HH', 'H', 'hh', 'h', 'mm', 'ss', 'a', 'a'
+                'HH',
+                'H',
+                'hh',
+                'h',
+                'mm',
+                'ss',
+                'a',
+                'a'
             ),
             $dateTimeFormat
         );
@@ -156,30 +164,30 @@ class DateFormatExtension extends \Twig_Extension
             array(
                 'd',
                 'j',
-                'm',
                 'n',
                 'M',
+                'm',
                 'Y',
                 'y',
                 'G',
                 'H',
-                'g',
                 'h',
+                'g',
                 'i',
                 's',
             ),
             array(
                 'DD',
                 'D',
-                'MM',
                 'M',
                 'MMM',
+                'MM',
                 'YYYY',
                 'YY',
                 'H',
                 'HH',
-                'h',
                 'hh',
+                'h',
                 'mm',
                 'ss',
             ),
