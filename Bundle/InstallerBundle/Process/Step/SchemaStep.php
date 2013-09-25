@@ -15,8 +15,7 @@ class SchemaStep extends AbstractStep
             ->runCommand('doctrine:schema:create')
             ->runCommand('doctrine:fixtures:load', array('--no-interaction' => true))
             ->runCommand('oro:entity-config:init')
-            ->runCommand('oro:entity-extend:init')
-            ->runCommand('oro:entity-extend:update-config');
+            ->runCommand('oro:entity-extend:init');
 
         return $this->complete();
     }
