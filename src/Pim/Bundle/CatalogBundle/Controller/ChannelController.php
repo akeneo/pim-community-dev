@@ -21,6 +21,8 @@ use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ChannelHandler;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Exception\DeleteException;
+use Pim\Bundle\CatalogBundle\Exception\LastAttributeOptionDeletedException;
 
 /**
  * Channel controller
@@ -191,8 +193,12 @@ class ChannelController extends AbstractDoctrineController
      */
     public function removeAction(Request $request, Channel $channel)
     {
-        $this->getManager()->remove($channel);
-        $this->getManager()->flush();
+        try {
+            $this->getManager()->remove($channel);
+            $this->getManager()->flush();
+        } catch (LastAttributeOptionDeletedException $ex) {
+            throw new DeleteException($this->getTranslator()->trans('flash.channel.not removable'));
+        }
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);

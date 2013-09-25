@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Exception\LastAttributeOptionDeletedException;
 
 /**
  * Aims to add / remove locales and channels
@@ -196,7 +197,7 @@ class UserPreferencesListener implements EventSubscriber
                 }
             }
             if (!isset($defaultOption)) {
-                throw new \LogicException(sprintf('Tried to delete last %s attribute option', $attributeCode));
+                throw new LastAttributeOptionDeletedException(sprintf('Tried to delete last %s attribute option', $attributeCode));
             }
 
             // TODO : quick fix to pass behat, waiting for refactoring of that listener

@@ -130,6 +130,7 @@ flash:
     channel:
         saved:   Channel successfully saved
         removed: Channel successfully removed
+        not removable: The last channel cannot be removed
     currency:
         updated: Currency successfully updated
     family:
