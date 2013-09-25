@@ -120,7 +120,7 @@ abstract class DatagridManager implements DatagridManagerInterface
     /**
      * @var bool
      */
-    protected $multipleSorting = true;
+    protected $multipleSorting = false;
 
     /**
      * {@inheritDoc}
