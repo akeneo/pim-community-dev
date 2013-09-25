@@ -92,8 +92,8 @@ var jsfv = (function () {
         /*// {% block getVal %}{% endblock %} */
 
         if (errorMessage != true) {
-{% block addError %}
-        {% spaceless %}jsfv.addError(field, errorMessage);{% endspaceless %}
+{% block addFailureException %}
+        {% spaceless %}jsfv.addFailureException(field, errorMessage);{% endspaceless %}
 {% endblock %}
 
             return false;
@@ -130,7 +130,7 @@ var jsfv = (function () {
         },
 {% endblock %}
 {% block addError_method %}
-        addError: function (field, errorMessage) {
+        addFailureException: function (field, errorMessage) {
             // Add errors block
             field = $(field);
             var target = field;
@@ -214,6 +214,12 @@ var jsfv = (function () {
                         e.stopImmediatePropagation();
                     }
                     return submitForm;
+                });
+
+                jsfv.onEvent(form, 'keydown', function(e) {
+                    if ($(e.target).is(':input') && e.keyCode === 13) {
+                        $(this).submit();
+                    }
                 });
             }
 {% endif %}

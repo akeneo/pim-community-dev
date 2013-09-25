@@ -8,20 +8,26 @@ use DateTimeZone;
 
 class SettingsRequirements extends RequirementCollection
 {
-    const REQUIRED_PHP_VERSION = '5.3.3';
+    const REQUIRED_PHP_VERSION = '5.3.8';
 
+    /**
+     * @param TranslatorInterface $translator
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public function __construct(TranslatorInterface $translator)
     {
         parent::__construct($translator->trans('settings.header', array(), 'requirements'));
 
         $on  = $translator->trans('switch.on');
         $off = $translator->trans('switch.off');
+        $mem = ini_get('memory_limit');
 
         $this
             ->add(new Requirement(
                 $translator->trans('settings.version', array(), 'requirements'),
-                version_compare(phpversion(), self::REQUIRED_PHP_VERSION, '>='),
-                '>='.self::REQUIRED_PHP_VERSION,
+                version_compare(phpversion(), self::REQUIRED_PHP_VERSION, '>'),
+                '>'.self::REQUIRED_PHP_VERSION,
                 phpversion()
             ))
             ->add(new Requirement(
@@ -33,7 +39,7 @@ class SettingsRequirements extends RequirementCollection
             ))
             ->add(new Requirement(
                 $translator->trans('settings.memory_limit', array(), 'requirements'),
-                $this->getBytes(ini_get('memory_limit')) >= 256 * 1024 * 1024,
+                $this->getBytes($mem) >= 256 * 1024 * 1024 || '-1' === $mem,
                 '256M',
                 ini_get('memory_limit')
             ))

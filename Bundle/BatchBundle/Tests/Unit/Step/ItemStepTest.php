@@ -12,11 +12,22 @@ use Oro\Bundle\BatchBundle\Event\EventInterface;
  */
 class ItemStepTest extends \PHPUnit_Framework_TestCase
 {
-    protected $itemStep        = null;
-    protected $eventDispatcher = null;
-    protected $jobRepository   = null;
-
     const STEP_NAME = 'test_step_name';
+
+    /**
+     * @var ItemStep
+     */
+    protected $itemStep = null;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $eventDispatcher = null;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $jobRepository = null;
 
     /**
      * {@inheritdoc}
@@ -150,35 +161,45 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
 
     public function testExecute()
     {
-        $reader = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
+        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $stepExecution->expects($this->any())
+            ->method('getStatus')
+            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
 
+        $reader = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ReaderStub')
+            ->setMethods(array('setStepExecution', 'read'))
+            ->getMock();
+        $reader->expects($this->once())
+            ->method('setStepExecution')
+            ->with($stepExecution);
         $reader->expects($this->exactly(8))
             ->method('read')
             ->will($this->onConsecutiveCalls(1, 2, 3, 4, 5, 6, 7, null));
 
-        $processor = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemProcessorInterface');
-
+        $processor = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ProcessorStub')
+            ->setMethods(array('setStepExecution', 'process'))
+            ->getMock();
+        $processor->expects($this->once())
+            ->method('setStepExecution')
+            ->with($stepExecution);
         $processor->expects($this->exactly(7))
             ->method('process')
             ->will($this->onConsecutiveCalls(1, null, 3, 4, 5, 6, 7, null));
 
-        $writer = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemWriterInterface');
-
+        $writer = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\WriterStub')
+            ->setMethods(array('setStepExecution', 'write'))
+            ->getMock();
+        $writer->expects($this->once())
+            ->method('setStepExecution')
+            ->with($stepExecution);
         $writer->expects($this->exactly(2))
             ->method('write');
 
         $this->itemStep->setReader($reader);
         $this->itemStep->setProcessor($processor);
         $this->itemStep->setWriter($writer);
-
-        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $stepExecution->expects($this->any())
-            ->method('getStatus')
-            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
-
         $this->itemStep->setBatchSize(5);
         $this->itemStep->execute($stepExecution);
     }

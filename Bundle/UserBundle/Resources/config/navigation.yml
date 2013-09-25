@@ -11,7 +11,7 @@ oro_menu_config:
             route: 'oro_user_index'
             extras:
                 routes: ['/^oro_user_(?!role\w+|group\w+|security\w+|reset\w+)\w+$/']
-                description: List of all system users
+                description: List of system users
         user_create:
             label: 'Create User'
             route: 'oro_user_create'
@@ -20,13 +20,13 @@ oro_menu_config:
             route: 'oro_user_role_index'
             extras:
                 routes: ['oro_user_role_*']
-                description: List of all system roles
+                description: List of system roles
         user_groups:
             label: 'Groups'
             route: 'oro_user_group_index'
             extras:
                 routes: ['oro_user_group_*']
-                description: List of all system groups
+                description: List of system groups
         shortcut_new_user:
             label: Create new user
             route: oro_user_create

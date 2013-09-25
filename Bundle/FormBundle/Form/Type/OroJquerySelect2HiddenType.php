@@ -60,7 +60,8 @@ class OroJquerySelect2HiddenType extends AbstractType
                     'entity_class'       => null,
                     'configs'            => $defaultConfig,
                     'converter'          => null,
-                    'autocomplete_alias' => null
+                    'autocomplete_alias' => null,
+                    'excluded'           => null
                 )
             );
 
@@ -183,7 +184,10 @@ class OroJquerySelect2HiddenType extends AbstractType
     {
         parent::buildView($view, $form, $options);
 
-        $vars = array('configs' => $options['configs']);
+        $vars = array(
+            'configs' => $options['configs'],
+            'excluded' => (array)$options['excluded']
+        );
 
         if ($form->getData()) {
             $result = array();

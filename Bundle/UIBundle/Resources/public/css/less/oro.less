@@ -308,6 +308,7 @@ label, input, button, select, textarea { font-size:13px;}
   width: 100%;
   display: block;
 }
+.opportunity-info .control-group .controls p.control-label,
 .opportunity-info .controls p.control-label{
   text-overflow: ellipsis;
   overflow: hidden;
@@ -395,19 +396,21 @@ body .select2-container {
   color:@linkColor;
 }
 
-li.dropdown{
-  ul{
-    display: none !important;
+#main-menu{
+  li.dropdown{
     ul{
-      top: 0;
+      display: none !important;
+      ul{
+        top: 0;
+      }
     }
-  }
-  &:hover > .menu_level_1{
-    display: block !important;
-  }
-  .menu_level_2 li:hover > .menu_level_3,
-  .menu_level_1 li:hover > .menu_level_2{
-    display: block !important;
+    &:hover > .menu_level_1{
+      display: block !important;
+    }
+    .menu_level_2 li:hover > .menu_level_3,
+    .menu_level_1 li:hover > .menu_level_2{
+      display: block !important;
+    }
   }
 }
 
@@ -1400,7 +1403,7 @@ footer {
     cursor: move;
   }
 }
-.ui-dialog #adopted button.btn {
+.ui-dialog .widget-actions-section button.btn {
   margin-left: 5px;
 }
 .ui-dialog .ui-resizable-se {
@@ -4809,9 +4812,16 @@ disabled look for disabled choices in the results dropdown
   > .row-fluid {
     margin:0 -7px;
     .contact-info-col {
+      
       width:50%;
       margin:0;
       padding-left:13px;
+      .box-type1{
+        min-height: 461px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+      }
       &:last-child {
         float:right;
       }
@@ -4827,6 +4837,10 @@ disabled look for disabled choices in the results dropdown
           }
         }
       }
+    }
+    .contact-info-row {
+      margin:0;
+      padding-left:13px;
     }
   }
 }
@@ -5155,6 +5169,8 @@ span.validation-faled {
   display: block;
   margin: 5px 0 5px 14px;
   line-height: 1.1em;
+  display: block;
+  clear:both;
   &:before {
     content: "\f00d";
     color: @errorText;
@@ -5164,7 +5180,9 @@ span.validation-faled {
     margin-left: -14px;
   }
 }
-
+.ui-dialog .form-horizontal .control-group .controls .validation-faled{
+  margin-left: 127px;
+}
 @media only screen and (max-width: 1340px) {
   .contact-info-col-set > .row-fluid > .span6{
     width: 100%;
@@ -5174,4 +5192,7 @@ span.validation-faled {
   .contact-info-col-set > .row-fluid > .span6:last-child{
     margin-bottom: 0;
   }
+}
+.default-field{
+  background: #C3C3C3;
 }

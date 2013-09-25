@@ -1,0 +1,3 @@
+oro.importexport.import_error %number%: "Error in row #%number%."
+oro_importexport.import.import_success: "File was successful imported."
+oro_importexport.import.import_error: "Errors occurred during file import."

@@ -1,8 +1,10 @@
 /* jshint devel:true*/
 /* global define, require */
-define(['jquery', 'underscore', 'backbone', 'oro/mediator'],
-function($, _, Backbone, mediator) {
+define(['underscore', 'backbone', 'oro/mediator', 'jquery.form'],
+function(_, Backbone, mediator) {
     'use strict';
+
+    var $ = Backbone.$;
 
     /**
      * @export  oro/abstract-widget
@@ -80,6 +82,7 @@ function($, _, Backbone, mediator) {
          */
         _adoptWidgetActions: function() {
             this.actions['adopted'] = {};
+            this.form = null;
             var adoptedActionsContainer = this._getAdoptedActionsContainer();
             if (adoptedActionsContainer.length > 0) {
                 var self = this;
@@ -132,11 +135,27 @@ function($, _, Backbone, mediator) {
         },
 
         _onAdoptedFormSubmit: function(form) {
-            this.loadContent(form.serialize(), form.attr('method'));
+            if (form.find('[type="file"]').length) {
+                this.trigger('beforeContentLoad', this);
+                form.ajaxSubmit({
+                    data: {
+                        '_widgetContainer': this.options.type,
+                        '_wid': this.getWid()
+                    },
+                    success: _.bind(this.onContentLoad, this),
+                    error: _.bind(this.onContentLoadFail, this)
+                });
+            } else {
+                this.loadContent(form.serialize(), form.attr('method'));
+            }
         },
 
         _onAdoptedFormResetClick: function(form) {
             $(form).trigger('reset');
+        },
+
+        _createWidgetActionsSection: function(section) {
+            return $('<div id="' + section + '" class="widget-actions-section"/>');
         },
 
         addAction: function(key, actionElement, section) {
@@ -145,7 +164,12 @@ function($, _, Backbone, mediator) {
             }
             if (!this.hasAction(key, section)) {
                 this.actions[key] = actionElement;
-                this.getActionsElement().append(actionElement);
+                var sectionContainer = this.getActionsElement().find('#' + section);
+                if (!sectionContainer.length) {
+                    sectionContainer = this._createWidgetActionsSection(section);
+                    sectionContainer.appendTo(this.getActionsElement());
+                }
+                sectionContainer.append(actionElement);
             }
         },
 
@@ -215,7 +239,7 @@ function($, _, Backbone, mediator) {
 
             if (container) {
                 _.each(this.actions, function(actions, section) {
-                    var sectionContainer = $('<div id="' + section + '"/>');
+                    var sectionContainer = self._createWidgetActionsSection(section);
                     _.each(actions, function(action) {
                         self._initActionEvents(action);
                         sectionContainer.append(action);
@@ -227,7 +251,7 @@ function($, _, Backbone, mediator) {
 
         _initActionEvents: function(action) {
             var self = this;
-            switch (action.attr('type').toLowerCase()) {
+            switch ($(action).attr('type').toLowerCase()) {
                 case 'submit':
                     action.on('click', function() {
                         self.trigger('adoptedFormSubmitClick', self.form, self);
@@ -288,18 +312,38 @@ function($, _, Backbone, mediator) {
             options.data = (options.data !== undefined ? options.data + '&' : '') +
                 '_widgetContainer=' + this.options.type + '&_wid=' + this.getWid();
 
-            Backbone.$.ajax(options).done(_.bind(function(content) {
-                try {
-                    this.trigger('contentLoad', content, this);
-                    this.actionsEl = null;
-                    this.setElement($(content).filter('.widget-content'));
-                    this._show();
-                    mediator.trigger('hash_navigation_request:complete');
-                } catch (error) {
-                    // Remove state with unrestorable content
-                    this.trigger('contentLoadError', this);
-                }
-            }, this));
+            this.trigger('beforeContentLoad', this);
+            Backbone.$.ajax(options)
+                .done(_.bind(this.onContentLoad, this))
+                .fail(_.bind(this.onContentLoadFail, this))
+            ;
+        },
+
+        onContentLoadFail: function() {
+            var failContent = '<div class="widget-content">' +
+                '<div class="alert alert-error">Widget content loading failed</div>' +
+                '</div>';
+            this.onContentLoad(failContent);
+        },
+
+        /**
+         * Handle loaded content.
+         *
+         * @param {String} content
+         */
+        onContentLoad: function(content) {
+            try {
+                this.trigger('contentLoad', content, this);
+                this.actionsEl = null;
+                this.actions = {};
+                this.setElement($(content).filter('.widget-content'));
+                this._show();
+                mediator.trigger('hash_navigation_request:complete');
+            } catch (error) {
+                console.warn(error)
+                // Remove state with unrestorable content
+                this.trigger('contentLoadError', this);
+            }
         },
 
         _show: function() {

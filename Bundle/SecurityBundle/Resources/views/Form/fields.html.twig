@@ -37,7 +37,7 @@
 
 {% block oro_acl_privilege_widget %}
      {% spaceless %}
-         <tr>
+         <tr {% if form.vars.value.identity.name == "(default)" %}class="default-field"{% endif %}>
              <td>
                  {{ form_widget(form.identity) }}
              </td>

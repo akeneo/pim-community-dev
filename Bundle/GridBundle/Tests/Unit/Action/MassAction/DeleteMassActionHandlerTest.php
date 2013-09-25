@@ -30,7 +30,16 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
 
-        $this->handler = new DeleteMassActionHandler($this->em, $this->translator);
+        // TODO: replace mock with valid behaviour and use contact pager iterator mock instantiation
+        $this->handler = $this->getMock(
+            'Oro\Bundle\GridBundle\Action\MassAction\DeleteMassActionHandler',
+            array('prepareIterableResult'),
+            array($this->em, $this->translator)
+        );
+        $this->handler->expects($this->any())
+            ->method('prepareIterableResult')
+            ->with($this->isInstanceOf('Oro\Bundle\GridBundle\Datagrid\IterableResultInterface'))
+            ->will($this->returnArgument(0));
 
         $this->mediator = $this->getMock('Oro\Bundle\GridBundle\Action\MassAction\MassActionMediatorInterface');
     }
@@ -63,12 +72,23 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
 
             if ($i == DeleteMassActionHandler::FLUSH_BATCH_SIZE) {
                 $emExpectedCalls[] = array('flush', array());
+                $emExpectedCalls[] = array('clear', array());
             }
 
             $emExpectedCalls[] = array('remove', array($entity));
         }
         $emExpectedCalls[] = array('flush', array());
+        $emExpectedCalls[] = array('clear', array());
         $emExpectedCalls[] = array('commit', array());
+
+        $resultsIterator = $this->getMock(
+            'Oro\Bundle\GridBundle\Tests\Unit\Action\MassAction\Stub\ArrayIterableResult',
+            array('setBufferSize'),
+            array($results)
+        );
+        $resultsIterator->expects($this->once())
+            ->method('setBufferSize')
+            ->with(DeleteMassActionHandler::FLUSH_BATCH_SIZE);
 
         $massAction = $this->getMock('Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface');
 
@@ -76,7 +96,7 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
             array(
                 'mock' => $this->mediator,
                 'expectedCalls' => array(
-                    array('getResults', array(), $this->returnValue($results)),
+                    array('getResults', array(), $this->returnValue($resultsIterator)),
                     array('getMassAction', array(), $this->returnValue($massAction)),
                 )
             ),
@@ -120,6 +140,14 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
 
         $entity = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
         $result = $this->getMock('Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface');
+        $resultsIterator = $this->getMock(
+            'Oro\Bundle\GridBundle\Tests\Unit\Action\MassAction\Stub\ArrayIterableResult',
+            array('setBufferSize'),
+            array(array($result))
+        );
+        $resultsIterator->expects($this->once())
+            ->method('setBufferSize')
+            ->with(DeleteMassActionHandler::FLUSH_BATCH_SIZE);
         $massAction = $this->getMock('Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface');
         $datagrid = $this->getMock('Oro\Bundle\GridBundle\Datagrid\DatagridInterface');
         $identifierField = $this->getMock('Oro\Bundle\GridBundle\Field\FieldDescriptionInterface');
@@ -128,7 +156,7 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
             array(
                 'mock' => $this->mediator,
                 'expectedCalls' => array(
-                    array('getResults', array(), $this->returnValue(array($result))),
+                    array('getResults', array(), $this->returnValue($resultsIterator)),
                     array('getDatagrid', array(), $this->returnValue($datagrid)),
                     array('getDatagrid', array(), $this->returnValue($datagrid)),
                     array('getMassAction', array(), $this->returnValue($massAction)),
@@ -161,6 +189,7 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
                     array('getReference', array('TestEntityName', $entityId), $this->returnValue($entity)),
                     array('remove', array($entity)),
                     array('flush', array()),
+                    array('clear', array()),
                     array('commit', array()),
                 )
             ),
@@ -200,6 +229,14 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
 
         $entity = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
         $result = $this->getMock('Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface');
+        $resultsIterator = $this->getMock(
+            'Oro\Bundle\GridBundle\Tests\Unit\Action\MassAction\Stub\ArrayIterableResult',
+            array('setBufferSize'),
+            array(array($result))
+        );
+        $resultsIterator->expects($this->once())
+            ->method('setBufferSize')
+            ->with(DeleteMassActionHandler::FLUSH_BATCH_SIZE);
         $massAction = $this->getMock('Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface');
         $datagrid = $this->getMock('Oro\Bundle\GridBundle\Datagrid\DatagridInterface');
         $identifierField = $this->getMock('Oro\Bundle\GridBundle\Field\FieldDescriptionInterface');
@@ -208,7 +245,7 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
             array(
                 'mock' => $this->mediator,
                 'expectedCalls' => array(
-                    array('getResults', array(), $this->returnValue(array($result))),
+                    array('getResults', array(), $this->returnValue($resultsIterator)),
                     array('getDatagrid', array(), $this->returnValue($datagrid)),
                     array('getMassAction', array(), $this->returnValue($massAction)),
                     array('getDatagrid', array(), $this->returnValue($datagrid)),
@@ -242,6 +279,7 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
                     array('getReference', array('TestEntityName', $entityId), $this->returnValue($entity)),
                     array('remove', array($entity)),
                     array('flush', array()),
+                    array('clear', array()),
                     array('commit', array()),
                 )
             ),
@@ -281,6 +319,14 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
     public function testHandleCannotGetEntityName()
     {
         $result = $this->getMock('Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface');
+        $resultsIterator = $this->getMock(
+            'Oro\Bundle\GridBundle\Tests\Unit\Action\MassAction\Stub\ArrayIterableResult',
+            array('setBufferSize'),
+            array(array($result))
+        );
+        $resultsIterator->expects($this->once())
+            ->method('setBufferSize')
+            ->with(DeleteMassActionHandler::FLUSH_BATCH_SIZE);
         $massAction = $this->getMock('Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface');
         $datagrid = $this->getMock('Oro\Bundle\GridBundle\Datagrid\DatagridInterface');
 
@@ -288,7 +334,7 @@ class DeleteMassActionHandlerTest extends \PHPUnit_Framework_TestCase
             array(
                 'mock' => $this->mediator,
                 'expectedCalls' => array(
-                    array('getResults', array(), $this->returnValue(array($result))),
+                    array('getResults', array(), $this->returnValue($resultsIterator)),
                     array('getDatagrid', array(), $this->returnValue($datagrid)),
                     array('getMassAction', array(), $this->returnValue($massAction)),
                 )

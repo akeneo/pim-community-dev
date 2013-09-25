@@ -144,7 +144,7 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
 
         $aclResource = $action->getAclResource();
 
-        if (!$aclResource || $this->securityFacade->isGranted($aclResource)) {
+        if (!$aclResource || $this->isResourceGranted($aclResource)) {
             $datagrid->addRowAction($action);
         }
     }
@@ -156,7 +156,7 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
     public function addMassAction(DatagridInterface $datagrid, MassActionInterface $massAction)
     {
         $aclResource = $massAction->getAclResource();
-        if (!$aclResource || $this->securityFacade->isGranted($aclResource)) {
+        if (!$aclResource || $this->isResourceGranted($aclResource)) {
             $datagrid->addMassAction($massAction);
         }
     }
@@ -222,4 +222,23 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
      * @return PagerInterface
      */
     abstract protected function createPager(ProxyQueryInterface $query);
+
+    /**
+     * Checks if an access to a resource is granted or not
+     *
+     * @param string $aclResource An ACL annotation id or "permission;descriptor"
+     * @return bool
+     */
+    protected function isResourceGranted($aclResource)
+    {
+        $delim = strpos($aclResource, ';');
+        if ($delim) {
+            $permission = substr($aclResource, 0, $delim);
+            $descriptor = substr($aclResource, $delim + 1);
+
+            return $this->securityFacade->isGranted($permission, $descriptor);
+        }
+
+        return $this->securityFacade->isGranted($aclResource);
+    }
 }

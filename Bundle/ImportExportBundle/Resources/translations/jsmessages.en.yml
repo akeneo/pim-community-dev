@@ -1,0 +1,2 @@
+"Export performed successfully, {{ count }} entities were exported.": "Export performed successfully, {{ count }} entities were exported."
+"Export operation fails, {{ count }} error(s) found.": "Export operation fails, {{ count }} error(s) found."

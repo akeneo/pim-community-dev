@@ -71,7 +71,7 @@ class WorkflowItem
     /**
      * Entities related to this WorkflowItems
      *
-     * @var Collection
+     * @var Collection|WorkflowBindEntity[]
      *
      * @ORM\OneToMany(
      *  targetEntity="WorkflowBindEntity",
@@ -91,6 +91,20 @@ class WorkflowItem
      * @ORM\JoinColumn(name="workflow_name", referencedColumnName="name", onDelete="CASCADE")
      */
     protected $definition;
+
+    /**
+     * Related transition records
+     *
+     * @var Collection|WorkflowTransitionRecord[]
+     *
+     * @ORM\OneToMany(
+     *  targetEntity="WorkflowTransitionRecord",
+     *  mappedBy="workflowItem",
+     *  cascade={"persist", "remove"},
+     *  orphanRemoval=true
+     * )
+     */
+    protected $transitionRecords;
 
     /**
      * @var \Datetime $created
@@ -143,6 +157,7 @@ class WorkflowItem
     public function __construct()
     {
         $this->bindEntities = new ArrayCollection();
+        $this->transitionRecords = new ArrayCollection();
         $this->closed = false;
         $this->data = new WorkflowData();
         $this->result = new WorkflowResult();
@@ -409,6 +424,26 @@ class WorkflowItem
             $this->result = new WorkflowResult();
         }
         return $this->result;
+    }
+
+    /**
+     * @return Collection|WorkflowTransitionRecord[]
+     */
+    public function getTransitionRecords()
+    {
+        return $this->transitionRecords;
+    }
+
+    /**
+     * @param WorkflowTransitionRecord $transitionRecord
+     * @return WorkflowItem
+     */
+    public function addTransitionRecord(WorkflowTransitionRecord $transitionRecord)
+    {
+        $transitionRecord->setWorkflowItem($this);
+        $this->transitionRecords->add($transitionRecord);
+
+        return $this;
     }
 
     /**
