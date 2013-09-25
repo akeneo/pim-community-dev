@@ -78,9 +78,4 @@ class EntitySelectType extends AbstractType
     {
         return self::NAME;
     }
-
-    protected function findRelationModel()
-    {
-
-    }
 }
