@@ -2,6 +2,7 @@
 {% import 'OroTagBundle::macros.html.twig' as _tag %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroEmailBundle::macros.html.twig' as Email %}
+{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 
 {% set gridId = 'users-email-grid' %}
 {% block head_script %}
@@ -73,7 +74,7 @@
 
 {% block stats %}
     {{ parent() }}
-    <li>{{ 'Last logged in'|trans }}: {{ entity.lastLogin ? UI.time(entity.lastLogin) : 'N/A' }}</li>
+    <li>{{ 'Last logged in'|trans }}: {{ entity.lastLogin ? Locale.time(entity.lastLogin) : 'N/A' }}</li>
     <li>{{ 'Login count'|trans }}: {{ entity.loginCount|default(0) }}</li>
 {% endblock stats %}
 
@@ -104,7 +105,7 @@
                         UI.attibuteRow('User name'|trans, entity.username),
                         UI.attibuteRow('First name'|trans, entity.firstname),
                         UI.attibuteRow('Last name'|trans, entity.lastname),
-                        UI.attibuteRow('Birthday'|trans, entity.birthday ? UI.date(entity.birthday) : 'N/A'),
+                        UI.attibuteRow('Birthday'|trans, entity.birthday ? Locale.date(entity.birthday) : 'N/A'),
                         UI.renderAttribute('API key'|trans, _self.api_data_block(entity))
                     ]
                 },

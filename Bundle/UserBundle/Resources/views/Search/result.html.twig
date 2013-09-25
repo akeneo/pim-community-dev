@@ -4,7 +4,7 @@
     * indexer_item - indexer item Oro\Bundle\SearchBundle\Query\Result\Item
 #}
 {% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
-{% import 'OroLocaleBundle::macros.html.twig' as macros %}
+{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 
 {% set format = oro_config_value('oro_locale.name_format') %}
 {% set entity_output = oro_config_entity('Oro\\Bundle\\UserBundle\\Entity\\User') %}
@@ -29,8 +29,8 @@
 {% set entityType = entity_output.name|trans({}, 'config') %}
 
 {% set entityInfo = [
-    {'title': 'Created', 'value': entity.createdAt ? macros.time(entity.createdAt) : 'N/A'},
-    {'title': 'Updated', 'value': entity.updatedAt ? macros.time(entity.updatedAt) : 'N/A'},
-    {'title': 'Last logged in', 'value': entity.lastLogin ? macros.time(entity.lastLogin) : 'N/A'},
+    {'title': 'Created', 'value': entity.createdAt ? Locale.time(entity.createdAt) : 'N/A'},
+    {'title': 'Updated', 'value': entity.updatedAt ? Locale.time(entity.updatedAt) : 'N/A'},
+    {'title': 'Last logged in', 'value': entity.lastLogin ? Locale.time(entity.lastLogin) : 'N/A'},
     {'title': 'Login count', 'value': entity.loginCount|default(0)}
 ] %}
