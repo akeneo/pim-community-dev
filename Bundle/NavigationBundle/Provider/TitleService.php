@@ -17,6 +17,9 @@ use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
 
 use Doctrine\ORM\EntityRepository;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class TitleService implements TitleServiceInterface
 {
     /**
@@ -25,6 +28,13 @@ class TitleService implements TitleServiceInterface
      * @var string
      */
     private $template;
+
+    /**
+     * Short title template
+     *
+     * @var string
+     */
+    private $shortTemplate;
 
     /**
      * Title data readers
@@ -107,19 +117,34 @@ class TitleService implements TitleServiceInterface
      * @param string $prefix
      * @param string $suffix
      * @param bool   $isJSON
+     * @param bool   $isShort
      * @return $this
      */
-    public function render($params = array(), $title = null, $prefix = null, $suffix = null, $isJSON = false)
-    {
+    public function render(
+        $params = array(),
+        $title = null,
+        $prefix = null,
+        $suffix = null,
+        $isJSON = false,
+        $isShort = false
+    ) {
         if (!is_null($title) && $isJSON) {
             try {
                 /** @var $data \Oro\Bundle\NavigationBundle\Title\StoredTitle */
-                $data =  $this->serializer->deserialize($title, 'Oro\Bundle\NavigationBundle\Title\StoredTitle', 'json');
+                $data =  $this->serializer->deserialize(
+                    $title,
+                    'Oro\Bundle\NavigationBundle\Title\StoredTitle',
+                    'json'
+                );
 
                 $params = $data->getParams();
-                $title = $data->getTemplate();
-                $prefix = $data->getPrefix();
-                $suffix = $data->getSuffix();
+                if ($isShort) {
+                    $title = $data->getShortTemplate();
+                } else {
+                    $title = $data->getTemplate();
+                    $prefix = $data->getPrefix();
+                    $suffix = $data->getSuffix();
+                }
             } catch (RuntimeException $e) {
                 // wrong json string - ignore title
                 $params = array();
@@ -128,25 +153,28 @@ class TitleService implements TitleServiceInterface
                 $suffix = '';
             }
         }
-
-        if (is_null($title)) {
-            $title = $this->getTemplate();
-        }
-        if (is_null($prefix)) {
-            $prefix = $this->prefix;
-        }
-        if (is_null($suffix)) {
-            $suffix = $this->suffix;
-        }
+        $trans = $this->translator;
         if (empty($params)) {
             $params = $this->getParams();
         }
-
-        $trans = $this->translator;
-
-        $translatedTemplate = $trans->trans($title, $params);
-
-        $translatedTemplate = $trans->trans($prefix, $params) . $translatedTemplate . $trans->trans($suffix, $params);
+        if ($isShort) {
+            if (is_null($title)) {
+                $title = $this->getShortTemplate();
+            }
+            $translatedTemplate = $trans->trans($title, $params);
+        } else {
+            if (is_null($title)) {
+                $title = $this->getTemplate();
+            }
+            if (is_null($prefix)) {
+                $prefix = $this->prefix;
+            }
+            if (is_null($suffix)) {
+                $suffix = $this->suffix;
+            }
+            $translatedTemplate = $trans->trans($prefix, $params) .
+                $trans->trans($title, $params) . $trans->trans($suffix, $params);
+        }
 
         return $translatedTemplate;
     }
@@ -164,6 +192,9 @@ class TitleService implements TitleServiceInterface
             || (isset($values['force']) && $values['force']))
         ) {
             $this->setTemplate($values['titleTemplate']);
+        }
+        if (isset($values['titleShortTemplate'])) {
+            $this->setShortTemplate($values['titleShortTemplate']);
         }
         if (isset($values['params'])) {
             $this->setParams($values['params']);
@@ -228,6 +259,29 @@ class TitleService implements TitleServiceInterface
     }
 
     /**
+     * Set short template string
+     *
+     * @param string $shortTemplate
+     * @return $this
+     */
+    public function setShortTemplate($shortTemplate)
+    {
+        $this->shortTemplate = $shortTemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get short template string
+     *
+     * @return string
+     */
+    public function getShortTemplate()
+    {
+        return $this->shortTemplate;
+    }
+
+    /**
      * Return params
      *
      * @return array
@@ -264,8 +318,10 @@ class TitleService implements TitleServiceInterface
 
         if ($bdData) {
             $this->setTemplate($bdData->getTitle());
+            $this->setShortTemplate($bdData->getShortTitle());
         } elseif (isset($this->titles[$route])) {
             $this->setTemplate($this->titles[$route]);
+            $this->setShortTemplate($this->titles[$route]);
         }
     }
 
@@ -314,6 +370,7 @@ class TitleService implements TitleServiceInterface
 
             // update existing system titles
             if ($entity->getIsSystem()) {
+                $entity->setShortTitle($this->getShortTitle($title, $route));
                 $title = $this->createTile($route, $title);
                 if (!$title) {
                     $title = '';
@@ -327,9 +384,10 @@ class TitleService implements TitleServiceInterface
 
         // create title items for new routes
         foreach ($data as $route => $title) {
-            if ($title = $this->createTile($route, $title)) {
+            if ($fullTitle = $this->createTile($route, $title)) {
                 $entity = new Title();
-                $entity->setTitle($title);
+                $entity->setShortTitle($this->getShortTitle($title, $route));
+                $entity->setTitle($fullTitle);
                 $entity->setRoute($route);
                 $entity->setIsSystem(true);
 
@@ -349,10 +407,7 @@ class TitleService implements TitleServiceInterface
                 $titleData[] = $title;
             }
 
-            $breadcrumbLabels = $this->breadcrumbManager->getBreadcrumbLabels(
-                $this->userConfigManager->get('oro_navigation.breadcrumb_menu'),
-                $route
-            );
+            $breadcrumbLabels = $this->getBreadcrumbs($route);
             if (count($breadcrumbLabels)) {
                 $titleData = array_merge($titleData, $breadcrumbLabels);
             }
@@ -368,6 +423,36 @@ class TitleService implements TitleServiceInterface
     }
 
     /**
+     * @param $route
+     * @return array
+     */
+    protected function getBreadcrumbs($route)
+    {
+        return $this->breadcrumbManager->getBreadcrumbLabels(
+            $this->userConfigManager->get('oro_navigation.breadcrumb_menu'),
+            $route
+        );
+    }
+
+    /**
+     * Get short title
+     *
+     * @param $title
+     * @param $route
+     */
+    protected function getShortTitle($title, $route)
+    {
+        if (!$title) {
+            $breadcrumbs = $this->getBreadcrumbs($route);
+            if (count($breadcrumbs)) {
+                $title = $breadcrumbs[0];
+            }
+        }
+
+        return $title;
+    }
+
+    /**
      * Return serialized title data
      *
      * @return string
@@ -377,6 +462,7 @@ class TitleService implements TitleServiceInterface
         $storedTitle = new StoredTitle();
         $storedTitle
             ->setTemplate($this->getTemplate())
+            ->setShortTemplate($this->getShortTemplate())
             ->setParams($this->getParams())
             ->setPrefix($this->prefix)
             ->setSuffix($this->suffix);

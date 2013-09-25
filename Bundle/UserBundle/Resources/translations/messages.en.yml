@@ -82,3 +82,18 @@ Login: Login
 "View role": "View role"
 "Remove role": "Remove role"
 "Template controller": "Template controller"
+oro:
+    user:
+        controller:
+            group:
+                message:
+                    saved: "Group saved"
+            role:
+                message:
+                    saved: "Role saved"
+            user:
+                message:
+                    saved: "User saved"
+            status:
+                message:
+                    saved: "Status saved"

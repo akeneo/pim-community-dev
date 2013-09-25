@@ -30,7 +30,7 @@ class CsvFileWriter implements ItemWriterInterface, StepExecutionAwareInterface
     /**
      * @var string
      */
-    protected $delimiter = ';';
+    protected $delimiter = ',';
 
     /**
      * @var string

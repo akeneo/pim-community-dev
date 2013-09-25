@@ -29,6 +29,7 @@ class TitleTest extends \PHPUnit_Framework_TestCase
         return array(
             array('route'),
             array('title'),
+            array('shortTitle'),
             array('isSystem')
         );
     }

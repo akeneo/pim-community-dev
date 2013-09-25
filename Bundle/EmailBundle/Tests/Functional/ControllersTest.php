@@ -51,6 +51,6 @@ class ControllersTest extends WebTestCase
 
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200, '');
-        $this->assertContains("Template sucessfully saved", $crawler->html());
+        $this->assertContains("Template saved", $crawler->html());
     }
 }

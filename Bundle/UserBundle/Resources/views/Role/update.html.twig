@@ -27,15 +27,15 @@
                 'aCss': 'no-hash remove-button',
                 'dataId': form.vars.value.id,
                 'id': 'btn-remove-role',
-                'dataMessage': 'Are you sure you want to delete this role?',
-                'successMessage': 'Role successfully removed',
-                'title': 'Delete Role',
-                'label': 'Delete'
+                'dataMessage': 'Are you sure you want to delete this role?'|trans,
+                'successMessage': 'Role removed'|trans,
+                'title': 'Delete Role'|trans,
+                'label': 'Delete'|trans
             })
         }}
         {{ UI.buttonSeparator() }}
     {% endif %}
-    {{ UI.button({'path' : path('oro_user_role_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+    {{ UI.button({'path' : path('oro_user_role_index'), 'title' : 'Cancel'|trans, 'label' : 'Cancel'|trans}) }}
     {{ UI.saveAndStayButton('oro_user_role_update') }}
     {{ UI.saveAndCloseButton() }}
 {% endblock navButtons %}
@@ -45,7 +45,7 @@
         {% set breadcrumbs = {
             'entity':      form.vars.value,
             'indexPath':   path('oro_user_role_index'),
-            'indexLabel': 'Roles',
+            'indexLabel': 'Roles'|trans,
             'entityTitle': form.vars.value.label
         }
         %}
@@ -60,7 +60,7 @@
 
     {% set dataBlocks = [
         {
-            'title': 'General',
+            'title': 'General'|trans,
             'class': 'active',
             'subblocks': [
                 {
@@ -93,7 +93,7 @@
 
     {% set dataBlocks = dataBlocks|merge(
         [{
-            'title' : 'Users',
+            'title' : 'Users'|trans,
             'subblocks':
             [
                 {

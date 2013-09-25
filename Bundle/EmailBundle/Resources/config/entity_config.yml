@@ -5,6 +5,7 @@ oro_entity_config:
                 available_in_template:
                     options:
                         default_value:      false
+                        allowed_type:       [string,integer,smallint,bigint,boolean,decimal,date,text,float]
                         is_bool:            true
                     form:
                         type:               choice

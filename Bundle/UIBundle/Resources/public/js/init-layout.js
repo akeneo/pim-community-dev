@@ -9,9 +9,9 @@ function(mediator) {
         }, 50);
     });
 });
-require(['jquery', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout', 'oro/navigation', 'oro/modal', 'oro/messenger',
+require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout', 'oro/navigation', 'oro/modal', 'oro/messenger',
     'bootstrap', 'jquery-ui', 'jquery-ui-timepicker'],
-function($, __, app, mediator, layout, Navigation, Modal, messenger) {
+function($, _, __, app, mediator, layout, Navigation, Modal, messenger) {
     'use strict';
 
     /* ============================================================
@@ -132,9 +132,9 @@ function($, __, app, mediator, layout, Navigation, Modal, messenger) {
                 $parent.find('input[type=text]').first().focus().select();
             }
         });
-        $('body').on('focus.dropdown.data-api', '[data-toggle=dropdown]', function(e) {
+        $('body').on('focus.dropdown.data-api', '[data-toggle=dropdown]', _.debounce(function(e) {
             $(e.target).parent().find('input[type=text]').first().focus();
-        });
+        }, 10));
 
         $('html').click(function(e) {
             var $target = $(e.target),

@@ -109,6 +109,7 @@ oro_entity_config:
                 is_visible:
                     options:
                         default_value:      true
+                        allowed_type:       [string,integer,smallint,bigint,boolean,decimal,date,text,float]
                         required_property:
                             config_id:
                                 scope:      extend
