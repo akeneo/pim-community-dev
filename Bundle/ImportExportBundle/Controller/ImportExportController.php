@@ -93,7 +93,6 @@ class ImportExportController extends Controller
 
         /** @var ContextInterface $contexts */
         $context = $jobResult->getContext();
-        $hasItemsToProcess = false;
 
         $counts = array();
         $counts['errors'] = count($jobResult->getFailureExceptions());
