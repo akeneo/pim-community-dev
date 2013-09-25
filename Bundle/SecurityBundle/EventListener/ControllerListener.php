@@ -3,12 +3,11 @@
 namespace Oro\Bundle\SecurityBundle\EventListener;
 
 use Doctrine\Common\Util\ClassUtils;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Psr\Log\LoggerInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 class ControllerListener
@@ -37,6 +36,14 @@ class ControllerListener
         $this->logger = $logger;
     }
 
+    /**
+     * Checks if an access to a controller action is granted or not.
+     *
+     * This method is executed just before any controller action.
+     *
+     * @param FilterControllerEvent $event
+     * @throws AccessDeniedException
+     */
     public function onKernelController(FilterControllerEvent $event)
     {
         $controller = $event->getController();
@@ -48,16 +55,19 @@ class ControllerListener
             list($object, $method) = $controller;
             $className = ClassUtils::getClass($object);
 
-            $this->logger->info(
-                sprintf('User invoked class: "%s", Method: "%s".', $className, $method)
+            $this->logger->debug(
+                sprintf(
+                    'Invoked controller "%s::%s". (%s)',
+                    $className,
+                    $method,
+                    $event->getRequestType() === HttpKernelInterface::MASTER_REQUEST ? 'MASTER_REQUEST' : 'SUB_REQUEST'
+                )
             );
 
             if (!$this->securityFacade->isClassMethodGranted($className, $method)) {
-                // check if we have internal action - show blank
-                if ($event->getRequest() !== null && $event->getRequest()->attributes->get('_route') == null) {
-                    return new Response('');
+                if ($event->getRequestType() === HttpKernelInterface::MASTER_REQUEST) {
+                    throw new AccessDeniedException('Access denied.');
                 }
-                throw new AccessDeniedException('Access denied.');
             }
         }
     }
