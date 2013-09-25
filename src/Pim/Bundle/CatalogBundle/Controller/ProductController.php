@@ -217,12 +217,17 @@ class ProductController extends AbstractDoctrineController
 
                 $scope = $this->productManager->getScope();
 
+                $dateTime = new \DateTime();
+                $fileName = sprintf(
+                    'products_export_%s_%s_%s.csv',
+                    $this->getDataLocale(),
+                    $scope,
+                    $dateTime->format('Y-m-d_H:i:s')
+                );
+
                 // prepare response
                 $response = new StreamedResponse();
-                $attachment = $response->headers->makeDisposition(
-                    ResponseHeaderBag::DISPOSITION_INLINE,
-                    'quick_export_products.csv'
-                );
+                $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $fileName);
                 $response->headers->set('Content-Type', 'text/csv');
                 $response->headers->set('Content-Disposition', $attachment);
                 $response->setCallback($this->quickExportCallback($gridManager, $scope, static::BATCH_SIZE));
@@ -251,6 +256,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @param ProductDatagridManager $gridManager
      * @param string                 $scope
+     * @param integer                $limit
      *
      * @return \Closure
      */
