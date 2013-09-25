@@ -4,7 +4,6 @@ namespace Oro\Bundle\GridBundle\Datagrid;
 
 use Doctrine\ORM\EntityManager;
 
-use Oro\Bundle\GridBundle\Property\FormatterInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -129,11 +128,4 @@ interface DatagridManagerInterface
      * @return void
      */
     public function setViewsList(AbstractViewsList $list);
-
-    /**
-     * @param                  string $type
-     * @param FormatterInterface      $formatter
-     * @return void
-     */
-    public function addFormatter($type, FormatterInterface $formatter);
 }

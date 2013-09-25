@@ -8,7 +8,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Routing\Router;
 
-use Oro\Bundle\GridBundle\Property\FormatterInterface;
 use Oro\Bundle\GridBundle\Builder\DatagridBuilderInterface;
 use Oro\Bundle\GridBundle\Builder\ListBuilderInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
@@ -122,19 +121,6 @@ abstract class DatagridManager implements DatagridManagerInterface
      * @var bool
      */
     protected $multipleSorting = true;
-
-    /**
-     * @var array
-     */
-    protected $formatters = array();
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addFormatter($type, FormatterInterface $formatter)
-    {
-        $this->formatters[$type] = $formatter;
-    }
 
     /**
      * {@inheritDoc}
@@ -287,7 +273,6 @@ abstract class DatagridManager implements DatagridManagerInterface
 
         /** @var $fieldDescription FieldDescriptionInterface */
         foreach ($this->getFieldDescriptionCollection() as $fieldDescription) {
-            $fieldDescription->setFormatters($this->formatters);
             $listCollection->add($fieldDescription);
         }
 

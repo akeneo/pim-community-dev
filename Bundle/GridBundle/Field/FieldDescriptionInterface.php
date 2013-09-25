@@ -257,12 +257,4 @@ interface FieldDescriptionInterface
      * @return boolean
      */
     public function isEditable();
-
-    /**
-     * Set formatters array
-     *
-     * @param $formatters
-     * @return void
-     */
-    public function setFormatters(array $formatters);
 }

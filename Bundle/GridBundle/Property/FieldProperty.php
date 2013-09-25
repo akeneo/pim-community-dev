@@ -94,12 +94,7 @@ class FieldProperty extends AbstractProperty
             case FieldDescriptionInterface::TYPE_DATETIME:
             case FieldDescriptionInterface::TYPE_DATE:
                 if ($value instanceof \DateTime) {
-                    $formatter = $this->getFormatterByType($this->field->getType());
-                    if ($formatter) {
-                        $value = $formatter->format($value);
-                    } else {
-                        $value = $value->format(\DateTime::ISO8601);
-                    }
+                    $value = $value->format(\DateTime::ISO8601);
                 }
                 $result = (string)$value;
                 break;
