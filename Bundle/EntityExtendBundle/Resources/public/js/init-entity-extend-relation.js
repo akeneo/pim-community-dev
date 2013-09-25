@@ -1,7 +1,7 @@
 /* jshint browser:true */
 /* global require */
-require(['jquery', 'underscore', 'routing'],
-function($, _, routing) {
+require(['jquery', 'routing'],
+function($, routing) {
     'use strict';
     $(function() {
         $(document).on('change', 'form select.extend-rel-target-name', function (e) {

@@ -74,17 +74,6 @@ class EntitySelectHandler implements SearchHandlerInterface
         $this->entityName = str_replace('_', '\\', $targetEntity);
         $this->fieldName  = $targetField;
 
-        //$page = (int)$page > 0 ? (int)$page : 1;
-        //$perPage = (int)$perPage > 0 ? (int)$perPage : 10;
-        //$perPage += 1;
-
-        //$items = $this->searchEntities($query, $targetField);
-
-        /*$this->hasMore = count($items) == $perPage;
-        if ($this->hasMore) {
-            $items = array_slice($items, 0, $perPage - 1);
-        }*/
-
         return $this->formatResult($this->searchEntities($query, $targetField));
     }
 
