@@ -2,7 +2,10 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Provider;
 
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\PersistentCollection;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
@@ -13,7 +16,6 @@ use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ConfigProvider implements ConfigProviderInterface
 {
@@ -200,10 +202,12 @@ class ConfigProvider implements ConfigProviderInterface
 
         if ($entity instanceof PersistentCollection) {
             $className = $entity->getTypeClass()->getName();
+        } elseif (is_string($entity)) {
+            $className = ClassUtils::getRealClass($entity);
         } elseif (is_object($entity)) {
-            $className = get_class($entity);
+            $className = ClassUtils::getClass($entity);
         } elseif (is_array($entity) && count($entity) && is_object(reset($entity))) {
-            $className = get_class(reset($entity));
+            $className = ClassUtils::getClass(reset($entity));
         }
 
         if (!is_string($className)) {
