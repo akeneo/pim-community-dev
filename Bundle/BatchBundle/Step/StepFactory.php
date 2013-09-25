@@ -17,6 +17,13 @@ class StepFactory
         $this->jobRepository   = $jobRepository;
     }
 
+    /**
+     * @param string $title
+     * @param string $reader
+     * @param string $processor
+     * @param string $writer
+     * @return ItemStep
+     */
     public function createStep($title, $reader, $processor, $writer)
     {
         $step = new ItemStep($title);

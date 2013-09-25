@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\ResultRecordInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\GridBundle\Datagrid\IterableResultInterface;
 
 class MassActionMediator implements MassActionMediatorInterface
 {
@@ -33,13 +34,13 @@ class MassActionMediator implements MassActionMediatorInterface
     /**
      * @param MassActionInterface $massAction
      * @param DatagridInterface $datagrid
-     * @param \Iterator|ResultRecordInterface[] $results
+     * @param IterableResultInterface $results
      * @param array $data
      */
     public function __construct(
         MassActionInterface $massAction,
         DatagridInterface $datagrid,
-        $results,
+        IterableResultInterface $results,
         array $data = array()
     ) {
         $this->massAction = $massAction;

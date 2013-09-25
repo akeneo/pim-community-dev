@@ -1,20 +1,10 @@
 {% extends 'OroInstallerBundle::layout.html.twig' %}
 {% use 'OroInstallerBundle::progress.html.twig' %}
+{% form_theme form with 'OroInstallerBundle:Form:fields.html.twig' %}
 
 {% set step = 'configure' %}
 
 {% block title %}{{ 'process.step.configure.header'|trans }} - {{ parent() }}{% endblock %}
-
-{% block javascript %}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var _width1= $('.progress-bar li:last-child').width()/2;
-            $('.progress-bar li:last-child em.fix-bg').width(_width1);
-            var _width2= $('.progress-bar li:first-child').width()/2;
-            $('.progress-bar li:first-child em.fix-bg').width(_width2);
-        });
-    </script>
-{% endblock javascript %}
 
 {% block content %}
 <div class="page-title">

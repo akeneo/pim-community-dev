@@ -21,6 +21,8 @@ use Oro\Bundle\EntityBundle\Datagrid\CustomEntityDatagrid;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 
 /**
@@ -41,24 +43,23 @@ class EntitiesController extends Controller
      */
     public function indexAction(Request $request, $id)
     {
-        $className = str_replace('_', '\\', $id);
+        $extendEntityName = str_replace('_', '\\', $id);
+        $this->checkAccess('VIEW', $extendEntityName);
 
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
 
-        if (!$entityConfigProvider->hasConfig($className)) {
+        if (!$entityConfigProvider->hasConfig($extendEntityName)) {
             throw $this->createNotFoundException();
         }
 
-        $entityConfig = $entityConfigProvider->getConfig($className);
+        $entityConfig = $entityConfigProvider->getConfig($extendEntityName);
 
         /** @var  CustomEntityDatagrid $datagrid */
         $datagridManager = $this->get('oro_entity.custom_datagrid.manager');
 
-        $extendClassName = $className;
-
-        $datagridManager->setCustomEntityClass($className, $extendClassName);
-        $datagridManager->setEntityName($extendClassName);
+        $datagridManager->setCustomEntityClass($extendEntityName);
+        $datagridManager->setEntityName($extendEntityName);
         $datagridManager->getRouteGenerator()->setRouteParameters(array('id' => $id));
 
         $view = $datagridManager->getDatagrid()->createView();
@@ -68,9 +69,10 @@ class EntitiesController extends Controller
             : $this->render(
                 'OroEntityBundle:Entities:index.html.twig',
                 array(
-                    'datagrid'  => $view,
-                    'entity_id' => $id,
-                    'label'     => $entityConfig->get('label')
+                    'datagrid'      => $view,
+                    'entity_id'     => $id,
+                    'entity_class'  => $extendEntityName,
+                    'label'         => $entityConfig->get('label')
                 )
             );
     }
@@ -87,6 +89,7 @@ class EntitiesController extends Controller
     public function viewAction($entity_id, $id)
     {
         $extendEntityName = str_replace('_', '\\', $entity_id);
+        $this->checkAccess('VIEW', $extendEntityName);
 
         /** @var OroEntityManager $em */
         $em = $this->getDoctrine()->getManager();
@@ -126,6 +129,7 @@ class EntitiesController extends Controller
             'entity_fields' => $result,
             'id'            => $id,
             'entity_config' => $entityConfigProvider->getConfig($extendEntityName),
+            'entity_class'  => $extendEntityName,
         );
     }
 
@@ -141,6 +145,7 @@ class EntitiesController extends Controller
     public function updateAction(Request $request, $entity_id, $id)
     {
         $extendEntityName = str_replace('_', '\\', $entity_id);
+        $this->checkAccess(!$id ? 'CREATE' : 'EDIT', $extendEntityName);
 
         /** @var OroEntityManager $em */
         $em = $this->getDoctrine()->getManager();
@@ -196,6 +201,7 @@ class EntitiesController extends Controller
             'entity'        => $record,
             'entity_id'     => $entity_id,
             'entity_config' => $entityConfig,
+            'entity_class'  => $extendEntityName,
             'form'          => $form->createView(),
         );
     }
@@ -211,6 +217,7 @@ class EntitiesController extends Controller
     public function deleteAction(Request $request, $entity_id, $id)
     {
         $extendEntityName = str_replace('_', '\\', $entity_id);
+        $this->checkAccess('DELETE', $extendEntityName);
 
         /** @var OroEntityManager $em */
         $em = $this->getDoctrine()->getManager();
@@ -226,5 +233,23 @@ class EntitiesController extends Controller
         $em->flush();
 
         return new JsonResponse('', Codes::HTTP_OK);
+    }
+
+    /**
+     * Checks if an access to the given entity is granted or not
+     *
+     * @param string $permission
+     * @param string $entityName
+     * @return bool
+     * @throws AccessDeniedException
+     */
+    private function checkAccess($permission, $entityName)
+    {
+        /** @var SecurityFacade $securityFacade */
+        $securityFacade = $this->get('oro_security.security_facade');
+        $isGranted = $securityFacade->isGranted($permission, 'entity:' . $entityName);
+        if (!$isGranted) {
+            throw new AccessDeniedException('Access denied.');
+        }
     }
 }

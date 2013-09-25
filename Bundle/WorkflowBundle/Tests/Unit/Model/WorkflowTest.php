@@ -11,6 +11,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\AttributeManager;
 use Oro\Bundle\WorkflowBundle\Model\StepManager;
 use Oro\Bundle\WorkflowBundle\Model\TransitionManager;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowTransitionRecord;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -324,8 +325,26 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $workflowItem->expects($this->any())
             ->method('getCurrentStepName')
             ->will($this->returnValue('stepOne'));
+        $workflowItem->expects($this->once())
+            ->method('addTransitionRecord')
+            ->with($this->isInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowTransitionRecord'))
+            ->will(
+                $this->returnCallback(
+                    function (WorkflowTransitionRecord $transitionRecord) {
+                        \PHPUnit_Framework_TestCase::assertEquals('transition', $transitionRecord->getTransitionName());
+                        \PHPUnit_Framework_TestCase::assertEquals('stepOne', $transitionRecord->getStepFromName());
+                        \PHPUnit_Framework_TestCase::assertEquals('stepTwo', $transitionRecord->getStepToName());
+                    }
+                )
+            );
 
-        $transition = $this->getTransitionMock('transition');
+        $step = $this->getStepMock('stepOne');
+        $step->expects($this->once())
+            ->method('isAllowedTransition')
+            ->with('transition')
+            ->will($this->returnValue(true));
+
+        $transition = $this->getTransitionMock('transition', false, 'stepTwo');
         $transition->expects($this->once())
             ->method('isAllowed')
             ->with($workflowItem)
@@ -333,12 +352,9 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $transition->expects($this->once())
             ->method('transit')
             ->with($workflowItem);
-
-        $step = $this->getStepMock('stepOne');
-        $step->expects($this->once())
-            ->method('isAllowedTransition')
-            ->with('transition')
-            ->will($this->returnValue(true));
+        $transition->expects($this->once())
+            ->method('transit')
+            ->with($workflowItem);
 
         $workflow = $this->createWorkflow();
         $workflow->setTransitions(array($transition));
@@ -487,9 +503,9 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $transitions = array();
         if (!$transitionName) {
             $transitions[Workflow::DEFAULT_START_TRANSITION_NAME] =
-                $this->getTransitionMock(Workflow::DEFAULT_START_TRANSITION_NAME, true);
+                $this->getTransitionMock(Workflow::DEFAULT_START_TRANSITION_NAME, true, 'step_name');
         } else {
-            $transitions[$transitionName] = $this->getTransitionMock($transitionName, true);
+            $transitions[$transitionName] = $this->getTransitionMock($transitionName, true, 'step_name');
         }
         $transitions = new ArrayCollection($transitions);
 
