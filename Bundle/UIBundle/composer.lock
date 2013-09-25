@@ -380,9 +380,7 @@
             "require": {
                 "symfony/framework-bundle": "2.1.*",
                 "symfony/process": "2.1.*",
-                "symfony/finder": "2.1.*",
-                "jms/aop-bundle": "1.0.*",
-                "jms/metadata": "1.1.*"
+                "symfony/finder": "2.1.*"
             },
             "require-dev": {
                 "symfony/validator": "*",
@@ -487,9 +485,7 @@
             "require": {
                 "symfony/framework-bundle": "2.1.*",
                 "symfony/security-bundle": "*",
-                "jms/metadata": "1.1.*",
-                "jms/aop-bundle": "1.0.*",
-                "jms/di-extra-bundle": "1.1.*"
+                "jms/metadata": "1.1.*"
             },
             "require-dev": {
                 "sensio/framework-extra-bundle": "*",

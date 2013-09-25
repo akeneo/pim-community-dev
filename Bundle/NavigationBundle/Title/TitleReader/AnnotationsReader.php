@@ -3,7 +3,7 @@ namespace Oro\Bundle\NavigationBundle\Title\TitleReader;
 
 use Doctrine\Common\Annotations\Reader as CommonAnnotationsReader;
 
-use JMS\DiExtraBundle\Finder\PatternFinder;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class AnnotationsReader extends Reader
@@ -42,8 +42,7 @@ class AnnotationsReader extends Reader
             return array();
         }
 
-        $finder = new PatternFinder(self::ANNOTATION_CLASS, '*.php');
-        $files = $finder->findFiles($directories);
+        $files = $this->findFiles('*.php', $directories);
 
         foreach ($files as $index => $file) {
             if (strpos($file, 'AnnotationsReader') !== false || strpos($file, 'Annotation') !== false) {
@@ -67,13 +66,15 @@ class AnnotationsReader extends Reader
 
         foreach ($files as $file) {
             $className = $this->getClassName($file);
-            $reflection = new \ReflectionClass($className);
+            if ($className) {
+                $reflection = new \ReflectionClass($className);
 
-            //read annotations from methods
-            foreach ($reflection->getMethods() as $reflectionMethod) {
-                $title = $this->reader->getMethodAnnotation($reflectionMethod, self::ANNOTATION_CLASS);
-                if (is_object($title)) {
-                    $titles[$this->getDefaultRouteName($reflection, $reflectionMethod)] = $title->getTitleTemplate();
+                //read annotations from methods
+                foreach ($reflection->getMethods() as $reflectionMethod) {
+                    $title = $this->reader->getMethodAnnotation($reflectionMethod, self::ANNOTATION_CLASS);
+                    if (is_object($title)) {
+                        $titles[$this->getDefaultRouteName($reflection, $reflectionMethod)] = $title->getTitleTemplate();
+                    }
                 }
             }
         }
@@ -127,6 +128,10 @@ class AnnotationsReader extends Reader
     {
         $src = file_get_contents($filename);
 
+        if (!preg_match('#'.str_replace("\\", "\\\\", self::ANNOTATION_CLASS).'#', $src)) {
+            return null;
+        }
+
         if (!preg_match('/\bnamespace\s+([^;]+);/s', $src, $match)) {
             throw new \RuntimeException(sprintf('Namespace could not be determined for file "%s".', $filename));
         }
@@ -137,5 +142,23 @@ class AnnotationsReader extends Reader
         }
 
         return $namespace . '\\' . $match[1];
+    }
+
+    /**
+     * @param $filePattern
+     * @param array $dirs
+     * @return array
+     */
+    private function findFiles($filePattern, array $dirs)
+    {
+        $finder = new Finder();
+        $finder
+            ->files()
+            ->name($filePattern)
+            ->in($dirs)
+            ->ignoreVCS(true)
+        ;
+
+        return array_map('realpath', array_keys(iterator_to_array($finder)));
     }
 }

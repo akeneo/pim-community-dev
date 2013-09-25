@@ -6,7 +6,6 @@ use Doctrine\Common\Annotations\Reader as AnnotationReader;
 use Symfony\Component\Finder\Finder;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
 
-use JMS\DiExtraBundle\Finder\PatternFinder;
 
 class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderInterface
 {
@@ -59,7 +58,8 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
             $directories = $this->bundleDirectories;
         }
 
-        $files = $this->getFinder()->findFiles($directories);
+        $files = $this->findFiles('*.php', $directories);
+
         foreach ($files as $file) {
             $className = $this->getClassName($file);
             if ($className !== null) {
@@ -103,27 +103,23 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
     protected function getClassName($fileName)
     {
         $src = $this->getFileContent($fileName);
+        if (!preg_match('#'.str_replace("\\", "\\\\", self::ANNOTATION_CLASS).'#', $src)) {
+
+            return null;
+        }
 
         if (!preg_match('/\bnamespace\s+([^;]+);/s', $src, $match)) {
+
             return null;
         }
         $namespace = $match[1];
 
         if (!preg_match('/\bclass\s+([^\s]+)\s+(?:extends|implements|{)/s', $src, $match)) {
+
             return null;
         }
 
         return $namespace . '\\' . $match[1];
-    }
-
-    /**
-     * Creates PatternFinder object
-     *
-     * @return PatternFinder
-     */
-    protected function getFinder()
-    {
-        return new PatternFinder(self::ANNOTATION_CLASS, '*.php');
     }
 
     /**
@@ -146,5 +142,23 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
     protected function getFileContent($fileName)
     {
         return file_get_contents($fileName);
+    }
+
+    /**
+     * @param $filePattern
+     * @param array $dirs
+     * @return array
+     */
+    private function findFiles($filePattern, array $dirs)
+    {
+        $finder = new Finder();
+        $finder
+            ->files()
+            ->name($filePattern)
+            ->in($dirs)
+            ->ignoreVCS(true)
+        ;
+
+        return array_map('realpath', array_keys(iterator_to_array($finder)));
     }
 }
