@@ -27,7 +27,7 @@ BEHAT_CMD=`echo $* | sed -e "s/noxdebug//" | sed -e "s/noxdebug//"`
 
 RESULT="OK"
 
-if [ "$XDEBUG" == 'xdebug' ]; then
+if [ "$XDEBUG" = 'xdebug' ]; then
     PHP_EXTENSION_DIR=`php -i | grep extension_dir | cut -d ' ' -f3`
     if [ ! -f $PHP_EXTENSION_DIR/$XDEBUG_EXTENSION ]; then
        echo Unable to find xdebug extension $PHP_EXTENSION_DIR/$XDEBUG_EXTENSION >&2
@@ -41,7 +41,7 @@ FEATURES=`find $FEATURES_DIR/ -name *.feature`
 for FEATURE in $FEATURES; do
     FEATURE_NAME=`echo $FEATURE | sed -e 's#^.*/features/\(.*\)$#features/\1#'`
     echo "Executing feature $FEATURE_NAME"
-    if [ "$XDEBUG" == 'xdebug' ]; then
+    if [ "$XDEBUG" = 'xdebug' ]; then
         php -d zend_extension=$PHP_EXTENSION_DIR/$XDEBUG_EXTENSION $BEHAT_CMD $FEATURE
     else
         $BEHAT_CMD $FEATURE
@@ -52,7 +52,7 @@ for FEATURE in $FEATURES; do
     fi
 done
 
-if [ "$RESULT" == KO ]; then
+if [ "$RESULT" = KO ]; then
     exit 1;
 else
     exit 0;
