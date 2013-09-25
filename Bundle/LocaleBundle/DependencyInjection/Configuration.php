@@ -23,7 +23,7 @@ class Configuration implements ConfigurationInterface
             $treeBuilder->root('oro_locale'),
             array(
                 'date_format'         => array('value' => 'm/d/y'),
-                'time_format'         => array('value' => 'H:mm'),
+                'time_format'         => array('value' => 'h:i a'),
                 'locale'              => array('value' => 'en_US'),
                 'timezone'            => array('value' => 'America/New_York'),
                 'default_currency'    => array('value' => 'USD'),

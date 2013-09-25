@@ -43,6 +43,7 @@ oro_system_configuration:
                 label: 'Date format'
                 required: true
                 choices:
+                      "d M Y": "dd MONTH yyyy"
                       "m/d/y": "mm/dd/yy"
                       "d.m.Y": "dd.mm.yyyy"
                       "d.m.y": "dd.mm.yy"
@@ -60,8 +61,8 @@ oro_system_configuration:
                 label: 'Time format'
                 required: true
                 choices:
-                      "H:mm":  "H:mm"
-                      "HH:mm": "HH:mm"
+                      "h:i a":  "H:mm"
+                      "H:i":    "HH:mm"
                 constraints:
                     - NotBlank: ~
 
