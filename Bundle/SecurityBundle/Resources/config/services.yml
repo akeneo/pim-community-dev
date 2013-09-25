@@ -44,9 +44,10 @@ parameters:
     oro_security.entity_security_metadata_provider.cache.clearer.class: Oro\Bundle\SecurityBundle\Cache\EntitySecurityMetadataCacheClearer
 
     oro_security.listener.config_subscriber.class:             Oro\Bundle\SecurityBundle\EventListener\ConfigSubscriber
+    oro_security.listener.controller.class:                    Oro\Bundle\SecurityBundle\EventListener\ControllerListener
 
-    oro_security.acl.pointcut.class:                           Oro\Bundle\SecurityBundle\Acl\Interceptor\AclPointcut
-    oro_security.acl.interceptor.class:                        Oro\Bundle\SecurityBundle\Acl\Interceptor\AclInterceptor
+#    oro_security.acl.pointcut.class:                           Oro\Bundle\SecurityBundle\Acl\Interceptor\AclPointcut
+#    oro_security.acl.interceptor.class:                        Oro\Bundle\SecurityBundle\Acl\Interceptor\AclInterceptor
 
     oro_user.acl.manager.api.class:     Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_security.twig.security_extension:                      Oro\Bundle\SecurityBundle\Twig\OroSecurityExtension
@@ -323,20 +324,28 @@ services:
         tags:
             - { name: kernel.event_subscriber}
 
-    oro_security.acl.pointcut:
-        class: %oro_security.acl.pointcut.class%
-        arguments:
-            - @oro_security.acl.annotation_provider
-        tags:
-            - { name: jms_aop.pointcut, interceptor: oro_security.acl.interceptor }
-
-    oro_security.acl.interceptor:
-        scope: request
-        class: %oro_security.acl.interceptor.class%
+    oro_security.listener.controller:
+        class: %oro_security.listener.controller.class%
         arguments:
            - @oro_security.security_facade
-           - @request
            - @logger
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
+
+#    oro_security.acl.pointcut:
+#        class: %oro_security.acl.pointcut.class%
+#        arguments:
+#            - @oro_security.acl.annotation_provider
+#        tags:
+#            - { name: jms_aop.pointcut, interceptor: oro_security.acl.interceptor }
+#
+#    oro_security.acl.interceptor:
+#        scope: request
+#        class: %oro_security.acl.interceptor.class%
+#        arguments:
+#           - @oro_security.security_facade
+#           - @request
+#           - @logger
 
     oro_security.twig.security_extension:
         class: %oro_security.twig.security_extension%
