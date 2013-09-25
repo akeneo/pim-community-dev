@@ -524,7 +524,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
         $proxyQuery->addSelect(sprintf("%s AS familyLabel", $familyExpr), true);
 
-
         // prepare query for completeness
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
 
