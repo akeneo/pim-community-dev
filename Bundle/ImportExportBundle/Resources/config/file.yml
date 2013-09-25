@@ -1,0 +1,9 @@
+parameters:
+    oro_importexport.file.file_system_operator.class: Oro\Bundle\ImportExportBundle\File\FileSystemOperator
+
+services:
+    oro_importexport.file.file_system_operator:
+        class: %oro_importexport.file.file_system_operator.class%
+        arguments:
+            - %kernel.cache_dir%
+            - "import_export"

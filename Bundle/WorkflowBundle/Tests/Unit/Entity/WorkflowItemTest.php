@@ -5,6 +5,7 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Entity;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowTransitionRecord;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 
 class WorkflowItemTest extends \PHPUnit_Framework_TestCase
@@ -17,6 +18,11 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->workflowItem = new WorkflowItem();
+    }
+
+    protected function tearDown()
+    {
+        unset($this->workflowItem);
     }
 
     public function testId()
@@ -214,7 +220,7 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
         $this->workflowItem->prePersist();
         $this->assertInstanceOf('DateTime', $this->workflowItem->getCreatedAt());
 
-        $this->assertEquals($this->workflowItem->getCreatedAt()->getTimestamp(), time(), '', 5);
+        $this->assertEquals(time(), $this->workflowItem->getCreatedAt()->getTimestamp(), '', 5);
     }
 
     public function testUpdatedAndPreUpdate()
@@ -223,6 +229,18 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
         $this->workflowItem->preUpdate();
         $this->assertInstanceOf('DateTime', $this->workflowItem->getUpdatedAt());
 
-        $this->assertEquals($this->workflowItem->getUpdatedAt()->getTimestamp(), time(), '', 5);
+        $this->assertEquals(time(), $this->workflowItem->getUpdatedAt()->getTimestamp(), '', 5);
+    }
+
+    public function testGetAddTransitionRecords()
+    {
+        $this->assertEmpty($this->workflowItem->getTransitionRecords()->getValues());
+
+        $transitionRecord = new WorkflowTransitionRecord();
+        $transitionRecord->setTransitionName('test_transition');
+
+        $this->assertEquals($this->workflowItem, $this->workflowItem->addTransitionRecord($transitionRecord));
+        $this->assertEquals(array($transitionRecord), $this->workflowItem->getTransitionRecords()->getValues());
+        $this->assertEquals($this->workflowItem, $transitionRecord->getWorkflowItem());
     }
 }

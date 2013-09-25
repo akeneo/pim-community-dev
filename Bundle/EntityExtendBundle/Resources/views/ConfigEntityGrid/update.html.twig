@@ -5,7 +5,7 @@
 {% set title = 'Update Entity' %}
 {% set formAction = path('oro_entityextend_entity_update') %}
 
-{% set entityClass = entity.classname|replace('\\', '_') %}
+{% set audit_entity_class = entity.classname|replace('\\', '_') %}
 {% set audit_title = entity_config.get('label')|default('N/A') %}
 {% set audit_path = 'oro_entityconfig_audit' %}
 

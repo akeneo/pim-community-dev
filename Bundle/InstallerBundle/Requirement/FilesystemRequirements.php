@@ -6,6 +6,15 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class FilesystemRequirements extends RequirementCollection
 {
+    /**
+     *
+     * @param TranslatorInterface $translator
+     * @param string              $rootDir
+     * @param string              $cacheDir
+     * @param string              $logsDir
+     * @param string              $uploadsDir
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
     public function __construct(TranslatorInterface $translator, $rootDir, $cacheDir, $logsDir, $uploadsDir)
     {
         parent::__construct($translator->trans('filesystem.header', array(), 'requirements'));

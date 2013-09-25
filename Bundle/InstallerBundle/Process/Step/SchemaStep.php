@@ -8,10 +8,13 @@ class SchemaStep extends AbstractStep
 {
     public function displayAction(ProcessContextInterface $context)
     {
-        set_time_limit(120);
+        set_time_limit(600);
 
-        $this->runCommand('doctrine:schema:create');
-        $this->runCommand('doctrine:fixtures:load', array('--no-interaction' => true));
+        $this
+            ->runCommand('oro:entity-extend:clear')
+            ->runCommand('doctrine:schema:drop', array('--force' => true, '--full-database' => true))
+            ->runCommand('doctrine:schema:create')
+            ->runCommand('doctrine:fixtures:load', array('--no-interaction' => true));
 
         return $this->complete();
     }
