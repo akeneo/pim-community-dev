@@ -197,7 +197,9 @@ class UserPreferencesListener implements EventSubscriber
                 }
             }
             if (!isset($defaultOption)) {
-                throw new LastAttributeOptionDeletedException(sprintf('Tried to delete last %s attribute option', $attributeCode));
+                throw new LastAttributeOptionDeletedException(
+                    sprintf('Tried to delete last %s attribute option', $attributeCode)
+                );
             }
 
             // TODO : quick fix to pass behat, waiting for refactoring of that listener
