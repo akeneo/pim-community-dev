@@ -17,6 +17,9 @@ use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
 
 use Doctrine\ORM\EntityRepository;
 
+/**
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 class TitleService implements TitleServiceInterface
 {
     /**
@@ -115,7 +118,6 @@ class TitleService implements TitleServiceInterface
      * @param string $suffix
      * @param bool   $isJSON
      * @param bool   $isShort
-     * @SuppressWarnings(PHPMD.ExcessiveMethodComplexity)
      * @return $this
      */
     public function render(
