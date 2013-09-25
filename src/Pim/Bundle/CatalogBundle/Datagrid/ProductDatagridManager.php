@@ -194,38 +194,41 @@ class ProductDatagridManager extends FlexibleDatagridManager
         );
         $fieldsCollection->add($field);
 
-        $fieldCreated = new FieldDescription();
-        $fieldCreated->setName('created');
-        $fieldCreated->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
-                'label'       => $this->translate('Created At'),
-                'field_name'  => 'created',
-                'filter_type' => FilterInterface::TYPE_DATETIME,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-            )
-        );
-        $fieldsCollection->add($fieldCreated);
+        $field = $this->createDatetimeField('created', 'Created At');
+        $fieldsCollection->add($field);
 
-        $fieldUpdated = new FieldDescription();
-        $fieldUpdated->setName('updated');
-        $fieldUpdated->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
-                'label'       => $this->translate('Updated At'),
-                'field_name'  => 'updated',
-                'filter_type' => FilterInterface::TYPE_DATETIME,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-            )
-        );
-        $fieldsCollection->add($fieldUpdated);
+        $field = $this->createDatetimeField('updated', 'Updated At');
+        $fieldsCollection->add($field);
 
         $field = $this->createCompletenessField();
         $fieldsCollection->add($field);
+    }
+
+    /**
+     * Create a datetime field (for created and updated product fields)
+     *
+     * @param string $code
+     * @param string $label
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createDatetimeField($code, $label)
+    {
+        $field = new FieldDescription();
+        $field->setName($code);
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
+                'label'       => $this->translate($label),
+                'field_name'  => $code,
+                'filter_type' => FilterInterface::TYPE_DATETIME,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+
+        return $field;
     }
 
     /**
