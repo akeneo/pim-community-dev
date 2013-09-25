@@ -34,7 +34,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setOwner('Main')
             ->setEntity('Business Unit', array('Create', 'Edit', 'Delete', 'View', 'Assign'))
             ->save()
-            ->assertMessage('Role successfully saved')
+            ->assertMessage('Role saved')
             ->close();
 
         return ($randomPrefix);
@@ -66,7 +66,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setEmail($username.'@mail.com')
             ->setRoles(array('Label_' . $role))
             ->save()
-            ->assertMessage('User successfully saved')
+            ->assertMessage('User saved')
             ->toGrid()
             ->close()
             ->assertTitle('Users - System');
@@ -92,7 +92,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setBusinessUnitName($unitname)
             ->setOwner('Main')
             ->save()
-            ->assertMessage('Business Unit successfully saved')
+            ->assertMessage('Business Unit saved')
             ->toGrid()
             ->assertTitle('Business Units - System')
             ->close();

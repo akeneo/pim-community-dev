@@ -93,7 +93,7 @@ class RolesTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setLabel($this->newRole['LABEL'])
             ->setOwner('Main')
             ->save()
-            ->assertMessage('Role successfully saved')
+            ->assertMessage('Role saved')
             ->close();
 
         //verify new GROUP

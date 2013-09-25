@@ -158,7 +158,10 @@ class BusinessUnitController extends Controller
     protected function update(BusinessUnit $entity)
     {
         if ($this->get('oro_organization.form.handler.business_unit')->process($entity)) {
-            $this->get('session')->getFlashBag()->add('success', 'Business Unit successfully saved');
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('oro.business_unit.controller.message.saved')
+            );
 
             return $this->get('oro_ui.router')->actionRedirect(
                 array(
