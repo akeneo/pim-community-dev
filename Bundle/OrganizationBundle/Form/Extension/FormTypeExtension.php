@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\OrganizationBundle\Form\Extension;
 
+use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
@@ -16,7 +17,6 @@ use Oro\Bundle\OrganizationBundle\Event\RecordOwnerDataListener;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Form\Type\BusinessUnitType;
@@ -29,9 +29,9 @@ class FormTypeExtension extends AbstractTypeExtension
     protected $securityContext;
 
     /**
-     * @var ConfigProvider
+     * @var OwnershipMetadataProvider
      */
-    protected $configProvider;
+    protected $ownershipMetadataProvider;
 
     /**
      * @var BusinessUnitManager
@@ -57,15 +57,24 @@ class FormTypeExtension extends AbstractTypeExtension
 
     protected $assignIsGranted;
 
+    /**
+     * Constructor
+     *
+     * @param SecurityContextInterface $securityContext
+     * @param OwnershipMetadataProvider $ownershipMetadataProvider
+     * @param BusinessUnitManager $manager
+     * @param SecurityFacade $securityFacade
+     * @param TranslatorInterface $translator
+     */
     public function __construct(
         SecurityContextInterface $securityContext,
-        ConfigProvider $configProvider,
+        OwnershipMetadataProvider $ownershipMetadataProvider,
         BusinessUnitManager $manager,
         SecurityFacade $securityFacade,
         TranslatorInterface $translator
     ) {
         $this->securityContext = $securityContext;
-        $this->configProvider = $configProvider;
+        $this->ownershipMetadataProvider = $ownershipMetadataProvider;
         $this->manager = $manager;
         $this->securityFacade = $securityFacade;
         $this->translator = $translator;
@@ -73,10 +82,10 @@ class FormTypeExtension extends AbstractTypeExtension
     }
 
     /**
-    * Returns the name of the type being extended.
-    *
-    * @return string The name of the type being extended
-    */
+     * Returns the name of the type being extended.
+     *
+     * @return string The name of the type being extended
+     */
     public function getExtendedType()
     {
         return 'form';
@@ -90,53 +99,44 @@ class FormTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $dataClassName = $builder->getForm()->getConfig()->getDataClass();
-        $token = $this->securityContext->getToken();
-        if (!$token) {
+        if (!$dataClassName) {
             return;
         }
-        $user = $token->getUser();
-        if ($user
-            && $dataClassName
-            && $this->configProvider->hasConfig($dataClassName)
-        ) {
-            $config = $this->configProvider->getConfig($dataClassName);
-            if ($config->has('owner_type') && $config->get('owner_type') != OwnershipType::OWNER_TYPE_NONE) {
-                if (!method_exists($dataClassName, 'getOwner')) {
-                    throw new \LogicException(
-                        sprintf('Method getOwner must be implemented for %s entity', $dataClassName)
-                    );
-                }
-                $ownerType = $config->get('owner_type');
-                /**
-                 * TODO: Implement object-based assign check after access levels are supported
-                 */
-                $this->assignIsGranted = $this->securityFacade->isGranted('ASSIGN', 'Entity:' . $dataClassName);
-                /**
-                 * Adding listener to hide owner field for update pages
-                 * if assign permission is not granted
-                 */
-                $builder->addEventListener(
-                    FormEvents::POST_SET_DATA,
-                    array($this, 'postSetData')
+        if (!$this->securityContext->getToken()) {
+            return;
+        }
+        $user = $this->securityContext->getToken()->getUser();
+        if (!$user || is_string($user)) {
+            return;
+        }
+        $metadata = $this->ownershipMetadataProvider->getMetadata($dataClassName);
+        if ($metadata->hasOwner()) {
+            if (!method_exists($dataClassName, 'getOwner')) {
+                throw new \LogicException(
+                    sprintf('Method getOwner must be implemented for %s entity.', $dataClassName)
                 );
-                if (OwnershipType::OWNER_TYPE_USER == $ownerType && $this->assignIsGranted) {
-                    /**
-                     * Showing user owner box for entities with owner type USER if assign permission is
-                     * granted.
-                     */
-                    $builder->add(
-                        $this->fieldName,
-                        'oro_user_select',
-                        array(
-                            'required' => true,
-                            'constraints' => array(new NotBlank())
-                        )
-                    );
-                } elseif (OwnershipType::OWNER_TYPE_BUSINESS_UNIT == $ownerType) {
-                    $this->addBusinessUnitOwnerField($builder, $user, $dataClassName);
-                } elseif (OwnershipType::OWNER_TYPE_ORGANIZATION == $ownerType) {
-                    $this->addOrganizationOwnerField($builder, $user);
-                }
+            }
+
+            /**
+             * TODO: Implement object-based assign check after access levels are supported
+             */
+            $this->assignIsGranted = $this->securityFacade->isGranted('ASSIGN', 'entity:' . $dataClassName);
+
+            /**
+             * Adding listener to hide owner field for update pages
+             * if assign permission is not granted
+             */
+            $builder->addEventListener(
+                FormEvents::POST_SET_DATA,
+                array($this, 'postSetData')
+            );
+
+            if ($metadata->isUserOwned() && $this->assignIsGranted) {
+                $this->addUserOwnerField($builder);
+            } elseif ($metadata->isBusinessUnitOwned()) {
+                $this->addBusinessUnitOwnerField($builder, $user, $dataClassName);
+            } elseif ($metadata->isOrganizationOwned()) {
+                $this->addOrganizationOwnerField($builder, $user);
             }
         }
     }
@@ -170,6 +170,27 @@ class FormTypeExtension extends AbstractTypeExtension
                     'mapped' => false,
                     'required' => false,
                     'label' => $this->fieldLabel
+                )
+            );
+        }
+    }
+
+    /**
+     * @param FormBuilderInterface $builder
+     */
+    protected function addUserOwnerField(FormBuilderInterface $builder)
+    {
+        /**
+         * Showing user owner box for entities with owner type USER if assign permission is
+         * granted.
+         */
+        if ($this->assignIsGranted) {
+            $builder->add(
+                $this->fieldName,
+                'oro_user_select',
+                array(
+                    'required' => true,
+                    'constraints' => array(new NotBlank())
                 )
             );
         }

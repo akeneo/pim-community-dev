@@ -4,7 +4,7 @@
 {% set title = 'Update Entity' %}
 {% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}
 
-{% set entityClass = field.entity.className|replace('\\', '_') %}
+{% set audit_entity_class = field.entity.className|replace('\\', '_') %}
 {% set audit_title = entity_config.get('label') %}
 {% set audit_path = 'oro_entityconfig_audit_field' %}
 {% set audit_entity_id = field.id %}

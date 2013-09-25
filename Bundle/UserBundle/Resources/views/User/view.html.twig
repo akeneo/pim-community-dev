@@ -11,11 +11,11 @@
 
 {% set format = oro_config_value('oro_user.name_format') %}
 {% oro_title_set({params : {"%username%": entity.fullname(format)|default('N/A') }}) %}
-{% set entityClass = 'Oro_Bundle_UserBundle_Entity_User' %}
+{% set audit_entity_class = 'Oro_Bundle_UserBundle_Entity_User' %}
 {% macro api_data_block(user) %}
 <div class="horizontal">
     <strong class="label label-info">{{ user.api ? user.api.apiKey : 'N/A' }}</strong>
-    {% if resource_granted('oro_user_user_apigen') %}
+    {% if resource_granted('oro_user_user_update') %}
         <a class="btn btn-small no-hash" id="btn-apigen" href="{{ path('oro_user_apigen', { id: user.id }) }}"
            data-title="{{ 'Generate key'|trans }}" data-message="{{ 'Generate key was successful. New key:'|trans }}">
             {{ 'Generate key'|trans }}

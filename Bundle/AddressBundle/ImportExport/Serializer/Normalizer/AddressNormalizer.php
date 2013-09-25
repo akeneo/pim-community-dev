@@ -67,15 +67,16 @@ class AddressNormalizer implements NormalizerInterface, DenormalizerInterface
         if (!empty($data['postalCode'])) {
             $result->setPostalCode($data['postalCode']);
         }
-        if (!empty($data['regionText'])) {
-            $result->setRegionText($data['regionText']);
-        }
         $this->setRegionAndCountry($result, $data);
+
         return $result;
     }
 
     protected function setRegionAndCountry(AbstractAddress $address, array $data)
     {
+        if (!empty($data['regionText'])) {
+            $address->setRegionText($data['regionText']);
+        }
         if (!empty($data['country'])) {
             $country = $this->createCountry($data['country']);
             $address->setCountry($country);
