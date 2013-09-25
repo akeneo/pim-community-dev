@@ -286,29 +286,22 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setName('family');
         $field->setOptions(
             array(
-                'type'          => FieldDescriptionInterface::TYPE_HTML,
-                'label'         => $this->translate('Family'),
-                'field_name'    => 'familyLabel',
-                'expression'    => 'productFamily.id',
-                'filter_type'   => FilterInterface::TYPE_ENTITY,
-                'sortable'      => true,
-                'filterable'    => true,
-                'show_filter'   => true,
-                'multiple'      => true,
-                'class'         => 'PimCatalogBundle:Family',
+                'type'            => FieldDescriptionInterface::TYPE_HTML,
+                'label'           => $this->translate('Family'),
+                'field_name'      => 'familyLabel',
+                'expression'      => 'productFamily.id',
+                'filter_type'     => FilterInterface::TYPE_ENTITY,
+                'sortable'        => true,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'multiple'        => true,
+                'class'           => 'PimCatalogBundle:Family',
                 'filter_by_where' => true
             )
         );
 
         $field->setProperty(
-            new TwigTemplateProperty(
-                $field,
-                'PimCatalogBundle:Entity:_codeOrLabel.html.twig',
-                array(
-                    'localeCode'  => $this->flexibleManager->getLocale(),
-                    'channelCode' => $this->flexibleManager->getScope()
-                )
-            )
+            new TwigTemplateProperty($field, 'PimCatalogBundle:Entity:_toString.html.twig',)
         );
 
         return $field;
