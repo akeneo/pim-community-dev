@@ -47,7 +47,7 @@ class ChangeStatus extends AbstractMassEditAction
     /**
      * @return boolean
      */
-    public function getToEnable()
+    public function isToEnable()
     {
         return $this->toEnable;
     }
