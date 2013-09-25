@@ -91,7 +91,9 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DATETIME') %}
                             cell: MomentCell.extend({
                                 modelFormat:   "YYYY-MM-DD hh:mm:ss",
-                                displayFormat: "MM/DD/YYYY hh:mm a"
+                                displayFormat: "MM/DD/YYYY hh:mm a",
+                                displayInUTC: false,
+                                displayTimeZone: '+05:00'
                             })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DECIMAL') %}
                             cell: NumberCell
