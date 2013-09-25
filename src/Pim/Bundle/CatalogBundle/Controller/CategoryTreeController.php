@@ -27,6 +27,7 @@ use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Form\Type\CategoryType;
 use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 
 /**
  * Category Tree Controller
@@ -388,7 +389,7 @@ class CategoryTreeController extends AbstractDoctrineController
         $params = ($parent !== null) ? array('node' => $parent->getId()) : array();
 
         if (count($category->getChannels())) {
-            throw new \DomainException('Category is related to a channel.');
+            throw new DeleteException($this->getTranslator()->trans('flash.tree.not removable'));
         }
         $this->categoryManager->remove($category);
         $this->categoryManager->getStorageManager()->flush();

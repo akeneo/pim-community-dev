@@ -127,6 +127,7 @@ flash:
         created: Tree successfully created
         updated: Tree successfully updated
         removed: Tree successfully removed
+        not removable: Trees connected to channels cannot be removed.
     channel:
         saved:   Channel successfully saved
         removed: Channel successfully removed
