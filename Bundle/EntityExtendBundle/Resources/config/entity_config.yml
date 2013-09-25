@@ -8,7 +8,6 @@ oro_entity_config:
                     route:                  'oro_entityextend_entity_remove'
                     type:                   'ajax'
                     icon:                   'trash'
-                    acl_resource:           'oro_entityextend_entity_remove'
                     filter:                 { owner: 'Custom', state: ['New', 'Requires update', 'Active']}
                     args:                   ['id']
                 -
@@ -16,7 +15,6 @@ oro_entity_config:
                     route:                  'oro_entityextend_entity_unremove'
                     type:                   'ajax'
                     icon:                   'backward'
-                    acl_resource:           'oro_entityextend_entity_unremove'
                     filter:                 { owner: 'Custom', state: ['Deleted']}
                     args:                   ['id']
             layout_action:
@@ -101,7 +99,6 @@ oro_entity_config:
                     route:                  'oro_entityextend_field_remove'
                     type:                   'ajax'
                     icon:                   'trash'
-                    acl_resource:           'oro_entityextend_field_remove'
                     filter:                 { owner: 'Custom', state: ['New', 'Requires update', 'Active'] }
                     args:                   ['id']
                 -
@@ -109,7 +106,6 @@ oro_entity_config:
                     route:                  'oro_entityextend_field_unremove'
                     type:                   'ajax'
                     icon:                   'backward'
-                    acl_resource:           'oro_entityextend_field_unremove'
                     filter:                 { owner: 'Custom', state: ['Deleted'] }
                     args:                   ['id']
             layout_action:
