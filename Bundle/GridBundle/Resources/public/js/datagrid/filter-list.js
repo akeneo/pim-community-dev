@@ -25,6 +25,7 @@ function(_, FilterList) {
 
             this.collection.on('beforeFetch', this._beforeCollectionFetch, this);
             this.collection.on('updateState', this._onUpdateCollectionState, this);
+            this.collection.on('reset', this._oCollectionReset, this);
 
             FilterList.prototype.initialize.apply(this, arguments);
         },
@@ -63,6 +64,19 @@ function(_, FilterList) {
             this.ignoreFiltersUpdateEvents = true;
             this._applyState(collection.state.filters || {});
             this.ignoreFiltersUpdateEvents = false;
+        },
+
+        /**
+         * Triggers after collection resets it's data
+         *
+         * @protected
+         */
+        _oCollectionReset: function(collection) {
+            console.log(collection.state.totalRecords);
+            if (collection.state.totalRecords > 0) {
+                this.$el.show();
+            }
+            this.$el.show();
         },
 
         /**

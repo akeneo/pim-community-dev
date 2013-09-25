@@ -90,9 +90,11 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSetExecutionContext()
     {
-        $this->assertNull($this->stepExecution->getExecutionContext());
+        $this->assertEquals(new ExecutionContext(), $this->stepExecution->getExecutionContext());
 
         $expectedExecutionContext = new ExecutionContext();
+        $expectedExecutionContext->put('key', 'value');
+
         $this->assertEntity($this->stepExecution->setExecutionContext($expectedExecutionContext));
         $this->assertSame($expectedExecutionContext, $this->stepExecution->getExecutionContext());
     }

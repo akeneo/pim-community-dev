@@ -31,7 +31,12 @@ class JobExecution
     /**
      * @var array
      *
-     * @ORM\OneToMany(targetEntity="StepExecution", mappedBy="jobExecution")
+     * @ORM\OneToMany(
+     *      targetEntity="StepExecution",
+     *      mappedBy="jobExecution",
+     *      cascade={"persist", "remove"},
+     *      orphanRemoval=true
+     * )
      */
     private $stepExecutions;
 
@@ -51,28 +56,28 @@ class JobExecution
     private $status;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      *
      * @ORM\Column(name="start_time", type="datetime", nullable=true)
      */
     private $startTime;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      *
      * @ORM\Column(name="end_time", type="datetime", nullable=true)
      */
     private $endTime;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      *
      * @ORM\Column(name="create_time", type="datetime", nullable=true)
      */
     private $createTime;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      *
      * @ORM\Column(name="updated_time", type="datetime", nullable=true)
      */
@@ -119,9 +124,23 @@ class JobExecution
     {
         $this->setStatus(new BatchStatus(BatchStatus::STARTING));
         $this->setExitStatus(new ExitStatus(ExitStatus::UNKNOWN));
+        $this->executionContext = new ExecutionContext();
         $this->stepExecutions = new ArrayCollection();
         $this->createTime = new \DateTime();
         $this->failureExceptions = array();
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
+
+        if ($this->stepExecutions) {
+            $this->stepExecutions = clone $this->stepExecutions;
+        }
+
+        if ($this->executionContext) {
+            $this->executionContext = clone $this->executionContext;
+        }
     }
 
     /**
@@ -160,7 +179,7 @@ class JobExecution
     /**
      * Returns the time that this execution ended
      *
-     * @return the time that this execution ended
+     * @return \DateTime the time that this execution ended
      */
     public function getEndTime()
     {
@@ -184,7 +203,7 @@ class JobExecution
     /**
      * Gets the time this execution started
      *
-     * @return the time this execution started
+     * @return \DateTime the time this execution started
      */
     public function getStartTime()
     {
@@ -207,7 +226,7 @@ class JobExecution
     /**
      * Gets the time this execution has been created
      *
-     * @return the time this execution has been created
+     * @return \DateTime the time this execution has been created
      */
     public function getCreateTime()
     {
@@ -231,7 +250,7 @@ class JobExecution
     /**
      * Gets the time this execution has been updated
      *
-     * @return the time this execution has been updated
+     * @return \DateTime time this execution has been updated
      */
     public function getUpdatedTime()
     {
@@ -309,11 +328,11 @@ class JobExecution
     }
 
     /**
-     * @return the exitCode
+     * @return ExitStatus exitCode
      */
     public function getExitStatus()
     {
-        if ($this->exitStatus === null and $this->exitCode !== null) {
+        if ($this->exitStatus === null && $this->exitCode !== null) {
             $this->exitStatus = new ExitStatus($this->exitCode);
         }
 
@@ -323,7 +342,7 @@ class JobExecution
     /**
      * Accessor for the step executions.
      *
-     * @return ArrayCollection the step executions that were registered
+     * @return ArrayCollection|StepExecution[] the step executions that were registered
      */
     public function getStepExecutions()
     {
@@ -363,7 +382,7 @@ class JobExecution
      * be noted that this does not necessarily mean that it has been persisted
      * as such yet.
      *
-     * @return true if the end time is null
+     * @return bool if the end time is null
      */
     public function isRunning()
     {
@@ -373,7 +392,7 @@ class JobExecution
     /**
      * Test if this JobExecution indicates that it has been signalled to
      * stop.
-     * @return true if the status is BatchStatus::STOPPING
+     * @return bool if the status is BatchStatus::STOPPING
      */
     public function isStopping()
     {
@@ -387,6 +406,7 @@ class JobExecution
      */
     public function stop()
     {
+        /** @var StepExecution $stepExecution */
         foreach ($this->stepExecutions as $stepExecution) {
             $stepExecution->setTerminateOnly();
         }
@@ -406,7 +426,7 @@ class JobExecution
 
     /**
      * Add a failure exception
-     * @param Exception $e
+     * @param \Exception $e
      *
      * @return JobExecution
      */
@@ -433,6 +453,7 @@ class JobExecution
     {
         $allExceptions = $this->failureExceptions;
 
+        /** @var StepExecution $stepExecution */
         foreach ($this->stepExecutions as $stepExecution) {
             $allExceptions = array_merge($allExceptions, $stepExecution->getFailureExceptions());
         }
@@ -443,13 +464,14 @@ class JobExecution
     /**
      * Set the associated job
      *
-     * @param Job $job The job instance to associate the JobExecution to
+     * @param JobInstance $jobInstance The job instance to associate the JobExecution to
      *
      * @return JobExecution
      */
     public function setJobInstance(JobInstance $jobInstance)
     {
         $this->jobInstance = $jobInstance;
+        $this->jobInstance->addJobExecution($this);
 
         return $this;
     }
@@ -457,7 +479,7 @@ class JobExecution
     /**
      * Get the associated jobInstance
      *
-     * @return $job The job to which the JobExecution is associated
+     * @return JobInstance The job to which the JobExecution is associated
      */
     public function getJobInstance()
     {
@@ -494,14 +516,13 @@ class JobExecution
      */
     public function __toString()
     {
-        $string = "";
         $startTime       = self::formatDate($this ->startTime);
         $endTime         = self::formatDate($this ->endTime);
         $updatedTime     = self::formatDate($this->updatedTime);
         $jobInstanceCode = $this->jobInstance != null ? $this->jobInstance->getCode() : '';
 
         $message = "startTime=%s, endTime=%s, updatedTime=%s, status=%d, exitStatus=%s, exitDescription=[%s], job=[%s]";
-        $string = sprintf(
+        return sprintf(
             $message,
             $startTime,
             $endTime,
@@ -511,15 +532,13 @@ class JobExecution
             $this->exitDescription,
             $jobInstanceCode
         );
-
-        return $string;
     }
 
     /**
      * Format a date or return empty string if null
      *
-     * @param Datetime date
-     * @param string dateformat
+     * @param \DateTime date
+     * @param string $format date format
      *
      * @return string Date formatted
      */

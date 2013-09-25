@@ -6,10 +6,11 @@ function($, _) {
     /**
      * @export oro/select2-config
      */
-    var Select2Config = function (config, url, perPage) {
+    var Select2Config = function (config, url, perPage, excluded) {
         this.config = config;
         this.url = url;
         this.perPage = perPage;
+        this.excluded = excluded;
     };
 
     Select2Config.prototype = {
@@ -24,6 +25,24 @@ function($, _) {
             if (this.config.initSelection === undefined) {
                 this.config.initSelection = _.bind(this.initSelection, this);
             }
+
+            var filterData = function(data) {
+                if (self.excluded) {
+                    var forRemove = [];
+                    var results = data.results;
+                    for (var i = 0; i < results.length; i++) {
+                        if (results[i].hasOwnProperty('id') && self.excluded.indexOf(results[i].id) > -1) {
+                            forRemove.push(i);
+                        }
+                    }
+                    for (i = 0; i < forRemove.length; i++) {
+                        results.splice(forRemove[i], 1);
+                    }
+                    data.results = results;
+                }
+                return data;
+            };
+
             if (this.config.ajax === undefined) {
                 this.config.ajax = {
                     'url': this.url,
@@ -39,6 +58,10 @@ function($, _) {
                     }
                 };
             }
+            var resultsMethod = this.config.ajax.results;
+            this.config.ajax.results = function(data, page) {
+                return filterData(resultsMethod(data, page));
+            };
             if (this.config.ajax.quietMillis === undefined) {
                 this.config.ajax.quietMillis = 700;
             }

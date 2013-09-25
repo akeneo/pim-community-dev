@@ -1,0 +1,101 @@
+<div class="btn-group">
+    {% if resource_granted('oro_importexport_import') %}
+    <a type="button"
+        class="btn import-btn no-hash"
+        href="{{ path('oro_importexport_import_form', {'entity': entityClass}) }}">
+        <i class="icon-signin"></i>{{ 'Import'|trans }}
+    </a>
+    {% endif %}
+
+    {% if resource_granted('oro_importexport_export') %}
+    <a type="button"
+       class="btn export-btn no-hash"
+       href="{{ path('oro_importexport_export_instant', {'processorAlias': exportProcessor}) }}">
+        <i class="icon-signout"></i>{{ 'Export'|trans }}
+    </a>
+    {% endif %}
+</div>
+
+<script type="text/javascript">
+    require(['jquery', 'oro/translator', 'oro/widget-manager', 'oro/dialog-widget', 'oro/messenger',
+        'oro/registry', 'oro/mediator'],
+    function($, __, WidgetManager, DialogWidget, Messanger, registry, mediator) {
+        $('.import-btn').on('click', function(e) {
+            e.preventDefault();
+
+            var widget = new DialogWidget({
+                'url': this.href,
+                'title': {{ imortTitle|default('Import'|trans)|json_encode|raw }},
+                'stateEnabled': false,
+                'incrementalPosition': false,
+                'dialogOptions': {
+                    'width': 650,
+                    'autoResize': true,
+                    'modal': true
+                }
+            });
+            WidgetManager.addWidgetInstance(widget);
+            widget.render();
+
+            {% if dataGridName is defined %}
+            var datagridName = {{ dataGridName|json_encode|raw }};
+            var onGridAdd = function(datagrid) {
+                widget.on('importComplete', function(data) {
+                    if (data.success) {
+                        datagrid.collection.fetch();
+                    }
+                });
+            };
+            var datagrid = registry.getElement('datagrid', datagridName);
+            if (datagrid) {
+                onGridAdd(datagrid);
+            } else {
+                mediator.once("datagrid:created:" + datagridName, onGridAdd);
+            }
+            {% endif %}
+        });
+
+        $('.export-btn').on('click', function(e) {
+            e.preventDefault();
+
+            var exportStartedMessage = Messanger.notificationFlashMessage(
+                'info',
+                {{ 'Export started, please wait...'|trans|json_encode|raw }},
+                {delay: 0}
+            );
+
+            $.getJSON(this.href, function(data) {
+                exportStartedMessage.close();
+                if (data.success) {
+                    if (data.readsCount > 0) {
+                        var $successMessage = __(
+                            'Export performed successfully, {{'{{ count }}'}} entities were exported.',
+                            {'count': data.readsCount}
+                        );
+                        var resultFileLink
+                            = '<a href="' + data.url + '" target="_blank">{{ 'Download result file'|trans }}</a>';
+                        $successMessage += ' ' + resultFileLink;
+
+                        Messanger.notificationFlashMessage('success', $successMessage, {delay: 0});
+                    } else {
+                        Messanger.notificationFlashMessage(
+                            'info',
+                            {{ 'No entities found for export.'|trans|json_encode|raw }},
+                            {delay: 0}
+                        );
+                    }
+                } else {
+                    var $errorMessage = __(
+                        'Export operation fails, {{'{{ count }}'}} error(s) found.',
+                        {'count': data.errorsCount}
+                    );
+                    var errorLogLink
+                        = '<a href="' + data.url + '" target="_blank">{{ 'Download error log'|trans }}</a>';
+                    $errorMessage += ' ' + errorLogLink;
+
+                    Messanger.notificationFlashMessage('error', $errorMessage, {delay: 0});
+                }
+            });
+        });
+    });
+</script>

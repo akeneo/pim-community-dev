@@ -6,6 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\AbstractQuery;
 
+use Oro\Bundle\BatchBundle\ORM\Query\QueryCountCalculator;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
 /**
@@ -99,9 +100,7 @@ class ProxyQuery implements ProxyQueryInterface
 
         $this->applyQueryHints($query);
 
-        $countCalculator = new CountCalculator();
-
-        return $countCalculator->getCount($query);
+        return QueryCountCalculator::calculateCount($query);
     }
 
     /**

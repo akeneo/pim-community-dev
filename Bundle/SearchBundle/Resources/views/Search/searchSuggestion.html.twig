@@ -1,5 +1,5 @@
 {% spaceless %}
-<ul>
+<ul data-count={% if records_count is defined %}{{ records_count }}{% else %}0{% endif %}>
     {% if data is defined %}
         {% for item in data %}
         <li>

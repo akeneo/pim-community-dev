@@ -8,6 +8,7 @@ oro_menu_config:
             route: 'oro_email_emailtemplate_index'
             extras:
                 routes: ['oro_email_emailtemplate_*']
+                description: 'List of email templates'
     tree:
         application_menu:
             children:
