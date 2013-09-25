@@ -104,7 +104,7 @@
                         UI.attibuteRow('User name', entity.username),
                         UI.attibuteRow('First name', entity.firstname),
                         UI.attibuteRow('Last name', entity.lastname),
-                        UI.attibuteRow('Birthday', entity.birthday ? UI.date(entity.birthday, oro_config_value('oro_locale.date_format')) : 'N/A'),
+                        UI.attibuteRow('Birthday', entity.birthday ? UI.date(entity.birthday) : 'N/A'),
                         UI.renderAttribute('API key', _self.api_data_block(entity))
                     ]
                 },

@@ -57,8 +57,18 @@ class DateFormatExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function formatDateTime(\Twig_Environment $env, $date, $dateTimeFormat, $locale = null, $timezone = null)
-    {
+    public function formatDateTime(
+        \Twig_Environment $env,
+        $date,
+        $dateTimeFormat = null,
+        $locale = null,
+        $timezone = null
+    ) {
+        if (is_null($dateTimeFormat)) {
+            $dateTimeFormat = $this->cm->get(self::DATE_FORMAT_CONFIG_KEY);
+        }
+
+        $dateTimeFormat = $dateTimeFormat === false ? 'd/m/Y H:i:s' : $dateTimeFormat;
         $dateTimeFormat = $this->convertDateTimeToICUFormat($dateTimeFormat);
 
         return twig_localized_date_filter(
@@ -86,7 +96,8 @@ class DateFormatExtension extends \Twig_Extension
                 'd', // day DD
                 'j', // day D
                 'y', // year YY
-                'Y', // year YYYY
+                'Y', // year YYYY,
+                'F', // month name
             ),
             array(
                 'MM',
@@ -94,7 +105,8 @@ class DateFormatExtension extends \Twig_Extension
                 'dd',
                 'd',
                 'yy',
-                'yyyy'
+                'yyyy',
+                'MMMM'
             ),
             $dateTimeFormat
         );
