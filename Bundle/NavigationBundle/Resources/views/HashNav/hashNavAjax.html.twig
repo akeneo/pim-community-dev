@@ -7,7 +7,7 @@
 {% set md5_object = '' %}
 {% set is_entity = false %}
 {% if entity is not defined %}
-    {% if form is defined %}
+    {% if form is defined and form.vars.value is defined %}
         {% set md5_object = form.vars.value %}
         {% set is_entity = true %}
     {% else %}
