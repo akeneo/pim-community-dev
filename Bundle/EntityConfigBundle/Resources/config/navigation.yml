@@ -16,5 +16,5 @@ oro_menu_config:
 oro_titles:
     oro_entityconfig_index: ~
     oro_entityconfig_view: %%entityName%%
-    oro_entityconfig_update: %%entityName%%
-    oro_entityconfig_field_update: %%entityName%%
+    oro_entityconfig_update: Edit %%entityName%%
+    oro_entityconfig_field_update: Edit %%entityName%%
