@@ -43,13 +43,13 @@ oro_system_configuration:
                 label: 'Date format'
                 required: true
                 choices:
-                      "MM/dd/yy":   "MM/dd/yy"
-                      "dd.MM.yyyy": "dd.MM.yyyy"
-                      "dd.MM.yy":   "dd.MM.yy"
-                      "d.M.yy":     "d.M.yy"
-                      "dd/MM/yy":   "dd/MM/yy"
-                      "yy/MM/dd":   "yy/MM/dd"
-                      "yyyy-MM-dd": "yyyy-MM-dd"
+                      "m/d/y": "mm/dd/yy"
+                      "d.m.Y": "dd.mm.yyyy"
+                      "d.m.y": "dd.mm.yy"
+                      "j.n.y": "d.m.yy"
+                      "d/m/y": "dd/mm/yy"
+                      "y/m/d": "yy/mm/dd"
+                      "Y-m-d": "yyyyy-mm-dd"
                 constraints:
                     - NotBlank: ~
 
