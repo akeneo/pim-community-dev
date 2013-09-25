@@ -6,9 +6,9 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class DateFormatExtension extends \Twig_Extension
 {
-    const TIMEZONE_CONFIG_KEY    = 'oro_locale.timezone';
-    const DATE_FORMAT_CONFIG_KEY = 'oro_locale.date_format';
-    const TIME_FORMAT_CONFIG_KEY = 'oro_locale.time_format';
+    const CONFIG_TIMEZONE_KEY    = 'oro_locale.timezone';
+    const CONFIG_DATE_FORMAT_KEY = 'oro_locale.date_format';
+    const CONFIG_TIME_FORMAT_KEY = 'oro_locale.time_format';
 
     /** @var ConfigManager */
     protected $cm;
@@ -29,6 +29,11 @@ class DateFormatExtension extends \Twig_Extension
         return array(
             'locale_date' => new \Twig_SimpleFilter(
                 'locale_date',
+                array($this, 'formatDate'),
+                array('needs_environment' => true)
+            ),
+            'locale_datetime' => new \Twig_SimpleFilter(
+                'locale_datetime',
                 array($this, 'formatDateTime'),
                 array('needs_environment' => true)
             ),
@@ -65,7 +70,31 @@ class DateFormatExtension extends \Twig_Extension
         $timezone = null
     ) {
         if (is_null($dateTimeFormat)) {
-            $dateTimeFormat = $this->cm->get(self::DATE_FORMAT_CONFIG_KEY);
+            $dateTimeFormat = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY) .
+                ' ' . $this->cm->get(self::CONFIG_TIME_FORMAT_KEY);
+        }
+
+        return $this->formatDate($env, $date, $dateTimeFormat, $locale, $timezone);
+    }
+
+    /**
+     *
+     * @param \Twig_Environment $env
+     * @param $date
+     * @param $dateTimeFormat
+     * @param null $locale
+     * @param $timezone
+     * @return string
+     */
+    public function formatDate(
+        \Twig_Environment $env,
+        $date,
+        $dateTimeFormat = null,
+        $locale = null,
+        $timezone = null
+    ) {
+        if (is_null($dateTimeFormat)) {
+            $dateTimeFormat = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY);
         }
 
         $dateTimeFormat = $dateTimeFormat === false ? 'd/m/Y H:i:s' : $dateTimeFormat;
@@ -98,6 +127,14 @@ class DateFormatExtension extends \Twig_Extension
                 'y', // year YY
                 'Y', // year YYYY,
                 'F', // month name
+                'H', // hour 24h with 0
+                'G', // hour 24h without 0
+                'h', // hour 12h with 0
+                'g', // hour 12h without 0
+                'i', // min
+                's', // sec
+                'a', // am/pm
+                'A', // AM/PM
             ),
             array(
                 'MM',
@@ -106,7 +143,8 @@ class DateFormatExtension extends \Twig_Extension
                 'd',
                 'yy',
                 'yyyy',
-                'MMMM'
+                'MMMM',
+                'HH', 'H', 'hh', 'h', 'mm', 'ss', 'a', 'a'
             ),
             $dateTimeFormat
         );
@@ -156,8 +194,8 @@ class DateFormatExtension extends \Twig_Extension
      */
     public function getMomentDateTimeFormat()
     {
-        $dateFormat = $this->cm->get(self::DATE_FORMAT_CONFIG_KEY);
-        $timeFormat = $this->cm->get(self::TIME_FORMAT_CONFIG_KEY);
+        $dateFormat = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY);
+        $timeFormat = $this->cm->get(self::CONFIG_TIME_FORMAT_KEY);
 
         return $this->convertDateTimeToMomentJSFormat(implode(' ', array($dateFormat, $timeFormat)));
     }
@@ -169,7 +207,7 @@ class DateFormatExtension extends \Twig_Extension
      */
     public function getMomentDateFormat()
     {
-        $format = $this->cm->get(self::DATE_FORMAT_CONFIG_KEY);
+        $format = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY);
 
         return $this->convertDateTimeToMomentJSFormat($format);
     }
@@ -181,7 +219,7 @@ class DateFormatExtension extends \Twig_Extension
      */
     public function getTimeZone()
     {
-        $timezone = $this->cm->get(self::TIMEZONE_CONFIG_KEY);
+        $timezone = $this->cm->get(self::CONFIG_TIMEZONE_KEY);
 
         $result = '+00:00';
         if ($timezone) {

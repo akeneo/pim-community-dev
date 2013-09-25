@@ -62,8 +62,12 @@ oro_system_configuration:
                 label: 'Time format'
                 required: true
                 choices:
-                      "h:i a":  "H:mm"
-                      "H:i":    "HH:mm"
+                      "H:i":  "HH:mm (24H)"
+                      "G:i": "H:mm (24H)"
+                      "h:i a": "HH:mm am/pm"
+                      "g:i a": "H:mm am/pm"
+                      "h:i A": "HH:mm AM/PM"
+                      "g:i A": "H:mm AM/PM"
                 constraints:
                     - NotBlank: ~
 
