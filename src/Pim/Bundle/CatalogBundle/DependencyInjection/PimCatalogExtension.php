@@ -61,7 +61,7 @@ class PimCatalogExtension extends Extension
         }
 
         $container->setParameter('validator.mapping.loader.yaml_files_loader.mapping_files', $yamlMappingFiles);
-        
+
         //Add DeleteException to list of safe message exceptions
         $exceptionCodes = $container->getParameter('fos_rest.exception.codes');
         $exceptionCodes['Pim\Bundle\CatalogBundle\Exception\DeleteException'] = 409;

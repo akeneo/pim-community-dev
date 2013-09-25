@@ -2,13 +2,13 @@ define(
     ['oro/datagrid/toolbar', 'oro/datagrid/actions-panel'],
     function(Toolbar, ActionsPanel) {
         'use strict';
-        
+
         /**
          * Datagrid toolbar widget
-         * 
+         *
          * @override
          * @see Oro/Bundle/GridBundle/Resources/public/js/datagrid/toolbar.js
-         * 
+         *
          * @author  Romain Monceau <romain@akeneo.com>
          * @export oro/datagrid/toolbar
          * @class  pim.datagrid.Toolbar
@@ -18,7 +18,7 @@ define(
             /**
              * @override
              * @see Oro/Bundle/GridBundle/Resources/public/js/datagrid/toolbar.js
-             * 
+             *
              * @property
              */
             template:_.template(
@@ -46,65 +46,65 @@ define(
                     '<div class="pagination pagination-centered"></div>' +
                 '</div>'
             ),
-            
+
             /** @property */
             exportActionsPanel: ActionsPanel,
-            
+
             /**
              * @override
              * @see Oro/Bundle/GridBundle/Resources/public/js/datagrid/toolbar.js
-             * 
+             *
              * @param {Array} options.exportActions List of export actions
-             * 
+             *
              * Redefine initialize method adding exportActionsPanel
              */
             initialize: function(options) {
                 options = options || {};
-                
+
                 Toolbar.prototype.initialize.call(this, options);
-                
+
                 this.exportActionsPanel = new this.exportActionsPanel();
                 if (options.exportActions) {
                     this.exportActionsPanel.setActions(options.exportActions);
                 }
             },
-            
+
             /**
              * @override
              * @see Oro/Bundle/GridBundle/Resources/public/js/datagrid/toolbar.js
-             * 
+             *
              * Enable toolbar
              */
             enable: function() {
                 Toolbar.prototype.enable.call(this);
                 this.exportActionsPanel.enable();
-                
+
                 return this;
             },
-            
+
             /**
              * @override
              * @see Oro/Bundle/GridBundle/Resources/public/js/datagrid/toolbar.js
-             * 
+             *
              * Disable toolbar
              */
             disable: function() {
                 Toolbar.prototype.disable.call(this);
                 this.exportActionsPanel.disable();
-                
+
                 return this;
             },
-            
+
             /**
              * @override
              * @see Oro/Bundle/GridBundle/Resources/public/js/datagrid/toolbar.js
-             * 
+             *
              * Render toolbar with pager and other views
              * Override to add export actions panel
              */
             render: function() {
                 Toolbar.prototype.render.call(this);
-                
+
                 this.$('.export-actions-panel').append(this.exportActionsPanel.render().$el);
 
                 return this;

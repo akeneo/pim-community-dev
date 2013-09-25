@@ -1,12 +1,12 @@
 /**
  * Extends Oro Pageable Collection to add category management
- * 
+ *
  * @param {type} OroPageableCollection
  * @param {type} app
  * @returns {unresolved}
  */
 define(
-    ["oro/pageable-collection-orig", "oro/app", "underscore"], 
+    ["oro/pageable-collection-orig", "oro/app", "underscore"],
     function(OroPageableCollection, app, _){
         var parent = OroPageableCollection.prototype,
             TREE_REGEX = /(&?treeId=(\d+))/,
@@ -21,7 +21,7 @@ define(
                 }),
                 /**
                  * Sets the category for the collection
-                 * 
+                 *
                  * @param {int} treeId
                  * @param {int} categoryId
                  */
@@ -121,5 +121,4 @@ define(
             });
         return PageableCollection;
     }
-    
-)
+);

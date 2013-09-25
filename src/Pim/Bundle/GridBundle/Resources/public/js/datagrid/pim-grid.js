@@ -5,7 +5,7 @@ define(
 
         /**
          * Pim grid class extending Oro Datagrid adding export actions
-         * 
+         *
          * @author  Romain Monceau <romain@akeneo.com>
          * @class   Pim.Datagrid.Grid
          * @extends Oro.Datagrid.Grid
@@ -28,11 +28,11 @@ define(
             },
             /** @property {pim.datagrid.Toolbar} */
             toolbar: Toolbar,
-            
+
             /**
              * @override
              * Add export actions in toolbar
-             * 
+             *
              * @param {Object} toolbarOptions
              * @return {pim.datagrid.Toolbar}
              * @private
@@ -45,26 +45,26 @@ define(
                     exportActions: this._getToolbarExportActions()
                 }));
             },
-            
+
             /**
              * Get toolbar export actions
-             * 
+             *
              * @return {Array}
              * @private
              */
             _getToolbarExportActions: function() {
                 var result = [];
-                
+
                 _.each(this.exportActions, function(action) {
                     result.push(this.createExportAction(action.prototype));
                 }, this);
-                
+
                 return result;
             },
-            
+
             /**
              * Creates export action
-             * 
+             *
              * @param {Function} actionPrototype
              * @return Pim.Datagrid.Action.ExportCollectionAction
              * @protected
