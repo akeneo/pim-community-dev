@@ -117,6 +117,8 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->assertTitle('Users - Users Management - System')
             ->assertMessage('User was successfully deleted');
 
-        $login->openUsers()->filterBy('Username', $username)->assertNoDataMessage('No user was found to match your search');
+        $login->openUsers()
+            ->filterBy('Username', $username)
+            ->assertNoDataMessage('No user was found to match your search');
     }
 }
