@@ -6,7 +6,7 @@
 {% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
 {% import 'OroUserBundle::macros.html.twig' as macros %}
 
-{% set format = oro_config_value('oro_user.name_format') %}
+{% set format = oro_config_value('oro_locale.name_format') %}
 {% set entity_output = oro_config_entity('Oro\\Bundle\\UserBundle\\Entity\\User') %}
 {% set showImage = true %}
 

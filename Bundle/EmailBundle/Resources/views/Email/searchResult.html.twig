@@ -7,7 +7,7 @@
 {% import 'OroUserBundle::macros.html.twig' as UI %}
 {% import 'OroEmailBundle::macros.html.twig' as EA %}
 
-{% set format = oro_config_value('oro_user.name_format') %}
+{% set format = oro_config_value('oro_locale.name_format') %}
 {% set iconType = 'envelope' %}
 
 {% set recordUrl = indexer_item.recordUrl %}
