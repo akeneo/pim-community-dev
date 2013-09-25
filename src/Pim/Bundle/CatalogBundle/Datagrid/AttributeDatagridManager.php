@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -52,7 +54,7 @@ class AttributeDatagridManager extends DatagridManager
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
         $field = new FieldDescription();
-        $field->setName('Code');
+        $field->setName('code');
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
@@ -176,16 +178,21 @@ class AttributeDatagridManager extends DatagridManager
         $field->setName('group');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
+                'type'        => FieldDescriptionInterface::TYPE_HTML,
                 'label'       => $this->translate('Group'),
-                'field_name'  => 'group',
+                'field_name'  => 'groupName',
+                'expression'  => 'attributeGroup.id',
                 'filter_type' => FilterInterface::TYPE_CHOICE,
-                'required'    => false,
                 'sortable'    => true,
                 'filterable'  => true,
                 'show_filter' => true,
                 'field_options' => array('choices' => $choices),
+                'filter_by_where' => true
             )
+        );
+
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimCatalogBundle:Entity:_toString.html.twig')
         );
 
         return $field;
@@ -249,18 +256,20 @@ class AttributeDatagridManager extends DatagridManager
     /**
      * {@inheritdoc}
      */
-    protected function createQuery()
+    protected function prepareQuery(ProxyQueryInterface $proxyQuery)
     {
-        $queryBuilder = $this->productManager->getStorageManager()->createQueryBuilder();
-        $queryBuilder
-            ->select('attribute')
-            ->from('PimCatalogBundle:ProductAttribute', 'attribute')
-            ->addSelect('translation')
-            ->leftJoin('attribute.translations', 'translation', 'with', 'translation.locale = :locale')
-            ->setParameter('locale', $this->productManager->getLocale());
-        $this->queryFactory->setQueryBuilder($queryBuilder);
-        $query = $this->queryFactory->createQuery();
+        $rootAlias = $proxyQuery->getRootAlias();
 
-        return $query;
+        $groupExpr = "(CASE WHEN gt.name IS NULL THEN attributeGroup.code ELSE gt.name END)";
+        $proxyQuery
+            ->addSelect('translation')
+            ->addSelect(sprintf("%s AS groupName", $groupExpr), true);
+
+        $proxyQuery
+            ->leftJoin($rootAlias .'.translations', 'translation', 'with', 'translation.locale = :locale')
+            ->leftJoin($rootAlias .'.group', 'attributeGroup')
+            ->leftJoin('attributeGroup.translations', 'gt', 'WITH', 'gt.locale = :locale');
+
+        $proxyQuery->setParameter('locale', $this->productManager->getLocale());
     }
 }
