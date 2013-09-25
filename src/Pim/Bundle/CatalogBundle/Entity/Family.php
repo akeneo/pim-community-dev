@@ -78,7 +78,7 @@ class Family implements TranslatableInterface, VersionableInterface
     protected $attributeAsLabel;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection $attributeRequirements
+     * @var \Doctrine\Common\Collections\ArrayCollection $requirements
      *
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\AttributeRequirement",
@@ -86,7 +86,7 @@ class Family implements TranslatableInterface, VersionableInterface
      *     cascade={"persist", "remove"}
      * )
      */
-    protected $attributeRequirements;
+    protected $requirements;
 
     /**
      * @var datetime $created
@@ -117,9 +117,9 @@ class Family implements TranslatableInterface, VersionableInterface
      */
     public function __construct()
     {
-        $this->attributes            = new ArrayCollection();
-        $this->translations          = new ArrayCollection();
-        $this->attributeRequirements = new ArrayCollection();
+        $this->attributes   = new ArrayCollection();
+        $this->translations = new ArrayCollection();
+        $this->requirements = new ArrayCollection();
     }
 
     /**
@@ -441,7 +441,7 @@ class Family implements TranslatableInterface, VersionableInterface
     public function addAttributeRequirement(AttributeRequirement $requirement)
     {
         $requirement->setFamily($this);
-        $this->attributeRequirements[] = $requirement;
+        $this->requirements[] = $requirement;
 
         return $this;
     }
@@ -449,13 +449,13 @@ class Family implements TranslatableInterface, VersionableInterface
     /**
      * Set attribute requirements
      *
-     * @param array $attributeRequirements
+     * @param array $requirements
      *
      * @return Family
      */
-    public function setAttributeRequirements($attributeRequirements)
+    public function setAttributeRequirements($requirements)
     {
-        $this->attributeRequirements = $attributeRequirements;
+        $this->requirements = $requirements;
 
         return $this;
     }
@@ -469,7 +469,7 @@ class Family implements TranslatableInterface, VersionableInterface
     {
         $result = array();
 
-        foreach ($this->attributeRequirements as $requirement) {
+        foreach ($this->requirements as $requirement) {
             $key = $this->getAttributeRequirementKeyFor(
                 $requirement->getAttribute()->getCode(),
                 $requirement->getChannel()->getCode()
