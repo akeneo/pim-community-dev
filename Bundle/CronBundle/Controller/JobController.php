@@ -94,7 +94,10 @@ class JobController extends Controller
             if ($ret['error']) {
                 $this->get('session')->getFlashBag()->add('error', $ret['message']);
             } else {
-                $this->get('session')->getFlashBag()->add('success', $translator->trans('oro.cron.message.start.success'));
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $translator->trans('oro.cron.message.start.success')
+                );
             }
 
             return $this->redirect($this->generateUrl('oro_cron_job_index'));

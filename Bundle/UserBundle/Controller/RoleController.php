@@ -120,8 +120,10 @@ class RoleController extends Controller
         $aclRoleHandler->createForm($entity);
 
         if ($aclRoleHandler->process($entity)) {
-
-            $this->get('session')->getFlashBag()->add('success', 'Role successfully saved');
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('oro.user.controller.role.message.saved')
+            );
 
             return $this->get('oro_ui.router')->actionRedirect(
                 array(

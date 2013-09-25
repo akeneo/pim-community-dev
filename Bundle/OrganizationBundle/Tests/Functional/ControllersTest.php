@@ -73,7 +73,7 @@ class ControllersTest extends WebTestCase
 
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
-        $this->assertContains("Business Unit successfully saved", $crawler->html());
+        $this->assertContains("Business Unit saved", $crawler->html());
     }
 
     /**
@@ -114,7 +114,7 @@ class ControllersTest extends WebTestCase
 
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
-        $this->assertContains("Business Unit successfully saved", $crawler->html());
+        $this->assertContains("Business Unit saved", $crawler->html());
 
         //get id
         $this->client->request(

@@ -3,7 +3,7 @@
 namespace Oro\Bundle\EntityBundle\Form\Type;
 
 use Doctrine\Common\Util\Inflector;
-use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -11,6 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class CustomEntityType extends AbstractType
 {
@@ -22,16 +24,19 @@ class CustomEntityType extends AbstractType
     protected $configManager;
 
     protected $typeMap = array(
-        'string'   => 'text',
-        'integer'  => 'integer',
-        'smallint' => 'integer',
-        'bigint'   => 'integer',
-        'boolean'  => 'choice',
-        'decimal'  => 'number',
-        'date'     => 'oro_date',
-        'datetime' => 'oro_datetime',
-        'text'     => 'textarea',
-        'float'    => 'number',
+        'string'     => 'text',
+        'integer'    => 'integer',
+        'smallint'   => 'integer',
+        'bigint'     => 'integer',
+        'boolean'    => 'choice',
+        'decimal'    => 'number',
+        'date'       => 'oro_date',
+        'datetime'   => 'oro_datetime',
+        'text'       => 'textarea',
+        'float'      => 'number',
+        'oneToMany'  => 'integer',
+        'manyToOne'  => 'oro_entity_select',
+        'manyToMany' => 'integer',
     );
 
     /**
@@ -89,6 +94,17 @@ class CustomEntityType extends AbstractType
                 if ($fieldConfigId->getFieldType() == 'boolean') {
                     $options['empty_value'] = false;
                     $options['choices']     = array('No', 'Yes');
+                }
+
+                if (in_array($fieldConfigId->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))) {
+                    $options['entity_class'] = $extendConfig->get('target_entity');
+                    $options['configs']      = array(
+                        'placeholder'   => 'oro.form.choose_value',
+                        'extra_config'  => 'relation',
+                        'target_entity' => str_replace('\\', '_', $extendConfig->get('target_entity')),
+                        'target_field'  => $extendConfig->get('target_field'),
+                        'properties'    => array($extendConfig->get('target_field')),
+                    );
                 }
 
                 $builder->add(
