@@ -31,11 +31,10 @@ class Navigation extends Page
         $this->test->moveto($this->menu->element($this->using('xpath')->value("li/a[normalize-space(.) = '{$menu}']")));
         $this->menu->element($this->using('xpath')->value("li/a[normalize-space(.) = '{$menu}']"))->click();
 
-        if ($this->menu->displayed()) {
-            if ($this->menu->elements($this->using('xpath')->value("li[a[normalize-space(.) = '{$menu}']]/ul"))) {
-                $this->menu = $this->menu->element($this->using('xpath')->value("li[a[normalize-space(.) = '{$menu}']]/ul"));
-            }
-
+        try {
+            $this->menu = $this->menu->element($this->using('xpath')->value("li[a[normalize-space(.) = '{$menu}']]/ul"));
+        } catch (\Exception $e) {
+            $this->menu = $this->menu->element($this->using('xpath')->value("li/a[normalize-space(.) = '{$menu}']"));
         }
 
         $this->waitPageToLoad();
