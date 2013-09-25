@@ -71,6 +71,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected $filterCategoryId = self::UNCLASSIFIED_CATEGORY;
 
+    protected $familyExpression = "CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END";
+    //CASE WHEN ft.label IS NULL THEN family.code ELSE ft.label END
+
     /**
      * Define constructor to add new price type
      */
@@ -289,16 +292,14 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'type'          => FieldDescriptionInterface::TYPE_TEXT,
                 'label'         => $this->translate('Family'),
                 'field_name'    => 'familyLabel',
-                'expression'    => 'family',
+                'expression'    => 'productFamily.id',
                 'filter_type'   => FilterInterface::TYPE_ENTITY,
-                'required'      => false,
-                'sortable'      => false,
+                'sortable'      => true,
                 'filterable'    => true,
                 'show_filter'   => true,
                 'multiple'      => true,
                 'class'         => 'PimCatalogBundle:Family',
-                'property'      => 'label',
-                'filter_by_where' => true,
+                'filter_by_where' => true
             )
         );
 
@@ -511,19 +512,14 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         $rootAlias = $proxyQuery->getRootAlias();
 
-        // @todo : must be THEN CONCAT("[", family.code, "]")
-        $selectConcat = "CASE WHEN ft.label IS NULL ".
-                        "THEN family.code ".
-                        "ELSE ft.label END ".
-                        "as familyLabel";
-
         // prepare query for family
         $proxyQuery
-            ->addSelect($selectConcat, true)
-            ->leftJoin($rootAlias .'.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
+            ->leftJoin($rootAlias .'.family', 'productFamily')
+            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
             ->leftJoin('values.prices', 'valuePrices');
+
+        $proxyQuery->addSelect($this->familyExpression .' AS familyLabel', true);
 
         // prepare query for completeness
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
