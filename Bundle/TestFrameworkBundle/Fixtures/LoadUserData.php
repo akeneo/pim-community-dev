@@ -61,8 +61,8 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
             $admin->setOwner($this->getReference('default_business_unit'));
         }
 
-        $this->setFlexibleAttributeValueOption($userManager, $admin, 'gender', 0);
-        $this->setFlexibleAttributeValue($userManager, $admin, 'company', '');
+        //$this->setFlexibleAttributeValueOption($userManager, $admin, 'gender', 0);
+        //$this->setFlexibleAttributeValue($userManager, $admin, 'company', '');
         $this->addReference('default_user', $admin);
 
         $userManager->updateUser($admin);
