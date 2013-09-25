@@ -49,11 +49,12 @@ class DateFormatExtension extends \Twig_Extension
             'oro_config_timezone'              => new \Twig_Function_Method($this, 'getTimeZone'),
             'oro_config_moment_dateformat'     => new \Twig_Function_Method($this, 'getMomentDateFormat'),
             'oro_config_moment_datetimeformat' => new \Twig_Function_Method($this, 'getMomentDateTimeFormat'),
+            'oro_config_jquery_dateformat'     => new \Twig_Function_Method($this, 'getJqueryDateFormat'),
+            'oro_config_jquery_timeformat'     => new \Twig_Function_Method($this, 'getJqueryTimeFormat'),
         );
     }
 
     /**
-     *
      * @param \Twig_Environment $env
      * @param                   $date
      * @param                   $dateTimeFormat
@@ -78,7 +79,6 @@ class DateFormatExtension extends \Twig_Extension
     }
 
     /**
-     *
      * @param \Twig_Environment $env
      * @param                   $date
      * @param                   $dateTimeFormat
@@ -113,6 +113,85 @@ class DateFormatExtension extends \Twig_Extension
     }
 
     /**
+     * Returns datetime format needed for momentJS
+     *
+     * @return string
+     */
+    public function getMomentDateTimeFormat()
+    {
+        $dateFormat = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY);
+        $timeFormat = $this->cm->get(self::CONFIG_TIME_FORMAT_KEY);
+
+        return $this->convertDateTimeToMomentJSFormat(implode(' ', array($dateFormat, $timeFormat)));
+    }
+
+    /**
+     * Returns date format needed for momentJS
+     *
+     * @return string
+     */
+    public function getMomentDateFormat()
+    {
+        $format = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY);
+
+        return $this->convertDateTimeToMomentJSFormat($format);
+    }
+
+    /**
+     * Get config time zone
+     *
+     * @return string
+     */
+    public function getTimeZone()
+    {
+        $timezone = $this->cm->get(self::CONFIG_TIMEZONE_KEY);
+
+        $result = '+00:00';
+        if ($timezone) {
+            $date = new \DateTime('now', new \DateTimeZone($timezone));
+
+            $result = $date->format('P');
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns date format needed for jqueryUI datepicker
+     *
+     * @return string
+     */
+    public function getJqueryDateFormat()
+    {
+        $format = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY);
+
+        return $this->convertDateTimeToMomentJSFormat($format);
+    }
+
+    /**
+     * Returns date format needed for jqueryUI datetimepicker
+     *
+     * @return string
+     */
+    public function getJqueryTimeFormat()
+    {
+        $format = $this->cm->get(self::CONFIG_TIME_FORMAT_KEY);
+
+        return $this->convertDateTimeToMomentJSFormat($format);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'oro_locale';
+    }
+
+    /**
+     * Format description
+     * http://www.icu-project.org/apiref/icu4c/classSimpleDateFormat.html#details
+     *
      * @param $dateTimeFormat
      *
      * @return string libICU format for IntlDateFormatter::create()
@@ -158,7 +237,15 @@ class DateFormatExtension extends \Twig_Extension
         );
     }
 
-    public function convertDateTimeToMomentJSFormat($format)
+    /**
+     * Format description
+     * http://momentjs.com/docs/#/parsing/string-format/
+     *
+     * @param string $format
+     *
+     * @return string
+     */
+    protected function convertDateTimeToMomentJSFormat($format)
     {
         return str_replace(
             array(
@@ -193,57 +280,5 @@ class DateFormatExtension extends \Twig_Extension
             ),
             $format
         );
-    }
-
-    /**
-     * Returns date
-     *
-     * @return string
-     */
-    public function getMomentDateTimeFormat()
-    {
-        $dateFormat = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY);
-        $timeFormat = $this->cm->get(self::CONFIG_TIME_FORMAT_KEY);
-
-        return $this->convertDateTimeToMomentJSFormat(implode(' ', array($dateFormat, $timeFormat)));
-    }
-
-    /**
-     * Returns date
-     *
-     * @return string
-     */
-    public function getMomentDateFormat()
-    {
-        $format = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY);
-
-        return $this->convertDateTimeToMomentJSFormat($format);
-    }
-
-    /**
-     * Get config time zone
-     *
-     * @return string
-     */
-    public function getTimeZone()
-    {
-        $timezone = $this->cm->get(self::CONFIG_TIMEZONE_KEY);
-
-        $result = '+00:00';
-        if ($timezone) {
-            $date = new \DateTime('now', new \DateTimeZone($timezone));
-
-            $result = $date->format('P');
-        }
-
-        return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'oro_locale';
     }
 }
