@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\UserBundle\DataFixtures\ORM;
+namespace Oro\Bundle\TestFrameworkBundle\Fixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
