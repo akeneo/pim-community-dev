@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'pim/initselect2', 
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'pim/initselect2',
      'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
     function ($, __, mediator, Navigation, messenger, Dialog, initSelect2) {
         'use strict';
@@ -11,7 +11,7 @@ define(
             initialized = true;
             function pageInit() {
                 // Place code that we need to run on every page load here
-                
+
                 $('.remove-attribute').each(function () {
                     var target = $(this).parent().find('.icons-container').first();
                     if (target.length) {

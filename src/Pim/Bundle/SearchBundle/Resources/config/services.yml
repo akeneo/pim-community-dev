@@ -4,6 +4,9 @@ parameters:
 services:
     pim_search.index_value_listener:
         class:     %pim_search.index_value_listener.class%
-        arguments: ["@service_container", %oro_search.realtime_update%, %oro_search.entities_config%]
+        arguments:
+            - @service_container
+            - %oro_search.realtime_update%
+            - %oro_search.entities_config%
         tags:
             - { name: doctrine.event_listener, event: onFlush }

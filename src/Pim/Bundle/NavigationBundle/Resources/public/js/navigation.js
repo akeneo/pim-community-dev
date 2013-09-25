@@ -1,13 +1,13 @@
 /**
  * Extends Oro Navigation to automatically navigate to last filter status
- * 
+ *
  * @param {type} OroNavigation
  * @returns {unresolved}
  */
 define(
     ['oro/navigation-orig', 'oro/app', 'oro/messenger'],
     function(OroNavigation, app, messenger) {
-        
+
         var GRID_URL_REGEX = /enrich\/product\/(\?.*)?$/,
             QUERY_STRING_REGEX = /^[^\?]+\??/,
             flashMessages = [],
