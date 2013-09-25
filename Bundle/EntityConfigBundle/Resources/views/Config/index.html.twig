@@ -2,6 +2,7 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 
 {% set gridId = 'entityconfig-grid' %}
+{% set pageTitle = 'Entities' %}
 
 {% block content %}
     {% if require_js|length %}
@@ -9,17 +10,16 @@
             require({{ require_js|json_encode|raw }})
         </script>
     {% endif %}
-    {% set pageTitle = 'Entities' %}
+    {{ parent() }}
+{% endblock %}
 
-    {% set buttons = [] %}
+{% block navButtons %}
     {% for button in buttonConfig %}
-        {% set buttons = buttons|merge([UI.addButton({
+        {{ UI.addButton({
             'path': path(button.route, button.args|default({})),
             'title': button.title|default(button.name),
             'label': button.name,
             'aClass': button.aClass|default('')
-        })]) %}
+        }) }}
     {% endfor %}
-
-    {{ parent() }}
 {% endblock %}

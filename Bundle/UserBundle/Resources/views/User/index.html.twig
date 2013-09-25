@@ -1,11 +1,14 @@
 {% extends 'OroUIBundle:actions:index.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% set gridId = 'users-grid' %}
-{% block content %}
-    {% set pageTitle = 'Users' %}
-    {% set buttons = [] %}
+{% set pageTitle = 'Users' %}
+
+{% block navButtons %}
     {% if resource_granted('oro_user_user_create') %}
-        {% set buttons = buttons|merge([UI.addButton({'path' : path('oro_user_create'), 'title' : 'Create user', 'label' : 'Create user'})]) %}
+        {{ UI.addButton({
+            'path' : path('oro_user_create'),
+            'title' : 'Create user',
+            'label' : 'Create user'
+        }) }}
     {% endif %}
-    {{ parent() }}
 {% endblock %}

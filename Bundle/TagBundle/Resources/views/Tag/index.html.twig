@@ -1,11 +1,14 @@
 {% extends 'OroUIBundle:actions:index.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% set gridId = 'tags-grid' %}
-{% block content %}
-    {% set pageTitle = 'Tags' %}
-    {% set buttons = [] %}
+{% set pageTitle = 'Tags' %}
+
+{% block navButtons %}
     {% if resource_granted('oro_tag_create') %}
-        {% set buttons = buttons|merge([UI.addButton({'path' : path('oro_tag_create'), 'title' : 'Create tag', 'label' : 'Create tag'})]) %}
+        {{ UI.addButton({
+            'path' : path('oro_tag_create'),
+            'title' : 'Create tag',
+            'label' : 'Create tag'
+        }) }}
     {% endif %}
-    {{ parent() }}
 {% endblock %}
