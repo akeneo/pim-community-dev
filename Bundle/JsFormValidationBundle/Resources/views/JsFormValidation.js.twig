@@ -186,7 +186,7 @@ var jsfv = (function () {
         onReady: function() {
 {% if check_modes.submit %}
             // On submit checks
-            var form = jsfv.id('{{ formName }}');
+            var field, form = jsfv.id('{{ formName }}');
 
             // Form exists ?
             if (form) {
@@ -198,9 +198,12 @@ var jsfv = (function () {
                 form = $(form);
                 // Remove HTML5 validation
                 form.attr('novalidate', 'novalidate');
-                // autofocus on a first form input
-                form.find(':input:visible:not(.offscreen):not(button):not([disabled]):not([readonly])')
-                    .first().focus();
+
+                // autofocus on a first form filed (if it has no value)
+                field = form.find(':input:visible:not(.offscreen):not(button):not([disabled]):not([readonly])').first();
+                if (!field.val()) {
+                    field.focus();
+                }
 
                 jsfv.onFirstEvent(form, 'submit', function(e) {
                     var gv, submitForm = true;
