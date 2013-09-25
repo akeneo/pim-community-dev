@@ -29,6 +29,12 @@ function($, _, routing, mediator, registry) {
               this
           );
 
+          $(document).on('click', '.search-view-more-link', function(evt) {
+              $('#top-search-form').submit();
+              return false;
+          });
+
+
           $('.search-form').submit(function(){
               var $searchString = $.trim($(this).find('.search').val());
               if ($searchString.length === 0) {
@@ -67,13 +73,18 @@ function($, _, routing, mediator, registry) {
                       data: {
                           search: queryString,
                           from: searchBarForm.val(),
-                          limit: 5
+                          max_results: 5
                       },
                       success: function(data) {
                           searchBarContainer.removeClass('header-search-focused');
                           searchDropdown.html(data);
 
+                          var countAll = searchDropdown.find('ul').attr('data-count');
                           var count = searchDropdown.find('li').length;
+
+                          if (countAll > count) {
+                              searchDropdown.append($('.search-more').html());
+                          }
 
                           $('#recordsCount').val(count);
 

@@ -66,6 +66,7 @@ class ConfigurationBuilder implements BuilderInterface
      */
     private function createFromArray(ItemInterface $menu, array $data, array &$itemList, array $options = array())
     {
+        $isAllowed = false;
         foreach ($data as $itemCode => $itemData) {
             if (!empty($itemList[$itemCode])) {
 
@@ -90,8 +91,11 @@ class ConfigurationBuilder implements BuilderInterface
                 if (!empty($itemData['children'])) {
                     $this->createFromArray($newMenuItem, $itemData['children'], $itemList, $options);
                 }
+
+                $isAllowed = $isAllowed || $newMenuItem->getExtra('isAllowed');
             }
         }
+        $menu->setExtra('isAllowed', $isAllowed);
     }
 
     /**

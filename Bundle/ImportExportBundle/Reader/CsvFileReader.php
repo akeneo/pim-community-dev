@@ -32,7 +32,7 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
     /**
      * @var string
      */
-    protected $delimiter = ';';
+    protected $delimiter = ',';
 
     /**
      * @var string

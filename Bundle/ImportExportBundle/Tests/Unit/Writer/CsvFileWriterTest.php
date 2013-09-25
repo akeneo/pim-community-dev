@@ -73,7 +73,7 @@ class CsvFileWriterTest extends \PHPUnit_Framework_TestCase
             'header' => array('one', 'two')
         );
 
-        $this->assertAttributeEquals(';', 'delimiter', $this->writer);
+        $this->assertAttributeEquals(',', 'delimiter', $this->writer);
         $this->assertAttributeEquals('"', 'enclosure', $this->writer);
         $this->assertAttributeEquals(true, 'firstLineIsHeader', $this->writer);
         $this->assertAttributeEmpty('header', $this->writer);
