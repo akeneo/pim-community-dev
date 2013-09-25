@@ -16,8 +16,8 @@ function(_, messenger, __, Modal, AbstractAction) {
             confirm_title: __('Mass Action Confirmation'),
             confirm_content: __('Are you sure you want to do this?'),
             confirm_ok: __('Yes, do it'),
-            success: __('Mass action was successfully performed.'),
-            error: __('Mass action was not performed.'),
+            success: __('Mass action performed.'),
+            error: __('Mass action is not performed.'),
             empty_selection: __('Please, select items to perform mass action.')
         },
 

@@ -43,7 +43,7 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
                 'Unassign all tags from entities',
                 'View tag cloud'))
             ->save()
-            ->assertMessage('Role successfully saved')
+            ->assertMessage('Role saved')
             ->close();
 
         return ($randomPrefix);
@@ -75,7 +75,7 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             ->setEmail($username.'@mail.com')
             ->setRoles(array('Label_' . $role))
             ->save()
-            ->assertMessage('User successfully saved')
+            ->assertMessage('User saved')
             ->toGrid()
             ->close()
             ->assertTitle('Users - System');
@@ -101,7 +101,7 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             ->setTagname($tagname)
             ->setOwner('admin')
             ->save()
-            ->assertMessage('Tag successfully saved')
+            ->assertMessage('Tag saved')
             ->assertTitle('Tags - System')
             ->close();
 

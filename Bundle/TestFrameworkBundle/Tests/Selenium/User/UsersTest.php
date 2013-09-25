@@ -48,7 +48,7 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setEmail($username.'@mail.com')
             ->setRoles(array('Manager'))
             ->save()
-            ->assertMessage('User successfully saved')
+            ->assertMessage('User saved')
             ->toGrid()
             ->close()
             ->assertTitle('Users - System');
@@ -81,7 +81,7 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setFirstname('First_' . $newUsername)
             ->setLastname('Last_' . $newUsername)
             ->save()
-            ->assertMessage('User successfully saved')
+            ->assertMessage('User saved')
             ->toGrid()
             ->assertTitle('Users - System')
             ->close();
@@ -122,7 +122,7 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->open(array($username))
             ->delete()
             ->assertTitle('Users - System')
-            ->assertMessage('Item was deleted');
+            ->assertMessage('Item deleted');
 
         $login->openUsers()->filterBy('Username', $username)->assertNoDataMessage('No users were found to match your search');
     }

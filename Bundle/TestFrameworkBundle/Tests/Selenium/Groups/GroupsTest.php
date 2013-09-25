@@ -92,7 +92,7 @@ class GroupsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setOwner('Main')
             //->setRoles(array($this->newGroup['ROLE']))
             ->save()
-            ->assertMessage('Group successfully saved')
+            ->assertMessage('Group saved')
             ->close();
 
         $this->assertTrue($groups->entityExists(array('name' => $this->newGroup['NAME'] . $randomPrefix)));

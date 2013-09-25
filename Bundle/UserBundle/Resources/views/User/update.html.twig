@@ -38,14 +38,14 @@
             'aCss': 'no-hash remove-button',
             'id': 'btn-remove-user',
             'dataId':  form.vars.value.id,
-            'dataMessage': 'Are you sure you want to delete this user?',
-            'successMessage': 'User was successfully deleted',
+            'dataMessage': 'Are you sure you want to delete this user?'|trans,
+            'successMessage': 'User deleted'|trans,
             'title': 'Delete user',
             'label': 'Delete'
         }) }}
         {{ UI.buttonSeparator() }}
     {% endif %}
-    {{ UI.button({'path' : path('oro_user_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+    {{ UI.button({'path' : path('oro_user_index'), 'title' : 'Cancel'|trans, 'label' : 'Cancel'|trans}) }}
     {{ UI.saveAndStayButton('oro_user_user_update') }}
     {{ UI.saveAndCloseButton() }}
 {% endblock navButtons %}
@@ -55,7 +55,7 @@
         {% set breadcrumbs = {
             'entity':      form.vars.value,
             'indexPath':   path('oro_user_index'),
-            'indexLabel': 'Users',
+            'indexLabel': 'Users'|trans,
             'entityTitle': form.vars.value.fullname(format)|default('N/A'),
             'hasAvatar':   true,
             'imagePath':   form.vars.value.imagePath,
@@ -78,8 +78,8 @@
     {% set id = 'user-profile' %}
 
     {% set dataBlocks = [{
-            'title': 'General',
-            'class': 'active',
+            'title': 'General'|trans,
+            'class': 'active'|trans,
             'subblocks': [
                 {
                     'title': '',
@@ -97,7 +97,7 @@
                     'title': '',
                     'data': [
                         form_row(form.email),
-                        UI.collectionField(form.emails, 'Additional emails', 'Add another email'),
+                        UI.collectionField(form.emails, 'Additional emails'|trans, 'Add another email'|trans),
                         form_row(form.tags)
                     ]
                 }
@@ -116,7 +116,7 @@
         {% endmacro %}
         {% set dataBlocks = dataBlocks|merge(
             [{
-                'title': 'Groups and Roles',
+                'title': 'Groups and Roles'|trans,
                 'subblocks': [
                     {
                         'title': '',
@@ -133,7 +133,7 @@
     {% if form.change_password is defined %}
         {% set dataBlocks = dataBlocks|merge(
             [{
-                'title': 'Passwords',
+                'title': 'Passwords'|trans,
                 'subblocks': [
                     {
                         'title': '',
@@ -149,7 +149,7 @@
     {% if form.values is defined %}
         {% set dataBlocks = dataBlocks|merge(
             [{
-                'title': 'Additional data',
+                'title': 'Additional data'|trans,
                 'subblocks': [{
                     'title': '',
                     'useSpan': false,
@@ -168,7 +168,7 @@
     {% endmacro %}
     {% set dataBlocks = dataBlocks|merge(
         [{
-            'title': 'Business Units',
+            'title': 'Business Units'|trans,
             'subblocks': [
                 {
                     'title': '',
