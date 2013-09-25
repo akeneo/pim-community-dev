@@ -36,7 +36,13 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
         $this->loadAttributes($userManager);
 
         $admin = $userManager->createUser();
-        $api = new UserApi();
+        $api   = new UserApi();
+        $role  = $manager
+            ->getRepository('OroUserBundle:Role')
+            ->findOneBy(array('role' => 'ROLE_SUPER_ADMIN'));
+        $group = $manager
+            ->getRepository('OroUserBundle:Group')
+            ->findOneBy(array('name' => 'Administrators'));
 
         $api->setApiKey('admin_api_key')
             ->setUser($admin);
@@ -46,16 +52,19 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
             ->setPlainPassword('admin')
             ->setFirstname('John')
             ->setLastname('Doe')
-            ->addRole($this->getReference('admin_role'))
-            ->addGroup($this->getReference('oro_group_administrators'))
             ->setEmail('admin@example.com')
-            ->setApi($api);
+            ->setApi($api)
+            ->addRole($role)
+            ->addGroup($group);
+
         if ($this->hasReference('default_business_unit')) {
             $admin->setOwner($this->getReference('default_business_unit'));
         }
+
         $this->setFlexibleAttributeValueOption($userManager, $admin, 'gender', 0);
         $this->setFlexibleAttributeValue($userManager, $admin, 'company', '');
         $this->addReference('default_user', $admin);
+
         $userManager->updateUser($admin);
     }
 
@@ -68,7 +77,6 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
     public function loadAttributes($entityManager)
     {
         $this->assertHasRequiredAttributes($entityManager, array('company', 'gender'));
-
     }
 
     /**
