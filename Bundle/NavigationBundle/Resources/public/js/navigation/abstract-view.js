@@ -96,7 +96,8 @@ function(_, Backbone, Navigation, DotmenuView) {
             if (el.data('url')) {
                 itemData['url'] = el.data('url');
             }
-            itemData['title_rendered'] = el.data('title_rendered') ? el.data('title_rendered') : document.title;
+            itemData['title_rendered'] = el.data('title-rendered') ? el.data('title-rendered') : document.title;
+            itemData['title_rendered_short'] = el.data('title-rendered-short') ? el.data('title-rendered-short') : document.title;
             itemData['title'] = el.data('title') ? JSON.stringify(el.data('title')) : '{"template": "' + document.title + '"}';
             return itemData;
         },

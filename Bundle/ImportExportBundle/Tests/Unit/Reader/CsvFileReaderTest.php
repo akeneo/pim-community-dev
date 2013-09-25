@@ -58,7 +58,7 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
             'header' => array('one', 'two')
         );
 
-        $this->assertAttributeEquals(';', 'delimiter', $this->reader);
+        $this->assertAttributeEquals(',', 'delimiter', $this->reader);
         $this->assertAttributeEquals('"', 'enclosure', $this->reader);
         $this->assertAttributeEquals('\\', 'escape', $this->reader);
         $this->assertAttributeEquals(true, 'firstLineIsHeader', $this->reader);
@@ -207,7 +207,7 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
             ->method('hasOption')
             ->will(
                 $this->returnCallback(
-                    function($option) use ($options) {
+                    function ($option) use ($options) {
                         return isset($options[$option]);
                     }
                 )
@@ -216,7 +216,7 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
             ->method('getOption')
             ->will(
                 $this->returnCallback(
-                    function($option) use ($options) {
+                    function ($option) use ($options) {
                         return $options[$option];
                     }
                 )

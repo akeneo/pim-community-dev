@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\OrganizationBundle\Tests\Form\Extension;
 
+use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -19,7 +20,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    private $configProvider;
+    private $ownershipMetadataProvider;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -30,11 +31,6 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     private $securityFacade;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    private $config;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -53,7 +49,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
     private $businessUnits;
 
     private $fieldName;
-    
+
     private $entityClassName;
 
     /**
@@ -64,9 +60,10 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
-        $this->configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->ownershipMetadataProvider =
+            $this->getMockBuilder('Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider')
+                ->disableOriginalConstructor()
+                ->getMock();
         $this->manager = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager')
             ->disableOriginalConstructor()
             ->getMock();
@@ -103,26 +100,6 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
         $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
             ->disableOriginalConstructor()
             ->getMock();
-        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->configProvider->expects($this->any())
-            ->method('getConfig')
-            ->with($this->entityClassName)
-            ->will($this->returnValue($this->config));
-        $this->configProvider->expects($this->any())
-            ->method('hasConfig')
-            ->with($this->entityClassName)
-            ->will($this->returnValue(true));
-        $token->expects($this->any())
-            ->method('getUser')
-            ->will($this->returnValue($this->user));
-        $this->securityContext->expects($this->any())
-            ->method('getToken')
-            ->will($this->returnValue($token));
         $config = $this->getMockBuilder('Symfony\Component\Form\FormConfigInterface')
             ->disableOriginalConstructor()
             ->getMock();
@@ -142,7 +119,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->extension = new FormTypeExtension(
             $this->securityContext,
-            $this->configProvider,
+            $this->ownershipMetadataProvider,
             $this->manager,
             $this->securityFacade,
             $this->tranlsator
@@ -152,6 +129,27 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetExtendedType()
     {
         $this->assertEquals('form', $this->extension->getExtendedType());
+    }
+
+    public function testAnonymousUser()
+    {
+        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $token->expects($this->any())
+            ->method('getUser')
+            ->will($this->returnValue('anon.'));
+        $this->securityContext->expects($this->any())
+            ->method('getToken')
+            ->will($this->returnValue($token));
+
+        $this->ownershipMetadataProvider->expects($this->never())
+            ->method('getMetadata');
+        $this->builder->expects($this->never())
+            ->method('add');
+
+        $this->extension->buildForm($this->builder, array());
+
     }
 
     /**
@@ -169,7 +167,6 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
             )
         );
         $this->extension->buildForm($this->builder, array());
-
     }
 
     /**
@@ -312,20 +309,29 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function mockConfigs(array $values)
     {
+        $token = $this->getMockBuilder('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $token->expects($this->any())
+            ->method('getUser')
+            ->will($this->returnValue($this->user));
+        $this->securityContext->expects($this->any())
+            ->method('getToken')
+            ->will($this->returnValue($token));
+
         $this->securityFacade->expects($this->any())->method('isGranted')
-            ->with('ASSIGN', 'Entity:' . $this->entityClassName)
+            ->with('ASSIGN', 'entity:' . $this->entityClassName)
             ->will($this->returnValue($values['is_granted']));
-        $this->config->expects($this->once())
-            ->method('has')
-            ->with('owner_type')
-            ->will($this->returnValue(true));
-        $this->config->expects($this->exactly(2))
-            ->method('get')
-            ->with('owner_type')
-            ->will($this->returnValue($values['owner_type']));
+        $metadata = OwnershipType::OWNER_TYPE_NONE === $values['owner_type']
+            ? new OwnershipMetadata($values['owner_type'])
+            : new OwnershipMetadata($values['owner_type'], 'owner', 'owner_id');
+        $this->ownershipMetadataProvider->expects($this->once())
+            ->method('getMetadata')
+            ->with($this->entityClassName)
+            ->will($this->returnValue($metadata));
         $this->extension = new FormTypeExtension(
             $this->securityContext,
-            $this->configProvider,
+            $this->ownershipMetadataProvider,
             $this->manager,
             $this->securityFacade,
             $this->tranlsator
