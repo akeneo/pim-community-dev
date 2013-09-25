@@ -10,7 +10,9 @@ oro_menu_config:
             children:
                 system_tab:
                     children:
-                        oro_business_unit_list: ~
+                        users_management:
+                            children:
+                                oro_business_unit_list: ~
 
 oro_titles:
     oro_business_unit_index:  ~

@@ -85,7 +85,6 @@ class ConfigModelManager
             } catch (\PDOException $e) {
                 $this->dbCheckCache = false;
             }
-
         }
 
         return $this->dbCheckCache;

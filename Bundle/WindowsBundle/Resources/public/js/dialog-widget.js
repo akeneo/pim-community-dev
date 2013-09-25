@@ -1,7 +1,7 @@
 /* global define */
 define(['underscore', 'backbone', 'oro/app', 'oro/error', 'oro/abstract-widget', 'oro/dialog/state/model',
-    'jquery.dialog.extended'],
-function(_, Backbone, app, error, AbstractWidget, StateModel) {
+    'oro/loading-mask', 'jquery.dialog.extended'],
+function(_, Backbone, app, error, AbstractWidget, StateModel, LoadingMask) {
     'use strict';
 
     /**
@@ -61,8 +61,26 @@ function(_, Backbone, app, error, AbstractWidget, StateModel) {
 
             this.options.dialogOptions.close = runner(closeHandlers);
 
+            this.on('beforeContentLoad', _.bind(this._showLoading, this));
+            this.on('contentLoad', _.bind(this._hideLoading, this));
             this.on('widgetRender', _.bind(this._initAdjustHeight, this));
             this.on('contentLoadError', _.bind(this.loadErrorHandler, this));
+        },
+
+        _showLoading: function() {
+            var dialogContainer = this.$el.closest('.ui-dialog');
+            if (dialogContainer.length) {
+                this.loading = new LoadingMask();
+                dialogContainer.append(this.loading.render().$el);
+                this.loading.show();
+            }
+        },
+
+        _hideLoading: function() {
+            if (this.loading) {
+                this.loading.remove();
+                this.loading = null;
+            }
         },
 
         setTitle: function(title) {
@@ -105,6 +123,7 @@ function(_, Backbone, app, error, AbstractWidget, StateModel) {
                     }, this)
                 });
             }
+            this._hideLoading();
             this.widget.remove();
             AbstractWidget.prototype.remove.call(this);
         },

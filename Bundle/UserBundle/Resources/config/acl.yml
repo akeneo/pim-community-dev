@@ -1,4 +1,0 @@
-assign_roles_groups_to_user:
-    type: action
-    label: "Assign roles and groups to user"
-    group_name: ""

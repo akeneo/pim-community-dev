@@ -1,0 +1,3 @@
+oro_inportexport_bundle:
+    resource: "@OroImportExportBundle/Controller"
+    type:     annotation

@@ -28,7 +28,7 @@ interface ItemWriterInterface
      *
      * FIXME: array is not maybe the best structure to hold the items. Investigate this point.
      *
-     * @throws Exception if there are errors. The framework will catch the
+     * @throws \Exception if there are errors. The framework will catch the
      * exception and convert or rethrow it as appropriate.
      */
     public function write(array $items);
