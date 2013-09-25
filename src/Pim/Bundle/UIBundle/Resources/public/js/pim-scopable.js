@@ -1,8 +1,8 @@
 define(
-    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'bootstrap', 'jquery.select2'],
-    function ($, Backbone, _, mediator) {
+    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'pim/init', 'bootstrap', 'jquery.select2'],
+    function ($, Backbone, _, mediator, pimInit) {
         'use strict';
-
+        pimInit()
         /**
          * Allow expanding/collapsing scopable fields
          *
