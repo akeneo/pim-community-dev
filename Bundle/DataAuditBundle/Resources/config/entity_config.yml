@@ -27,7 +27,6 @@ oro_entity_config:
                     options:
                         priority:           60
                         default_value:      true
-                        allowed_type:       [string,integer,smallint,bigint,boolean,decimal,date,text,float]
                     grid:
                         type:               boolean
                         label:              'Auditable'

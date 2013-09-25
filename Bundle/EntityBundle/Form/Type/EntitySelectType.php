@@ -3,10 +3,9 @@
 namespace Oro\Bundle\EntityBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 
@@ -40,14 +39,9 @@ class EntitySelectType extends AbstractType
             );
 
             $fieldName = $fieldConfig->get('target_field');
-
             $vars['attr'] = array(
                 'data-entities' => json_encode(
-                    array(
-                        array(
-                            'text' => $form->getData()->{'get' . ucfirst($fieldName)}(),
-                        )
-                    )
+                    array(array($fieldName => $form->getData()->{'get' . ucfirst($fieldName)}()))
                 )
             );
         }
@@ -65,12 +59,6 @@ class EntitySelectType extends AbstractType
                 'placeholder'        => 'oro.form.choose_value',
                 'allowClear'         => true,
                 'autocomplete_alias' => 'entity_select',
-                'configs'            => array(
-                    'placeholder' => 'oro.form.choose_value',
-                    //'extra_config'       => 'autocomplete',
-                    //'route_name'         => 'oro_entity_search',
-                    'properties'  => array('id', 'text')
-                )
             )
         );
     }

@@ -22,10 +22,5 @@ services:
         class:                                                 %oro_entity.form.handler.entity_select.class%
         arguments:
             - @doctrine.orm.entity_manager
-            - @service_container
-#            - %orocrm_contact.entity.class%
-#            - ["first_name", "last_name"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: entity_select, acl_resource: oro_search }
-
-
