@@ -121,6 +121,7 @@ class DateFormatExtension extends \Twig_Extension
     {
         return str_replace(
             array(
+                'M', // month MM
                 'm', // month MM
                 'n',
                 'd', // day DD
@@ -138,6 +139,7 @@ class DateFormatExtension extends \Twig_Extension
                 'A', // AM/PM
             ),
             array(
+                'MMM',
                 'MM',
                 'M',
                 'dd',
