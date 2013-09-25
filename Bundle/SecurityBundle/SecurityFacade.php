@@ -63,7 +63,7 @@ class SecurityFacade
         // check method level ACL
         $annotation = $this->annotationProvider->findAnnotation($class, $method);
         if ($annotation !== null) {
-            $this->logger->info(
+            $this->logger->debug(
                 sprintf('Check an access using "%s" ACL annotation.', $annotation->getId())
             );
             $isGranted = $this->securityContext->isGranted(
@@ -76,7 +76,7 @@ class SecurityFacade
         if ($isGranted && ($annotation === null || !$annotation->getIgnoreClassAcl())) {
             $annotation = $this->annotationProvider->findAnnotation($class);
             if ($annotation !== null) {
-                $this->logger->info(
+                $this->logger->debug(
                     sprintf('Check an access using "%s" ACL annotation.', $annotation->getId())
                 );
                 $isGranted = $this->securityContext->isGranted(
@@ -103,7 +103,7 @@ class SecurityFacade
             && is_string($attributes)
             && $annotation = $this->annotationProvider->findAnnotationById($attributes)
         ) {
-            $this->logger->info(sprintf('Check an access using "%s" ACL annotation.', $annotation->getId()));
+            $this->logger->debug(sprintf('Check an access using "%s" ACL annotation.', $annotation->getId()));
             $isGranted = $this->securityContext->isGranted(
                 $annotation->getPermission(),
                 $this->objectIdentityFactory->get($annotation)

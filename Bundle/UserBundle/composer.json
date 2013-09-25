@@ -11,7 +11,6 @@
         "friendsofsymfony/rest-bundle": "0.11.*",
         "nelmio/api-doc-bundle": "dev-master",
         "escapestudios/wsse-authentication-bundle": "2.1.x-dev",
-        "jms/aop-bundle": "1.0.*",
         "jms/serializer-bundle": "0.12.*@dev",
         "liip/imagine-bundle": "dev-master",
         "doctrine/data-fixtures": "@dev",
