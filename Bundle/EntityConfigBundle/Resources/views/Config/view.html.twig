@@ -41,8 +41,8 @@
 {% endblock pageHeader %}
 
 {% block stats %}
-    <li>{{ 'Created'|trans }}: {{ Locale.Time(entity.created) }}</li>
-    <li>{{ 'Updated'|trans }}: {{ Locale.Time(entity.updated) }}</li>
+    <li>{{ 'Created'|trans }}: {{ Locale.time(entity.created) }}</li>
+    <li>{{ 'Updated'|trans }}: {{ Locale.time(entity.updated) }}</li>
     {% if link %}
     <li>{{ ['<a href="', link, '">', 'Number of records'|trans, ': ', entity_count|default(0) , '</a>']|join|raw }}</li>
     {% else %}
