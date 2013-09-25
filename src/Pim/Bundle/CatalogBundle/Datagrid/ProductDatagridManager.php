@@ -286,7 +286,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setName('family');
         $field->setOptions(
             array(
-                'type'          => FieldDescriptionInterface::TYPE_TEXT,
+                'type'          => FieldDescriptionInterface::TYPE_HTML,
                 'label'         => $this->translate('Family'),
                 'field_name'    => 'familyLabel',
                 'expression'    => 'productFamily.id',
@@ -297,6 +297,17 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'multiple'      => true,
                 'class'         => 'PimCatalogBundle:Family',
                 'filter_by_where' => true
+            )
+        );
+
+        $field->setProperty(
+            new TwigTemplateProperty(
+                $field,
+                'PimCatalogBundle:Entity:_codeOrLabel.html.twig',
+                array(
+                    'localeCode'  => $this->flexibleManager->getLocale(),
+                    'channelCode' => $this->flexibleManager->getScope()
+                )
             )
         );
 
@@ -514,10 +525,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias .'.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
+            ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices');
 
-        $familyExpr = "(CASE WHEN ft.label IS NULL THEN CONCAT('[', CONCAT(productFamily.code, ']')) ELSE ft.label END)";
+        $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
         $proxyQuery->addSelect(sprintf("%s AS familyLabel", $familyExpr), true);
+
 
         // prepare query for completeness
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
