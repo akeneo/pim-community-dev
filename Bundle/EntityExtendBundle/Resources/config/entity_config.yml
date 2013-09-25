@@ -47,6 +47,7 @@ oro_entity_config:
 
                 is_extend:
                     options:
+                        priority:           27
                         default_value:      false
                         internal:           true
                     grid:
