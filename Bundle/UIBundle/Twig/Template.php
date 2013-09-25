@@ -18,7 +18,7 @@ abstract class Template extends Twig_Template
         $templateJson = json_decode($templateContent);
         if ($templateJson) {
             $templateJson->template_name = $this->getTemplateName();
-            if ($templateJson->content) {
+            if (!empty($templateJson->content)) {
                 $templateJson->content = $this->wrapContent($templateJson->content);
             }
             $content = json_encode($templateJson);

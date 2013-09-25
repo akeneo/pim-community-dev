@@ -1,7 +1,26 @@
 {% spaceless %}
+{#
+    Get page unique hash
+    If we have entity object (view page) or form (edit page), return md5 of serialized object
+    Othewise return md5 of full page content
+#}
+{% set md5_object = '' %}
+{% set is_entity = false %}
+{% if entity is not defined %}
+    {% if form is defined %}
+        {% set md5_object = form.vars.value %}
+        {% set is_entity = true %}
+    {% else %}
+        {% set md5_object = content %}
+    {% endif %}
+{% else %}
+    {% set md5_object = entity %}
+    {% set is_entity = true %}
+{% endif %}
+{% set md5_string = md5_object|objectMd5 %}
 {% if (app.request.get('hash-navigation-md5')) %}
     {% set data = {
-        'content_md5': (content)|md5
+        'content_md5': md5_string
     } %}
 {% else %}
     {% set data = {
@@ -16,7 +35,8 @@
     'mostviewed': oro_menu_render('mostviewed'),
     'content': content,
     'showPinButton': (app.request.attributes.get('_route') != bap.start_route),
-    'content_md5': (content)|md5
+    'is_entity_page': is_entity,
+    'content_md5': md5_string
     } %}
 {% endif %}
     {{ data|json_encode|raw }}

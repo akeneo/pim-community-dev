@@ -29,6 +29,17 @@ class Md5ExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("3474851a3410906697ec77337df7aae4", $this->extension->md5("test_string"));
     }
 
+    public function testObjectMd5WithString()
+    {
+        $this->assertEquals("3474851a3410906697ec77337df7aae4", $this->extension->objectMd5("test_string"));
+    }
+
+    public function testObjectMd5WithObject()
+    {
+        $object = new \stdClass();
+        $this->assertEquals(md5(serialize($object)), $this->extension->objectMd5($object));
+    }
+
     public function testSetFilters()
     {
         $this->assertArrayHasKey('md5', $this->extension->getFilters());
