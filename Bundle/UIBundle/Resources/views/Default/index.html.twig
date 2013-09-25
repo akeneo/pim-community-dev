@@ -36,7 +36,8 @@
                 <!--[if lte IE 9]>
                 <link href="{{ asset('bundles/oroui/css/ie.css') }}" rel="stylesheet" media="all" />
                 <script type="text/javascript">
-                    require(['jquery', 'bundles/oroui/lib/html5', 'bundles/oroui/lib/jquery/jquery.placeholder'],
+                    require.config({shim: {'oroui/lib/jquery/jquery.placeholder': {deps: ['jquery']}}});
+                    require(['jquery', 'oroui/lib/html5', 'oroui/lib/jquery/jquery.placeholder'],
                     function($){
                         $(function() {
                             $('input[placeholder], textarea[placeholder]').placeholder();
