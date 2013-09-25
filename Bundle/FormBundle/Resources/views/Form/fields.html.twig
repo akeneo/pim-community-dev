@@ -155,11 +155,6 @@
     {{ form_javascript(form) }}
 {% endblock %}
 
-{#{% block oro_entity_select_widget %}#}
-    {#{{ form_widget(form) }}#}
-    {#{{ form_javascript(form) }}#}
-{#{% endblock %}#}
-
 {% block oro_combobox_dataconfig_autocomplete %}
     {% set url = '' %}
     {% if configs.ajax.url is defined and configs.ajax.url%}

@@ -73,7 +73,6 @@ class ConfigController extends Controller
      *      type="action",
      *      group_name=""
      * )
-     * AclAncestor("oro_entityconfig")
      * @Template()
      */
     public function updateAction($id)
@@ -131,7 +130,6 @@ class ConfigController extends Controller
      *      type="action",
      *      group_name=""
      * )
-     * AclAncestor("oro_entityconfig")
      * @Template()
      */
     public function viewAction(EntityConfigModel $entity)
@@ -268,7 +266,6 @@ class ConfigController extends Controller
      *      type="action",
      *      group_name=""
      * )
-     * AclAncestor("oro_entityconfig")
      * @Template()
      */
     public function fieldUpdateAction($id)
@@ -338,7 +335,6 @@ class ConfigController extends Controller
      *      type="action",
      *      group_name=""
      * )
-     * AclAncestor("oro_entityconfig")
      */
     public function fieldSearchAction($id)
     {
