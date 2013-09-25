@@ -52,12 +52,12 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
         code:
             - NotBlank: ~
             - Regex:
-                pattern: "/^[a-zA-Z0-9_]+$/"
-                message: "Attribute code may contain only letters, numbers and underscores"
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Attribute code may contain only letters, numbers and underscores
             - Length:
                 max: 255
             - Regex:
-                pattern: "/^(?!(treeId|categoryId|scope|enabled|family)$)/"
+                pattern: /^(?!(treeId|categoryId|scope|enabled|family)$)/
                 message: This code is not available.
         searchable:
             - Type: bool
@@ -181,7 +181,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
         code:
             - NotBlank: ~
             - Regex:
-                pattern: "/^[a-zA-Z0-9_]+$/"
-                message: "Option code may contain only letters, numbers and underscores"
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Option code may contain only letters, numbers and underscores
             - Length:
                 max: 255

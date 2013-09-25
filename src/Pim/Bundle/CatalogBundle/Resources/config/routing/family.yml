@@ -1,5 +1,5 @@
 pim_catalog_family_index:
-    path: ""
+    path: ''
     defaults: { _controller: pim_catalog.controller.family:createAction }
 
 pim_catalog_family_create:

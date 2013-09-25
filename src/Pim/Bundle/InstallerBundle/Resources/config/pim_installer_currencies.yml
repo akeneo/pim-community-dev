@@ -1,2 +1,3 @@
 currencies:
-    ['USD', 'EUR']
+    - USD
+    - EUR

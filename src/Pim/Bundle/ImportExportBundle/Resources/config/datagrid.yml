@@ -16,7 +16,7 @@ services:
               entity_hint: jobs
               route_name: pim_importexport_export_index
         calls:
-            - [ setJobType, ['export'] ]
+            - [ setJobType, [export] ]
             - [ setConnectorRegistry, [@oro_batch.connectors] ]
 
     pim_import_export.datagrid.manager.import:
@@ -29,7 +29,7 @@ services:
               entity_hint: jobs
               route_name: pim_importexport_import_index
         calls:
-            - [ setJobType, ['import'] ]
+            - [ setJobType, [import] ]
             - [ setConnectorRegistry, [@oro_batch.connectors] ]
 
     pim_import_export.datagrid.manager.export_report:
@@ -42,7 +42,7 @@ services:
               entity_hint: job_reports
               route_name: pim_importexport_export_report_index
         calls:
-            - [ setJobType, ['export'] ]
+            - [ setJobType, [export] ]
 
     pim_import_export.datagrid.manager.import_report:
         class: %pim_import_export.datagrid.manager.report.class%
@@ -54,4 +54,4 @@ services:
               entity_hint: job_reports
               route_name: pim_importexport_import_report_index
         calls:
-            - [ setJobType, ['import'] ]
+            - [ setJobType, [import] ]

@@ -1,70 +1,70 @@
 oro_menu_config:
     items:
         home:
-            name: 'Home'
+            name: Home
             label: ''
             extras:
-                icon: 'icon-home'
+                icon: icon-home
                 position: 1
-            route: 'oro_default'
+            route: oro_default
         pim_enrich_tab:
-            label: 'Enrich'
+            label: Enrich
             uri: '#'
             extras:
                 position: 20
-            aclResourceId: 'pim_navigation_enrich'
+            aclResourceId: pim_navigation_enrich
             showNonAuthorized: false
         pim_enrich_product:
-            label: 'Products'
-            route: 'pim_catalog_product_index'
+            label: Products
+            route: pim_catalog_product_index
         pim_enrich_attribute:
-            label: 'Attributes'
-            route: 'pim_catalog_productattribute_index'
+            label: Attributes
+            route: pim_catalog_productattribute_index
         pim_enrich_family:
-            label: 'Families'
-            route: 'pim_catalog_family_create'
+            label: Families
+            route: pim_catalog_family_create
         pim_enrich_attributegroup:
-            label: 'Attribute groups'
-            route: 'pim_catalog_attributegroup_create'
+            label: Attribute groups
+            route: pim_catalog_attributegroup_create
         pim_enrich_categorytree:
-            label: 'Categories'
-            route: 'pim_catalog_categorytree_create'
+            label: Categories
+            route: pim_catalog_categorytree_create
         pim_import_tab:
-            label: 'Collect'
+            label: Collect
             uri: '#'
             extras:
                 position: 10
-            aclResourceId: 'pim_navigation_collect'
+            aclResourceId: pim_navigation_collect
             showNonAuthorized: false
         pim_export_tab:
-            label: 'Spread'
+            label: Spread
             uri: '#'
             extras:
                 position: 30
-            aclResourceId: 'pim_navigation_spread'
+            aclResourceId: pim_navigation_spread
             showNonAuthorized: false
         pim_configuration_tab:
-            label: 'Settings'
+            label: Settings
             uri: '#'
             extras:
                 position: 50
-            aclResourceId: 'pim_navigation_settings'
+            aclResourceId: pim_navigation_settings
             showNonAuthorized: false
         system_tab:
-            label: 'System'
+            label: System
             extras:
                 position: 60
-            aclResourceId: 'pim_navigation_system'
+            aclResourceId: pim_navigation_system
             showNonAuthorized: false
         pim_catalog_locale:
-            label: 'Locales'
-            route: 'pim_catalog_locale_index'
+            label: Locales
+            route: pim_catalog_locale_index
         pim_catalog_currency:
-            label: 'Currencies'
-            route: 'pim_catalog_currency_index'
+            label: Currencies
+            route: pim_catalog_currency_index
         pim_catalog_channel:
-            label: 'Channels'
-            route: 'pim_catalog_channel_index'
+            label: Channels
+            route: pim_catalog_channel_index
 
         oro_tag_list:
             display: false

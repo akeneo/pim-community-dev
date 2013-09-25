@@ -1,8 +1,8 @@
 oro_menu_config:
     items:
         demo_dashboard:
-            label: 'Dashboard'
-            route: 'oro_default'
+            label: Dashboard
+            route: oro_default
 
     tree:
         application_menu:

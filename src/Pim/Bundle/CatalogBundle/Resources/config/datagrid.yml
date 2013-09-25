@@ -9,18 +9,18 @@ parameters:
 services:
     # Product attribute grid manager
     pim_catalog.datagrid.manager.productattribute:
-        class: "%pim_catalog.datagrid.manager.productattribute.class%"
+        class: %pim_catalog.datagrid.manager.productattribute.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: productattributes
               entity_hint: attributes
               route_name: pim_catalog_productattribute_index
         calls:
-            - [ setProductManager, ['@pim_catalog.manager.product'] ]
+            - [ setProductManager, [@pim_catalog.manager.product] ]
 
     # Product grid manager
     pim_catalog.datagrid.manager.product:
-        class: "%pim_catalog.datagrid.manager.product.class%"
+        class: %pim_catalog.datagrid.manager.product.class%
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: products
@@ -29,9 +29,9 @@ services:
               flexible: true
               route_name: pim_catalog_product_index
         calls:
-            - [ setCategoryManager, ['@pim_catalog.manager.category'] ]
-            - [ setDatagridBuilder, ['@pim_grid.builder.datagrid'] ]
-            - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
+            - [ setCategoryManager, [@pim_catalog.manager.category] ]
+            - [ setDatagridBuilder, [@pim_grid.builder.datagrid] ]
+            - [ setLocaleManager, [@pim_catalog.manager.locale] ]
 
     pim_catalog.datagrid.manager.history:
         class: Pim\Bundle\CatalogBundle\Datagrid\AuditDatagridManager
@@ -49,7 +49,7 @@ services:
               entity_hint: channels
               route_name: pim_catalog_channel_index
         calls:
-            - [ setCategoryManager, ['@pim_catalog.manager.category'] ]
+            - [ setCategoryManager, [@pim_catalog.manager.category] ]
 
     pim_catalog.datagrid.manager.currency:
         class: %pim_catalog.datagrid.manager.currency_datagrid.class%
@@ -70,4 +70,4 @@ services:
     pim_catalog.datagrid.worker:
         class: %pim_catalog.datagrid.worker.class%
         arguments:
-            - '@service_container'
+            - @service_container
