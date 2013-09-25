@@ -51,7 +51,7 @@ class BaseDatagrid extends DatagridManager
             );
 
             if (isset($config['filter'])) {
-                $keys = array_map(
+                $keys             = array_map(
                     function ($item) use ($scope) {
                         return $scope . '_' . $item;
                     },
@@ -76,15 +76,8 @@ class BaseDatagrid extends DatagridManager
             $gridActions = $provider->getPropertyConfig()->getGridActions($type);
 
             foreach ($gridActions as $config) {
-                if (isset($config['acl_resource'])) {
-                    $acl = $config['acl_resource'];
-                } else {
-                    $acl = 'root';
-                }
-
                 $configItem = array(
-                    'name' => strtolower($config['name']),
-                    'acl_resource' => $acl,
+                    'name'    => strtolower($config['name']),
                     'options' => array(
                         'label' => ucfirst($config['name']),
                         'icon'  => isset($config['icon']) ? $config['icon'] : 'question-sign',
