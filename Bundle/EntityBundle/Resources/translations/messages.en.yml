@@ -1,0 +1,5 @@
+oro:
+    entity:
+        controller:
+            message:
+                saved: "Entity saved"

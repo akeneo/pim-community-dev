@@ -1,5 +1,8 @@
 oro:
     business_unit:
+        controller:
+            message:
+                saved: "Business Unit saved"
         form:
             choose_business_user: "Choose a business unit..."
         datagrid:

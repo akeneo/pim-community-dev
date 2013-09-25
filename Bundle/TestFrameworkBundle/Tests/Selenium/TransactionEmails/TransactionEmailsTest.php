@@ -42,7 +42,7 @@ class TransactionEmailsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setGroups(array('Marketing'))
             ->setEmail($email)
             ->save()
-            ->assertMessage('Email notification rule has been saved')
+            ->assertMessage('Email notification rule saved')
             ->assertTitle('Transaction Emails - System')
             ->close();
 
@@ -65,7 +65,7 @@ class TransactionEmailsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->open(array($email))
             ->setEmail($newemail)
             ->save()
-            ->assertMessage('Email notification rule has been saved')
+            ->assertMessage('Email notification rule saved')
             ->assertTitle('Transaction Emails - System')
             ->close();
 
@@ -85,6 +85,6 @@ class TransactionEmailsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->openTransactionEmails()
             ->delete('Recipient email', $email)
             ->assertTitle('Transaction Emails - System')
-            ->assertMessage('Item was deleted');
+            ->assertMessage('Item deleted');
     }
 }

@@ -41,7 +41,7 @@ class EmailTemplateTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setSubject('Subject')
             ->setContent('Template content')
             ->save()
-            ->assertMessage('Template sucessfully saved')
+            ->assertMessage('Template saved')
             ->assertTitle('Email Templates - System')
             ->close();
 
@@ -65,7 +65,7 @@ class EmailTemplateTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->cloneEntity('Template name', $templatename)
             ->setName($newtemplatename)
             ->save()
-            ->assertMessage('Template sucessfully saved')
+            ->assertMessage('Template saved')
             ->assertTitle('Email Templates - System')
             ->close()
             ->open(array($newtemplatename))
@@ -94,7 +94,7 @@ class EmailTemplateTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->open(array($templatename))
             ->setName($newtemplatename)
             ->save()
-            ->assertMessage('Template sucessfully saved')
+            ->assertMessage('Template saved')
             ->assertTitle('Email Templates - System')
             ->close();
 
@@ -114,6 +114,6 @@ class EmailTemplateTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->openEmailTemplates()
             ->delete('Template name', $templatename)
             ->assertTitle('Email Templates - System')
-            ->assertMessage('Item was deleted');
+            ->assertMessage('Item deleted');
     }
 }
