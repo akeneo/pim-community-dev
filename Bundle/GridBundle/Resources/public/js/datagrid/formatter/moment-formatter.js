@@ -71,7 +71,7 @@ function(_, Backgrid) {
 
         /**
          * Converts datetime values from user input to model values.
-         *  
+         *
          * @member Backgrid.Extension.MomentFormatter
          * @param {string} formattedData
          * @return {string}

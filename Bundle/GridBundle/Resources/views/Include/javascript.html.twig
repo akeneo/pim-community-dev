@@ -92,8 +92,8 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                             cell: MomentCell.extend({
                                 modelFormat:   "YYYY-MM-DD hh:mm:ss",
                                 displayFormat: "MM/DD/YYYY hh:mm a",
-                                displayInUTC: false,
-                                displayTimeZone: '+05:00'
+                                displayInUTC:  false,
+                                displayTimeZone: {{ oro_config_timezone()|json_encode|raw }}
                             })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DECIMAL') %}
                             cell: NumberCell
