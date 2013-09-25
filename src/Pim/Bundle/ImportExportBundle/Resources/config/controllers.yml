@@ -9,41 +9,41 @@ services:
     pim_import_export.controller.export:
         parent: pim_catalog.controller.abstract_doctrine
         scope: request
-        class: '%pim_import_export.controller.export.class%'
+        class: %pim_import_export.controller.export.class%
         arguments:
-            - '@pim_catalog.datagrid.worker'
-            - '@oro_batch.connectors'
+            - @pim_catalog.datagrid.worker
+            - @oro_batch.connectors
             - export
-            - '%kernel.root_dir%'
-            - '%kernel.environment%'
+            - %kernel.root_dir%
+            - %kernel.environment%
 
     pim_import_export.controller.import:
         parent: pim_catalog.controller.abstract_doctrine
         scope: request
-        class: '%pim_import_export.controller.import.class%'
+        class: %pim_import_export.controller.import.class%
         arguments:
-            - '@pim_catalog.datagrid.worker'
-            - '@oro_batch.connectors'
+            - @pim_catalog.datagrid.worker
+            - @oro_batch.connectors
             - import
-            - '%kernel.root_dir%'
-            - '%kernel.environment%'
+            - %kernel.root_dir%
+            - %kernel.environment%
 
     pim_import_export.controller.export_report:
         parent: pim_catalog.controller.abstract_doctrine
         scope: request
-        class: '%pim_import_export.controller.export_report.class%'
+        class: %pim_import_export.controller.export_report.class%
         arguments:
-            - '@pim_catalog.datagrid.worker'
-            - '@oro_batch.logger.batch_log_handler'
-            - '@pim_import_export.archiver.job_execution_archiver'
+            - @pim_catalog.datagrid.worker
+            - @oro_batch.logger.batch_log_handler
+            - @pim_import_export.archiver.job_execution_archiver
             - export
 
     pim_import_export.controller.import_report:
         parent: pim_catalog.controller.abstract_doctrine
         scope: request
-        class: '%pim_import_export.controller.import_report.class%'
+        class: %pim_import_export.controller.import_report.class%
         arguments:
-            - '@pim_catalog.datagrid.worker'
-            - '@oro_batch.logger.batch_log_handler'
-            - '@pim_import_export.archiver.job_execution_archiver'
+            - @pim_catalog.datagrid.worker
+            - @oro_batch.logger.batch_log_handler
+            - @pim_import_export.archiver.job_execution_archiver
             - import

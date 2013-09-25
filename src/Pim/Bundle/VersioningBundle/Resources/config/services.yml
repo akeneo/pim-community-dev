@@ -34,6 +34,8 @@ services:
 
     pim_versioning.event_listener.adduser:
         class:     %pim_versioning.event_listener.adduser.class%
-        arguments: [@pim_versioning.event_listener.addversion, @security.context]
+        arguments:
+            - @pim_versioning.event_listener.addversion
+            - @security.context
         tags:
             - { name: kernel.event_listener, event: kernel.request , method: onKernelRequest}
