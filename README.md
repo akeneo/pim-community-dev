@@ -36,7 +36,7 @@ http://getcomposer.org/ or just run the following command:
 
 Now, you can go to your pim project directory.
 
-    $ cd pim-community-standard
+    $ cd pim-community-dev
 
 ### Install Akeneo PIM dependencies with Composer
 
