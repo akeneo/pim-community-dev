@@ -3,7 +3,6 @@ namespace Oro\Bundle\NavigationBundle\Title\TitleReader;
 
 use Doctrine\Common\Annotations\Reader as CommonAnnotationsReader;
 
-use JMS\DiExtraBundle\Finder\PatternFinder;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
 
