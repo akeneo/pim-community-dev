@@ -54,6 +54,7 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
      * @var SplFileObject
      */
     private $csv;
+    private $fieldNames;
 
     /**
      * Get uploaded file constraints
@@ -251,5 +252,14 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
             'enclosure'     => array(),
             'escape'        => array(),
         );
+    }
+
+    /**
+     * Used by demobundle to manually reinitialize reader between imports
+     */
+    public function finish()
+    {
+        $this->csv = null;
+        $this->fieldNames = null;
     }
 }
