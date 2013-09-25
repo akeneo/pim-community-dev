@@ -5,6 +5,7 @@ namespace Oro\Bundle\EntityBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Doctrine\ORM\QueryBuilder;
 
@@ -22,7 +23,6 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 
 /**
@@ -176,7 +176,10 @@ class EntitiesController extends Controller
 
                 $id = $record->getId();
 
-                $this->get('session')->getFlashBag()->add('success', 'Entity successfully saved');
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('oro.entity.controller.message.saved')
+                );
 
                 return $this->get('oro_ui.router')->actionRedirect(
                     array(

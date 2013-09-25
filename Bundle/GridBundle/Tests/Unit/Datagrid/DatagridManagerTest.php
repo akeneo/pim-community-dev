@@ -278,7 +278,7 @@ class DatagridManagerTest extends \PHPUnit_Framework_TestCase
             ->with(self::TEST_HINT);
         $datagridMock->expects($this->at(5))
             ->method('setMultipleSorting')
-            ->with(true);
+            ->with(false);
 
         $this->model->setDatagridBuilder($datagridBuilderMock);
         $this->model->setListBuilder($listBuilderMock);

@@ -140,7 +140,7 @@
             {% endif %}
             data-id="{{ parameters.dataId }}"
             data-message="{{ parameters.dataMessage|trans }}"
-            data-success-message="{{ parameters.successMessage|default('Item was deleted successfully')|trans }}"
+            data-success-message="{{ parameters.successMessage|default('Item deleted')|trans }}"
             data-url="{{ parameters.dataUrl }}"
             {% if parameters.dataRedirect is defined %}
                 data-redirect="{{ parameters.dataRedirect  }}"

@@ -21,14 +21,22 @@ class Navigation extends Page
 
     public function tab($tab)
     {
-        $this->test->moveto($this->tabs->element($this->using('xpath')->value("ul/li/a[contains(., '{$tab}')]")));
-        $this->menu = $this->tabs->element($this->using('xpath')->value("ul/li[a[contains(., '{$tab}')]]/ul"));
+        $this->test->moveto($this->tabs->element($this->using('xpath')->value("ul/li/a[normalize-space(.) = '{$tab}']")));
+        $this->menu = $this->tabs->element($this->using('xpath')->value("ul/li[a[normalize-space(.) = '{$tab}']]/ul"));
         return $this;
     }
 
     public function menu($menu)
     {
-        $this->menu->element($this->using('xpath')->value("li/a[contains(., '{$menu}')]"))->click();
+        $this->test->moveto($this->menu->element($this->using('xpath')->value("li/a[normalize-space(.) = '{$menu}']")));
+        $this->menu->element($this->using('xpath')->value("li/a[normalize-space(.) = '{$menu}']"))->click();
+
+        try {
+            $this->menu = $this->menu->element($this->using('xpath')->value("li[a[normalize-space(.) = '{$menu}']]/ul"));
+        } catch (\Exception $e) {
+            $this->menu = $this->menu->element($this->using('xpath')->value("li/a[normalize-space(.) = '{$menu}']"));
+        }
+
         $this->waitPageToLoad();
         $this->waitForAjax();
         return $this;

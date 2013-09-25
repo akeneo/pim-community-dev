@@ -3,23 +3,23 @@
 namespace Oro\Bundle\EntityConfigBundle\Controller;
 
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Oro\Bundle\GridBundle\Datagrid\Datagrid;
-
+use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-
 use Oro\Bundle\EntityConfigBundle\Datagrid\EntityFieldsDatagridManager;
 use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
-
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
+
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * EntityConfig controller.
@@ -39,7 +39,7 @@ class ConfigController extends Controller
      * Lists all Flexible entities.
      * @Route("/", name="oro_entityconfig_index")
      * Acl(
-     *      id="oro_entityconfig_index",
+     *      id="oro_entityconfig",
      *      label="View configurable entities",
      *      type="action",
      *      group_name=""
@@ -93,7 +93,10 @@ class ConfigController extends Controller
 
             if ($form->isValid()) {
                 //persist data inside the form
-                $this->get('session')->getFlashBag()->add('success', 'ConfigEntity successfully saved');
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('oro.entity_config.controller.config_entity.message.saved')
+                );
 
                 return $this->get('oro_ui.router')->actionRedirect(
                     array(
@@ -101,7 +104,7 @@ class ConfigController extends Controller
                         'parameters' => array('id' => $id),
                     ),
                     array(
-                        'route' => 'oro_entityconfig_view',
+                        'route'      => 'oro_entityconfig_view',
                         'parameters' => array('id' => $id)
                     )
                 );
@@ -139,6 +142,7 @@ class ConfigController extends Controller
                 'id' => $entity->getId()
             )
         );
+
 
         $datagrid = $datagridManager->getDatagrid();
 
@@ -194,6 +198,12 @@ class ConfigController extends Controller
         } else {
             $entityCount = 0;
         }
+
+        /**
+         * Set 50 records per page by default for DataGrid
+         */
+        $datagrid->getPager()->setMaxPerPage(50);
+        $datagrid->getPager()->init();
 
         return array(
             'entity'           => $entity,
@@ -277,7 +287,10 @@ class ConfigController extends Controller
 
             if ($form->isValid()) {
                 //persist data inside the form
-                $this->get('session')->getFlashBag()->add('success', 'ConfigField successfully saved');
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('oro.entity_config.controller.config_field.message.saved')
+                );
 
                 return $this->get('oro_ui.router')->actionRedirect(
                     array(
@@ -294,6 +307,10 @@ class ConfigController extends Controller
 
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
+
+        /** @var ConfigProvider $entityExtendProvider */
+        $entityExtendProvider = $this->get('oro_entity_config.provider.extend');
+
         $entityConfig         = $entityConfigProvider->getConfig($field->getEntity()->getClassName());
         $fieldConfig          = $entityConfigProvider->getConfig(
             $field->getEntity()->getClassName(),
@@ -305,7 +322,53 @@ class ConfigController extends Controller
             'field_config'  => $fieldConfig,
             'field'         => $field,
             'form'          => $form->createView(),
-            'formAction'    => $this->generateUrl('oro_entityconfig_field_update', array('id' => $field->getId()))
+            'formAction'    => $this->generateUrl('oro_entityconfig_field_update', array('id' => $field->getId())),
+            'require_js'    => $entityExtendProvider->getPropertyConfig()->getRequireJsModules()
         );
+    }
+
+    /**
+     * @Route("/field/search/{id}", name="oro_entityconfig_field_search", defaults={"id"=0})
+     * Acl(
+     *      id="oro_entityconfig_field_search",
+     *      label="Return varchar type field(s) in given entity",
+     *      type="action",
+     *      group_name=""
+     * )
+     */
+    public function fieldSearchAction($id)
+    {
+        $fields = array();
+        if ($id) {
+            /** @var EntityConfigModel $entity */
+            $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)
+                ->findOneBy(array('className' => $id));
+
+            if ($entity) {
+                /** @var ConfigProvider $entityConfigProvider */
+                $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
+
+                /** @var FieldConfigModel $fields */
+                $entityFields = $this->getDoctrine()->getRepository(FieldConfigModel::ENTITY_NAME)
+                    ->findBy(
+                        array(
+                            'entity' => $entity->getId(),
+                            'type'   => 'string'
+                        ),
+                        array('fieldName' => 'ASC')
+                    );
+
+                foreach ($entityFields as $field) {
+                    $label = $entityConfigProvider->getConfig($id, $field->getFieldName())->get('label');
+                    if (!$label) {
+                        $label = $field->getFieldName();
+                    }
+
+                    $fields[$field->getFieldName()] = $label;
+                }
+            }
+        }
+
+        return new Response(json_encode($fields));
     }
 }

@@ -39,7 +39,7 @@ class RolesTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit()
             ->openRoles()
-            ->assertTitle('Roles - System');
+            ->assertTitle('Roles - Users Management - System');
     }
 
     public function testRolesGridDefaultContent()
@@ -85,21 +85,18 @@ class RolesTest extends \PHPUnit_Extensions_Selenium2TestCase
         $roles = $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit()
-            ->openNavigation()
-            ->tab('System')
-            ->menu('Roles')
-            ->openRoles(false)
+            ->openRoles()
             ->add()
-            ->setLabel($this->newRole['LABEL'])
+            ->setLabel($this->newRole['LABEL'] . $randomPrefix)
             ->setOwner('Main')
             ->save()
-            ->assertMessage('Role successfully saved')
+            ->assertMessage('Role saved')
             ->close();
 
-        //verify new GROUP
+        //verify new Role
         $roles->refresh();
 
-        $this->assertTrue($roles->entityExists(array('name' => $this->newRole['LABEL'])));
+        $this->assertTrue($roles->entityExists(array('name' => $this->newRole['LABEL'] . $randomPrefix)));
 
         return $randomPrefix;
     }
@@ -115,7 +112,7 @@ class RolesTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit()
             ->openRoles();
-        $roles->deleteEntity(array('name' => $this->newRole['LABEL']));
-        $this->assertFalse($roles->entityExists(array('name' => $this->newRole['LABEL'])));
+        $roles->deleteEntity(array('name' => $this->newRole['LABEL'] . $randomPrefix));
+        $this->assertFalse($roles->entityExists(array('name' => $this->newRole['LABEL'] . $randomPrefix)));
     }
 }

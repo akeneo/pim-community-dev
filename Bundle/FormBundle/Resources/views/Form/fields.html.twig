@@ -178,6 +178,29 @@
     };
 {% endblock %}
 
+{% block oro_combobox_dataconfig_relation %}
+    {% set url = '' %}
+    {% if configs.ajax.url is defined and configs.ajax.url%}
+    {% set url = configs.ajax.url %}
+    {% elseif configs.route_name is defined and configs.route_name %}
+        {% set url = path(configs.route_name) %}
+    {% endif %}
+    select2Config.ajax = {
+        'url': {{ url|json_encode|raw }},
+        'data': function (query, page) {
+            return {
+                'page': page,
+                'per_page': {{ configs.per_page|default(10) }},
+                'name': "{{ configs.autocomplete_alias }}",
+                'query': query + ',{{ configs.target_entity }},{{ configs.target_field }}'
+            };
+        },
+        'results': function (data, page) {
+            return data;
+        }
+    };
+{% endblock %}
+
 {% block oro_combobox_dataconfig_grid %}
     {% set url = configs.ajax.url is defined ? configs.ajax.url : path(configs.route, {'_format': 'json'}) %}
     select2Config.ajax = {

@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -157,7 +158,10 @@ class ConfigFieldGridController extends Controller
 
             if ($form->isValid()) {
                 //persist data inside the form
-                $this->get('session')->getFlashBag()->add('success', 'ConfigField successfully saved');
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('oro.entity_extend.controller.config_field.message.saved')
+                );
 
                 $extendEntityConfig = $configManager->getProvider('extend')->getConfig($entity->getClassName());
                 if ($extendEntityConfig->get('state') != ExtendManager::STATE_NEW) {
@@ -194,7 +198,8 @@ class ConfigFieldGridController extends Controller
                 'field_config'  => $fieldConfig,
                 'field'         => $newFieldModel,
                 'form'          => $form->createView(),
-                'formAction'    => $this->generateUrl('oro_entityextend_field_update', array('id' => $entity->getId()))
+                'formAction'    => $this->generateUrl('oro_entityextend_field_update', array('id' => $entity->getId())),
+                'require_js'    => $configManager->getProvider('extend')->getPropertyConfig()->getRequireJsModules()
             )
         );
     }

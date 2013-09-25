@@ -134,6 +134,19 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(is_string($result));
     }
 
+    public function testRenderShort()
+    {
+        $shortTitle = 'short title';
+        $this->translator->expects($this->exactly(1))
+            ->method('trans')
+            ->with($this->equalTo($shortTitle))
+            ->will($this->returnValue($shortTitle));
+        $this->titleService->setShortTemplate($shortTitle);
+        $result = $this->titleService->render(array(), null, 'Prefix', 'Suffix', true, true);
+        $this->assertTrue(is_string($result));
+        $this->assertEquals($result, $shortTitle);
+    }
+
     public function testSettersAndGetters()
     {
         $testString = 'Test string';
@@ -147,6 +160,7 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
 
         $dataArray = array(
             'titleTemplate' => 'titleTemplate',
+            'titleShortTemplate' => 'titleShortTemplate',
             'prefix' => 'prefix',
             'suffix' => 'suffix',
             'params' => array('test_params')
@@ -154,6 +168,7 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
         $this->titleService->setData($dataArray);
 
         $this->assertEquals($dataArray['titleTemplate'], $this->titleService->getTemplate());
+        $this->assertEquals($dataArray['titleShortTemplate'], $this->titleService->getShortTemplate());
         $this->assertEquals($dataArray['params'], $this->titleService->getParams());
     }
 
@@ -298,6 +313,10 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
         $entityMock->expects($this->once())
             ->method('setTitle')
             ->with($this->equalTo('Title / test-breadcrumb / test-suffix'));
+
+        $entityMock->expects($this->once())
+            ->method('setShortTitle')
+            ->with($this->equalTo('Title'));
 
         $this->repository->expects($this->once())
             ->method('findAll')

@@ -77,6 +77,10 @@ class OroEntityExtendBundle extends Bundle
             if (is_array($aliases)) {
                 foreach ($aliases as $className => $alias) {
                     if (class_exists($className) && !class_exists($alias, false)) {
+                        $aliasArr = explode('\\', $alias);
+                        $shortAlias = array_pop($aliasArr);
+
+                        class_alias($className, $shortAlias);
                         class_alias($className, $alias);
                     }
                 }
@@ -114,9 +118,6 @@ class OroEntityExtendBundle extends Bundle
 
             $process = new Process($console . ' oro:entity-extend:dump' . ' --env ' . $env);
             $process->run();
-            while ($process->isRunning()) {
-                /** wait for previous process */
-            }
         }
 
         if (count(scandir($cacheDir . '/Extend/Entity')) == 2) {

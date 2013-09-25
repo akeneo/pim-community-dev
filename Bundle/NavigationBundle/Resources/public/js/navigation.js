@@ -67,22 +67,23 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
          * @property
          */
         selectors: {
-            links:          'a:not([href^=#],[href^=javascript],[href^=mailto],[href^=skype],[href^=ftp],[href^=callto],[href^=tel]),span[data-url]',
-            scrollLinks:    'a[href^=#]',
-            forms:          'form',
-            content:        '#content',
-            container:      '#container',
-            loadingMask:    '.hash-loading-mask',
-            searchDropdown: '#search-div',
-            menuDropdowns:  '.pin-menus.dropdown, .nav .dropdown',
-            pinbarHelp:     '.pin-bar-empty',
-            historyTab:     '#history-content',
-            mostViewedTab:  '#mostviewed-content',
-            flashMessages:  '#flash-messages',
-            menu:           '#main-menu',
-            breadcrumb:     '#breadcrumb',
-            pinButton:      '#pin-button-div',
-            gridContainer:  '.grid-container'
+            links:               'a:not([href^=#],[href^=javascript],[href^=mailto],[href^=skype],[href^=ftp],[href^=callto],[href^=tel]),span[data-url]',
+            scrollLinks:         'a[href^=#]',
+            forms:               'form',
+            content:             '#content',
+            container:           '#container',
+            loadingMask:         '.hash-loading-mask',
+            searchDropdown:      '#search-div',
+            menuDropdowns:       '.pin-menus.dropdown, .nav .dropdown',
+            pinbarHelp:          '.pin-bar-empty',
+            historyTab:          '#history-content',
+            mostViewedTab:       '#mostviewed-content',
+            flashMessages:       '#flash-messages',
+            menu:                '#main-menu',
+            breadcrumb:          '#breadcrumb',
+            pinButtonsContainer: '#pin-button-div',
+            gridContainer:       '.grid-container',
+            pinButtons:          '.minimize-button, .favorite-button'
         },
         selectorCached: {},
 
@@ -873,20 +874,12 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                          * Setting page title
                          */
                         document.title = data.title;
-                        /**
-                         * Setting serialized titles for pinbar and favourites buttons
-                         */
-                        var titleSerialized = data.titleSerialized;
-                        if (titleSerialized) {
-                            titleSerialized = $.parseJSON(titleSerialized);
-                            $('.top-action-box .btn').filter('.minimize-button, .favorite-button').data('title', titleSerialized);
-                        }
                         this.processClicks(this.selectorCached.menu.find(this.selectors.links));
                         this.disableEmptyLinks(this.selectorCached.menu.find(this.selectors.scrollLinks));
                         this.processClicks(this.selectorCached.container.find(this.selectors.links));
                         this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
                         this.processForms(this.selectorCached.container.find(this.selectors.forms));
-                        this.processPinButton(data.showPinButton);
+                        this.processPinButton(data);
                         this.restoreFormState(this.tempCache);
                         if (!options.fromCache) {
                             this.updateMenuTabs(data);
@@ -994,15 +987,24 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
         },
 
         /**
-         * View / hide pins div
+         * View / hide pins div and set titles
          *
          * @param showPinButton
          */
-        processPinButton: function(showPinButton) {
-            if (showPinButton) {
-                this.selectorCached.pinButton.show();
+        processPinButton: function(data) {
+            if (data.showPinButton) {
+                this.selectorCached.pinButtonsContainer.show();
+                /**
+                 * Setting serialized titles for pinbar and favourites buttons
+                 */
+                var titleSerialized = data.titleSerialized;
+                if (titleSerialized) {
+                    titleSerialized = $.parseJSON(titleSerialized);
+                    this.selectorCached.pinButtonsContainer.find(this.selectors.pinButtons).data('title', titleSerialized);
+                }
+                this.selectorCached.pinButtonsContainer.find(this.selectors.pinButtons).data('title-rendered-short', data.titleShort);
             } else {
-                this.selectorCached.pinButton.hide();
+                this.selectorCached.pinButtonsContainer.hide();
             }
         },
 

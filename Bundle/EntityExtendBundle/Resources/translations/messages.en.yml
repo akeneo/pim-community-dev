@@ -1,3 +1,12 @@
 "Your config changes will be applied to schema.": "Your config changes will be applied to schema."
 "It may take few minutes...": "It may take few minutes..."
 "Cancel": "Cancel"
+oro:
+    entity_extend:
+        controller:
+            config_entity:
+                message:
+                    saved: "ConfigEntity saved"
+            config_field:
+                message:
+                    saved: "ConfigField saved"

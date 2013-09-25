@@ -38,6 +38,13 @@ class Title
     /**
      * @var string
      *
+     * @ORM\Column(name="short_title", type="string", length=255)
+     */
+    private $shortTitle;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="is_system", type="boolean")
      */
     private $isSystem = true;
@@ -96,6 +103,29 @@ class Title
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set short title
+     *
+     * @param  string $shortTitle
+     * @return Title
+     */
+    public function setShortTitle($shortTitle)
+    {
+        $this->shortTitle = $shortTitle;
+
+        return $this;
+    }
+
+    /**
+     * Get short title
+     *
+     * @return string
+     */
+    public function getShortTitle()
+    {
+        return $this->shortTitle;
     }
 
     /**

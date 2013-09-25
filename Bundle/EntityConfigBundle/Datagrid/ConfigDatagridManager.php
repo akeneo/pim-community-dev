@@ -250,22 +250,6 @@ class ConfigDatagridManager extends BaseDatagrid
         );
         $fieldsCollection->add($fieldObjectModule);
 
-        $fieldObjectCreate = new FieldDescription();
-        $fieldObjectCreate->setName('created');
-        $fieldObjectCreate->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
-                'label'       => 'Create At',
-                'field_name'  => 'created',
-                'filter_type' => FilterInterface::TYPE_DATETIME,
-                'required'    => true,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-            )
-        );
-        $fieldsCollection->add($fieldObjectCreate);
-
         $fieldObjectUpdate = new FieldDescription();
         $fieldObjectUpdate->setName('updated');
         $fieldObjectUpdate->setOptions(

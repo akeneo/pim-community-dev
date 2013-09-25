@@ -401,7 +401,11 @@ body .select2-container {
     ul{
       display: none !important;
       ul{
-        top: 0;
+        top: 5px;
+        border: 1px solid #bbb !important;
+        margin: 0;
+        -webkit-border-radius: 3px !important;
+        border-radius:3px !important;
       }
     }
     &:hover > .menu_level_1{
@@ -3097,6 +3101,9 @@ ul.inline-extra > li:first-child {
 }
 .navbar-extra-right {
   padding-right: 20px;
+  .btn-group{
+    margin-left: 8px;
+  }
 }
 .row-oro {
   width: 100%;
@@ -3832,7 +3839,9 @@ h5.usser-fiedset {
 }
 input:focus:invalid:focus,
 textarea:focus:invalid:focus,
-select:focus:invalid:focus {
+select:focus:invalid:focus,
+div.selector.focus,
+div.uploader.focus{
   border-color: rgba(82, 168, 236, 0.8);
   outline: 0;
   outline: thin dotted \9;
@@ -3863,14 +3872,17 @@ select:focus:invalid:focus {
     .control-label { text-align:right; }
   }
 }
+.alert-error > ul{
+  margin-bottom: 0;
+}
 #flash-messages {
   .alert {
-    margin: 0;
+    margin: 3px 0 0;
     background-color: @warningBackground;
     background-image: url('../../img/warning-ico.png');
     background-position: 10px 48%;
     background-repeat: no-repeat;
-    padding: 6px 35px 6px 37px;
+    padding: 3px 35px 1px 37px;
     border:1px solid rgba(241,216,103,.3);
     text-shadow: 0 1px 0 rgba(255,255,255,.5);
     .close {
@@ -3902,18 +3914,22 @@ select:focus:invalid:focus {
     display: none;
   }
 }
+#flash-messages{
+  overflow: hidden;
+}
 .flash-messages-frame {
   position: fixed;
-  top: 70px;
-  left: 0;
+  top: 66px;
+  left: 25%;
   z-index: 500;
+  width: 50%;
+
   .box-sizing(border-box);
   padding: 0 10px;
-  width: 100%;
   .opacity(90,.9)
 }
 .flash-messages-holder {
-  width: 100%;
+  /*width: 100%; ticket/BAP-1733*/
 }
 .oro-multiselect {
   display: inline-block;
@@ -4778,6 +4794,9 @@ disabled look for disabled choices in the results dropdown
 .breadcrumb-pin {
   border-bottom: 1px solid #f2f2f2;
   padding:0;
+  #pin-button-div{
+    float: right;
+  }
   #breadcrumb {
     float:left;
   }
@@ -4808,6 +4827,18 @@ disabled look for disabled choices in the results dropdown
   }
 }
 .contact-info-col-set {
+  &.conact-page{
+    > .row-fluid {
+      .contact-info-col {
+        .box-type1{
+          min-height: 461px;
+          box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          -webkit-box-sizing: border-box;
+        }
+      }
+    }
+  }
   padding:13px 6px;
   > .row-fluid {
     margin:0 -7px;
@@ -4816,12 +4847,7 @@ disabled look for disabled choices in the results dropdown
       width:50%;
       margin:0;
       padding-left:13px;
-      .box-type1{
-        min-height: 461px;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-      }
+
       &:last-child {
         float:right;
       }
@@ -5092,10 +5118,10 @@ iframe.email-body {
   }
   input[type="text"],
   input[type="password"] {
-    height: 34px;
-    font: 14px/36px @baseFontFamily;
+    height: 16px;
+    font: 14px/16px @baseFontFamily;
     color: #000;
-    padding: 0 10px;
+    padding: 9px 10px;
     width: 205px;
     border-left-color:#ccc;
   }
@@ -5195,4 +5221,12 @@ span.validation-faled {
 }
 .default-field{
   background: #C3C3C3;
+}
+.search-more{
+  display: none;
+}
+.search-view-more-link{
+  display: block;
+  line-height: @baseLineHeight;
+  padding-left: 10px;
 }

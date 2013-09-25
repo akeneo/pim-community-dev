@@ -35,7 +35,7 @@ class TransactionEmailsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             ->setOwner('Main')
             ->setEntity('Email Notification', array('Create', 'Edit', 'Delete', 'View'))
             ->save()
-            ->assertMessage('Role successfully saved')
+            ->assertMessage('Role saved')
             ->close();
 
         return ($randomPrefix);
@@ -67,7 +67,7 @@ class TransactionEmailsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             ->setEmail($username.'@mail.com')
             ->setRoles(array('Label_' . $role))
             ->save()
-            ->assertMessage('User successfully saved')
+            ->assertMessage('User saved')
             ->toGrid()
             ->close()
             ->assertTitle('Users - System');

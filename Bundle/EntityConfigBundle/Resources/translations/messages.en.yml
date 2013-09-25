@@ -1,0 +1,9 @@
+oro:
+    entity_config:
+        controller:
+            config_entity:
+                message:
+                    saved: "ConfigEntity saved"
+            config_field:
+                message:
+                    saved: "ConfigField saved"
