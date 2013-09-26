@@ -43,8 +43,12 @@ class WorkflowItemValidatorTest extends \PHPUnit_Framework_TestCase
             ->with($workflowItem)
             ->will($this->returnValue(true));
 
-        // method must not throw an exception
-        $this->validator->validate($workflowItem);
+        try {
+            $this->validator->validate($workflowItem);
+        } catch (\Exception $e) {
+            $this->fail('Validation must not thrown an exception');
+            throw $e;
+        }
     }
 
     /**
