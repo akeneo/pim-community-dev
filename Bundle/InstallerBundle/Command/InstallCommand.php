@@ -32,6 +32,7 @@ class InstallCommand extends ContainerAwareCommand
             ->setupStep($input, $output)
             ->finalStep($input, $output);
 
+        $output->writeln('');
         $output->writeln('<info>Oro Application has been successfully installed.</info>');
     }
 
@@ -148,14 +149,15 @@ class InstallCommand extends ContainerAwareCommand
             ->runCommand('doctrine:schema:update', $output, array('--force' => true, '--no-interaction' => true))
             ->runCommand('oro:search:create-index', $output)
             ->runCommand('oro:navigation:init', $output)
-            ->runCommand('assets:install', $output, array('target' => './'))
+            ->runCommand('assets:install', $output)
             ->runCommand('assetic:dump', $output)
             ->runCommand('oro:assetic:dump', $output)
             ->runCommand('oro:translation:dump', $output);
 
         $params = $this->getContainer()->get('oro_installer.yaml_persister')->parse();
 
-        $params['system']['installed'] = date('c');
+        $params['system']['installed']        = date('c');
+        $params['session']['session_handler'] = 'session.handler.native_file';
 
         $this->getContainer()->get('oro_installer.yaml_persister')->dump($params);
 
