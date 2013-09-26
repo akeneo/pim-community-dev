@@ -77,8 +77,6 @@ class ExtendConfigDumper
 
     public function clear()
     {
-        $this->em->getExtendManager()->
-
         $filesystem = new Filesystem();
         if ($filesystem->exists($this->cacheDir)) {
             $filesystem->remove(array($this->cacheDir));
