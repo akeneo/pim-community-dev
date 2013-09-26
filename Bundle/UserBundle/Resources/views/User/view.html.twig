@@ -80,11 +80,6 @@
 
 {% block content_data %}
   <div class="user-profile-cols">
-    {% set attributes = {} %}
-    {% for value in entity|getAttributes() %}
-        {% set attributes = attributes | merge([UI.flexibleAttributeRow(value)]) %}
-    {% endfor %}
-
     {% set id = 'user-profile' %}
 
     {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'|trans}, entity.emails|length ? {data: entity.emails, field:'email'} : {})] %}
@@ -113,12 +108,6 @@
                 'title': 'Contact Information'|trans,
                 'data': dataSubBlocks
                 }
-            ]
-        },
-        {
-            'title': 'Additional data'|trans,
-            'subblocks': [
-                {'title': null, 'data': attributes}
             ]
         }
     ]
