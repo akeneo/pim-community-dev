@@ -70,11 +70,11 @@ oro_menu_config:
 
 oro_titles:
     oro_user_view: %%username%%
-    oro_user_update: Edit %%username%%
+    oro_user_update: %%username%% - Edit
     oro_user_create: Create User
     oro_user_index: ~
 
-    oro_user_role_update: Edit %%role%%
+    oro_user_role_update: %%role%% - Edit
     oro_user_role_create: Create Role
     oro_user_role_index: ~
 
@@ -87,5 +87,5 @@ oro_titles:
     oro_user_reset_check_email: Password Reset - Check Email
 
     oro_user_group_create: Create Group
-    oro_user_group_update: Edit %%group%%
+    oro_user_group_update: %%group%% - Edit
     oro_user_group_index: ~
