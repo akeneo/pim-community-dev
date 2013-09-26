@@ -17,5 +17,5 @@ oro_menu_config:
 
 oro_titles:
     oro_notification_emailnotification_index: ~
-    oro_notification_emailnotification_update: "Edit Notification Rule #%%id%%"
+    oro_notification_emailnotification_update: "Notification Rule #%%id%% - Edit"
     oro_notification_emailnotification_create: "Add Notification Rule"

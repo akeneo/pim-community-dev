@@ -218,12 +218,6 @@ var jsfv = (function () {
                     }
                     return submitForm;
                 });
-
-                jsfv.onEvent(form, 'keydown', function(e) {
-                    if ($(e.target).is(':input:not([type=file]):not(select)') && e.keyCode === 13) {
-                        $(this).submit();
-                    }
-                });
             }
 {% endif %}
 
