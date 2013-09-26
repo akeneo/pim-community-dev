@@ -1109,12 +1109,12 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                 if ($form.data('sent')) {
                     return;
                 }
-                $form.data('sent', true);
 
                 var url = $form.attr('action');
                 this.method = $form.attr('method') || "get";
 
                 if (url) {
+                    $form.data('sent', true);
                     registry.setElement('form_validate', true);
                     mediator.trigger("hash_navigation_request:form-start", $form.get(0));
                     if (registry.getElement('form_validate')) {
@@ -1124,6 +1124,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                                 url += '?' + data;
                             }
                             this.setLocation(url);
+                            $form.removeData('sent');
                         } else {
                             this.beforeRequest();
                             $form.ajaxSubmit({
