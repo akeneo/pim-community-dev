@@ -114,7 +114,8 @@ class EntitiesController extends Controller
         foreach ($fields as $field) {
             $value = $record->{'get' . Inflector::classify($field->getId()->getFieldName()) }();
             if ($value instanceof \DateTime) {
-                $value = $value->format('Y-m-d');
+                $configFormat = $this->get('oro_config.global')->get('oro_locale.date_format') ? : 'Y-m-d';
+                $value = $value->format($configFormat);
             }
 
             $fieldConfig = $entityConfigProvider->getConfigById($field->getId());
