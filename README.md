@@ -15,7 +15,7 @@ Requirements
 
 Akeneo PIM requires PHP 5.3.3 or above and MySQL 5.1 or above.
 
-Akene PIM is based on Symfony 2, Doctrine 2 and Oro Platform (see http://www.orocrm.com/oro-platform).
+Akeneo PIM is based on Symfony 2, Doctrine 2 and Oro Platform (see http://www.orocrm.com/oro-platform).
 These dependencies will be installed automatically with [Composer][2].
 
 Installation instructions
