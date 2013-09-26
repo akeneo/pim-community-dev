@@ -1,7 +1,7 @@
 /* jshint devel:true*/
 /* global define, require */
-define(['underscore', 'backbone', 'oro/mediator', 'jquery.form'],
-function(_, Backbone, mediator) {
+define(['underscore', 'backbone', 'oro/mediator', 'oro/loading-mask', 'jquery.form'],
+function(_, Backbone, mediator, LoadingMask) {
     'use strict';
 
     var $ = Backbone.$;
@@ -19,8 +19,12 @@ function(_, Backbone, mediator) {
             elementFirst: true,
             title: '',
             alias: null,
-            wid: null
+            wid: null,
+            loadingMaskEnabled: true,
+            loadingElement: null
         },
+
+        loadingElement: null,
 
         initialize: function(options) {
             options = options || {};
@@ -52,9 +56,37 @@ function(_, Backbone, mediator) {
             this.on('adoptedFormSubmitClick', _.bind(this._onAdoptedFormSubmitClick, this));
             this.on('adoptedFormResetClick', _.bind(this._onAdoptedFormResetClick, this));
             this.on('adoptedFormSubmit', _.bind(this._onAdoptedFormSubmit, this));
+            if (this.options.loadingMaskEnabled) {
+                this.on('beforeContentLoad', _.bind(this._showLoading, this));
+                this.on('contentLoad', _.bind(this._hideLoading, this));
+                this.on('renderStart', _.bind(function(el) {
+                    this.loadingElement = el;
+                }, this));
+            }
 
             this.actions = {};
             this.firstRun = true;
+            this.loadingElement = $('body');
+        },
+
+        _showLoading: function() {
+            var loadingElement = this.options.loadingElement || this.loadingElement;
+            loadingElement = $(loadingElement);
+            if (loadingElement && loadingElement.length) {
+                if (loadingElement[0].tagName.toLowerCase() !== 'body' && loadingElement.css('position') == 'static') {
+                    loadingElement.css('position', 'relative');
+                }
+                this.loading = new LoadingMask();
+                loadingElement.append(this.loading.render().$el);
+                this.loading.show();
+            }
+        },
+
+        _hideLoading: function() {
+            if (this.loading) {
+                this.loading.remove();
+                this.loading = null;
+            }
         },
 
         getWid: function() {

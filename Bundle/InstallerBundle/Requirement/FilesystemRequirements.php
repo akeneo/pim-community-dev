@@ -32,7 +32,7 @@ class FilesystemRequirements extends RequirementCollection
                 $status ? $exists : $notExists
             ))
             ->add(new Requirement(
-                $translator->trans('filesystem.cache.header', array(), 'requirements'),
+                realpath($cacheDir),
                 $status = is_writable($cacheDir),
                 $translator->trans('filesystem.writable', array(), 'requirements'),
                 $status ? $translator->trans('filesystem.writable', array(), 'requirements') : $translator->trans('filesystem.not_writable', array(), 'requirements'),
@@ -40,7 +40,7 @@ class FilesystemRequirements extends RequirementCollection
                 $translator->trans('filesystem.cache.help', array('%path%' => $cacheDir), 'requirements')
             ))
             ->add(new Requirement(
-                $translator->trans('filesystem.logs.header', array(), 'requirements'),
+                realpath($logsDir),
                 $status = is_writable($logsDir),
                 $writable,
                 $status ? $writable : $notWritable,
@@ -48,7 +48,7 @@ class FilesystemRequirements extends RequirementCollection
                 $translator->trans('filesystem.logs.help', array('%path%' => $logsDir), 'requirements')
             ))
             ->add(new Requirement(
-                $translator->trans('filesystem.uploads.header', array(), 'requirements'),
+                realpath($uploadsDir),
                 $status = is_writable($uploadsDir),
                 $writable,
                 $status ? $writable : $notWritable,
@@ -56,7 +56,7 @@ class FilesystemRequirements extends RequirementCollection
                 $translator->trans('filesystem.uploads.help', array('%path%' => $uploadsDir), 'requirements')
             ))
             ->add(new Requirement(
-                $translator->trans('filesystem.parameters.header', array(), 'requirements'),
+                realpath($rootDir . '/config/parameters.yml'),
                 $status = is_writable($rootDir . '/config/parameters.yml'),
                 $writable,
                 $status ? $writable : $notWritable,

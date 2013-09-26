@@ -62,6 +62,7 @@ function(_, Backbone, AbstractWidget) {
                     this._showRemote();
                 }
             }
+            this.loadingElement = this.widgetContentContainer.parent();
             AbstractWidget.prototype.show.apply(this);
         },
 
