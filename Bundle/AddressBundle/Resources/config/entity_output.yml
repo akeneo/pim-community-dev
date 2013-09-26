@@ -1,4 +1,4 @@
-Oro\Bundle\AddressBundle\Entity\Lead:
+Oro\Bundle\AddressBundle\Entity\Address:
     name:                               entity.address.name
     description:                        entity.address.description
 
