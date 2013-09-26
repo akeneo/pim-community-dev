@@ -75,8 +75,8 @@ class AttributeDatagridManager extends DatagridManager
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => $this->translate('Label'),
-                'entity_alias' => 'translation',
-                'field_name'   => 'label',
+                'field_name'  => 'attributeLabel',
+                'expression'  => 'translation.label',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
@@ -101,6 +101,7 @@ class AttributeDatagridManager extends DatagridManager
                 'sortable'    => true,
                 'filterable'  => true,
                 'show_filter' => true,
+                'filter_by_where' => true
             )
         );
         $fieldsCollection->add($field);
@@ -124,6 +125,7 @@ class AttributeDatagridManager extends DatagridManager
         $field = $this->createGroupField();
         $fieldsCollection->add($field);
     }
+
     /**
      * @inheritdoc
      */
@@ -131,6 +133,7 @@ class AttributeDatagridManager extends DatagridManager
     {
         return 'id';
     }
+
     /**
      * Create attribute type field description for datagrid
      *
@@ -260,10 +263,17 @@ class AttributeDatagridManager extends DatagridManager
     {
         $rootAlias = $proxyQuery->getRootAlias();
 
+        $labelExpr = sprintf(
+            "(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)",
+            $rootAlias
+        );
         $groupExpr = "(CASE WHEN gt.name IS NULL THEN attributeGroup.code ELSE gt.name END)";
+
         $proxyQuery
-            ->addSelect('translation')
-            ->addSelect(sprintf("%s AS groupName", $groupExpr), true);
+            ->addSelect($rootAlias)
+            ->addSelect(sprintf("%s AS attributeLabel", $labelExpr), true)
+            ->addSelect(sprintf("%s AS groupName", $groupExpr), true)
+            ->addSelect('translation.label', true);
 
         $proxyQuery
             ->leftJoin($rootAlias .'.translations', 'translation', 'with', 'translation.locale = :locale')
