@@ -15,7 +15,7 @@
 {% endblock pageHeader %}
 
 {% block stats %}
-    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? UI.time(breadcrumbs.entity.createdAt) : 'N/A' }}</li>
+    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? Locale.time(breadcrumbs.entity.createdAt) : 'N/A' }}</li>
 {% endblock stats %}
 
 {% block content_data %}
