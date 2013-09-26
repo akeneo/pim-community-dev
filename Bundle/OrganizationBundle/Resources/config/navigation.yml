@@ -17,6 +17,6 @@ oro_menu_config:
 
 oro_titles:
     oro_business_unit_index:  ~
-    oro_business_unit_update: Edit %%business_unit.name%%
+    oro_business_unit_update: %%business_unit.name%% - Edit
     oro_business_unit_create: Create Business Unit
     oro_business_unit_view: %%business_unit.name%%

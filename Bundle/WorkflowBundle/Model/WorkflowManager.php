@@ -172,8 +172,6 @@ class WorkflowManager
     }
 
     /**
-     * Get workflow items for entity.
-     *
      * @param object $entity
      * @param string|null $workflowName
      * @param string|null $workflowType
@@ -193,6 +191,24 @@ class WorkflowManager
             $workflowName,
             $workflowType
         );
+    }
+
+    /**
+     * @param WorkflowItem $workflowItem
+     * @return bool
+     */
+    public function isAllManagedEntitiesSpecified(WorkflowItem $workflowItem)
+    {
+        $workflow = $this->getWorkflow($workflowItem);
+
+        foreach ($workflow->getManagedEntityAttributes() as $attribute) {
+            $attributeName = $attribute->getName();
+            if (!$workflowItem->getData()->get($attributeName)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

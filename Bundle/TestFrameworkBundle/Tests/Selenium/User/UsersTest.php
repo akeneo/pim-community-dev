@@ -70,7 +70,7 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->filterBy('Username', $username)
             ->open(array($username))
             ->edit()
-            ->assertTitle('Edit First_' . $username . ' Last_' . $username . ' - Users - Users Management - System')
+            ->assertTitle('First_' . $username . ' Last_' . $username . ' - Edit - Users - Users Management - System')
             ->setUsername($newUsername)
             ->setFirstname('First_' . $newUsername)
             ->setLastname('Last_' . $newUsername)

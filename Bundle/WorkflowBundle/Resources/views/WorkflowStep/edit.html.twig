@@ -152,7 +152,13 @@
             <script type="text/javascript">
                 require(['oro/widget-manager', 'oro/messenger'],
                 function(widgetManager, messenger){
-                    widgetManager.getWidgetInstanceByAlias('workflow_step_form', function(widget){
+                    widgetManager.getWidgetInstanceByAlias('workflow_step_form', function(widget) {
+                        widget.on('saveStart', function() {
+                            widgetManager.getWidgetInstanceByAlias('workflow_transitions', function(transitionsWidget){
+                                transitionsWidget.$el.find('button').prop("disabled", true);
+                            });
+                        });
+
                         widget.on('formSave', function() {
                             messenger.notificationFlashMessage('success', {{ 'Step information saved'|trans|json_encode|raw }});
                             widgetManager.getWidgetInstanceByAlias('workflow_transitions', function(transitionsWidget){
