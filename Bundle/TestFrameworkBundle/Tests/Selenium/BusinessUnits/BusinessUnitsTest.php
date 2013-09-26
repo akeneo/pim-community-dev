@@ -34,13 +34,13 @@ class BusinessUnitsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit()
             ->openBusinessUnits()
             ->add()
-            ->assertTitle('Create Business Unit - Business Units - System')
+            ->assertTitle('Create Business Unit - Business Units - Users Management - System')
             ->setBusinessUnitName($unitname)
             ->setOwner('Main')
             ->save()
             ->assertMessage('Business Unit saved')
             ->toGrid()
-            ->assertTitle('Business Units - System')
+            ->assertTitle('Business Units - Users Management - System')
             ->close();
 
         return $unitname;
@@ -66,7 +66,7 @@ class BusinessUnitsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->save()
             ->assertMessage('Business Unit saved')
             ->toGrid()
-            ->assertTitle('Business Units - System');
+            ->assertTitle('Business Units - Users Management - System');
 
         return $newunitname;
     }
@@ -77,7 +77,6 @@ class BusinessUnitsTest extends \PHPUnit_Extensions_Selenium2TestCase
      */
     public function testDeleteBusinessUnit($unitname)
     {
-        $this->markTestSkipped('BAP-726');
         $login = new Login($this);
         $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
@@ -86,7 +85,7 @@ class BusinessUnitsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->filterBy('Name', $unitname)
             ->open(array($unitname))
             ->delete()
-            ->assertTitle('Business Units - System')
+            ->assertTitle('Business Units - Users Management - System')
             ->assertMessage('Item deleted');
     }
 }

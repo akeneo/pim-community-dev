@@ -2,12 +2,12 @@
 
 namespace Oro\Bundle\EntityBundle\Controller;
 
+use Doctrine\Common\Inflector\Inflector;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-
-use Doctrine\ORM\QueryBuilder;
 
 use FOS\Rest\Util\Codes;
 
@@ -23,7 +23,6 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 
 /**
  * Entities controller.
@@ -113,9 +112,10 @@ class EntitiesController extends Controller
 
         $result = array();
         foreach ($fields as $field) {
-            $value = $record->{'get' . $field->getId()->getFieldName()}();
+            $value = $record->{'get' . Inflector::classify($field->getId()->getFieldName()) }();
             if ($value instanceof \DateTime) {
-                $value = $value->format('Y-m-d');
+                $configFormat = $this->get('oro_config.global')->get('oro_locale.date_format') ? : 'Y-m-d';
+                $value = $value->format($configFormat);
             }
 
             $fieldConfig = $entityConfigProvider->getConfigById($field->getId());

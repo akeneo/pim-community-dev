@@ -2,11 +2,11 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Tools;
 
-use Oro\Bundle\EntityExtendBundle\Exception\RuntimeException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
+
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
 use Oro\Bundle\EntityExtendBundle\Entity\EntityConfig;
@@ -14,6 +14,7 @@ use Oro\Bundle\EntityExtendBundle\Entity\Repository\EntityConfigRepository;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory;
+use Oro\Bundle\EntityExtendBundle\Exception\RuntimeException;
 
 class ExtendConfigDumper
 {
@@ -93,39 +94,30 @@ class ExtendConfigDumper
     {
         $configProvider = $this->em->getExtendManager()->getConfigProvider();
         $className      = $entityConfig->getId()->getClassName();
+        $doctrine       = array();
 
         if (strpos($className, self::ENTITY) !== false) {
-            $entityName = $className;
-            $type       = 'Custom';
-            $doctrine   = array(
-                $entityName => array(
-                    'type'       => 'entity',
-                    'table'      => 'oro_extend_' . strtolower(str_replace('\\', '', $entityName)),
-                    'fields'     => array(
-                        'id' => array(
-                            'type'      => 'integer',
-                            'id'        => true,
-                            'generator' => array(
-                                'strategy' => 'AUTO'
-                            )
-                        )
-                    ),
-                    'oneToMany'  => array(),
-                    'manyToOne'  => array(),
-                    'manyToMany' => array(),
-                )
+            $entityName            = $className;
+            $type                  = 'Custom';
+            $doctrine[$entityName] = array(
+                'type'       => 'entity',
+                'table'      => 'oro_extend_' . strtolower(str_replace('\\', '', $entityName)),
+                'fields'     => array(
+                    'id' => array('type' => 'integer', 'id' => true, 'generator' => array('strategy' => 'AUTO'))
+                ),
+                'oneToMany'  => array(),
+                'manyToOne'  => array(),
+                'manyToMany' => array(),
             );
         } else {
-            $entityName = $entityConfig->get('extend_class');
-            $type       = 'Extend';
-            $doctrine   = array(
-                $entityName => array(
-                    'type'       => 'mappedSuperclass',
-                    'fields'     => array(),
-                    'oneToMany'  => array(),
-                    'manyToOne'  => array(),
-                    'manyToMany' => array(),
-                )
+            $entityName            = $entityConfig->get('extend_class');
+            $type                  = 'Extend';
+            $doctrine[$entityName] = array(
+                'type'       => 'mappedSuperclass',
+                'fields'     => array(),
+                'oneToMany'  => array(),
+                'manyToOne'  => array(),
+                'manyToMany' => array(),
             );
         }
 
@@ -148,15 +140,13 @@ class ExtendConfigDumper
                             $fieldConfig->get('target_entity')
                         );
                     } else {
-                        $doctrine[$entityName]['fields'][$fieldName]['code']     = $fieldName;
-                        $doctrine[$entityName]['fields'][$fieldName]['type']     = $fieldType;
-                        $doctrine[$entityName]['fields'][$fieldName]['nullable'] = true;
-
+                        $doctrine[$entityName]['fields'][$fieldName]['code']      = $fieldName;
+                        $doctrine[$entityName]['fields'][$fieldName]['type']      = $fieldType;
+                        $doctrine[$entityName]['fields'][$fieldName]['nullable']  = true;
                         $doctrine[$entityName]['fields'][$fieldName]['length']    = $fieldConfig->get('length');
                         $doctrine[$entityName]['fields'][$fieldName]['precision'] = $fieldConfig->get('precision');
                         $doctrine[$entityName]['fields'][$fieldName]['scale']     = $fieldConfig->get('scale');
                     }
-
                 }
 
                 if ($fieldConfig->get('state') != ExtendManager::STATE_DELETED) {
@@ -240,10 +230,8 @@ class ExtendConfigDumper
         // Extend entity always have "id" identifier
         if (strpos($className, self::ENTITY) !== false) {
             return 'id';
-        } else {
-            $meta = $this->em->getClassMetadata($className);
-
-            return $meta->getSingleIdentifierColumnName();
         }
+
+        return $this->em->getClassMetadata($className)->getSingleIdentifierColumnName();
     }
 }

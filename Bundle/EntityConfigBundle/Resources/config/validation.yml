@@ -4,7 +4,7 @@ Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel:
         properties:
             fieldName:
                 - NotBlank:     ~
-                - Regex:        "/^[a-zA-Z0-9_]*$/i"
+                - Regex:         "/^[a-z]+[a-z0-9_]*$/i"
                 - Length:
                     min:        2
                     max:        50
@@ -32,7 +32,9 @@ Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel:
         properties:
             className:
                 - NotBlank:     ~
-                - Regex:        "/^[a-zA-Z0-9_]*$/i"
+                - Regex:
+                    pattern: "/^[a-z]+[a-z0-9]*$/i"
+                    message: Value is not valid. Yoy can use only alphabetical symbols and numbers
                 - Length:
                     min:        5
                     max:        50

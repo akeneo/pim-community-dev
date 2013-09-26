@@ -23,8 +23,8 @@ abstract class AbstractStep extends ControllerStep
     /**
      * Execute Symfony2 command
      *
-     * @param string             $command Command name (for example, "cache:clear")
-     * @param array              $params  [optional] Additional command parameters, like "--force" etc
+     * @param  string            $command Command name (for example, "cache:clear")
+     * @param  array             $params  [optional] Additional command parameters, like "--force" etc
      * @return AbstractStep
      * @throws \Exception
      * @throws \RuntimeException
