@@ -11,7 +11,7 @@ abstract class AbstractEntity extends Page
      */
     public function save()
     {
-        $this->byXPath("//button[contains(., 'Save and Close')]")->click();
+        $this->byXPath("//button[normalize-space(.) = 'Save and Close']")->click();
         sleep(1);
         $this->waitPageToLoad();
         $this->waitForAjax();
