@@ -1,4 +1,5 @@
-Oro\Bundle\EmailBundle\Entity\Email:
+Oro\Bundle\EmailBundle\Entity\EmailTemplate:
     icon_class:                         icon-envelope
-    name:                               entity.email.name
-    description:                        entity.email.description
+    name:                               entity.email_template.name
+    description:                        entity.email_template.description
+

@@ -1,4 +1,4 @@
 entity:
-    email:
-        name:           Email
-        description:    Email message
+    email_template:
+        name:           Email Template
+        description:    Email template
