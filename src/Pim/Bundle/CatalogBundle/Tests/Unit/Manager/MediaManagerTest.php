@@ -141,9 +141,11 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $bundle = new \ReflectionClass('Pim\Bundle\CatalogBundle\PimCatalogBundle');
+        
         $file->expects($this->any())
              ->method('getPathname')
-             ->will($this->returnValue('src/Pim/Bundle/CatalogBundle/Tests/fixtures/akeneo.jpg'));
+             ->will($this->returnValue(sprintf('%s/Tests/fixtures/akeneo.jpg', dirname($bundle->getFileName()))));
 
         $file->expects($this->any())
              ->method('getClientOriginalName')

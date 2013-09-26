@@ -1,6 +1,6 @@
 # PIM
 
-pim_product:
+pim_catalog:
     resource: "@PimCatalogBundle/Resources/config/routing.yml"
 
 pim_importexport:

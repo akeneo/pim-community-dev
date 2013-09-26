@@ -76,6 +76,10 @@ oro_menu_config:
             display: false
         entities_list:
             display: false
+        oro_cron_job:
+            display: false
+        system_configuraion:
+            display: false
 
     tree:
         application_menu:
