@@ -110,7 +110,7 @@ class EmailTemplate implements Translatable
      * )
      * @Assert\Valid(deep = true)
      */
-    private $translations;
+    protected $translations;
 
     /**
      * @param $name
