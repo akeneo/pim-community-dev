@@ -52,6 +52,7 @@ services:
               route_name: pim_catalog_channel_index
         calls:
             - [ setCategoryManager, [@pim_catalog.manager.category] ]
+            - [ setIdentifierField, ['id'] ]
 
     pim_catalog.datagrid.manager.currency:
         class: %pim_catalog.datagrid.manager.currency_datagrid.class%
