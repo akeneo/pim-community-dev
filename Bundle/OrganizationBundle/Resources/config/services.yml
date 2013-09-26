@@ -12,6 +12,8 @@ parameters:
     oro_organization.form.listener.class:                               Oro\Bundle\OrganizationBundle\Event\FormListener
     oro_organization.twig.get_owner.class:                              Oro\Bundle\OrganizationBundle\Twig\OwnerTypeExtension
     oro_organization.entity_ownership.listener.class:                   Oro\Bundle\OrganizationBundle\Event\RecordOwnerDataListener
+    oro_organization.business_unit.listener.class:                      Oro\Bundle\OrganizationBundle\Event\BusinessUnitListener
+    oro_organization.twig.business_units.class:                         Oro\Bundle\OrganizationBundle\Twig\BusinessUnitExtension
 
 services:
     oro_organization.form.business_unit:
@@ -108,3 +110,15 @@ services:
         arguments:                    ["@service_container", "@oro_entity_config.provider.ownership"]
         tags:
              - { name: doctrine.event_listener, event: prePersist }
+
+    oro_organization.business_unit.listener:
+        class:                        %oro_organization.business_unit.listener.class%
+        tags:
+            - { name: doctrine.event_listener, event: preRemove }
+
+    oro_organization.twig.business_units:
+        class: %oro_organization.twig.business_units.class%
+        arguments:
+            - @oro_organization.business_unit_manager
+        tags:
+            - { name: twig.extension }
