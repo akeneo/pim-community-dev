@@ -5,6 +5,7 @@ namespace Oro\Bundle\GridBundle\Tests\Unit\Builder\ORM;
 use Oro\Bundle\GridBundle\Builder\ORM\DatagridBuilder;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
 class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -277,7 +278,9 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
         }
 
         // test
-        $this->initializeDatagridBuilder(array('actionFactory' => $actionFactoryMock, 'securityFacade' => $securityFacade));
+        $this->initializeDatagridBuilder(
+            array('actionFactory' => $actionFactoryMock, 'securityFacade' => $securityFacade)
+        );
         $this->model->addRowAction($datagridMock, $actualParameters);
     }
 
@@ -372,8 +375,14 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetBaseDatagrid()
     {
+        // filter form
+        $filterForm = $this->getMock('Symfony\Component\Form\Form', array(), array(), '', false);
+
         // form builder
-        $formBuilderMock = $this->getMock('Symfony\Component\Form\FormBuilder', array(), array(), '', false);
+        $formBuilderMock = $this->getMock('Symfony\Component\Form\FormBuilder', array('getForm'), array(), '', false);
+        $formBuilderMock->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($filterForm));
 
         // form factory
         $formFactoryMock = $this->getMockForAbstractClass(
@@ -401,6 +410,18 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
         $fieldDescriptionCollection = new FieldDescriptionCollection();
         $routeGeneratorMock = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Route\RouteGeneratorInterface');
         $parametersMock = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ParametersInterface');
+        $parametersMock->expects($this->at(0))
+            ->method('get')
+            ->with(ParametersInterface::FILTER_PARAMETERS)
+            ->will($this->returnValue(array()));
+        $parametersMock->expects($this->at(1))
+            ->method('get')
+            ->with(ParametersInterface::PAGER_PARAMETERS)
+            ->will($this->returnValue(array()));
+        $parametersMock->expects($this->at(2))
+            ->method('get')
+            ->with(ParametersInterface::SORT_PARAMETERS)
+            ->will($this->returnValue(array()));
 
         // test datagrid
         $this->initializeDatagridBuilder(
