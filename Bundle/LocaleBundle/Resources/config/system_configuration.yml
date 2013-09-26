@@ -120,14 +120,14 @@ oro_system_configuration:
                                 children:
                                     locale_options:
                                         children:
-                                            - oro_locale.locale
+#                                            - oro_locale.locale
+#                                            - oro_locale.default_currency
                                             - oro_locale.timezone
-                                            - oro_locale.default_currency
                                             - oro_locale.date_format
                                             - oro_locale.time_format
                                             - oro_locale.name_format
-                                    number_formats:
-                                        children:
-                                            - oro_locale.decimal_symbol
-                                            - oro_locale.thousands_separator
-                                            - oro_locale.number_of_decimals
+#                                    number_formats:
+#                                        children:
+#                                            - oro_locale.decimal_symbol
+#                                            - oro_locale.thousands_separator
+#                                            - oro_locale.number_of_decimals
