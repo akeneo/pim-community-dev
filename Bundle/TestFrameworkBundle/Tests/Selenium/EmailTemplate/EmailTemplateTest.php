@@ -34,7 +34,7 @@ class EmailTemplateTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit()
             ->openEmailTemplates()
             ->add()
-            ->assertTitle('Create Email Template - Email Templates - System')
+            ->assertTitle('Create Email Template - Templates - Emails - System')
             ->setEntityName('User')
             ->setType('Html')
             ->setName($templatename)
@@ -42,7 +42,7 @@ class EmailTemplateTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setContent('Template content')
             ->save()
             ->assertMessage('Template saved')
-            ->assertTitle('Email Templates - System')
+            ->assertTitle('Templates - Emails - System')
             ->close();
 
         return $templatename;
@@ -66,7 +66,7 @@ class EmailTemplateTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setName($newtemplatename)
             ->save()
             ->assertMessage('Template saved')
-            ->assertTitle('Email Templates - System')
+            ->assertTitle('Templates - Emails - System')
             ->close()
             ->open(array($newtemplatename))
             ->getFields($fields);
@@ -95,7 +95,7 @@ class EmailTemplateTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setName($newtemplatename)
             ->save()
             ->assertMessage('Template saved')
-            ->assertTitle('Email Templates - System')
+            ->assertTitle('Templates - Emails - System')
             ->close();
 
         return $newtemplatename;
@@ -113,7 +113,7 @@ class EmailTemplateTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit()
             ->openEmailTemplates()
             ->delete('Template name', $templatename)
-            ->assertTitle('Email Templates - System')
+            ->assertTitle('Templates - Emails - System')
             ->assertMessage('Item deleted');
     }
 }
