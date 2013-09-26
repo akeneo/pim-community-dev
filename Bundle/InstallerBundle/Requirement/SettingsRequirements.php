@@ -154,12 +154,15 @@ class SettingsRequirements extends RequirementCollection
             case 'g':
             case 'gb':
                 $val *= 1024;
+                // no break
             case 'm':
             case 'mb':
                 $val *= 1024;
+                // no break
             case 'k':
             case 'kb':
                 $val *= 1024;
+                // no break
         }
 
         return (float) $val; // not (int) because of the Windows ]:->
