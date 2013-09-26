@@ -4,12 +4,12 @@ parameters:
         business_unit: "OroOrganizationBundle:BusinessUnit"
         user: "OroUserBundle:User"
 
-    oro_entity.owner.entity_owner_accessor.class:              Oro\Bundle\EntityBundle\Owner\EntityOwnerAccessor
-    oro_entity.owner.ownership_metadata_provider.class:        Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider
-    oro_entity.owner.ownership_metadata_provider.cache.class:  Doctrine\Common\Cache\FilesystemCache
-    oro_entity.owner.ownership_config_subscriber.class:        Oro\Bundle\EntityBundle\EventListener\OwnershipConfigSubscriber
-    oro_entity.owner.ownership_metadata_provider.cache.warmer.class:  Oro\Bundle\EntityBundle\Cache\OwnershipMetadataCacheWarmer
-    oro_entity.owner.ownership_metadata_provider.cache.clearer.class: Oro\Bundle\EntityBundle\Cache\OwnershipMetadataCacheClearer
+    oro_entity.owner.entity_owner_accessor.class:                       Oro\Bundle\EntityBundle\Owner\EntityOwnerAccessor
+    oro_entity.owner.ownership_metadata_provider.class:                 Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider
+    oro_entity.owner.ownership_metadata_provider.cache.class:           Doctrine\Common\Cache\FilesystemCache
+    oro_entity.owner.ownership_config_subscriber.class:                 Oro\Bundle\EntityBundle\EventListener\OwnershipConfigSubscriber
+    oro_entity.owner.ownership_metadata_provider.cache.warmer.class:    Oro\Bundle\EntityBundle\Cache\OwnershipMetadataCacheWarmer
+    oro_entity.owner.ownership_metadata_provider.cache.clearer.class:   Oro\Bundle\EntityBundle\Cache\OwnershipMetadataCacheClearer
 
 services:
     oro_entity.owner.entity_owner_accessor:

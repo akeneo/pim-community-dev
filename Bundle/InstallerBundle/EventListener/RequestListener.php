@@ -10,6 +10,11 @@ use Symfony\Component\Routing\Router;
 class RequestListener
 {
     /**
+     * @var Router
+     */
+    protected $router;
+
+    /**
      * Installed flag
      *
      * @var bool
@@ -17,17 +22,20 @@ class RequestListener
     protected $installed;
 
     /**
-     * @var Router
+     * Debug flag
+     *
+     * @var bool
      */
-    protected $router;
+    protected $debug;
 
     /**
      *
      */
-    public function __construct($installed, Router $router)
+    public function __construct(Router $router, $installed, $debug = false)
     {
-        $this->installed = $installed;
         $this->router    = $router;
+        $this->installed = $installed;
+        $this->debug     = $debug;
     }
 
     public function onRequest(GetResponseEvent $event)
@@ -40,9 +48,21 @@ class RequestListener
             'oro_installer_flow',
             'sylius_flow_display',
             'sylius_flow_forward',
-            '_wdt',
-            '_profiler'
         );
+
+        if ($this->debug) {
+            $allowedRoutes = array_merge(
+                $allowedRoutes,
+                array(
+                    '_wdt',
+                    '_profiler',
+                    '_profiler_search',
+                    '_profiler_search_bar',
+                    '_profiler_search_results',
+                    '_profiler_router',
+                )
+            );
+        }
 
         if (!$this->installed) {
             if (!in_array($event->getRequest()->get('_route'), $allowedRoutes)) {

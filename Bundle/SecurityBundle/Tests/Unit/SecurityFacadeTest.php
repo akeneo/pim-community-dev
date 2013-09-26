@@ -63,7 +63,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->with('TestClass', 'TestMethod')
             ->will($this->returnValue($annotation));
         $this->logger->expects($this->once())
-            ->method('info');
+            ->method('debug');
         $this->objectIdentityFactory->expects($this->once())
             ->method('get')
             ->with($this->identicalTo($annotation))
@@ -102,7 +102,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->with('TestClass')
             ->will($this->returnValue(null));
         $this->logger->expects($this->once())
-            ->method('info');
+            ->method('debug');
         $this->objectIdentityFactory->expects($this->once())
             ->method('get')
             ->with($this->identicalTo($annotation))
@@ -137,7 +137,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->with('TestClass', 'TestMethod')
             ->will($this->returnValue($annotation));
         $this->logger->expects($this->once())
-            ->method('info');
+            ->method('debug');
         $this->objectIdentityFactory->expects($this->once())
             ->method('get')
             ->with($this->identicalTo($annotation))
@@ -187,7 +187,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->with('TestClass')
             ->will($this->returnValue($classAnnotation));
         $this->logger->expects($this->exactly(2))
-            ->method('info');
+            ->method('debug');
         $this->objectIdentityFactory->expects($this->at(0))
             ->method('get')
             ->with($this->identicalTo($annotation))
@@ -245,7 +245,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->with('TestClass')
             ->will($this->returnValue($classAnnotation));
         $this->logger->expects($this->exactly(2))
-            ->method('info');
+            ->method('debug');
         $this->objectIdentityFactory->expects($this->at(0))
             ->method('get')
             ->with($this->identicalTo($annotation))
@@ -288,7 +288,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->with('TestAnnotation')
             ->will($this->returnValue($annotation));
         $this->logger->expects($this->once())
-            ->method('info');
+            ->method('debug');
         $this->securityContext->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('TEST_PERMISSION'), $this->identicalTo($oid))

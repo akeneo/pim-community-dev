@@ -96,9 +96,6 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     {
         $this->setName($name);
         $this->tagging = new ArrayCollection();
-
-        $this->setCreatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
-        $this->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
     }
 
     /**
@@ -234,6 +231,17 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     public function __toString()
     {
         return (string) $this->getName();
+    }
+
+    /**
+     * Pre persist event listener
+     *
+     * @ORM\PrePersist
+     */
+    public function beforeSave()
+    {
+        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**

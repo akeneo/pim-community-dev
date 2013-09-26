@@ -41,6 +41,8 @@ class SetupStep extends AbstractStep
 
             $this->get('oro_user.manager')->updateUser($user);
 
+            $this->runCommand('oro:entity-extend:update-config');
+
             return $this->complete();
         }
 
