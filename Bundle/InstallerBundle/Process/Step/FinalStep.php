@@ -8,6 +8,10 @@ class FinalStep extends AbstractStep
 {
     public function displayAction(ProcessContextInterface $context)
     {
+        if ($this->container->hasParameter('installed') && $this->container->getParameter('installed')) {
+            return $this->redirect($this->generateUrl('oro_default'));
+        }
+
         set_time_limit(600);
 
         $params = $this->get('oro_installer.yaml_persister')->parse();
@@ -18,16 +22,14 @@ class FinalStep extends AbstractStep
         $this->get('oro_installer.yaml_persister')->dump($params);
 
         $this
-            ->runCommand('oro:entity-config:init')
-            ->runCommand('oro:entity-extend:init')
-            ->runCommand('oro:entity-extend:update-config')
             ->runCommand('doctrine:schema:update', array('--force' => true))
             ->runCommand('oro:search:create-index')
             ->runCommand('oro:navigation:init')
             ->runCommand('assets:install', array('target' => './'))
             ->runCommand('assetic:dump')
             ->runCommand('oro:assetic:dump')
-            ->runCommand('oro:translation:dump');
+            ->runCommand('oro:translation:dump')
+            ->runCommand('cache:clear', array('--no-warmup' => true));
 
         $this->complete();
 

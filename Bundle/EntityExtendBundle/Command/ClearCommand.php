@@ -22,9 +22,7 @@ class ClearCommand extends ContainerAwareCommand
     {
         $output->writeln($this->getDescription());
 
-        /** @var ExtendConfigDumper $dumper */
         $dumper = $this->getContainer()->get('oro_entity_extend.tools.dumper');
-
         $dumper->clear();
 
         $output->writeln('Done');

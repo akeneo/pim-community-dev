@@ -162,6 +162,6 @@ class SettingsRequirements extends RequirementCollection
                 $val *= 1024;
         }
 
-        return (int) $val;
+        return (float) $val; // not (int) because of the Windows ]:->
     }
 }
