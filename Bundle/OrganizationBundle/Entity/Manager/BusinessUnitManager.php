@@ -46,6 +46,16 @@ class BusinessUnitManager
     }
 
     /**
+     * @param array $criteria
+     * @param array $orderBy
+     * @return BusinessUnit
+     */
+    public function getBusinessUnit(array $criteria = array(), array $orderBy = null)
+    {
+        return $this->getBusinessUnitRepo()->findOneBy($criteria, $orderBy );
+    }
+
+    /**
      * @return BusinessUnitRepository
      */
     public function getBusinessUnitRepo()
