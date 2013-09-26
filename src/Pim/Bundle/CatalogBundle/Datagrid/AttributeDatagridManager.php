@@ -37,8 +37,7 @@ class AttributeDatagridManager extends DatagridManager
     }
 
     /**
-     * get properties
-     * @return array
+     * {@inheritdoc}
      */
     protected function getProperties()
     {

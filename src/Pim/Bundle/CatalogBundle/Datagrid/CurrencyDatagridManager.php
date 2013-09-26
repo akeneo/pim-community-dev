@@ -21,8 +21,7 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 class CurrencyDatagridManager extends DatagridManager
 {
     /**
-     * get properties
-     * @return array
+     * {@inheritdoc}
      */
     protected function getProperties()
     {
