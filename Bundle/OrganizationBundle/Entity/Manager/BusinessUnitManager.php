@@ -52,7 +52,7 @@ class BusinessUnitManager
      */
     public function getBusinessUnit(array $criteria = array(), array $orderBy = null)
     {
-        return $this->getBusinessUnitRepo()->findOneBy($criteria, $orderBy );
+        return $this->getBusinessUnitRepo()->findOneBy($criteria, $orderBy);
     }
 
     /**
