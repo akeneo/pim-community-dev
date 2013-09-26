@@ -1,0 +1,12 @@
+entity:
+    address:
+        name:           Address
+        description:    Address
+
+    country:
+        name:           Country
+        description:    Country
+
+    region:
+        name:           Region
+        description:    Country region

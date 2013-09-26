@@ -1,0 +1,11 @@
+Oro\Bundle\AddressBundle\Entity\Lead:
+    name:                               entity.address.name
+    description:                        entity.address.description
+
+Oro\Bundle\AddressBundle\Entity\Country:
+    name:                               entity.country.name
+    description:                        entity.country.description
+
+Oro\Bundle\AddressBundle\Entity\Region:
+    name:                               entity.region.name
+    description:                        entity.region.description
