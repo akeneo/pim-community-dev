@@ -4,7 +4,6 @@ namespace Oro\Bundle\WorkflowBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
@@ -23,13 +22,10 @@ class WorkflowStepController extends Controller
      */
     public function editAction(WorkflowItem $workflowItem)
     {
+        $this->get('oro_workflow.http.workflow_item_validator')->validate($workflowItem);
+
         /** @var WorkflowManager $workflowManager */
         $workflowManager = $this->get('oro_workflow.manager');
-        if (!$workflowManager->isAllManagedEntitiesSpecified($workflowItem)) {
-            // there is no need to remove workflow item to allow debugging of this case
-            throw new NotFoundHttpException('Managed entities for workflow item not found');
-        }
-
         $workflow = $workflowManager->getWorkflow($workflowItem);
         $currentStep = $workflow->getStep($workflowItem->getCurrentStepName());
 
