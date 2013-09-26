@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -18,6 +20,9 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
  */
 class AuditDatagridManager extends DatagridManager
 {
+    /**
+     * @var string
+     */
     protected $authorExpression = <<<DQL
 CONCAT(
     CONCAT(
@@ -30,13 +35,35 @@ DQL;
 
     /**
      * {@inheritdoc}
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $fieldAction = new FieldDescription();
-        $fieldAction->setName('action');
-        $fieldAction->setOptions(
+        $field = $this->createFieldAction();
+        $fieldsCollection->add($field);
+
+        $field = $this->createFieldVersion();
+        $fieldsCollection->add($field);
+
+        $field = $this->createFieldData();
+        $fieldsCollection->add($field);
+
+        $field = $this->createFieldAuthor();
+        $fieldsCollection->add($field);
+
+        $field = $this->createFieldLoggedAt();
+        $fieldsCollection->add($field);
+    }
+
+    /**
+     * Create field action
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createFieldAction()
+    {
+        $field = new FieldDescription();
+        $field->setName('action');
+        $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
                 'label'       => 'Action',
@@ -48,11 +75,20 @@ DQL;
                 'show_filter' => false,
             )
         );
-        $fieldsCollection->add($fieldAction);
 
-        $fieldVersion = new FieldDescription();
-        $fieldVersion->setName('version');
-        $fieldVersion->setOptions(
+        return $field;
+    }
+
+    /**
+     * Create field version
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createFieldVersion()
+    {
+        $field = new FieldDescription();
+        $field->setName('version');
+        $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_INTEGER,
                 'label'       => 'Version',
@@ -64,11 +100,20 @@ DQL;
                 'show_filter' => false,
             )
         );
-        $fieldsCollection->add($fieldVersion);
 
-        $fieldData = new FieldDescription();
-        $fieldData->setName('data');
-        $fieldData->setOptions(
+        return $field;
+    }
+
+    /**
+     * Create field data
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createFieldData()
+    {
+        $field = new FieldDescription();
+        $field->setName('data');
+        $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_HTML,
                 'label'       => 'Data',
@@ -80,16 +125,26 @@ DQL;
                 'show_filter' => false,
             )
         );
-        $templateDataProperty = new TwigTemplateProperty(
-            $fieldData,
-            'OroDataAuditBundle:Datagrid:Property/data.html.twig'
+        $field->setProperty(
+            new TwigTemplateProperty(
+                $field,
+                'OroDataAuditBundle:Datagrid:Property/data.html.twig'
+            )
         );
-        $fieldData->setProperty($templateDataProperty);
-        $fieldsCollection->add($fieldData);
 
-        $fieldAuthor = new FieldDescription();
-        $fieldAuthor->setName('author');
-        $fieldAuthor->setOptions(
+        return $field;
+    }
+
+    /**
+     * Create field author
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createFieldAuthor()
+    {
+        $field = new FieldDescription();
+        $field->setName('author');
+        $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => 'Author',
@@ -102,12 +157,21 @@ DQL;
                 'show_filter' => false,
             )
         );
-        $fieldAuthor->setFieldName('author');
-        $fieldsCollection->add($fieldAuthor);
+        $field->setFieldName('author');
 
-        $fieldLogged = new FieldDescription();
-        $fieldLogged->setName('logged');
-        $fieldLogged->setOptions(
+        return $field;
+    }
+
+    /**
+     * Create logged at field
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createFieldLoggedAt()
+    {
+        $field = new FieldDescription();
+        $field->setName('logged');
+        $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_DATETIME,
                 'label'       => 'Logged At',
@@ -119,26 +183,27 @@ DQL;
                 'show_filter' => false,
             )
         );
-        $fieldsCollection->add($fieldLogged);
+
+        return $field;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function createQuery()
+    protected function prepareQuery(ProxyQueryInterface $proxyQuery)
     {
-        $query = parent::createQuery();
+        $rootAlias = $proxyQuery->getRootAlias();
 
-        $query->leftJoin('a.user', 'u');
-        $query->addSelect('a', true);
-        $query->addSelect('u', true);
-        $query->addSelect($this->authorExpression . ' AS author', true);
+        $proxyQuery
+            ->addSelect($rootAlias, true)
+            ->addSelect('u', true)
+            ->addSelect($this->authorExpression . ' AS author', true);
 
-        return $query;
+        $proxyQuery->leftJoin(sprintf('%s.user', $rootAlias), 'u');
     }
 
     /**
-     * @{inheritDoc}
+     * {@inheritDoc}
      */
     public function getToolbarOptions()
     {
