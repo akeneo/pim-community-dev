@@ -11,8 +11,8 @@ services:
         scope: request
         class: %pim_import_export.controller.export.class%
         arguments:
-            - @pim_catalog.datagrid.worker
-            - @oro_batch.connectors
+            - '@pim_catalog.datagrid.worker'
+            - '@oro_batch.connectors'
             - export
             - %kernel.root_dir%
             - %kernel.environment%
@@ -22,8 +22,8 @@ services:
         scope: request
         class: %pim_import_export.controller.import.class%
         arguments:
-            - @pim_catalog.datagrid.worker
-            - @oro_batch.connectors
+            - '@pim_catalog.datagrid.worker'
+            - '@oro_batch.connectors'
             - import
             - %kernel.root_dir%
             - %kernel.environment%
@@ -33,9 +33,9 @@ services:
         scope: request
         class: %pim_import_export.controller.export_report.class%
         arguments:
-            - @pim_catalog.datagrid.worker
-            - @oro_batch.logger.batch_log_handler
-            - @pim_import_export.archiver.job_execution_archiver
+            - '@pim_catalog.datagrid.worker'
+            - '@oro_batch.logger.batch_log_handler'
+            - '@pim_import_export.archiver.job_execution_archiver'
             - export
 
     pim_import_export.controller.import_report:
@@ -43,7 +43,7 @@ services:
         scope: request
         class: %pim_import_export.controller.import_report.class%
         arguments:
-            - @pim_catalog.datagrid.worker
-            - @oro_batch.logger.batch_log_handler
-            - @pim_import_export.archiver.job_execution_archiver
+            - '@pim_catalog.datagrid.worker'
+            - '@oro_batch.logger.batch_log_handler'
+            - '@pim_import_export.archiver.job_execution_archiver'
             - import

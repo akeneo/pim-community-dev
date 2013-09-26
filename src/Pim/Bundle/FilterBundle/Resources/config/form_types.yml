@@ -6,15 +6,15 @@ services:
     pim_filter.form.type.filter.currency:
         class:     %pim_filter.form.type.filter.currency_class%
         arguments:
-            - @translator
-            - @pim_catalog.manager.currency
+            - '@translator'
+            - '@pim_catalog.manager.currency'
         tags:
             - { name: form.type, alias: pim_type_currency_filter }
 
     pim_filter.form.type.filter.scope:
         class:     %pim_filter.form.type.filter.scope_class%
         arguments:
-            - @translator
-            - @pim_catalog.manager.channel
+            - '@translator'
+            - '@pim_catalog.manager.channel'
         tags:
             - { name: form.type, alias: pim_type_scope_filter }

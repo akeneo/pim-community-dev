@@ -2,6 +2,6 @@ services:
     pim_navigation.menu.voter.request:
          class: Pim\Bundle\NavigationBundle\Menu\RequestVoter
          arguments:
-             - @service_container
+             - '@service_container'
          tags:
              - { name: knp_menu.voter }

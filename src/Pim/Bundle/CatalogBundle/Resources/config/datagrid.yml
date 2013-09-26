@@ -70,4 +70,4 @@ services:
     pim_catalog.datagrid.worker:
         class: %pim_catalog.datagrid.worker.class%
         arguments:
-            - @service_container
+            - '@service_container'

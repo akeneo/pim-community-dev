@@ -18,7 +18,7 @@ services:
     pim_import_export.validator.constraints.channel_validator:
         class: %pim_import_export.validator.constraints.channel_validator.class%
         arguments:
-            - @pim_catalog.manager.channel
+            - '@pim_catalog.manager.channel'
         tags:
             - { name: validator.constraint_validator, alias: channel_validator }
 
@@ -26,10 +26,10 @@ services:
         public: false
         class: %pim_import_export.form.transform_imported_product_data_subscriber.class%
         arguments:
-            - @pim_import_export.converter.product_enabled_converter
-            - @pim_import_export.converter.product_value_converter
-            - @pim_import_export.converter.product_family_converter
-            - @pim_import_export.converter.product_categories_converter
+            - '@pim_import_export.converter.product_enabled_converter'
+            - '@pim_import_export.converter.product_value_converter'
+            - '@pim_import_export.converter.product_family_converter'
+            - '@pim_import_export.converter.product_categories_converter'
 
     pim_import_export.converter.product_enabled_converter:
         public: false
@@ -39,20 +39,20 @@ services:
         public: false
         class: %pim_import_export.converter.product_value_converter.class%
         arguments:
-            - @doctrine.orm.entity_manager
-            - @pim_catalog.manager.currency
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.manager.currency'
 
     pim_import_export.converter.product_family_converter:
         public: false
         class: %pim_import_export.converter.product_family_converter.class%
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
 
     pim_import_export.converter.product_categories_converter:
         public: false
         class: %pim_import_export.converter.product_categories_converter.class%
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
 
     pim_import_export.archiver.job_execution_archiver:
         class: %pim_import_export.archiver.job_execution_archiver.class%
@@ -62,6 +62,6 @@ services:
     pim_import_export.event_listener.archive_subscriber:
         class: %pim_import_export.event_listener.archive_subscriber.class%
         arguments:
-            - @pim_import_export.archiver.job_execution_archiver
+            - '@pim_import_export.archiver.job_execution_archiver'
         tags:
             - { name: kernel.event_subscriber }

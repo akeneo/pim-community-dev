@@ -23,7 +23,7 @@ services:
     pim_serializer.normalizer.product:
         class: %pim_serializer.normalizer.product.class%
         arguments:
-            - @router
+            - '@router'
         tags:
             - { name: pim_serializer.normalizer }
 

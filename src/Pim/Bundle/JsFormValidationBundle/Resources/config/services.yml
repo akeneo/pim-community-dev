@@ -5,5 +5,5 @@ services:
     jsfv.generator:
         class: %pim_jsfv.generator.class%
         arguments:
-            - @service_container
-            - @validator.mapping.class_metadata_factory
+            - '@service_container'
+            - '@validator.mapping.class_metadata_factory'
