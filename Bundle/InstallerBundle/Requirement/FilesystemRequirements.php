@@ -34,8 +34,8 @@ class FilesystemRequirements extends RequirementCollection
             ->add(new Requirement(
                 realpath($cacheDir),
                 $status = is_writable($cacheDir),
-                $translator->trans('filesystem.writable', array(), 'requirements'),
-                $status ? $translator->trans('filesystem.writable', array(), 'requirements') : $translator->trans('filesystem.not_writable', array(), 'requirements'),
+                $writable,
+                $status ? $writable : $notWritable,
                 true,
                 $translator->trans('filesystem.cache.help', array('%path%' => $cacheDir), 'requirements')
             ))
@@ -62,7 +62,6 @@ class FilesystemRequirements extends RequirementCollection
                 $status ? $writable : $notWritable,
                 true,
                 $translator->trans('filesystem.parameters.help', array('%path%' => $rootDir . '/config/parameters.yml'), 'requirements')
-            ))
-        ;
+            ));
     }
 }

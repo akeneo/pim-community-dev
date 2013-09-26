@@ -61,7 +61,7 @@ class MailerType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'validation_groups' => function(FormInterface $form) {
+            'validation_groups' => function (FormInterface $form) {
                 $data = $form->getData();
 
                 return 'smtp' == $data['oro_installer_mailer_transport']

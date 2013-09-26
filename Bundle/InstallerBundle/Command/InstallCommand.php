@@ -32,6 +32,7 @@ class InstallCommand extends ContainerAwareCommand
             ->setupStep($input, $output)
             ->finalStep($input, $output);
 
+        $output->writeln('');
         $output->writeln('<info>Oro Application has been successfully installed.</info>');
     }
 
@@ -105,30 +106,25 @@ class InstallCommand extends ContainerAwareCommand
             ->findOneBy(array('role' => 'ROLE_SUPER_ADMIN'));
 
         $user
-            ->setUsername(
-                isset($options['user-name'])
-                    ? $options['user-name']
-                    : $dialog->ask($output, '<question>Username:</question> ')
+            ->setUsername(isset($options['user-name'])
+                ? $options['user-name']
+                : $dialog->ask($output, '<question>Username:</question> ')
             )
-            ->setEmail(
-                isset($options['user-email'])
-                    ? $options['user-email']
-                    : $dialog->ask($output, '<question>Email:</question> ')
+            ->setEmail(isset($options['user-email'])
+                ? $options['user-email']
+                : $dialog->ask($output, '<question>Email:</question> ')
             )
-            ->setFirstname(
-                isset($options['user-firstname'])
-                    ? $options['user-firstname']
-                    : $dialog->ask($output, '<question>First name:</question> ')
+            ->setFirstname(isset($options['user-firstname'])
+                ? $options['user-firstname']
+                : $dialog->ask($output, '<question>First name:</question> ')
             )
-            ->setLastname(
-                isset($options['user-lastname'])
-                    ? $options['user-lastname']
-                    : $dialog->ask($output, '<question>Last name:</question> ')
+            ->setLastname(isset($options['user-lastname'])
+                ? $options['user-lastname']
+                : $dialog->ask($output, '<question>Last name:</question> ')
             )
-            ->setPlainPassword(
-                isset($options['user-password'])
-                    ? $options['user-password']
-                    : $dialog->askHiddenResponse($output, '<question>Password:</question> ')
+            ->setPlainPassword(isset($options['user-password'])
+                ? $options['user-password']
+                : $dialog->askHiddenResponse($output, '<question>Password:</question> ')
             )
             ->setEnabled(true)
             ->addRole($role);
@@ -153,14 +149,15 @@ class InstallCommand extends ContainerAwareCommand
             ->runCommand('doctrine:schema:update', $output, array('--force' => true, '--no-interaction' => true))
             ->runCommand('oro:search:create-index', $output)
             ->runCommand('oro:navigation:init', $output)
-            ->runCommand('assets:install', $output, array('target' => './'))
+            ->runCommand('assets:install', $output)
             ->runCommand('assetic:dump', $output)
             ->runCommand('oro:assetic:dump', $output)
             ->runCommand('oro:translation:dump', $output);
 
         $params = $this->getContainer()->get('oro_installer.yaml_persister')->parse();
 
-        $params['system']['installed'] = date('c');
+        $params['system']['installed']        = date('c');
+        $params['session']['session_handler'] = 'session.handler.native_file';
 
         $this->getContainer()->get('oro_installer.yaml_persister')->dump($params);
 
