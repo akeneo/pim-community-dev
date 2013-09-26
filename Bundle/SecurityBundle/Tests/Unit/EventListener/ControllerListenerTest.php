@@ -12,7 +12,6 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
-
 class ControllerListenerTest extends \PHPUnit_Framework_TestCase
 {
     protected $className = 'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject';
