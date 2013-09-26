@@ -396,6 +396,7 @@ function(_, Backbone, mediator, LoadingMask, layout) {
                 this.setElement($(content).filter('.widget-content'));
                 layout.init(this.$el);
                 this._show();
+                mediator.trigger('hash_navigation_request:complete');
             } catch (error) {
                 console.warn(error)
                 // Remove state with unrestorable content
