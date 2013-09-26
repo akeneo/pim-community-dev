@@ -1,7 +1,7 @@
 /* jshint devel:true*/
 /* global define, require */
-define(['underscore', 'backbone', 'oro/mediator', 'oro/loading-mask', 'jquery.form'],
-function(_, Backbone, mediator, LoadingMask) {
+define(['underscore', 'backbone', 'oro/mediator', 'oro/loading-mask', 'oro/layout', 'jquery.form'],
+function(_, Backbone, mediator, LoadingMask, layout) {
     'use strict';
 
     var $ = Backbone.$;
@@ -25,6 +25,8 @@ function(_, Backbone, mediator, LoadingMask) {
         },
 
         loadingElement: null,
+        loadingMask: null,
+        loading: false,
 
         initialize: function(options) {
             options = options || {};
@@ -66,26 +68,30 @@ function(_, Backbone, mediator, LoadingMask) {
 
             this.actions = {};
             this.firstRun = true;
+
+            mediator.trigger('widget:init:' + this.getWid(), this);
             this.loadingElement = $('body');
         },
 
         _showLoading: function() {
-            var loadingElement = this.options.loadingElement || this.loadingElement;
-            loadingElement = $(loadingElement);
-            if (loadingElement && loadingElement.length) {
-                if (loadingElement[0].tagName.toLowerCase() !== 'body' && loadingElement.css('position') == 'static') {
-                    loadingElement.css('position', 'relative');
+            if (this.options.loadingMaskEnabled) {
+                var loadingElement = this.options.loadingElement || this.loadingElement;
+                loadingElement = $(loadingElement);
+                if (loadingElement && loadingElement.length) {
+                    if (loadingElement[0].tagName.toLowerCase() !== 'body' && loadingElement.css('position') == 'static') {
+                        loadingElement.css('position', 'relative');
+                    }
+                    this.loadingMask = new LoadingMask();
+                    loadingElement.append(this.loadingMask.render().$el);
+                    this.loadingMask.show();
                 }
-                this.loading = new LoadingMask();
-                loadingElement.append(this.loading.render().$el);
-                this.loading.show();
             }
         },
 
         _hideLoading: function() {
-            if (this.loading) {
-                this.loading.remove();
-                this.loading = null;
+            if (this.loadingMask) {
+                this.loadingMask.remove();
+                this.loadingMask = null;
             }
         },
 
@@ -128,6 +134,7 @@ function(_, Backbone, mediator, LoadingMask) {
                         this.options.url = formAction;
                     }
                     this.form.submit(function(e) {
+                        e.preventDefault();
                         e.stopImmediatePropagation();
                         self.trigger('adoptedFormSubmit', self.form, self);
                         return false;
@@ -139,6 +146,14 @@ function(_, Backbone, mediator, LoadingMask) {
                     var actionId = $action.data('action-name') || 'adopted_action_' + idx;
                     switch (action.type.toLowerCase()) {
                         case 'submit':
+                            var submitReplacement = $('<input type="submit"/>');
+                            submitReplacement.css({
+                                position: 'absolute',
+                                left: '-9999px',
+                                width: '1px',
+                                height: '1px'
+                            });
+                            form.append(submitReplacement);
                             actionId = 'form_submit';
                             break;
                         case 'reset':
@@ -167,8 +182,12 @@ function(_, Backbone, mediator, LoadingMask) {
         },
 
         _onAdoptedFormSubmit: function(form) {
+            if (this.loading) {
+                return;
+            }
             if (form.find('[type="file"]').length) {
                 this.trigger('beforeContentLoad', this);
+                this.loading = true;
                 form.ajaxSubmit({
                     data: {
                         '_widgetContainer': this.options.type,
@@ -283,7 +302,11 @@ function(_, Backbone, mediator, LoadingMask) {
 
         _initActionEvents: function(action) {
             var self = this;
-            switch ($(action).attr('type').toLowerCase()) {
+            var type = $(action).attr('type');
+            if (!type) {
+                return;
+            }
+            switch (type.toLowerCase()) {
                 case 'submit':
                     action.on('click', function() {
                         self.trigger('adoptedFormSubmitClick', self.form, self);
@@ -327,6 +350,7 @@ function(_, Backbone, mediator, LoadingMask) {
          * @param {String|null} method
          */
         loadContent: function(data, method) {
+            this.loading = true;
             var url = this.options.url;
             if (url === undefined || !url) {
                 url = window.location.href;
@@ -364,11 +388,13 @@ function(_, Backbone, mediator, LoadingMask) {
          * @param {String} content
          */
         onContentLoad: function(content) {
+            this.loading = false;
             try {
                 this.trigger('contentLoad', content, this);
                 this.actionsEl = null;
                 this.actions = {};
                 this.setElement($(content).filter('.widget-content'));
+                layout.init(this.$el);
                 this._show();
                 mediator.trigger('hash_navigation_request:complete');
             } catch (error) {
@@ -379,8 +405,8 @@ function(_, Backbone, mediator, LoadingMask) {
         },
 
         _show: function() {
-            this.trigger('renderStart', this.$el, this);
             this._adoptWidgetActions();
+            this.trigger('renderStart', this.$el, this);
             this.show();
             this.trigger('renderComplete', this.$el, this);
         },
@@ -389,6 +415,7 @@ function(_, Backbone, mediator, LoadingMask) {
             this.setWidToElement(this.$el);
             this._renderActions();
             this.trigger('widgetRender', this.$el, this);
+            mediator.trigger('widget:render:' + this.getWid(), this.$el, this);
         },
 
         setWidToElement: function(el) {
