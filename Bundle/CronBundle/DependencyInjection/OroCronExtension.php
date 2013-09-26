@@ -26,5 +26,6 @@ class OroCronExtension extends Extension
         $loader->load('services.yml');
 
         $container->setParameter('oro_cron.max_jobs', (int) $config['max_concurrent_jobs']);
+        $container->setParameter('oro_cron.jms_statistics', $config['jms_statistics']);
     }
 }
