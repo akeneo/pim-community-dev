@@ -2,7 +2,8 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityNotFoundException;
+
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 
@@ -183,5 +184,31 @@ class WorkflowDataTest extends \PHPUnit_Framework_TestCase
             ),
             $this->data->getValues()
         );
+    }
+
+    public function testGetProxyValue()
+    {
+        $name = 'entity';
+
+        $existingEntity = $this->getMock('Doctrine\Common\Persistence\Proxy');
+        $existingEntity->expects($this->once())
+            ->method('__isInitialized')
+            ->will($this->returnValue(false));
+        $existingEntity->expects($this->once())
+            ->method('__load');
+
+        $this->data->set($name, $existingEntity);
+        $this->assertEquals($existingEntity, $this->data->get($name));
+
+        $removedEntity = $this->getMock('Doctrine\Common\Persistence\Proxy');
+        $removedEntity->expects($this->once())
+            ->method('__isInitialized')
+            ->will($this->returnValue(false));
+        $removedEntity->expects($this->once())
+            ->method('__load')
+            ->will($this->throwException(new EntityNotFoundException()));
+
+        $this->data->set($name, $removedEntity);
+        $this->assertNull($this->data->get($name));
     }
 }
