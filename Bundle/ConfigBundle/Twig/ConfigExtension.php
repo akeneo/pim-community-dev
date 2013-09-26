@@ -2,12 +2,12 @@
 
 namespace Oro\Bundle\ConfigBundle\Twig;
 
-use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class ConfigExtension extends \Twig_Extension
 {
     /**
-     * @var UserConfigManager
+     * @var ConfigManager
      */
     protected $userConfigManager;
 
@@ -16,7 +16,7 @@ class ConfigExtension extends \Twig_Extension
      */
     protected $entityOutput;
 
-    public function __construct(UserConfigManager $userConfigManager, $entityOutput = array())
+    public function __construct(ConfigManager $userConfigManager, $entityOutput = array())
     {
         $this->userConfigManager = $userConfigManager;
         $this->entityOutput      = $entityOutput;

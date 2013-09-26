@@ -36,8 +36,11 @@ class SetupStep extends AbstractStep
                 ->getRepository('OroUserBundle:Role')
                 ->findOneBy(array('role' => 'ROLE_SUPER_ADMIN'));
 
+            $businessUnit = $this->get('oro_organization.business_unit_manager')->getBusinessUnit();
+
             $user->setEnabled(true)
-                ->addRole($role);
+                ->addRole($role)
+                ->setOwner($businessUnit);
 
             $this->get('oro_user.manager')->updateUser($user);
 

@@ -81,7 +81,7 @@ class DateRangeFilterTypeTest extends AbstractTypeTestCase
                 'formData' => array('type' => null, 'value' => array('start' => '', 'end' => '')),
                 'viewData' => array(
                     'value'          => array('type' => null, 'value' => array('start' => '', 'end' => '')),
-                    'widget_options' => array('dateFormat' => 'mm/dd/yy', 'firstDay' => 1)
+                    'widget_options' => array('firstDay' => 1)
                 ),
                 'customOptions' => array(
                     'widget_options' => array('firstDay' => 1)
