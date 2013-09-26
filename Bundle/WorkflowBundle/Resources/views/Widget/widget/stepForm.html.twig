@@ -6,6 +6,8 @@
     </fieldset>
 {% endmacro %}
 
+{% set saveAllowed = displayStep.name == currentStep.name and not workflowItem.closed %}
+
 <div class="container-fluid form-container widget-content">
     <style type="text/css">
         .step-form-header li.display {
@@ -90,7 +92,7 @@
                 {% endfor %}
             </div>
 
-            {% if displayStep.name == currentStep.name and not workflowItem.closed %}
+            {% if saveAllowed %}
                 <div class="widget-actions">
                     <button type="submit" class="btn btn-success btn-small">{{ 'Save'|trans }}</button>
                 </div>
@@ -101,14 +103,53 @@
     <script type="text/javascript">
         require(['oro/widget-manager'],
         function(widgetManager){
+            var saving = false;
             widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget){
                 widget.$el.find('.step-form-header a').on('click', function(e) {
                     e.preventDefault();
                     e.stopImmediatePropagation();
-                    widget.setUrl(this.href);
-                    widget.loadContent();
+                    if (!saving) {
+                        widget.setUrl(this.href);
+                        widget.loadContent();
+                    }
                 });
                 widget.setTitle(widget.$el.find('.step-form-header').show());
+
+                {% if saveAllowed %}
+                widget.on('renderStart', function() {
+                    widget.options.loadingMaskEnabled = true;
+                });
+
+                var isAllRequiredFieldsFilled = function(form) {
+                    var requiredEls = form.find(':input[required]');
+                    for (var i = 0; i < requiredEls.length; i++) {
+                        var $el = $(requiredEls[i]);
+                        if ($el.length && !$el.val().length) {
+                            return false;
+                        }
+                    }
+                    return true;
+                };
+
+                var form = widget.$el.find('form');
+                form.find(':input').on('change', function() {
+                    if (isAllRequiredFieldsFilled(form)) {
+                        saving = true;
+                        widget.options.loadingMaskEnabled = false;
+                        widget.trigger('saveStart', form);
+
+                        var submitAction = widget.getAction('form_submit', 'adopted');
+                        if (submitAction) {
+                            submitAction.html('<i class="icon-spinner"></i> {{ "Saving"|trans }}...');
+                            submitAction.removeClass('btn-success');
+                            submitAction.prop('disabled',true);
+                        }
+
+                        form.submit();
+                        form.find(':input:not(:disabled)').prop('disabled',true);
+                    }
+                });
+                {% endif %}
             });
         });
     </script>

@@ -1,7 +1,7 @@
 /* jshint devel:true*/
 /* global define, require */
-define(['underscore', 'backbone', 'oro/mediator', 'oro/loading-mask', 'jquery.form'],
-function(_, Backbone, mediator, LoadingMask) {
+define(['underscore', 'backbone', 'oro/mediator', 'oro/loading-mask', 'oro/layout', 'jquery.form'],
+function(_, Backbone, mediator, LoadingMask, layout) {
     'use strict';
 
     var $ = Backbone.$;
@@ -66,19 +66,23 @@ function(_, Backbone, mediator, LoadingMask) {
 
             this.actions = {};
             this.firstRun = true;
+
+            mediator.trigger('widget:init:' + this.getWid(), this);
             this.loadingElement = $('body');
         },
 
         _showLoading: function() {
-            var loadingElement = this.options.loadingElement || this.loadingElement;
-            loadingElement = $(loadingElement);
-            if (loadingElement && loadingElement.length) {
-                if (loadingElement[0].tagName.toLowerCase() !== 'body' && loadingElement.css('position') == 'static') {
-                    loadingElement.css('position', 'relative');
+            if (this.options.loadingMaskEnabled) {
+                var loadingElement = this.options.loadingElement || this.loadingElement;
+                loadingElement = $(loadingElement);
+                if (loadingElement && loadingElement.length) {
+                    if (loadingElement[0].tagName.toLowerCase() !== 'body' && loadingElement.css('position') == 'static') {
+                        loadingElement.css('position', 'relative');
+                    }
+                    this.loading = new LoadingMask();
+                    loadingElement.append(this.loading.render().$el);
+                    this.loading.show();
                 }
-                this.loading = new LoadingMask();
-                loadingElement.append(this.loading.render().$el);
-                this.loading.show();
             }
         },
 
@@ -283,7 +287,11 @@ function(_, Backbone, mediator, LoadingMask) {
 
         _initActionEvents: function(action) {
             var self = this;
-            switch ($(action).attr('type').toLowerCase()) {
+            var type = $(action).attr('type');
+            if (!type) {
+                return;
+            }
+            switch (type.toLowerCase()) {
                 case 'submit':
                     action.on('click', function() {
                         self.trigger('adoptedFormSubmitClick', self.form, self);
@@ -369,8 +377,8 @@ function(_, Backbone, mediator, LoadingMask) {
                 this.actionsEl = null;
                 this.actions = {};
                 this.setElement($(content).filter('.widget-content'));
+                layout.init(this.$el);
                 this._show();
-                mediator.trigger('hash_navigation_request:complete');
             } catch (error) {
                 console.warn(error)
                 // Remove state with unrestorable content
@@ -379,8 +387,8 @@ function(_, Backbone, mediator, LoadingMask) {
         },
 
         _show: function() {
-            this.trigger('renderStart', this.$el, this);
             this._adoptWidgetActions();
+            this.trigger('renderStart', this.$el, this);
             this.show();
             this.trigger('renderComplete', this.$el, this);
         },
@@ -389,6 +397,7 @@ function(_, Backbone, mediator, LoadingMask) {
             this.setWidToElement(this.$el);
             this._renderActions();
             this.trigger('widgetRender', this.$el, this);
+            mediator.trigger('widget:render:' + this.getWid(), this.$el, this);
         },
 
         setWidToElement: function(el) {
