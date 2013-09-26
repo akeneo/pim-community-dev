@@ -2,20 +2,17 @@
 
 namespace Oro\Bundle\WorkflowBundle\Controller;
 
-use Doctrine\ORM\EntityManager;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Exception\WorkflowNotFoundException;
-use Oro\Bundle\WorkflowBundle\Model\Step;
-use Oro\Bundle\WorkflowBundle\Model\Workflow;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class WorkflowStepController extends Controller
 {
@@ -28,6 +25,11 @@ class WorkflowStepController extends Controller
     {
         /** @var WorkflowManager $workflowManager */
         $workflowManager = $this->get('oro_workflow.manager');
+        if (!$workflowManager->isAllManagedEntitiesSpecified($workflowItem)) {
+            // there is no need to remove workflow item to allow debugging of this case
+            throw new NotFoundHttpException('Managed entities for workflow item not found');
+        }
+
         $workflow = $workflowManager->getWorkflow($workflowItem);
         $currentStep = $workflow->getStep($workflowItem->getCurrentStepName());
 
