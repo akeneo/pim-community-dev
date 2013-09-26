@@ -6,7 +6,6 @@ use Doctrine\Common\Annotations\Reader as AnnotationReader;
 use Symfony\Component\Finder\Finder;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
 
-
 class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderInterface
 {
     const ANNOTATION_CLASS = 'Oro\Bundle\SecurityBundle\Annotation\Acl';
