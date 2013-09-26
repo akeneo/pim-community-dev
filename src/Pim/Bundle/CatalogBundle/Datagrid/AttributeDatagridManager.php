@@ -131,14 +131,6 @@ class AttributeDatagridManager extends DatagridManager
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getIdentifierField()
-    {
-        return 'id';
-    }
-
-    /**
      * Create attribute type field description for datagrid
      *
      * @return FieldDescription
