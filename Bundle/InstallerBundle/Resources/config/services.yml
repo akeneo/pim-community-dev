@@ -50,5 +50,6 @@ services:
     kernel.listener.install.event:
         class:                                    %oro_installer.listener.request.class%
         arguments:
-            - %installed%
             - "@router"
+            - %installed%
+            - %kernel.debug%

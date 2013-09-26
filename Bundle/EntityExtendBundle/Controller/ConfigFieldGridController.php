@@ -26,12 +26,15 @@ use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityExtendBundle\Form\Type\FieldType;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+
 /**
  * Class ConfigGridController
  *
  * @package Oro\Bundle\EntityExtendBundle\Controller
  * @Route("/entity/extend/field")
  * TODO: Discuss ACL impl., currently acl is disabled
+ * @AclAncestor("oro_entityconfig_manage")
  */
 class ConfigFieldGridController extends Controller
 {

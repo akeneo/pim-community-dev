@@ -34,7 +34,7 @@ class EntitySelectType extends AbstractType
         $vars = array('configs' => $options['configs']);
         if ($form->getData()) {
             $fieldConfig = $this->entityManager->getExtendManager()->getConfigProvider()->getConfig(
-                $form->getParent()->getConfig()->getDataClass(),
+                $form->getParent()->getData(),
                 $form->getName()
             );
 

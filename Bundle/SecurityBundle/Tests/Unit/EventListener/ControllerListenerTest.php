@@ -1,17 +1,23 @@
 <?php
 
-namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Interceptor;
+namespace Oro\Bundle\SecurityBundle\Tests\Unit\EventListener;
 
-use Oro\Bundle\SecurityBundle\Acl\Interceptor\AclInterceptor;
+use Oro\Bundle\SecurityBundle\EventListener\ControllerListener;
 use CG\Proxy\MethodInvocation;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject;
 use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
-class AclInterceptorTest extends \PHPUnit_Framework_TestCase
+
+class ControllerListenerTest extends \PHPUnit_Framework_TestCase
 {
+    protected $className = 'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject';
+    protected $methodName = 'getId';
+
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $securityContext;
 
@@ -24,11 +30,11 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
     /** @var Request */
     protected $request;
 
-    /** @var MethodInvocation */
-    protected $methodInvocation;
+    /** @var ControllerListener */
+    protected $listener;
 
-    /** @var AclInterceptor */
-    protected $interceptor;
+    /** @var FilterControllerEvent */
+    protected $event;
 
     protected function setUp()
     {
@@ -43,52 +49,55 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
                 ->getMock();
         $this->request = new Request();
         $this->request->attributes->add(array('_route' => 'test'));
-        $this->interceptor = new AclInterceptor(
+        $this->listener = new ControllerListener(
             new SecurityFacade(
                 $this->securityContext,
                 $this->annotationProvider,
                 $this->objectIdentityFactory,
                 $logger
             ),
-            $this->request,
             $logger
-        );
-
-        $reflection = new \ReflectionClass('Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject');
-        $reflectionMethod = $reflection->getMethod('getId');
-        $this->methodInvocation = new MethodInvocation(
-            $reflectionMethod,
-            new TestDomainObject(),
-            array(),
-            array()
         );
     }
 
     public function testInterceptWithNoAnnotation()
     {
+        $event = new FilterControllerEvent(
+            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            array(new TestDomainObject(), $this->methodName),
+            $this->request,
+            HttpKernelInterface::MASTER_REQUEST
+        );
+
         $this->annotationProvider->expects($this->at(0))
             ->method('findAnnotation')
             ->with(
-                $this->methodInvocation->reflection->class,
-                $this->methodInvocation->reflection->name
+                $this->className,
+                $this->methodName
             )
             ->will($this->returnValue(null));
         $this->annotationProvider->expects($this->at(1))
             ->method('findAnnotation')
             ->with(
-                $this->methodInvocation->reflection->class
+                $this->className
             )
             ->will($this->returnValue(null));
 
         $this->securityContext->expects($this->never())
             ->method('isGranted');
 
-        $result = $this->interceptor->intercept($this->methodInvocation);
-        $this->assertEquals('getId()', $result);
+        $this->listener->onKernelController($event);
     }
 
     public function testInterceptAccessGranted()
     {
+        $event = new FilterControllerEvent(
+            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            array(new TestDomainObject(), $this->methodName),
+            $this->request,
+            HttpKernelInterface::MASTER_REQUEST
+        );
+
         $classAnnotation = new AclAnnotation(array('id' => 'test_class', 'type' => 'test', 'permission' => 'TEST'));
         $classIdentity = new ObjectIdentity('123', 'test_class');
         $methodAnnotation = new AclAnnotation(array('id' => 'test_method', 'type' => 'test', 'permission' => 'TEST'));
@@ -97,8 +106,8 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
         $this->annotationProvider->expects($this->at(0))
             ->method('findAnnotation')
             ->with(
-                $this->methodInvocation->reflection->class,
-                $this->methodInvocation->reflection->name
+                $this->className,
+                $this->methodName
             )
             ->will($this->returnValue($methodAnnotation));
         $this->objectIdentityFactory->expects($this->at(0))
@@ -113,7 +122,7 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
         $this->annotationProvider->expects($this->at(1))
             ->method('findAnnotation')
             ->with(
-                $this->methodInvocation->reflection->class
+                $this->className
             )
             ->will($this->returnValue($classAnnotation));
         $this->objectIdentityFactory->expects($this->at(1))
@@ -125,12 +134,18 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('TEST'), $this->identicalTo($classIdentity))
             ->will($this->returnValue(true));
 
-        $result = $this->interceptor->intercept($this->methodInvocation);
-        $this->assertEquals('getId()', $result);
+        $this->listener->onKernelController($event);
     }
 
     public function testInterceptAccessGrantedWithIgnoreClassAcl()
     {
+        $event = new FilterControllerEvent(
+            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            array(new TestDomainObject(), $this->methodName),
+            $this->request,
+            HttpKernelInterface::MASTER_REQUEST
+        );
+
         $methodAnnotation = new AclAnnotation(
             array('id' => 'test_method', 'type' => 'test', 'permission' => 'TEST', 'ignore_class_acl' => true)
         );
@@ -139,8 +154,8 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
         $this->annotationProvider->expects($this->once())
             ->method('findAnnotation')
             ->with(
-                $this->methodInvocation->reflection->class,
-                $this->methodInvocation->reflection->name
+                $this->className,
+                $this->methodName
             )
             ->will($this->returnValue($methodAnnotation));
         $this->objectIdentityFactory->expects($this->once())
@@ -152,12 +167,18 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('TEST'), $this->identicalTo($methodIdentity))
             ->will($this->returnValue(true));
 
-        $result = $this->interceptor->intercept($this->methodInvocation);
-        $this->assertEquals('getId()', $result);
+        $this->listener->onKernelController($event);
     }
 
     public function testInterceptAccessGrantedWithoutClassAcl()
     {
+        $event = new FilterControllerEvent(
+            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            array(new TestDomainObject(), $this->methodName),
+            $this->request,
+            HttpKernelInterface::MASTER_REQUEST
+        );
+
         $methodAnnotation = new AclAnnotation(
             array('id' => 'test_method', 'type' => 'test', 'permission' => 'TEST')
         );
@@ -166,8 +187,8 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
         $this->annotationProvider->expects($this->at(0))
             ->method('findAnnotation')
             ->with(
-                $this->methodInvocation->reflection->class,
-                $this->methodInvocation->reflection->name
+                $this->className,
+                $this->methodName
             )
             ->will($this->returnValue($methodAnnotation));
         $this->objectIdentityFactory->expects($this->once())
@@ -182,31 +203,37 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
         $this->annotationProvider->expects($this->at(1))
             ->method('findAnnotation')
             ->with(
-                $this->methodInvocation->reflection->class
+                $this->className
             )
             ->will($this->returnValue(null));
 
-        $result = $this->interceptor->intercept($this->methodInvocation);
-        $this->assertEquals('getId()', $result);
+        $this->listener->onKernelController($event);
     }
 
     public function testInterceptAccessGrantedByClassAcl()
     {
+        $event = new FilterControllerEvent(
+            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            array(new TestDomainObject(), $this->methodName),
+            $this->request,
+            HttpKernelInterface::MASTER_REQUEST
+        );
+
         $classAnnotation = new AclAnnotation(array('id' => 'test_class', 'type' => 'test', 'permission' => 'TEST'));
         $classIdentity = new ObjectIdentity('123', 'test_class');
 
         $this->annotationProvider->expects($this->at(0))
             ->method('findAnnotation')
             ->with(
-                $this->methodInvocation->reflection->class,
-                $this->methodInvocation->reflection->name
+                $this->className,
+                $this->methodName
             )
             ->will($this->returnValue(null));
 
         $this->annotationProvider->expects($this->at(1))
             ->method('findAnnotation')
             ->with(
-                $this->methodInvocation->reflection->class
+                $this->className
             )
             ->will($this->returnValue($classAnnotation));
         $this->objectIdentityFactory->expects($this->once())
@@ -218,8 +245,7 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('TEST'), $this->identicalTo($classIdentity))
             ->will($this->returnValue(true));
 
-        $result = $this->interceptor->intercept($this->methodInvocation);
-        $this->assertEquals('getId()', $result);
+        $this->listener->onKernelController($event);
     }
 
     /**
@@ -227,6 +253,13 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInterceptAccessDeniedByClassAcl()
     {
+        $event = new FilterControllerEvent(
+            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            array(new TestDomainObject(), $this->methodName),
+            $this->request,
+            HttpKernelInterface::MASTER_REQUEST
+        );
+
         $classAnnotation = new AclAnnotation(array('id' => 'test_class', 'type' => 'test', 'permission' => 'TEST'));
         $classIdentity = new ObjectIdentity('123', 'test_class');
         $methodAnnotation = new AclAnnotation(array('id' => 'test_method', 'type' => 'test', 'permission' => 'TEST'));
@@ -235,8 +268,8 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
         $this->annotationProvider->expects($this->at(0))
             ->method('findAnnotation')
             ->with(
-                $this->methodInvocation->reflection->class,
-                $this->methodInvocation->reflection->name
+                $this->className,
+                $this->methodName
             )
             ->will($this->returnValue($methodAnnotation));
         $this->objectIdentityFactory->expects($this->at(0))
@@ -251,7 +284,7 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
         $this->annotationProvider->expects($this->at(1))
             ->method('findAnnotation')
             ->with(
-                $this->methodInvocation->reflection->class
+                $this->className
             )
             ->will($this->returnValue($classAnnotation));
         $this->objectIdentityFactory->expects($this->at(1))
@@ -263,7 +296,7 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('TEST'), $this->identicalTo($classIdentity))
             ->will($this->returnValue(false));
 
-        $this->interceptor->intercept($this->methodInvocation);
+        $this->listener->onKernelController($event);
     }
 
     /**
@@ -271,6 +304,13 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInterceptAccessDeniedByMethodAcl()
     {
+        $event = new FilterControllerEvent(
+            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            array(new TestDomainObject(), $this->methodName),
+            $this->request,
+            HttpKernelInterface::MASTER_REQUEST
+        );
+
         $methodAnnotation = new AclAnnotation(
             array('id' => 'test_method', 'type' => 'test', 'permission' => 'TEST', 'ignore_class_acl' => true)
         );
@@ -279,8 +319,8 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
         $this->annotationProvider->expects($this->once())
             ->method('findAnnotation')
             ->with(
-                $this->methodInvocation->reflection->class,
-                $this->methodInvocation->reflection->name
+                $this->className,
+                $this->methodName
             )
             ->will($this->returnValue($methodAnnotation));
         $this->objectIdentityFactory->expects($this->once())
@@ -292,7 +332,7 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('TEST'), $this->identicalTo($methodIdentity))
             ->will($this->returnValue(false));
 
-        $this->interceptor->intercept($this->methodInvocation);
+        $this->listener->onKernelController($event);
     }
 
     /**
@@ -300,14 +340,21 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
      */
     public function testInterceptAccessDenied()
     {
+        $event = new FilterControllerEvent(
+            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            array(new TestDomainObject(), $this->methodName),
+            $this->request,
+            HttpKernelInterface::MASTER_REQUEST
+        );
+
         $annotation = new AclAnnotation(array('id' => 'test', 'type' => 'test', 'permission' => 'TEST'));
         $identity = new ObjectIdentity('123', 'test');
 
         $this->annotationProvider->expects($this->once())
             ->method('findAnnotation')
             ->with(
-                $this->methodInvocation->reflection->class,
-                $this->methodInvocation->reflection->name
+                $this->className,
+                $this->methodName
             )
             ->will($this->returnValue($annotation));
         $this->objectIdentityFactory->expects($this->once())
@@ -320,11 +367,18 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('TEST'), $this->identicalTo($identity))
             ->will($this->returnValue(false));
 
-        $this->interceptor->intercept($this->methodInvocation);
+        $this->listener->onKernelController($event);
     }
 
     public function testInterceptAccessDeniedForInternalAction()
     {
+        $event = new FilterControllerEvent(
+            $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
+            array(new TestDomainObject(), $this->methodName),
+            $this->request,
+            HttpKernelInterface::SUB_REQUEST
+        );
+
         $this->request->attributes->remove('_route');
 
         $annotation = new AclAnnotation(array('id' => 'test', 'type' => 'test', 'permission' => 'TEST'));
@@ -333,8 +387,8 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
         $this->annotationProvider->expects($this->once())
             ->method('findAnnotation')
             ->with(
-                $this->methodInvocation->reflection->class,
-                $this->methodInvocation->reflection->name
+                $this->className,
+                $this->methodName
             )
             ->will($this->returnValue($annotation));
         $this->objectIdentityFactory->expects($this->once())
@@ -347,7 +401,6 @@ class AclInterceptorTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('TEST'), $this->identicalTo($identity))
             ->will($this->returnValue(false));
 
-        $result = $this->interceptor->intercept($this->methodInvocation);
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $result);
+        $this->listener->onKernelController($event);
     }
 }

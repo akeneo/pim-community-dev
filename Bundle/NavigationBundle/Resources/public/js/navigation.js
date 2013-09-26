@@ -318,8 +318,16 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
             this.cacheTimer = setInterval(_.bind(function() {
                 var cacheData = this.getCachedData();
                 if (cacheData) {
-                    this.validateMd5Request(cacheData);
-                    //this.validateGridStates(cacheData);
+                    if (!cacheData.is_entity_page) {
+                        //validating grid states only for non-entity pages
+                        var hasGridCache = this.validateGridStates(cacheData);
+                        //validating content md5 only if no cached grids found on page
+                        if (!hasGridCache) {
+                            this.validateMd5Request(cacheData);
+                        }
+                    } else {
+                        this.validateMd5Request(cacheData);
+                    }
                 }
             }, this), 5000);
         },
@@ -357,6 +365,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
          * Validate grid state based on grid collection
          *
          * @param cacheData
+         * @return true if grid cache is found and false otherwise
          */
         validateGridStates: function(cacheData) {
             if (cacheData.states) {
@@ -378,8 +387,11 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                     }, this);
                     options.error = _.bind(this.showOutdatedMessage, this, url);
                     collection.fetch(options);
+                    return true;
                 }
             }
+
+            return false;
         },
 
         /**
@@ -782,10 +794,16 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
         },
 
         /**
-         * Clearing content area with native js, prevents freezing of firefox with firebug enabled
+         * Clearing content area with native js, prevents freezing of firefox with firebug enabled.
+         * If no container found, reload the page
          */
         clearContainer: function() {
-            document.getElementById('container').innerHTML = '';
+            var container = document.getElementById('container');
+            if (container) {
+                container.innerHTML = '';
+            } else {
+                location.reload();
+            }
         },
 
         /**
@@ -1103,20 +1121,24 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
          */
         processForms: function(selector) {
             $(selector).on('submit', _.bind(function (e) {
-                var target = e.currentTarget;
-                if ($(target).data('nohash')) {
+                var $form = $(e.currentTarget);
+                if ($form.data('nohash')) {
                     return;
                 }
                 e.preventDefault();
+                if ($form.data('sent')) {
+                    return;
+                }
+                $form.data('sent', true);
 
-                var url = $(target).attr('action');
-                this.method = $(target).attr('method') ? $(target).attr('method') : "get";
+                var url = $form.attr('action');
+                this.method = $form.attr('method') || "get";
 
                 if (url) {
                     registry.setElement('form_validate', true);
-                    mediator.trigger("hash_navigation_request:form-start", target);
+                    mediator.trigger("hash_navigation_request:form-start", $form.get(0));
                     if (registry.getElement('form_validate')) {
-                        var data = $(target).serialize();
+                        var data = $form.serialize();
                         if (this.method === 'get') {
                             if (data) {
                                 url += '?' + data;
@@ -1124,9 +1146,12 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                             this.setLocation(url);
                         } else {
                             this.beforeRequest();
-                            $(target).ajaxSubmit({
+                            $form.ajaxSubmit({
                                 data: this.headerObject,
                                 headers: this.headerObject,
+                                complete: function(){
+                                    $form.removeData('sent');
+                                },
                                 error: _.bind(this.processError, this),
                                 success: _.bind(function (data) {
                                     this.handleResponse(data, {'skipCache' : true}); //don't cache form submit response

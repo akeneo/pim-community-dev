@@ -72,7 +72,6 @@ function(_, FilterList) {
          * @protected
          */
         _oCollectionReset: function(collection) {
-            console.log(collection.state.totalRecords);
             if (collection.state.totalRecords > 0) {
                 this.$el.show();
             }

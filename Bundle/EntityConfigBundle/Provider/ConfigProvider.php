@@ -129,10 +129,10 @@ class ConfigProvider implements ConfigProviderInterface
     {
         $config = new Config($configId);
         if ($configId instanceof FieldConfigIdInterface) {
-            $type = PropertyConfigContainer::TYPE_FIELD;
+            $type          = PropertyConfigContainer::TYPE_FIELD;
             $defaultValues = $this->getPropertyConfig()->getDefaultValues($type, $configId->getFieldType());
         } else {
-            $type = PropertyConfigContainer::TYPE_ENTITY;
+            $type          = PropertyConfigContainer::TYPE_ENTITY;
             $defaultValues = $this->getPropertyConfig()->getDefaultValues($type);
         }
 
@@ -153,6 +153,10 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function getIds($className = null)
     {
+        if ($className) {
+            $className = $this->getClassName($className);
+        }
+
         return $this->configManager->getIds($this->getScope(), $className);
     }
 
@@ -212,7 +216,11 @@ class ConfigProvider implements ConfigProviderInterface
 
         if (!is_string($className)) {
             throw new RuntimeException(
-                'ConfigProvider::getClassName expects Object, PersistentCollection array of entities or string'
+                sprintf(
+                    'ConfigProvider::getClassName expects Object, ' .
+                    'PersistentCollection array of entities or string, "%s" given',
+                    gettype($className)
+                )
             );
         }
 
