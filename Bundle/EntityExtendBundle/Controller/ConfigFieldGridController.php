@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
-use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,18 +13,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use FOS\Rest\Util\Codes;
 
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
-use Oro\Bundle\EntityExtendBundle\Form\Type\FieldType;
-use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
+use Oro\Bundle\EntityExtendBundle\Form\Type\FieldType;
+
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
@@ -169,9 +168,12 @@ class ConfigFieldGridController extends Controller
                 $extendEntityConfig = $configManager->getProvider('extend')->getConfig($entity->getClassName());
                 if ($extendEntityConfig->get('state') != ExtendManager::STATE_NEW) {
                     $extendEntityConfig->set('state', ExtendManager::STATE_UPDATED);
-                    $configManager->persist($extendEntityConfig);
-                    $configManager->flush();
                 }
+
+                $extendEntityConfig->set('upgradeable', true);
+
+                $configManager->persist($extendEntityConfig);
+                $configManager->flush();
 
                 return $this->get('oro_ui.router')->actionRedirect(
                     array(
@@ -227,21 +229,37 @@ class ConfigFieldGridController extends Controller
             throw $this->createNotFoundException('Unable to find FieldConfigModel entity.');
         }
 
+        $className = $field->getEntity()->getClassName();
+
         /** @var ExtendManager $extendManager */
         $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
         /** @var ConfigManager $configManager */
         $configManager = $this->get('oro_entity_config.config_manager');
 
-        $fieldConfig = $extendManager->getConfigProvider()->getConfig(
-            $field->getEntity()->getClassName(),
-            $field->getFieldName()
-        );
+        $fieldConfig = $extendManager->getConfigProvider()->getConfig($className, $field->getFieldName());
 
         if (!$fieldConfig->is('owner', ExtendManager::OWNER_CUSTOM)) {
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 
         $fieldConfig->set('state', ExtendManager::STATE_DELETED);
+
+        $fields = $extendManager->getConfigProvider()->filter(
+            function (ConfigInterface $config) {
+                return in_array(
+                    $config->get('state'),
+                    array(ExtendManager::STATE_ACTIVE, ExtendManager::STATE_UPDATED)
+                );
+            },
+            $className
+        );
+
+        if (!count($fields)) {
+            $entityConfig = $extendManager->getConfigProvider()->getConfig($className);
+
+            $entityConfig->set('upgradeable', false);
+            $configManager->persist($entityConfig);
+        }
 
         $configManager->persist($fieldConfig);
         $configManager->flush();
@@ -269,15 +287,14 @@ class ConfigFieldGridController extends Controller
             throw $this->createNotFoundException('Unable to find FieldConfigModel entity.');
         }
 
+        $className = $field->getEntity()->getClassName();
+
         /** @var ExtendManager $extendManager */
         $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
         /** @var ConfigManager $configManager */
         $configManager = $this->get('oro_entity_config.config_manager');
 
-        $fieldConfig = $extendManager->getConfigProvider()->getConfig(
-            $field->getEntity()->getClassName(),
-            $field->getFieldName()
-        );
+        $fieldConfig = $extendManager->getConfigProvider()->getConfig($className, $field->getFieldName());
 
         if (!$fieldConfig->is('owner', ExtendManager::OWNER_CUSTOM)) {
             return new Response('', Codes::HTTP_FORBIDDEN);
@@ -286,6 +303,12 @@ class ConfigFieldGridController extends Controller
         $fieldConfig->set('state', ExtendManager::STATE_UPDATED);
 
         $configManager->persist($fieldConfig);
+
+        $entityConfig = $extendManager->getConfigProvider()->getConfig($className);
+        $entityConfig->set('upgradeable', true);
+
+        $configManager->persist($entityConfig);
+
         $configManager->flush();
 
         return new JsonResponse(array('message' => 'Item was restored', 'successful' => true), Codes::HTTP_OK);

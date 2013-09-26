@@ -48,7 +48,7 @@ class ExtendConfigDumper
         $yml     = array();
         $configs = $this->em->getExtendManager()->getConfigProvider()->getConfigs();
         foreach ($configs as $config) {
-            if ($config->is('is_extend')) {
+            if ($config->is('is_extend') && $config->is('upgradeable')) {
                 $yml[] = $this->dumpByConfig($config);
             }
         }
