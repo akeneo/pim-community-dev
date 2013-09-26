@@ -85,7 +85,7 @@ class AttributeDatagridManager extends DatagridManager
             )
         );
         $field->setProperty(
-            new TwigTemplateProperty($field, 'PimCatalogBundle:Entity:_toString.html.twig')
+            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_toString.html.twig')
         );
 
         $fieldsCollection->add($field);
@@ -199,7 +199,7 @@ class AttributeDatagridManager extends DatagridManager
         );
 
         $field->setProperty(
-            new TwigTemplateProperty($field, 'PimCatalogBundle:Entity:_toString.html.twig')
+            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_toString.html.twig')
         );
 
         return $field;
