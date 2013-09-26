@@ -34,18 +34,21 @@ class NavigationTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->tab('System')
             ->menu('Users Management')
             ->menu('Users')
+            ->open()
             ->assertElementPresent("//table[@class='grid table-hover table table-bordered table-condensed']/tbody");
 
         $login->openNavigation()
             ->tab('System')
             ->menu('Users Management')
             ->menu('Roles')
+            ->open()
             ->assertElementPresent("//table[@class='grid table-hover table table-bordered table-condensed']/tbody");
 
         $login->openNavigation()
             ->tab('System')
             ->menu('Users Management')
             ->menu('Groups')
+            ->open()
             ->assertElementPresent("//table[@class='grid table-hover table table-bordered table-condensed']/tbody");
     }
 
@@ -144,7 +147,7 @@ class NavigationTest extends \PHPUnit_Extensions_Selenium2TestCase
         $login->byXPath("//div[@class='top-action-box']//button[@class='btn minimize-button']")->click();
         $login->waitForAjax();
         $login->assertElementPresent(
-            "//div[@class='list-bar']//a[text() = 'Users - Users Management - System']",
+            "//div[@class='list-bar']//a[@title = 'Users - Users Management - System' and text() = 'Users']",
             'Element does not minimised to pinbar tab'
         );
     }
@@ -158,6 +161,7 @@ class NavigationTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->openNavigation()
             ->tab('Search')
             ->menu('Advanced search')
+            ->open()
             ->assertElementPresent(
                 "//div[@class='container-fluid']//div[@class='search_stats alert alert-info']",
                 'Element does not present on page'

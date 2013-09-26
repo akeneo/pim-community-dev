@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
+use Doctrine\Common\Persistence\Proxy;
+use Doctrine\ORM\EntityNotFoundException;
+
 class WorkflowData implements \ArrayAccess, \IteratorAggregate, \Countable
 {
     /**
@@ -70,6 +73,11 @@ class WorkflowData implements \ArrayAccess, \IteratorAggregate, \Countable
     public function get($name)
     {
         if (isset($this->data[$name])) {
+            $value = $this->data[$name];
+            if ($value instanceof Proxy && !$value->__isInitialized()) {
+                // set value as null if entity is not exist
+                $this->set($name, $this->extractProxyEntity($value));
+            }
             return $this->data[$name];
         } else {
             return null;
@@ -215,5 +223,20 @@ class WorkflowData implements \ArrayAccess, \IteratorAggregate, \Countable
     public function getIterator()
     {
         return new \ArrayIterator($this->data);
+    }
+
+    /**
+     * @param Proxy $entity
+     * @return object|Proxy|null
+     */
+    protected function extractProxyEntity(Proxy $entity)
+    {
+        try {
+            $entity->__load();
+        } catch (EntityNotFoundException $exception) {
+            $entity = null;
+        }
+
+        return $entity;
     }
 }

@@ -2,8 +2,24 @@
 
 namespace Oro\Bundle\UIBundle\Twig;
 
+use JMS\Serializer\Serializer;
+use JMS\Serializer\Exception\RuntimeException;
+
 class Md5Extension extends \Twig_Extension
 {
+    /**
+     * @var Serializer
+     */
+    protected $serializer = null;
+
+    /**
+     * @param Serializer $serializer
+     */
+    public function __construct(Serializer $serializer)
+    {
+        $this->serializer = $serializer;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -36,7 +52,11 @@ class Md5Extension extends \Twig_Extension
     {
         $hash = '';
         if (is_object($object)) {
-            $hash = md5(serialize($object));
+            try {
+                $hash = md5($this->serializer->serialize($object, 'json'));
+            } catch (RuntimeException $e) {
+                $hash = '';
+            }
         } elseif (is_string($object)) {
             $hash = md5($object);
         }

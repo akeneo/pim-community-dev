@@ -147,21 +147,6 @@
         ) %}
     {% endif %}
 
-    {% if form.values is defined %}
-        {% set dataBlocks = dataBlocks|merge(
-            [{
-                'title': 'Additional data'|trans,
-                'subblocks': [{
-                    'title': '',
-                    'useSpan': false,
-                    'data': [
-                        form_row(form.values)
-                    ]
-                }]
-            }]
-        ) %}
-    {% endif %}
-
     {% macro businessUnitsTree(form, businessUnits) %}
         <div id="business_units_tree">
             {% include 'OroOrganizationBundle:BusinessUnit:businessUnitsTree.html.twig' with {'businessUnits': businessUnits, 'hasId': form.vars.value.id ? true : false} %}

@@ -34,8 +34,7 @@ class SystemType extends AbstractType
                         new Assert\NotBlank(),
                     )
                 )
-            )
-        ;
+            );
     }
 
     public function getName()
