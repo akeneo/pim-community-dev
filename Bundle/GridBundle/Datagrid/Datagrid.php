@@ -65,13 +65,6 @@ class Datagrid implements DatagridInterface
     protected $filtersApplied = false;
 
     /**
-     * Pager applied flag
-     *
-     * @var bool
-     */
-    protected $pagerApplied = false;
-
-    /**
      * @var RouteGeneratorInterface
      */
     protected $routeGenerator;
@@ -309,7 +302,7 @@ class Datagrid implements DatagridInterface
      */
     public function getPager()
     {
-        $this->applyPager();
+        $this->applyParameters();
 
         return $this->pager;
     }
@@ -373,16 +366,10 @@ class Datagrid implements DatagridInterface
      */
     protected function applyPager()
     {
-        if ($this->pagerApplied) {
-            return;
-        }
-
         $pagerParameters = $this->parameters->get(ParametersInterface::PAGER_PARAMETERS);
         $this->pager->setPage(isset($pagerParameters['_page']) ? $pagerParameters['_page'] : 1);
         $this->pager->setMaxPerPage(isset($pagerParameters['_per_page']) ? (int) $pagerParameters['_per_page'] : 10);
         $this->pager->init();
-
-        $this->pagerApplied = true;
     }
 
     /**
