@@ -194,38 +194,41 @@ class ProductDatagridManager extends FlexibleDatagridManager
         );
         $fieldsCollection->add($field);
 
-        $fieldCreated = new FieldDescription();
-        $fieldCreated->setName('created');
-        $fieldCreated->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
-                'label'       => $this->translate('Created At'),
-                'field_name'  => 'created',
-                'filter_type' => FilterInterface::TYPE_DATETIME,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-            )
-        );
-        $fieldsCollection->add($fieldCreated);
+        $field = $this->createDatetimeField('created', 'Created At');
+        $fieldsCollection->add($field);
 
-        $fieldUpdated = new FieldDescription();
-        $fieldUpdated->setName('updated');
-        $fieldUpdated->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
-                'label'       => $this->translate('Updated At'),
-                'field_name'  => 'updated',
-                'filter_type' => FilterInterface::TYPE_DATETIME,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-            )
-        );
-        $fieldsCollection->add($fieldUpdated);
+        $field = $this->createDatetimeField('updated', 'Updated At');
+        $fieldsCollection->add($field);
 
         $field = $this->createCompletenessField();
         $fieldsCollection->add($field);
+    }
+
+    /**
+     * Create a datetime field (for created and updated product fields)
+     *
+     * @param string $code
+     * @param string $label
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createDatetimeField($code, $label)
+    {
+        $field = new FieldDescription();
+        $field->setName($code);
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
+                'label'       => $this->translate($label),
+                'field_name'  => $code,
+                'filter_type' => FilterInterface::TYPE_DATETIME,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+
+        return $field;
     }
 
     /**
@@ -283,20 +286,22 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setName('family');
         $field->setOptions(
             array(
-                'type'          => FieldDescriptionInterface::TYPE_TEXT,
-                'label'         => $this->translate('Family'),
-                'field_name'    => 'familyLabel',
-                'expression'    => 'family',
-                'filter_type'   => FilterInterface::TYPE_ENTITY,
-                'required'      => false,
-                'sortable'      => true,
-                'filterable'    => true,
-                'show_filter'   => true,
-                'multiple'      => true,
-                'class'         => 'PimCatalogBundle:Family',
-                'property'      => 'label',
-                'filter_by_where' => true,
+                'type'            => FieldDescriptionInterface::TYPE_HTML,
+                'label'           => $this->translate('Family'),
+                'field_name'      => 'familyLabel',
+                'expression'      => 'productFamily.id',
+                'filter_type'     => FilterInterface::TYPE_ENTITY,
+                'sortable'        => true,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'multiple'        => true,
+                'class'           => 'PimCatalogBundle:Family',
+                'filter_by_where' => true
             )
+        );
+
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_toString.html.twig')
         );
 
         return $field;
@@ -508,19 +513,16 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         $rootAlias = $proxyQuery->getRootAlias();
 
-        // @todo : must be THEN CONCAT("[", family.code, "]")
-        $selectConcat = "CASE WHEN ft.label IS NULL ".
-                        "THEN family.code ".
-                        "ELSE ft.label END ".
-                        "as familyLabel";
-
         // prepare query for family
         $proxyQuery
-            ->addSelect($selectConcat, true)
-            ->leftJoin($rootAlias .'.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
+            ->leftJoin($rootAlias .'.family', 'productFamily')
+            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
+            ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices');
+
+        $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
+        $proxyQuery->addSelect(sprintf("%s AS familyLabel", $familyExpr), true);
 
         // prepare query for completeness
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
