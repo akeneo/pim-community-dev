@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityBundle\Controller;
 
+use Doctrine\Common\Inflector\Inflector;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,7 +111,7 @@ class EntitiesController extends Controller
 
         $result = array();
         foreach ($fields as $field) {
-            $value = $record->{'get' . $field->getId()->getFieldName()}();
+            $value = $record->{'get' . Inflector::classify($field->getId()->getFieldName()) }();
             if ($value instanceof \DateTime) {
                 $value = $value->format('Y-m-d');
             }
