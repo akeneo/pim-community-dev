@@ -25,6 +25,8 @@ function(_, Backbone, mediator, LoadingMask, layout) {
         },
 
         loadingElement: null,
+        loadingMask: null,
+        loading: false,
 
         initialize: function(options) {
             options = options || {};
@@ -79,17 +81,17 @@ function(_, Backbone, mediator, LoadingMask, layout) {
                     if (loadingElement[0].tagName.toLowerCase() !== 'body' && loadingElement.css('position') == 'static') {
                         loadingElement.css('position', 'relative');
                     }
-                    this.loading = new LoadingMask();
-                    loadingElement.append(this.loading.render().$el);
-                    this.loading.show();
+                    this.loadingMask = new LoadingMask();
+                    loadingElement.append(this.loadingMask.render().$el);
+                    this.loadingMask.show();
                 }
             }
         },
 
         _hideLoading: function() {
-            if (this.loading) {
-                this.loading.remove();
-                this.loading = null;
+            if (this.loadingMask) {
+                this.loadingMask.remove();
+                this.loadingMask = null;
             }
         },
 
@@ -132,6 +134,7 @@ function(_, Backbone, mediator, LoadingMask, layout) {
                         this.options.url = formAction;
                     }
                     this.form.submit(function(e) {
+                        e.preventDefault();
                         e.stopImmediatePropagation();
                         self.trigger('adoptedFormSubmit', self.form, self);
                         return false;
@@ -143,6 +146,14 @@ function(_, Backbone, mediator, LoadingMask, layout) {
                     var actionId = $action.data('action-name') || 'adopted_action_' + idx;
                     switch (action.type.toLowerCase()) {
                         case 'submit':
+                            var submitReplacement = $('<input type="submit"/>');
+                            submitReplacement.css({
+                                position: 'absolute',
+                                left: '-9999px',
+                                width: '1px',
+                                height: '1px'
+                            });
+                            form.append(submitReplacement);
                             actionId = 'form_submit';
                             break;
                         case 'reset':
@@ -171,8 +182,12 @@ function(_, Backbone, mediator, LoadingMask, layout) {
         },
 
         _onAdoptedFormSubmit: function(form) {
+            if (this.loading) {
+                return;
+            }
             if (form.find('[type="file"]').length) {
                 this.trigger('beforeContentLoad', this);
+                this.loading = true;
                 form.ajaxSubmit({
                     data: {
                         '_widgetContainer': this.options.type,
@@ -335,6 +350,7 @@ function(_, Backbone, mediator, LoadingMask, layout) {
          * @param {String|null} method
          */
         loadContent: function(data, method) {
+            this.loading = true;
             var url = this.options.url;
             if (url === undefined || !url) {
                 url = window.location.href;
@@ -372,6 +388,7 @@ function(_, Backbone, mediator, LoadingMask, layout) {
          * @param {String} content
          */
         onContentLoad: function(content) {
+            this.loading = false;
             try {
                 this.trigger('contentLoad', content, this);
                 this.actionsEl = null;

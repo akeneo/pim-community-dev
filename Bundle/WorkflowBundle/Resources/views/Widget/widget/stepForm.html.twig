@@ -69,6 +69,10 @@
                 });
             });
         </script>
+    {% elseif form.vars.errors|length > 0 %}
+        <div class="alert alert-error">
+            {{ form_errors(form) }}
+        </div>
     {% endif %}
 
     {% if displayStep.formOptions.attribute_fields is defined and displayStep.formOptions.attribute_fields|length %}
@@ -132,7 +136,7 @@
                 };
 
                 var form = widget.$el.find('form');
-                form.find(':input').on('change', function() {
+                form.find(':input:not(.select2-input)').on('change', function() {
                     if (isAllRequiredFieldsFilled(form)) {
                         saving = true;
                         widget.options.loadingMaskEnabled = false;
