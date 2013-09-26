@@ -84,6 +84,10 @@ class AttributeDatagridManager extends DatagridManager
                 'show_filter' => true,
             )
         );
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimCatalogBundle:Entity:_toString.html.twig')
+        );
+
         $fieldsCollection->add($field);
 
         $field = $this->createAttributeTypeField();
