@@ -2,5 +2,7 @@ oro_entity_config:
     security:
         entity:
             items:
-                type: ~
+                type:
+                    options:
+                        internal: true
                 group_name: ~
