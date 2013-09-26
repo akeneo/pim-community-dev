@@ -1,0 +1,3 @@
+Oro\Bundle\NotificationBundle\Entity\EmailNotification:
+    name:                               entity.email_notification.name
+    description:                        entity.email_notification.description

@@ -24,6 +24,7 @@ services:
             - name: oro_grid.datagrid.manager
               datagrid_name: user_roles
               entity_name: Oro\Bundle\UserBundle\Entity\Role
+              query_entity_alias: user_role
               entity_hint: role
               route_name: oro_user_role_index
 

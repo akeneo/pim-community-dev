@@ -48,7 +48,8 @@ class JobController extends Controller
     public function viewAction(Job $job)
     {
         $manager    = $this->get('oro_cron.job_manager');
-        $statisticsEnabled = $this->container->getParameter('%jms_job_queue.statistics%');
+        $statisticsEnabled = $this->container->hasParameter('jms_job_queue.statistics')
+            && $this->container->getParameter('jms_job_queue.statistics');
         $statistics = $statisticsEnabled
             ? $manager->getJobStatistics($job)
             : array();

@@ -20,7 +20,7 @@
 {% endblock %}
 
 {% block navButtons %}
-    {% if form.vars.value.id and resource_granted('oro_business_unit_delete') %}
+    {% if form.vars.value.id and oro_get_business_units_count() > 1 and resource_granted('oro_business_unit_delete') %}
         {{ UI.deleteButton({
             'dataUrl': path('oro_api_delete_businessunit', {'id': form.vars.value.id}),
             'dataRedirect': path('oro_business_unit_index'),

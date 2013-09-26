@@ -55,7 +55,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit()
             ->openUsers()
             ->add()
-            ->assertTitle('Create User - Users - System')
+            ->assertTitle('Create User - Users - Users Management - System')
             ->setUsername($username)
             ->enable()
             ->setOwner('Main')
@@ -69,7 +69,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->assertMessage('User saved')
             ->toGrid()
             ->close()
-            ->assertTitle('Users - System');
+            ->assertTitle('Users - Users Management - System');
 
         return $username;
     }
@@ -88,13 +88,13 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit()
             ->openBusinessUnits()
             ->add()
-            ->assertTitle('Create Business Unit - Business Units - System')
+            ->assertTitle('Create Business Unit - Business Units - Users Management - System')
             ->setBusinessUnitName($unitname)
             ->setOwner('Main')
             ->save()
             ->assertMessage('Business Unit saved')
             ->toGrid()
-            ->assertTitle('Business Units - System')
+            ->assertTitle('Business Units - Users Management - System')
             ->close();
 
         return $unitname;
