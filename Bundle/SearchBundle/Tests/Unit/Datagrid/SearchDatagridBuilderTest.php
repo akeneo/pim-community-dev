@@ -21,10 +21,13 @@ class SearchDatagridBuilderTest extends \PHPUnit_Framework_TestCase
         );
         $parameters = $this->getMockForAbstractClass(
             'Oro\Bundle\GridBundle\Datagrid\ParametersInterface',
-            array(),
+            array('get'),
             '',
             false
         );
+        $parameters->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue(array()));
 
         $datagrid = $datagridBuilder->getBaseDatagrid(
             $indexerQuery,
@@ -45,7 +48,11 @@ class SearchDatagridBuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected function createDatagridBuilder()
     {
-        $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilder', array(), array(), '', false);
+        $form = $this->getMock('Symfony\Component\Form\Form', array(), array(), '', false);
+        $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilder', array('getForm'), array(), '', false);
+        $formBuilder->expects($this->any())
+            ->method('getForm')
+            ->will($this->returnValue($form));
         $formFactory = $this->getMockForAbstractClass(
             'Symfony\Component\Form\FormFactoryInterface',
             array(),

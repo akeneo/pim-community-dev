@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\UserBundle\Datagrid;
 
+use Doctrine\ORM\QueryBuilder;
+
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -10,6 +12,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
 class RoleDatagridManager extends DatagridManager
 {
@@ -49,12 +52,12 @@ class RoleDatagridManager extends DatagridManager
     /**
      * {@inheritDoc}
      */
-    protected function createQuery()
+    protected function prepareQuery(ProxyQueryInterface $query)
     {
-        $query = parent::createQuery();
-        $query->where('o.role <> :anon');
+        $entityAlias = $query->getRootAlias();
 
-        return $query;
+        /** @var QueryBuilder $query */
+        $query->andWhere("$entityAlias.role <> :anonymousRole");
     }
 
     /**
@@ -64,7 +67,7 @@ class RoleDatagridManager extends DatagridManager
     {
         return array_merge(
             parent::getQueryParameters(),
-            array('anon' => User::ROLE_ANONYMOUS)
+            array('anonymousRole' => User::ROLE_ANONYMOUS)
         );
     }
 
