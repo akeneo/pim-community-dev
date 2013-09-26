@@ -55,8 +55,8 @@ class TitleNode extends \Twig_Node
     }
 
     /**
-     * Compiler visits file in order from children to parents, to implement behaviour of extend titles in children files
-     * we should handle only calls from first file that calls set title.
+     * Compiler visits files in order from children to parents, to implement behaviour of extend titles in children
+     * view files we should handle only nodes from first file, all others are overridden with first.
      *
      * @param \Twig_Compiler $compiler
      * @return bool
