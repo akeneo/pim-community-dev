@@ -162,7 +162,7 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
         $this->byXPath("//button[contains(.,'Request')]")->click();
         $this->waitPageToLoad();
         $this->waitForAjax();
-        $messageActual = $this->byXPath("//*[@id='top-page']//div/div[contains(.,'The username or email address')]")->text();
+        $messageActual = $this->byXPath("//*[@id='top-page']//div[contains(@class,'alert-error')]")->text();
         $messageExpect = "The username or email address \"123test123\" does not exist.";
         $this->assertEquals($messageExpect, $messageActual);
 
@@ -170,7 +170,7 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
         $this->byXPath("//button[contains(.,'Request')]")->click();
         $this->waitPageToLoad();
         $this->waitForAjax();
-        $messageActual = $this->byXPath("//*[@id='top-page']//h3[contains(.,'An email has been sent to')]")->text();
+        $messageActual = $this->byXPath("//*[@id='top-page']//div[contains(@class,'alert-success')]")->text();
 
         $this->assertEquals('An email has been sent to ...@example.com. It contains a link you must click to reset your password.', $messageActual);
     }

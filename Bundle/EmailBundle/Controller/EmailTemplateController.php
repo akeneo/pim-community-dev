@@ -117,11 +117,10 @@ class EmailTemplateController extends Controller
             $form->submit($request);
         }
 
-        list ($subjectRendered, $templateRendered) = $this->get('oro_email.email_renderer')
-            ->compileMessage($emailTemplate);
+        $templateRendered = $this->get('oro_email.email_renderer')
+            ->compilePreview($emailTemplate);
 
         return array(
-            'subject' => $subjectRendered,
             'content' => $templateRendered,
         );
     }

@@ -36,7 +36,8 @@ class AdvancedSearchTest extends \PHPUnit_Extensions_Selenium2TestCase
         $userData = $users->getRandomEntity();
         $login->openNavigation()
             ->tab('Search')
-            ->menu('Advanced search');
+            ->menu('Advanced search')
+            ->open();
         //Fill advanced search input field
         $login->byId('query')->value($query . $userData[$userField]);
         $login->byId('sendButton')->click();
