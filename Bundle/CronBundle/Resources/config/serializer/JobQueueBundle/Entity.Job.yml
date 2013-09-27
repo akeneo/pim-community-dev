@@ -1,0 +1,5 @@
+JMS\JobQueueBundle\Entity\Job:
+    exclusion_policy: ALL
+    properties:
+        relatedEntities:
+            type: array
