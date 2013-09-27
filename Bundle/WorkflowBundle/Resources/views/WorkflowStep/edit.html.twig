@@ -146,13 +146,25 @@
             {{ oro_widget_render({
                 'widgetType': 'block',
                 'url': path('oro_workflow_widget_step_form', {workflowItemId: workflowItem.id}),
-                'loadingElement': 'body',
+                'loadingMaskEnabled': false,
                 'alias': 'workflow_step_form'
             }) }}
             <script type="text/javascript">
-                require(['oro/widget-manager', 'oro/messenger'],
-                function(widgetManager, messenger){
+                require(['oro/widget-manager'],
+                function(widgetManager){
                     widgetManager.getWidgetInstanceByAlias('workflow_step_form', function(widget) {
+                        var lastFocused = null;
+                        var followFocus = function(el) {
+                            widget.$('form :input').on('focus', function() {
+                                lastFocused = this.id;
+                            });
+                            if (lastFocused) {
+                                console.log(widget.$('#' + lastFocused));
+                                widget.$('#' + lastFocused)[0].focus();
+                            }
+                        };
+                        widget.on('widgetRender', followFocus);
+
                         widget.on('saveStart', function() {
                             widgetManager.getWidgetInstanceByAlias('workflow_transitions', function(transitionsWidget){
                                 transitionsWidget.$el.find('button').prop("disabled", true);
@@ -160,7 +172,6 @@
                         });
 
                         widget.on('formSave', function() {
-                            messenger.notificationFlashMessage('success', {{ 'Step information saved'|trans|json_encode|raw }});
                             widgetManager.getWidgetInstanceByAlias('workflow_transitions', function(transitionsWidget){
                                 transitionsWidget.loadContent();
                             });

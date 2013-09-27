@@ -200,9 +200,11 @@ var jsfv = (function () {
                 form.attr('novalidate', 'novalidate');
 
                 // autofocus on a first form filed (if it has no value)
-                field = form.find(':input:visible:not(.offscreen):not(button):not([disabled]):not([readonly])').first();
-                if (!field.val()) {
-                    field.focus();
+                if (!form.data('disable-autofocus')) {
+                    field = form.find(':input:visible:not(.offscreen):not(button):not([disabled]):not([readonly])').first();
+                    if (!field.val()) {
+                        field.focus();
+                    }
                 }
 
                 jsfv.onFirstEvent(form, 'submit', function(e) {

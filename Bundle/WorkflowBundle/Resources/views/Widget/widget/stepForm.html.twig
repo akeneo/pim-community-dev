@@ -80,6 +80,7 @@
 
         <form method="post"
             data-nohash="true"
+            data-disable-autofocus="true"
             id="{{ form.vars.name }}"
             action="{{ path('oro_workflow_widget_step_form', {workflowItemId: workflowItem.id}) }}"
             class="form-horizontal">
@@ -137,21 +138,23 @@
 
                 var form = widget.$el.find('form');
                 form.find(':input:not(.select2-input)').on('change', function() {
-                    if (isAllRequiredFieldsFilled(form)) {
-                        saving = true;
-                        widget.options.loadingMaskEnabled = false;
-                        widget.trigger('saveStart', form);
+                    setTimeout(function() {
+                        if (isAllRequiredFieldsFilled(form)) {
+                            saving = true;
+                            widget.options.loadingMaskEnabled = false;
+                            widget.trigger('saveStart', form);
 
-                        var submitAction = widget.getAction('form_submit', 'adopted');
-                        if (submitAction) {
-                            submitAction.html('<i class="icon-spinner"></i> {{ "Saving"|trans }}...');
-                            submitAction.removeClass('btn-success');
-                            submitAction.prop('disabled',true);
+                            var submitAction = widget.getAction('form_submit', 'adopted');
+                            if (submitAction) {
+                                submitAction.html('<i class="icon-spinner"></i> {{ "Saving"|trans }}...');
+                                submitAction.removeClass('btn-success');
+                                submitAction.prop('disabled',true);
+                            }
+
+                            form.submit();
+                            form.find(':input:not(:disabled)').prop('disabled',true);
                         }
-
-                        form.submit();
-                        form.find(':input:not(:disabled)').prop('disabled',true);
-                    }
+                    }, 100);
                 });
                 {% endif %}
             });
