@@ -15,6 +15,9 @@ header .dropdown-menu li > a{
 .navbar-inner{
     filter: none;
 }
+#oroplatform-header>.navbar-inner {
+    filter: none;
+}
 .btn-group{
     display: inline;
 }
