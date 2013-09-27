@@ -209,18 +209,22 @@ function(_, Backbone, mediator, LoadingMask, layout) {
             return $('<div id="' + section + '" class="widget-actions-section"/>');
         },
 
-        addAction: function(key, actionElement, section) {
+        addAction: function(key, section, actionElement) {
             if (section === undefined) {
                 section = 'main';
             }
             if (!this.hasAction(key, section)) {
-                this.actions[key] = actionElement;
+                if (!this.actions.hasOwnProperty(section)) {
+                    this.actions[section] = {};
+                }
+                this.actions[section][key] = actionElement;
                 var sectionContainer = this.getActionsElement().find('#' + section);
                 if (!sectionContainer.length) {
                     sectionContainer = this._createWidgetActionsSection(section);
                     sectionContainer.appendTo(this.getActionsElement());
                 }
                 sectionContainer.append(actionElement);
+                this.trigger('widget:add:action:' + section + ':' + key, $(actionElement));
             }
         },
 
@@ -267,9 +271,9 @@ function(_, Backbone, mediator, LoadingMask, layout) {
             }
         },
 
-        getAction: function(key, section) {
-            var action = null;
+        getAction: function(key, section, callback) {
             if (this.hasAction(key, section)) {
+                var action = null;
                 if (section !== undefined) {
                     action = this.actions[section][key];
                 } else {
@@ -279,8 +283,10 @@ function(_, Backbone, mediator, LoadingMask, layout) {
                         }
                     });
                 }
+                callback(action);
+            } else {
+                this.once('widget:add:action:' + section + ':' + key, callback);
             }
-            return action;
         },
 
         _renderActions: function() {
@@ -291,9 +297,10 @@ function(_, Backbone, mediator, LoadingMask, layout) {
             if (container) {
                 _.each(this.actions, function(actions, section) {
                     var sectionContainer = self._createWidgetActionsSection(section);
-                    _.each(actions, function(action) {
+                    _.each(actions, function(action, key) {
                         self._initActionEvents(action);
                         sectionContainer.append(action);
+                        self.trigger('widget:add:action:' + section + ':' + key, $(action));
                     });
                     container.append(sectionContainer);
                 });

@@ -31,11 +31,13 @@
         require(['oro/widget-manager', 'oro/messenger'],
         function(WidgetManager, Messanger) {
             WidgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
-                widget.getAction('form_submit', 'adopted').on('click', function() {
-                    Messanger.notificationFlashMessage(
-                        'info',
-                        {{ 'Import validation started, please wait...'|trans|json_encode|raw }}
-                    );
+                widget.getAction('form_submit', 'adopted', function(action) {
+                    action.on('click', function() {
+                        Messanger.notificationFlashMessage(
+                            'info',
+                            {{ 'Import validation started, please wait...'|trans|json_encode|raw }}
+                        );
+                    });
                 });
             });
         });
