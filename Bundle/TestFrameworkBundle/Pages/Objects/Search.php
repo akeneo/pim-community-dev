@@ -70,7 +70,7 @@ class Search extends Page
     public function result($filter)
     {
         if (!is_null($filter)) {
-            $result = $this->elements($this->using("xpath")->value("//div[@id='search-result-grid']//tr//h1/a[contains(., '{$filter}')]"));
+            $result = $this->elements($this->using("xpath")->value("//div[@id='search-result-grid']//tr//h1/a[normalize-space(.) = '{$filter}']"));
         } else {
             $result = $this->elements($this->using("xpath")->value("//div[@id='search-result-grid']//tr//h1/a"));
         }
