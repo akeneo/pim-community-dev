@@ -8,11 +8,6 @@ namespace Oro\Bundle\NavigationBundle\Twig;
  */
 class TitleNode extends \Twig_Node
 {
-    /**
-     * @var string|null
-     */
-    static protected $firstFileName = null;
-
     public function __construct(\Twig_Node $expr = null, $lineno = 0, $tag = null)
     {
         parent::__construct(array('expr' => $expr), array(), $lineno, $tag);
@@ -45,31 +40,10 @@ class TitleNode extends \Twig_Node
             throw new \Twig_Error_Syntax('Function oro_title_set expected argument: array');
         }
 
-        if ($this->isSetTitleShouldBeProcessed($compiler)) {
-            $compiler
-                ->raw("\n")
-                ->write('$this->env->getExtension("oro_title")->set(')
-                ->subcompile($arguments)
-                ->raw(");\n");
-        }
-    }
-
-    /**
-     * Compiler visits files in order from children to parents, to implement behaviour of extend titles in children
-     * view files we should handle only nodes from first file, all others are overridden with first.
-     *
-     * @param \Twig_Compiler $compiler
-     * @return bool
-     */
-    protected function isSetTitleShouldBeProcessed(\Twig_Compiler $compiler)
-    {
-        if (!self::$firstFileName) {
-            self::$firstFileName = $compiler->getFilename();
-            return true;
-        } elseif (self::$firstFileName == $compiler->getFilename()) {
-            return true;
-        } else {
-            return false;
-        }
+        $compiler
+            ->raw("\n")
+            ->write('$this->env->getExtension("oro_title")->set(')
+            ->subcompile($arguments)
+            ->raw(");\n");
     }
 }
