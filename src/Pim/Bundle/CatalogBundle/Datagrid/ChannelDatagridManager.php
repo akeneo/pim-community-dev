@@ -9,6 +9,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 
@@ -140,5 +141,20 @@ class ChannelDatagridManager extends DatagridManager
         );
 
         return array($clickAction, $editAction, $deleteAction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareQuery(ProxyQueryInterface $proxyQuery)
+    {
+        $rootAlias = $proxyQuery->getRootAlias();
+
+        $proxyQuery
+            ->addSelect($rootAlias)
+            ->addSelect('category');
+
+        $proxyQuery
+            ->innerJoin(sprintf('%s.category', $rootAlias), 'category');
     }
 }

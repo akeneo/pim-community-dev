@@ -271,7 +271,7 @@ class AttributeDatagridManager extends DatagridManager
             ->addSelect('translation.label', true);
 
         $proxyQuery
-            ->leftJoin($rootAlias .'.translations', 'translation', 'with', 'translation.locale = :locale')
+            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :locale')
             ->leftJoin($rootAlias .'.group', 'attributeGroup')
             ->leftJoin('attributeGroup.translations', 'gt', 'WITH', 'gt.locale = :locale');
 
