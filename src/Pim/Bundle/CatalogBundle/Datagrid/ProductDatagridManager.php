@@ -520,7 +520,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias .'.family', 'family')
             ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
-            ->leftJoin('values.prices', 'valuePrices');
+            ->leftJoin('values.prices', 'valuePrices')
+            ->groupBy($rootAlias);
 
         // prepare query for completeness
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
