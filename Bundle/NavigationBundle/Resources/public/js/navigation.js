@@ -2,10 +2,10 @@
 /* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger', 'oro/registry',
     'oro/modal', 'oro/loading-mask', 'oro/navigation/pagestate/view', 'oro/navigation/pagestate/model',
-    'oro/pageable-collection', 'jquery.form'],
+    'oro/pageable-collection', 'oro/widget-manager','jquery.form'],
 function($, _, Backbone, __, app, mediator, messenger, registry,
          Modal, LoadingMask, PagestateView, PagestateModel,
-         PageableCollection) {
+         PageableCollection, widgetManager) {
     'use strict';
 
     var Navigation,
@@ -240,6 +240,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                 this.beforeRequest();
                 var cacheData;
                 if (cacheData = this.getCachedData()) {
+                    widgetManager.resetWidgets();
                     this.tempCache = cacheData;
                     this.handleResponse(cacheData, {fromCache: true});
                     this.validatePageCache(cacheData);

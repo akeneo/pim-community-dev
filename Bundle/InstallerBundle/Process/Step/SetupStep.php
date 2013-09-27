@@ -34,7 +34,7 @@ class SetupStep extends AbstractStep
             $role = $this
                 ->getDoctrine()
                 ->getRepository('OroUserBundle:Role')
-                ->findOneBy(array('role' => 'ROLE_SUPER_ADMIN'));
+                ->findOneBy(array('role' => 'ROLE_ADMINISTRATOR'));
 
             $businessUnit = $this->get('oro_organization.business_unit_manager')->getBusinessUnit();
 

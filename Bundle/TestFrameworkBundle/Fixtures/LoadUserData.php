@@ -39,7 +39,7 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
         $api   = new UserApi();
         $role  = $manager
             ->getRepository('OroUserBundle:Role')
-            ->findOneBy(array('role' => 'ROLE_SUPER_ADMIN'));
+            ->findOneBy(array('role' => 'ROLE_ADMINISTRATOR'));
         $group = $manager
             ->getRepository('OroUserBundle:Group')
             ->findOneBy(array('name' => 'Administrators'));

@@ -11,6 +11,11 @@ function(mediator) {
         widgets: {},
         aliases: {},
 
+        resetWidgets: function() {
+            this.widgets = {};
+            this.aliases = {};
+        },
+
         addWidgetInstance: function(widget) {
             this.widgets[widget.getWid()] = widget;
             mediator.trigger('widget_registration:wid:' + widget.getWid(), widget);

@@ -103,7 +103,7 @@ class InstallCommand extends ContainerAwareCommand
             ->getContainer()
             ->get('doctrine.orm.entity_manager')
             ->getRepository('OroUserBundle:Role')
-            ->findOneBy(array('role' => 'ROLE_SUPER_ADMIN'));
+            ->findOneBy(array('role' => 'ROLE_ADMINISTRATOR'));
 
         $user
             ->setUsername(isset($options['user-name'])

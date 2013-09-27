@@ -36,7 +36,7 @@ class LoadAclRoles extends AbstractFixture implements OrderedFixtureInterface, C
 
         if ($manager->isAclEnabled()) {
             $this->loadSuperAdminRole($manager);
-            $this->loadAdminRole($manager);
+            //$this->loadAdminRole($manager);
             $this->loadManagerRole($manager);
             $this->loadUserRole($manager);
             $manager->flush();

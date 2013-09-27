@@ -32,7 +32,8 @@ class WorkflowStepController extends Controller
         $data = array(
             'workflow' => $workflow,
             'currentStep' => $currentStep,
-            'workflowItem' => $workflowItem
+            'workflowItem' => $workflowItem,
+            'entity' => $workflowItem
         );
 
         $customTemplate = $currentStep->getTemplate();
