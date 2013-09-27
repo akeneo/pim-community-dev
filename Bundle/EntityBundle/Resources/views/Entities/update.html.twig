@@ -1,10 +1,7 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
-{% oro_title_set({params : {
-    "%entityName%": entity.id ? 'Item #'~entity.id : 'New '~entity_config.get('label')
-
-} }) %}
+{% oro_title_set({params : {"%entityName%": entity.id ? 'Item #'~entity.id : 'New '~entity_config.get('label')} }) %}
 
 {% set formAction = path('oro_entity_update', {'entity_id': entity_id, id: entity.id}) %}
 
