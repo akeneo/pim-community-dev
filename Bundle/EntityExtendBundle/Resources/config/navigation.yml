@@ -1,0 +1,4 @@
+oro_titles:
+    oro_entityextend_entity_create: New Entity
+    oro_entityextend_field_create: New Field - %%entityName%%
+    oro_entityextend_field_update: %%fieldName%% - New Field - %%entityName%%
