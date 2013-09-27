@@ -3,13 +3,9 @@
 namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Price;
-use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Product;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
@@ -17,7 +13,7 @@ use Oro\Bundle\BatchBundle\Entity\JobInstance;
  *
  * Execute with "php app/console doctrine:fixtures:load"
  *
- * @author    Gildas Quemener <gildas.quemener@gmail.com>
+ * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
