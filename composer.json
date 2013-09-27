@@ -1,11 +1,11 @@
 {
-    "name": "akeneo/pim",
+    "name": "akeneo/pim-community-dev",
     "description": "Akeneo PIM, the future of catalog management is open !",
     "license": "OSL-3.0",
     "authors": [
         {
             "name": "Akeneo",
-            "homepage": "http://akeneo.com"
+            "homepage": "http://www.akeneo.com"
         }
     ],
     "autoload": {
@@ -35,12 +35,12 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:akeneo/platform.git",
+            "url": "https://github.com/akeneo/platform.git",
             "branch": "master"
         },
         {
             "type": "vcs",
-            "url": "git@github.com:akeneo/DemoBundle.git"
+            "url": "https://github.com/akeneo/DemoBundle.git"
         }
     ],
     "scripts": {
