@@ -20,7 +20,7 @@ class ControllersTest extends WebTestCase
         'lastName' => 'LastNameAudit',
         'birthday' => '07/01/2013',
         'enabled' => 1,
-        'roles' => 'Superadmin',
+        'roles' => 'Manager',
         'groups' => 'Sales',
         'company' => 'company',
         'gender' => 'Male'
