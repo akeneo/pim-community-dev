@@ -98,9 +98,8 @@ Write permission for the HTTP server
 You must give write permission to the Apache user on the following directories:
 - app/cache
 - app/logs
-- app/logs/batch
 - app/entities
-- web/bundles/jsformvalidation
+- web/bundles
 - web/uploads/product
 
 Checking your System Configuration
