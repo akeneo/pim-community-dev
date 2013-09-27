@@ -6,7 +6,7 @@ oro:
         controller:
             config_entity:
                 message:
-                    saved: "ConfigEntity saved"
+                    saved: "Entity saved"
             config_field:
                 message:
-                    saved: "ConfigField saved"
+                    saved: "Field saved"
