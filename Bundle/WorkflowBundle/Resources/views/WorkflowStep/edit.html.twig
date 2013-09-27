@@ -164,7 +164,7 @@
                         };
                         widget.on('widgetRender', followFocus);
 
-                        widget.on('saveStart', function() {
+                        widget.on('adoptedFormSubmit', function() {
                             widgetManager.getWidgetInstanceByAlias('workflow_transitions', function(transitionsWidget){
                                 transitionsWidget.$el.find('button').prop("disabled", true);
                             });

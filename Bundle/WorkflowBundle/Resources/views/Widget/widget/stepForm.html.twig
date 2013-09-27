@@ -108,12 +108,11 @@
     <script type="text/javascript">
         require(['oro/widget-manager'],
         function(widgetManager){
-            var saving = false;
             widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget){
                 widget.$el.find('.step-form-header a').on('click', function(e) {
                     e.preventDefault();
                     e.stopImmediatePropagation();
-                    if (!saving) {
+                    if (!widget.loading) {
                         widget.setUrl(this.href);
                         widget.loadContent();
                     }
@@ -123,6 +122,17 @@
                 {% if saveAllowed %}
                 widget.on('renderStart', function() {
                     widget.options.loadingMaskEnabled = true;
+                });
+
+                widget.on('adoptedFormSubmit', function() {
+                    widget.options.loadingMaskEnabled = false;
+                    var submitAction = widget.getAction('form_submit', 'adopted');
+                    if (submitAction) {
+                        submitAction.html('<i class="icon-spinner"></i> {{ "Saving"|trans }}...');
+                        submitAction.removeClass('btn-success');
+                        submitAction.prop('disabled',true);
+                    }
+                    form.find(':input:not(:disabled)').prop('disabled',true);
                 });
 
                 var isAllRequiredFieldsFilled = function(form) {
@@ -140,19 +150,7 @@
                 form.find(':input:not(.select2-input)').on('change', function() {
                     setTimeout(function() {
                         if (isAllRequiredFieldsFilled(form)) {
-                            saving = true;
-                            widget.options.loadingMaskEnabled = false;
-                            widget.trigger('saveStart', form);
-
-                            var submitAction = widget.getAction('form_submit', 'adopted');
-                            if (submitAction) {
-                                submitAction.html('<i class="icon-spinner"></i> {{ "Saving"|trans }}...');
-                                submitAction.removeClass('btn-success');
-                                submitAction.prop('disabled',true);
-                            }
-
                             form.submit();
-                            form.find(':input:not(:disabled)').prop('disabled',true);
                         }
                     }, 100);
                 });
