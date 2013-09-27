@@ -7,7 +7,7 @@ use Oro\Bundle\TestFrameworkBundle\Pages\Entity;
 
 class Lead extends AbstractEntity implements Entity
 {
-    protected $topic;
+    protected $name;
     protected $firstname;
     protected $lastname;
     protected $contact;
@@ -28,7 +28,7 @@ class Lead extends AbstractEntity implements Entity
 
     public function init()
     {
-        $this->topic = $this->byId('orocrm_sales_lead_form_topic');
+        $this->name = $this->byId('orocrm_sales_lead_form_name');
         $this->firstname = $this->byId('orocrm_sales_lead_form_firstName');
         $this->lastname = $this->byId('orocrm_sales_lead_form_lastName');
         $this->contact = $this->byXpath("//div[@id='s2id_orocrm_sales_lead_form_contact']/a");
@@ -45,16 +45,16 @@ class Lead extends AbstractEntity implements Entity
         return $this;
     }
 
-    public function setTopic($firstname)
+    public function setName($name)
     {
-        $this->topic->clear();
-        $this->topic->value($firstname);
+        $this->name->clear();
+        $this->name->value($name);
         return $this;
     }
 
-    public function getTopic()
+    public function getName()
     {
-        return $this->topic->value();
+        return $this->name->value();
     }
 
     public function setFirstName($firstname)
