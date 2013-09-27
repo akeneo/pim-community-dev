@@ -19,9 +19,9 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
-use Pim\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
 
@@ -519,10 +519,16 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
             ->leftJoin('values.options', 'valueOptions')
-            ->leftJoin('values.prices', 'valuePrices');
+            ->leftJoin('values.prices', 'valuePrices')
+            ->leftJoin($rootAlias .'.categories', 'category');
 
         $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
-        $proxyQuery->addSelect(sprintf("%s AS familyLabel", $familyExpr), true);
+        $proxyQuery
+            ->addSelect(sprintf("%s AS familyLabel", $familyExpr), true)
+            ->addSelect('values')
+            ->addSelect('valuePrices')
+            ->addSelect('valueOptions')
+            ->addSelect('category');
 
         // prepare query for completeness
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
@@ -562,6 +568,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $exprWithoutCompleteness = $proxyQuery->expr()->isNull('pCompleteness');
         $exprFamilyIsNull        = $proxyQuery->expr()->isNull($rootAlias .'.family');
         $proxyQuery
+            ->addSelect('pCompleteness')
             ->leftJoin($rootAlias .'.completenesses', 'pCompleteness')
             ->leftJoin('pCompleteness.locale', 'locale')
             ->leftJoin('pCompleteness.channel', 'channel')
@@ -661,6 +668,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         $attributeIds = $this->getAvailableAttributeIds($proxyQuery);
 
+        $rootAlias = $proxyQuery->getRootAlias();
+
         $proxyQuery
             ->resetDQLPart('groupBy')
             ->resetDQLPart('orderBy');
@@ -668,7 +677,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         // join tables
         $proxyQuery
             ->leftJoin('values.options', 'valueOptions')
-            ->leftJoin('o.categories', 'categories');
+            ->leftJoin($rootAlias .'.categories', 'categories');
 
         // select datas
         $proxyQuery
