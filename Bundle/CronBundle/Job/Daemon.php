@@ -150,7 +150,7 @@ class Daemon
      */
     protected function getQueueStopProcess($pid)
     {
-        $cmd = defined('PHP_WINDOWS_VERSION_BUILD') ? 'taskkill /PID %u' : 'kill -9 %u';
+        $cmd = defined('PHP_WINDOWS_VERSION_BUILD') ? 'taskkill /F /PID %u' : 'kill -9 %u';
 
         return new Process(sprintf($cmd, $pid));
     }
