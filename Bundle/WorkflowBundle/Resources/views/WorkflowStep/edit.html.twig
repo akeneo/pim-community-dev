@@ -154,14 +154,17 @@
                 function(widgetManager){
                     widgetManager.getWidgetInstanceByAlias('workflow_step_form', function(widget) {
                         var lastFocused = null;
-                        var followFocus = function(el) {
+                        var followFocus = function() {
                             widget.$('form :input').on('focus', function() {
                                 lastFocused = this.id;
                             });
                             if (lastFocused) {
-                                widget.$('#' + lastFocused)[0].focus();
+                                var field = widget.$('#' + lastFocused);
+                                field.focus();
+                                field.select();
                             }
                         };
+                        followFocus();
                         widget.on('widgetRender', followFocus);
 
                         widget.on('adoptedFormSubmit', function() {
