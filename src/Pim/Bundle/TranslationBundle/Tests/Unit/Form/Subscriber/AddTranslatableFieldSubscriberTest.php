@@ -25,8 +25,8 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 
     protected $localeConfig = array(
         'locales'=>array(
-            'fr_FR' => array('label'=>'Français'),
-            'en_US' => array('label'=>'English')
+            'fr_FR' => array('label'=>'French (France)'),
+            'en_US' => array('label'=>'English (United States)')
         )
     );
 
@@ -363,7 +363,8 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         return new AddTranslatableFieldSubscriber(
             $this->formFactory,
             $this->getValidatorMock(),
-            $options
+            $options,
+            'en_US'
         );
     }
 

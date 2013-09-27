@@ -4,6 +4,8 @@ services:
         arguments:
             - '@validator'
             - '@pim_catalog.manager.locale'
-            - %pim_catalog.locales%
+            - '%locale%'
+        calls:
+            - [ "setRequest", ["@?request="] ]
         tags:
             - { name: form.type, alias: pim_translatable_field }

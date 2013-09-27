@@ -95,8 +95,7 @@ services:
     pim_catalog.twig.locale_extension:
         class: Pim\Bundle\CatalogBundle\Twig\LocaleExtension
         arguments:
-            - '@pim_catalog.manager.locale'
-            - '@pim_catalog.helper.locale'
+            - '@service_container'
         tags:
             - { name: twig.extension }
 

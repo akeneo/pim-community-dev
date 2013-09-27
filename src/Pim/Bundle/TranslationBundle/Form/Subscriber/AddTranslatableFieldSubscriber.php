@@ -42,13 +42,22 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     protected $options;
 
     /**
+     * @var string
+     */
+    protected $defaultLocale;
+    
+    /**
      * Constructor
      *
      * @param FormFactoryInterface $formFactory
      * @param ValidatorInterface   $validator
      * @param multitype:mixed      $options
      */
-    public function __construct(FormFactoryInterface $formFactory, ValidatorInterface $validator, array $options)
+    public function __construct(
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator,
+        array $options,
+        $defaultLocale)
     {
         $this->formFactory        = $formFactory;
         $this->validator          = $validator;
@@ -99,7 +108,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
                     $this->getOption('widget'),
                     $content !== null ? $content : '',
                     array(
-                        'label'           => $this->options['locale_config']['locales'][$binded['locale']]['label'],
+                        'label'           => \Locale::getDisplayName($binded['locale']),
                         'required'        => in_array($binded['locale'], $this->getOption('required_locale')),
                         'mapped'          => false,
                         'auto_initialize' => false

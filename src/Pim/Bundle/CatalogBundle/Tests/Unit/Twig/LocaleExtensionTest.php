@@ -24,9 +24,7 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $localeHelper          = $this->getLocaleHelperMock();
-        $localeManager         = $this->getLocaleManagerMock('fr_FR');
-        $this->localeExtension = new LocaleExtension($localeManager, $localeHelper);
+        $this->localeExtension = new LocaleExtension($this->getContainerMock());
     }
 
     /**
@@ -39,46 +37,33 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testLocalizedLabel()
     {
-        $this->assertEquals('fr_FR', $this->localeExtension->localizedLabel('fr_FR'));
+        $this->assertEquals('English (United States)', $this->localeExtension->localizedLabel('en_US'));
     }
 
     public function testGetFunctions()
     {
         $twigFunctions = $this->localeExtension->getFunctions();
 
-        $this->assertArrayHasKey('localizedLabel', $twigFunctions);
+        $this->assertArrayHasKey('localized_label', $twigFunctions);
         $this->assertTrue(method_exists($this->localeExtension, 'localizedLabel'));
-        $this->assertInstanceOf('\Twig_Function_Method', $twigFunctions['localizedLabel']);
+        $this->assertInstanceOf('\Twig_Function_Method', $twigFunctions['localized_label']);
     }
 
-    protected function getLocaleHelperMock()
+    protected function getContainerMock()
     {
-        $helper = $this->getMock('Pim\Bundle\CatalogBundle\Helper\LocaleHelper');
-
-        $helper->expects($this->any())
-            ->method('getLocalizedLabel')
-            ->will($this->returnArgument(0));
-
-        return $helper;
-    }
-
-    /**
-     * Create locale manager
-     *
-     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
-     */
-    protected function getLocaleManagerMock($code)
-    {
-        $localeManager = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
             ->disableOriginalConstructor()
             ->getMock();
+        $container->expects($this->any())
+            ->method('get')
+            ->with($this->equalTo('request'))
+            ->will($this->returnValue($request));
 
-        $localeManager
-            ->expects($this->any())
-            ->method('getUserLocaleCode')
-            ->will($this->returnValue($code));
-
-        return $localeManager;
+        $request->expects($this->any())
+            ->method('getLocale')
+            ->will($this->returnValue('en_US'));
+        return $container;
     }
+
 }

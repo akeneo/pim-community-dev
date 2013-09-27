@@ -26,10 +26,6 @@ class PimCatalogExtension extends Extension
         $this->processConfiguration(new CurrencyConfiguration(), $currencyConfig);
         $container->setParameter('pim_catalog.currencies', $currencyConfig);
 
-        $localeConfig = Yaml::parse(realpath(__DIR__.'/../Resources/config/pim_locales.yml'));
-        $this->processConfiguration(new LocaleConfiguration(), $localeConfig);
-        $container->setParameter('pim_catalog.locales', $localeConfig);
-
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $container->setParameter(
