@@ -92,6 +92,11 @@ oro_entity_config:
                         internal:           true
                         serializable:       true
 
+                upgradeable:
+                    options:
+                        internal:           true
+                        default_value:      true
+
         field:
             grid_action:
                 -
@@ -125,7 +130,7 @@ oro_entity_config:
                     entity_id:              true
                     aClass:                 'btn-danger entity-extend-apply'
                     void:                   true
-                    filter:                 { state: ['New', 'Requires update', 'Deleted'] }
+                    filter:                 { state: ['New', 'Requires update', 'Deleted'], upgradeable: true }
             items:
                 owner:
                     options:
