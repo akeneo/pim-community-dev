@@ -19,15 +19,17 @@ Requirements
     - php5-intl
     - php5-mysql
  - a PHP opcode cache (Akeneo is tested mainly with APC)
+ - PHP memory_limit at least at 256 MB on Apache side and 512 MB on CLI side
  - MySQL 5.1 or above
  - Apache mod rewrite enabled
+ - Java JRE (for compressing the JavaScript via YUI Compressor)
 
 Akeneo PIM is based on Symfony 2, Doctrine 2 and Oro Platform [OroPlatform][3].
 These dependencies will be installed automatically with [Composer][2].
 
 Installation instructions
 -------------------------
-## Using Composer
+## Using Composer to install dependencies
 
 This is the recommended way to install Akeneo PIM.
 

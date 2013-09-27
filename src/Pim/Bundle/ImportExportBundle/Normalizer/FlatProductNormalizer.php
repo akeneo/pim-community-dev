@@ -10,7 +10,7 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 /**
  * A normalizer to transform a product entity into a flat array
  *
- * @author    Gildas Quemener <gildas.quemener@gmail.com>
+ * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
