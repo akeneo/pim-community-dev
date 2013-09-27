@@ -442,6 +442,27 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
         $this->workflowManager->getWorkflow($incorrectIdentifier);
     }
 
+    public function testIsAllManagedEntitiesSpecified()
+    {
+        $managedAttributeName = 'entity';
+
+        $managedAttribute = new Attribute();
+        $managedAttribute->setName($managedAttributeName);
+
+        $workflow = $this->createWorkflow(self::TEST_WORKFLOW_NAME, array($managedAttribute));
+        $this->workflowRegistry->expects($this->any())
+            ->method('getWorkflow')
+            ->with(self::TEST_WORKFLOW_NAME)
+            ->will($this->returnValue($workflow));
+
+        $validWorkflowItem = $this->createWorkflowItem();
+        $validWorkflowItem->getData()->set($managedAttributeName, new \DateTime());
+        $this->assertTrue($this->workflowManager->isAllManagedEntitiesSpecified($validWorkflowItem));
+
+        $invalidWorkflowItem = $this->createWorkflowItem();
+        $this->assertFalse($this->workflowManager->isAllManagedEntitiesSpecified($invalidWorkflowItem));
+    }
+
     /**
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
@@ -472,7 +493,6 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function createWorkflow($name = self::TEST_WORKFLOW_NAME, array $entityAttributes = array())
     {
-
         $worklflow = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Workflow')
             ->setConstructorArgs(array(new StepManager(), new AttributeManager(), new TransitionManager()))
             ->setMethods(

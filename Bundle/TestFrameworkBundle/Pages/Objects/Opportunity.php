@@ -17,6 +17,7 @@ class Opportunity extends AbstractEntity implements Entity
     protected $closereason;
     protected $closerevenu;
     protected $closedate;
+    protected $owner;
 
     public function __construct($testCase, $redirect = true)
     {
@@ -35,6 +36,7 @@ class Opportunity extends AbstractEntity implements Entity
         $this->closereason = $this->select($this->byId('orocrm_sales_opportunity_form_closeReason'));
         $this->closerevenu = $this->byId('orocrm_sales_opportunity_form_closeRevenue');
         $this->closedate = $this->byId('orocrm_sales_opportunity_form_closeDate');
+        $this->owner = $this->byXpath("//div[@id='s2id_orocrm_sales_opportunity_form_owner']/a");
 
         return $this;
     }
@@ -99,6 +101,27 @@ class Opportunity extends AbstractEntity implements Entity
     public function getProbability()
     {
         return $this->probability->value();
+    }
+
+    public function setOwner($owner)
+    {
+        $this->owner->click();
+        $this->waitForAjax();
+        $this->byXpath("//div[@id='select2-drop']/div/input")->value($owner);
+        $this->waitForAjax();
+        $this->assertElementPresent(
+            "//div[@id='select2-drop']//div[contains(., '{$owner}')]",
+            "Owner autocoplete doesn't return search value"
+        );
+        $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$owner}')]")->click();
+
+        return $this;
+
+    }
+
+    public function getOwner()
+    {
+        return;
     }
 
     public function seBudget($budget)

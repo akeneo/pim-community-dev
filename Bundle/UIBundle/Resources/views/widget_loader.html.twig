@@ -5,8 +5,8 @@
     function($, widgetManager, widget){
         $(function(){
             var widgetInstance = new widget({{ options|json_encode|raw }});
-            widgetInstance.render();
             widgetManager.addWidgetInstance(widgetInstance);
+            widgetInstance.render();
         })
     });
 </script>

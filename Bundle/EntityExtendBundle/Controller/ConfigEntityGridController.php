@@ -151,6 +151,7 @@ class ConfigEntityGridController extends Controller
         $extendConfig = $configManager->getProvider('extend')->getConfig($className);
         $extendConfig->set('owner', ExtendManager::OWNER_CUSTOM);
         $extendConfig->set('state', ExtendManager::STATE_NEW);
+        $extendConfig->set('upgradeable', false);
         $extendConfig->set('is_extend', true);
 
         $configManager->persist($extendConfig);

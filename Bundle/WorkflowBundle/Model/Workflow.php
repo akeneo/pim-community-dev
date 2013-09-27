@@ -185,7 +185,7 @@ class Workflow
     /**
      * Get steps.
      *
-     * @return Collection
+     * @return Collection|Step[]
      */
     public function getSteps()
     {
@@ -195,7 +195,7 @@ class Workflow
     /**
      * Get steps sorted by order.
      *
-     * @return Collection
+     * @return Collection|Step[]
      */
     public function getOrderedSteps()
     {
@@ -224,7 +224,7 @@ class Workflow
     /**
      * Get step attributes.
      *
-     * @return Collection
+     * @return Collection|Attribute[]
      */
     public function getAttributes()
     {
@@ -245,7 +245,7 @@ class Workflow
     /**
      * Get attributes with option "managed_entity"
      *
-     * @return Collection
+     * @return Collection|Attribute[]
      */
     public function getManagedEntityAttributes()
     {
@@ -255,7 +255,7 @@ class Workflow
     /**
      * Get list of attributes that require binding
      *
-     * @return Collection
+     * @return Collection|Attribute[]
      */
     public function getBindEntityAttributes()
     {
@@ -287,7 +287,7 @@ class Workflow
     /**
      * Get transitions.
      *
-     * @return Collection
+     * @return Collection|Transition[]
      */
     public function getTransitions()
     {
@@ -421,7 +421,7 @@ class Workflow
      * Get allowed start transitions.
      *
      * @param array $data
-     * @return Collection
+     * @return Collection|Transition[]
      */
     public function getAllowedStartTransitions(array $data = array())
     {
@@ -434,7 +434,7 @@ class Workflow
      * Get allowed transitions for existing workflow item.
      *
      * @param WorkflowItem $workflowItem
-     * @return Collection
+     * @return Collection|Transition[]
      * @throws UnknownStepException
      */
     public function getAllowedTransitions(WorkflowItem $workflowItem)

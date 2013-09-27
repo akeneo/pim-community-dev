@@ -26,6 +26,7 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
  * TODO: Discuss ACL impl., currently management of configurable entities can be on or off only
  * @Acl(
  *      id="oro_entityconfig_manage",
+ *      label="Manage configurable entities",
  *      type="action",
  *      group_name=""
  * )
@@ -49,6 +50,13 @@ class ConfigController extends Controller
         /** @var  ConfigDatagridManager $datagrid */
         $datagridManager = $this->get('oro_entity_config.datagrid.manager');
         $datagrid        = $datagridManager->getDatagrid();
+
+        /**
+         * Set 50 records per page by default for DataGrid
+         */
+        $datagrid->getPager()->setMaxPerPage(50);
+        $datagrid->getPager()->init();
+
         $view            = 'json' == $request->getRequestFormat()
             ? 'OroGridBundle:Datagrid:list.json.php'
             : 'OroEntityConfigBundle:Config:index.html.twig';
@@ -140,7 +148,6 @@ class ConfigController extends Controller
                 'id' => $entity->getId()
             )
         );
-
 
         $datagrid = $datagridManager->getDatagrid();
 
