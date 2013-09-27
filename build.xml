@@ -47,6 +47,7 @@
         <copy file="/var/lib/jenkins/apps-conf/${jobName}/parameters.yml" tofile="${basedir}/app/config/parameters.yml" />
         <copy file="/var/lib/jenkins/apps-conf/${jobName}/parameters.yml" tofile="${basedir}/app/config/parameters_test.yml" />
         <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" />
+        <copy file="${basedir}/phpdoc.xml.dist" tofile="${basedir}/phpdoc.xml" />
     </target>
 
     <target name="lint" description="Perform syntax check of sourcecode files">
@@ -112,6 +113,7 @@
         <exec executable="phpdoc">
             <arg line="--directory ${basedir}/src" />
             <arg line="--target ${basedir}/build/api" />
+            <arg line="--template checkstyle" />
         </exec>
     </target>
 
