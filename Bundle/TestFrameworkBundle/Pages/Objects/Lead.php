@@ -7,7 +7,7 @@ use Oro\Bundle\TestFrameworkBundle\Pages\Entity;
 
 class Lead extends AbstractEntity implements Entity
 {
-    protected $topic;
+    protected $name;
     protected $firstname;
     protected $lastname;
     protected $contact;
@@ -19,6 +19,7 @@ class Lead extends AbstractEntity implements Entity
     protected $employees;
     protected $industry;
     protected $address;
+    protected $owner;
 
     public function __construct($testCase, $redirect = true)
     {
@@ -27,7 +28,7 @@ class Lead extends AbstractEntity implements Entity
 
     public function init()
     {
-        $this->topic = $this->byId('orocrm_sales_lead_form_topic');
+        $this->name = $this->byId('orocrm_sales_lead_form_name');
         $this->firstname = $this->byId('orocrm_sales_lead_form_firstName');
         $this->lastname = $this->byId('orocrm_sales_lead_form_lastName');
         $this->contact = $this->byXpath("//div[@id='s2id_orocrm_sales_lead_form_contact']/a");
@@ -39,20 +40,21 @@ class Lead extends AbstractEntity implements Entity
         $this->employees = $this->byId('orocrm_sales_lead_form_numberOfEmployees');
         $this->industry = $this->byId('orocrm_sales_lead_form_industry');
         $this->address = $this->byId('orocrm_sales_lead_form_address');
+        $this->owner = $this->byXpath("//div[@id='s2id_orocrm_sales_lead_form_owner']/a");
 
         return $this;
     }
 
-    public function setTopic($firstname)
+    public function setName($name)
     {
-        $this->topic->clear();
-        $this->topic->value($firstname);
+        $this->name->clear();
+        $this->name->value($name);
         return $this;
     }
 
-    public function getTopic()
+    public function getName()
     {
-        return $this->topic->value();
+        return $this->name->value();
     }
 
     public function setFirstName($firstname)
@@ -164,6 +166,27 @@ class Lead extends AbstractEntity implements Entity
     public function getEmployees()
     {
         return $this->employees->value();
+    }
+
+    public function setOwner($owner)
+    {
+        $this->owner->click();
+        $this->waitForAjax();
+        $this->byXpath("//div[@id='select2-drop']/div/input")->value($owner);
+        $this->waitForAjax();
+        $this->assertElementPresent(
+            "//div[@id='select2-drop']//div[contains(., '{$owner}')]",
+            "Owner autocoplete doesn't return search value"
+        );
+        $this->byXpath("//div[@id='select2-drop']//div[contains(., '{$owner}')]")->click();
+
+        return $this;
+
+    }
+
+    public function getOwner()
+    {
+        return;
     }
 
     public function setAddressLabel($value)

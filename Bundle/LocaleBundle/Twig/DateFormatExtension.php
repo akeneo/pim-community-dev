@@ -9,6 +9,7 @@ class DateFormatExtension extends \Twig_Extension
     const CONFIG_TIMEZONE_KEY    = 'oro_locale.timezone';
     const CONFIG_DATE_FORMAT_KEY = 'oro_locale.date_format';
     const CONFIG_TIME_FORMAT_KEY = 'oro_locale.time_format';
+    const CONFIG_LOCALE_KEY      = 'oro_locale.locale';
 
     /** @var ConfigManager */
     protected $cm;
@@ -70,12 +71,36 @@ class DateFormatExtension extends \Twig_Extension
         $locale = null,
         $timezone = null
     ) {
+        list ($dateTimeFormat, $timezone, $locale) = $this->applyDefaultParams($dateTimeFormat, $timezone, $locale);
+
+        return $this->formatDate($env, $date, $dateTimeFormat, $locale, $timezone);
+    }
+
+    /**
+     * Apply config params to dateTimeFormat, timezone and locale
+     * in case when no params passed from template
+     *
+     * @param $dateTimeFormat
+     * @param $timezone
+     * @param $locale
+     * @return array
+     */
+    protected function applyDefaultParams($dateTimeFormat, $timezone, $locale)
+    {
         if (is_null($dateTimeFormat)) {
             $dateTimeFormat = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY) .
                 ' ' . $this->cm->get(self::CONFIG_TIME_FORMAT_KEY);
         }
 
-        return $this->formatDate($env, $date, $dateTimeFormat, $locale, $timezone);
+        if (is_null($timezone)) {
+            $timezone = $this->cm->get(self::CONFIG_TIMEZONE_KEY);
+        }
+
+        if (is_null($locale)) {
+            $locale = $this->cm->get(self::CONFIG_LOCALE_KEY);
+        }
+
+        return array($dateTimeFormat, $timezone, $locale);
     }
 
     /**
@@ -94,11 +119,8 @@ class DateFormatExtension extends \Twig_Extension
         $locale = null,
         $timezone = null
     ) {
-        if (is_null($dateTimeFormat)) {
-            $dateTimeFormat = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY);
-        }
+        list ($dateTimeFormat, $timezone, $locale) = $this->applyDefaultParams($dateTimeFormat, $timezone, $locale);
 
-        $dateTimeFormat = $dateTimeFormat === false ? 'd/m/Y H:i:s' : $dateTimeFormat;
         $dateTimeFormat = $this->convertDateTimeToICUFormat($dateTimeFormat);
 
         return twig_localized_date_filter(

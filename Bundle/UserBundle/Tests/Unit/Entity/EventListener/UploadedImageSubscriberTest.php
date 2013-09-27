@@ -30,7 +30,7 @@ class UploadedImageSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testSetKernelRoot()
     {
         $subscriber = $this->getSubscriber();
-        $this->assertAttributeEquals($this->tmpRootPath . DIRECTORY_SEPARATOR . 'web', 'webRoot', $subscriber);
+        $this->assertAttributeEquals(realpath($this->tmpRootPath . DIRECTORY_SEPARATOR . 'web'), 'webRoot', $subscriber);
     }
 
     /**
@@ -174,7 +174,7 @@ class UploadedImageSubscriberTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $dir = $this->getUploadRootDir() . DIRECTORY_SEPARATOR . $uploadDir;
+        $dir = realpath($this->getUploadRootDir()) . DIRECTORY_SEPARATOR . $uploadDir;
         $imageFile->expects($this->once())
             ->method('move')
             ->with($dir, $fileName);
