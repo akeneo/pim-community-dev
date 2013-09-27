@@ -114,7 +114,11 @@ class TitleExtension extends \Twig_Extension
     {
         if (!$templateScope) {
             $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-            $templateScope = md5($backtrace[1]['file']);
+            if (!empty($backtrace[1]['file'])) {
+                $templateScope = md5($backtrace[1]['file']);
+            } else {
+                $templateScope = md5(uniqid('twig_title', true)); // random string
+            }
         }
 
         if (!isset($this->templateFileTitleDataStack[$templateScope])) {
