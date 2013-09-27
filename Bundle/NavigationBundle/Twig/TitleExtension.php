@@ -113,7 +113,7 @@ class TitleExtension extends \Twig_Extension
     protected function addTitleData(array $options = array(), $templateScope = null)
     {
         if (!$templateScope) {
-            $backtrace = debug_backtrace();
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
             $templateScope = md5($backtrace[1]['file']);
         }
 
