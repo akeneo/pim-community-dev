@@ -112,6 +112,7 @@
         <exec executable="phpdoc">
             <arg line="--directory ${basedir}/src" />
             <arg line="--target ${basedir}/build/api" />
+            <arg line="--template checkstyle" />
         </exec>
     </target>
 
