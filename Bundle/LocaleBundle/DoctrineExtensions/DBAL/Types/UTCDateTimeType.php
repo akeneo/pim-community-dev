@@ -44,6 +44,11 @@ class UTCDateTimeType extends DateTimeType
             throw ConversionException::conversionFailed($value, $this->getName());
         }
 
+        $errors = $val->getLastErrors();
+        if ($errors['warning_count'] > 0) {
+            return null;
+        }
+
         return $val;
     }
 }
