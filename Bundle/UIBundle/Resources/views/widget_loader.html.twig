@@ -2,11 +2,11 @@
 
 <script type="text/javascript">
     require(['jquery', 'oro/widget-manager', 'oro/{{ widgetType ~ '-widget' }}'],
-    function($, widgetManager, widget){
+    function($, widgetManager, Widget){
         $(function(){
-            var widgetInstance = new widget({{ options|json_encode|raw }});
-            widgetManager.addWidgetInstance(widgetInstance);
-            widgetInstance.render();
+            var widget = new Widget({{ options|json_encode|raw }});
+            widget.render();
+            widgetManager.addWidgetInstance(widget);
         })
     });
 </script>
