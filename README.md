@@ -12,16 +12,24 @@ Important Note: this application is not production ready and is intendant for ev
 
 Requirements
 ------------
+ - PHP 5.3.3 or above
+ - PHP Modules:
+    - php5-curl
+    - php5-gd
+    - php5-intl
+    - php5-mysql
+ - a PHP opcode cache (Akeneo is tested mainly with APC)
+ - PHP memory_limit at least at 256 MB on Apache side and 512 MB on CLI side
+ - MySQL 5.1 or above
+ - Apache mod rewrite enabled
+ - Java JRE (for compressing the JavaScript via YUI Compressor)
 
-Akeneo PIM requires PHP 5.3.3 or above and MySQL 5.1 or above.
-
-Akene PIM is based on Symfony 2, Doctrine 2 and Oro Platform (see http://www.orocrm.com/oro-platform).
+Akeneo PIM is based on Symfony 2, Doctrine 2 and Oro Platform [OroPlatform][3].
 These dependencies will be installed automatically with [Composer][2].
 
 Installation instructions
 -------------------------
-
-## Using Composer
+## Using Composer to install dependencies
 
 This is the recommended way to install Akeneo PIM.
 
@@ -47,11 +55,12 @@ Due to some Oro Platform limitations, you **MUST** create your database before l
 Note that using the "--prefer-dist" option can speed up
 the installation by looking into your local Composer cache.
 
-Then initialize the application data with the provided install script:
+### Initialize data and assets
 
     $ ./install.sh all
 
-Note: This script can executed several times if you need to reinit your db or redeploy your assets.
+Note: This script can be executed several times if you need to reinit your db or redeploy your assets.
+By default, this script initialize the dev environment.
 
 Create the Apache Virtual host
 ------------------------------
@@ -91,8 +100,8 @@ You must give write permission to the Apache user on the following directories:
 - app/logs
 - app/logs/batch
 - app/entities
-- web/bundles
-- web/uploads
+- web/bundles/jsformvalidation
+- web/uploads/product
 
 Checking your System Configuration
 ----------------------------------
@@ -109,7 +118,7 @@ If you get any warnings or recommendations, fix them before moving on.
 Connect to your PIM application
 -------------------------------
 
-Go to http://akeneo-pim.local/app_dev.php
+Go to http://akeneo-pim.local/ for production mode or http://akeneo-pim.local/app_dev.php for development mode.
 
 You can now connect as Akeneo administrator with the following credentials:
 - login: "admin"
@@ -135,3 +144,4 @@ $ ./install.sh db
 
 [1]:  http://symfony.com/doc/2.1/book/installation.html
 [2]:  http://getcomposer.org/
+[3]:  http://www.orocrm.com/oro-platform 
