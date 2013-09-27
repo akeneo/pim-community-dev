@@ -35,12 +35,12 @@ class AddressType extends AbstractType
             ->add('label', 'text', array('required' => false, 'label' => 'Label'))
             ->add('firstName', 'text', array('required' => false, 'label' => 'First Name'))
             ->add('lastName', 'text', array('required' => false, 'label' => 'Last Name'))
+            ->add('country', 'oro_country', array('required' => true, 'label' => 'Country'))
             ->add('street', 'text', array('required' => true, 'label' => 'Street'))
             ->add('street2', 'text', array('required' => false, 'label' => 'Street 2'))
             ->add('city', 'text', array('required' => true, 'label' => 'City'))
             ->add('state', 'oro_region', array('required' => false, 'label' => 'State'))
             ->add('state_text', 'hidden', array('required' => false, 'label' => 'Custom State'))
-            ->add('country', 'oro_country', array('required' => true, 'label' => 'Country'))
             ->add('postalCode', 'text', array('required' => true, 'label' => 'ZIP/Postal code'));
     }
 
