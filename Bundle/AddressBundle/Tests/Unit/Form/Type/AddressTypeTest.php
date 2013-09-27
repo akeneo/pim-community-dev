@@ -55,27 +55,27 @@ class AddressTypeTest extends \PHPUnit_Framework_TestCase
 
         $builder->expects($this->at(5))
             ->method('add')
-            ->with('street', 'text');
+            ->with('country', 'oro_country');
 
         $builder->expects($this->at(6))
             ->method('add')
-            ->with('street2', 'text');
+            ->with('street', 'text');
 
         $builder->expects($this->at(7))
             ->method('add')
-            ->with('city', 'text');
+            ->with('street2', 'text');
 
         $builder->expects($this->at(8))
             ->method('add')
-            ->with('state', 'oro_region');
+            ->with('city', 'text');
 
         $builder->expects($this->at(9))
             ->method('add')
-            ->with('state_text', 'hidden');
+            ->with('state', 'oro_region');
 
         $builder->expects($this->at(10))
             ->method('add')
-            ->with('country', 'oro_country');
+            ->with('state_text', 'hidden');
 
         $builder->expects($this->at(11))
             ->method('add')
