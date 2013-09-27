@@ -35,6 +35,10 @@ class GenerateWSSEHeaderCommand extends ContainerAwareCommand
             ->get('oro_user.manager')
             ->findUserByUsername($username);
 
+        if (null === $user) {
+            throw new \InvalidArgumentException(sprintf('User "%s" does not exist', $username));
+        }
+
         if (null === $user->getApi() || null === $user->getApi()->getApiKey()) {
             throw new \InvalidArgumentException(sprintf('User "%s" does not yet have an API key generated', $username));
         }
