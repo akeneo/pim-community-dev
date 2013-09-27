@@ -26,6 +26,8 @@ oro:
                         no:  "No"
                 page_size:
                     all: "All"
+                view:
+                    system_templates: "System only"
             email:
                 from_name: "From"
                 sentAt: "Sent"
