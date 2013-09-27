@@ -21,7 +21,7 @@ class JobSerializerMetadataPass implements CompilerPassInterface
 
         // replace
         //      'JMS\JobQueueBundle' => 'JMS\JobQueueBundle/Resources/config/serializer'
-        // to
+        // with
         //      'JMS\JobQueueBundle' => 'OroCronBundle/Resources/config/serializer/JobQueueBundle'
         $locatorDef = $container->getDefinition(self::LOCATOR_SERVICE);
         $directories = $locatorDef->getArgument(0);
