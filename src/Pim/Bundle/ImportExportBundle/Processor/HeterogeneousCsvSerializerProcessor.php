@@ -9,7 +9,7 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
  * It will put empty values for value that are not defined.
  * It only works for collection of HASHES (otherwise it can't compute the columns).
  *
- * @author    Gildas Quemener <gildas.quemener@gmail.com>
+ * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
