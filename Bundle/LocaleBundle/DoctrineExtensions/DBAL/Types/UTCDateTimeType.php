@@ -8,19 +8,26 @@ use Doctrine\DBAL\Types\DateTimeType;
 
 class UTCDateTimeType extends DateTimeType
 {
+    /** @var null| \DateTimeZone  */
     static private $utc = null;
 
+    /**
+     * {@inheritdoc}
+     */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {
             return null;
         }
 
-        $value->setTimeZone(new \DateTimeZone('UTC'));
+        $value->setTimeZone((self::$utc) ? self::$utc : (self::$utc = new \DateTimeZone('UTC')));
 
         return parent::convertToDatabaseValue($value, $platform);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {
