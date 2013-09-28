@@ -142,7 +142,7 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $bundle = new \ReflectionClass('Pim\Bundle\CatalogBundle\PimCatalogBundle');
-        
+
         $file->expects($this->any())
              ->method('getPathname')
              ->will($this->returnValue(sprintf('%s/Tests/fixtures/akeneo.jpg', dirname($bundle->getFileName()))));
