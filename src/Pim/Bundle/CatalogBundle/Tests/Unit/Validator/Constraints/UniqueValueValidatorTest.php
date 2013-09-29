@@ -6,6 +6,8 @@ use Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValueValidator;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValue;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -18,6 +20,9 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
     protected $context;
     protected $validator;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $doctrine      = $this->getManagerRegistryMock();
@@ -46,6 +51,9 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->initialize($this->context);
     }
 
+    /**
+     * Test related method
+     */
     public function testInvalidPropertyPath()
     {
         $this
@@ -62,6 +70,9 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate('bar', new UniqueValue());
     }
 
+    /**
+     * Test related method
+     */
     public function testNonFormProductData()
     {
         $this
@@ -84,6 +95,9 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate('bar', new UniqueValue());
     }
 
+    /**
+     * Test related method
+     */
     public function testNonExistingProductAttribute()
     {
         $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
@@ -113,6 +127,9 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate('bar', new UniqueValue());
     }
 
+    /**
+     * Test related method
+     */
     public function testNonProductValue()
     {
         $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
@@ -142,6 +159,9 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate('bar', new UniqueValue());
     }
 
+    /**
+     * Test related method
+     */
     public function testValidValueBecauseNoResult()
     {
         $product   = $this->getProductMock();
@@ -196,6 +216,9 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate('bar', new UniqueValue());
     }
 
+    /**
+     * Test related method
+     */
     public function testValidValueBecauseSameProduct()
     {
         $product   = $this->getProductMock();
@@ -250,6 +273,9 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate('bar', new UniqueValue());
     }
 
+    /**
+     * Test related method
+     */
     public function testInvalidValue()
     {
         $product   = $this->getProductMock();
@@ -312,11 +338,17 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate('bar', $constraint);
     }
 
+    /**
+     * @return \Doctrine\Common\Persistence\ManagerRegistry
+     */
     private function getManagerRegistryMock()
     {
         return $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
     }
 
+    /**
+     * @return \Symfony\Component\Validator\ExecutionContext
+     */
     private function getExecutionContextMock()
     {
         return $this
@@ -325,6 +357,9 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Symfony\Component\Form\Form
+     */
     private function getFormMock()
     {
         return $this
@@ -333,11 +368,17 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
     public function getObjectManagerMock()
     {
         return $this->getMock('Doctrine\Common\Persistence\ObjectManager');
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
     private function getEntityRepositoryMock()
     {
         return $this
@@ -346,16 +387,25 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     */
     public function getProductMock()
     {
         return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     */
     public function getProductValueMock()
     {
         return $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
     public function getProductAttributeMock()
     {
         return $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
