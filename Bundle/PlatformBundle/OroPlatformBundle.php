@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class OroPlatformBundle extends Bundle
 {
-    const VERSION = '1.0.0-alpha6';
+    const VERSION = '1.0.0-beta1';
 
     public static function registeredBundles(Kernel $kernel)
     {
