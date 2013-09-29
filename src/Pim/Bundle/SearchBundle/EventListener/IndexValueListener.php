@@ -34,7 +34,7 @@ class IndexValueListener
     /**
      * Unfortunately, can't use AbstractEngine as a parameter here due to circular reference
      *
-     * @param ContainerInterface $container
+     * @param ContainerInterface $container The service container
      * @param boolean            $realtime  Realtime update flag
      * @param array              $entities  Entities config array from search.yml
      */

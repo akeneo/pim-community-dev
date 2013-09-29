@@ -33,6 +33,7 @@ class VersionBuilder
      * Build a version from a versionable entity
      *
      * @param VersionableInterface $versionable
+     * @param User                 $user
      *
      * @return \Pim\Bundle\VersioningBundle\Entity\Version
      */

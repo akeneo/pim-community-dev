@@ -15,6 +15,8 @@ use Pim\Bundle\VersioningBundle\Entity\Version;
 class VersionRepository extends EntityRepository
 {
     /**
+     * @param Version $current
+     *
      * @return Version|null
      */
     public function findPreviousVersion(Version $current)
