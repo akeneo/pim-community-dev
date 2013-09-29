@@ -245,4 +245,22 @@ class User extends AbstractEntity implements Entity
         $this->assertElementPresent("//div[label[text() = 'User name']]//div/p[text() = '$userName']");
         return $this;
     }
+
+    public function checkHistoryWindow()
+    {
+        $this->byXpath("//div[@class='navigation clearfix navbar-extra navbar-extra-right']//a[contains(., 'Change History')]")->click();
+        $this->waitForAjax();
+        $this->assertElementPresent(
+            "//div[@class='ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable ui-dialog-normal ui-dialog-buttons']"
+        );
+        $this->byXpath(
+            "//div[@class='ui-dialog-titlebar-buttonpane']/button[@title='close']"
+        )->click();
+        $this->waitForAjax();
+        $this->assertElementNotPresent(
+            "//div[@class='ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable ui-dialog-normal ui-dialog-buttons']"
+        );
+
+        return $this;
+    }
 }

@@ -1,11 +1,3 @@
-{% macro time(time, format) -%}
-<time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | localizeddate('short', 'short') }}</time>
-{%- endmacro %}
-
-{% macro date(time, format) -%}
-<time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | localizeddate('short', 'none') }}</time>
-{%- endmacro %}
-
 {% macro collection_prototype(widget) %}
     {% if 'prototype' in widget.vars|keys %}
         {% set form = widget.vars.prototype %}
@@ -148,6 +140,7 @@
             {% endif %}
             data-id="{{ parameters.dataId }}"
             data-message="{{ parameters.dataMessage|trans }}"
+            data-success-message="{{ parameters.successMessage|default('Item deleted')|trans }}"
             data-url="{{ parameters.dataUrl }}"
             {% if parameters.dataRedirect is defined %}
                 data-redirect="{{ parameters.dataRedirect  }}"
@@ -183,8 +176,10 @@
     {{ _self.buttonType({'type': 'submit', 'class': 'btn-success', 'label': label}) }}
 {% endmacro %}
 
-{% macro saveAndStayButton(label = 'Save') %}
+{% macro saveAndStayButton(acl = '', label = 'Save') %}
+    {% if acl is empty or resource_granted(acl) %}
     {{ _self.buttonType({'type': 'button', 'class': 'btn-success', 'label': label, 'action': 'save_and_stay'}) }}
+    {% endif %}
 {% endmacro %}
 
 {#

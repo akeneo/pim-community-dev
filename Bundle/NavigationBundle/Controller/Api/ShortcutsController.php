@@ -3,16 +3,18 @@
 namespace Oro\Bundle\NavigationBundle\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\TranslatorInterface;
+
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\Rest\Util\Codes;
-
-use Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider;
 use Knp\Menu\Iterator\RecursiveItemIterator;
 use Knp\Menu\ItemInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+
+use Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * @RouteResource("shortcuts")

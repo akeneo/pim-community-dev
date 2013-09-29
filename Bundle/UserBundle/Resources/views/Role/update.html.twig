@@ -4,6 +4,7 @@
 {% oro_title_set({params : { "%role%": form.vars.value.label } }) %}
 {% set gridId = 'users-grid' %}
 {% set formAction = form.vars.value.id ? path('oro_user_role_update', { 'id': form.vars.value.id}) : path('oro_user_role_create') %}
+
 {% block head_script %}
     {{ parent() }}
 
@@ -16,23 +17,6 @@
     } %}
 
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId, 'parameters': listenerParameters} %}
-
-    <script type="text/javascript">
-        require(['jquery', 'jquery.jstree', 'jstree/jquery.hotkeys'],
-        function($){
-            $(function() {
-                $('#acl_tree').jstree({
-                    "checkbox": {
-                        real_checkboxes: true,
-                        real_checkboxes_names: function (n) {
-                            return ['resource[' + n.data('id') + ']', 1]
-                        }
-                    },
-                    "plugins": ["themes", "html_data", "ui", "checkbox", "hotkeys"]
-                });
-            });
-        });
-    </script>
 {% endblock %}
 
 {% block navButtons %}
@@ -43,15 +27,16 @@
                 'aCss': 'no-hash remove-button',
                 'dataId': form.vars.value.id,
                 'id': 'btn-remove-role',
-                'dataMessage': 'Are you sure you want to delete this role?',
-                'title': 'Delete Role',
-                'label': 'Delete'
+                'dataMessage': 'Are you sure you want to delete this role?'|trans,
+                'successMessage': 'Role removed'|trans,
+                'title': 'Delete Role'|trans,
+                'label': 'Delete'|trans
             })
         }}
         {{ UI.buttonSeparator() }}
     {% endif %}
-    {{ UI.button({'path' : path('oro_user_role_index'), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
-    {{ UI.saveAndStayButton() }}
+    {{ UI.button({'path' : path('oro_user_role_index'), 'title' : 'Cancel'|trans, 'label' : 'Cancel'|trans}) }}
+    {{ UI.saveAndStayButton('oro_user_role_update') }}
     {{ UI.saveAndCloseButton() }}
 {% endblock navButtons %}
 
@@ -60,7 +45,7 @@
         {% set breadcrumbs = {
             'entity':      form.vars.value,
             'indexPath':   path('oro_user_role_index'),
-            'indexLabel': 'Roles',
+            'indexLabel': 'Roles'|trans,
             'entityTitle': form.vars.value.label
         }
         %}
@@ -73,8 +58,9 @@
 {% block content_data %}
     {% set id = 'role-profile' %}
 
-    {% set dataBlocks = [{
-            'title': 'General',
+    {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
             'class': 'active',
             'subblocks': [
                 {
@@ -82,7 +68,6 @@
                     'data': [
                         form_widget(form.appendUsers, {'id': 'roleAppendUsers'}),
                         form_widget(form.removeUsers, {'id': 'roleRemoveUsers'}),
-                        form_row(form.role),
                         form_row(form.label)
                     ]
                 }
@@ -90,29 +75,27 @@
         }]
     %}
 
-    {% macro aclTree(form, resources) %}
-        <div id="acl_tree">
-            {% include 'OroUserBundle:Role:_aclSubTree.html.twig' with {'resources': resources, 'hasId': form.vars.value.id ? true : false} %}
-        </div>
-    {% endmacro %}
-    {% set dataBlocks = dataBlocks|merge(
-        [{
-            'title': 'Acl',
-            'subblocks': [
-                {
-                    'title': '',
-                    'data': [
-                        _self.aclTree(form, resources)
-                    ]
-                }
-            ]
-        }]
-        )
-    %}
+    {% for privilegeBlock, privilegeConfig in  privilegesConfig %}
+        {% set dataBlocks = dataBlocks|merge(
+            [{
+                'title': privilegeConfig.label,
+                'subblocks': [
+                    {
+                        'title': '',
+                        'useSpan': false,
+                        'data': [
+                            form_widget(form.children[privilegeBlock])
+                        ]
+                    }
+                ]
+            }]
+            )
+        %}
+    {% endfor %}
 
     {% set dataBlocks = dataBlocks|merge(
         [{
-            'title' : 'Users',
+            'title' : 'Users'|trans,
             'subblocks':
             [
                 {

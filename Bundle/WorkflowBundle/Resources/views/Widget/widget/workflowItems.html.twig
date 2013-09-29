@@ -1,4 +1,4 @@
-{% import 'OroUIBundle::macros.html.twig' as macros %}
+{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 
 <div class="widget-content workflow-items">
@@ -19,7 +19,7 @@
         }
     </style>
     {% if workflows_items_data|length %}
-        {% set allow_delete = resource_granted('oro_workflow_workflow_item_delete') %}
+        {% set allow_delete = resource_granted('oro_workflow') %}
         <table class="table-hover table table-bordered table-condensed">
             <thead>
                 <tr>
@@ -53,7 +53,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            {{ macros.date(data.workflowItem.createdAt) }}
+                            {{ Locale.date(data.workflowItem.createdAt) }}
                         </td>
                         <td>
                             {% if not enabled %}

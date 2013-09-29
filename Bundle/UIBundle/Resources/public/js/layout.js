@@ -30,10 +30,11 @@ function($, __) {
     }
 
     return {
-        init: function () {
-            this.styleForm(document.body);
+        init: function (container) {
+            container = $(container || document.body);
+            this.styleForm(container);
 
-            $('input.datepicker').each(function (index, el) {
+            container.find('input.datepicker').each(function (index, el) {
                 el = $(el);
                 el.datepicker({
                     dateFormat: el.attr('data-dateformat') || 'm/d/y',
@@ -45,7 +46,7 @@ function($, __) {
                 });
             });
 
-            $('input.datetimepicker').each(function (index, el) {
+            container.find('input.datetimepicker').each(function (index, el) {
                 el = $(el);
                 el.datetimepicker({
                     dateFormat: el.attr('data-dateformat') || 'm/d/y',
@@ -58,7 +59,7 @@ function($, __) {
                 });
             });
 
-            $('[data-spy="scroll"]').each(function () {
+            container.find('[data-spy="scroll"]').each(function () {
                 var $spy = $(this);
                 $spy.scrollspy($spy.data());
                 $spy = $(this).scrollspy('refresh');
@@ -66,7 +67,7 @@ function($, __) {
                 $('.scrollspy-nav ul.nav li:first').addClass('active');
             });
 
-            $('[data-toggle="tooltip"]').tooltip();
+            container.find('[data-toggle="tooltip"]').tooltip();
         },
 
         hideProgressBar: function() {

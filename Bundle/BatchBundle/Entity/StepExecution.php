@@ -35,7 +35,7 @@ class StepExecution
      * @var JobExecution
      *
      * @ORM\ManyToOne(targetEntity="JobExecution", inversedBy="stepExecutions")
-     * @ORM\JoinColumn(name="job_execution_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="job_execution_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $jobExecution = null;
 
@@ -125,6 +125,13 @@ class StepExecution
 
     /**
      * @var array
+     *
+     * @ORM\Column(name="errors", type="array", nullable=true)
+     */
+    private $errors = null;
+
+    /**
+     * @var array
      */
     private $readerWarnings = array();
 
@@ -139,13 +146,19 @@ class StepExecution
         $this->stepName = $stepName;
         $this->jobExecution = $jobExecution;
         $jobExecution->addStepExecution($this);
-
+        $this->executionContext = new ExecutionContext();
         $this->setStatus(new BatchStatus(BatchStatus::STARTING));
         $this->setExitStatus(new ExitStatus(ExitStatus::EXECUTING));
 
         $this->failureExceptions = array();
+        $this->errors = array();
 
         $this->startTime = new \DateTime();
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
     }
 
     /**
@@ -417,12 +430,23 @@ class StepExecution
     /**
      * Accessor for the execution context information of the enclosing job.
      *
-     * @return the that was used to start this step execution.
+     * @return JobExecution that was used to start this step execution.
      *
      */
     public function getJobExecution()
     {
         return $this->jobExecution;
+    }
+
+    /**
+     * @param JobExecution $jobExecution
+     * @return StepExecution
+     */
+    public function setJobExecution(JobExecution $jobExecution)
+    {
+        $this->jobExecution = $jobExecution;
+
+        return $this;
     }
 
     /**
@@ -436,7 +460,7 @@ class StepExecution
 
     /**
      * Add a failure exception
-     * @param Exception $e
+     * @param \Exception $e
      *
      * @return $this
      */
@@ -463,6 +487,29 @@ class StepExecution
                 $this->failureExceptions
             )
         );
+    }
+
+    /**
+     * Get errors
+     *
+     * @return array
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
+     * Add an error
+     *
+     * @param string $errorMessage
+     * @return $this
+     */
+    public function addError($errorMessage)
+    {
+        $this->errors[] = $errorMessage;
+
+        return $this;
     }
 
     /**

@@ -10,6 +10,7 @@ class Navigation extends Page
     protected $tabs;
     protected $menu;
     protected $pinbar;
+    protected $xpathMenu = '';
 
     public function __construct($testCase, $redirect = true)
     {
@@ -21,16 +22,30 @@ class Navigation extends Page
 
     public function tab($tab)
     {
-        $this->test->moveto($this->tabs->element($this->using('xpath')->value("ul/li/a[contains(., '{$tab}')]")));
-        $this->menu = $this->tabs->element($this->using('xpath')->value("ul/li[a[contains(., '{$tab}')]]/ul"));
+        $this->test->moveto($this->tabs->element($this->using('xpath')->value("ul/li/a[normalize-space(.) = '{$tab}']")));
+        $this->xpathMenu = "//div[@id = 'main-menu']/ul" . "/li[a[normalize-space(.) = '{$tab}']]";
         return $this;
     }
 
+    /**
+     * @param string
+     * @return $this
+     */
     public function menu($menu)
     {
-        $this->menu->element($this->using('xpath')->value("li/a[contains(., '{$menu}')]"))->click();
+        $this->test->moveto($this->byXPath($this->xpathMenu . "/ul/li/a[normalize-space(.) = '{$menu}']"));
+        $this->xpathMenu = $this->xpathMenu . "/ul/li[a[normalize-space(.) = '{$menu}']]";
+
+        return $this;
+    }
+
+    public function open()
+    {
+        $this->byXPath($this->xpathMenu . '/a')->click();
+
         $this->waitPageToLoad();
         $this->waitForAjax();
+
         return $this;
     }
 }

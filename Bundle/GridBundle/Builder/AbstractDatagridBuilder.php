@@ -17,8 +17,8 @@ use Oro\Bundle\GridBundle\Filter\FilterFactoryInterface;
 use Oro\Bundle\GridBundle\Sorter\SorterFactoryInterface;
 use Oro\Bundle\GridBundle\Action\ActionFactoryInterface;
 use Oro\Bundle\GridBundle\Datagrid\PagerInterface;
-use Oro\Bundle\UserBundle\Acl\ManagerInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
 {
@@ -48,9 +48,9 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
     protected $actionFactory;
 
     /**
-     * @var ManagerInterface
+     * @var SecurityFacade
      */
-    protected $aclManager;
+    protected $securityFacade;
 
     /**
      * @var string
@@ -60,24 +60,25 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
     /**
      * @param FormFactoryInterface $formFactory
      * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerInterface $aclManager
+     * @param SecurityFacade $securityFacade
      * @param FilterFactoryInterface $filterFactory
      * @param SorterFactoryInterface $sorterFactory
      * @param ActionFactoryInterface $actionFactory
-     * @param string $className
+     * @param $className
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         EventDispatcherInterface $eventDispatcher,
-        ManagerInterface $aclManager,
+        SecurityFacade $securityFacade,
         FilterFactoryInterface $filterFactory,
         SorterFactoryInterface $sorterFactory,
         ActionFactoryInterface $actionFactory,
         $className
     ) {
+        //ManagerInterface $aclManager,
         $this->formFactory     = $formFactory;
         $this->eventDispatcher = $eventDispatcher;
-        $this->aclManager      = $aclManager;
+        $this->securityFacade  = $securityFacade;
         $this->filterFactory   = $filterFactory;
         $this->sorterFactory   = $sorterFactory;
         $this->actionFactory   = $actionFactory;
@@ -142,7 +143,8 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
         );
 
         $aclResource = $action->getAclResource();
-        if (!$aclResource || $this->aclManager->isResourceGranted($aclResource)) {
+
+        if (!$aclResource || $this->isResourceGranted($aclResource)) {
             $datagrid->addRowAction($action);
         }
     }
@@ -154,7 +156,7 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
     public function addMassAction(DatagridInterface $datagrid, MassActionInterface $massAction)
     {
         $aclResource = $massAction->getAclResource();
-        if (!$aclResource || $this->aclManager->isResourceGranted($aclResource)) {
+        if (!$aclResource || $this->isResourceGranted($aclResource)) {
             $datagrid->addMassAction($massAction);
         }
     }
@@ -220,4 +222,23 @@ abstract class AbstractDatagridBuilder implements DatagridBuilderInterface
      * @return PagerInterface
      */
     abstract protected function createPager(ProxyQueryInterface $query);
+
+    /**
+     * Checks if an access to a resource is granted or not
+     *
+     * @param string $aclResource An ACL annotation id or "permission;descriptor"
+     * @return bool
+     */
+    protected function isResourceGranted($aclResource)
+    {
+        $delim = strpos($aclResource, ';');
+        if ($delim) {
+            $permission = substr($aclResource, 0, $delim);
+            $descriptor = substr($aclResource, $delim + 1);
+
+            return $this->securityFacade->isGranted($permission, $descriptor);
+        }
+
+        return $this->securityFacade->isGranted($aclResource);
+    }
 }

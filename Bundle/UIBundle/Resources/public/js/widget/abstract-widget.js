@@ -1,8 +1,10 @@
 /* jshint devel:true*/
 /* global define, require */
-define(['jquery', 'underscore', 'backbone', 'oro/mediator'],
-function($, _, Backbone, mediator) {
+define(['underscore', 'backbone', 'oro/mediator', 'oro/loading-mask', 'oro/layout', 'jquery.form'],
+function(_, Backbone, mediator, LoadingMask, layout) {
     'use strict';
+
+    var $ = Backbone.$;
 
     /**
      * @export  oro/abstract-widget
@@ -17,8 +19,14 @@ function($, _, Backbone, mediator) {
             elementFirst: true,
             title: '',
             alias: null,
-            wid: null
+            wid: null,
+            loadingMaskEnabled: true,
+            loadingElement: null
         },
+
+        loadingElement: null,
+        loadingMask: null,
+        loading: false,
 
         initialize: function(options) {
             options = options || {};
@@ -34,7 +42,7 @@ function($, _, Backbone, mediator) {
         },
 
         remove: function() {
-            // cause that's circular dependency
+            this.trigger('widgetRemove', this.$el);
             mediator.trigger('widget_remove', this.getWid());
             Backbone.View.prototype.remove.call(this);
         },
@@ -50,9 +58,41 @@ function($, _, Backbone, mediator) {
             this.on('adoptedFormSubmitClick', _.bind(this._onAdoptedFormSubmitClick, this));
             this.on('adoptedFormResetClick', _.bind(this._onAdoptedFormResetClick, this));
             this.on('adoptedFormSubmit', _.bind(this._onAdoptedFormSubmit, this));
+            if (this.options.loadingMaskEnabled) {
+                this.on('beforeContentLoad', _.bind(this._showLoading, this));
+                this.on('contentLoad', _.bind(this._hideLoading, this));
+                this.on('renderStart', _.bind(function(el) {
+                    this.loadingElement = el;
+                }, this));
+            }
 
             this.actions = {};
             this.firstRun = true;
+
+            mediator.trigger('widget:init:' + this.getWid(), this);
+            this.loadingElement = $('body');
+        },
+
+        _showLoading: function() {
+            if (this.options.loadingMaskEnabled) {
+                var loadingElement = this.options.loadingElement || this.loadingElement;
+                loadingElement = $(loadingElement);
+                if (loadingElement && loadingElement.length) {
+                    if (loadingElement[0].tagName.toLowerCase() !== 'body' && loadingElement.css('position') == 'static') {
+                        loadingElement.css('position', 'relative');
+                    }
+                    this.loadingMask = new LoadingMask();
+                    loadingElement.append(this.loadingMask.render().$el);
+                    this.loadingMask.show();
+                }
+            }
+        },
+
+        _hideLoading: function() {
+            if (this.loadingMask) {
+                this.loadingMask.remove();
+                this.loadingMask = null;
+            }
         },
 
         getWid: function() {
@@ -80,6 +120,7 @@ function($, _, Backbone, mediator) {
          */
         _adoptWidgetActions: function() {
             this.actions['adopted'] = {};
+            this.form = null;
             var adoptedActionsContainer = this._getAdoptedActionsContainer();
             if (adoptedActionsContainer.length > 0) {
                 var self = this;
@@ -93,6 +134,7 @@ function($, _, Backbone, mediator) {
                         this.options.url = formAction;
                     }
                     this.form.submit(function(e) {
+                        e.preventDefault();
                         e.stopImmediatePropagation();
                         self.trigger('adoptedFormSubmit', self.form, self);
                         return false;
@@ -104,6 +146,14 @@ function($, _, Backbone, mediator) {
                     var actionId = $action.data('action-name') || 'adopted_action_' + idx;
                     switch (action.type.toLowerCase()) {
                         case 'submit':
+                            var submitReplacement = $('<input type="submit"/>');
+                            submitReplacement.css({
+                                position: 'absolute',
+                                left: '-9999px',
+                                width: '1px',
+                                height: '1px'
+                            });
+                            form.append(submitReplacement);
                             actionId = 'form_submit';
                             break;
                         case 'reset':
@@ -132,20 +182,49 @@ function($, _, Backbone, mediator) {
         },
 
         _onAdoptedFormSubmit: function(form) {
-            this.loadContent(form.serialize(), form.attr('method'));
+            if (this.loading) {
+                return;
+            }
+            if (form.find('[type="file"]').length) {
+                this.trigger('beforeContentLoad', this);
+                this.loading = true;
+                form.ajaxSubmit({
+                    data: {
+                        '_widgetContainer': this.options.type,
+                        '_wid': this.getWid()
+                    },
+                    success: _.bind(this.onContentLoad, this),
+                    error: _.bind(this.onContentLoadFail, this)
+                });
+            } else {
+                this.loadContent(form.serialize(), form.attr('method'));
+            }
         },
 
         _onAdoptedFormResetClick: function(form) {
             $(form).trigger('reset');
         },
 
-        addAction: function(key, actionElement, section) {
+        _createWidgetActionsSection: function(section) {
+            return $('<div id="' + section + '" class="widget-actions-section"/>');
+        },
+
+        addAction: function(key, section, actionElement) {
             if (section === undefined) {
                 section = 'main';
             }
             if (!this.hasAction(key, section)) {
-                this.actions[key] = actionElement;
-                this.getActionsElement().append(actionElement);
+                if (!this.actions.hasOwnProperty(section)) {
+                    this.actions[section] = {};
+                }
+                this.actions[section][key] = actionElement;
+                var sectionContainer = this.getActionsElement().find('#' + section);
+                if (!sectionContainer.length) {
+                    sectionContainer = this._createWidgetActionsSection(section);
+                    sectionContainer.appendTo(this.getActionsElement());
+                }
+                sectionContainer.append(actionElement);
+                this.trigger('widget:add:action:' + section + ':' + key, $(actionElement));
             }
         },
 
@@ -192,9 +271,9 @@ function($, _, Backbone, mediator) {
             }
         },
 
-        getAction: function(key, section) {
-            var action = null;
+        getAction: function(key, section, callback) {
             if (this.hasAction(key, section)) {
+                var action = null;
                 if (section !== undefined) {
                     action = this.actions[section][key];
                 } else {
@@ -204,8 +283,10 @@ function($, _, Backbone, mediator) {
                         }
                     });
                 }
+                callback(action);
+            } else {
+                this.once('widget:add:action:' + section + ':' + key, callback);
             }
-            return action;
         },
 
         _renderActions: function() {
@@ -215,10 +296,11 @@ function($, _, Backbone, mediator) {
 
             if (container) {
                 _.each(this.actions, function(actions, section) {
-                    var sectionContainer = $('<div id="' + section + '"/>');
-                    _.each(actions, function(action) {
+                    var sectionContainer = self._createWidgetActionsSection(section);
+                    _.each(actions, function(action, key) {
                         self._initActionEvents(action);
                         sectionContainer.append(action);
+                        self.trigger('widget:add:action:' + section + ':' + key, $(action));
                     });
                     container.append(sectionContainer);
                 });
@@ -227,7 +309,11 @@ function($, _, Backbone, mediator) {
 
         _initActionEvents: function(action) {
             var self = this;
-            switch (action.attr('type').toLowerCase()) {
+            var type = $(action).attr('type');
+            if (!type) {
+                return;
+            }
+            switch (type.toLowerCase()) {
                 case 'submit':
                     action.on('click', function() {
                         self.trigger('adoptedFormSubmitClick', self.form, self);
@@ -271,6 +357,7 @@ function($, _, Backbone, mediator) {
          * @param {String|null} method
          */
         loadContent: function(data, method) {
+            this.loading = true;
             var url = this.options.url;
             if (url === undefined || !url) {
                 url = window.location.href;
@@ -288,23 +375,45 @@ function($, _, Backbone, mediator) {
             options.data = (options.data !== undefined ? options.data + '&' : '') +
                 '_widgetContainer=' + this.options.type + '&_wid=' + this.getWid();
 
-            Backbone.$.ajax(options).done(_.bind(function(content) {
-                try {
-                    this.trigger('contentLoad', content, this);
-                    this.actionsEl = null;
-                    this.setElement($(content).filter('.widget-content'));
-                    this._show();
-                    Oro.Events.trigger('hash_navigation_request:complete');
-                } catch (error) {
-                    // Remove state with unrestorable content
-                    this.trigger('contentLoadError', this);
-                }
-            }, this));
+            this.trigger('beforeContentLoad', this);
+            Backbone.$.ajax(options)
+                .done(_.bind(this.onContentLoad, this))
+                .fail(_.bind(this.onContentLoadFail, this))
+            ;
+        },
+
+        onContentLoadFail: function() {
+            var failContent = '<div class="widget-content">' +
+                '<div class="alert alert-error">Widget content loading failed</div>' +
+                '</div>';
+            this.onContentLoad(failContent);
+        },
+
+        /**
+         * Handle loaded content.
+         *
+         * @param {String} content
+         */
+        onContentLoad: function(content) {
+            this.loading = false;
+            try {
+                this.trigger('contentLoad', content, this);
+                this.actionsEl = null;
+                this.actions = {};
+                this.setElement($(content).filter('.widget-content'));
+                layout.init(this.$el);
+                this._show();
+                mediator.trigger('hash_navigation_request:complete');
+            } catch (error) {
+                console.warn(error)
+                // Remove state with unrestorable content
+                this.trigger('contentLoadError', this);
+            }
         },
 
         _show: function() {
-            this.trigger('renderStart', this.$el, this);
             this._adoptWidgetActions();
+            this.trigger('renderStart', this.$el, this);
             this.show();
             this.trigger('renderComplete', this.$el, this);
         },
@@ -313,6 +422,7 @@ function($, _, Backbone, mediator) {
             this.setWidToElement(this.$el);
             this._renderActions();
             this.trigger('widgetRender', this.$el, this);
+            mediator.trigger('widget:render:' + this.getWid(), this.$el, this);
         },
 
         setWidToElement: function(el) {

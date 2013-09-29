@@ -77,10 +77,22 @@ body {
 }
 body.error-page {
   background-color: #eee;
+  #container{
+    position: relative;
+    .popup-frame{
+      position: relative;
+      top: 50%;
+    }
+    .popup-holder{
+      position: relative;
+      margin: -97px 0 0;
+    }
+  }
 }
 html {
   margin: 0;
   padding: 0;
+  height: 100%;
 }
 body.error-page #main {
   background: none;
@@ -90,9 +102,6 @@ a:hover,
 a:active,
 a:focus {
   text-decoration: none;
-}
-#top-page > .container-fluid {
-  background: #fff;
 }
 #main {
   background-color: #fff;
@@ -108,14 +117,13 @@ a:focus {
 
 // Bootstrap - Buttons
 .btn-group {
-  float:left;
   > .btn {
     font-size:13px;
   }
 }
 .btn,
 .ui-datepicker .ui-datepicker-buttonpane button {
-  .border-radius( @baseBtnBorderRadius);
+  .border-radius(@baseBtnBorderRadius);
   padding: 0 12px;
   height: 28px;
   line-height: 26px;
@@ -301,6 +309,23 @@ label, input, button, select, textarea { font-size:13px;}
   text-align:left;
   line-height:1.2em;
 }
+.control-group .controls p.control-label{
+  width: auto;
+}
+.email-field a{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  display: block;
+}
+.opportunity-info .control-group .controls p.control-label,
+.opportunity-info .controls p.control-label{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
 .form-horizontal {
   .control-group {
     label.control-label {
@@ -317,6 +342,9 @@ label, input, button, select, textarea { font-size:13px;}
     }
     .controls {
       margin-left:170px;
+      .control-label {
+        width: auto;
+      }
     }
   }
 }
@@ -378,6 +406,29 @@ body .select2-container {
   background:#f3f3f3;
   color:@linkColor;
 }
+
+#main-menu{
+  li.dropdown{
+    ul{
+      display: none !important;
+      ul{
+        top: 5px;
+        border: 1px solid #bbb !important;
+        margin: 0;
+        -webkit-border-radius: 3px !important;
+        border-radius:3px !important;
+      }
+    }
+    &:hover > .menu_level_1{
+      display: block !important;
+    }
+    .menu_level_2 li:hover > .menu_level_3,
+    .menu_level_1 li:hover > .menu_level_2{
+      display: block !important;
+    }
+  }
+}
+
 .navbar .nav li.dropdown.open > .dropdown-toggle,
 .navbar .nav li.dropdown.active > .dropdown-toggle,
 .navbar .nav li.dropdown.open.active > .dropdown-toggle {
@@ -867,7 +918,7 @@ header {
       .dropdown-menu { /* All 2+ level */
         border:none;
         .border-radius(0 3px 3px 3px);
-        width:140px;
+        width:auto;
         padding:0;
         font-size:13px;
         .box-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
@@ -1367,7 +1418,7 @@ footer {
     cursor: move;
   }
 }
-.ui-dialog #adopted button.btn {
+.ui-dialog .widget-actions-section button.btn {
   margin-left: 5px;
 }
 .ui-dialog .ui-resizable-se {
@@ -1925,9 +1976,6 @@ footer {
   display: inline-block;
   padding-left: 5px;
   padding-right: 5px;
-}
-.list-group {
-
 }
 .list-group > .list-group-item {
   padding: 10px;
@@ -2722,6 +2770,9 @@ footer {
       }
       .controls {
         margin-left:0;
+        .control-label {
+          width: auto;
+        }
       }
     }
   }
@@ -3061,6 +3112,9 @@ ul.inline-extra > li:first-child {
 }
 .navbar-extra-right {
   padding-right: 20px;
+  .btn-group{
+    margin-left: 8px;
+  }
 }
 .row-oro {
   width: 100%;
@@ -3796,7 +3850,9 @@ h5.usser-fiedset {
 }
 input:focus:invalid:focus,
 textarea:focus:invalid:focus,
-select:focus:invalid:focus {
+select:focus:invalid:focus,
+div.selector.focus,
+div.uploader.focus{
   border-color: rgba(82, 168, 236, 0.8);
   outline: 0;
   outline: thin dotted \9;
@@ -3827,14 +3883,17 @@ select:focus:invalid:focus {
     .control-label { text-align:right; }
   }
 }
+.alert-error > ul{
+  margin-bottom: 0;
+}
 #flash-messages {
   .alert {
-    margin: 0;
+    margin: 3px 0 0;
     background-color: @warningBackground;
     background-image: url('../../img/warning-ico.png');
     background-position: 10px 48%;
     background-repeat: no-repeat;
-    padding: 6px 35px 6px 37px;
+    padding: 3px 35px 1px 37px;
     border:1px solid rgba(241,216,103,.3);
     text-shadow: 0 1px 0 rgba(255,255,255,.5);
     .close {
@@ -3866,18 +3925,22 @@ select:focus:invalid:focus {
     display: none;
   }
 }
+#flash-messages{
+  overflow: hidden;
+}
 .flash-messages-frame {
   position: fixed;
-  top: 70px;
-  left: 0;
+  top: 66px;
+  left: 25%;
   z-index: 500;
+  width: 50%;
+
   .box-sizing(border-box);
   padding: 0 10px;
-  width: 100%;
   .opacity(90,.9)
 }
 .flash-messages-holder {
-  width: 100%;
+  /*width: 100%; ticket/BAP-1733*/
 }
 .oro-multiselect {
   display: inline-block;
@@ -4643,7 +4706,6 @@ disabled look for disabled choices in the results dropdown
   }
 }*/
 
-
 #orocrm_contact_form_addresses_collection.oro-item-collection > div {
     position: relative;
     padding: 10px 0 0;
@@ -4743,6 +4805,9 @@ disabled look for disabled choices in the results dropdown
 .breadcrumb-pin {
   border-bottom: 1px solid #f2f2f2;
   padding:0;
+  #pin-button-div{
+    float: right;
+  }
   #breadcrumb {
     float:left;
   }
@@ -4773,13 +4838,27 @@ disabled look for disabled choices in the results dropdown
   }
 }
 .contact-info-col-set {
+  &.conact-page{
+    > .row-fluid {
+      .contact-info-col {
+        .box-type1{
+          min-height: 461px;
+          box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          -webkit-box-sizing: border-box;
+        }
+      }
+    }
+  }
   padding:13px 6px;
   > .row-fluid {
     margin:0 -7px;
     .contact-info-col {
+      
       width:50%;
       margin:0;
       padding-left:13px;
+
       &:last-child {
         float:right;
       }
@@ -4790,11 +4869,15 @@ disabled look for disabled choices in the results dropdown
           label.control-label { width:120px; }
           .controls {
             margin-left:130px;
-            .control-label { width:155px; }
+            .control-label { width:100%; }
             .tag-view { width:100%; }
           }
         }
       }
+    }
+    .contact-info-row {
+      margin:0;
+      padding-left:13px;
     }
   }
 }
@@ -4958,11 +5041,11 @@ disabled look for disabled choices in the results dropdown
 pre.email-body {
   width: 99%;
   min-height: 5em;
+  overflow: auto;
 }
 iframe.email-body {
   width: 99%;
   min-height: 5em;
-  height: 25em;
   #font > #family > .monospace;
   color: @grayDark;
   padding: (@baseLineHeight - 1) / 2;
@@ -4975,13 +5058,30 @@ iframe.email-body {
   .border-radius(@baseBorderRadius);
 }
 
+.ui-dialog pre.email-body,
+.ui-dialog iframe.email-body {
+  height: 200px;
+}
 
 // PER PAGE
 
 /* Login + Forgot Password */
-.login-page { background:#f7f7f7; }
+.login-page {
+  background: #f7f7f7;
+  height: 100%;
+  min-height: 280px;
+  #page{
+    min-height: 100%;
+    position: relative;
+    top: 50%;
+    #top-page{
+      position: relative;
+      margin: -135px 0 0;
+    }
+  }
+}
 .form-signin {
-  margin: 125px auto 40px;
+  margin: 0 auto;
   max-width: 400px;
   padding: 0;
   background: #fff;
@@ -5029,10 +5129,10 @@ iframe.email-body {
   }
   input[type="text"],
   input[type="password"] {
-    height: 34px;
-    font: 14px/36px @baseFontFamily;
+    height: 16px;
+    font: 14px/16px @baseFontFamily;
     color: #000;
-    padding: 0 10px;
+    padding: 9px 10px;
     width: 205px;
     border-left-color:#ccc;
   }
@@ -5079,4 +5179,68 @@ iframe.email-body {
   border-radius:0 !important;
   -webkit-border-radius:0 !important;
   -moz-border-radius:0 !important;
+}
+
+.security-row {
+  display: inline-block;
+  width: 30%;
+  margin-bottom:25px;
+}
+
+.security-row > div {
+  display: inline-block;
+  margin-right: 20px;
+  text-align: right;
+  min-width: 250px;
+}
+
+.security-row input[type="checkbox"]{
+  margin: 0;
+}
+
+.acl-table .a-center {
+  text-align: center;
+}
+span.validation-faled {
+  color: @errorText;
+  display: block;
+  margin: 5px 0 5px 14px;
+  line-height: 1.1em;
+  display: block;
+  clear:both;
+  &:before {
+    content: "\f00d";
+    color: @errorText;
+    font: normal 1.15em/1em 'FontAwesome';
+    display: inline-block;
+    width: 14px;
+    margin-left: -14px;
+  }
+}
+.ui-dialog .form-horizontal .control-group .controls .validation-faled{
+  margin-left: 127px;
+}
+@media only screen and (max-width: 1340px) {
+  .contact-info-col-set > .row-fluid > .span6{
+    width: 100%;
+    margin-bottom: 13px;
+  }
+
+  .contact-info-col-set > .row-fluid > .span6:last-child{
+    margin-bottom: 0;
+  }
+}
+.default-field{
+  background: #C3C3C3;
+}
+.search-more{
+  display: none;
+}
+.search-view-more-link{
+  display: block;
+  line-height: @baseLineHeight;
+  padding-left: 10px;
+}
+.input-addon{
+  width: 258px;
 }

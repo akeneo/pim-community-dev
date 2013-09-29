@@ -18,7 +18,7 @@
         {% set pinbarItems = [] %}
         {% for pinbarItem in item.children %}
             {% if pinbarItem.extras.isAllowed %}
-                {% set pinbarItems = pinbarItems|merge([{'id': pinbarItem.extras.id, 'title': pinbarItem.label|raw, 'title_rendered': oro_title_render(pinbarItem.label|raw),  'url': pinbarItem.uri, 'type': pinbarItem.extras.type}]) %}
+                {% set pinbarItems = pinbarItems|merge([{'id': pinbarItem.extras.id, 'title': pinbarItem.label|raw, 'title_rendered': oro_title_render(pinbarItem.label|raw), 'title_rendered_short': oro_title_render_short(pinbarItem.label|raw), 'url': pinbarItem.uri, 'type': pinbarItem.extras.type}]) %}
             {% endif %}
         {% endfor %}
     {% endif %}

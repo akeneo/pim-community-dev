@@ -12,18 +12,13 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\AddressBundle\Entity\AddressType;
 
 /**
  * @RouteResource("addresstype")
  * @NamePrefix("oro_api_")
- * @Acl(
- *      id="oro_address_type",
- *      name="Address type manipulation",
- *      description="Address type manipulation",
- *      parent="oro_address"
- * )
+ * TODO: Discuss ACL impl.
  */
 class AddressTypeController extends FOSRestController implements ClassResourceInterface
 {
@@ -34,11 +29,11 @@ class AddressTypeController extends FOSRestController implements ClassResourceIn
      *      description="Get all address types items",
      *      resource=true
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_address_type_list",
-     *      name="View list of address types",
-     *      description="View list of address types",
-     *      parent="oro_address_type"
+     *      type="action",
+     *      label="API Get Address Types",
+     *      group_name=""
      * )
      * @return Response
      */
@@ -60,11 +55,11 @@ class AddressTypeController extends FOSRestController implements ClassResourceIn
      *      description="Get address type item",
      *      resource=true
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_address_type_show",
-     *      name="View address type",
-     *      description="View address type",
-     *      parent="oro_address_type"
+     *      type="action",
+     *      label="API Get Address Type",
+     *      group_name=""
      * )
      * @return Response
      */

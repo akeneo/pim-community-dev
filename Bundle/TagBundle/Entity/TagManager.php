@@ -4,12 +4,13 @@ namespace Oro\Bundle\TagBundle\Entity;
 
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
-use Oro\Bundle\UserBundle\Acl\Manager;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Oro\Bundle\TagBundle\Entity\Repository\TagRepository;
@@ -45,9 +46,9 @@ class TagManager
     protected $securityContext;
 
     /**
-     * @var Manager
+     * @var SecurityFacade
      */
-    protected $aclManager;
+    protected $securityFacade;
 
     /**
      * @var Router
@@ -60,7 +61,7 @@ class TagManager
         $taggingClass,
         ObjectMapper $mapper,
         SecurityContextInterface $securityContext,
-        Manager $aclManager,
+        SecurityFacade $securityFacade,
         Router $router
     ) {
         $this->em = $em;
@@ -69,7 +70,7 @@ class TagManager
         $this->taggingClass = $taggingClass;
         $this->mapper = $mapper;
         $this->securityContext = $securityContext;
-        $this->aclManager = $aclManager;
+        $this->securityFacade = $securityFacade;
         $this->router = $router;
     }
 
@@ -170,7 +171,7 @@ class TagManager
             $taggingCollection = $tag->getTagging()->filter(
                 function (Tagging $tagging) use ($entity) {
                     // only use tagging entities that related to current entity
-                    return $tagging->getEntityName() == get_class($entity)
+                    return $tagging->getEntityName() == ClassUtils::getClass($entity)
                     && $tagging->getRecordId() == $entity->getTaggableId();
                 }
             );
@@ -216,18 +217,18 @@ class TagManager
             );
 
             if (!$tagsToDelete->isEmpty()
-                && $this->aclManager->isResourceGranted(self::ACL_RESOURCE_ASSIGN_ID_KEY)
+                && $this->securityFacade->isGranted(self::ACL_RESOURCE_ASSIGN_ID_KEY)
             ) {
                 $this->deleteTaggingByParams(
                     $tagsToDelete,
-                    get_class($resource),
+                    ClassUtils::getClass($resource),
                     $resource->getTaggableId(),
                     $this->getUser()->getId()
                 );
             }
 
             // process if current user allowed to remove other's tag links
-            if ($this->aclManager->isResourceGranted(self::ACL_RESOURCE_REMOVE_ID_KEY)) {
+            if ($this->securityFacade->isGranted(self::ACL_RESOURCE_REMOVE_ID_KEY)) {
                 // get 'not mine' taggings
                 $oldTags = $this->getTagging($resource, $this->getUser()->getId(), true);
                 $tagsToDelete = $oldTags->filter(
@@ -238,15 +239,15 @@ class TagManager
                 if (!$tagsToDelete->isEmpty()) {
                     $this->deleteTaggingByParams(
                         $tagsToDelete,
-                        get_class($resource),
+                        ClassUtils::getClass($resource),
                         $resource->getTaggableId()
                     );
                 }
             }
 
             foreach ($tagsToAdd as $tag) {
-                if (!$this->aclManager->isResourceGranted(self::ACL_RESOURCE_ASSIGN_ID_KEY)
-                    || (!$this->aclManager->isResourceGranted(self::ACL_RESOURCE_CREATE_ID_KEY) && !$tag->getId())
+                if (!$this->securityFacade->isGranted(self::ACL_RESOURCE_ASSIGN_ID_KEY)
+                    || (!$this->securityFacade->isGranted(self::ACL_RESOURCE_CREATE_ID_KEY) && !$tag->getId())
                 ) {
                     // skip tags that have not ID because user not granted to create tags
                     continue;
@@ -254,7 +255,7 @@ class TagManager
 
                 $this->em->persist($tag);
 
-                $alias = $this->mapper->getEntityConfig(get_class($resource));
+                $alias = $this->mapper->getEntityConfig(ClassUtils::getClass($resource));
 
                 $tagging = $this->createTagging($tag, $resource)
                     ->setAlias($alias['alias']);

@@ -64,6 +64,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarNode('template')->end()
                     ->scalarNode('clear_matcher')->end()
                     ->scalarNode('depth')->end()
+                    ->scalarNode('allow_safe_labels')->end()
                     ->scalarNode('currentAsLink')->end()
                     ->scalarNode('currentClass')->end()
                     ->scalarNode('ancestorClass')->end()

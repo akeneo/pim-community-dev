@@ -64,11 +64,7 @@ class DateTimeRangeFilterType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        // TODO: replace with correct locale data
-        // format of jQueryUI Timepicker (http://trentrichardson.com/examples/timepicker/#tp-formatting)
         $widgetOptions = array(
-            'dateFormat' => 'mm/dd/yy',
-            'timeFormat' => 'hh:mm tt',
             'firstDay'   => 0,
         );
         $view->vars['widget_options'] = array_merge($widgetOptions, $options['widget_options']);

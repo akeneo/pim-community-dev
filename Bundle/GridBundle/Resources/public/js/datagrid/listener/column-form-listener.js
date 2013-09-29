@@ -165,11 +165,12 @@ function($, _, __, mediator, Modal, AbstractListener) {
                 this.datagrid.setAdditionalParameter('data_in', included);
                 this.datagrid.setAdditionalParameter('data_not_in', excluded);
                 var columnName = this.columnName;
+                var dataField = this.dataField;
                 this.datagrid.collection.each(function(model) {
-                    if (_.indexOf(included, model.get('id')) !== -1) {
+                    if (_.indexOf(included, model.get(dataField)) !== -1) {
                         model.set(columnName, true);
                     }
-                    if (_.indexOf(excluded, model.get('id')) !== -1) {
+                    if (_.indexOf(excluded, model.get(dataField)) !== -1) {
                         model.set(columnName, false);
                     }
                 });

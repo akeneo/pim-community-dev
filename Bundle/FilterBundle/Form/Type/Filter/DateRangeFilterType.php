@@ -89,10 +89,7 @@ class DateRangeFilterType extends AbstractType
     {
         $view->vars['type_values'] = $options['type_values'];
 
-        // TODO: replace with correct locale data
-        // format of jQueryUI Timepicker (http://api.jqueryui.com/datepicker/)
         $widgetOptions = array(
-            'dateFormat' => 'mm/dd/yy',
             'firstDay'   => 0,
         );
         $view->vars['widget_options'] = array_merge($widgetOptions, $options['widget_options']);

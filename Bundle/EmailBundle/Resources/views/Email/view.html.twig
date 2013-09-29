@@ -5,7 +5,8 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroEmailBundle::macros.html.twig' as EA %}
-{% set format = oro_config_value('oro_user.name_format') %}
+{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
+{% set format = oro_config_value('oro_locale.name_format') %}
 {% oro_title_set({params : {"%subject%": entity.subject} }) %}
 
 {% block pageHeader %}
@@ -14,14 +15,14 @@
 {% endblock pageHeader %}
 
 {% block stats %}
-    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? UI.time(breadcrumbs.entity.createdAt) : 'N/A' }}</li>
+    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? Locale.time(breadcrumbs.entity.createdAt) : 'N/A' }}</li>
 {% endblock stats %}
 
 {% block content_data %}
     {% set id = 'email-profile' %}
 
     {% set attributes = [
-            UI.attibuteRow('Sent', UI.time(entity.sentAt)),
+            UI.attibuteRow('Sent', Locale.time(entity.sentAt)),
             UI.attibuteRow('From', EA.email_address(entity.fromEmailAddress, entity.fromName, format)),
             UI.attibuteRow('To', EA.recipient_email_addresses(entity.recipients('to'), format)),
             UI.attibuteRow('Cc', EA.recipient_email_addresses(entity.recipients('cc'), format)),

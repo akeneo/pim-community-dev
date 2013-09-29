@@ -18,6 +18,12 @@ class StoredTitle
     private $template;
 
     /**
+     * @Type("string")
+     * @var string
+     */
+    private $shortTemplate;
+
+    /**
      * @Type("array")
      * @var array
      */
@@ -56,6 +62,29 @@ class StoredTitle
     public function getTemplate()
     {
         return $this->template;
+    }
+
+    /**
+     * Set short template string
+     *
+     * @param string $shortTemplate
+     * @return $this
+     */
+    public function setShortTemplate($shortTemplate)
+    {
+        $this->shortTemplate = $shortTemplate;
+
+        return $this;
+    }
+
+    /**
+     * Get short template string
+     *
+     * @return string
+     */
+    public function getShortTemplate()
+    {
+        return $this->shortTemplate;
     }
 
     /**

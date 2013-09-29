@@ -4,16 +4,18 @@
 {% set title = 'Update Entity' %}
 {% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}
 
-{% set entityClass = field.entity.className|replace('\\', '_') %}
+{% set audit_entity_class = field.entity.className|replace('\\', '_') %}
 {% set audit_title = entity_config.get('label') %}
 {% set audit_path = 'oro_entityconfig_audit_field' %}
 {% set audit_entity_id = field.id %}
 
 {% block navButtons %}
-    {{ UI.button({'path' : path('oro_entityconfig_view', {id: field.entity.id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+    {% if resource_granted('oro_entityconfig_manage') %}
+        {{ UI.button({'path' : path('oro_entityconfig_view', {id: field.entity.id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
 
-    {{ UI.saveAndStayButton() }}
-    {{ UI.saveAndCloseButton() }}
+        {{ UI.saveAndStayButton() }}
+        {{ UI.saveAndCloseButton() }}
+    {% endif %}
 {% endblock navButtons %}
 
 {% block pageHeader %}
@@ -38,6 +40,12 @@
 {% endblock stats %}
 
 {% block content_data %}
+    {% if require_js is defined and require_js|length %}
+        <script type="text/javascript">
+            require({{ require_js|json_encode|raw }})
+        </script>
+    {% endif %}
+
     {% set id = 'configfield-update' %}
     {% set dataBlocks = form_data_blocks(form) %}
     {% set data = {

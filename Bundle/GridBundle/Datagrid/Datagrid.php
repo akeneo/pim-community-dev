@@ -16,6 +16,7 @@ use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
+use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
 /**
@@ -62,13 +63,6 @@ class Datagrid implements DatagridInterface
      * @var bool
      */
     protected $filtersApplied = false;
-
-    /**
-     * Pager applied flag
-     *
-     * @var bool
-     */
-    protected $pagerApplied = false;
 
     /**
      * @var RouteGeneratorInterface
@@ -141,6 +135,11 @@ class Datagrid implements DatagridInterface
      * @var string|null
      */
     protected $identifierFieldName;
+
+    /**
+     * @var AbstractViewsList|null
+     */
+    private $viewsList;
 
     /**
      * @var bool
@@ -303,7 +302,7 @@ class Datagrid implements DatagridInterface
      */
     public function getPager()
     {
-        $this->applyPager();
+        $this->applyParameters();
 
         return $this->pager;
     }
@@ -367,16 +366,10 @@ class Datagrid implements DatagridInterface
      */
     protected function applyPager()
     {
-        if ($this->pagerApplied) {
-            return;
-        }
-
         $pagerParameters = $this->parameters->get(ParametersInterface::PAGER_PARAMETERS);
         $this->pager->setPage(isset($pagerParameters['_page']) ? $pagerParameters['_page'] : 1);
         $this->pager->setMaxPerPage(isset($pagerParameters['_per_page']) ? (int) $pagerParameters['_per_page'] : 10);
         $this->pager->init();
-
-        $this->pagerApplied = true;
     }
 
     /**
@@ -567,6 +560,22 @@ class Datagrid implements DatagridInterface
     public function setIdentifierFieldName($identifierFieldName)
     {
         $this->identifierFieldName = $identifierFieldName;
+    }
+
+    /**
+     * @return null|AbstractViewsList
+     */
+    public function getViewsList()
+    {
+        return $this->viewsList;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setViewsList($list)
+    {
+        $this->viewsList = $list;
     }
 
     /**

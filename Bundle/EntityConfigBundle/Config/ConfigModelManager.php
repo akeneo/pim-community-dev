@@ -30,9 +30,26 @@ class ConfigModelManager
     protected $localCache;
 
     /**
+     * @var bool
+     */
+    protected $dbCheckCache;
+
+    /**
      * @var ServiceLink
      */
     protected $proxyEm;
+
+    private $ignoreModel = array(
+        'Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel',
+        'Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel',
+        'Oro\Bundle\EntityConfigBundle\Entity\AbstractConfigModel',
+    );
+
+    private $requiredTables = array(
+        'oro_entity_config',
+        'oro_entity_config_field',
+        'oro_entity_config_value',
+    );
 
     public function __construct(ServiceLink $proxyEm)
     {
@@ -48,16 +65,29 @@ class ConfigModelManager
         return $this->proxyEm->getService();
     }
 
-
     /**
      * @return bool
      */
     public function checkDatabase()
     {
-        $tables = $this->getEntityManager()->getConnection()->getSchemaManager()->listTableNames();
-        $table  = $this->getEntityManager()->getClassMetadata(EntityConfigModel::ENTITY_NAME)->getTableName();
+        if ($this->dbCheckCache === null) {
+            try {
+                $conn = $this->getEntityManager()->getConnection();
 
-        return in_array($table, $tables);
+                if (!$conn->isConnected()) {
+                    $this->getEntityManager()->getConnection()->connect();
+                }
+
+                $this->dbCheckCache = $conn->isConnected() && (bool) array_intersect(
+                    $this->requiredTables,
+                    $this->getEntityManager()->getConnection()->getSchemaManager()->listTableNames()
+                );
+            } catch (\PDOException $e) {
+                $this->dbCheckCache = false;
+            }
+        }
+
+        return $this->dbCheckCache;
     }
 
     /**
@@ -67,6 +97,10 @@ class ConfigModelManager
      */
     public function findModel($className, $fieldName = null)
     {
+        if (in_array($className, $this->ignoreModel)) {
+            return false;
+        }
+
         $cacheKey = $className . $fieldName;
 
         if ($this->localCache->containsKey($cacheKey)) {

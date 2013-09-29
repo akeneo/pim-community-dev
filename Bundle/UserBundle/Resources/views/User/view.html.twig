@@ -1,13 +1,22 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroTagBundle::macros.html.twig' as _tag %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroEmailBundle::macros.html.twig' as Email %}
+{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 
-{% set format = oro_config_value('oro_user.name_format') %}
+{% set gridId = 'users-email-grid' %}
+{% block head_script %}
+    {{ parent() }}
+    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
+{% endblock %}
+
+{% set format = oro_config_value('oro_locale.name_format') %}
 {% oro_title_set({params : {"%username%": entity.fullname(format)|default('N/A') }}) %}
-{% set entityClass = 'Oro_Bundle_UserBundle_Entity_User' %}
+{% set audit_entity_class = 'Oro_Bundle_UserBundle_Entity_User' %}
 {% macro api_data_block(user) %}
 <div class="horizontal">
     <strong class="label label-info">{{ user.api ? user.api.apiKey : 'N/A' }}</strong>
-    {% if resource_granted('oro_user_user_apigen') %}
+    {% if resource_granted('oro_user_user_update') %}
         <a class="btn btn-small no-hash" id="btn-apigen" href="{{ path('oro_user_apigen', { id: user.id }) }}"
            data-title="{{ 'Generate key'|trans }}" data-message="{{ 'Generate key was successful. New key:'|trans }}">
             {{ 'Generate key'|trans }}
@@ -17,8 +26,12 @@
 {% endmacro %}
 
 {% block navButtons %}
-    {% if resource_granted('oro_user_user_update') %}
-        {{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
+    {% if editRoute is defined %}
+        {{ UI.button({'path' : path(editRoute), 'iClass' : 'icon-edit ', 'title' : 'Edit profile', 'label' : 'Edit'}) }}
+    {% else %}
+        {% if resource_granted('oro_user_user_update') %}
+            {{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
+        {% endif %}
     {% endif %}
     {% if resource_granted('oro_user_user_delete') and entity.id!=app.user.id %}
         {{ UI.deleteButton({
@@ -27,7 +40,8 @@
             'aCss': 'no-hash remove-button',
             'id': 'btn-remove-user',
             'dataId': entity.id,
-            'dataMessage': 'Are you sure you want to delete this user?',
+            'dataMessage': 'Are you sure you want to delete this user?'|trans,
+            'successMessage': 'User deleted'|trans,
             'title': 'Delete user',
             'label': 'Delete'
         }) }}
@@ -38,7 +52,7 @@
     {% set breadcrumbs = {
         'entity':      entity,
         'indexPath':   path('oro_user_index'),
-        'indexLabel': 'Users',
+        'indexLabel': 'Users'|trans,
         'entityTitle': entity.fullname(format)|default('N/A'),
         'hasAvatar':   true,
         'imagePath':   entity.imagePath,
@@ -60,56 +74,63 @@
 
 {% block stats %}
     {{ parent() }}
-    <li>{{ 'Last logged in'|trans }}: {{ entity.lastLogin ? UI.time(entity.lastLogin) : 'N/A' }}</li>
+    <li>{{ 'Last logged in'|trans }}: {{ entity.lastLogin ? Locale.time(entity.lastLogin) : 'N/A' }}</li>
     <li>{{ 'Login count'|trans }}: {{ entity.loginCount|default(0) }}</li>
 {% endblock stats %}
 
 {% block content_data %}
   <div class="user-profile-cols">
-    {% set attributes = {} %}
-    {% for value in entity|getAttributes() %}
-        {% set attributes = attributes | merge([UI.flexibleAttributeRow(value)]) %}
-    {% endfor %}
-
     {% set id = 'user-profile' %}
 
-    {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'}, entity.emails|length ? {data: entity.emails, field:'email'} : {})] %}
+    {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'|trans}, entity.emails|length ? {data: entity.emails, field:'email'} : {})] %}
     {% if resource_granted('oro_tag_view_tag_cloud') %}
-        {% set dataSubBlocks = dataSubBlocks|merge([UI.renderAttribute('Tags', _tag.renderView(entity))]) %}
+        {% set dataSubBlocks = dataSubBlocks|merge([UI.renderAttribute('Tags'|trans, _tag.renderView(entity))]) %}
     {% endif %}
 
-    {% set data = {
-        'dataBlocks':
-            [
+    {#{{ render(controller('OroEmailBundle:Email:activities', {'emails': entity.emails})) }}#}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [
                 {
-                    'title': 'General',
-                    'class': 'active',
-                    'subblocks': [
-                        {
-                            'title': 'Basic Information',
-                            'data': [
-                                UI.attibuteRow('User name', entity.username),
-                                UI.attibuteRow('First name', entity.firstname),
-                                UI.attibuteRow('Last name', entity.lastname),
-                                UI.attibuteRow('Birthday', entity.birthday ? UI.date(entity.birthday) : 'N/A'),
-                                UI.renderAttribute('API key', _self.api_data_block(entity))
-                            ]
-                        },
-                        {
-                            'title': 'Contact Information',
-                            'data': dataSubBlocks
-                        }
+                    'title': 'Basic Information'|trans,
+                    'data': [
+                        UI.attibuteRow('User name'|trans, entity.username),
+                        UI.attibuteRow('First name'|trans, entity.firstname),
+                        UI.attibuteRow('Last name'|trans, entity.lastname),
+                        UI.attibuteRow('Birthday'|trans, entity.birthday ? Locale.date(entity.birthday) : 'N/A'),
+                        UI.renderAttribute('API key'|trans, _self.api_data_block(entity))
                     ]
                 },
                 {
-                    'title': 'Additional data',
-                    'subblocks': [
-                        {'title': null, 'data': attributes}
-                    ]
+                'title': 'Contact Information'|trans,
+                'data': dataSubBlocks
                 }
             ]
         }
+    ]
     %}
+
+    {% if resource_granted('oro_email_view') %}
+        {% set dataBlocks = dataBlocks|merge
+            (
+                    [{
+                        'title': 'User emails'|trans,
+                        'subblocks': [
+                            {
+                                'title': '',
+                                'useSpan': false,
+                                'data': [UI.gridBlock(gridId), Email.renderJs()]
+                            }
+                        ]
+                    }]
+            )
+        %}
+    {% endif %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
   </div>
 {% endblock content_data %}

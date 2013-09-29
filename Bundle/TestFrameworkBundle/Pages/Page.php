@@ -51,7 +51,7 @@ class Page
      */
     public function __call($name, $arguments)
     {
-        if (preg_match('/open(.*)/i', "{$name}", $result) > 0) {
+        if (preg_match('/open(.+)/i', "{$name}", $result) > 0) {
             $class = __NAMESPACE__ . '\\Objects\\' . $result[1];
             $class = new \ReflectionClass($class);
             return $class->newInstanceArgs(array_merge(array($this->test), $arguments));

@@ -201,13 +201,13 @@ class EmailRendererTest extends \PHPUnit_Framework_TestCase
         $renderer->expects($this->at(0))
             ->method('render')
             ->with(
-                '{% verbatim %}'.strip_tags($content).'{% endverbatim %}',
+                strip_tags($content),
                 array_merge($templateParams, array('user' => $this->user))
             );
         $renderer->expects($this->at(1))
             ->method('render')
             ->with(
-                '{% verbatim %}'.$subject.'{% endverbatim %}',
+                $subject,
                 array_merge($templateParams, array('user' => $this->user))
             );
 
@@ -215,6 +215,36 @@ class EmailRendererTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInternalType('array', $result);
         $this->assertCount(2, $result);
+    }
+
+
+    /**
+     * Compile template preview test
+     */
+    public function testCompilePreview()
+    {
+        $this->cache
+            ->expects($this->once())
+            ->method('fetch')
+            ->with($this->cacheKey)
+            ->will($this->returnValue(serialize(array('somekey' => array()))));
+
+        $content = 'test content <a href="sdfsdf">asfsdf</a> {{ entity.name }}';
+
+        $emailTemplate = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailTemplate');
+        $emailTemplate->expects($this->once())
+            ->method('getContent')
+            ->will($this->returnValue($content));
+        $emailTemplate->expects($this->once())
+            ->method('getType')
+            ->will($this->returnValue('html'));
+
+        $renderer = $this->getRendererInstance();
+
+        $renderer->expects($this->at(0))
+            ->method('render')
+            ->with('{% verbatim %}' . $content . '{% endverbatim %}');
+        $renderer->compilePreview($emailTemplate);
     }
 
     /**

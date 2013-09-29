@@ -14,7 +14,7 @@ class DbPing implements PeriodicInterface
     /**
      * @param \PDO $pdo A \PDO instance, same as used by session handler
      */
-    public function __construct(\PDO $pdo)
+    public function __construct(\PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
@@ -24,8 +24,10 @@ class DbPing implements PeriodicInterface
      */
     public function tick()
     {
-        $stmt = $this->pdo->prepare("SELECT 1");
+        if ($this->pdo instanceof \PDO) {
+            $stmt = $this->pdo->prepare("SELECT 1");
 
-        $stmt->execute();
+            $stmt->execute();
+        }
     }
 }

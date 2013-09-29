@@ -13,6 +13,8 @@ use FOS\Rest\Util\Codes;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 use Oro\Bundle\WindowsBundle\Entity\WindowsState;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * @RouteResource("windows")

@@ -1,8 +1,11 @@
 <?php
+
 namespace Oro\Bundle\SearchBundle\Controller\Api;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 class SoapController extends ContainerAware
 {
@@ -12,6 +15,8 @@ class SoapController extends ContainerAware
      * @Soap\Param("offset", phpType = "int")
      * @Soap\Param("max_results", phpType = "int")
      * @Soap\Result(phpType = "Oro\Bundle\SearchBundle\Query\Result")
+     *
+     * @AclAncestor("oro_search")
      */
     public function searchAction($search, $offset = 0, $max_results = 0)
     {
@@ -28,6 +33,8 @@ class SoapController extends ContainerAware
      * @Soap\Method("advancedSearch")
      * @Soap\Param("query", phpType = "string")
      * @Soap\Result(phpType = "Oro\Bundle\SearchBundle\Query\Result")
+     *
+     * @AclAncestor("oro_search")
      */
     public function advancedSearchAction($query)
     {

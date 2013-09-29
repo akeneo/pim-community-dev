@@ -4,7 +4,7 @@ namespace Oro\Bundle\UserBundle\Controller\Api\Soap;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Oro\Bundle\SoapBundle\Controller\Api\Soap\FlexibleSoapController;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 class UserController extends FlexibleSoapController
 {
@@ -13,7 +13,7 @@ class UserController extends FlexibleSoapController
      * @Soap\Param("page", phpType="int")
      * @Soap\Param("limit", phpType="int")
      * @Soap\Result(phpType="Oro\Bundle\UserBundle\Entity\User[]")
-     * @AclAncestor("oro_user_user_list")
+     * @AclAncestor("oro_user_user_view")
      */
     public function cgetAction($page = 1, $limit = 10)
     {
@@ -75,7 +75,7 @@ class UserController extends FlexibleSoapController
      * @Soap\Method("getUserRoles")
      * @Soap\Param("id", phpType="int")
      * @Soap\Result(phpType="Oro\Bundle\UserBundle\Entity\Role[]")
-     * @AclAncestor("oro_user_user_roles")
+     * @AclAncestor("oro_user_role_view")
      */
     public function getRolesAction($id)
     {
@@ -86,24 +86,11 @@ class UserController extends FlexibleSoapController
      * @Soap\Method("getUserGroups")
      * @Soap\Param("id", phpType="int")
      * @Soap\Result(phpType="Oro\Bundle\UserBundle\Entity\Group[]")
-     * @AclAncestor("oro_user_user_groups")
+     * @AclAncestor("oro_user_group_view")
      */
     public function getGroupsAction($id)
     {
         return $this->getEntity($id)->getGroups();
-    }
-
-    /**
-     * @Soap\Method("getUserAcl")
-     * @Soap\Param("id", phpType="int")
-     * @Soap\Result(phpType="string[]")
-     * @AclAncestor("oro_user_user_acl")
-     */
-    public function getAclAction($id)
-    {
-        return $this->getAclManager()->getAclForUser(
-            $this->getEntity($id)
-        );
     }
 
     /**
@@ -125,14 +112,6 @@ class UserController extends FlexibleSoapController
         }
 
         return $entity;
-    }
-
-    /**
-     * @return \Oro\Bundle\UserBundle\Acl\Manager
-     */
-    protected function getAclManager()
-    {
-        return $this->container->get('oro_user.acl_manager');
     }
 
     /**

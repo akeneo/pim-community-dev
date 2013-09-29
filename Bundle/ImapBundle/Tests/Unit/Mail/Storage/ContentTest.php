@@ -10,11 +10,13 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     {
         $content = 'testContent';
         $contentType = 'testContentType';
+        $contentTransferEncoding = 'testContentTransferEncoding';
         $encoding = 'testEncoding';
-        $obj = new Content($content, $contentType, $encoding);
+        $obj = new Content($content, $contentType, $contentTransferEncoding, $encoding);
 
         $this->assertEquals($content, $obj->getContent());
         $this->assertEquals($contentType, $obj->getContentType());
+        $this->assertEquals($contentTransferEncoding, $obj->getContentTransferEncoding());
         $this->assertEquals($encoding, $obj->getEncoding());
     }
 }

@@ -1,0 +1,66 @@
+title:                    Oro Application installation
+
+welcome:
+    header:               Welcome to Oro Installer
+    content:              This wizard will guide you through the setup process.
+    button:               Begin Installation
+
+switch:
+    off:                  off
+    on:                   on
+
+form:
+    configuration:
+        database:
+            header:       MySQL database connection
+            driver:       Driver
+            host:         Host
+            port:         Port
+            user:         User
+            password:     Password
+            name:         Name
+        mailer:
+            header:       Mailer settings
+            host:         Host
+            user:         User
+            password:     Password
+            transport:    Transport
+        system:
+            header:       System settings
+            secret:       Secret
+            locale:       Locale
+        websocket:
+            header:       Websocket connection
+            host:         Host
+            port:         Port
+    setup:
+        email:            Email
+        username:         Username
+        firstname:        First name
+        lastname:         Last name
+        password:         Password
+        password_re:      Re-enter password
+        load_fixtures:    Load fixtures
+
+process:
+    step:
+        check:
+            header:       System requirements check
+            invalid:      Some of the requirements are not met and the installation process cannot continue. Please check below for the minimum requirements to Install Oro.
+            table:
+                current:  Current
+                required: Required
+        configure:
+            header:       Configuration
+        setup:
+            header:       Administration setup
+        final:
+            header:       Finish
+            greeting:     Success!!!
+            content:      You are now ready to start using Oro.<br>For help please join our community <a href="http://www.orocrm.com/forums">forums</a>.
+    button:
+        back:             Back
+        next:             Next
+        install:          Install
+        refresh:          Refresh
+        finish:           Launch application

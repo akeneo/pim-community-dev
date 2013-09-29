@@ -151,9 +151,9 @@ class Email
     protected $folder;
 
     /**
-     * @var EmailBody
+     * @var ArrayCollection
      *
-     * @ORM\OneToOne(targetEntity="EmailBody", mappedBy="header", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="EmailBody", mappedBy="header", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Exclude
      */
     protected $emailBody;
@@ -162,6 +162,7 @@ class Email
     {
         $this->importance = self::NORMAL_IMPORTANCE;
         $this->recipients = new ArrayCollection();
+        $this->emailBody = new ArrayCollection();
     }
 
     /**
@@ -480,7 +481,11 @@ class Email
      */
     public function getEmailBody()
     {
-        return $this->emailBody;
+        if ($this->emailBody->count() === 0) {
+            return null;
+        }
+
+        return $this->emailBody->first();
     }
 
     /**
@@ -491,7 +496,11 @@ class Email
      */
     public function setEmailBody(EmailBody $emailBody)
     {
-        $this->emailBody = $emailBody;
+        if ($this->emailBody->count() > 0) {
+            $this->emailBody->clear();
+        }
+        $emailBody->setHeader($this);
+        $this->emailBody->add($emailBody);
 
         return $this;
     }

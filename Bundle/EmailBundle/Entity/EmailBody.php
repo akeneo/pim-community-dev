@@ -71,9 +71,9 @@ class EmailBody
     protected $persistent;
 
     /**
-     * @var EmailOrigin
+     * @var Email
      *
-     * @ORM\OneToOne(targetEntity="Email", inversedBy="emailBody")
+     * @ORM\ManyToOne(targetEntity="Email", inversedBy="emailBody")
      * @ORM\JoinColumn(name="email_id", referencedColumnName="id")
      * @Exclude
      */

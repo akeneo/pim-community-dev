@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block oro_type_date_range_filter_js %}
-    {% set dateConstantPrefix = 'Oro\\Bundle\\FilterBundle\\Form\\Type\\Filter\\DateRangeFilterType::' %}
+    {% set widgetOptions = formView.vars.widget_options|merge({dateFormat: oro_config_jquery_dateformat() }) %}
 
     new (DateFilter.extend({
         'name':    {{ formView.vars.name|json_encode|raw }},
@@ -26,12 +26,12 @@
         'enabled': {{ formView.vars.show_filter|json_encode|raw }},
         'choices': {{ formView.children.type.vars.choices|oro_filter_choices|json_encode|raw }},
         'typeValues': {{ formView.vars.type_values|json_encode|raw }},
-        'externalWidgetOptions': {{ formView.vars.widget_options|json_encode|raw }}
+        'externalWidgetOptions': {{ widgetOptions|json_encode|raw }}
     }))
 {% endblock %}
 
 {% block oro_type_datetime_range_filter_js %}
-    {% set dateTimeConstantPrefix = 'Oro\\Bundle\\FilterBundle\\Form\\Type\\Filter\\DateTimeRangeFilterType::' %}
+    {% set widgetOptions = formView.vars.widget_options|merge({dateFormat: oro_config_jquery_dateformat(), timeFormat: oro_config_jquery_timeformat()}) %}
 
     new (DatetimeFilter.extend({
         'name':    {{ formView.vars.name|json_encode|raw }},
@@ -39,16 +39,17 @@
         'enabled': {{ formView.vars.show_filter|json_encode|raw }},
         'choices': {{ formView.children.type.vars.choices|oro_filter_choices|json_encode|raw }},
         'typeValues': {{ formView.vars.type_values|json_encode|raw }},
-        'externalWidgetOptions': {{ formView.vars.widget_options|json_encode|raw }}
+        'externalWidgetOptions': {{ widgetOptions|json_encode|raw }}
     }))
 {% endblock %}
 
 {% block oro_type_select_filter_js %}
     new (SelectFilter.extend({
-        'name':    {{ formView.vars.name|json_encode|raw }},
-        'label':   {{ formView.vars.label|json_encode|raw }},
-        'enabled': {{ formView.vars.show_filter|json_encode|raw }},
-        'options': {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
+        'name':             {{ formView.vars.name|json_encode|raw }},
+        'label':            {{ formView.vars.label|json_encode|raw }},
+        'enabled':          {{ formView.vars.show_filter|json_encode|raw }},
+        'populateDefault':  {{ formView.vars.populate_default|json_encode|raw }},
+        'options':          {{ formView.children.value.vars.choices|oro_filter_choices|json_encode|raw }}
     }))
 {% endblock %}
 

@@ -54,7 +54,15 @@ function(_, Backbone, BackbonePageableCollection, app) {
             pageSize: 'p',
             sorters: 's',
             filters: 'f',
-            gridName: 't'
+            gridName: 't',
+            gridView: 'v'
+        },
+
+        /**
+         * @property {Object}
+         */
+        additionalParameters: {
+            view: 'gridView'
         },
 
         /**
@@ -167,6 +175,25 @@ function(_, Backbone, BackbonePageableCollection, app) {
                 );
             }
             return data;
+        },
+
+        /**
+         * Adds additional parameters to state
+         *
+         * @param {Object} state
+         * @return {Object}
+         */
+        processAdditionalParams: function (state) {
+            var state = app.deepClone(state);
+            state.parameters = state.parameters || {};
+
+            _.each(this.additionalParameters, _.bind(function(value, key) {
+                if (!_.isUndefined(state[value])) {
+                    state.parameters[key] = state[value]
+                }
+            }, this));
+
+            return state;
         },
 
         /**
@@ -401,6 +428,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @return {Object}
          */
         processQueryParams: function(data, state) {
+            state = this.processAdditionalParams(state);
             var pageablePrototype = PageableCollection.prototype;
 
             // map params except directions

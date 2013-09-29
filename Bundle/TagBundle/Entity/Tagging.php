@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\TagBundle\Entity;
 
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\UserBundle\Entity\User;
@@ -117,7 +118,7 @@ class Tagging implements ContainAuthorInterface
      */
     public function setResource(Taggable $resource)
     {
-        $this->entityName = get_class($resource);
+        $this->entityName = ClassUtils::getClass($resource);
         $this->recordId = $resource->getTaggableId();
     }
 

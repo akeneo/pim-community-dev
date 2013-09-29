@@ -8,6 +8,7 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.3.*",
+        "oro/entity-config-bundle": "dev-master",
         "oro/ui-bundle": "dev-master",
         "oro/grid-bundle": "dev-master",
         "oro/navigation-bundle": "dev-master",

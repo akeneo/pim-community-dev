@@ -2,7 +2,10 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Provider;
 
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\PersistentCollection;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
@@ -13,7 +16,6 @@ use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ConfigProvider implements ConfigProviderInterface
 {
@@ -62,15 +64,6 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * @param $className
-     * @return bool
-     */
-    public function isConfigurable($className)
-    {
-        return $this->configManager->isConfigurable($this->getClassName($className));
-    }
-
-    /**
      * @param      $className
      * @param null $fieldName
      * @param null $fieldType
@@ -84,13 +77,28 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
+     * Clone Config id with ConfigProvider scope
+     *
+     * @param ConfigIdInterface $configId
+     * @return ConfigIdInterface
+     */
+    public function copyId(ConfigIdInterface $configId)
+    {
+        if ($configId instanceof FieldConfigIdInterface) {
+            return $this->getId($configId->getClassName(), $configId->getFieldName(), $configId->getFieldType());
+        } else {
+            return $this->getId($configId->getClassName());
+        }
+    }
+
+    /**
      * @param      $className
      * @param null $fieldName
      * @return bool
      */
     public function hasConfig($className, $fieldName = null)
     {
-        return $this->configManager->hasConfig($this->getId($className, $fieldName));
+        return $this->configManager->hasConfig($this->getClassName($className), $fieldName);
     }
 
     /**
@@ -109,7 +117,7 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function getConfigById(ConfigIdInterface $configId)
     {
-        return $this->configManager->getConfig($configId);
+        return $this->configManager->getConfig($this->copyId($configId));
     }
 
     /**
@@ -121,10 +129,10 @@ class ConfigProvider implements ConfigProviderInterface
     {
         $config = new Config($configId);
         if ($configId instanceof FieldConfigIdInterface) {
-            $type = PropertyConfigContainer::TYPE_FIELD;
+            $type          = PropertyConfigContainer::TYPE_FIELD;
             $defaultValues = $this->getPropertyConfig()->getDefaultValues($type, $configId->getFieldType());
         } else {
-            $type = PropertyConfigContainer::TYPE_ENTITY;
+            $type          = PropertyConfigContainer::TYPE_ENTITY;
             $defaultValues = $this->getPropertyConfig()->getDefaultValues($type);
         }
 
@@ -145,6 +153,10 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function getIds($className = null)
     {
+        if ($className) {
+            $className = $this->getClassName($className);
+        }
+
         return $this->configManager->getIds($this->getScope(), $className);
     }
 
@@ -194,15 +206,21 @@ class ConfigProvider implements ConfigProviderInterface
 
         if ($entity instanceof PersistentCollection) {
             $className = $entity->getTypeClass()->getName();
+        } elseif (is_string($entity)) {
+            $className = ClassUtils::getRealClass($entity);
         } elseif (is_object($entity)) {
-            $className = get_class($entity);
+            $className = ClassUtils::getClass($entity);
         } elseif (is_array($entity) && count($entity) && is_object(reset($entity))) {
-            $className = get_class(reset($entity));
+            $className = ClassUtils::getClass(reset($entity));
         }
 
         if (!is_string($className)) {
             throw new RuntimeException(
-                'ConfigProvider::getClassName expects Object, PersistentCollection array of entities or string'
+                sprintf(
+                    'ConfigProvider::getClassName expects Object, ' .
+                    'PersistentCollection array of entities or string, "%s" given',
+                    gettype($className)
+                )
             );
         }
 

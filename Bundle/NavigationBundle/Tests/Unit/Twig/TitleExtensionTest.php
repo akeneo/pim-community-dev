@@ -26,6 +26,7 @@ class TitleExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $functions = $this->extension->getFunctions();
         $this->assertArrayHasKey('oro_title_render', $functions);
+        $this->assertArrayHasKey('oro_title_render_short', $functions);
         $this->assertArrayHasKey('oro_title_render_serialized', $functions);
     }
 
@@ -36,40 +37,128 @@ class TitleExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testRenderSerialized()
     {
-        $this->service->expects($this->once())
-                      ->method('getSerialized');
+        $expectedResult = 'expected';
 
-        $this->extension->renderSerialized();
-    }
-
-    public function testRenderStored()
-    {
-        $data = array();
-
-        $this->service->expects($this->once())
-            ->method('render')
-            ->with($this->equalTo($data));
-
-        $this->extension->render($data);
-    }
-
-    public function testSet()
-    {
-        $data = array();
-
-        $this->service->expects($this->once())
+        $this->service->expects($this->at(0))
             ->method('setData')
-            ->with($this->equalTo($data));
+            ->will($this->returnSelf());
 
-        $this->extension->set($data);
+        $this->service->expects($this->at(1))->method('getSerialized')->will($this->returnValue($expectedResult));
+
+        $this->assertEquals($expectedResult, $this->extension->renderSerialized());
     }
 
     public function testRender()
     {
-        $this->service->expects($this->once())
-            ->method('render');
+        $expectedResult = 'expected';
+        $title = 'title';
 
-        $this->extension->render();
+        $this->service->expects($this->at(0))
+            ->method('setData')
+            ->with(array())
+            ->will($this->returnSelf());
+
+        $this->service->expects($this->at(1))
+            ->method('render')
+            ->with(array(), $title, null, null, true)
+            ->will($this->returnValue($expectedResult));
+
+        $this->assertEquals($expectedResult, $this->extension->render($title));
+    }
+
+    public function testRenderShort()
+    {
+        $expectedResult = 'expected';
+        $title = 'title';
+
+        $this->service->expects($this->at(0))
+            ->method('setData')
+            ->with(array())
+            ->will($this->returnSelf());
+
+        $this->service->expects($this->at(1))
+            ->method('render')
+            ->with(array(), $title, null, null, true, true)
+            ->will($this->returnValue($expectedResult));
+
+        $this->assertEquals($expectedResult, $this->extension->renderShort($title));
+    }
+
+    /**
+     * @dataProvider renderAfterSetDataProvider
+     * @param array $data
+     * @param array $expectedData
+     */
+    public function testRenderAfterSet(array $data, array $expectedData)
+    {
+        foreach ($data as $arguments) {
+            list($data, $templateScope) = array_pad($arguments, 2, null);
+            $this->extension->set($data, $templateScope);
+        }
+
+        $expectedResult = 'expected';
+        $title = 'test';
+
+        $this->service->expects($this->at(0))
+            ->method('setData')
+            ->with($expectedData)
+            ->will($this->returnSelf());
+
+        $this->service->expects($this->at(1))
+            ->method('render')
+            ->with(array(), $title, null, null, true)
+            ->will($this->returnValue($expectedResult));
+
+        $this->assertEquals($expectedResult, $this->extension->render($title));
+    }
+
+    public function renderAfterSetDataProvider()
+    {
+        return array(
+            'override options in same template' => array(
+                array(
+                    array(array('k1' => 'v1')),
+                    array(array('k1' => 'v2')),
+                    array(array('k2' => 'v3')),
+                ),
+                array('k1' => 'v2', 'k2' => 'v3'),
+            ),
+            'override options in different template' => array(
+                array(
+                    array(array('k1' => 'v1'), 'child_template'),
+                    array(array('k1' => 'v2'), 'child_template'),
+                    array(array('k3' => 'v3'), 'child_template'),
+                    array(array('k1' => 'v4'), 'parent_template'),
+                    array(array('k2' => 'v5'), 'parent_template'),
+                    array(array('k3' => 'v6'), 'parent_template'),
+                    array(array('k4' => 'v7'), 'parent_template'),
+                ),
+                array('k1' => 'v2', 'k2' => 'v5', 'k3' => 'v3', 'k4' => 'v7'),
+            ),
+            'empty data' => array(
+                array(),
+                array(),
+            ),
+        );
+    }
+
+    public function testSet()
+    {
+        $fooData = array('k' => 'foo');
+        $barData = array('k' => 'bar');
+
+        $this->service->expects($this->never())->method('setData');
+
+        $this->extension->set($fooData);
+        $this->extension->set($barData);
+
+        $this->assertAttributeEquals(
+            array(
+                md5(__FILE__) => array($fooData, $barData)
+            ),
+            'templateFileTitleDataStack',
+            $this->extension
+        );
     }
 
     public function testTokenParserDeclarations()
