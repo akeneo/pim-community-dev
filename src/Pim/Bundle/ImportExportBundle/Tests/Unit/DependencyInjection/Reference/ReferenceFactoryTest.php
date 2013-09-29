@@ -5,12 +5,17 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\DependencyInjection\Reference
 use Pim\Bundle\ImportExportBundle\DependencyInjection\Reference\ReferenceFactory;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ReferenceFactoryTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Test related method
+     */
     public function testCreateReference()
     {
         $factory = new ReferenceFactory();

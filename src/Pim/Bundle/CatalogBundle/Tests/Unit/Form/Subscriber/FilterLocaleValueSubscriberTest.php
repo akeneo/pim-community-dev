@@ -5,6 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\Subscriber;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\FilterLocaleValueSubscriber;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -14,21 +16,33 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
     const CURRENT_LOCALE = 'fr_FR';
     const OTHER_LOCALE   = 'en_US';
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->target = new FilterLocaleValueSubscriber(self::CURRENT_LOCALE);
     }
 
+    /**
+     * Test related method
+     */
     public function testInstandOfEventSubscriberInterface()
     {
         $this->assertInstanceOf('Symfony\Component\EventDispatcher\EventSubscriberInterface', $this->target);
     }
 
+    /**
+     * Test related method
+     */
     public function testGetSubscribedEvents()
     {
         $this->assertEquals(array('form.pre_set_data' => 'preSetData'), $this->target->getSubscribedEvents());
     }
 
+    /**
+     * Test related method
+     */
     public function testPreSetDataWithNullData()
     {
         $form  = $this->getFormMock();
@@ -40,6 +54,9 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->target->preSetData($event);
     }
 
+    /**
+     * Test related method
+     */
     public function testPreSetData()
     {
         $data = array(
@@ -58,6 +75,12 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->target->preSetData($event);
     }
 
+    /**
+     * @param mixed $data
+     * @param mixed $form
+     *
+     * @return \Symfony\Component\Form\FormEvent
+     */
     private function getEventMock($data, $form)
     {
         $event = $this
@@ -76,6 +99,9 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         return $event;
     }
 
+    /**
+     * @return \Symfony\Component\Form\Form
+     */
     private function getFormMock()
     {
         return $this
@@ -84,6 +110,12 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @param mixed $attribute
+     * @param mixed $locale
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     */
     private function getProductValueMock($attribute, $locale)
     {
         $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
@@ -99,6 +131,11 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         return $value;
     }
 
+    /**
+     * @param boolean $translatable
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
     private function getProductAttributeMock($translatable = true)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
