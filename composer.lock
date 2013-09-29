@@ -244,27 +244,27 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapBundle.git",
-                "reference": "2dfe46ac5d4d1a7a68b49c07df87ffbb6949e3a7"
+                "reference": "7b81dd6fc4a48ef7d8ead47ecc18e60a3bd0fb60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapBundle/zipball/2dfe46ac5d4d1a7a68b49c07df87ffbb6949e3a7",
-                "reference": "2dfe46ac5d4d1a7a68b49c07df87ffbb6949e3a7",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapBundle/zipball/7b81dd6fc4a48ef7d8ead47ecc18e60a3bd0fb60",
+                "reference": "7b81dd6fc4a48ef7d8ead47ecc18e60a3bd0fb60",
                 "shasum": ""
             },
             "require": {
                 "ass/xmlsecurity": "dev-master",
-                "besimple/soap-common": "self.version",
+                "besimple/soap-common": "0.2.*",
                 "ext-soap": "*",
                 "php": ">=5.3.0",
-                "symfony/http-foundation": ">=2.0,<2.4-dev",
+                "symfony/framework-bundle": "~2.0",
                 "zendframework/zend-mail": "2.1.*",
                 "zendframework/zend-mime": "2.1.*",
                 "zendframework/zend-soap": "2.1.*"
             },
             "suggest": {
-                "besimple/soap-client": "dev-master",
-                "besimple/soap-server": "dev-master"
+                "besimple/soap-client": "0.2.*",
+                "besimple/soap-server": "0.2.*"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -302,7 +302,7 @@
                 "soap",
                 "soap-bundle"
             ],
-            "time": "2013-08-16 15:18:31"
+            "time": "2013-09-27 19:35:39"
         },
         {
             "name": "besimple/soap-common",
@@ -311,12 +311,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapCommon.git",
-                "reference": "653e1f23c49dd8bbf7cd7226697dce6dffa68663"
+                "reference": "e9a8384121e4db63ebcbf791df8c177c64f4bc4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapCommon/zipball/653e1f23c49dd8bbf7cd7226697dce6dffa68663",
-                "reference": "653e1f23c49dd8bbf7cd7226697dce6dffa68663",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapCommon/zipball/e9a8384121e4db63ebcbf791df8c177c64f4bc4a",
+                "reference": "e9a8384121e4db63ebcbf791df8c177c64f4bc4a",
                 "shasum": ""
             },
             "require": {
@@ -373,16 +373,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BeSimple/BeSimpleSoapServer.git",
-                "reference": "36d5d57db680e5e4efbd99808cccefc525772454"
+                "reference": "b22fd13cadcd5a75945e650efc736d566fb29492"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapServer/zipball/36d5d57db680e5e4efbd99808cccefc525772454",
-                "reference": "36d5d57db680e5e4efbd99808cccefc525772454",
+                "url": "https://api.github.com/repos/BeSimple/BeSimpleSoapServer/zipball/b22fd13cadcd5a75945e650efc736d566fb29492",
+                "reference": "b22fd13cadcd5a75945e650efc736d566fb29492",
                 "shasum": ""
             },
             "require": {
-                "besimple/soap-common": "self.version",
+                "besimple/soap-common": "0.2.*",
                 "ext-soap": "*",
                 "php": ">=5.3.0"
             },
@@ -422,7 +422,7 @@
                 "soap",
                 "soap-server"
             ],
-            "time": "2013-08-16 15:18:31"
+            "time": "2013-09-27 19:35:39"
         },
         {
             "name": "cboden/ratchet",
