@@ -14,6 +14,9 @@ use Pim\Bundle\ImportExportBundle\Validator\Constraints\ChannelValidator;
  */
 class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
@@ -22,11 +25,17 @@ class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->initialize($this->context);
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfConstraintValidator()
     {
         $this->assertInstanceOf('Symfony\Component\Validator\Constraints\ChoiceValidator', $this->validator);
     }
 
+    /**
+     * Test related method
+     */
     public function testValidChannel()
     {
         $this->manager->expects($this->any())
@@ -39,6 +48,9 @@ class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate('foo', new Channel());
     }
 
+    /**
+     * Test related method
+     */
     public function testInvalidChannel()
     {
         $this->manager->expects($this->any())
@@ -62,7 +74,12 @@ class ChannelValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate('foo', new Channel());
     }
 
-    private function getChannelManagerMock($channels = array())
+    /**
+     * Get channel manager mock
+     *
+     * @return \Pim\Bundle\CatalogBundle\Manager\ChannelManager
+     */
+    private function getChannelManagerMock()
     {
         $manager = $this
             ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
