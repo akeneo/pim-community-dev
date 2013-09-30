@@ -120,6 +120,10 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         if (isset($bundles['LiipImagineBundle'])) {
             $this->prependExtensionConfig($container, 'liip_imagine');
         }
+
+        if (isset($bundles['GenemuFormBundle'])) {
+            $this->prependExtensionConfig($container, 'genemu_form');
+        }
     }
 
     /**

@@ -68,10 +68,6 @@ services:
          tags:
              - { name: twig.extension }
 
-genemu_form:
-    select2: ~
-    autocomplete: ~
-
 oro_search:
     engine:                   orm
     realtime_update:          true
