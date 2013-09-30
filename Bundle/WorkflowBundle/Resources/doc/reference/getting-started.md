@@ -5,6 +5,7 @@ Table of Contents
 -----------------
  - [What is Workflow?](#what-is-workflow)
  - [Main Entities](#main-entities)
+ - [Entity and Wizard Workflows?](#entity-and-wizard-workflows)
  - [How it works?](#how-it-works)
  - [Configuration](#configuration)
 
