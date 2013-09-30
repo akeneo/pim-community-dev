@@ -15,17 +15,21 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->localeHelper = new LocaleHelper('en_US');
+        $localeManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $this->localeHelper = new LocaleHelper($localeManager, $securityContext, 'en_US');
     }
     /**
-     * Data provider for the localizedLabel method
+     * Data provider for the localeLabel method
      * Can only test for a user locale because locale helper use static property
      *
      * @static
      *
      * @return array
      */
-    public static function dataProviderForLocalizedLabel()
+    public static function dataProviderForLocaleLabel()
     {
         return array(
             'FR' => array(
@@ -68,12 +72,12 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
      * @param string $userLocaleCode
      * @param array  $expectedResults
      *
-     * @dataProvider dataProviderForLocalizedLabel
+     * @dataProvider dataProviderForLocaleLabel
      */
-    public function testGetLocalizedLabelFR($userLocaleCode, $expectedResults)
+    public function testGetLocaleLabelFR($userLocaleCode, $expectedResults)
     {
         foreach ($expectedResults as $code => $expectedResult) {
-            $this->assertEquals($expectedResult, $this->localeHelper->getLocalizedLabel($code, $userLocaleCode));
+            $this->assertEquals($expectedResult, $this->localeHelper->getLocaleLabel($code, $userLocaleCode));
         }
     }
 }

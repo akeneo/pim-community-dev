@@ -379,7 +379,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $helper->expects($this->any())
-            ->method('getLocalizedLabel')
+            ->method('getLocaleLabel')
             ->will($this->returnArgument(0));
         return $helper;
     }

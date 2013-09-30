@@ -58,6 +58,6 @@ class LocaleSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $data->setCode($this->localeHelper->getLocalizedLabel($data->getCode()));
+        $data->setCode($this->localeHelper->getLocaleLabel($data->getCode()));
     }
 }

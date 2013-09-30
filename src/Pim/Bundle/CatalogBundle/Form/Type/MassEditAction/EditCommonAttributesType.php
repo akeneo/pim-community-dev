@@ -85,7 +85,7 @@ class EditCommonAttributesType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         foreach ($view['locale']->vars['choices'] as $choice) {
-            $choice->label = $this->localeHelper->getLocalizedLabel($choice->label);
+            $choice->label = $this->localeHelper->getLocaleLabel($choice->label);
         }
 
         $view->vars['groups'] = $this->productFormView->getView();

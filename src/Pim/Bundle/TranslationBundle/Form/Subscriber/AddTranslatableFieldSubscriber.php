@@ -110,7 +110,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
                     $this->getOption('widget'),
                     $content !== null ? $content : '',
                     array(
-                        'label'           => $this->localeHelper->getLocalizedLabel($binded['locale']),
+                        'label'           => $this->localeHelper->getLocaleLabel($binded['locale']),
                         'required'        => in_array($binded['locale'], $this->getOption('required_locale')),
                         'mapped'          => false,
                         'auto_initialize' => false

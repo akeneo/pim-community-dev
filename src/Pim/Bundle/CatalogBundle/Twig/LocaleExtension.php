@@ -29,10 +29,22 @@ class LocaleExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'localized_label' => new \Twig_Function_Method($this, 'localizedLabel')
+            'locale_label' => new \Twig_Function_Method($this, 'localeLabel'),
+            'currency_symbol' => new \Twig_Function_Method($this, 'currencySymbol'),
+            'locale_currency' => new \Twig_Function_Method($this, 'localeCurrency'),
         );
     }
 
+    /**
+     * @return array
+     */
+    public function getFilters()
+    {
+        return array(
+            'flag' => new \Twig_Filter_Method($this, 'flag', array('is_safe' => array('html'))),
+        );
+    }
+    
     /**
      * Get displayed locale from locale code
      *
@@ -40,9 +52,24 @@ class LocaleExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function localizedLabel($code, $locale = null)
+    public function localeLabel($code, $locale = null)
     {
-        return $this->localeHelper->getLocalizedLabel($code, $locale);
+        return $this->localeHelper->getLocaleLabel($code, $locale);
+    }
+
+    public function currencySymbol($code, $locale = null)
+    {
+        return $this->localeHelper->getCurrencySymbol($code, $locale);
+    }
+
+    public function localeCurrency()
+    {
+        return $this->localeHelper->getLocaleCurrency();
+    }
+
+    public function flag($code, $locale = null)
+    {
+        return $this->localeHelper->getFlag($code, $locale);
     }
 
     /**

@@ -218,7 +218,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
             ->disableOriginalConstructor()
             ->getMock();
         $helper->expects($this->any())
-            ->method('getLocalizedLabel')
+            ->method('getLocaleLabel')
             ->will($this->returnArgument(0));
         return $helper;
     }
