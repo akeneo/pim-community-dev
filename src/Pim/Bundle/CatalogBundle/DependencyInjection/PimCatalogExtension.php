@@ -3,10 +3,12 @@
 namespace Pim\Bundle\CatalogBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Parser as YamlParser;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -14,7 +16,7 @@ use Symfony\Component\Finder\Finder;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class PimCatalogExtension extends Extension
+class PimCatalogExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * {@inheritdoc}
@@ -70,5 +72,70 @@ class PimCatalogExtension extends Extension
         $exceptionMessages = $container->getParameter('fos_rest.exception.messages');
         $exceptionMessages['Pim\Bundle\CatalogBundle\Exception\DeleteException'] = true;
         $container->setParameter('fos_rest.exception.messages', $exceptionMessages);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (isset($bundles['TwigBundle'])) {
+            $this->prependExtensionConfig($container, 'twig');
+        }
+    }
+
+    /**
+     * Prepend configuration of a bundle to the container
+     *
+     * @param ContainerBuilder $container
+     * @param string           $extensionAlias
+     *
+     */
+    private function prependExtensionConfig(ContainerBuilder $container, $extensionAlias)
+    {
+        $container->prependExtensionConfig(
+            $extensionAlias,
+            $this->getBundleConfig($extensionAlias)
+        );
+    }
+
+    /**
+     * Get the bundle configuration from a file
+     *
+     * @param string $extensionAlias
+     *
+     * @return array
+     */
+    private function getBundleConfig($extensionAlias)
+    {
+        $configFile = realpath(
+            sprintf('%s/../Resources/config/bundles/%s.yml', __DIR__, $extensionAlias)
+        );
+
+        if (!is_file($configFile)) {
+            throw new \InvalidArgumentException(
+                sprintf('Could not load file %s', $configFile)
+            );
+        }
+
+        $yamlParser = new YamlParser();
+        $config = $yamlParser->parse(file_get_contents($configFile));
+
+        if (!array_key_exists($extensionAlias, $config)) {
+            $configKeys = array_keys($config);
+
+            throw new \RuntimeException(
+                sprintf(
+                    'Found file %s but it didn\'t start with "%s", got "%s" instead.',
+                    $configFile,
+                    $extensionAlias,
+                    reset($configKeys)
+                )
+            );
+        }
+
+        return $config[$extensionAlias];
     }
 }

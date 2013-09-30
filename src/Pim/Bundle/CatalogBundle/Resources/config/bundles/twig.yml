@@ -1,0 +1,5 @@
+twig:
+    globals:
+        bap:
+            layout:      ::base.html.twig
+            start_route: oro_default
