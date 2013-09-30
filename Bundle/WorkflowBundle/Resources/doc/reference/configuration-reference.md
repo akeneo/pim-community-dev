@@ -612,20 +612,15 @@ PhoneCall Entity
 namespace Acme\Bundle\DemoWorkflowBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Phone call entity
- *
  * @ORM\Table(name="acme_demo_workflow_phone_call")
  * @ORM\Entity
  */
 class PhoneCall
 {
     /**
-     * @var integer
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -633,29 +628,21 @@ class PhoneCall
     private $id;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="number", type="string", length=255)
      */
     private $number;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
 
     /**
-     * @var ArrayCollection
-     *
      * @ORM\OneToMany(targetEntity="PhoneConversation", mappedBy="call")
      **/
     private $conversations;
@@ -665,22 +652,11 @@ class PhoneCall
         $this->conversations = new ArrayCollection();
     }
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set number
-     *
-     * @param string $number
-     * @return PhoneCall
-     */
     public function setNumber($number)
     {
         $this->number = $number;
@@ -688,22 +664,11 @@ class PhoneCall
         return $this;
     }
 
-    /**
-     * Get number
-     *
-     * @return string
-     */
     public function getNumber()
     {
         return $this->number;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return PhoneCall
-     */
     public function setName($name)
     {
         $this->name = $name;
@@ -711,22 +676,11 @@ class PhoneCall
         return $this;
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * Set description
-     *
-     * @param string $description
-     * @return PhoneCall
-     */
     public function setDescription($description)
     {
         $this->description = $description;
@@ -734,21 +688,11 @@ class PhoneCall
         return $this;
     }
 
-    /**
-     * Get description
-     *
-     * @return string
-     */
     public function getDescription()
     {
         return $this->description;
     }
 
-    /**
-     * Get description
-     *
-     * @return ArrayCollection
-     */
     public function getConversations()
     {
         return $this->conversations;
@@ -766,16 +710,12 @@ namespace Acme\Bundle\DemoWorkflowBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Phone conversation entity
- *
  * @ORM\Table(name="acme_demo_workflow_phone_conversation")
  * @ORM\Entity
  */
 class PhoneConversation
 {
     /**
-     * @var integer
-     *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -783,50 +723,31 @@ class PhoneConversation
     private $id;
 
     /**
-     * @var PhoneCall
-     *
      * @ORM\ManyToOne(targetEntity="PhoneCall", inversedBy="conversations")
      * @ORM\JoinColumn(name="call_id", referencedColumnName="id")
      */
     private $call;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="result", type="string", length=255, nullable=true)
      */
     private $result;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="comment", type="string", length=255, nullable=true)
      */
     private $comment;
 
     /**
-     * @var boolean
-     *
      * @ORM\Column(name="successful", type="boolean", nullable=true)
      */
     private $successful;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set result
-     *
-     * @param string $result
-     * @return PhoneConversation
-     */
     public function setResult($result)
     {
         $this->result = $result;
@@ -834,22 +755,11 @@ class PhoneConversation
         return $this;
     }
 
-    /**
-     * Get result
-     *
-     * @return string
-     */
     public function getResult()
     {
         return $this->result;
     }
 
-    /**
-     * Set comment
-     *
-     * @param string $comment
-     * @return PhoneConversation
-     */
     public function setComment($comment)
     {
         $this->comment = $comment;
@@ -857,22 +767,11 @@ class PhoneConversation
         return $this;
     }
 
-    /**
-     * Get comment
-     *
-     * @return string
-     */
     public function getComment()
     {
         return $this->comment;
     }
 
-    /**
-     * Set successful
-     *
-     * @param boolean $successful
-     * @return PhoneConversation
-     */
     public function setSuccessful($successful)
     {
         $this->successful = $successful;
@@ -880,20 +779,11 @@ class PhoneConversation
         return $this;
     }
 
-    /**
-     * Is successful
-     *
-     * @return boolean
-     */
     public function isSuccessful()
     {
         return $this->successful;
     }
 
-    /**
-     * @param PhoneCall $call
-     * @return PhoneConversation
-     */
     public function setCall($call)
     {
         $this->call = $call;
@@ -901,9 +791,6 @@ class PhoneConversation
         return $this;
     }
 
-    /**
-     * @return PhoneCall
-     */
     public function getCall()
     {
         return $this->call;
