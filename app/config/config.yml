@@ -68,17 +68,6 @@ services:
          tags:
              - { name: twig.extension }
 
-knp_gaufrette:
-    adapters:
-        pim_adapter:
-            local:
-                directory: %upload_dir%
-                create:    true
-    filesystems:
-        pim:
-            adapter: pim_adapter
-            alias:   pim_filesystem
-
 pim_demo:
     load_data: true
 
