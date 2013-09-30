@@ -5,17 +5,25 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\ConstraintGuesser;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\RangeGuesser;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class RangeGuesserTest extends ConstraintGuesserTest
 {
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->target = new RangeGuesser();
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfContraintGuesserInterface()
     {
         $this->assertInstanceOf(
@@ -24,6 +32,9 @@ class RangeGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testSupportAttribute()
     {
         $this->assertTrue(
@@ -45,6 +56,9 @@ class RangeGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGuessMinConstraint()
     {
         $constraints = $this->target->guessConstraints(
@@ -64,6 +78,9 @@ class RangeGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGuessNegativeNotAllowedConstraint()
     {
         $constraints = $this->target->guessConstraints(
@@ -84,6 +101,9 @@ class RangeGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGuessMaxConstraint()
     {
         $constraints = $this->target->guessConstraints(
@@ -103,6 +123,9 @@ class RangeGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGuessMinMaxConstraint()
     {
         $constraints = $this->target->guessConstraints(
@@ -123,6 +146,9 @@ class RangeGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testDoNotGuessRangeConstraint()
     {
         $constraints = $this->target->guessConstraints(
@@ -134,6 +160,9 @@ class RangeGuesserTest extends ConstraintGuesserTest
         $this->assertEquals(0, count($constraints));
     }
 
+    /**
+     * Test related method
+     */
     public function testGuessMinDateConstraint()
     {
         $constraints = $this->target->guessConstraints(
@@ -150,6 +179,9 @@ class RangeGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGuessMaxDateConstraint()
     {
         $constraints = $this->target->guessConstraints(
@@ -171,6 +203,9 @@ class RangeGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGuessMinMaxDateConstraint()
     {
         $constraints = $this->target->guessConstraints(

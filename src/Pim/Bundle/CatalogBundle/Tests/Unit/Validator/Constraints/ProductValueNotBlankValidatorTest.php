@@ -11,6 +11,13 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 
+/**
+ * Test related class
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -100,6 +107,8 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Assert validation with simple right data (string, int, etc.)
+     * @param mixed $return
+     * @param mixed $attribute
      *
      * @dataProvider dataProviderWithRightSimpleData
      */
@@ -141,6 +150,8 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Assert validation with simple wrong data (null, empty string, empty array)
+     * @param mixed $return
+     * @param mixed $attribute
      *
      * @dataProvider dataProviderWithWrongSimpleData
      */

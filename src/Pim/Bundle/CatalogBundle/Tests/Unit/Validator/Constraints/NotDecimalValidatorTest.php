@@ -6,12 +6,17 @@ use Pim\Bundle\CatalogBundle\Validator\Constraints\NotDecimal;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\NotDecimalValidator;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @return array
+     */
     public static function getValidData()
     {
         return array(
@@ -21,6 +26,9 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @return array
+     */
     public static function getInvalidData()
     {
         return array(
@@ -30,17 +38,25 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->target = new NotDecimalValidator();
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfConstraintValidator()
     {
         $this->assertInstanceOf('Symfony\Component\Validator\ConstraintValidator', $this->target);
     }
 
     /**
+     * @param mixed $value
+     *
      * @dataProvider getValidData
      */
     public function testValidValue($value)
@@ -60,6 +76,8 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param mixed $value
+     *
      * @dataProvider getInvalidData
      */
     public function testInvalidValue($value)
@@ -79,6 +97,9 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
         $this->target->validate($value, $constraint);
     }
 
+    /**
+     * Test related method
+     */
     public function testValidMetric()
     {
         $value = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Metric');
@@ -100,6 +121,9 @@ class NotDecimalValidatorTest extends \PHPUnit_Framework_TestCase
         $this->target->validate($value, $constraint);
     }
 
+    /**
+     * Test related method
+     */
     public function testInvalidMetric()
     {
         $value = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Metric');

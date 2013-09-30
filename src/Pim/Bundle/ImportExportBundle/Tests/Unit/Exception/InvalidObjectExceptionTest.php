@@ -13,6 +13,9 @@ use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
  */
 class InvalidObjectExceptionTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Test related method
+     */
     public function testGetMessage()
     {
         $form = $this->getFormMock(
@@ -40,6 +43,11 @@ class InvalidObjectExceptionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @param array $errors
+     *
+     * @return \Symfony\Component\Form\Form
+     */
     private function getFormMock($errors)
     {
         $form = $this
@@ -54,6 +62,12 @@ class InvalidObjectExceptionTest extends \PHPUnit_Framework_TestCase
         return $form;
     }
 
+    /**
+     * @param mixed $template
+     * @param array $parameters
+     *
+     * @return \Symfony\Component\Form\FormError
+     */
     private function getFormErrorMock($template, array $parameters)
     {
         $error = $this

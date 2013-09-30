@@ -25,7 +25,10 @@ class LocaleExtension extends \Twig_Extension
     protected $localeHelper;
 
     /**
-     * @param \Pim\Bundle\CatalogBundle\Helper\LocaleHelper $localeHelper
+     * Constructor
+     *
+     * @param LocaleManager $localeManager
+     * @param LocaleHelper  $localeHelper
      */
     public function __construct(LocaleManager $localeManager, LocaleHelper $localeHelper)
     {

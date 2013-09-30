@@ -5,17 +5,25 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\ConstraintGuesser;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UrlGuesser;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class UrlGuesserTest extends ConstraintGuesserTest
 {
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->target = new UrlGuesser();
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfContraintGuesserInterface()
     {
         $this->assertInstanceOf(
@@ -24,6 +32,9 @@ class UrlGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testSupportAttribute()
     {
         $this->assertTrue(
@@ -33,6 +44,9 @@ class UrlGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGuessUrlConstraint()
     {
         $constraints = $this->target->guessConstraints(
@@ -47,6 +61,9 @@ class UrlGuesserTest extends ConstraintGuesserTest
         $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Url', $constraints);
     }
 
+    /**
+     * Test related method
+     */
     public function testDoNotGuessUrlConstraint()
     {
         $constraints = $this->target->guessConstraints(

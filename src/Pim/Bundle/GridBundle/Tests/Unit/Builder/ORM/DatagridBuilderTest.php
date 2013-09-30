@@ -41,6 +41,8 @@ class DatagridBuilderTest extends OroDatagridBuilderTest
     }
 
     /**
+     * @param array $arguments
+     *
      * @return array
      */
     protected function getDatagridBuilderArguments(array $arguments = array())

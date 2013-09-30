@@ -5,17 +5,25 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\ConstraintGuesser;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\FileGuesser;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class FileGuesserTest extends ConstraintGuesserTest
 {
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->target = new FileGuesser();
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfContraintGuesserInterface()
     {
         $this->assertInstanceOf(
@@ -24,6 +32,9 @@ class FileGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testSupportAttribute()
     {
         $this->assertTrue(
@@ -35,6 +46,9 @@ class FileGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGuessFileMaxSizeConstraint()
     {
         $constraints = $this->target->guessConstraints(
@@ -49,6 +63,9 @@ class FileGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGuessAllowedExtensionConstraint()
     {
         $constraints = $this->target->guessConstraints(
@@ -68,6 +85,9 @@ class FileGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGuessMultipleFileConstraints()
     {
         $constraints = $this->target->guessConstraints(

@@ -13,6 +13,9 @@ use Pim\Bundle\CatalogBundle\MassEditAction\ChangeStatus;
  */
 class ChangeStatusTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->objectManager = $this->getObjectManagerMock();
@@ -20,11 +23,17 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
         $this->action        = new ChangeStatus($manager);
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfMassEditAction()
     {
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\MassEditAction\MassEditAction', $this->action);
     }
 
+    /**
+     * Test related method
+     */
     public function testEnableManyProducts()
     {
         $foo = $this->getProductMock();
@@ -46,6 +55,9 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
         $this->action->perform(array($foo, $bar));
     }
 
+    /**
+     * Test related method
+     */
     public function testDisableManyProducts()
     {
         $foo = $this->getProductMock();
@@ -67,6 +79,11 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
         $this->action->perform(array($foo, $bar));
     }
 
+    /**
+     * @param mixed $objectManager
+     *
+     * @return \Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
+     */
     protected function getFlexibleManagerMock($objectManager)
     {
         $manager = $this
@@ -81,11 +98,17 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
         return $manager;
     }
 
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
     protected function getObjectManagerMock()
     {
         return $this->getMock('Doctrine\Common\Persistence\ObjectManager');
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     */
     protected function getProductMock()
     {
         return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');

@@ -455,7 +455,6 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
      *
      * @param ProductAttribute $attribute
      * @param Channel          $channel
-     * @param Locale           $locale
      * @param boolean          $required
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement

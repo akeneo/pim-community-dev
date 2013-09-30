@@ -40,7 +40,7 @@ class ProductRepository extends FlexibleEntityRepository
     }
 
     /**
-     * @param string $scope
+     * @param Channel $channel
      *
      * @return QueryBuilder
      */
@@ -85,6 +85,8 @@ class ProductRepository extends FlexibleEntityRepository
     }
 
     /**
+     * @param array $ids
+     *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function findByIds(array $ids)

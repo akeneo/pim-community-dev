@@ -21,6 +21,7 @@ class LocaleHelper
      * Initialized the locales list (if needed) and get the localized label
      *
      * @param string $code
+     * @param string $locale
      *
      * @return string
      */
