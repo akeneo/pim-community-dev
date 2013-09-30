@@ -5,7 +5,6 @@ namespace Pim\Bundle\GridBundle\Builder\ORM;
 use Pim\Bundle\GridBundle\Action\Export\ExportActionInterface;
 
 use Oro\Bundle\GridBundle\Action\ActionFactoryInterface;
-use Oro\Bundle\UserBundle\Acl\ManagerInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
@@ -39,7 +38,6 @@ class DatagridBuilder extends OroDatagridBuilder
      *
      * @param FormFactoryInterface     $formFactory
      * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerInterface         $aclManager
      * @param FilterFactoryInterface   $filterFactory
      * @param SorterFactoryInterface   $sorterFactory
      * @param ActionFactoryInterface   $actionFactory
@@ -59,7 +57,6 @@ class DatagridBuilder extends OroDatagridBuilder
         parent::__construct(
             $formFactory,
             $eventDispatcher,
-            $aclManager,
             $filterFactory,
             $sorterFactory,
             $actionFactory,

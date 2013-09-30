@@ -20,7 +20,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
 
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ProductCreateHandler;
@@ -110,11 +109,6 @@ class ProductController extends AbstractDoctrineController
     private $auditManager;
 
     /**
-     * @var AclManager
-     */
-    private $aclManager;
-
-    /**
      * @staticvar int
      */
     const BATCH_SIZE = 250;
@@ -139,7 +133,6 @@ class ProductController extends AbstractDoctrineController
      * @param CategoryManager          $categoryManager
      * @param LocaleManager            $localeManager
      * @param AuditManager             $auditManager
-     * @param AclManager               $aclManager
      */
     public function __construct(
         Request $request,
@@ -158,8 +151,7 @@ class ProductController extends AbstractDoctrineController
         ProductManager $productManager,
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
-        AuditManager $auditManager,
-        AclManager $aclManager
+        AuditManager $auditManager
     ) {
         parent::__construct(
             $request,
@@ -181,7 +173,6 @@ class ProductController extends AbstractDoctrineController
         $this->categoryManager      = $categoryManager;
         $this->localeManager        = $localeManager;
         $this->auditManager         = $auditManager;
-        $this->aclManager           = $aclManager;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -393,9 +384,7 @@ class ProductController extends AbstractDoctrineController
             array('currentLocale' => $this->getDataLocale())
         );
 
-        if (!$this->aclManager->isResourceGranted('pim_catalog_product_change_family')) {
-            $form->remove('family');
-        }
+        $form->remove('family');
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -630,9 +619,6 @@ class ProductController extends AbstractDoctrineController
         }
         if (!$dataLocale) {
             throw new \Exception('User must have a catalog locale defined');
-        }
-        if (!$this->aclManager->isResourceGranted('pim_catalog_locale_'.$dataLocale)) {
-            throw new \Exception(sprintf("User doesn't have access to the locale '%s'", $dataLocale));
         }
 
         return $dataLocale;

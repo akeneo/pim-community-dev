@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "f58a9e3b1eb68d4cf559f5999de0233d",
+    "hash": "b780103a034870d57e067912ea1d8627",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -672,16 +672,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "2c9761ff1d13e188d5f7378066c1ce2882d7a336"
+                "reference": "d0e4447707a064a5814b18cb0dcc2f24185f6179"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/2c9761ff1d13e188d5f7378066c1ce2882d7a336",
-                "reference": "2c9761ff1d13e188d5f7378066c1ce2882d7a336",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/d0e4447707a064a5814b18cb0dcc2f24185f6179",
+                "reference": "d0e4447707a064a5814b18cb0dcc2f24185f6179",
                 "shasum": ""
             },
             "require": {
@@ -737,7 +737,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2013-08-07 16:04:25"
+            "time": "2013-09-26 19:23:25"
         },
         {
             "name": "doctrine/collections",
@@ -3473,16 +3473,16 @@
         },
         {
             "name": "oro/platform",
-            "version": "dev-maintenance/pim_alpha6",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/akeneo/platform.git",
-                "reference": "1102e694ed972116777724acfb6492bea9d357bc"
+                "url": "git@github.com:laboro/platform.git",
+                "reference": "041b3f4c07abdcbc9119e1baca4b2547236b9d04"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/platform/zipball/1102e694ed972116777724acfb6492bea9d357bc",
-                "reference": "1102e694ed972116777724acfb6492bea9d357bc",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/041b3f4c07abdcbc9119e1baca4b2547236b9d04",
+                "reference": "041b3f4c07abdcbc9119e1baca4b2547236b9d04",
                 "shasum": ""
             },
             "require": {
@@ -3503,8 +3503,6 @@
                 "genemu/form-bundle": "2.2.*",
                 "incenteev/composer-parameter-handler": "~2.0",
                 "jdare/clank-bundle": "dev-master",
-                "jms/aop-bundle": "dev-master",
-                "jms/di-extra-bundle": "1.4.*@dev",
                 "jms/job-queue-bundle": "dev-master",
                 "jms/serializer": "0.12.*@dev",
                 "jms/serializer-bundle": "0.12.*@dev",
@@ -3521,12 +3519,13 @@
                 "sensio/framework-extra-bundle": "2.3.*",
                 "sensio/generator-bundle": "2.3.*",
                 "stof/doctrine-extensions-bundle": "dev-master",
+                "sylius/flow-bundle": "0.1.*",
                 "symfony/assetic-bundle": "2.3.*@dev",
                 "symfony/monolog-bundle": "2.3.*",
                 "symfony/swiftmailer-bundle": "2.3.*",
                 "symfony/symfony": "v2.3.4",
                 "twig/extensions": "1.0.*@dev",
-                "willdurand/expose-translation-bundle": "0.2.*@dev"
+                "willdurand/expose-translation-bundle": ">=0.2@dev,<0.4@dev"
             },
             "type": "library",
             "extra": {
@@ -3536,7 +3535,8 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Oro\\Bundle": "src/"
+                    "Oro\\Bundle": "src/",
+                    "Extend\\": "app/entities/"
                 }
             },
             "license": [
@@ -3545,10 +3545,10 @@
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/laboro/platform.git",
             "support": {
-                "source": "https://github.com/akeneo/platform/tree/maintenance/pim_alpha6",
-                "issues": "https://github.com/akeneo/platform/issues"
+                "source": "https://github.com/laboro/platform/tree/master",
+                "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-09-24 10:23:39"
+            "time": "2013-09-27 14:30:07"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -4070,6 +4070,64 @@
             "time": "2013-08-30 12:35:21"
         },
         {
+            "name": "sylius/flow-bundle",
+            "version": "dev-master",
+            "target-dir": "Sylius/Bundle/FlowBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Sylius/SyliusFlowBundle.git",
+                "reference": "1fa700ed5dd8fc00a7922db6b58412e80fce0b6c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Sylius/SyliusFlowBundle/zipball/1fa700ed5dd8fc00a7922db6b58412e80fce0b6c",
+                "reference": "1fa700ed5dd8fc00a7922db6b58412e80fce0b6c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/framework-bundle": "~2.1"
+            },
+            "require-dev": {
+                "symfony/yaml": "~2.1"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Sylius\\Bundle\\FlowBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paweł Jędrzejewski",
+                    "email": "pjedrzejewski@diweb.pl",
+                    "homepage": "http://pjedrzejewski.com"
+                },
+                {
+                    "name": "Community contributions",
+                    "homepage": "https://github.com/Sylius/SyliusFlowBundle/contributors"
+                }
+            ],
+            "description": "Multiple action setups for Symfony2, build your checkouts/installers or whatever needs more than one step to complete.",
+            "homepage": "http://sylius.org",
+            "keywords": [
+                "checkout",
+                "flow",
+                "installation",
+                "steps"
+            ],
+            "time": "2013-09-07 17:43:59"
+        },
+        {
             "name": "symfony/assetic-bundle",
             "version": "2.3.x-dev",
             "target-dir": "Symfony/Bundle/AsseticBundle",
@@ -4499,32 +4557,32 @@
         },
         {
             "name": "willdurand/expose-translation-bundle",
-            "version": "0.2.1",
+            "version": "dev-master",
             "target-dir": "Bazinga/ExposeTranslationBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/willdurand/BazingaExposeTranslationBundle.git",
-                "reference": "86d94edb8960db6d818a9ee370e5892009f0be74"
+                "reference": "72f6567cdb6cf4b8cd20570d45ad8aaf3c311c79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaExposeTranslationBundle/zipball/86d94edb8960db6d818a9ee370e5892009f0be74",
-                "reference": "86d94edb8960db6d818a9ee370e5892009f0be74",
+                "url": "https://api.github.com/repos/willdurand/BazingaExposeTranslationBundle/zipball/72f6567cdb6cf4b8cd20570d45ad8aaf3c311c79",
+                "reference": "72f6567cdb6cf4b8cd20570d45ad8aaf3c311c79",
                 "shasum": ""
             },
             "require": {
-                "symfony/console": ">=2.0,<2.4-dev",
-                "symfony/finder": ">=2.0,<2.4-dev",
-                "symfony/framework-bundle": ">=2.0,<2.4-dev"
+                "symfony/console": "~2.0",
+                "symfony/finder": "~2.0",
+                "symfony/framework-bundle": "~2.0"
             },
             "require-dev": {
-                "symfony/browser-kit": ">=2.0,<2.4-dev",
-                "symfony/yaml": ">=2.0,<2.4-dev"
+                "symfony/browser-kit": "~2.0",
+                "symfony/yaml": "~2.0"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.2.x-dev"
+                    "dev-master": "0.3.x-dev"
                 }
             },
             "autoload": {
@@ -4548,7 +4606,7 @@
                 "javascript",
                 "translation"
             ],
-            "time": "2013-03-15 23:21:26"
+            "time": "2013-09-18 08:13:56"
         },
         {
             "name": "zendframework/zend-code",
@@ -5263,7 +5321,7 @@
                 "Context",
                 "Symfony2"
             ],
-            "time": "2013-06-20 09:38:27"
+            "time": "2013-09-03 02:05:15"
         },
         {
             "name": "behat/gherkin",

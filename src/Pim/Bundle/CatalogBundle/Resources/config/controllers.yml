@@ -108,7 +108,6 @@ services:
             - '@pim_catalog.manager.category'
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.audit'
-            - '@oro_user.acl_manager'
 
     pim_catalog.controller.mass_edit_action:
         scope: request

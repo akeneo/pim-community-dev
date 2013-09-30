@@ -74,14 +74,14 @@ cd $APP_ROOT
 # Execute tasks
 if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     # Ignoring the case where the DB does not exist yet
+    php app/console oro:entity-extend:clear
     php app/console doctrine:database:drop --force 2>&1 > /dev/null || true
     php app/console doctrine:database:create
     php app/console doctrine:schema:create
     php app/console doctrine:fixture:load --no-interaction
-    # Some segfault on cache purge from ACL load
-    php app/console oro:acl:load || true
-    php app/console oro:entity-config:update
-    php app/console oro:entity-extend:create
+    php app/console oro:entity-config:init
+    php app/console oro:entity-extend:init
+    php app/console oro:entity-extend:update-config
     php app/console cache:clear
     php app/console doctrine:schema:update --force
     php app/console oro:search:create-index
@@ -92,10 +92,11 @@ fi
 
 if [ $TASK = 'assets' ] || [ $TASK = 'all' ]; then
     php app/console fos:js-routing:dump --target=web/js/routes.js
-    php app/console oro:navigation:init
+#    php app/console oro:navigation:init TO FIX
     php app/console assets:install web
     php app/console assetic:dump
     php app/console oro:assetic:dump
+    php app/console oro:translation:dump
     php app/console cache:clear
 fi
 
