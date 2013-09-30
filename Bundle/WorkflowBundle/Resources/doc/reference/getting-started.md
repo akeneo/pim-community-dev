@@ -24,7 +24,7 @@ Workflow consists of several related entities.
 step form as a fields and list of allowed transitions that will rendered as a buttons. Before rendering each
 transitions checked is it allowed for current Workflow Item. Contains name, label and template as additional parameters.
 
-* **Attribute** - entity that represent one value in Workflow Item, can be bind to a step form, but don't know about
+* **Attribute** - entity that represent one value in Workflow Item, can be bind to a step form, but doesn't know about
 it's form representation. Attribute knows about its type (string, object, entity etc.) and additional options to specify
 whether it contains managed entity, should entity be bound to Workflow Item and can entity have several related
 instances of Workflow Item. Contains name and label as additional parameters.
