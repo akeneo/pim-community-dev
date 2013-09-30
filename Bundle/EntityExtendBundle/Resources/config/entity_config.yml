@@ -263,7 +263,7 @@ oro_entity_config:
                         type:               oro_entity_target_field_type
                         options:
                             attr:           {class: 'extend-rel-target-field'}
-                            required:       false
+                            required:       true
                             label:          'Target field'
                             empty_value:    'Please choice target field...'
                             block:          entity
