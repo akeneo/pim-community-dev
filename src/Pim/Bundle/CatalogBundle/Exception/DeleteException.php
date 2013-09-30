@@ -11,5 +11,4 @@ namespace Pim\Bundle\CatalogBundle\Exception;
  */
 class DeleteException extends \LogicException
 {
-
 }
