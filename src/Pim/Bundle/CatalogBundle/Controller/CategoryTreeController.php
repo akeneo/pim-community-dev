@@ -38,6 +38,7 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
  *
  * @Acl(
  *      id="pim_catalog_category",
+ *      type="entity",
  *      name="Category manipulation",
  *      description="Category manipulation",
  *      parent="pim_catalog"
@@ -121,6 +122,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @Template
      * @Acl(
      *      id="pim_catalog_category_list",
+     *      type="entity",
      *      name="View tree list",
      *      description="View tree list",
      *      parent="pim_catalog_category"
@@ -153,6 +155,7 @@ class CategoryTreeController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_category_move",
+     *      type="entity",
      *      name="Move category",
      *      description="Move category",
      *      parent="pim_catalog_category"
@@ -188,6 +191,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @Template
      * @Acl(
      *      id="pim_catalog_category_children",
+     *      type="entity",
      *      name="See category children",
      *      description="See category children",
      *      parent="pim_catalog_category"
@@ -250,6 +254,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @Template
      * @Acl(
      *      id="pim_catalog_category_products",
+     *      type="entity",
      *      name="See category's products",
      *      description="See category's products",
      *      parent="pim_catalog_category"
@@ -277,6 +282,7 @@ class CategoryTreeController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_category_create",
+     *      type="entity",
      *      name="Create a category",
      *      description="Create a category",
      *      parent="pim_catalog_category"
@@ -327,6 +333,7 @@ class CategoryTreeController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_category_edit",
+     *      type="entity",
      *      name="Edit a category",
      *      description="Edit a category",
      *      parent="pim_catalog_category"
@@ -377,6 +384,7 @@ class CategoryTreeController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_category_remove",
+     *      type="entity",
      *      name="Remove a category",
      *      description="Remove a category",
      *      parent="pim_catalog_category"

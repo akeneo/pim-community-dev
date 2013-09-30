@@ -13,6 +13,7 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
  *
  * @Acl(
  *      id="pim_importexport_export_report",
+ *      type="entity",
  *      name="Export report manipulation",
  *      description="Export report manipulation",
  *      parent="pim_importexport"
@@ -25,6 +26,7 @@ class ExportReportController extends JobExecutionController
      *
      * @Acl(
      *      id="pim_importexport_export_report_index",
+     *      type="entity",
      *      name="View export report list",
      *      description="View export report list",
      *      parent="pim_importexport_export_report"
@@ -40,6 +42,7 @@ class ExportReportController extends JobExecutionController
      *
      * @Acl(
      *      id="pim_importexport_export_report_show",
+     *      type="entity",
      *      name="View export report details",
      *      description="View export report details",
      *      parent="pim_importexport_export_report"
@@ -55,6 +58,7 @@ class ExportReportController extends JobExecutionController
      *
      * @Acl(
      *      id="pim_importexport_export_report_download_log",
+     *      type="entity",
      *      name="Download export report log",
      *      description="Download export report log",
      *      parent="pim_importexport_export_report"
@@ -70,6 +74,7 @@ class ExportReportController extends JobExecutionController
      *
      * @Acl(
      *      id="pim_importexport_export_report_download_files",
+     *      type="entity",
      *      name="Download exported files",
      *      description="Download exported files",
      *      parent="pim_importexport_export_report"
