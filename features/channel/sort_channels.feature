@@ -45,13 +45,11 @@ Feature: Sort channels
     When I sort by "label" value descending
     Then I should see sorted channels QUX, FOO, BAZ and BAR
 
-  @skip
   Scenario: Successfully sort channels by tree ascending
     Given I am on the channels page
     When I sort by "category tree" value ascending
     Then I should see sorted channels QUX, FOO, BAR and BAZ
 
-  @skip
   Scenario: Successfully sort channels by tree descending
     Given I am on the channels page
     When I sort by "category tree" value descending
