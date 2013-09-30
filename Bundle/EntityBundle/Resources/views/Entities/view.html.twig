@@ -29,10 +29,20 @@
 {% block stats %}
 {% endblock stats%}
 
+{% macro attibuteRow(title, value) %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% macro attribute_data(value) %}
+        <div class="clearfix-oro">
+            <p class="control-label">{{ value }}</p>
+        </div>
+    {% endmacro %}
+    {{ UI.renderAttribute(title, _self.attribute_data(value)) }}
+{% endmacro %}
+
 {% block content_data %}
     {% set general_fields = [ ] %}
     {% for key, value in entity_fields|default %}
-        {% set general_fields = general_fields|merge([UI.attibuteRow(key|capitalize, value)])%}
+        {% set general_fields = general_fields|merge([_self.attibuteRow(key|capitalize, value)])%}
     {% endfor %}
 
     {% set data = { 'dataBlocks': [{
