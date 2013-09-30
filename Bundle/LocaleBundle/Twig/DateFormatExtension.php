@@ -80,16 +80,17 @@ class DateFormatExtension extends \Twig_Extension
      * Apply config params to dateTimeFormat, timezone and locale
      * in case when no params passed from template
      *
-     * @param $dateTimeFormat
-     * @param $timezone
-     * @param $locale
+     * @param string $dateTimeFormat
+     * @param string $timezone
+     * @param string $locale
+     * @param bool $dateOnly skip time
      * @return array
      */
-    protected function applyDefaultParams($dateTimeFormat, $timezone, $locale)
+    protected function applyDefaultParams($dateTimeFormat, $timezone, $locale, $dateOnly = false)
     {
         if (is_null($dateTimeFormat)) {
-            $dateTimeFormat = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY) .
-                ' ' . $this->cm->get(self::CONFIG_TIME_FORMAT_KEY);
+            $dateTimeFormat = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY) . ($dateOnly ? '' :
+                    ' ' . $this->cm->get(self::CONFIG_TIME_FORMAT_KEY));
         }
 
         if (is_null($timezone)) {
@@ -119,7 +120,12 @@ class DateFormatExtension extends \Twig_Extension
         $locale = null,
         $timezone = null
     ) {
-        list ($dateTimeFormat, $timezone, $locale) = $this->applyDefaultParams($dateTimeFormat, $timezone, $locale);
+        list ($dateTimeFormat, $timezone, $locale) = $this->applyDefaultParams(
+            $dateTimeFormat,
+            $timezone,
+            $locale,
+            true
+        );
 
         $dateTimeFormat = $this->convertDateTimeToICUFormat($dateTimeFormat);
 
