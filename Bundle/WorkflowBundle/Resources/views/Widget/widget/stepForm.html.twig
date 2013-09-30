@@ -126,13 +126,14 @@
 
                 widget.on('adoptedFormSubmit', function() {
                     widget.options.loadingMaskEnabled = false;
-                    var submitAction = widget.getAction('form_submit', 'adopted');
-                    if (submitAction) {
-                        submitAction.html('<i class="icon-spinner"></i> {{ "Saving"|trans }}...');
-                        submitAction.removeClass('btn-success');
-                        submitAction.prop('disabled',true);
-                    }
                     form.find(':input:not(:disabled)').prop('disabled',true);
+                    widget.getAction('form_submit', 'adopted', function(submitAction) {
+                        if (submitAction) {
+                            submitAction.html('<i class="icon-spinner"></i> {{ "Saving"|trans }}...');
+                            submitAction.removeClass('btn-success');
+                            submitAction.prop('disabled',true);
+                        }
+                    });
                 });
 
                 var isAllRequiredFieldsFilled = function(form) {

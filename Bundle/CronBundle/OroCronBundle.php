@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 use Oro\Bundle\CronBundle\DependencyInjection\Compiler\JobStatisticParameterPass;
+use Oro\Bundle\CronBundle\DependencyInjection\Compiler\JobSerializerMetadataPass;
 
 class OroCronBundle extends Bundle
 {
@@ -16,5 +17,6 @@ class OroCronBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new JobStatisticParameterPass(), PassConfig::TYPE_AFTER_REMOVING);
+        $container->addCompilerPass(new JobSerializerMetadataPass());
     }
 }

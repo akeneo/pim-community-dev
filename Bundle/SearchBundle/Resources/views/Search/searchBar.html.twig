@@ -1,3 +1,4 @@
+{% if resource_granted('oro_search') %}
 <div class="dropdown header-dropdown-search header-utility-dropdown">
     <a href="javascript:void(0);" class="dropdown-toggle oro-dropdown-toggle" title="{% trans %}Search{% endtrans %}"><i class="icon-search"></i></a>
     <ul class="dropdown-menu">
@@ -40,3 +41,4 @@
 <script type="text/javascript">
     require(['oro/init-search-bar'])
 </script>
+{% endif %}
