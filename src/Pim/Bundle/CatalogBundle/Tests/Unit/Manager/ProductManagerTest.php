@@ -59,6 +59,15 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test related method
+     */
+    public function testCreateProduct()
+    {
+        $product = $this->getProductManager()->createProduct();
+        $this->assertEquals(get_class($product), 'Pim\Bundle\CatalogBundle\Entity\Product');
+    }
+
+    /**
      * Create ProductManager
      *
      * @param MediaManager  $mediaManager
@@ -71,17 +80,19 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
         $flexibleRepository = $this->getEntityRepositoryMock();
 
         return new ProductManager(
-            'Product',
+            'Pim\Bundle\CatalogBundle\Entity\Product',
             array(
                 'entities_config' => array(
-                    'Product' => array(
+                    'Pim\Bundle\CatalogBundle\Entity\Product' => array(
                         'flexible_class' => 'Pim\Bundle\CatalogBundle\Entity\Product',
                         'flexible_value_class' => 'Pim\Bundle\CatalogBundle\Entity\ProductValue',
                         'attribute_class' => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
                         'attribute_option_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOption',
-                        'attribute_option_value_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue'
+                        'attribute_option_value_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue',
+                        'default_locale' => null,
+                        'default_scope'  => null
                     )
-                )
+                ),
             ),
             $objectManager ?: $this->getObjectManagerMock($flexibleRepository),
             $this->getEventDispatcherInterfaceMock(),
