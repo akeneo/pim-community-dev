@@ -68,13 +68,6 @@ services:
          tags:
              - { name: twig.extension }
 
-oro_ui:
-    settings:
-        application_name:
-            value: "Akeneo"
-        application_title:
-            value: "Akeneo"
-
 oro_user:
     settings:
         name_format:
