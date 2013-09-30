@@ -22,6 +22,8 @@ Table of Contents
    - [Example](#example-6)
  - [Example Workflow Configuration](#example-workflow-configuration)
    - [Configuration](#configuration)
+   - [PhoneCall Entity](#phonecall-entity)
+   - [PhoneConversation Entity](#phoneconversation-entity)
    - [Flow Diagram](#flow-diagram)
 
 Overview
@@ -307,7 +309,7 @@ Transition configuration has next options:
     workflow doesn't have start_step attribute.
 * **options**
     Options of transition that can have additional configuration, for example option with name
-    frontend (a list frontend options)
+    frontend (a list of frontend options)
 
 Example
 -------
@@ -398,7 +400,7 @@ Conditions Configuration
 
 Conditions configuration is a part of Transition Definition Configuration. It declares a tree structure of conditions
 that are applied on the Workflow Item to check is the Transition could be performed. Single condition configuration
-contains from alias - a unique name of condition and options.
+contains alias - a unique name of condition and options.
 
 Alias of condition starts from "@" symbol and must refer to registered condition. For example "@or" refers to logical
 OR condition.
@@ -406,8 +408,8 @@ OR condition.
 Options can refer to values of Workflow Data using "$" prefix. For example "$call_timeout" refers to value of
 "call_timeout" attribute of Workflow Item that is processed in condition.
 
-Also it is possible to refer to any property of Workflow Item using "$." prefix (it is a Workflow instance).
-For example to refer date time when Workflow Item was created a string "$.created" can be used.
+Also it is possible to refer to any property of Workflow Item using "$." prefix. For example to refer date time when
+Workflow Item was created a string "$.created" can be used.
 
 Example
 -------
@@ -436,7 +438,7 @@ Post Actions
 
 Post actions configuration complements Transition Definition configuration. All configured Post Actions will be
 performed during transition AFTER conditions will be qualified and current Step of Workflow Item will be changed to
-the corresponding in the Transition.
+the corresponding one (step_to option) in the Transition.
 
 Single Post Action configuration consists from alias of Post Action (which is a unique name of Post Action) and options
 (if such are required).
@@ -600,6 +602,313 @@ workflows:
                             comment: $conversation_comment
                             successful: $conversation_successful
                             call: $phone_call
+```
+
+PhoneCall Entity
+----------------
+```
+<?php
+
+namespace Acme\Bundle\DemoWorkflowBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Phone call entity
+ *
+ * @ORM\Table(name="acme_demo_workflow_phone_call")
+ * @ORM\Entity
+ */
+class PhoneCall
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="number", type="string", length=255)
+     */
+    private $number;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="PhoneConversation", mappedBy="call")
+     **/
+    private $conversations;
+
+    public function __construct()
+    {
+        $this->conversations = new ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set number
+     *
+     * @param string $number
+     * @return PhoneCall
+     */
+    public function setNumber($number)
+    {
+        $this->number = $number;
+
+        return $this;
+    }
+
+    /**
+     * Get number
+     *
+     * @return string
+     */
+    public function getNumber()
+    {
+        return $this->number;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return PhoneCall
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return PhoneCall
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Get description
+     *
+     * @return ArrayCollection
+     */
+    public function getConversations()
+    {
+        return $this->conversations;
+    }
+}
+```
+
+PhoneConversation Entity
+------------------------
+```
+<?php
+
+namespace Acme\Bundle\DemoWorkflowBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Phone conversation entity
+ *
+ * @ORM\Table(name="acme_demo_workflow_phone_conversation")
+ * @ORM\Entity
+ */
+class PhoneConversation
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var PhoneCall
+     *
+     * @ORM\ManyToOne(targetEntity="PhoneCall", inversedBy="conversations")
+     * @ORM\JoinColumn(name="call_id", referencedColumnName="id")
+     */
+    private $call;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="result", type="string", length=255, nullable=true)
+     */
+    private $result;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="comment", type="string", length=255, nullable=true)
+     */
+    private $comment;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="successful", type="boolean", nullable=true)
+     */
+    private $successful;
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set result
+     *
+     * @param string $result
+     * @return PhoneConversation
+     */
+    public function setResult($result)
+    {
+        $this->result = $result;
+
+        return $this;
+    }
+
+    /**
+     * Get result
+     *
+     * @return string
+     */
+    public function getResult()
+    {
+        return $this->result;
+    }
+
+    /**
+     * Set comment
+     *
+     * @param string $comment
+     * @return PhoneConversation
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * Set successful
+     *
+     * @param boolean $successful
+     * @return PhoneConversation
+     */
+    public function setSuccessful($successful)
+    {
+        $this->successful = $successful;
+
+        return $this;
+    }
+
+    /**
+     * Is successful
+     *
+     * @return boolean
+     */
+    public function isSuccessful()
+    {
+        return $this->successful;
+    }
+
+    /**
+     * @param PhoneCall $call
+     * @return PhoneConversation
+     */
+    public function setCall($call)
+    {
+        $this->call = $call;
+
+        return $this;
+    }
+
+    /**
+     * @return PhoneCall
+     */
+    public function getCall()
+    {
+        return $this->call;
+    }
+}
 ```
 
 Flow Diagram
