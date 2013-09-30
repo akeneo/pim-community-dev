@@ -24,7 +24,7 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->localeExtension = new LocaleExtension($this->getContainerMock());
+        $this->localeExtension = new LocaleExtension($this->getLocaleHelperMock());
     }
 
     /**
@@ -37,7 +37,7 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testLocalizedLabel()
     {
-        $this->assertEquals('English (United States)', $this->localeExtension->localizedLabel('en_US'));
+        $this->assertEquals('en_US', $this->localeExtension->localizedLabel('en_US'));
     }
 
     public function testGetFunctions()
@@ -49,21 +49,19 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Twig_Function_Method', $twigFunctions['localized_label']);
     }
 
-    protected function getContainerMock()
+    /**
+     * Get LocaleHelperMock
+     * 
+     * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+     */
+    protected function getLocaleHelperMock()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
+        $helper = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Helper\LocaleHelper')
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects($this->any())
-            ->method('get')
-            ->with($this->equalTo('request'))
-            ->will($this->returnValue($request));
-
-        $request->expects($this->any())
-            ->method('getLocale')
-            ->will($this->returnValue('en_US'));
-        return $container;
+        $helper->expects($this->any())
+            ->method('getLocalizedLabel')
+            ->will($this->returnArgument(0));
+        return $helper;
     }
-
 }

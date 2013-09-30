@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
 use Symfony\Component\HttpFoundation\Request;
+use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 
 /**
  * Translatable field type for translation entities
@@ -36,9 +37,9 @@ class TranslatableFieldType extends AbstractType
     protected $request;
     
     /**
-     * @var string
+     * @var LocaleHelper
      */
-    protected $defaultLocale;
+    protected $localeHelper;
 
 
     /**
@@ -46,16 +47,11 @@ class TranslatableFieldType extends AbstractType
      * @param LocaleManager      $localeManager
      * @param array              $localeConfig
      */
-    public function __construct(ValidatorInterface $validator, LocaleManager $localeManager, $defaultLocale)
+    public function __construct(ValidatorInterface $validator, LocaleManager $localeManager, LocaleHelper $localeHelper)
     {
         $this->validator     = $validator;
         $this->localeManager = $localeManager;
-        $this->defaultLocale = $defaultLocale;
-    }
-
-    public function setRequest(Request $request=null)
-    {
-        $this->request = $request;
+        $this->localeHelper = $localeHelper;
     }
 
     /**
@@ -83,8 +79,8 @@ class TranslatableFieldType extends AbstractType
         $subscriber = new AddTranslatableFieldSubscriber(
             $builder->getFormFactory(),
             $this->validator,
-            $options,
-            $this->getDefaultLocale()
+            $this->localeHelper,
+            $options
         );
         $builder->addEventSubscriber($subscriber);
     }

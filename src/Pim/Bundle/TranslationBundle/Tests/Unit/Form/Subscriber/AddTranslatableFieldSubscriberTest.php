@@ -25,8 +25,8 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 
     protected $localeConfig = array(
         'locales'=>array(
-            'fr_FR' => array('label'=>'French (France)'),
-            'en_US' => array('label'=>'English (United States)')
+            'fr_FR' => array('label'=>'fr_FR'),
+            'en_US' => array('label'=>'en_US')
         )
     );
 
@@ -363,9 +363,25 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         return new AddTranslatableFieldSubscriber(
             $this->formFactory,
             $this->getValidatorMock(),
-            $options,
-            'en_US'
+            $this->getLocaleHelperMock(),
+            $options
         );
+    }
+
+    /**
+     * Get LocaleHelperMock
+     * 
+     * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+     */
+    protected function getLocaleHelperMock()
+    {
+        $helper = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Helper\LocaleHelper')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $helper->expects($this->any())
+            ->method('getLocalizedLabel')
+            ->will($this->returnArgument(0));
+        return $helper;
     }
 
     /**

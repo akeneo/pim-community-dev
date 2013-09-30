@@ -2,8 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Twig;
 
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 
 /**
  * Twig extension to render locales from twig templates
@@ -14,17 +13,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class LocaleExtension extends \Twig_Extension
 {
-    /**
-     * @var LocaleManager
-     */
-    protected $container;
+    private $localeHelper;
 
     /**
      * @param \Pim\Bundle\CatalogBundle\Helper\LocaleHelper $localeHelper
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(LocaleHelper $localeHelper)
     {
-        $this->container = $container;
+        $this->localeHelper = $localeHelper;
     }
 
     /**
@@ -44,9 +40,9 @@ class LocaleExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function localizedLabel($code)
+    public function localizedLabel($code, $locale = null)
     {
-        return \Locale::getDisplayName($code, $this->container->get('request')->getLocale());
+        return $this->localeHelper->getLocalizedLabel($code, $locale);
     }
 
     /**
@@ -56,5 +52,4 @@ class LocaleExtension extends \Twig_Extension
     {
         return 'pim_locale_extension';
     }
-    
 }

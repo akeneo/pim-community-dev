@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Helper;
 
-use Symfony\Component\Locale\Locale;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * LocaleHelper essentially allow to translate locale code to localized locale label
@@ -17,26 +17,46 @@ use Symfony\Component\Locale\Locale;
  */
 class LocaleHelper
 {
+    private $defaultLocale;
+    private $request;
+    
+    public function __construct($defaultLocale)
+    {
+        $this->defaultLocale = $defaultLocale;
+    }
+    /**
+     * Sets the current request
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    public function setRequest(Request $request = null)
+    {
+        $this->request = $request;
+    }
+
+    /**
+     * Returns the current locale from the request, or the default locale if no active request is found
+     * 
+     * @return string
+     */
+    public function getCurrentLocale()
+    {
+        return $this->request ? $this->request->getLocale() : $this->defaultLocale;
+    }
+
     /**
      * Initialized the locales list (if needed) and get the localized label
      *
-     * @param string $code
-     *
+     * @param string $code the code of the local's label
+     * @param string $locale the locale in which the label should be translated
      * @return string
      */
-    public function getLocalizedLabel($code, $locale)
+    public function getLocalizedLabel($code, $locale = null)
     {
-        $locales = Locale::getDisplayLocales($locale);
-
-        if (isset($locales[$code])) {
-            return $locales[$code];
+        if (is_null($locale)) {
+            $locale = $this->getCurrentLocale();
         }
 
-        list($lang) = explode('_', $code);
-        if (isset($locales[$lang])) {
-            return $locales[$lang];
-        }
-
-        return $code;
+        return \Locale::getDisplayName($code, $locale);
     }
 }

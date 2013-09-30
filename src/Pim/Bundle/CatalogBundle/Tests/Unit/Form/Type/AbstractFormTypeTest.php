@@ -85,7 +85,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
                 new TranslatableFieldType(
                     $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
                     $this->getLocaleManagerMock(),
-                    'en_US'
+                    $this->getLocaleHelperMock()
                 )
             )
             ->addType($this->createEntityType())
@@ -181,5 +181,20 @@ abstract class AbstractFormTypeTest extends TypeTestCase
         $formType = $this->form->get($name);
         $this->assertInstanceOf('\Symfony\Component\Form\Form', $formType);
         $this->assertEquals($type, $formType->getConfig()->getType()->getInnerType()->getName());
+    }
+    /**
+     * Get LocaleHelperMock
+     * 
+     * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+     */
+    protected function getLocaleHelperMock()
+    {
+        $helper = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Helper\LocaleHelper')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $helper->expects($this->any())
+            ->method('getLocalizedLabel')
+            ->will($this->returnArgument(0));
+        return $helper;
     }
 }

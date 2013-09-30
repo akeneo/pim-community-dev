@@ -8,7 +8,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Form\View\ProductFormView;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 
 /**
@@ -26,27 +25,19 @@ class EditCommonAttributesType extends AbstractType
     protected $productFormView;
 
     /**
-     * @var LocaleManager
-     */
-    protected $localeManager;
-
-    /**
      * @var LocaleHelper
      */
     protected $localeHelper;
 
     /**
      * @param ProductFormView $productFormView
-     * @param LocaleManager   $localeManager
      * @param LocaleHelper    $localeHelper
      */
     public function __construct(
         ProductFormView $productFormView,
-        LocaleManager $localeManager,
         LocaleHelper $localeHelper
     ) {
         $this->productFormView = $productFormView;
-        $this->localeManager   = $localeManager;
         $this->localeHelper    = $localeHelper;
     }
 
@@ -93,9 +84,8 @@ class EditCommonAttributesType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $userLocale = $this->localeManager->getUserLocaleCode();
         foreach ($view['locale']->vars['choices'] as $choice) {
-            $choice->label = $this->localeHelper->getLocalizedLabel($choice->label, $userLocale);
+            $choice->label = $this->localeHelper->getLocalizedLabel($choice->label);
         }
 
         $view->vars['groups'] = $this->productFormView->getView();

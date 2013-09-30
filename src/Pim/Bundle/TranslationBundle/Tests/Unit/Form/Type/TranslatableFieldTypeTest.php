@@ -17,12 +17,6 @@ use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
  */
 class TranslatableFieldTypeTest extends TypeTestCase
 {
-    protected $localeConfig = array(
-        'locales'=>array(
-            'fr_FR' => array('label'=>'Français'),
-            'en_US' => array('label'=>'English')
-        )
-    );
     /**
      * @var TranslatableFieldType
      */
@@ -72,7 +66,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
                 new TranslatableFieldType(
                     $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
                     $this->getLocaleManagerMock(),
-                    $this->localeConfig
+                    $this->getLocaleHelperMock()
                 )
             )
             ->getFormFactory();
@@ -81,7 +75,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
         $this->type = new TranslatableFieldType(
             $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
             $this->getLocaleManagerMock(),
-            $this->localeConfig
+            $this->getLocaleHelperMock()
         );
         $this->options = $this->buildOptions(self::OPT_ENTITY_CLASS, self::OPT_NAME, self::OPT_TRANSLATION_CLASS);
 
@@ -211,5 +205,21 @@ class TranslatableFieldTypeTest extends TypeTestCase
     {
         $options = $this->buildOptions($entityClass, $fieldName, $translationClass);
         $form = $this->factory->create($this->type, null, $options);
+    }
+    
+    /**
+     * Get LocaleHelperMock
+     * 
+     * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+     */
+    protected function getLocaleHelperMock()
+    {
+        $helper = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Helper\LocaleHelper')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $helper->expects($this->any())
+            ->method('getLocalizedLabel')
+            ->will($this->returnArgument(0));
+        return $helper;
     }
 }

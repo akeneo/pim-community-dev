@@ -11,6 +11,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\Common\Inflector\Inflector;
 use Pim\Bundle\TranslationBundle\Exception\MissingOptionException;
 use Pim\Bundle\TranslationBundle\Factory\TranslationFactory;
+use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 
 /**
  * Define subscriber for translation fields
@@ -42,9 +43,9 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     protected $options;
 
     /**
-     * @var string
+     * @var LocaleHelper
      */
-    protected $defaultLocale;
+    protected $localeHelper;
     
     /**
      * Constructor
@@ -56,11 +57,12 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     public function __construct(
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
-        array $options,
-        $defaultLocale)
-    {
+        LocaleHelper $localeHelper,
+        array $options
+    ) {
         $this->formFactory        = $formFactory;
         $this->validator          = $validator;
+        $this->localeHelper = $localeHelper;
         $this->options            = $options;
 
         $this->translationFactory = new TranslationFactory(
@@ -108,7 +110,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
                     $this->getOption('widget'),
                     $content !== null ? $content : '',
                     array(
-                        'label'           => \Locale::getDisplayName($binded['locale']),
+                        'label'           => $this->localeHelper->getLocalizedLabel($binded['locale']),
                         'required'        => in_array($binded['locale'], $this->getOption('required_locale')),
                         'mapped'          => false,
                         'auto_initialize' => false

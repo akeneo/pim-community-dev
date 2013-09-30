@@ -15,7 +15,7 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
-        $this->localeHelper = new LocaleHelper();
+        $this->localeHelper = new LocaleHelper('en_US');
     }
     /**
      * Data provider for the localizedLabel method
@@ -32,9 +32,9 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
                 'fr_FR',
                 array(
                     'en_US' => 'anglais (États-Unis)',
-                    'en_EN' => 'anglais',
-                    'fr_FR' => 'français',
-                    'de_DE' => 'allemand',
+                    'en_EN' => 'anglais (EN)',
+                    'fr_FR' => 'français (France)',
+                    'de_DE' => 'allemand (Allemagne)',
                     'azert' => 'azert'
                 )
             ),
@@ -42,9 +42,9 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
                 'en_US',
                 array(
                     'en_US' => 'English (United States)',
-                    'en_EN' => 'English',
-                    'fr_FR' => 'French',
-                    'de_DE' => 'German',
+                    'en_EN' => 'English (EN)',
+                    'fr_FR' => 'French (France)',
+                    'de_DE' => 'German (Germany)',
                     'azert' => 'azert'
                 )
             ),
@@ -52,9 +52,9 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
                 'de_DE',
                 array(
                     'en_US' => 'Englisch (Vereinigte Staaten)',
-                    'en_EN' => 'Englisch',
-                    'fr_FR' => 'Französisch',
-                    'de_DE' => 'Deutsch',
+                    'en_EN' => 'Englisch (EN)',
+                    'fr_FR' => 'Französisch (Frankreich)',
+                    'de_DE' => 'Deutsch (Deutschland)',
                     'azert' => 'azert'
                 )
             )
