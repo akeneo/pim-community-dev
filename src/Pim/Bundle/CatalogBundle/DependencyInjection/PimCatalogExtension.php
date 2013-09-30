@@ -104,6 +104,10 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         if (isset($bundles['FOSJsRoutingBundle'])) {
             $this->prependExtensionConfig($container, 'fos_js_routing');
         }
+
+        if (isset($bundles['BeSimpleSoapBundle'])) {
+            $this->prependExtensionConfig($container, 'be_simple_soap');
+        }
     }
 
     /**

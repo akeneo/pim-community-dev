@@ -58,18 +58,6 @@ swiftmailer:
     password:                 "%mailer_password%"
     spool:                    { type: memory }
 
-be_simple_soap:
-    cache:
-        type:                 disk
-        lifetime:             86400
-        limit:                5
-    services:
-        soap:
-            namespace:        http://symfony.loc/Api/1.0/
-            binding:          rpc-literal
-            resource:         "%kernel.root_dir%/../app/config/soap.yml"
-            resource_type:    yml
-
 stof_doctrine_extensions:
     default_locale: %default_locale%
     translation_fallback: true
