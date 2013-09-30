@@ -64,7 +64,7 @@ class ChannelManager
 
         $choices = array();
         foreach ($channels as $channel) {
-            $choices[$channel->getCode()] = $channel->getName();
+            $choices[$channel->getCode()] = $channel->getLabel();
         }
 
         return $choices;

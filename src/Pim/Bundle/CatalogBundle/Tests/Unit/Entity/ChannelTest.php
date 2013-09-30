@@ -66,16 +66,16 @@ class ChannelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for name property
+     * Test getter/setter for label property
      */
-    public function testGetSetName()
+    public function testGetSetLabel()
     {
-        $this->assertEmpty($this->channel->getName());
+        $this->assertEmpty($this->channel->getLabel());
 
         // change value and assert new
-        $newName = 'E-Commerce';
-        $this->assertEntity($this->channel->setName($newName));
-        $this->assertEquals($newName, $this->channel->getName());
+        $newLabel = 'E-Commerce';
+        $this->assertEntity($this->channel->setLabel($newLabel));
+        $this->assertEquals($newLabel, $this->channel->getLabel());
     }
 
     /**
