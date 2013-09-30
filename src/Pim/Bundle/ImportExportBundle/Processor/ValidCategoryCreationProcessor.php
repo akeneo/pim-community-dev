@@ -35,14 +35,14 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     protected $formFactory;
 
     /**
-     * Delimiter separating the translated titles
+     * Delimiter separating the translated labels
      *
      * @var string
      */
-    protected $titleDelimiter    = ',';
+    protected $labelDelimiter    = ',';
 
     /**
-     * Delimiter separating locale from the title
+     * Delimiter separating locale from the label
      *
      * @var string
      */
@@ -82,23 +82,23 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     }
 
     /**
-     * Set the title delimiter
+     * Set the label delimiter
      *
-     * @param string $titleDelimiter
+     * @param string $labelDelimiter
      */
-    public function setTitleDelimiter($titleDelimiter)
+    public function setLabelDelimiter($labelDelimiter)
     {
-        $this->titleDelimiter = $titleDelimiter;
+        $this->labelDelimiter = $labelDelimiter;
     }
 
     /**
-     * Get the Title delimiter
+     * Get the label delimiter
      *
      * @return string
      */
-    public function getTitleDelimiter()
+    public function getLabelDelimiter()
     {
-        return $this->titleDelimiter;
+        return $this->labelDelimiter;
     }
 
     /**
@@ -147,7 +147,7 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     public function getConfigurationFields()
     {
         return array(
-            'titleDelimiter'      => array(),
+            'labelDelimiter'      => array(),
             'localeDelimiter'     => array(),
             'circularRefsChecked' => array(
                 'type' => 'checkbox',
@@ -372,14 +372,14 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
             )
         );
 
-        $titleData = array();
+        $labelData = array();
 
-        $titles = explode($this->titleDelimiter, $item['title']);
-        foreach ($titles as $titleItem) {
-            $titleItem = explode($this->localeDelimiter, $titleItem);
-            if (count($titleItem) === 2) {
-                list($locale, $title) = $titleItem;
-                $titleData[$locale] = $title;
+        $labels = explode($this->labelDelimiter, $item['label']);
+        foreach ($labels as $labelItem) {
+            $labelItem = explode($this->localeDelimiter, $labelItem);
+            if (count($labelItem) === 2) {
+                list($locale, $label) = $labelItem;
+                $labelData[$locale] = $label;
             } else {
                 // TODO: Log an error = translation for this category will not be imported
             }
@@ -387,7 +387,7 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
 
         $data = array(
             'code' => $item['code'],
-            'title' => $titleData,
+            'label' => $labelData,
             'dynamic' => (bool) $item['dynamic'],
         );
 
