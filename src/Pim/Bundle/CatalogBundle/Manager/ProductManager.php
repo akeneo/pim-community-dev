@@ -27,11 +27,6 @@ class ProductManager extends FlexibleManager
     protected $mediaManager;
 
     /**
-     * @var \Pim\Bundle\CatalogBundle\Manager\ChannelManager
-     */
-    protected $channelManager;
-
-    /**
      * {@inheritdoc}
      */
     public function __construct(
