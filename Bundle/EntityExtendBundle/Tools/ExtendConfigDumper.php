@@ -33,7 +33,7 @@ class ExtendConfigDumper
 
     /**
      * @param OroEntityManager $em
-     * @param string           $cacheDir
+     * @param string $cacheDir
      */
     public function __construct(OroEntityManager $em, $cacheDir)
     {
@@ -204,12 +204,8 @@ class ExtendConfigDumper
         switch ($relType) {
             case 'manyToOne':
                 $config[$entityName][$relType][$fieldName]['targetEntity'] = $to;
-
-                $classArr  = explode('\\', $to);
-                $className = array_pop($classArr);
-
-                $config[$entityName][$relType][$fieldName]['joinColumn'] = array(
-                    'name'                 => strtolower($className) . '_id',
+                $config[$entityName][$relType][$fieldName]['joinColumn']   = array(
+                    'name'                 => strtolower($fieldName) . '_id',
                     'referencedColumnName' => $this->getEntityIdentifier($to)
                 );
 
