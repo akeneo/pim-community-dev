@@ -58,16 +58,6 @@ swiftmailer:
     password:                 "%mailer_password%"
     spool:                    { type: memory }
 
-knp_paginator:
-    page_range:               5         # default page range used in pagination control
-    default_options:
-        page_name:            page      # page query parameter name
-        sort_field_name:      sort      # sort field query parameter name
-        sort_direction_name:  direction # sort direction query parameter name
-        distinct:             true      # ensure distinct results, useful when ORM queries are using GROUP BY statements
-    template:
-        pagination:           OroUIBundle::pager.html.twig
-
 fos_rest:
     view:
         failed_validation: HTTP_BAD_REQUEST
