@@ -83,8 +83,8 @@ services:
     pim_catalog.helper.locale:
         class: Pim\Bundle\CatalogBundle\Helper\LocaleHelper
         arguments:
-            - '@security.context'
             - '@pim_catalog.manager.locale'
+            - '@security.context'
             - '%locale%'
         calls:
             - [ "setRequest", ["@?request="] ]
