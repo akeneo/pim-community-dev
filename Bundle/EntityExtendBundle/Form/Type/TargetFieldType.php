@@ -51,12 +51,13 @@ class TargetFieldType extends AbstractType
 
             $className = $form->getParent()->get('target_entity')->getData();
             if (null == $className) {
-                $className = $request->request->get(
+                $className =  $request->request->get(
                     'oro_entity_config_type[extend][target_entity]',
                     null,
                     true
                 );
             }
+            $className = str_replace('_', '\\', $className);
 
             if ($className) {
                 /** @var EntityConfigModel $entity */
@@ -79,7 +80,10 @@ class TargetFieldType extends AbstractType
                         );
 
                     foreach ($entityFields as $field) {
-                        $label = $entityConfigProvider->getConfig($className, $field->getFieldName())->get('label');
+                        $label                           = $entityConfigProvider->getConfig(
+                            $className,
+                            $field->getFieldName()
+                        )->get('label');
                         $choices[$field->getFieldName()] = $label ? : $field->getFieldName();
                     }
                 }

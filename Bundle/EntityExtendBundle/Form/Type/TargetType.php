@@ -66,7 +66,7 @@ class TargetType extends AbstractType
                     }
                 }
 
-                $options[$entity->getClassName()] = $moduleName . ':' . $entityName;
+                $options[str_replace('\\', '_', $entity->getClassName())] = $moduleName . ':' . $entityName;
             }
         }
 
