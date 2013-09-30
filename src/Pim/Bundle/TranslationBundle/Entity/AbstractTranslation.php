@@ -23,7 +23,7 @@ abstract class AbstractTranslation
     /**
      * @var string $locale
      *
-     * @ORM\Column(type="string", length=8)
+     * @ORM\Column(type="string", length=10)
      */
     protected $locale;
 
