@@ -6,7 +6,7 @@ function($, routing) {
     $(function() {
         $(document).on('change', 'form select.extend-rel-target-name', function (e) {
             var el     = $(this),
-                target = el.find('option:selected').attr('value'),
+                target = el.find('option:selected').attr('value').replace(/\\/g,'_'),
                 query =  routing.generate.apply(routing, ['oro_entityconfig_field_search', {id: target}]),
                 fields = $('form select.extend-rel-target-field');
 

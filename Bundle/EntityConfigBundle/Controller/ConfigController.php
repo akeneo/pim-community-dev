@@ -345,6 +345,8 @@ class ConfigController extends Controller
     {
         $fields = array();
         if ($id) {
+            $id = str_replace('_', '\\', $id);
+
             /** @var EntityConfigModel $entity */
             $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)
                 ->findOneBy(array('className' => $id));
