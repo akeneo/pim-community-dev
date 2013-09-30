@@ -71,6 +71,10 @@ function(mediator) {
         }
     };
 
+    mediator.on('widget_initialize', function(widget) {
+        widgetManager.addWidgetInstance(widget);
+    });
+
     mediator.on('widget_remove', function(wid) {
         widgetManager.removeWidget(wid);
     });

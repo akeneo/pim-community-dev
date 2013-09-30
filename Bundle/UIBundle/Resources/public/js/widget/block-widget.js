@@ -26,13 +26,13 @@ function(_, Backbone, AbstractWidget) {
 
         initialize: function(options) {
             options = options || {};
-            this.initializeWidget(options);
 
             this.widget = Backbone.$(this.options.template({
                 'title': this.options.title,
                 'contentClasses': this.options.contentClasses
             }));
             this.widgetContentContainer = this.widget.find(this.options.contentContainer);
+            this.initializeWidget(options);
         },
 
         setTitle: function(title) {

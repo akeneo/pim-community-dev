@@ -81,9 +81,9 @@ function(_, Backbone, mediator, LoadingMask, layout) {
 
             this.actions = {};
             this.firstRun = true;
-
-            mediator.trigger('widget:init:' + this.getWid(), this);
             this.loadingElement = $('body');
+
+            mediator.trigger('widget_initialize', this);
         },
 
         /**
