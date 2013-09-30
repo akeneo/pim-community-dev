@@ -50,6 +50,15 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test related method
+     */
+    public function testCreateProductValue()
+    {
+        $value = $this->getProductManager()->createProductValue();
+        $this->assertEquals(get_class($value), 'Pim\Bundle\CatalogBundle\Entity\ProductValue');
+    }
+
+    /**
      * Create ProductManager
      *
      * @param MediaManager  $mediaManager
@@ -63,7 +72,17 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
 
         return new ProductManager(
             'Product',
-            array('entities_config' => array('Product' => null)),
+            array(
+                'entities_config' => array(
+                    'Product' => array(
+                        'flexible_class' => 'Pim\Bundle\CatalogBundle\Entity\Product',
+                        'flexible_value_class' => 'Pim\Bundle\CatalogBundle\Entity\ProductValue',
+                        'attribute_class' => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                        'attribute_option_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOption',
+                        'attribute_option_value_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue'
+                    )
+                )
+            ),
             $objectManager ?: $this->getObjectManagerMock($flexibleRepository),
             $this->getEventDispatcherInterfaceMock(),
             $this->getAttributeTypeFactoryMock(),
