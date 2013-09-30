@@ -59,6 +59,7 @@ assetic:
         - OroNavigationBundle
         - OroWindowsBundle
         - OroEntityExtendBundle
+        - OroSecurityBundle
         - OroSegmentationTreeBundle
         - OroAsseticBundle
         - PimUIBundle
@@ -235,6 +236,9 @@ a2lix_translation_form:
     locales:                  [en, fr]
     templating:               "OroUIBundle:Form:translateable.html.twig"
 
+apy_js_form_validation:
+    check_modes: [submit]
+
 lexik_maintenance:
     authorized:
         path:                 "maintenance|.*\.js"             # "maintenance" is only for demo purposes, remove in production!
@@ -272,9 +276,6 @@ oro_filter:
 
 oro_batch:
     sender_email: mailer@akeneo.com
-
-apy_js_form_validation:
-    check_modes: [submit]
 
 knp_gaufrette:
     adapters:
