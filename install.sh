@@ -26,6 +26,12 @@ ORO_FIXTURE_BUNDLES="
     WorkflowBundle/DataFixtures
 "
 ORO_FIXTURES=`echo $ORO_FIXTURE_BUNDLES | sed -e "s# # --fixtures=$ORO_BUNDLE_PATH#g" -e "s#^# --fixtures=$ORO_BUNDLE_PATH#"`
+PIM_FIXTURE_PATHS="
+    src/Pim/Bundle/InstallerBundle/DataFixtures
+    src/Pim/Bundle/UserBundle/DataFixtures
+    vendor/akeneo/DemoBundle/Pim/Bundle/DemoBundle/DataFixtures
+"
+PIM_FIXTURES=`echo $PIM_FIXTURE_PATHS | sed -e "s# # --fixtures=#g" -e "s#^# --fixtures=#"`
 
 APP_ROOT=`dirname $0`
 DEFAULT_ENV="dev"
@@ -95,8 +101,7 @@ if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     echo "Loading ORO fixtures"
     php app/console doctrine:fixtures:load $ORO_FIXTURES --no-interaction
     echo "Loading PIM fixtures"
-    php app/console doctrine:fixtures:load --fixtures=src/Pim/Bundle/InstallerBundle/DataFixtures/ --no-interaction --append
-    php app/console doctrine:fixtures:load --fixtures=src/Pim/Bundle/UserBundle/DataFixtures/ --no-interaction --append
+    php app/console doctrine:fixtures:load $PIM_FIXTURES --no-interaction --append
     php app/console oro:entity-config:init
     php app/console oro:entity-extend:init
     php app/console oro:entity-extend:update-config
