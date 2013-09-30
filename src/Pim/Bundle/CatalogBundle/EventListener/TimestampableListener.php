@@ -28,9 +28,9 @@ class TimestampableListener extends BaseTimestampableListener
     /**
      * Update flexible fields when a value is updated
      *
-     * @param ObjectManager $om
-     * @param Flexible      $flexible
-     * @param array         $fields
+     * @param ObjectManager    $objectManager
+     * @param AbstractFlexible $flexible
+     * @param array            $fields
      */
     protected function updateFlexibleFields(ObjectManager $objectManager, AbstractFlexible $flexible, $fields)
     {

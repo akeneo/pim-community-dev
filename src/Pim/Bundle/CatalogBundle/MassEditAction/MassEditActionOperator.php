@@ -133,7 +133,7 @@ class MassEditActionOperator
     /**
      * Delegate the batch operation initialization to the chosen operation adapter
      *
-     * @param array $parameters
+     * @param array $productIds
      */
     public function initializeOperation($productIds)
     {

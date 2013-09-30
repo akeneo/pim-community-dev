@@ -31,6 +31,7 @@ abstract class AbstractMassEditAction implements MassEditAction
      *
      * @param string $key
      * @param array  $parameters
+     * @param mixed  $default
      *
      * @throw InvalidArgumentException
      *

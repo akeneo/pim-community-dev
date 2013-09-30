@@ -13,6 +13,9 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
  */
 class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $em = $this->getEntityManagerMock();
@@ -33,6 +36,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         $this->converter = new ProductValueConverter($em, $currencyManager);
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertBasicType()
     {
         $this->attributeRepository
@@ -47,6 +53,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testIgnoreUnknownAttribute()
     {
         $this->attributeRepository
@@ -61,6 +70,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertLocalizedValue()
     {
         $this->attributeRepository
@@ -75,6 +87,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertUnlocalizedValue()
     {
         $this->attributeRepository
@@ -89,6 +104,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertScopableValue()
     {
         $this->attributeRepository
@@ -103,6 +121,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertPricesValue()
     {
         $this->attributeRepository
@@ -132,6 +153,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertEmptyPricesValue()
     {
         $this->attributeRepository
@@ -161,6 +185,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertDateValue()
     {
         $this->attributeRepository
@@ -182,6 +209,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertOptionValue()
     {
         $this->attributeRepository
@@ -208,6 +238,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertOptionsValue()
     {
         $this->attributeRepository
@@ -241,6 +274,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertMetricValue()
     {
         $this->attributeRepository
@@ -264,6 +300,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertEmptyMetricValue()
     {
         $this->attributeRepository
@@ -298,6 +337,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         $this->converter->convert(array('weight' => '60KILOGRAM'));
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertMedia()
     {
         $this->attributeRepository
@@ -309,6 +351,13 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $this->converter->convert(array('image' => 'akeneo.jpg')));
     }
 
+    /**
+     * @param string  $backendType
+     * @param boolean $translatable
+     * @param boolean $scopable
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
     protected function getAttributeMock($backendType, $translatable = false, $scopable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
@@ -328,6 +377,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         return $attribute;
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
     protected function getEntityManagerMock()
     {
         return $this
@@ -336,6 +388,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\CurrencyManager
+     */
     protected function getCurrencyManagerMock()
     {
         $currencyManager = $this
@@ -351,6 +406,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         return $currencyManager;
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
     protected function getRepositoryMock()
     {
         return $this
@@ -359,6 +417,11 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @param integer $id
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeOption
+     */
     protected function getAttributeOptionMock($id)
     {
         $option = $this
