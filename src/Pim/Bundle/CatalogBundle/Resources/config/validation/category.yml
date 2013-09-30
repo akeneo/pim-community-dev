@@ -14,6 +14,6 @@ Pim\Bundle\CatalogBundle\Entity\Category:
 
 Pim\Bundle\CatalogBundle\Entity\CategoryTranslation:
     properties:
-        title:
+        label:
             - Length:
                 max: 64

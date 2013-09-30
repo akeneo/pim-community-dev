@@ -69,10 +69,10 @@ class CategoryType extends AbstractSegmentType
     protected function addTitleField(FormBuilderInterface $builder)
     {
         $builder->add(
-            'title',
+            'label',
             'pim_translatable_field',
             array(
-                'field'             => 'title',
+                'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\CategoryTranslation',
                 'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Category',
                 'property_path'     => 'translations'
