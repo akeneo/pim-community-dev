@@ -13,6 +13,7 @@ use Oro\Bundle\GridBundle\Filter\FilterFactoryInterface;
 use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Sorter\SorterFactoryInterface;
 use Oro\Bundle\GridBundle\Builder\ORM\DatagridBuilder as OroDatagridBuilder;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -38,6 +39,7 @@ class DatagridBuilder extends OroDatagridBuilder
      *
      * @param FormFactoryInterface     $formFactory
      * @param EventDispatcherInterface $eventDispatcher
+     * @param SecurityFacade           $securityFacade
      * @param FilterFactoryInterface   $filterFactory
      * @param SorterFactoryInterface   $sorterFactory
      * @param ActionFactoryInterface   $actionFactory
@@ -47,7 +49,7 @@ class DatagridBuilder extends OroDatagridBuilder
     public function __construct(
         FormFactoryInterface $formFactory,
         EventDispatcherInterface $eventDispatcher,
-        ManagerInterface $aclManager,
+        SecurityFacade $securityFacade,
         FilterFactoryInterface $filterFactory,
         SorterFactoryInterface $sorterFactory,
         ActionFactoryInterface $actionFactory,
@@ -57,6 +59,7 @@ class DatagridBuilder extends OroDatagridBuilder
         parent::__construct(
             $formFactory,
             $eventDispatcher,
+            $securityFacade,
             $filterFactory,
             $sorterFactory,
             $actionFactory,
