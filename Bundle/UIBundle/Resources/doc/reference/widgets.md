@@ -30,9 +30,9 @@ Widget container responsible for displaying widget, loading widget data from ser
 
 Widget container should support settings functionality, settings are defined by widget (not implemented yet).
 
-Widget container add \_*widgetContainer=\<widgetContainerType\>&*\_wid=\<widgetIdentifier\> to all requests.
+Widget container add \_widgetContainer=\<widgetContainerType\>&\_wid=\<widgetIdentifier\> to all requests.
 
-*\_**widgetContainer** variable* used to determine proper template for current container;
+\_**widgetContainer** variable used to determine proper template for current container;
 
 \_**wid** variable may be used by widget to get instance of widget container from widget manager.
 
@@ -67,29 +67,11 @@ Add action element to specified section
 
 Parameters:
 
-Name
-
-Type
-
-Description
-
-key
-
-string
-
-action name
-
-section
-
-string
-
-section name
-
-actionElement
-
-HTMLElement
-
- 
+Name |  Type |  Description
+-----|-------|-------------
+key | string | action name
+section | string | section name
+actionElement | HTMLElement |
 
 #### getAction(key, section, callback)
 
@@ -97,29 +79,11 @@ Get action element when after render.
 
 Parameters:
 
-Name
-
-Type
-
-Description
-
-key
-
-string
-
-action name
-
-section
-
-string
-
-section name
-
-callback
-
-function
-
-callback method for processing action element
+Name |  Type |  Description
+-----|-------|-------------
+key | string | action name
+section | string | section name
+callback | function | callback method for processing action element
 
 #### getActions() → {Object}
 
@@ -149,23 +113,10 @@ Check action availability.
 
 Parameters:
 
-Name
-
-Type
-
-Description
-
-key
-
-string
-
-action name
-
-section
-
-string
-
-section name
+Name |  Type |  Description
+-----|-------|-------------
+key | string | action name
+section | string | section name
 
 Returns: Type: boolean
 
@@ -179,23 +130,11 @@ Load content
 
 Parameters:
 
-Name
+Name |  Type |  Description
+-----|-------|-------------
+data | Object or null |
+method | String or null |
 
-Type
-
-Description
-
-data
-
-Object or null
-
- 
-
-method
-
-String or null
-
- 
 
 #### remove()
 
@@ -207,23 +146,10 @@ Remove action from section
 
 Parameters:
 
-Name
-
-Type
-
-Description
-
-key
-
-string
-
-action name
-
-section
-
-string
-
-section name
+Name |  Type |  Description
+-----|-------|-------------
+key | string | action name
+section | string | section name
 
 #### render()
 
@@ -235,17 +161,9 @@ Set widget title.
 
 Parameters:
 
-Name
-
-Type
-
-Description
-
-title
-
-string
-
- 
+Name |  Type |  Description
+-----|-------|-------------
+title | string |
 
 #### setUrl(url)
 
@@ -253,17 +171,9 @@ Set url
 
 Parameters:
 
-Name
-
-Type
-
-Description
-
-url
-
-string
-
- 
+Name |  Type |  Description
+-----|-------|-------------
+url | string |
 
 #### setWidToElement(el)
 
@@ -271,17 +181,9 @@ Add data-wid attribute to given element.
 
 Parameters:
 
-Name
-
-Type
-
-Description
-
-el
-
-HTMLElement
-
- 
+Name |  Type |  Description
+-----|-------|-------------
+el | HTMLElement |
 
 #### show()
 
@@ -313,61 +215,51 @@ Interaction example
 
 Let's assume that widget need to trigger *formSave* event when form successfully saved.
 
-<table>
-<col width="100%" />
-<tbody>
-<tr class="odd">
-<td align="left"><pre><code>&lt;div id=&quot;poll-widget&quot;&gt;&lt;/div&gt;
-&lt;script type=&quot;text/javascript&quot;&gt;
-require([&#39;oro/widget-manager&#39;, &#39;oro/block-widget&#39;],
+```html
+<div id="poll-widget"></div>
+<script type="text/javascript">
+require(['oro/widget-manager', 'oro/block-widget'],
 function(widgetManager, BlockWidget) {
     var widgetInstance = new BlockWidget({
-        el: &#39;#poll-widget&#39;,
-        url: &#39;/my-poll-widget&#39;,
-        title: &#39;Satisfaction survey&#39;
+        el: '#poll-widget',
+        url: '/my-poll-widget',
+        title: 'Satisfaction survey'
     });
     addWidgetInstance.render();
 
-    widgetInstance.on(&#39;formSave&#39;, function() {
-        alert(&#39;Form saved&#39;);
+    widgetInstance.on('formSave', function() {
+        alert('Form saved');
     });
 });
-&lt;/script&gt;</code></pre></td>
-</tr>
-</tbody>
-</table>
+</script>
+````
 
-<table>
-<col width="100%" />
-<tbody>
-<tr class="odd">
-<td align="left"><pre><code>&lt;div class=&quot;widget-content&quot;&gt;
-    &lt;form action=&quot;/my-poll-widget&quot; method=&quot;post&quot;&gt;
-        &lt;label for=&quot;variant&quot;&gt;Are you satisfied&lt;/label&gt;
-        &lt;select name=&quot;variant&quot; id=&quot;variant&quot;&gt;
-            &lt;option value=&quot;yes&quot;&gt;Yes&lt;/option&gt;
-            &lt;option value=&quot;no&quot;&gt;No&lt;/option&gt;
-        &lt;/select&gt;
+```html
+<div class="widget-content">
+    <form action="/my-poll-widget" method="post">
+        <label for="variant">Are you satisfied</label>
+        <select name="variant" id="variant">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+        </select>
 
-        &lt;div class=&quot;widget-actions&quot;&gt;
-            &lt;button type=&quot;submit&quot;&gt;Vote&lt;/button&gt;
-        &lt;/div&gt;
-    &lt;/form&gt;
+        <div class="widget-actions">
+            <button type="submit">Vote</button>
+        </div>
+    </form>
 
     {% if isSaved %}
-    &lt;script type=&quot;text/javascript&quot;&gt;
-        require([&#39;oro/widget-manager&#39;],
+    <script type="text/javascript">
+        require(['oro/widget-manager'],
         function(widgetManager) {
-            widgetManager.getWidgetInstance({{ app.request.get(&#39;_wid&#39;)|json_encode|raw }}, function(widget) {
-                widget.trigger(&#39;formSave&#39;);
+            widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
+                widget.trigger('formSave');
             });
         });
-    &lt;/script&gt;
+    </script>
     {% endif %}
-&lt;/div&gt;</code></pre></td>
-</tr>
-</tbody>
-</table>
+</div>
+```
 
 API
 ---
@@ -384,17 +276,9 @@ Add widget instance to registry.
 
 Parameters:
 
-Name
-
-Type
-
-Description
-
-widget
-
-oro.AbstractWidget
-
-widget instance
+Name |  Type |  Description
+-----|-------|-------------
+widget | oro.AbstractWidget | widget instance
 
 #### getWidgetInstance(wid, callback)
 
@@ -402,23 +286,10 @@ Get widget instance by widget identifier and pass it to callback when became ava
 
 Parameters:
 
-Name
-
-Type
-
-Description
-
-wid
-
-string
-
-unique widget identifier
-
-callback
-
-function
-
-widget handler
+Name |  Type |  Description
+-----|-------|-------------
+wid | string | unique widget identifier
+callback | function | widget handler
 
 #### getWidgetInstanceByAlias(alias, callback)
 
@@ -426,23 +297,10 @@ Get widget instance by alias and pass it to callback when became available.
 
 Parameters:
 
-Name
-
-Type
-
-Description
-
-alias
-
-string
-
-widget alias
-
-callback
-
-function
-
-widget handler
+Name |  Type |  Description
+-----|-------|-------------
+alias | string | widget alias
+callback | function | widget handler
 
 #### removeWidget(wid)
 
@@ -450,23 +308,13 @@ Remove widget instance from registry.
 
 Parameters:
 
-Name
-
-Type
-
-Description
-
-wid
-
-string
-
-unique widget identifier
+Name |  Type |  Description
+-----|-------|-------------
+wid | string | unique widget identifier
 
 Widgets
 =======
 
 Widget is any controller/action or static content rendered inside widget container.
-
 @Template annotation support \_widgetContainer request variable, based on which appropriate template is chosen by next rule: \<widgetContainer\>/\<action\>.\<format\>.\<templateEngine\> (dialog/example.html.twig). In case when no template for specific container found widget/\<action\>.\<format\>.\<templateEngine\> (widget/example.html.twig) template will be tried to render. If no such template found then default template for action will be rendered (example.html.twig).
-
 Widgets may be rendered with twig function oro_widget_render($options)
