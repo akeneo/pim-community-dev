@@ -289,7 +289,7 @@ Families | Create:                           Families | Create
 Families %family.label% | Edit:              Families %family.label% | Edit
 Channels:                                    Channels
 Channels | Create:                           Channels | Create
-Channels %channel.name% | Edit:              Channels %channel.name% | Edit
+Channels %channel.label% | Edit:             Channels %channel.label% | Edit
 Currencies:                                  Currencies
 Locales:                                     Locales
 Locales %locale.code% | Edit:                Locales %locale.code% | Edit

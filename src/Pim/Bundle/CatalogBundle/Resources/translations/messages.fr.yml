@@ -280,7 +280,7 @@ Families | Create:                           __Families | Create
 Families %family.label% | Edit:              __Families %family.label% | Edit
 Channels:                                    __Channels
 Channels | Create:                           __Channels | Create
-Channels %channel.name% | Edit:              __Channels %channel.name% | Edit
+Channels %channel.label% | Edit:             __Channels %channel.label% | Edit
 Currencies:                                  __Currencies
 Locales:                                     __Locales
 Locales %locale.code% | Edit:                __Locales %locale.code% | Edit

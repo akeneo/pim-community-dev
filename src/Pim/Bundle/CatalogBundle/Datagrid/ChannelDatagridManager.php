@@ -68,12 +68,12 @@ class ChannelDatagridManager extends DatagridManager
         $fieldsCollection->add($field);
 
         $field = new FieldDescription();
-        $field->setName('name');
+        $field->setName('label');
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('Name'),
-                'field_name'  => 'name',
+                'label'       => $this->translate('Label'),
+                'field_name'  => 'label',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
