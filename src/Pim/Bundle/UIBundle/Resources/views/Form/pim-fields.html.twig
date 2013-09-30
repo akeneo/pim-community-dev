@@ -167,7 +167,7 @@
 
 {% block widget_attributes %}
 {% if attr.class is defined %}
-    {% if attr.class != 'noswitch' %}
+    {% if 'noswitch' not in attr.class and 'input-' not in attr.class %}
         {% set class = attr.class ~ ' input-large' %}
     {% else %}
         {% set class = attr.class %}
@@ -200,7 +200,7 @@
     <div class="control-group">
         {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.data.vars.id} }) }}
         <div class="controls">
-            {{ form_widget(form.unit) }}
+            {{ form_widget(form.unit, { 'attr': { 'class': 'input-small' }}) }}
             {{ form_widget(form.data) }}
             <div class="icons-container">
                 {{ form_errors(form) }}
