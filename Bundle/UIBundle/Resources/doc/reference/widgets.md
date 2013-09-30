@@ -32,9 +32,9 @@ Widget container should support settings functionality, settings are defined by 
 
 Widget container add \_widgetContainer=\<widgetContainerType\>&\_wid=\<widgetIdentifier\> to all requests.
 
-\_**widgetContainer** variable used to determine proper template for current container;
+**\_widgetContainer** variable used to determine proper template for current container;
 
-\_**wid** variable may be used by widget to get instance of widget container from widget manager.
+**\_wid** variable may be used by widget to get instance of widget container from widget manager.
 
 Containers
 ----------
@@ -215,6 +215,7 @@ Interaction example
 
 Let's assume that widget need to trigger *formSave* event when form successfully saved.
 
+**Page content**
 ```html
 <div id="poll-widget"></div>
 <script type="text/javascript">
@@ -234,6 +235,7 @@ function(widgetManager, BlockWidget) {
 </script>
 ````
 
+**Widget content**
 ```html
 <div class="widget-content">
     <form action="/my-poll-widget" method="post">
