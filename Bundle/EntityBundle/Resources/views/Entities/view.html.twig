@@ -1,6 +1,9 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 
-{% oro_title_set({params : {"%entityName%": 'Item #'~entity.id|default('N/A') }}) %}
+{% oro_title_set({params : {
+    "%entityName%": entity_config.get('label')|default('N/A'),
+    "%recordName%": 'Item #'~entity.id|default('N/A') },
+}) %}
 
 {% block navButtons %}
     {% if resource_granted('EDIT', 'entity:'~entity_class) %}
