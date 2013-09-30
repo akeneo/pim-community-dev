@@ -37,7 +37,7 @@ class ChannelTypeTest extends AbstractFormTypeTest
         // Assert fields
         $this->assertField('id', 'hidden');
         $this->assertField('code', 'text');
-        $this->assertField('name', 'text');
+        $this->assertField('label', 'text');
 
         // Assert option class
         $this->assertEquals(

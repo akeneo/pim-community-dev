@@ -45,7 +45,7 @@ class CategoryTypeTest extends AbstractFormTypeTest
     {
         // Assert fields
         $this->assertField('code', 'text');
-        $this->assertField('title', 'pim_translatable_field');
+        $this->assertField('label', 'pim_translatable_field');
 
         // Assert option class
         $this->assertEquals(
