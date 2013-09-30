@@ -269,6 +269,26 @@ class ProductManager extends FlexibleManager
     }
 
     /**
+     * Create a product (alias of createFlexible)
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     */
+    public function createProduct()
+    {
+        return parent::createFlexible();
+    }
+
+    /**
+     * Create a product value (alias of createFlexibleValue)
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+     */
+    public function createProductValue()
+    {
+        return parent::createFlexibleValue();
+    }
+
+    /**
      * Add empty values for family and product-specific attributes for relevant scopes and locales
      *
      * It makes sure that if an attribute is translatable/scopable, then all values
