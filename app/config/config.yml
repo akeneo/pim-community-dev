@@ -68,11 +68,6 @@ services:
          tags:
              - { name: twig.extension }
 
-oro_user:
-    settings:
-        name_format:
-          value:              %%last%%, %%first%%
-
 oro_translation:
     js_translation:
         # order of domains reflects messages fallback
