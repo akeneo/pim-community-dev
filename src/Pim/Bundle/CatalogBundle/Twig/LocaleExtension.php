@@ -57,11 +57,23 @@ class LocaleExtension extends \Twig_Extension
         return $this->localeHelper->getLocaleLabel($code, $locale);
     }
 
+    /**
+     * Returns the symbol for a currency
+     * 
+     * @param string $currency
+     * @param string $locale
+     * @return string
+     */
     public function currencySymbol($code, $locale = null)
     {
         return $this->localeHelper->getCurrencySymbol($code, $locale);
     }
 
+    /**
+     * Returns the catalog locale currency
+     * 
+     * @return string
+     */
     public function localeCurrency()
     {
         return $this->localeHelper->getLocaleCurrency();

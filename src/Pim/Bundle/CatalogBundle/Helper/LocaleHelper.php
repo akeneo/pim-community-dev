@@ -70,6 +70,8 @@ class LocaleHelper
      * Returns the symbol for a currency
      * 
      * @param string $currency
+     * @param string $locale
+     * @return string
      */
     public function getCurrencySymbol($currency, $locale = null)
     {
@@ -79,6 +81,11 @@ class LocaleHelper
         return Intl\Intl::getCurrencyBundle()->getCurrencySymbol($currency, $locale);
     }
     
+    /**
+     * Returns the catalog locale currency
+     * 
+     * @return string
+     */
     public function getLocaleCurrency()
     {
         $localeCode = $this->getCatalogLocale();
@@ -88,17 +95,19 @@ class LocaleHelper
     }
     
     /**
+     * Returns the flag  icon for a locale
+     * 
      * @param string $code
-     *
+     * @param string $locale
      * @return string
      */
-    public function getFlag($code)
+    public function getFlag($code, $locale = null)
     {
         return sprintf(
             '<img src="%s" class="flag flag-%s" alt="%s" /><code class="flag-language">%s</code>',
             '/bundles/pimui/images/blank.gif',
             \Locale::getRegion($code),
-            $this->getLocaleLabel($code),
+            $this->getLocaleLabel($code, $locale),
             \Locale::getPrimaryLanguage($code)
         );
     }
