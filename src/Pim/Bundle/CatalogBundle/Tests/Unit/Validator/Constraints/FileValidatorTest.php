@@ -6,12 +6,17 @@ use Pim\Bundle\CatalogBundle\Validator\Constraints\File;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\FileValidator;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class FileValidatorTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @return array
+     */
     public static function getValidData()
     {
         return array(
@@ -22,6 +27,9 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @return array
+     */
     public static function getInvalidData()
     {
         return array(
@@ -30,17 +38,25 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->target = new FileValidator();
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfConstraintValidator()
     {
         $this->assertInstanceOf('Symfony\Component\Validator\Constraints\FileValidator', $this->target);
     }
 
     /**
+     * @param mixed $file
+     *
      * @dataProvider getValidData
      */
     public function testValidValue($file)
@@ -62,6 +78,8 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param mixed $file
+     *
      * @dataProvider getInvalidData
      */
     public function testInvalidValue($file)
@@ -87,6 +105,8 @@ class FileValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param mixed $file
+     *
      * @dataProvider getValidData
      */
     public function testEmptyAllowedExtensions($file)

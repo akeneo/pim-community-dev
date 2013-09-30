@@ -22,6 +22,8 @@ interface DatagridWorkerInterface
      * @param array  $routeParams
      *
      * @return Datagrid
+     *
+     * @throws \InvalidArgumentException
      */
     public function getDataAuditDatagrid($entity, $route, array $routeParams);
 

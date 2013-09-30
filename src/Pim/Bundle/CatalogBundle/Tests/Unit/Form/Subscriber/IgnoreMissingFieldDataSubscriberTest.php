@@ -16,16 +16,25 @@ class IgnoreMissingFieldDataSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     protected $subscriber;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->subscriber = new IgnoreMissingFieldDataSubscriber();
     }
 
+    /**
+     * Test related method
+     */
     public function testIsAnEventSubscriber()
     {
         $this->assertInstanceOf('Symfony\Component\EventDispatcher\EventSubscriberInterface', $this->subscriber);
     }
 
+    /**
+     * Test related method
+     */
     public function testSubscribedEvents()
     {
         $this->assertEquals(
@@ -34,6 +43,9 @@ class IgnoreMissingFieldDataSubscriberTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testPreSubmit()
     {
         $form = $this->getFormMock(
@@ -56,6 +68,12 @@ class IgnoreMissingFieldDataSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->subscriber->preSubmit($event);
     }
 
+    /**
+     * @param mixed $form
+     * @param mixed $data
+     *
+     * @return \Symfony\Component\Form\FormEvent
+     */
     protected function getFormEventMock($form, $data)
     {
         $event = $this
@@ -74,6 +92,11 @@ class IgnoreMissingFieldDataSubscriberTest extends \PHPUnit_Framework_TestCase
         return $event;
     }
 
+    /**
+     * @param array $children
+     *
+     * @return \Symfony\Component\Form\Form
+     */
     protected function getFormMock(array $children)
     {
         $form = $this

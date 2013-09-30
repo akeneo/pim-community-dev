@@ -14,16 +14,25 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterMassEditAction
  */
 class RegisterMassEditActionsPassTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->target = new RegisterMassEditActionsPass();
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfCompilerPassInterface()
     {
         $this->assertInstanceOf('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface', $this->target);
     }
 
+    /**
+     * Test related method
+     */
     public function testProcessTaggedMassEditActionService()
     {
         $container = new ContainerBuilder();
@@ -47,6 +56,13 @@ class RegisterMassEditActionsPassTest extends \PHPUnit_Framework_TestCase
         $this->assertHasMethodCall($calls, 1, 'registerMassEditAction', 'bar', 'pim_catalog.mass_edit_action.bar');
     }
 
+    /**
+     * @param array   $calls
+     * @param integer $position
+     * @param string  $method
+     * @param string  $alias
+     * @param string  $id
+     */
     public function assertHasMethodCall($calls, $position, $method, $alias, $id)
     {
         $this->assertEquals($method, $calls[$position][0]);

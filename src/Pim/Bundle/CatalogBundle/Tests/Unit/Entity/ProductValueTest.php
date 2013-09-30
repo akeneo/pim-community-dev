@@ -6,6 +6,8 @@ use Pim\Bundle\CatalogBundle\Entity\ProductValue;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -100,29 +102,47 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($target->isRemovable());
     }
 
+    /**
+     * @return ProductValue
+     */
     private function getTargetedClass()
     {
         return new ProductValue();
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Entity\Family
+     */
     private function getFamilyMock()
     {
         return $this
             ->getMock('Pim\Bundle\CatalogBundle\Entity\Family');
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     */
     private function getProductMock()
     {
         return $this
             ->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
     private function getProductAttributeMock()
     {
         return $this
             ->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
     }
 
+    /**
+     * @param mixed   $element
+     * @param boolean $contains
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
     private function getArrayCollectionMock($element, $contains = true)
     {
         $coll = $this->getMock('Doctrine\Common\Collections\ArrayCollection', array('contains'));

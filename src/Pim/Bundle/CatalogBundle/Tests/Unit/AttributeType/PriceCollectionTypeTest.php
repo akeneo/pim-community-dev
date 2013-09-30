@@ -30,6 +30,9 @@ class PriceCollectionTypeTest extends AttributeTypeTestCase
         return new PriceCollectionType($this->backendType, $this->formType, $this->guesser, $currencyManager);
     }
 
+    /**
+     * Test related method
+     */
     public function testBuildValueFormType()
     {
         $factory = $this->getFormFactoryMock();
@@ -61,6 +64,9 @@ class PriceCollectionTypeTest extends AttributeTypeTestCase
         $this->target->buildValueFormType($factory, $value);
     }
 
+    /**
+     * Test related method
+     */
     public function testBuildAttributeFormTypes()
     {
         $this->assertCount(

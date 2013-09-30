@@ -101,8 +101,6 @@ class PendingManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array $data
-     *
      * @return VersionableInterface
      */
     protected function getVersionableMock()

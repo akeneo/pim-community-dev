@@ -3,8 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\AttributeType;
 
 use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
-
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\AttributeType\MetricType;
 
 /**
@@ -26,6 +24,7 @@ class MetricTypeTest extends AttributeTypeTestCase
     protected function createAttributeType()
     {
         $measureManager = new MeasureManager();
+
         return new MetricType($this->backendType, $this->formType, $this->guesser, $measureManager);
     }
 }

@@ -14,6 +14,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->objectManager       = $this->getObjectManagerMock();
@@ -31,11 +34,17 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testIsAMassEditAction()
     {
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\MassEditAction\MassEditAction', $this->action);
     }
 
+    /**
+     * Test related method
+     */
     public function testInitialize()
     {
         $foo = $this->getProductMock();
@@ -101,6 +110,9 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testPerform()
     {
         $foo = $this->getProductMock();
@@ -183,11 +195,17 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         $this->action->perform(array($foo, $bar));
     }
 
+    /**
+     * Test related method
+     */
     public function testFormType()
     {
         $this->assertEquals('pim_catalog_mass_edit_common_attributes', $this->action->getFormType());
     }
 
+    /**
+     * Test related method
+     */
     public function testFormOptions()
     {
         $this->localeManager
@@ -204,6 +222,12 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @param mixed $objectManager
+     * @param mixed $attributeRepository
+     *
+     * @return \Pim\Bundle\CatalogBundle\Manager\ProductManager
+     */
     protected function getProductManagerMock($objectManager, $attributeRepository)
     {
         $manager = $this
@@ -222,16 +246,25 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         return $manager;
     }
 
+    /**
+     * @return \Doctrine\Common\Persistence\ObjectManager
+     */
     protected function getObjectManagerMock()
     {
         return $this->getMock('Doctrine\Common\Persistence\ObjectManager');
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     */
     protected function getProductMock()
     {
         return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
     protected function getEntityRepositoryMock()
     {
         return $this
@@ -240,6 +273,14 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @param string  $code
+     * @param string  $type
+     * @param boolean $scopable
+     * @param boolean $translatable
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
     protected function getProductAttributeMock($code, $type = 'text', $scopable = false, $translatable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
@@ -263,6 +304,11 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         return $attribute;
     }
 
+    /**
+     * @param mixed $locale
+     *
+     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
+     */
     protected function getLocaleManagerMock($locale)
     {
         $manager = $this
@@ -277,6 +323,11 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         return $manager;
     }
 
+    /**
+     * @param string $code
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     */
     protected function getLocaleMock($code = null)
     {
         $locale = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Locale');
@@ -288,6 +339,11 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         return $locale;
     }
 
+    /**
+     * @param string $code
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
+     */
     protected function getChannelMock($code)
     {
         $channel = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Channel');
@@ -299,6 +355,14 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         return $channel;
     }
 
+    /**
+     * @param mixed $attribute
+     * @param mixed $data
+     * @param mixed $scope
+     * @param array $prices
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     */
     protected function getProductValueMock($attribute, $data, $scope = null, array $prices = array())
     {
         $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
@@ -322,6 +386,11 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         return $value;
     }
 
+    /**
+     * @param array $activeCodes
+     *
+     * @return \Pim\Bundle\CatalogBundle\Manager\CurrencyManager
+     */
     protected function getCurrencyManagerMock(array $activeCodes)
     {
         $manager = $this
@@ -336,6 +405,11 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         return $manager;
     }
 
+    /**
+     * @param mixed $currency
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductPrice
+     */
     protected function getProductPriceMock($currency)
     {
         return $this

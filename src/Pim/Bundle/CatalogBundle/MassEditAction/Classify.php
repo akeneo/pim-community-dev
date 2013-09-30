@@ -64,7 +64,9 @@ class Classify extends AbstractMassEditAction
     }
 
     /**
-     * @return CategoryInterface[]
+     * @param CategoryInterface[] $categories
+     *
+     * @return Classify
      */
     public function setCategories($categories)
     {

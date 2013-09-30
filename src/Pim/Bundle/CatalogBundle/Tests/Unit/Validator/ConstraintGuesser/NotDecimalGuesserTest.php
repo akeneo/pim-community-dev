@@ -21,6 +21,9 @@ class NotDecimalGuesserTest extends ConstraintGuesserTest
         $this->target = new NotDecimalGuesser();
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfContraintGuesserInterface()
     {
         $this->assertInstanceOf(
@@ -29,6 +32,9 @@ class NotDecimalGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testSupportAttribute()
     {
         $this->assertTrue(
@@ -46,6 +52,9 @@ class NotDecimalGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGuessNotDecimalConstraint()
     {
         $constraints = $this->target->guessConstraints(
@@ -55,6 +64,9 @@ class NotDecimalGuesserTest extends ConstraintGuesserTest
         $this->assertContainsInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\NotDecimal', $constraints);
     }
 
+    /**
+     * Test related method
+     */
     public function testDoNotGuessNotDecimalConstraint()
     {
         $this->assertEquals(
