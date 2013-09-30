@@ -68,6 +68,28 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * test related method
+     */
+    public function testSetLocale()
+    {
+        $pm = $this->getProductManager();
+        $this->assertNull($pm->getLocale());
+        $pm->setLocale('de_DE');
+        $this->assertEquals($pm->getLocale(), 'de_DE');
+    }
+
+    /**
+     * test related method
+     */
+    public function testSetScope()
+    {
+        $pm = $this->getProductManager();
+        $this->assertNull($pm->getScope());
+        $pm->setScope('mychan');
+        $this->assertEquals($pm->getScope(), 'mychan');
+    }
+
+    /**
      * Create ProductManager
      *
      * @param MediaManager  $mediaManager
