@@ -26,12 +26,12 @@ class FlatAttributeGroupNormalizer extends AttributeGroupNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeName(AttributeGroup $group)
+    protected function normalizeLabel(AttributeGroup $group)
     {
-        $names = parent::normalizeName($group);
+        $labels = parent::normalizeLabel($group);
         $flat = array();
-        foreach ($names as $locale => $name) {
-            $flat[]= $locale.':'.$name;
+        foreach ($labels as $locale => $label) {
+            $flat[]= $locale.':'.$label;
         }
 
         return implode(', ', $flat);
