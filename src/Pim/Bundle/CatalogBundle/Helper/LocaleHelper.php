@@ -20,15 +20,15 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class LocaleHelper
 {
-    private $security;
+    private $securityContext;
     private $localeManager;
     private $defaultLocale;
     private $request;
     
-    public function __construct(LocaleManager $localeManager, SecurityContextInterface $security, $defaultLocale)
+    public function __construct(LocaleManager $localeManager, SecurityContextInterface $securityContext, $defaultLocale)
     {
         $this->localeManager = $localeManager;
-        $this->security = $security;
+        $this->securityContext = $securityContext;
         $this->defaultLocale = $defaultLocale;
     }
     /**
@@ -101,14 +101,18 @@ class LocaleHelper
      * @param string $locale
      * @return string
      */
-    public function getFlag($code, $locale = null)
+    public function getFlag($code, $fullLabel=false, $locale = null)
     {
+        if (is_null($locale)) {
+            $locale = $this->getCurrentLocale();
+        }
+        $localeLabel = $this->getLocaleLabel($code, $locale);
         return sprintf(
             '<img src="%s" class="flag flag-%s" alt="%s" /><code class="flag-language">%s</code>',
             '/bundles/pimui/images/blank.gif',
-            \Locale::getRegion($code),
-            $this->getLocaleLabel($code, $locale),
-            \Locale::getPrimaryLanguage($code)
+            strtolower(\Locale::getRegion($code)),
+            $localeLabel,
+            $fullLabel ? $localeLabel : \Locale::getPrimaryLanguage($code)
         );
     }
     /**
