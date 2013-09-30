@@ -255,7 +255,7 @@ Is dynamic: __Is dynamic
 Dashboard:                                   __Dashboard
 Attribute groups:                            __Attribute groups
 Attribute groups | Create:                   __Attribute groups | Create
-Attribute groups %group.name% | Edit:        __Attribute groups %group.name% | Edit
+Attribute groups %group.label% | Edit:       __Attribute groups %group.label% | Edit
 Attribute groups | Sort:                     __Attribute groups | Sort
 Category trees:                              __Category trees
 Category trees | List:                       __Category trees | List

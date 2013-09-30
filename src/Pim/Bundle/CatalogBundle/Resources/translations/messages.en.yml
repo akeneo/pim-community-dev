@@ -264,7 +264,7 @@ Is dynamic: Is dynamic
 Dashboard:                                   Dashboard
 Attribute groups:                            Attribute groups
 Attribute groups | Create:                   Attribute groups | Create
-Attribute groups %group.name% | Edit:        Attribute groups %group.name% | Edit
+Attribute groups %group.label% | Edit:       Attribute groups %group.label% | Edit
 Attribute groups | Sort:                     Attribute groups | Sort
 Category trees:                              Category trees
 Category trees | List:                       Category trees | List
