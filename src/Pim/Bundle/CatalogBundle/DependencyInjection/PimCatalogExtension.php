@@ -112,6 +112,10 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         if (isset($bundles['StofDoctrineExtensionsBundle'])) {
             $this->prependExtensionConfig($container, 'stof_doctrine_extensions');
         }
+
+        if (isset($bundles['EscapeWSSEAuthenticationBundle'])) {
+            $this->prependExtensionConfig($container, 'escape_wsse_authentication');
+        }
     }
 
     /**
