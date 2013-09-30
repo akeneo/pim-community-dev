@@ -108,6 +108,45 @@ define(
                 var $tree = $('#tree-' + treeId);
                 $('#apply-on-tree-' + treeId).val(1);
                 $tree.jstree(self.config);
+
+                $tree.bind("check_node.jstree", function (e, d) {
+                    if (d.inst.get_checked() && $(d.rslt.obj[0]).hasClass('jstree-root') == false) {
+                        var selected = $('#pim_product_categories').val();
+                        if (selected.length > 0) {
+                            selected = selected.split(',');
+                        } else {
+                            selected = new Array();
+                        }
+                        var id = d.rslt.obj[0].id.replace('node_', '');
+                        if ($.inArray(id, selected) < 0) {
+                            selected.push(id);
+                            selected = $.unique(selected);
+                            selected = selected.join(',');
+                            $('#pim_product_categories').val(selected);
+                            var treeId = e.target.id;
+                            var treeLinkId = treeId.replace('-', '-link-');
+                            $('#'+treeLinkId+' i').removeClass('gray');
+                            $('#'+treeLinkId+' i').addClass('green');
+                        }
+                    }
+                });
+
+                $tree.bind("uncheck_node.jstree", function (e, d) {
+                    if (d.inst.get_checked()) {
+                        var selected = $('#pim_product_categories').val();
+                        selected = selected.split(',');
+                        var id = d.rslt.obj[0].id.replace('node_', '');
+                        selected.splice($.inArray(id, selected),1);
+                        selected = selected.join(',');
+                        $('#pim_product_categories').val(selected);
+                        var treeId = e.target.id;
+                        if ($("#"+treeId).jstree('get_checked').length == 0) {
+                            var treeLinkId = treeId.replace('-', '-link-');
+                            $('#'+treeLinkId+' i').removeClass('green');
+                            $('#'+treeLinkId+' i').addClass('gray');
+                        }
+                    }
+                });
             };
 
             this.bindEvents = function () {
