@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionParametersParser;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
