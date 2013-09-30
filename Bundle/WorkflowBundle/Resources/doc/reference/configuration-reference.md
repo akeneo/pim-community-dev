@@ -68,13 +68,13 @@ Single workflow configuration has next properties:
 
 * **unique name***
     Workflow should have a unique name in scope of all application. As workflow configuration doesn't support merging
-    two workflows with the same name will lead to exception on during configuration loading.
+    two workflows with the same name will lead to exception during configuration loading.
 * **label***
     *string*
     This value will be shown in the UI
 * **enabled**
     *boolean (true - default)*
-    A flag is workflow enabled or not. If not enabled, operations with workflow will be be restricted.
+    If not enabled, operations with workflow will be be restricted.
 * **type**
     *string ("wizard", "entity" - default)*
     type of workflow.
@@ -86,7 +86,7 @@ Single workflow configuration has next properties:
 * **steps**
     Contains configuration for Steps
 * **transitions**
-    Contains configuration for Transition
+    Contains configuration for Transitions
 * **transition_definitions**
     Contains configuration for Transition Definitions
 
@@ -126,10 +126,10 @@ Attribute described with next configuration:
     Type of attribute. Next types are supported:
     * **boolean**
     * **bool**
-        alias for "boolean"
+        *alias for boolean*
     * **integer**
     * **int**
-        alias for "integer"
+        *alias for integer*
     * **float**
     * **string**
     * **array**
@@ -155,10 +155,10 @@ Attribute described with next configuration:
     * **bind**
         *boolean*
         By default is *true* when *managed_entity* is *true*. Allowed only when type is entity. If true than instances of
-        Workflow will be bind with entity that are saved in data as value of this attribute. It's useful when you need to
-        find all Workflow Items that are connected with entity.
+        Workflow will be bound to entity that is saved in data as value of this attribute. It's useful when you need to
+        find all Workflow Items that are connected with entity instance.
     * **multiple**
-        *boolean* (*false* - default)
+        *boolean (false - default)*
         By default is same as managed_entity value.
         If *true* than it will be possible to multiple instances of Workflow for this entity. If *false* than the
         restriction of one instance of Workflow for entity will be applied. Also false value is possible only if bind
