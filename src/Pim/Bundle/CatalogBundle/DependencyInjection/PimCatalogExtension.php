@@ -108,6 +108,10 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         if (isset($bundles['BeSimpleSoapBundle'])) {
             $this->prependExtensionConfig($container, 'be_simple_soap');
         }
+
+        if (isset($bundles['StofDoctrineExtensionsBundle'])) {
+            $this->prependExtensionConfig($container, 'stof_doctrine_extensions');
+        }
     }
 
     /**
