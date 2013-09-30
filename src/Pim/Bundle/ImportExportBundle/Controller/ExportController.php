@@ -15,7 +15,7 @@ use Oro\Bundle\BatchBundle\Entity\JobInstance;
  *
  * @Acl(
  *      id="pim_importexport_export",
- *      type="entity",
+ *      type="action",
  *      name="Export profile manipulation",
  *      description="Export profile manipulation",
  *      parent="pim_importexport"
@@ -28,7 +28,7 @@ class ExportController extends JobInstanceController
      *
      * @Acl(
      *      id="pim_importexport_export_index",
-     *      type="entity",
+     *      type="action",
      *      name="View export profile list",
      *      description="View export profile list",
      *      parent="pim_importexport_export"
@@ -44,7 +44,7 @@ class ExportController extends JobInstanceController
      *
      * @Acl(
      *      id="pim_importexport_export_create",
-     *      type="entity",
+     *      type="action",
      *      name="Create an export profile",
      *      description="Create an export profile",
      *      parent="pim_importexport_export"
@@ -60,7 +60,7 @@ class ExportController extends JobInstanceController
      *
      * @Acl(
      *      id="pim_importexport_export_show",
-     *      type="entity",
+     *      type="action",
      *      name="View the configuration of an export profile",
      *      description="View the configuration of an export profile",
      *      parent="pim_importexport_export"
@@ -76,7 +76,7 @@ class ExportController extends JobInstanceController
      *
      * @Acl(
      *      id="pim_importexport_export_edit",
-     *      type="entity",
+     *      type="action",
      *      name="Edit the configuration of an export profile",
      *      description="Edit the configuration of an export profile",
      *      parent="pim_importexport_export"
@@ -92,7 +92,7 @@ class ExportController extends JobInstanceController
      *
      * @Acl(
      *      id="pim_importexport_export_remove",
-     *      type="entity",
+     *      type="action",
      *      name="Remove an export profile",
      *      description="Remove an export profile",
      *      parent="pim_importexport_export"
@@ -108,7 +108,7 @@ class ExportController extends JobInstanceController
      *
      * @Acl(
      *      id="pim_importexport_export_launch",
-     *      type="entity",
+     *      type="action",
      *      name="Launch an export profile",
      *      description="Launch an export profile",
      *      parent="pim_importexport_export"

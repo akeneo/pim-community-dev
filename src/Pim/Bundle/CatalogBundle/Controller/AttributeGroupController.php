@@ -34,7 +34,7 @@ use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
  *
  * @Acl(
  *      id="pim_catalog_attribute_group",
- *      type="entity",
+ *      type="action",
  *      name="Attribute group manipulation",
  *      description="Attribute group manipulation",
  *      parent="pim_catalog"
@@ -114,7 +114,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @Template()
      * @Acl(
      *      id="pim_catalog_attribute_group_create",
-     *      type="entity",
+     *      type="action",
      *      name="Create group",
      *      description="Create group",
      *      parent="pim_catalog_attribute_group"
@@ -148,7 +148,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @Template
      * @Acl(
      *      id="pim_catalog_attribute_group_edit",
-     *      type="entity",
+     *      type="action",
      *      name="Edit attribute groups",
      *      description="Edit attribute groups",
      *      parent="pim_catalog_attribute_group"
@@ -192,7 +192,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_attribute_group_sort",
-     *      type="entity",
+     *      type="action",
      *      name="Sort groups",
      *      description="Sort groups",
      *      parent="pim_catalog_attribute_group"
@@ -231,7 +231,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_attribute_group_remove",
-     *      type="entity",
+     *      type="action",
      *      name="Remove group",
      *      description="Remove group",
      *      parent="pim_catalog_attribute_group"
@@ -284,7 +284,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_attribute_group_add_attribute",
-     *      type="entity",
+     *      type="action",
      *      name="Add attribute to group",
      *      description="Add attribute to group",
      *      parent="pim_catalog_attribute_group"
@@ -324,7 +324,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_attribute_group_remove_attribute",
-     *      type="entity",
+     *      type="action",
      *      name="Remove attribute from a group",
      *      description="Remove attribute from a group",
      *      parent="pim_catalog_attribute_group"

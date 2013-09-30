@@ -33,7 +33,7 @@ use Pim\Bundle\CatalogBundle\Exception\LastAttributeOptionDeletedException;
  *
  * @Acl(
  *      id="pim_catalog_channel",
- *      type="entity",
+ *      type="action",
  *      name="Channel manipulation",
  *      description="Channel manipulation",
  *      parent="pim_catalog"
@@ -108,7 +108,7 @@ class ChannelController extends AbstractDoctrineController
      * @Template
      * @Acl(
      *      id="pim_catalog_channel_index",
-     *      type="entity",
+     *      type="action",
      *      name="View channel list",
      *      description="View channel list",
      *      parent="pim_catalog_channel"
@@ -137,7 +137,7 @@ class ChannelController extends AbstractDoctrineController
      * @Template("PimCatalogBundle:Channel:edit.html.twig")
      * @Acl(
      *      id="pim_catalog_channel_create",
-     *      type="entity",
+     *      type="action",
      *      name="Create a channel",
      *      description="Create a channel",
      *      parent="pim_catalog_channel"
@@ -159,7 +159,7 @@ class ChannelController extends AbstractDoctrineController
      * @Template
      * @Acl(
      *      id="pim_catalog_channel_edit",
-     *      type="entity",
+     *      type="action",
      *      name="Edit a channel",
      *      description="Edit a channel",
      *      parent="pim_catalog_channel"
@@ -189,7 +189,7 @@ class ChannelController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_channel_remove",
-     *      type="entity",
+     *      type="action",
      *      name="Remove a channel",
      *      description="Remove a channel",
      *      parent="pim_catalog_channel"

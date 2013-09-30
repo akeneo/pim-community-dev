@@ -27,7 +27,7 @@ use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
  *
  * @Acl(
  *      id="pim_catalog_locale",
- *      type="entity",
+ *      type="action",
  *      name="Locale manipulation",
  *      description="Locale manipulation",
  *      parent="pim_catalog"
@@ -85,7 +85,7 @@ class LocaleController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_locale_index",
-     *      type="entity",
+     *      type="action",
      *      name="View locale list",
      *      description="View locale list",
      *      parent="pim_catalog_locale"

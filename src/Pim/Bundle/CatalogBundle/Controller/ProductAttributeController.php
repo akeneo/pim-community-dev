@@ -37,7 +37,7 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
  *
  * @Acl(
  *      id="pim_catalog_attribute",
- *      type="entity",
+ *      type="action",
  *      name="Attribute manipulation",
  *      description="Attribute manipulation",
  *      parent="pim_catalog"
@@ -149,7 +149,7 @@ class ProductAttributeController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_attribute_index",
-     *      type="entity",
+     *      type="action",
      *      name="View attribute list",
      *      description="View attribute list",
      *      parent="pim_catalog_attribute"
@@ -175,7 +175,7 @@ class ProductAttributeController extends AbstractDoctrineController
      * @Template("PimCatalogBundle:ProductAttribute:form.html.twig")
      * @Acl(
      *      id="pim_catalog_attribute_create",
-     *      type="entity",
+     *      type="action",
      *      name="Create an attribute",
      *      description="Create an attribute",
      *      parent="pim_catalog_attribute"
@@ -209,7 +209,7 @@ class ProductAttributeController extends AbstractDoctrineController
      * @Template("PimCatalogBundle:ProductAttribute:form.html.twig")
      * @Acl(
      *      id="pim_catalog_attribute_edit",
-     *      type="entity",
+     *      type="action",
      *      name="Edit an attribute",
      *      description="Edit an attribute",
      *      parent="pim_catalog_attribute"
@@ -254,7 +254,7 @@ class ProductAttributeController extends AbstractDoctrineController
      * @Template("PimCatalogBundle:ProductAttribute:_form_parameters.html.twig")
      * @Acl(
      *      id="pim_catalog_attribute_preprocess",
-     *      type="entity",
+     *      type="action",
      *      name="Preprocess an attribute",
      *      description="Preprocess an attribute",
      *      parent="pim_catalog_attribute"
@@ -304,7 +304,7 @@ class ProductAttributeController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_attribute_sort",
-     *      type="entity",
+     *      type="action",
      *      name="Sort attribute options",
      *      description="Sort attribute options",
      *      parent="pim_catalog_attribute"
@@ -343,7 +343,7 @@ class ProductAttributeController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_attribute_remove",
-     *      type="entity",
+     *      type="action",
      *      name="Remove attribute",
      *      description="Remove attribute",
      *      parent="pim_catalog_attribute"

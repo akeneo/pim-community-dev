@@ -26,7 +26,7 @@ use Pim\Bundle\CatalogBundle\Entity\Currency;
  *
  * @Acl(
  *      id="pim_catalog_currency",
- *      type="entity",
+ *      type="action",
  *      name="Currency manipulation",
  *      description="Currency manipulation",
  *      parent="pim_catalog"
@@ -84,7 +84,7 @@ class CurrencyController extends AbstractDoctrineController
      * @Acl(
      *      id="pim_catalog_currency_index",
      *      name="View currency list",
-     *      type="entity",
+     *      type="action",
      *      description="View currency list",
      *      parent="pim_catalog_currency"
      * )
@@ -113,7 +113,7 @@ class CurrencyController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_currency_toggle",
-     *      type="entity",
+     *      type="action",
      *      name="Change currency status",
      *      description="Change currency status",
      *      parent="pim_catalog_currency"

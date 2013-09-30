@@ -35,7 +35,7 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
  *
  * @Acl(
  *      id="pim_catalog_family",
- *      type="entity",
+ *      type="action",
  *      name="Family manipulation",
  *      description="Family manipulation",
  *      parent="pim_catalog"
@@ -118,7 +118,7 @@ class FamilyController extends AbstractDoctrineController
      * @Template
      * @Acl(
      *      id="pim_catalog_family_create",
-     *      type="entity",
+     *      type="action",
      *      name="Create a family",
      *      description="Create a family",
      *      parent="pim_catalog_family"
@@ -159,7 +159,7 @@ class FamilyController extends AbstractDoctrineController
      * @Template
      * @Acl(
      *      id="pim_catalog_family_edit",
-     *      type="entity",
+     *      type="action",
      *      name="Edit a family",
      *      description="Edit a family",
      *      parent="pim_catalog_family"
@@ -220,7 +220,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_family_remove",
-     *      type="entity",
+     *      type="action",
      *      name="Remove a family",
      *      description="Remove a family",
      *      parent="pim_catalog_family"
@@ -247,7 +247,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_family_add_attribute",
-     *      type="entity",
+     *      type="action",
      *      name="Add attribute to a family",
      *      description="Add attribute to a family",
      *      parent="pim_catalog_family"
@@ -284,7 +284,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_family_remove_atribute",
-     *      type="entity",
+     *      type="action",
      *      name="Remove attribute from a family",
      *      description="Remove attribute from a family",
      *      parent="pim_catalog_family"

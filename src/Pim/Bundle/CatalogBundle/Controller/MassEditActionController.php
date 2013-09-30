@@ -31,7 +31,7 @@ use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
  *
  * @Acl(
  *      id="pim_catalog_mass_edit",
- *      type="entity",
+ *      type="action",
  *      name="Product mass edit actions",
  *      description="Product mass edit actions",
  *      parent="pim_catalog"
@@ -104,7 +104,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @Template
      * @Acl(
      *      id="pim_catalog_mass_edit_choose",
-     *      type="entity",
+     *      type="action",
      *      name="Choose action",
      *      description="Choose action",
      *      parent="pim_catalog_mass_edit"
@@ -145,7 +145,7 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_mass_edit_configure",
-     *      type="entity",
+     *      type="action",
      *      name="Configure action",
      *      description="Configure action",
      *      parent="pim_catalog_mass_edit"
@@ -191,7 +191,7 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_mass_edit_perform",
-     *      type="entity",
+     *      type="action",
      *      name="Perform action",
      *      description="Perform action",
      *      parent="pim_catalog_mass_edit"

@@ -46,7 +46,7 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
  *
  * @Acl(
  *      id="pim_catalog_product",
- *      type= "entity",
+ *      type="action",
  *      name="Product manipulation",
  *      description="Product manipulation",
  *      parent="pim_catalog"
@@ -184,7 +184,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_product_index",
-     *      type= "entity",
+     *      type="action",
      *      name="View product list",
      *      description="View product list",
      *      parent="pim_catalog_product"
@@ -310,7 +310,7 @@ class ProductController extends AbstractDoctrineController
      * @Template
      * @Acl(
      *      id="pim_catalog_product_create",
-     *      type= "entity",
+     *      type="action",
      *      name="Create a product",
      *      description="Create a product",
      *      parent="pim_catalog_product"
@@ -356,7 +356,7 @@ class ProductController extends AbstractDoctrineController
      * @Template
      * @Acl(
      *      id="pim_catalog_product_edit",
-     *      type= "entity",
+     *      type="action",
      *      name="Edit a product",
      *      description="Edit a product",
      *      parent="pim_catalog_product"
@@ -438,7 +438,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_product_add_attribute",
-     *      type= "entity",
+     *      type="action",
      *      name="Add an attribute to a product",
      *      description="Add an attribute to a product",
      *      parent="pim_catalog_product"
@@ -474,7 +474,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_product_remove",
-     *      type= "entity",
+     *      type="action",
      *      name="Remove a product",
      *      description="Remove a product",
      *      parent="pim_catalog_product"
@@ -501,7 +501,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @Acl(
      *      id="pim_catalog_product_remove_attribute",
-     *      type= "entity",
+     *      type="action",
      *      name="Remove a product's attribute",
      *      description="Remove a product's attribute",
      *      parent="pim_catalog_product"
@@ -541,7 +541,7 @@ class ProductController extends AbstractDoctrineController
      * @Template
      * @Acl(
      *      id="pim_catalog_product_categories_view",
-     *      type= "entity",
+     *      type="action",
      *      name="Consult the categories of a product",
      *      description="Consult the categories of a product",
      *      parent="pim_catalog_product"
