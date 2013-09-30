@@ -12,7 +12,8 @@
         "psr-0": {
             "": "src/",
             "Context": "features/",
-            "Extend\\": "app/entities/"
+            "Extend\\": "app/entities/",
+            "OroEmail\\": "app/emails/"
         }
     },
     "require": {
