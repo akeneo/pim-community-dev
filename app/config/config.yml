@@ -24,16 +24,8 @@ framework:
 
 # Twig Configuration
 twig:
-    debug:                    "%kernel.debug%"
-    strict_variables:         "%kernel.debug%"
-    exception_controller:     "FOS\RestBundle\Controller\ExceptionController::showAction"
-    form:
-        resources:
-            - 'OroUIBundle:Form:fields.html.twig'
-            - 'OroFormBundle:Form:fields.html.twig'
-            - 'OroTranslationBundle:Form:fields.html.twig'
-            - 'OroOrganizationBundle:Form:fields.html.twig'
-            - 'PimUIBundle:Form:pim-fields.html.twig'
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
 
 # Assetic Configuration
 assetic:
