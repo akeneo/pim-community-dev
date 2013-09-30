@@ -59,6 +59,7 @@ class ProductType extends FlexibleType
             )
         );
 
+        // TODO : import and form edit could work on same mode
         if ($options['import_mode']) {
             $builder
                 ->add(
@@ -72,6 +73,18 @@ class ProductType extends FlexibleType
                 )
                 ->addEventSubscriber($this->transformer)
                 ->addEventSubscriber(new IgnoreMissingFieldDataSubscriber());
+        } else {
+            $builder
+                ->add(
+                    'categories',
+                    'oro_entity_identifier',
+                    array(
+                        'class'    => 'PimCatalogBundle:Category',
+                        'required' => true,
+                        'mapped'   => true,
+                        'multiple' => true,
+                    )
+                );
         }
     }
 
