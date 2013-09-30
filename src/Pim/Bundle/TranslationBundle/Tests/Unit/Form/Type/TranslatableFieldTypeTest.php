@@ -220,6 +220,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
         $helper->expects($this->any())
             ->method('getLocaleLabel')
             ->will($this->returnArgument(0));
+
         return $helper;
     }
 }

@@ -182,6 +182,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
         $this->assertInstanceOf('\Symfony\Component\Form\Form', $formType);
         $this->assertEquals($type, $formType->getConfig()->getType()->getInnerType()->getName());
     }
+
     /**
      * Get LocaleHelperMock
      * 
@@ -195,6 +196,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
         $helper->expects($this->any())
             ->method('getLocaleLabel')
             ->will($this->returnArgument(0));
+
         return $helper;
     }
 }

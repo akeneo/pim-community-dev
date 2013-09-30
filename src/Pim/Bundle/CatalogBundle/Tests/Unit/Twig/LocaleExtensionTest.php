@@ -85,7 +85,6 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('flag', $twigFilters);
         $this->assertTrue(method_exists($this->localeExtension, 'flag'));
         $this->assertInstanceOf('\Twig_Filter_Method', $twigFilters['flag']);
-        
     }
     /**
      * Get LocaleHelperMock
@@ -109,6 +108,7 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
         $helper->expects($this->any())
             ->method('getCurrencySymbol')
             ->will($this->returnArgument(0));
+
         return $helper;
     }
 }

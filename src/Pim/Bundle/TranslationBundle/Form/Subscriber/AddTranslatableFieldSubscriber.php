@@ -52,6 +52,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      *
      * @param FormFactoryInterface $formFactory
      * @param ValidatorInterface   $validator
+     * @param LocaleHelper         $localeHelper
      * @param multitype:mixed      $options
      */
     public function __construct(

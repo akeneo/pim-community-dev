@@ -7,9 +7,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\HttpFoundation\Request;
+
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\TranslationBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
-use Symfony\Component\HttpFoundation\Request;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 
 /**
@@ -45,7 +46,7 @@ class TranslatableFieldType extends AbstractType
     /**
      * @param ValidatorInterface $validator
      * @param LocaleManager      $localeManager
-     * @param array              $localeConfig
+     * @param LocaleHelper       $localeHelper
      */
     public function __construct(ValidatorInterface $validator, LocaleManager $localeManager, LocaleHelper $localeHelper)
     {
@@ -123,7 +124,12 @@ class TranslatableFieldType extends AbstractType
     {
         return 'pim_translatable_field';
     }
-    
+
+    /**
+     * Returns the request locale, or the default locale if no request exists
+     * 
+     * @return string
+     */
     protected function getDefaultLocale()
     {
         return $this->request ? $this->request->getLocale() : $this->defaultLocale;
