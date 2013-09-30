@@ -13,6 +13,20 @@
 # You can use the "db" and "assets" arguments to install only "db" or "assets"
 
 set -e
+
+ORO_BUNDLE_PATH="vendor/oro/platform/src/Oro/Bundle/"
+ORO_FIXTURE_BUNDLES="
+    AddressBundle/DataFixtures
+    EmailBundle/DataFixtures
+    NotificationBundle/DataFixtures
+    OrganizationBundle/DataFixtures
+    SecurityBundle/DataFixtures
+    UserBundle/DataFixtures
+    TestFrameworkBundle/Fixtures
+    WorkflowBundle/DataFixtures
+"
+ORO_FIXTURES=`echo $ORO_FIXTURE_BUNDLES | sed -e "s# # --fixtures=$ORO_BUNDLE_PATH#g" -e "s#^# --fixtures=$ORO_BUNDLE_PATH#"`
+
 APP_ROOT=`dirname $0`
 DEFAULT_ENV="dev"
 
@@ -34,7 +48,7 @@ usage()
 }
 
 if [ ! -f $APP_ROOT/app/bootstrap.php.cache ]; then
-    echo "It seems that you forget to run composer install inside this directory !" >&2
+    echo "It seems that you forget to run composer install inside this directory!" >&2
     exit 2;
 fi
 
@@ -78,7 +92,11 @@ if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     php app/console doctrine:database:drop --force 2>&1 > /dev/null || true
     php app/console doctrine:database:create
     php app/console doctrine:schema:create
-    php app/console doctrine:fixture:load --no-interaction
+    echo "Loading ORO fixtures"
+    php app/console doctrine:fixtures:load $ORO_FIXTURES --no-interaction
+    echo "Loading PIM fixtures"
+    php app/console doctrine:fixtures:load --fixtures=src/Pim/Bundle/InstallerBundle/DataFixtures/ --no-interaction --append
+    php app/console doctrine:fixtures:load --fixtures=src/Pim/Bundle/UserBundle/DataFixtures/ --no-interaction --append
     php app/console oro:entity-config:init
     php app/console oro:entity-extend:init
     php app/console oro:entity-extend:update-config
