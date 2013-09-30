@@ -84,6 +84,10 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         if (isset($bundles['TwigBundle'])) {
             $this->prependExtensionConfig($container, 'twig');
         }
+
+        if (isset($bundles['AsseticBundle'])) {
+            $this->prependExtensionConfig($container, 'assetic');
+        }
     }
 
     /**
