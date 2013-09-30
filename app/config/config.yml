@@ -68,9 +68,6 @@ services:
          tags:
              - { name: twig.extension }
 
-oro_batch:
-    sender_email: mailer@akeneo.com
-
 knp_gaufrette:
     adapters:
         pim_adapter:
