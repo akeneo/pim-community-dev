@@ -83,7 +83,7 @@ services:
     pim_catalog.form.type.currency:
         class: %pim_catalog.form.type.currency.class%
         arguments:
-            - %pim_catalog.currencies%
+            - '@pim_catalog.helper.locale'
         tags:
             - { name: form.type, alias: pim_catalog_currency }
 

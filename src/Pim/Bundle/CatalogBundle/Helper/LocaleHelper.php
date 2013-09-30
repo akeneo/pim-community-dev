@@ -82,6 +82,36 @@ class LocaleHelper
     }
     
     /**
+     * Returns the label for a currency
+     * 
+     * @param string $currency
+     * @param string $locale
+     * @return string
+     */
+    public function getCurrencyLabel($currency, $locale = null)
+    {
+        if (is_null($locale)) {
+            $locale = $this->getCurrentLocale();
+        }
+        return Intl\Intl::getCurrencyBundle()->getCurrencyName($currency, $locale);
+    }
+    
+    /**
+     * Returns an array of all known currency names, indexed by code
+     * 
+     * @param string $currency
+     * @param string $locale
+     * @return string
+     */
+    public function getCurrencyLabels($locale = null)
+    {
+        if (is_null($locale)) {
+            $locale = $this->getCurrentLocale();
+        }
+        return Intl\Intl::getCurrencyBundle()->getCurrencyNames($locale);
+    }
+    
+    /**
      * Returns the catalog locale currency
      * 
      * @return string
@@ -101,7 +131,7 @@ class LocaleHelper
      * @param string $locale
      * @return string
      */
-    public function getFlag($code, $fullLabel=false, $locale = null)
+    public function getFlag($code, $fullLabel = false, $locale = null)
     {
         if (is_null($locale)) {
             $locale = $this->getCurrentLocale();

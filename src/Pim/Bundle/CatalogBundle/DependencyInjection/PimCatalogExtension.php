@@ -22,10 +22,6 @@ class PimCatalogExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         // process configuration to validation and merge
-        $currencyConfig = Yaml::parse(realpath(__DIR__ .'/../Resources/config/pim_currencies.yml'));
-        $this->processConfiguration(new CurrencyConfiguration(), $currencyConfig);
-        $container->setParameter('pim_catalog.currencies', $currencyConfig);
-
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $container->setParameter(
