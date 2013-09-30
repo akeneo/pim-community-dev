@@ -96,6 +96,10 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         if (isset($bundles['KnpPaginatorBundle'])) {
             $this->prependExtensionConfig($container, 'knp_paginator');
         }
+
+        if (isset($bundles['FOSRestBundle'])) {
+            $this->prependExtensionConfig($container, 'fos_rest');
+        }
     }
 
     /**
