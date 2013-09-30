@@ -9,7 +9,7 @@ Feature: Edit common attributes of many products at once
     And a "ceiling" product
     And a "torch" product
     And the following attribute group:
-      | name    |
+      | label   |
       | General |
     And the following product attributes:
       | product | label  | group   | translatable | scopable | type        | metric family | default metric unit |

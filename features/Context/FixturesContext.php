@@ -347,8 +347,8 @@ class FixturesContext extends RawMinkContext
     {
         foreach ($table->getHash() as $index => $data) {
             $group = new AttributeGroup();
-            $group->setCode($this->camelize($data['name']));
-            $group->setLocale('en_US')->setName($data['name']); // TODO translation refactoring
+            $group->setCode($this->camelize($data['label']));
+            $group->setLocale('en_US')->setLabel($data['label']); // TODO translation refactoring
             $group->setSortOrder($index);
 
             $this->persist($group);
