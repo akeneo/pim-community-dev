@@ -44,10 +44,10 @@ automatically in active session and save it in DB, used as main entry point for 
 One entity can have several related Workflow Items of one Workflow type. Contains Worfklow name, current Step name and
 list of bound entities (these entities that must know about this Workflow Item).
 
-How it works?
-=============
+Entity and Wizard Workflows
+===========================
 
-First of all there are two kinds of Workflows:
+There are two types of Workflows:
 * wizard
 * entity (default)
 
@@ -61,6 +61,9 @@ UI blocks:
 Unlike wizard, entity Workflow doesn't have special page and it's directly managed on entity page. Another difference
 from wizard Workflow is that steps of entity Workflow cannot have forms and user performs transitions on managed entity
 page by clicking on Workflow buttons.
+
+How it works?
+=============
 
 In both cases when user clicks button with start transition in the background a new instance of Workflow Item of
 specific Workflow is created and, if required, managed entity instance is set to it.
