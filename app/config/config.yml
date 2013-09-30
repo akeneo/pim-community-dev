@@ -68,10 +68,6 @@ services:
          tags:
              - { name: twig.extension }
 
-oro_search:
-    engine:                   orm
-    realtime_update:          true
-
 oro_ui:
     settings:
         application_name:

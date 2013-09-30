@@ -124,6 +124,10 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         if (isset($bundles['GenemuFormBundle'])) {
             $this->prependExtensionConfig($container, 'genemu_form');
         }
+
+        if (isset($bundles['OroSearchBundle'])) {
+            $this->prependExtensionConfig($container, 'oro_search');
+        }
     }
 
     /**
