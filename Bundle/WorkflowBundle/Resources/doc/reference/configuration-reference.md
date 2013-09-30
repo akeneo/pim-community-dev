@@ -237,7 +237,7 @@ Summarizing all above, step has next configuration:
     *string (oro_workflow_step - default)*
     A form type that will be used to render form of step.
 * **form_options**
-    This options will be passed to form type of step, they can contain options for form types of attributes.
+    These options will be passed to form type of step, they can contain options for form types of attributes.
 * **allowed_transitions**
     Optional list of allowed transitions. If no transitions are allowed it's same as is_final option set to true
 
@@ -306,7 +306,8 @@ Transition configuration has next options:
     If true than this transition can be used to start new workflow. At least one start transition is required if
     workflow doesn't have start_step attribute.
 * **options**
-    Options of transition that can have additional configuration, for example - frontent_options
+    Options of transition that can have additional configuration, for example option with name
+    frontend (a list frontend options)
 
 Example
 -------
