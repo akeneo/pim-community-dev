@@ -1,0 +1,4 @@
+oro_user:
+    settings:
+        name_format:
+          value:              %%last%%, %%first%%

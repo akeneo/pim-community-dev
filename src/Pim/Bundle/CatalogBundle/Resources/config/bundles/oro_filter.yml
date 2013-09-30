@@ -1,0 +1,4 @@
+oro_filter:
+    twig:
+        layout: PimFilterBundle:Filter:pim-layout.js.twig
+
