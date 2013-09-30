@@ -88,6 +88,10 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         if (isset($bundles['AsseticBundle'])) {
             $this->prependExtensionConfig($container, 'assetic');
         }
+
+        if (isset($bundles['DoctrineBundle'])) {
+            $this->prependExtensionConfig($container, 'doctrine');
+        }
     }
 
     /**
