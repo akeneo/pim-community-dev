@@ -2,7 +2,7 @@
 {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 {% oro_title_set({params : {"%entityName%": 'N/A' }}) %}
 
-{% set title = 'Create Entity' %}
+{% set title = 'New Entity' %}
 {% set formAction = path('oro_entityextend_entity_create') %}
 
 {% block navButtons %}
@@ -17,7 +17,7 @@
         'entity':      'entity',
         'indexPath':   path('oro_entityconfig_index'),
         'indexLabel': 'Entities',
-        'entityTitle': 'N/A',
+        'entityTitle': 'New Entity'|trans,
     } %}
 
     {{ parent() }}
