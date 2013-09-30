@@ -68,10 +68,6 @@ services:
          tags:
              - { name: twig.extension }
 
-oro_filter:
-    twig:
-        layout: PimFilterBundle:Filter:pim-layout.js.twig
-
 oro_batch:
     sender_email: mailer@akeneo.com
 

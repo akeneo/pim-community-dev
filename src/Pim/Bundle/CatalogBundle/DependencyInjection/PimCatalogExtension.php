@@ -148,6 +148,10 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         if (isset($bundles['OroEntityExtendBundle'])) {
             $this->prependExtensionConfig($container, 'oro_entity_extend');
         }
+
+        if (isset($bundles['OroFilterBundle'])) {
+            $this->prependExtensionConfig($container, 'oro_filter');
+        }
     }
 
     /**
