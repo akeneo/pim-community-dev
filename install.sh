@@ -26,6 +26,7 @@ ORO_FIXTURE_BUNDLES="
     WorkflowBundle/DataFixtures
 "
 ORO_FIXTURES=`echo $ORO_FIXTURE_BUNDLES | sed -e "s# # --fixtures=$ORO_BUNDLE_PATH#g" -e "s#^# --fixtures=$ORO_BUNDLE_PATH#"`
+
 PIM_FIXTURE_PATHS="
     src/Pim/Bundle/InstallerBundle/DataFixtures
     src/Pim/Bundle/UserBundle/DataFixtures
@@ -115,7 +116,7 @@ fi
 
 if [ $TASK = 'assets' ] || [ $TASK = 'all' ]; then
     php app/console fos:js-routing:dump --target=web/js/routes.js
-#    php app/console oro:navigation:init TO FIX
+    php app/console oro:navigation:init
     php app/console assets:install web
     php app/console assetic:dump
     php app/console oro:assetic:dump
