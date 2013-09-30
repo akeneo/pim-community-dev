@@ -4,12 +4,14 @@ namespace Pim\Bundle\CatalogBundle\Datagrid;
 
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
+
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
@@ -35,8 +37,7 @@ class AttributeDatagridManager extends DatagridManager
     }
 
     /**
-     * get properties
-     * @return array
+     * {@inheritdoc}
      */
     protected function getProperties()
     {
@@ -52,7 +53,7 @@ class AttributeDatagridManager extends DatagridManager
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
         $field = new FieldDescription();
-        $field->setName('Code');
+        $field->setName('code');
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
@@ -73,8 +74,8 @@ class AttributeDatagridManager extends DatagridManager
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => $this->translate('Label'),
-                'entity_alias' => 'translation',
-                'field_name'   => 'label',
+                'field_name'  => 'attributeLabel',
+                'expression'  => 'translation.label',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
@@ -82,6 +83,10 @@ class AttributeDatagridManager extends DatagridManager
                 'show_filter' => true,
             )
         );
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_toString.html.twig')
+        );
+
         $fieldsCollection->add($field);
 
         $field = $this->createAttributeTypeField();
@@ -99,6 +104,7 @@ class AttributeDatagridManager extends DatagridManager
                 'sortable'    => true,
                 'filterable'  => true,
                 'show_filter' => true,
+                'filter_by_where' => true
             )
         );
         $fieldsCollection->add($field);
@@ -122,13 +128,7 @@ class AttributeDatagridManager extends DatagridManager
         $field = $this->createGroupField();
         $fieldsCollection->add($field);
     }
-    /**
-     * @inheritdoc
-     */
-    public function getIdentifierField()
-    {
-        return 'id';
-    }
+
     /**
      * Create attribute type field description for datagrid
      *
@@ -176,16 +176,21 @@ class AttributeDatagridManager extends DatagridManager
         $field->setName('group');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_OPTIONS,
+                'type'        => FieldDescriptionInterface::TYPE_HTML,
                 'label'       => $this->translate('Group'),
-                'field_name'  => 'group',
+                'field_name'  => 'groupName',
+                'expression'  => 'attributeGroup.id',
                 'filter_type' => FilterInterface::TYPE_CHOICE,
-                'required'    => false,
                 'sortable'    => true,
                 'filterable'  => true,
                 'show_filter' => true,
                 'field_options' => array('choices' => $choices),
+                'filter_by_where' => true
             )
+        );
+
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_toString.html.twig')
         );
 
         return $field;
@@ -249,18 +254,27 @@ class AttributeDatagridManager extends DatagridManager
     /**
      * {@inheritdoc}
      */
-    protected function createQuery()
+    protected function prepareQuery(ProxyQueryInterface $proxyQuery)
     {
-        $queryBuilder = $this->productManager->getStorageManager()->createQueryBuilder();
-        $queryBuilder
-            ->select('attribute')
-            ->from('PimCatalogBundle:ProductAttribute', 'attribute')
-            ->addSelect('translation')
-            ->leftJoin('attribute.translations', 'translation', 'with', 'translation.locale = :locale')
-            ->setParameter('locale', $this->productManager->getLocale());
-        $this->queryFactory->setQueryBuilder($queryBuilder);
-        $query = $this->queryFactory->createQuery();
+        $rootAlias = $proxyQuery->getRootAlias();
 
-        return $query;
+        $labelExpr = sprintf(
+            "(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)",
+            $rootAlias
+        );
+        $groupExpr = "(CASE WHEN gt.name IS NULL THEN attributeGroup.code ELSE gt.name END)";
+
+        $proxyQuery
+            ->addSelect($rootAlias)
+            ->addSelect(sprintf("%s AS attributeLabel", $labelExpr), true)
+            ->addSelect(sprintf("%s AS groupName", $groupExpr), true)
+            ->addSelect('translation.label', true);
+
+        $proxyQuery
+            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :locale')
+            ->leftJoin($rootAlias .'.group', 'attributeGroup')
+            ->leftJoin('attributeGroup.translations', 'gt', 'WITH', 'gt.locale = :locale');
+
+        $proxyQuery->setParameter('locale', $this->productManager->getLocale());
     }
 }
