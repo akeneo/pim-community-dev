@@ -12,7 +12,7 @@ Feature: Filter channels
       | mobile | Mobile |
       | ipad   | IPad   |
     And the following channels:
-      | code | name  | locales      | category |
+      | code | label | locales      | category |
       | FOO  | foo   | fr_FR, en_US | master   |
       | BAR  | bar   | de_DE        | master   |
       | BAZ  | baz   | fr_FR        | mobile   |
@@ -21,7 +21,7 @@ Feature: Filter channels
 
   Scenario: Successfully display filters
     Given I am on the channels page
-    Then I should see the filters Code, Name and Category tree
+    Then I should see the filters Code, Label and Category tree
     And the grid should contain 4 elements
     And I should see channels FOO, BAZ, QUX and BAR
 
@@ -32,16 +32,16 @@ Feature: Filter channels
     And I should see channels BAR and BAZ
     And I should not see channels FOO and QUX
 
-  Scenario: Successfully filter by name
+  Scenario: Successfully filter by label
     Given I am on the channels page
-    When I filter by "Name" with value "Ba"
+    When I filter by "Label" with value "Ba"
     Then the grid should contain 2 elements
     And I should see channels BAR and BAZ
     And I should not see channels FOO and QUX
 
-  Scenario: Successfully filter by name and code
+  Scenario: Successfully filter by label and code
     Given I am on the channels page
-    When I filter by "Name" with value "Ba"
+    When I filter by "Label" with value "Ba"
     And I filter by "Code" with value "R"
     Then the grid should contain 1 element
     And I should see channel BAR

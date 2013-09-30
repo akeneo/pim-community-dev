@@ -72,7 +72,7 @@ class FixturesContext extends RawMinkContext
     {
         $tree = $this->createTree('default');
         foreach ($this->channels as $code => $locales) {
-            $this->createChannel($code, $locales, $tree);
+            $this->createChannel($code, ucfirst($code), $locales, $tree);
         }
 
         $this->flush();
@@ -540,31 +540,26 @@ class FixturesContext extends RawMinkContext
     public function theFollowingChannels(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $channel = new Channel();
-            $channel->setCode($data['code']);
-            $channel->setName($data['name']);
 
+            $code = $data['code'];
+            $label = $data['label'];
+
+            $locales = array();
             if (isset($data['locales'])) {
                 $locales = explode(', ', $data['locales']);
-                foreach ($locales as $localeCode) {
-                    $locale = $this->getLocale($localeCode);
-                    $channel->addLocale($locale);
-                }
             }
 
+            $category = null;
             if (isset($data['category'])) {
                 $category = $this->getCategory($data['category']);
-                $channel->setCategory($category);
             }
 
+            $currencies = array();
             if (isset($data['currencies'])) {
-                foreach ($data['currencies'] as $currencyCode) {
-                    $currency = $this->getCurrency($currencyCode);
-                    $channel->addCurrency($currency);
-                }
+                $currencies = explode(', ', $data['currencies']);
             }
 
-            $this->persist($channel);
+            $this->createChannel($code, $label, $locales, $category, $currencies);
         }
     }
 
@@ -1093,19 +1088,32 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string       $code
-     * @param array:string $locales
-     * @param Category     $tree
+     * @param string   $code
+     * @param string   $label
+     * @param string[] $locales
+     * @param Category $tree
+     * @param string[] $currencies
      */
-    private function createChannel($code, $locales, $tree = null)
+    private function createChannel($code, $label = null, $locales = array(), $tree = null, $currencies = array())
     {
-        $channel = new Channel;
+        $channel = new Channel();
         $channel->setCode($code);
-        $channel->setName(ucfirst($code));
-        $channel->setCategory($tree);
+
+        if ($label === null) {
+            $label = ucfirst($code);
+        }
+        $channel->setLabel($label);
+
+        if ($tree !== null) {
+            $channel->setCategory($tree);
+        }
 
         foreach ($locales as $localeCode) {
             $channel->addLocale($this->getLocale($localeCode));
+        }
+
+        foreach ($currencies as $currencyCode) {
+            $channel->addCurrency($this->getCurrency($currencyCode));
         }
 
         $this->persist($channel);
