@@ -116,6 +116,10 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         if (isset($bundles['EscapeWSSEAuthenticationBundle'])) {
             $this->prependExtensionConfig($container, 'escape_wsse_authentication');
         }
+
+        if (isset($bundles['LiipImagineBundle'])) {
+            $this->prependExtensionConfig($container, 'liip_imagine');
+        }
     }
 
     /**
