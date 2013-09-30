@@ -178,17 +178,11 @@ class ProductManager extends FlexibleManager
      *     2.3) Reflush to save these new values
      *
      * @param ProductInterface $product
-     * @param ArrayCollection  $categories
-     * @param array            $onlyTree
      *
      * @return null
      */
-    public function save(ProductInterface $product, ArrayCollection $categories = null, array $onlyTree = null)
+    public function save(ProductInterface $product)
     {
-        if ($categories != null) {
-            $this->setCategories($product, $categories, $onlyTree);
-        }
-
         $this->storageManager->persist($product);
         $this->storageManager->flush();
 
@@ -211,44 +205,6 @@ class ProductManager extends FlexibleManager
                 $activeCurrencies = $this->currencyManager->getActiveCodes();
                 $value->addMissingPrices($activeCurrencies);
                 $value->removeDisabledPrices($activeCurrencies);
-            }
-        }
-    }
-
-    /**
-     * Set the list of categories for a product. The categories not beloging
-     * to the array params are removed from product.
-     * The onlyTrees parameter allow to limit the scope of the removing or setting
-     * of categories to specific trees
-     *
-     * @param ProductInterface $product
-     * @param ArrayCollection  $categories
-     * @param array            $onlyTrees
-     *
-     * @throws LogicException When a the product is assigned to a root category
-     */
-    public function setCategories(
-        ProductInterface $product,
-        ArrayCollection $categories = null,
-        array $onlyTrees = null
-    ) {
-        // Remove current categories
-        $currentCategories = $product->getCategories();
-        foreach ($currentCategories as $currentCategory) {
-            if ($onlyTrees != null &&
-               in_array($currentCategory->getRoot(), $onlyTrees)) {
-                $currentCategory->removeProduct($product);
-            }
-        }
-
-        // Add new categories
-        foreach ($categories as $category) {
-            if ($onlyTrees != null &&
-               in_array($category->getRoot(), $onlyTrees)) {
-                if ($category->getParent() == null) {
-                    throw new \LogicException("A product cannot be assigned to a root category");
-                }
-                $category->addProduct($product);
             }
         }
     }
