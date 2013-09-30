@@ -37,11 +37,17 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('pim_locale_extension', $this->localeExtension->getName());
     }
 
+    /**
+     * Test related method
+     */
     public function testLocalizedLabel()
     {
         $this->assertEquals('fr_FR', $this->localeExtension->localizedLabel('fr_FR'));
     }
 
+    /**
+     * Test related method
+     */
     public function testGetFunctions()
     {
         $twigFunctions = $this->localeExtension->getFunctions();
@@ -51,6 +57,9 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Twig_Function_Method', $twigFunctions['localizedLabel']);
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+     */
     protected function getLocaleHelperMock()
     {
         $helper = $this->getMock('Pim\Bundle\CatalogBundle\Helper\LocaleHelper');
@@ -64,6 +73,7 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Create locale manager
+     * @param string $code
      *
      * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
      */

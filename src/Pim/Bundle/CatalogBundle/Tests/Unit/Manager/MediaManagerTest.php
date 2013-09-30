@@ -88,6 +88,11 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         $target->handle($media, '');
     }
 
+    /**
+     * @param mixed $filesystem
+     *
+     * @return MediaManager
+     */
     private function getTargetedClass($filesystem)
     {
         $name = 'foo';
@@ -96,6 +101,12 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         return new MediaManager($filesystemMap, $name, '/tmp/upload');
     }
 
+    /**
+     * @param string $name
+     * @param mixed  $filesystem
+     *
+     * @return \Knp\Bundle\GaufretteBundle\FilesystemMap
+     */
     private function getFilesystemMapMock($name, $filesystem)
     {
         $filesystemMap = $this
@@ -112,6 +123,9 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         return $filesystemMap;
     }
 
+    /**
+     * @return \Knp\Bundle\GaufretteBundle\Filesystem
+     */
     private function getFilesystemMock()
     {
         $filesystem = $this
@@ -123,6 +137,11 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         return $filesystem;
     }
 
+    /**
+     * @param mixed $file
+     *
+     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     */
     private function getMediaMock($file = null)
     {
         $media = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media');
@@ -134,6 +153,9 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         return $media;
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\File\UploadedFile
+     */
     private function getFileMock()
     {
         $file = $this

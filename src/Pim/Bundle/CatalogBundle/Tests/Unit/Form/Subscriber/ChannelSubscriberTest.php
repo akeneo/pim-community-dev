@@ -13,6 +13,9 @@ use Pim\Bundle\CatalogBundle\Form\Subscriber\ChannelSubscriber;
  */
 class ChannelSubscriberTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @return array
+     */
     public function getTestAddCodeFieldData()
     {
         return array(
@@ -23,6 +26,8 @@ class ChannelSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param integer $id
+     *
      * @dataProvider getTestAddCodeFieldData
      */
     public function testAddCodeField($id)

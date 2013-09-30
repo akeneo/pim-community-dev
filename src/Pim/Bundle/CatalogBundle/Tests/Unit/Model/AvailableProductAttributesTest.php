@@ -14,6 +14,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class AvailableProductAttributesTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Test related method
+     */
     public function testConstructor()
     {
         $target = $this->getTargetedClass();
@@ -21,6 +24,9 @@ class AvailableProductAttributesTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $target->getAttributes());
     }
 
+    /**
+     * Test related method
+     */
     public function testGetSetAttributes()
     {
         $target = $this->getTargetedClass();
@@ -30,6 +36,9 @@ class AvailableProductAttributesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($attributes, $target->getAttributes());
     }
 
+    /**
+     * @return AvailableProductAttributes
+     */
     private function getTargetedClass()
     {
         return new AvailableProductAttributes();

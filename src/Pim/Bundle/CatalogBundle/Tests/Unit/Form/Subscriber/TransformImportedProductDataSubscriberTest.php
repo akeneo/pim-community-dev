@@ -13,6 +13,9 @@ use Pim\Bundle\CatalogBundle\Form\Subscriber\TransformImportedProductDataSubscri
  */
 class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Test related method
+     */
     public function testInstanceOfEventSubscriber()
     {
         $this->assertInstanceOf(
@@ -21,6 +24,9 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testSubscribedToNothing()
     {
         $this->assertEmpty(TransformImportedProductDataSubscriber::getSubscribedEvents());
