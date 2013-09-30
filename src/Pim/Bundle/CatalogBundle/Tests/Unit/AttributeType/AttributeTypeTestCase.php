@@ -3,6 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\AttributeType;
 
 /**
+ * Test related class
+ *
   * @author    Gildas Quemener <gildas@akeneo.com>
   * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -95,6 +97,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array $options
+     *
      * @return \Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface
      */
     protected function getFlexibleValueMock(array $options)
@@ -126,7 +129,8 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $backendType
-     * @param mixed $defaultValue
+     * @param mixed  $defaultValue
+     *
      * @return \Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface
      */
     protected function getAttributeMock($backendType, $defaultValue)

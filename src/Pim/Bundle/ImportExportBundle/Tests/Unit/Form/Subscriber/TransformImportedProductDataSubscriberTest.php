@@ -15,6 +15,9 @@ use Pim\Bundle\ImportExportBundle\Form\Subscriber\TransformImportedProductDataSu
  */
 class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->productEnabledConverter    = $this->getConverterMock('ProductEnabledConverter');
@@ -32,6 +35,9 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         $this->form = $this->getFormMock();
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfEventSubscriber()
     {
         $this->assertInstanceOf(
@@ -40,6 +46,9 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testSubscribedEvent()
     {
         $this->assertEquals(
@@ -48,6 +57,9 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testTransformImportedData()
     {
         $event = new FormEvent($this->form, array());
@@ -87,6 +99,9 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         $this->assertEquals(array(1, 2, 3), $data['categories']);
     }
 
+    /**
+     * @return \Symfony\Component\Form\Form
+     */
     protected function getFormMock()
     {
         return $this
@@ -95,6 +110,11 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
             ->getMock();
     }
 
+    /**
+     * @param string $class
+     *
+     * @return \Pim\Bundle\ImportExportBundle\Converter\mixed
+     */
     protected function getConverterMock($class)
     {
         return $this

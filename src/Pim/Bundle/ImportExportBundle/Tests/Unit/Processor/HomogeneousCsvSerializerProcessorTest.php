@@ -13,6 +13,9 @@ use Pim\Bundle\ImportExportBundle\Processor\HomogeneousCsvSerializerProcessor;
  */
 class HomogeneousCsvSerializerProcessorTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->serializer = $this
@@ -23,6 +26,9 @@ class HomogeneousCsvSerializerProcessorTest extends \PHPUnit_Framework_TestCase
         $this->processor = new HomogeneousCsvSerializerProcessor($this->serializer);
     }
 
+    /**
+     * Test related method
+     */
     public function testProcess()
     {
         $this->processor->setDelimiter(';');

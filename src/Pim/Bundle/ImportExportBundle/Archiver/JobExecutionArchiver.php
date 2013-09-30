@@ -56,7 +56,7 @@ class JobExecutionArchiver
     /**
      * Copy the source path to the archive
      * @param string $sourcePath
-     * @param string $archivepath
+     * @param string $archivePath
      */
     protected function copyFile($sourcePath, $archivePath)
     {
@@ -68,6 +68,7 @@ class JobExecutionArchiver
 
     /**
      * Get download file path
+     * @param JobExecution $jobExecution
      *
      * @return string
      */
@@ -84,6 +85,8 @@ class JobExecutionArchiver
 
     /**
      * @param JobExecution $jobExecution
+     *
+     * @return string
      */
     public function getJobExecutionPath(JobExecution $jobExecution)
     {
@@ -96,6 +99,8 @@ class JobExecutionArchiver
 
     /**
      * @param string $jobType
+     *
+     * @return string
      */
     public function getBaseDirectory($jobType)
     {

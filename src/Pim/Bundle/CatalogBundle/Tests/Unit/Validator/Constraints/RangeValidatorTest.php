@@ -6,12 +6,17 @@ use Pim\Bundle\CatalogBundle\Validator\Constraints\Range;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\RangeValidator;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class RangeValidatorTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
@@ -19,11 +24,17 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->initialize($this->context);
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfConstraintValidator()
     {
         $this->assertInstanceOf('Symfony\Component\Validator\Constraints\RangeValidator', $this->validator);
     }
 
+    /**
+     * Test related method
+     */
     public function testValidPrice()
     {
         $constraint = new Range(
@@ -44,6 +55,9 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate($price, $constraint);
     }
 
+    /**
+     * Test related method
+     */
     public function testOutOfRangePrice()
     {
         $constraint = new Range(
@@ -72,6 +86,9 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param array $options
+     * @param mixed $date
+     *
      * @dataProvider getValideDateData
      */
     public function testValidDate($options, $date)
@@ -86,6 +103,10 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param array $options
+     * @param mixed $date
+     * @param array $with
+     *
      * @dataProvider getOutOfRangeDateData
      */
     public function testOutOfRangeDate($options, $date, $with)
@@ -100,6 +121,9 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate($date, $constraint);
     }
 
+    /**
+     * @return array
+     */
     public static function getValideDateData()
     {
         return array(
@@ -109,6 +133,9 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @return array
+     */
     public static function getOutOfRangeDateData()
     {
         return array(
@@ -157,6 +184,9 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testNullIsValid()
     {
         $this->context->expects($this->never())
@@ -165,6 +195,9 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate(null, new Range(array('min' => 10, 'max' => 20)));
     }
 
+    /**
+     * @return array
+     */
     public function getTenToTwenty()
     {
         return array(
@@ -179,6 +212,9 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @return array
+     */
     public function getLessThanTen()
     {
         return array(
@@ -189,6 +225,9 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @return array
+     */
     public function getMoreThanTwenty()
     {
         return array(
@@ -200,6 +239,8 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param mixed $value
+     *
      * @dataProvider getTenToTwenty
      */
     public function testValidValuesMin($value)
@@ -212,6 +253,8 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param mixed $value
+     *
      * @dataProvider getTenToTwenty
      */
     public function testValidValuesMax($value)
@@ -224,6 +267,8 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param mixed $value
+     *
      * @dataProvider getTenToTwenty
      */
     public function testValidValuesMinMax($value)
@@ -236,6 +281,8 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param mixed $value
+     *
      * @dataProvider getLessThanTen
      */
     public function testInvalidValuesMin($value)
@@ -258,6 +305,8 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param mixed $value
+     *
      * @dataProvider getMoreThanTwenty
      */
     public function testInvalidValuesMax($value)
@@ -285,6 +334,8 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param mixed $value
+     *
      * @dataProvider getMoreThanTwenty
      */
     public function testInvalidValuesCombinedMax($value)
@@ -314,6 +365,8 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param mixed $value
+     *
      * @dataProvider getLessThanTen
      */
     public function testInvalidValuesCombinedMin($value)
@@ -342,6 +395,9 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate($value, $constraint);
     }
 
+    /**
+     * @return array
+     */
     public function getInvalidValues()
     {
         return array(
@@ -353,6 +409,9 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testMinMessageIsSet()
     {
         $constraint = new Range(
@@ -376,6 +435,9 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
         $this->validator->validate(9, $constraint);
     }
 
+    /**
+     * Test related method
+     */
     public function testMaxMessageIsSet()
     {
         $constraint = new Range(

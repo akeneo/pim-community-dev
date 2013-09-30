@@ -5,6 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\View;
 use Pim\Bundle\CatalogBundle\Form\View\ProductFormView;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -13,11 +15,17 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 {
     protected $formView = null;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->formView = new ProductFormView();
     }
 
+    /**
+     * Test related method
+     */
     public function testAddChildrenWithBasicValue()
     {
         $group = $this->getGroupMock(
@@ -67,6 +75,9 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($formView, $this->formView->getView());
     }
 
+    /**
+     * Test related method
+     */
     public function testAddMultiChildrenInTheSameGroup()
     {
         $group = $this->getGroupMock(
@@ -140,6 +151,9 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($formView, $this->formView->getView());
     }
 
+    /**
+     * Test related method
+     */
     public function testAddChildrenWithScopableValue()
     {
         $group = $this->getGroupMock(
@@ -206,6 +220,9 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($formView, $this->formView->getView());
     }
 
+    /**
+     * Test related method
+     */
     public function testAddChildrenWithPriceValue()
     {
         $group = $this->getGroupMock(
@@ -259,6 +276,11 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($formView, $this->formView->getView());
     }
 
+    /**
+     * @param array $options
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     */
     private function getValueMock(array $options)
     {
         $options = array_merge(
@@ -287,6 +309,11 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         return $value;
     }
 
+    /**
+     * @param array $options
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
     private function getAttributeMock(array $options)
     {
         $options = array_merge(
@@ -335,6 +362,9 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         return $attribute;
     }
 
+    /**
+     * Test related method
+     */
     public function testAttributeSortingInsideGroups()
     {
         $generalGroup = $this->getGroupMock(
@@ -452,6 +482,11 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(73, 1987), array_keys($result[2]['attributes']));
     }
 
+    /**
+     * @param array $options
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     */
     private function getGroupMock(array $options)
     {
         $options = array_merge(

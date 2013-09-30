@@ -17,7 +17,7 @@ class PendingCompletenessRepository extends EntityRepository
      * Find a collection where field is not null (channel, locale or family)
      * Allow to find all pending completeness
      *
-     * @param string $fieldType
+     * @param string $fieldName
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */

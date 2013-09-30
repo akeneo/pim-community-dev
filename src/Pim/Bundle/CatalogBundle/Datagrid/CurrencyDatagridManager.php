@@ -21,8 +21,7 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 class CurrencyDatagridManager extends DatagridManager
 {
     /**
-     * get properties
-     * @return array
+     * {@inheritdoc}
      */
     protected function getProperties()
     {
@@ -77,7 +76,7 @@ class CurrencyDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-        return array(array(
+        $toggleAction = array(
             'name'         => 'toggle',
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'root',
@@ -86,6 +85,8 @@ class CurrencyDatagridManager extends DatagridManager
                 'icon'          => 'random',
                 'link'          => 'toggle_link'
             )
-        ));
+        );
+
+        return array($toggleAction);
     }
 }

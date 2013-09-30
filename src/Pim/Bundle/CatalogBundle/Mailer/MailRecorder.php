@@ -17,7 +17,7 @@ class MailRecorder implements \Swift_Events_SendListener
     private $filename;
 
     /**
-     * @param string location where to store the messages
+     * @param string $filename location where to store the messages
      */
     public function __construct($filename)
     {

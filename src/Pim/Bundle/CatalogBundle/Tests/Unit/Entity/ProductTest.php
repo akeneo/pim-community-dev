@@ -105,6 +105,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($otherGroup, next($groups));
     }
 
+    /**
+     * Test related method
+     */
     public function testSkuLabel()
     {
         $sku = $this->getValueMock($this->getAttributeMock(null, 'pim_catalog_identifier'), 'foo-bar');
@@ -113,6 +116,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo-bar', $this->product->getLabel());
     }
 
+    /**
+     * Test related method
+     */
     public function testAttributeLabel()
     {
         $attributeAsLabel = $this->getAttributeMock();
@@ -127,6 +133,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $this->product->getLabel());
     }
 
+    /**
+     * Test related method
+     */
     public function testNullValuedAttributeLabel()
     {
         $attributeAsLabel = $this->getAttributeMock();
@@ -142,6 +151,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo-bar', $this->product->getLabel());
     }
 
+    /**
+     * Test related method
+     */
     public function testEmptyStringValuedAttributeLabel()
     {
         $attributeAsLabel = $this->getAttributeMock();
@@ -157,6 +169,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo-bar', $this->product->getLabel());
     }
 
+    /**
+     * Test related method
+     */
     public function testNullAttributeLabel()
     {
         $attribute = $this->getAttributeMock();
@@ -172,6 +187,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo-bar', $this->product->getLabel());
     }
 
+    /**
+     * Test related method
+     */
     public function testIsSetEnabled()
     {
         $this->assertTrue($this->product->isEnabled());
@@ -183,6 +201,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->product->isEnabled());
     }
 
+    /**
+     * Test related method
+     */
     public function testGetIdentifier()
     {
         $identifier = $this->getValueMock($this->getAttributeMock(null, 'pim_catalog_identifier'));
@@ -298,6 +319,12 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         return $locale;
     }
 
+    /**
+     * @param mixed  $group
+     * @param string $type
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
     private function getAttributeMock($group = null, $type = 'pim_catalog_text')
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
@@ -313,6 +340,12 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         return $attribute;
     }
 
+    /**
+     * @param mixed $attribute
+     * @param mixed $data
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     */
     private function getValueMock($attribute, $data = null)
     {
         $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
@@ -332,6 +365,13 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         return $value;
     }
 
+    /**
+     * @param integer $id
+     * @param mixed   $name
+     * @param integer $sortOrder
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     */
     private function getGroupMock($id, $name, $sortOrder)
     {
         $group = $this->getMock('Pim\Bundle\CatalogBundle\Entity\AttributeGroup');
@@ -351,15 +391,20 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         return $group;
     }
 
+    /**
+     * @param mixed $attributeAsLabel
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Family
+     */
     private function getFamilyMock($attributeAsLabel)
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', array('getAttributeAsLabel'));
+        $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family', array('getAttributeAsLabel'));
 
-        $attribute->expects($this->any())
-                  ->method('getAttributeAsLabel')
-                  ->will($this->returnValue($attributeAsLabel));
+        $family->expects($this->any())
+               ->method('getAttributeAsLabel')
+               ->will($this->returnValue($attributeAsLabel));
 
-        return $attribute;
+        return $family;
     }
 
     /**

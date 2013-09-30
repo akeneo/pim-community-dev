@@ -74,6 +74,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Get a mock of ObjectManager
+     * @param mixed $repository
      *
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
@@ -300,6 +301,11 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
         return $file;
     }
 
+    /**
+     * @param array $activeCodes
+     *
+     * @return \Pim\Bundle\CatalogBundle\Manager\CurrencyManager
+     */
     protected function getCurrencyManagerMock(array $activeCodes = array())
     {
         $manager = $this
@@ -314,6 +320,9 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
         return $manager;
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
     protected function getEntityRepositoryMock()
     {
         return $this

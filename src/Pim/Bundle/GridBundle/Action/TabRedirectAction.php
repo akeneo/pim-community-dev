@@ -5,7 +5,7 @@ namespace Pim\Bundle\GridBundle\Action;
 use Oro\Bundle\GridBundle\Action\AbstractAction;
 
 /**
- *
+ * Grid action for redirection to a specific form tab
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

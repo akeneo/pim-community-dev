@@ -17,6 +17,9 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
  */
 class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->formFactory    = $this->getFormFactoryMock();
@@ -32,6 +35,9 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testProcess()
     {
         $product = $this->getProductMock();
@@ -109,6 +115,9 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->processor->process(array());
     }
 
+    /**
+     * @return \Symfony\Component\Form\FormFactory
+     */
     protected function getFormFactoryMock()
     {
         return $this
@@ -117,6 +126,11 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @param boolean $valid
+     *
+     * @return \Symfony\Component\Form\Form
+     */
     protected function getFormMock($valid = true)
     {
         $form = $this
@@ -135,6 +149,9 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         return $form;
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\ProductManager
+     */
     protected function getProductManagerMock()
     {
         return $this
@@ -143,6 +160,9 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
     protected function getStorageManagerMock()
     {
         $storageManager = $this
@@ -157,6 +177,9 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         return $storageManager;
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
     protected function getFamilyRepositoryMock()
     {
         $repo = $this
@@ -171,6 +194,9 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         return $repo;
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\ChannelManager
+     */
     protected function getChannelManagerMock()
     {
         return $this
@@ -179,6 +205,9 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
+     */
     protected function getLocaleManagerMock()
     {
         return $this
@@ -187,6 +216,9 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
     protected function getEntityManagerMock()
     {
         return $this
@@ -195,6 +227,9 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
     protected function getRepositoryMock()
     {
         return $this
@@ -203,6 +238,13 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @param string  $code
+     * @param string  $backendType
+     * @param boolean $scopable
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
     protected function getAttributeMock($code, $backendType, $scopable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
@@ -222,11 +264,19 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         return $attribute;
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     */
     protected function getProductMock()
     {
         return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
     }
 
+    /**
+     * @param integer $id
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Category
+     */
     protected function getCategoryMock($id)
     {
         $category = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Category');
@@ -238,6 +288,11 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         return $category;
     }
 
+    /**
+     * @param integer $id
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Family
+     */
     protected function getFamilyMock($id)
     {
         $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family');

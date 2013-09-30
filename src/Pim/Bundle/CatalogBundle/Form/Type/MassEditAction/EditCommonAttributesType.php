@@ -106,6 +106,9 @@ class EditCommonAttributesType extends AbstractType
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'pim_catalog_mass_edit_common_attributes';

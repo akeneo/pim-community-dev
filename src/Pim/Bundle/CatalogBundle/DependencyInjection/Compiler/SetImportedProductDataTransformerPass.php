@@ -15,6 +15,9 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class SetImportedProductDataTransformerPass implements CompilerPassInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition('pim_catalog.form.type.product')) {

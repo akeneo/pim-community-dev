@@ -13,6 +13,9 @@ use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
  */
 class LocaleHelperTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $localeManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')

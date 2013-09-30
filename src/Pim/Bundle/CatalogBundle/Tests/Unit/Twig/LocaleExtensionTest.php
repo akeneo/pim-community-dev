@@ -35,6 +35,9 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('pim_locale_extension', $this->localeExtension->getName());
     }
 
+    /**
+     * Test related method
+     */
     public function testLocaleLabel()
     {
         $this->assertEquals('en_US', $this->localeExtension->localeLabel('en_US'));
@@ -55,6 +58,9 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('USD', $this->localeExtension->localeCurrency());
     }
 
+    /**
+     * Test related method
+     */
     public function testGetFunctions()
     {
         $twigFunctions = $this->localeExtension->getFunctions();
@@ -81,7 +87,6 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Twig_Filter_Method', $twigFilters['flag']);
         
     }
-    
     /**
      * Get LocaleHelperMock
      * 

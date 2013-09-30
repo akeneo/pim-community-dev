@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -15,6 +17,9 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
 {
     private $normalizer;
 
+    /**
+     * @return array
+     */
     public static function getSupportNormalizationData()
     {
         return array(
@@ -25,12 +30,19 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->normalizer = new FlatProductNormalizer();
     }
 
     /**
+     * @param string  $class
+     * @param string  $format
+     * @param boolean $isSupported
+     *
      * @dataProvider getSupportNormalizationData
      */
     public function testSupportNormalization($class, $format, $isSupported)
@@ -40,6 +52,9 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($isSupported, $this->normalizer->supportsNormalization($data, $format));
     }
 
+    /**
+     * Test related method
+     */
     public function testNormalizeProduct()
     {
         $now = new \DateTime();
@@ -74,6 +89,9 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testNormalizeProductWithoutFamily()
     {
         $now = new \DateTime();
@@ -129,6 +147,14 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $this->normalizer->normalize($product, 'csv');
     }
 
+    /**
+     * @param ProductAttribute $identifier
+     * @param array            $values
+     * @param Family           $family
+     * @param string           $categories
+     *
+     * @return ProductInterface
+     */
     private function getProductMock($identifier = null, array $values = array(), $family = null, $categories = '')
     {
         $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
@@ -157,6 +183,13 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         return $product;
     }
 
+    /**
+     * @param ProductAttribute $attribute
+     * @param mixed            $data
+     * @param mixed            $locale
+     *
+     * @return ProductValue
+     */
     private function getValueMock($attribute = null, $data = null, $locale = null)
     {
         $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
@@ -176,6 +209,13 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         return $value;
     }
 
+    /**
+     * @param string  $code
+     * @param boolean $translatable
+     * @param string  $type
+     *
+     * @return ProductAttribute
+     */
     private function getAttributeMock($code, $translatable = false, $type = 'pim_catalog_text')
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
@@ -195,6 +235,11 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         return $attribute;
     }
 
+    /**
+     * @param string $code
+     *
+     * @return Family
+     */
     private function getFamilyMock($code)
     {
         $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family');

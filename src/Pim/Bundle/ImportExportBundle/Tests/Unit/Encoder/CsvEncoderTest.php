@@ -5,12 +5,17 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Encoder;
 use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class CsvEncoderTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @return array
+     */
     public static function getEncodeSimpleArrayData()
     {
         return array(
@@ -23,6 +28,9 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @return array
+     */
     public static function getUnexpectedValues()
     {
         return array(
@@ -36,11 +44,17 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testIsAnEncoder()
     {
         $this->assertInstanceOf('Symfony\Component\Serializer\Encoder\EncoderInterface', new CsvEncoder());
     }
 
+    /**
+     * Test related method
+     */
     public function testSupportCsv()
     {
         $encode = new CsvEncoder();
@@ -48,6 +62,10 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $delimiter
+     * @param string $enclosure
+     * @param string $expectedResult
+     *
      * @dataProvider getEncodeSimpleArrayData
      */
     public function testEncodeArray($delimiter, $enclosure, $expectedResult)
@@ -70,6 +88,9 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testEncodeCollectionOfHashes()
     {
         $encoder = new CsvEncoder();
@@ -86,6 +107,9 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testEncodeEmptyArray()
     {
         $encoder = new CsvEncoder();
@@ -94,6 +118,8 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param mixed $value
+     *
      * @dataProvider getUnexpectedValues
      * @expectedException InvalidArgumentException
      */
@@ -104,6 +130,9 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
         $encoder->encode($value, 'csv');
     }
 
+    /**
+     * @return array
+     */
     public static function getEncodeArrayWithHeader()
     {
         $entry1 = array('name' => 'foo', 'code' => 'bar');
@@ -118,6 +147,9 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param array  $array
+     * @param string $csv
+     *
      * @dataProvider getEncodeArrayWithHeader
      */
     public function testEncodeArrayWithHeader($array, $csv)
@@ -127,6 +159,9 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($csv, $encoder->encode($array, 'csv', array('withHeader' => true)));
     }
 
+    /**
+     * @return array
+     */
     public static function getEncodeArrayWithoutHeader()
     {
         $entry1 = array('name' => 'foo', 'code' => 'bar');
@@ -141,6 +176,9 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param array  $array
+     * @param string $csv
+     *
      * @dataProvider getEncodeArrayWithoutHeader
      */
     public function testEncodeArrayWithoutHeader($array, $csv)
@@ -161,6 +199,9 @@ class CsvEncoderTest extends \PHPUnit_Framework_TestCase
         $encoder->encode(array('boo' => 'far'), 'csv', array('heterogeneous' => true));
     }
 
+    /**
+     * Test related method
+     */
     public function testMultipleEncodeOfHomogeneousData()
     {
         $encoder = new CsvEncoder();

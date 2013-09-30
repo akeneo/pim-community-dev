@@ -13,10 +13,12 @@ services:
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: productattributes
+              entity_name: %pim_catalog.entity.product_attribute.class%
               entity_hint: attributes
               route_name: pim_catalog_productattribute_index
         calls:
             - [ setProductManager, [@pim_catalog.manager.product] ]
+            - [ setIdentifierField, ['id'] ]
 
     # Product grid manager
     pim_catalog.datagrid.manager.product:
@@ -50,6 +52,7 @@ services:
               route_name: pim_catalog_channel_index
         calls:
             - [ setCategoryManager, [@pim_catalog.manager.category] ]
+            - [ setIdentifierField, ['id'] ]
 
     pim_catalog.datagrid.manager.currency:
         class: %pim_catalog.datagrid.manager.currency_datagrid.class%

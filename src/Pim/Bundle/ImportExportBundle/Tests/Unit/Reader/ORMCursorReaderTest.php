@@ -5,17 +5,25 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader;
 use Pim\Bundle\ImportExportBundle\Reader\ORMCursorReader;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Test related method
+     */
     public function testInstanceOfItemReaderInterface()
     {
         $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\ItemReaderInterface', new ORMCursorReader());
     }
 
+    /**
+     * Test related method
+     */
     public function testRead()
     {
         $reader = new ORMCursorReader();
@@ -40,6 +48,9 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($reader->read($stepExecution));
     }
 
+    /**
+     * @return \octrine\ORM\AbstractQuery
+     */
     private function getQueryMock()
     {
         return $this
@@ -49,6 +60,11 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @param array $results
+     *
+     * @return \Doctrine\ORM\Internal\Hydration\IterableResult
+     */
     private function getIterableResultMock(array $results)
     {
         $mock = $this
@@ -65,6 +81,9 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
         return $mock;
     }
 
+    /**
+     * @return \Oro\Bundle\BatchBundle\Entity\StepExecution
+     */
     private function getStepExecutionMock()
     {
         return $this
