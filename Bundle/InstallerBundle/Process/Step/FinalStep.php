@@ -4,6 +4,8 @@ namespace Oro\Bundle\InstallerBundle\Process\Step;
 
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 
+use Oro\Bundle\InstallerBundle\InstallerEvents;
+
 class FinalStep extends AbstractStep
 {
     public function displayAction(ProcessContextInterface $context)
@@ -33,6 +35,8 @@ class FinalStep extends AbstractStep
             ->runCommand('cache:clear', array('--no-warmup' => true));
 
         $this->complete();
+
+        $this->get('event_dispatcher')->dispatch(InstallerEvents::INSTALLER_FINISH);
 
         return $this->render('OroInstallerBundle:Process/Step:final.html.twig');
     }
