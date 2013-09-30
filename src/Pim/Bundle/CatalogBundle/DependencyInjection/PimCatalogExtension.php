@@ -144,6 +144,10 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         if (isset($bundles['JMSDiExtraBundle'])) {
             $this->prependExtensionConfig($container, 'jms_di_extra');
         }
+
+        if (isset($bundles['OroEntityExtendBundle'])) {
+            $this->prependExtensionConfig($container, 'oro_entity_extend');
+        }
     }
 
     /**

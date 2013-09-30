@@ -68,10 +68,6 @@ services:
          tags:
              - { name: twig.extension }
 
-oro_entity_extend:
-    backend:        Dynamic
-    backup:         "%kernel.root_dir%/entities/Backup/"
-
 oro_filter:
     twig:
         layout: PimFilterBundle:Filter:pim-layout.js.twig
