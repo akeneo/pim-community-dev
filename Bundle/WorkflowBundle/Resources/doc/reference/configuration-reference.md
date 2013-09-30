@@ -660,7 +660,6 @@ class PhoneCall
     public function setNumber($number)
     {
         $this->number = $number;
-
         return $this;
     }
 
@@ -672,7 +671,6 @@ class PhoneCall
     public function setName($name)
     {
         $this->name = $name;
-
         return $this;
     }
 
@@ -763,7 +761,6 @@ class PhoneConversation
     public function setComment($comment)
     {
         $this->comment = $comment;
-
         return $this;
     }
 
@@ -775,7 +772,6 @@ class PhoneConversation
     public function setSuccessful($successful)
     {
         $this->successful = $successful;
-
         return $this;
     }
 
@@ -787,7 +783,6 @@ class PhoneConversation
     public function setCall($call)
     {
         $this->call = $call;
-
         return $this;
     }
 
