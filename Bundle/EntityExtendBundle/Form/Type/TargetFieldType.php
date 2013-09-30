@@ -57,7 +57,6 @@ class TargetFieldType extends AbstractType
                     true
                 );
             }
-            //$className = str_replace('_', '\\', $className);
 
             if ($className) {
                 /** @var EntityConfigModel $entity */
