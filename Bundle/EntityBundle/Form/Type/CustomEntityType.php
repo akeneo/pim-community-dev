@@ -108,7 +108,7 @@ class CustomEntityType extends AbstractType
                 }
 
                 $builder->add(
-                    Inflector::camelize($fieldConfigId->getFieldName()),
+                    $fieldConfigId->getFieldName(),
                     $this->typeMap[$fieldConfigId->getFieldType()],
                     $options
                 );
