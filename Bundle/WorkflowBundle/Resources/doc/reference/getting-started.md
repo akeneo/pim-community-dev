@@ -144,7 +144,7 @@ workflows:
                     @and:                                        # AND for all children conditions
                         - @not_empty: [$username]                # username attribute value is not empty
                         - @greater_or_equal: [$age, 18]          # age attribute value is greater or equal to 18
-                post_actions:                # required post actions: create User entity and bind it to Workflow Item
+                post_actions:                # required post actions: create User entity
                     - @create_entity:        # create entity post action
                         parameters:          # parameters of post action
                             class: Acme\Bundle\DemoBundle\Entity\User    # entity class name
