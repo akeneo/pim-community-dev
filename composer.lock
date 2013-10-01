@@ -3472,12 +3472,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "81cbc44c970631f07a46062094126fc7f6b6b738"
+                "reference": "ebeb34db49dfe3bbc659d0c5e9ee3e05e9fdf554"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/81cbc44c970631f07a46062094126fc7f6b6b738",
-                "reference": "81cbc44c970631f07a46062094126fc7f6b6b738",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/ebeb34db49dfe3bbc659d0c5e9ee3e05e9fdf554",
+                "reference": "ebeb34db49dfe3bbc659d0c5e9ee3e05e9fdf554",
                 "shasum": ""
             },
             "require": {
@@ -3539,7 +3539,7 @@
                 "source": "https://github.com/laboro/platform/tree/master",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-10-01 09:49:38"
+            "time": "2013-10-01 11:51:10"
         },
         {
             "name": "phpcollection/phpcollection",
