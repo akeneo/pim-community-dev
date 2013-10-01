@@ -5,7 +5,7 @@
     <ul class="nav nav-list">
         {% for group in product.orderedGroups %}
         <li class="tab{% if loop.index == 1 %} active{% endif %}">
-            <a href="#tabs-{{group.id}}" data-toggle="tab">{{ group.name }}</a>
+            <a href="#tabs-{{group.id}}" data-toggle="tab">{{ group.label }}</a>
         </li>
         {% endfor %}
     </ul>
@@ -24,7 +24,7 @@
                         <label for="default_channel">{{ 'Default channel'|trans }}</label>
                         <select id="default_channel">
                             {% for channel in channels %}
-                                <option value="{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.name }}</option>
+                                <option value="{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.label }}</option>
                             {% endfor %}
                         </select>
                     </span>
@@ -37,7 +37,7 @@
 
     {% for groupId, groupView in form.vars.groups %}
     <div id="tabs-{{ groupId }}" class="tab-pane fullheight">
-        <h3>{{ groupView.name }}</h3>
+        <h3>{{ groupView.label }}</h3>
         {% for attributeId, attributeView in groupView.attributes %}
             <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
             {% if attributeView.values is defined %}
