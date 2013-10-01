@@ -35,6 +35,6 @@ services:
     oro_installer.form.type.setup:
         class:                                            %oro_installer.form.type.setup.class%
         arguments:
-            - %oro_user.entity.class%
+            - Oro\Bundle\UserBundle\Entity\User
         tags:
             - { name: form.type, alias: oro_installer_setup }
