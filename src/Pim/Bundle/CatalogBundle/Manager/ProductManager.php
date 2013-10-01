@@ -169,13 +169,7 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * Save a product in two phases :
-     *   1) Persist and flush the entity as usual and associate it to the provided categories
-     *      associated with the provided tree
-     *   2)
-     *     2.1) Force the reloading of the object (to be sure all values are loaded)
-     *     2.2) Add missing and remove redundant scope and locale values for each attribute
-     *     2.3) Reflush to save these new values
+     * Save a product
      *
      * @param ProductInterface $product
      *
@@ -184,10 +178,6 @@ class ProductManager extends FlexibleManager
     public function save(ProductInterface $product)
     {
         $this->storageManager->persist($product);
-        $this->storageManager->flush();
-
-        $this->storageManager->refresh($product);
-        $this->ensureRequiredAttributeValues($product);
         $this->storageManager->flush();
     }
 
