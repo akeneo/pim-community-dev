@@ -63,7 +63,7 @@ Currently, the application has two types of ACL extensions: Actions(Capabilities
 
 Resources, that gives control on entity manipulations (View, Edit, Delete etc.).
 
-To add entity to ACL, the next config to the @Configurable annotation in entity class should be added:
+To mark an entity as ACL protected, the next config to the @Configurable annotation in entity class should be added:
 
 ``` php
 /**
@@ -82,8 +82,9 @@ To add entity to ACL, the next config to the @Configurable annotation in entity 
  */
  class MyEntity
 ```
+**group_name** parameter is used to group entities by groups in UI edit page. Now this parameter is not in use.
 
-There are 2 ways to declare entity class based permissions:
+You can use @Acl and @AclAncestor annotations to protect controller actions.
 
  - Using @Acl annotation:
 
@@ -128,7 +129,7 @@ $this->securityFacade->isGranted('myentity_view')
 
  **Capabilities**:
 
-Additional resources that are not related to specific entity, e.g. Configuration, Search etc.
+Additional resources that are not related to an entity, e.g. Configuration, Search etc.
 
 There are 2 ways to declare capability permissions:
 
@@ -174,7 +175,7 @@ or check in code directly with [securityFacade service](#securityFacade)
 $this->securityFacade->isGranted('can_do_something')
 ```
 
-If you'd like to bind acl resource to specific class methods, you can use bindings:
+If you'd like to bind acl resource to specific controller action, you can use bindings:
 
 ``` yml
 can_do_something_specific:
