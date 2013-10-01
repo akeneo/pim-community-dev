@@ -71,6 +71,7 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping:                true
+        class_metadata_factory_name: Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory
 
 # Swiftmailer Configuration
 swiftmailer:
