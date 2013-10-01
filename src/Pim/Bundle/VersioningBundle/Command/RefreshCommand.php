@@ -47,9 +47,6 @@ class RefreshCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // TODO : fix
-        return;
-
         $noDebug = $input->getOption('no-debug');
         if (!$noDebug) {
             $logger = $this->getContainer()->get('logger');
