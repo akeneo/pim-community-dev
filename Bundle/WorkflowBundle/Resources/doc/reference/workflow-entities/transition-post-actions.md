@@ -40,6 +40,9 @@ Configuration Syntax
 Each post action can be optionally configured with condition. It allows to implement more sufficient logic in
 transitions definitions. If condition is not satisfied post action won't be executed.
 
+If flag "break_on_failure" is specified post action throws an exception on error, otherwise logs error using standard
+logger.
+
 See syntax examples:
 
 **Full Configuration Example**
@@ -346,8 +349,6 @@ Tree Executor
 **Alias:** tree
 
 **Description:** Composite object contains a list of post actions that will be executed sequentially.
-If flag "breakOnFailure" is specified post action throws an exception on error, otherwise logs error using standard
-logger.
 
 **Configuration Example**
 ```
