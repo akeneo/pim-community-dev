@@ -7,16 +7,17 @@ Feature: Sort channels
   Background:
     Given there is no channel
     And the following categories:
-      | code   | label  |
-      | master | Master |
-      | mobile | Mobile |
-      | ipad   | IPad   |
+      | code      | label      |
+      | master    | Master     |
+      | mobile    | Mobile     |
+      | ipad      | IPad       |
+      | ecommerce | E-Commerce |
     And the following channels:
-      | code | label | locales      | category |
-      | FOO  | foo   | fr_FR, en_US | master   |
-      | BAR  | bar   | de_DE        | master   |
-      | BAZ  | baz   | fr_FR        | mobile   |
-      | QUX  | qux   | en_US        | ipad     |
+      | code | label | locales      | category  |
+      | FOO  | foo   | fr_FR, en_US | master    |
+      | BAR  | bar   | de_DE        | ecommerce |
+      | BAZ  | baz   | fr_FR        | mobile    |
+      | QUX  | qux   | en_US        | ipad      |
     And I am logged in as "admin"
 
   Scenario: Successfully display the sortable columns
@@ -48,9 +49,9 @@ Feature: Sort channels
   Scenario: Successfully sort channels by tree ascending
     Given I am on the channels page
     When I sort by "category tree" value ascending
-    Then I should see sorted channels QUX, FOO, BAR and BAZ
+    Then I should see sorted channels BAR, QUX, FOO and BAZ
 
   Scenario: Successfully sort channels by tree descending
     Given I am on the channels page
     When I sort by "category tree" value descending
-    Then I should see sorted channels BAZ, FOO, BAR and QUX
+    Then I should see sorted channels BAZ, FOO, QUX and BAR
