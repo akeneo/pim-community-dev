@@ -283,18 +283,18 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setName('family');
         $field->setOptions(
             array(
-                'type'          => FieldDescriptionInterface::TYPE_TEXT,
-                'label'         => $this->translate('Family'),
-                'field_name'    => 'familyLabel',
-                'expression'    => 'family',
-                'filter_type'   => FilterInterface::TYPE_ENTITY,
-                'required'      => false,
-                'sortable'      => true,
-                'filterable'    => true,
-                'show_filter'   => true,
-                'multiple'      => true,
-                'class'         => 'PimCatalogBundle:Family',
-                'property'      => 'label',
+                'type'            => FieldDescriptionInterface::TYPE_TEXT,
+                'label'           => $this->translate('Family'),
+                'field_name'      => 'familyLabel',
+                'expression'      => 'family',
+                'filter_type'     => FilterInterface::TYPE_ENTITY,
+                'required'        => false,
+                'sortable'        => true,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'multiple'        => true,
+                'class'           => 'PimCatalogBundle:Family',
+                'property'        => 'label',
                 'filter_by_where' => true,
             )
         );
@@ -338,15 +338,15 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $fieldCompleteness->setName('completenesses');
         $fieldCompleteness->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_HTML,
-                'label'       => $this->translate('Complete'),
-                'field_name'  => 'completenesses',
-                'expression'  => 'pCompleteness',
-                'filter_type' => FilterInterface::TYPE_COMPLETENESS,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-                'filter_by_where' => true,
+                'type'               => FieldDescriptionInterface::TYPE_HTML,
+                'label'              => $this->translate('Complete'),
+                'field_name'         => 'completenesses',
+                'expression'         => 'pCompleteness',
+                'filter_type'        => FilterInterface::TYPE_COMPLETENESS,
+                'sortable'           => true,
+                'filterable'         => true,
+                'show_filter'        => true,
+                'filter_by_where'    => true,
                 'sort_field_mapping' => array(
                     'entityAlias' => 'pCompleteness',
                     'fieldName'   => 'ratio'
@@ -375,11 +375,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_catalog_product_edit',
             'options'      => array(
-                'label'   => $this->translate('Edit attributes of the product'),
-                'icon'    => 'edit',
-                'link'    => 'edit_link'
+                'label' => $this->translate('Edit attributes of the product'),
+                'icon'  => 'edit',
+                'link'  => 'edit_link'
             )
         );
 
@@ -390,7 +390,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $editCategoriesAction = array(
             'name'         => 'edit_categories',
             'type'         => ActionInterface::TYPE_TAB_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_catalog_product_edit',
             'options'      => array(
                 'label'     => $this->translate('Classify the product'),
                 'tab'       => '#categories',
@@ -403,11 +403,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_catalog_product_remove',
             'options'      => array(
-                'label'   => $this->translate('Delete the product'),
-                'icon'    => 'trash',
-                'link'    => 'delete_link'
+                'label' => $this->translate('Delete the product'),
+                'icon'  => 'trash',
+                'link'  => 'delete_link'
             )
         );
 
@@ -436,7 +436,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             array(
                 'name'  => 'redirect',
                 'label' => $this->translate('Mass Edition'),
-                'icon' => 'edit',
+                'icon'  => 'edit',
                 'route' => 'pim_catalog_mass_edit_action_choose',
             )
         );
@@ -453,11 +453,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         $exportCsv = new ExportCollectionAction(
             array(
-                'acl_resource' => 'root',
-                'baseUrl' => $this->router->generate('pim_catalog_product_index', array('_format' => 'csv')),
-                'name' =>  'exportCsv',
-                'label' => $this->translate('CSV export'),
-                'icon'  => 'icon-download',
+                'acl_resource'   => 'pim_catalog_product_index',
+                'baseUrl'        => $this->router->generate('pim_catalog_product_index', array('_format' => 'csv')),
+                'name'           =>  'exportCsv',
+                'label'          => $this->translate('CSV export'),
+                'icon'           => 'icon-download',
                 'keepParameters' => true
             )
         );

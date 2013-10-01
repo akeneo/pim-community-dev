@@ -258,24 +258,28 @@ pim_catalog_product:
     label: Product manipulation
 
 pim_catalog_product_index:
-    type: action
-    label: View product list
+    type: entity
+    class: PimCatalogBundle:Product
+    permission: VIEW
 
 pim_catalog_product_create:
-    type: action
-    label: Create a product
+   type: entity
+   class: PimCatalogBundle:Product
+   permission: CREATE
 
 pim_catalog_product_edit:
-    type: action
-    label: Edit a product
+   type: entity
+   class: PimCatalogBundle:Product
+   permission: EDIT
+
+pim_catalog_product_remove:
+   type: entity
+   class: PimCatalogBundle:Product
+   permission: DELETE
 
 pim_catalog_product_add_attribute:
     type: action
     label: Add an attribute to a product
-
-pim_catalog_product_remove:
-    type: action
-    label: Remove a product
 
 pim_catalog_product_remove_attribute:
     type: action
