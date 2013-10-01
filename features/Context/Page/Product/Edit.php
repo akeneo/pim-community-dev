@@ -427,5 +427,4 @@ class Edit extends Form
 
         return $elt;
     }
-
 }
