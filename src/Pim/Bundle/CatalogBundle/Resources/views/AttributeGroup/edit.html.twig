@@ -3,16 +3,19 @@
     {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% endif %}
 
-{% oro_title_set({ params: { "%group.name%": form.vars.value.name } }) %}
+{% oro_title_set({ params: { "%group.label%": form.vars.value.label } }) %}
 
 {% block groupTab %}
 {{ JSFV(form) }}
 <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ path('pim_catalog_attributegroup_edit', { id: form.vars.value.id }) }}" method="POST">
 
-    {% set title = 'attribute group.edit'|trans ~ ' - ' ~ form.vars.data.name %}
+    {% set title = 'attribute group.edit'|trans ~ ' - ' ~ form.vars.data.label %}
 
     {% set buttons %}
-        {{ elements.deleteLink(path('pim_catalog_attributegroup_remove', {'id': form.vars.value.id}), path('pim_catalog_attributegroup_index'), 'confirmation.remove.attribute group'|trans({'%name%': form.vars.data.name}), "", "flash.attribute group.removed"|trans) }}
+        {{ elements.deleteLink(
+            path('pim_catalog_attributegroup_remove', {'id': form.vars.value.id}),
+            path('pim_catalog_attributegroup_index'), 'confirmation.remove.attribute group'|trans({'%name%': form.vars.data.label}), "", "flash.attribute group.removed"|trans)
+        }}
         {{ elements.submitBtn() }}
     {% endset %}
 
@@ -27,7 +30,7 @@
         {{ elements.form_errors(form) }}
 
         <div class="tab-pane active" id="properties">
-            {{ elements.accordion({ 'General Properties': form_row(form.code), 'Group values': form_row(form.name) }) }}
+            {{ elements.accordion({ 'General Properties': form_row(form.code), 'Group values': form_row(form.label) }) }}
         </div>
         {{ form_row(form.sort_order) }}
         {{ form_row(form._token) }}

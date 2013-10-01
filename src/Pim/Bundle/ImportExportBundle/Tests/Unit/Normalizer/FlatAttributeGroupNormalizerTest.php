@@ -47,7 +47,7 @@ class FlatAttributeGroupNormalizerTest extends AttributeGroupNormalizerTest
             array(
                 array(
                     'code'       => 'mycode',
-                    'name'      => 'en_US:My name, fr_FR:Mon nom',
+                    'label'      => 'en_US:My name, fr_FR:Mon nom',
                     'sortOrder'  => 5,
                     'attributes' => 'attribute1, attribute2, attribute3'
                 )

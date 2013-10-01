@@ -14,7 +14,7 @@ Feature: Filter products per category
       | green-tshirt  |
       | akeneo-mug    |
     And the following categories:
-      | code           | title   | products                   |
+      | code           | label   | products                   |
       | tshirts        | TShirts | purple-tshirt,green-tshirt |
     And I am logged in as "admin"
 

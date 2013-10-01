@@ -30,33 +30,33 @@ class AttributeGroupTranslation extends AbstractTranslation
     protected $foreignKey;
 
     /**
-     * @var string $name
+     * @var string $label
      *
      * @ORM\Column(name="label", type="string", length=100, nullable=true)
      */
-    protected $name;
+    protected $label;
 
     /**
-     * Set name
+     * Set label
      *
-     * @param string $name
+     * @param string $label
      *
      * @return AttributeGroupTranslation
      */
-    public function setName($name)
+    public function setLabel($label)
     {
-        $this->name = $name;
+        $this->label = $label;
 
         return $this;
     }
 
     /**
-     * Get the name
+     * Get the label
      *
      * @return string
      */
-    public function getName()
+    public function getLabel()
     {
-        return $this->name;
+        return $this->label;
     }
 }

@@ -6,10 +6,10 @@ Feature: Delete a channel
 
   Background:
     Given the following categories:
-      | code           | title          |
+      | code           | label          |
       | ipad_catalog   | iPad Catalog   |
     And the following channels:
-      | code | name  | locales      | category       |
+      | code | label | locales      | category       |
       | FOO  | foo   | fr_FR, en_US | ipad_catalog   |
     And I am logged in as "admin"
 

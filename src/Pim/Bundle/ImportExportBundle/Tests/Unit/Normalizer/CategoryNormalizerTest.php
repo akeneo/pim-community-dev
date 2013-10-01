@@ -66,7 +66,7 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'code'    => 'root_category',
-                    'title'   => array('en' => 'Root category', 'fr' => 'Categorie racine'),
+                    'label'   => array('en' => 'Root category', 'fr' => 'Categorie racine'),
                     'parent'  => '',
                     'dynamic' => '0',
                 )
@@ -74,7 +74,7 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'code'    => 'child_category',
-                    'title'   => array('en' => 'Child category', 'fr' => 'fr:Catégorie enfant'),
+                    'label'   => array('en' => 'Child category', 'fr' => 'fr:Catégorie enfant'),
                     'parent'  => '1',
                     'dynamic' => '0',
                 )
@@ -109,9 +109,9 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
         $category = new Category();
         $category->setCode($data['code']);
 
-        foreach ($this->getTitles($data) as $locale => $title) {
+        foreach ($this->getLabels($data) as $locale => $label) {
             $translation = $category->getTranslation($locale);
-            $translation->setTitle($title);
+            $translation->setLabel($label);
             $category->addTranslation($translation);
         }
 
@@ -131,8 +131,8 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    protected function getTitles($data)
+    protected function getLabels($data)
     {
-        return $data['title'];
+        return $data['label'];
     }
 }

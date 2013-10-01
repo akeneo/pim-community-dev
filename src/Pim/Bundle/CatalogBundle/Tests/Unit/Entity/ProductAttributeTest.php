@@ -78,10 +78,10 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $this->attribute->setCode($newCode);
         $this->assertEquals($expectedCode, $this->attribute->getLabel());
 
-        $newName = 'test-label';
+        $newLabel = 'test-label';
         $this->assertEntity($this->attribute->setLocale('en_US'));
-        $this->assertEntity($this->attribute->setLabel($newName));
-        $this->assertEquals($newName, $this->attribute->getLabel());
+        $this->assertEntity($this->attribute->setLabel($newLabel));
+        $this->assertEquals($newLabel, $this->attribute->getLabel());
 
         // if no translation, assert the expected code is returned
         $this->attribute->setLocale('fr_FR');
@@ -103,10 +103,10 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $this->attribute->setCode($newCode);
         $this->assertEquals($expectedCode, $this->attribute->__toString());
 
-        $newName = 'test-label';
+        $newLabel = 'test-label';
         $this->assertEntity($this->attribute->setLocale('en_US'));
-        $this->assertEntity($this->attribute->setLabel($newName));
-        $this->assertEquals($newName, $this->attribute->__toString());
+        $this->assertEntity($this->attribute->setLabel($newLabel));
+        $this->assertEquals($newLabel, $this->attribute->__toString());
 
         // if no translation, assert the expected code is returned
         $this->attribute->setLocale('fr_FR');
@@ -150,7 +150,7 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
     {
         $this->attribute->getVirtualGroup()->setLocale('en_US');
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', $this->attribute->getVirtualGroup());
-        $this->assertEquals('Other', $this->attribute->getVirtualGroup()->getName());
+        $this->assertEquals('Other', $this->attribute->getVirtualGroup()->getLabel());
 
         $attributeGroup = new AttributeGroup();
         $this->assertEntity($this->attribute->setGroup($attributeGroup));
