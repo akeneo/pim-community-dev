@@ -110,28 +110,28 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for title property
+     * Test getter/setter for label property
      */
-    public function testGetSetTitle()
+    public function testGetSetLabel()
     {
         // Change value and assert new
         $newCode = 'code';
         $expectedCode = '['. $newCode .']';
         $this->category->setCode($newCode);
-        $this->assertEquals($expectedCode, $this->category->getTitle());
+        $this->assertEquals($expectedCode, $this->category->getLabel());
 
-        $newTitle = 'test-title';
+        $newLabel = 'test-label';
         $this->assertEntity($this->category->setLocale('en_US'));
-        $this->assertEntity($this->category->setTitle($newTitle));
-        $this->assertEquals($newTitle, $this->category->getTitle());
+        $this->assertEntity($this->category->setLabel($newLabel));
+        $this->assertEquals($newLabel, $this->category->getLabel());
 
         // if no translation, assert the expected code is returned
         $this->category->setLocale('fr_FR');
-        $this->assertEquals($expectedCode, $this->category->getTitle());
+        $this->assertEquals($expectedCode, $this->category->getLabel());
 
         // if empty translation, assert the expected code is returned
-        $this->category->setTitle('');
-        $this->assertEquals($expectedCode, $this->category->getTitle());
+        $this->category->setLabel('');
+        $this->assertEquals($expectedCode, $this->category->getLabel());
     }
 
     /**
@@ -145,17 +145,17 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
         $this->category->setCode($newCode);
         $this->assertEquals($expectedCode, $this->category->__toString());
 
-        $newTitle = 'test-label';
+        $newLabel = 'test-label';
         $this->assertEntity($this->category->setLocale('en_US'));
-        $this->assertEntity($this->category->setTitle($newTitle));
-        $this->assertEquals($newTitle, $this->category->__toString());
+        $this->assertEntity($this->category->setLabel($newLabel));
+        $this->assertEquals($newLabel, $this->category->__toString());
 
         // if no translation, assert the expected code is returned
         $this->category->setLocale('fr_FR');
         $this->assertEquals($expectedCode, $this->category->__toString());
 
         // if empty translation, assert the expected code is returned
-        $this->category->setTitle('');
+        $this->category->setLabel('');
         $this->assertEquals($expectedCode, $this->category->__toString());
     }
 

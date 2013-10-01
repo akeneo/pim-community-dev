@@ -8,6 +8,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
@@ -68,12 +69,12 @@ class ChannelDatagridManager extends DatagridManager
         $fieldsCollection->add($field);
 
         $field = new FieldDescription();
-        $field->setName('name');
+        $field->setName('label');
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('Name'),
-                'field_name'  => 'name',
+                'label'       => $this->translate('Label'),
+                'field_name'  => 'label',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
@@ -83,30 +84,45 @@ class ChannelDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($field);
 
+        $field = $this->createTreeField();
+        $fieldsCollection->add($field);
+    }
+
+    /**
+     * Create a tree field
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createTreeField()
+    {
         $trees = $this->categoryManager->getTrees();
         $choices = array();
         foreach ($trees as $tree) {
-            $choices[$tree->getId()] = $tree->getTitle();
+            $choices[$tree->getId()] = $tree->getLabel();
         }
 
         $field = new FieldDescription();
         $field->setName('category');
         $field->setOptions(
             array(
-                'type'          => FieldDescriptionInterface::TYPE_TEXT,
-                'label'         => $this->translate('Category tree'),
-                'field_name'    => 'category',
-                'filter_type'   => FilterInterface::TYPE_CHOICE,
-                'required'      => false,
-                'sortable'      => true,
-                'filterable'    => true,
-                'show_filter'   => true,
-                'field_options' => array(
-                    'choices' => $choices
-                ),
+                'type'            => FieldDescriptionInterface::TYPE_HTML,
+                'label'           => $this->translate('Category tree'),
+                'field_name'      => 'categoryLabel',
+                'expression'      => 'category.id',
+                'filter_type'     => FilterInterface::TYPE_CHOICE,
+                'required'        => false,
+                'sortable'        => true,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'field_options'   => array('choices' => $choices),
+                'filter_by_where' => true
             )
         );
-        $fieldsCollection->add($field);
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_toString.html.twig')
+        );
+
+        return $field;
     }
 
     /**
@@ -150,11 +166,15 @@ class ChannelDatagridManager extends DatagridManager
     {
         $rootAlias = $proxyQuery->getRootAlias();
 
-        $proxyQuery
-            ->addSelect($rootAlias)
-            ->addSelect('category');
+        $treeExpr = "(CASE WHEN ct.label IS NULL THEN category.code ELSE ct.label END)";
 
         $proxyQuery
-            ->innerJoin(sprintf('%s.category', $rootAlias), 'category');
+            ->addSelect($rootAlias)
+            ->addSelect('category')
+            ->addSelect(sprintf("%s AS categoryLabel", $treeExpr), true);
+
+        $proxyQuery
+            ->innerJoin(sprintf('%s.category', $rootAlias), 'category')
+            ->leftJoin('category.translations', 'ct');
     }
 }

@@ -221,7 +221,7 @@ class FamilyController extends AbstractDoctrineController
      *      description="Remove a family",
      *      parent="pim_catalog_family"
      * )
-     * @return array
+     * @return Response|RedirectResponse
      */
     public function removeAction(Family $entity)
     {
@@ -284,6 +284,8 @@ class FamilyController extends AbstractDoctrineController
      *      parent="pim_catalog_family"
      * )
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws DeleteException
      */
     public function removeProductAttributeAction($familyId, $attributeId)
     {

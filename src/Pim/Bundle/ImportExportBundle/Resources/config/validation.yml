@@ -1,6 +1,6 @@
 Pim\Bundle\ImportExportBundle\Processor\ValidCategoryCreationProcessor:
     properties:
-        titleDelimiter:
+        labelDelimiter:
             - NotBlank: ~
             - Choice:
                 choices: [',', '/']

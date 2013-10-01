@@ -12,7 +12,7 @@
 {% block formContent %}
     {% for groupView in form.operation.vars.groups %}
 
-        <h4>{{ groupView.name }}</h4>
+        <h4>{{ groupView.label }}</h4>
 
         {% for attributeId, attributeView in groupView.attributes %}
         <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">

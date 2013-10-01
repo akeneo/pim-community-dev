@@ -48,7 +48,7 @@ class CategoryType extends AbstractSegmentType
     {
         parent::buildForm($builder, $options);
 
-        $this->addTitleField($builder);
+        $this->addLabelField($builder);
 
         if ($options['import_mode']) {
             $builder->add('dynamic');
@@ -62,17 +62,17 @@ class CategoryType extends AbstractSegmentType
     }
 
     /**
-     * Add title field
+     * Add label field
      *
      * @param FormBuilderInterface $builder
      */
-    protected function addTitleField(FormBuilderInterface $builder)
+    protected function addLabelField(FormBuilderInterface $builder)
     {
         $builder->add(
-            'title',
+            'label',
             'pim_translatable_field',
             array(
-                'field'             => 'title',
+                'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\CategoryTranslation',
                 'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Category',
                 'property_path'     => 'translations'

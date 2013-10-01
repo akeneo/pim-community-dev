@@ -6,7 +6,7 @@ Feature: Display the family history
   Background:
     Given I am logged in as "admin"
     And the following attribute group:
-      | name    |
+      | label   |
       | General |
     And the following product attributes:
       | label       | group   |
