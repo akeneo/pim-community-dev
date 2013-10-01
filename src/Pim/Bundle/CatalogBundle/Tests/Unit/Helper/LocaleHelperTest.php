@@ -18,26 +18,30 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->localeHelper = new LocaleHelper();
+        $localeManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+                ->disableOriginalConstructor()
+                ->getMock();
+        $securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $this->localeHelper = new LocaleHelper($localeManager, $securityContext, 'en_US');
     }
     /**
-     * Data provider for the localizedLabel method
+     * Data provider for the localeLabel method
      * Can only test for a user locale because locale helper use static property
      *
      * @static
      *
      * @return array
      */
-    public static function dataProviderForLocalizedLabel()
+    public static function dataProviderForLocaleLabel()
     {
         return array(
             'FR' => array(
                 'fr_FR',
                 array(
                     'en_US' => 'anglais (États-Unis)',
-                    'en_EN' => 'anglais',
-                    'fr_FR' => 'français',
-                    'de_DE' => 'allemand',
+                    'en_EN' => 'anglais (EN)',
+                    'fr_FR' => 'français (France)',
+                    'de_DE' => 'allemand (Allemagne)',
                     'azert' => 'azert'
                 )
             ),
@@ -45,9 +49,9 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
                 'en_US',
                 array(
                     'en_US' => 'English (United States)',
-                    'en_EN' => 'English',
-                    'fr_FR' => 'French',
-                    'de_DE' => 'German',
+                    'en_EN' => 'English (EN)',
+                    'fr_FR' => 'French (France)',
+                    'de_DE' => 'German (Germany)',
                     'azert' => 'azert'
                 )
             ),
@@ -55,9 +59,9 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
                 'de_DE',
                 array(
                     'en_US' => 'Englisch (Vereinigte Staaten)',
-                    'en_EN' => 'Englisch',
-                    'fr_FR' => 'Französisch',
-                    'de_DE' => 'Deutsch',
+                    'en_EN' => 'Englisch (EN)',
+                    'fr_FR' => 'Französisch (Frankreich)',
+                    'de_DE' => 'Deutsch (Deutschland)',
                     'azert' => 'azert'
                 )
             )
@@ -71,12 +75,12 @@ class LocaleHelperTest extends \PHPUnit_Framework_TestCase
      * @param string $userLocaleCode
      * @param array  $expectedResults
      *
-     * @dataProvider dataProviderForLocalizedLabel
+     * @dataProvider dataProviderForLocaleLabel
      */
-    public function testGetLocalizedLabelFR($userLocaleCode, $expectedResults)
+    public function testGetLocaleLabelFR($userLocaleCode, $expectedResults)
     {
         foreach ($expectedResults as $code => $expectedResult) {
-            $this->assertEquals($expectedResult, $this->localeHelper->getLocalizedLabel($code, $userLocaleCode));
+            $this->assertEquals($expectedResult, $this->localeHelper->getLocaleLabel($code, $userLocaleCode));
         }
     }
 }

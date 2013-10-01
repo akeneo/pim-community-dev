@@ -20,10 +20,10 @@ class LoadCurrencyData extends AbstractInstallerFixture
      */
     public function load(ObjectManager $manager)
     {
-        $allCurrencies = $this->container->getParameter('pim_catalog.currencies');
+        $allCurrencies = $this->container->get('pim_catalog.helper.locale')->getCurrencyLabels();
         $activatedCurrencies = Yaml::parse(realpath($this->getFilePath()));
 
-        foreach (array_keys($allCurrencies['currencies']) as $currencyCode) {
+        foreach (array_keys($allCurrencies) as $currencyCode) {
             $activated = in_array($currencyCode, $activatedCurrencies['currencies']);
             $currency = $this->createCurrency($currencyCode, $activated);
             $this->setReference('currency.'. $currencyCode, $currency);
