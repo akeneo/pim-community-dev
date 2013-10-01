@@ -7,12 +7,12 @@ Feature: Browse channels
   Background:
     Given there is no channel
     And the following categories:
-      | code   | title  |
+      | code   | label  |
       | master | Master |
       | mobile | Mobile |
       | ipad   | IPad   |
     And the following channels:
-      | code | name  | locales      | category |
+      | code | label | locales      | category |
       | FOO  | foo   | fr_FR, en_US | master   |
       | BAR  | bar   | de_DE        | master   |
       | BAZ  | baz   | fr_FR        | mobile   |
@@ -26,4 +26,4 @@ Feature: Browse channels
 
   Scenario: Successfully display columns
     Given I am on the channels page
-    Then I should see the columns Code, Name and Category tree
+    Then I should see the columns Code, Label and Category tree

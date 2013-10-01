@@ -32,7 +32,7 @@
                         {% set iClass = "gray" %}
                         <li>
                             <a class="{{ aClass }}" href="javascript:void(0);" id="tree-link-{{ tree.id }}">
-                                <i class="icon-ok {{ iClass }}"></i>{{ tree.title }}
+                                <i class="icon-ok {{ iClass }}"></i>{{ tree.label }}
                             </a>
                         </li>
                     {% endfor %}
@@ -47,7 +47,7 @@
                 <div id="trees" data-id="" data-datalocale="en_US" {% if selectedTree is defined %} data-selected-tree="{{ selectedTree }}"{% endif %}>
                     {% for tree in trees %}
                         <div class="tree" data-tree-id="{{ tree.id }}">
-                            <h3>{{ tree.title }}</h3>
+                            <h3>{{ tree.label }}</h3>
                             <input type="hidden" id="apply-on-tree-{{ tree.id }}" name="apply_on_tree_{{ tree.id }}" value="0"/>
                             <div id="tree-{{ tree.id }}"></div>
                         </div>

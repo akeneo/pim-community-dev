@@ -8,7 +8,7 @@
     {% set recordUrl = indexer_item.recordUrl %}
 {% endif %}
 
-{% set title = entity.title|default('N/A') %}
+{% set title = entity.label|default('N/A') %}
 {% set entityType = 'Category' |trans({}, 'config') %}
 
 {% set entityInfo = [

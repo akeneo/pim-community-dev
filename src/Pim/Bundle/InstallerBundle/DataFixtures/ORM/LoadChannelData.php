@@ -39,18 +39,18 @@ class LoadChannelData extends AbstractInstallerFixture
     /**
      * Create a channel
      * @param string   $code       Channel code
-     * @param string   $name       Channel name
+     * @param string   $label      Channel label
      * @param string[] $locales    Locales
      * @param string[] $currencies Currencies
      * @param string   $tree       Category tree
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\Channel
      */
-    protected function createChannel($code, $name, $locales, $currencies, $tree)
+    protected function createChannel($code, $label, $locales, $currencies, $tree)
     {
         $channel = new Channel();
         $channel->setCode($code);
-        $channel->setName($name);
+        $channel->setLabel($label);
         $channel->setCategory($this->getReference('category.'.$tree));
         foreach ($locales as $locale) {
             $channel->addLocale($this->getReference('locale.'.$locale));

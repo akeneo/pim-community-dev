@@ -7,7 +7,7 @@ Feature: Filter attributes
   Background:
     Given there is no attribute
     And the following attribute groups:
-      | name      |
+      | label     |
       | General   |
       | Marketing |
     And the following attributes:

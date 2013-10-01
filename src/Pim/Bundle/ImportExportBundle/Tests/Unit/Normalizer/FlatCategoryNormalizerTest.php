@@ -46,7 +46,7 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
             array(
                 array(
                     'code'    => 'root_category',
-                    'title'   => 'en:Root category,fr:Categorie racine',
+                    'label'   => 'en:Root category,fr:Categorie racine',
                     'parent'  => '',
                     'dynamic' => '0',
                 )
@@ -54,7 +54,7 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
             array(
                 array(
                     'code'    => 'child_category',
-                    'title'   => 'en:Child category,fr:Catégorie enfant',
+                    'label'   => 'en:Child category,fr:Catégorie enfant',
                     'parent'  => '1',
                     'dynamic' => '0',
                 )
@@ -80,16 +80,16 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
      *
      * @return array
      */
-    protected function getTitles($data)
+    protected function getLabels($data)
     {
-        $titles = array();
-        foreach (explode(',', $data['title']) as $data) {
-            $title = explode(':', $data);
-            $locale = reset($title);
-            $title = end($title);
-            $titles[$locale]= $title;
+        $labels = array();
+        foreach (explode(',', $data['label']) as $data) {
+            $label = explode(':', $data);
+            $locale = reset($label);
+            $label = end($label);
+            $labels[$locale]= $label;
         }
 
-        return $titles;
+        return $labels;
     }
 }

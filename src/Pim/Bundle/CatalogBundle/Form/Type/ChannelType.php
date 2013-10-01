@@ -55,7 +55,7 @@ class ChannelType extends AbstractType
         $builder
             ->add('id', 'hidden')
             ->add('code')
-            ->add('name', 'text', array('label' => 'Default label'))
+            ->add('label', 'text', array('label' => 'Default label'))
             ->add(
                 'currencies',
                 'entity',

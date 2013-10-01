@@ -124,13 +124,14 @@ class AttributeGroupController extends AbstractDoctrineController
     public function createAction()
     {
         $group = new AttributeGroup();
-        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToNameOrderedBySortOrder();
 
         if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'flash.attribute group.created');
 
             return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
         }
+
+        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
 
         return array(
             'groups'         => $groups,
@@ -157,7 +158,7 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     public function editAction(AttributeGroup $group)
     {
-        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToNameOrderedBySortOrder();
+        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
 
         $datagrid = $this->dataGridWorker->getDataAuditDatagrid(
             $group,

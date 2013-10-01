@@ -5,7 +5,7 @@ Feature: Export categories
 
   Background:
   Given the following categories:
-    | code        | title       | parent    |
+    | code        | label       | parent    |
     | computers   | Computers   |           |
     | laptops     | Laptops     | computers |
     | hard_drives | Hard drives | laptops   |

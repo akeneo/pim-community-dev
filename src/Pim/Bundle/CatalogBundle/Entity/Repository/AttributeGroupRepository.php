@@ -30,16 +30,16 @@ class AttributeGroupRepository extends EntityRepository
     }
 
     /**
-     * Find all ordered by name with fallback to default mecanism
+     * Find all ordered by label with fallback to default mecanism
      *
      * @return array
      */
-    public function getIdToNameOrderedBySortOrder()
+    public function getIdToLabelOrderedBySortOrder()
     {
         $groups = $this->buildAllOrderedBySortOrder()->getQuery()->execute();
         $orderedGroups = array();
         foreach ($groups as $group) {
-            $orderedGroups[$group->getId()]= $group->getName();
+            $orderedGroups[$group->getId()]= $group->getLabel();
         }
 
         return $orderedGroups;

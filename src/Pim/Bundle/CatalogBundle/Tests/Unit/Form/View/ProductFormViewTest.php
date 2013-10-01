@@ -30,8 +30,8 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     {
         $group = $this->getGroupMock(
             array(
-                'id'   => 1,
-                'name' => 'General',
+                'id'    => 1,
+                'label' => 'General',
             )
         );
 
@@ -59,7 +59,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
         $formView = array(
             1 => array(
-                'name'       => 'General',
+                'label'      => 'General',
                 'attributes' => array(
                     42 => array(
                         'isRemovable' => true,
@@ -82,8 +82,8 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     {
         $group = $this->getGroupMock(
             array(
-                'id'   => 1,
-                'name' => 'General',
+                'id'    => 1,
+                'label' => 'General',
             )
         );
 
@@ -128,7 +128,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
         $formView = array(
             1 => array(
-                'name'       => 'General',
+                'label'      => 'General',
                 'attributes' => array(
                     42 => array(
                         'isRemovable' => true,
@@ -158,8 +158,8 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     {
         $group = $this->getGroupMock(
             array(
-                'id'   => 1,
-                'name' => 'General',
+                'id'    => 1,
+                'label' => 'General',
             )
         );
 
@@ -198,7 +198,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
         $formView = array(
             1 => array(
-                'name'       => 'General',
+                'label'      => 'General',
                 'attributes' => array(
                     42 => array(
                         'isRemovable' => true,
@@ -227,8 +227,8 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     {
         $group = $this->getGroupMock(
             array(
-                'id'   => 1,
-                'name' => 'General',
+                'id'    => 1,
+                'label' => 'General',
             )
         );
 
@@ -257,7 +257,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
         $formView = array(
             1 => array(
-                'name'       => 'General',
+                'label'      => 'General',
                 'attributes' => array(
                     42 => array(
                         'isRemovable' => false,
@@ -369,14 +369,14 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     {
         $generalGroup = $this->getGroupMock(
             array(
-                'id'   => 1,
-                'name' => 'General',
+                'id'    => 1,
+                'label' => 'General',
             )
         );
         $otherGroup = $this->getGroupMock(
             array(
-                'id'   => 2,
-                'name' => 'Other',
+                'id'    => 2,
+                'label' => 'Other',
             )
         );
 
@@ -491,8 +491,8 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     {
         $options = array_merge(
             array(
-                'id'   => null,
-                'name' => null,
+                'id'    => null,
+                'label' => null,
             ),
             $options
         );
@@ -504,8 +504,8 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($options['id']));
 
         $group->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue($options['name']));
+            ->method('getLabel')
+            ->will($this->returnValue($options['label']));
 
         return $group;
     }

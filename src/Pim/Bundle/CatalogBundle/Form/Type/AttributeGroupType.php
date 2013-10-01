@@ -25,10 +25,10 @@ class AttributeGroupType extends AbstractType
         $builder->add('code');
 
         $builder->add(
-            'name',
+            'label',
             'pim_translatable_field',
             array(
-                'field'             => 'name',
+                'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroupTranslation',
                 'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroup',
                 'property_path'     => 'translations'

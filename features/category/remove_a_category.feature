@@ -15,7 +15,7 @@ Feature: Remove a category
     | shoes-m-1 |
     | shoes-mf  |
   And the following category:
-    | code      | title     | parent    | products             |
+    | code      | label     | parent    | products             |
     | master    | Master    |           |                      |
     | books     | Books     | master    |                      |
     | computers | Computers | master    |                      |
