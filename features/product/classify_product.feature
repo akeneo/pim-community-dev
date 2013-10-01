@@ -10,7 +10,7 @@ Feature: Classify a product
     | tea    |
     | coffee |
   Given the following categories:
-    | code      | title     | parent    |
+    | code      | label     | parent    |
     | beverages | Beverages |           |
     | hot       | Hot       | beverages |
     | cold      | Cold      | beverages |
