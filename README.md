@@ -142,7 +142,7 @@ pim_demo:
 
 Then relaunch the install.sh script with the db option:
 
-$ ./install.sh db
+$ ./install.sh db prod
 
 Known issues
 ------------
