@@ -9,7 +9,7 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
                 message: Channel code may contain only letters, numbers and underscores
             - Length:
                 max: 64
-        name:
+        label:
             - NotBlank: ~
             - Length:
                 max: 100

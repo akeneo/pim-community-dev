@@ -11,7 +11,7 @@ Feature: Add attribute to a family
       | Bags       |
       | Jewels     |
     And the following attribute group:
-      | name    |
+      | label   |
       | General |
 
   Scenario: Successfully list available grouped attributes

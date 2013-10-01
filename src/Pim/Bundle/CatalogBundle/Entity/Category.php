@@ -316,27 +316,27 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     }
 
     /**
-     * Get title
+     * Get label
      *
      * @return string
      */
-    public function getTitle()
+    public function getLabel()
     {
-        $translated = ($this->getTranslation()) ? $this->getTranslation()->getTitle() : null;
+        $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
 
         return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
     }
 
     /**
-     * Set title
+     * Set label
      *
-     * @param string $title
+     * @param string $label
      *
      * @return string
      */
-    public function setTitle($title)
+    public function setLabel($label)
     {
-        $this->getTranslation()->setTitle($title);
+        $this->getTranslation()->setLabel($label);
 
         return $this;
     }
@@ -356,6 +356,6 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      */
     public function __toString()
     {
-        return $this->getTitle();
+        return $this->getLabel();
     }
 }

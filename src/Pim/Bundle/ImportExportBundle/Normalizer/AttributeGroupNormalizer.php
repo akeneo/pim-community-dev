@@ -32,7 +32,7 @@ class AttributeGroupNormalizer implements NormalizerInterface
     {
         $this->results = array(
             'code'       => $group->getCode(),
-            'name'       => $this->normalizeName($group),
+            'label'      => $this->normalizeLabel($group),
             'sortOrder'  => $group->getSortOrder(),
             'attributes' => $this->normalizeAttributes($group)
         );
@@ -49,20 +49,20 @@ class AttributeGroupNormalizer implements NormalizerInterface
     }
 
     /**
-     * Normalize the name
+     * Normalize the label
      *
      * @param AttributeGroup $group
      *
      * @return array
      */
-    protected function normalizeName(AttributeGroup $group)
+    protected function normalizeLabel(AttributeGroup $group)
     {
-        $names = array();
+        $labels = array();
         foreach ($group->getTranslations() as $translation) {
-            $names[$translation->getLocale()] = $translation->getName();
+            $labels[$translation->getLocale()] = $translation->getLabel();
         }
 
-        return $names;
+        return $labels;
     }
 
     /**

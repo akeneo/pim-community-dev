@@ -38,11 +38,11 @@ class Channel
     protected $code;
 
     /**
-     * @var string $name
+     * @var string $label
      *
-     * @ORM\Column(name="name", type="string", length=100)
+     * @ORM\Column(name="label", type="string", length=100)
      */
-    protected $name;
+    protected $label;
 
     /**
      * @var Category $category
@@ -141,25 +141,25 @@ class Channel
     }
 
     /**
-     * Get name
+     * Get label
      *
      * @return string
      */
-    public function getName()
+    public function getLabel()
     {
-        return $this->name;
+        return $this->label;
     }
 
     /**
-     * Set name
+     * Set label
      *
-     * @param string $name
+     * @param string $label
      *
      * @return Channel
      */
-    public function setName($name)
+    public function setLabel($label)
     {
-        $this->name = $name;
+        $this->label = $label;
 
         return $this;
     }

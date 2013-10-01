@@ -29,7 +29,7 @@
                         'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale, 'select_node_id': selectedNode  })
                     },
                     'auto_open_root': true,
-                    'node_label_field': 'title',
+                    'node_label_field': 'label',
                     'preselect_node_id': selectedNode
                 },
                 'themes': {

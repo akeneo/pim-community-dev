@@ -40,7 +40,7 @@ define(
                         'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'select_node_id': selectedNode })
                     },
                     'auto_open_root': true,
-                    'node_label_field': 'title',
+                    'node_label_field': 'label',
                     'no_tree_message': _.__('jstree.no_tree'),
                     'preselect_node_id': selectedNode
                 },
@@ -145,9 +145,9 @@ define(
                     var id       = data.rslt.parent.attr('id').replace('node_', ''),
                         url      = Routing.generate('pim_catalog_categorytree_create', { parent: id }),
                         position = data.rslt.position,
-                        title    = data.rslt.name;
+                        label    = data.rslt.name;
 
-                    url = url + '?title=' + title + '&position=' + position;
+                    url = url + '?label=' + label + '&position=' + position;
                     loadingMask.show();
                     $.ajax({
                         async: true,

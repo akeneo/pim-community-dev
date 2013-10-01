@@ -27,14 +27,14 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for titleDelimiter
+     * Test getter/setter for labelDelimiter
      */
-    public function testGetSetTitleDelimiter()
+    public function testGetSetLabelDelimiter()
     {
-        $this->assertEquals(',', $this->processor->getTitleDelimiter());
+        $this->assertEquals(',', $this->processor->getLabelDelimiter());
         $newDelimiter = ';';
-        $this->processor->setTitleDelimiter($newDelimiter);
-        $this->assertEquals($newDelimiter, $this->processor->getTitleDelimiter());
+        $this->processor->setLabelDelimiter($newDelimiter);
+        $this->assertEquals($newDelimiter, $this->processor->getLabelDelimiter());
     }
 
     /**
@@ -65,7 +65,7 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
     public function testGetConfigurationFields()
     {
         $configurationFields = array(
-            'titleDelimiter'      => array(),
+            'labelDelimiter'      => array(),
             'localeDelimiter'     => array(),
             'circularRefsChecked' => array(
                 'type' => 'checkbox',
@@ -222,7 +222,7 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
         return array(
             'code'    => $code,
             'parent'  => $parent,
-            'title'   => sprintf('en_US:%s (en),fr_FR:%s (fr)', ucfirst($code), ucfirst($code)),
+            'label'   => sprintf('en_US:%s (en),fr_FR:%s (fr)', ucfirst($code), ucfirst($code)),
             'dynamic' => '0',
         );
     }
@@ -278,12 +278,12 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
 
         $english = new CategoryTranslation();
         $english->setLocale('en_US');
-        $english->setTitle(ucfirst($code) . ' (en)');
+        $english->setLabel(ucfirst($code) . ' (en)');
         $category->addTranslation($english);
 
         $french = new CategoryTranslation();
         $french->setLocale('fr_FR');
-        $french->setTitle(ucfirst($code) . ' (fr)');
+        $french->setLabel(ucfirst($code) . ' (fr)');
         $category->addTranslation($french);
 
         if ($parent) {

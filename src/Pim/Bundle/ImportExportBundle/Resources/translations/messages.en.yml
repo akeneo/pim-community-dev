@@ -93,9 +93,9 @@ oro_batch:
 
     valid_category_creation_processor:
         title: Category creation
-        titleDelimiter:
-            label: Title delimiter
-            help: One character separating the titles in each locale
+        labelDelimiter:
+            label: Label delimiter
+            help: One character separating the labels in each locale
         localeDelimiter:
             label: Locale delimiter
             help: One character separating the title from the locale

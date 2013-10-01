@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 /**
  * Channel repository
- * Define a default sort order by name
+ * Define a default sort order by label
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -17,7 +17,7 @@ class ChannelRepository extends EntityRepository
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $criteria, array $orderBy = array('name' => 'ASC'), $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = array('label' => 'ASC'), $limit = null, $offset = null)
     {
         return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
@@ -25,7 +25,7 @@ class ChannelRepository extends EntityRepository
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = array('name' =>'ASC'))
+    public function findOneBy(array $criteria, array $orderBy = array('label' =>'ASC'))
     {
         return parent::findOneBy($criteria, $orderBy);
     }

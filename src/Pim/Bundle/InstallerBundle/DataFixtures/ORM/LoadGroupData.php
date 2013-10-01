@@ -67,16 +67,16 @@ class LoadGroupData extends AbstractInstallerFixture
      *
      * @param AttributeGroup $entity AttributeGroup entity
      * @param string         $locale Locale used
-     * @param string         $name   Name translated in locale value linked
+     * @param string         $label  Name translated in locale value linked
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation
      */
-    protected function createTranslation($entity, $locale, $name)
+    protected function createTranslation($entity, $locale, $label)
     {
         $translation = new AttributeGroupTranslation();
         $translation->setForeignKey($entity);
         $translation->setLocale($locale);
-        $translation->setName($name);
+        $translation->setLabel($label);
 
         return $translation;
     }

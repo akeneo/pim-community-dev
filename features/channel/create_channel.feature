@@ -6,7 +6,7 @@ Feature: Create a channel
 
   Background:
     Given the following categories:
-      | code           | title          |
+      | code           | label          |
       | ipad_catalog   | iPad Catalog   |
       | mobile_catelog | Mobile Catalog |
     And the following currencies:

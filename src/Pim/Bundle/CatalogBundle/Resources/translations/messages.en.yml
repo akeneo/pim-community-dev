@@ -264,7 +264,7 @@ Is dynamic: Is dynamic
 Dashboard:                                   Dashboard
 Attribute groups:                            Attribute groups
 Attribute groups | Create:                   Attribute groups | Create
-Attribute groups %group.name% | Edit:        Attribute groups %group.name% | Edit
+Attribute groups %group.label% | Edit:       Attribute groups %group.label% | Edit
 Attribute groups | Sort:                     Attribute groups | Sort
 Category trees:                              Category trees
 Category trees | List:                       Category trees | List
@@ -289,7 +289,7 @@ Families | Create:                           Families | Create
 Families %family.label% | Edit:              Families %family.label% | Edit
 Channels:                                    Channels
 Channels | Create:                           Channels | Create
-Channels %channel.name% | Edit:              Channels %channel.name% | Edit
+Channels %channel.label% | Edit:             Channels %channel.label% | Edit
 Currencies:                                  Currencies
 Locales:                                     Locales
 Locales %locale.code% | Edit:                Locales %locale.code% | Edit
