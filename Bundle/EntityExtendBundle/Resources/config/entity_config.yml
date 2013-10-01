@@ -240,6 +240,9 @@ oro_entity_config:
                                 scope:      extend
                             code:           is_extend
                             value:          true
+                    constraints:
+                        - NotBlank:
+                            message: 'Please choice target entity...'
                     form:
                         type:               oro_entity_target_type
                         options:
@@ -259,6 +262,9 @@ oro_entity_config:
                                 scope:      extend
                             code:           is_extend
                             value:          true
+                    constraints:
+                        - NotBlank:
+                            message: 'Please choice target field...'
                     form:
                         type:               oro_entity_target_field_type
                         options:

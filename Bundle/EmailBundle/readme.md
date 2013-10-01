@@ -195,3 +195,5 @@ Here is a list of key classes of EmailBundle:
  - EmailOwnerProvider - implements a chain of email owner providers.
  - EmailBodyLoaderInterface - provides an interface for classes responsible for load email body and attachments from different sort of email servers, for example IMAP or EWS.
  - EmailBodyLoaderSelector - implements a functionality to find appropriate email body and attachments loader.
+ - AbstractEmailSynchronizer - provides a base algorithm which can be used to synchronize emails from different sort of mailboxes, for example IMAP or EWS. In derived class you need just implement two methods: getEmailOriginClass and createSynchronizationProcessor. Example you can see in OroImapBundle/Sync/ImapEmailSynchronizer.php.
+ - AbstractEmailSynchronizationProcessor - a base class for different sort of email synchronization processors.

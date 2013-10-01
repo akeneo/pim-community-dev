@@ -50,6 +50,9 @@ filesystem:
     uploads:
         header:           Uploads directory
         help:             "<![CDATA[To set permissions run: sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX %path% & sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx %path%]]>"
+    assets:
+        header:           Assets directory
+        help:             "<![CDATA[To set permissions run: sudo setfacl -R -m u:www-data:rwX -m u:`whoami`:rwX %path% & sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx %path%]]>"
     exists:               exists
     not_exists:           not exists
     writable:             writable
