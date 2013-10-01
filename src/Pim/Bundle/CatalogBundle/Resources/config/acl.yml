@@ -2,6 +2,7 @@ pim_catalog:
     type: action
     label: General catalog management operations
 
+# Locales
 pim_catalog_locales:
     type: action
     label: Access to locales
@@ -253,6 +254,7 @@ pim_catalog_locale_en_IE:
     type: action
     label: Access to data related to locale en_IE
 
+# Product
 pim_catalog_product:
     type: action
     label: Product manipulation
@@ -261,66 +263,60 @@ pim_catalog_product_index:
     type: entity
     class: PimCatalogBundle:Product
     permission: VIEW
-
 pim_catalog_product_create:
-   type: entity
-   class: PimCatalogBundle:Product
-   permission: CREATE
-
+    type: entity
+    class: PimCatalogBundle:Product
+    permission: CREATE
 pim_catalog_product_edit:
-   type: entity
-   class: PimCatalogBundle:Product
-   permission: EDIT
-
+    type: entity
+    class: PimCatalogBundle:Product
+    permission: EDIT
 pim_catalog_product_remove:
-   type: entity
-   class: PimCatalogBundle:Product
-   permission: DELETE
+    type: entity
+    class: PimCatalogBundle:Product
+    permission: DELETE
 
 pim_catalog_product_add_attribute:
     type: action
     label: Add an attribute to a product
-
 pim_catalog_product_remove_attribute:
     type: action
     label: Remove an attribute from a product
-
 pim_catalog_product_categories_view:
     type: action
     label: Consult the categories of a product
-
 pim_catalog_product_change_family:
     type: action
     label: Change the family of products
 
+# Category
 pim_catalog_category:
     type: action
     label: Category manipulation
 
 pim_catalog_category_list:
-    type: action
-    label: View tree list
+    type: entity
+    class: PimCatalogBundle:Category
+    permission: VIEW
+pim_catalog_category_create:
+    type: entity
+    class: PimCatalogBundle:Category
+    permission: CREATE
+pim_catalog_category_edit:
+    type: entity
+    class: PimCatalogBundle:Category
+    permission: EDIT
+pim_catalog_category_remove:
+    type: entity
+    class: PimCatalogBundle:Category
+    permission: DELETE
 
 pim_catalog_category_move:
     type: action
     label: Move category
-
 pim_catalog_category_children:
     type: action
     label: See category children
-
 pim_catalog_category_products:
     type: action
     label: See category's products
-
-pim_catalog_category_create:
-    type: action
-    label: Create a category
-
-pim_catalog_category_edit:
-    type: action
-    label: Edit a category
-
-pim_catalog_category_remove:
-    type: action
-    label: Remove a category
