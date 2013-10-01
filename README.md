@@ -144,6 +144,15 @@ Then relaunch the install.sh script with the db option:
 
 $ ./install.sh db
 
+Known issues
+------------
+ - with XDebug, the default value of max_nesting_level (100) is too low and make the ACL loading failed (which causes 403 HTTP response code on every application screen, even the login screen). A working value is 500:
+`xdebug.max_nesting_level=500`
+
+ - not enough memory can cause the JS routing bundle to fail on a segmentation fault. Please check with `php -i | grep memory` that you have enough memory according to the requirements
+ - some segmentation fault can be caused as well by the circular references collector. You can disable it with the following setting in your php.ini files:
+`zend.enable_gc = 0`
+
 [1]:  http://symfony.com/doc/2.1/book/installation.html
 [2]:  http://getcomposer.org/
 [3]:  http://www.orocrm.com/oro-platform 
