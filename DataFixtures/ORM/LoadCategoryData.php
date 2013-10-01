@@ -125,11 +125,11 @@ class LoadCategoryData extends AbstractDemoFixture
      *
      * @param Category $category Category
      * @param string   $locale   Locale used
-     * @param string   $title    Title translated in locale value linked
+     * @param string   $label    Label translated in locale value linked
      */
-    protected function translate(Category $category, $locale, $title)
+    protected function translate(Category $category, $locale, $label)
     {
-        $translation = $this->createTranslation($category, $locale, $title);
+        $translation = $this->createTranslation($category, $locale, $label);
         $category->addTranslation($translation);
 
         $this->manager->persist($category);
@@ -140,16 +140,16 @@ class LoadCategoryData extends AbstractDemoFixture
      *
      * @param AttributeGroup $entity AttributeGroup entity
      * @param string         $locale Locale used
-     * @param string         $title  Title translated in locale value linked
+     * @param string         $label  Label translated in locale value linked
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\CategoryTranslation
      */
-    protected function createTranslation($entity, $locale, $title)
+    protected function createTranslation($entity, $locale, $label)
     {
         $translation = new CategoryTranslation();
         $translation->setForeignKey($entity);
         $translation->setLocale($locale);
-        $translation->setTitle($title);
+        $translation->setLabel($label);
 
         return $translation;
     }
