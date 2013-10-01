@@ -379,9 +379,9 @@ Otherwise, class-field-based ACE is set.
      
 To get all the registered ACL extensions registered in system (now it is a entity and action extensions) you can use **getAllExtensions** function.
 
-If an object is not get its own access rights, then the access check is on the root object. To get an ObjectIdentity is used for grant default permissions, can be used the **getRootOid** function with ACL extension key as parameter.
-
 After the setting new ACL permissions to an object, the changes must be saved. It can be done with **flush** function.
+
+If an object is not get its own access rights, then the access check is on the root object. To get an ObjectIdentity is used for grant default permissions, can be used the **getRootOid** function with ACL extension key as parameter.
 
 To get the ACLs that belong to the given object identities can be used **findAcls** function. **deleteAcl** function delete an ACL for the given ObjectIdentity.
 
