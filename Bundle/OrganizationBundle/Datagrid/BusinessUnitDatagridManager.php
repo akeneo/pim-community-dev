@@ -176,7 +176,7 @@ class BusinessUnitDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'oro_business_unit_view',
             'options'      => array(
-                'label' => $this->translate('oro.business_unit.datagrid.view'),
+                'label' => $this->translate('oro.business_unit.datagrid.action.view'),
                 'icon'  => 'user',
                 'link'  => 'view_link',
             )
@@ -187,7 +187,7 @@ class BusinessUnitDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_REDIRECT,
             'acl_resource' => 'oro_business_unit_update',
             'options'      => array(
-                'label' => $this->translate('oro.business_unit.datagrid.update'),
+                'label' => $this->translate('oro.business_unit.datagrid.action.update'),
                 'icon'  => 'edit',
                 'link'  => 'update_link',
             )
@@ -198,7 +198,7 @@ class BusinessUnitDatagridManager extends DatagridManager
             'type'         => ActionInterface::TYPE_DELETE,
             'acl_resource' => 'oro_business_unit_delete',
             'options'      => array(
-                'label' => $this->translate('oro.business_unit.datagrid.delete'),
+                'label' => $this->translate('oro.business_unit.datagrid.action.delete'),
                 'icon'  => 'trash',
                 'link'  => 'delete_link',
             )
