@@ -276,6 +276,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function removeCategory(Category $category)
     {
         $this->categories->removeElement($category);
+        $category->removeProduct($this);
 
         return $this;
     }

@@ -207,6 +207,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $category
      *
+     * @Given /^I select the "([^"]*)" tree$/
+     */
+    public function iSelectTheTree($category)
+    {
+        $this->getCurrentPage()->selectTree($category);
+        $this->wait();
+    }
+
+    /**
+     * @param string $category
+     *
      * @Given /^I expand the "([^"]*)" category$/
      */
     public function iExpandTheCategory($category)

@@ -55,16 +55,6 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 class ProductController extends AbstractDoctrineController
 {
     /**
-     * @var string
-     */
-    const CATEGORY_PREFIX = "category_node_";
-
-    /**
-     * @var string
-     */
-    const TREE_APPLY_PREFIX = "apply_on_tree_";
-
-    /**
      * @var GridRenderer
      */
     private $gridRenderer;
@@ -401,12 +391,8 @@ class ProductController extends AbstractDoctrineController
             $form->bind($request);
 
             if ($form->isValid()) {
-
-                $categoriesData = $this->getCategoriesData($request->request->all());
-                $categories = $this->categoryManager->getCategoriesByIds($categoriesData['categories']);
-
                 $this->productManager->handleMedia($product);
-                $this->productManager->save($product, $categories, $categoriesData['trees']);
+                $this->productManager->save($product);
                 // Call completeness calculator after validating data and saving product
                 // so all values for all locale are loaded now
                 $this->calculator->calculateForAProduct($product);
@@ -579,40 +565,6 @@ class ProductController extends AbstractDoctrineController
         }
 
         return parent::redirectToRoute($route, $parameters, $status);
-    }
-
-    /**
-     * Generate an array composed of an array of categories ids
-     * from category_id_* params and an array of tree ids from
-     * apply_to_tree_* params
-     *
-     * @param array $requestParameters
-     *
-     * @return array of categories data structured of two arrays
-     *      categories, trees
-     */
-    protected function getCategoriesData(array $requestParameters)
-    {
-        $categories = array();
-        $trees = array();
-
-        foreach ($requestParameters as $key => $value) {
-            if ($value === "1") {
-                if (strpos($key, static::CATEGORY_PREFIX) === 0) {
-                    $catId = (int) str_replace(static::CATEGORY_PREFIX, '', $key);
-                    if ($catId > 0) {
-                        $categories[] = $catId;
-                    }
-                } elseif (strpos($key, static::TREE_APPLY_PREFIX) === 0) {
-                    $treeId = (int) str_replace(static::TREE_APPLY_PREFIX, '', $key);
-                    if ($treeId > 0) {
-                        $trees[] = $treeId;
-                    }
-                }
-            }
-        }
-
-        return array('categories' => $categories, "trees" => $trees);
     }
 
     /**
