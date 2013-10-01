@@ -19,9 +19,9 @@ class LoadLocaleData extends AbstractInstallerFixture
      */
     public function load(ObjectManager $manager)
     {
-        $allLocales = $this->container->getParameter('pim_catalog.locales');
-
-        foreach (array_keys($allLocales['locales']) as $localeCode) {
+        $bundle = new \ReflectionClass('Pim\Bundle\InstallerBundle\PimInstallerBundle');
+        $locales = array_map('trim', file(sprintf('%s/Resources/config/locales', dirname($bundle->getFileName()))));
+        foreach ($locales as $localeCode) {
             $locale = new Locale();
             $locale->setCode($localeCode);
             $this->setReference('locale.'. $localeCode, $locale);

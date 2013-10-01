@@ -52,18 +52,6 @@ class PimCatalogExtensionTest extends \PHPUnit_Framework_TestCase
         $this->extension->load($this->configs, $this->container);
         $this->assertGreaterThanOrEqual(1, $this->container->getServiceIds());
 
-        // assert currency configuration
-        $configCurrencies = $this->container->getParameter('pim_catalog.currencies');
-        $this->assertCount(1, $configCurrencies);
-        $this->assertArrayHasKey('currencies', $configCurrencies);
-        $this->assertTrue(is_array($configCurrencies['currencies']));
-
-        // assert locale configuration
-        $configLocales = $this->container->getParameter('pim_catalog.locales');
-        $this->assertCount(1, $configLocales);
-        $this->assertArrayHasKey('locales', $configLocales);
-        $this->assertTrue(is_array($configLocales['locales']));
-
         // assert validation configuration
         $yamlMappingFiles = $this->container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files');
         $this->assertGreaterThanOrEqual(5, count($yamlMappingFiles));

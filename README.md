@@ -101,6 +101,8 @@ You must give write permission to the Apache user on the following directories:
 - app/entities
 - web/bundles
 - web/uploads/product
+- app/import
+- app/export
 
 Checking your System Configuration
 ----------------------------------
