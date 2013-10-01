@@ -91,10 +91,11 @@ class TranslatableFieldTypeTest extends TypeTestCase
     {
         $objectManager = $this->getMockForAbstractClass('\Doctrine\Common\Persistence\ObjectManager');
         $securityContext = $this->getSecurityContextMock();
+        $aclManager = $this->getACLManagerMock();
 
         // create mock builder for locale manager and redefine constructor to set object manager
         $mockBuilder = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
-                            ->setConstructorArgs(array($objectManager, $securityContext));
+                            ->setConstructorArgs(array($objectManager, $securityContext, $aclManager, 'fr_FR'));
 
         // create locale manager mock from mock builder previously create and redefine getActiveCodes method
         $localeManager = $mockBuilder->getMock(
@@ -222,5 +223,14 @@ class TranslatableFieldTypeTest extends TypeTestCase
             ->will($this->returnArgument(0));
 
         return $helper;
+    }
+    
+    protected function getACLManagerMock()
+    {
+        $manager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\ManagerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return $manager;
     }
 }

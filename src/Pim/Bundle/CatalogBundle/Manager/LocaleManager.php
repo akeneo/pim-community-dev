@@ -167,6 +167,21 @@ class LocaleManager
 
         return $locales;
     }
+    
+    /**
+     * Get active locale codes for which the user has ACLs
+     * 
+     * @return array
+     */
+    public function getUserCodes()
+    {
+        return array_map(
+            function ($locale) {
+                return $locale->getCode();
+            },
+            $this->getUserLocales()
+        );
+    }
 
     /**
      * Get the list of available fallback locales

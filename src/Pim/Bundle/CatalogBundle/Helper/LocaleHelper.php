@@ -127,5 +127,4 @@ class LocaleHelper
             $fullLabel ? $localeLabel : \Locale::getPrimaryLanguage($code)
         );
     }
-
 }

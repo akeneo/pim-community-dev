@@ -237,12 +237,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      */
     protected function getFieldNames()
     {
-        $userLocales = array_map(
-            function ($locale) {
-                return $locale->getCode();
-            },
-            $this->localeManager->getUserLocales()
-        );
+        $userLocales = $this->localeManager->getUserCodes();
         $collection = array();
 
         foreach ($this->getOption('locales') as $locale) {
