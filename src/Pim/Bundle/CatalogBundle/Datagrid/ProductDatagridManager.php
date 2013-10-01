@@ -556,18 +556,19 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function prepareQueryForCompleteness(ProxyQueryInterface $proxyQuery, $rootAlias)
     {
-        $exprLocaleAndScope      = $proxyQuery->expr()->andX(
+        $exprLocaleAndScope = $proxyQuery->expr()->andX(
             'locale.code = :localeCode',
             'channel.code = :channelCode'
         );
-        $exprWithoutCompleteness = $proxyQuery->expr()->isNull('pCompleteness');
-        $exprFamilyIsNull        = $proxyQuery->expr()->isNull($rootAlias .'.family');
+        $exprCompleteness = $proxyQuery->expr()->isNull('pCompleteness');
+        $exprFamilyIsNull = $proxyQuery->expr()->isNull($rootAlias .'.family');
+
         $proxyQuery
             ->addSelect('pCompleteness')
             ->leftJoin($rootAlias .'.completenesses', 'pCompleteness')
             ->leftJoin('pCompleteness.locale', 'locale')
             ->leftJoin('pCompleteness.channel', 'channel')
-            ->orWhere($exprLocaleAndScope, $exprWithoutCompleteness, $exprFamilyIsNull);
+            ->orWhere($exprLocaleAndScope, $exprCompleteness, $exprFamilyIsNull);
     }
 
     /**
@@ -662,8 +663,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function prepareQueryForExport(ProxyQueryInterface $proxyQuery)
     {
         $attributeIds = $this->getAvailableAttributeIds($proxyQuery);
-
-        $rootAlias = $proxyQuery->getRootAlias();
 
         $proxyQuery
             ->resetDQLPart('groupBy')
