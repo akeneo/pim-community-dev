@@ -11,7 +11,7 @@
         <tbody>
             {% for locale in locales %}
             <tr>
-                <td>{{ locale.code|flag }}</td>
+                <td>{{ locale.code|flag(true) }}</td>
                 {% for channel in channels %}
                 <td>
                     {% include 'PimCatalogBundle:Product:_healthbar.html.twig'
