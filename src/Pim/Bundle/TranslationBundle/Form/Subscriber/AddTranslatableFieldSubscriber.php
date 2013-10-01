@@ -38,7 +38,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     protected $translationFactory;
 
     /**
-     * @var multitype:mixed
+     * @var array
      */
     protected $options;
 
@@ -46,14 +46,14 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      * @var LocaleHelper
      */
     protected $localeHelper;
-    
+
     /**
      * Constructor
      *
      * @param FormFactoryInterface $formFactory
      * @param ValidatorInterface   $validator
      * @param LocaleHelper         $localeHelper
-     * @param multitype:mixed      $options
+     * @param array                $options
      */
     public function __construct(
         FormFactoryInterface $formFactory,

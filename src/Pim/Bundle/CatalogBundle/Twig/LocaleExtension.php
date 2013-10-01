@@ -49,12 +49,13 @@ class LocaleExtension extends \Twig_Extension
             'flag' => new \Twig_Filter_Method($this, 'flag', array('is_safe' => array('html'))),
         );
     }
-    
+
     /**
      * Get displayed locale from locale code
      *
      * @param string $code
      * @param string $locale
+     *
      * @return string
      */
     public function localeLabel($code, $locale = null)
@@ -64,9 +65,10 @@ class LocaleExtension extends \Twig_Extension
 
     /**
      * Returns the symbol for a currency
-     * 
+     *
      * @param string $currency
      * @param string $locale
+     *
      * @return string
      */
     public function currencySymbol($code, $locale = null)
@@ -76,7 +78,7 @@ class LocaleExtension extends \Twig_Extension
 
     /**
      * Returns the catalog locale currency
-     * 
+     *
      * @return string
      */
     public function localeCurrency()
@@ -86,9 +88,10 @@ class LocaleExtension extends \Twig_Extension
 
     /**
      * Returns the flag icon for a locale
-     * 
+     *
      * @param string $code
      * @param string $locale
+     *
      * @return string
      */
     public function flag($code, $locale = null)
