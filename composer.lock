@@ -3472,12 +3472,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "bd79d5b734cd92814fd5e33015c6bca57f1723a8"
+                "reference": "81cbc44c970631f07a46062094126fc7f6b6b738"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/bd79d5b734cd92814fd5e33015c6bca57f1723a8",
-                "reference": "bd79d5b734cd92814fd5e33015c6bca57f1723a8",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/81cbc44c970631f07a46062094126fc7f6b6b738",
+                "reference": "81cbc44c970631f07a46062094126fc7f6b6b738",
                 "shasum": ""
             },
             "require": {
@@ -3515,7 +3515,7 @@
                 "sensio/framework-extra-bundle": "2.3.*",
                 "sensio/generator-bundle": "2.3.*",
                 "stof/doctrine-extensions-bundle": "dev-master",
-                "sylius/flow-bundle": "0.1.*",
+                "sylius/flow-bundle": "dev-master",
                 "symfony/assetic-bundle": "2.3.*@dev",
                 "symfony/monolog-bundle": "2.3.*",
                 "symfony/swiftmailer-bundle": "2.3.*",
@@ -3539,7 +3539,7 @@
                 "source": "https://github.com/laboro/platform/tree/master",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-09-30 15:16:23"
+            "time": "2013-10-01 09:49:38"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -4067,12 +4067,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Sylius/SyliusFlowBundle.git",
-                "reference": "1fa700ed5dd8fc00a7922db6b58412e80fce0b6c"
+                "reference": "9bd4f557f4b3ca9650d32d2fb5be164563982f3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Sylius/SyliusFlowBundle/zipball/1fa700ed5dd8fc00a7922db6b58412e80fce0b6c",
-                "reference": "1fa700ed5dd8fc00a7922db6b58412e80fce0b6c",
+                "url": "https://api.github.com/repos/Sylius/SyliusFlowBundle/zipball/9bd4f557f4b3ca9650d32d2fb5be164563982f3e",
+                "reference": "9bd4f557f4b3ca9650d32d2fb5be164563982f3e",
                 "shasum": ""
             },
             "require": {
@@ -4085,7 +4085,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.1.x-dev"
+                    "dev-master": "1.0-dev"
                 }
             },
             "autoload": {
@@ -4116,7 +4116,7 @@
                 "installation",
                 "steps"
             ],
-            "time": "2013-09-07 17:43:59"
+            "time": "2013-10-01 00:10:44"
         },
         {
             "name": "symfony/assetic-bundle",
