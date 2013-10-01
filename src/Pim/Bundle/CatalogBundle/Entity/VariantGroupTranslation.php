@@ -6,16 +6,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
- * Family translation entity
+ * Variant group translation
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity()
- * @ORM\Table(name="pim_catalog_family_translation")
+ * @ORM\Entity
+ * @ORM\Table(name="pim_catalog_variant_translation")
  */
-class FamilyTranslation extends AbstractTranslation
+class VariantGroupTranslation extends AbstractTranslation
 {
     /**
      * All required columns are mapped through inherited superclass
@@ -24,7 +24,7 @@ class FamilyTranslation extends AbstractTranslation
     /**
      * Change foreign key to add constraint and work with basic entity
      *
-     * @ORM\ManyToOne(targetEntity="Family", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="VariantGroup", inversedBy="translations")
      * @ORM\JoinColumn(name="foreign_key", referencedColumnName="id")
      */
     protected $foreignKey;
@@ -32,7 +32,7 @@ class FamilyTranslation extends AbstractTranslation
     /**
      * @var string $label
      *
-     * @ORM\Column(name="label", type="string", length=64, nullable=true)
+     * @ORM\Column(name="label", type="string", length=100, nullable=true)
      */
     protected $label;
 
@@ -41,7 +41,7 @@ class FamilyTranslation extends AbstractTranslation
      *
      * @param string $label
      *
-     * @return FamilyTranslation
+     * @return VariantGroupTranslation
      */
     public function setLabel($label)
     {
