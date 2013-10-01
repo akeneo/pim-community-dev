@@ -251,7 +251,7 @@ class AddressCountryAndRegionSubscriberTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()->getMock();
         $countryMock->expects($this->once())
             ->method('hasRegions')
-            ->will($this->returnValue(false));1
+            ->will($this->returnValue(false));
 
         $repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
         $repository->expects($this->any())->method('find')->with(self::TEST_COUNTRY_NAME)
