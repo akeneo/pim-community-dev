@@ -225,12 +225,13 @@ class TranslatableFieldTypeTest extends TypeTestCase
         return $helper;
     }
     
+    /**
+     * Get ACL ManagerInterface mock
+     * 
+     * @return type
+     */
     protected function getACLManagerMock()
     {
-        $manager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\ManagerInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        return $manager;
+        return $this->getMock('Oro\Bundle\UserBundle\Acl\ManagerInterface');
     }
 }

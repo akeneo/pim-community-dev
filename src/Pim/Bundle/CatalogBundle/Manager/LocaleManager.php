@@ -244,6 +244,7 @@ class LocaleManager
         if (!isset($userLocale)) {
             $userLocale = array_shift($userLocales);
         }
+
         return $userLocale;
     }
 
