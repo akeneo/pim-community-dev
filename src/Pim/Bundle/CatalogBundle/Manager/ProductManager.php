@@ -82,6 +82,7 @@ class ProductManager extends FlexibleManager
 
         if ($product) {
             $this->ensureRequiredAttributeValues($product);
+            $this->addMissingPrices($product);
         }
 
         return $product;
@@ -100,6 +101,7 @@ class ProductManager extends FlexibleManager
         $products = $this->getFlexibleRepository()->findByIds($ids);
         foreach ($products as $product) {
             $this->ensureRequiredAttributeValues($product);
+            $this->addMissingPrices($product);
         }
 
         return $products;
@@ -122,6 +124,7 @@ class ProductManager extends FlexibleManager
 
         if ($product) {
             $this->ensureRequiredAttributeValues($product);
+            $this->addMissingPrices($product);
         }
 
         return $product;
@@ -181,23 +184,6 @@ class ProductManager extends FlexibleManager
         $this->storageManager->flush();
     }
 
-    /**
-     * Add missing prices (a price per currency)
-     *
-     * @param ProductInterface $product the product
-     *
-     * @return null
-     */
-    public function addMissingPrices(ProductInterface $product)
-    {
-        foreach ($product->getValues() as $value) {
-            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
-                $activeCurrencies = $this->currencyManager->getActiveCodes();
-                $value->addMissingPrices($activeCurrencies);
-                $value->removeDisabledPrices($activeCurrencies);
-            }
-        }
-    }
 
     /**
      * Return the identifier attribute
@@ -216,7 +202,13 @@ class ProductManager extends FlexibleManager
      */
     public function createProduct()
     {
-        return parent::createFlexible();
+        $product =  parent::createFlexible();
+        if ($product) {
+            $this->ensureRequiredAttributeValues($product);
+            $this->addMissingPrices($product);
+        }
+
+        return $product;
     }
 
     /**
@@ -227,6 +219,24 @@ class ProductManager extends FlexibleManager
     public function createProductValue()
     {
         return parent::createFlexibleValue();
+    }
+
+    /**
+     * Add missing prices (a price per currency)
+     *
+     * @param ProductInterface $product the product
+     *
+     * @return null
+     */
+    protected function addMissingPrices(ProductInterface $product)
+    {
+        foreach ($product->getValues() as $value) {
+            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
+                $activeCurrencies = $this->currencyManager->getActiveCodes();
+                $value->addMissingPrices($activeCurrencies);
+                $value->removeDisabledPrices($activeCurrencies);
+            }
+        }
     }
 
     /**
@@ -359,7 +369,7 @@ class ProductManager extends FlexibleManager
      */
     protected function addProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
     {
-        $value = $this->createFlexibleValue();
+        $value = $this->createProductValue();
         if ($locale) {
             $value->setLocale($locale);
         }
