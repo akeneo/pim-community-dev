@@ -8,7 +8,7 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/framework-bundle": "2.3.*",
-        "sylius/flow-bundle": "0.1.*"
+        "sylius/flow-bundle": "dev-master"
     },
     "require-dev": {
         "symfony/form": "~2.3",
