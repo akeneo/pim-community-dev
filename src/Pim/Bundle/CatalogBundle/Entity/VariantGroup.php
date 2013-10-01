@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Variant group entity
@@ -83,7 +84,7 @@ class VariantGroup implements TranslatableInterface
      */
     public function __construct()
     {
-        $this->attribtues   = new ArrayCollection();
+        $this->attributes   = new ArrayCollection();
         $this->products     = new ArrayCollection();
         $this->translations = new ArrayCollection();
     }
@@ -131,7 +132,9 @@ class VariantGroup implements TranslatableInterface
      */
     public function addAttribute(ProductAttribute $attribute)
     {
-        $this->attributes[] = $attribute;
+        if (!$this->attributes->contains($attribute)) {
+            $this->attributes[] = $attribute;
+        }
 
         return $this;
     }
@@ -147,10 +150,6 @@ class VariantGroup implements TranslatableInterface
      */
     public function removeAttribute(ProductAttribute $attribute)
     {
-        if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
-            throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
-        }
-
         $this->attributes->removeElement($attribute);
 
         return $this;
@@ -284,10 +283,14 @@ class VariantGroup implements TranslatableInterface
      * Remove a product from the collection
      *
      * @param ProductInterface $product
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
      */
     public function removeProduct(ProductInterface $product)
     {
         $this->products->removeElement($product);
+
+        return $this;
     }
 
     /**
