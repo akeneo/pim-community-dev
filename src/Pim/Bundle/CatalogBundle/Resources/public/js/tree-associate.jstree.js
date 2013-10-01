@@ -3,7 +3,7 @@ define(
     function ($, _, Routing) {
         'use strict';
 
-        return function (elementId) {
+        return function (elementId, hiddenCategoryId) {
             var $el = $(elementId);
             if (!$el || !$el.length || !_.isObject($el)) {
                 throw new Error('Unable to instantiate tree on this element');
@@ -111,7 +111,7 @@ define(
 
                 $tree.bind("check_node.jstree", function (e, d) {
                     if (d.inst.get_checked() && $(d.rslt.obj[0]).hasClass('jstree-root') == false) {
-                        var selected = $('#pim_product_categories').val();
+                        var selected = $(hiddenCategoryId).val();
                         if (selected.length > 0) {
                             selected = selected.split(',');
                         } else {
@@ -122,7 +122,7 @@ define(
                             selected.push(id);
                             selected = $.unique(selected);
                             selected = selected.join(',');
-                            $('#pim_product_categories').val(selected);
+                            $(hiddenCategoryId).val(selected);
                             var treeId = e.target.id;
                             var treeLinkId = treeId.replace('-', '-link-');
                             $('#'+treeLinkId+' i').removeClass('gray');
@@ -133,12 +133,12 @@ define(
 
                 $tree.bind("uncheck_node.jstree", function (e, d) {
                     if (d.inst.get_checked()) {
-                        var selected = $('#pim_product_categories').val();
+                        var selected = $(hiddenCategoryId).val();
                         selected = selected.split(',');
                         var id = d.rslt.obj[0].id.replace('node_', '');
                         selected.splice($.inArray(id, selected),1);
                         selected = selected.join(',');
-                        $('#pim_product_categories').val(selected);
+                        $(hiddenCategoryId).val(selected);
                         var treeId = e.target.id;
                         if ($("#"+treeId).jstree('get_checked').length == 0) {
                             var treeLinkId = treeId.replace('-', '-link-');
