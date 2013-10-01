@@ -26,16 +26,18 @@ Table of Contents
    - [Workflow Definition Repository](#workflow-definition-repository)
    - [Workflow Item](#workflow-item)
    - [Workflow Item Repository](#workflow-item-repository)
-   - [Workflow Item Entity](#workflow-item-repository)
+   - [Workflow Bind Entity](#workflow-bind-entity)
  - [Support Entities](#support-entities)
    - [Workflow Data](#workflow-data)
+   - [Workflow Result](#workflow-result)
    - [Entity Binder](#entity-binder)
-   - [Configuration Tree](#configuration-tree)
+   - [Workflow Configuration](#workflow-configuration)
+   - [Workflow List Configuration](#workflow-list-configuration)
    - [Configuration Provider](#configuration-provider)
    - [Workflow Data Serializer](#workflow-data-serializer)
    - [Workflow Data Normalizer](#workflow-data-normalizer)
    - [Attribute Normalizer](#attribute-normalizer)
-   - [Parameter Pass](#parameter-pass)
+   - [Parameter Pass](#parameter-pass)W 
 
 Main Entities
 =============
@@ -45,22 +47,35 @@ Workflow
 Oro\Bundle\WorkflowBundle\Model\Workflow
 
 **Description:**
-Encapsulates all logic of workflow, contains lists of steps, attributes and transitions, knows about managed entity class, start step and EntityBinder.
+Encapsulates all logic of workflow, contains lists of steps, attributes and transitions. Create instance of
+Workflow Item, performs transition if it's allowed, gets allowed transitions and start transitions.
+Delegates operations with aggregated domain models to corresponding managers, such as StepManager, TransitionManager
+and AttributeManager
 
 **Methods:**
-* **transit(WorkflowItem, transitionName)** - performs transit with name transitionName for specified WorkflowItem;
-* **isTransitionAllowed(WorkflowItem, Transition)** - calculates whether Transition is allowed for specified WorkflowItem;
-* **createWorkflowItem(Entity)** - creates WorkflowItem for specified Entity.
+* **transit(WorkflowItem, Transition)** - performs transit with name transitionName for specified WorkflowItem;
+* **isTransitionAllowed(WorkflowItem, Transition)** - calculates whether transition is allowed for specified WorkflowItem;
+* **start(data, Transition)** - returns new instance of Workflow Item and processes it's start transition.
+* **getAllowedStartTransitions(data)** - returns a list of allowed start transitions
+* **getAllowedTransitions(WorkflowItem)** - returns a list of allowed transitions
+* **getTransition(transitionName)** - gets Transition by name
+* **getTransitions(transitionName)** - gets all transitions
+* **getBindEntityAttributes()** - gets list of Attributes of bound entities
+* **getManagedEntityAttributes()** - gets list of Attributes of managed entities
+* **getAttributes()** - gets list of all Attributes
+* **getOrderedSteps()** - gets ordered list of all Steps
 
 Workflow Registry
 -----------------
 **Class:**
 Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry
 
-**Description:** Assembles Workflow items using WorkflowAssembler, stores it in internal cache and return Workflow items by their names.
+**Description:** Assembles Workflow object using WorkflowAssembler, and return Workflow objects by their names
+or managed entities.
 
 **Methods:**
-* **getWorkflow(workflowName)** - extracts Workflow item by its name.
+* **getWorkflow(workflowName)** - extracts Workflow object by its name.
+* **getWorkflowsByEntityClass(entityClass)** - gets list of Workflow objects where given entity class is managed entity.
 
 Step
 ----
@@ -68,7 +83,8 @@ Step
 Oro\Bundle\WorkflowBundle\Model\Step
 
 **Description:**
-Encapsulated step parameters, contains lists of attributes and allowed transition names, has step template and isFinal flag.
+Encapsulated step parameters, contains lists of attributes and allowed transition names, has step template,
+isFinal flag, form type and form options.
 
 **Methods:**
 * **isAllowedTransition(transitionName)** - calculates whether transition with name transitionName allowed for current step;
@@ -93,15 +109,15 @@ Attribute
 Oro\Bundle\WorkflowBundle\Model\Attribute
 
 **Description:**
-Encapsulates attribute parameters, has label, form type and options.
+Encapsulates attribute parameters, has label, type and options.
 
 Condition
---------
+---------
 **Interface:**
 Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface
 
 **Description:**
-Basic interface for Transition Conditions. Detailed description
+Basic interface for Transition Conditions.
 
 **Methods:**
 * **initialize(options)** - initialize specific condition based on input options;
@@ -119,7 +135,7 @@ Creates instances of Transition Conditions based on type (alias) and options.
 * **create(type, options)** - creates specific instance of Transition Condition.
 
 Post Action
-----------
+-----------
 **Interface:**
 Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface
 
@@ -150,10 +166,11 @@ Workflow Assembler
 Oro\Bundle\WorkflowBundle\Model\WorkflowAssembler
 
 **Description:**
-Creates instances of Wokflows based on Workflow Definitions. Requires configuration tree to parse configuration and attribute, step and transition assemblers to assemble appropriate parts of configuration.
+Creates instances of Wokflow onjects based on Workflow Definitions. Requires configuration object to parse
+configuration and attribute, step and transition assemblers to assemble appropriate parts of configuration.
 
 **Methods:**
-* **assemble(WorkflowDefinition)** - assemble and returns Workflow instance based on input WorkflowDefinition.
+* **assemble(WorkflowDefinition)** - assemble and returns instance of Workflow based on input WorkflowDefinition.
 
 Step Assembler
 --------------
@@ -172,7 +189,8 @@ Transition Assembler
 Oro\Bundle\WorkflowBundle\Model\TransitionAssembler
 
 **Description:**
-Creates instances of Transitions based on transition configuration, transition definition configuration and list of Step entities. Uses Condition Factory and Post Action Factory to create configurable conditions and post actions.
+Creates instances of Transitions based on transition configuration, transition definition configuration and list of
+Step entities. Uses Condition Factory and Post Action Factory to create configurable conditions and post actions.
 
 **Methods:**
 * **assemble(configuration, definitionsConfiguration, steps)** - assemble and returns list of Transitions.
@@ -229,7 +247,7 @@ Workflow Definition Repository
 Oro\Bundle\WorkflowBundle\Entity\Repository\WorkflowDefinitionRepository
 
 **Methods:**
-* **findWorkflowDefinitionsByEntity(entity)** - returns list of appropriate Workflow Definitions for input entity.
+* **findByEntityClass(entity)** - returns list of appropriate Workflow Definitions for input entity.
 
 Workflow Item
 -------------
@@ -237,11 +255,14 @@ Workflow Item
 Oro\Bundle\WorkflowBundle\Entity\WorkflowItem
 
 **Description:**
-Specific instance of Worklflow, contains state of workflow - data as instance of WorkflowData, current step name and list of related entities as list of WorkflowBindEntity entities.
+Specific instance of Workflow, contains state of workflow - data as instance of WorkflowData,
+temporary storage of result of last applied transition post actions as instance of WorkflowResult, current step name,
+list of related entities as list of WorkflowBindEntity entities, log of all applied transitions as list of
+WorkflowTransitionRecord entities.
 
 **Methods:**
-* **addBindEntity(WorkflowBindEntity)** - add new instance of related entity;
-* **removeBindEntity(WorkflowBindEntity)** - remove existing related entity.
+* **addBindEntity(WorkflowBindEntity)** - adds new instance of related entity;
+* **removeBindEntity(WorkflowBindEntity)** - removes existing related entity.
 
 Workflow Item Repository
 ------------------------
@@ -249,15 +270,17 @@ Workflow Item Repository
 Oro\Bundle\WorkflowBundle\Entity\Repository\WorkflowItemRepository
 
 **Methods:**
-* **findWorkflowItemsByEntity(entity)** - returns list of all Workflow Items related to input entity.
+* **findByEntityMetadata(entityClass, entityIdentifier, workflowName, workflowType)** - returns list of all Workflow
+Items related to input parameters.
 
-Workflow Item Entity
+Workflow Bind Entity
 --------------------
 **Class:**
 Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity
 
 **Description:**
-Encapsulates relation of Workflow Item with specific entity, contains entity ID, entity class name and step name of Workflow.
+Encapsulates relation of Workflow Item with specific entity, contains entity ID, entity class name and step name
+of Workflow.
 
 Support Entities
 ================
@@ -269,28 +292,48 @@ Oro\Bundle\WorkflowBundle\Model\WorkflowData
 **Description:**
 Container for all Workflow data, implements ArrayAccess, IteratorAggregate and Countable interfaces.
 
+Workflow Result
+-------------
+**Class:**
+Oro\Bundle\WorkflowBundle\Model\WorkflowResult
+
+**Description:**
+Container of results of last applied transition post actions. This data is not persistable so it can be used only once
+right after successful transition.
+
 Entity Binder
 -------------
 **Class:**
 Oro\Bundle\WorkflowBundle\Model\EntityBinder
 
 **Description:**
-Bind specific entity to Workflow Item with specific step, extracts entity class name and entity ID using Doctrine metadata.
+Ensures that all values of bind attributes of WorkflowItem are actually persisted or removed (if values was unset).
 
 **Methods:**
-* **bind(WorkflowItem, entity, assignedStep)** - bind entity to WorkflowItem with assigned step.
+* **bindEntities(WorkflowItem)** - bind all corresponding attribute values.
 
-Configuration Tree
+Workflow Configuration
 ------------------
 **Class:**
-Oro\Bundle\WorkflowBundle\Configuration\ConfigurationTree
+Oro\Bundle\WorkflowBundle\Configuration\WorkflowConfiguration
 
 **Description:**
-Contains tree builders for configuration parts (steps, conditions, condition definitions, transitions), provides list of node definitions and function to parse data.
+Contains tree builder for single Workflow configuration with steps, conditions, condition definitions, transitions.
 
 **Methods:**
-* **parseConfiguration(configuration)** - parses input configuration according to generated node definitions;
-* **getNodeDefinitions()** - returns list of node definitions from tree builders.
+* **getConfigTreeBuilder()** - configuration tree builder for single Workflow configuration.
+
+Workflow List Configuration
+------------------
+**Class:**
+Oro\Bundle\WorkflowBundle\Configuration\WorkflowListConfiguration
+
+**Description:**
+Contains tree builder for list of Workflows, processConfiguration raw configuration of Workflows.
+
+**Methods:**
+* **getConfigTreeBuilder()** - configuration tree builder for list of Workflows.
+* **processConfiguration(configs)** - processes raw configuration according to configuration tree builder
 
 Configuration Provider
 ---------------------
@@ -298,10 +341,10 @@ Configuration Provider
 Oro\Bundle\WorkflowBundle\Configuration\ConfigurationProvider
 
 **Description:**
-Parses files workflow.yml in all bundles, builds configuration using Configuration Tree and creates instances of Workflow Definitions.
+Parses files workflow.yml in all bundles and processes merged configuration using Workflow List Configuration.
 
 **Methods:**
-* **getWorkflowDefinitions()** - returns list of Workflow Definitions that were built using configuration files in all bundles.
+* **getWorkflowDefinitionConfiguration()** - get list of configurations for Workflow Definitions.
 
 Workflow Data Serializer
 -----------------------
@@ -320,23 +363,27 @@ Workflow Data Normalizer
 Oro\Bundle\WorkflowBundle\Serializer\Normalizer\WorkflowDataNormalizer
 
 **Description:**
-Custom data normalizer for Workflow Data Serializer, use basic serializer and Attribute Serializer.
+Custom data normalizer for Workflow Data Serializer, use basic serializer and collection of Attribute Normalizers.
 
 **Methods:**
-* **normalize(object, format, context)** - convert complex source data to plain representation;
-* **denormalize(data, class, format, context)** - convert plain source data to complex representation.
+* **normalize(object, format, context)** - convert origin source data to scalar/array representation;
+* **denormalize(data, class, format, context)** - convert scalar/array data to origin representation.
 
 Attribute Normalizer
 --------------------
-**Class:**
+**Interface:**
 Oro\Bundle\WorkflowBundle\Serializer\Normalizer\AttributeNormalizer
 
 **Description:**
-Custom data normalizer for Attribute entities, convert entity values to plain representation.
+Responsible for converting attribute values to scalar/array representation and vice versa. By default there are
+two specific Attribute Normalizers: StandardAttributeNormalizer and EntityAttributeNormalizer. Any other can be
+used with OroWorkflowBundle, use "oro_workflow.attribute_normalizer" tag to register your custom normalizers.
 
 **Methods:**
-* **normalize(workflow, attributeName, attributeValue)** - convert Workflow Attribute value to plain representation;
-* **denormalize(workflow, attributeName, attributeValue)** - convert Workflow Attribute value to original representation.
+* **normalize(Workflow, Attribute, attributeValue)** - convert Workflow Attribute value to scalar/array representation;
+* **denormalize(Workflow, Attribute, attributeValue)** - convert Workflow Attribute value to original representation.
+* **supportsNormalization(Workflow, Attribute, attributeValue)** - checks if normalization is supported
+* **supportsDenormalization(Workflow, Attribute, attributeValue)** - checks if denormalization is supported
 
 Parameter Pass
 --------------

@@ -7,6 +7,8 @@ Table of Contents
  - [Main Entities](#main-entities)
  - [Entity and Wizard Workflows?](#entity-and-wizard-workflows)
  - [How it works?](#how-it-works)
+ - [Managed Entities](#managed-entities)
+ - [Bind Entities](#bind-entities)
  - [Configuration](#configuration)
 
 What is Workflow?
@@ -78,6 +80,21 @@ until they are allowed.
 
 Workflow Item stores all collected data and current step, so, user can stop his progress on Workflow at any moment and
 then return to it, and Workflow will have exactly the same state.
+
+Managed Entities
+================
+
+Workflow can have attributes with managed entities. Values of such attributes are required. When user visits page of
+some entity, this knowledge can be used to show all applicable Workflows that can be started.
+
+When Workflow has managed entity attribute it means that the data of Workflow Item contains a reference to that entity.
+If for some reason managed entity will be deleted Workflow Item won't be applicable.
+
+Bind Entities
+=============
+
+When Workflow has attributes with bind entities this information can be used to show all bound Workflows Items on page
+of the entity. Managed entities attributes are bound by default.
 
 Configuration
 =============
