@@ -3,9 +3,11 @@
 namespace Oro\Bundle\GridBundle\Tests\Unit\Action;
 
 use Doctrine\ORM\Query\Expr;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Oro\Bundle\GridBundle\Datagrid\ORM\ProxyQuery;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MassActionDispatcherTest extends \PHPUnit_Framework_TestCase
 {
@@ -170,7 +172,7 @@ class MassActionDispatcherTest extends \PHPUnit_Framework_TestCase
         $result = self::callProtectedMethod($dispatcher, 'getResultIterator', array($query, self::TEST_BUFFER_SIZE));
 
         $this->assertInstanceOf('Oro\Bundle\GridBundle\Datagrid\ORM\IterableResult', $result);
-        $this->assertAttributeEquals(self::TEST_BUFFER_SIZE, 'pageSize', $result);
+        $this->assertAttributeEquals(self::TEST_BUFFER_SIZE, 'bufferSize', $result);
     }
 
     /**

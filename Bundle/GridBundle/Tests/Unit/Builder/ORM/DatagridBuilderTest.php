@@ -393,7 +393,7 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
                 ->method('addMassAction');
         }
 
-        $this->initializeDatagridBuilder(array('aclManager' => $aclManager));
+        $this->initializeDatagridBuilder(array('securityFacade' => $securityFacade));
         $this->model->addMassAction($datagridMock, $massActionMock);
     }
 
