@@ -51,6 +51,10 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@security.context'
+            - '@oro_user.acl_manager'
+            - '%locale%'
+        calls:
+            - [ "setRequest", ["@?request="] ]
 
     pim_catalog.manager.currency:
         class: %pim_catalog.manager.currency.class%

@@ -84,10 +84,6 @@ services:
         class: Pim\Bundle\CatalogBundle\Helper\LocaleHelper
         arguments:
             - '@pim_catalog.manager.locale'
-            - '@security.context'
-            - '%locale%'
-        calls:
-            - [ "setRequest", ["@?request="] ]
 
     pim_catalog.twig.locale_extension:
         class: Pim\Bundle\CatalogBundle\Twig\LocaleExtension
