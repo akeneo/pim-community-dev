@@ -1,0 +1,7 @@
+parameters:
+#    oro_require_js.example.class: Oro\RequireJSBundle\Example
+
+services:
+#    oro_require_js.example:
+#        class: %oro_require_js.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

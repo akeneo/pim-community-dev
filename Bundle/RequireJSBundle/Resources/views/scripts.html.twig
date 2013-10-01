@@ -1,0 +1,20 @@
+{%  if compressed %}
+    <script type="text/javascript">
+        var require = (function(){
+            var r=function(c){m(r.c,c)};r.c={};function m(a,b){
+                for (var i in b)b[i].toString()==='[object Object]'?m(a[i]||(a[i]={}),b[i]):a[i]=b[i]}
+            return r;
+        }());
+        {% placeholder requirejs_config_extend %}
+        require = require.c;
+    </script>
+    {# @TODO use application_path from configuration #}
+    <script type="text/javascript" src="{{ asset('js/oro.min.js') }}"></script>
+{% else %}
+    <script type="text/javascript" src="{{ asset('bundles/ororequirejs/lib/require.js') }}"></script>
+    {# @TODO use config_path from configuration #}
+    <script type="text/javascript" src="{{ asset('js/require-config.js') }}"></script>
+    <script type="text/javascript">
+        {% placeholder requirejs_config_extend %}
+    </script>
+{% endif %}
