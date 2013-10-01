@@ -267,5 +267,7 @@ class AddressCountryAndRegionSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $eventMock->expects($this->once())->method('setData')
             ->with(array_intersect_key($startData, array('state_text' => null, 'country' => self::TEST_COUNTRY_NAME)));
+
+        $this->subscriber->preSubmit($eventMock);
     }
 }
