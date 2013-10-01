@@ -30,6 +30,7 @@ Table of Contents
  - [Support Entities](#support-entities)
    - [Workflow Data](#workflow-data)
    - [Workflow Result](#workflow-result)
+   - [Context Accessor](#context-accessor)
    - [Entity Binder](#entity-binder)
    - [Workflow Configuration](#workflow-configuration)
    - [Workflow List Configuration](#workflow-list-configuration)
@@ -293,13 +294,23 @@ Oro\Bundle\WorkflowBundle\Model\WorkflowData
 Container for all Workflow data, implements ArrayAccess, IteratorAggregate and Countable interfaces.
 
 Workflow Result
--------------
+---------------
 **Class:**
 Oro\Bundle\WorkflowBundle\Model\WorkflowResult
 
 **Description:**
 Container of results of last applied transition post actions. This data is not persistable so it can be used only once
 right after successful transition.
+
+Context Accessor
+----------------
+**Class:**
+Oro\Bundle\WorkflowBundle\Model\ContextAccessor
+
+**Description:**
+Context is used in post action and conditions and thereby it's usually an instance of Workflow Item.
+This class is a simple helper that encapsulates logic of accessing properties of context using
+Symfony\Component\PropertyAccess\PropertyAccessor.
 
 Entity Binder
 -------------
@@ -308,12 +319,14 @@ Oro\Bundle\WorkflowBundle\Model\EntityBinder
 
 **Description:**
 Ensures that all values of bind attributes of WorkflowItem are actually persisted or removed (if values was unset).
+This class delegates operations with Doctrine classes to special helper - a class
+Oro\Bundle\WorkflowBundle\Model\DoctrineHelper.
 
 **Methods:**
 * **bindEntities(WorkflowItem)** - bind all corresponding attribute values.
 
 Workflow Configuration
-------------------
+----------------------
 **Class:**
 Oro\Bundle\WorkflowBundle\Configuration\WorkflowConfiguration
 
