@@ -48,7 +48,7 @@ class CategoryType extends AbstractSegmentType
     {
         parent::buildForm($builder, $options);
 
-        $this->addTitleField($builder);
+        $this->addLabelField($builder);
 
         if ($options['import_mode']) {
             $builder->add('dynamic');
@@ -62,11 +62,11 @@ class CategoryType extends AbstractSegmentType
     }
 
     /**
-     * Add title field
+     * Add label field
      *
      * @param FormBuilderInterface $builder
      */
-    protected function addTitleField(FormBuilderInterface $builder)
+    protected function addLabelField(FormBuilderInterface $builder)
     {
         $builder->add(
             'label',

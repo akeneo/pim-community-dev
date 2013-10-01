@@ -293,7 +293,7 @@ class CategoryTreeController extends AbstractDoctrineController
             $category = $this->categoryManager->getTreeInstance();
         }
 
-        $category->setCode($request->get('title'));
+        $category->setCode($request->get('label'));
 
         $form = $this->createForm($this->categoryType, $category);
 

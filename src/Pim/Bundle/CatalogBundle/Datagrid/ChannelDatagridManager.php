@@ -98,7 +98,7 @@ class ChannelDatagridManager extends DatagridManager
         $trees = $this->categoryManager->getTrees();
         $choices = array();
         foreach ($trees as $tree) {
-            $choices[$tree->getId()] = $tree->getTitle();
+            $choices[$tree->getId()] = $tree->getLabel();
         }
 
         $field = new FieldDescription();
@@ -166,7 +166,7 @@ class ChannelDatagridManager extends DatagridManager
     {
         $rootAlias = $proxyQuery->getRootAlias();
 
-        $treeExpr = "(CASE WHEN ct.title IS NULL THEN category.code ELSE ct.title END)";
+        $treeExpr = "(CASE WHEN ct.label IS NULL THEN category.code ELSE ct.label END)";
 
         $proxyQuery
             ->addSelect($rootAlias)
