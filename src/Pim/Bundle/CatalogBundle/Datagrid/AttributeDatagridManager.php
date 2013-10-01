@@ -168,7 +168,7 @@ class AttributeDatagridManager extends DatagridManager
         $groups = $em->getRepository('PimCatalogBundle:AttributeGroup')->findAllWithTranslations();
         $choices = array();
         foreach ($groups as $group) {
-            $choices[$group->getId()] = $group->getName();
+            $choices[$group->getId()] = $group->getLabel();
         }
         asort($choices);
 
@@ -178,7 +178,7 @@ class AttributeDatagridManager extends DatagridManager
             array(
                 'type'        => FieldDescriptionInterface::TYPE_HTML,
                 'label'       => $this->translate('Group'),
-                'field_name'  => 'groupName',
+                'field_name'  => 'groupLabel',
                 'expression'  => 'attributeGroup.id',
                 'filter_type' => FilterInterface::TYPE_CHOICE,
                 'sortable'    => true,
@@ -262,12 +262,12 @@ class AttributeDatagridManager extends DatagridManager
             "(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)",
             $rootAlias
         );
-        $groupExpr = "(CASE WHEN gt.name IS NULL THEN attributeGroup.code ELSE gt.name END)";
+        $groupExpr = "(CASE WHEN gt.label IS NULL THEN attributeGroup.code ELSE gt.label END)";
 
         $proxyQuery
             ->addSelect($rootAlias)
             ->addSelect(sprintf("%s AS attributeLabel", $labelExpr), true)
-            ->addSelect(sprintf("%s AS groupName", $groupExpr), true)
+            ->addSelect(sprintf("%s AS groupLabel", $groupExpr), true)
             ->addSelect('translation.label', true);
 
         $proxyQuery
