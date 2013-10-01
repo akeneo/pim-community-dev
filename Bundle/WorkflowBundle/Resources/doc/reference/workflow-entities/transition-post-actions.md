@@ -43,6 +43,8 @@ transitions definitions. If condition is not satisfied post action won't be exec
 See syntax examples:
 
 **Full Configuration Example**
+
+```
 - @alias_of_post_action:
     condition:
         # optional condition configuration
@@ -50,11 +52,14 @@ See syntax examples:
         - some_parameters: some_value
         # other parameters of post action
     break_on_failure: boolean # by default false
+```
 
 **Short Configuration Example**
+```
 - @alias_of_post_action:
     - some_parameters: some_value
     # other parameters of post action
+```
 
 Assign Value
 ------------
