@@ -82,7 +82,7 @@
                     $(document).one('ajaxStop', function () {
                         $el.jstree('create', -1, 'last', {
                             'attr': { 'class': 'jstree-unclassified', 'id': 'node_' },
-                            'data': { 'label': _.__('jstree.all') }
+                            'data': { 'title': _.__('jstree.all') }
                         }, null, true);
                         if ('node_' === selectedNode) {
                             $el.jstree('select_node', '#node_');
@@ -90,7 +90,7 @@
 
                         $el.jstree('create', '#node_' + root_node_id, 'last', {
                             'attr': { 'class': 'jstree-unclassified', 'id': 'node_0' },
-                            'data': { 'label': _.__('jstree.unclassified') }
+                            'data': { 'title': _.__('jstree.unclassified') }
                         }, null, true);
                     });
                 }).on('select_node.jstree', function () {
