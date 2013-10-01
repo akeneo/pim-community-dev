@@ -362,8 +362,6 @@ class ProductController extends AbstractDoctrineController
             array('currentLocale' => $this->getDataLocale())
         );
 
-        $form->remove('family');
-
         if ($request->isMethod('POST')) {
             $form->bind($request);
 
