@@ -45,11 +45,15 @@ class UserPreferencesListenerTest extends WebTestCase
     {
         $prefix = sha1(rand(0, 9999999));
         $channel1 = new Channel();
-        $channel1->setCode($prefix . 'channel1')->setName('channel1');
+        $channel1
+            ->setCode($prefix . 'channel1')
+            ->setLabel('channel1');
         $this->entityManager->persist($channel1);
 
         $channel2 = new Channel();
-        $channel2->setCode($prefix . 'channel2')->setName('channel2');
+        $channel2
+            ->setCode($prefix . 'channel2')
+            ->setLabel('channel2');
         $this->entityManager->persist($channel2);
 
         $this->entityManager->flush();
@@ -63,9 +67,9 @@ class UserPreferencesListenerTest extends WebTestCase
 
         $user = $this->userManager->createFlexible();
         $user
-                ->setUsername($prefix)
-                ->setEmail($prefix . '@test.com')
-                ->setPassword($prefix);
+            ->setUsername($prefix)
+            ->setEmail($prefix . '@test.com')
+            ->setPassword($prefix);
         $value = $user->setCatalogscope($removedOption);
         $this->userManager->updateUser($user);
         $this->entityManager->flush();
