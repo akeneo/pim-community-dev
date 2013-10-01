@@ -669,19 +669,14 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->resetDQLPart('groupBy')
             ->resetDQLPart('orderBy');
 
-        // join tables
-        $proxyQuery
-            ->leftJoin('values.options', 'valueOptions')
-            ->leftJoin($rootAlias .'.categories', 'categories');
-
         // select datas
         $proxyQuery
             ->select($proxyQuery->getRootAlias())
             ->addSelect('values')
-            ->addSelect('family')
+            ->addSelect('productFamily')
             ->addSelect('valuePrices')
             ->addSelect('valueOptions')
-            ->addSelect('categories');
+            ->addSelect('category');
 
         // where clause on attributes
         $exprIn = $proxyQuery->expr()->in('attribute', $attributeIds);
