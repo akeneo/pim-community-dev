@@ -65,7 +65,8 @@ class ConfigProviderTest extends \PHPUnit_Framework_TestCase
     public function testCreateConfig()
     {
         $this->configProvider->createConfig(
-            new EntityConfigId(DemoEntity::ENTITY_NAME, 'test'), array('first' => 'test')
+            new EntityConfigId(DemoEntity::ENTITY_NAME, 'test'),
+            array('first' => 'test')
         );
 
         $this->configProvider->flush();
