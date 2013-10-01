@@ -7,7 +7,7 @@ Feature: Browse channels
   Background:
     Given there is no channel
     And the following categories:
-      | code   | title  |
+      | code   | label  |
       | master | Master |
       | mobile | Mobile |
       | ipad   | IPad   |

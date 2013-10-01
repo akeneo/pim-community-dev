@@ -6,7 +6,7 @@ Feature: Delete a channel
 
   Background:
     Given the following categories:
-      | code           | title          |
+      | code           | label          |
       | ipad_catalog   | iPad Catalog   |
     And the following channels:
       | code | label | locales      | category       |

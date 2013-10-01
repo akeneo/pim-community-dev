@@ -514,7 +514,7 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $category = new Category();
             $category->setCode($data['code']);
-            $category->setLocale('en_US')->setTitle($data['title']); // TODO translation refactoring
+            $category->setLocale('en_US')->setLabel($data['label']); // TODO translation refactoring
 
             if (!empty($data['parent'])) {
                 $parent = $this->getCategoryOrCreate($data['parent']);
