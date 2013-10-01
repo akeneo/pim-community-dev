@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
@@ -30,14 +30,6 @@ use Pim\Bundle\CatalogBundle\Exception\LastAttributeOptionDeletedException;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Acl(
- *      id="pim_catalog_channel",
- *      type="action",
- *      name="Channel manipulation",
- *      description="Channel manipulation",
- *      parent="pim_catalog"
- * )
  */
 class ChannelController extends AbstractDoctrineController
 {
@@ -106,13 +98,7 @@ class ChannelController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @Acl(
-     *      id="pim_catalog_channel_index",
-     *      type="action",
-     *      name="View channel list",
-     *      description="View channel list",
-     *      parent="pim_catalog_channel"
-     * )
+     * @AclAncestor("pim_catalog_channel_index")
      * @return Response
      */
     public function indexAction(Request $request)
@@ -135,13 +121,7 @@ class ChannelController extends AbstractDoctrineController
      * Create channel
      *
      * @Template("PimCatalogBundle:Channel:edit.html.twig")
-     * @Acl(
-     *      id="pim_catalog_channel_create",
-     *      type="action",
-     *      name="Create a channel",
-     *      description="Create a channel",
-     *      parent="pim_catalog_channel"
-     * )
+     * @AclAncestor("pim_catalog_channel_create")
      * @return array
      */
     public function createAction()
@@ -157,13 +137,7 @@ class ChannelController extends AbstractDoctrineController
      * @param Channel $channel
      *
      * @Template
-     * @Acl(
-     *      id="pim_catalog_channel_edit",
-     *      type="action",
-     *      name="Edit a channel",
-     *      description="Edit a channel",
-     *      parent="pim_catalog_channel"
-     * )
+     * @AclAncestor("pim_catalog_channel_edit")
      * @return array
      */
     public function editAction(Channel $channel)
@@ -187,13 +161,7 @@ class ChannelController extends AbstractDoctrineController
      * @param Request $request
      * @param Channel $channel
      *
-     * @Acl(
-     *      id="pim_catalog_channel_remove",
-     *      type="action",
-     *      name="Remove a channel",
-     *      description="Remove a channel",
-     *      parent="pim_catalog_channel"
-     * )
+     * @AclAncestor("pim_catalog_channel_remove")
      * @return Response
      */
     public function removeAction(Request $request, Channel $channel)

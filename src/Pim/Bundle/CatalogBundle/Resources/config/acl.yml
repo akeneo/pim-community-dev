@@ -320,3 +320,25 @@ pim_catalog_category_children:
 pim_catalog_category_products:
     type: action
     label: See category's products
+
+# Channel
+pim_catalog_channel:
+    type: action
+    label: Channel manipulation
+
+pim_catalog_channel_index:
+    type: entity
+    class: PimCatalogBundle:Category
+    permission: VIEW
+pim_catalog_channel_create:
+    type: entity
+    class: PimCatalogBundle:Category
+    permission: CREATE
+pim_catalog_channel_edit:
+    type: entity
+    class: PimCatalogBundle:Category
+    permission: EDIT
+pim_catalog_channel_remove:
+    type: entity
+    class: PimCatalogBundle:Category
+    permission: DELETE
