@@ -29,7 +29,7 @@
                         'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale, 'select_node_id': selectedNode  })
                     },
                     'auto_open_root': true,
-                    'node_label_field': 'title',
+                    'node_label_field': 'label',
                     'preselect_node_id': selectedNode
                 },
                 'themes': {
@@ -82,7 +82,7 @@
                     $(document).one('ajaxStop', function () {
                         $el.jstree('create', -1, 'last', {
                             'attr': { 'class': 'jstree-unclassified', 'id': 'node_' },
-                            'data': { 'title': _.__('jstree.all') }
+                            'data': { 'label': _.__('jstree.all') }
                         }, null, true);
                         if ('node_' === selectedNode) {
                             $el.jstree('select_node', '#node_');
@@ -90,7 +90,7 @@
 
                         $el.jstree('create', '#node_' + root_node_id, 'last', {
                             'attr': { 'class': 'jstree-unclassified', 'id': 'node_0' },
-                            'data': { 'title': _.__('jstree.unclassified') }
+                            'data': { 'label': _.__('jstree.unclassified') }
                         }, null, true);
                     });
                 }).on('select_node.jstree', function () {
