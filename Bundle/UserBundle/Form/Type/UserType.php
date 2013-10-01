@@ -7,10 +7,10 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityRepository;
 
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
-use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
 use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Form\Type\EmailType;
@@ -19,29 +19,33 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 class UserType extends FlexibleType
 {
     /**
-     * @var AclManager
-     */
-    protected $aclManager;
-
-    /**
      * @var SecurityContextInterface
      */
     protected $security;
 
     /**
+     * @var bool
+     */
+    protected $isMyProfilePage;
+
+    /**
      * @param FlexibleManager          $flexibleManager flexible manager
-     * @param AclManager               $aclManager      ACL manager
      * @param SecurityContextInterface $security        Security context
+     * @param Request                  $request         Request
      */
     public function __construct(
         FlexibleManager $flexibleManager,
-        AclManager $aclManager,
-        SecurityContextInterface $security
+        SecurityContextInterface $security,
+        Request $request
     ) {
         parent::__construct($flexibleManager, '');
 
-        $this->aclManager = $aclManager;
         $this->security   = $security;
+        if ($request->attributes->get('_route') == 'oro_user_profile_update') {
+            $this->isMyProfilePage = true;
+        } else {
+            $this->isMyProfilePage = false;
+        }
     }
 
     /**
@@ -54,7 +58,7 @@ class UserType extends FlexibleType
 
         // user fields
         $builder->addEventSubscriber(
-            new UserSubscriber($builder->getFormFactory(), $this->aclManager, $this->security)
+            new UserSubscriber($builder->getFormFactory(), $this->security)
         );
         $this->setDefaultUserFields($builder);
         $builder
@@ -72,7 +76,9 @@ class UserType extends FlexibleType
                     },
                     'multiple'       => true,
                     'expanded'       => true,
-                    'required'       => true,
+                    'required'       => !$this->isMyProfilePage,
+                    'read_only'      => $this->isMyProfilePage,
+                    'disabled'      => $this->isMyProfilePage,
                 )
             )
             ->add(
@@ -84,6 +90,8 @@ class UserType extends FlexibleType
                     'multiple'       => true,
                     'expanded'       => true,
                     'required'       => false,
+                    'read_only'      => $this->isMyProfilePage,
+                    'disabled'      => $this->isMyProfilePage
                 )
             )
             ->add(
@@ -112,6 +120,11 @@ class UserType extends FlexibleType
             ->add(
                 'tags',
                 'oro_tag_select'
+            )
+            ->add('imapConfiguration', 'oro_imap_configuration')
+            ->add(
+                'change_password',
+                'oro_change_password'
             );
     }
 
@@ -165,7 +178,7 @@ class UserType extends FlexibleType
                 'error_mapping' => array(
                     'roles' => 'rolesCollection'
                 ),
-
+                'cascade_validation' => true
             )
         );
     }

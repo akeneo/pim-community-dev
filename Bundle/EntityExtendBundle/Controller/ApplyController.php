@@ -4,105 +4,22 @@ namespace Oro\Bundle\EntityExtendBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Process\Process;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
-
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
-
-use Oro\Bundle\EntityExtendBundle\Tools\Schema;
-use Symfony\Component\Process\Process;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 /**
  * EntityExtendBundle controller.
- * @Route("/oro_entityextend")
- * @Acl(
- *      id="oro_entityextend",
- *      name="Entity extend manipulation",
- *      description="Entity extend manipulation"
- * )
+ * @Route("/entity/extend")
+ * TODO: Discuss ACL impl., currently acl is disabled
  */
 class ApplyController extends Controller
 {
-    /**
-     * @Route(
-     *      "/apply/{id}",
-     *      name="oro_entityextend_apply",
-     *      requirements={"id"="\d+"},
-     *      defaults={"id"=0}
-     * )
-     * @Acl(
-     *      id="oro_entityextend_apply",
-     *      name="Validate changes",
-     *      description="Validate entityconfig changes",
-     *      parent="oro_entityextend"
-     * )
-     * @Template()
-     */
-    public function applyAction($id)
-    {
-        /** @var ConfigEntity $entity */
-        $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
-
-        /** @var ConfigProvider $entityConfigProvider */
-        $entityConfigProvider = $this->get('oro_entity.config.entity_config_provider');
-
-        /** @var ConfigProvider $extendConfigProvider */
-        $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
-        $extendConfig = $extendConfigProvider->getConfig($entity->getClassName());
-
-        /** @var Schema $schemaTools */
-        $schemaTools = $this->get('oro_entity_extend.tools.schema');
-
-        /**
-         * do Validations
-         */
-        $validation = array();
-
-        $fields = $extendConfig->getFields();
-        foreach ($fields as $code => $field) {
-
-            //$isSystem = $schemaTools->checkFieldIsSystem($field);
-            $isSystem = $field->get('owner') == 'System' ? true : false;
-            if ($isSystem) {
-                continue;
-            }
-
-            if (in_array($field->get('state'), array('New', 'Updated', 'To be deleted'))) {
-                if ($field->get('state') == 'New') {
-                    $isValid = true;
-                } else {
-                    $isValid = $schemaTools->checkFieldCanDelete($field);
-                }
-
-                if ($isValid) {
-                    $validation['success'][] = sprintf(
-                        "Field '%s(%s)' is valid. State -> %s",
-                        $code,
-                        $field->get('owner'),
-                        $field->get('state')
-                    );
-                } else {
-                    $validation['error'][] = sprintf(
-                        "Warning. Field '%s(%s)' has data.",
-                        $code,
-                        $field->get('owner')
-                    );
-                }
-            }
-        }
-
-        return array(
-            'validations'   => $validation,
-            'entity'        => $entity,
-            'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
-            'entity_extend' => $extendConfig,
-        );
-    }
-
     /**
      * @Route(
      *      "/update/{id}",
@@ -110,53 +27,57 @@ class ApplyController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_update",
-     *      name="Apply changes",
-     *      description="Apply entityconfig changes",
-     *      parent="oro_entityextend"
+     *      label="Apply entityconfig changes",
+     *      type="action",
+     *      group_name=""
      * )
      * @Template()
      */
     public function updateAction($id)
     {
-        /** @var ConfigEntity $entity */
-        $entity  = $this->getDoctrine()->getRepository(ConfigEntity::ENTITY_NAME)->find($id);
-        $env = $this->get('kernel')->getEnvironment();
+        set_time_limit(0);
+
+        /** @var KernelInterface $kernel */
+        $kernel = $this->get('kernel');
+
+        $console = escapeshellarg($this->getPhp()) . ' ' . escapeshellarg($kernel->getRootDir() . '/console');
+        $env     = $kernel->getEnvironment();
 
         $commands = array(
-            'backup'       => new Process('php ../app/console oro:entity-extend:backup '. str_replace('\\', '\\\\', $entity->getClassName()). ' --env '.$env),
-            'generator'    => new Process('php ../app/console oro:entity-extend:generate'. ' --env '.$env),
-            'cacheClear'   => new Process('php ../app/console cache:clear --no-warmup'. ' --env '.$env),
-            'schemaUpdate' => new Process('php ../app/console doctrine:schema:update --force'. ' --env '.$env),
-            'searchIndex'  => new Process('php ../app/console oro:search:create-index --env '.$env),
-            'cacheWarmup'  => new Process('php ../app/console cache:warmup'. ' --env '.$env),
+            'update'       => new Process($console . ' oro:entity-extend:update-config --env ' . $env),
+            'schemaUpdate' => new Process($console . ' doctrine:schema:update --force --env ' . $env),
+            'searchIndex'  => new Process($console . ' oro:search:create-index --env ' . $env),
+        );
+
+        // put system in maintenance mode
+        $this->get('oro_platform.maintenance')->on();
+
+        register_shutdown_function(
+            function ($mode) {
+                $mode->off();
+            },
+            $this->get('oro_platform.maintenance')
         );
 
         foreach ($commands as $command) {
             /** @var $command Process */
             $command->run();
-
-            while ($command->isRunning()) {
-                /** wait for previous process */
-            }
         }
 
-        /** @var ConfigProvider $extendConfigProvider */
-        $extendConfigProvider = $this->get('oro_entity_extend.config.extend_config_provider');
-        $extendConfig = $extendConfigProvider->getConfig($entity->getClassName());
+        return $this->redirect($this->generateUrl('oro_entityconfig_index'));
+    }
 
-        $extendConfig->set('state', 'Active');
-
-        foreach ($extendConfig->getFields() as $field) {
-            if ($field->get('owner') != 'System') {
-                $field->set('state', 'Active');
-            }
+    protected function getPhp()
+    {
+        $phpFinder = new PhpExecutableFinder();
+        if (!$phpPath = $phpFinder->find()) {
+            throw new \RuntimeException(
+                'The php executable could not be found, add it to your PATH environment variable and try again'
+            );
         }
 
-        $extendConfigProvider->persist($extendConfig);
-        $extendConfigProvider->flush();
-
-        return $this->redirect($this->generateUrl('oro_entityconfig_view', array('id' => $id)));
+        return $phpPath;
     }
 }

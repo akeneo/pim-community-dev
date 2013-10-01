@@ -1,7 +1,13 @@
 parameters:
-    oro_email.emailtemplate.datagrid_manager.class: Oro\Bundle\EmailBundle\Datagrid\EmailTemplateDatagridManager
+    oro_email.emailtemplate.datagrid_manager.class:   Oro\Bundle\EmailBundle\Datagrid\EmailTemplateDatagridManager
+    oro_email.emailtemplate.datagrid_view_list.class: Oro\Bundle\EmailBundle\Datagrid\EmailTemplatesViewList
 
 services:
+    oro_email.emailtemplate.datagrid_view_list:
+        class: %oro_email.emailtemplate.datagrid_view_list.class%
+        arguments:
+            - @translator
+
     oro_email.emailtemplate.datagrid_manager:
         class: %oro_email.emailtemplate.datagrid_manager.class%
         arguments: [%oro_config.entities%]
@@ -9,6 +15,7 @@ services:
             - name: oro_grid.datagrid.manager
               datagrid_name: emailtemplate
               entity_name: %oro_email.emailtemplate.entity.class%
-              entity_hint: email templates
+              entity_hint: email template
               route_name: oro_email_emailtemplate_index
               identifier_field: "id"
+              views_list: oro_email.emailtemplate.datagrid_view_list

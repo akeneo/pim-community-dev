@@ -248,9 +248,12 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
     public function testGetPager()
     {
-        $perPage = 15;
-        $page = 2;
-        $request = new Request();
+        $filterForm = $this->getMock('Symfony\Component\Form\Form', array(), array(), '', false);
+
+        $formBuilder = $this->getMock('Symfony\Component\Form\FormBuilder', array('getForm'), array(), '', false);
+        $formBuilder->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($filterForm));
 
         $container = $this->getMockForAbstractClass(
             'Symfony\Component\DependencyInjection\ContainerInterface',
@@ -264,22 +267,21 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         $container->expects($this->any())
             ->method('get')
             ->with('request')
-            ->will($this->returnValue($request));
+            ->will($this->returnValue(new Request()));
 
         $parameters = new RequestParameters($container, 'datagrid_name');
-        $parameters->set(
-            ParametersInterface::PAGER_PARAMETERS,
-            array('_page' => $page, '_per_page' => $perPage)
-        );
+        $parameters->set(ParametersInterface::FILTER_PARAMETERS, array());
+        $parameters->set(ParametersInterface::PAGER_PARAMETERS, array());
+        $parameters->set(ParametersInterface::SORT_PARAMETERS, array());
 
         /** @var $pager PagerInterface */
         $pager = $this->getMock('Oro\Bundle\GridBundle\Datagrid\ORM\Pager', array('init'));
-        $datagrid = $this->createDatagrid(array('pager' => $pager, 'parameters' => $parameters));
+        $datagrid = $this->createDatagrid(
+            array('pager' => $pager, 'parameters' => $parameters, 'formBuilder' => $formBuilder)
+        );
 
         $this->assertSame($pager, $datagrid->getPager());
-        $this->assertEquals($page, $pager->getPage());
-        $this->assertEquals($perPage, $pager->getMaxPerPage());
-        $this->assertAttributeEquals(true, 'pagerApplied', $datagrid);
+        $this->assertAttributeEquals(true, 'filtersApplied', $datagrid);
     }
 
     public function testGetQuery()
@@ -470,7 +472,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
      * @param array $arguments
      * @return Datagrid
      */
-    private function createDatagrid($arguments = array())
+    protected function createDatagrid($arguments = array())
     {
         $arguments = $this->getDatagridMockArguments($arguments);
         return new Datagrid(
@@ -484,7 +486,7 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    private function getDatagridMockArguments(array $arguments = array())
+    protected function getDatagridMockArguments(array $arguments = array())
     {
         $defaultArguments = array(
             'query'           => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface'),
@@ -607,5 +609,31 @@ class DatagridTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Oro\Bundle\GridBundle\Datagrid\DatagridView', $datagridView);
         $this->assertEquals($datagrid, $datagridView->getDatagrid());
+    }
+
+    public function testMultipleSorting()
+    {
+        $datagrid = $this->createDatagrid();
+
+        // default value
+        $this->assertTrue($datagrid->getMultipleSorting());
+
+        // custom value
+        $datagrid->setMultipleSorting(false);
+        $this->assertFalse($datagrid->getMultipleSorting());
+    }
+
+    public function testViewList()
+    {
+        $datagrid = $this->createDatagrid();
+
+        // default value
+        $this->assertAttributeSame(null, 'viewsList', $datagrid);
+
+        // custom value
+        $view = $this->getMockBuilder('Oro\Bundle\GridBundle\Datagrid\Views\View')
+            ->disableOriginalConstructor()->getMock();
+        $datagrid->setViewsList($view);
+        $this->assertEquals($view, $datagrid->getViewsList());
     }
 }

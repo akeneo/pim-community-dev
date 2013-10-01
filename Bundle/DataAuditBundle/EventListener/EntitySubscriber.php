@@ -27,7 +27,6 @@ class EntitySubscriber implements EventSubscriber
     /**
      * @param LoggableManager       $loggableManager
      * @param ExtendMetadataFactory $metadataFactory
-     * @param ConfigProvider        $auditConfigProvider
      */
     public function __construct(LoggableManager $loggableManager, ExtendMetadataFactory $metadataFactory)
     {

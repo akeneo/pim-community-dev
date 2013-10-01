@@ -4,51 +4,59 @@ oro_entity_config:
             form:
                 block_config:
                     entity:
+                        title:              'General'
                         priority:           20
+
             items:
                 icon:
                     options:
                         priority:           10
                     form:
-                        type:               text
+                        type:               oro_icon_select
                         options:
                             block:          entity
-                            required:       true
                 label:
                     options:
                         priority:           20
+                    constraints:
+                        - NotBlank:         ~
+                        - Length:
+                            min:            2
+                            max:            50
                     grid:
-                        type:               string
+                        type:               html
                         label:              'Label'
                         filter_type:        oro_grid_orm_string
                         required:           true
                         sortable:           true
                         filterable:         true
                         show_filter:        true
+                        template:           OroEntityConfigBundle:Config:propertyLabel.html.twig
                     form:
                         type:               text
                         options:
                             block:          entity
                             required:       true
+
                 plural_label:
                     options:
-                        priority:           30
+                        priority:           35
+                    constraints:
+                        - Length:
+                            min:            2
+                            max:            50
                     form:
                         type:               text
                         options:
                             block:          entity
                             required:       true
+
                 description:
                     options:
                         priority:           50
-                    grid:
-                        type:               text
-                        label:              'Description'
-                        filter_type:        oro_grid_orm_string
-                        required:           false
-                        sortable:           true
-                        filterable:         true
-                        show_filter:        true
+                    constraints:
+                        - Length:
+                            max:            500
                     form:
                         type:               textarea
                         options:
@@ -58,12 +66,17 @@ oro_entity_config:
             form:
                 block_config:
                     entity:
-                        title:              'Field Information'
+                        title:              'General'
                         priority:           20
             items:
                 label:
                     options:
                         priority:           10
+                    constraints:
+                        - NotBlank:         ~
+                        - Length:
+                            min:            2
+                            max:            50
                     grid:
                         type:               string
                         label:              'Label'
@@ -77,17 +90,13 @@ oro_entity_config:
                         options:
                             block:          entity
                             required:       true
+
                 description:
                     options:
                         priority:           30
-                    grid:
-                        type:               text
-                        label:              'Description'
-                        filter_type:        oro_grid_orm_string
-                        required:           false
-                        sortable:           true
-                        filterable:         false
-                        show_filter:        false
+                    constraints:
+                        - Length:
+                            max:            500
                     form:
                         type:               textarea
                         options:
@@ -96,29 +105,61 @@ oro_entity_config:
 
     datagrid:
         field:
-#            form:
-#                block_config:
-#                    datagrid:
-#                        title:              'Datagrid Config'
-#                        subblocks:
-#                            base:           ~
             items:
-                is_searchable:
+                is_visible:
                     options:
-                        default_value:      false
-                        is_bool:            true
-                    grid:
-                        type:               boolean
-                        label:              'Grid'
-                        filter_type:        oro_grid_orm_boolean
-                        required:           true
-                        sortable:           true
-                        filterable:         false
-                        show_filter:        false
+                        default_value:      true
+                        allowed_type:       [string,integer,smallint,bigint,boolean,decimal,date,text,float]
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+
                     form:
                         type:               choice
                         options:
                             choices:        ['No', 'Yes']
                             empty_value:    false
                             block:          other
-                            label:          'Grid'
+                            label:          'Show on grid'
+
+    form:
+        field:
+            items:
+                is_enabled:
+                    options:
+                        default_value:      true
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          other
+                            label:          'Show on form'
+
+    view:
+        field:
+            items:
+                is_displayable:
+                    options:
+                        default_value:      true
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+
+                    form:
+                        type:               choice
+                        options:
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            block:          other
+                            label:          'Show on view'

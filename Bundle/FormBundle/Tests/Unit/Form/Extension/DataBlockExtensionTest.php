@@ -12,14 +12,15 @@ class DataBlockExtensionTest extends \PHPUnit_Framework_TestCase
     /** @var  DataBlockExtension */
     private $formExtension;
 
-    private $manager;
+    private $securityFacade;
 
-    private $options = array('block' => 1, 'subblock' => 1, 'block_config' => 1);
+    private $options = array('block' => 1, 'subblock' => 1, 'block_config' => 1, 'tooltip' => 1);
 
     public function setUp()
     {
-        $this->manager = $this->getMockForAbstractClass('Oro\Bundle\UserBundle\Acl\ManagerInterface');
-        $this->formExtension = new DataBlockExtension($this->manager);
+        $this->securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+            ->disableOriginalConstructor()->getMock();
+        $this->formExtension = new DataBlockExtension($this->securityFacade);
     }
 
     public function testSetDefaultOptions()
@@ -54,5 +55,6 @@ class DataBlockExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->options['block'], $formView->vars['block']);
         $this->assertEquals($this->options['subblock'], $formView->vars['subblock']);
         $this->assertEquals($this->options['block_config'], $formView->vars['block_config']);
+        $this->assertEquals($this->options['tooltip'], $formView->vars['tooltip']);
     }
 }

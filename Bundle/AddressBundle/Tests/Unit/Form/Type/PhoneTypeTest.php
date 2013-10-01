@@ -38,7 +38,7 @@ class PhoneTypeTest extends \PHPUnit_Framework_TestCase
 
         $builder->expects($this->at(2))
             ->method('add')
-            ->with('primary', 'checkbox');
+            ->with('primary', 'radio');
 
         $this->type->buildForm($builder, array());
     }

@@ -28,8 +28,8 @@ class TitleNodeTest extends \PHPUnit_Framework_TestCase
     {
         $this->node = $this->getMock('Twig_Node');
         $this->compiler = $this->getMockBuilder('Twig_Compiler')
-                               ->disableOriginalConstructor()
-                               ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->titleNode = new TitleNode($this->node);
     }
@@ -41,9 +41,7 @@ class TitleNodeTest extends \PHPUnit_Framework_TestCase
      */
     public function testFailedCompile()
     {
-        $this->node->expects($this->once())
-                   ->method('getIterator')
-                   ->will($this->returnValue(array()));
+        $this->node->expects($this->once())->method('getIterator')->will($this->returnValue(array()));
 
         $this->titleNode->compile($this->compiler);
     }
@@ -53,26 +51,31 @@ class TitleNodeTest extends \PHPUnit_Framework_TestCase
      */
     public function testSuccessCompile()
     {
-        $exprMock = $this->getMockBuilder('Twig_Node_Expression_Array')
-                         ->disableOriginalConstructor()
-                         ->getMock();
+        $exprMock = $this->getMockBuilder('Twig_Node_Expression_Array')->disableOriginalConstructor()->getMock();
 
         $this->node->expects($this->once())
             ->method('getIterator')
             ->will($this->returnValue(array($exprMock)));
 
-        $this->compiler->expects($this->exactly(2))
-                       ->method('raw')
-                       ->will($this->returnValue($this->compiler));
+        $this->compiler->expects($this->at(0))
+            ->method('raw')
+            ->with("\n")
+            ->will($this->returnSelf());
 
-        $this->compiler->expects($this->once())
-                       ->method('write')
-                       ->will($this->returnValue($this->compiler));
+        $this->compiler->expects($this->at(1))
+            ->method('write')
+            ->with('$this->env->getExtension("oro_title")->set(')
+            ->will($this->returnSelf());
 
-        $this->compiler->expects($this->once())
-                       ->method('subcompile')
-                       ->with($this->isInstanceOf(get_class($exprMock)))
-                       ->will($this->returnValue($this->compiler));
+        $this->compiler->expects($this->at(2))
+            ->method('subcompile')
+            ->with($exprMock)
+            ->will($this->returnSelf());
+
+        $this->compiler->expects($this->at(3))
+            ->method('raw')
+            ->with(");\n")
+            ->will($this->returnSelf());
 
         $this->titleNode->compile($this->compiler);
     }

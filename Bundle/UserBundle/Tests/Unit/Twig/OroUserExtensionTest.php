@@ -15,16 +15,10 @@ class OroUserExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $manager;
-
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
     protected $genderProvider;
 
     protected function setUp()
     {
-        $this->manager = $this->getMockForAbstractClass('Oro\Bundle\UserBundle\Acl\ManagerInterface');
         $this->genderProvider = $this->getMock(
             'Oro\Bundle\UserBundle\Provider\GenderProvider',
             array('getLabelByName'),
@@ -33,12 +27,11 @@ class OroUserExtensionTest extends \PHPUnit_Framework_TestCase
             false
         );
 
-        $this->twigExtension = new OroUserExtension($this->manager, $this->genderProvider);
+        $this->twigExtension = new OroUserExtension($this->genderProvider);
     }
 
     protected function tearDown()
     {
-        unset($this->manager);
         unset($this->genderProvider);
         unset($this->twigExtension);
     }
@@ -51,7 +44,6 @@ class OroUserExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetFunctions()
     {
         $expectedFunctions = array(
-            'resource_granted' => 'checkResourceIsGranted',
             'oro_gender'       => 'getGenderLabel',
         );
 
@@ -63,16 +55,6 @@ class OroUserExtensionTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('\Twig_Function_Method', $actualFunctions[$twigFunction]);
             $this->assertAttributeEquals($internalMethod, 'method', $actualFunctions[$twigFunction]);
         }
-    }
-
-    public function testCheckResourceIsGranted()
-    {
-        $this->manager->expects($this->once())
-            ->method('isResourceGranted')
-            ->with($this->equalTo('test_acl'))
-            ->will($this->returnValue(true));
-
-        $this->assertTrue($this->twigExtension->checkResourceIsGranted('test_acl'));
     }
 
     public function testGetGenderLabel()

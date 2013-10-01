@@ -1,3 +1,4 @@
+{% import 'OroLocaleBundle::macros.html.twig' as macro %}
 <ul>
 {% for fieldKey, fieldValue in value %}
     {% if fieldKey == 'auditData' %}
@@ -18,7 +19,7 @@
         {% else %}
         <s>{{ fieldValue.old }}</s>
         {% endif %}
-        {{ fieldValue.new.timestamp is defined ? fieldValue.new|date('m/d/Y') : fieldValue.new }}
+        {{ fieldValue.new.timestamp is defined ? macro.time(fieldValue.new) : fieldValue.new }}
     </li>
     {% endif %}
 {% endfor %}

@@ -1,5 +1,6 @@
 {% extends bap.layout%}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 
 {% block page_container %}
     {% block content %}
@@ -10,17 +11,25 @@
                 <div class="row">
                     <div class="pull-right">
                         <div class="pull-right">
-                            {% block navButtons %}
-                            {% endblock navButtons %}
+                            {% placeholder update_navButtons_before with {entity: entity} %}
+                            {% block navButtons %}{% endblock navButtons %}
+                            {% placeholder update_navButtons_after with {entity: entity} %}
+
                             <input type="hidden" name="input_action" value="" data-form-id="{{ form.vars.name }}"/>
                         </div>
-                        {% if (entityClass is defined and form.vars.value.id) %}
-                            {% placeholder change_history_block with {'entity': entityClass, 'id': form.vars.value.id, 'title': audit_title|default(form.vars.value), 'audit_path': audit_path|default('oro_dataaudit_history') } %}
-                        {% endif %}
+                        <div class="pull-right user-info-state">
+                            <ul class="inline-decorate">
+                            {% set audit_entity_id = audit_entity_id|default ? audit_entity_id : form.vars.value.id|default %}
+
+                            {% if (audit_entity_class is defined and audit_entity_id and resource_granted('oro_dataaudit_history')) %}
+                                {% placeholder change_history_block with {'entity': audit_entity_class, 'id': audit_entity_id, 'title': audit_title|default(form.vars.value), 'audit_path': audit_path|default('oro_dataaudit_history') } %}
+                            {% endif %}
+                            </ul>
+                        </div>
                     </div>
                     <div class="span9">
                         {% block pageHeader %}
-                            <div class="customer-info {% if (breadcrumbs.hasAvatar is not defined) %}customer-simple{% endif %} well-small">
+                            <div class="clearfix customer-info {% if (breadcrumbs.hasAvatar is not defined) %}customer-simple{% endif %} well-small">
                                 {% if (breadcrumbs.hasAvatar is defined and breadcrumbs.hasAvatar) %}
                                     <div class="visual">
                                         <img src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-usser.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
@@ -46,8 +55,8 @@
                                         <ul class="inline">
                                             {% block stats %}
                                                 {% if breadcrumbs.entity.createdAt is defined and breadcrumbs.entity.updatedAt is defined %}
-                                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? UI.time(breadcrumbs.entity.createdAt) : 'N/A' }}</li>
-                                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? UI.time(breadcrumbs.entity.updatedAt) : 'N/A' }}</li>
+                                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? Locale.time(breadcrumbs.entity.createdAt) : 'N/A' }}</li>
+                                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? Locale.time(breadcrumbs.entity.updatedAt) : 'N/A' }}</li>
                                                 {% endif %}
                                             {% endblock stats %}
                                         </ul>
@@ -60,7 +69,8 @@
             </div>
             <div class="layout-content">
                 {% block content_data %}
-                    {{ UI.scrollData(id, data, true) }}
+                    {% set data = oro_form_process(data, form) %}
+                    {{ UI.scrollData(id, data, form) }}
                 {% endblock content_data %}
             </div>
         </form>

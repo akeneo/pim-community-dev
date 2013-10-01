@@ -1,6 +1,8 @@
 <?php
 namespace Oro\Bundle\OrganizationBundle\Tests\Unit\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class OrganizationTest extends \PHPUnit_Framework_TestCase

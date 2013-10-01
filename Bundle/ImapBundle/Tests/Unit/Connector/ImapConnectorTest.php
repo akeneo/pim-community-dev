@@ -25,7 +25,8 @@ class ImapConnectorTest extends \PHPUnit_Framework_TestCase
         $this->storage->expects($this->any())
             ->method('__destruct');
 
-        $this->searchStringManager = $this->getMock('Oro\Bundle\ImapBundle\Connector\Search\SearchStringManagerInterface');
+        $this->searchStringManager =
+            $this->getMock('Oro\Bundle\ImapBundle\Connector\Search\SearchStringManagerInterface');
         $this->searchStringManager->expects($this->any())
             ->method('isAcceptableItem')
             ->will($this->returnValue(true));
@@ -65,26 +66,23 @@ class ImapConnectorTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $result);
     }
 
-    public function testFindItemsWithParentFolderOnly()
+    public function testFindItemsWithSearchQuery()
     {
         $this->storage->expects($this->at(0))
-            ->method('selectFolder')
-            ->with($this->equalTo('SomeFolder'));
+            ->method('search')
+            ->with($this->equalTo(array('some query')))
+            ->will($this->returnValue(array('1', '2')));
         $this->storage->expects($this->never())
-            ->method('search');
-        $this->storage->expects($this->never())
-            ->method('getMessage');
+            ->method('getMessage')
+            ->will($this->returnValue(new \stdClass()));
 
-        $result = $this->connector->findItems('SomeFolder');
-        $this->assertCount(0, $result);
+        $result = $this->connector->findItems($this->connector->getSearchQueryBuilder()->get());
+        $this->assertCount(2, $result);
     }
 
-    public function testFindItemsWithParentFolderAndSearchQuery()
+    public function testFindItemsWithSearchQueryGetMessages()
     {
         $this->storage->expects($this->at(0))
-            ->method('selectFolder')
-            ->with($this->equalTo('SomeFolder'));
-        $this->storage->expects($this->at(1))
             ->method('search')
             ->with($this->equalTo(array('some query')))
             ->will($this->returnValue(array('1', '2')));
@@ -92,13 +90,15 @@ class ImapConnectorTest extends \PHPUnit_Framework_TestCase
             ->method('getMessage')
             ->will($this->returnValue(new \stdClass()));
 
-        $result = $this->connector->findItems('SomeFolder', $this->connector->getSearchQueryBuilder()->get());
+        $result = $this->connector->findItems($this->connector->getSearchQueryBuilder()->get());
         $this->assertCount(2, $result);
+        foreach ($result as $r) {
+        }
     }
 
     public function testFindFolders()
     {
-        $folder = $this->getMockBuilder('Zend\Mail\Storage\Folder')
+        $folder = $this->getMockBuilder('Oro\Bundle\ImapBundle\Mail\Storage\Folder')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -113,7 +113,7 @@ class ImapConnectorTest extends \PHPUnit_Framework_TestCase
 
     public function testFindFolder()
     {
-        $folder = $this->getMockBuilder('Zend\Mail\Storage\Folder')
+        $folder = $this->getMockBuilder('Oro\Bundle\ImapBundle\Mail\Storage\Folder')
             ->disableOriginalConstructor()
             ->getMock();
 

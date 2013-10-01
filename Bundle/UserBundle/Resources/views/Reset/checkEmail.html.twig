@@ -11,7 +11,9 @@
             <h2 class="title">{{ 'Check Email'|trans }}</h2>
         </div>
         <fieldset>
-            <h3 class="oro-justify">{{ 'An email has been sent to %email%. It contains a link you must click to reset your password.'|trans({ '%email%': email }) }}</h3>
+            <div class="alert alert-success">
+                {{ 'An email has been sent to %email%. It contains a link you must click to reset your password.'|trans({ '%email%': email }) }}
+            </div>
             <a href="{{ path('oro_default') }}">{{ 'Go to homepage'|trans }}</a>
         </fieldset>
     </form>

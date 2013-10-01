@@ -9,6 +9,8 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+
 /**
  * @RouteResource("search")
  * @NamePrefix("oro_api_")
@@ -26,6 +28,8 @@ class SearchController extends FOSRestController
      *      {"name"="from", "dataType"="string"}
      *  }
      * )
+     *
+     * @AclAncestor("oro_search")
      */
     public function getAction()
     {

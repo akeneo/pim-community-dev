@@ -3,10 +3,12 @@
 namespace Oro\Bundle\EntityConfigBundle\Form\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 class ConfigSubscriber implements EventSubscriberInterface
 {
@@ -38,24 +40,31 @@ class ConfigSubscriber implements EventSubscriberInterface
      */
     public function postSubmit(FormEvent $event)
     {
-        $options   = $event->getForm()->getConfig()->getOptions();
-        $className = $options['class_name'];
-        $fieldName = isset($options['field_name']) ? $options['field_name'] : null;
-        $data      = $event->getData();
+        $options     = $event->getForm()->getConfig()->getOptions();
+        $configModel = $options['config_model'];
+
+        if ($configModel instanceof FieldConfigModel) {
+            $className = $configModel->getEntity()->getClassName();
+            $fieldName = $configModel->getFieldName();
+        } else {
+            $fieldName = null;
+            $className = $configModel->getClassName();
+        }
+
+        $data = $event->getData();
 
         foreach ($this->configManager->getProviders() as $provider) {
             if (isset($data[$provider->getScope()])) {
-                if ($fieldName) {
-                    $config = $provider->getFieldConfig($className, $fieldName);
-                } else {
-                    $config = $provider->getConfig($className);
-                }
+                $config = $provider->getConfig($className, $fieldName);
+
                 $config->setValues($data[$provider->getScope()]);
-                //TODO::look after a EntityConfig changes in configManager
+
                 $this->configManager->persist($config);
             }
         }
 
-        $this->configManager->flush();
+        if ($event->getForm()->isValid()) {
+            $this->configManager->flush();
+        }
     }
 }

@@ -46,7 +46,7 @@ class LoggableManagerTest extends AbstractMetadataTest
 
         $provider
             ->expects($this->any())
-            ->method('hasConfig')
+            ->method('isConfigurable')
             ->will($this->returnValue(false));
 
         $this->loggableManager = new LoggableManager('Oro\Bundle\DataAuditBundle\Entity\Audit', $provider);

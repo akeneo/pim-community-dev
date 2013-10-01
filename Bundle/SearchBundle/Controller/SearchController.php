@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\SearchBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -11,11 +12,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\SearchBundle\Datagrid\SearchDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\DatagridView;
 use Oro\Bundle\SearchBundle\Provider\ResultStatisticsProvider;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 class SearchController extends Controller
 {
     /**
      * @Route("/advanced-search", name="oro_search_advanced")
+     *
+     * @Acl(
+     *      id="oro_search",
+     *      type="action",
+     *      label="Search",
+     *      group_name=""
+     * )
      */
     public function ajaxAdvancedSearchAction()
     {
@@ -33,6 +43,7 @@ class SearchController extends Controller
      *
      * @Route("/search-bar", name="oro_search_bar")
      * @Template("OroSearchBundle:Search:searchBar.html.twig")
+     * @AclAncestor("oro_search")
      */
     public function searchBarAction()
     {
@@ -47,6 +58,8 @@ class SearchController extends Controller
      * @param  string       $from
      * @param  string       $string
      * @return DatagridView
+     *
+     * @AclAncestor("oro_search")
      */
     protected function getSearchResultsDatagridView($from, $string)
     {
@@ -70,6 +83,8 @@ class SearchController extends Controller
      *
      * @Route("/", name="oro_search_results")
      * @Template("OroSearchBundle:Search:searchResults.html.twig")
+     *
+     * @AclAncestor("oro_search")
      */
     public function searchResultsAction(Request $request)
     {
@@ -93,6 +108,8 @@ class SearchController extends Controller
      * Return search results in json for datagrid
      *
      * @Route("/ajax", name="oro_search_results_ajax")
+     *
+     * @AclAncestor("oro_search")
      */
     public function searchResultsAjaxAction(Request $request)
     {

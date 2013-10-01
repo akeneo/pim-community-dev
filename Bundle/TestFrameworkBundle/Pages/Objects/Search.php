@@ -13,7 +13,7 @@ class Search extends Page
     public function __construct($testCase)
     {
         parent::__construct($testCase);
-        $this->pane = $this->byXPath('//span[@title="Search"]');
+        $this->pane = $this->byXPath('//a[@title="Search"]');
         $this->simpleSearch = $this->byId('search-bar-search');
         $this->searchButton = $this->byXPath("//form[@id='top-search-form']//div/button[contains(.,'Go')]");
     }
@@ -70,7 +70,7 @@ class Search extends Page
     public function result($filter)
     {
         if (!is_null($filter)) {
-            $result = $this->elements($this->using("xpath")->value("//div[@id='search-result-grid']//tr//h1/a[contains(., '{$filter}')]"));
+            $result = $this->elements($this->using("xpath")->value("//div[@id='search-result-grid']//tr//h1/a[normalize-space(.) = '{$filter}']"));
         } else {
             $result = $this->elements($this->using("xpath")->value("//div[@id='search-result-grid']//tr//h1/a"));
         }

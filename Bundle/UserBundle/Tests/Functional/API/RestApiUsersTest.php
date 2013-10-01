@@ -34,7 +34,8 @@ class RestUsersApiTest extends WebTestCase
                 "firstName" => "firstName",
                 "lastName" => "lastName",
                 "rolesCollection" => array("1"),
-                "attributes" => array("company" => "Some test company")
+                "attributes" => array("company" => "Some test company"),
+                "owner" => "1",
             )
         );
         $this->client->request('POST', $this->client->generate('oro_api_post_user'), $request);

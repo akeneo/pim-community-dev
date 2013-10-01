@@ -2,14 +2,16 @@
 
 namespace Oro\Bundle\ConfigBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Table(
  *  name="oro_config",
  *  uniqueConstraints={@ORM\UniqueConstraint(name="UQ_ENTITY", columns={"entity", "record_id"})}
  * )
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Oro\Bundle\ConfigBundle\Entity\Repository\ConfigRepository")
  */
 class Config
 {
@@ -25,23 +27,29 @@ class Config
     /**
      * @var string
      *
-     * @ORM\Column(name="entity", type="string", length=255)
+     * @ORM\Column(name="entity", type="string", length=255, nullable=true)
      */
-    protected $entity;
+    protected $scopedEntity;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="record_id", type="integer")
+     * @ORM\Column(name="record_id", type="integer", nullable=true)
      */
     protected $recordId;
 
     /**
      * @var array
      *
-     * @ORM\Column(name="settings", type="json_array")
+     * @ORM\OneToMany(targetEntity="ConfigValue", mappedBy="config",
+     *      cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    protected $settings;
+    protected $values;
+
+    public function __construct()
+    {
+        $this->values = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -60,18 +68,19 @@ class Config
      */
     public function getEntity()
     {
-        return $this->entity;
+        return $this->scopedEntity;
     }
 
     /**
      * Set entity
      *
      * @param  string $entity
+     *
      * @return Config
      */
     public function setEntity($entity)
     {
-        $this->entity = $entity;
+        $this->scopedEntity = $entity;
 
         return $this;
     }
@@ -90,6 +99,7 @@ class Config
      * Set record id
      *
      * @param  integer $recordId
+     *
      * @return Config
      */
     public function setRecordId($recordId)
@@ -104,21 +114,39 @@ class Config
      *
      * @return array Entity related settings
      */
-    public function getSettings()
+    public function getValues()
     {
-        return $this->settings;
+        return $this->values;
     }
 
     /**
-     * Pass an associative array of settings => values and re-set settings with new ones.
-     *
-     * @param  array  $settings Array of setting => value pairs
-     * @return Config
+     * @param $values
+     * @return $this
      */
-    public function setSettings(array $settings)
+    public function setValues($values)
     {
-        $this->settings = $settings;
+        $this->values = $values;
 
         return $this;
+    }
+
+    public function getOrCreateValue($section, $key)
+    {
+        $value = $this->getValues()->filter(
+            function (ConfigValue $item) use ($key, $section) {
+                return $item->getName() == $key && $item->getSection() == $section;
+            }
+        );
+
+        if ($value->first() === false) {
+            $value = new ConfigValue();
+            $value->setConfig($this)
+                ->setName($key)
+                ->setSection($section);
+        } else {
+            $value = $value->first();
+        }
+
+        return $value;
     }
 }

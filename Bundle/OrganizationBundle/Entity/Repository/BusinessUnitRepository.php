@@ -15,17 +15,17 @@ class BusinessUnitRepository extends EntityRepository
      * @param User $user
      * @return array
      */
-    public function getBusinessUnitsTree(User $user)
+    public function getBusinessUnitsTree(User $user = null)
     {
         $businessUnits = $this->createQueryBuilder('businessUnit')
                     ->select(
                         array(
                             'businessUnit.id',
                             'businessUnit.name',
-                            'IDENTITY(businessUnit.parent) parent',
+                            'IDENTITY(businessUnit.owner) parent',
                         )
                     );
-        if ($user->getId()) {
+        if ($user && $user->getId()) {
             $units = $user->getBusinessUnits()->map(
                 function (BusinessUnit $businessUnit) {
                     return $businessUnit->getId();
@@ -50,7 +50,6 @@ class BusinessUnitRepository extends EntityRepository
             }
         }
         unset($businessUnit);
-
         if (isset($children[0])) {
             $children = $children[0];
         }
@@ -70,5 +69,18 @@ class BusinessUnitRepository extends EntityRepository
             ->setParameter('ids', $businessUnits)
             ->getQuery()
             ->execute();
+    }
+
+    /**
+     * Get count of business units
+     *
+     * @return int
+     */
+    public function getBusinessUnitsCount()
+    {
+        $qb = $this->createQueryBuilder('businessUnit');
+        $qb->select('count(businessUnit.id)');
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }

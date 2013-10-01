@@ -31,7 +31,7 @@ class AddManagerCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->compiler = new AddManagerCompilerPass();
 
         $this->builder = new ContainerBuilder();
-        $defRegistry = new Definition('Oro\Bundle\DataFlowBundle\Manager\FlexibleManagerRegistry');
+        $defRegistry = new Definition('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry');
         $definitions = array('oro_flexibleentity.registry' => $defRegistry);
         $this->builder->setDefinitions($definitions);
     }

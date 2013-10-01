@@ -1,15 +1,22 @@
 <?php
 namespace Oro\Bundle\DataAuditBundle\Loggable;
 
-use Oro\Bundle\DataAuditBundle\Metadata\PropertyMetadata;
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
+
 use Doctrine\Common\Collections\Collection;
+
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\EntityManager;
+
+use Oro\Bundle\DataAuditBundle\Metadata\PropertyMetadata;
 use Oro\Bundle\UserBundle\Entity\User;
+
+use Oro\Bundle\EntityBundle\ORM\EntityClassAccessor;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Oro\Bundle\DataAuditBundle\Metadata\ClassMetadata;
+
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 
@@ -82,11 +89,13 @@ class LoggableManager
     protected $auditConfigProvider;
 
     /**
-     * @param                $logEntityClass
-     * @param ConfigProvider $auditConfigProvider
+     * @param                     $logEntityClass
+     * @param ConfigProvider      $auditConfigProvider
      */
-    public function __construct($logEntityClass, ConfigProvider $auditConfigProvider)
-    {
+    public function __construct(
+        $logEntityClass,
+        ConfigProvider $auditConfigProvider
+    ) {
         $this->auditConfigProvider = $auditConfigProvider;
         $this->logEntityClass      = $logEntityClass;
     }
@@ -178,9 +187,12 @@ class LoggableManager
 
             $id = $this->getIdentifier($entity);
             $logEntryMeta->getReflectionProperty('objectId')->setValue($logEntry, $id);
-            $uow->scheduleExtraUpdate($logEntry, array(
-                'objectId' => array(null, $id)
-            ));
+            $uow->scheduleExtraUpdate(
+                $logEntry,
+                array(
+                    'objectId' => array(null, $id)
+                )
+            );
 
             $uow->setOriginalEntityProperty(spl_object_hash($logEntry), 'objectId', $id);
 
@@ -196,9 +208,12 @@ class LoggableManager
                 $data[$props['field']] = $identifiers;
                 $logEntry->setData($data);
 
-                $uow->scheduleExtraUpdate($logEntry, array(
-                    'data' => array($oldData, $data)
-                ));
+                $uow->scheduleExtraUpdate(
+                    $logEntry,
+                    array(
+                        'data' => array($oldData, $data)
+                    )
+                );
                 $uow->setOriginalEntityProperty(spl_object_hash($logEntry), 'objectId', $data);
             }
             unset($this->pendingRelatedEntities[$oid]);
@@ -257,7 +272,7 @@ class LoggableManager
             return;
         }
 
-        $this->checkAuditable(get_class($entity));
+        $this->checkAuditable($this->getEntityClassName($entity));
 
         /** @var User $user */
         $user = $this->em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
@@ -268,9 +283,9 @@ class LoggableManager
 
         $uow = $this->em->getUnitOfWork();
 
-        if ($this->hasConfig(get_class($entity))) {
-            $meta       = $this->getConfig(get_class($entity));
-            $entityMeta = $this->em->getClassMetadata(get_class($entity));
+        if ($this->hasConfig($this->getEntityClassName($entity))) {
+            $meta       = $this->getConfig($this->getEntityClassName($entity));
+            $entityMeta = $this->em->getClassMetadata($this->getEntityClassName($entity));
 
             $logEntryMeta = $this->em->getClassMetadata($this->getLogEntityClass());
             /** @var Audit $logEntry */
@@ -279,10 +294,11 @@ class LoggableManager
             // do not store log entries for flexible attributes - add them to a parent entity instead
             if ($entity instanceof AbstractEntityFlexibleValue) {
                 if ($action !== self::ACTION_REMOVE && !$this->logFlexible($entity)) {
-                    $flexibleEntityMeta = $this->em->getClassMetadata(get_class($entity));
+                    $flexibleEntityMeta = $this->em->getClassMetadata($this->getEntityClassName($entity));
 
                     // if no "parent" object has been saved previously - get it from attribute and save it's log
-                    if ($flexibleEntityMeta->reflFields['entity']->getValue($entity) instanceof AbstractEntityFlexible) {
+                    $value = $flexibleEntityMeta->reflFields['entity']->getValue($entity);
+                    if ($value instanceof AbstractEntityFlexible) {
                         $this->createLogEntity($action, $flexibleEntityMeta->reflFields['entity']->getValue($entity));
                     }
 
@@ -349,7 +365,10 @@ class LoggableManager
                 $logEntry->setData($newValues);
             }
 
-            if ($action === self::ACTION_UPDATE && 0 === count($newValues) && !($entity instanceof AbstractEntityFlexible)) {
+            if ($action === self::ACTION_UPDATE
+                && 0 === count($newValues)
+                && !($entity instanceof AbstractEntityFlexible)
+            ) {
                 return;
             }
 
@@ -382,6 +401,7 @@ class LoggableManager
 
     /**
      * Get the LogEntry class
+     *
      * @return string
      */
     protected function getLogEntityClass()
@@ -391,6 +411,7 @@ class LoggableManager
 
     /**
      * Add flexible attribute log to a parent entity's log entry
+     *
      * @param  AbstractEntityFlexibleValue $entity
      * @return boolean                     True if value has been saved, false otherwise
      */
@@ -476,7 +497,7 @@ class LoggableManager
      */
     protected function getNewVersion($logEntityMeta, $entity)
     {
-        $entityMeta = $this->em->getClassMetadata(get_class($entity));
+        $entityMeta = $this->em->getClassMetadata($this->getEntityClassName($entity));
         $entityId   = $this->getIdentifier($entity);
 
         $dql = "SELECT MAX(log.version) FROM {$logEntityMeta->name} log";
@@ -484,17 +505,19 @@ class LoggableManager
         $dql .= " AND log.objectClass = :objectClass";
 
         $q = $this->em->createQuery($dql);
-        $q->setParameters(array(
-            'objectId'    => $entityId,
-            'objectClass' => $entityMeta->name
-        ));
+        $q->setParameters(
+            array(
+                'objectId'    => $entityId,
+                'objectClass' => $entityMeta->name
+            )
+        );
 
         return $q->getSingleScalarResult() + 1;
     }
 
     /**
-     * @param $entity
-     * @param  null  $entityMeta
+     * @param       $entity
+     * @param  null $entityMeta
      * @return mixed
      */
     protected function getIdentifier($entity, $entityMeta = null)
@@ -518,11 +541,16 @@ class LoggableManager
             $classMetadata = new ClassMetadata($reflection->getName());
 
             foreach ($reflection->getProperties() as $reflectionProperty) {
-                if ($this->auditConfigProvider->hasFieldConfig($entityClassName, $reflectionProperty->getName())
-                    && ($fieldConfig = $this->auditConfigProvider->getFieldConfig($entityClassName, $reflectionProperty->getName()))
+                $fieldName = $reflectionProperty->getName();
+                if (strpos($fieldName, 'field_') === 0) {
+                    $fieldName = str_replace('field_', '', $fieldName);
+                }
+
+                if ($this->auditConfigProvider->hasConfig($entityClassName, $fieldName)
+                    && ($fieldConfig = $this->auditConfigProvider->getConfig($entityClassName, $fieldName))
                     && $fieldConfig->is('auditable')
                 ) {
-                    $propertyMetadata = new PropertyMetadata($entityClassName, $reflectionProperty->getName());
+                    $propertyMetadata         = new PropertyMetadata($entityClassName, $reflectionProperty->getName());
                     $propertyMetadata->method = '__toString';
 
                     $classMetadata->addPropertyMetadata($propertyMetadata);
@@ -533,5 +561,18 @@ class LoggableManager
                 $this->addConfig($classMetadata);
             }
         }
+    }
+
+    /**
+     * @param $entity
+     * @return string
+     */
+    private function getEntityClassName($entity)
+    {
+        if (is_object($entity)) {
+            return get_class($entity);
+        }
+
+        return $entity;
     }
 }

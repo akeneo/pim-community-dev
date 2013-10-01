@@ -10,6 +10,8 @@ use Gedmo\Translatable\Translatable;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+
 /**
  * EmailTemplate
  *
@@ -19,7 +21,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          @ORM\Index(name="email_is_system_idx", columns={"isSystem"}),
  *          @ORM\Index(name="email_entity_name_idx", columns={"entityName"})})
  * @ORM\Entity(repositoryClass="Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository")
- * @Gedmo\TranslationEntity(class="Oro\Bundle\EmailBundle\Entity\EmailTemplateTranslation")*
+ * @Gedmo\TranslationEntity(class="Oro\Bundle\EmailBundle\Entity\EmailTemplateTranslation")
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Email Template", "plural_label"="Email Templates"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
 class EmailTemplate implements Translatable
 {
@@ -99,7 +110,7 @@ class EmailTemplate implements Translatable
      * )
      * @Assert\Valid(deep = true)
      */
-    private $translations;
+    protected $translations;
 
     /**
      * @param $name
@@ -129,7 +140,7 @@ class EmailTemplate implements Translatable
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -145,14 +156,14 @@ class EmailTemplate implements Translatable
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -168,14 +179,14 @@ class EmailTemplate implements Translatable
     public function setParent($parent)
     {
         $this->parent = $parent;
-    
+
         return $this;
     }
 
     /**
      * Get parent
      *
-     * @return integer 
+     * @return integer
      */
     public function getParent()
     {
@@ -191,14 +202,14 @@ class EmailTemplate implements Translatable
     public function setSubject($subject)
     {
         $this->subject = $subject;
-    
+
         return $this;
     }
 
     /**
      * Get subject
      *
-     * @return string 
+     * @return string
      */
     public function getSubject()
     {
@@ -214,14 +225,14 @@ class EmailTemplate implements Translatable
     public function setContent($content)
     {
         $this->content = $content;
-    
+
         return $this;
     }
 
     /**
      * Get content
      *
-     * @return string 
+     * @return string
      */
     public function getContent()
     {
@@ -237,14 +248,14 @@ class EmailTemplate implements Translatable
     public function setEntityName($entityName)
     {
         $this->entityName = $entityName;
-    
+
         return $this;
     }
 
     /**
      * Get entityName
      *
-     * @return string 
+     * @return string
      */
     public function getEntityName()
     {
@@ -373,6 +384,6 @@ class EmailTemplate implements Translatable
      */
     public function __toString()
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 }

@@ -27,8 +27,7 @@ class UserMenuBuilder implements BuilderInterface
         $menu->addChild(
             'My User',
             array(
-                 'route'           => 'oro_user_view',
-                 'routeParameters' => array('id' => $this->securityContext->getToken()->getUser()->getId())
+                 'route' => 'oro_user_profile_view',
             )
         );
         /* Disabled status menu till active stream will be implemented (BAP-617)

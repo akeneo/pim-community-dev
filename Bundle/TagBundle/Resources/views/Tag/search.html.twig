@@ -6,10 +6,13 @@
     {{ parent() }}
     {% include 'OroGridBundle:Include:javascript.html.twig' with { datagridView: datagrid, selector: '#tag-search-results-grid' } %}
     <script type="text/javascript">
-        $(function() {
-            // hide header
-            var searchDatagrid = Oro.Registry.getElement('datagrid', {{ datagrid.datagrid.name|json_encode|raw }});
-            searchDatagrid.header.$el.remove();
+        require(['jquery', 'oro/registry'],
+        function($, registry) {
+            $(function() {
+                // hide header
+                var searchDatagrid = registry.getElement('datagrid', {{ datagrid.datagrid.name|json_encode|raw }});
+                searchDatagrid.header.$el.remove();
+            });
         });
     </script>
 {% endblock %}
@@ -35,13 +38,16 @@
                         {% endif %}
 
                         <div class="entity-type{% if selected %} selected{% endif %}">
-                            <i class="{{ iconClass }}"></i>
                             {% if selected %}
                             {{ label|trans }} ({{ type.count }})
-                            <div class="arrow"><i class="icon-chevron-right"></i></div>
+                            <i class="{{ iconClass }}"></i>
+                            <div class="arrow">
+                              <i class="icon-chevron-right"></i>
+                            </div>
                             {% else %}
                             <a href="{{ path('oro_tag_search', { from: alias, id: tag.id }) }}">
-                                {{ label|trans }} ({{ type.count }})
+                              <i class="{{ iconClass }}"></i>
+                              {{ label|trans }} ({{ type.count }})
                             </a>
                             {% endif %}
                         </div>

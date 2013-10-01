@@ -62,18 +62,18 @@ class ControllersTest extends WebTestCase
         $form = $crawler->selectButton('Save and Close')->form();
         $form['oro_business_unit_form[name]'] = 'testBU';
         $form['oro_business_unit_form[organization]'] = 1;
-        $form['oro_business_unit_form[parent]'] = null;
         $form['oro_business_unit_form[appendUsers]'] = $user['id'];
         $form['oro_business_unit_form[email]'] = 'test@test.com';
         $form['oro_business_unit_form[phone]'] = '123-123-123';
         $form['oro_business_unit_form[fax]'] = '321-321-321';
+        $form['oro_business_unit_form[owner]'] = 1;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
 
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
-        $this->assertContains("Business Unit successfully saved", $crawler->html());
+        $this->assertContains("Business Unit saved", $crawler->html());
     }
 
     /**
@@ -84,10 +84,10 @@ class ControllersTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $this->client->generate('oro_business_unit_index', array('_format' =>'json')),
+            $this->client->generate('oro_business_unit_index', array('_format' =>'json'))
+            . '?business_units[_filter][name][value]=testBU',
             array(
                 'business_units[_filter][name][type]' => null,
-                'business_units[_filter][name][value]' => 'testBU',
                 'business_units[_pager][_page]' => 1,
                 'business_units[_pager][_per_page]' => 10,
                 'business_units[_sort_by][name]' => 'ASC'
@@ -107,21 +107,22 @@ class ControllersTest extends WebTestCase
         /** @var Form $form */
         $form = $crawler->selectButton('Save and Close')->form();
         $form['oro_business_unit_form[name]'] = 'testBU_Updated';
+        $form['oro_business_unit_form[owner]'] = 1;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
 
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
-        $this->assertContains("Business Unit successfully saved", $crawler->html());
+        $this->assertContains("Business Unit saved", $crawler->html());
 
         //get id
         $this->client->request(
             'GET',
-            $this->client->generate('oro_business_unit_index', array('_format' =>'json')),
+            $this->client->generate('oro_business_unit_index', array('_format' =>'json'))
+            . '?business_units[_filter][name][value]=testBU_Updated',
             array(
                 'business_units[_filter][name][type]' => null,
-                'business_units[_filter][name][value]' => 'testBU_Updated',
                 'business_units[_pager][_page]' => 1,
                 'business_units[_pager][_per_page]' => 10,
                 'business_units[_sort_by][name]' => 'ASC'
@@ -142,6 +143,7 @@ class ControllersTest extends WebTestCase
      */
     public function testView($id)
     {
+
         $crawler = $this->client->request(
             'GET',
             $this->client->generate('oro_business_unit_view', array('id' => $id))
@@ -149,7 +151,7 @@ class ControllersTest extends WebTestCase
 
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
-        $this->assertContains("testBU_Updated - Business Units - System", $crawler->html());
+        $this->assertContains("testBU_Updated - Business Units - Users Management - System", $crawler->html());
     }
 
     /**

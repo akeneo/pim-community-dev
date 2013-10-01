@@ -1,0 +1,64 @@
+workflows:
+    first_workflow:
+        label: 'First Workflow'
+        enabled: true
+        start_step: first_step
+        steps:
+            first_step:
+                label: 'First Step'
+                template: My:Custom:template.html.twig
+                order: 1
+                is_final: true
+                allowed_transitions:
+                    - first_transition
+                form_type: oro_workflow_step
+                form_options:
+                    attribute_fields:
+                        first_attribute:
+                            form_type: text
+                            label: 'First Attribute'
+                            options:
+                                required: true
+        attributes:
+            first_attribute:
+                label: 'First Attribute'
+                type: object
+                options:
+                    class: DateTime
+        transitions:
+            first_transition:
+                label: 'First Transition'
+                step_to: first_step
+                is_start: true
+                transition_definition: first_transition_definition
+                options:
+                    first_key: first_value
+        transition_definitions:
+            first_transition_definition:
+                conditions:
+                    @true: ~
+                post_actions:
+                    - @custom_post_action: ~
+    second_workflow:
+        label: 'Second Workflow'
+        enabled: false
+        start_step: second_step
+        type: wizard
+        steps:
+            second_step:
+                label: 'Second Step'
+                template: ~
+                order: 1
+                is_final: false
+                form_type: custom_workflow_step
+                allowed_transitions: []
+        attributes: []
+        transitions:
+            second_transition:
+                label: 'Second Transition'
+                step_to: second_step
+                transition_definition: second_transition_definition
+                options:
+                    second_key: second_value
+        transition_definitions:
+            second_transition_definition: []

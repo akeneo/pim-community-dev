@@ -1,11 +1,3 @@
-{% macro time(time, format) -%}
-<time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | localizeddate('short', 'short') }}</time>
-{%- endmacro %}
-
-{% macro date(time, format) -%}
-<time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | localizeddate('short', 'none') }}</time>
-{%- endmacro %}
-
 {% macro collection_prototype(widget) %}
     {% if 'prototype' in widget.vars|keys %}
         {% set form = widget.vars.prototype %}
@@ -143,16 +135,19 @@
 {% macro deleteButton(parameters) %}
     <div class="pull-left btn-group icons-holder">
         <a href="javascript: void(0);" class="btn icons-holder-text {{ parameters.aCss is defined? parameters.aCss : '' }}"
-           {% if (parameters.id is defined) %}
+            {% if (parameters.id is defined) %}
                 id="{{ parameters.id }}"
-           {% endif %}
-           data-id="{{ parameters.dataId }}"
-           data-message="{{ parameters.dataMessage|trans }}"
-           data-url="{{ parameters.dataUrl  }}"
-           data-redirect="{{ parameters.dataRedirect  }}"
-           {% if (parameters.title is defined) %}
+            {% endif %}
+            data-id="{{ parameters.dataId }}"
+            data-message="{{ parameters.dataMessage|trans }}"
+            data-success-message="{{ parameters.successMessage|default('Item deleted')|trans }}"
+            data-url="{{ parameters.dataUrl }}"
+            {% if parameters.dataRedirect is defined %}
+                data-redirect="{{ parameters.dataRedirect  }}"
+            {% endif %}
+            {% if (parameters.title is defined) %}
                 title="{{ parameters.title|trans }}"
-           {% endif %}
+            {% endif %}
            >
            <i class="icon-trash hide-text">{{ parameters.label|trans }}</i>{{ parameters.label|trans }}
         </a>
@@ -181,8 +176,10 @@
     {{ _self.buttonType({'type': 'submit', 'class': 'btn-success', 'label': label}) }}
 {% endmacro %}
 
-{% macro saveAndStayButton(label = 'Save') %}
+{% macro saveAndStayButton(acl = '', label = 'Save') %}
+    {% if acl is empty or resource_granted(acl) %}
     {{ _self.buttonType({'type': 'button', 'class': 'btn-success', 'label': label, 'action': 'save_and_stay'}) }}
+    {% endif %}
 {% endmacro %}
 
 {#
@@ -259,7 +256,7 @@
     Parameters:
         dataTarget - id of scroll block
         data - array with scroll data blocks
-        isForm - flag that scroll block must contain the form
+        form
     data parameter structure:
         [
             'dataBlocks' - array of blocks. each block consist of:
@@ -276,12 +273,20 @@
             'hiddenData' - additional data (hidden fields from the form)
         ]
 #}
-{% macro scrollData(dataTarget, data, isForm) %}
+{% macro scrollData(dataTarget, data, form = null) %}
+    {% if form is defined and form %}
+        {% set isForm = true %}
+    {% else %}
+        {% set isForm = false %}
+    {% endif %}
+
+    {% set dataBlocks = data.dataBlocks %}
+
     <div id="{{ dataTarget }}" class="navbar navbar-static scrollspy-nav">
         <div class="navbar-inner">
             <div class="container-fluid" style="width: auto;">
                 <ul class="nav">
-                    {% for navElement in data.dataBlocks %}
+                    {% for navElement in dataBlocks %}
                         <li {% if navElement.class is defined %}class="{{ navElement.class }}"{% endif %}><a href="#scroll-{{ loop.index }}">{{ navElement.title|trans }}</a></li>
                     {% endfor %}
                 </ul>
@@ -290,20 +295,25 @@
     </div>
     <div class="clearfix">
         {% if data.formErrors is defined and data.formErrors | length%}
-            <div class="customer-info-actions container-fluid well-small">
-                <div class="pull-left alert alert-error">
-                    <button class="close" type="button" data-dismiss="alert">×</button>
+            <div class="customer-info-actions container-fluid well-small alert-wrap">
+                <div class="alert alert-error">
+                    <button class="close" type="button" data-dismiss="alert" data-target=".alert-wrap">×</button>
                     {{ data.formErrors|raw }}
                 </div>
             </div>
         {% endif %}
         <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="50" class="scrollspy container-fluid scrollable-container{% if isForm %} form-container{% endif %}">
-            {% for scrollBlock in data.dataBlocks %}
+            {% for scrollBlock in dataBlocks %}
                 {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks, isForm) }}
             {% endfor %}
-            {% if data.hiddenData is defined %}
+            {% if data.hiddenData is defined or isForm %}
                 <div class="hide">
-                    {{ data.hiddenData|raw }}
+                    {% if data.hiddenData is defined %}
+                        {{ data.hiddenData|raw }}
+                    {% endif %}
+                    {% if isForm %}
+                        {{ form_rest(form) }}
+                    {% endif %}
                 </div>
             {% endif %}
         </div>

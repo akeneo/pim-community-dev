@@ -6,10 +6,10 @@ use Doctrine\Common\Cache\Cache;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
+use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
-use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
-use Oro\Bundle\EntityConfigBundle\Event\NewEntityEvent;
 
 class ConfigSubscriber implements EventSubscriberInterface
 {
@@ -21,7 +21,7 @@ class ConfigSubscriber implements EventSubscriberInterface
 
     public function __construct(Cache $cache, $cacheKey)
     {
-        $this->cache = $cache;
+        $this->cache    = $cache;
         $this->cacheKey = $cacheKey;
     }
 
@@ -31,30 +31,28 @@ class ConfigSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Events::NEW_ENTITY     => 'newEntityConfig',
-            Events::PERSIST_CONFIG => 'persistConfig',
+            Events::NEW_ENTITY_CONFIG_MODEL => 'newEntityConfig',
+            Events::PRE_PERSIST_CONFIG      => 'persistConfig',
         );
     }
 
     /**
-     * @param NewEntityEvent $event
+     * @param NewEntityConfigModelEvent $event
      */
-    public function newEntityConfig(NewEntityEvent $event)
+    public function newEntityConfig(NewEntityConfigModelEvent $event)
     {
         // clear cache when new entity added to configurator
         // in case if default value for some fields will equal true
-        $cm = $event->getConfigManager();
-        if ($cm->hasConfig($event->getClassName())) {
-            $config = $cm->getConfig($event->getClassName(), 'email');
-            $fields = $config->getFields(
-                function (FieldConfig $field) {
-                    return $field->is('available_in_template');
-                }
-            );
+        $cp = $event->getConfigManager()->getProvider('email');
+        $fieldConfigs = $cp->filter(
+            function (ConfigInterface $config) {
+                return $config->is('available_in_template');
+            },
+            $event->getClassName()
+        );
 
-            if (!$fields->isEmpty()) {
-                $this->cache->delete($this->cacheKey);
-            }
+        if (count($fieldConfigs)) {
+            $this->cache->delete($this->cacheKey);
         }
     }
 
@@ -66,7 +64,7 @@ class ConfigSubscriber implements EventSubscriberInterface
         $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
         $change = $event->getConfigManager()->getConfigChangeSet($event->getConfig());
 
-        if ($event->getConfig()->getScope() == 'email' && isset($change['available_in_template'])) {
+        if ($event->getConfig()->getId()->getScope() == 'email' && isset($change['available_in_template'])) {
             $this->cache->delete($this->cacheKey);
         }
     }

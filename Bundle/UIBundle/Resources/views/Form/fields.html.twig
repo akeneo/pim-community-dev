@@ -57,25 +57,33 @@
 {% endblock form_row_flex %}
 
 {% block choice_widget_collapsed %}
+    {% if client_validation %}
     <script type="text/javascript">
-        $(function() {
-            $('#{{ id }}').on('uniformInit', function () {
-                $(this).filter('.error:not([multiple])').removeClass('error').closest('.selector').addClass('error');
+        require(['jquery'],
+        function($){
+            $(function() {
+                $('#{{ id }}').on('uniformInit', function () {
+                    $(this).filter('.error:not([multiple])').removeClass('error').closest('.selector').addClass('error');
+                });
             });
-        })
+        });
     </script>
+    {% endif %}
     {{ parent() }}
 {% endblock choice_widget_collapsed %}
 
 {% block form_widget_simple %}
-    {% if type is defined and type == 'file' %}
-        <script type="text/javascript">
+    {% if type is defined and type == 'file' and client_validation %}
+    <script type="text/javascript">
+        require(['jquery'],
+        function($){
             $(function() {
                 $('#{{ id }}').on('uniformInit', function () {
                     $(this).filter('.error').removeClass('error').closest('.uploader').addClass('error');
                 });
-            })
-        </script>
+            });
+        });
+    </script>
     {% endif %}
     {{ parent() }}
 {% endblock form_widget_simple %}
@@ -105,7 +113,7 @@
                         : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators') %}
                     {% set combinedError = (combinedError != '') ? combinedError ~ '; ' ~ error : error %}
                 {% endfor %}
-                <a class="validation-tooltip" data-placement="top" data-toggle="tooltip" data-original-title="{{ combinedError }}">{{ combinedError }}</a>
+                <span class="validation-faled">{{ combinedError }}</span>
             {% else %}
                 {{ parent() }}
             {% endif %}
@@ -153,6 +161,22 @@
         </div>
     {% endspaceless %}
 {% endblock choice_widget_expanded %}
+
+{% block choice_widget_options %}
+    {% spaceless %}
+        {% for group_label, choice in options %}
+            {% if choice is iterable %}
+                <optgroup label="{{ group_label|trans({}, translation_domain) }}">
+                    {% set options = choice %}
+                    {{ block('choice_widget_options') }}
+                </optgroup>
+            {% else %}
+                {% set label = choice.label|trans({}, translation_domain) %}
+                <option value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{% if (attr.is_safe is defined and attr.is_safe) %}{{ label|raw }}{% else %}{{ label }}{% endif %}</option>
+            {% endif %}
+        {% endfor %}
+    {% endspaceless %}
+{% endblock choice_widget_options %}
 
 {% block form_label %}
     {% spaceless %}

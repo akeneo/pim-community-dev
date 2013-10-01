@@ -30,11 +30,11 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit()
             ->openRoles()
             ->add()
-            ->setName('ROLE_NAME_' . $randomPrefix)
             ->setLabel('Label_' . $randomPrefix)
-            ->selectAcl('Root')
+            ->setOwner('Main')
+            ->setEntity('Business Unit', array('Create', 'Edit', 'Delete', 'View', 'Assign'))
             ->save()
-            ->assertMessage('Role successfully saved')
+            ->assertMessage('Role saved')
             ->close();
 
         return ($randomPrefix);
@@ -55,9 +55,10 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit()
             ->openUsers()
             ->add()
-            ->assertTitle('Create User - Users - System')
+            ->assertTitle('Create User - Users - Users Management - System')
             ->setUsername($username)
             ->enable()
+            ->setOwner('Main')
             ->setFirstpassword('123123q')
             ->setSecondpassword('123123q')
             ->setFirstname('First_'.$username)
@@ -65,9 +66,10 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setEmail($username.'@mail.com')
             ->setRoles(array('Label_' . $role))
             ->save()
-            ->assertMessage('User successfully saved')
+            ->assertMessage('User saved')
+            ->toGrid()
             ->close()
-            ->assertTitle('Users - System');
+            ->assertTitle('Users - Users Management - System');
 
         return $username;
     }
@@ -86,11 +88,13 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit()
             ->openBusinessUnits()
             ->add()
-            ->assertTitle('Create Business Unit - Business Units - System')
+            ->assertTitle('Create Business Unit - Business Units - Users Management - System')
             ->setBusinessUnitName($unitname)
+            ->setOwner('Main')
             ->save()
-            ->assertMessage('Business Unit successfully saved')
-            ->assertTitle('Business Units - System')
+            ->assertMessage('Business Unit saved')
+            ->toGrid()
+            ->assertTitle('Business Units - Users Management - System')
             ->close();
 
         return $unitname;
@@ -108,7 +112,8 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
      */
     public function testBusinessUnitAcl($aclcase, $username, $role, $unitname)
     {
-        $rolename = 'ROLE_NAME_' . $role;
+        $this->markTestSkipped('Skipped due bug BAP-1693');
+        $rolename = 'Label_' . $role;
         $login = new Login($this);
         $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
@@ -137,7 +142,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $rolename)
             ->open(array($rolename))
-            ->selectAcl('Delete business unit')
+            ->setEntity('Business Unit', array('Delete'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -152,7 +157,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $rolename)
             ->open(array($rolename))
-            ->selectAcl('Edit business unit')
+            ->setEntity('Business Unit', array('Edit'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -167,7 +172,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $rolename)
             ->open(array($rolename))
-            ->selectAcl('Create business unit')
+            ->setEntity('Business Unit', array('Create'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -182,22 +187,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $rolename)
             ->open(array($rolename))
-            ->selectAcl('View business unit')
-            ->save()
-            ->logout()
-            ->setUsername($username)
-            ->setPassword('123123q')
-            ->submit()
-            ->openBusinessUnits()
-            ->checkContextMenu($unitname, 'View');
-    }
-
-    public function viewListAcl($login, $rolename, $username)
-    {
-        $login->openRoles()
-            ->filterBy('Role', $rolename)
-            ->open(array($rolename))
-            ->selectAcl('View business units list')
+            ->setEntity('Business Unit', array('View'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -219,7 +209,6 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             'update' => array('update'),
             'create' => array('create'),
             'view' => array('view'),
-            'view list' => array('view list'),
         );
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\GridBundle\Datagrid;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
@@ -88,7 +87,7 @@ abstract class FlexibleDatagridManager extends DatagridManager
      * Traverse all flexible attributes and add them as fields to collection
      *
      * @param FieldDescriptionCollection $fieldsCollection
-     * @param array $options
+     * @param array                      $options
      */
     protected function configureFlexibleFields(
         FieldDescriptionCollection $fieldsCollection,
@@ -107,8 +106,8 @@ abstract class FlexibleDatagridManager extends DatagridManager
 
     /**
      * @param FieldDescriptionCollection $fieldsCollection
-     * @param string $attributeCode
-     * @param array $options
+     * @param string                     $attributeCode
+     * @param array                      $options
      */
     protected function configureFlexibleField(
         FieldDescriptionCollection $fieldsCollection,
@@ -128,8 +127,8 @@ abstract class FlexibleDatagridManager extends DatagridManager
     /**
      * Create field by flexible attribute
      *
-     * @param AbstractAttribute $attribute
-     * @param array $options
+     * @param  AbstractAttribute         $attribute
+     * @param  array                     $options
      * @return FieldDescriptionInterface
      */
     protected function createFlexibleField(AbstractAttribute $attribute, array $options = array())
@@ -144,8 +143,8 @@ abstract class FlexibleDatagridManager extends DatagridManager
     /**
      * Get options for flexible field
      *
-     * @param AbstractAttribute $attribute
-     * @param array $options
+     * @param  AbstractAttribute $attribute
+     * @param  array             $options
      * @return array
      */
     protected function getFlexibleFieldOptions(AbstractAttribute $attribute, array $options = array())
@@ -197,7 +196,7 @@ abstract class FlexibleDatagridManager extends DatagridManager
     }
 
     /**
-     * @param string $code
+     * @param  string            $code
      * @return AbstractAttribute
      * @throws \LogicException
      */
@@ -212,7 +211,7 @@ abstract class FlexibleDatagridManager extends DatagridManager
     }
 
     /**
-     * @param string $code
+     * @param  string  $code
      * @return boolean
      */
     protected function hasFlexibleAttribute($code)

@@ -92,6 +92,12 @@ class EmailRendererTest extends \PHPUnit_Framework_TestCase
     public function testConfigureSandboxNotCached()
     {
         $entityClass = 'Oro\Bundle\UserBundle\Entity\User';
+
+        $configIdMock = $this->getMockForAbstractClass('Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface');
+        $configIdMock
+            ->expects($this->once())->method('getClassName')
+            ->will($this->returnValue($entityClass));
+
         $configuredData = array(
             $entityClass => array(
                 'getsomecode'
@@ -109,18 +115,15 @@ class EmailRendererTest extends \PHPUnit_Framework_TestCase
             ->method('save')
             ->with($this->cacheKey, serialize($configuredData));
 
-        $configurableEntities = array($entityClass);
+        $configurableEntities = array($configIdMock);
         $this->configProvider
             ->expects($this->once())
-            ->method('getAllConfigurableEntityNames')
+            ->method('getIds')
             ->will($this->returnValue($configurableEntities));
 
         $fieldsCollection = new ArrayCollection();
 
-        $config = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\EntityConfig')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $config->expects($this->once())->method('getFields')
+        $this->configProvider->expects($this->once())->method('filter')
             ->will(
                 $this->returnCallback(
                     function ($callback) use ($fieldsCollection) {
@@ -129,26 +132,28 @@ class EmailRendererTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $this->configProvider
-            ->expects($this->once())
-            ->method('getConfig')
-            ->with($entityClass)
-            ->will($this->returnValue($config));
+        $field1Id = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $field1Id->expects($this->once())
+            ->method('getFieldName')
+            ->will($this->returnValue('someCode'));
 
-        $field1 = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\FieldConfig')
+        $field1 = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface')
             ->disableOriginalConstructor()
-            ->getMock();
-        $field2 = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\FieldConfig')
+            ->getMockForAbstractClass();
+
+        $field2 = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface')
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getMockForAbstractClass();
 
         $field1->expects($this->once())
             ->method('is')
             ->with('available_in_template')
             ->will($this->returnValue(true));
         $field1->expects($this->once())
-            ->method('getCode')
-            ->will($this->returnValue('someCode'));
+            ->method('getId')
+            ->will($this->returnValue($field1Id));
 
         $field2->expects($this->once())
             ->method('is')
@@ -196,13 +201,13 @@ class EmailRendererTest extends \PHPUnit_Framework_TestCase
         $renderer->expects($this->at(0))
             ->method('render')
             ->with(
-                '{% verbatim %}'.strip_tags($content).'{% endverbatim %}',
+                strip_tags($content),
                 array_merge($templateParams, array('user' => $this->user))
             );
         $renderer->expects($this->at(1))
             ->method('render')
             ->with(
-                '{% verbatim %}'.$subject.'{% endverbatim %}',
+                $subject,
                 array_merge($templateParams, array('user' => $this->user))
             );
 
@@ -210,6 +215,36 @@ class EmailRendererTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInternalType('array', $result);
         $this->assertCount(2, $result);
+    }
+
+
+    /**
+     * Compile template preview test
+     */
+    public function testCompilePreview()
+    {
+        $this->cache
+            ->expects($this->once())
+            ->method('fetch')
+            ->with($this->cacheKey)
+            ->will($this->returnValue(serialize(array('somekey' => array()))));
+
+        $content = 'test content <a href="sdfsdf">asfsdf</a> {{ entity.name }}';
+
+        $emailTemplate = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailTemplate');
+        $emailTemplate->expects($this->once())
+            ->method('getContent')
+            ->will($this->returnValue($content));
+        $emailTemplate->expects($this->once())
+            ->method('getType')
+            ->will($this->returnValue('html'));
+
+        $renderer = $this->getRendererInstance();
+
+        $renderer->expects($this->at(0))
+            ->method('render')
+            ->with('{% verbatim %}' . $content . '{% endverbatim %}');
+        $renderer->compilePreview($emailTemplate);
     }
 
     /**

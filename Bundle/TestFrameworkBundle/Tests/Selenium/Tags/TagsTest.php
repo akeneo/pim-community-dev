@@ -36,8 +36,9 @@ class TagsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->add()
             ->assertTitle('Create Tag - Tags - System')
             ->setTagname($tagname)
+            ->setOwner('admin')
             ->save()
-            ->assertMessage('Tag successfully saved')
+            ->assertMessage('Tag saved')
             ->assertTitle('Tags - System')
             ->close();
 
@@ -62,7 +63,7 @@ class TagsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setTagname($newtagname)
             ->save()
             ->assertTitle('Tags - System')
-            ->assertMessage('Tag successfully saved');
+            ->assertMessage('Tag saved');
 
         return $newtagname;
     }
@@ -81,6 +82,6 @@ class TagsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->filterBy('Tag', $tagname)
             ->delete()
             ->assertTitle('Tags - System')
-            ->assertMessage('Item was deleted');
+            ->assertMessage('Item deleted');
     }
 }

@@ -3,15 +3,18 @@
 namespace Oro\Bundle\NavigationBundle\Controller\Api;
 
 use Symfony\Component\HttpFoundation\Response;
+
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\Rest\Util\Codes;
-use Oro\Bundle\UserBundle\Entity\User;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory;
 use Oro\Bundle\NavigationBundle\Entity\Repository\NavigationRepositoryInterface;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * @RouteResource("navigationitems")

@@ -56,7 +56,8 @@ class SoapDataAuditApiTest extends WebTestCase
             "plainPassword" => '1231231q',
             "firstName" => "firstName",
             "lastName" => "lastName",
-            "rolesCollection" => array("1")
+            "rolesCollection" => array("1"),
+            "owner" => "1"
         );
 
         $id = $this->client->getSoap()->createUser($request);
@@ -107,19 +108,5 @@ class SoapDataAuditApiTest extends WebTestCase
             unset($audit['loggedAt']);
             $this->assertEquals($audit, $result);
         }
-    }
-
-    /**
-     * @param array $response
-     * @depends testGetAudits
-     */
-    public function testDeleteAudit($response)
-    {
-        foreach ($response as $audit) {
-            $this->client->getSoap()->deleteAudit($audit['id']);
-        }
-        $result = $this->client->getSoap()->getAudits();
-        $result = ToolsAPI::classToArray($result);
-        $this->assertEmpty($result);
     }
 }

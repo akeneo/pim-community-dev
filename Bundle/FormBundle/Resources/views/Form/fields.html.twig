@@ -1,50 +1,3 @@
-{% block oro_ticker_symbol_widget %}
-    <script type="text/javascript">
-        $(function() {
-            var cache = {};
-            $("#{{ id }}").typeahead({
-                source: function (request, process) {
-                    YAHOO = {
-                        Finance: {
-                            SymbolSuggest: {
-                                ssCallback: function (data) {
-                                    var result = $.map(data.ResultSet.Result, function (item) {
-                                        return item.name + " (" + item.symbol + ")";
-                                    });
-                                    $.each(data.ResultSet.Result, function (itemKey, item) {
-                                        cache[item.name + " (" + item.symbol + ")"] = item.symbol;
-                                    });
-                                    process(result)
-                                }
-                            }
-                        }
-                    };
-                    $.ajax({
-                        type: "GET",
-                        dataType: "jsonp",
-                        jsonp: "callback",
-                        jsonpCallback: "YAHOO.Finance.SymbolSuggest.ssCallback",
-                        data: {
-                            query: request
-                        },
-                        cache: true,
-                        url: "http://autoc.finance.yahoo.com/autoc"
-                    });
-                },
-                updater: function(item) {
-                    if (typeof cache[item] != 'undefined') {
-                        return cache[item];
-                    } else {
-                        return item;
-                    }
-                }
-            });
-        });
-    </script>
-
-    {{ form_widget(form) }}
-{% endblock %}
-
 {% block genemu_jqueryselect2_country_row %}
     {{ block('genemu_jqueryselect2_row') }}
 {% endblock %}
@@ -57,54 +10,158 @@
     {{ block('genemu_jqueryselect2_row') }}
 {% endblock %}
 
-{% block oro_jqueryselect2_hidden_row %}
-    {{ block('genemu_jqueryselect2_row') }}
+{% block genemu_jqueryselect2_row %}
+    {{ form_row(form, { 'attr': {'class': 'select2'} }) }}
+    {{ form_javascript(form) }}
 {% endblock %}
 
-{% block genemu_jqueryselect2_row %}
-    {{ form_row(form) }}
-    {{ form_javascript(form) }}
+{% block percent_widget %}
+    {% set type = type|default('text') %}
+    <div class="input-append">
+        {% set type = type|default('text') %}
+        <input class="input-addon" type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        <span class="add-on">%</span>
+    </div>
 {% endblock %}
 
 {% block genemu_jqueryselect2_javascript %}
     <script type="text/javascript">
-        (function() {
+        require(['jquery', 'oro/select2-config', 'jquery.select2'],
+        function($, Select2Config){
             var $field = $('#{{ id }}');
 
             {% block genemu_jqueryselect2_javascript_prototype %}
-                {% set url = '' %}
-                {% if configs.ajax.url is defined and configs.ajax.url%}
-                    {% set url = configs.ajax.url %}
-                {% elseif configs.route_name is defined and configs.route_name %}
-                    {% set url = path(configs.route_name) %}
-                {% endif %}
+            {% set url = '' %}
+            {% if configs.ajax.url is defined and configs.ajax.url%}
+            {% set url = configs.ajax.url %}
+            {% elseif configs.route_name is defined and configs.route_name %}
+            {% set url = path(configs.route_name) %}
+            {% endif %}
 
-                {% if configs.placeholder is defined %}
-                    {% set configs = configs|merge({'placeholder': configs.placeholder|trans }) %}
-                {% endif %}
-                {% if configs.result_template_twig is defined and configs.result_template_twig %}
-                    {% set configs = configs|merge({'result_template': include(configs.result_template_twig) }) %}
-                {% endif %}
-                {% if configs.selection_template_twig is defined and configs.selection_template_twig %}
-                    {% set configs = configs|merge({'selection_template': include(configs.selection_template_twig) }) %}
-                {% endif %}
+            {% if configs.placeholder is defined %}
+            {% set configs = configs|merge({'placeholder': configs.placeholder|trans }) %}
+            {% endif %}
+            {% if configs.result_template_twig is defined and configs.result_template_twig %}
+            {% set configs = configs|merge({'result_template': include(configs.result_template_twig) }) %}
+            {% endif %}
+            {% if configs.selection_template_twig is defined and configs.selection_template_twig %}
+            {% set configs = configs|merge({'selection_template': include(configs.selection_template_twig) }) %}
+            {% endif %}
 
-                var select2Config = {{ configs|json_encode|raw }};
-                {% if configs.extra_config is defined and configs.extra_config %}
-                    {{ block('oro_combobox_dataconfig_' ~ configs.extra_config) }}
-                {% endif %}
+            var select2Config = {{ configs|json_encode|raw }};
+            {% if configs.extra_config is defined and configs.extra_config %}
+            {{ block('oro_combobox_dataconfig_' ~ configs.extra_config) }}
+            {% endif %}
 
-                if ($field.length && $field[0].tagName.toLowerCase() === 'input') {
-                    var configurator = new OroSelect2Config(select2Config, {{ url|json_encode|raw }}, {{ configs.per_page|default(10) }});
-                    select2Config = configurator.getConfig();
-                }
+            {% if excluded is not defined %}
+                {% set excluded = [] %}
+            {% endif %}
+            if ($field.length && $field[0].tagName.toLowerCase() === 'input') {
+                var configurator = new Select2Config(
+                    select2Config,
+                    {{ url|json_encode|raw }},
+                    {{ configs.per_page|default(10) }},
+                    {{ excluded|json_encode|raw }}
+                );
+                select2Config = configurator.getConfig();
+            }
 
-                $field.select2(select2Config);
+            $field.select2(select2Config);
 
-                $field.trigger('select2-init');
+            $field.trigger('select2-init');
             {% endblock %}
-        })();
+        });
     </script>
+{% endblock %}
+
+{% block genemu_jqueryselect2_entity_widget %}
+    {% spaceless %}
+        {% if expanded %}
+            {{ block('choice_widget_expanded') }}
+        {% else %}
+            {{ block('genemu_jqueryselect2_entity_widget_collapsed') }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}
+
+{% block genemu_jqueryselect2_entity_widget_collapsed %}
+    {% spaceless %}
+        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
+            {% if empty_value is not none %}
+                <option {% if value is empty %} selected="selected"{% endif %} value="">
+                    {{ empty_value|trans({}, translation_domain) }}
+                </option>
+            {% endif %}
+            {% if preferred_choices|length > 0 %}
+                {% set options = preferred_choices %}
+                {{ block('choice_widget_options') }}
+                {% if choices|length > 0 and separator is not none %}
+                    <option disabled="disabled">{{ separator }}</option>
+                {% endif %}
+            {% endif %}
+            {% set options = choices %}
+            {{ block('choice_widget_options') }}
+        </select>
+    {% endspaceless %}
+{% endblock %}
+
+{% block oro_ticker_symbol_widget %}
+    <script type="text/javascript">
+        require(['jquery', 'bootstrap'],
+        function($){
+            $(function() {
+                var cache = {};
+                $("#{{ id }}").typeahead({
+                    source: function (request, process) {
+                        YAHOO = {
+                            Finance: {
+                                SymbolSuggest: {
+                                    ssCallback: function (data) {
+                                        var result = $.map(data.ResultSet.Result, function (item) {
+                                            return item.name + " (" + item.symbol + ")";
+                                        });
+                                        $.each(data.ResultSet.Result, function (itemKey, item) {
+                                            cache[item.name + " (" + item.symbol + ")"] = item.symbol;
+                                        });
+                                        process(result)
+                                    }
+                                }
+                            }
+                        };
+                        $.ajax({
+                            type: "GET",
+                            dataType: "jsonp",
+                            jsonp: "callback",
+                            jsonpCallback: "YAHOO.Finance.SymbolSuggest.ssCallback",
+                            data: {
+                                query: request
+                            },
+                            cache: true,
+                            url: "http://autoc.finance.yahoo.com/autoc"
+                        });
+                    },
+                    updater: function(item) {
+                        if (typeof cache[item] != 'undefined') {
+                            return cache[item];
+                        } else {
+                            return item;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block oro_jqueryselect2_hidden_row %}
+    {{ block('genemu_jqueryselect2_row') }}
+{% endblock %}
+
+{% block oro_icon_select_widget %}
+    {{ form_widget(form) }}
+    {{ form_javascript(form) }}
 {% endblock %}
 
 {% block oro_combobox_dataconfig_autocomplete %}
@@ -122,6 +179,29 @@
                 'per_page': {{ configs.per_page|default(10) }},
                 'name': "{{ configs.autocomplete_alias }}",
                 'query': query
+            };
+        },
+        'results': function (data, page) {
+            return data;
+        }
+    };
+{% endblock %}
+
+{% block oro_combobox_dataconfig_relation %}
+    {% set url = '' %}
+    {% if configs.ajax.url is defined and configs.ajax.url%}
+    {% set url = configs.ajax.url %}
+    {% elseif configs.route_name is defined and configs.route_name %}
+        {% set url = path(configs.route_name) %}
+    {% endif %}
+    select2Config.ajax = {
+        'url': {{ url|json_encode|raw }},
+        'data': function (query, page) {
+            return {
+                'page': page,
+                'per_page': {{ configs.per_page|default(10) }},
+                'name': "{{ configs.autocomplete_alias }}",
+                'query': query + ',{{ configs.target_entity }},{{ configs.target_field }}'
             };
         },
         'results': function (data, page) {
@@ -154,33 +234,48 @@
     };
 {% endblock %}
 
-{% block genemu_jqueryselect2_entity_widget %}
-    {% spaceless %}
-        {% if expanded %}
-            {{ block('choice_widget_expanded') }}
-        {% else %}
-            {{ block('genemu_jqueryselect2_entity_widget_collapsed') }}
-        {% endif %}
-    {% endspaceless %}
-{% endblock %}
+{% block oro_multiple_entity_widget %}
+    {{ form_widget(form) }}
 
-{% block genemu_jqueryselect2_entity_widget_collapsed %}
-    {% spaceless %}
-        <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}>
-            {% if empty_value is not none %}
-                <option {% if value is empty %} selected="selected"{% endif %} value="">
-                    {{ empty_value|trans({}, translation_domain) }}
-                </option>
-            {% endif %}
-            {% if preferred_choices|length > 0 %}
-                {% set options = preferred_choices %}
-                {{ block('choice_widget_options') }}
-                {% if choices|length > 0 and separator is not none %}
-                    <option disabled="disabled">{{ separator }}</option>
-                {% endif %}
-            {% endif %}
-            {% set options = choices %}
-            {{ block('choice_widget_options') }}
-        </select>
-    {% endspaceless %}
+    <style type="text/css">
+        #{{ id }}-container .entity-item {
+            padding: 5px 7px;
+            margin-left: 0;
+            margin-right: 1.5%;
+            margin-top: 15px;
+        }
+
+        #{{ id }}-container .entity-item h4 {
+            margin: 3px 0;
+        }
+    </style>
+
+    <div id="{{ id }}-container"></div>
+
+    <script type="text/javascript">
+        require(['jquery',
+            'oro/multiple-entity', 'oro/multiple-entity/collection', 'oro/multiple-entity/model',
+            'text!{{ asset('bundles/oroform/js/multiple-entity/templates/multiple-entities.html') }}',
+            'text!{{ asset('bundles/oroform/js/multiple-entity/templates/multiple-entity.html') }}'
+        ],
+        function($, MultipleEntity, MultipleEntityCollection, MultipleEntityModel, EntitiesTpl, EntityTpl) {
+            var widget = new MultipleEntity({
+                el: '#{{ id }}-container',
+                template: EntitiesTpl,
+                elementTemplate: EntityTpl,
+                addedElement: '#{{ id }}_added',
+                removedElement: '#{{ id }}_removed',
+                name: {{ id|json_encode|raw }},
+                defaultElement: {{ form.vars.default_element|json_encode|raw }},
+                selectionUrl: {{ form.vars.grid_url|json_encode|raw }},
+                collection: new MultipleEntityCollection(),
+                selectorWindowTitle: {{ form.vars.selector_window_title|trans|json_encode|raw }}
+            });
+            var data = [];
+            {% for element in initial_elements %}
+                data.push(new MultipleEntityModel({{ element|json_encode|raw }}));
+            {% endfor %}
+            widget.getCollection().reset(data);
+        });
+    </script>
 {% endblock %}

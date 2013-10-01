@@ -13,15 +13,15 @@ interface ParametersInterface
     /**
      * Get parameter value from parameters container
      *
-     * @param string $type
-     * @param mixed $default
+     * @param  string $type
+     * @param  mixed  $default
      * @return array
      */
     public function get($type, $default = null);
 
     /**
-     * @param string $type
-     * @param mixed $value
+     * @param  string $type
+     * @param  mixed  $value
      * @return void
      */
     public function set($type, $value);

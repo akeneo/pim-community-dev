@@ -1,0 +1,5 @@
+oro_workflow:
+    label: Workflow manipulations
+    type: action
+    group_name: ""
+    bindings: ~

@@ -6,11 +6,11 @@
 }
 
 .search-entity-types-column .entity-type {
-    border-bottom: 1px solid #cccccc;
-    width: 190px;
+    border-bottom: 1px solid #e6e6e6;
+    width: 200px;
     height: 30px;
     font-size: 13px;
-    padding: 10px 0 0 10px;
+    padding: 5px 0 5px 10px;
 }
 
 .search-entity-types-column .entity-type.selected {
@@ -36,7 +36,8 @@
 }
 
 .search-no-results {
-    width: 100%;
+    margin:10px auto;
+    width: 98%;
     padding: 10px 0;
     text-align: center;
     vertical-align: middle;

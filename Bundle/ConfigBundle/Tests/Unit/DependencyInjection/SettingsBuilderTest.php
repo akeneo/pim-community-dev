@@ -12,15 +12,18 @@ class SettingsBuilderTest extends \PHPUnit_Framework_TestCase
 
         $root
             ->children()
-                ->scalarNode('foo')->end()
+            ->scalarNode('foo')->end()
             ->end();
 
-        SettingsBuilder::append($root, array(
-            'greeting' => array(
-                'value' => true,
-                'type'  => 'boolean',
-            ),
-        ));
+        SettingsBuilder::append(
+            $root,
+            array(
+                'greeting' => array(
+                    'value' => true,
+                    'type'  => 'boolean',
+                ),
+            )
+        );
 
         $children = $this->getField($root, 'children');
 
@@ -35,14 +38,17 @@ class SettingsBuilderTest extends \PHPUnit_Framework_TestCase
 
         $root
             ->children()
-                ->scalarNode('foo')->end()
+            ->scalarNode('foo')->end()
             ->end();
 
-        SettingsBuilder::append($root, array(
-            'level' => array(
-                'value' => 10,
-            ),
-        ));
+        SettingsBuilder::append(
+            $root,
+            array(
+                'level' => array(
+                    'value' => 10,
+                ),
+            )
+        );
 
         $children = $this->getField($root, 'children');
 
@@ -57,15 +63,18 @@ class SettingsBuilderTest extends \PHPUnit_Framework_TestCase
 
         $root
             ->children()
-                ->scalarNode('foo')->end()
+            ->scalarNode('foo')->end()
             ->end();
 
-        SettingsBuilder::append($root, array(
-            'list' => array(
-                'value' => array(1, 2, 3),
-                'type'  => 'array',
-            ),
-        ));
+        SettingsBuilder::append(
+            $root,
+            array(
+                'list' => array(
+                    'value' => array(1, 2, 3),
+                    'type'  => 'array',
+                ),
+            )
+        );
 
         $children = $this->getField($root, 'children');
         $settings = $this->getField($children['settings'], 'children');

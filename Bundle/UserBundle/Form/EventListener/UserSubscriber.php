@@ -8,7 +8,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
-use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class UserSubscriber implements EventSubscriberInterface
@@ -19,27 +18,20 @@ class UserSubscriber implements EventSubscriberInterface
     protected $factory;
 
     /**
-     * @var AclManager
-     */
-    protected $aclManager;
-
-    /**
      * @var SecurityContextInterface
      */
     protected $security;
 
+
     /**
-     * @param FormFactoryInterface     $factory    Factory to add new form children
-     * @param AclManager               $aclManager ACL manager
-     * @param SecurityContextInterface $security   Security context
+     * @param FormFactoryInterface      $factory        Factory to add new form children
+     * @param SecurityContextInterface  $security       Security context
      */
     public function __construct(
         FormFactoryInterface $factory,
-        AclManager $aclManager,
         SecurityContextInterface $security
     ) {
         $this->factory    = $factory;
-        $this->aclManager = $aclManager;
         $this->security   = $security;
     }
 
@@ -50,14 +42,14 @@ class UserSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_BIND => 'preBind',
+            FormEvents::PRE_SUBMIT => 'preSubmit',
         );
     }
 
     /**
      * @param FormEvent $event
      */
-    public function preBind(FormEvent $event)
+    public function preSubmit(FormEvent $event)
     {
         $submittedData = $event->getData();
 
@@ -68,14 +60,6 @@ class UserSubscriber implements EventSubscriberInterface
                 }
 
             }
-        }
-
-        if (!$this->aclManager->isResourceGranted('oro_user_role')) {
-            unset($submittedData['rolesCollection']);
-        }
-
-        if (!$this->aclManager->isResourceGranted('oro_user_group')) {
-            unset($submittedData['groups']);
         }
 
         $event->setData($submittedData);
@@ -95,14 +79,6 @@ class UserSubscriber implements EventSubscriberInterface
             $form->remove('plainPassword');
         }
 
-        if (!$this->aclManager->isResourceGranted('oro_user_role')) {
-            $form->remove('rolesCollection');
-        }
-
-        if (!$this->aclManager->isResourceGranted('oro_user_group')) {
-            $form->remove('groups');
-        }
-
         // do not allow user to disable his own account
         $form->add(
             $this->factory->createNamed(
@@ -120,6 +96,10 @@ class UserSubscriber implements EventSubscriberInterface
                 )
             )
         );
+
+        if (!$this->isCurrentUser($entity)) {
+            $form->remove('change_password');
+        }
     }
 
     /**

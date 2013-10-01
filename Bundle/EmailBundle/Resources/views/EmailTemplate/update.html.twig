@@ -61,7 +61,7 @@
         {% endif %}
         {{ cancelButton }}
 
-        {{ UI.saveAndStayButton() }}
+        {{ UI.saveAndStayButton('oro_email_emailtemplate_update') }}
         {{ UI.saveAndCloseButton() }}
     {% else %}
         {{ cancelButton  }}
@@ -115,7 +115,6 @@
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
         'dataBlocks': dataBlocks,
-        'hiddenData': form_rest(form)
         }
     %}
 

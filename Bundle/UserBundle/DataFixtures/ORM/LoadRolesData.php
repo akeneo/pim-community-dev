@@ -25,21 +25,24 @@ class LoadRolesData extends AbstractFixture implements OrderedFixtureInterface
         $roleUser->setLabel('User');
         $this->addReference('user_role', $roleUser);
 
-        $roleSAdmin = new Role('ROLE_SUPER_ADMIN');
-        $roleSAdmin->setLabel('Super admin');
+        $roleSAdmin = new Role('ROLE_ADMINISTRATOR');
+        $roleSAdmin->setLabel('Administrator');
         $this->addReference('admin_role', $roleSAdmin);
-
-        $roleAdmin = new Role('ROLE_ADMINISTRATOR');
-        $roleAdmin->setLabel('Administrator');
-        $this->addReference('administrator_role', $roleAdmin);
 
         $roleManager = new Role('ROLE_MANAGER');
         $roleManager->setLabel('Manager');
         $this->addReference('manager_role', $roleManager);
-
+        if ($this->hasReference('default_business_unit')) {
+            $defaultBusinessUnit = $this->getReference('default_business_unit');
+            if ($defaultBusinessUnit) {
+                $roleAnonymous->setOwner($defaultBusinessUnit);
+                $roleUser->setOwner($defaultBusinessUnit);
+                $roleSAdmin->setOwner($defaultBusinessUnit);
+                $roleManager->setOwner($defaultBusinessUnit);
+            }
+        }
         $manager->persist($roleAnonymous);
         $manager->persist($roleUser);
-        $manager->persist($roleAdmin);
         $manager->persist($roleSAdmin);
         $manager->persist($roleManager);
 
@@ -48,6 +51,6 @@ class LoadRolesData extends AbstractFixture implements OrderedFixtureInterface
 
     public function getOrder()
     {
-        return 1;
+        return 20;
     }
 }

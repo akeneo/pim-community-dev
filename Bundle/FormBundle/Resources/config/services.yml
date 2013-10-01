@@ -1,5 +1,7 @@
 parameters:
-    oro_form.twig.form.class:              Oro\Bundle\FormBundle\Twig\FormExtension
+    oro_form.twig.form.class:                     Oro\Bundle\FormBundle\Twig\FormExtension
+    oro_form.autocomplete.config.handler.class:   Oro\Bundle\FormBundle\Autocomplete\ConfigHandler
+
 services:
     oro_form.twig.form_extension:
         class: %oro_form.twig.form.class%

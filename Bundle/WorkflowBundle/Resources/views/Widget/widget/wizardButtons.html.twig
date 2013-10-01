@@ -1,0 +1,22 @@
+{% import 'OroWorkflowBundle::macros.html.twig' as workflowMacros %}
+
+{% set blockId = 'wizard-transitions-container-' ~ random() %}
+<div class="widget-content" id="{{ blockId }}">
+    <div class="btn-group">
+        {% for data in transitionsData %}
+            {{ workflowMacros.renderTransitionButton(
+                data.workflow,
+                data.transition,
+                data.workflow.isTransitionAllowed(data.workflowItem, data.transition),
+                path(
+                    'oro_workflow_api_rest_workflow_transit',
+                    {
+                        workflowItemId: data.workflowItem.id,
+                        transitionName: data.transition.name
+                    }
+                )
+            ) }}
+        {% endfor %}
+    </div>
+    {{ workflowMacros.renderTransitionsJs(transitionsData, blockId) }}
+</div>

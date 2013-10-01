@@ -1,14 +1,14 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
-{% set title = 'Add Field ' %}
-{% oro_title_set({params : {"%username%": 'User' }}) %}
+{% set title = 'New Field ' %}
+{% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}
 
 {% set formAction = path('oro_entityextend_field_create', {id: entity_id}) %}
 
 {% block navButtons %}
     {{ UI.button({'path' : path('oro_entityconfig_view', {'id':entity_id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
-    {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Save'}) }}
+    {{ UI.buttonType({'type': 'submit', 'class': 'btn-success', 'label': 'Continue'}) }}
 {% endblock navButtons %}
 
 {% block pageHeader %}
@@ -30,23 +30,9 @@
 
 {% block content_data %}
     {% set id = 'configfield-create' %}
-    {% set dataBlocks = [
-        {
-            'title': 'Doctrine Type',
-            'class': 'active',
-            'subblocks': [{
-                'title': '',
-                'data': [
-                    form_row(form.code),
-                    form_row(form.type),
-                ]
-            }]
-        }
-    ] %}
-
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
-        'dataBlocks': dataBlocks,
+        'dataBlocks': form_data_blocks(form),
         'hiddenData': form_rest(form)
     } %}
 

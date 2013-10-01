@@ -2,26 +2,27 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigEntity;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigField;
-use Oro\Bundle\EntityConfigBundle\Entity\ConfigValue;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
+use Oro\Bundle\EntityConfigBundle\Entity\ConfigModelValue;
 
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var  ConfigEntity */
+    /** @var  EntityConfigModel */
     private $configEntity;
 
-    /** @var  ConfigField */
+    /** @var  FieldConfigModel */
     private $configField;
 
-    /** @var  ConfigValue */
+    /** @var  ConfigModelValue */
     private $configValue;
 
     protected function setUp()
     {
-        $this->configEntity = new ConfigEntity();
-        $this->configField  = new ConfigField();
-        $this->configValue  = new ConfigValue();
+        $this->configEntity = new EntityConfigModel();
+        $this->configField  = new FieldConfigModel();
+        $this->configValue  = new ConfigModelValue();
     }
 
     public function testProperties()
@@ -51,6 +52,9 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         /** test ConfigField */
         $this->assertEmpty($this->configField->getId());
 
+        $this->configField->setMode(ConfigModelManager::MODE_READONLY);
+        $this->assertEquals(ConfigModelManager::MODE_READONLY, $this->configField->getMode());
+
         /** test ConfigValue */
         $this->assertEmpty($this->configValue->getId());
         $this->assertEmpty($this->configValue->getScope());
@@ -59,6 +63,9 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->configValue->getField());
 
         $this->assertFalse($this->configValue->getSerializable());
+
+        $this->configValue->setSerializable(true);
+        $this->assertTrue($this->configValue->getSerializable());
 
 
         $this->assertEmpty($this->configValue->getEntity());
@@ -73,7 +80,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             'test',
-            $this->configField->getCode($this->configField->setCode('test'))
+            $this->configField->getFieldName($this->configField->setFieldName('test'))
         );
 
         $this->assertEquals(
@@ -126,7 +133,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             $this->configValue->toArray()
         );
 
-        /** test AbstractConfig setValues() */
+        /** test Config setValues() */
         $this->configEntity->setValues(array($this->configValue));
         $this->assertEquals(
             $this->configValue,
@@ -142,7 +149,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             ->setScope('datagrid')
             ->setValue('a:2:{s:4:"code";s:8:"test_001";s:4:"type";s:6:"string";}');
 
-        $values = array(
+        $values       = array(
             'is_searchable' => true,
             'is_sortable'   => false,
             'doctrine'      => $this->configValue
@@ -151,7 +158,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             'doctrine' => true
         );
 
-        $this->configField->addValue(new ConfigValue('is_searchable', 'datagrid', false));
+        $this->configField->addValue(new ConfigModelValue('is_searchable', 'datagrid', false));
         $this->configField->fromArray('datagrid', $values, $serializable);
         $this->assertEquals(
             array(
@@ -160,6 +167,17 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                 'doctrine'      => $this->configValue
             ),
             $this->configField->toArray('datagrid')
+        );
+
+        $this->configEntity->addValue(new ConfigModelValue('is_searchable', 'datagrid', false));
+        $this->configEntity->fromArray('datagrid', $values, $serializable);
+        $this->assertEquals(
+            array(
+                'is_searchable' => 1,
+                'is_sortable'   => 0,
+                'doctrine'      => $this->configValue
+            ),
+            $this->configEntity->toArray('datagrid')
         );
     }
 }

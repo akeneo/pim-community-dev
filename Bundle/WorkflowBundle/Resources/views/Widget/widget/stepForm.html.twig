@@ -1,0 +1,162 @@
+{% macro render_form_col(fields) %}
+    <fieldset class="span4 offset1">
+        {% for field in fields %}
+            {{ form_row(field) }}
+        {% endfor %}
+    </fieldset>
+{% endmacro %}
+
+{% set saveAllowed = displayStep.name == currentStep.name and not workflowItem.closed %}
+
+<div class="container-fluid form-container widget-content">
+    <style type="text/css">
+        .step-form-header li.display {
+            font-weight: bold;
+        }
+
+        .step-form-header li {
+            font-size: 15px;
+        }
+
+        .step-form-header li.step:not(:last-child):after {
+            content: "-";
+            padding-left: 10px;
+            color: #c8c8c8;
+            font-weight: normal;
+        }
+
+        .step-form-container {
+            padding: 20px 0 20px;
+        }
+
+        .form-horizontal .step-form-container .control-label {
+            font-weight: normal;
+        }
+    </style>
+
+    <div class="step-form-header" style="display: none;">
+        <ul class="inline">
+            {% for step in steps %}
+                <li class="step
+                    {% if step.name == currentStep.name %} current{% endif %}
+                    {% if step.name == displayStep.name %} display{% endif %}
+                    "
+                >
+                    {% if step.name != displayStep.name %}
+                        <a href="{{ path('oro_workflow_widget_step_form', { workflowItemId: workflowItem.id, stepName: step.name }) }}"
+                            class="no-hash">
+                            {% block step_label %}
+                                {% if step.name == currentStep.name %}
+                                    <i class="icon icon-chevron-right"></i>
+                                {% endif %}
+                                {{ step.label|trans }}
+                            {% endblock %}
+                        </a>
+                    {% else %}
+                        {{ block('step_label') }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% if saved %}
+        <script type="text/javascript">
+            require(['oro/widget-manager'],
+            function(widgetManager){
+                widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
+                    widget.trigger('formSave');
+                });
+            });
+        </script>
+    {% elseif form.vars.errors|length > 0 %}
+        <div class="alert alert-error">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    {% if displayStep.formOptions.attribute_fields is defined and displayStep.formOptions.attribute_fields|length %}
+        {{ JSFV(form) }}
+
+        <form method="post"
+            data-nohash="true"
+            data-disable-autofocus="true"
+            id="{{ form.vars.name }}"
+            action="{{ path('oro_workflow_widget_step_form', {workflowItemId: workflowItem.id}) }}"
+            class="form-horizontal">
+            <div class="step-form-container row-fluid">
+                {% set fieldsPerCol = 4 %}
+                {% set numberOfColumns = 2 %}
+                {% set formFieldsPerCol = form|length/numberOfColumns %}
+                {% if formFieldsPerCol > fieldsPerCol  %}
+                    {% set fieldsPerCol = formFieldsPerCol %}
+                {% endif %}
+                {% for colNum in 1..numberOfColumns %}
+                    {% set start = (colNum - 1) * fieldsPerCol %}
+                    {{ _self.render_form_col(form|slice(start, fieldsPerCol)) }}
+                {% endfor %}
+            </div>
+
+            {% if saveAllowed %}
+                <div class="widget-actions">
+                    <button type="submit" class="btn btn-success btn-small">{{ 'Save'|trans }}</button>
+                </div>
+            {% endif %}
+        </form>
+    {% endif %}
+
+    <script type="text/javascript">
+        require(['oro/widget-manager'],
+        function(widgetManager){
+            widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget){
+                widget.$el.find('.step-form-header a').on('click', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    if (!widget.loading) {
+                        widget.setUrl(this.href);
+                        widget.loadContent();
+                    }
+                });
+                widget.setTitle(widget.$el.find('.step-form-header').show());
+
+                {% if saveAllowed %}
+                widget.on('renderStart', function() {
+                    widget.options.loadingMaskEnabled = true;
+                });
+
+                widget.on('adoptedFormSubmit', function() {
+                    widget.options.loadingMaskEnabled = false;
+                    form.find(':input:not(:disabled)').prop('disabled',true);
+                    widget.getAction('form_submit', 'adopted', function(submitAction) {
+                        if (submitAction) {
+                            submitAction.html('<i class="icon-spinner"></i> {{ "Saving"|trans }}...');
+                            submitAction.removeClass('btn-success');
+                            submitAction.prop('disabled',true);
+                        }
+                    });
+                });
+
+                var isAllRequiredFieldsFilled = function(form) {
+                    var requiredEls = form.find(':input[required]');
+                    for (var i = 0; i < requiredEls.length; i++) {
+                        var $el = $(requiredEls[i]);
+                        if ($el.length && !$el.val().length) {
+                            return false;
+                        }
+                    }
+                    return true;
+                };
+
+                var form = widget.$el.find('form');
+                form.find(':input:not(.select2-input)').on('change', function() {
+                    setTimeout(function() {
+                        if (isAllRequiredFieldsFilled(form)) {
+                            form.submit();
+                        }
+                    }, 100);
+                });
+                {% endif %}
+            });
+        });
+    </script>
+</div>

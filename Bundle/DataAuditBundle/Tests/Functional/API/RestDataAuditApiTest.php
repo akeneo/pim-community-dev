@@ -49,7 +49,8 @@ class RestDataAuditApiTest extends WebTestCase
                 "plainPassword" => '1231231q',
                 "firstName" => "firstName",
                 "lastName" => "lastName",
-                "rolesCollection" => array("1")
+                "rolesCollection" => array("1"),
+                "owner" => "1",
             )
         );
 
@@ -99,26 +100,5 @@ class RestDataAuditApiTest extends WebTestCase
             unset($audit['loggedAt']);
             $this->assertEquals($audit, $result);
         }
-    }
-
-    /**
-     * @param array $response
-     * @depends testGetAudits
-     */
-    public function testDeleteAudit($response)
-    {
-        foreach ($response as $audit) {
-            $this->client->request(
-                'DELETE',
-                $this->client->generate('oro_api_delete_audit', array('id' => $audit['id']))
-            );
-            $result = $this->client->getResponse();
-            ToolsAPI::assertJsonResponse($result, 204);
-        }
-        $this->client->request('GET', $this->client->generate('oro_api_get_audits'));
-        $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 200);
-        $result = ToolsAPI::jsonToArray($result->getContent());
-        $this->assertEmpty($result);
     }
 }

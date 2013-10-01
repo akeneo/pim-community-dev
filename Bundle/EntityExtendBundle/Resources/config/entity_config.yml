@@ -1,6 +1,26 @@
 oro_entity_config:
     extend:
         entity:
+            require_js:                     ['oro/init-entity-extend-apply', 'oro/init-entity-extend-relation']
+            grid_action:
+                -
+                    name:                   'Remove'
+                    route:                  'oro_entityextend_entity_remove'
+                    type:                   'ajax'
+                    icon:                   'trash'
+                    filter:                 { owner: 'Custom', state: ['New', 'Requires update', 'Active']}
+                    args:                   ['id']
+                -
+                    name:                   'Restore'
+                    route:                  'oro_entityextend_entity_unremove'
+                    type:                   'ajax'
+                    icon:                   'backward'
+                    filter:                 { owner: 'Custom', state: ['Deleted']}
+                    args:                   ['id']
+            layout_action:
+                -
+                    name:                   'Create Entity'
+                    route:                  'oro_entityextend_entity_create'
             items:
                 owner:
                     options:
@@ -22,46 +42,95 @@ oro_entity_config:
                             read_only:      true
                             required:       false
                             label:          'Type'
-                    view:
-                        type:               string
-                        stats:              false
-                        block:
+
                 is_extend:
                     options:
+                        priority:           27
                         default_value:      false
                         internal:           true
+                    grid:
+                        type:               boolean
+                        label:              'Is Extend'
+                        filter_type:        oro_grid_orm_boolean
+                        required:           true
+                        sortable:           true
+                        filterable:         true
+                        show_filter:        false
+
                 state:
                     options:
                         priority:           25
                         default_value:      'Active'
-                        label:              'Status'
+                        label:              'Schema status'
                     grid:
                         type:               string
-                        label:              'Status'
+                        label:              'Schema status'
                         filter_type:        oro_grid_orm_choice
-                        choices:            {system: '', new: 'New', active: 'Active', updated: 'Updated', deleted: 'To be deleted'}
+                        choices:            {system: '', new: 'New', active: 'Active', updated: 'Requires update', deleted: 'To be deleted'}
                         required:           true
                         sortable:           true
                         filterable:         false
                         show_filter:        false
-                extend_class:
+
+                is_deleted:
                     options:
+                        default_value:      false
                         internal:           true
+                    grid:
+                        show_column:        false
+                        query:
+                            operator:       '!='
+                            value:          true
+
                 unique_key:
                     options:
                         internal:           true
                         serializable:       true
-                proxy_class:
+
+                index:
                     options:
                         internal:           true
+                        serializable:       true
+
+                upgradeable:
+                    options:
+                        internal:           true
+                        default_value:      true
 
         field:
             grid_action:
-                -                           {'name':'Remove', 'route':'oro_entityextend_field_remove', 'type':'delete', 'icon':'trash', 'acl_resource':'root', 'filter':'is_extend', 'args':['id']}
+                -
+                    name:                   'Remove'
+                    route:                  'oro_entityextend_field_remove'
+                    type:                   'ajax'
+                    icon:                   'trash'
+                    filter:                 { owner: 'Custom', state: ['New', 'Requires update', 'Active'] }
+                    args:                   ['id']
+                -
+                    name:                   'Restore'
+                    route:                  'oro_entityextend_field_unremove'
+                    type:                   'ajax'
+                    icon:                   'backward'
+                    filter:                 { owner: 'Custom', state: ['Deleted'] }
+                    args:                   ['id']
             layout_action:
-                -                           {'name':'Manage unique keys', 'route':'oro_entityextend_entity_unique_key', 'entity_id':true}
-                -                           {'name':'Create field', 'route':'oro_entityextend_field_create', 'entity_id':true, 'filter':'is_extend'}
-                -                           {'name':'Update schema', 'route':'oro_entityextend_update', 'entity_id':true, 'aClass':'btn-danger entity-extend-apply', 'void':true}
+                -
+                    name:                   'Manage unique keys'
+                    route:                  'oro_entityextend_entity_unique_key'
+                    entity_id:              true
+                    filter:                 { is_extend: true }
+                -
+                    name:                   'Create field'
+                    route:                  'oro_entityextend_field_create'
+                    entity_id:              true
+                    filter:                 { is_extend: true }
+                -
+                    name:                   'Update schema'
+                    route:                  'oro_entityextend_update'
+                    entity_id:              true
+                    aClass:                 'btn-danger entity-extend-apply'
+                    void:                   true
+                    filter:                 { state: ['New', 'Requires update', 'Deleted'], upgradeable: true }
             items:
                 owner:
                     options:
@@ -77,20 +146,16 @@ oro_entity_config:
                         filterable:         false
                         show_filter:        false
 
-                constraint:
-                    options:
-                        internal:           true
-
                 state:
                     options:
                         priority:           25
                         default_value:      'Active'
-                        label:              'Status'
+                        label:              'Schema status'
                     grid:
                         type:               string
-                        label:              'Status'
+                        label:              'Schema status'
                         filter_type:        oro_grid_orm_choice
-                        choices:            { new: 'New', applied: 'Applied', updated: 'Updated', deleted: 'To be deleted'}
+                        choices:            { new: 'New', applied: 'Applied', updated: 'Requires update', deleted: 'To be deleted'}
                         required:           true
                         sortable:           true
                         filterable:         false
@@ -100,66 +165,122 @@ oro_entity_config:
                     options:
                         priority:           40
                         default_value:      false
-                        is_bool:            true
                         internal:           true
-#                    grid:
-#                        type:               boolean
-#                        label:              'Is Extend Field'
-#                        filter_type:        oro_grid_orm_boolean
-#                        required:           true
-#                        sortable:           true
-#                        filterable:         false
-#                        show_filter:        false
-#                    form:
-#                        type:               choice
-#                        block:              entity
-#                        options:
-#                            choices:        ['No', 'Yes']
-#                            read_only:      true
-#                            required:       false
-#                            label:          "Is Extend Field"
 
                 length:
                     options:
                         default_value:      255
+                        allowed_type:       [string]
                         required_property:
-                            property_path:  extend.owner
+                            config_id:
+                                scope:      extend
+                            code:           owner
                             value:          Custom
+                    constraints:
+                        - Regex:            "/^[0-9]*$/"
+                        - Range:
+                            min:            1
+                            max:            255
                     form:
                         type:               text
                         options:
                             required:       false
                             label:          'Length'
-                            allowed_type:   'string'
                             block:          entity
                             subblock:       properties
 
                 precision:
                     options:
                         default_value:      2
+                        allowed_type:       [decimal]
                         required_property:
-                            property_path:  extend.owner
+                            config_id:
+                                scope:      extend
+                            code:           owner
                             value:          Custom
+                    constraints:
+                        - Regex:            "/^[0-9]*$/"
+                        - Range:
+                            min:            0
                     form:
                         type:               text
                         options:
                             required:       false
                             label:          'Precision'
-                            allowed_type:   'decimal'
                             block:          entity
                             subblock:       properties
 
                 scale:
                     options:
                         default_value:      2
+                        allowed_type:       [decimal]
                         required_property:
-                            property_path:  extend.owner
+                            config_id:
+                                scope:      extend
+                            code:           owner
                             value:          Custom
+                    constraints:
+                        - Regex:            "/^[0-9]*$/"
+                        - Range:
+                            min:            0
                     form:
                         type:               text
                         options:
                             required:       false
                             label:          'Scale'
-                            allowed_type:   'decimal'
                             block:          entity
                             subblock:       properties
+
+                target_entity:
+                    options:
+                        allowed_type:       [oneToMany, manyToOne, manyToMany]
+                        required_property:
+                            config_id:
+                                field_name:  null
+                                scope:      extend
+                            code:           is_extend
+                            value:          true
+                    constraints:
+                        - NotBlank:
+                            message: 'Please choice target entity...'
+                    form:
+                        type:               oro_entity_target_type
+                        options:
+                            attr:           {class: 'extend-rel-target-name'}
+                            required:       true
+                            label:          'Target entity'
+                            empty_value:    'Please choice target entity...'
+                            block:          entity
+                            subblock:       properties
+
+                target_field:
+                    options:
+                        allowed_type:       [oneToMany, manyToOne, manyToMany]
+                        required_property:
+                            config_id:
+                                field_name:  null
+                                scope:      extend
+                            code:           is_extend
+                            value:          true
+                    constraints:
+                        - NotBlank:
+                            message: 'Please choice target field...'
+                    form:
+                        type:               oro_entity_target_field_type
+                        options:
+                            attr:           {class: 'extend-rel-target-field'}
+                            required:       true
+                            label:          'Target field'
+                            empty_value:    'Please choice target field...'
+                            block:          entity
+                            subblock:       properties
+
+                is_deleted:
+                    options:
+                        default_value:      false
+                        internal:           true
+                    grid:
+                        show_column:        false
+                        query:
+                            operator:       '!='
+                            value:          true

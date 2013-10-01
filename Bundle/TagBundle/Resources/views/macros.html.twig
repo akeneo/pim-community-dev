@@ -9,10 +9,13 @@
     </div>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            var tags = {{ oro_tag_get_list(entity)|json_encode|raw }};
-            var tagView = new Oro.Tags.TagView();
-            tagView.getCollection().reset(tags);
+        require(['jquery', 'oro/tag/view'],
+        function($, TagView){
+            $(function() {
+                /** @type oro.tag.View */
+                var tagView = new TagView();
+                tagView.getCollection().reset({{ oro_tag_get_list(entity)|json_encode|raw }});
+            });
         });
     </script>
 {% endmacro %}

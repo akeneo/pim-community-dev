@@ -5,15 +5,17 @@
 {% set title = 'Update Entity' %}
 {% set formAction = path('oro_entityconfig_update', {id: entity.id}) %}
 
-{% set entityClass = entity.classname|replace('\\', '_') %}
+{% set audit_entity_class = entity.classname|replace('\\', '_') %}
 {% set audit_title = entity_config.get('label')|default('N/A') %}
 {% set audit_path = 'oro_entityconfig_audit' %}
 
 {% block navButtons %}
-    {{ UI.button({'path' : path('oro_entityconfig_view', {id: entity.id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
+    {% if resource_granted('oro_entityconfig_manage') %}
+        {{ UI.button({'path' : path('oro_entityconfig_view', {id: entity.id}), 'title' : 'Cancel', 'label' : 'Cancel'}) }}
 
-    {{ UI.saveAndStayButton() }}
-    {{ UI.saveAndCloseButton() }}
+        {{ UI.saveAndStayButton() }}
+        {{ UI.saveAndCloseButton() }}
+    {% endif %}
 {% endblock navButtons %}
 
 {% block pageHeader %}
@@ -36,8 +38,7 @@
     {% set dataBlocks = form_data_blocks(form) %}
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
-        'dataBlocks': dataBlocks,
-        'hiddenData': form_rest(form)
+        'dataBlocks': dataBlocks
     }%}
 
     {{ parent() }}

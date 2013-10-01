@@ -9,6 +9,7 @@ use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
+use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 use Oro\Bundle\GridBundle\Datagrid\PagerInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
@@ -73,30 +74,30 @@ interface DatagridInterface
 
     /**
      * @param FilterInterface $filter
-     * @param boolean $prepend
+     * @param boolean         $prepend
      */
     public function addFilter(FilterInterface $filter, $prepend = false);
 
     /**
-     * @param PropertyInterface $property
+     * @param  PropertyInterface $property
      * @return void
      */
     public function addProperty(PropertyInterface $property);
 
     /**
-     * @param SorterInterface $sorter
+     * @param  SorterInterface $sorter
      * @return void
      */
     public function addSorter(SorterInterface $sorter);
 
     /**
-     * @param ActionInterface $action
+     * @param  ActionInterface $action
      * @return void
      */
     public function addRowAction(ActionInterface $action);
 
     /**
-     * @param MassActionInterface $action
+     * @param  MassActionInterface $action
      * @return void
      */
     public function addMassAction(MassActionInterface $action);
@@ -117,7 +118,7 @@ interface DatagridInterface
     public function getMassActions();
 
     /**
-     * @param string $name
+     * @param  string               $name
      * @return null|SorterInterface
      */
     public function getSorter($name);
@@ -206,7 +207,37 @@ interface DatagridInterface
      * Set identifier field
      *
      * @return FieldDescriptionInterface
-     * @throws \RuntimeException If there is no identifier field
+     * @throws \RuntimeException         If there is no identifier field
      */
     public function getIdentifierField();
+
+    /**
+     * Set multiple sorting flag
+     *
+     * @param boolean $multipleSorting
+     */
+    public function setMultipleSorting($multipleSorting);
+
+    /**
+     * Get multiple sorting flag
+     *
+     * @return boolean
+     */
+    public function getMultipleSorting();
+
+    /**
+     * Setter for views list
+     *
+     * @param AbstractViewsList|null $list
+     *
+     * @return mixed
+     */
+    public function setViewsList($list);
+
+    /**
+     * Getter for views list
+     *
+     * @return AbstractViewsList|null
+     */
+    public function getViewsList();
 }

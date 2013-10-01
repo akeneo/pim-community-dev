@@ -25,11 +25,15 @@
 
     {% import _self as navigation %}
     <script type="text/javascript">
-        $(function () {
-            var favorites = new navigation.favorites.MainView({{- navigation.get_options(['el', 'tabTitle', 'tabIcon'], options) -}});
-            {% if favorites is defined %}
-            favorites.getCollection().reset({{ favorites|json_encode|raw }});
-            {% endif %}
+        require(['jquery', 'oro/navigation/favorites/view'],
+        function($, FavoritesView) {
+            $(function () {
+                /** @type {oro.navigation.favorites.View} */
+                var favorites = new FavoritesView({{- navigation.get_options(['el', 'tabTitle', 'tabIcon'], options) -}});
+                {% if favorites is defined %}
+                favorites.getCollection().reset({{ favorites|json_encode|raw }});
+                {% endif %}
+            });
         });
     </script>
 {% endblock %}

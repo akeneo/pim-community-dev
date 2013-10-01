@@ -1,0 +1,55 @@
+{% import 'OroWorkflowBundle::macros.html.twig' as workflowMacros %}
+
+{% set blockId = 'entity-transitions-container-' ~ random() %}
+<div class="widget-content" id="{{ blockId }}">
+    {# Show buttons for entity workflows #}
+    <div class="btn-group">
+        {% for data in transitionsData if data.workflow.type == 'entity' %}
+            {# Show button for start or transit entity workflow #}
+            {% if data.workflowItem is defined %}
+                {# Existing workflow #}
+                {% set url = path(
+                    'oro_workflow_api_rest_workflow_transit',
+                    {
+                        workflowItemId: data.workflowItem.id,
+                        transitionName: data.transition.name
+                    }
+                ) %}
+            {% else %}
+                {# New workflow #}
+                {% set url = path(
+                    'oro_workflow_api_rest_workflow_start',
+                    {
+                        workflowName: data.workflow.name,
+                        entityClass: entity_class,
+                        entityId: entity_id,
+                        transitionName: data.transition.name
+                    }
+                ) %}
+            {% endif %}
+            {{ workflowMacros.renderTransitionButton(data.workflow, data.transition, true, url, false) }}
+        {% endfor %}
+    </div>
+
+    {# Show buttons that for start new wizard workflows #}
+    <div class="btn-group">
+        {% for data in transitionsData if data.workflow.type == 'wizard' and data.workflowItem is not defined  %}
+            {{ workflowMacros.renderTransitionButton(
+                data.workflow,
+                data.transition,
+                true,
+                path(
+                    'oro_workflow_api_rest_workflow_start',
+                    {
+                        workflowName: data.workflow.name,
+                        entityClass: entity_class,
+                        entityId: entity_id,
+                        transitionName: data.transition.name
+                    }
+                ),
+                true
+            ) }}
+        {% endfor %}
+    </div>
+    {{ workflowMacros.renderTransitionsJs(transitionsData, blockId) }}
+</div>

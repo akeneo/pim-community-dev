@@ -12,3 +12,7 @@ js:
       - '@OroAddressBundle/Resources/public/js/collections/address.js'
       - '@OroAddressBundle/Resources/public/js/views/address.js'
       - '@OroAddressBundle/Resources/public/js/views/address_book.js'
+
+css:
+  'address':
+      - 'bundles/oroaddress/css/address.css'

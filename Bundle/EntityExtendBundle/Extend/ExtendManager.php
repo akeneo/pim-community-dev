@@ -2,16 +2,13 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Extend;
 
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Proxy\ServiceProxy;
-use Oro\Bundle\EntityExtendBundle\Entity\ExtendProxyInterface;
-use Oro\Bundle\EntityExtendBundle\Extend\Factory\ConfigFactory;
-use Oro\Bundle\EntityExtendBundle\Tools\Generator\Generator;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class ExtendManager
 {
     const STATE_NEW     = 'New';
-    const STATE_UPDATED = 'Updated';
+    const STATE_UPDATED = 'Requires update';
     const STATE_ACTIVE  = 'Active';
     const STATE_DELETED = 'Deleted';
 
@@ -19,37 +16,13 @@ class ExtendManager
     const OWNER_CUSTOM = 'Custom';
 
     /**
-     * @var ProxyObjectFactory
-     */
-    protected $proxyFactory;
-
-    /**
-     * @var ConfigFactory
-     */
-    protected $configFactory;
-
-    /**
      * @var ConfigProvider
      */
     protected $configProvider;
 
-    /**
-     * @var Generator
-     */
-    protected $generator;
-
-    /**
-     * @var ServiceProxy
-     */
-    protected $lazyEm;
-
-    public function __construct(ServiceProxy $lazyEm, ConfigProvider $configProvider, $backend, $entityCacheDir)
+    public function __construct(ConfigProvider $configProvider)
     {
-        $this->lazyEm         = $lazyEm;
-        $this->configProvider = $configProvider;
-        $this->proxyFactory   = new ProxyObjectFactory($this);
-        $this->configFactory  = new ConfigFactory($this);
-        $this->generator      = new Generator($configProvider, $backend, $entityCacheDir);
+        $this->configProvider  = $configProvider;
     }
 
     /**
@@ -61,102 +34,70 @@ class ExtendManager
     }
 
     /**
-     * @return \Doctrine\ORM\EntityManager
+     * @param $className
+     * @return bool
      */
-    public function getEntityManager()
+    public function isExtend($className)
     {
-        return $this->lazyEm->getService();
+        return $this->configProvider->getConfig($className)->is('is_extend');
     }
 
     /**
-     * @return ProxyObjectFactory
+     * @param string $entityName
+     * @param string $fieldName
+     * @param string $fieldConfig
+     * @param string $owner
+     * @param string $mode
      */
-    public function getProxyFactory()
-    {
-        return $this->proxyFactory;
-    }
+    public function createField(
+        $entityName,
+        $fieldName,
+        $fieldConfig,
+        $owner = self::OWNER_CUSTOM,
+        $mode = ConfigModelManager::MODE_DEFAULT
+    ) {
+        $configManager = $this->configProvider->getConfigManager();
 
-    /**
-     * @return ConfigFactory
-     */
-    public function getConfigFactory()
-    {
-        return $this->configFactory;
-    }
+        $configManager->createConfigFieldModel($entityName, $fieldName, $fieldConfig['type'], $mode);
 
-    /**
-     * @return Generator
-     */
-    public function getClassGenerator()
-    {
-        return $this->generator;
-    }
+        $extendFieldConfig = $this->configProvider->getConfig($entityName, $fieldName);
+        $extendFieldConfig->set('owner', $owner);
+        $extendFieldConfig->set('state', self::STATE_NEW);
+        $extendFieldConfig->set('extend', true);
 
-    /**
-     * @param $entityName
-     * @return bool|string
-     */
-    public function isExtend($entityName)
-    {
-        if ($entityName
-            && $this->configProvider->hasConfig($entityName)
-            && $this->configProvider->getConfig($entityName)->is('is_extend')
-        ) {
-            return true;
+        if (isset($fieldConfig['options'])) {
+            foreach ($fieldConfig['options'] as $key => $value) {
+                $extendFieldConfig->set($key, $value);
+            }
         }
 
-        return false;
+        $configManager->persist($extendFieldConfig);
     }
 
     /**
-     * @param $entityName
-     * @return null|string
+     * @param string $entityName
+     * @param bool   $isExtend
+     * @param string $owner
+     * @param string $mode
      */
-    public function getExtendClass($entityName)
-    {
-        return $this->configProvider->getConfig($entityName)->get('extend_class');
-    }
+    public function createEntity(
+        $entityName,
+        $isExtend = true,
+        $owner = self::OWNER_CUSTOM,
+        $mode = ConfigModelManager::MODE_DEFAULT
+    ) {
+        $configManager = $this->configProvider->getConfigManager();
 
-    /**
-     * @param $entityName
-     * @return null|string
-     */
-    public function getProxyClass($entityName)
-    {
-        return $this->configProvider->getConfig($entityName)->get('proxy_class');
-    }
+        $configManager->createConfigEntityModel($entityName, $mode);
 
-    /**
-     * @param $entity
-     */
-    public function loadExtend($entity)
-    {
-        $proxy = $this->getProxyFactory()->getProxyObject($entity);
-        $this->getProxyFactory()->initExtendObject($proxy);
-    }
+        $extendConfig = $this->configProvider->getConfig($entityName);
+        $extendConfig->set('owner', $owner);
+        $extendConfig->set('state', self::STATE_NEW);
+        $extendConfig->set('is_extend', $isExtend);
 
-    public function persist($entity)
-    {
-        if ($this->isExtend($entity)) {
-            $proxy = $this->getProxyFactory()->getProxyObject($entity);
-            $proxy->__proxy__createFromEntity($entity);
+        $configManager->persist($extendConfig);
 
-            $this->getEntityManager()->detach($entity);
-            $this->getEntityManager()->persist($proxy);
-            $this->getEntityManager()->persist($proxy->__proxy__getExtend());
-        }
-
-        if ($entity instanceof ExtendProxyInterface) {
-            $this->getEntityManager()->persist($entity->__proxy__getExtend());
-        }
-    }
-
-    /**
-     * @param $entity
-     */
-    public function remove($entity)
-    {
-        $extend = $this->getProxyFactory()->getProxyObject($entity);
-        $this->getEntityManager()->remove($extend);
+        $entityFieldConfig = $configManager->getProvider('entity')->getConfig($entityName, 'id');
+        $entityFieldConfig->set('label', 'Id');
     }
 }

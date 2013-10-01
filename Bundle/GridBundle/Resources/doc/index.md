@@ -23,6 +23,8 @@ OroGridBundle Documentation
     - [Grid Rendering](./reference/backend/grid-rendering.md)
     - [Events](./reference/backend/events.md)
     - [Translations](./reference/backend/translations.md)
+    - [Reports](./reference/backend/reports.md)
+    - [Views](./reference/backend/views.md)
 - **Frontend Architecture**
     - [Overview](./reference/frontend/overview.md)
     - [Backbone Developer Introduction](./reference/frontend/backbone-developer-introduction.md)

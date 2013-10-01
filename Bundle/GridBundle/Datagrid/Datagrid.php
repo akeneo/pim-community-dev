@@ -16,6 +16,7 @@ use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\EventDispatcher\ResultDatagridEvent;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
+use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
 /**
@@ -62,13 +63,6 @@ class Datagrid implements DatagridInterface
      * @var bool
      */
     protected $filtersApplied = false;
-
-    /**
-     * Pager applied flag
-     *
-     * @var bool
-     */
-    protected $pagerApplied = false;
 
     /**
      * @var RouteGeneratorInterface
@@ -143,14 +137,23 @@ class Datagrid implements DatagridInterface
     protected $identifierFieldName;
 
     /**
-     * @param ProxyQueryInterface $query
+     * @var AbstractViewsList|null
+     */
+    private $viewsList;
+
+    /**
+     * @var bool
+     */
+    protected $multipleSorting = true;
+
+    /**
+     * @param ProxyQueryInterface        $query
      * @param FieldDescriptionCollection $columns
-     * @param PagerInterface $pager
-     * @param FormBuilderInterface $formBuilder
-     * @param RouteGeneratorInterface $routeGenerator
-     * @param ParametersInterface $parameters
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param string $name
+     * @param PagerInterface             $pager
+     * @param FormBuilderInterface       $formBuilder
+     * @param RouteGeneratorInterface    $routeGenerator
+     * @param ParametersInterface        $parameters
+     * @param EventDispatcherInterface   $eventDispatcher
      */
     public function __construct(
         ProxyQueryInterface $query,
@@ -265,7 +268,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param SorterInterface $sorter
+     * @param  SorterInterface $sorter
      * @return void
      */
     public function addSorter(SorterInterface $sorter)
@@ -299,7 +302,8 @@ class Datagrid implements DatagridInterface
      */
     public function getPager()
     {
-        $this->applyPager();
+        $this->applyParameters();
+
         return $this->pager;
     }
 
@@ -362,16 +366,10 @@ class Datagrid implements DatagridInterface
      */
     protected function applyPager()
     {
-        if ($this->pagerApplied) {
-            return;
-        }
-
         $pagerParameters = $this->parameters->get(ParametersInterface::PAGER_PARAMETERS);
         $this->pager->setPage(isset($pagerParameters['_page']) ? $pagerParameters['_page'] : 1);
-        $this->pager->setMaxPerPage(isset($pagerParameters['_per_page']) ? (int)$pagerParameters['_per_page'] : 10);
+        $this->pager->setMaxPerPage(isset($pagerParameters['_per_page']) ? (int) $pagerParameters['_per_page'] : 10);
         $this->pager->init();
-
-        $this->pagerApplied = true;
     }
 
     /**
@@ -490,7 +488,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param ActionInterface $action
+     * @param  ActionInterface $action
      * @return void
      */
     public function addRowAction(ActionInterface $action)
@@ -499,7 +497,7 @@ class Datagrid implements DatagridInterface
     }
 
     /**
-     * @param MassActionInterface $action
+     * @param  MassActionInterface $action
      * @return void
      */
     public function addMassAction(MassActionInterface $action)
@@ -565,6 +563,22 @@ class Datagrid implements DatagridInterface
     }
 
     /**
+     * @return null|AbstractViewsList
+     */
+    public function getViewsList()
+    {
+        return $this->viewsList;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setViewsList($list)
+    {
+        $this->viewsList = $list;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getIdentifierField()
@@ -574,5 +588,21 @@ class Datagrid implements DatagridInterface
             return $this->columns->get($identifierFieldName);
         }
         throw new \RuntimeException(sprintf('There is no identifier field in grid "%s"', $this->getName()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setMultipleSorting($multipleSorting)
+    {
+        $this->multipleSorting = $multipleSorting;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getMultipleSorting()
+    {
+        return $this->multipleSorting;
     }
 }

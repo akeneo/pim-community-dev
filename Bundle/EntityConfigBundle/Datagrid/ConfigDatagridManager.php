@@ -4,35 +4,22 @@ namespace Oro\Bundle\EntityConfigBundle\Datagrid;
 
 use Doctrine\ORM\Query;
 
-use Oro\Bundle\EntityConfigBundle\Entity\AbstractConfig;
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
-use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Datagrid\ResultRecord;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
+use Oro\Bundle\GridBundle\Property\ActionConfigurationProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 
-class ConfigDatagridManager extends DatagridManager
+class ConfigDatagridManager extends BaseDatagrid
 {
-    /**
-     * @var FieldDescriptionCollection
-     */
-    protected $fieldsCollection;
-
-    /**
-     * @var ConfigManager
-     */
-    protected $configManager;
-
-    public function __construct(ConfigManager $configManager)
-    {
-        $this->configManager = $configManager;
-    }
-
     /**
      * @return array
      */
@@ -41,12 +28,28 @@ class ConfigDatagridManager extends DatagridManager
         $actions = array();
 
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getEntityLayoutActions() as $config) {
+            foreach ($provider->getPropertyConfig()->getLayoutActions() as $config) {
                 $actions[] = $config;
             }
         }
 
         return $actions;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRequireJsModules()
+    {
+        $modules = array();
+        foreach ($this->configManager->getProviders() as $provider) {
+            $modules = array_merge(
+                $modules,
+                $provider->getPropertyConfig()->getRequireJsModules()
+            );
+        }
+
+        return $modules;
     }
 
     /**
@@ -59,15 +62,58 @@ class ConfigDatagridManager extends DatagridManager
             new UrlProperty('update_link', $this->router, 'oro_entityconfig_update', array('id')),
         );
 
+        $filters = array();
+        $actions = array();
+
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getEntityGridActions() as $config) {
-                $properties[] = new UrlProperty(
-                    strtolower($config['name']) . '_link',
-                    $this->router,
-                    $config['route'],
-                    (isset($config['args']) ? $config['args'] : array())
-                );
+            $gridActions = $provider->getPropertyConfig()->getGridActions();
+
+            $this->prepareProperties($gridActions, $properties, $actions, $filters, $provider->getScope());
+
+            if ($provider->getPropertyConfig()->getUpdateActionFilter()) {
+                $filters['update'] = $provider->getPropertyConfig()->getUpdateActionFilter();
             }
+        }
+
+        if (count($filters)) {
+            $properties[] = new ActionConfigurationProperty(
+                function (ResultRecord $record) use ($filters, $actions) {
+                    if ($record->getValue('mode') == ConfigModelManager::MODE_READONLY) {
+                        $actions = array_map(
+                            function () {
+                                return false;
+                            },
+                            $actions
+                        );
+
+                        $actions['update'] = false;
+                    } else {
+                        foreach ($filters as $action => $filter) {
+                            foreach ($filter as $key => $value) {
+                                if (is_array($value)) {
+                                    $error = true;
+                                    foreach ($value as $v) {
+                                        if ($record->getValue($key) == $v) {
+                                            $error = false;
+                                        }
+                                    }
+                                    if ($error) {
+                                        $actions[$action] = false;
+                                        break;
+                                    }
+                                } else {
+                                    if ($record->getValue($key) != $value) {
+                                        $actions[$action] = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    return $actions;
+                }
+            );
         }
 
         return $properties;
@@ -79,7 +125,7 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected function getObjectName($scope = 'name')
     {
-        $options = array('name'=> array(), 'module'=> array());
+        $options = array('name' => array(), 'module' => array());
 
         $query = $this->createQuery()->getQueryBuilder()
             ->add('select', 'ce.className')
@@ -90,15 +136,20 @@ class ConfigDatagridManager extends DatagridManager
         foreach ((array) $result as $value) {
             $className = explode('\\', $value['className']);
 
-            $options['name'][$value['className']] = '';
+            $options['name'][$value['className']]   = '';
             $options['module'][$value['className']] = '';
 
-            foreach ($className as $index => $name) {
-                if (count($className)-1 == $index) {
-                    $options['name'][$value['className']] = $name;
-                } elseif (!in_array($name, array('Bundle','Entity'))) {
-                    $options['module'][$value['className']] .= $name;
+            if (strpos($value['className'], 'Extend\\Entity') === false) {
+                foreach ($className as $index => $name) {
+                    if (count($className) - 1 == $index) {
+                        $options['name'][$value['className']] = $name;
+                    } elseif (!in_array($name, array('Bundle', 'Entity'))) {
+                        $options['module'][$value['className']] .= $name;
+                    }
                 }
+            } else {
+                $options['name'][$value['className']]   = str_replace('Extend\\Entity\\', '', $value['className']);
+                $options['module'][$value['className']] = 'System';
             }
         }
 
@@ -112,24 +163,39 @@ class ConfigDatagridManager extends DatagridManager
     {
         $fields = array();
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
+            foreach ($provider->getPropertyConfig()->getItems() as $code => $item) {
                 if (isset($item['grid'])) {
-                    $fieldObjectProvider = new FieldDescription();
-                    $fieldObjectProvider->setName($code);
-                    $fieldObjectProvider->setOptions(
+                    $item['grid'] = $provider->getPropertyConfig()->initConfig($item['grid']);
+
+                    $fieldName = $provider->getScope() . '_' . $code;
+
+                    $fieldObject = new FieldDescription();
+                    $fieldObject->setName($fieldName);
+                    $fieldObject->setOptions(
                         array_merge(
                             $item['grid'],
                             array(
                                 'expression' => 'cev' . $code . '.value',
-                                'field_name' => $code,
+                                'field_name' => $fieldName,
                             )
                         )
                     );
 
+                    if (isset($item['grid']['type'])
+                        && $item['grid']['type'] == FieldDescriptionInterface::TYPE_HTML
+                        && isset($item['grid']['template'])
+                    ) {
+                        $templateDataProperty = new TwigTemplateProperty(
+                            $fieldObject,
+                            $item['grid']['template']
+                        );
+                        $fieldObject->setProperty($templateDataProperty);
+                    }
+
                     if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
-                        $fields[$item['options']['priority']] = $fieldObjectProvider;
+                        $fields[$item['options']['priority']] = $fieldObject;
                     } else {
-                        $fields[] = $fieldObjectProvider;
+                        $fields[] = $fieldObject;
                     }
                 }
             }
@@ -184,22 +250,6 @@ class ConfigDatagridManager extends DatagridManager
         );
         $fieldsCollection->add($fieldObjectModule);
 
-        $fieldObjectCreate = new FieldDescription();
-        $fieldObjectCreate->setName('created');
-        $fieldObjectCreate->setOptions(
-            array(
-                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
-                'label'       => 'Create At',
-                'field_name'  => 'created',
-                'filter_type' => FilterInterface::TYPE_DATETIME,
-                'required'    => true,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-            )
-        );
-        $fieldsCollection->add($fieldObjectCreate);
-
         $fieldObjectUpdate = new FieldDescription();
         $fieldObjectUpdate->setName('updated');
         $fieldObjectUpdate->setOptions(
@@ -219,13 +269,14 @@ class ConfigDatagridManager extends DatagridManager
 
     /**
      * {@inheritDoc}
+     * Todo: update acl resources after impl.
      */
     protected function getRowActions()
     {
         $clickAction = array(
             'name'         => 'rowClick',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            //'acl_resource' => '(root)',
             'options'      => array(
                 'label'         => 'View',
                 'link'          => 'view_link',
@@ -236,7 +287,7 @@ class ConfigDatagridManager extends DatagridManager
         $viewAction = array(
             'name'         => 'view',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            //'acl_resource' => 'root',
             'options'      => array(
                 'label' => 'View',
                 'icon'  => 'book',
@@ -247,7 +298,7 @@ class ConfigDatagridManager extends DatagridManager
         $updateAction = array(
             'name'         => 'update',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            //'acl_resource' => 'root',
             'options'      => array(
                 'label' => 'Edit',
                 'icon'  => 'edit',
@@ -257,34 +308,7 @@ class ConfigDatagridManager extends DatagridManager
 
         $actions = array($clickAction, $viewAction, $updateAction);
 
-        foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getEntityGridActions() as $config) {
-                $configItem = array(
-                    'name'         => strtolower($config['name']),
-                    'acl_resource' => isset($config['acl_resource']) ? $config['acl_resource'] : 'root',
-                    'options'      => array(
-                        'label' => ucfirst($config['name']),
-                        'icon'  => isset($config['icon']) ? $config['icon'] : 'question-sign',
-                        'link'  => strtolower($config['name']) . '_link'
-                    )
-                );
-
-                if (isset($config['type'])) {
-                    switch ($config['type']) {
-                        case 'delete':
-                            $configItem['type'] = ActionInterface::TYPE_DELETE;
-                            break;
-                        case 'redirect':
-                            $configItem['type'] = ActionInterface::TYPE_REDIRECT;
-                            break;
-                    }
-                } else {
-                    $configItem['type'] = ActionInterface::TYPE_REDIRECT;
-                }
-
-                $actions[] = $configItem;
-            }
-        }
+        $this->prepareRowActions($actions);
 
         return $actions;
     }
@@ -295,14 +319,23 @@ class ConfigDatagridManager extends DatagridManager
      */
     protected function prepareQuery(ProxyQueryInterface $query)
     {
-        $query->where('ce.mode <> :mode');
-        $query->setParameter('mode', AbstractConfig::MODE_VIEW_HIDDEN);
-
         foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getConfigContainer()->getEntityItems() as $code => $item) {
-                $alias = 'cev' . $code;
-                $query->leftJoin('ce.values', $alias, 'WITH', $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'");
-                $query->addSelect($alias . '.value as ' . $code, true);
+            foreach ($provider->getPropertyConfig()->getItems() as $code => $item) {
+                $alias     = 'cev' . $code;
+                $fieldName = $provider->getScope() . '_' . $code;
+
+                if (isset($item['grid']['query'])) {
+                    $query->andWhere($alias . '.value ' . $item['grid']['query']['operator'] . ' :' . $alias);
+                    $query->setParameter($alias, $item['grid']['query']['value']);
+                }
+
+                $query->leftJoin(
+                    'ce.values',
+                    $alias,
+                    'WITH',
+                    $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'"
+                );
+                $query->addSelect($alias . '.value as ' . $fieldName, true);
             }
         }
 

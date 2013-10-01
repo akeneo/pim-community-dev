@@ -144,7 +144,11 @@ class DataBlocks
      */
     protected function createBlock($code, $blockConfig = array())
     {
-        $block = new BlockConfig($code);
+        if ($this->formConfig->hasBlock($code)) {
+            $block = $this->formConfig->getBlock($code);
+        } else {
+            $block = new BlockConfig($code);
+        }
         $block->setClass($this->accessor->getValue($blockConfig, '[class]'));
         $block->setPriority($this->accessor->getValue($blockConfig, '[priority]'));
 
@@ -152,6 +156,7 @@ class DataBlocks
             ? $this->accessor->getValue($blockConfig, '[title]')
             : ucfirst($code);
         $block->setTitle($title);
+        $block->setDescription($this->accessor->getValue($blockConfig, '[description]'));
 
         foreach ((array)$this->accessor->getValue($blockConfig, '[subblocks]') as $subCode => $subBlockConfig) {
             $block->addSubBlock($this->createSubBlock($subCode, (array)$subBlockConfig));
@@ -172,6 +177,7 @@ class DataBlocks
         $subBlock = new SubBlockConfig($code);
         $subBlock->setTitle($this->accessor->getValue($config, '[title]'));
         $subBlock->setPriority($this->accessor->getValue($config, '[priority]'));
+        $subBlock->setDescription($this->accessor->getValue($config, '[description]'));
 
         return $subBlock;
     }

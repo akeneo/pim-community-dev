@@ -1,0 +1,8 @@
+parameters:
+    oro_organization.form.type.business_unit_select.class:       Oro\Bundle\OrganizationBundle\Form\Type\BusinessUnitSelectType
+
+services:
+    oro_organization.form.type.business_unit_select:
+        class: %oro_organization.form.type.business_unit_select.class%
+        tags:
+            - { name: form.type, alias: oro_business_unit_select }

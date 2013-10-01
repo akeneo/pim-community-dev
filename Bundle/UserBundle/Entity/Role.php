@@ -2,25 +2,39 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
-use Symfony\Component\Security\Core\Role\RoleInterface;
+use Symfony\Component\Security\Core\Role\Role as BaseRole;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
-use Oro\Bundle\UserBundle\Entity\Acl;
 
 use JMS\Serializer\Annotation\Type;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
+
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
  * Role Entity
  *
  * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\RoleRepository")
  * @ORM\Table(name="oro_access_role")
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Role", "plural_label"="Roles"},
+ *      "ownership"={
+ *          "owner_type"="BUSINESS_UNIT",
+ *          "owner_field_name"="owner",
+ *          "owner_column_name"="business_unit_owner_id"
+ *      },
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
-class Role implements RoleInterface
+class Role extends BaseRole
 {
     /**
      * @var int
@@ -37,7 +51,6 @@ class Role implements RoleInterface
      * @var string
      *
      * @ORM\Column(type="string", unique=true, length=30, nullable=false)
-     * @Soap\ComplexType("string")
      * @Type("string")
      */
     protected $role;
@@ -52,9 +65,12 @@ class Role implements RoleInterface
     protected $label;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Acl", mappedBy="accessRoles")
+     * @var BusinessUnit
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
+     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Soap\ComplexType("string", nillable=true)
      */
-    protected $aclResources;
+    protected $owner;
 
     /**
      * Populate the role field
@@ -65,7 +81,6 @@ class Role implements RoleInterface
     {
         $this->role  =
         $this->label = $role;
-        $this->aclResources = new ArrayCollection();
     }
 
     /**
@@ -141,40 +156,21 @@ class Role implements RoleInterface
     }
 
     /**
-     * Add aclResources
-     *
-     * @param  Acl  $aclResources
+     * @return BusinessUnit
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param BusinessUnit $owningBusinessUnit
      * @return Role
      */
-    public function addAclResource(Acl $aclResources)
+    public function setOwner($owningBusinessUnit)
     {
-        $this->aclResources[] = $aclResources;
+        $this->owner = $owningBusinessUnit;
 
         return $this;
-    }
-
-    /**
-     * Remove aclResources
-     *
-     * @param Acl $aclResources
-     */
-    public function removeAclResource(Acl $aclResources)
-    {
-        $this->aclResources->removeElement($aclResources);
-    }
-
-    /**
-     * Get aclResources
-     *
-     * @return ArrayCollection
-     */
-    public function getAclResources()
-    {
-        return $this->aclResources;
-    }
-
-    public function setAclResources($resources)
-    {
-        $this->aclResources = $resources;
     }
 }

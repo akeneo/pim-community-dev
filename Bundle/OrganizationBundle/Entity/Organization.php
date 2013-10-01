@@ -2,7 +2,11 @@
 
 namespace Oro\Bundle\OrganizationBundle\Entity;
 
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Organization
@@ -45,7 +49,7 @@ class Organization
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -61,14 +65,14 @@ class Organization
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -126,6 +130,6 @@ class Organization
      */
     public function __toString()
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 }

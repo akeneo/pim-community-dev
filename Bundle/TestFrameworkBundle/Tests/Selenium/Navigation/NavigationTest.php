@@ -32,17 +32,23 @@ class NavigationTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->submit()
             ->openNavigation()
             ->tab('System')
+            ->menu('Users Management')
             ->menu('Users')
+            ->open()
             ->assertElementPresent("//table[@class='grid table-hover table table-bordered table-condensed']/tbody");
 
         $login->openNavigation()
             ->tab('System')
+            ->menu('Users Management')
             ->menu('Roles')
+            ->open()
             ->assertElementPresent("//table[@class='grid table-hover table table-bordered table-condensed']/tbody");
 
         $login->openNavigation()
             ->tab('System')
+            ->menu('Users Management')
             ->menu('Groups')
+            ->open()
             ->assertElementPresent("//table[@class='grid table-hover table table-bordered table-condensed']/tbody");
     }
 
@@ -58,7 +64,7 @@ class NavigationTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit();
         //Open History pinbar dropdown
-        $login->byXPath("//div[@class='pin-menus dropdown dropdown-close-prevent']/span")->click();
+        $login->byXPath("//div[@class='pin-menus dropdown dropdown-close-prevent']/i")->click();
         $login->waitForAjax();
         $login->assertElementPresent("//div[@class='tabbable tabs-left']");
         $login->byXPath("//div[@class='tabbable tabs-left']//a[contains(., 'History')]")->click();
@@ -82,7 +88,7 @@ class NavigationTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit();
         //Open Most viewed pinbar dropdown
-        $login->byXPath("//div[@class='pin-menus dropdown dropdown-close-prevent']/span")->click();
+        $login->byXPath("//div[@class='pin-menus dropdown dropdown-close-prevent']/i")->click();
         $login->waitForAjax();
         $login->assertElementPresent("//div[@class='tabbable tabs-left']");
         $login->byXPath("//div[@class='tabbable tabs-left']//a[contains(., 'Most Viewed')]")->click();
@@ -108,7 +114,7 @@ class NavigationTest extends \PHPUnit_Extensions_Selenium2TestCase
         //Add Groups page to favorites
         $login->byXPath("//button[@class='btn favorite-button']")->click();
         //Open pinbar dropdown Favorites
-        $login->byXPath("//div[@class='pin-menus dropdown dropdown-close-prevent']/span")->click();
+        $login->byXPath("//div[@class='pin-menus dropdown dropdown-close-prevent']/i")->click();
         $login->waitForAjax();
         $login->assertElementPresent("//div[@class='tabbable tabs-left']");
         $login->byXPath("//div[@class='tabbable tabs-left']//a[contains(., 'Favorites')]")->click();
@@ -141,7 +147,7 @@ class NavigationTest extends \PHPUnit_Extensions_Selenium2TestCase
         $login->byXPath("//div[@class='top-action-box']//button[@class='btn minimize-button']")->click();
         $login->waitForAjax();
         $login->assertElementPresent(
-            "//div[@class='list-bar']//a[text() = 'Users - System']",
+            "//div[@class='list-bar']//a[@title = 'Users - Users Management - System' and text() = 'Users']",
             'Element does not minimised to pinbar tab'
         );
     }
@@ -155,6 +161,7 @@ class NavigationTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->openNavigation()
             ->tab('Search')
             ->menu('Advanced search')
+            ->open()
             ->assertElementPresent(
                 "//div[@class='container-fluid']//div[@class='search_stats alert alert-info']",
                 'Element does not present on page'

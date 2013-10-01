@@ -8,7 +8,7 @@
 
             {{ block('children') }}
         {% elseif (not item.hasChildren and item.parent is null) %}
-            <div class="dot-menu-empty-message">{{ 'There are no items'|trans|raw }}</div>
+            <div class="dot-menu-empty-message">{{ 'No items'|trans|raw }}</div>
         {% endif %}
     </ul>
 {% endblock %}

@@ -6,21 +6,16 @@
  * Task for complete refactoring: BAP-859
  */
 
+require(['jquery', 'underscore', 'oro/translator', 'jquery.bind-first', 'bootstrap-tooltip'],
+function($, _, __){
 {% block before %}{% endblock %}
 
-var jsfv = new function () {
+var jsfv = (function () {
     function getComputeMessage(key, placeholders, number) {
-        Translator.placeHolderPrefix = '{{ '{{' }} ';
-        Translator.placeHolderSuffix = ' {{ '}}' }}';
-        // Default translations
-        if (!Translator.has('validators:'+key)) {
-            Translator.add('validators:'+key, key);
-        }
-
-        var result = Translator.get('validators:'+key, placeholders, number);
+        var result = __('validators:'+key, placeholders, number);
         if (undefined == result && number != undefined) {
             // Try to get translated string without a number parameter.
-            result = Translator.get('validators:'+key, placeholders);
+            result = __('validators:'+key, placeholders);
         }
         return result;
     }
@@ -84,6 +79,9 @@ var jsfv = new function () {
 {% endblock %}
 
     function checkError(field, checkFunction, parameters, value) {
+        if (!$("#" + field).length || $("#" + field).is(':disabled')) {
+            return true;
+        }
         field = jsfv.id(field);
         // Remove old errors of the field
         {% block removeErrors %}{% spaceless %}jsfv.removeErrors(field);{% endspaceless %}{% endblock %}
@@ -94,8 +92,8 @@ var jsfv = new function () {
         /*// {% block getVal %}{% endblock %} */
 
         if (errorMessage != true) {
-{% block addError %}
-        {% spaceless %}jsfv.addError(field, errorMessage);{% endspaceless %}
+{% block addFailureException %}
+        {% spaceless %}jsfv.addFailureException(field, errorMessage);{% endspaceless %}
 {% endblock %}
 
             return false;
@@ -127,24 +125,22 @@ var jsfv = new function () {
             if (field.parent().filter('.error').length) {
                 field = field.parent();
             }
+            field.siblings('.validation-faled').remove();
             field.removeClass('error').parent().filter('.controls').removeClass('validation-error');
         },
 {% endblock %}
 {% block addError_method %}
-        addError: function (field, errorMessage) {
+        addFailureException: function (field, errorMessage) {
             // Add errors block
             field = $(field);
             var target = field;
             if (field.parent().filter('.selector').length || field.parent().filter('.uploader').length) {
                 target = field.parent();
             }
-            if (target.siblings('a.validation-tooltip').length == 0)  {
-                $('<a class="validation-tooltip" data-placement="top" data-toggle="tooltip"></a>').insertAfter(target);
+            if (!target.siblings('.validation-faled').length) {
+                $('<span class="validation-faled"></span>').insertAfter(target);
             }
-            target.siblings('a.validation-tooltip')
-                        .attr('data-original-title', errorMessage)
-                        .html('data-original-title')
-                        .tooltip();
+            target.siblings('.validation-faled').text(errorMessage);
             target.addClass('error').parent().filter('.controls').addClass('validation-error');
         },
 {% endblock %}
@@ -190,7 +186,7 @@ var jsfv = new function () {
         onReady: function() {
 {% if check_modes.submit %}
             // On submit checks
-            var form = jsfv.id('{{ formName }}');
+            var field, form = jsfv.id('{{ formName }}');
 
             // Form exists ?
             if (form) {
@@ -199,8 +195,17 @@ var jsfv = new function () {
                     form = jsfv.id('{{ formName }}__token').form;
                 }
 
+                form = $(form);
                 // Remove HTML5 validation
-                $(form).attr('novalidate', 'novalidate');
+                form.attr('novalidate', 'novalidate');
+
+                // autofocus on a first form filed (if it has no value)
+                if (!form.data('disable-autofocus')) {
+                    field = form.find(':input:visible:not(.offscreen):not(button):not([disabled]):not([readonly])').first();
+                    if (!field.val()) {
+                        field.focus();
+                    }
+                }
 
                 jsfv.onFirstEvent(form, 'submit', function(e) {
                     var gv, submitForm = true;
@@ -210,6 +215,7 @@ var jsfv = new function () {
 {% set resultvar = 'submitForm' %}{% set fieldName = '.' %}
 {% block getters_constraints_submit %}{{ block('getters_constraints_field') }}{% endblock %}
                     if (!submitForm) {
+                        form.find('.error>:input,:input.error').first().focus();
                         e.stopImmediatePropagation();
                     }
                     return submitForm;
@@ -220,7 +226,7 @@ var jsfv = new function () {
 {% if check_modes.blur %}
             // On blur checks
 {% for fieldName, constraints in fieldConstraints %}
-            jsfv.onEvent('{{ fieldName }}', 'blur', jsfv.check_{{ fieldName }});
+            jsfv.onEvent('{{ fieldName }}', 'blur select2-blur', jsfv.check_{{ fieldName }});
 {% endfor %}
 {% endif %}
 
@@ -232,10 +238,11 @@ var jsfv = new function () {
 {% endif %}
         }
     };
-}
+}());
 
 {% block onReady %}
-$(jsfv.onReady);
+$(_.debounce(jsfv.onReady, 50));
 {% endblock %}
 
 {% block after %}{% endblock %}
+});

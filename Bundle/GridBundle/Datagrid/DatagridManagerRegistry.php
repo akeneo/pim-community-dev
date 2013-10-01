@@ -27,8 +27,8 @@ class DatagridManagerRegistry
     }
 
     /**
-     * @param string $name
-     * @param string $serviceId
+     * @param  string          $name
+     * @param  string          $serviceId
      * @throws \LogicException
      */
     public function addDatagridManagerService($name, $serviceId)
@@ -41,7 +41,7 @@ class DatagridManagerRegistry
     }
 
     /**
-     * @param string $name
+     * @param  string $name
      * @return bool
      */
     public function hasDatagridManager($name)
@@ -50,7 +50,7 @@ class DatagridManagerRegistry
     }
 
     /**
-     * @param string $name
+     * @param  string                   $name
      * @return DatagridManagerInterface
      * @throws \LogicException
      */

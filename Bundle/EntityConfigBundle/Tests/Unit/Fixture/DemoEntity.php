@@ -4,14 +4,16 @@ namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Fixture;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
  * @ORM\Entity
- * @Configurable
+ * @Config
  */
 class DemoEntity
 {
+    const ENTITY_NAME = 'Oro\Bundle\EntityConfigBundle\Tests\Unit\Fixture\DemoEntity';
+
     /**
      * @var integer
      * @ORM\Column(name="id", type="integer")

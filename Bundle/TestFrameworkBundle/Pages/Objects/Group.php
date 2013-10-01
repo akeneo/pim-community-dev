@@ -16,7 +16,7 @@ class Group extends AbstractEntity implements Entity
     {
         parent::__construct($testCase, $redirect);
         $this->name = $this->byId('oro_user_group_form_name');
-        $this->roles = $this->select($this->byId('oro_user_group_form_roles'));
+        $this->owner = $this->select($this->byId('oro_user_group_form_owner'));
     }
 
     public function setName($name)
@@ -30,12 +30,15 @@ class Group extends AbstractEntity implements Entity
         return $this->name->value();
     }
 
-    public function setRoles($roles = array())
+    public function setOwner($owner)
     {
-        foreach ($roles as $role) {
-            $this->roles->selectOptionByLabel($role);
-        }
+        $this->owner->selectOptionByLabel($owner);
 
         return $this;
+    }
+
+    public function getOwner()
+    {
+        return trim($this->owner->selectedLabel());
     }
 }

@@ -12,6 +12,11 @@ class SubBlockConfig implements FormConfigInterface
     /**
      * @var string
      */
+    protected $description;
+
+    /**
+     * @var string
+     */
     protected $code;
 
     /**
@@ -46,6 +51,25 @@ class SubBlockConfig implements FormConfigInterface
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
@@ -122,9 +146,10 @@ class SubBlockConfig implements FormConfigInterface
     public function toArray()
     {
         return array(
-            'code'  => $this->code,
-            'title' => $this->title,
-            'data'  => $this->data
+            'code'        => $this->code,
+            'title'       => $this->title,
+            'description' => $this->description,
+            'data'        => $this->data
         );
     }
 }

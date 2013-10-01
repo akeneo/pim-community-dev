@@ -50,7 +50,7 @@ class ConfigurationBuilder implements BuilderInterface
                         $menu->setExtra('type', $menuTreeElement['type']);
                     }
 
-                    $this->createFromArray($menu, $menuTreeElement['children'], $menuConfig['items']);
+                    $this->createFromArray($menu, $menuTreeElement['children'], $menuConfig['items'], $options);
                 }
             }
         }
@@ -60,11 +60,13 @@ class ConfigurationBuilder implements BuilderInterface
      * @param ItemInterface $menu
      * @param array         $data
      * @param array         $itemList
+     * @param array         $options
      *
      * @return \Knp\Menu\ItemInterface
      */
-    private function createFromArray(ItemInterface $menu, array $data, array &$itemList)
+    private function createFromArray(ItemInterface $menu, array $data, array &$itemList, array $options = array())
     {
+        $isAllowed = false;
         foreach ($data as $itemCode => $itemData) {
             if (!empty($itemList[$itemCode])) {
 
@@ -84,13 +86,16 @@ class ConfigurationBuilder implements BuilderInterface
                 $this->moveToExtras($itemOptions, 'translateDomain');
                 $this->moveToExtras($itemOptions, 'translateParameters');
 
-                $newMenuItem = $menu->addChild($itemOptions['name'], $itemOptions);
+                $newMenuItem = $menu->addChild($itemOptions['name'], array_merge($itemOptions, $options));
 
                 if (!empty($itemData['children'])) {
-                    $this->createFromArray($newMenuItem, $itemData['children'], $itemList);
+                    $this->createFromArray($newMenuItem, $itemData['children'], $itemList, $options);
                 }
+
+                $isAllowed = $isAllowed || $newMenuItem->getExtra('isAllowed');
             }
         }
+        $menu->setExtra('isAllowed', $isAllowed);
     }
 
     /**

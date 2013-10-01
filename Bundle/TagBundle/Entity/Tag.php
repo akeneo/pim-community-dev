@@ -7,6 +7,7 @@ use Doctrine\ORM\PersistentCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
  * Tag
@@ -14,6 +15,20 @@ use Oro\Bundle\UserBundle\Entity\User;
  * @ORM\Table(name="oro_tag_tag")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="Oro\Bundle\TagBundle\Entity\Repository\TagRepository")
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Tag", "plural_label"="Tags"},
+ *      "ownership"={
+ *          "owner_type"="USER",
+ *          "owner_field_name"="owner",
+ *          "owner_column_name"="user_owner_id"
+ *      },
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
 class Tag implements ContainAuthorInterface, ContainUpdaterInterface
 {
@@ -66,6 +81,13 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     protected $updatedBy;
 
     /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $owner;
+
+    /**
      * Constructor
      *
      * @param string $name Tag's name
@@ -74,9 +96,6 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     {
         $this->setName($name);
         $this->tagging = new ArrayCollection();
-
-        $this->setCreatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
-        $this->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
     }
 
     /**
@@ -211,7 +230,18 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
      */
     public function __toString()
     {
-        return $this->getName();
+        return (string) $this->getName();
+    }
+
+    /**
+     * Pre persist event listener
+     *
+     * @ORM\PrePersist
+     */
+    public function beforeSave()
+    {
+        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**
@@ -221,5 +251,24 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     public function doUpdate()
     {
         $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * @return User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param User $owningUser
+     * @return Tag
+     */
+    public function setOwner($owningUser)
+    {
+        $this->owner = $owningUser;
+
+        return $this;
     }
 }

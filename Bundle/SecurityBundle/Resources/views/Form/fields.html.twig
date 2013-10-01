@@ -1,0 +1,65 @@
+{% block oro_acl_label_widget %}
+    <strong>{{ value|trans }}</strong>
+{% endblock %}
+
+{% block oro_acl_object_name_widget %}
+    {{ form_widget(form.oid) }}
+    {{ form_widget(form.name) }}
+{% endblock %}
+
+{% block oro_acl_collection_widget %}
+    {% if privileges_config.view_type == 'grid' %}
+        <table class="table table-striped acl-table">
+            <tbody>
+            <tr>
+                <th>
+                    &nbsp;
+                </th>
+                {% for field in privileges_config['permissions'] %}
+                    <th class="a-center">
+                        {{ field|trans }}
+                    </th>
+                {% endfor %}
+            </tr>
+            {% for child in form %}
+                {{ form_widget(child) }}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {% for child in form %}
+            <div class="security-row">
+                {{ form_widget(child) }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block oro_acl_privilege_widget %}
+     {% spaceless %}
+         <tr {% if form.vars.value.identity.name == "(default)" %}class="default-field"{% endif %}>
+             <td>
+                 {{ form_widget(form.identity) }}
+             </td>
+             {{ form_widget(form.permissions) }}
+         </tr>
+     {% endspaceless %}
+{% endblock %}
+
+{% block oro_acl_permission_widget %}
+    {{ form_widget(form.accessLevel) }}
+    {{ form_widget(form.name) }}
+{% endblock %}
+
+{% block oro_acl_permission_collection_widget %}
+    {% for field in privileges_config['permissions'] %}
+        <td class="a-center">
+            {% for permission in form %}
+                {% if permission.vars.value.name == field %}
+                    {{ form_widget(permission) }}
+                {% endif %}
+            {% endfor %}
+            &nbsp;
+        </td>
+    {% endfor %}
+{% endblock %}

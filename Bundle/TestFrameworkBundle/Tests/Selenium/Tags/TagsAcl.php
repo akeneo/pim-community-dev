@@ -33,9 +33,17 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             ->add()
             ->setName('ROLE_NAME_' . $randomPrefix)
             ->setLabel('Label_' . $randomPrefix)
-            ->selectAcl('Root')
+            ->setOwner('Main')
+            ->setEntity('Tag', array('Create', 'Edit', 'Delete', 'View'))
+            ->setEntity('User', array('Create', 'Edit', 'Delete', 'View', 'Assign'))
+            ->setEntity('Group', array('Create', 'Edit', 'Delete', 'View', 'Assign'))
+            ->setEntity('Role', array('Create', 'Edit', 'Delete', 'View', 'Assign'))
+            ->setCapability(array(
+                'Tag assign/unassign',
+                'Unassign all tags from entities',
+                'View tag cloud'))
             ->save()
-            ->assertMessage('Role successfully saved')
+            ->assertMessage('Role saved')
             ->close();
 
         return ($randomPrefix);
@@ -58,6 +66,7 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             ->add()
             ->assertTitle('Create User - Users - System')
             ->setUsername($username)
+            ->setOwner('Main')
             ->enable()
             ->setFirstpassword('123123q')
             ->setSecondpassword('123123q')
@@ -66,7 +75,8 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             ->setEmail($username.'@mail.com')
             ->setRoles(array('Label_' . $role))
             ->save()
-            ->assertMessage('User successfully saved')
+            ->assertMessage('User saved')
+            ->toGrid()
             ->close()
             ->assertTitle('Users - System');
 
@@ -89,8 +99,9 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             ->add()
             ->assertTitle('Create Tag - Tags - System')
             ->setTagname($tagname)
+            ->setOwner('admin')
             ->save()
-            ->assertMessage('Tag successfully saved')
+            ->assertMessage('Tag saved')
             ->assertTitle('Tags - System')
             ->close();
 
@@ -131,7 +142,7 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
             case 'unassign global':
                 $this->unassignGlobalAcl($login, $rolename, $rolelabel, $tagname);
                 break;
-            case 'assign/unassign':
+            case 'assign unassign':
                 $this->assignAcl($login, $rolename, $username);
                 break;
         }
@@ -142,7 +153,7 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $role)
             ->open(array($role))
-            ->selectAcl('Delete tags')
+            ->setEntity('Tag', array('Delete'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -157,7 +168,7 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $role)
             ->open(array($role))
-            ->selectAcl('Update tag')
+            ->setEntity('Tag', array('Edit'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -172,7 +183,7 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $role)
             ->open(array($role))
-            ->selectAcl('Create tag')
+            ->setEntity('Tag', array('Create'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -187,7 +198,7 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $role)
             ->open(array($role))
-            ->selectAcl('View list of tags')
+            ->setEntity('Tag', array('View'))
             ->save()
             ->logout()
             ->setUsername($username)
@@ -203,12 +214,13 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $rolename)
             ->open(array($rolename))
-            ->selectAcl('Tag unassign global')
+            ->setCapability(array('Unassign all tags from entities'))
             ->save()
             ->openUsers()
             ->add()
             ->setUsername($username)
             ->enable()
+            ->setOwner('Main')
             ->setFirstpassword('123123q')
             ->setSecondpassword('123123q')
             ->setFirstname('First_'.$username)
@@ -235,15 +247,15 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
         $login->openRoles()
             ->filterBy('Role', $role)
             ->open(array($role))
-            ->selectAcl('Tag assign/unassign')
+            ->setCapability(array('Tag assign/unassign'))
             ->save()
             ->logout()
             ->setUsername($username)
             ->setPassword('123123q')
             ->submit()
-            ->openAccounts()
-            ->add(false)
-            ->assertElementPresent("//div[@class='select2-container select2-container-multi select2-container-disabled']");
+            ->openUsers()
+            ->add()
+            ->assertElementNotPresent("//div[@class='select2-container select2-container-multi select2-container-disabled']");
     }
 
     /**
@@ -254,12 +266,12 @@ class TagsAcl extends \PHPUnit_Extensions_Selenium2TestCase
     public function columnTitle()
     {
         return array(
+            'unassign global' => array('unassign global'),
+            'assign unassign' => array('assign unassign'),
             'delete' => array('delete'),
             'update' => array('update'),
             'create' => array('create'),
             'view list' => array('view list'),
-            'unassign global' => array('unassign global'),
-            'assign/unassign' => array('assign/unassign'),
         );
     }
 }

@@ -55,14 +55,17 @@
         </div>
     </div>
     <script>
-        $(function () {
-            $('#myTab a:last').tab('show');
-            $('#myTab a').click(function (e) {
-                e.preventDefault();
-                $(this).tab('show');
-            })
-            $('a.popup-me').popover();
-        })
+        require(['jquery', 'jquery-ui', 'bootstrap'],
+        function($) {
+            $(function () {
+                $('#myTab a:last').tab('show');
+                $('#myTab a').click(function (e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                });
+                $('a.popup-me').popover();
+            });
+        });
     </script>
 
     {# horizontal example #}
@@ -84,7 +87,7 @@
                         <label for="oro_user_user_form_username" class="control-label required"><em>*</em>Username</label>
                         <div class="controls validation-error">
                             <input class="error" type="text" value="micky.figueroa_36a4c" required="required" name="oro_user_user_form[username]" id="oro_user_user_form_username" />
-                            <a title="" class="validation-tooltip" data-placement="top" data-toggle="tooltip" href="javascript: void(0);" data-original-title="{{ 'should have min 3 symbols'|trans }}">{{ 'should have min 3 symbols'|trans }}</a>
+                            <span class="validation-faled">{{ 'should have min 3 symbols'|trans }}</span>
                         </div>
                     </div>
                     <div class="control-group">
@@ -103,7 +106,7 @@
                         <label for="oro_user_user_form_birthday" class="control-label">Date of birth</label>
                         <div class="controls validation-error">
                             <input type="text" value="11/16/56" data-dateformat="m/d/y" placeholder="m/d/y" class="datepicker hasdatepicker error" name="oro_user_user_form[birthday]" id="oro_user_user_form_birthday" />
-                            <a title="" class="validation-tooltip" data-placement="top" data-toggle="tooltip" href="javascript: void(0);" data-original-title="some msgs span two lines <br/> use mm/dd/yy format">{{ 'some msgs span two lines <br/> use mm/dd/yy format'|trans }}</a>
+                            <span class="validation-faled">{{ 'some msgs span two lines <br/> use mm/dd/yy format'|trans|raw }}</span>
                         </div>
                     </div>
                     <div class="control-group">

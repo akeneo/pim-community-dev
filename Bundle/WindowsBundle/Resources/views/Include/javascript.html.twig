@@ -1,3 +1,6 @@
 <script type="text/javascript">
-    Oro.widget.StateModel.prototype.urlRoot = {{ path('oro_api_get_windows')|json_encode|raw }};
+    require(['oro/dialog/state/model'],
+    function(StateModel) {
+        StateModel.prototype.urlRoot = {{ path('oro_api_get_windows')|json_encode|raw }};
+    });
 </script>

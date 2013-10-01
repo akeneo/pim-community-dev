@@ -4,7 +4,7 @@ namespace Oro\Bundle\EntityConfigBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-use Oro\Bundle\EntityConfigBundle\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 abstract class BaseCommand extends ContainerAwareCommand
 {

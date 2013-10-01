@@ -1,0 +1,16 @@
+{%- block sidebar %}
+<p>
+    {{ 'oro.cron.sidebar.status'|trans }}:
+    <span class="label label-{{ pid ? 'success' : 'important' }}">{{ pid ? 'oro.cron.sidebar.running'|trans : 'oro.cron.sidebar.not_running'|trans }}</span>
+    <img src="{{ asset('bundles/orocron/images/loading.gif') }}" alt="" style="display: none;" />
+</p>
+<p>{{ 'oro.cron.sidebar.pid'|trans }}: <span>{{ pid|default('oro.cron.na'|trans) }}</span></p>
+
+<p>
+    <a class="btn btn-primary btn-large no-hash" id="run-daemon" href="{{ path('oro_cron_job_run_daemon') }}"{% if pid %} style="display: none;"{% endif %}>{{ 'oro.cron.sidebar.run'|trans }}</a>
+    <a class="btn btn-warning btn-large no-hash" id="stop-daemon" href="{{ path('oro_cron_job_stop_daemon') }}"{% if not pid %} style="display: none;"{% endif %}>{{ 'oro.cron.sidebar.stop'|trans }}</a>
+</p>
+<p><a class="btn btn-small" href="{{ path('oro_cron_job_index') }}">{{ 'oro.cron.sidebar.refresh'|trans }}</a></p>
+
+<a class="btn btn-small" id="status-daemon" href="{{ path('oro_cron_job_status') }}" style="display: none;">{{ 'oro.cron.sidebar.check'|trans }}</a>
+{% endblock -%}

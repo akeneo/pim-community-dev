@@ -1,0 +1,16 @@
+parameters:
+    oro_cron.job_daemon.class:        Oro\Bundle\CronBundle\Job\Daemon
+    oro_cron.job_manager.class:       Oro\Bundle\CronBundle\Entity\Manager\JobManager
+
+services:
+    oro_cron.job_daemon:
+        class:                        %oro_cron.job_daemon.class%
+        arguments:
+            - %kernel.root_dir%
+            - %oro_cron.max_jobs%
+            - %kernel.environment%
+
+    oro_cron.job_manager:
+        class:                        %oro_cron.job_manager.class%
+        arguments:
+            - "@doctrine.orm.entity_manager"

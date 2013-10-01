@@ -18,6 +18,7 @@ use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
+use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionInterface;
 
 /**
@@ -107,9 +108,19 @@ abstract class DatagridManager implements DatagridManagerInterface
     private $identifierField;
 
     /**
+     * @var AbstractViewsList|null
+     */
+    private $viewsList;
+
+    /**
      * @var array
      */
     protected $toolbarOptions = array();
+
+    /**
+     * @var bool
+     */
+    protected $multipleSorting = false;
 
     /**
      * {@inheritDoc}
@@ -178,6 +189,14 @@ abstract class DatagridManager implements DatagridManagerInterface
     /**
      * {@inheritDoc}
      */
+    public function setViewsList(AbstractViewsList $list)
+    {
+        $this->viewsList = $list;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -232,6 +251,7 @@ abstract class DatagridManager implements DatagridManagerInterface
             $this->identifierField =
                 current($this->entityManager->getClassMetadata($this->entityName)->getIdentifierFieldNames());
         }
+
         return $this->identifierField;
     }
 
@@ -258,8 +278,8 @@ abstract class DatagridManager implements DatagridManagerInterface
 
         // merge default parameters
         $parametersArray = $this->parameters->toArray();
-        if (empty($parametersArray[$this->name])) {
-            foreach ($this->getDefaultParameters() as $type => $value) {
+        foreach ($this->getDefaultParameters() as $type => $value) {
+            if (empty($parametersArray[$this->name][$type])) {
                 $this->parameters->set($type, $value);
             }
         }
@@ -337,6 +357,12 @@ abstract class DatagridManager implements DatagridManagerInterface
         $datagrid->setEntityName($this->entityName);
         $datagrid->setName($this->name);
         $datagrid->setEntityHint($this->entityHint);
+
+        // set multiple sorting flag
+        $datagrid->setMultipleSorting($this->multipleSorting);
+
+        $views = $this->getViewsList();
+        $datagrid->setViewsList($views);
     }
 
     /**
@@ -364,6 +390,7 @@ abstract class DatagridManager implements DatagridManagerInterface
     {
         $query = $this->queryFactory->createQuery();
         $this->prepareQuery($query);
+
         return $query;
     }
 
@@ -601,6 +628,7 @@ abstract class DatagridManager implements DatagridManagerInterface
             $options['pageSize']['items'],
             function ($item) {
                 $item = isset($item['size']) ? $item['size'] : $item;
+
                 return $item == 0;
             }
         );
@@ -628,9 +656,17 @@ abstract class DatagridManager implements DatagridManagerInterface
     }
 
     /**
-     * @param string $id
-     * @param array $parameters
-     * @param string $domain
+     * @return null|AbstractViewsList
+     */
+    public function getViewsList()
+    {
+        return $this->viewsList;
+    }
+
+    /**
+     * @param  string $id
+     * @param  array  $parameters
+     * @param  string $domain
      * @return string
      */
     protected function translate($id, array $parameters = array(), $domain = null)

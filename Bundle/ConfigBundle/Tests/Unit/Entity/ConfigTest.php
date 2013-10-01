@@ -1,6 +1,11 @@
 <?php
 
-namespace Oro\Bundle\ConfigBundle\Entity;
+namespace Oro\Bundle\ConfigBundle\Tests\Unit\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Oro\Bundle\ConfigBundle\Entity\Config;
+use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
 
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,6 +34,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $object->setEntity($entity);
 
         $this->assertEquals($entity, $object->getEntity());
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $object->getValues());
     }
 
     public function testRecordId()
@@ -43,20 +49,32 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($id, $object->getRecordId());
     }
 
-    public function testSettings()
+    /**
+     * Test getOrCreateValue
+     */
+    public function testGetOrCreateValue()
     {
         $object   = $this->object;
-        $settings = array(
-            'oro_user' => array(
-                'greeting' => true,
-                'level'    => 10,
-            )
-        );
 
-        $this->assertEmpty($object->getSettings());
+        $value = $object->getOrCreateValue('oro_user', 'level');
 
-        $object->setSettings($settings);
+        $this->assertEquals('oro_user', $value->getSection());
+        $this->assertEquals('level', $value->getName());
+        $this->assertEquals($object, $value->getConfig());
 
-        $this->assertEquals($settings, $object->getSettings());
+        $values = new ArrayCollection();
+        $configValue = new ConfigValue();
+        $configValue->setValue('test')
+            ->setSection('test')
+            ->setName('test');
+
+        $values->add($configValue);
+        $object->setValues($values);
+
+        $value = $object->getOrCreateValue('test', 'test');
+
+        $this->assertEquals('test', (string)$value);
+        $this->assertEquals('test', $value->getSection());
+        $this->assertEquals('test', $value->getName());
     }
 }

@@ -3,12 +3,14 @@
 namespace Oro\Bundle\EmailBundle\Provider;
 
 use Doctrine\Common\Cache\Cache;
-use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
+
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
+use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\UserBundle\Entity\User;
+
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\EntityConfigBundle\Config\FieldConfig;
 
 class EmailRenderer extends \Twig_Environment
 {
@@ -76,21 +78,19 @@ class EmailRenderer extends \Twig_Environment
     {
         $configuration = array();
 
-        /**
-         * @TODO Change when new code of entity config will be merged
-         */
-        foreach ($this->configProvider->getAllConfigurableEntityNames() as $className) {
-            $config = $this->configProvider->getConfig($className);
-            $fields = $config->getFields(
-                function (FieldConfig $field) {
-                    return $field->is('available_in_template');
-                }
+        foreach ($this->configProvider->getIds() as $entityConfigId) {
+            $className = $entityConfigId->getClassName();
+            $fields    = $this->configProvider->filter(
+                function (ConfigInterface $fieldConfig) {
+                    return $fieldConfig->is('available_in_template');
+                },
+                $className
             );
 
-            if (!$fields->isEmpty()) {
+            if (count($fields)) {
                 $configuration[$className] = array();
-                foreach ($fields as $field) {
-                    $configuration[$className][] = 'get' . strtolower($field->getCode());
+                foreach ($fields as $fieldConfig) {
+                    $configuration[$className][] = 'get' . strtolower($fieldConfig->getId()->getFieldName());
                 }
             }
         }
@@ -102,7 +102,7 @@ class EmailRenderer extends \Twig_Environment
      * Compile email message
      *
      * @param EmailTemplate $entity
-     * @param array $templateParams
+     * @param array         $templateParams
      *
      * @return array first element is email subject, second - message
      */
@@ -114,9 +114,29 @@ class EmailRenderer extends \Twig_Environment
 
         $templateParams['user'] = $this->user;
 
-        $templateRendered = $this->render('{% verbatim %}'.$content.'{% endverbatim %}', $templateParams);
-        $subjectRendered  = $this->render('{% verbatim %}'.$entity->getSubject().'{% endverbatim %}', $templateParams);
+        $templateRendered = $this->render($content, $templateParams);
+        $subjectRendered  = $this->render($entity->getSubject(), $templateParams);
 
         return array($subjectRendered, $templateRendered);
+    }
+
+    /**
+     * Compile preview content
+     *
+     * @param EmailTemplate $entity
+     *
+     * @return string
+     */
+    public function compilePreview(EmailTemplate $entity)
+    {
+        // ensure we have no html tags in txt template
+        $content = $entity->getContent();
+        $content = $entity->getType() == 'txt' ? strip_tags($content) : $content;
+
+        $templateParams['user'] = $this->user;
+
+        $templateRendered = $this->render('{% verbatim %}' . $content . '{% endverbatim %}', $templateParams);
+
+        return $templateRendered;
     }
 }

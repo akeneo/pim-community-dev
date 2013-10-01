@@ -3,7 +3,7 @@ oro:
         controller:
             emailtemplate:
                 saved:
-                    message: "Template sucessfully saved"
+                    message: "Template saved"
         form:
             choose_template: "Choose a template..."
         datagrid:
@@ -26,6 +26,13 @@ oro:
                         no:  "No"
                 page_size:
                     all: "All"
+                view:
+                    system_templates: "System only"
+            email:
+                from_name: "From"
+                sentAt: "Sent"
+                subject: "Subject"
+                recipients: "Recipients"
         handler:
             attempt_save_system_template: "Overriding of system's templates is prohibited, clone it instead."
 "%subject% - Email": "%subject% - Email"

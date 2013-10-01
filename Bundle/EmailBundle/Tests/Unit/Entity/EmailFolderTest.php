@@ -21,6 +21,13 @@ class EmailFolderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('test', $entity->getName());
     }
 
+    public function testFullNameGetterAndSetter()
+    {
+        $entity = new EmailFolder();
+        $entity->setFullName('test');
+        $this->assertEquals('test', $entity->getFullName());
+    }
+
     public function testTypeGetterAndSetter()
     {
         $entity = new EmailFolder();

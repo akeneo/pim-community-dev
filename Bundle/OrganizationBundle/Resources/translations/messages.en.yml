@@ -1,0 +1,18 @@
+oro:
+    business_unit:
+        controller:
+            message:
+                saved: "Business Unit saved"
+        form:
+            choose_business_user: "Choose a business unit..."
+        datagrid:
+            action:
+                view: "View"
+                update: "Update"
+                delete: "Delete"
+            name: "Name"
+            email: "Email"
+            phone: "Phone"
+            owner: "Owner Business Unit"
+            organization: "Organization"
+            created_at: "Created At"

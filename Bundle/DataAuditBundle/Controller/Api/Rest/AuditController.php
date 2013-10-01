@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\DataAuditBundle\Controller\Api\Rest;
 
+use Symfony\Component\Validator\Constraints\True;
+
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Routing\ClassResourceInterface;
@@ -10,7 +12,8 @@ use FOS\Rest\Util\Codes;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
-use Symfony\Component\Validator\Constraints\True;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * @NamePrefix("oro_api_")
@@ -26,6 +29,8 @@ class AuditController extends FOSRestController implements ClassResourceInterfac
      * )
      *
      * @return Response
+     *
+     * @AclAncestor("oro_dataaudit_history")
      */
     public function cgetAction()
     {
@@ -51,6 +56,8 @@ class AuditController extends FOSRestController implements ClassResourceInterfac
      * )
      *
      * @return Response
+     *
+     * @AclAncestor("oro_dataaudit_history")
      */
     public function getAction($id)
     {
@@ -59,31 +66,6 @@ class AuditController extends FOSRestController implements ClassResourceInterfac
         }
 
         return $this->handleView($this->view($entity, Codes::HTTP_OK));
-    }
-
-    /**
-     * Remove audit entity
-     *
-     * @param int $d
-     *
-     * @ApiDoc(
-     *  description="Remove audit entity",
-     *  resource=true,
-     *  requirements={
-     *      {"name"="id", "dataType"="integer"},
-     *  }
-     * )
-     */
-    public function deleteAction($id)
-    {
-        if (!$entity = $this->getEntity($id)) {
-            return $this->handleView($this->view('', Codes::HTTP_NOT_FOUND));
-        }
-
-        $this->getManager()->remove($entity);
-        $this->getManager()->flush();
-
-        return $this->handleView($this->view('', Codes::HTTP_NO_CONTENT));
     }
 
     /**

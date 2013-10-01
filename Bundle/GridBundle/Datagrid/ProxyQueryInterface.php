@@ -10,8 +10,8 @@ interface ProxyQueryInterface
     /**
      * Execute query
      *
-     * @param array $params
-     * @param null  $hydrationMode
+     * @param  array $params
+     * @param  null  $hydrationMode
      * @return mixed
      */
     public function execute(array $params = array(), $hydrationMode = null);
@@ -19,8 +19,8 @@ interface ProxyQueryInterface
     /**
      * Proxy for query methods
      *
-     * @param string $name
-     * @param array  $args
+     * @param  string $name
+     * @param  array  $args
      * @return mixed
      */
     public function __call($name, $args);
@@ -28,8 +28,8 @@ interface ProxyQueryInterface
     /**
      * Adds sorting order
      *
-     * @param array $parentAssociationMappings
-     * @param array $fieldMapping
+     * @param array  $parentAssociationMappings
+     * @param array  $fieldMapping
      * @param string $direction
      */
     public function addSortOrder(array $parentAssociationMappings, array $fieldMapping, $direction = null);
@@ -44,8 +44,8 @@ interface ProxyQueryInterface
     /**
      * Adds select part to internal whitelist
      *
-     * @param string $select
-     * @param bool $addToWhitelist
+     * @param  string              $select
+     * @param  bool                $addToWhitelist
      * @return ProxyQueryInterface
      */
     public function addSelect($select = null, $addToWhitelist = false);
@@ -53,8 +53,8 @@ interface ProxyQueryInterface
     /**
      * Set query parameter
      *
-     * @param string $name
-     * @param mixed $value
+     * @param  string              $name
+     * @param  mixed               $value
      * @return ProxyQueryInterface
      */
     public function setParameter($name, $value);
@@ -69,8 +69,8 @@ interface ProxyQueryInterface
     /**
      * Sets a query hint
      *
-     * @param string $name
-     * @param mixed $value
+     * @param  string              $name
+     * @param  mixed               $value
      * @return ProxyQueryInterface
      */
     public function setQueryHint($name, $value);
@@ -78,8 +78,8 @@ interface ProxyQueryInterface
     /**
      * Set sort by field
      *
-     * @param array $parentAssociationMappings
-     * @param array $fieldMapping
+     * @param  array               $parentAssociationMappings
+     * @param  array               $fieldMapping
      * @return ProxyQueryInterface
      */
     public function setSortBy($parentAssociationMappings, $fieldMapping);
@@ -94,7 +94,7 @@ interface ProxyQueryInterface
     /**
      * Set sort order
      *
-     * @param mixed $sortOrder
+     * @param  mixed               $sortOrder
      * @return ProxyQueryInterface
      */
     public function setSortOrder($sortOrder);
@@ -116,7 +116,7 @@ interface ProxyQueryInterface
     /**
      * Set first result
      *
-     * @param int $firstResult
+     * @param  int                 $firstResult
      * @return ProxyQueryInterface
      */
     public function setFirstResult($firstResult);
@@ -131,7 +131,7 @@ interface ProxyQueryInterface
     /**
      * Set max records
      *
-     * @param int $maxResults
+     * @param  int                 $maxResults
      * @return ProxyQueryInterface
      */
     public function setMaxResults($maxResults);
@@ -153,7 +153,7 @@ interface ProxyQueryInterface
     /**
      * Join entity
      *
-     * @param array $associationMappings
+     * @param  array $associationMappings
      * @return mixed
      */
     public function entityJoin(array $associationMappings);

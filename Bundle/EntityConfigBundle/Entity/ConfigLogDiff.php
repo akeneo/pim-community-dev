@@ -5,7 +5,7 @@ namespace Oro\Bundle\EntityConfigBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="oro_config_log_diff")
+ * @ORM\Table(name="oro_entity_config_log_diff")
  * @ORM\Entity
  */
 class ConfigLogDiff
