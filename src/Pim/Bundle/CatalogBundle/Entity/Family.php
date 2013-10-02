@@ -432,7 +432,7 @@ class Family implements TranslatableInterface, VersionableInterface
      *
      * @param string $label
      *
-     * @return string
+     * @return Family
      */
     public function setLabel($label)
     {

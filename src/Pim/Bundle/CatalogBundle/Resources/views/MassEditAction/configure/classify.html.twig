@@ -5,11 +5,11 @@
 
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore', 'pim/tree/mass-associate'],
+            ['jquery', 'underscore', 'pim/tree/associate'],
             function($, _, TreeAssociate){
                 'use strict';
                 $(function() {
-                    new TreeAssociate('#trees');
+                    new TreeAssociate('#trees', '#pim_catalog_mass_edit_action_operation_categories');
                 });
             }
         );

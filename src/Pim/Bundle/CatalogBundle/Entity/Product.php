@@ -77,6 +77,14 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     protected $enabled = true;
 
     /**
+     * @var VariantGroup $variantGroup
+     *
+     * @ORM\ManyToOne(targetEntity="VariantGroup", inversedBy="products")
+     * @ORM\JoinColumn(name="variant_group_id", referencedColumnName="id")
+     */
+    protected $variantGroup;
+
+    /**
      * @var ArrayCollection $completenesses
      *
      * @ORM\OneToMany(
@@ -286,6 +294,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function removeCategory(Category $category)
     {
         $this->categories->removeElement($category);
+        $category->removeProduct($this);
 
         return $this;
     }
@@ -347,6 +356,30 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         }
 
         return !$this->getFamily()->getAttributes()->contains($attribute);
+    }
+
+    /**
+     * Get variant group
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
+     */
+    public function getVariantGroup()
+    {
+        return $this->variantGroup;
+    }
+
+    /**
+     * Set variant group
+     *
+     * @param VariantGroup $variantGroup
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     */
+    public function setVariantGroup(VariantGroup $variantGroup = null)
+    {
+        $this->variantGroup = $variantGroup;
+
+        return $this;
     }
 
     /**
