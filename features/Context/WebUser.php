@@ -4,12 +4,14 @@ namespace Context;
 
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ExpectationException;
-use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\Gherkin\Node\TableNode;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Oro\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
  * Context of the website
@@ -1500,6 +1502,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iExecuteTheJob($type)
     {
         $this->getPage(sprintf('%s show', ucfirst($type)))->execute();
+        sleep(10);
     }
 
     /**
