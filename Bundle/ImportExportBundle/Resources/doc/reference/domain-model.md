@@ -33,7 +33,7 @@ Table of Contents
     - [Strategy Interface](#strategy-interface)
     - [Import Strategy Helper](#import-strategy-helper)
  - [Serializer](#serializer)
-    - [Serializer](#serializer)
+    - [Serializer](#serializer-1)
 
 Job
 ---
