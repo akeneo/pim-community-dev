@@ -94,6 +94,18 @@ class VariantGroupController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $this->getManager()->createQueryBuilder();
+        $queryBuilder
+            ->select('v')
+            ->from('PimCatalogBundle:VariantGroup', 'v');
+        $datagrid = $this->datagridWorker->getDatagrid('variant_group', $queryBuilder);
+
+        $view = ('json' === $request->getRequestFormat())
+            ? 'OroGridBundle:Datagrid:list.json.php'
+            : 'PimCatalogBundle:VariantGroup:index.html.twig';
+
+        return $this->render($view, array('datagrid' => $datagrid->createView()));
     }
 
     /**
