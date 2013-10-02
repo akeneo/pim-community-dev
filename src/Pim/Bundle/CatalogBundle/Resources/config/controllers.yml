@@ -45,7 +45,6 @@ services:
             - '@oro_grid.renderer'
             - '@pim_catalog.datagrid.worker'
             - '@pim_catalog.manager.category'
-            - '@pim_catalog.form.type.category'
 
     pim_catalog.controller.channel:
         scope: request
