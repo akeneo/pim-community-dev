@@ -45,7 +45,7 @@ class AttributeConstraintGuesser implements ConstraintGuesserInterface
                 $constraints[] = new Constraints\Email();
                 break;
             case 'oro_flexibleentity_integer_unsigned':
-                $constraints[] = new Constraints\GreaterThan(array('value' => 0));
+                $constraints[] = new Constraints\Range(array('min' => 0));
                 break;
         }
 
