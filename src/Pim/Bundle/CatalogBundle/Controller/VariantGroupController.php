@@ -2,6 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
+use Symfony\Component\Form\Form;
+
+use Pim\Bundle\CatalogBundle\Form\Handler\VariantGroupHandler;
+
+use Pim\Bundle\CatalogBundle\Form\Handler\ChannelHandler;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -41,6 +47,16 @@ class VariantGroupController extends AbstractDoctrineController
     protected $datagridWorker;
 
     /**
+     * @var VariantGroupHandler
+     */
+    protected $variantHandler;
+
+    /**
+     * @var Form
+     */
+    protected $variantForm;
+
+    /**
      * Constructor
      *
      * @param Request $request
@@ -62,7 +78,9 @@ class VariantGroupController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridWorkerInterface $datagridWorker
+        DatagridWorkerInterface $datagridWorker,
+        VariantGroupHandler $variantHandler,
+        Form $variantForm
     ) {
         parent::__construct(
             $request,
@@ -76,6 +94,8 @@ class VariantGroupController extends AbstractDoctrineController
         );
 
         $this->datagridWorker = $datagridWorker;
+        $this->variantHandler = $variantHandler;
+        $this->variantForm    = $variantForm;
     }
 
     /**
