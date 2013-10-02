@@ -16,8 +16,9 @@ use Behat\Mink\Exception\ElementNotFoundException;
 class Base extends Page
 {
     protected $elements = array(
-        'Dialog' => array('css' => 'div.modal'),
-        'Title'  => array('css' => '.navbar-title')
+        'Dialog'    => array('css' => 'div.modal'),
+        'Title'     => array('css' => '.navbar-title'),
+        'HeadTitle' => array('css' => 'title')
     );
 
     /**
@@ -32,6 +33,22 @@ class Base extends Page
                 "$('.select2-drop-active input:visible').trigger($.Event('keydown', {which: 9, keyCode: 9}));"
             );
         } catch (UnsupportedDriverActionException $e) {
+        }
+    }
+
+    /**
+     * @param string $title
+     *
+     * @throws \Exception
+     */
+    public function checkHeadTitle($title)
+    {
+        $headTitle = $this->getElement('HeadTitle')->getHtml();
+
+        if (trim($headTitle) !== trim($title)) {
+            throw new \Exception(
+                sprintf('Incorrect title. Expected "%s", given "%s"', $title, $headTitle)
+            );
         }
     }
 
