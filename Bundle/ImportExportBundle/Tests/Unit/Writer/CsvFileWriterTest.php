@@ -150,6 +150,29 @@ class CsvFileWriterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider optionsDataProvider
+     * @param array $options
+     * @param array $data
+     * @param string $expected
+     */
+    public function testWriteWithClearWriter($options, $data, $expected)
+    {
+        $stepExecution = $this->getMockStepExecution($options);
+        $this->writer->setStepExecution($stepExecution);
+        $clearWriter = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Writer\DoctrineClearWriter')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $clearWriter->expects($this->once())
+            ->method('write')
+            ->with($data);
+        $this->writer->setClearWriter($clearWriter);
+        $this->writer->write($data);
+        $this->assertFileExists($expected);
+        $this->assertFileEquals($expected, $options['filePath']);
+
+    }
+
+    /**
      * @param array $jobInstanceRawConfiguration
      * @return \PHPUnit_Framework_MockObject_MockObject|StepExecution
      */

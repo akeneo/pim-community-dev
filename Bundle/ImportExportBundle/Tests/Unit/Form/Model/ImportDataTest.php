@@ -3,6 +3,7 @@
 namespace Oro\Bundle\ImportExportBundle\Tests\Unit\Form\Model;
 
 use Oro\Bundle\ImportExportBundle\Form\Model\ImportData;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ImportDataTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,8 +16,9 @@ class ImportDataTest extends \PHPUnit_Framework_TestCase
     {
         $obj = new ImportData();
 
-        call_user_func_array(array($obj, 'set' . ucfirst($property)), array($value));
-        $this->assertEquals($value, call_user_func_array(array($obj, 'get' . ucfirst($property)), array()));
+        $accessor = PropertyAccess::createPropertyAccessor();
+        $accessor->setValue($obj, $property, $value);
+        $this->assertEquals($value, $accessor->getValue($obj, $property));
     }
 
     public function propertiesDataProvider()
