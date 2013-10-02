@@ -2,17 +2,17 @@
 
 namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\IntegerType;
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\IntegerUnsignedType;
 
 class IntegerUnsignedTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_integer';
+    protected $name = 'oro_flexibleentity_integer_unsigned';
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->target = new IntegerType('integer', 'number', $this->guesser);
+        $this->target = new IntegerUnsignedType('integer', 'number', $this->guesser);
     }
 
     public function testBuildValueFormType()
