@@ -3,10 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\CatalogBundle\Entity\Product;
-
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-
 use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
+use Pim\Bundle\CatalogBundle\Entity\VariantGroupTranslation;
 
 /**
  * Test related class
@@ -156,6 +155,29 @@ class VariantGroupTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEntity($this->variant->setProducts($expectedProducts));
         $this->assertCount(2, $this->variant->getProducts());
+    }
+
+    /**
+     * Test getter/setter for translations property
+     */
+    public function testTranslations()
+    {
+        $this->assertCount(0, $this->variant->getTranslations());
+
+        // Change value and assert new
+        $newTranslation = new VariantGroupTranslation();
+        $this->assertEntity($this->variant->addTranslation($newTranslation));
+        $this->assertCount(1, $this->variant->getTranslations());
+        $this->assertInstanceOf(
+            'Pim\Bundle\CatalogBundle\Entity\VariantGroupTranslation',
+            $this->variant->getTranslations()->first()
+        );
+
+        $this->variant->addTranslation($newTranslation);
+        $this->assertCount(1, $this->variant->getTranslations());
+
+        $this->assertEntity($this->variant->removeTranslation($newTranslation));
+        $this->assertCount(0, $this->variant->getTranslations());
     }
 
     /**

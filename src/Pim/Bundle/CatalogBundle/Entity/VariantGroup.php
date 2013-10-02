@@ -54,7 +54,7 @@ class VariantGroup implements TranslatableInterface
      *
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
-     *     mappedBy="variant"
+     *     mappedBy="variantGroup"
      * )
      */
     protected $products;
