@@ -210,7 +210,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
     {
         $this->localeManager
             ->expects($this->any())
-            ->method('getActiveLocales')
+            ->method('getUserLocales')
             ->will($this->returnValue(array('fr', 'en', 'pl')));
 
         $this->assertEquals(
