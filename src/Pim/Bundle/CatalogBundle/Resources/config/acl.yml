@@ -381,3 +381,31 @@ pim_catalog_family_add_attribute:
 pim_catalog_family_remove_atribute:
     type: action
     label: Remove attribute from a family
+
+# Attribute group
+pim_catalog_attribute_group:
+    type: action
+    label: Attribute group manipulation
+
+pim_catalog_attribute_group_create:
+    type: entity
+    class: PimCatalogBundle:AttributeGroup
+    permission: CREATE
+pim_catalog_attribute_group_edit:
+    type: entity
+    class: PimCatalogBundle:AttributeGroup
+    permission: EDIT
+pim_catalog_attribute_group_remove:
+    type: entity
+    class: PimCatalogBundle:AttributeGroup
+    permission: DELETE
+
+pim_catalog_attribute_group_sort:
+    type: action
+    label: Sort groups
+pim_catalog_attribute_group_add_attribute:
+    type: action
+    label: Add attribute to a group
+pim_catalog_attribute_group_remove_attribute:
+    type: action
+    label: Remove attribute from a group
