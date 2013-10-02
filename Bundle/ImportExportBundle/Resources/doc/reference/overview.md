@@ -88,7 +88,7 @@ connector:
 
 ### Supported Formats
 
-This bundle supports format of csv file on one side and Doctrine entity on another side. Other formats could be added
+This bundle supports format of csv file on one side and Doctrine entity on another side.
 
 Dependencies
 ------------
