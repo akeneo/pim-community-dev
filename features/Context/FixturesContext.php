@@ -535,7 +535,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following channels:$/
+     * @Given /^the following channels?:$/
      */
     public function theFollowingChannels(TableNode $table)
     {
@@ -566,7 +566,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following attributes:$/
+     * @Given /^the following attributes?:$/
      */
     public function theFollowingAttributes(TableNode $table)
     {
@@ -574,14 +574,20 @@ class FixturesContext extends RawMinkContext
             $attribute = $this->getProductManager()->createAttribute($data['type']);
 
             $attribute->setCode($data['code']);
-            $attribute->setScopable($data['scopable'] === 'yes');
-            $attribute->setTranslatable($data['localizable'] === 'yes');
+
+            $scopable = (isset($data['scopable'])) ? $data['scopable'] === 'yes' : false;
+            $attribute->setScopable($scopable);
+
+            $localizable = (isset($data['localizable'])) ? $data['localizable'] === 'yes' : false;
+            $attribute->setTranslatable($localizable);
 
             $attribute->setLocale('en_US');
             $attribute->setLabel($data['label']);
 
-            $group = $this->getGroup($data['group']);
-            $attribute->setGroup($group);
+            if (isset($data['group'])) {
+                $group = $this->getGroup($data['group']);
+                $attribute->setGroup($group);
+            }
 
             $this->persist($attribute);
         }
