@@ -1,6 +1,7 @@
 <?php
 namespace Oro\Bundle\TestFrameworkBundle\Fixtures;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -44,25 +45,27 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
             ->getRepository('OroUserBundle:Group')
             ->findOneBy(array('name' => 'Administrators'));
 
-        $api->setApiKey('admin_api_key')
+        $unit = $manager
+            ->getRepository('OroOrganizationBundle:BusinessUnit')
+            ->findOneBy(array('name' => 'Main'));
+
+        $api->setApiKey('admin_api_key2')
             ->setUser($admin);
 
         $admin
-            ->setUsername('admin')
-            ->setPlainPassword('admin')
+            ->setUsername('admin2')
+            ->setPlainPassword('admin2')
             ->setFirstname('John')
             ->setLastname('Doe')
-            ->setEmail('admin@example.com')
+            ->setEmail('admin@example2.com')
             ->setApi($api)
             ->addRole($role)
-            ->addGroup($group);
+            ->addGroup($group)
+            ->setBusinessUnits(
+                new ArrayCollection(array($unit))
+            )
+            ->setOwner($unit);
 
-        if ($this->hasReference('default_business_unit')) {
-            $admin->setOwner($this->getReference('default_business_unit'));
-        }
-
-        //$this->setFlexibleAttributeValueOption($userManager, $admin, 'gender', 0);
-        //$this->setFlexibleAttributeValue($userManager, $admin, 'company', '');
         $this->addReference('default_user', $admin);
 
         $userManager->updateUser($admin);
