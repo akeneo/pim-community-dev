@@ -141,6 +141,7 @@ class VariantGroupController extends AbstractDoctrineController
      */
     public function editAction(VariantGroup $variant)
     {
+        return array();
     }
 
     /**
