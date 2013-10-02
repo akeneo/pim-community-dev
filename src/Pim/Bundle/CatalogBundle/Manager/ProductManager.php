@@ -82,7 +82,6 @@ class ProductManager extends FlexibleManager
 
         if ($product) {
             $this->ensureRequiredAttributeValues($product);
-            $this->addMissingPrices($product);
         }
 
         return $product;
@@ -101,7 +100,6 @@ class ProductManager extends FlexibleManager
         $products = $this->getFlexibleRepository()->findByIds($ids);
         foreach ($products as $product) {
             $this->ensureRequiredAttributeValues($product);
-            $this->addMissingPrices($product);
         }
 
         return $products;
@@ -121,10 +119,8 @@ class ProductManager extends FlexibleManager
 
         $products = $this->getFlexibleRepository()->findByWithAttributes(array(), array($code => $identifier));
         $product = reset($products);
-
         if ($product) {
             $this->ensureRequiredAttributeValues($product);
-            $this->addMissingPrices($product);
         }
 
         return $product;
@@ -205,7 +201,6 @@ class ProductManager extends FlexibleManager
         $product =  parent::createFlexible();
         if ($product) {
             $this->ensureRequiredAttributeValues($product);
-            $this->addMissingPrices($product);
         }
 
         return $product;
@@ -298,6 +293,8 @@ class ProductManager extends FlexibleManager
                 $this->removeProductValue($product, $attribute, $value['locale'], $value['scope']);
             }
         }
+
+        $this->addMissingPrices($product);
     }
 
     /**
