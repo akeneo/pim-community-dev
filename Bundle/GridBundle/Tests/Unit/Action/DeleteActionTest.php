@@ -37,13 +37,42 @@ class DeleteActionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(ActionInterface::TYPE_DELETE, $this->model->getType());
     }
 
-    public function testSetOptions()
+    /**
+     * @param array $toSet
+     * @param array $expected
+     * @dataProvider optionsProvider
+     */
+    public function testSetOptions($toSet, $expected)
     {
-        $options = array(
-            'link'         => '/delete_link',
-            'confirmation' => true,
+        $this->model->setOptions($toSet);
+        $this->assertEquals($expected, $this->model->getOptions());
+    }
+
+    /**
+     * @return array
+     */
+    public function optionsProvider()
+    {
+        return array(
+            'options equals to provided' => array(
+                'to set' => array(
+                    'link'         => '/delete_link',
+                    'confirmation' => true,
+                ),
+                'expected from get' => array(
+                    'link'         => '/delete_link',
+                    'confirmation' => true,
+                ),
+            ),
+            'option confirmation is true by default' => array(
+                'to set' => array(
+                    'link'         => '/delete_link',
+                ),
+                'expected from get' => array(
+                    'link'         => '/delete_link',
+                    'confirmation' => true,
+                ),
+            )
         );
-        $this->model->setOptions($options);
-        $this->assertEquals($options, $this->model->getOptions());
     }
 }

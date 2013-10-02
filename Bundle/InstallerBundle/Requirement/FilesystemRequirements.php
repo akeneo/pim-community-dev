@@ -13,9 +13,10 @@ class FilesystemRequirements extends RequirementCollection
      * @param string              $cacheDir
      * @param string              $logsDir
      * @param string              $uploadsDir
+     * @param string              $assetsDir
      * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    public function __construct(TranslatorInterface $translator, $rootDir, $cacheDir, $logsDir, $uploadsDir)
+    public function __construct(TranslatorInterface $translator, $rootDir, $cacheDir, $logsDir, $uploadsDir, $assetsDir)
     {
         parent::__construct($translator->trans('filesystem.header', array(), 'requirements'));
 
@@ -54,6 +55,14 @@ class FilesystemRequirements extends RequirementCollection
                 $status ? $writable : $notWritable,
                 true,
                 $translator->trans('filesystem.uploads.help', array('%path%' => $uploadsDir), 'requirements')
+            ))
+            ->add(new Requirement(
+                realpath($assetsDir),
+                $status = is_writable($assetsDir),
+                $writable,
+                $status ? $writable : $notWritable,
+                true,
+                $translator->trans('filesystem.assets.help', array('%path%' => $assetsDir), 'requirements')
             ))
             ->add(new Requirement(
                 realpath($rootDir . '/config/parameters.yml'),

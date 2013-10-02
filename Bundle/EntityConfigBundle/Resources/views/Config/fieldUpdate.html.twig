@@ -1,8 +1,11 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
-{% set title = 'Update Entity' %}
-{% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}
+{% set title = 'Update Field' %}
+{% oro_title_set({params : {
+    "%entityName%": entity_config.get('label')|default('N/A'),
+    "%fieldName%": field_config.get('label')|default('N/A'),
+}}) %}
 
 {% set audit_entity_class = field.entity.className|replace('\\', '_') %}
 {% set audit_title = entity_config.get('label') %}

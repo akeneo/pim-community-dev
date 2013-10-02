@@ -46,7 +46,8 @@ class EntityCacheClearer implements CacheClearerInterface
 
         $entityCacheDir = sprintf('%s/%s', $this->entityCacheDir, str_replace('\\', '/', $this->entityCacheNamespace));
 
-        $this->clearEmailAddressCache($entityCacheDir, $fs);
+        // Temporary fix till EmailAddress will be moved to the cache folder
+        // $this->clearEmailAddressCache($entityCacheDir, $fs);
     }
 
     /**
