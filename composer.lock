@@ -3251,12 +3251,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "df90f919b73e2e848d767a372caf9ca036877bf6"
+                "reference": "4e85d2655135a045ae7e713413cab823a1f7334a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/df90f919b73e2e848d767a372caf9ca036877bf6",
-                "reference": "df90f919b73e2e848d767a372caf9ca036877bf6",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/4e85d2655135a045ae7e713413cab823a1f7334a",
+                "reference": "4e85d2655135a045ae7e713413cab823a1f7334a",
                 "shasum": ""
             },
             "require": {
@@ -3306,7 +3306,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2013-09-27 14:18:10"
+            "time": "2013-10-02 14:49:08"
         },
         {
             "name": "mtdowling/cron-expression",
@@ -3477,12 +3477,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "71a7b6116a1800e1e6587692b671dcb71a86f413"
+                "reference": "86ceda7f20c5f4681c41bed575c5f3252eda7c7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/71a7b6116a1800e1e6587692b671dcb71a86f413",
-                "reference": "71a7b6116a1800e1e6587692b671dcb71a86f413",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/86ceda7f20c5f4681c41bed575c5f3252eda7c7e",
+                "reference": "86ceda7f20c5f4681c41bed575c5f3252eda7c7e",
                 "shasum": ""
             },
             "require": {
@@ -3541,10 +3541,10 @@
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/orocrm/platform.git",
             "support": {
-                "source": "https://github.com/laboro/platform/tree/release",
+                "source": "https://github.com/laboro/platform/tree/maintenance/pim_beta1",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-09-30 15:25:48"
+            "time": "2013-10-02 16:50:17"
         },
         {
             "name": "phpcollection/phpcollection",
