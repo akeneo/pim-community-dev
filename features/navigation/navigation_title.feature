@@ -1,6 +1,6 @@
 @javascript
 Feature: Well display navigation titles
-  In order to have a well-formed title on the page
+  In order to have a well-formed title each the page
   As a user
   I need to be able to see title depending of the catalog page
 
