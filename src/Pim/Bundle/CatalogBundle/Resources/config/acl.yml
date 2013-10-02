@@ -414,3 +414,29 @@ pim_catalog_attribute_group_add_attribute:
 pim_catalog_attribute_group_remove_attribute:
     type: action
     label: Remove attribute from a group
+
+# ProductAttribute
+pim_catalog_attribute:
+    type: action
+    label: Attribute manipulation
+
+pim_catalog_attribute_index:
+    type: entity
+    class: PimCatalogBundle:ProductAttribute
+    permission: VIEW
+pim_catalog_attribute_create:
+    type: entity
+    class: PimCatalogBundle:ProductAttribute
+    permission: CREATE
+pim_catalog_attribute_edit:
+    type: entity
+    class: PimCatalogBundle:ProductAttribute
+    permission: EDIT
+pim_catalog_attribute_remove:
+    type: entity
+    class: PimCatalogBundle:ProductAttribute
+    permission: DELETE
+
+pim_catalog_attribute_sort:
+    type: action
+    label: Sort attributes inside attribute groups
