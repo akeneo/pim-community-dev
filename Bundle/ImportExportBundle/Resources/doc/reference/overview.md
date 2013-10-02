@@ -32,7 +32,7 @@ the writer.
 
 ### Reader
 
-Reads data from some source. In terms of import it can ba a csv file with imported data. In terms of export the source
+Reads data from some source. In terms of import it can ba a CSV file with imported data. In terms of export the source
 is a Doctrine entity, it's repository or more sophisticated query builder.
 
 ### Processor
@@ -44,13 +44,13 @@ representation.
 ### Writer
 
 Writer as the name implies is responsible for saving result in destination. In terms of import it's a storage,
-encapsulated with Doctrine. In terms of export it's a plain csv file.
+encapsulated with Doctrine. In terms of export it's a plain CSV file.
 
 OroBatchBundle Configuration
 ----------------------------
 
-This configuration is used by OroBatchBundle and encapsulates three jobs for importing entity to csv file,
-validating import data and exporting entity to csv file.
+This configuration is used by OroBatchBundle and encapsulates three jobs for importing entity to CSV file,
+validating import data and exporting entity to CSV file.
 
 ```
 connector:
@@ -88,7 +88,7 @@ connector:
 
 ### Supported Formats
 
-This bundle supports format of csv file on one side and Doctrine entity on another side.
+This bundle supports format of CSV file on one side and Doctrine entity on another side.
 
 Dependencies
 ------------

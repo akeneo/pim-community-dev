@@ -97,7 +97,6 @@ read warnings and execution context (Oro\Bundle\BatchBundle\Item\ExecutionContex
 As import/export domain has it's own terms, ContextInterface expands Oro\Bundle\BatchBundle\Entity\StepExecution
 interface and decouples it's clients from knowing about OroBatchBundle.
 
-
 ### Context Registry
 **Class:**
 Oro\Bundle\ImportExportBundle\Context\ContextRegistry
@@ -110,11 +109,45 @@ Reader
 ------
 
 ### Reader Interface
+**Interface:**
+Oro\Bundle\ImportExportBundle\Reader\ReaderInterface
 
-### Csv File Reader
+**Description:**
+Interface for class that is responsible for reading data from some source. Extends from reader of OroBatchBundle.
+
+### CSV File Reader
+**Class:**
+Oro\Bundle\ImportExportBundle\Reader\CsvFileReader
+
+**Description:**
+Reads data from CSV file. Configuration supports next options:
+
+* **filePath** - path to source file
+* **delimiter** - CSV delimiter symbol (default ,)
+* **enclosure** - CSV enclosure symbol (default ")
+* **escape** - CSV escape symbol (default \)
+* **firstLineIsHeader** - a flag tells that the first line of CSV file is a header (default true)
+* **header** - a custom header
+
+Result of read operation is an array that represents read line from file and keys of this array are taken from first
+row or custom header option.
 
 ### Entity Reader
 
+**Class:**
+Oro\Bundle\ImportExportBundle\Reader\EntityReader
+
+**Description:**
+Reads entities using Doctrine. To allow handling large amounts of data without memory lack errors  reading is performed
+using Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator which loads data partially using internal batch.
+
+Configuration supports next options:
+
+* **entityName** - the name or class name of entity to read
+* **queryBuilder** - and instance of custom Doctrine\ORM\QueryBuilder
+* **query** - and instance of custom Doctrine\ORM\Query
+
+Class requires at one option, options are mutually exclusive.
 
 Processor
 ---------
