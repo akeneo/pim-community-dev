@@ -40,13 +40,19 @@ class AppKernel extends Kernel
 
             // PIM deps
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
+        );
 
+        // BAP bundles
+        $bundles = array_merge($bundles, Oro\Bundle\PlatformBundle\OroPlatformBundle::registeredBundles($this));
+
+        $pimBundles = array(
             // BAP overriden bundles
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
             new Pim\Bundle\FilterBundle\PimFilterBundle(),
             new Pim\Bundle\GridBundle\PimGridBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
             new Pim\Bundle\SearchBundle\PimSearchBundle(),
+            new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
 
             // PIM bundles
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
@@ -54,20 +60,18 @@ class AppKernel extends Kernel
             new Pim\Bundle\UIBundle\PimUIBundle(),
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
             new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
-            new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
             new Pim\Bundle\DemoBundle\PimDemoBundle(),
             new Pim\Bundle\VersioningBundle\PimVersioningBundle(),
         );
+
+        $bundles = array_merge($bundles, $pimBundles);
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
-
-        // BAP bundles
-        $bundles = array_merge($bundles, Oro\Bundle\PlatformBundle\OroPlatformBundle::registeredBundles($this));
 
         return $bundles;
     }
