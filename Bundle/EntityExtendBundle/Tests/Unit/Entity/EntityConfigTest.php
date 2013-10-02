@@ -10,12 +10,12 @@ class EntityConfigTest extends \PHPUnit_Framework_TestCase
     protected $entity;
 
     protected $config = array(
-        'class'    => 'OroCRM\Bundle\ContactBundle\Entity\Contact',
-        'entity'   => 'Extend\Entity\ExtendContact',
+        'class'    => 'Oro\Bundle\UserBundle\Entity\User',
+        'entity'   => 'Extend\Entity\ExtendUser',
         'type'     => 'Extend',
         'property' => array(),
         'doctrine' => array(
-            'Extend\Entity\ExtendContact' => array(
+            'Extend\Entity\ExtendUser' => array(
                 'type'       => 'mappedSuperclass',
                 'fields'     => array(),
                 'oneToMany'  => array(),
@@ -23,7 +23,7 @@ class EntityConfigTest extends \PHPUnit_Framework_TestCase
                 'manyToMany' => array(),
             )
         ),
-        'parent'   => 'OroCRM\Bundle\ContactBundle\Model\ExtendContact',
+        'parent'   => 'Oro\Bundle\UserBundle\Model\ExtendUser',
         'inherit'  => ''
     );
 
