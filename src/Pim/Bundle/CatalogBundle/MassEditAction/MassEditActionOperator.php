@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
+use JMS\Serializer\Annotation\Exclude;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
@@ -16,6 +17,7 @@ class MassEditActionOperator
 {
     /**
      * @var MassEditAction $operation
+     * @Exclude
      */
     protected $operation;
 
@@ -26,11 +28,13 @@ class MassEditActionOperator
 
     /**
      * @var ProductManager $manager
+     * @Exclude
      */
     protected $manager;
 
     /**
      * @var MassEditAction[] $operations
+     * @Exclude
      */
     protected $operations = array();
 
