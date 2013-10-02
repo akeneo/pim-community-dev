@@ -254,6 +254,22 @@ pim_catalog_locale_en_IE:
     type: action
     label: Access to data related to locale en_IE
 
+# Currency
+id: pim_catalog_currency
+type: action
+name: Currency manipulation
+description: Currency manipulation
+parent: pim_catalog
+
+id: pim_catalog_currency_index
+    type: entity
+    class: PimCatalogBundle:Currency
+    permission: VIEW
+id: pim_catalog_currency_toggle
+    type: entity
+    class: PimCatalogBundle:Currency
+    permission: EDIT
+
 # Product
 pim_catalog_product:
     type: action
