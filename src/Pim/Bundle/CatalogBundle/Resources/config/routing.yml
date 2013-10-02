@@ -38,3 +38,7 @@ product:
 mass_edit_action:
     resource: '@PimCatalogBundle/Resources/config/routing/mass_edit_action.yml'
     prefix: /enrich/mass-edit-action
+
+variant_group:
+    resource: '@PimCatalogBundle/Resources/config/routing/variant_group.yml'
+    prefix: /enrich/variant-group
