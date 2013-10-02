@@ -84,4 +84,15 @@ class ObjectIdentityFactory
 
         return $result;
     }
+
+    /**
+     * Check if object is supported by ACL
+     *
+     * @param $val
+     * @return bool
+     */
+    public function supports($val) {
+
+        return $this->extensionSelector->supports($val);
+    }
 }

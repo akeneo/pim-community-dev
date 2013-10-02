@@ -119,4 +119,24 @@ class SecurityFacade
 
         return $isGranted;
     }
+
+    /**
+     * Filter array of entities. Return array of allowed entities
+     *
+     * @param $attribute
+     * @param string[] $entities
+     * @return string[]
+     */
+    public function filterAllowedEntities($attribute, $entities)
+    {
+        foreach (array_keys($entities) as $entity) {
+            $objectString = 'Entity:' . $entity;
+
+            if ($this->objectIdentityFactory->supports($objectString) && !$this->isGranted($attribute, $objectString)) {
+                unset ($entities[$entity]);
+            }
+        }
+
+        return $entities;
+    }
 }

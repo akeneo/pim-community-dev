@@ -19,6 +19,8 @@ class Indexer
     const RELATION_MANY_TO_ONE  = 'many-to-one';
     const RELATION_ONE_TO_MANY  = 'one-to-many';
 
+    const SEARCH_ENTITY_PERMISSION = 'VIEW';
+
     /**
      * @var AbstractEngine
      */
@@ -34,27 +36,42 @@ class Indexer
      */
     protected $mapper;
 
+    protected $aclFacade;
+
     /**
-     *
-     * @param ObjectManager  $em
+     * @param ObjectManager $em
      * @param AbstractEngine $adapter
-     * @param ObjectMapper   $mapper
+     * @param ObjectMapper $mapper
+     * @param $aclFacade
      */
-    public function __construct(ObjectManager $em, AbstractEngine $adapter, ObjectMapper $mapper)
+    public function __construct(ObjectManager $em, AbstractEngine $adapter, ObjectMapper $mapper, $aclFacade = null)
     {
         $this->em      = $em;
         $this->adapter = $adapter;
         $this->mapper  = $mapper;
+        $this->aclFacade = $aclFacade;
     }
 
     /**
-     * Get array with entities aliases and labels
+     * Get array with mapped entities
      *
      * @return array
      */
-    public function getEntitiesLabels()
+    public function getMappedEntitiesList()
     {
-        return $this->mapper->getEntitiesLabels();
+        return $this->mapper->getMappedEntitiesList();
+    }
+
+    /**
+     * Get list of entities allowed to user
+     *
+     * @return array
+     */
+    public function getAllowedEntities()
+    {
+        return $this->aclFacade
+            ? $this->aclFacade->filterAllowedEntities(self::SEARCH_ENTITY_PERMISSION, $this->getMappedEntitiesList())
+            : $this->getMappedEntitiesList();
     }
 
     /**
@@ -115,7 +132,12 @@ class Indexer
      */
     public function query(Query $query)
     {
-        return $this->adapter->search($query);
+        if (!$this->checkAclInSearchQuery($query)) {
+            // we haven't allowed entities, so return null search result
+            return new Result($query, array(), 0);
+        } else {
+            return $this->adapter->search($query);
+        }
     }
 
     /**
@@ -129,5 +151,40 @@ class Indexer
         $parser = new Parser($this->mapper->getMappingConfig());
 
         return $this->query($parser->getQueryFromString($searchString));
+    }
+
+    /**
+     * Check indexed entities list in search query
+     *
+     * @param Query $query
+     * @return Result
+     */
+    protected function checkAclInSearchQuery(Query $query)
+    {
+        if ($this->aclFacade) {
+            $allowedEntities = $this->getAllowedEntities();
+            $queryFromEntities = $query->getFrom();
+
+            // in query, from record !== '*'
+            if (count($queryFromEntities) && $queryFromEntities[0] !== '*') {
+                foreach($queryFromEntities as $key => $fromEntityAlias) {
+                    if (!in_array($queryFromEntities, $allowedEntities)) {
+                        unset ($queryFromEntities[$key]);
+                    }
+                }
+
+                if (count($queryFromEntities)) {
+                    $query->from($allowedEntities);
+                } else {
+
+                    // we haven't allowed entities in query
+                    return false;
+                }
+            } else {
+                $query->from($allowedEntities);
+            }
+        }
+
+        return true;
     }
 }

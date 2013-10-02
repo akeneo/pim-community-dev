@@ -27,15 +27,12 @@ class ObjectMapper extends AbstractMapper
      *
      * @return array
      */
-    public function getEntitiesLabels()
+    public function getMappedEntitiesList()
     {
         $entities = array();
 
         foreach ($this->mappingConfig as $class => $mappingEntity) {
-            $entities[] = array(
-                'alias' => isset($mappingEntity['alias']) ? $mappingEntity['alias'] : '',
-                'class' => $class,
-            );
+            $entities[$class] = isset($mappingEntity['alias']) ? $mappingEntity['alias'] : '';
         }
 
         return $entities;

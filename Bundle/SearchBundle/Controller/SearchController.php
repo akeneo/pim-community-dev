@@ -48,7 +48,7 @@ class SearchController extends Controller
     public function searchBarAction()
     {
         return array(
-            'entities'     => $this->get('oro_search.index')->getEntitiesLabels(),
+            'entities'     => $this->get('oro_search.index')->getAllowedEntities(),
             'searchString' => $this->getRequest()->get('searchString'),
             'fromString'   => $this->getRequest()->get('fromString'),
         );

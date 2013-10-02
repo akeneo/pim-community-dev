@@ -10,7 +10,7 @@ parameters:
 services:
     oro_search.index:
         class:                        %oro_search.index.class%
-        arguments:                    ["@doctrine.orm.entity_manager", "@oro_search.search.engine", "@oro_search.mapper"]
+        arguments:                    ["@doctrine.orm.entity_manager", "@oro_search.search.engine", "@oro_search.mapper", "@?oro_security.security_facade"]
 
     oro_search.index_listener:
         class:                        %oro_search.index_listener.class%
