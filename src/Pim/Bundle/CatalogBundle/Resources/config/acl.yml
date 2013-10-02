@@ -440,3 +440,17 @@ pim_catalog_attribute_remove:
 pim_catalog_attribute_sort:
     type: action
     label: Sort attributes inside attribute groups
+
+# Mass edit action
+pim_catalog_mass_edit:
+    type: action
+    label: Product mass edit actions
+pim_catalog_mass_edit_choose:
+    type: action
+    label: Choose action
+pim_catalog_mass_edit_configure:
+    type: action
+    label: Configure action
+pim_catalog_mass_edit_perform:
+    type: action
+    label: Perform action
