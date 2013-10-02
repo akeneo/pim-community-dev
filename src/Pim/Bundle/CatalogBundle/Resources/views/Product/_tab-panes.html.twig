@@ -1,10 +1,11 @@
 <div class="tab-pane active" id="attributes">
     {% include 'PimCatalogBundle:Product:_attributes.html.twig' %}
 </div>
-
-<div class="tab-pane" id="categories">
-   {% include 'PimCatalogBundle:Product:_associateCategories.html.twig' %}
-</div>
+{% if resource_granted("pim_catalog_product_categories_view") %}
+    <div class="tab-pane" id="categories">
+       {% include 'PimCatalogBundle:Product:_associateCategories.html.twig' %}
+    </div>
+{% endif %}
 
 <div class="tab-pane" id="completeness">
    {% include 'PimCatalogBundle:Product:_completeness.html.twig' %}

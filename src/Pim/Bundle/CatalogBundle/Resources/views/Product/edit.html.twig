@@ -12,7 +12,9 @@
             function($, _, mediator, TreeAssociate, Scopable, FormUpdateListener, Dialog){
                 'use strict';
                 $(function() {
-                    new TreeAssociate('#trees');
+                    {% if resource_granted('pim_catalog_product_categories_view') %}
+                        new TreeAssociate('#trees');
+                    {% endif %}
 
                     _.each($('form div.scopable'), function(field) {
                         new Scopable({ el: $(field) });
