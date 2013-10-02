@@ -114,7 +114,7 @@ class ProductType extends FlexibleType
     {
         $builder->add(
             'values',
-            new LocalizedCollectionType(),
+            'pim_catalog_localized_collection',
             array(
                 'type'               => $this->valueFormAlias,
                 'allow_add'          => true,

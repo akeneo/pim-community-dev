@@ -287,7 +287,7 @@ class CategoryTreeController extends AbstractDoctrineController
 
         $category->setCode($request->get('title'));
 
-        $form = $this->createForm('pim_category', $category);
+        $form = $this->createForm('pim_category', $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -339,7 +339,7 @@ class CategoryTreeController extends AbstractDoctrineController
             return $this->gridRenderer->renderResultsJsonResponse($datagrid->createView());
         }
 
-        $form = $this->createForm('pim_category', $category);
+        $form = $this->createForm('pim_category', $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -409,5 +409,15 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         return $category;
+    }
+
+    /**
+     * Gets the options for the form
+     * 
+     * @param Category $category
+     */
+    protected function getFormOptions(Category $category)
+    {
+        return array();
     }
 }

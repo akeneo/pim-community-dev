@@ -94,3 +94,8 @@ services:
             - '@pim_catalog.helper.locale'
         tags:
             - { name: form.type, alias: pim_catalog_mass_edit_common_attributes }
+
+    pim_catalog.form.type.localized_collection:
+        class: '%pim_catalog.form.type.localized_collection.class%'
+        tags:
+            - { name: form.type, alias: pim_catalog_localized_collection }
