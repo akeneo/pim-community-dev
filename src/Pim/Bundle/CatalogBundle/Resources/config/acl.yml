@@ -3,9 +3,14 @@ pim_catalog:
     label: General catalog management operations
 
 # Locales
-pim_catalog_locales:
+pim_catalog_locale:
     type: action
-    label: Access to locales
+    label: Locale manipulation
+
+pim_catalog_locale_index:
+    type: entity
+    class: PimCatalogBundle:Locale
+    permission: VIEW
 
 pim_catalog_locale_af_ZA:
     type: action
