@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
@@ -274,6 +275,29 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $newUpdated = new \Datetime();
         $this->assertEntity($this->family->setUpdated($newUpdated));
         $this->assertEquals($newUpdated, $this->family->getUpdated());
+    }
+
+    /**
+     * Test getter/setter for translations property
+     */
+    public function testTranslations()
+    {
+        $this->assertCount(0, $this->family->getTranslations());
+
+        // Change value and assert new
+        $newTranslation = new FamilyTranslation();
+        $this->assertEntity($this->family->addTranslation($newTranslation));
+        $this->assertCount(1, $this->family->getTranslations());
+        $this->assertInstanceOf(
+            'Pim\Bundle\CatalogBundle\Entity\FamilyTranslation',
+            $this->family->getTranslations()->first()
+        );
+
+        $this->family->addTranslation($newTranslation);
+        $this->assertCount(1, $this->family->getTranslations());
+
+        $this->assertEntity($this->family->removeTranslation($newTranslation));
+        $this->assertCount(0, $this->family->getTranslations());
     }
 
     /**
