@@ -3,7 +3,7 @@
 {% endif %}
 <div class="tab-groups">
     <ul class="nav nav-list">
-        {% for group in product.orderedGroups %}
+        {% for group in product.orderedGroups if form.vars.groups[group.id] is defined %}
         <li class="tab{% if loop.index == 1 %} active{% endif %}">
             <a href="#tabs-{{group.id}}" data-toggle="tab">{{ group.name }}</a>
         </li>
