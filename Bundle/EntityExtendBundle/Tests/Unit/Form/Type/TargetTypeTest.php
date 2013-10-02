@@ -5,8 +5,8 @@ namespace Oro\Bundle\EntityExtendBundle\Tests\Unit\Form\Type;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
-use Oro\Bundle\EntityConfigBundle\Config\Config;
+//use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
+//use Oro\Bundle\EntityConfigBundle\Config\Config;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
@@ -48,7 +48,7 @@ class TargetTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testOptions()
     {
-        $repo = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\EntityManager')
+        /*$repo = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->setMethods(array('getRepository'))
             ->getMock();
@@ -57,7 +57,7 @@ class TargetTypeTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getRepository')
             //->will($this->anything())
-        ;
+        ;*/
 
         //$this->type->setDefaultOptions($this->resolver);
     }
