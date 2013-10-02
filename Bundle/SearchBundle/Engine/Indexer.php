@@ -132,7 +132,7 @@ class Indexer
      */
     public function query(Query $query)
     {
-        if (!$this->checkAclInSearchQuery($query)) {
+        if ($this->aclFacade && !$this->checkAclInSearchQuery($query)) {
             // we haven't allowed entities, so return null search result
             return new Result($query, array(), 0);
         } else {
@@ -161,28 +161,27 @@ class Indexer
      */
     protected function checkAclInSearchQuery(Query $query)
     {
-        if ($this->aclFacade) {
-            $allowedEntities = $this->getAllowedEntities();
-            $queryFromEntities = $query->getFrom();
+        $allowedEntities = $this->getAllowedEntities();
+        $queryFromEntities = $query->getFrom();
+        $entitiesList = array_values($allowedEntities);
 
-            // in query, from record !== '*'
-            if (count($queryFromEntities) && $queryFromEntities[0] !== '*') {
-                foreach($queryFromEntities as $key => $fromEntityAlias) {
-                    if (!in_array($queryFromEntities, $allowedEntities)) {
-                        unset ($queryFromEntities[$key]);
-                    }
+        // in query, from record !== '*'
+        if (count($queryFromEntities) && $queryFromEntities[0] !== '*') {
+            foreach($queryFromEntities as $key => $fromEntityAlias) {
+                if (!in_array($fromEntityAlias, $entitiesList)) {
+                    unset ($queryFromEntities[$key]);
                 }
-
-                if (count($queryFromEntities)) {
-                    $query->from($allowedEntities);
-                } else {
-
-                    // we haven't allowed entities in query
-                    return false;
-                }
-            } else {
-                $query->from($allowedEntities);
             }
+
+            if (count($queryFromEntities)) {
+                $query->from($allowedEntities);
+            } else {
+
+                // we haven't allowed entities in query
+                return false;
+            }
+        } else {
+            $query->from($allowedEntities);
         }
 
         return true;
