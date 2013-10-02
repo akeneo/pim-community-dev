@@ -8,12 +8,10 @@
         {% placeholder requirejs_config_extend %}
         require = require.c;
     </script>
-    {# @TODO use application_path from configuration #}
-    <script type="text/javascript" src="{{ asset('js/oro.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset(get_requirejs_build_path()) }}"></script>
 {% else %}
     <script type="text/javascript" src="{{ asset('bundles/ororequirejs/lib/require.js') }}"></script>
-    {# @TODO use config_path from configuration #}
-    <script type="text/javascript" src="{{ asset('js/require-config.js') }}"></script>
+    <script type="text/javascript" src="{{ asset(get_requirejs_config_path()) }}"></script>
     <script type="text/javascript">
         {% placeholder requirejs_config_extend %}
     </script>

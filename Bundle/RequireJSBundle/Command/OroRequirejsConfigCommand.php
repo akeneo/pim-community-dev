@@ -3,33 +3,31 @@
 namespace Oro\Bundle\RequireJSBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Yaml\Yaml;
-
-use Doctrine\Common\Cache\CacheProvider;
 
 class OroRequirejsConfigCommand extends ContainerAwareCommand
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function configure()
     {
         $this
             ->setName('oro:requirejs:config')
-            ->setDescription('Create require.js configuration')
-            ->addArgument('write_to', InputArgument::OPTIONAL, 'path for require.js configuration');
+            ->setDescription('Create require.js configuration');
     }
 
     /**
-     * Get array with assets from config files
+     * Collects settings for main require.js config
      *
      * @return array
      */
     protected function combineConfig()
     {
-        $config = $this->getContainer()->getParameter('oro_require_js.config');
+        $require_js = $this->getContainer()->getParameter('oro_require_js');
+        $config = $require_js['config'];
         $bundles = $this->getContainer()->getParameter('kernel.bundles');
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
@@ -53,29 +51,32 @@ class OroRequirejsConfigCommand extends ContainerAwareCommand
         return $config;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln('Combine require.js main config');
         $content = 'require(' . json_encode($this->combineConfig()) . ');';
+        // for some reason built application gets broken with configuration in "oneline-json"
+        $content = str_replace(',', ",\n", $content);
+        $require_js = $this->getContainer()->getParameter('oro_require_js');
 
-        $path = $input->getArgument('write_to');
-        if (empty($path)) {
-            $path = $this->getContainer()->getParameter('oro_require_js.config_path');
-        }
-
-        $target = realpath($this->getContainer()->getParameter('kernel.root_dir') . '/../web/' . $path);
-
-        $output->writeln(
-            sprintf(
-                '<comment>%s</comment> <info>[file+]</info> %s',
-                date('H:i:s'),
-                $target
-            )
-        );
+        $target = realpath($this->getContainer()->getParameter('kernel.root_dir') . '/../web') .
+            '/' . $require_js['config_path'];
 
         $this->getContainer()->get('filesystem')->mkdir(dirname($target), 0777);
 
         if (false === @file_put_contents($target, $content)) {
             throw new \RuntimeException('Unable to write file ' . $target);
         }
+
+        $output->writeln(
+            sprintf(
+                '<comment>%s</comment> <info>[file+]</info> %s',
+                date('H:i:s'),
+                realpath($target)
+            )
+        );
     }
 }

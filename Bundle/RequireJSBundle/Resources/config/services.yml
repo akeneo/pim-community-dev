@@ -1,7 +1,10 @@
 parameters:
-#    oro_require_js.example.class: Oro\RequireJSBundle\Example
+    oro_requirejs.twig.class:             Oro\Bundle\RequireJSBundle\Twig\OroRequireJSExtension
 
 services:
-#    oro_require_js.example:
-#        class: %oro_require_js.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    oro_requirejs.twig.requirejs_extension:
+        class:                            %oro_requirejs.twig.class%
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: twig.extension }
