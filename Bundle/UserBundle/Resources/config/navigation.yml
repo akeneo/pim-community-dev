@@ -74,6 +74,9 @@ oro_titles:
     oro_user_create: Create User
     oro_user_index: ~
 
+    oro_user_profile_view: %%username%%
+    oro_user_profile_update: %%username%% - Edit
+
     oro_user_role_update: %%role%% - Edit
     oro_user_role_create: Create Role
     oro_user_role_index: ~

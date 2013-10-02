@@ -1,3 +1,2 @@
 oro_titles:
-    oro_search_advanced: Dashboard | Advanced Search
-    oro_search_results:  Search Results - %%keyword%%
+    oro_search_results:  %%keyword%% - Search Results

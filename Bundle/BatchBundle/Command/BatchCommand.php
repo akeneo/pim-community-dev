@@ -63,8 +63,8 @@ class BatchCommand extends ContainerAwareCommand
         if ($executionId) {
             $jobExecution = $this->getEntityManager()->getRepository('OroBatchBundle:JobExecution')->find($executionId);
             if (!$jobExecution) {
-                throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $id));
-                }
+                throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $executionId));
+            }
             if (!$jobExecution->getStatus()->isStarting()) {
                 throw new \RuntimeException(
                     sprintf('Job execution "%s" has invalid status: %s', $executionId, $jobExecution->getStatus())
