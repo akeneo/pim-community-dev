@@ -95,7 +95,9 @@
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_product_index')) }}
             <div class="btn-group">
-                {{ form_widget(form.enabled) }}
+                {% if form.enabled is defined %}
+                    {{ form_widget(form.enabled) }}
+                {% endif %}
             </div>
             {{ elements.deleteLink(path('pim_catalog_product_remove', { id: form.vars.value.id }), path('pim_catalog_product_index'), 'confirmation.remove.product'|trans({ '%name%': product.label }), "", 'flash.product.removed'|trans) }}
             {{ elements.submitBtn }}
