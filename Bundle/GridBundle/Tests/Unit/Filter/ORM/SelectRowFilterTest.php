@@ -45,6 +45,10 @@ class SelectRowFilterTest extends FilterTestCase
                 'data' => array('value' => ''),
                 'expectProxyQueryCalls' => array()
             ),
+            'bad case to sort' => array(
+                'data' => array('value' => SelectRowFilter::SELECTED_VALUE, 'in' => array(), 'out' => array()),
+                'expectProxyQueryCalls' => array()
+            ),
             'empty out set should return all data' => array(
                 'data' => array('value' => SelectRowFilter::SELECTED_VALUE, 'in' => null, 'out' => array()),
                 'expectProxyQueryCalls' => array(
