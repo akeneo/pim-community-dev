@@ -47,3 +47,37 @@ pim_importexport_import_remove:
 pim_importexport_import_launch:
     type: action
     label: Launch an import profile
+
+# Export reports
+pim_importexport_export_report:
+    type: action
+    label: Export report manipulation
+pim_importexport_export_report_index:
+    type: action
+    label: View export report list
+pim_importexport_export_report_show:
+    type: action
+    label: View export report details
+pim_importexport_export_report_download_log:
+    type: action
+    label: Download export report log
+pim_importexport_export_report_download_files:
+    type: action
+    label: Download exported files
+
+# Import reports
+pim_importexport_import_report:
+    type: action
+    label: Export report manipulation
+pim_importexport_import_report_index:
+    type: action
+    label: View export report list
+pim_importexport_import_report_show:
+    type: action
+    label: View export report details
+pim_importexport_import_report_download_log:
+    type: action
+    label: Download export report log
+pim_importexport_import_report_download_files:
+    type: action
+    label: Download imported files
