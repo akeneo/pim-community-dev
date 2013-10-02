@@ -1,6 +1,7 @@
 Config Provider
 ====================
 
+An entity configuration may be described in YAML file or using @Config annotation. The YAML file must be named entity_config.yml and must be located in [BundleName]\Resources\config folder. The following examples show the same configuration
 Config provider should be specified in services.yml
 and described in entity_config.yml (see configuration.md)
 
