@@ -48,9 +48,9 @@ class TargetTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testOptions()
     {
-        $repo = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+        $repo = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\EntityManager')
             ->disableOriginalConstructor()
-            //->setMethods(array('getRepository'))
+            ->setMethods(array('getRepository'))
             ->getMock();
 
         $repo
