@@ -2,19 +2,19 @@
 
 namespace Pim\Bundle\CatalogBundle\Form\Type;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\CatalogBundle\Helper\SortHelper;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\ChannelSubscriber;
+use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Pim\Bundle\CatalogBundle\Helper\SortHelper;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
  * Type for channel form
@@ -26,17 +26,17 @@ use Pim\Bundle\CatalogBundle\Form\Subscriber\ChannelSubscriber;
 class ChannelType extends AbstractType
 {
     /**
-     * @var \Pim\Bundle\CatalogBundle\Manager\LocaleManager
+     * @var LocaleManager
      */
     protected $localeManager;
 
     /**
-     * @var \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+     * @var LocaleHelper
      */
     protected $localeHelper;
 
     /**
-     * Inject locale manager in the constructor
+     * Inject locale manager and locale helper in the constructor
      *
      * @param LocaleManager $localeManager
      * @param LocaleHelper  $localeHelper
