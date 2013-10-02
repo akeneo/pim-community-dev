@@ -255,17 +255,15 @@ pim_catalog_locale_en_IE:
     label: Access to data related to locale en_IE
 
 # Currency
-id: pim_catalog_currency
-type: action
-name: Currency manipulation
-description: Currency manipulation
-parent: pim_catalog
+pim_catalog_currency:
+    type: action
+    label: Currency manipulation
 
-id: pim_catalog_currency_index
+pim_catalog_currency_index:
     type: entity
     class: PimCatalogBundle:Currency
     permission: VIEW
-id: pim_catalog_currency_toggle
+pim_catalog_currency_toggle:
     type: entity
     class: PimCatalogBundle:Currency
     permission: EDIT
@@ -358,3 +356,28 @@ pim_catalog_channel_remove:
     type: entity
     class: PimCatalogBundle:Category
     permission: DELETE
+
+#Family
+pim_catalog_family:
+    type: action
+    label: Family manipulation
+
+pim_catalog_family_create:
+    type: entity
+    class: PimCatalogBundle:Family
+    permission: CREATE
+pim_catalog_family_edit:
+    type: entity
+    class: PimCatalogBundle:Family
+    permission: EDIT
+pim_catalog_family_remove:
+    type: entity
+    class: PimCatalogBundle:Family
+    permission: DELETE
+
+pim_catalog_family_add_attribute:
+    type: action
+    label: Add attribute to a family
+pim_catalog_family_remove_atribute:
+    type: action
+    label: Remove attribute from a family
