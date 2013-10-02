@@ -18,6 +18,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
+use Oro\Bundle\UserBundle\Acl\ManagerInterface as ACLManagerInterface;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
@@ -58,6 +59,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
      * @var Pim\Bundle\CatalogBundle\Manager\LocaleManager
      */
     protected $localeManager;
+    
+    /**
+     * @var ACLManagerInterface
+     */
+    protected $ACLManager;
 
     /**
      * Filter by tree id, 0 means not tree selected
@@ -100,6 +106,16 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function setLocaleManager(LocaleManager $manager)
     {
         $this->localeManager = $manager;
+    }
+
+    /**
+     * Set the ACL Manager
+     * 
+     * @param ACLManagerInterface $ACLManager
+     */
+    public function setACLManager(ACLManagerInterface $ACLManager)
+    {
+        $this->ACLManager = $ACLManager;
     }
 
     /**
@@ -424,24 +440,27 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function getMassActions()
     {
-        $deleteMassActions = new DeleteMassAction(
-            array(
-                'name'  => 'delete',
-                'label' => $this->translate('Delete'),
-                'icon'  => 'trash'
-            )
-        );
-
-        $redirectMassAction = new RedirectMassAction(
-            array(
-                'name'  => 'redirect',
-                'label' => $this->translate('Mass Edition'),
-                'icon' => 'edit',
-                'route' => 'pim_catalog_mass_edit_action_choose',
-            )
-        );
-
-        return array($redirectMassAction, $deleteMassActions);
+        $actions = array();
+        if ($this->ACLManager->isResourceGranted('pim_catalog_product_remove')) {
+            $actions[] = new DeleteMassAction(
+                array(
+                    'name'  => 'delete',
+                    'label' => $this->translate('Delete'),
+                    'icon'  => 'trash'
+                )
+            );
+        }
+        if ($this->ACLManager->isResourceGranted('pim_catalog_product_remove')) {
+            $actions[] = new RedirectMassAction(
+                array(
+                    'name'  => 'redirect',
+                    'label' => $this->translate('Mass Edition'),
+                    'icon' => 'edit',
+                    'route' => 'pim_catalog_mass_edit_action_choose',
+                )
+            );
+        }
+        return $actions;
     }
 
     /**
