@@ -149,7 +149,7 @@ class Job implements JobInterface
      */
     public function addStep($stepName, StepInterface $step)
     {
-        $this->steps[$stepName] = $step;
+        $this->steps[] = $step;
     }
 
     /**
