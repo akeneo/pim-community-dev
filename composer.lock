@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "88dbb2c43fd7f61da0ab87e83fda2ad0",
+    "hash": "5b95797bc3b9a7da3a7d6f1791447807",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -117,7 +117,7 @@
                 "source": "https://github.com/akeneo/DemoBundle/tree/master",
                 "issues": "https://github.com/akeneo/DemoBundle/issues"
             },
-            "time": "2013-09-25 09:18:19"
+            "time": "2013-10-01 15:19:09"
         },
         {
             "name": "apy/jsfv-bundle",
@@ -1323,27 +1323,32 @@
         },
         {
             "name": "escapestudios/wsse-authentication-bundle",
-            "version": "2.1.x-dev",
+            "version": "dev-master",
             "target-dir": "Escape/WSSEAuthenticationBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/escapestudios/EscapeWSSEAuthenticationBundle.git",
-                "reference": "45a37e57e3cb69e2e0a68cabd53465f9c918d33a"
+                "reference": "408ae53315674582f715da56bc37498dbfd696ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/escapestudios/EscapeWSSEAuthenticationBundle/zipball/45a37e57e3cb69e2e0a68cabd53465f9c918d33a",
-                "reference": "45a37e57e3cb69e2e0a68cabd53465f9c918d33a",
+                "url": "https://api.github.com/repos/escapestudios/EscapeWSSEAuthenticationBundle/zipball/408ae53315674582f715da56bc37498dbfd696ea",
+                "reference": "408ae53315674582f715da56bc37498dbfd696ea",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "symfony/framework-bundle": "2.1.*",
-                "symfony/security-bundle": "2.1.*"
+                "symfony/framework-bundle": "2.3.*",
+                "symfony/security-bundle": "2.3.*"
             },
             "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3.x-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "Escape\\WSSEAuthenticationBundle": ""
@@ -1370,7 +1375,7 @@
                 "bundle",
                 "wsse"
             ],
-            "time": "2013-03-25 09:51:31"
+            "time": "2013-07-03 15:47:56"
         },
         {
             "name": "evenement/evenement",
@@ -2286,12 +2291,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSDiExtraBundle.git",
-                "reference": "782ecc42faff1a40e38ab587862f74564cee1dd7"
+                "reference": "01029f6a19c5a4131b80878311cd44a990ff923a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSDiExtraBundle/zipball/782ecc42faff1a40e38ab587862f74564cee1dd7",
-                "reference": "782ecc42faff1a40e38ab587862f74564cee1dd7",
+                "url": "https://api.github.com/repos/schmittjoh/JMSDiExtraBundle/zipball/01029f6a19c5a4131b80878311cd44a990ff923a",
+                "reference": "01029f6a19c5a4131b80878311cd44a990ff923a",
                 "shasum": ""
             },
             "require": {
@@ -2344,7 +2349,7 @@
                 "annotations",
                 "dependency injection"
             ],
-            "time": "2013-09-17 09:48:21"
+            "time": "2013-10-02 11:10:43"
         },
         {
             "name": "jms/job-queue-bundle",
@@ -2353,12 +2358,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSJobQueueBundle.git",
-                "reference": "e5c4ed9cb0a51b6bbf8de4e006b24a57bae7bc68"
+                "reference": "46e6c362dd94140b75d0a2ae986d65e6086d0a76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSJobQueueBundle/zipball/e5c4ed9cb0a51b6bbf8de4e006b24a57bae7bc68",
-                "reference": "e5c4ed9cb0a51b6bbf8de4e006b24a57bae7bc68",
+                "url": "https://api.github.com/repos/schmittjoh/JMSJobQueueBundle/zipball/46e6c362dd94140b75d0a2ae986d65e6086d0a76",
+                "reference": "46e6c362dd94140b75d0a2ae986d65e6086d0a76",
                 "shasum": ""
             },
             "require": {
@@ -2416,7 +2421,7 @@
                 "job",
                 "queue"
             ],
-            "time": "2013-09-18 15:05:58"
+            "time": "2013-10-01 19:13:39"
         },
         {
             "name": "jms/metadata",
@@ -3468,61 +3473,61 @@
         },
         {
             "name": "oro/platform",
-            "version": "dev-master",
+            "version": "dev-maintenance/pim_beta1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "ebeb34db49dfe3bbc659d0c5e9ee3e05e9fdf554"
+                "reference": "71a7b6116a1800e1e6587692b671dcb71a86f413"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/ebeb34db49dfe3bbc659d0c5e9ee3e05e9fdf554",
-                "reference": "ebeb34db49dfe3bbc659d0c5e9ee3e05e9fdf554",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/71a7b6116a1800e1e6587692b671dcb71a86f413",
+                "reference": "71a7b6116a1800e1e6587692b671dcb71a86f413",
                 "shasum": ""
             },
             "require": {
-                "a2lix/translation-form-bundle": "1.*@dev",
-                "apy/jsfv-bundle": "dev-master",
-                "ass/xmlsecurity": "dev-master",
+                "a2lix/translation-form-bundle": "dev-master#2e67a02330f27d9737200b486138c916f98d4c66",
+                "apy/jsfv-bundle": "dev-master#d1c2ff7892b8c7437d9257dcee6c27b225f52c87",
+                "ass/xmlsecurity": "dev-master#68d2cc03c8eef3e2089c576b1c05561660ce0c8d",
                 "besimple/soap-bundle": "dev-master#57a05d5c82f1401e9ab2aa2e89f94d72e602d2c9",
-                "besimple/soap-common": "dev-master",
-                "besimple/soap-server": "dev-master",
-                "ddeboer/data-import": "dev-master",
-                "doctrine/data-fixtures": "@dev",
-                "doctrine/doctrine-bundle": "1.2.*",
-                "doctrine/doctrine-fixtures-bundle": "@dev",
-                "doctrine/orm": ">=2.2.3,<2.4-dev",
-                "escapestudios/wsse-authentication-bundle": "2.1.x-dev",
-                "friendsofsymfony/jsrouting-bundle": "1.1.*@dev",
-                "friendsofsymfony/rest-bundle": "0.12.*",
-                "genemu/form-bundle": "2.2.*",
-                "incenteev/composer-parameter-handler": "~2.0",
-                "jdare/clank-bundle": "dev-master",
-                "jms/job-queue-bundle": "dev-master",
-                "jms/serializer": "0.14.*@dev",
-                "jms/serializer-bundle": "0.13.*@dev",
-                "knplabs/knp-menu": "dev-master",
-                "knplabs/knp-menu-bundle": "dev-master",
-                "knplabs/knp-paginator-bundle": "dev-master",
-                "kriswallsmith/assetic": "1.1.*@dev",
-                "leafo/lessphp": "dev-master",
-                "lexik/maintenance-bundle": "dev-master",
-                "liip/imagine-bundle": "dev-master",
-                "mtdowling/cron-expression": "1.0.*",
-                "nelmio/api-doc-bundle": "dev-master",
+                "besimple/soap-common": "dev-master#e9a8384121e4db63ebcbf791df8c177c64f4bc4a",
+                "besimple/soap-server": "dev-master#b22fd13cadcd5a75945e650efc736d566fb29492",
+                "ddeboer/data-import": "dev-master#257df19c0a48e821197a8c51bf4f06bdd4ff4faa",
+                "doctrine/data-fixtures": "dev-master#b1e7d5a991ca891cd66c143a618f5ce1e679ba9f",
+                "doctrine/doctrine-bundle": "dev-master#a41322d452354ee1e01b1e0f25c4f2ae3ca77ed3",
+                "doctrine/doctrine-fixtures-bundle": "dev-master#3caec4826e58fe47520b591f965b4adcdfc8a6c8",
+                "doctrine/orm": "2.3.x-dev#66d8b43f69105f3e3f0fb7d042f805eec1107e22",
+                "escapestudios/wsse-authentication-bundle": "dev-master#408ae53315674582f715da56bc37498dbfd696ea",
+                "friendsofsymfony/jsrouting-bundle": "dev-master#73fd9994ee85e57e778e059c28beb1b963679fa5",
+                "friendsofsymfony/rest-bundle": "0.12.0",
+                "genemu/form-bundle": "dev-master#9a68d6811fd80d1fe908af014687562301329d6e",
+                "incenteev/composer-parameter-handler": "dev-master#bc06242a63298affc72d2089f93d8986a6217c4c",
+                "jdare/clank-bundle": "dev-master#762449fd25aacedebd1b405e62026700891363cb",
+                "jms/job-queue-bundle": "dev-master#e5c4ed9cb0a51b6bbf8de4e006b24a57bae7bc68",
+                "jms/serializer": "dev-master#ad2153e3aeaa420f50cd97b3551d476509c1b68d",
+                "jms/serializer-bundle": "dev-master#0c98dc74502b729ce473d387cf72fd294dae5b0e",
+                "knplabs/knp-menu": "dev-master#52c8ffd7eba8028f93ef9eece98f74b2f11c1c1f",
+                "knplabs/knp-menu-bundle": "dev-master#1b07578738d3425c09cfbd153276382388994f46",
+                "knplabs/knp-paginator-bundle": "dev-master#769b83d01b3f76b011522599bd48e5e202d94ff4",
+                "kriswallsmith/assetic": "1.1.x-dev#1d671c54f147ece319642132330927672b6190a7",
+                "leafo/lessphp": "dev-master#6e8e724fc7edcedc83a52cd18acc5b72f7dd3c40",
+                "lexik/maintenance-bundle": "dev-master#11b3542d407bd660611a828744a01b0cf4e95b97",
+                "liip/imagine-bundle": "dev-master#51e28873a5a831cead026181faa898f8091f813e",
+                "mtdowling/cron-expression": "v1.0.2",
+                "nelmio/api-doc-bundle": "dev-master#c2d36d9ef0ec80dadb92746bff55af7df1af8b1c",
                 "php": ">=5.3.8",
-                "sensio/distribution-bundle": "2.3.*",
-                "sensio/framework-extra-bundle": "2.3.*",
-                "sensio/generator-bundle": "2.3.*",
-                "stof/doctrine-extensions-bundle": "dev-master",
-                "sylius/flow-bundle": "dev-master",
-                "symfony/assetic-bundle": "2.3.*@dev",
-                "symfony/monolog-bundle": "2.3.*",
-                "symfony/swiftmailer-bundle": "2.3.*",
+                "sensio/distribution-bundle": "dev-master#45664e203fd1364705091a58971cc6bd94fb5189",
+                "sensio/framework-extra-bundle": "dev-master#403e13e384d8a81c9c8a1adfe89356e9849c14ff",
+                "sensio/generator-bundle": "dev-master#766205eccd54314beec018a13d6f7fd0c42d45a1",
+                "stof/doctrine-extensions-bundle": "dev-master#6e8dc798687963ffc4e4e0dfa687b361699855a9",
+                "sylius/flow-bundle": "dev-master#1fa700ed5dd8fc00a7922db6b58412e80fce0b6c",
+                "symfony/assetic-bundle": "2.3.x-dev#65bd076341ac54ebfcd845d8471044fc4afa73d2",
+                "symfony/monolog-bundle": "2.3.x-dev#03ed73bc11367b3156cc21f22ac37c7f70fcd10a",
+                "symfony/swiftmailer-bundle": "v2.3.4",
                 "symfony/symfony": "v2.3.4",
-                "twig/extensions": "1.0.*@dev",
-                "willdurand/expose-translation-bundle": "0.2.*@dev",
-                "zendframework/zend-mail": "2.1.*"
+                "twig/extensions": "dev-master#3604161a4aa2e5c535cbc708810123fd3258b2dc",
+                "willdurand/expose-translation-bundle": "0.2.1",
+                "zendframework/zend-mail": "2.1.5"
             },
             "type": "library",
             "autoload": {
@@ -3536,10 +3541,10 @@
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/orocrm/platform.git",
             "support": {
-                "source": "https://github.com/laboro/platform/tree/master",
+                "source": "https://github.com/laboro/platform/tree/release",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-10-01 11:51:10"
+            "time": "2013-09-30 15:25:48"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -4503,12 +4508,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "a0abed01eb4da79838d06db823d82a9c5cf6e6d0"
+                "reference": "c579a8141477531ce2afd8a441aaccc11033f37d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/a0abed01eb4da79838d06db823d82a9c5cf6e6d0",
-                "reference": "a0abed01eb4da79838d06db823d82a9c5cf6e6d0",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/c579a8141477531ce2afd8a441aaccc11033f37d",
+                "reference": "c579a8141477531ce2afd8a441aaccc11033f37d",
                 "shasum": ""
             },
             "require": {
@@ -4544,7 +4549,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-09-29 07:27:48"
+            "time": "2013-10-02 05:57:25"
         },
         {
             "name": "willdurand/expose-translation-bundle",
