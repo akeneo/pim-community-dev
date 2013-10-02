@@ -37,7 +37,7 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
         $this->loadAttributes($userManager);
 
         $admin = $userManager->createUser();
-        $api   = new UserApi();
+
         $role  = $manager
             ->getRepository('OroUserBundle:Role')
             ->findOneBy(array('role' => 'ROLE_ADMINISTRATOR'));
@@ -49,15 +49,16 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
             ->getRepository('OroOrganizationBundle:BusinessUnit')
             ->findOneBy(array('name' => 'Main'));
 
-        $api->setApiKey('admin_api_key2')
+        $api   = new UserApi();
+        $api->setApiKey('admin_api_key')
             ->setUser($admin);
 
         $admin
-            ->setUsername('admin2')
-            ->setPlainPassword('admin2')
+            ->setUsername('admin')
+            ->setPlainPassword('admin')
             ->setFirstname('John')
             ->setLastname('Doe')
-            ->setEmail('admin@example2.com')
+            ->setEmail('admin@example.com')
             ->setApi($api)
             ->addRole($role)
             ->addGroup($group)
