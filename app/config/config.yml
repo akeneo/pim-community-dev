@@ -4,6 +4,7 @@ imports:
 
 parameters:
     oro_grid.route.default_generator.class: Pim\Bundle\GridBundle\Route\SetterRouteGenerator
+    oro_flexibleentity.validator.attribute_constraint_guesser.class: Pim\Bundle\CatalogBundle\Validator\ChainedAttributeConstraintGuesser
 
 framework:
     #esi:             ~
