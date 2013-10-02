@@ -8,7 +8,6 @@ use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
-use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
@@ -108,11 +107,11 @@ class VariantGroupDatagridManager extends DatagridManager
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_catalog_variant_group_edit',
             'options'      => array(
-                'label'   => $this->translate('Edit'),
-                'icon'    => 'edit',
-                'link'    => 'edit_link'
+                'label' => $this->translate('Edit'),
+                'icon'  => 'edit',
+                'link'  => 'edit_link'
             )
         );
 
@@ -123,7 +122,7 @@ class VariantGroupDatagridManager extends DatagridManager
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_catalog_variant_group_remove',
             'options'      => array(
                 'label' => $this->translate('Delete'),
                 'icon'  => 'trash',

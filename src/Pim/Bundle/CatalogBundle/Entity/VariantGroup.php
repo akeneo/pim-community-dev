@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -18,6 +18,15 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *
  * @ORM\Entity
  * @ORM\Table(name="pim_catalog_variant_group")
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Variant group", "plural_label"="Variant groups"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
 class VariantGroup implements TranslatableInterface
 {
