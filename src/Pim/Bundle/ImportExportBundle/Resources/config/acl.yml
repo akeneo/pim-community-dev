@@ -1,5 +1,49 @@
 pim_importexport:
-    name: PIM Import Export
-    description: General node for imports and exports
-    parent: root
     type: action
+    label: General import and export operations
+
+# Export
+pim_importexport_export:
+    type: action
+    label: Export profile manipulation
+pim_importexport_export_index:
+    type: action
+    label: View export profile list
+pim_importexport_export_create:
+    type: action
+    label: Create an export profile
+pim_importexport_export_show:
+    type: action
+    label: View the configuration of an export profile
+pim_importexport_export_edit:
+    type: action
+    label: Edit the configuration of an export profile
+pim_importexport_export_remove:
+    type: action
+    label: Remove an export profile
+pim_importexport_export_launch:
+    type: action
+    label: Launch an export profile
+
+# Import
+pim_importexport_import:
+    type: action
+    label: Import profile manipulation
+pim_importexport_import_index:
+    type: action
+    label: View import profile list
+pim_importexport_import_create:
+    type: action
+    label: Create an import profile
+pim_importexport_import_show:
+    type: action
+    label: View the configuration of an import profile
+pim_importexport_import_edit:
+    type: action
+    label: Edit the configuration of an import profile
+pim_importexport_import_remove:
+    type: action
+    label: Remove an import profile
+pim_importexport_import_launch:
+    type: action
+    label: Launch an import profile

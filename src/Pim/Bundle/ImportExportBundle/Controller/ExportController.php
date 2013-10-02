@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
@@ -12,27 +12,13 @@ use Oro\Bundle\BatchBundle\Entity\JobInstance;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Acl(
- *      id="pim_importexport_export",
- *      type="action",
- *      name="Export profile manipulation",
- *      description="Export profile manipulation",
- *      parent="pim_importexport"
- * )
  */
 class ExportController extends JobInstanceController
 {
     /**
      * {@inheritdoc}
      *
-     * @Acl(
-     *      id="pim_importexport_export_index",
-     *      type="action",
-     *      name="View export profile list",
-     *      description="View export profile list",
-     *      parent="pim_importexport_export"
-     * )
+     * @AclAncestor("pim_importexport_export_index")
      */
     public function indexAction(Request $request)
     {
@@ -42,13 +28,7 @@ class ExportController extends JobInstanceController
     /**
      * {@inheritdoc}
      *
-     * @Acl(
-     *      id="pim_importexport_export_create",
-     *      type="action",
-     *      name="Create an export profile",
-     *      description="Create an export profile",
-     *      parent="pim_importexport_export"
-     * )
+     * @AclAncestor("pim_importexport_export_create")
      */
     public function createAction(Request $request)
     {
@@ -58,13 +38,7 @@ class ExportController extends JobInstanceController
     /**
      * {@inheritdoc}
      *
-     * @Acl(
-     *      id="pim_importexport_export_show",
-     *      type="action",
-     *      name="View the configuration of an export profile",
-     *      description="View the configuration of an export profile",
-     *      parent="pim_importexport_export"
-     * )
+     * @AclAncestor("pim_importexport_export_show")
      */
     public function showAction($id)
     {
@@ -74,13 +48,7 @@ class ExportController extends JobInstanceController
     /**
      * {@inheritdoc}
      *
-     * @Acl(
-     *      id="pim_importexport_export_edit",
-     *      type="action",
-     *      name="Edit the configuration of an export profile",
-     *      description="Edit the configuration of an export profile",
-     *      parent="pim_importexport_export"
-     * )
+     * @AclAncestor("pim_importexport_export_edit")
      */
     public function editAction(Request $request, $id)
     {
@@ -90,13 +58,7 @@ class ExportController extends JobInstanceController
     /**
      * {@inheritdoc}
      *
-     * @Acl(
-     *      id="pim_importexport_export_remove",
-     *      type="action",
-     *      name="Remove an export profile",
-     *      description="Remove an export profile",
-     *      parent="pim_importexport_export"
-     * )
+     * @AclAncestor("pim_importexport_export_remove")
      */
     public function removeAction(Request $request, $id)
     {
@@ -106,13 +68,7 @@ class ExportController extends JobInstanceController
     /**
      * {@inheritdoc}
      *
-     * @Acl(
-     *      id="pim_importexport_export_launch",
-     *      type="action",
-     *      name="Launch an export profile",
-     *      description="Launch an export profile",
-     *      parent="pim_importexport_export"
-     * )
+     * @AclAncestor("pim_importexport_export_launch")
      */
     public function launchAction(Request $request, $id)
     {
