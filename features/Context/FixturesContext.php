@@ -528,21 +528,43 @@ class FixturesContext extends RawMinkContext
             $label = $data['label'];
 
             $locales = array();
-            if (isset($data['locales'])) {
+            if (isset($data['locales']) && !empty($data['locales'])) {
                 $locales = explode(', ', $data['locales']);
             }
 
             $category = null;
-            if (isset($data['category'])) {
+            if (isset($data['category']) && !empty($data['category'])) {
                 $category = $this->getCategory($data['category']);
             }
 
             $currencies = array();
-            if (isset($data['currencies'])) {
+            if (isset($data['currencies']) && !empty($data['currencies'])) {
                 $currencies = explode(', ', $data['currencies']);
             }
 
-            $this->createChannel($code, $label, $locales, $category, $currencies);
+            try {
+                $channel = $this->getChannel($code);
+
+                if (!empty($label)) {
+                    $channel->setLabel($label);
+                }
+
+                if ($category !== null) {
+                    $channel->setCategory($category);
+                }
+
+                foreach ($locales as $localeCode) {
+                    $channel->addLocale($this->getLocale($localeCode));
+                }
+
+                foreach ($currencies as $currencyCode) {
+                    $channel->addCurrency($this->getCurrency($currencyCode));
+                }
+
+                $this->persist($channel);
+            } catch (\InvalidArgumentException $e) {
+                $this->createChannel($code, $label, $locales, $category, $currencies);
+            }
         }
     }
 
