@@ -24,8 +24,7 @@ define(
                     'json_data',
                     'ui',
                     'crrm',
-                    'types',
-                    'contextmenu'
+                    'types'
                 ],
                 contextmenu: {
                     items: {
@@ -82,9 +81,12 @@ define(
                     'select_multiple_modifier': false
                 }
             };
-            if ($el.attr("data-editable")) {
+            if ($el.attr("data-movable")) {
                 this.config.plugins.push("dnd")
-            }
+            } 
+            if ($el.attr("data-creatable")) {
+                this.config.plugins.push("contextmenu")
+            } 
             this.init = function () {
                 $el.jstree(this.config).bind('move_node.jstree', function (e, data) {
                     var this_jstree = $.jstree._focused();

@@ -10,17 +10,19 @@
             function($, TreeManage, Navigation){
                 'use strict';
                 $(function() {
-                    var createBtn = $('<a>', {
-                        'href': '{{ path("pim_catalog_categorytree_create") }}',
-                        'data-toggle': 'tooltip',
-                        'data-placement': 'right',
-                        'data-original-title': '{{ "btn.create.tree"|trans|capitalize }}'
-                    }).html(
-                        $('<i>', { 'class': 'icon-plus-sign' })
-                    );
-
+                    var buttons = []
+                    {% if resource_granted("pim_catalog_category_move") %}
+                        buttons.push($('<a>', {
+                            'href': '{{ path("pim_catalog_categorytree_create") }}',
+                            'data-toggle': 'tooltip',
+                            'data-placement': 'right',
+                            'data-original-title': '{{ "btn.create.tree"|trans|capitalize }}'
+                        }).html(
+                            $('<i>', { 'class': 'icon-plus-sign' })
+                        ));
+                    {% endif %}
                     // Instantiate sidebar
-                    $('#category-tree-container').sidebarize({ buttons: [ createBtn ] });
+                    $('#category-tree-container').sidebarize({ buttons: buttons });
                     new TreeManage('#tree');
                     $('[data-toggle="tooltip"]').tooltip();
                 });
@@ -31,7 +33,7 @@
 
 {% block content %}
     <div id="category-tree-container" class="row-fluid">
-        <div id="tree" {% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %} {% if resource_granted("pim_catalog_category_move") %}data-editable="true"{% endif %}></div>
+        <div id="tree" {% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %} {% if resource_granted("pim_catalog_category_move") %}data-movable="true"{% endif %}  {% if resource_granted("pim_catalog_category_create") %}data-creatable="true"{% endif %}></div>
 
         <div id="category-form">
             {% include 'PimCatalogBundle:CategoryTree:form.html.twig' with {'form': form} %}
