@@ -319,7 +319,7 @@ class ProductController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_catalog_product_index');
         }
 
-        $entity = $this->productManager->createFlexible(true);
+        $entity = $this->productManager->createProduct();
 
         if ($this->productCreateHandler->process($entity)) {
 
@@ -643,8 +643,6 @@ class ProductController extends AbstractDoctrineController
                 sprintf('Product with id %d could not be found.', $id)
             );
         }
-
-        $this->productManager->addMissingPrices($product);
 
         return $product;
     }
