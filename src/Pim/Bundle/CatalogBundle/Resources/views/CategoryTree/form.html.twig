@@ -39,7 +39,7 @@
     path('pim_catalog_categorytree_create', { parent: parentId }) }}" method="POST" {{ form_enctype(form) }}>
 
     {% set buttons %}
-        {% if form.vars.value.id %}
+        {% if form.vars.value.id and resource_granted("pim_catalog_category_remove") %}
             {{ elements.deleteLink(
                 path('pim_catalog_categorytree_remove', { id: form.vars.value.id }),
                 path('pim_catalog_categorytree_create'),
