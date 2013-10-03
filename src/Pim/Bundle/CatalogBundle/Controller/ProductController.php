@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -335,7 +334,7 @@ class ProductController extends AbstractDoctrineController
             );
             $response = array('status' => 1, 'url' => $url);
 
-            return new JsonResponse($response);
+            return new Response(json_encode($response));
         }
 
         return array(
