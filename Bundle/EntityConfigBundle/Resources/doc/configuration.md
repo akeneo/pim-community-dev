@@ -1,8 +1,6 @@
 Config(yml) Example
 ====================
 
-The configuration YAML should be placed in [BundleName]\Resources\config\entity_config.yml
-
 ``` yaml
 oro_entity_config:
     # An example of 'entity' scope configuration
@@ -40,36 +38,6 @@ oro_entity_config:
                             required:       true                    # Specify whether this field is required or not
 
         field:                                                      # A configuration of a form used to configure entity field
-            items:                                                  # block of entity
-
-                label:                      ~                       # same as entity.items.label
-```
-
-
-Below just an example of scope configurations:
-
-    audit:
-        entity:
-            items:
-                auditable:
-                    options:
-                        priority:           60
-                    grid:
-                        type:               boolean
-                        label:              'Auditable'
-                        filter_type:        oro_grid_orm_boolean
-                        required:           true
-                        sortable:           true
-                        filterable:         true
-                        show_filter:        false
-                    form:
-                        type:               choice
-                        options:
-                            choices:        ['No', 'Yes']
-                            empty_value:    false
-                            block:          entity
-                            label:          'Auditable'
-        field:
             items:
                 auditable:
                     options:
@@ -90,30 +58,4 @@ Below just an example of scope configurations:
                             empty_value:    false
                             block:          entity
                             label:          'Auditable'
-    datagrid:
-        field:
-            form:
-                block_config:
-                    datagrid:
-                        title:              'Datagrid Config'
-                        subblocks:
-                            base:           ~
-            items:
-                is_searchable:
-                    options:
-                        default_value:      false
-                    grid:
-                        type:               boolean
-                        label:              'Datagrid search'
-                        filter_type:        oro_grid_orm_boolean
-                        required:           true
-                        sortable:           true
-                        filterable:         true
-                        show_filter:        false
-                    form:
-                        type:               choice
-                        options:
-                            choices:        ['No', 'Yes']
-                            empty_value:    false
-                            block:          datagrid
-                            label:          "Datagrid search"
+```
