@@ -4,31 +4,7 @@
 
 {% block head_script %}
     {{ parent() }}
-    <script type="text/javascript">
-        require(
-            ['jquery', 'pim/tree/manage', 'oro/navigation', 'jquery.sidebarize', 'bootstrap-tooltip'],
-            function($, TreeManage, Navigation){
-                'use strict';
-                $(function() {
-                    var buttons = []
-                    {% if resource_granted("pim_catalog_category_move") %}
-                        buttons.push($('<a>', {
-                            'href': '{{ path("pim_catalog_categorytree_create") }}',
-                            'data-toggle': 'tooltip',
-                            'data-placement': 'right',
-                            'data-original-title': '{{ "btn.create.tree"|trans|capitalize }}'
-                        }).html(
-                            $('<i>', { 'class': 'icon-plus-sign' })
-                        ));
-                    {% endif %}
-                    // Instantiate sidebar
-                    $('#category-tree-container').sidebarize({ buttons: buttons });
-                    new TreeManage('#tree');
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
-            }
-        );
-    </script>
+    {% include "PimCatalogBundle:CategoryTree:_scripts.html.twig" %}
 {% endblock %}
 
 {% block content %}
