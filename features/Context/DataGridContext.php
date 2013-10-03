@@ -353,7 +353,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @Then /^I should not see products? ((?!with data).)*$/
      * @Then /^I should not see attributes? ((?!in group).)*$/
-     * @Then /^I should not see (?:(?:entit|currenc)(?:y|ies)|channels?|locales?|(?:import|export) profiles?) (.*)$/
+     * @Then /^I should not see channels? (.*)$/
+     * @Then /^I should not see locales? (.*)$/
+     * @Then /^I should not see (?:import|export) profiles? (.*)$/
+     * @Then /^I should not see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
+     * @Then /^I should not see variants? (.*)$/
      */
     public function iShouldNotSeeEntities($entities)
     {
