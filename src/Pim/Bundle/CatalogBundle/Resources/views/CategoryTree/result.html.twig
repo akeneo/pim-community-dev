@@ -1,5 +1,5 @@
 {% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
-{% import 'OroUserBundle::macros.html.twig' as macros %}
+{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 
 {% set showImage = true %}
 {% set imagePath = asset('/bundles/pimui/images/icon_category.png') %}
@@ -12,5 +12,5 @@
 {% set entityType = 'Category' |trans({}, 'config') %}
 
 {% set entityInfo = [
-    {'title': 'Created', 'value': entity.created ? macros.time(entity.created) : 'N/A'},
+    {'title': 'Created', 'value': entity.created ? Locale.time(entity.created) : 'N/A'}
 ] %}
