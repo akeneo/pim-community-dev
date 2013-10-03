@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
-use Pim\Bundle\CatalogBundle\Manager\VariantGroupManager;
-
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -15,6 +13,7 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Manager\VariantGroupManager;
 
 /**
  * Variant group datagrid manager
@@ -29,6 +28,11 @@ class VariantGroupDatagridManager extends DatagridManager
      * @var LocaleManager
      */
     protected $localeManager;
+
+    /**
+     * @var VariantGroupManager
+     */
+    protected $variantGroupManager;
 
     /**
      * {@inheritdoc}

@@ -2,8 +2,6 @@
 
 namespace Context;
 
-use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\Inflector;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
@@ -22,6 +20,7 @@ use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 
