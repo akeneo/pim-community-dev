@@ -101,6 +101,7 @@ services:
             - '@oro_grid.renderer'
             - '@pim_catalog.datagrid.worker'
             - '@pim_catalog.form.handler.product_create'
+            - '@pim_catalog.form.product_create'
             - '@pim_catalog.calculator.completeness'
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.category'

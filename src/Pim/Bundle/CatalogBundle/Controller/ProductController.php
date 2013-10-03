@@ -128,6 +128,7 @@ class ProductController extends AbstractDoctrineController
      * @param GridRenderer             $gridRenderer
      * @param DatagridWorkerInterface  $datagridWorker
      * @param ProductCreateHandler     $productCreateHandler
+     * @param Form                     $productCreateForm
      * @param CompletenessCalculator   $calculator
      * @param ProductManager           $productManager
      * @param CategoryManager          $categoryManager
@@ -147,6 +148,7 @@ class ProductController extends AbstractDoctrineController
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $datagridWorker,
         ProductCreateHandler $productCreateHandler,
+        Form $productCreateForm,
         CompletenessCalculator $calculator,
         ProductManager $productManager,
         CategoryManager $categoryManager,
@@ -168,6 +170,7 @@ class ProductController extends AbstractDoctrineController
         $this->gridRenderer         = $gridRenderer;
         $this->datagridWorker       = $datagridWorker;
         $this->productCreateHandler = $productCreateHandler;
+        $this->productCreateForm    = $productCreateForm;
         $this->calculator           = $calculator;
         $this->productManager       = $productManager;
         $this->categoryManager      = $categoryManager;
@@ -340,11 +343,7 @@ class ProductController extends AbstractDoctrineController
         }
 
         return array(
-            'form' => $this->createForm(
-                'pim_product_create',
-                $entity,
-                $this->getFormCreateOptions($entity)
-            )->createView(),
+            'form'       => $this->productCreateForm->createView(),
             'dataLocale' => $this->getDataLocale()
         );
     }
@@ -710,16 +709,5 @@ class ProductController extends AbstractDoctrineController
                 'enable_state'  => $this->aclManager->isResourceGranted('pim_catalog_product_change_state'),
                 'currentLocale' => $this->getDataLocale()
             );
-    }
-    
-    /**
-     * Returns the options for the create form
-     * 
-     * @param object $product
-     * @return array
-     */
-    protected function getCreateFormOptions($product)
-    {
-        return array();
     }
 }
