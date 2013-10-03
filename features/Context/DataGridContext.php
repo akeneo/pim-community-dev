@@ -381,7 +381,13 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @throws \InvalidArgumentException
      *
-     * @Then /^I should see sorted (?:entities|channels|currencies|locales|attributes|(?:import|export) profiles) (.*)$/
+     * @Then /^I should see sorted channels (.*)$/
+     * @Then /^I should see sorted currencies (.*)$/
+     * @Then /^I should see sorted locales (.*)$/
+     * @Then /^I should see sorted attributes (.*)$/
+     * @Then /^I should see sorted (?:import|export) profiles (.*)$/
+     * @Then /^I should see sorted (?:entities) (.*)$/
+     * @Then /^I should see sorted variants (.*)$/
      */
     public function iShouldSeeSortedEntities($elements)
     {
