@@ -190,9 +190,17 @@ class VariantGroupController extends AbstractDoctrineController
      *     description="Remove a variant group",
      *     parent="pim_catalog_variant_group"
      * )
-     * @return Response
+     * @return Response|RedirectResponse
      */
     public function removeAction(VariantGroup $variant)
     {
+        $this->getManager()->remove($variant);
+        $this->getManager()->flush();
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirectToRoute('pim_catalog_variant_group_index');
+        }
     }
 }
