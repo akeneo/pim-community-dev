@@ -30,6 +30,10 @@ Feature: Remove attribute from a family
     And the following products:
       | sku            | family |
       | bag-dolce-vita | Bags   |
+    And the following product values:
+      | product         | attribute        | locale |scope      | value          |
+      | bag-dolce-vita  | Long description |        |           | my description |
+      | bag-dolce-vita  | Manufacturer     |        |           | dolce          |
     And the attribute "Manufacturer" has been removed from the "Bags" family
     And I am logged in as "admin"
     When I am on the "bag-dolce-vita" product page
