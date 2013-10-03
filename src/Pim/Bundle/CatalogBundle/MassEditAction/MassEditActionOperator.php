@@ -115,7 +115,7 @@ class MassEditActionOperator
     public function setOperationAlias($operationAlias)
     {
         if (!$this->isGranted($operationAlias)) {
-            throw new \RuntimeException(sprintf('Operation %s is not allowed', $operationAlias));
+            throw new \InvalidArgumentException(sprintf('Operation %s is not allowed', $operationAlias));
         }
         $this->operationAlias = $operationAlias;
 
