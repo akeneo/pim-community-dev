@@ -525,32 +525,46 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->addSelect('valueOptions')
             ->addSelect('category');
 
-        // prepare query for completeness
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
 
         $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
         $proxyQuery->setParameter('channelCode', $this->flexibleManager->getScope());
 
-        // prepare query for categories
+        $this->prepareQueryForCategory($proxyQuery, $rootAlias);
+    }
+
+    /**
+     * Prepare query for categories field
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     * @param string              $rootAlias
+     */
+    protected function prepareQueryForCategory(ProxyQueryInterface $proxyQuery, $rootAlias)
+    {
         if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
             $categoryRepository = $this->categoryManager->getEntityRepository();
+            $categoryExists = ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY)
+                && $categoryRepository->find($this->filterCategoryId) != null;
+            $treeExists = $categoryRepository->find($this->filterTreeId) != null;
 
-            if ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY) {
+            if ($categoryExists) {
                 $productIds = $categoryRepository->getLinkedProductIds($this->filterCategoryId, false);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
                 $expression = $proxyQuery->expr()->in($rootAlias .'.id', $productIds);
                 $proxyQuery->andWhere($expression);
-            } else {
+            } else if ($this->filterTreeId) {
                 $productIds = $categoryRepository->getLinkedProductIds($this->filterTreeId, true);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
                 $expression = $proxyQuery->expr()->notIn($rootAlias .'.id', $productIds);
                 $proxyQuery->andWhere($expression);
             }
         }
+
     }
 
     /**
      * Prepare query for completeness field
+     *
      * @param ProxyQueryInterface $proxyQuery
      * @param string              $rootAlias
      */
