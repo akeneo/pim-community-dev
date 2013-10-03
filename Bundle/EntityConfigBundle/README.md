@@ -82,6 +82,8 @@ oro_entity_config:
 ```
 Now you may go to System > Entities. The 'Demo Attr' column should be displayed in the grid. Click Edit on any entity to go to edit entity form. 'Demo Attr' field should be displayed there.
 
+[Example of YAML config](Resources/doc/configuration.md)
+
 Implementation
 --------------
 
