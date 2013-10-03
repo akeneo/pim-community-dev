@@ -81,7 +81,7 @@ class ProductManager extends FlexibleManager
         $product = $this->getFlexibleRepository()->findWithSortedAttribute($id);
 
         if ($product) {
-            $this->ensureRequiredAttributeValues($product);
+            $this->addMissingProductValues($product);
         }
 
         return $product;
@@ -98,8 +98,9 @@ class ProductManager extends FlexibleManager
     public function findByIds(array $ids)
     {
         $products = $this->getFlexibleRepository()->findByIds($ids);
+
         foreach ($products as $product) {
-            $this->ensureRequiredAttributeValues($product);
+            $this->addMissingProductValues($product);
         }
 
         return $products;
@@ -119,8 +120,9 @@ class ProductManager extends FlexibleManager
 
         $products = $this->getFlexibleRepository()->findByWithAttributes(array(), array($code => $identifier));
         $product = reset($products);
+
         if ($product) {
-            $this->ensureRequiredAttributeValues($product);
+            $this->addMissingProductValues($product);
         }
 
         return $product;
@@ -136,7 +138,7 @@ class ProductManager extends FlexibleManager
      */
     public function addAttributeToProduct(ProductInterface $product, ProductAttribute $attribute)
     {
-        $requiredValues = $this->computeRequiredValues($attribute);
+        $requiredValues = $this->getMissingValues($attribute);
 
         foreach ($requiredValues as $value) {
             $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
@@ -200,7 +202,7 @@ class ProductManager extends FlexibleManager
     {
         $product =  parent::createFlexible();
         if ($product) {
-            $this->ensureRequiredAttributeValues($product);
+            $this->addMissingProductValues($product);
         }
 
         return $product;
@@ -217,35 +219,16 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * Add missing prices (a price per currency)
-     *
-     * @param ProductInterface $product the product
-     *
-     * @return null
-     */
-    protected function addMissingPrices(ProductInterface $product)
-    {
-        foreach ($product->getValues() as $value) {
-            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
-                $activeCurrencies = $this->currencyManager->getActiveCodes();
-                $value->addMissingPrices($activeCurrencies);
-                $value->removeDisabledPrices($activeCurrencies);
-            }
-        }
-    }
-
-    /**
      * Add empty values for family and product-specific attributes for relevant scopes and locales
      *
-     * It makes sure that if an attribute is translatable/scopable, then all values
-     * in the required locales/channels exist. If the attribute is not scopable or
-     * translatable, makes sure that a single value exists.
+     * It makes sure that if an attribute is translatable/scopable, then all values in the required locales/channels
+     * exist. If the attribute is not scopable or translatable, makes sure that a single value exists.
      *
      * @param ProductInterface $product
      *
      * @return null
      */
-    protected function ensureRequiredAttributeValues(ProductInterface $product)
+    protected function addMissingProductValues(ProductInterface $product)
     {
         $attributes = $product->getAttributes();
 
@@ -262,7 +245,7 @@ class ProductManager extends FlexibleManager
         $attributes = array_unique($attributes);
 
         foreach ($attributes as $attribute) {
-            $requiredValues = $this->computeRequiredValues($attribute);
+            $requiredValues = $this->getExpectedValues($attribute);
             $existingValues = array();
 
             foreach ($product->getValues() as $value) {
@@ -298,14 +281,14 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * Returns an array of values that are required to link product to an attribute
+     * Returns an array of values that are expected to link product to an attribute depending on locale and scope
      * Each value is returned as an array with 'scope' and 'locale' keys
      *
      * @param ProductAttribute $attribute
      *
      * @return array:array
      */
-    protected function computeRequiredValues(ProductAttribute $attribute)
+    protected function getExpectedValues(ProductAttribute $attribute)
     {
         $requiredValues = array();
 
@@ -332,6 +315,24 @@ class ProductManager extends FlexibleManager
         }
 
         return $requiredValues;
+    }
+
+    /**
+     * Add missing prices (a price per currency)
+     *
+     * @param ProductInterface $product the product
+     *
+     * @return null
+     */
+    protected function addMissingPrices(ProductInterface $product)
+    {
+        foreach ($product->getValues() as $value) {
+            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
+                $activeCurrencies = $this->currencyManager->getActiveCodes();
+                $value->addMissingPrices($activeCurrencies);
+                $value->removeDisabledPrices($activeCurrencies);
+            }
+        }
     }
 
     /**
