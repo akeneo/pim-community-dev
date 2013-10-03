@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
+use Oro\Bundle\UserBundle\Acl\ManagerInterface as ACLManagerInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+
 
 /**
  * A batch operation operator
@@ -28,18 +30,30 @@ class MassEditActionOperator
      * @var ProductManager $manager
      */
     protected $manager;
+    
+    /**
+     * @var ACLManagerInterface
+     */
+    protected $ACLManager;
 
     /**
      * @var MassEditAction[] $operations
      */
     protected $operations = array();
+    
+    /**
+     * @var string[] $acls
+     */
+    protected $acls = array();
 
     /**
      * @param ProductManager $manager
+     * @param ACLManagerInterface $ACLManager
      */
-    public function __construct(ProductManager $manager)
+    public function __construct(ProductManager $manager, ACLManagerInterface $ACLManager)
     {
         $this->manager = $manager;
+        $this->ACLManager = $ACLManager;
     }
 
     /**
@@ -50,12 +64,15 @@ class MassEditActionOperator
      *
      * @throw \InvalidArgumentException
      */
-    public function registerMassEditAction($alias, MassEditAction $operation)
+    public function registerMassEditAction($alias, MassEditAction $operation, $acl = null)
     {
         if (array_key_exists($alias, $this->operations)) {
             throw new \InvalidArgumentException(sprintf('Operation "%s" is already registered', $alias));
         }
         $this->operations[$alias] = $operation;
+        if ($acl) {
+            $this->acls[$alias] = $acl;
+        }
     }
 
     /**
@@ -68,24 +85,12 @@ class MassEditActionOperator
         $choices = array();
 
         foreach (array_keys($this->operations) as $alias) {
-            $choices[$alias] = sprintf('pim_catalog.mass_edit_action.%s.label', $alias);
+            if ($this->isGranted($alias)) {
+                $choices[$alias] = sprintf('pim_catalog.mass_edit_action.%s.label', $alias);
+            }
         }
 
         return $choices;
-    }
-
-    /**
-     * Set the batch operation
-     *
-     * @param MassEditAction $operation
-     *
-     * @return MassEditActionOperator
-     */
-    public function setOperation(MassEditAction $operation)
-    {
-        $this->operation = $operation;
-
-        return $this;
     }
 
     /**
@@ -109,6 +114,9 @@ class MassEditActionOperator
      */
     public function setOperationAlias($operationAlias)
     {
+        if (!$this->isGranted($operationAlias)) {
+            throw new \RuntimeException(sprintf('Operation %s is not allowed', $operationAlias));
+        }
         $this->operationAlias = $operationAlias;
 
         if (!isset($this->operations[$operationAlias])) {
@@ -171,5 +179,17 @@ class MassEditActionOperator
         }
 
         return $products;
+    }
+
+    /**
+     * Returns true if the operation is allowed for the current user
+     * 
+     * @param string $operationAlias
+     * @return boolean
+     */
+    protected function isGranted($operationAlias)
+    {
+        return !isset($this->acls[$operationAlias]) ||
+            $this->ACLManager->isResourceGranted($this->acls[$operationAlias]);
     }
 }

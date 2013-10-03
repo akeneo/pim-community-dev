@@ -124,6 +124,7 @@ services:
         class: %pim_catalog.mass_edit_action.operator.class%
         arguments:
             - '@pim_catalog.manager.product'
+            - '@oro_user.acl_manager'
 
     # Mass edit actions
     pim_catalog.mass_edit_action.change_status:
@@ -132,7 +133,7 @@ services:
         arguments:
             - '@pim_catalog.manager.product'
         tags:
-            - { name: pim_catalog.mass_edit_action, alias: change-status }
+            - { name: pim_catalog.mass_edit_action, alias: change-status, acl: pim_catalog_product_change_state }
 
     pim_catalog.mass_edit_action.edit_common_attributes:
         public: false
@@ -142,7 +143,7 @@ services:
             - '@pim_catalog.manager.locale'
             - '@pim_catalog.manager.currency'
         tags:
-            - { name: pim_catalog.mass_edit_action, alias: edit-common-attributes }
+            - { name: pim_catalog.mass_edit_action, alias: edit-common-attributes, acl: pim_catalog_product_edit }
 
     pim_catalog.mass_edit_action.classify:
         public: false
@@ -151,7 +152,7 @@ services:
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.category'
         tags:
-            - { name: pim_catalog.mass_edit_action, alias: classify }
+            - { name: pim_catalog.mass_edit_action, alias: classify, acl: pim_catalog_product_categories_view }
 
     pim_catalog.mass_edit_action.change_family:
         public: false
@@ -159,4 +160,4 @@ services:
         arguments:
             - '@pim_catalog.manager.product'
         tags:
-            - { name: pim_catalog.mass_edit_action, alias: change-family }
+            - { name: pim_catalog.mass_edit_action, alias: change-family, acl: pim_catalog_product_change_family }
