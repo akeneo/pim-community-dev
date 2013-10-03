@@ -96,14 +96,14 @@ class PropertyConfigContainer
      * @param string $type
      * @return array
      */
-    public function getInternalValues($type = self::TYPE_ENTITY)
+    public function getNotAuditableValues($type = self::TYPE_ENTITY)
     {
         $type = $this->getConfigType($type);
 
         $result = array();
         foreach ($this->getItems($type) as $code => $item) {
-            if (isset($item['options']['internal']) && $item['options']['internal']) {
-                $result[$code] = 0;
+            if (isset($item['options']['internal']) || $item['options']['internal'] === false) {
+                $result[$code] = true;
             }
         }
 
