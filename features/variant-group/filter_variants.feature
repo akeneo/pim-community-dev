@@ -12,13 +12,12 @@ Feature: Filter variants
       | size      | Size       | pim_catalog_simpleselect |
       | dimension | Dimensions | pim_catalog_simpleselect |
     And the following variants:
-      | code           | label          | attributes |
+      | code           | label         | attributes  |
       | TSHIRT_ORO    | T-Shirt Oro    | size, color |
       | MUG           | Mug Akeneo     | color       |
       | TSHIRT_AKENEO | T-Shirt Akeneo | size        |
     And I am logged in as "admin"
 
-  @skip
   Scenario: Successfully display filters
     Given I am on the variants page
     Then I should see the filters Code, Label and Axis
@@ -47,7 +46,6 @@ Feature: Filter variants
     And I should see variant TSHIRT_AKENEO
     And I should not see variants MUG and TSHIRT_ORO
 
-  @skip
   Scenario: Successfully filter by axis
     Given I am on the variants page
     When I filter by "Axis" with value "Color"
