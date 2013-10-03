@@ -76,7 +76,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      * Store decimal value
      * @var double $decimal
      *
-     * @ORM\Column(name="value_decimal", type="decimal", nullable=true)
+     * @ORM\Column(name="value_decimal", type="decimal", precision=14, scale=4, nullable=true)
      */
     protected $decimal;
 
