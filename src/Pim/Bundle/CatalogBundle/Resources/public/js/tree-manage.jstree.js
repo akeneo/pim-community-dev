@@ -25,7 +25,6 @@ define(
                     'ui',
                     'crrm',
                     'types',
-                    'dnd',
                     'contextmenu'
                 ],
                 contextmenu: {
@@ -83,7 +82,9 @@ define(
                     'select_multiple_modifier': false
                 }
             };
-
+            if ($el.attr("data-editable")) {
+                this.config.plugins.push("dnd")
+            }
             this.init = function () {
                 $el.jstree(this.config).bind('move_node.jstree', function (e, data) {
                     var this_jstree = $.jstree._focused();
