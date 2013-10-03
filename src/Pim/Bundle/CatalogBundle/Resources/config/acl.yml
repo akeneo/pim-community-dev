@@ -344,7 +344,7 @@ pim_catalog_product_change_family:
     parent: pim_catalog_product
 
 pim_catalog_product_change_state:
-    name: Cange state of product 
+    name: Change state of product 
     description: Change the state of products
     parent: pim_catalog_product
 
