@@ -126,12 +126,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Abhoryo/APYJsFormValidationBundle.git",
-                "reference": "d1c2ff7892b8c7437d9257dcee6c27b225f52c87"
+                "reference": "a7dbcb403f79bed6ed0c3e6a5b575035e4cf6699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Abhoryo/APYJsFormValidationBundle/zipball/d1c2ff7892b8c7437d9257dcee6c27b225f52c87",
-                "reference": "d1c2ff7892b8c7437d9257dcee6c27b225f52c87",
+                "url": "https://api.github.com/repos/Abhoryo/APYJsFormValidationBundle/zipball/a7dbcb403f79bed6ed0c3e6a5b575035e4cf6699",
+                "reference": "a7dbcb403f79bed6ed0c3e6a5b575035e4cf6699",
                 "shasum": ""
             },
             "require": {
@@ -187,7 +187,7 @@
                 "symfony",
                 "validation"
             ],
-            "time": "2013-09-18 07:22:09"
+            "time": "2013-10-02 19:15:46"
         },
         {
             "name": "ass/xmlsecurity",
@@ -3477,12 +3477,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "86ceda7f20c5f4681c41bed575c5f3252eda7c7e"
+                "reference": "bbbf4cf92fea541fcae34f26cdee566fef6a8699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/86ceda7f20c5f4681c41bed575c5f3252eda7c7e",
-                "reference": "86ceda7f20c5f4681c41bed575c5f3252eda7c7e",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/bbbf4cf92fea541fcae34f26cdee566fef6a8699",
+                "reference": "bbbf4cf92fea541fcae34f26cdee566fef6a8699",
                 "shasum": ""
             },
             "require": {
@@ -3515,7 +3515,7 @@
                 "liip/imagine-bundle": "dev-master#51e28873a5a831cead026181faa898f8091f813e",
                 "mtdowling/cron-expression": "v1.0.2",
                 "nelmio/api-doc-bundle": "dev-master#c2d36d9ef0ec80dadb92746bff55af7df1af8b1c",
-                "php": ">=5.3.8",
+                "php": ">=5.3.3",
                 "sensio/distribution-bundle": "dev-master#45664e203fd1364705091a58971cc6bd94fb5189",
                 "sensio/framework-extra-bundle": "dev-master#403e13e384d8a81c9c8a1adfe89356e9849c14ff",
                 "sensio/generator-bundle": "dev-master#766205eccd54314beec018a13d6f7fd0c42d45a1",
@@ -3544,7 +3544,7 @@
                 "source": "https://github.com/laboro/platform/tree/maintenance/pim_beta1",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-10-02 16:50:17"
+            "time": "2013-10-03 12:01:39"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -4508,12 +4508,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "c579a8141477531ce2afd8a441aaccc11033f37d"
+                "reference": "d3b488a8b772e5f127050950c59810a867b3b002"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/c579a8141477531ce2afd8a441aaccc11033f37d",
-                "reference": "c579a8141477531ce2afd8a441aaccc11033f37d",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/d3b488a8b772e5f127050950c59810a867b3b002",
+                "reference": "d3b488a8b772e5f127050950c59810a867b3b002",
                 "shasum": ""
             },
             "require": {
@@ -4549,7 +4549,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-10-02 05:57:25"
+            "time": "2013-10-03 07:19:21"
         },
         {
             "name": "willdurand/expose-translation-bundle",
