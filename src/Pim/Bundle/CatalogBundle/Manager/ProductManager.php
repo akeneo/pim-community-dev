@@ -201,9 +201,6 @@ class ProductManager extends FlexibleManager
     public function createProduct()
     {
         $product =  parent::createFlexible();
-        if ($product) {
-            $this->addMissingProductValues($product);
-        }
 
         return $product;
     }
@@ -216,6 +213,21 @@ class ProductManager extends FlexibleManager
     public function createProductValue()
     {
         return parent::createFlexibleValue();
+    }
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @return null
+     */
+    public function handleMedia(ProductInterface $product)
+    {
+        foreach ($product->getValues() as $value) {
+            if ($media = $value->getMedia()) {
+                $filenamePrefix =  $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null;
+                $this->mediaManager->handle($media, $filenamePrefix);
+            }
+        }
     }
 
     /**
@@ -404,21 +416,6 @@ class ProductManager extends FlexibleManager
         foreach ($values as $value) {
             $product->removeValue($value);
             $value->setEntity(null);
-        }
-    }
-
-    /**
-     * @param ProductInterface $product
-     *
-     * @return null
-     */
-    public function handleMedia(ProductInterface $product)
-    {
-        foreach ($product->getValues() as $value) {
-            if ($media = $value->getMedia()) {
-                $filenamePrefix =  $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null;
-                $this->mediaManager->handle($media, $filenamePrefix);
-            }
         }
     }
 
