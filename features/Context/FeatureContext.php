@@ -2,13 +2,11 @@
 
 namespace Context;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Yaml\Parser;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Mink\Exception\ExpectationException;
-
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Main feature context
@@ -20,6 +18,12 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
     private $kernel;
+
+    /**
+     * Path of the yaml file containing tables that should be excluded from database purge
+     * @var string
+     */
+    private $excludedTablesFile = 'excluded_tables.yml';
 
     /**
      * Register contexts
@@ -39,7 +43,15 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function purgeDatabase()
     {
-        $purger = new ORMPurger($this->getEntityManager());
+        $excludedTablesFile = __DIR__ . '/' . $this->excludedTablesFile;
+        if (file_exists($excludedTablesFile)) {
+            $parser = new Parser();
+            $excludedTables = $parser->parse(file_get_contents($excludedTablesFile));
+            $excludedTables = $excludedTables['excluded_tables'];
+        } else {
+            $excludedTables = array();
+        }
+        $purger = new SelectiveORMPurger($this->getEntityManager(), $excludedTables);
         $purger->purge();
     }
 
