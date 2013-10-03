@@ -16,7 +16,7 @@ class TargetFieldTypeTest extends \PHPUnit_Framework_TestCase
     /** @var  TargetFieldType */
     protected $type;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()
@@ -30,6 +30,7 @@ class TargetFieldTypeTest extends \PHPUnit_Framework_TestCase
 
     public function test()
     {
+
     }
 
     public function testNames()

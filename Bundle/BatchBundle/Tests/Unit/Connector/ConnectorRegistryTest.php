@@ -44,7 +44,7 @@ class ConnectorRegistryTest extends \PHPUnit_Framework_TestCase
 
         $job->expects($this->once())
             ->method('addStep')
-            ->with('Export', $step);
+            ->with($step);
 
         $this->registry->addStepToJob(
             'Akeneo',
