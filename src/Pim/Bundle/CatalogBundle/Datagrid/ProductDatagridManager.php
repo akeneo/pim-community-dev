@@ -388,51 +388,53 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function getRowActions()
     {
-        $editAction = array(
-            'name'         => 'edit',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label'   => $this->translate('Edit attributes of the product'),
-                'icon'    => 'edit',
-                'link'    => 'edit_link'
-            )
-        );
+        $actions = array();
+        if ($this->ACLManager->isResourceGranted('pim_catalog_product_edit')) {
+            $editAction = array(
+                'name'         => 'edit',
+                'type'         => ActionInterface::TYPE_REDIRECT,
+                'acl_resource' => 'root',
+                'options'      => array(
+                    'label'   => $this->translate('Edit attributes of the product'),
+                    'icon'    => 'edit',
+                    'link'    => 'edit_link'
+                )
+            );
 
-        $clickAction = $editAction;
-        $clickAction['name'] = 'rowClick';
-        $clickAction['options']['runOnRowClick'] = true;
+            $clickAction = $editAction;
+            $clickAction['name'] = 'rowClick';
+            $clickAction['options']['runOnRowClick'] = true;
+            $actions[] = $editAction;
+            $actions[] = $clickAction;
+            if ($this->ACLManager->isResourceGranted('pim_catalog_product_categories_view')) {
+                $actions[] = array(
+                    'name'         => 'edit_categories',
+                    'type'         => ActionInterface::TYPE_TAB_REDIRECT,
+                    'acl_resource' => 'root',
+                    'options'      => array(
+                        'label'     => $this->translate('Classify the product'),
+                        'tab'       => '#categories',
+                        'icon'      => 'folder-close',
+                        'className' => 'edit-categories-action',
+                        'link'      => 'edit_categories_link'
+                    )
+                );
+            }
+        }
 
-        $editCategoriesAction = array(
-            'name'         => 'edit_categories',
-            'type'         => ActionInterface::TYPE_TAB_REDIRECT,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label'     => $this->translate('Classify the product'),
-                'tab'       => '#categories',
-                'icon'      => 'folder-close',
-                'className' => 'edit-categories-action',
-                'link'      => 'edit_categories_link'
-            )
-        );
-
-        $deleteAction = array(
-            'name'         => 'delete',
-            'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'root',
-            'options'      => array(
-                'label'   => $this->translate('Delete the product'),
-                'icon'    => 'trash',
-                'link'    => 'delete_link'
-            )
-        );
-
-        return array(
-            $clickAction,
-            $editAction,
-            $editCategoriesAction,
-            $deleteAction
-        );
+        if ($this->ACLManager->isResourceGranted('pim_catalog_product_remove')) {
+            $actions[] = array(
+                'name'         => 'delete',
+                'type'         => ActionInterface::TYPE_DELETE,
+                'acl_resource' => 'root',
+                'options'      => array(
+                    'label'   => $this->translate('Delete the product'),
+                    'icon'    => 'trash',
+                    'link'    => 'delete_link'
+                )
+            );
+        }
+        return $actions;
     }
 
     /**
@@ -450,7 +452,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 )
             );
         }
-        if ($this->ACLManager->isResourceGranted('pim_catalog_product_remove')) {
+        if ($this->ACLManager->isResourceGranted('pim_catalog_product_edit')) {
             $actions[] = new RedirectMassAction(
                 array(
                     'name'  => 'redirect',
