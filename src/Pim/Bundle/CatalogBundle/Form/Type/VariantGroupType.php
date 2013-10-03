@@ -22,8 +22,9 @@ class VariantGroupType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add('code');
+
         $builder
-            ->add('code')
             ->add(
                 'label',
                 'pim_translatable_field',
@@ -33,7 +34,9 @@ class VariantGroupType extends AbstractType
                     'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\VariantGroup',
                     'property_path'     => 'translations'
                 )
-            )
+            );
+
+        $builder
             ->add(
                 'attributes',
                 'entity',
