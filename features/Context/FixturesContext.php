@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\Inflector;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
-use Oro\Bundle\UserBundle\Entity\Acl;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
@@ -1139,7 +1138,7 @@ class FixturesContext extends RawMinkContext
     private function getRoleOrCreate($label)
     {
         try {
-            $role = $this->getEntityOrException('OroUserBundle:Role', array('label' => $label));
+            $role = $this->getEntityOrException('OroUserBundle:Role', array('role' => $label));
         } catch (\InvalidArgumentException $e) {
             $role = new Role($label);
             $this->persist($role);
@@ -1295,48 +1294,67 @@ class FixturesContext extends RawMinkContext
         $scope        = 'ecommerce';
         $scopeOption  = null;
 
-        $user = new User();
-        $user->setUsername($username);
-        $user->setFirstname('John');
-        $user->setLastname('Doe');
-        $user->setPlainPassword($password);
-        $user->setEmail($email);
-
-        $user->addRole($this->getRoleOrCreate(User::ROLE_DEFAULT));
-        $user->addRole($this->getRoleOrCreate(User::ROLE_ANONYMOUS));
+        $user = $this->getUserManager()->createUser();
+        $user
+            ->setUsername($username)
+            ->setPlainPassword($password)
+            ->setFirstname('John')
+            ->setLastname('Doe')
+            ->setEmail($email)
+            ->addRole($this->getRoleOrCreate('ROLE_ADMINISTRATOR'));
 
         $manager = $this->getContainer()->get('oro_user.manager.flexible');
 
-        $localeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
-        $localeAttribute->setCode('cataloglocale')->setLabel('cataloglocale');
-        foreach ($this->locales as $localeCode) {
-            $option = $manager->createAttributeOption();
-            $optionValue = $manager->createAttributeOptionValue()->setValue($localeCode);
-            $option->addOptionValue($optionValue);
-            $localeAttribute->addOption($option);
-            if ($locale == $localeCode) {
-                $localeOption = $option;
+        $localeAttribute = $manager->getAttributeRepository()->findOneBy(array('code' => 'cataloglocale'));
+
+        if (!$localeAttribute) {
+            $localeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
+            $localeAttribute->setCode('cataloglocale')->setLabel('cataloglocale');
+            foreach ($this->locales as $localeCode) {
+                $option = $manager->createAttributeOption();
+                $optionValue = $manager->createAttributeOptionValue()->setValue($localeCode);
+                $option->addOptionValue($optionValue);
+                $localeAttribute->addOption($option);
+                if ($locale == $localeCode) {
+                    $localeOption = $option;
+                }
             }
+            $this->persist($localeAttribute);
+        } else {
+            $localeOption = $localeAttribute->getOptions()->filter(
+                function ($option) use ($locale) {
+                    return $option->getOptionValue()->getValue() === $locale;
+                }
+            )->first();
         }
-        $this->persist($localeAttribute);
 
         $localeValue = $manager->createFlexibleValue();
         $localeValue->setAttribute($localeAttribute);
         $localeValue->setOption($localeOption);
         $user->addValue($localeValue);
 
-        $scopeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
-        $scopeAttribute->setCode('catalogscope')->setLabel('catalogscope');
-        foreach (array_keys($this->channels) as $scopeCode) {
-            $option = $manager->createAttributeOption();
-            $optionValue = $manager->createAttributeOptionValue()->setValue($scopeCode);
-            $option->addOptionValue($optionValue);
-            $scopeAttribute->addOption($option);
-            if ($scope == $scopeCode) {
-                $scopeOption = $option;
+        $scopeAttribute = $manager->getAttributeRepository()->findOneBy(array('code' => 'catalogscope'));
+
+        if (!$scopeAttribute) {
+            $scopeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
+            $scopeAttribute->setCode('catalogscope')->setLabel('catalogscope');
+            foreach (array_keys($this->channels) as $scopeCode) {
+                $option = $manager->createAttributeOption();
+                $optionValue = $manager->createAttributeOptionValue()->setValue($scopeCode);
+                $option->addOptionValue($optionValue);
+                $scopeAttribute->addOption($option);
+                if ($scope == $scopeCode) {
+                    $scopeOption = $option;
+                }
             }
+            $this->persist($scopeAttribute);
+        } else {
+            $scopeOption = $scopeAttribute->getOptions()->filter(
+                function ($option) use ($scope) {
+                    return $option->getOptionValue()->getValue() === $scope;
+                }
+            )->first();
         }
-        $this->persist($scopeAttribute);
 
         $scopeValue = $manager->createFlexibleValue();
         $scopeValue->setAttribute($scopeAttribute);
@@ -1351,38 +1369,6 @@ class FixturesContext extends RawMinkContext
         $this->persist($api);
 
         return $user;
-    }
-
-    /**
-     * @param string $name
-     * @param Acl    $parent
-     * @param array  $roles
-     * @param string $class
-     * @param string $method
-     *
-     * @return Acl
-     */
-    private function createAcl($name, $parent = null, array $roles = array(), $class = null, $method = null)
-    {
-        $acl = new Acl();
-        $acl->setId($name);
-        $acl->setName($this->camelize($name));
-        $acl->setDescription($this->camelize($name));
-        if ($parent) {
-            $acl->setParent($parent);
-        }
-        if ($class) {
-            $acl->setClass($class);
-        }
-        if ($method) {
-            $acl->setMethod($method);
-        }
-        foreach ($roles as $role) {
-            $acl->addAccessRole($this->getRoleOrCreate($role));
-        }
-        $this->persist($acl);
-
-        return $acl;
     }
 
     /**

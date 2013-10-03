@@ -1,4 +1,9 @@
 excluded_tables:
+    - acl_classes
+    - acl_entries
+    - acl_object_identities
+    - acl_object_identity_ancestors
+    - acl_security_identities
     - oro_access_group
     - oro_access_role
     - oro_address

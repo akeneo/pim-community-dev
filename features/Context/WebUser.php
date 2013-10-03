@@ -1939,7 +1939,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $condition = $condition ?: <<<JS
         document.readyState == "complete"                   // Page is ready
             && !$.active                                    // No ajax request is active
-            && $("#page").css("display") == "block"         // Page is displayed (no yellow progress bar)
+            && $("#page").css("display") == "block"         // Page is displayed (no progress bar)
             && $(".loading-mask").css("display") == "none"; // Page is not loading (no black mask loading page)
 JS;
 
