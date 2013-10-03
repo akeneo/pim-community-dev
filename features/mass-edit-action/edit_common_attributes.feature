@@ -12,19 +12,19 @@ Feature: Edit common attributes of many products at once
       | label   |
       | General |
     And the following product attributes:
-      | product | label  | group   | translatable | scopable | type        | metric family | default metric unit |
-      | lamp    | Name   | General | yes          | no       | text        |               |                     |
-      | ceiling | Name   | General | yes          | no       | text        |               |                     |
-      | torch   | Name   | General | yes          | no       | text        |               |                     |
-      | lamp    | Colors | General | no           | no       | multiselect |               |                     |
-      | ceiling | Colors | General | no           | no       | multiselect |               |                     |
-      | torch   | Colors | General | no           | no       | multiselect |               |                     |
-      | lamp    | Price  | General | no           | no       | prices      |               |                     |
-      | torch   | Price  | General | no           | no       | prices      |               |                     |
-      | ceiling | Visual | General | no           | no       | image       |               |                     |
-      | torch   | Visual | General | no           | no       | image       |               |                     |
-      | lamp    | Weight | General | no           | no       | metric      | Weight        | KILOGRAM            |
-      | torch   | Weight | General | no           | no       | metric      | Weight        | KILOGRAM            |
+      | product | label  | group   | translatable | scopable | type        | metric family | default metric unit | locale | scope |
+      | lamp    | Name   | General | yes          | no       | text        |               |                     | en_US  |       |
+      | ceiling | Name   | General | yes          | no       | text        |               |                     | en_US  |       |
+      | torch   | Name   | General | yes          | no       | text        |               |                     | en_US  |       |
+      | lamp    | Colors | General | no           | no       | multiselect |               |                     |        |       |
+      | ceiling | Colors | General | no           | no       | multiselect |               |                     |        |       |
+      | torch   | Colors | General | no           | no       | multiselect |               |                     |        |       |
+      | lamp    | Price  | General | no           | no       | prices      |               |                     |        |       |
+      | torch   | Price  | General | no           | no       | prices      |               |                     |        |       |
+      | ceiling | Visual | General | no           | no       | image       |               |                     |        |       |
+      | torch   | Visual | General | no           | no       | image       |               |                     |        |       |
+      | lamp    | Weight | General | no           | no       | metric      | Weight        | KILOGRAM            |        |       |
+      | torch   | Weight | General | no           | no       | metric      | Weight        | KILOGRAM            |        |       |
     And I am logged in as "Julia"
 
   Scenario: Allow editing only common attributes

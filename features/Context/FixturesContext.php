@@ -377,9 +377,13 @@ class FixturesContext extends RawMinkContext
                     'scopable'     => false,
                     'scopable'     => 'no',
                     'translatable' => 'no',
+                    'locale'       => null,
+                    'scope'        => null
                 ),
                 $data
             );
+            $data['locale'] = ($data['locale'] === '') ? null : $data['locale'];
+            $data['scope'] = ($data['scope'] === '') ? null : $data['scope'];
 
             try {
                 $code = $this->camelize($data['label']);
@@ -418,7 +422,8 @@ class FixturesContext extends RawMinkContext
             if (!empty($data['product'])) {
                 $product = $this->getProduct($data['product']);
                 $value   = $this->createValue($attribute);
-
+                $value->setLocale($data['locale']);
+                $value->setScope($data['scope']);
                 $product->addValue($value);
                 $this->getProductManager()->save($product);
             }
@@ -835,9 +840,10 @@ class FixturesContext extends RawMinkContext
         $productValue = $product->getValue($attribute, $locale, $scope);
         if (!$productValue) {
             throw new \InvalidArgumentException(
-                sprintf('Could not find product value for attribute "%s" in locale "%s"', $attribute, $lang)
+                sprintf('Could not find product value for attribute "%s" in locale "%s"', $attribute, $locale)
             );
         }
+
         $this->getEntityManager()->refresh($productValue);
 
         return $productValue;
