@@ -170,7 +170,7 @@ class ExtensionsRequirements extends RequirementCollection
                 false,
                 $translator->trans('extensions.help', array('%extension%' => 'PDO'), 'requirements')
             ))
-           ->add(new Requirement(
+            ->add(new Requirement(
                 $translator->trans('extensions.gd', array(), 'requirements'),
                 null !== $gdVersion && $gdVersion >= 2.0,
                 '>=2.0',
