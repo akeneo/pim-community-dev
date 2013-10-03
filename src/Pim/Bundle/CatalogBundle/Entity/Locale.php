@@ -33,7 +33,7 @@ class Locale
     /**
      * @var string $code
      *
-     * @ORM\Column(name="code", type="string", length=10, unique=true)
+     * @ORM\Column(name="code", type="string", length=20, unique=true)
      */
     protected $code;
 
