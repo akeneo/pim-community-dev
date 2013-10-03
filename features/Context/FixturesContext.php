@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\Inflector;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
@@ -308,6 +310,20 @@ class FixturesContext extends RawMinkContext
 
         foreach ($channels as $channel) {
             $this->remove($channel);
+        }
+        $this->flush();
+    }
+
+    /**
+     * @Given /^there is no variant$/
+     */
+    public function thereIsNoVariant()
+    {
+        $em = $this->getEntityManager();
+        $variants = $em->getRepository('PimCatalogBundle:VariantGroup')->findAll();
+
+        foreach ($variants as $variant) {
+            $this->remove($variant);
         }
         $this->flush();
     }
@@ -694,6 +710,24 @@ class FixturesContext extends RawMinkContext
 
         $this->flush();
     }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following variants?:$/
+     */
+    public function theFollowingVariants(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $code = $data['code'];
+            $label = $data['label'];
+            $attributes = explode(', ', $data['attributes']);
+
+            $this->createVariant($code, $label, $attributes);
+        }
+    }
+
+
 
     /**
      * @Given /^there is no identifier attribute$/
@@ -1126,6 +1160,25 @@ class FixturesContext extends RawMinkContext
         }
 
         $this->persist($channel);
+    }
+
+    /**
+     * @param string $code
+     * @param string $label
+     * @param array $attributes
+     */
+    private function createVariant($code, $label, array $attributes)
+    {
+        $variant = new VariantGroup();
+        $variant->setCode($code);
+        $variant->setLocale('en_US')->setLabel($label); // TODO translation refactoring
+
+        foreach ($attributes as $attributeCode) {
+            $attribute = $this->getAttribute($attributeCode);
+            $variant->addAttribute($attribute);
+        }
+
+        $this->persist($variant);
     }
 
     /**

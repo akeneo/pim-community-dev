@@ -46,6 +46,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'user groups' => 'UserGroup index',
         'categories'  => 'Category tree creation',
         'home'        => 'Base index',
+        'variants'    => 'Variant index'
     );
 
     /**
