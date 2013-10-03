@@ -138,7 +138,7 @@ class ProductManager extends FlexibleManager
      */
     public function addAttributeToProduct(ProductInterface $product, ProductAttribute $attribute)
     {
-        $requiredValues = $this->getMissingValues($attribute);
+        $requiredValues = $this->getExpectedValues($attribute);
 
         foreach ($requiredValues as $value) {
             $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
