@@ -5,6 +5,7 @@ namespace Oro\Bundle\UserBundle\Tests\Functional;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\TestFrameworkBundle\Test\ToolsAPI;
 use Oro\Bundle\TestFrameworkBundle\Test\Client;
+use Symfony\Component\DomCrawler\Form;
 
 /**
  * @outputBuffering enabled
@@ -81,8 +82,7 @@ class ControllersTest extends WebTestCase
             'GET',
             $this->client->generate('oro_user_update', array('id' => $result['id']))
         );
-        /** @var Form $form */
-        $form = $crawler->selectButton('Save and Close')->form();
+
         $form = $crawler->selectButton('Save and Close')->form();
         $form['oro_user_user_form[enabled]'] = 1;
         $form['oro_user_user_form[username]'] = 'testUser1';
@@ -101,5 +101,43 @@ class ControllersTest extends WebTestCase
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
         $this->assertContains("User saved", $crawler->html());
+    }
+
+    public function testViewProfile()
+    {
+        $this->client->request('GET', $this->client->generate('oro_user_profile_view'));
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
+        $this->assertContains('John Doe - Users - Users Management - System', $result->getContent());
+    }
+
+    public function testUpdateProfile()
+    {
+        $crawler = $this->client->request('GET', $this->client->generate('oro_user_profile_update'));
+        ToolsAPI::assertJsonResponse($this->client->getResponse(), 200, 'text/html; charset=UTF-8');
+        $this->assertContains(
+            'John Doe - Edit - Users - Users Management - System',
+            $this->client->getResponse()->getContent()
+        );
+        /** @var Form $form */
+        $form = $crawler->selectButton('Save and Close')->form();
+        $form['oro_user_user_form[birthday]'] = '01/01/1999/';
+
+        $this->client->followRedirects(true);
+        $crawler = $this->client->submit($form);
+
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
+        $this->assertContains("User saved", $crawler->html());
+
+        $crawler = $this->client->request('GET', $this->client->generate('oro_user_profile_update'));
+        ToolsAPI::assertJsonResponse($this->client->getResponse(), 200, 'text/html; charset=UTF-8');
+        $this->assertContains(
+            'John Doe - Edit - Users - Users Management - System',
+            $this->client->getResponse()->getContent()
+        );
+        /** @var Form $form */
+        $form = $crawler->selectButton('Save and Close')->form();
+        $this->assertEquals('1/1/99', $form['oro_user_user_form[birthday]']->getValue());
     }
 }

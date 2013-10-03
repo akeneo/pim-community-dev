@@ -97,8 +97,9 @@ class ConnectorRegistry
         /** @var Job $job */
         $job = $this->jobs[$jobType][$jobConnector][$jobAlias];
 
-        $step = $this->stepFactory->createStep($stepTitle, $stepReader, $stepProcessor, $stepWriter);
-        $job->addStep($stepTitle, $step);
+        $job->addStep(
+            $this->stepFactory->createStep($stepTitle, $stepReader, $stepProcessor, $stepWriter)
+        );
     }
 
     /**
