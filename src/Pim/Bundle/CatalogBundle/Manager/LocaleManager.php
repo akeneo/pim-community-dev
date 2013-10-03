@@ -29,7 +29,7 @@ class LocaleManager
     /**
      * @var ManagerInterface
      */
-    protected $ACLmanager;
+    protected $aclManager;
     
     /**
      * @var string
@@ -50,12 +50,12 @@ class LocaleManager
     public function __construct(
         ObjectManager $objectManager,
         SecurityContextInterface $securityContext,
-        ManagerInterface $ACLManager,
+        ManagerInterface $aclManager,
         $defaultLocale
     ) {
         $this->objectManager = $objectManager;
         $this->securityContext = $securityContext;
-        $this->ACLmanager = $ACLManager;
+        $this->aclManager = $aclManager;
         $this->defaultLocale = $defaultLocale;
     }
 
@@ -160,7 +160,7 @@ class LocaleManager
     {
         $locales = array();
         foreach ($this->getActiveLocales() as $code => $locale) {
-            if ($this->ACLmanager->isResourceGranted(sprintf('pim_catalog_locale_%s', $locale->getCode()))) {
+            if ($this->aclManager->isResourceGranted(sprintf('pim_catalog_locale_%s', $locale->getCode()))) {
                 $locales[] = $locale;
             }
         }

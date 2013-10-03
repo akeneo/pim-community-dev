@@ -34,7 +34,7 @@ services:
             - [ setCategoryManager, [@pim_catalog.manager.category] ]
             - [ setDatagridBuilder, [@pim_grid.builder.datagrid] ]
             - [ setLocaleManager, [@pim_catalog.manager.locale] ]
-            - [ setACLManager, [@oro_user.acl_manager] ]
+            - [ setAclManager, [@oro_user.acl_manager] ]
 
     pim_catalog.datagrid.manager.history:
         class: Pim\Bundle\CatalogBundle\Datagrid\AuditDatagridManager

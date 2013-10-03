@@ -22,7 +22,7 @@ class MassActionPass implements CompilerPassInterface
         }
         $container->getDefinition('oro_grid.mass_action.dispatcher')
             ->addMethodCall(
-                'setACLManager',
+                'setAclManager',
                 array(new Reference('oro_user.acl_manager'))
         );
     }

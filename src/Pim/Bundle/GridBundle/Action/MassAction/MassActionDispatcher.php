@@ -6,7 +6,7 @@ use Oro\Bundle\GridBundle\Action\MassAction\MassActionMediator;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionResponseInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionDispatcher as OroMassActionDispatcher;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
-use Oro\Bundle\UserBundle\Acl\ManagerInterface as ACLManagerInterface;
+use Oro\Bundle\UserBundle\Acl\ManagerInterface as AclManagerInterface;
 
 use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
 
@@ -16,18 +16,18 @@ use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
 class MassActionDispatcher extends OroMassActionDispatcher
 {
     /**
-     * @var ACLManagerInterface
+     * @var AclManagerInterface
      */
-    protected $ACLManager;
+    protected $aclManager;
 
     /**
      * Set the ACL Manager
      * 
-     * @param ACLManagerInterface $ACLManager
+     * @param AclManagerInterface $aclManager
      */
-    public function setACLManager(ACLManagerInterface $ACLManager)
+    public function setAclManager(AclManagerInterface $aclManager)
     {
-        $this->ACLManager = $ACLManager;
+        $this->aclManager = $aclManager;
     }
 
     /**
@@ -64,7 +64,7 @@ class MassActionDispatcher extends OroMassActionDispatcher
         $datagridManager = $this->managerRegistry->getDatagridManager($datagridName);
 
         if ($datagridManager instanceof ProductDatagridManager) {
-            if (!$this->ACLManager->isResourceGranted('pim_catalog_product_remove')) {
+            if (!$this->aclManager->isResourceGranted('pim_catalog_product_remove')) {
                 throw new \RuntimeException('Mass delete is not allowed by ACLs');
             }
             $datagridManager->setFilterTreeId(isset($data['treeId']) ? $data['treeId'] : 0);

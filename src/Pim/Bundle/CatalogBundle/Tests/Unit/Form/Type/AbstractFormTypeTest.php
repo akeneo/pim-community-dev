@@ -101,7 +101,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
     {
         $objectManager = $this->getMockForAbstractClass('\Doctrine\Common\Persistence\ObjectManager');
         $securityContext = $this->getSecurityContextMock();
-        $aclManager = $this->getACLManagerMock();
+        $aclManager = $this->getAclManagerMock();
 
         // create mock builder for locale manager and redefine constructor to set object manager
         $mockBuilder = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
@@ -206,7 +206,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
      * 
      * @return type
      */
-    protected function getACLManagerMock()
+    protected function getAclManagerMock()
     {
         return $this->getMock('Oro\Bundle\UserBundle\Acl\ManagerInterface');
     }

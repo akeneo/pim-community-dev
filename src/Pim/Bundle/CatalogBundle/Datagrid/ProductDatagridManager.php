@@ -18,7 +18,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
-use Oro\Bundle\UserBundle\Acl\ManagerInterface as ACLManagerInterface;
+use Oro\Bundle\UserBundle\Acl\ManagerInterface as AclManagerInterface;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
@@ -61,9 +61,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected $localeManager;
     
     /**
-     * @var ACLManagerInterface
+     * @var AclManagerInterface
      */
-    protected $ACLManager;
+    protected $aclManager;
 
     /**
      * Filter by tree id, 0 means not tree selected
@@ -111,11 +111,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
     /**
      * Set the ACL Manager
      * 
-     * @param ACLManagerInterface $ACLManager
+     * @param AclManagerInterface $aclManager
      */
-    public function setACLManager(ACLManagerInterface $ACLManager)
+    public function setAclManager(AclManagerInterface $aclManager)
     {
-        $this->ACLManager = $ACLManager;
+        $this->aclManager = $aclManager;
     }
 
     /**
@@ -389,7 +389,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected function getRowActions()
     {
         $actions = array();
-        if ($this->ACLManager->isResourceGranted('pim_catalog_product_edit')) {
+        if ($this->aclManager->isResourceGranted('pim_catalog_product_edit')) {
             $editAction = array(
                 'name'         => 'edit',
                 'type'         => ActionInterface::TYPE_REDIRECT,
@@ -406,7 +406,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             $clickAction['options']['runOnRowClick'] = true;
             $actions[] = $editAction;
             $actions[] = $clickAction;
-            if ($this->ACLManager->isResourceGranted('pim_catalog_product_categories_view')) {
+            if ($this->aclManager->isResourceGranted('pim_catalog_product_categories_view')) {
                 $actions[] = array(
                     'name'         => 'edit_categories',
                     'type'         => ActionInterface::TYPE_TAB_REDIRECT,
@@ -422,7 +422,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             }
         }
 
-        if ($this->ACLManager->isResourceGranted('pim_catalog_product_remove')) {
+        if ($this->aclManager->isResourceGranted('pim_catalog_product_remove')) {
             $actions[] = array(
                 'name'         => 'delete',
                 'type'         => ActionInterface::TYPE_DELETE,
@@ -443,7 +443,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected function getMassActions()
     {
         $actions = array();
-        if ($this->ACLManager->isResourceGranted('pim_catalog_product_remove')) {
+        if ($this->aclManager->isResourceGranted('pim_catalog_product_remove')) {
             $actions[] = new DeleteMassAction(
                 array(
                     'name'  => 'delete',
@@ -452,7 +452,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 )
             );
         }
-        if ($this->ACLManager->isResourceGranted('pim_catalog_product_edit')) {
+        if ($this->aclManager->isResourceGranted('pim_catalog_product_edit')) {
             $actions[] = new RedirectMassAction(
                 array(
                     'name'  => 'redirect',
