@@ -71,9 +71,9 @@ class ProductAttributeRepository extends AttributeRepository
      * An axis define a variation of a variant group
      * Axes are attributes with options, not localizable and not scopable
      *
-     * @return ProductAttribute[]
+     * @return \Doctrine\ORM\QueryBuilder
      */
-    public function findAxisQB()
+    public function findAllAxisQB()
     {
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -84,5 +84,19 @@ class ProductAttributeRepository extends AttributeRepository
             ->andWhere($qb->expr()->neq('a.translatable', 1));
 
         return $qb;
+    }
+
+    /**
+     * Find all axis
+     *
+     * @see findAllAxisQB
+     *
+     * @return array
+     */
+    public function findAllAxis()
+    {
+        $qb = $this->findAllAxisQB();
+
+        return $qb->getQuery()->getResult();
     }
 }

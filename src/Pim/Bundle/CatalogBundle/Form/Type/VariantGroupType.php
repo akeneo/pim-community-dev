@@ -42,7 +42,7 @@ class VariantGroupType extends AbstractType
                     'multiple' => true,
                     'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
                     'query_builder' => function (ProductAttributeRepository $repository) {
-                        return $repository->findAxisQB();
+                        return $repository->findAllAxisQB();
                     }
                 )
             );
