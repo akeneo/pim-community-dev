@@ -526,11 +526,10 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->addSelect('category');
 
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
+        $this->prepareQueryForCategory($proxyQuery, $rootAlias);
 
         $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
         $proxyQuery->setParameter('channelCode', $this->flexibleManager->getScope());
-
-        $this->prepareQueryForCategory($proxyQuery, $rootAlias);
     }
 
     /**
@@ -559,7 +558,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 $proxyQuery->andWhere($expression);
             }
         }
-
     }
 
     /**
