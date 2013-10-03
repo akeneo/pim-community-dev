@@ -90,6 +90,16 @@ class VariantGroup implements TranslatableInterface
     }
 
     /**
+     * Get the id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * Returns the label of the variant group
      *
      * @return string
