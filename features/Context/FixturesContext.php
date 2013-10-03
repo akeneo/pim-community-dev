@@ -858,7 +858,9 @@ class FixturesContext extends RawMinkContext
      */
     public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
     {
+        $this->getEntityManager()->clear();
         $product = $this->getProduct($identifier);
+        $this->getEntityManager()->refresh($product);
 
         foreach ($table->getRowsHash() as $code => $value) {
             assertEquals($value, (string) $product->getValue($code));

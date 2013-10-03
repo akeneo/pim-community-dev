@@ -96,3 +96,32 @@ Feature: Execute a job
     And the product "SKU-001" should have the following values:
       | name        | Donec                                                             |
       | description | dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est |
+
+  Scenario: Successfully update an existing product
+    Given a "SKU-001" product
+    Given the following product values:
+      | product | attribute | value  |
+      | SKU-001 | name      | FooBar |
+    Given the following file to import:
+      """
+      sku;family;categories;name;description
+      SKU-001;Bag;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      """
+    And the following job "acme_product_import" configuration:
+      | element   | property          | value                |
+      | reader    | filePath          | {{ file to import }} |
+      | reader    | uploadAllowed     | no                   |
+      | reader    | delimiter         | ;                    |
+      | reader    | enclosure         | "                    |
+      | reader    | escape            | \                    |
+      | processor | enabled           | yes                  |
+      | processor | categories column | categories           |
+      | processor | family column     | families             |
+      | processor | channel           | ecommerce            |
+    And I am logged in as "Julia"
+    When I am on the "acme_product_import" import job page
+    And I launch the import job
+    Then there should be 1 product
+    And the product "SKU-001" should have the following values:
+      | name        | Donec                                                             |
+      | description | dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est |
