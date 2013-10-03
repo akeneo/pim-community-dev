@@ -44,7 +44,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      * Locale code
      * @var string $locale
      *
-     * @ORM\Column(name="locale_code", type="string", length=5, nullable=true)
+     * @ORM\Column(name="locale_code", type="string", length=20, nullable=true)
      */
     protected $locale;
 
