@@ -27,7 +27,7 @@ class MailerType extends AbstractType
                     'constraints'   => array(
                         new Assert\NotBlank(),
                     ),
-//                   'client_validation' => false,
+                   'client_validation' => false,
                 )
             )
             ->add(

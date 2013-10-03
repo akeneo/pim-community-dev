@@ -21,7 +21,7 @@ class SystemType extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Locale(),
                     ),
-//                   'client_validation'  => false,
+                   'client_validation'  => false,
                 )
             )
             ->add(

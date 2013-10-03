@@ -8,6 +8,10 @@ class ConfigureStep extends AbstractStep
 {
     public function displayAction(ProcessContextInterface $context)
     {
+        if ($this->container->hasParameter('installed') && $this->container->getParameter('installed')) {
+            return $this->redirect($this->getRequest()->getBasePath() . '/install.php');
+        }
+
         return $this->render(
             'OroInstallerBundle:Process/Step:configure.html.twig',
             array(
