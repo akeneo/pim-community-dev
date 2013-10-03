@@ -7,6 +7,7 @@ Table of Contents
  - [Adding Data Converter](#adding-data-converter)
  - [Export Processor](#export-processor)
  - [Import Strategy](#import-strategy)
+ - [Import Processor](#import-processor)
 
 Adding Normalizers
 ------------------
@@ -146,8 +147,8 @@ services:
             - { name: oro_importexport.processor, type: export, entity: %orocrm_contact.group.entity.class%, alias: orocrm_contact_group }
 ```
 
-There is a controller in OroImportExportBundle that can be utilized to request export CSV file
-(see route **oro_importexport_export_instant**).
+There is a controller in OroImportExportBundle that can be utilized to request export CSV file. See controller action
+OroImportExportBundle:ImportExport:instantExport (route **oro_importexport_export_instant**).
 
 Now if you'll send a request to URL **/export/instant/orocrm_contact_group** you will receive a response with URL
 of result exported file and some additional information:
