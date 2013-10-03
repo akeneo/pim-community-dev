@@ -17,6 +17,9 @@ use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
+/**
+ * The configuration provider can be used to manage configuration data inside particular configuration scope.
+ */
 class ConfigProvider implements ConfigProviderInterface
 {
     /**
@@ -121,7 +124,7 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * Gets configuration data for an object (class or field) is represented by the given id.
+     * Gets configuration data for an object (class or field) which is represented by the given id.
      *
      * @param ConfigIdInterface $configId
      * @return ConfigInterface
@@ -133,7 +136,8 @@ class ConfigProvider implements ConfigProviderInterface
 
     /**
      * Creates an instance if Config class which stores configuration data for an object
-     * is represented by the given id and initializes it with the given attributes.
+     * which is represented by the given id.
+     * The returned object is initialized with data specified $values argument.
      *
      * @param  ConfigIdInterface $configId
      * @param  array             $values An associative array contains configuration properties
@@ -164,8 +168,8 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * Gets a list of ids for all classes (if $className is not specified) or all fields for
-     * the given class, which can be managed by this provider.
+     * Gets a list of ids for all classes (if $className is not specified) or all fields of
+     * the given $className, which can be managed by this provider.
      *
      * @param string|null   $className
      * @return array|ConfigIdInterface[]
@@ -180,8 +184,8 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * Gets configuration data for all classes (if $className is not specified) or all fields for
-     * the given class.
+     * Gets configuration data for all classes (if $className is not specified) or all fields of
+     * the given $className.
      *
      * @param string|null   $className
      * @return array|ConfigInterface[]
@@ -199,7 +203,7 @@ class ConfigProvider implements ConfigProviderInterface
 
     /**
      * Applies the callback to configuration data of all classes (if $className is not specified)
-     * or all fields for the given class.
+     * or all fields of the given $className.
      *
      * @param callable      $callback The callback function to run for configuration data for each object
      * @param string|null   $className
@@ -212,7 +216,7 @@ class ConfigProvider implements ConfigProviderInterface
 
     /**
      * Filters configuration data of all classes (if $className is not specified)
-     * or all fields for the given class using the given callback function.
+     * or all fields of the given $className using the given callback function.
      *
      * @param callable      $callback The callback function to use
      * @param string|null   $className
@@ -295,7 +299,7 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
-     * Gets the name of the configuration scope this provider is responsible for.
+     * Gets the name of the scope this provider works with.
      *
      * @return string
      */

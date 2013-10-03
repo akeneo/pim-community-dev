@@ -3,8 +3,8 @@ EntityConfigBundle
 - Allows to add metadata (configuration) to any entity class
 - Provides functionality to manage this metadata
 
-Get Started
------------
+Getting Started
+---------------
 To show how metadata can be added to an entity lets add the following YAML file (this file must be located in [BundleName]\Resources\config\entity_config.yml):
 ``` yaml
 oro_entity_config:
@@ -76,52 +76,23 @@ oro_entity_config:
                         sortable:           true                 # allows an administrator to sort rows clicks on 'Demo Attr' column
                     form:
                         type:               text                 # sets the attribute type
-                        block:              entity               # specifies in which block on the form this attribute should be displayed
                         options:
+                            block:          entity               # specifies in which block on the form this attribute should be displayed
                             label:          'Demo Attr'          # sets the the label name
 ```
 Now you may go to System > Entities. The 'Demo Attr' column should be displayed in the grid. Click Edit on any entity to go to edit entity form. 'Demo Attr' field should be displayed there.
 
-Config Parts
+Implementation
 ------------
-- Config - it is key-value storage
-- ConfigId - resource Id it is identifier for some resources(Entity, Field)
-- ConfigManager - config manager
-- ConfigProvider - get config form configManger filtered by scope add has helpful function to manage
 
-Start working
--------------
-add entity_config.yml file  to the "Resource" folder of bundle
-```
-oro_entity_config:
-    extend:                                 #scope name
-        entity:                             #entities property
-                owner:
-                    options:
-                        priority:           40
-                        internal:           true
-                        default_value:      'System'
-                    grid:
-                        type:               string
-                        label:              'Type'
-                        filter_type:        oro_grid_orm_string
-                        required:           true
-                        sortable:           true
-                        filterable:         true
-                        show_filter:        true
-                    form:
-                        type:               text
-                        block:              entity
-                        options:
-                            read_only:      true
-                            required:       false
-                            label:          'Type'
-```    
+### ConfigId
+Allows to identify each configurable object. The entity id is represented by EntityConfigId class. The field id is represented by FieldConfigId class.
 
-Use in Code
------------
-You can manage your all configuration data in some scope through ConfigProvider.
-The configuration provider it is a service with name "oro_entity_config.provider" + scope
+### Config
+The aim of this class is to store configuration data for each configurable object.
+
+### ConfigProvider
+The configuration provider can be used to manage configuration data inside particular configuration scope. Each configuration provider is a service named **oro_entity_config.provider.{scope}**, where **{scope}** is the name of the configuration scope a provider works with.
 For example the following code gets the configuration provider for 'extend' scope.
 ``` php
 <?php
@@ -130,41 +101,11 @@ For example the following code gets the configuration provider for 'extend' scop
 $configProvider = $this->get('oro_entity_config.provider.extend');
 ```
 
-Provider function
------------------
-- isConfigurable($className)
-- getId($className, $fieldName = null)
-- hasConfig($className, $fieldName = null)
-- getConfig($className, $fieldName = null)
-- getConfigById($configid)
-- createConfig($configId, array $values)
-- getIds($className = null)
-- getConfigs($className = null)
-- map(\Closure $map, $className = null)
-- filter(\Closure $map, $className = null)
-- getClassName($entity/PersistColection/$className)
-- clearCache($className, $fieldName = null)
-- persist($config)
-- merge($config)
-- flush()
+### ConfigManager
+This class is the central access point to entity configuration functionality. It allows to load/save configuration data from/into the database, manage configuration data, manage configuration data cache, retrieve the configuration provider for particular scope, and other.
 
-Config function
------------------
-- getId()
-- get($code, $strict = false)
-- set($code, $value)
-- has($code)
-- is($code)
-- all(\Closure $filter = null)
-- public function setValues($values)
-
-ConfigManager function
-----------------------
-- getConfigChangeSet($config)
-
-Events
-------
-- Events::NEW_ENTITY_CONFIG_MODEL
-- Events::NEW_FIELD_CONFIG_MODEL
-- Events::PRE_PERSIST_CONFIG
+### Events
+ - Events::NEW_ENTITY_CONFIG_MODEL
+ - Events::NEW_FIELD_CONFIG_MODEL
+ - Events::PRE_PERSIST_CONFIG
 
