@@ -71,7 +71,7 @@ class VariantGroup implements TranslatableInterface
      * @var \Doctrine\Common\Collections\ArrayCollection $translations
      *
      * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\FamilyTranslation",
+     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\VariantGroupTranslation",
      *     mappedBy="foreignKey",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
