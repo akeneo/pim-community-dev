@@ -86,7 +86,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
      * Test related method
      * @return StepExecution
      */
-    private function getStepExecutionMock()
+    protected function getStepExecutionMock()
     {
         return $this
             ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')

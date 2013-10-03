@@ -4,6 +4,28 @@ Feature: Execute a job
   As Julia
   I need to be able to execute a valid export
 
+  Background:
+    Given the following families:
+      | code |
+      | Bag  |
+      | Hat  |
+    And the following categories:
+      | code    | label   | parent |
+      | master  | Master  |        |
+      | leather | Leather | master |
+      | silk    | Silk    | master |
+      | coton   | Coton   | master |
+      | travel  | Travel  | master |
+      | men     | Men     | master |
+      | women   | Women   | master |
+    And the following attributes:
+      | code        | label       | type                   |
+      | name        | Name        | pim_catalog_text       |
+      | description | Description | pim_catalog_textarea   |
+    And the following job:
+      | connector            | alias          | code                | label                       | type   |
+      | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
+
   Scenario: Fail to see the import button of a job with validation errors
     Given the following job:
       | connector            | alias          | code                | label                       | type   |
@@ -27,26 +49,6 @@ Feature: Execute a job
       SKU-009;Hat;;porttitor;sagittis. Duis gravida. Praesent eu nulla at sem molestie sodales.
       SKU-010;Bag;men,silk;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
       """
-    And the following families:
-      | code |
-      | Bag  |
-      | Hat  |
-    And the following categories:
-      | code    | label   | parent |
-      | master  | Master  |        |
-      | leather | Leather | master |
-      | silk    | Silk    | master |
-      | coton   | Coton   | master |
-      | travel  | Travel  | master |
-      | men     | Men     | master |
-      | women   | Women   | master |
-    And the following attributes:
-      | code        | label       | type                   |
-      | name        | Name        | pim_catalog_text       |
-      | description | Description | pim_catalog_textarea   |
-    And the following job:
-      | connector            | alias          | code                | label                       | type   |
-      | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
     And the following job "acme_product_import" configuration:
       | element   | property          | value                |
       | reader    | filePath          | {{ file to import }} |
@@ -69,4 +71,28 @@ Feature: Execute a job
     And the product "SKU-002" should have the following value:
       | description | Pellentesque habitant morbi tristique senectus et netus et malesuada fames |
 
-  Scenario: Fail to import a csv file of products with duplicate SKU
+  Scenario: Successfully ignore duplicate unique data
+    Given the following file to import:
+      """
+      sku;family;categories;name;description
+      SKU-001;Bag;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      SKU-001;Hat;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+      """
+    And the following job "acme_product_import" configuration:
+      | element   | property          | value                |
+      | reader    | filePath          | {{ file to import }} |
+      | reader    | uploadAllowed     | no                   |
+      | reader    | delimiter         | ;                    |
+      | reader    | enclosure         | "                    |
+      | reader    | escape            | \                    |
+      | processor | enabled           | yes                  |
+      | processor | categories column | categories           |
+      | processor | family column     | families             |
+      | processor | channel           | ecommerce            |
+    And I am logged in as "Julia"
+    When I am on the "acme_product_import" import job page
+    And I launch the import job
+    Then there should be 1 product
+    And the product "SKU-001" should have the following values:
+      | name        | Donec                                                             |
+      | description | dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est |

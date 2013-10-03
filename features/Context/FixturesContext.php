@@ -585,15 +585,20 @@ class FixturesContext extends RawMinkContext
     public function theFollowingAttributes(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
+            $data = array_merge(
+                array(
+                    'scopable'    => 'no',
+                    'localizable' => 'no',
+                    'group'       => null,
+                ),
+                $data
+            );
+
             $attribute = $this->getProductManager()->createAttribute($data['type']);
 
             $attribute->setCode($data['code']);
-
-            $scopable = (isset($data['scopable'])) ? $data['scopable'] === 'yes' : false;
-            $attribute->setScopable($scopable);
-
-            $localizable = (isset($data['localizable'])) ? $data['localizable'] === 'yes' : false;
-            $attribute->setTranslatable($localizable);
+            $attribute->setScopable($data['scopable'] === 'yes');
+            $attribute->setTranslatable($data['localizable'] === 'yes');
 
             $attribute->setLocale('en_US');
             $attribute->setLabel($data['label']);
@@ -839,7 +844,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Then /^there should be (\d+) products$/
+     * @Then /^there should be (\d+) products?$/
      */
     public function thereShouldBeProducts($expectedTotal)
     {
@@ -849,9 +854,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^the product "([^"]*)" should have the following value:$/
+     * @Given /^the product "([^"]*)" should have the following values?:$/
      */
-    public function theProductShouldHaveTheFollowingValue($identifier, TableNode $table)
+    public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
     {
         $product = $this->getProduct($identifier);
 
@@ -1057,7 +1062,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return ProductAttribute
      */
-    private function createAttribute($label, $translatable = true, $type = 'text', $showInGrid = false)
+    private function createAttribute($label, $translatable = true, $type = 'text', $showInGrid = false, $unique = false, $required = false)
     {
         $attribute = $this->getProductManager()->createAttribute($this->getAttributeType($type));
         $attribute->setCode($this->camelize($label));
@@ -1065,6 +1070,10 @@ class FixturesContext extends RawMinkContext
         $attribute->setTranslatable($translatable);
         $attribute->setUseableAsGridColumn($showInGrid);
         $attribute->setUseableAsGridFilter($showInGrid);
+        if ('identifier' === $type) {
+            $attribute->setUnique(true);
+            $attribute->setRequired(true);
+        }
         $this->persist($attribute);
 
         return $attribute;
