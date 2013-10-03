@@ -2,19 +2,46 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Tests\Unit\Form\Type;
 
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyType;
+use Symfony\Component\Form\Test\TypeTestCase;
 
-class UniqueKeyTypeTest extends \PHPUnit_Framework_TestCase
+class UniqueKeyTypeTest extends TypeTestCase
 {
     protected $type;
 
     protected function setUp()
     {
-        $this->type = new UniqueKeyType(array());
+        parent::setUp();
+
+        $fields = array(
+            new FieldConfigId('Oro\Bundle\UserBundle\Entity\User', 'entity', 'firstName'),
+            new FieldConfigId('Oro\Bundle\UserBundle\Entity\User', 'entity', 'lastName'),
+            new FieldConfigId('Oro\Bundle\UserBundle\Entity\User', 'entity', 'email'),
+        );
+
+        $this->type = new UniqueKeyType($fields);
     }
 
-    public function test()
+    public function testType()
     {
+        $formData = array(
+            'name' => 'test',
+            'key'  => array('firstName', 'lastName', 'email')
+        );
+
+        $form = $this->factory->create($this->type);
+        $form->submit($formData);
+
+        //var_dump($form->get('name')->getData());
+        print_r(get_class_methods($form->get('key')));
+
+
+        $this->assertTrue($form->isSynchronized());
+        $this->assertTrue($form->isValid());
+
+        //$this->assertEquals($formData, $form->getData());
+
     }
 
     public function testNames()
