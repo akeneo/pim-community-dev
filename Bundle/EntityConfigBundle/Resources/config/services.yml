@@ -1,5 +1,6 @@
 parameters:
     oro_entity_config.config_manager.class:                     Oro\Bundle\EntityConfigBundle\Config\ConfigManager
+    oro_entity_config.config_model_manager.class:               Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager
     oro_entity_config.cache.cache.class:                        Oro\Bundle\EntityConfigBundle\Config\ConfigCache
     oro_entity_config.provider_bag.class:                       Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderBag
 
@@ -22,10 +23,16 @@ services:
             - @oro_entity_config.metadata.annotation_metadata_factory
             - @event_dispatcher
             - @oro_entity_config.link.provider_bag
-            - @oro_entity_config.link.entity_manager
+            - @oro_entity_config.config_model_manager
             - @oro_entity_config.link.security_context
         calls:
             - [setCache, [@oro_entity_config.cache.cache]]
+
+    oro_entity_config.config_model_manager:
+        public: false
+        class: %oro_entity_config.config_model_manager.class%
+        arguments:
+            - @oro_entity_config.link.entity_manager
 
     oro_entity_config.provider_bag:
         class:                                                  %oro_entity_config.provider_bag.class%
