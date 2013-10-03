@@ -1,0 +1,17 @@
+Pim\Bundle\CatalogBundle\Entity\VariantGroup:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Variant group code may caontain only letters, numbers and underscores
+            - Length:
+                max: 50
+
+Pim\Bundle\CatalogBundle\Entity\VariantGroupTranslation:
+    properties:
+        label:
+            - Length:
+                max: 100
