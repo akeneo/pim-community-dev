@@ -9,6 +9,8 @@ Pim\Bundle\CatalogBundle\Entity\VariantGroup:
                 message: Variant group code may caontain only letters, numbers and underscores
             - Length:
                 max: 50
+        attributes:
+            - Count: { min: 1 }
 
 Pim\Bundle\CatalogBundle\Entity\VariantGroupTranslation:
     properties:
