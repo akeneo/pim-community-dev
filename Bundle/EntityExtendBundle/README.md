@@ -1,7 +1,40 @@
 EntityExtendBundle
 ==================
-- Allows to add an additional fields into existing entities through UI
-- Allows to add new entities through UI
+- Allows to add an additional fields into existing entities through UI or using configuration files
+- Allows to add new entities through UI or using configuration files
+
+UI
+--
+To manage existing entities or create new ones through UI go to System > Entities section. On this page you can see a list of all entities, but please note that you can modify only entities marked as extendable. See IS EXTEND column to see whether an entity can be extended or not. To create a new entity click **Create entity** button at the top right corner of the page, fill the form and click **Save And Close**. Next add necessary fields to you entity clicking on **Create field** button. To add new field to existing entity go to view page of this entity and click **Create field** button. When all changes are made do not forget to click Update schema to apply your changes.
+
+Config files
+------------
+The following example shows how existing entity can be extended or new one can be created.
+``` yaml
+# add field to Contact entity
+OroCRM\Bundle\ContactBundle\Entity\Contact:
+    fields:
+        my_field:
+            type:                   string
+
+# create new entity
+Country:
+    is_extend:                      true                    # set true to allow to add other fields in other bundles
+    configs:                                                # set default values for metadata
+        entity:
+            label:                  Country
+            plural_label:           Countries
+    fields:                                                 # declare fields
+        id:
+            type:                   int
+        name:
+            type:                   string
+            configs:
+                entity:
+                    label:          Name
+            options:
+                length:             200
+```
 
 Initializing entity extend functionality
 ----------------------------------------
