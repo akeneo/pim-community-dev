@@ -11,7 +11,7 @@
 
     <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat"/>
 
-    <target name="build-behat-pr" depends="prepare,composer,vendors,setupdb,dumpassets,behat-pr"/>
+    <target name="build-behat-pr" depends="prepare,composer,vendors,install-all-behat,behat-pr"/>
 
     <target name="build-behat-coverage" depends="prepare,composer,vendors,setupdb,dumpassets,behat-coverage"/>
 
@@ -262,6 +262,13 @@
           <arg value="-n" />
           <arg value="--complete" />
           <arg value="--force" />
+        </exec>
+    </target>
+
+    <target name="install-all-behat" description="Setup db and install assets for Behat">
+        <exec executable="./install.sh">
+          <arg value="all" />
+          <arg value="behat" />
         </exec>
     </target>
 
