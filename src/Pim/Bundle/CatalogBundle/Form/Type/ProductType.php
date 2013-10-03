@@ -48,16 +48,31 @@ class ProductType extends FlexibleType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($options['enable_state']) {
+            $builder
+                ->add(
+                    'enabled',
+                    'checkbox',
+                    array(
+                        'attr' => array(
+                            'data-on-label'  => 'Enabled',
+                            'data-off-label' => 'Disabled',
+                            'size'           => null
+                        )
+                    )
+                );
+        }
         parent::buildForm($builder, $options);
-
-        $builder->add(
-            'family',
-            'entity',
-            array(
-                'class'       => 'PimCatalogBundle:Family',
-                'empty_value' => ''
-            )
-        );
+        if ($options['enable_family']) {
+            $builder->add(
+                'family',
+                'entity',
+                array(
+                    'class'       => 'PimCatalogBundle:Family',
+                    'empty_value' => ''
+                )
+            );
+        }
 
         if ($options['import_mode']) {
             $builder
@@ -83,26 +98,6 @@ class ProductType extends FlexibleType
         $view->vars['groups'] = $this->productFormView->getView();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addEntityFields(FormBuilderInterface $builder)
-    {
-        parent::addEntityFields($builder);
-
-        $builder
-            ->add(
-                'enabled',
-                'checkbox',
-                array(
-                    'attr' => array(
-                        'data-on-label'  => 'Enabled',
-                        'data-off-label' => 'Disabled',
-                        'size'           => null
-                    )
-                )
-            );
-    }
 
     /**
      * Add entity fieldsto form builder
@@ -135,6 +130,8 @@ class ProductType extends FlexibleType
             array(
                 'currentLocale' => null,
                 'import_mode'   => false,
+                'enable_family' => false,
+                'enable_state'  => false
             )
         );
     }

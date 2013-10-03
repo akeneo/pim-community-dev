@@ -80,11 +80,6 @@ class ProductController extends AbstractDoctrineController
     private $productCreateHandler;
 
     /**
-     * @var Form
-     */
-    private $productCreateForm;
-
-    /**
      * @var CompletenessCalculator
      */
     private $calculator;
@@ -133,7 +128,6 @@ class ProductController extends AbstractDoctrineController
      * @param GridRenderer             $gridRenderer
      * @param DatagridWorkerInterface  $datagridWorker
      * @param ProductCreateHandler     $productCreateHandler
-     * @param Form                     $productCreateForm
      * @param CompletenessCalculator   $calculator
      * @param ProductManager           $productManager
      * @param CategoryManager          $categoryManager
@@ -153,7 +147,6 @@ class ProductController extends AbstractDoctrineController
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $datagridWorker,
         ProductCreateHandler $productCreateHandler,
-        Form $productCreateForm,
         CompletenessCalculator $calculator,
         ProductManager $productManager,
         CategoryManager $categoryManager,
@@ -175,7 +168,6 @@ class ProductController extends AbstractDoctrineController
         $this->gridRenderer         = $gridRenderer;
         $this->datagridWorker       = $datagridWorker;
         $this->productCreateHandler = $productCreateHandler;
-        $this->productCreateForm    = $productCreateForm;
         $this->calculator           = $calculator;
         $this->productManager       = $productManager;
         $this->categoryManager      = $categoryManager;
@@ -348,7 +340,11 @@ class ProductController extends AbstractDoctrineController
         }
 
         return array(
-            'form'       => $this->productCreateForm->createView(),
+            'form' => $this->createForm(
+                'pim_product_create',
+                $entity,
+                $this->getFormCreateOptions($entity)
+            )->createView(),
             'dataLocale' => $this->getDataLocale()
         );
     }
@@ -390,12 +386,8 @@ class ProductController extends AbstractDoctrineController
         $form     = $this->createForm(
             'pim_product',
             $product,
-            array('currentLocale' => $this->getDataLocale())
+            $this->getFormOptions($product)
         );
-
-        if (!$this->aclManager->isResourceGranted('pim_catalog_product_change_family')) {
-            $form->remove('family');
-        }
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -703,5 +695,31 @@ class ProductController extends AbstractDoctrineController
             $availableAttributes ?: new AvailableProductAttributes(),
             array('attributes' => $attributes)
         );
+    }
+
+    /**
+     * Returns the options for the form
+     * 
+     * @param object $product
+     * @return array
+     */
+    protected function getFormOptions($product)
+    {
+        return array(
+                'enable_family' => $this->aclManager->isResourceGranted('pim_catalog_product_change_family'),
+                'enable_state'  => $this->aclManager->isResourceGranted('pim_catalog_product_change_state'),
+                'currentLocale' => $this->getDataLocale()
+            );
+    }
+    
+    /**
+     * Returns the options for the create form
+     * 
+     * @param object $product
+     * @return array
+     */
+    protected function getCreateFormOptions($product)
+    {
+        return array();
     }
 }
