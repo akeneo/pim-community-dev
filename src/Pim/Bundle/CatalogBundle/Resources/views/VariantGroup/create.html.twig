@@ -3,6 +3,7 @@
     {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% endif %}
 {% endspaceless %}
+
 <form id="pim_catalog_variant_group_create" method="POST" class="form-horizontal"
     data-title="{{ 'Create a new variant group'|trans }}"
     data-button-submit="{{ 'btn.save'|trans|capitalize }}"
@@ -18,5 +19,4 @@
         {{ form_row(form.attributes) }}
         {{ form_row(form._token) }}
     </div>
-
 </form>
