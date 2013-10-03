@@ -5,9 +5,6 @@ namespace Oro\Bundle\EntityExtendBundle\Tests\Unit\Form\Type;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-//use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
-//use Oro\Bundle\EntityConfigBundle\Config\Config;
-
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Oro\Bundle\EntityExtendBundle\Form\Type\TargetType;
@@ -26,14 +23,14 @@ class TargetTypeTest extends \PHPUnit_Framework_TestCase
     /** @var OptionsResolverInterface */
     protected $resolver;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()
             ->setMethods(array('getEntityManager', 'getIds'))
             ->getMock();
 
-        $this->request = new Request();
+        $this->request = new Request($request = array('id' => 1));
 
         $this->type = new TargetType($this->configManager, $this->request);
 
@@ -46,26 +43,52 @@ class TargetTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('choice', $this->type->getParent());
     }
 
-    public function testOptions()
+    public function testOptionsEdit()
     {
-        /*$repo = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\EntityManager')
+        $entity = $this->getMock('Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel');
+        $entity
+            ->expects($this->once())
+            ->method('getClassName')
+            ->will($this->returnValue('Oro\Bundle\UserBundle\Entity\User'));
+
+        $field = $this->getMock('Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel');
+        $field
+            ->expects($this->once())
+            ->method('getEntity')
+            ->will($this->returnValue($entity));
+
+        $repo = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
-            ->setMethods(array('getRepository'))
             ->getMock();
-
         $repo
-            ->expects($this->any())
-            ->method('getRepository')
-            //->will($this->anything())
-        ;*/
+            ->expects($this->once())
+            ->method('find')
+            ->will($this->returnValue($field));
 
-        //$this->type->setDefaultOptions($this->resolver);
+        $em = $this->getMockBuilder('Oro\Bundle\EntityBundle\ORM\OroEntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $em
+            ->expects($this->once())
+            ->method('getRepository')
+            ->will($this->returnValue($repo));
+
+        $this->configManager
+            ->expects($this->once())
+            ->method('getEntityManager')
+            ->will($this->returnValue($em));
+
+        $this->configManager
+            ->expects($this->once())
+            ->method('getIds')
+            ->will($this->returnValue(array(new EntityConfigId('Oro\Bundle\UserBundle\Entity\User', 'entity'))));
+
+        $this->type->setDefaultOptions($this->resolver);
     }
 
-    public function testOptionsWithRequest()
+    public function testOptionsCreate()
     {
         $this->request = new Request(
-            $query = array(),
             $request = array(
                 'entity' => new \Oro\Bundle\UserBundle\Entity\User(),
                 'id'     => 1,

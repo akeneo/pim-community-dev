@@ -11,7 +11,6 @@ class UniqueKeyType extends AbstractType
 {
     /**
      * @var FieldConfigIdInterface[]
-
      */
     protected $fields;
 
