@@ -48,11 +48,6 @@ class ConfigManager
     protected $metadataFactory;
 
     /**
-     * @var ServiceLink
-     */
-    protected $emLink;
-
-    /**
      * @var EventDispatcher
      */
     protected $eventDispatcher;
@@ -98,21 +93,20 @@ class ConfigManager
     protected $configChangeSets;
 
     /**
-     * @param MetadataFactory $metadataFactory
-     * @param EventDispatcher $eventDispatcher
-     * @param ServiceLink     $providerBagLink
-     * @param ServiceLink     $emLink
-     * @param ServiceLink     $securityLink
+     * @param MetadataFactory     $metadataFactory
+     * @param EventDispatcher     $eventDispatcher
+     * @param ServiceLink         $providerBagLink
+     * @param ConfigModelManager  $modelManager
+     * @param ServiceLink         $securityLink
      */
     public function __construct(
         MetadataFactory $metadataFactory,
         EventDispatcher $eventDispatcher,
         ServiceLink $providerBagLink,
-        ServiceLink $emLink,
+        ConfigModelManager $modelManager,
         ServiceLink $securityLink
     ) {
         $this->metadataFactory = $metadataFactory;
-        $this->emLink          = $emLink;
         $this->eventDispatcher = $eventDispatcher;
 
         $this->providerBag      = $providerBagLink;
@@ -121,7 +115,7 @@ class ConfigManager
         $this->originalConfigs  = new ArrayCollection;
         $this->configChangeSets = new ArrayCollection;
 
-        $this->modelManager = new ConfigModelManager($emLink);
+        $this->modelManager = $modelManager;
         $this->auditManager = new AuditManager($this, $securityLink);
     }
 

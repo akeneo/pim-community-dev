@@ -29,6 +29,10 @@
     margin: 0;
 }
 
+.system-configuration-container .parent-scope-checkbox label {
+    float: left;
+}
+
 .search-header .configuration-search-form {
     margin-top: 0;
     margin-bottom: 16px;

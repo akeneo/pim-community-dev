@@ -61,6 +61,9 @@ class InstallCommand extends ContainerAwareCommand
         return $this;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
     protected function setupStep(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Setting up database.</info>');
