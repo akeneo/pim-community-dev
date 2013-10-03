@@ -1090,16 +1090,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $locale
-     *
-     * @Given /^I select the (\w+) activated locale$/
-     */
-    public function iSelectTheActivatedLocale($locale)
-    {
-        $this->getCurrentPage()->selectActivatedLocale($locale);
-    }
-
-    /**
      * @Given /^I disable the product$/
      */
     public function iDisableTheProduct()
