@@ -165,14 +165,14 @@ class InstallCommand extends ContainerAwareCommand
             ->setRows(array());
 
         foreach ($collection as $requirement) {
-            $table->addRow(
-                $requirement->isFulfilled()
-                    ? array('OK', $requirement->getTestMessage())
-                    : array(
-                        $requirement->isOptional() ? 'WARNING' : 'ERROR',
-                        $requirement->getHelpText()
-                    )
-            );
+            if ($requirement->isFulfilled()) {
+                $table->addRow(array('OK', $requirement->getTestMessage()));
+            } else {
+                $table->addRow(array(
+                    $requirement->isOptional() ? 'WARNING' : 'ERROR',
+                    $requirement->getHelpText()
+                ));
+            }
         }
 
         $table->render($output);
