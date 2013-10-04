@@ -39,7 +39,7 @@ class ORMReader extends AbstractConfigurableStepElement implements ItemReaderInt
             $result = $this->query->execute();
             $stepExecution->setReadCount(count($result));
 
-            return $result;
+            return empty($result) ? null : $result;
         }
     }
 
