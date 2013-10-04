@@ -43,7 +43,6 @@ parameters:
     oro_security.entity_security_metadata_provider.cache.warmer.class:  Oro\Bundle\SecurityBundle\Cache\EntitySecurityMetadataCacheWarmer
     oro_security.entity_security_metadata_provider.cache.clearer.class: Oro\Bundle\SecurityBundle\Cache\EntitySecurityMetadataCacheClearer
 
-    oro_security.listener.config_subscriber.class:             Oro\Bundle\SecurityBundle\EventListener\ConfigSubscriber
     oro_security.listener.controller.class:                    Oro\Bundle\SecurityBundle\EventListener\ControllerListener
 
     oro_user.acl.manager.api.class:     Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
@@ -317,11 +316,6 @@ services:
             - @oro_security.entity_security_metadata_provider
         tags:
             - { name: kernel.cache_clearer }
-
-    oro_security.listener.config_subscriber:
-        class: %oro_security.listener.config_subscriber.class%
-        tags:
-            - { name: kernel.event_subscriber}
 
     oro_security.listener.controller:
         class: %oro_security.listener.controller.class%
