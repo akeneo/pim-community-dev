@@ -130,8 +130,8 @@ class ProductType extends FlexibleType
             array(
                 'currentLocale' => null,
                 'import_mode'   => false,
-                'enable_family' => false,
-                'enable_state'  => false
+                'enable_family' => true,
+                'enable_state'  => true
             )
         );
     }
