@@ -2,13 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Form\Type;
 
-use Pim\Bundle\CatalogBundle\Form\Subscriber\VariantGroupSubscriber;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\VariantGroupSubscriber;
 
 /**
  * Type for variant group form
