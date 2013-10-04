@@ -15,6 +15,14 @@ Feature: Edit a variant group
       | MUG     | MUG Akeneo     | color         |
     And I am logged in as "admin"
 
-  Scenario: Successfully edit a variant group
+  Scenario: Successfully display the edit view for a variant group
     Given I am on the "MUG" variant page
     Then I should see the Code and Axis fields
+    And the fields Code and Axis should be disabled
+
+  Scenario: Successfully edit a variant group
+    Given I am on the "MUG" variant page
+    When I fill in the following information:
+      | English (United States) | Mug |
+    And I press the "Save" button
+    Then I should see "Variant group successfully updated"
