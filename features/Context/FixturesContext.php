@@ -1076,7 +1076,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return ProductAttribute
      */
-    private function createAttribute($label, $translatable = true, $type = 'text', $showInGrid = false, $unique = false, $required = false)
+    private function createAttribute($label, $translatable = true, $type = 'text', $showInGrid = false)
     {
         $attribute = $this->getProductManager()->createAttribute($this->getAttributeType($type));
         $attribute->setCode($this->camelize($label));

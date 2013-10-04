@@ -238,7 +238,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     {
         $product = $this->productManager->findByIdentifier(reset($item));
         if (!$product) {
-            $product = $this->productManager->createFlexible();
+            $product = $this->productManager->createProduct();
         } else {
             $product->getCategories()->count();
         }
@@ -263,8 +263,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
                 $product->{'set'.ucfirst($code)}(null);
             }
         }
-
-        $this->productManager->addMissingPrices($product);
 
         return $product;
     }

@@ -525,22 +525,33 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->addSelect('valueOptions')
             ->addSelect('category');
 
-        // prepare query for completeness
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
+        $this->prepareQueryForCategory($proxyQuery, $rootAlias);
 
         $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
         $proxyQuery->setParameter('channelCode', $this->flexibleManager->getScope());
+    }
 
-        // prepare query for categories
+    /**
+     * Prepare query for categories field
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     * @param string              $rootAlias
+     */
+    protected function prepareQueryForCategory(ProxyQueryInterface $proxyQuery, $rootAlias)
+    {
         if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
             $categoryRepository = $this->categoryManager->getEntityRepository();
+            $categoryExists = ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY)
+                && $categoryRepository->find($this->filterCategoryId) != null;
+            $treeExists = $categoryRepository->find($this->filterTreeId) != null;
 
-            if ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY) {
+            if ($categoryExists) {
                 $productIds = $categoryRepository->getLinkedProductIds($this->filterCategoryId, false);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
                 $expression = $proxyQuery->expr()->in($rootAlias .'.id', $productIds);
                 $proxyQuery->andWhere($expression);
-            } else {
+            } elseif ($treeExists) {
                 $productIds = $categoryRepository->getLinkedProductIds($this->filterTreeId, true);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
                 $expression = $proxyQuery->expr()->notIn($rootAlias .'.id', $productIds);
@@ -551,6 +562,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
     /**
      * Prepare query for completeness field
+     *
      * @param ProxyQueryInterface $proxyQuery
      * @param string              $rootAlias
      */
