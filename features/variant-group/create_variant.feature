@@ -36,6 +36,25 @@ Feature: Variant group creation
       | Axis | Size |
     And I press the "Save" button
     Then I should see validation error "This value should not be blank."
+  
+  Scenario: Fail to create a variant filling a non-valid code
+    Given I am on the variants page
+    When I create a new variant
+    And I fill in the following information:
+      | Code | =( |
+    And I press the "Save" button
+    Then I should see validation error "Variant group code may contain only letters, numbers and underscores."
+
+  Scenario: Fail to create a variant filling an already used code
+    Given I am on the variants page
+    And the following variants:
+      | code    | label          | attributes    |
+      | TSHIRT  | T-Shirt Akeneo | size, color   |
+    When I create a new variant
+    And I fill in the following information:
+      | Code | TSHIRT |
+    And I press the "Save" button
+    Then I should see validation error "This value is already used."
 
   Scenario: Fail to create a variant missing adding an axis
     Given I am on the variants page
