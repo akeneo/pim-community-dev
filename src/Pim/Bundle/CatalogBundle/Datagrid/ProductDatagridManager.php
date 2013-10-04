@@ -551,7 +551,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
                 $expression = $proxyQuery->expr()->in($rootAlias .'.id', $productIds);
                 $proxyQuery->andWhere($expression);
-            } else if ($this->filterTreeId) {
+            } elseif ($treeExists) {
                 $productIds = $categoryRepository->getLinkedProductIds($this->filterTreeId, true);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
                 $expression = $proxyQuery->expr()->notIn($rootAlias .'.id', $productIds);

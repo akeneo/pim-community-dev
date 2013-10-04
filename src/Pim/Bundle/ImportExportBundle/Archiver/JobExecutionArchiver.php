@@ -62,7 +62,9 @@ class JobExecutionArchiver
     {
         $sourceName = basename($sourcePath);
         $destPath   = $archivePath.$sourceName;
-        mkdir($archivePath, 0777, true);
+        if (!is_dir($archivePath)) {
+            mkdir($archivePath, 0777, true);
+        }
         copy($sourcePath, $destPath);
     }
 
