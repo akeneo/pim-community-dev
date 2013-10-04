@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Form\Type;
 
+use Pim\Bundle\CatalogBundle\Form\Subscriber\VariantGroupSubscriber;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -50,6 +52,8 @@ class VariantGroupType extends AbstractType
                     }
                 )
             );
+
+        $builder->addEventSubscriber(new VariantGroupSubscriber());
     }
 
     /**

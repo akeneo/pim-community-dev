@@ -179,7 +179,7 @@ class VariantGroupController extends AbstractDoctrineController
     public function editAction(VariantGroup $variant)
     {
         if ($this->variantHandler->process($variant)) {
-            $this->addFlash('success', 'flash.variant group.saved');
+            $this->addFlash('success', 'flash.variant group.updated');
 
             return $this->redirect(
                 $this->generateUrl('pim_catalog_variant_group_index')
