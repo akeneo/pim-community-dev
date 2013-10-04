@@ -3,6 +3,7 @@ Transition Conditions
 
 Table of Contents
 -----------------
+ - [Add Custom Condition](#add-custom-condition)
  - [And Condition](#and-condition)
  - [Or Condition](#or-condition)
  - [Not Condition](#not-condition)
@@ -18,6 +19,24 @@ Table of Contents
  - [False Condition](#false-condition)
  - [Configurable Condition](#configurable-condition)
 
+Add Custom Condition
+-------------------------
+
+To add custom condition simply add a service to DIC with tag "oro_workflow.condition", for example:
+
+```
+parameters:
+    oro_workflow.condition.blank.class: Oro\Bundle\WorkflowBundle\Model\Condition\Blank
+services:
+    oro_workflow.condition.blank:
+        class: %oro_workflow.condition.blank.class%
+        arguments: [@oro_workflow.context_accessor]
+        tags:
+            - { name: oro_workflow.condition, alias: blank|empty }
+```
+
+Symbol "|" in alias can be used to have several aliases. Note that service class must implement
+Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface.
 
 And Condition
 -------------
@@ -97,7 +116,7 @@ Is value of attribute "call_timeout" equal 60.
 @equal:
     left: $call_timeout # A property path
     right: 60 # A scalar value
- 
+
 # Same as using non-associative options
 @equal: [$call_timeout, 60]
 ```
@@ -121,7 +140,7 @@ Is value of attribute "call_timeout" not equal 60.
 @not_equal:
     left: $call_timeout # A property path
     right: 60 # A scalar value
- 
+
 # Same as using non-associative options
 @not_equal: [$call_timeout, 60]
 ```
@@ -184,7 +203,7 @@ Is property value of attribute "call_timeout" greater than 60
 @greater:
     left: $call_timeout # A property path
     right: 60 # A scalar value
-  
+
 # Same as using non-associative options
 @greater: [$call_timeout, 60]
 ```
@@ -208,7 +227,7 @@ Is property value of attribute "call_timeout" greater or equal than 60
 @greater_or_equal:
     left: $call_timeout # A property path
     right: 60 # A scalar value
-  
+
 # Same as using non-associative options
 @greater_or_equal: [$call_timeout, 60]
 ```
@@ -232,7 +251,7 @@ Is property value of attribute "call_timeout" less than 60
 @less:
     left: $call_timeout # A property path
     right: 60 # A scalar value
-  
+
 # Same as using non-associative options
 @less: [$call_timeout, 60]
 ```
@@ -256,7 +275,7 @@ Is property value of attribute "call_timeout" less or equal than 60
 @less_or_equal:
     left: $call_timeout # A property path
     right: 60 # A scalar value
-  
+
 # Same as using non-associative options
 @less_or_equal: [$call_timeout, 60]
 ```
@@ -312,10 +331,10 @@ $configuration = array(
     )
 );
 /** @var $conditionFactory \Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory */
-$condition = $conditionFactory->create('configurable', $configuration);
- 
+$condition = $conditionFactory->create(Configurable::ALIAS', $configuration);
+
 /** @var object $data */
 $data->call_timeout = 20;
- 
+
 var_dump($condition->isAllowed($data)); // will output TRUE
 ```
