@@ -1429,12 +1429,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git",
-                "reference": "73fd9994ee85e57e778e059c28beb1b963679fa5"
+                "reference": "052ab23e7233493494b26c4eca3c13a14df7e08a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/73fd9994ee85e57e778e059c28beb1b963679fa5",
-                "reference": "73fd9994ee85e57e778e059c28beb1b963679fa5",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/052ab23e7233493494b26c4eca3c13a14df7e08a",
+                "reference": "052ab23e7233493494b26c4eca3c13a14df7e08a",
                 "shasum": ""
             },
             "require": {
@@ -1474,7 +1474,7 @@
             "keywords": [
                 "Js Routing"
             ],
-            "time": "2013-09-10 15:45:38"
+            "time": "2013-10-04 08:52:27"
         },
         {
             "name": "friendsofsymfony/rest",
@@ -2516,12 +2516,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "ad2153e3aeaa420f50cd97b3551d476509c1b68d"
+                "reference": "08f9352dee7757b5d80a0542b39d157b51b86aad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/ad2153e3aeaa420f50cd97b3551d476509c1b68d",
-                "reference": "ad2153e3aeaa420f50cd97b3551d476509c1b68d",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/08f9352dee7757b5d80a0542b39d157b51b86aad",
+                "reference": "08f9352dee7757b5d80a0542b39d157b51b86aad",
                 "shasum": ""
             },
             "require": {
@@ -2575,7 +2575,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2013-09-26 06:27:00"
+            "time": "2013-10-04 10:43:33"
         },
         {
             "name": "jms/serializer-bundle",
@@ -3103,12 +3103,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/lessphp.git",
-                "reference": "6e8e724fc7edcedc83a52cd18acc5b72f7dd3c40"
+                "reference": "261f1bd28fe07d5b313e65c3a93409ed67306e0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafo/lessphp/zipball/6e8e724fc7edcedc83a52cd18acc5b72f7dd3c40",
-                "reference": "6e8e724fc7edcedc83a52cd18acc5b72f7dd3c40",
+                "url": "https://api.github.com/repos/leafo/lessphp/zipball/261f1bd28fe07d5b313e65c3a93409ed67306e0e",
+                "reference": "261f1bd28fe07d5b313e65c3a93409ed67306e0e",
                 "shasum": ""
             },
             "type": "library",
@@ -3136,7 +3136,7 @@
             ],
             "description": "lessphp is a compiler for LESS written in PHP.",
             "homepage": "http://leafo.net/lessphp/",
-            "time": "2013-09-27 06:40:48"
+            "time": "2013-10-03 19:32:48"
         },
         {
             "name": "lexik/maintenance-bundle",
@@ -3251,12 +3251,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "4e85d2655135a045ae7e713413cab823a1f7334a"
+                "reference": "b5fa119527f25b787fbb20e75593e0671b0ea079"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/4e85d2655135a045ae7e713413cab823a1f7334a",
-                "reference": "4e85d2655135a045ae7e713413cab823a1f7334a",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/b5fa119527f25b787fbb20e75593e0671b0ea079",
+                "reference": "b5fa119527f25b787fbb20e75593e0671b0ea079",
                 "shasum": ""
             },
             "require": {
@@ -3306,7 +3306,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2013-10-02 14:49:08"
+            "time": "2013-10-03 15:23:01"
         },
         {
             "name": "mtdowling/cron-expression",
@@ -3477,12 +3477,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:laboro/platform.git",
-                "reference": "bbbf4cf92fea541fcae34f26cdee566fef6a8699"
+                "reference": "766417d9a24bcb2036cb46880ac5049b070b80db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/bbbf4cf92fea541fcae34f26cdee566fef6a8699",
-                "reference": "bbbf4cf92fea541fcae34f26cdee566fef6a8699",
+                "url": "https://api.github.com/repos/laboro/platform/zipball/766417d9a24bcb2036cb46880ac5049b070b80db",
+                "reference": "766417d9a24bcb2036cb46880ac5049b070b80db",
                 "shasum": ""
             },
             "require": {
@@ -3544,7 +3544,7 @@
                 "source": "https://github.com/laboro/platform/tree/maintenance/pim_beta1",
                 "issues": "https://github.com/laboro/platform/issues"
             },
-            "time": "2013-10-03 12:01:39"
+            "time": "2013-10-04 14:37:31"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -4193,12 +4193,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Icu.git",
-                "reference": "45c8d35427304b1e14a13a03426055f501ba5f61"
+                "reference": "98e197da54df1f966dd5e8a4992135703569c987"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Icu/zipball/45c8d35427304b1e14a13a03426055f501ba5f61",
-                "reference": "45c8d35427304b1e14a13a03426055f501ba5f61",
+                "url": "https://api.github.com/repos/symfony/Icu/zipball/98e197da54df1f966dd5e8a4992135703569c987",
+                "reference": "98e197da54df1f966dd5e8a4992135703569c987",
                 "shasum": ""
             },
             "require": {
@@ -4232,7 +4232,7 @@
                 "icu",
                 "intl"
             ],
-            "time": "2013-08-06 12:55:36"
+            "time": "2013-10-04 10:06:38"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -4508,12 +4508,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "d3b488a8b772e5f127050950c59810a867b3b002"
+                "reference": "f47c6d63a9806f795c7d892d5f2d1b10f230547d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/d3b488a8b772e5f127050950c59810a867b3b002",
-                "reference": "d3b488a8b772e5f127050950c59810a867b3b002",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/f47c6d63a9806f795c7d892d5f2d1b10f230547d",
+                "reference": "f47c6d63a9806f795c7d892d5f2d1b10f230547d",
                 "shasum": ""
             },
             "require": {
@@ -4549,7 +4549,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-10-03 07:19:21"
+            "time": "2013-10-04 14:13:23"
         },
         {
             "name": "willdurand/expose-translation-bundle",
