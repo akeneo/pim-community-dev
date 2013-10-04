@@ -7,6 +7,8 @@ use Symfony\Component\Form\FormEvents;
 
 class AddressCountryAndRegionSubscriberTest extends \PHPUnit_Framework_TestCase
 {
+    const TEST_COUNTRY_NAME = 'testCountry';
+
     /** @var \Doctrine\Common\Persistence\ObjectManager */
     protected $om;
 
@@ -79,7 +81,8 @@ class AddressCountryAndRegionSubscriberTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
+        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')
+            ->disableOriginalConstructor()->getMock();
         $countryMock->expects($this->once())
             ->method('hasRegions')
             ->will($this->returnValue(true));
@@ -142,7 +145,8 @@ class AddressCountryAndRegionSubscriberTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
+        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')
+            ->disableOriginalConstructor()->getMock();
         $countryMock->expects($this->once())
             ->method('hasRegions')
             ->will($this->returnValue(true));
@@ -187,62 +191,83 @@ class AddressCountryAndRegionSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testPreSubmitData()
     {
         $eventMock = $this->getMockBuilder('Symfony\Component\Form\FormEvent')
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->disableOriginalConstructor()->getMock();
 
-        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')->disableOriginalConstructor()->getMock();
+        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')
+            ->disableOriginalConstructor()->getMock();
         $countryMock->expects($this->once())
             ->method('hasRegions')
             ->will($this->returnValue(true));
 
         $repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
-        $repository
-            ->expects($this->any())
-            ->method('find')
+        $repository->expects($this->any())->method('find')->with(self::TEST_COUNTRY_NAME)
             ->will($this->returnValue($countryMock));
 
-        $this->om->expects($this->once())
-            ->method('getRepository')
-            ->with($this->equalTo('OroAddressBundle:Country'))
+        $this->om->expects($this->once())->method('getRepository')->with($this->equalTo('OroAddressBundle:Country'))
             ->will($this->returnValue($repository));
 
         $configMock = $this->getMock('Symfony\Component\Form\FormConfigInterface');
-        $configMock->expects($this->once())
-            ->method('getOptions')
+        $configMock->expects($this->once())->method('getOptions')
             ->will($this->returnValue(array()));
 
         $fieldMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $fieldMock->expects($this->once())
-            ->method('getConfig')
+            ->disableOriginalConstructor()->getMock();
+        $fieldMock->expects($this->once())->method('getConfig')
             ->will($this->returnValue($configMock));
 
         $formMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $formMock->expects($this->once())
-            ->method('get')
-            ->with($this->equalTo('state'))
+            ->disableOriginalConstructor()->getMock();
+        $formMock->expects($this->once())->method('get')->with($this->equalTo('state'))
             ->will($this->returnValue($fieldMock));
-        $formMock->expects($this->once())
-            ->method('add');
+        $formMock->expects($this->once())->method('add');
 
         $newFieldMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->disableOriginalConstructor()->getMock();
 
-        $this->formBuilder->expects($this->once())
-            ->method('createNamed')
+        $this->formBuilder->expects($this->once())->method('createNamed')
             ->will($this->returnValue($newFieldMock));
 
-        $eventMock->expects($this->once())
-            ->method('getData')
-            ->will($this->returnValue(array()));
-        $eventMock->expects($this->once())
-            ->method('getForm')
+        $startData = array('state_text' => 'stateText', 'country' => self::TEST_COUNTRY_NAME);
+        $eventMock->expects($this->once())->method('getData')
+            ->will($this->returnValue($startData));
+        $eventMock->expects($this->once())->method('getForm')
             ->will($this->returnValue($formMock));
 
-        $this->assertEquals(null, $this->subscriber->preSubmit($eventMock));
+        $eventMock->expects($this->once())->method('setData')
+            ->with(array_intersect_key($startData, array('country' => self::TEST_COUNTRY_NAME)));
+
+        $this->subscriber->preSubmit($eventMock);
+    }
+
+    /**
+     * Cover scenario when country has not any stored state and state filled as text field
+     */
+    public function testPreSubmitDataTextScenario()
+    {
+        $eventMock = $this->getMockBuilder('Symfony\Component\Form\FormEvent')
+            ->disableOriginalConstructor()->getMock();
+
+        $countryMock = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\Country')
+            ->disableOriginalConstructor()->getMock();
+        $countryMock->expects($this->once())
+            ->method('hasRegions')
+            ->will($this->returnValue(false));
+
+        $repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
+        $repository->expects($this->any())->method('find')->with(self::TEST_COUNTRY_NAME)
+            ->will($this->returnValue($countryMock));
+
+        $this->om->expects($this->once())->method('getRepository')->with($this->equalTo('OroAddressBundle:Country'))
+            ->will($this->returnValue($repository));
+
+
+        $startData = array('state' => 'someState', 'state_text' => 'stateText', 'country' => self::TEST_COUNTRY_NAME);
+        $eventMock->expects($this->once())->method('getData')
+            ->will($this->returnValue($startData));
+
+        $eventMock->expects($this->once())->method('setData')
+            ->with(array_intersect_key($startData, array('state_text' => null, 'country' => self::TEST_COUNTRY_NAME)));
+
+        $this->subscriber->preSubmit($eventMock);
     }
 }

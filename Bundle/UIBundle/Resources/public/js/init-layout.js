@@ -252,6 +252,11 @@ function($, _, __, app, mediator, layout, Navigation, Modal, messenger) {
             });
 
             confirm.on('ok', function() {
+                var navigation = Navigation.getInstance();
+                if (navigation) {
+                    navigation.loadingMask.show();
+                }
+
                 $.ajax({
                     url: el.data('url'),
                     type: 'DELETE',
@@ -259,13 +264,22 @@ function($, _, __, app, mediator, layout, Navigation, Modal, messenger) {
                         el.trigger('removesuccess');
                         messenger.addMessage('success', el.data('success-message'), {'hashNavEnabled': Navigation.isEnabled()});
                         if (el.data('redirect')) {
-                            var navigation = Navigation.getInstance();
                             if (navigation) {
                                 navigation.setLocation(el.data('redirect'));
                             } else {
                                 window.location.href = el.data('redirect');
                             }
                         }
+                    },
+                    error: function () {
+                        if (navigation) {
+                            navigation.loadingMask.hide();
+                        }
+
+                        messenger.notificationMessage(
+                            'error',
+                            el.data('error-message') ||  __('Unexpected error occured. Please contact system administrator.')
+                        );
                     }
                 });
             });

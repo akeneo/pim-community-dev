@@ -30,6 +30,7 @@ class SetupType extends AbstractType
                 'repeated',
                 array(
                     'type'           => 'password',
+                    'invalid_message' => 'The password fields must match.',
                     'first_options'  => array('label' => 'form.setup.password'),
                     'second_options' => array('label' => 'form.setup.password_re'),
                 )

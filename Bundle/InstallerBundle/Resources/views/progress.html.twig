@@ -1,5 +1,5 @@
 {% block progress %}
-{% set step = step is defined ? step|lower : 'check' %}
+{% set step = step is defined ? step|lower : 'configure' %}
 <div class="progress-bar">
     <ul>
         <li{% if step == 'check' %} class="active"{% endif %}>
