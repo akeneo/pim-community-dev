@@ -62,8 +62,7 @@ class OroRequirejsConfigCommand extends ContainerAwareCommand
         $content = str_replace(',', ",\n", $content);
         $require_js = $this->getContainer()->getParameter('oro_require_js');
 
-        $target = realpath($this->getContainer()->getParameter('kernel.root_dir') . '/../web') .
-            '/' . $require_js['config_path'];
+        $target = $require_js['web_root'] . DIRECTORY_SEPARATOR . $require_js['config_path'];
 
         $this->getContainer()->get('filesystem')->mkdir(dirname($target), 0777);
 

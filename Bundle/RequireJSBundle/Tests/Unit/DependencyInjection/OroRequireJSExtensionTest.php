@@ -11,6 +11,7 @@ class OroRequireJSExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected $expectedParameters = array(
         'oro_require_js' => array(),
+        'oro_require_js.web_root' => '/path/to/web_root',
         'oro_require_js.config_path' => 'js/require-config.js',
         'oro_require_js.build_path' => 'js/app.min.js',
     );
@@ -21,6 +22,7 @@ class OroRequireJSExtensionTest extends \PHPUnit_Framework_TestCase
     protected $config = array(
         'oro_translation' => array(
             'js_engine' => 'node',
+            'web_root' => '/path/to/web_root',
             'config_path' => 'js/require-config.js',
             'build_path' => 'js/app.min.js',
         )
@@ -49,7 +51,7 @@ class OroRequireJSExtensionTest extends \PHPUnit_Framework_TestCase
             if (is_scalar($expected)) {
                 $this->assertEquals($expected, $actualParameters[$parameterName]);
             } else {
-                $this->assertNotEmpty($actualParameters[$parameterName], $expected);
+                $this->assertNotEmpty($actualParameters[$parameterName]);
             }
         }
     }

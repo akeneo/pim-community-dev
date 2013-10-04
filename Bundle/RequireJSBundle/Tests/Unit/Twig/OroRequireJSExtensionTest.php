@@ -8,6 +8,7 @@ class OroRequireJSExtensionTest extends \PHPUnit_Framework_TestCase
     protected $functions = array(
         'get_requirejs_config_path' => array('oro_require_js.config_path', 'require-config.js'),
         'get_requirejs_build_path' => array('oro_require_js.build_path', 'oro.min.js'),
+        'requirejs_build_exists' => array(),
     );
 
     public function testGetFunctions()
@@ -24,10 +25,14 @@ class OroRequireJSExtensionTest extends \PHPUnit_Framework_TestCase
         foreach ($functions as $function) {
             $this->assertInstanceOf('\Twig_SimpleFunction', $function);
             $this->assertArrayHasKey($function->getName(), $this->functions);
-            $this->assertEquals(
-                $this->functions[$function->getName()][1],
-                call_user_func($function->getCallable())
-            );
+            if ($function->getName() === 'requirejs_build_exists') {
+                $this->assertInternalType('boolean', call_user_func($function->getCallable()));
+            } else {
+                $this->assertEquals(
+                    $this->functions[$function->getName()][1],
+                    call_user_func($function->getCallable())
+                );
+            }
         }
     }
 

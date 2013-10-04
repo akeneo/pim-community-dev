@@ -46,7 +46,9 @@ class OroRequirejsConfigCommandTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($container));
 
         $method = new \ReflectionMethod(
-            'Oro\Bundle\RequireJSBundle\Command\OroRequirejsConfigCommand', 'combineConfig');
+            'Oro\Bundle\RequireJSBundle\Command\OroRequirejsConfigCommand',
+            'combineConfig'
+        );
         $method->setAccessible(true);
 
         $this->assertEquals($expected, $method->invoke($command));

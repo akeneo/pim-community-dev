@@ -15,7 +15,8 @@
         "oro/user-bundle": "dev-master",
         "oro/navigation-bundle": "dev-master",
         "oro/translation-bundle": "dev-master",
-        "oro/platform-bundle": "dev-master"
+        "oro/platform-bundle": "dev-master",
+        "oro/requirejs-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\CronBundle": "" }

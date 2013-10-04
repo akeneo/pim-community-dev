@@ -1,4 +1,4 @@
-{%  if compressed %}
+{% if compressed and requirejs_build_exists() %}
     <script type="text/javascript">
         var require = (function(){
             var r=function(c){m(r.c,c)};r.c={};function m(a,b){

@@ -63,7 +63,9 @@ class OroRequirejsBuildCommandTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($container));
 
         $method = new \ReflectionMethod(
-            'Oro\Bundle\RequireJSBundle\Command\OroRequirejsBuildCommand', 'generateBuildConfig');
+            'Oro\Bundle\RequireJSBundle\Command\OroRequirejsBuildCommand',
+            'generateBuildConfig'
+        );
         $method->setAccessible(true);
 
         $this->assertEquals($expected, $method->invoke($command));

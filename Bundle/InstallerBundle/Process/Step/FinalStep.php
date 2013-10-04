@@ -31,7 +31,6 @@ class FinalStep extends AbstractStep
             ->runCommand('oro:assetic:dump')
             ->runCommand('oro:translation:dump')
             ->runCommand('oro:requirejs:config')
-            ->runCommand('oro:requirejs:build')
             ->runCommand('cache:clear', array('--no-warmup' => true));
 
         $this->complete();

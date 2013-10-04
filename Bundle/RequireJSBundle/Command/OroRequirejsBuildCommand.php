@@ -65,23 +65,22 @@ class OroRequirejsBuildCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $config = $this->getContainer()->getParameter('oro_require_js');
-        $webRoot = realpath($this->getContainer()->getParameter('kernel.root_dir') . '/../web');
 
         $output->writeln('Generate require.js build config');
         $buildConfig = $this->generateBuildConfig();
-        $mainConfigFile = $webRoot . '/' . $buildConfig['mainConfigFile'];
+        $mainConfigFile = $config['web_root'] . DIRECTORY_SEPARATOR . $buildConfig['mainConfigFile'];
         if (!file_exists($mainConfigFile)) {
             throw new \RuntimeException('Main config file "' . $mainConfigFile . '" does not exist');
         }
         $contentBuildConfig = '(' . json_encode($buildConfig) . ')';
-        $targetBuildConfig = $webRoot . '/build.js';
+        $targetBuildConfig = $config['web_root'] . DIRECTORY_SEPARATOR . 'build.js';
         if (false === @file_put_contents($targetBuildConfig, $contentBuildConfig)) {
             throw new \RuntimeException('Unable to write file ' . $targetBuildConfig);
         }
 
         $output->writeln('Run code optimization');
         $command = $config['js_engine'] . ' bundles/ororequirejs/lib/r.js -o ' . basename($targetBuildConfig);
-        $process = new Process($command, $webRoot);
+        $process = new Process($command, $config['web_root']);
         $process->setTimeout($config['building_timeout']);
         $process->run();
         if (!$process->isSuccessful()) {
@@ -96,7 +95,7 @@ class OroRequirejsBuildCommand extends ContainerAwareCommand
             sprintf(
                 '<comment>%s</comment> <info>[file+]</info> %s',
                 date('H:i:s'),
-                realpath($webRoot . '/' . $config['build_path'])
+                realpath($config['web_root'] . DIRECTORY_SEPARATOR . $config['build_path'])
             )
         );
     }

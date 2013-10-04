@@ -8,7 +8,8 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.1.*",
-        "stof/doctrine-extensions-bundle": "dev-master"
+        "stof/doctrine-extensions-bundle": "dev-master",
+        "oro/requirejs-bundle": "dev-master"
     },
     "require-dev": {
         "doctrine/dbal": ">=2.2,<2.4-dev",

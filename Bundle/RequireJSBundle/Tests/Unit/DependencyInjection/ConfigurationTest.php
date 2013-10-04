@@ -80,6 +80,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                     'js_engine' => 'node',
                     'config_path' => 'js/require-config.js',
                     'config' => array(),
+                    'web_root' => '%kernel.root_dir%/../web',
                     'build_path' => 'js/app.min.js',
                     'building_timeout' => 60,
                     'build' => array(
@@ -115,6 +116,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                         'scriptType' => 'text/javascript',
                     ),
                     'js_engine' => 'node',
+                    'web_root' => '%kernel.root_dir%/../web',
                     'build_path' => 'js/test/app.min.js',
                     'building_timeout' => 3600,
                     'build' => array(
