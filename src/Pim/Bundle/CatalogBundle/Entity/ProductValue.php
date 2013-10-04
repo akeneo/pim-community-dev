@@ -33,7 +33,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      * @var Oro\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttribute")
-     * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $attribute;
 
