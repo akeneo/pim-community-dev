@@ -103,28 +103,6 @@ class AclExtensionSelector
         throw $this->createAclExtensionNotFoundException($val, $type, $id);
     }
 
-    public function supports($val)
-    {
-        if (is_string($val)) {
-            $delim = strpos($val, ':');
-            if ($delim) {
-                $type = ltrim(substr($val, $delim + 1), ' ');
-                $id = strtolower(substr($val, 0, $delim));
-
-                if ($type !== null && $id !== null) {
-                    foreach ($this->extensions as $extension) {
-                        if ($extension->supports($type, $id)) {
-
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
     /**
      * Gets all ACL extension
      *

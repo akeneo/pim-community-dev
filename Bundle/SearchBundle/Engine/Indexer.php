@@ -36,20 +36,23 @@ class Indexer
      */
     protected $mapper;
 
-    protected $aclFacade;
+    protected $securityFacade;
+
+    protected $entitySecurityMetadataProvider;
 
     /**
      * @param ObjectManager $em
      * @param AbstractEngine $adapter
      * @param ObjectMapper $mapper
-     * @param $aclFacade
+     * @param $entitySecurityMetadataProvider
      */
-    public function __construct(ObjectManager $em, AbstractEngine $adapter, ObjectMapper $mapper, $aclFacade = null)
+    public function __construct(ObjectManager $em, AbstractEngine $adapter, ObjectMapper $mapper, $securityFacade = null,  $entitySecurityMetadataProvider = null)
     {
         $this->em      = $em;
         $this->adapter = $adapter;
         $this->mapper  = $mapper;
-        $this->aclFacade = $aclFacade;
+        $this->securityFacade = $securityFacade;
+        $this->entitySecurityMetadataProvider = $entitySecurityMetadataProvider;
     }
 
     /**
@@ -57,9 +60,9 @@ class Indexer
      *
      * @return array
      */
-    public function getMappedEntitiesList()
+    public function getEntitiesListAliases()
     {
-        return $this->mapper->getMappedEntitiesList();
+        return $this->mapper->getEntitiesListAliases();
     }
 
     /**
@@ -67,11 +70,11 @@ class Indexer
      *
      * @return array
      */
-    public function getAllowedEntities()
+    public function getAllowedEntitiesListAliases()
     {
-        return $this->aclFacade
-            ? $this->aclFacade->filterAllowedEntities(self::SEARCH_ENTITY_PERMISSION, $this->getMappedEntitiesList())
-            : $this->getMappedEntitiesList();
+        return $this->entitySecurityMetadataProvider
+            ? $this->filterAllowedEntities(self::SEARCH_ENTITY_PERMISSION, $this->getEntitiesListAliases())
+            : $this->getEntitiesListAliases();
     }
 
     /**
@@ -132,7 +135,7 @@ class Indexer
      */
     public function query(Query $query)
     {
-        if ($this->aclFacade && !$this->checkAclInSearchQuery($query)) {
+        if ($this->securityFacade && !$this->checkAclInSearchQuery($query)) {
             // we haven't allowed entities, so return null search result
             return new Result($query, array(), 0);
         } else {
@@ -157,16 +160,16 @@ class Indexer
      * Check indexed entities list in search query
      *
      * @param Query $query
-     * @return Result
+     * @return bool
      */
     protected function checkAclInSearchQuery(Query $query)
     {
-        $allowedEntities = $this->getAllowedEntities();
+        $allowedEntities = $this->getAllowedEntitiesListAliases();
         $queryFromEntities = $query->getFrom();
         $entitiesList = array_values($allowedEntities);
 
         // in query, from record !== '*'
-        if (count($queryFromEntities) && $queryFromEntities[0] !== '*') {
+        if (!empty($queryFromEntities) && $queryFromEntities[0] !== '*') {
             foreach($queryFromEntities as $key => $fromEntityAlias) {
                 if (!in_array($fromEntityAlias, $entitiesList)) {
                     unset ($queryFromEntities[$key]);
@@ -185,5 +188,27 @@ class Indexer
         }
 
         return true;
+    }
+
+    /**
+     * Filter array of entities. Return array of allowed entities
+     *
+     * @param $attribute
+     * @param string[] $entities The list of entity class names to be checked
+     * @return string[]
+     */
+    protected function filterAllowedEntities($attribute, $entities)
+    {
+        foreach (array_keys($entities) as $entityClass) {
+            $objectString = 'Entity:' . $entityClass;
+
+            if ($this->entitySecurityMetadataProvider->isProtectedEntity($entityClass)
+                && !$this->securityFacade->isGranted($attribute, $objectString))
+            {
+                unset ($entities[$entityClass]);
+            }
+        }
+
+        return $entities;
     }
 }

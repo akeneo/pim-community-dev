@@ -25,25 +25,6 @@ class SearchIndexRepository extends EntityRepository
     protected $drivers;
 
     /**
-     * Get list of indexed entities
-     */
-    public function getIndexedEntities()
-    {
-        $indexedEntities = array();
-        $entities = $this->createQueryBuilder('searchIndex')
-            ->select(array('searchIndex.entity as entity', 'searchIndex.alias as alias'))
-            ->groupBy('searchIndex.entity')
-            ->getQuery()
-            ->getArrayResult();
-
-        foreach ($entities as $entity) {
-            $indexedEntities[$entity['entity']] = $entity['alias'];
-        }
-
-        return $indexedEntities;
-    }
-
-    /**
      * Search query to index
      *
      * @param \Oro\Bundle\SearchBundle\Query\Query $query

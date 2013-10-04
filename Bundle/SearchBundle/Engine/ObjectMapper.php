@@ -27,7 +27,7 @@ class ObjectMapper extends AbstractMapper
      *
      * @return array
      */
-    public function getMappedEntitiesList()
+    public function getEntitiesListAliases()
     {
         $entities = array();
 
