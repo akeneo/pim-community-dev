@@ -9,7 +9,7 @@ class FinalStep extends AbstractStep
     public function displayAction(ProcessContextInterface $context)
     {
         if ($this->container->hasParameter('installed') && $this->container->getParameter('installed')) {
-            return $this->redirect($this->generateUrl('oro_default'));
+            return $this->redirect($this->getRequest()->getBasePath() . '/install.php');
         }
 
         set_time_limit(600);
