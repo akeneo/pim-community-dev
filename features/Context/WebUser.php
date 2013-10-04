@@ -2011,6 +2011,16 @@ JS;
     }
 
     /**
+     * @param string $code
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
+     */
+    private function getVariant($code)
+    {
+        return $this->getFixturesContext()->getVariant($code);
+    }
+
+    /**
      * @return FixturesContext
      */
     private function getFixturesContext()

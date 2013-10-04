@@ -1259,6 +1259,16 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $code
+     *
+     * @return VariantGroup
+     */
+    public function getVariant($code)
+    {
+        return $this->getEntityOrException('PimCatalogBundle:VariantGroup', array('code' => $code));
+    }
+
+    /**
      * @param Family $family
      * @param string $content
      * @param string $locale
