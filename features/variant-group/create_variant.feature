@@ -15,29 +15,29 @@ Feature: Variant group creation
   Scenario: Successfully display all required fields in the variant creation form
     Given I am on the variants page
     And I create a new variant
-    Then I should see the Code and Attributes fields
+    Then I should see the Code and Axis fields
 
   @skip
   Scenario: Successfully create a variant
     Given I am on the variants page
     When I create a new variant
     And I fill in the following information:
-      | Code       | MUG   | 
-      | Attributes | Color |
+      | Code | MUG   | 
+      | Axis | Color |
     And I press the "Save" button
     Then I am on the variants page
     And I should see variant MUG
 
   @skip
-  Scenario: Miss the code creating a variant
+  Scenario: Fail to create a variant missing the code
     Given I am on the variants page
     When I create a new variant
     And I fill in the following information:
-      | Attributes | Size |
+      | Axis | Size |
     And I press the "Save" button
     Then I should see validation error "This value should not be blank."
 
-  Scenario: Miss the attributes field creating a variant
+  Scenario: Fail to create a variant missing adding an axis
     Given I am on the variants page
     When I create a new variant
     And I fill in the following information:

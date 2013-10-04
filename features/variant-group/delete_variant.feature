@@ -24,10 +24,10 @@ Feature: Delete a variant group
     Then I should see "Item was deleted"
     And I should not see variant MUG
 
-  @skip
   Scenario: Successfully delete a variant
     Given I edit the "TSHIRT" variant
     When I press the "Delete" button
     And I confirm the deletion
     Then I should see "Variant successfully removed"
+    And the grid should contain 1 element
     And I should not see variant "TSHIRT"
