@@ -42,11 +42,13 @@ class ProductCsvReader extends CsvReader
             if (array_key_exists($code, $this->uniqueValues)) {
                 if (in_array($value, $this->uniqueValues[$code])) {
                     $stepExecution->addReaderWarning(
-                        $this,
+                        get_class($this),
                         sprintf(
-                            'The "%s" attribute is unique, the value "%s" was already read in this file.',
+                            'The "%s" attribute is unique, the value "%s" was already read in this file in %s:%s.',
                             $code,
-                            $value
+                            $value,
+                            $this->csv->getRealPath(),
+                            $this->csv->key()
                         ),
                         $data
                     );

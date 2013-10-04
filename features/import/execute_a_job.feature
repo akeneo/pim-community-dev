@@ -89,6 +89,7 @@ Feature: Execute a job
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
+    Then I should see "The \"sku\" attribute is unique, the value \"SKU-001\" was already read in this file"
     Then there should be 1 product
     And the product "SKU-001" should have the following values:
       | name        | Donec                                                             |

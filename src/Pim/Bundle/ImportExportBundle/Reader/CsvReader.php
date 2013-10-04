@@ -53,7 +53,7 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
     /**
      * @var SplFileObject
      */
-    private $csv;
+    protected $csv;
 
     /**
      * Get uploaded file constraints
@@ -217,11 +217,13 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
 
             if (count($this->fieldNames) !== count($data)) {
                 $stepExecution->addReaderWarning(
-                    $this,
+                    get_class($this),
                     sprintf(
-                        'Expecting to have %d columns, actually have %d.',
+                        'Expecting to have %d columns, actually have %d in %s:%d.',
                         count($this->fieldNames),
-                        count($data)
+                        count($data),
+                        $this->csv->getRealPath(),
+                        $this->csv->key()
                     ),
                     $data
                 );
