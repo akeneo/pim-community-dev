@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Writer;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Category writer using ORM method
@@ -39,7 +40,7 @@ class OrmCategoryWriter extends AbstractConfigurableStepElement implements ItemW
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(StepExecution $stepExecution, array $items)
     {
         if (is_array(reset($items))) {
             $items = call_user_func_array('array_merge', $items);
@@ -47,6 +48,7 @@ class OrmCategoryWriter extends AbstractConfigurableStepElement implements ItemW
 
         foreach ($items as $category) {
             $this->entityManager->persist($category);
+            $stepExecution->incrementWriteCount();
         }
 
         $this->entityManager->flush();

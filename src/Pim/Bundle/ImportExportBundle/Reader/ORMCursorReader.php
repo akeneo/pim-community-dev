@@ -37,7 +37,11 @@ class ORMCursorReader extends AbstractConfigurableStepElement implements ItemRea
             $this->cursor = $this->query->iterate();
         }
 
-        return $this->cursor->next() ?: null;
+        if ($data = $this->cursor->next()) {
+            $stepExecution->incrementReadCount();
+
+            return $data;
+        }
     }
 
     /**

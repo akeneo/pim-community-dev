@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Writer;
 use Symfony\Component\Validator\Constraints as Assert;
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Write data into a file on the filesystem
@@ -26,7 +27,7 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     protected $fileName = 'export_%datetime%.csv';
 
     private $handler;
-    
+
     private $resolvedFilePath;
 
     /**
@@ -102,7 +103,7 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     /**
      * {@inheritdoc}
      */
-    public function write(array $data)
+    public function write(StepExecution $stepExecution, array $data)
     {
         if (!$this->handler) {
             $this->handler = fopen($this->getPath(), 'w');
@@ -110,6 +111,7 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
 
         foreach ($data as $entry) {
             fwrite($this->handler, $entry);
+            $stepExecution->incrementWriteCount();
         }
     }
 

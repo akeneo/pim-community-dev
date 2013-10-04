@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Product writer using ORM method
@@ -52,10 +53,11 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements ItemWr
     /**
      * {@inheritdoc}
      */
-    public function write(array $items)
+    public function write(StepExecution $stepExecution, array $items)
     {
         foreach ($items as $product) {
             $this->productManager->getStorageManager()->persist($product);
+            $stepExecution->incrementWriteCount();
         }
         $this->productManager->getStorageManager()->flush();
 
