@@ -23,4 +23,4 @@ parameters:
 
     upload_dir:        uploads_test/product
 
-    installed:         false
+    installed:         true
