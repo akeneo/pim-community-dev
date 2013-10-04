@@ -27,9 +27,6 @@ Feature: Execute a job
       | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
 
   Scenario: Fail to see the import button of a job with validation errors
-    Given the following job:
-      | connector            | alias          | code                | label                       | type   |
-      | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
     Given I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     Then I should not see the "Import now" link
