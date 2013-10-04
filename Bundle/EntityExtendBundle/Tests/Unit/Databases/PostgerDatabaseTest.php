@@ -16,12 +16,18 @@ class PostgresDatabaseTest extends \PHPUnit_Framework_TestCase
 
     protected $file = 'dump.dump';
 
-    protected $dump = 'PGPASSWORD="test_password" pg_dump -Fc --no-acl --no-owner -h "localhost" -U "test_user" "test_db" -t "test_table_1" "test_table_2" > "dump.dump"';
-    protected $restore = 'PGPASSWORD="test_password" pg_restore --clean --no-acl --no-owner -h "localhost" -U "test_user" -d "test_db" "dump.dump"';
+    protected $dump;
+    protected $restore;
 
     public function setUp()
     {
         $this->classInstance = new PostgresDatabase($this->db, $this->user, $this->pass, $this->tables);
+
+        $this->dump = 'PGPASSWORD="test_password" pg_dump -Fc --no-acl --no-owner -h "localhost" '.
+            '-U "test_user" "test_db" -t "test_table_1" "test_table_2" > "dump.dump"';
+
+        $this->restore = 'PGPASSWORD="test_password" pg_restore --clean --no-acl --no-owner -h "localhost" '.
+            '-U "test_user" -d "test_db" "dump.dump"';
     }
 
     public function testDump()

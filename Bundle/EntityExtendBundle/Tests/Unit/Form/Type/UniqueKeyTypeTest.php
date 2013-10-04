@@ -33,13 +33,8 @@ class UniqueKeyTypeTest extends TypeTestCase
         $form = $this->factory->create($this->type);
         $form->submit($formData);
 
-        //var_dump($form->getData());
-        //print_r(get_class_methods($form->get('key')));
-
         $this->assertTrue($form->isSynchronized());
         $this->assertTrue($form->isValid());
-
-        //$this->assertEquals($formData, $form->getData());
     }
 
     public function testNames()

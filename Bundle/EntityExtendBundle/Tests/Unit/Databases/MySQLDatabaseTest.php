@@ -16,12 +16,18 @@ class MySQLDatabaseTest extends \PHPUnit_Framework_TestCase
 
     protected $file = 'dump.sql';
 
-    protected $dump = 'mysqldump --user="test_user" --password="test_password" --host="localhost" "test_db" "test_table_1" "test_table_2" > "dump.sql"';
-    protected $restore = 'mysql --user="test_user" --password="test_password" --host="localhost" "test_db" < "dump.sql"';
+    protected $dump;
+    protected $restore;
 
     public function setUp()
     {
         $this->classInstance = new MySQLDatabase($this->db, $this->user, $this->pass, $this->tables);
+
+        $this->dump = 'mysqldump --user="test_user" --password="test_password" --host="localhost" '.
+            '"test_db" "test_table_1" "test_table_2" > "dump.sql"';
+
+        $this->restore = 'mysql --user="test_user" --password="test_password" --host="localhost" '.
+            '"test_db" < "dump.sql"';
     }
 
     public function testDump()
