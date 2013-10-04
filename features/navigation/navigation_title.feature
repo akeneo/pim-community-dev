@@ -132,3 +132,18 @@ Feature: Well display navigation titles
       | sku-1 |
     And I edit the "sku-1" product
     Then I should see the title "Products sku-1 | Edit"
+
+  Scenario: Successfully display the variant index view title
+    Given I am on the variants page
+    Then I should see the tille "Variant groups"
+  
+  Scenario: Successfully display the variant edit view title
+    Given there is no variant
+    And the following attribute:
+      | code      | label      | type                     |
+      | color     | Color      | pim_catalog_multiselect  |
+    And the following variant:
+      | code | label      | attributes |
+      | MUG  | Mug Akeneo | color      |
+    And I edit the "MUG" variant
+    Then I should see the title "Variant groups MUG | Edit"
