@@ -26,6 +26,8 @@ class ObjectMapper extends AbstractMapper
      * Get array with entity aliases
      *
      * @return array
+     *  key - entity class name
+     *  value - entity search alias
      */
     public function getEntitiesListAliases()
     {

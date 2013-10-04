@@ -135,9 +135,13 @@ class Indexer
      */
     public function query(Query $query)
     {
-        if ($this->securityFacade && !$this->checkAclInSearchQuery($query)) {
+        if ($this->securityFacade) {
+            $this->applyAclToQuery($query);
             // we haven't allowed entities, so return null search result
-            return new Result($query, array(), 0);
+            if (count($query->getFrom()) == 0) {
+
+                return new Result($query, array(), 0);
+            }
         } else {
             return $this->adapter->search($query);
         }
@@ -162,7 +166,7 @@ class Indexer
      * @param Query $query
      * @return bool
      */
-    protected function checkAclInSearchQuery(Query $query)
+    protected function applyAclToQuery(Query $query)
     {
         $allowedEntities = $this->getAllowedEntitiesListAliases();
         $queryFromEntities = $query->getFrom();
@@ -175,19 +179,10 @@ class Indexer
                     unset ($queryFromEntities[$key]);
                 }
             }
-
-            if (count($queryFromEntities)) {
-                $query->from($allowedEntities);
-            } else {
-
-                // we haven't allowed entities in query
-                return false;
-            }
+            $query->from($allowedEntities);
         } else {
             $query->from($allowedEntities);
         }
-
-        return true;
     }
 
     /**
