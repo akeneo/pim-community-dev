@@ -28,6 +28,7 @@ Feature: Remove a category
     | shoes_m   | Male      | shoes     | shoes-m-1            |
   And I am logged in as "admin"
 
+  @skip
   Scenario: Remove a simple category
     Given I am on the "books" category page
     When I press the "Delete" button
@@ -36,6 +37,7 @@ Feature: Remove a category
     And I should not see the "Books" category under the "Master" category
     And I should see the "Computers" category under the "Master" category
 
+  @skip
   Scenario: Remove a category with sub-categories
     Given I am on the "computers" category page
     When I press the "Delete" button
@@ -43,6 +45,7 @@ Feature: Remove a category
     Then I should see flash message "Category successfully removed"
     And I should not see the "Computers" category under the "Master" category
 
+  @skip
   Scenario: Remove a category with products linked
     Given I am on the "shoes_f" category page
     When I press the "Delete" button
@@ -52,6 +55,7 @@ Feature: Remove a category
     And I should not see the "Female" category under the "Shoes" category
     And I should see the "Male" category under the "Shoes" category
 
+  @skip
   Scenario: Remove a category with sub-categories and products linked
     Given I am on the "shoes" category page
     When I press the "Delete" button
