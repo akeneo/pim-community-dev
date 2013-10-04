@@ -528,8 +528,23 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
         $this->prepareQueryForCategory($proxyQuery, $rootAlias);
 
-        $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
-        $proxyQuery->setParameter('channelCode', $this->flexibleManager->getScope());
+        $localeCode = $this->flexibleManager->getLocale();
+        $channelCode = $this->flexibleManager->getScope();
+                
+        $locale = $this->flexibleManager
+            ->getStorageManager()
+            ->getRepository('PimCatalogBundle:Locale')
+            ->findBy(array('code' => $localeCode));
+        
+        $channel = $this->flexibleManager
+            ->getStorageManager()
+            ->getRepository('PimCatalogBundle:Channel')
+            ->findBy(array('code' => $channelCode));
+        
+        $proxyQuery->setParameter('localeCode', $localeCode);
+        $proxyQuery->setParameter('locale', $locale);
+        $proxyQuery->setParameter('channelCode', $channelCode);
+        $proxyQuery->setParameter('channel', $channel);
     }
 
     /**
@@ -568,19 +583,13 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function prepareQueryForCompleteness(ProxyQueryInterface $proxyQuery, $rootAlias)
     {
-        $exprLocaleAndScope = $proxyQuery->expr()->andX(
-            'locale.code = :localeCode',
-            'channel.code = :channelCode'
-        );
-        $exprCompleteness = $proxyQuery->expr()->isNull('pCompleteness');
-        $exprFamilyIsNull = $proxyQuery->expr()->isNull($rootAlias .'.family');
-
         $proxyQuery
             ->addSelect('pCompleteness')
-            ->leftJoin($rootAlias .'.completenesses', 'pCompleteness')
-            ->leftJoin('pCompleteness.locale', 'locale')
-            ->leftJoin('pCompleteness.channel', 'channel')
-            ->orWhere($exprLocaleAndScope, $exprCompleteness, $exprFamilyIsNull);
+            ->leftJoin(
+                $rootAlias .'.completenesses', 
+                'pCompleteness',
+                'WITH',
+                'pCompleteness.locale = :locale AND pCompleteness.channel = :channel');
     }
 
     /**
