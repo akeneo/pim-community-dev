@@ -1009,6 +1009,18 @@ class FixturesContext extends RawMinkContext
         return $this->getEntityOrException('OroBatchBundle:JobInstance', array('code' => $code));
     }
 
+    public function replacePlaceholders($value)
+    {
+        if (false !== strpos($value, '{{') && false !== strpos($value, '}}')) {
+            $key = trim(str_replace(array('{{', '}}'), '', $value));
+            if (array_key_exists($key, $this->placeholderValues)) {
+                return $this->placeholderValues[$key];
+            }
+        }
+
+        return $value;
+    }
+
     /**
      * @param string $identifier
      * @param string $attribute
@@ -1549,17 +1561,5 @@ class FixturesContext extends RawMinkContext
     private function listToArray($list)
     {
         return $this->getMainContext()->listToArray($list);
-    }
-
-    private function replacePlaceholders($value)
-    {
-        if (false !== strpos($value, '{{') && false !== strpos($value, '}}')) {
-            $key = trim(str_replace(array('{{', '}}'), '', $value));
-            if (array_key_exists($key, $this->placeholderValues)) {
-                return $this->placeholderValues[$key];
-            }
-        }
-
-        return $value;
     }
 }

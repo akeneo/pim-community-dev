@@ -1506,6 +1506,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Given /^I upload and import the file "([^"]*)"$/
+     */
+    public function iUploadAndImportTheFile($file)
+    {
+        $this
+            ->getPage('Import show')
+            ->uploadAndImportFile($this->replacePlaceholders($file));
+        sleep(10);
+    }
+
+    /**
      * @param string $file
      *
      * @Given /^file "([^"]*)" should exist$/
@@ -2078,5 +2089,10 @@ JS;
     private function getMailRecorder()
     {
         return $this->getMainContext()->getMailRecorder();
+    }
+
+    private function replacePlaceholders($value)
+    {
+        return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
     }
 }

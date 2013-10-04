@@ -3,8 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\File;
+use Symfony\Component\HttpFoundation\File\File;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
@@ -21,7 +21,7 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
 {
     /**
      * @Assert\NotBlank(groups={"Execution"})
-     * @File(groups={"Execution"}, allowedExtensions={"csv"})
+     * @AssertFile(groups={"Execution"}, allowedExtensions={"csv"})
      */
     protected $filePath;
 
@@ -64,7 +64,7 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
     {
         return array(
             new Assert\NotBlank(),
-            new File(array('allowedExtensions' => array('csv'))),
+            new AssertFile(array('allowedExtensions' => array('csv'))),
         );
     }
 
@@ -74,7 +74,7 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
      *
      * @return CsvReader
      */
-    public function setUploadedFile(UploadedFile $uploadedFile)
+    public function setUploadedFile(File $uploadedFile)
     {
         $this->filePath = $uploadedFile->getRealPath();
 
