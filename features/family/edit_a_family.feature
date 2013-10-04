@@ -16,7 +16,7 @@ Feature: Edit a family
     Given I edit the "Bags" family
     When I change the Code to "purse"
     And I save the family
-    Then I should see flash message "Family successfully updated"
+    Then I should see "Family successfully updated"
 
   Scenario: Fail to set an already used code
     Given I edit the "Bags" family

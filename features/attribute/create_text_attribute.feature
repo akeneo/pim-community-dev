@@ -12,7 +12,7 @@ Feature: Create an attribute
     Given I fill in the following information:
      | Code | short_description |
     And I save the attribute
-    Then I should see flash message "Attribute successfully created"
+    Then I should see "Attribute successfully created"
 
   Scenario: Fail to create a text attribute with an invalid code
     Given I change the Code to an invalid value

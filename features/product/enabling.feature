@@ -8,7 +8,7 @@ Feature: Enable and disable a product
     And I am logged in as "admin"
     When I am on the "boat" product page
     And I disable the product
-    Then I should see flash message "Product successfully updated"
+    Then I should see "Product successfully updated"
     And product "boat" should be disabled
 
   Scenario: Successfully enable a product
@@ -16,5 +16,5 @@ Feature: Enable and disable a product
     And I am logged in as "admin"
     When I am on the "boat" product page
     And I enable the product
-    Then I should see flash message "Product successfully updated"
+    Then I should see "Product successfully updated"
     And product "boat" should be enabled

@@ -8,5 +8,5 @@ Feature: Attribute group creation
     When I am on the group creation page
     And I change the Code to "seo"
     And I save the group
-    Then I should see flash message "Attribute group successfully created"
+    Then I should see "Attribute group successfully created"
     And I should be on the "seo" group page
