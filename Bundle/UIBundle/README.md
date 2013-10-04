@@ -6,6 +6,7 @@ User interface layouts and controls.
 
 - [Form Components](./Resources/doc/reference/form_components.md)
 - [JavaScript Tools and Libraries](./Resources/doc/reference/js_tools_and_libraries.md)
+- [JavaScript Widgets](./Resources/doc/reference/widgets.md)
 
 ## Configuration Settings
 
