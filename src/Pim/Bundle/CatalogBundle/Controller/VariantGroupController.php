@@ -166,6 +166,8 @@ class VariantGroupController extends AbstractDoctrineController
      * Edit a variant group
      *
      * @param VariantGroup $variant
+     *
+     * @Template
      * @Acl(
      *     id="pim_catalog_variant_group_edit",
      *     name="Edit a variant group",
@@ -176,7 +178,17 @@ class VariantGroupController extends AbstractDoctrineController
      */
     public function editAction(VariantGroup $variant)
     {
-        return array();
+        if ($this->variantHandler->process($variant)) {
+            $this->addFlash('success', 'flash.variant group.saved');
+
+            return $this->redirect(
+                $this->generateUrl('pim_catalog_variant_group_index')
+            );
+        }
+
+        return array(
+            'form' => $this->variantForm->createView()
+        );
     }
 
     /**

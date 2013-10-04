@@ -41,6 +41,7 @@ class VariantGroupType extends AbstractType
                 'attributes',
                 'entity',
                 array(
+                    'label'    => 'Axis',
                     'required' => true,
                     'multiple' => true,
                     'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
