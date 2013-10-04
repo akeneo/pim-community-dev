@@ -8,8 +8,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 
-require_once __DIR__ . '/../../../../../../../app/OroRequirements.php';
-
 class InstallCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -45,6 +43,10 @@ class InstallCommand extends ContainerAwareCommand
     protected function checkStep(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Oro requirements check:</info>');
+
+        if (!class_exists('OroRequirements')) {
+            require_once $this->getContainer()->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . 'OroRequirements.php';
+        }
 
         $collection = new \OroRequirements();
 
