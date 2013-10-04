@@ -19,7 +19,7 @@ Feature: Delete export
     Then the grid should contain 3 elements
     When I delete the "foo_product_export" job
     And I confirm the deletion
-    Then I should see flash message "Item was deleted"
+    Then I should see flash message "Item deleted"
     And the grid should contain 2 elements
     And I should see export profiles "acme_product_export" and "acme_attribute_export"
     And I should not see export profiles "foo_product_export" and "acme_product_import"

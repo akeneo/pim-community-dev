@@ -55,4 +55,4 @@ Feature: Sort channels
   Scenario: Successfully sort channels by tree descending
     Given I am on the channels page
     When I sort by "category tree" value descending
-    Then I should see sorted channels BAZ, FOO, QUX, BAR, mobile and ecommerce
+    Then I should see sorted channels BAZ, FOO, QUX, BAR, ecommerce and mobile
