@@ -9,4 +9,4 @@ Feature: Browse groups
 
   Scenario: Successfully display groups
     Given I am on the user groups page
-    Then the grid should contain 0 elements
+    Then the grid should contain 3 elements
