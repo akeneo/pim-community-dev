@@ -18,7 +18,7 @@ Feature: Delete import
     Then the grid should contain 2 elements
     When I delete the "acme_product_import" job
     And I confirm the deletion
-    Then I should see "Item was deleted"
+    Then I should see flash message "Item was deleted"
     And the grid should contain 1 element
     And I should see import profile "acme_attribute_import"
     And I should not see import profiles "acme_product_export" and "acme_product_import"

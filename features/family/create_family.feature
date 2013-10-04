@@ -8,5 +8,5 @@ Feature: Family creation
     When I am on the family creation page
     And I change the Code to "computer"
     And I save the family
-    Then I should see "Family successfully created"
+    Then I should see flash message "Family successfully created"
     And I should be on the "Computer" family page

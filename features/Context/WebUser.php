@@ -1811,6 +1811,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $text
+     *
+     * @Then /^I should see (?:a )?flash message "([^"]*)"$/
+     */
+    public function iShouldSeeFlashMessage($text)
+    {
+        if (!$this->getCurrentPage()->findFlashMessage($text)) {
+            throw $this->createExpectationException(sprintf('No flash messages containing "%s" were found.', $text));
+        }
+    }
+
+    /**
      * @param string $fields
      *
      * @Given /^I display the (.*) attribute$/

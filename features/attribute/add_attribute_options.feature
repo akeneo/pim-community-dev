@@ -47,4 +47,4 @@ Feature: Add attribute options
       | blue  | yes                 |
       | green | no                  |
     And I save the attribute
-    Then I should see "Attribute successfully created"
+    Then I should see flash message "Attribute successfully created"
