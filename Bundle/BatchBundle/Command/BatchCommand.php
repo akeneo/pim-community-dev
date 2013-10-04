@@ -2,16 +2,16 @@
 
 namespace Oro\Bundle\BatchBundle\Command;
 
-use Monolog\Handler\StreamHandler;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator;
+use Monolog\Handler\StreamHandler;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Oro\Bundle\BatchBundle\Job\ExitStatus;
 use Oro\Bundle\BatchBundle\Job\BatchStatus;
 
@@ -30,7 +30,8 @@ class BatchCommand extends ContainerAwareCommand
             ->setName('oro:batch:job')
             ->setDescription('Launch a registered job instance')
             ->addArgument('code', InputArgument::REQUIRED, 'Job instance code')
-            ->addArgument('execution', InputArgument::OPTIONAL, 'Job execution id');
+            ->addArgument('execution', InputArgument::OPTIONAL, 'Job execution id')
+            ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Override job configuration (formatted as json. ie: php app/console oro:batch:job -c \'[{"reader":{"filePath":"/tmp/foo.csv"}}]\' acme_product_import)');
     }
 
     /**
@@ -53,6 +54,13 @@ class BatchCommand extends ContainerAwareCommand
 
         $job = $this->getConnectorRegistry()->getJob($jobInstance);
         $jobInstance->setJob($job);
+
+        // Override job configuration
+        if ($config = $input->getOption('config')) {
+            $job->setConfiguration(
+                $this->decodeConfiguration($config)
+            );
+        }
 
         $errors = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
         if (count($errors) > 0) {
@@ -126,5 +134,32 @@ class BatchCommand extends ContainerAwareCommand
         }
 
         return $errorsStr;
+    }
+
+    private function decodeConfiguration($data)
+    {
+        $config = json_decode($data, true);
+
+        switch (json_last_error()) {
+            case JSON_ERROR_DEPTH:
+                $error = 'Maximum stack depth exceeded';
+                break;
+            case JSON_ERROR_STATE_MISMATCH:
+                $error = 'Underflow or the modes mismatch';
+                break;
+            case JSON_ERROR_CTRL_CHAR:
+                $error = 'Unexpected control character found';
+                break;
+            case JSON_ERROR_SYNTAX:
+                $error = 'Syntax error, malformed JSON';
+                break;
+            case JSON_ERROR_UTF8:
+                $error = 'Malformed UTF-8 characters, possibly incorrectly encoded';
+                break;
+            default:
+                return $config;
+        }
+
+        throw new \InvalidArgumentException($error);
     }
 }

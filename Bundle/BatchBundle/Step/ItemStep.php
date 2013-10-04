@@ -122,9 +122,15 @@ class ItemStep extends AbstractStep
      */
     public function setConfiguration(array $config)
     {
-        $this->getReader()->setConfiguration($config['reader']);
-        $this->getProcessor()->setConfiguration($config['processor']);
-        $this->getWriter()->setConfiguration($config['writer']);
+        if (array_key_exists('reader', $config)) {
+            $this->getReader()->setConfiguration($config['reader']);
+        }
+        if (array_key_exists('processor', $config)) {
+            $this->getProcessor()->setConfiguration($config['processor']);
+        }
+        if (array_key_exists('writer', $config)) {
+            $this->getWriter()->setConfiguration($config['writer']);
+        }
     }
 
     /**
