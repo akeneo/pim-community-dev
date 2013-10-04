@@ -202,7 +202,7 @@ class LoggerSubscriber implements EventSubscriberInterface
         $this->logger->warning(
             sprintf(
                 'The %s was unable to handle the following data: %s (REASON: %s).',
-                get_class($lastWarning['reader']),
+                $lastWarning['reader'],
                 $this->formatAsString($lastWarning['data']),
                 $lastWarning['reason']
             )

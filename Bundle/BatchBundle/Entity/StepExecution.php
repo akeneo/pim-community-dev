@@ -125,6 +125,8 @@ class StepExecution
 
     /**
      * @var array
+     *
+     * @ORM\Column(name="reader_warnings", type="array", nullable=true)
      */
     private $readerWarnings = array();
 
@@ -240,11 +242,11 @@ class StepExecution
     /**
      * Add a reader warning
      *
-     * @param ItemReaderInterface $reader
-     * @param string              $message
-     * @param mixed               $data
+     * @param string $reader
+     * @param string $message
+     * @param mixed  $data
      */
-    public function addReaderWarning(ItemReaderInterface $reader, $message, $data)
+    public function addReaderWarning($reader, $message, $data)
     {
         $this->readerWarnings[] = array(
             'reader' => $reader,
