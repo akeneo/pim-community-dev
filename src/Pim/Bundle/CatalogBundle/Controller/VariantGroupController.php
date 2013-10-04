@@ -2,12 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -18,6 +20,7 @@ use Oro\Bundle\UserBundle\Annotation\Acl;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
+use Pim\Bundle\CatalogBundle\Form\Handler\VariantGroupHandler;
 
 /**
  * Variant group controller
@@ -41,6 +44,16 @@ class VariantGroupController extends AbstractDoctrineController
     protected $datagridWorker;
 
     /**
+     * @var VariantGroupHandler
+     */
+    protected $variantHandler;
+
+    /**
+     * @var Form
+     */
+    protected $variantForm;
+
+    /**
      * Constructor
      *
      * @param Request $request
@@ -62,7 +75,9 @@ class VariantGroupController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridWorkerInterface $datagridWorker
+        DatagridWorkerInterface $datagridWorker,
+        VariantGroupHandler $variantHandler,
+        Form $variantForm
     ) {
         parent::__construct(
             $request,
@@ -76,6 +91,8 @@ class VariantGroupController extends AbstractDoctrineController
         );
 
         $this->datagridWorker = $datagridWorker;
+        $this->variantHandler = $variantHandler;
+        $this->variantForm    = $variantForm;
     }
 
     /**
@@ -111,26 +128,46 @@ class VariantGroupController extends AbstractDoctrineController
     /**
      * Create a variant group
      *
-     * @Template("PimCatalogBundle:VariantGroup:edit.html.twig")
+     * @Template
      * @Acl(
      *     id="pim_catalog_variant_group_create",
      *     name="Create a variant group",
      *     description="Create a variant group",
      *     parent="pim_catalog_variant_group"
      * )
-     * @return array
+     * @return Response|RedirectResponse
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return $this->redirectToRoute('pim_catalog_variant_group_index');
+        }
+
         $variant = new VariantGroup();
 
-        return $this->editAction($variant);
+        if ($this->variantHandler->process($variant)) {
+            $this->addFlash('success', 'flash.variant group.created');
+
+            $url = $this->generateUrl(
+                'pim_catalog_variant_group_edit',
+                array('id' => $variant->getId())
+            );
+            $response = array('status' => 1, 'url' => $url);
+
+            return new Response(json_encode($response));
+        }
+
+        return array(
+            'form' => $this->variantForm->createView()
+        );
     }
 
     /**
      * Edit a variant group
      *
      * @param VariantGroup $variant
+     *
+     * @Template
      * @Acl(
      *     id="pim_catalog_variant_group_edit",
      *     name="Edit a variant group",
@@ -141,7 +178,17 @@ class VariantGroupController extends AbstractDoctrineController
      */
     public function editAction(VariantGroup $variant)
     {
-        return array();
+        if ($this->variantHandler->process($variant)) {
+            $this->addFlash('success', 'flash.variant group.updated');
+
+            return $this->redirect(
+                $this->generateUrl('pim_catalog_variant_group_index')
+            );
+        }
+
+        return array(
+            'form' => $this->variantForm->createView()
+        );
     }
 
     /**
@@ -154,9 +201,17 @@ class VariantGroupController extends AbstractDoctrineController
      *     description="Remove a variant group",
      *     parent="pim_catalog_variant_group"
      * )
-     * @return Response
+     * @return Response|RedirectResponse
      */
     public function removeAction(VariantGroup $variant)
     {
+        $this->getManager()->remove($variant);
+        $this->getManager()->flush();
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirectToRoute('pim_catalog_variant_group_index');
+        }
     }
 }

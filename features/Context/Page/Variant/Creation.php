@@ -1,14 +1,13 @@
 <?php
 
-namespace Context\Page\Product;
+namespace Context\Page\Variant;
 
 use Context\Page\Base\Form;
-use Behat\Mink\Exception\ElementNotFoundException;
 
 /**
- * Product creation page
+ * Variant creation page
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -18,7 +17,6 @@ class Creation extends Form
      * @var array
      */
     protected $elements = array(
-        'Activated locales' => array('css' => '#select2-drop'),
         'Create popin' => array('css' => 'div.ui-dialog')
     );
 
@@ -40,13 +38,12 @@ class Creation extends Form
         parent::pressButton($locator);
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function findField($field)
     {
-        $label = $this->find('css', sprintf('#pim_catalog_product_create label:contains("%s")', $field));
+        $label = $this->find('css', sprintf('#pim_catalog_variant_group_create label:contains("%s")', $field));
 
         if (!$label) {
             throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $field);
