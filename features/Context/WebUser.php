@@ -46,6 +46,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'user groups' => 'UserGroup index',
         'categories'  => 'Category tree creation',
         'home'        => 'Base index',
+        'variants'    => 'Variant index'
     );
 
     /**
@@ -1089,16 +1090,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $locale
-     *
-     * @Given /^I select the (\w+) activated locale$/
-     */
-    public function iSelectTheActivatedLocale($locale)
-    {
-        $this->getCurrentPage()->selectActivatedLocale($locale);
-    }
-
-    /**
      * @Given /^I disable the product$/
      */
     public function iDisableTheProduct()
@@ -2029,6 +2020,16 @@ JS;
     private function getChannel($code)
     {
         return $this->getFixturesContext()->getChannel($code);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
+     */
+    private function getVariant($code)
+    {
+        return $this->getFixturesContext()->getVariant($code);
     }
 
     /**

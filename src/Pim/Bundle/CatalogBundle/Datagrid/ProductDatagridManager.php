@@ -586,10 +586,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $proxyQuery
             ->addSelect('pCompleteness')
             ->leftJoin(
-                $rootAlias .'.completenesses', 
+                $rootAlias .'.completenesses',
                 'pCompleteness',
                 'WITH',
-                'pCompleteness.locale = :locale AND pCompleteness.channel = :channel');
+                'pCompleteness.locale = :locale AND pCompleteness.channel = :channel'
+            );
     }
 
     /**

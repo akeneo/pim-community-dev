@@ -126,3 +126,5 @@ services:
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
             - '@pim_catalog.datagrid.worker'
+            - '@pim_catalog.form.handler.variant_group'
+            - '@pim_catalog.form.variant_group'

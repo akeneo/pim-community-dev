@@ -331,7 +331,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @Then /^I should see products? ((?!with data).)*$/
      * @Then /^I should see attributes? ((?!in group).)*$/
-     * @Then /^I should see (?:(?:entit|currenc)(?:y|ies)|channels?|locales?|(?:import|export) profiles?) (.*)$/
+     * @Then /^I should see channels? (.*)$/
+     * @Then /^I should see locales? (.*)$/
+     * @Then /^I should see (?:import|export) profiles? (.*)$/
+     * @Then /^I should see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
+     * @Then /^I should see variants? (.*)$/
      */
     public function iShouldSeeEntities($elements)
     {
@@ -349,7 +353,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @Then /^I should not see products? ((?!with data).)*$/
      * @Then /^I should not see attributes? ((?!in group).)*$/
-     * @Then /^I should not see (?:(?:entit|currenc)(?:y|ies)|channels?|locales?|(?:import|export) profiles?) (.*)$/
+     * @Then /^I should not see channels? (.*)$/
+     * @Then /^I should not see locales? (.*)$/
+     * @Then /^I should not see (?:import|export) profiles? (.*)$/
+     * @Then /^I should not see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
+     * @Then /^I should not see variants? (.*)$/
      */
     public function iShouldNotSeeEntities($entities)
     {
@@ -373,7 +381,13 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @throws \InvalidArgumentException
      *
-     * @Then /^I should see sorted (?:entities|channels|currencies|locales|attributes|(?:import|export) profiles) (.*)$/
+     * @Then /^I should see sorted channels (.*)$/
+     * @Then /^I should see sorted currencies (.*)$/
+     * @Then /^I should see sorted locales (.*)$/
+     * @Then /^I should see sorted attributes (.*)$/
+     * @Then /^I should see sorted (?:import|export) profiles (.*)$/
+     * @Then /^I should see sorted (?:entities) (.*)$/
+     * @Then /^I should see sorted variants (.*)$/
      */
     public function iShouldSeeSortedEntities($elements)
     {

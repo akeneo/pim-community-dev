@@ -80,7 +80,7 @@ class VariantGroup implements TranslatableInterface
      * @var \Doctrine\Common\Collections\ArrayCollection $translations
      *
      * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\FamilyTranslation",
+     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\VariantGroupTranslation",
      *     mappedBy="foreignKey",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
@@ -96,6 +96,16 @@ class VariantGroup implements TranslatableInterface
         $this->attributes   = new ArrayCollection();
         $this->products     = new ArrayCollection();
         $this->translations = new ArrayCollection();
+    }
+
+    /**
+     * Get the id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

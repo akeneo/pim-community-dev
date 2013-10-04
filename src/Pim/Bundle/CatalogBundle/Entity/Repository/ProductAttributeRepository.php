@@ -65,4 +65,38 @@ class ProductAttributeRepository extends AttributeRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * Find all attributes of type axis
+     * An axis define a variation of a variant group
+     * Axes are attributes with options, not localizable and not scopable
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function findAllAxisQB()
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->andWhere(
+                $qb->expr()->in('a.attributeType', array('pim_catalog_simpleselect', 'pim_catalog_multiselect'))
+            )
+            ->andWhere($qb->expr()->neq('a.scopable', 1))
+            ->andWhere($qb->expr()->neq('a.translatable', 1));
+
+        return $qb;
+    }
+
+    /**
+     * Find all axis
+     *
+     * @see findAllAxisQB
+     *
+     * @return array
+     */
+    public function findAllAxis()
+    {
+        $qb = $this->findAllAxisQB();
+
+        return $qb->getQuery()->getResult();
+    }
 }
