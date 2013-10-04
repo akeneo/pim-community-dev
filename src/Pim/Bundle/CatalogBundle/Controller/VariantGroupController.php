@@ -13,7 +13,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
