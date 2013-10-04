@@ -26,6 +26,8 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     protected $fileName = 'export_%datetime%.csv';
 
     private $handler;
+    
+    private $resolvedFilePath;
 
     /**
      * Set the filename
@@ -82,16 +84,19 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
      */
     public function getPath()
     {
-        return sprintf(
-            '%s/%s',
-            $this->directoryName,
-            strtr(
-                $this->fileName,
-                array(
-                    '%datetime%' => date('Y-m-d_H:i:s')
+        if (!isset($this->resolvedFilePath)) {
+            return sprintf(
+                '%s/%s',
+                $this->directoryName,
+                strtr(
+                    $this->fileName,
+                    array(
+                        '%datetime%' => date('Y-m-d_H:i:s')
+                    )
                 )
-            )
-        );
+            );
+        }
+        return $this->resolvedFilePath;
     }
 
     /**
