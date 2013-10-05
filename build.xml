@@ -225,9 +225,15 @@
         <exec executable="app/console">
             <arg value="oro:assetic:dump" />
         </exec>
+        <exec executable="app/console">
+            <arg value="oro:translation:dump" />
+        </exec>
     </target>
 
     <target name="setupdb" description="Setup db">
+        <exec executable="app/console">
+          <arg value="oro:entity-extend:clear" />
+        </exec>
         <exec executable="app/console">
           <arg value="doctrine:database:drop" />
           <arg value="-n" />
@@ -242,15 +248,15 @@
           <arg value="-n" />
         </exec>
         <exec executable="app/console">
-          <arg value="oro:acl:load" />
+          <arg value="oro:entity-config:init" />
           <arg value="-n" />
         </exec>
         <exec executable="app/console">
-          <arg value="oro:entity-config:update" />
+          <arg value="oro:entity-extend:init" />
           <arg value="-n" />
         </exec>
         <exec executable="app/console">
-          <arg value="oro:entity-extend:create" />
+          <arg value="oro:entity-extend:update-config" />
           <arg value="-n" />
         </exec>
         <exec executable="app/console">
