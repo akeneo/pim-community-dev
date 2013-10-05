@@ -14,6 +14,7 @@ Feature: Edit a category
 
   Scenario: Edit a category
     Given I edit the "Laptops" category
+    And I select the "Computers" tree
     And I change the Code to "notebooks"
     And I save the category
     Then I should be on the category "notebooks" edit page
@@ -22,12 +23,14 @@ Feature: Edit a category
   @javascript
   Scenario: Go to category edit page from the category tree
     Given I am on the categories page
+    And I select the "Computers" tree
     And I click on the "Computers" category
     Then I should be on the category "computers" edit page
 
   @javascript
   Scenario: Move category to a different position in the tree
     Given I am on the categories page
+    And I select the "Computers" tree
     And I expand the "Laptops" category
     And I drag the "Hard drives" category to the "Computers" category
     Then I should see the "Hard drives" category under the "Computers" category
