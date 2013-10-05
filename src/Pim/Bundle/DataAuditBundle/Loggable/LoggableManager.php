@@ -17,8 +17,8 @@ use Doctrine\ORM\EntityManager;
 class LoggableManager extends OroLoggableManager
 {
     /**
-     * @param                     $logEntityClass
-     * @param ConfigProvider      $auditConfigProvider
+     * @param string         $logEntityClass
+     * @param ConfigProvider $auditConfigProvider
      */
     public function __construct(
         $logEntityClass,
@@ -70,7 +70,6 @@ class LoggableManager extends OroLoggableManager
     {
         $className = get_class($entity);
         if (strpos($className, 'Pim') !== 1) {
-
             return true;
         }
 
