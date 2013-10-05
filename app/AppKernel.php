@@ -53,7 +53,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\UserBundle\PimUserBundle(),
             new Pim\Bundle\SearchBundle\PimSearchBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
-            new Pim\Bundle\DataAuditBundle\PimDataAuditBundle()
+            new Pim\Bundle\DataAuditBundle\PimDataAuditBundle(),
 
             // PIM bundles
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
