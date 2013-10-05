@@ -104,7 +104,7 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
             foreach ($class->parentClasses as $parentClass) {
                 $parentClass = $em->getClassMetadata($parentClass);
 
-                if ( ! $calc->hasClass($parentClass->name)) {
+                if (!$calc->hasClass($parentClass->name)) {
                     $calc->addClass($parentClass);
                 }
 
@@ -115,7 +115,7 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
                 if ($assoc['isOwningSide']) {
                     $targetClass = $em->getClassMetadata($assoc['targetEntity']);
 
-                    if ( ! $calc->hasClass($targetClass->name)) {
+                    if (!$calc->hasClass($targetClass->name)) {
                         $calc->addClass($targetClass);
                     }
 
@@ -126,7 +126,7 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
                     foreach ($targetClass->parentClasses as $parentClass) {
                         $parentClass = $em->getClassMetadata($parentClass);
 
-                        if ( ! $calc->hasClass($parentClass->name)) {
+                        if (!$calc->hasClass($parentClass->name)) {
                             $calc->addClass($parentClass);
                         }
 
