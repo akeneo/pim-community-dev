@@ -38,6 +38,13 @@ class LocaleHelper
      */
     protected $request;
 
+    /**
+     * Constructor
+     *
+     * @param LocaleManager            $localeManager
+     * @param SecurityContextInterface $securityContext
+     * @param string                   $defaultLocale
+     */
     public function __construct(LocaleManager $localeManager, SecurityContextInterface $securityContext, $defaultLocale)
     {
         $this->localeManager = $localeManager;
@@ -47,7 +54,7 @@ class LocaleHelper
 
     /**
      * Sets the current request
-     * 
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
     public function setRequest(Request $request = null)
@@ -57,7 +64,7 @@ class LocaleHelper
 
     /**
      * Returns the current locale from the request, or the default locale if no active request is found
-     * 
+     *
      * @return string
      */
     public function getCurrentLocale()
@@ -68,8 +75,9 @@ class LocaleHelper
     /**
      * Initialized the locales list (if needed) and get the localized label
      *
-     * @param string $code the code of the local's label
+     * @param string $code   the code of the local's label
      * @param string $locale the locale in which the label should be translated
+     *
      * @return string
      */
     public function getLocaleLabel($code, $locale = null)
@@ -83,9 +91,10 @@ class LocaleHelper
 
     /**
      * Returns the symbol for a currency
-     * 
+     *
      * @param string $currency
      * @param string $locale
+     *
      * @return string
      */
     public function getCurrencySymbol($currency, $locale = null)
@@ -93,15 +102,16 @@ class LocaleHelper
         if (is_null($locale)) {
             $locale = $this->getCurrentLocale();
         }
-        
+
         return Intl\Intl::getCurrencyBundle()->getCurrencySymbol($currency, $locale);
     }
-    
+
     /**
      * Returns the label for a currency
-     * 
+     *
      * @param string $currency
      * @param string $locale
+     *
      * @return string
      */
     public function getCurrencyLabel($currency, $locale = null)
@@ -112,12 +122,12 @@ class LocaleHelper
 
         return Intl\Intl::getCurrencyBundle()->getCurrencyName($currency, $locale);
     }
-    
+
     /**
      * Returns an array of all known currency names, indexed by code
-     * 
-     * @param string $currency
+     *
      * @param string $locale
+     *
      * @return string
      */
     public function getCurrencyLabels($locale = null)
@@ -125,12 +135,13 @@ class LocaleHelper
         if (is_null($locale)) {
             $locale = $this->getCurrentLocale();
         }
+
         return Intl\Intl::getCurrencyBundle()->getCurrencyNames($locale);
     }
 
     /**
      * Returns the catalog locale currency
-     * 
+     *
      * @return string
      */
     public function getLocaleCurrency()
@@ -143,9 +154,11 @@ class LocaleHelper
 
     /**
      * Returns the flag icon for a locale
-     * 
-     * @param string $code
-     * @param string $locale
+     *
+     * @param string  $code
+     * @param boolean $fullLabel
+     * @param string  $locale
+     *
      * @return string
      */
     public function getFlag($code, $fullLabel = false, $locale = null)
@@ -154,7 +167,7 @@ class LocaleHelper
             $locale = $this->getCurrentLocale();
         }
         $localeLabel = $this->getLocaleLabel($code, $locale);
-        
+
         return sprintf(
             '<img src="%s" class="flag flag-%s" alt="%s" /><code class="flag-language">%s</code>',
             '/bundles/pimui/images/blank.gif',
@@ -166,7 +179,7 @@ class LocaleHelper
 
     /**
      * Returns the locale for the catalog
-     * 
+     *
      * @return string|NULL
      */
     protected function getCatalogLocale()

@@ -165,7 +165,7 @@ flash:
     variant group:
         created: __Variant group successfully created
         updated: __Variant group successfully updated
-        removed: __Variant group successfully removed 
+        removed: __Variant group successfully removed
     error ocurred: __Action failed. Please retry.
 
 # Info messages

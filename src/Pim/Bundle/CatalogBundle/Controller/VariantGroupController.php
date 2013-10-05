@@ -56,15 +56,17 @@ class VariantGroupController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request $request
-     * @param EngineInterface $templating
-     * @param RouterInterface $router
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
      * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface $formFactory
-     * @param ValidatorInterface $validator
-     * @param TranslatorInterface $translator
-     * @param RegistryInterface $doctrine
-     * @param DatagridWorkerInterface $datagridWorker
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
+     * @param RegistryInterface        $doctrine
+     * @param DatagridWorkerInterface  $datagridWorker
+     * @param VariantGroupHandler      $variantHandler
+     * @param Form                     $variantForm
      */
     public function __construct(
         Request $request,
@@ -127,6 +129,7 @@ class VariantGroupController extends AbstractDoctrineController
 
     /**
      * Create a variant group
+     * @param Request $request
      *
      * @Template
      * @Acl(
@@ -193,8 +196,8 @@ class VariantGroupController extends AbstractDoctrineController
 
     /**
      * Remove a variant group
-     *
      * @param VariantGroup $variant
+     *
      * @Acl(
      *     id="pim_catalog_variant_group_remove",
      *     name="Remove a variant group",
