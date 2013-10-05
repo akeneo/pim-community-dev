@@ -9,7 +9,7 @@
 
     <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb,fixtures,phpunit-coverage"/>
 
-    <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat"/>
+    <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
     <target name="build-behat-pr" depends="prepare,composer,vendors,install-all-behat,behat-pr"/>
 
