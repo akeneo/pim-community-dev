@@ -44,5 +44,4 @@ class Creation extends CategoryView
 
         return $this;
     }
-
 }
