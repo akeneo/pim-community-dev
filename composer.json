@@ -36,15 +36,9 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:laboro/platform.git",
-            "branch": "master"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/akeneo/platform.git",
             "branch": "master"
         },
-
         {
             "type": "vcs",
             "url": "https://github.com/akeneo/DemoBundle.git"

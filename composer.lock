@@ -3476,12 +3476,12 @@
             "version": "dev-maintenance/pim_beta1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:laboro/platform.git",
+                "url": "https://github.com/akeneo/platform.git",
                 "reference": "84c360dc2a94f397946726e8662ea0b4cbd69574"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laboro/platform/zipball/84c360dc2a94f397946726e8662ea0b4cbd69574",
+                "url": "https://api.github.com/repos/akeneo/platform/zipball/84c360dc2a94f397946726e8662ea0b4cbd69574",
                 "reference": "84c360dc2a94f397946726e8662ea0b4cbd69574",
                 "shasum": ""
             },
@@ -3541,8 +3541,8 @@
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/orocrm/platform.git",
             "support": {
-                "source": "https://github.com/laboro/platform/tree/maintenance/pim_beta1",
-                "issues": "https://github.com/laboro/platform/issues"
+                "source": "https://github.com/akeneo/platform/tree/maintenance/pim_beta1",
+                "issues": "https://github.com/akeneo/platform/issues"
             },
             "time": "2013-10-04 14:37:31"
         },
