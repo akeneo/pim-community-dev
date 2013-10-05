@@ -284,9 +284,6 @@
           <arg value="--no-interaction" />
         </exec>
         <exec executable="app/console">
-          <arg value="oro:acl:load" />
-        </exec>
-        <exec executable="app/console">
           <arg value="oro:search:create-index" />
         </exec>
         <exec executable="app/console">
