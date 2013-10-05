@@ -75,6 +75,8 @@ oro_menu_config:
             display: false
         oro_email_emailtemplate_list:
             display: false
+        emails:
+            display: false
         oro_notification_emailnotification_list:
             display: false
         entities_list:
