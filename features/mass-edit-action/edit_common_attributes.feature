@@ -40,8 +40,7 @@ Feature: Edit common attributes of many products at once
     And I display the Name attribute
     And I change the "Name" to "Lamp"
     And I move on to the next step
-    Then I should see "Product(s) attribute(s) have been updated"
-    And the english name of lamp should be "Lamp"
+    Then the english name of lamp should be "Lamp"
     And the english name of torch should be "Lamp"
     And the english name of ceiling should be "Lamp"
 
@@ -57,8 +56,7 @@ Feature: Edit common attributes of many products at once
     And I change the "$ Price" to "100"
     And I change the "€ Price" to "150"
     And I move on to the next step
-    Then I should see "Product(s) attribute(s) have been updated"
-    And the prices "Price" of products lamp and torch should be:
+    Then the prices "Price" of products lamp and torch should be:
       | amount | currency |
       | 100    | USD      |
       | 150    | EUR      |
@@ -70,8 +68,7 @@ Feature: Edit common attributes of many products at once
     And I display the Visual attribute
     And I attach file "akeneo.jpg" to "Visual"
     And I move on to the next step
-    Then I should see "Product(s) attribute(s) have been updated"
-    And the file "Visual" of products torch and ceiling should be "akeneo.jpg"
+    Then the file "Visual" of products torch and ceiling should be "akeneo.jpg"
 
   Scenario: Succesfully update many multi-valued values at once
     Given the following "Colors" attribute options: Red, Blue and White
@@ -81,8 +78,7 @@ Feature: Edit common attributes of many products at once
     And I display the Colors attribute
     And I change the "Colors" to "Red, Blue"
     And I move on to the next step
-    Then I should see "Product(s) attribute(s) have been updated"
-    And the options "Colors" of products lamp and ceiling should be:
+    Then the options "Colors" of products lamp and ceiling should be:
       | value |
       | Red   |
       | Blue  |
@@ -94,5 +90,4 @@ Feature: Edit common attributes of many products at once
     And I display the Weight attribute
     And I change the "Weight" to "600"
     And I move on to the next step
-    Then I should see "Product(s) attribute(s) have been updated"
-    And the metric "Weight" of products lamp and torch should be "600"
+    Then the metric "Weight" of products lamp and torch should be "600"

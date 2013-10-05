@@ -15,7 +15,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
@@ -28,13 +28,6 @@ use Pim\Bundle\CatalogBundle\Form\Handler\VariantGroupHandler;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Acl(
- *     id="pim_catalog_variant_group",
- *     name="Variant group manipulation",
- *     description="Variant group manipulation",
- *     parent="pim_catalog"
- * )
  */
 class VariantGroupController extends AbstractDoctrineController
 {
@@ -103,12 +96,7 @@ class VariantGroupController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @Acl(
-     *     id="pim_catalog_variant_group_index",
-     *     name="View variant group list",
-     *     description="View variant group list",
-     *     parent="pim_catalog_variant_group"
-     * )
+     * @AclAncestor("pim_catalog_variant_group_index")
      * @return Response
      */
     public function indexAction(Request $request)
@@ -132,12 +120,7 @@ class VariantGroupController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @Acl(
-     *     id="pim_catalog_variant_group_create",
-     *     name="Create a variant group",
-     *     description="Create a variant group",
-     *     parent="pim_catalog_variant_group"
-     * )
+     * @AclAncestor("pim_catalog_variant_group_create")
      * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
@@ -171,12 +154,7 @@ class VariantGroupController extends AbstractDoctrineController
      * @param VariantGroup $variant
      *
      * @Template
-     * @Acl(
-     *     id="pim_catalog_variant_group_edit",
-     *     name="Edit a variant group",
-     *     description="Edit a variant group",
-     *     parent="pim_catalog_variant_group"
-     * )
+     * @AclAncestor("pim_catalog_variant_group_edit")
      * @return array
      */
     public function editAction(VariantGroup $variant)
@@ -198,12 +176,7 @@ class VariantGroupController extends AbstractDoctrineController
      * Remove a variant group
      * @param VariantGroup $variant
      *
-     * @Acl(
-     *     id="pim_catalog_variant_group_remove",
-     *     name="Remove a variant group",
-     *     description="Remove a variant group",
-     *     parent="pim_catalog_variant_group"
-     * )
+     * @AclAncestor("pim_catalog_variant_group_remove")
      * @return Response|RedirectResponse
      */
     public function removeAction(VariantGroup $variant)

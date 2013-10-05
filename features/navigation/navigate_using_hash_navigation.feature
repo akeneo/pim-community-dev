@@ -33,4 +33,3 @@ Feature: Navigate the application in hash navigation mode
     | oro_user_status_create               |
     | oro_user_index                       |
     | oro_user_create                      |
-    | oro_default                          |

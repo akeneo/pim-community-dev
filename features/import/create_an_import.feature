@@ -14,7 +14,6 @@ Feature: Create an import
     And I visit the "Configuration" tab
     And I save the import
     Then I should see "Import profile - Mobile product import"
-    And I should see "The import has been successfully created."
 
   Scenario: Fail to create an unknown product import
     Given I am logged in as "admin"

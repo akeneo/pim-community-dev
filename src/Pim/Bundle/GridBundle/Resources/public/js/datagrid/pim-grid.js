@@ -22,6 +22,7 @@ define(
                 rowClassName: '',
                 toolbarOptions: {addResetAction: true, addRefreshAction: true},
                 rowClickAction: undefined,
+                multipleSorting: true,
                 rowActions: [],
                 massActions: [],
                 exportActions: []

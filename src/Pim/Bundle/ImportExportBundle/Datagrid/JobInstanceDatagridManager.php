@@ -63,7 +63,7 @@ class JobInstanceDatagridManager extends DatagridManager
         $clickAction = array(
             'name'         => 'rowClick',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => sprintf('pim_importexport_%s_show', $this->jobType),
             'options'      => array(
                 'label'         => $this->translate('Show'),
                 'link'          => 'show_link',
@@ -75,18 +75,18 @@ class JobInstanceDatagridManager extends DatagridManager
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => sprintf('pim_importexport_%s_edit', $this->jobType),
             'options'      => array(
-                'label'   => $this->translate('Edit'),
-                'icon'    => 'edit',
-                'link'    => 'edit_link'
+                'label' => $this->translate('Edit'),
+                'icon'  => 'edit',
+                'link'  => 'edit_link'
             )
         );
 
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'root',
+            'acl_resource' => sprintf('pim_importexport_%s_remove', $this->jobType),
             'options'      => array(
                 'label' => $this->translate('Delete'),
                 'icon'  => 'trash',
@@ -95,13 +95,13 @@ class JobInstanceDatagridManager extends DatagridManager
         );
 
         $launchAction = array(
-            'name'        => 'launch',
+            'name'         => 'launch',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => sprintf('pim_importexport_%s_launch', $this->jobType),
             'options'      => array(
-                'label'   => $this->translate('Launch'),
-                'icon'    => 'play',
-                'link'    => 'show_link'
+                'label' => $this->translate('Launch'),
+                'icon'  => 'play',
+                'link'  => 'show_link'
             )
         );
 

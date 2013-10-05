@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
  * Currency entity
@@ -16,6 +17,15 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="pim_catalog_currency")
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository")
  * @UniqueEntity("code")
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Currency", "plural_label"="Currencies"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
 class Currency
 {

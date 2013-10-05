@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -27,6 +28,15 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  * @Gedmo\Tree(type="nested")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Category", "plural_label"="Categories"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
 class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, VersionableInterface
 {
