@@ -53,6 +53,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\UserBundle\PimUserBundle(),
             new Pim\Bundle\SearchBundle\PimSearchBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
+            new Pim\Bundle\DataAuditBundle\PimDataAuditBundle()
 
             // PIM bundles
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
@@ -63,7 +64,6 @@ class AppKernel extends Kernel
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
             new Pim\Bundle\DemoBundle\PimDemoBundle(),
             new Pim\Bundle\VersioningBundle\PimVersioningBundle(),
-            new Pim\Bundle\DataAuditBundle\PimDataAuditBundle()
         );
 
         $bundles = array_merge($bundles, $pimBundles);
