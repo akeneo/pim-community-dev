@@ -54,25 +54,8 @@ oro_config:
 oro_dataaudit:
     resource: "@OroDataAuditBundle/Resources/config/routing.yml"
 
-oro_tag:
-    resource: "@OroTagBundle/Resources/config/routing.yml"
-    prefix:   /
-
-oro_email:
-    resource: "@OroEmailBundle/Resources/config/routing.yml"
-    prefix:   /
-
-oro_organization:
-    resource: "@OroOrganizationBundle/Resources/config/routing.yml"
-    prefix:   /
-
-oro_translation_bundle:
-    resource: "@OroTranslationBundle/Resources/config/routing.yml"
-    prefix:   /
-
-oro_assets:
-    resource: .
-    type: oro_assetic
+oro_entity:
+    resource: "@OroEntityBundle/Resources/config/routing.yml"
 
 oro_entity_config:
     resource: "@OroEntityConfigBundle/Resources/config/routing.yml"
@@ -80,9 +63,37 @@ oro_entity_config:
 oro_entity_extend:
     resource: "@OroEntityExtendBundle/Resources/config/routing.yml"
 
+oro_workflow:
+    resource: "@OroWorkflowBundle/Resources/config/routing.yml"
+
+oro_address:
+    resource: "@OroAddressBundle/Resources/config/routing.yml"
+
+oro_translation_bundle:
+    resource: "@OroTranslationBundle/Resources/config/routing.yml"
+
+oro_assets:
+    resource: .
+    type:     oro_assetic
+
+oro_tag:
+    resource: "@OroTagBundle/Resources/config/routing.yml"
+
+oro_email:
+    resource: "@OroEmailBundle/Resources/config/routing.yml"
+
+oro_organization:
+    resource: "@OroOrganizationBundle/Resources/config/routing.yml"
+
 oro_cron:
     resource: "@OroCronBundle/Resources/config/routing.yml"
     prefix:   /cron
+
+oro_installer:
+    resource: "@OroInstallerBundle/Resources/config/routing.yml"
+
+oro_importexport:
+    resource: "@OroImportExportBundle/Resources/config/routing.yml"
 
 # other third party
 

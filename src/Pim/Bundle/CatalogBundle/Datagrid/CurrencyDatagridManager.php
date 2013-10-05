@@ -79,7 +79,7 @@ class CurrencyDatagridManager extends DatagridManager
         $toggleAction = array(
             'name'         => 'toggle',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_catalog_currency_toggle',
             'options'      => array(
                 'label'         => $this->translate('Change status'),
                 'icon'          => 'random',

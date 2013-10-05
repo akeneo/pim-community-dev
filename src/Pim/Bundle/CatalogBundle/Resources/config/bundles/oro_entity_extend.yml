@@ -1,3 +1,2 @@
 oro_entity_extend:
-    backend:        Dynamic
-    backup:         "%kernel.root_dir%/entities/Backup/"
+    backup: "%kernel.root_dir%/entities/Backup/"

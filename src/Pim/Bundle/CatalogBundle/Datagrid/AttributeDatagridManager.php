@@ -58,7 +58,7 @@ class AttributeDatagridManager extends DatagridManager
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => $this->translate('Code'),
-                'field_name'   => 'code',
+                'field_name'  => 'code',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
@@ -96,14 +96,14 @@ class AttributeDatagridManager extends DatagridManager
         $field->setName('scopable');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
-                'label'       => $this->translate('Scopable'),
-                'field_name'  => 'scopable',
-                'filter_type' => FilterInterface::TYPE_BOOLEAN,
-                'required'    => false,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
+                'type'            => FieldDescriptionInterface::TYPE_BOOLEAN,
+                'label'           => $this->translate('Scopable'),
+                'field_name'      => 'scopable',
+                'filter_type'     => FilterInterface::TYPE_BOOLEAN,
+                'required'        => false,
+                'sortable'        => true,
+                'filterable'      => true,
+                'show_filter'     => true,
                 'filter_by_where' => true
             )
         );
@@ -140,14 +140,14 @@ class AttributeDatagridManager extends DatagridManager
         $field->setName('attributeType');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_TEXT,
-                'label'       => $this->translate('Type'),
-                'field_name'  => 'attributeType',
-                'filter_type' => FilterInterface::TYPE_CHOICE,
-                'required'    => false,
-                'sortable'    => false,
-                'filterable'  => true,
-                'show_filter' => true,
+                'type'          => FieldDescriptionInterface::TYPE_TEXT,
+                'label'         => $this->translate('Type'),
+                'field_name'    => 'attributeType',
+                'filter_type'   => FilterInterface::TYPE_CHOICE,
+                'required'      => false,
+                'sortable'      => false,
+                'filterable'    => true,
+                'show_filter'   => true,
                 'field_options' => array('choices' => $this->getAttributeTypeFieldOptions(), 'multiple' => true),
             )
         );
@@ -176,15 +176,15 @@ class AttributeDatagridManager extends DatagridManager
         $field->setName('group');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_HTML,
-                'label'       => $this->translate('Group'),
-                'field_name'  => 'groupLabel',
-                'expression'  => 'attributeGroup.id',
-                'filter_type' => FilterInterface::TYPE_CHOICE,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-                'field_options' => array('choices' => $choices),
+                'type'            => FieldDescriptionInterface::TYPE_HTML,
+                'label'           => $this->translate('Group'),
+                'field_name'      => 'groupLabel',
+                'expression'      => 'attributeGroup.id',
+                'filter_type'     => FilterInterface::TYPE_CHOICE,
+                'sortable'        => true,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'field_options'   => array('choices' => $choices),
                 'filter_by_where' => true
             )
         );
@@ -204,11 +204,11 @@ class AttributeDatagridManager extends DatagridManager
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_catalog_attribute_edit',
             'options'      => array(
-                'label'   => $this->translate('Edit'),
-                'icon'    => 'edit',
-                'link'    => 'edit_link'
+                'label' => $this->translate('Edit'),
+                'icon'  => 'edit',
+                'link'  => 'edit_link'
             )
         );
 
@@ -219,11 +219,11 @@ class AttributeDatagridManager extends DatagridManager
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_catalog_attribute_remove',
             'options'      => array(
-                'label'   => $this->translate('Delete'),
-                'icon'    => 'trash',
-                'link'    => 'delete_link'
+                'label' => $this->translate('Delete'),
+                'icon'  => 'trash',
+                'link'  => 'delete_link'
             )
         );
 

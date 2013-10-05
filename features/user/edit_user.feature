@@ -8,9 +8,13 @@ Feature: Edit a user
 
   Scenario: Successfully edit a user
     Given I edit the "admin" user
-    Then I should see "Doe, John"
     When I fill in the following information:
-      | Last name | Smith |
+      | First name | John  |
+      | Last name  | Smith |
     And I save the user
-    Then I should see "Smith, John"
-    And I should see "User successfully saved"
+    Then I should see "John Smith"
+    And I edit the "admin" user
+    When I fill in the following information:
+      | Last name  | Doe |
+    And I save the user
+    Then I should see "John Doe"

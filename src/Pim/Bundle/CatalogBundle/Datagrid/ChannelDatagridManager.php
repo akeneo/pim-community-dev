@@ -133,11 +133,11 @@ class ChannelDatagridManager extends DatagridManager
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_catalog_channel_edit',
             'options'      => array(
-                'label'   => $this->translate('Edit'),
-                'icon'    => 'edit',
-                'link'    => 'edit_link'
+                'label' => $this->translate('Edit'),
+                'icon'  => 'edit',
+                'link'  => 'edit_link'
             )
         );
 
@@ -148,7 +148,7 @@ class ChannelDatagridManager extends DatagridManager
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_catalog_channel_remove',
             'options'      => array(
                 'label' => $this->translate('Delete'),
                 'icon'  => 'trash',

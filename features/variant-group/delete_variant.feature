@@ -21,13 +21,11 @@ Feature: Delete a variant group
     And I should see variant MUG
     When I click on the "Delete" action of the row which contains "MUG"
     And I confirm the deletion
-    Then I should see "Item was deleted"
-    And I should not see variant MUG
+    Then I should not see variant MUG
 
   Scenario: Successfully delete a variant
     Given I edit the "TSHIRT" variant
     When I press the "Delete" button
     And I confirm the deletion
-    Then I should see "Variant group successfully removed"
-    And the grid should contain 1 element
+    Then the grid should contain 1 element
     And I should not see variant "TSHIRT"

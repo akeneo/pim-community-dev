@@ -23,6 +23,6 @@ Feature: Edit a variant group
   Scenario: Successfully edit a variant group
     Given I am on the "MUG" variant page
     When I fill in the following information:
-      | English (United States) | Mug |
+      | English (United States) | My Mug |
     And I press the "Save" button
-    Then I should see "Variant group successfully updated"
+    Then I should see "My Mug"
