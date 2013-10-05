@@ -21,7 +21,7 @@ class LocaleExtension extends \Twig_Extension
     /**
      * Constructor
      *
-     * @param LocaleHelper  $localeHelper
+     * @param LocaleHelper $localeHelper
      */
     public function __construct(LocaleHelper $localeHelper)
     {
@@ -66,7 +66,7 @@ class LocaleExtension extends \Twig_Extension
     /**
      * Returns the symbol for a currency
      *
-     * @param string $currency
+     * @param string $code
      * @param string $locale
      *
      * @return string

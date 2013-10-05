@@ -91,7 +91,7 @@ oro_menu_config:
                     children:
                         pim_enrich_product: ~
                         pim_enrich_categorytree: ~
-                        pim_enrich_variantgroup: ~ 
+                        pim_enrich_variantgroup: ~
 
                 pim_configuration_tab:
                     children:

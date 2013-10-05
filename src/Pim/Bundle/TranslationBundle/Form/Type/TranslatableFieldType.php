@@ -36,12 +36,11 @@ class TranslatableFieldType extends AbstractType
      * @var Request
      */
     protected $request;
-    
+
     /**
      * @var LocaleHelper
      */
     protected $localeHelper;
-
 
     /**
      * @param ValidatorInterface $validator
@@ -127,7 +126,7 @@ class TranslatableFieldType extends AbstractType
 
     /**
      * Returns the request locale, or the default locale if no request exists
-     * 
+     *
      * @return string
      */
     protected function getDefaultLocale()

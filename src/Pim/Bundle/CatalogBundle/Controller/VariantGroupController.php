@@ -58,6 +58,8 @@ class VariantGroupController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      * @param DatagridWorkerInterface  $datagridWorker
+     * @param VariantGroupHandler      $variantHandler
+     * @param Form                     $variantForm
      */
     public function __construct(
         Request $request,
@@ -115,6 +117,7 @@ class VariantGroupController extends AbstractDoctrineController
 
     /**
      * Create a variant group
+     * @param Request $request
      *
      * @Template
      * @AclAncestor("pim_catalog_variant_group_create")
@@ -171,7 +174,6 @@ class VariantGroupController extends AbstractDoctrineController
 
     /**
      * Remove a variant group
-     *
      * @param VariantGroup $variant
      *
      * @AclAncestor("pim_catalog_variant_group_remove")
