@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 
 /**
  * Flexible product
@@ -32,6 +33,8 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
  *      }
  *  }
  * )
+ *
+ * @ExclusionPolicy("all")
  */
 class Product extends AbstractEntityFlexible implements ProductInterface, VersionableInterface
 {
