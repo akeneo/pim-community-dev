@@ -14,7 +14,6 @@ Feature: Edit a category
 
   Scenario: Edit a category
     Given I edit the "Laptops" category
-    And I select the "Computers" tree
     And I change the Code to "notebooks"
     And I save the category
     Then I should be on the category "notebooks" edit page
