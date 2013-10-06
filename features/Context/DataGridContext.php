@@ -15,7 +15,6 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
  */
 class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 {
-
     /**
      * @var \SensioLabs\Behat\PageObjectExtension\Context\PageFactory
      */
@@ -484,7 +483,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     *
      * @return \Behat\Behat\Context\ExtendedContextInterface
      */
     private function getWebUserContext()

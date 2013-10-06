@@ -81,6 +81,9 @@ class EditCommonAttributes extends Wizard
         }
     }
 
+    /**
+     * @param string $label
+     */
     private function expand($label)
     {
         if ($icon = $label->getParent()->find('css', '.icon-caret-right')) {

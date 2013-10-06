@@ -17,6 +17,10 @@ class ChangeStatus extends Wizard
         'Products status' => array('css' => '#pim_catalog_mass_edit_action_operation_toEnable')
     );
 
+    /**
+     * Enable the products
+     * @return ChangeStatus
+     */
     public function enableProducts()
     {
         $this->getElement('Products status')->check();
@@ -24,6 +28,10 @@ class ChangeStatus extends Wizard
         return $this;
     }
 
+    /**
+     * Disable the products
+     * @return ChangeStatus
+     */
     public function disableProducts()
     {
         $this->getElement('Products status')->uncheck();

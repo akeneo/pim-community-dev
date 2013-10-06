@@ -155,7 +155,6 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
      *
      * @param ContainerBuilder $container
      * @param string           $extensionAlias
-     *
      */
     private function prependExtensionConfig(ContainerBuilder $container, $extensionAlias)
     {

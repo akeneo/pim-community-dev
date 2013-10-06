@@ -1166,7 +1166,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      * @param string $label
-     * @param array $attributes
+     * @param array  $attributes
      */
     private function createVariant($code, $label, array $attributes)
     {
