@@ -28,7 +28,7 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
      */
     public function testInstanceOfMassEditAction()
     {
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\MassEditAction\MassEditAction', $this->action);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionInterface', $this->action);
     }
 
     /**
