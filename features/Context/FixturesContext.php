@@ -624,7 +624,7 @@ class FixturesContext extends RawMinkContext
         $entity = $this->{'get'.ucfirst($entityName)}($id);
 
         foreach ($table->getHash() as $data) {
-            $audit = new Audit;
+            $audit = new Audit();
             $audit->setAction($data['action']);
             $audit->setLoggedAt(new \DateTime($data['loggedAt']));
             $audit->setObjectId($entity->getId());
@@ -1111,7 +1111,7 @@ class FixturesContext extends RawMinkContext
      */
     private function createLocale($code)
     {
-        $locale = new Locale;
+        $locale = new Locale();
         $locale->setCode($code);
 
         $this->persist($locale);

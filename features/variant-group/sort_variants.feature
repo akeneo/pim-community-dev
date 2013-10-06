@@ -28,7 +28,7 @@ Feature: Sort variants
     Given I am on the variants page
     When I sort by "code" value ascending
     Then I should see sorted variants MUG, TSHIRT_AKENEO and TSHIRT_ORO
-    
+
   Scenario: Successfully sort variants by code descending
     Given I am on the variants page
     When I sort by "code" value descending
@@ -38,7 +38,7 @@ Feature: Sort variants
     Given I am on the variants page
     When I sort by "label" value ascending
     Then I should see sorted variants MUG, TSHIRT_AKENEO and TSHIRT_ORO
-    
+
   Scenario: Successfully sort variants by label descending
     Given I am on the variants page
     When I sort by "label" value descending

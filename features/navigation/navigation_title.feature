@@ -136,7 +136,7 @@ Feature: Well display navigation titles
   Scenario: Successfully display the variant index view title
     Given I am on the variants page
     Then I should see the title "Variant groups"
-  
+
   Scenario: Successfully display the variant edit view title
     Given there is no variant
     And the following attribute:

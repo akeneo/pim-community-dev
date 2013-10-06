@@ -26,5 +26,3 @@ Feature: Classify a product
     And I click on the "Cold" category
     When I press the "Save" button
     Then I should see "Beverages (2)"
-     
-
