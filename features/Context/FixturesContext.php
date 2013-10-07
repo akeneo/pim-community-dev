@@ -22,6 +22,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Gherkin\Node\PyStringNode;
 
 /**
  * A context for creating entities
@@ -54,6 +55,16 @@ class FixturesContext extends RawMinkContext
         'file'        => 'pim_catalog_file',
         'multiselect' => 'pim_catalog_multiselect',
     );
+
+    private $placeholderValues = array();
+
+    /**
+     * @BeforeScenario
+     */
+    public function resetPlaceholderValues()
+    {
+        $this->placeholderValues = array();
+    }
 
     /**
      * @BeforeScenario
@@ -366,13 +377,9 @@ class FixturesContext extends RawMinkContext
                     'scopable'     => false,
                     'scopable'     => 'no',
                     'translatable' => 'no',
-                    'locale'       => null,
-                    'scope'        => null
                 ),
                 $data
             );
-            $data['locale'] = ($data['locale'] === '') ? null : $data['locale'];
-            $data['scope'] = ($data['scope'] === '') ? null : $data['scope'];
 
             try {
                 $code = $this->camelize($data['label']);
@@ -411,8 +418,7 @@ class FixturesContext extends RawMinkContext
             if (!empty($data['product'])) {
                 $product = $this->getProduct($data['product']);
                 $value   = $this->createValue($attribute);
-                $value->setLocale($data['locale']);
-                $value->setScope($data['scope']);
+
                 $product->addValue($value);
                 $this->getProductManager()->save($product);
             }
@@ -590,15 +596,20 @@ class FixturesContext extends RawMinkContext
     public function theFollowingAttributes(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
+            $data = array_merge(
+                array(
+                    'scopable'    => 'no',
+                    'localizable' => 'no',
+                    'group'       => null,
+                ),
+                $data
+            );
+
             $attribute = $this->getProductManager()->createAttribute($data['type']);
 
             $attribute->setCode($data['code']);
-
-            $scopable = (isset($data['scopable'])) ? $data['scopable'] === 'yes' : false;
-            $attribute->setScopable($scopable);
-
-            $localizable = (isset($data['localizable'])) ? $data['localizable'] === 'yes' : false;
-            $attribute->setTranslatable($localizable);
+            $attribute->setScopable($data['scopable'] === 'yes');
+            $attribute->setTranslatable($data['localizable'] === 'yes');
 
             $attribute->setLocale('en_US');
             $attribute->setLabel($data['label']);
@@ -676,7 +687,11 @@ class FixturesContext extends RawMinkContext
         $steps       = $job->getSteps();
 
         foreach ($table->getHash() as $data) {
-            $config[$data['element']][$data['property']] = $data['value'];
+            $value = $this->replacePlaceholders($data['value']);
+            if (in_array($value, array('yes', 'no'))) {
+                $value = 'yes' === $value;
+            }
+            $config[$data['element']][$data['property']] = $value;
         }
         $config = array_merge(array('reader' => array(), 'processor' => array(), 'writer' => array()), $config);
         $steps[0]->setConfiguration($config);
@@ -848,34 +863,37 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $identifier
-     * @param string $attribute
-     * @param string $locale
-     * @param string $scope
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return ProductValue
+     * @Given /^the following file to import:$/
      */
-    private function getProductValue($identifier, $attribute, $locale = null, $scope = null)
+    public function theFollowingFileToImport(PyStringNode $string)
     {
-        $product = $this->getProductManager()->findByIdentifier($identifier);
-        if (!$product) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find product with identifier "%s"', $identifier)
-            );
+        $this->placeholderValues['file to import'] = $filename =
+            sprintf('/tmp/behat-import-%s.csv', substr(md5(rand()), 0, 7));
+        file_put_contents($filename, (string) $string);
+    }
+
+    /**
+     * @Then /^there should be (\d+) products?$/
+     */
+    public function thereShouldBeProducts($expectedTotal)
+    {
+        $total = count($this->getProductManager()->getFlexibleRepository()->findAll());
+
+        assertEquals($expectedTotal, $total);
+    }
+
+    /**
+     * @Given /^the product "([^"]*)" should have the following values?:$/
+     */
+    public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
+    {
+        $this->getEntityManager()->clear();
+        $product = $this->getProduct($identifier);
+        $this->getEntityManager()->refresh($product);
+
+        foreach ($table->getRowsHash() as $code => $value) {
+            assertEquals($value, (string) $product->getValue($code));
         }
-
-        $productValue = $product->getValue($attribute, $locale, $scope);
-        if (!$productValue) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find product value for attribute "%s" in locale "%s"', $attribute, $locale)
-            );
-        }
-
-        $this->getEntityManager()->refresh($productValue);
-
-        return $productValue;
     }
 
     /**
@@ -895,11 +913,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getProduct($sku)
     {
-        $manager    = $this->getProductManager();
-        $repository = $manager->getFlexibleRepository();
-        $qb         = $repository->createQueryBuilder('p');
-        $repository->applyFilterByAttribute($qb, $manager->getIdentifierAttribute()->getCode(), $sku);
-        $product = $qb->getQuery()->getOneOrNullResult();
+        $product = $this->getProductManager()->findByIdentifier($sku);
 
         return $product ?: $this->createProduct($sku);
     }
@@ -993,6 +1007,80 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * Get currency
+     *
+     * @param string $code
+     *
+     * @return Currency
+     */
+    public function getCurrency($code)
+    {
+        return $this->getEntityOrException('PimCatalogBundle:Currency', array('code' => $code));
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Category
+     */
+    public function getCategory($code)
+    {
+        return $this->getEntityOrException('PimCatalogBundle:Category', array('code' => $code));
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Job
+     */
+    public function getJobInstance($code)
+    {
+        return $this->getEntityOrException('OroBatchBundle:JobInstance', array('code' => $code));
+    }
+
+    public function replacePlaceholders($value)
+    {
+        if (false !== strpos($value, '{{') && false !== strpos($value, '}}')) {
+            $key = trim(str_replace(array('{{', '}}'), '', $value));
+            if (array_key_exists($key, $this->placeholderValues)) {
+                return $this->placeholderValues[$key];
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $attribute
+     * @param string $locale
+     * @param string $scope
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return ProductValue
+     */
+    private function getProductValue($identifier, $attribute, $locale = null, $scope = null)
+    {
+        $product = $this->getProductManager()->findByIdentifier($identifier);
+        if (!$product) {
+            throw new \InvalidArgumentException(
+                sprintf('Could not find product with identifier "%s"', $identifier)
+            );
+        }
+
+        $productValue = $product->getValue($attribute, $locale, $scope);
+        if (!$productValue) {
+            throw new \InvalidArgumentException(
+                sprintf('Could not find product value for attribute "%s" in locale "%s"', $attribute, $lang)
+            );
+        }
+        $this->getEntityManager()->refresh($productValue);
+
+        return $productValue;
+    }
+
+    /**
      * @param mixed $data
      *
      * @return Product
@@ -1025,6 +1113,10 @@ class FixturesContext extends RawMinkContext
         $attribute->setTranslatable($translatable);
         $attribute->setUseableAsGridColumn($showInGrid);
         $attribute->setUseableAsGridFilter($showInGrid);
+        if ('identifier' === $type) {
+            $attribute->setUnique(true);
+            $attribute->setRequired(true);
+        }
         $this->persist($attribute);
 
         return $attribute;
@@ -1092,18 +1184,6 @@ class FixturesContext extends RawMinkContext
         }
 
         return $lang;
-    }
-
-    /**
-     * Get currency
-     *
-     * @param string $code
-     *
-     * @return Currency
-     */
-    public function getCurrency($code)
-    {
-        return $this->getEntityOrException('PimCatalogBundle:Currency', array('code' => $code));
     }
 
     /**
@@ -1204,16 +1284,6 @@ class FixturesContext extends RawMinkContext
      *
      * @return Category
      */
-    public function getCategory($code)
-    {
-        return $this->getEntityOrException('PimCatalogBundle:Category', array('code' => $code));
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return Category
-     */
     private function getCategoryOrCreate($code)
     {
         try {
@@ -1225,16 +1295,6 @@ class FixturesContext extends RawMinkContext
         }
 
         return $category;
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return Job
-     */
-    public function getJobInstance($code)
-    {
-        return $this->getEntityOrException('OroBatchBundle:JobInstance', array('code' => $code));
     }
 
     /**

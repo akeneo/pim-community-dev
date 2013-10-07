@@ -14,15 +14,14 @@ Feature: Classify a product
     | beverages | Beverages |           |
     | hot       | Hot       | beverages |
     | cold      | Cold      | beverages |
-    And I am logged in as "Julia"
+  And I am logged in as "Julia"
 
   Scenario: Associate a product to categories
-    And I am logged in as "Julia"
-    And I edit the "tea" product
-    And I visit the "Categories" tab
+    Given I edit the "tea" product
+    When I visit the "Categories" tab
     And I select the "Beverages" tree
     And I expand the "Beverages" category
     And I click on the "Hot" category
     And I click on the "Cold" category
-    When I press the "Save" button
+    And I press the "Save" button
     Then I should see "Beverages (2)"
