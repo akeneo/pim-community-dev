@@ -13,12 +13,22 @@ use Pim\Bundle\ImportExportBundle\Reader\ORMCursorReader;
  */
 class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        $this->reader = new ORMCursorReader();
+        $this->stepExecution = $this->getStepExecutionMock();
+
+        $this->reader->setStepExecution($this->stepExecution);
+    }
+
     /**
      * Test related method
      */
-    public function testInstanceOfItemReaderInterface()
+    public function testIsAConfigurableStepExecutionAwareReader()
     {
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\ItemReaderInterface', new ORMCursorReader());
+        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\ItemReaderInterface', $this->reader);
+        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement', $this->reader);
+        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface', $this->reader);
     }
 
     /**
@@ -26,8 +36,6 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testRead()
     {
-        $reader = new ORMCursorReader();
-        $stepExecution = $this->getStepExecutionMock();
         $query  = $this->getQueryMock();
         $result = $this->getIterableResultMock(
             array(
@@ -41,11 +49,11 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
             ->method('iterate')
             ->will($this->returnValue($result));
 
-        $reader->setQuery($query);
-        $this->assertEquals($item1, $reader->read($stepExecution));
-        $this->assertEquals($item2, $reader->read($stepExecution));
-        $this->assertEquals($item3, $reader->read($stepExecution));
-        $this->assertNull($reader->read($stepExecution));
+        $this->reader->setQuery($query);
+        $this->assertEquals($item1, $this->reader->read());
+        $this->assertEquals($item2, $this->reader->read());
+        $this->assertEquals($item3, $this->reader->read());
+        $this->assertNull($this->reader->read());
     }
 
     /**
