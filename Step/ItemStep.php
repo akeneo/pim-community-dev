@@ -167,7 +167,7 @@ class ItemStep extends AbstractStep
 
         $this->initializeStepComponents($stepExecution);
 
-        while (($item = $this->reader->read($stepExecution)) !== null) {
+        while (($item = $this->reader->read()) !== null) {
             if (false === $item) {
                 $this->dispatchStepExecutionEvent(EventInterface::INVALID_READER_EXECUTION, $stepExecution);
                 continue;
