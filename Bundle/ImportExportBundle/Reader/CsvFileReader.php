@@ -60,11 +60,9 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
     }
 
     /**
-     * @param StepExecution $stepExecution
-     * @throws RuntimeException
-     * @return object|null|bool
+     * {@inheritdoc}
      */
-    public function read(StepExecution $stepExecution)
+    public function read()
     {
         if ($this->getFile()->eof()) {
             return null;
@@ -72,7 +70,7 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
 
         $data = $this->getFile()->fgetcsv();
         if (false !== $data) {
-            $context = $this->getContext($stepExecution);
+            $context = $this->getContext($this->stepExecution);
             $context->incrementReadOffset();
             if (null === $data || array(null) === $data) {
                 return false;
@@ -81,7 +79,7 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
 
             if ($this->firstLineIsHeader) {
                 if (count($this->header) !== count($data)) {
-                    $stepExecution->addReaderWarning(
+                    $this->stepExecution->addReaderWarning(
                         $this,
                         sprintf(
                             'Expecting to get %d columns, actually got %d',
@@ -134,6 +132,7 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
      */
     public function setStepExecution(StepExecution $stepExecution)
     {
+        $this->stepExecution = $stepExecution;
         $context = $this->getContext($stepExecution);
 
         if (!$context->hasOption('filePath')) {

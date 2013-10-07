@@ -46,7 +46,7 @@ class EntityReader implements ReaderInterface
      * @param StepExecution $stepExecution
      * @return object|null
      */
-    public function read(StepExecution $stepExecution)
+    public function read()
     {
         $iterator = $this->getSourceIterator();
         if (!$this->rewound) {

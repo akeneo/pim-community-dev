@@ -81,17 +81,19 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testRead($options, $expected)
     {
-        $context = $this->getContextWithOptionsMock($options);
+        $context       = $this->getContextWithOptionsMock($options);
         $stepExecution = $this->getMockStepExecution($context);
         $this->reader->setStepExecution($stepExecution);
+
         $context->expects($this->atLeastOnce())
             ->method('incrementReadOffset');
         $context->expects($this->atLeastOnce())
             ->method('incrementReadCount');
         $stepExecution->expects($this->never())
             ->method('addReaderWarning');
+
         $data = array();
-        while (($dataRow = $this->reader->read($stepExecution)) !== null) {
+        while (($dataRow = $this->reader->read()) !== null) {
             $data[] = $dataRow;
         }
         $this->assertEquals($expected, $data);

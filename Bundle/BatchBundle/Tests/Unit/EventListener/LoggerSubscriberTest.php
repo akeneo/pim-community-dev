@@ -178,10 +178,8 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('warning')
             ->with(
-                $this->matchesRegularExpression(
-                    '/^The .+ was unable to handle the following data: \[foo => bar\] '.
-                    '\(REASON: This is a valid reason\.\)\.$/'
-                )
+                'The Oro\Bundle\BatchBundle\Item\ItemReaderInterface was unable ' .
+                'to handle the following data: [foo => bar] (REASON: This is a valid reason.).'
             );
 
         $stepExecution = $this->getStepExecutionMock();
@@ -191,7 +189,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
                 $this->returnValue(
                     array(
                         array(
-                            'reader' => $this->getMock('Oro\Bundle\BatchBundle\Item\ItemReaderInterface'),
+                            'reader' => 'Oro\Bundle\BatchBundle\Item\ItemReaderInterface',
                             'reason' => 'This is a valid reason.',
                             'data' => array('foo' => 'bar'),
                         )
@@ -209,10 +207,8 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('warning')
             ->with(
-                $this->matchesRegularExpression(
-                    '/^The .+ was unable to handle the following data: \[foo => bar\] '.
-                    '\(REASON: This is a valid reason\.\)\.$/'
-                )
+                'The Oro\Bundle\BatchBundle\Item\ItemReaderInterface was unable ' .
+                'to handle the following data: [foo => bar] (REASON: This is a valid reason.).'
             );
 
         $stepExecution = $this->getStepExecutionMock();
@@ -222,7 +218,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
                 $this->returnValue(
                     array(
                         array(
-                            'reader' => $this->getMock('Oro\Bundle\BatchBundle\Item\ItemReaderInterface'),
+                            'reader' => 'Oro\Bundle\BatchBundle\Item\ItemReaderInterface',
                             'reason' => 'This is a valid reason.',
                             'data' => array('foo' => 'bar'),
                         )

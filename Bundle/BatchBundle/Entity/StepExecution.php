@@ -488,6 +488,18 @@ class StepExecution
         );
     }
 
+    public function addError($message)
+    {
+        $this->errors[] = $message;
+
+        return $this;
+    }
+
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
     /**
      * To string
      * @return string
