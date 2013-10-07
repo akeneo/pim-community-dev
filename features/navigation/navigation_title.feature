@@ -135,8 +135,8 @@ Feature: Well display navigation titles
 
   Scenario: Successfully display the variant index view title
     Given I am on the variants page
-    Then I should see the tille "Variant groups"
-  
+    Then I should see the title "Variant groups"
+
   Scenario: Successfully display the variant edit view title
     Given there is no variant
     And the following attribute:
@@ -146,4 +146,4 @@ Feature: Well display navigation titles
       | code | label      | attributes |
       | MUG  | Mug Akeneo | color      |
     And I edit the "MUG" variant
-    Then I should see the title "Variant groups MUG | Edit"
+    Then I should see the title "Variant groups Mug Akeneo | Edit"

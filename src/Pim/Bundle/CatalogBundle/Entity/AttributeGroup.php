@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
@@ -19,6 +20,15 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  *
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository")
  * @ORM\Table(name="pim_catalog_attribute_group")
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Attribute group", "plural_label"="Attribute groups"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
 class AttributeGroup implements TranslatableInterface, VersionableInterface
 {

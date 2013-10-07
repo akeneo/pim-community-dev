@@ -942,7 +942,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSelectRole($role)
     {
-        $this->wait(10000, null);
+        $this->scrollContainerTo(600);
         $this->getPage('User creation')->selectRole($role);
     }
 
@@ -1802,6 +1802,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $text
+     *
+     * @Then /^I should see (?:a )?flash message "([^"]*)"$/
+     */
+    public function iShouldSeeFlashMessage($text)
+    {
+        if (!$this->getCurrentPage()->findFlashMessage($text)) {
+            throw $this->createExpectationException(sprintf('No flash messages containing "%s" were found.', $text));
+        }
+    }
+
+    /**
      * @param string $fields
      *
      * @Given /^I display the (.*) attribute$/
@@ -1969,7 +1981,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $condition = $condition ?: <<<JS
         document.readyState == "complete"                   // Page is ready
             && !$.active                                    // No ajax request is active
-            && $("#page").css("display") == "block"         // Page is displayed (no yellow progress bar)
+            && $("#page").css("display") == "block"         // Page is displayed (no progress bar)
             && $(".loading-mask").css("display") == "none"; // Page is not loading (no black mask loading page)
 JS;
 

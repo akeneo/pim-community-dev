@@ -9,7 +9,7 @@ namespace Pim\Bundle\CatalogBundle\MassEditAction;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface MassEditAction
+interface MassEditActionInterface
 {
     /**
      * Get the form type to use in order to configure the operation

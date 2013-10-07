@@ -7,14 +7,20 @@ parameters:
     database_password: root
 
     mailer_transport:  smtp
-    mailer_encryption: ssl
-    mailer_auth_mode:  login
     mailer_host:       localhost
     mailer_user:       ~
     mailer_password:   ~
+
+    # WebSocket server config
+    websocket_host:    "127.0.0.1"
+    websocket_port:    8080
+
+    session_handler:   ~
 
     locale:            en_US
     default_locale:    default
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     upload_dir:        uploads_test/product
+
+    installed:         true

@@ -165,7 +165,7 @@ flash:
     variant group:
         created: Variant group successfully created
         updated: Variant group successfully updated
-        removed: Variant group successfully removed 
+        removed: Variant group successfully removed
     error ocurred: Action failed. Please retry.
 
 # Info messages

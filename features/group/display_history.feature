@@ -30,7 +30,7 @@ Feature: Display the attribute group history
       | update | 2       | code:TecnicalTechnical |
     When I visit the "Attributes" tab
     And I add available attributes Description
-    Then I should see "Attributes successfully added to the attribute group"
+    Then I should see flash message "Attributes successfully added to the attribute group"
     When I visit the "History" tab
     Then there should be 3 updates
     And I should see history:
@@ -40,7 +40,7 @@ Feature: Display the attribute group history
       | update | 3       | attributes:description |
     When I visit the "Attributes" tab
     And I remove the "Description" attribute
-    Then I should see "Attribute successfully removed from the attribute group"
+    Then I should see flash message "Attribute successfully removed from the attribute group"
     When I visit the "History" tab
     Then there should be 4 updates
     And I should see history:

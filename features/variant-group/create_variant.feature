@@ -22,7 +22,7 @@ Feature: Variant group creation
     Given I am on the variants page
     When I create a new variant
     And I fill in the following information:
-      | Code | MUG   | 
+      | Code | MUG   |
       | Axis | Color |
     And I press the "Save" button
     Then I am on the variants page
@@ -36,7 +36,7 @@ Feature: Variant group creation
       | Axis | Size |
     And I press the "Save" button
     Then I should see validation error "This value should not be blank."
-  
+
   Scenario: Fail to create a variant filling a non-valid code
     Given I am on the variants page
     When I create a new variant

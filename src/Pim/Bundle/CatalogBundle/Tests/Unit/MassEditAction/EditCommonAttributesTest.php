@@ -39,7 +39,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsAMassEditAction()
     {
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\MassEditAction\MassEditAction', $this->action);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionInterface', $this->action);
     }
 
     /**

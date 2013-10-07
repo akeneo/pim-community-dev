@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * Export report controller
@@ -10,25 +10,13 @@ use Oro\Bundle\UserBundle\Annotation\Acl;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Acl(
- *      id="pim_importexport_import_report",
- *      name="Export report manipulation",
- *      description="Export report manipulation",
- *      parent="pim_importexport"
- * )
  */
 class ImportReportController extends JobExecutionController
 {
     /**
      * {@inheritdoc}
      *
-     * @Acl(
-     *      id="pim_importexport_import_report_index",
-     *      name="View export report list",
-     *      description="View export report list",
-     *      parent="pim_importexport_import_report"
-     * )
+     * @AclAncestor("pim_importexport_import_report_index")
      */
     public function indexAction()
     {
@@ -38,12 +26,7 @@ class ImportReportController extends JobExecutionController
     /**
      * {@inheritdoc}
      *
-     * @Acl(
-     *      id="pim_importexport_import_report_show",
-     *      name="View export report details",
-     *      description="View export report details",
-     *      parent="pim_importexport_import_report"
-     * )
+     * @AclAncestor("pim_importexport_import_report_show")
      */
     public function showAction($id)
     {
@@ -53,12 +36,7 @@ class ImportReportController extends JobExecutionController
     /**
      * {@inheritdoc}
      *
-     * @Acl(
-     *      id="pim_importexport_import_report_download_log",
-     *      name="Download export report log",
-     *      description="Download export report log",
-     *      parent="pim_importexport_import_report"
-     * )
+     * @AclAncestor("pim_importexport_import_report_download_log")
      */
     public function downloadLogFileAction($id)
     {
@@ -68,12 +46,7 @@ class ImportReportController extends JobExecutionController
     /**
      * {@inheritdoc}
      *
-     * @Acl(
-     *      id="pim_importexport_import_report_download_files",
-     *      name="Download imported files ",
-     *      description="Download imported files",
-     *      parent="pim_importexport_export_report"
-     * )
+     * @AclAncestor("pim_importexport_import_report_download_files")
      */
     public function downloadFilesAction($id)
     {

@@ -19,6 +19,7 @@ class Base extends Page
         'Dialog'         => array('css' => 'div.modal'),
         'Title'          => array('css' => '.navbar-title'),
         'HeadTitle'      => array('css' => 'title'),
+        'Flash messages' => array('css' => '.flash-messages-holder'),
         'Navigation Bar' => array('css' => 'header#oroplatform-header')
     );
 
@@ -100,7 +101,7 @@ class Base extends Page
      */
     public function pressButton($locator)
     {
-        # Search with exact name at first
+        // Search with exact name at first
         $button = $this->find('xpath', sprintf("//button[text() = '%s']", $locator));
 
         if (!$button) {
@@ -108,7 +109,7 @@ class Base extends Page
         }
 
         if (!$button) {
-            # Use Mink search, which use "contains" xpath condition
+            // Use Mink search, which use "contains" xpath condition
             $button = $this->findButton($locator);
         }
 
@@ -230,5 +231,24 @@ class Base extends Page
             ->getElement('Navigation Bar')
             ->find('css', 'h1.logo a')
             ->click();
+    }
+
+    /**
+     * Find a flash message containing text
+     *
+     * @param string $text
+     *
+     * @throws \Exception
+     * @return null|Element
+     */
+    public function findFlashMessage($text)
+    {
+        $holder = $this->getElement('Flash messages');
+
+        if (!$holder) {
+            throw new \Exception('Could not find the flash messages holder');
+        }
+
+        return $holder->find('css', sprintf('div.message:contains("%s")', $text));
     }
 }

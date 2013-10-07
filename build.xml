@@ -9,9 +9,9 @@
 
     <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb,fixtures,phpunit-coverage"/>
 
-    <target name="build-behat" depends="prepare,composer,vendors,setupdb,dumpassets,behat"/>
+    <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
-    <target name="build-behat-pr" depends="prepare,composer,vendors,setupdb,dumpassets,behat-pr"/>
+    <target name="build-behat-pr" depends="prepare,composer,vendors,install-all-behat,behat-pr"/>
 
     <target name="build-behat-coverage" depends="prepare,composer,vendors,setupdb,dumpassets,behat-coverage"/>
 
@@ -225,9 +225,15 @@
         <exec executable="app/console">
             <arg value="oro:assetic:dump" />
         </exec>
+        <exec executable="app/console">
+            <arg value="oro:translation:dump" />
+        </exec>
     </target>
 
     <target name="setupdb" description="Setup db">
+        <exec executable="app/console">
+          <arg value="oro:entity-extend:clear" />
+        </exec>
         <exec executable="app/console">
           <arg value="doctrine:database:drop" />
           <arg value="-n" />
@@ -242,15 +248,15 @@
           <arg value="-n" />
         </exec>
         <exec executable="app/console">
-          <arg value="oro:acl:load" />
+          <arg value="oro:entity-config:init" />
           <arg value="-n" />
         </exec>
         <exec executable="app/console">
-          <arg value="oro:entity-config:update" />
+          <arg value="oro:entity-extend:init" />
           <arg value="-n" />
         </exec>
         <exec executable="app/console">
-          <arg value="oro:entity-extend:create" />
+          <arg value="oro:entity-extend:update-config" />
           <arg value="-n" />
         </exec>
         <exec executable="app/console">
@@ -265,13 +271,17 @@
         </exec>
     </target>
 
+    <target name="install-all-behat" description="Setup db and install assets for Behat">
+        <exec executable="./install.sh">
+          <arg value="all" />
+          <arg value="behat" />
+        </exec>
+    </target>
+
     <target name="fixtures" description="Load fixtures">
         <exec executable="app/console">
           <arg value="doctrine:fixtures:load" />
           <arg value="--no-interaction" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="oro:acl:load" />
         </exec>
         <exec executable="app/console">
           <arg value="oro:search:create-index" />

@@ -26,7 +26,7 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
     protected $fileName = 'export_%datetime%.csv';
 
     private $handler;
-    
+
     private $resolvedFilePath;
 
     /**
@@ -96,6 +96,7 @@ class FileWriter extends AbstractConfigurableStepElement implements ItemWriterIn
                 )
             );
         }
+
         return $this->resolvedFilePath;
     }
 

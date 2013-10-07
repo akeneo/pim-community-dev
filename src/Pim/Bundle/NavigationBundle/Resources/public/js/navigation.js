@@ -60,9 +60,9 @@ define(
                  */
                 afterRequest: function() {
                     var message;
-                    parent.afterRequest.call(this)
+                    parent.afterRequest.call(this);
                     while (message = flashMessages.shift()) {
-                        messenger.notificationFlashMessage.apply(messenger, message)
+                        messenger.notificationFlashMessage.apply(messenger, message);
                     }
                 }
             });
