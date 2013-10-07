@@ -42,6 +42,11 @@ class LocaleManager
     protected $request;
 
     /**
+     * @var array
+     */
+    private $userLocales;
+
+    /**
      * Constructor
      *
      * @param ObjectManager            $objectManager   the storage manager
@@ -159,14 +164,15 @@ class LocaleManager
      */
     public function getUserLocales()
     {
-        $locales = array();
-        foreach ($this->getActiveLocales() as $code => $locale) {
-            if ($this->aclManager->isResourceGranted(sprintf('pim_catalog_locale_%s', $locale->getCode()))) {
-                $locales[] = $locale;
+        if (!isset($this->userLocales)) {
+            $this->userLocales = array();
+            foreach ($this->getActiveLocales() as $code => $locale) {
+                if ($this->aclManager->isResourceGranted(sprintf('pim_catalog_locale_%s', $locale->getCode()))) {
+                    $this->userLocales[] = $locale;
+                }
             }
         }
-
-        return $locales;
+        return $this->userLocales;
     }
     
     /**
