@@ -2,21 +2,15 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Field\FieldDescription;
+use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
+use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
+use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
-
-use Oro\Bundle\GridBundle\Filter\FilterInterface;
-
-use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-
-use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
-use Oro\Bundle\GridBundle\Field\FieldDescription;
-use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
-
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Product datagrid to link products to variant groups
@@ -149,20 +143,6 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
     public function setVariantGroup(VariantGroup $variantGroup)
     {
         $this->variantGroup = $variantGroup;
-
-        return $this;
-    }
-
-    /**
-     * Set a product manager
-     *
-     * @param ProductManager $productManager
-     *
-     * @return \Pim\Bundle\CatalogBundle\Datagrid\VariantProductDatagridManager
-     */
-    public function setProductManager(ProductManager $productManager)
-    {
-        $this->productManager = $productManager;
 
         return $this;
     }
