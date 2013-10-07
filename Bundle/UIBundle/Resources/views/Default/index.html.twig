@@ -12,13 +12,6 @@
             {% endblock %}
 
             {% block script %}
-                {% include 'OroUIBundle:Default:require.js.config.html.twig' %}
-                {% placeholder requirejs_config_extend %}
-                <script type="text/javascript" src="{{ asset('bundles/oroui/lib/require.js') }}"></script>
-                <script type="text/javascript">
-                    require(['oro/init-layout', 'oro/init-user', 'jquery.uniform']);
-                </script>
-
                 {% block scripts_before %}
                     {% placeholder scripts_before %}
                 {% endblock %}

@@ -1,7 +1,5 @@
 config:
     shim:
-        'jquery':
-            exports: 'jQuery'
         'jquery-ui':
             deps:
                 - 'jquery'
