@@ -42,3 +42,4 @@ Feature: Edit a variant group
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                          |
       | content | You will lose changes to the variant group if you leave this page. |
+    And I confirm the message

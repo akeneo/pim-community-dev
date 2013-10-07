@@ -62,11 +62,9 @@ class ProductType extends FlexibleType
         $builder
             ->add(
                 'categories',
-                'oro_entity_identifier',
+                'entity',
                 array(
                     'class'    => 'PimCatalogBundle:Category',
-                    'required' => true,
-                    'mapped'   => true,
                     'multiple' => true,
                 )
             );
@@ -93,18 +91,7 @@ class ProductType extends FlexibleType
     {
         parent::addEntityFields($builder);
 
-        $builder
-            ->add(
-                'enabled',
-                'checkbox',
-                array(
-                    'attr' => array(
-                        'data-on-label'  => 'Enabled',
-                        'data-off-label' => 'Disabled',
-                        'size'           => null
-                    )
-                )
-            );
+        $builder->add('enabled', 'hidden');
     }
 
     /**

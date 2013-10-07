@@ -6,7 +6,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Product reader
@@ -41,7 +40,7 @@ class ProductReader extends ORMReader
     /**
      * {@inheritdoc}
      */
-    public function read(StepExecution $stepExecution)
+    public function read()
     {
         if (!$this->query) {
             $channel = current($this->channelManager->getChannels(array('code' => $this->channel)));
@@ -50,7 +49,7 @@ class ProductReader extends ORMReader
                 ->getQuery();
         }
 
-        return parent::read($stepExecution);
+        return parent::read();
     }
 
     /**

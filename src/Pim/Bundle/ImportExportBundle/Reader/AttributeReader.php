@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Doctrine\ORM\EntityManager;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Attribute reader
@@ -27,7 +26,7 @@ class AttributeReader extends ORMCursorReader
     /**
      * {@inheritdoc}
      */
-    public function read(StepExecution $stepExecution)
+    public function read()
     {
         if (!$this->query) {
             $this->query = $this->em
@@ -36,6 +35,6 @@ class AttributeReader extends ORMCursorReader
                 ->getQuery();
         }
 
-        return parent::read($stepExecution);
+        return parent::read();
     }
 }
