@@ -27,13 +27,7 @@ Feature: Edit a variant group
     And I press the "Save" button
     Then I should see "My Mug"
 
-  Scenario: Successfully display a message when there are unsaved changes
-    Given I am on the "MUG" variant page
-    When I fill in the following information:
-      | English (United States) | Mug |
-    Then I should see "There are unsaved changes."
-
-  @insulated
+  @insulated @skip
   Scenario: Successfully have a confirmation popup when I change page with unsaved changes
     Given I am on the "MUG" variant page
     When I fill in the following information:
@@ -42,3 +36,11 @@ Feature: Edit a variant group
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                          |
       | content | You will lose changes to the variant group if you leave this page. |
+    And I confirm the message
+
+  @skip
+  Scenario: Successfully display a message when there are unsaved changes
+    Given I am on the "MUG" variant page
+    When I fill in the following information:
+      | English (United States) | Mug |
+    Then I should see "There are unsaved changes."

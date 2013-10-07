@@ -48,3 +48,4 @@ Feature: Edit a category
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                |
       | content | You will lose changes to the tree if you leave the page. |
+    And I confirm the message
