@@ -39,6 +39,20 @@
 
                     $('[data-toggle="popover"]').popover();
 
+                    $('#switch_status').on('click', function() {
+                        var $field = $('#{{ form.enabled.vars.id }}'),
+                            $status = $('#status');
+                        if (+$field.val()) {
+                            $field.val(0);
+                            $(this).html('{{ "info.product.enable"|trans }}');
+                            $status.html('{{ "info.product.disabled"|trans }}').removeClass('label-success');
+                        } else {
+                            $field.val(1);
+                            $(this).html('{{ "info.product.disable"|trans }}');
+                            $status.html('{{ "info.product.enabled"|trans }}').addClass('label-success');
+                        }
+                    });
+
                     {% if resource_granted('pim_catalog_product_change_family') %}
                         {% set familyWidget %}
                             {{ 'info.product.change family to'|trans }}:
@@ -95,8 +109,9 @@
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_product_index')) }}
             <div class="btn-group">
-                {{ form_widget(form.enabled) }}
+                <button id="switch_status" type="button" class="btn">{{ ('info.product.' ~ (form.enabled.vars.value ? 'disable' : 'enable'))|trans }}</button>
             </div>
+            {{ form_widget(form.enabled) }}
             {{ elements.deleteLink(path('pim_catalog_product_remove', { id: form.vars.value.id }), path('pim_catalog_product_index'), 'confirmation.remove.product'|trans({ '%name%': product.label }), "", 'flash.product.removed'|trans) }}
             {{ elements.submitBtn }}
         {% endset %}
@@ -127,6 +142,9 @@
                         {% endif %}
                     {% endfor %}
                 </ul>
+            </div>
+            <div class="btn-group">
+                <span id="status" class="label {{ form.enabled.vars.value ? 'label-success ' : ''}}label-large">{{ ('info.product.' ~ (form.enabled.vars.value ? 'disabled' : 'enabled'))|trans }}</span>
             </div>
         {% endset %}
 

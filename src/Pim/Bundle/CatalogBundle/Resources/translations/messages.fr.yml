@@ -180,6 +180,10 @@ info:
         change family to:        __Change the family to
         merge attributes:        __Current attributes will be merged with the ones in the new family.
         keep attributes:         __No attributes will be removed.
+        enable:                  __Enable
+        enabled:                 __Enabled
+        disable:                 __Disable
+        disabled:                __Disabled
 
 # Form elements
 Options:                       Options
