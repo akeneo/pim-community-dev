@@ -41,15 +41,15 @@
 
                     $('#switch_status').on('click', function() {
                         var $field = $('#{{ form.enabled.vars.id }}'),
-                            $status = $('#status');
+                            $status = $('.status-enabled').find('.badge');
                         if (+$field.val()) {
-                            $field.val(0);
+                            $field.val(0).trigger('change');
                             $(this).html('{{ "info.product.enable"|trans }}');
-                            $status.html('{{ "info.product.disabled"|trans }}').removeClass('label-success');
+                            $status.html('<i class="icon-status-disabled icon-circle"></i>{{ "info.product.disabled"|trans }}').removeClass('badge-enabled status-enabled').addClass('badge-disabled status-disabled');
                         } else {
-                            $field.val(1);
+                            $field.val(1).trigger('change');
                             $(this).html('{{ "info.product.disable"|trans }}');
-                            $status.html('{{ "info.product.enabled"|trans }}').addClass('label-success');
+                            $status.html('<i class="icon-status-enabled icon-circle"></i>{{ "info.product.enabled"|trans }}').removeClass('badge-disabled status-disabled').addClass('badge-enabled status-enabled');
                         }
                     });
 
@@ -143,8 +143,12 @@
                     {% endfor %}
                 </ul>
             </div>
-            <div class="btn-group">
-                <span id="status" class="label {{ form.enabled.vars.value ? 'label-success ' : ''}}label-large">{{ ('info.product.' ~ (form.enabled.vars.value ? 'enabled' : 'disabled'))|trans }}</span>
+            <div class="status-enabled pull-left">
+                {% if form.enabled.vars.value %}
+                    <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
+                {% else %}
+                    <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
+                {% endif %}
             </div>
         {% endset %}
 
