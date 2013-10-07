@@ -6,6 +6,10 @@ use Oro\Bundle\BatchBundle\Job\JobInterface;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\BatchBundle\Job\JobFactory;
 use Oro\Bundle\BatchBundle\Step\StepFactory;
+use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Oro\Bundle\BatchBundle\Job\Job;
 
 /**
  * Aims to register all connectors
@@ -31,9 +35,9 @@ class ConnectorRegistry
     /**
      * Get a registered job definition from a JobInstance
      *
-     * @param Oro\Bundle\BatchBundle\Entity\JobInstance $jobInstance
-     *
-     * @return Oro\Bundle\BatchBundle\Job\JobInterface
+     * @param JobInstance $jobInstance
+     * @return JobInterface
+     * @throws \LogicException
      */
     public function getJob(JobInstance $jobInstance)
     {
@@ -45,13 +49,15 @@ class ConnectorRegistry
                 return $job;
             }
         }
+
+        return null;
     }
 
     /**
      * Get the list of jobs
      * @param string $type
      *
-     * @return multitype:JobInterface
+     * @return JobInterface[]
      *
      * TODO : Rather return an array of array of JobInterface ?
      */
@@ -67,11 +73,11 @@ class ConnectorRegistry
      * @param string                 $jobType
      * @param string                 $jobAlias
      * @param string                 $jobTitle
+     * @param string                 $stepName
      * @param string                 $stepTitle
      * @param ItemReaderInterface    $stepReader
      * @param ItemProcessorInterface $stepProcessor
      * @param ItemWriterInterface    $stepWriter
-     *
      * @return null
      */
     public function addStepToJob(
@@ -88,9 +94,11 @@ class ConnectorRegistry
             $this->jobs[$jobType][$jobConnector][$jobAlias] = $this->jobFactory->createJob($jobTitle);
         }
 
-        $this->jobs[$jobType][$jobConnector][$jobAlias]->addStep(
-            $this->stepFactory->createStep($stepTitle, $stepReader, $stepProcessor, $stepWriter)
-        );
+        /** @var Job $job */
+        $job = $this->jobs[$jobType][$jobConnector][$jobAlias];
+
+        $step = $this->stepFactory->createStep($stepTitle, $stepReader, $stepProcessor, $stepWriter);
+        $job->addStep($stepTitle, $step);
     }
 
     /**

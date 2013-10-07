@@ -126,6 +126,13 @@ class StepExecution
     /**
      * @var array
      *
+     * @ORM\Column(name="errors", type="array", nullable=true)
+     */
+    private $errors = null;
+
+    /**
+     * @var array
+     *
      * @ORM\Column(name="reader_warnings", type="array", nullable=true)
      */
     private $readerWarnings = array();
@@ -141,13 +148,19 @@ class StepExecution
         $this->stepName = $stepName;
         $this->jobExecution = $jobExecution;
         $jobExecution->addStepExecution($this);
-
+        $this->executionContext = new ExecutionContext();
         $this->setStatus(new BatchStatus(BatchStatus::STARTING));
         $this->setExitStatus(new ExitStatus(ExitStatus::EXECUTING));
 
         $this->failureExceptions = array();
+        $this->errors = array();
 
         $this->startTime = new \DateTime();
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
     }
 
     /**

@@ -8,6 +8,8 @@ use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Oro\Bundle\BatchBundle\Event\EventInterface;
+use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 /**
  * Basic step implementation that read items, process them and write them
@@ -22,16 +24,19 @@ class ItemStep extends AbstractStep
 
     /**
      * @Assert\Valid
+     * @var ItemReaderInterface
      */
     private $reader = null;
 
     /**
      * @Assert\Valid
+     * @var ItemWriterInterface
      */
     private $writer = null;
 
     /**
      * @Assert\Valid
+     * @var ItemProcessorInterface
      */
     private $processor = null;
 
@@ -110,11 +115,27 @@ class ItemStep extends AbstractStep
      */
     public function getConfiguration()
     {
-        return array(
-            'reader'    => $this->getReader()->getConfiguration(),
-            'processor' => $this->getProcessor()->getConfiguration(),
-            'writer'    => $this->getWriter()->getConfiguration(),
-        );
+        $configuration = array();
+
+        if ($this->reader instanceof AbstractConfigurableStepElement) {
+            $configuration['reader'] = $this->reader->getConfiguration();
+        } else {
+            $configuration['reader'] = array();
+        }
+
+        if ($this->processor instanceof AbstractConfigurableStepElement) {
+            $configuration['processor'] = $this->processor->getConfiguration();
+        } else {
+            $configuration['processor'] = array();
+        }
+
+        if ($this->writer instanceof AbstractConfigurableStepElement) {
+            $configuration['writer'] = $this->writer->getConfiguration();
+        } else {
+            $configuration['writer'] = array();
+        }
+
+        return $configuration;
     }
 
     /**
@@ -122,14 +143,16 @@ class ItemStep extends AbstractStep
      */
     public function setConfiguration(array $config)
     {
-        if (array_key_exists('reader', $config)) {
-            $this->getReader()->setConfiguration($config['reader']);
+        if ($this->reader instanceof AbstractConfigurableStepElement && !empty($config['reader'])) {
+            $this->reader->setConfiguration($config['reader']);
         }
-        if (array_key_exists('processor', $config)) {
-            $this->getProcessor()->setConfiguration($config['processor']);
+
+        if ($this->processor instanceof AbstractConfigurableStepElement && !empty($config['processor'])) {
+            $this->processor->setConfiguration($config['processor']);
         }
-        if (array_key_exists('writer', $config)) {
-            $this->getWriter()->setConfiguration($config['writer']);
+
+        if ($this->writer instanceof AbstractConfigurableStepElement && !empty($config['writer'])) {
+            $this->writer->setConfiguration($config['writer']);
         }
     }
 
@@ -141,6 +164,8 @@ class ItemStep extends AbstractStep
         $itemsToWrite = array();
         $writeCount = 0;
 
+        $this->initializeStepComponents($stepExecution);
+
         while (($item = $this->reader->read($stepExecution)) !== null) {
             if (false === $item) {
                 $this->dispatchStepExecutionEvent(EventInterface::INVALID_READER_EXECUTION, $stepExecution);
@@ -149,8 +174,8 @@ class ItemStep extends AbstractStep
 
             if (null !== $processedItem = $this->processor->process($item)) {
                 $itemsToWrite[] = $processedItem;
-                $writeCount ++;
-                if (0 === ($writeCount % $this->batchSize)) {
+                $writeCount++;
+                if (0 === $writeCount % $this->batchSize) {
                     $this->writer->write($itemsToWrite);
                     $itemsToWrite = array();
                 }
@@ -159,6 +184,25 @@ class ItemStep extends AbstractStep
 
         if (count($itemsToWrite) > 0) {
             $this->writer->write($itemsToWrite);
+            $itemsToWrite = array();
+        }
+    }
+
+    /**
+     * @param StepExecution $stepExecution
+     */
+    protected function initializeStepComponents(StepExecution $stepExecution)
+    {
+        if ($this->reader instanceof StepExecutionAwareInterface) {
+            $this->reader->setStepExecution($stepExecution);
+        }
+
+        if ($this->processor instanceof StepExecutionAwareInterface) {
+            $this->processor->setStepExecution($stepExecution);
+        }
+
+        if ($this->writer instanceof StepExecutionAwareInterface) {
+            $this->writer->setStepExecution($stepExecution);
         }
     }
 }
