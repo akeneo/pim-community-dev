@@ -138,6 +138,20 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
                     array('data' => '59.90', 'currency' => 'USD')
                 )
             ),
+            array(
+                '50 EUR',
+                array(
+                    array('data' => '50.00', 'currency' => 'EUR'),
+                    array('data' => '', 'currency' => 'USD')
+                )
+            ),
+            array(
+                '50 EUR, USD',
+                array(
+                    array('data' => '50.00', 'currency' => 'EUR'),
+                    array('data' => '', 'currency' => 'USD')
+                )
+            ),
         );
     }
 
