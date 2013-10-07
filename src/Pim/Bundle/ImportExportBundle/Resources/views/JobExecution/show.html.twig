@@ -53,6 +53,11 @@
                     <td>{{ step.startTime |date("Y-m-d h:i:s") }}</td>
                     <td>{{ step.endTime |date("Y-m-d h:i:s") }}</td>
                 </tr>
+                    {% for warning in step.readerWarnings %}
+                    <tr>
+                        <td colspan="7"><i class="validation-tooltip"></i> {{ warning.reason }}</td>
+                    </tr>
+                    {% endfor %}
                 {% endfor %}
             </tbody>
         </table>

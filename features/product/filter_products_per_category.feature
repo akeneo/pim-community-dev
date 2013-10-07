@@ -14,9 +14,10 @@ Feature: Filter products per category
       | green-tshirt  |
       | akeneo-mug    |
     And the following categories:
-      | code           | label    | products                   |
-      | tshirts        | TShirts  | purple-tshirt,green-tshirt |
-      | trousers       | Trousers |                            |
+      | code           | parent  | label    | products                   |
+      | catalog        |         | Catalog  |                            |
+      | tshirts        | catalog | TShirts  | purple-tshirt,green-tshirt |
+      | trousers       | catalog | Trousers |                            |
     And I am logged in as "admin"
 
   Scenario: Successfully display all products classified in T-shirts on products page

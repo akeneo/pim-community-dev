@@ -286,7 +286,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'type'            => FieldDescriptionInterface::TYPE_TEXT,
                 'label'           => $this->translate('Family'),
                 'field_name'      => 'familyLabel',
-                'expression'      => 'family',
+                'expression'      => 'productFamily',
                 'filter_type'     => FilterInterface::TYPE_ENTITY,
                 'required'        => false,
                 'sortable'        => true,

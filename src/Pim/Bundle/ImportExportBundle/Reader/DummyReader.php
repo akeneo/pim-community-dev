@@ -4,7 +4,6 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Dummy step, can be use to do nothing until you'll have concret implementation
@@ -18,7 +17,7 @@ class DummyReader extends AbstractConfigurableStepElement implements ItemReaderI
     /**
      * {@inheritdoc}
      */
-    public function read(StepExecution $stepExecution)
+    public function read()
     {
         return null;
     }
