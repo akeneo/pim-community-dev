@@ -27,6 +27,29 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
     protected $label;
 
     /**
+     * @var string[]
+     */
+    protected $permissions;
+
+    /**
+     * Constructor
+     *
+     * @param string $securityType
+     * @param string $className
+     * @param string $group
+     * @param string $label
+     * @param string[] $permissions
+     */
+    public function __construct($securityType = '', $className = '', $group = '', $label = '', $permissions = array())
+    {
+        $this->securityType = $securityType;
+        $this->className = $className;
+        $this->group = $group;
+        $this->label = $label;
+        $this->permissions = $permissions;
+    }
+
+    /**
      * Gets the security type
      *
      * @return string
@@ -67,19 +90,13 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
     }
 
     /**
-     * Constructor
+     * Gets permissions
      *
-     * @param string $securityType
-     * @param string $className
-     * @param string $group
-     * @param string $label
+     * @return string[]
      */
-    public function __construct($securityType = '', $className = '', $group = '', $label = '')
+    public function getPermissions()
     {
-        $this->securityType = $securityType;
-        $this->className = $className;
-        $this->group = $group;
-        $this->label = $label;
+        return $this->permissions;
     }
 
     /**
@@ -92,7 +109,8 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
                 $this->securityType,
                 $this->className,
                 $this->group,
-                $this->label
+                $this->label,
+                $this->permissions,
             )
         );
     }
@@ -106,7 +124,8 @@ class EntitySecurityMetadata implements AclClassInfo, \Serializable
             $this->securityType,
             $this->className,
             $this->group,
-            $this->label
+            $this->label,
+            $this->permissions
             ) = unserialize($serialized);
     }
 }
