@@ -19,6 +19,9 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->reader = new CsvReader();
+        $this->stepExecution = $this->getStepExecutionMock();
+        $this->reader->setStepExecution($this->stepExecution);
+
     }
 
     /**
@@ -40,25 +43,24 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
     {
         $this->reader->setFilePath(__DIR__ . '/../../fixtures/import.csv');
 
-        $stepExecution = $this->getStepExecutionMock();
-        $stepExecution
+        $this->stepExecution
             ->expects($this->exactly(3))
             ->method('incrementReadCount');
 
         $this->assertEquals(
             array('firstname' => 'Severin', 'lastname' => 'Gero', 'age' => '28'),
-            $this->reader->read($stepExecution)
+            $this->reader->read()
         );
         $this->assertEquals(
             array('firstname' => 'Kyrylo', 'lastname' => 'Zdislav', 'age' => '34'),
-            $this->reader->read($stepExecution)
+            $this->reader->read()
         );
         $this->assertEquals(
             array('firstname' => 'Cenek', 'lastname' => 'Wojtek', 'age' => '7'),
-            $this->reader->read($stepExecution)
+            $this->reader->read()
         );
 
-        $this->assertNull($this->reader->read($stepExecution));
+        $this->assertNull($this->reader->read());
     }
 
     /**
@@ -68,8 +70,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
     {
         $this->reader->setFilePath(__DIR__ . '/../../fixtures/invalid_import.csv');
 
-        $stepExecution = $this->getStepExecutionMock();
-        $stepExecution
+        $this->stepExecution
             ->expects($this->once())
             ->method('addReaderWarning')
             ->with(
@@ -78,8 +79,8 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
                 array('Severin', 'Gero', '28', 'error')
             );
 
-        $this->assertFalse($this->reader->read($stepExecution));
-        $this->assertNull($this->reader->read($stepExecution));
+        $this->assertFalse($this->reader->read());
+        $this->assertNull($this->reader->read());
     }
 
     /**

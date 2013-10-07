@@ -35,3 +35,18 @@ Feature: Edit a family
     And I change the english Label to "NewJewelery"
     And I save the family
     Then I should see the families bags, NewJewelery and smartphone
+
+  @javascript
+  Scenario: Successfully display a message when there are unsaved changes
+    Given I am on the "Jewels" family page
+    When I change the english Label to "NewJewelery"
+    Then I should see "There are unsaved changes."
+    
+  @javascript @insulated
+  Scenario: Successfully have a confirmation popup when I change page with unsaved changes
+    Given I am on the "Jewels" family page
+    When I change the english Label to "NewJewelery"
+    And I click on the Akeneo logo
+    Then I should see a confirm dialog with the following content:
+      | title   | Are you sure you want to leave this page?                  |
+      | content | You will lose changes to the family if you leave the page. |

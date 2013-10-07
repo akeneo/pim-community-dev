@@ -6,9 +6,11 @@
     {{ JSFV(form) }}
     <form id="{{ form.vars.id }}" class="form-horizontal"
         action="{{ path('pim_catalog_variant_group_edit', { id: form.vars.value.id}) }}"
+        data-updated-title="{{ 'confirmation.leave'|trans }}"
+        data-updated-message="{{ 'confirmation.discard changes'|trans({ '%entity%': 'variant group'|trans }) }}"
         method="POST">
 
-        {% set title = 'variant group.edit'|trans ~ ' - ' ~ form.vars.data.label%}
+        {% set title = 'variant group.edit'|trans ~ ' - ' ~ form.vars.data.label %}
 
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_variant_group_index')) }}
@@ -24,7 +26,13 @@
             {{ elements.submitBtn() }}
         {% endset %}
 
-        {{ elements.page_header(title, buttons) }}
+        {% set right %}
+            <div class="pull-right entity-updated">
+                <span id="updated" class="label label-warning hide">{{ 'info.updated'|trans }}</span>
+            </div>
+        {% endset %}
+
+        {{ elements.page_header(title, buttons, null, null, right) }}
 
         <div class="row-fluid">
             {{ elements.form_errors(form) }}
@@ -38,4 +46,20 @@
             {{ form_row(form._token) }}
         </div>
     </form>
+{% endblock %}
+
+{% block head_script_component %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/formupdatelistener'],
+            function ($, FormUpdateListener){
+                'use strict';
+                $(function() {
+                    new FormUpdateListener($('#{{ form.vars.id }}'));
+                });
+            }
+        );
+    </script>
 {% endblock %}
