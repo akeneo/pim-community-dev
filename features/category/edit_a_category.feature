@@ -31,3 +31,18 @@ Feature: Edit a category
     And I expand the "Laptops" category
     And I drag the "Hard drives" category to the "Computers" category
     Then I should see the "Hard drives" category under the "Computers" category
+
+  @javascript
+  Scenario: Successfully display a message when there are unsaved changes
+    Given I edit the "Laptops" category
+    When I change the Code to "notebooks"
+    Then I should see "There are unsaved changes."
+    
+  @javascript @insulated
+  Scenario: Successfully have a confirmation popup when I change page with unsaved changes
+    Given I edit the "Laptops" category
+    When I change the Code to "notebooks"
+    And I click on the Akeneo logo
+    Then I should see a confirm dialog with the following content:
+      | title   | Are you sure you want to leave this page?                |
+      | content | You will lose changes to the tree if you leave the page. |
