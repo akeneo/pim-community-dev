@@ -80,6 +80,8 @@ services:
               route_name: pim_catalog_variant_group_index
         calls:
             - [ setIdentifierField, ['id'] ]
+            - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
+            - [ setVariantGroupManager, ['@pim_catalog.manager.variant_group'] ]
 
     pim_catalog.datagrid.worker:
         class: %pim_catalog.datagrid.worker.class%

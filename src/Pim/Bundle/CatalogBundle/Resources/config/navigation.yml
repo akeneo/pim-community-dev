@@ -75,6 +75,8 @@ oro_menu_config:
             display: false
         oro_email_emailtemplate_list:
             display: false
+        emails:
+            display: false
         oro_notification_emailnotification_list:
             display: false
         entities_list:
@@ -91,7 +93,7 @@ oro_menu_config:
                     children:
                         pim_enrich_product: ~
                         pim_enrich_categorytree: ~
-                        pim_enrich_variantgroup: ~ 
+                        pim_enrich_variantgroup: ~
 
                 pim_configuration_tab:
                     children:

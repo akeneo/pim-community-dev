@@ -1,4 +1,10 @@
 security:
+    acl:
+        connection: default
+        cache:
+            id: security.acl.cache.doctrine
+            prefix: sf2_acl_
+
     providers:
         chain_provider:
             chain:
@@ -17,6 +23,11 @@ security:
         dev:
             pattern:                        ^/(_(profiler|wdt)|css|images|js)/
             security:                       false
+
+        install:
+            pattern:                        ^/installer
+            security:                       false
+            anonymous:                      true
 
         liip_imagine:
             pattern:                        ^/media

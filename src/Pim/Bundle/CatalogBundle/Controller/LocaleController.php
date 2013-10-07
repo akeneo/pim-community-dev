@@ -13,7 +13,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
@@ -24,13 +24,6 @@ use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Acl(
- *      id="pim_catalog_locale",
- *      name="Locale manipulation",
- *      description="Locale manipulation",
- *      parent="pim_catalog"
- * )
  */
 class LocaleController extends AbstractDoctrineController
 {
@@ -82,12 +75,7 @@ class LocaleController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @Acl(
-     *      id="pim_catalog_locale_index",
-     *      name="View locale list",
-     *      description="View locale list",
-     *      parent="pim_catalog_locale"
-     * )
+     * @AclAncestor("pim_catalog_locale_index")
      * @return Response
      */
     public function indexAction(Request $request)

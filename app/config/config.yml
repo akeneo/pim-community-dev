@@ -5,7 +5,6 @@ imports:
 framework:
     #esi:             ~
     translator:      { fallback: %locale% }
-    default_locale:  %locale%
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -14,13 +13,17 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig', 'php'] } #assets_version: SomeVersionScheme
-    trusted_proxies: ~
+    default_locale:           "%locale%"
+    trusted_proxies:          ~
     session:
-        cookie_lifetime:      43200
         name:                 BAPID
+        handler_id:           %session_handler%
+        save_path:            %kernel.root_dir%/cache/sessions
     fragments:
-        enabled: true
-        path: /_fragment # used for controller action in template
+        enabled:              true
+        path:                 /_fragment # used for controller action in template
+    serializer:
+        enabled:              true
 
 # Twig Configuration
 twig:
@@ -37,22 +40,42 @@ assetic:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:               "%database_driver%"
-        host:                 "%database_host%"
-        port:                 "%database_port%"
-        dbname:               "%database_name%"
-        user:                 "%database_user%"
-        password:             "%database_password%"
-        charset:              UTF8
+        default_connection:   default
+        connections:
+            default:
+                driver:       pdo_mysql
+                host:         "%database_host%"
+                port:         "%database_port%"
+                dbname:       "%database_name%"
+                user:         "%database_user%"
+                password:     "%database_password%"
+                charset:      UTF8
+            report_source:
+                driver:       pdo_mysql
+                host:         "%database_host%"
+                port:         "%database_port%"
+                dbname:       "%database_name%"
+                user:         "%database_user%"
+                password:     "%database_password%"
+                charset:      UTF8
+            report_target:
+                driver:       pdo_mysql
+                host:         "%database_host%"
+                port:         "%database_port%"
+                dbname:       "%database_name%"
+                user:         "%database_user%"
+                password:     "%database_password%"
+                charset:      UTF8
+        types:
+                datetime: Oro\Bundle\LocaleBundle\DoctrineExtensions\DBAL\Types\UTCDateTimeType
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping:                true
+        class_metadata_factory_name: Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory
 
 # Swiftmailer Configuration
 swiftmailer:
     transport:                "%mailer_transport%"
-    encryption:               "%mailer_encryption%"
-    auth_mode:                "%mailer_auth_mode%"
     host:                     "%mailer_host%"
     username:                 "%mailer_user%"
     password:                 "%mailer_password%"
@@ -67,6 +90,43 @@ services:
          class: Twig_Extensions_Extension_Intl
          tags:
              - { name: twig.extension }
+    doctrine.dbal.default.wrapped_connection:
+        factory_service:      doctrine.dbal.default_connection
+        factory_method:       getWrappedConnection
+        class:                PDO
+    session.handler.pdo:
+        class:                Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments:
+            - "@doctrine.dbal.default.wrapped_connection"
+            -
+              db_table:       oro_session
+              db_id_col:      id
+
+clank:
+    web_socket_server:
+        port:                 %websocket_port%                # The port the socket server will listen on
+        host:                 %websocket_host%                # (optional) The host ip to bind to
+    session_handler:          session.handler.pdo
+    periodic:
+        -
+            service:          "oro_wamp.db_ping"
+            time:             60000                           # the time in milliseconds between the "tick" function being called
+
+a2lix_translation_form:
+    locales:                  [en, fr]
+    templating:               "OroUIBundle:Form:translateable.html.twig"
+
+apy_js_form_validation:
+    check_modes: [submit]
+
+lexik_maintenance:
+    authorized:
+        path:                 "maintenance|.*\.js"             # "maintenance" is only for demo purposes, remove in production!
+#        ips:                  ["127.0.0.1"]                   # Optional. Authorized ip addresses
+    driver:
+        class:                Lexik\Bundle\MaintenanceBundle\Drivers\FileDriver
+        options:
+            file_path:        %kernel.root_dir%/cache/lock
 
 pim_demo:
     load_data: true

@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
@@ -18,6 +19,15 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  * @ORM\Table(name="pim_catalog_channel")
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository")
  * @ORM\HasLifecycleCallbacks
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Channel", "plural_label"="Channels"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
 class Channel
 {

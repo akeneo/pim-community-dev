@@ -48,6 +48,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'user groups' => 'UserGroup index',
         'categories'  => 'Category tree creation',
         'home'        => 'Base index',
+        'variants'    => 'Variant index'
     );
 
     /**
@@ -943,7 +944,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSelectRole($role)
     {
-        $this->wait(10000, null);
+        $this->scrollContainerTo(600);
         $this->getPage('User creation')->selectRole($role);
     }
 
@@ -1088,16 +1089,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->getCurrentPage()->pressButton($button);
         $this->wait();
-    }
-
-    /**
-     * @param string $locale
-     *
-     * @Given /^I select the (\w+) activated locale$/
-     */
-    public function iSelectTheActivatedLocale($locale)
-    {
-        $this->getCurrentPage()->selectActivatedLocale($locale);
     }
 
     /**
@@ -1825,6 +1816,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $text
+     *
+     * @Then /^I should see (?:a )?flash message "([^"]*)"$/
+     */
+    public function iShouldSeeFlashMessage($text)
+    {
+        if (!$this->getCurrentPage()->findFlashMessage($text)) {
+            throw $this->createExpectationException(sprintf('No flash messages containing "%s" were found.', $text));
+        }
+    }
+
+    /**
      * @param string $fields
      *
      * @Given /^I display the (.*) attribute$/
@@ -1953,7 +1956,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $condition = $condition ?: <<<JS
         document.readyState == "complete"                   // Page is ready
             && !$.active                                    // No ajax request is active
-            && $("#page").css("display") == "block"         // Page is displayed (no yellow progress bar)
+            && $("#page").css("display") == "block"         // Page is displayed (no progress bar)
             && $(".loading-mask").css("display") == "none"; // Page is not loading (no black mask loading page)
 JS;
 
@@ -2031,6 +2034,16 @@ JS;
     private function getChannel($code)
     {
         return $this->getFixturesContext()->getChannel($code);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
+     */
+    private function getVariant($code)
+    {
+        return $this->getFixturesContext()->getVariant($code);
     }
 
     /**

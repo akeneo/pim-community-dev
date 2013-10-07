@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
@@ -12,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 
 /**
  * Flexible product
@@ -22,6 +24,17 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
  *
  * @ORM\Table(name="pim_catalog_product")
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository")
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Product", "plural_label"="Products"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
+ *
+ * @ExclusionPolicy("all")
  */
 class Product extends AbstractEntityFlexible implements ProductInterface, VersionableInterface
 {
