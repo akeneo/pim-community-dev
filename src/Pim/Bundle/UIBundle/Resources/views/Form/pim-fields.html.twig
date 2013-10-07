@@ -199,14 +199,22 @@
 {% spaceless %}
     <div class="control-group">
         {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.data.vars.id} }) }}
-        <div class="controls">
-            {{ form_widget(form.unit, { 'attr': { 'class': 'input-small' }}) }}
-            {{ form_widget(form.data) }}
+        <div class="controls metric input-prepend">
+            {{ form_widget(form.unit, { 'attr': { 'class': 'input-small prepend pull-left' }}) }}
+            {{ form_widget(form.data, { 'attr': { 'class': 'pull-left' }}) }}
             <div class="icons-container">
                 {{ form_errors(form) }}
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        require(
+            ['jquery', 'jquery.select2', 'selectize'],
+            function ($) {
+                $('#{{ form.unit.vars.id }}').select2('destroy').selectize();
+            }
+        );
+    </script>
 {% endspaceless %}
 {% endblock oro_flexibleentity_metric_row %}
 
