@@ -197,15 +197,4 @@ class VariantGroupController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_catalog_variant_group_index');
         }
     }
-
-    /**
-     * Get data for product datagrid
-     * @param Request $request
-     *
-     * @AclAncestor("pim_catalog_variant_group_products")
-     */
-    public function productsAction(Request $request)
-    {
-
-    }
 }
