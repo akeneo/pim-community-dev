@@ -44,11 +44,15 @@ class JobExecutionArchiver
             $writer = $step->getWriter();
             if ($reader instanceof CsvReader) {
                 $sourcePath = $reader->getFilePath();
-                $this->copyFile($sourcePath, $archivePath);
+                if (file_exists($sourcePath)) {
+                    $this->copyFile($sourcePath, $archivePath);
+                }
             }
             if ($writer instanceof FileWriter) {
                 $sourcePath = $writer->getPath();
-                $this->copyFile($sourcePath, $archivePath);
+                if (file_exists($sourcePath)) {
+                    $this->copyFile($sourcePath, $archivePath);
+                }
             }
         }
     }
