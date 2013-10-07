@@ -1,8 +1,8 @@
 /* jshint browser:true */
 /* global require */
 require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger',
-    'oro/widget-manager', 'oro/dialog-widget', 'jquery.dialog.extended'],
-function($, _, __, app, mediator, messenger, widgetManager, DialogWidget) {
+    'oro/dialog-widget', 'jquery.dialog.extended'],
+function($, _, __, app, mediator, messenger, DialogWidget) {
     'use strict';
 
     /* ============================================================
@@ -70,7 +70,6 @@ function($, _, __, app, mediator, messenger, widgetManager, DialogWidget) {
                 }
             }));
             dialog.once('widgetRemove', _.bind($el.removeData, $el, 'dialog'));
-            widgetManager.addWidgetInstance(dialog);
             dialog.render();
 
             return false;

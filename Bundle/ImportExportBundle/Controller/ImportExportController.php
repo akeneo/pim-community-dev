@@ -55,7 +55,8 @@ class ImportExportController extends Controller
                 $this->setImportFileName($processorAlias, $tmpFileName);
                 return $this->forward(
                     'OroImportExportBundle:ImportExport:importValidate',
-                    array('processorAlias' => $processorAlias)
+                    array('processorAlias' => $processorAlias),
+                    $this->getRequest()->query->all()
                 );
             }
         }

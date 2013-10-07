@@ -11,11 +11,19 @@ function(mediator) {
         widgets: {},
         aliases: {},
 
+        /**
+         * Reset manager to initial state.
+         */
         resetWidgets: function() {
             this.widgets = {};
             this.aliases = {};
         },
 
+        /**
+         * Add widget instance to registry.
+         *
+         * @param {oro.AbstractWidget} widget
+         */
         addWidgetInstance: function(widget) {
             this.widgets[widget.getWid()] = widget;
             mediator.trigger('widget_registration:wid:' + widget.getWid(), widget);
@@ -25,6 +33,12 @@ function(mediator) {
             }
         },
 
+        /**
+         * Get widget instance by widget identifier and pass it to callback when became available.
+         *
+         * @param {string} wid unique widget identifier
+         * @param {function} callback widget instance handler
+         */
         getWidgetInstance: function(wid, callback) {
             if (this.widgets.hasOwnProperty(wid)) {
                 callback(this.widgets[wid]);
@@ -33,6 +47,12 @@ function(mediator) {
             }
         },
 
+        /**
+         * Get widget instance by alias and pass it to callback when became available.
+         *
+         * @param {string} alias widget alias
+         * @param {function} callback widget instance handler
+         */
         getWidgetInstanceByAlias: function(alias, callback) {
             if (this.aliases.hasOwnProperty(alias)) {
                 this.getWidgetInstance(this.aliases[alias], callback);
@@ -41,10 +61,19 @@ function(mediator) {
             }
         },
 
+        /**
+         * Remove widget instance from registry.
+         *
+         * @param {string} wid unique widget identifier
+         */
         removeWidget: function(wid) {
             delete this.widgets[wid];
         }
     };
+
+    mediator.on('widget_initialize', function(widget) {
+        widgetManager.addWidgetInstance(widget);
+    });
 
     mediator.on('widget_remove', function(wid) {
         widgetManager.removeWidget(wid);

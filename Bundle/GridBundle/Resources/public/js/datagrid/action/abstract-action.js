@@ -158,10 +158,9 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             }
             action.frontend_options.url = action.frontend_options.url || this.getLinkWithParameters();
             action.frontend_options.title = action.frontend_options.title || this.label;
-            require(['oro/' + action.frontend_type + '-widget', 'oro/widget-manager'],
-            function(WidgetType, WidgetManager) {
+            require(['oro/' + action.frontend_type + '-widget'],
+            function(WidgetType) {
                 var widget = new WidgetType(action.frontend_options);
-                WidgetManager.addWidgetInstance(widget);
                 widget.render();
             });
         },
