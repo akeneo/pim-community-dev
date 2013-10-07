@@ -59,7 +59,6 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     private $categoryManager;
 
-
     /**
      * Constructor
      *
@@ -415,6 +414,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * Gets the options for the form
      * 
      * @param Category $category
+     * @return array
      */
     protected function getFormOptions(Category $category)
     {

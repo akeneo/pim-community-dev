@@ -37,11 +37,15 @@ class MassEditActionOperator
     protected $aclManager;
 
     /**
+     * The defined operations, indexed by code
+     * 
      * @var MassEditAction[] $operations
      */
     protected $operations = array();
     
     /**
+     * The default acls for each configured operation, indexed by code
+     * 
      * @var string[] $acls
      */
     protected $acls = array();
@@ -62,7 +66,7 @@ class MassEditActionOperator
      * @param string         $alias
      * @param MassEditAction $operation
      *
-     * @throw \InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function registerMassEditAction($alias, MassEditAction $operation, $acl = null)
     {
@@ -109,7 +113,7 @@ class MassEditActionOperator
      *
      * @param string $operationAlias
      *
-     * @throw InvalidArgumentException when the alias is not registered
+     * @throws InvalidArgumentException when the alias is not registered
      * @return MassEditAction
      */
     public function setOperationAlias($operationAlias)

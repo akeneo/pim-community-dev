@@ -46,6 +46,8 @@ class LocaleManager
      *
      * @param ObjectManager            $objectManager   the storage manager
      * @param SecurityContextInterface $securityContext the security context
+     * @param ManagerInterface         $aclManager      the ACL manager
+     * @param string                   $defaultLocale   the default locale for the UI
      */
     public function __construct(
         ObjectManager $objectManager,
@@ -58,7 +60,6 @@ class LocaleManager
         $this->aclManager = $aclManager;
         $this->defaultLocale = $defaultLocale;
     }
-
 
     /**
      * Sets the current request

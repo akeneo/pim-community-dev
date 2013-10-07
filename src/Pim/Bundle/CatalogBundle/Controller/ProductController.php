@@ -80,6 +80,11 @@ class ProductController extends AbstractDoctrineController
     private $productCreateHandler;
 
     /**
+     * @var Form
+     */
+    private $productCreateForm;
+
+    /**
      * @var CompletenessCalculator
      */
     private $calculator;
@@ -705,9 +710,9 @@ class ProductController extends AbstractDoctrineController
     protected function getFormOptions($product)
     {
         return array(
-                'enable_family' => $this->aclManager->isResourceGranted('pim_catalog_product_change_family'),
-                'enable_state'  => $this->aclManager->isResourceGranted('pim_catalog_product_change_state'),
-                'currentLocale' => $this->getDataLocale()
-            );
+            'enable_family' => $this->aclManager->isResourceGranted('pim_catalog_product_change_family'),
+            'enable_state'  => $this->aclManager->isResourceGranted('pim_catalog_product_change_state'),
+            'currentLocale' => $this->getDataLocale()
+        );
     }
 }

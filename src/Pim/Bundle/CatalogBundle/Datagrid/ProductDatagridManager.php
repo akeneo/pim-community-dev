@@ -434,6 +434,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 )
             );
         }
+
         return $actions;
     }
 
@@ -462,6 +463,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 )
             );
         }
+
         return $actions;
     }
 

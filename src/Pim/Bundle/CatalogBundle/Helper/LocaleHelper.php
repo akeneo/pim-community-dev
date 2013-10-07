@@ -3,8 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Helper;
 
 use Symfony\Component\Intl;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
@@ -25,6 +23,9 @@ class LocaleHelper
      */
     protected $localeManager;
 
+    /**
+     * @param LocaleManager $localeManager
+     */
     public function __construct(LocaleManager $localeManager)
     {
         $this->localeManager = $localeManager;
@@ -90,6 +91,7 @@ class LocaleHelper
         if (is_null($locale)) {
             $locale = $this->localeManager->getCurrentLocale();
         }
+
         return Intl\Intl::getCurrencyBundle()->getCurrencyNames($locale);
     }
 

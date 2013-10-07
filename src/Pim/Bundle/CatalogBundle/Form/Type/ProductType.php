@@ -62,7 +62,9 @@ class ProductType extends FlexibleType
                     )
                 );
         }
+
         parent::buildForm($builder, $options);
+
         if ($options['enable_family']) {
             $builder->add(
                 'family',

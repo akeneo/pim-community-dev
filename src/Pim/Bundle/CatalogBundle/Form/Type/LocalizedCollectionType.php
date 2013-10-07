@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\FilterLocaleValueSubscriber;
 use Symfony\Component\Form\AbstractType;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\FilterLocaleValueSubscriber;
 
 /**
  * Localized collection type
@@ -31,12 +31,18 @@ class LocalizedCollectionType extends AbstractType
     {
         $resolver->setDefaults(array('currentLocale' => null));
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
         return 'collection';
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'pim_catalog_localized_collection';
