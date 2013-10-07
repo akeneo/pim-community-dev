@@ -6,7 +6,6 @@ use Oro\Bundle\GridBundle\Action\MassAction\MassActionMediator;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionResponseInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionDispatcher as OroMassActionDispatcher;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
-use Oro\Bundle\UserBundle\Acl\ManagerInterface as AclManagerInterface;
 
 use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
 
@@ -15,20 +14,6 @@ use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
  */
 class MassActionDispatcher extends OroMassActionDispatcher
 {
-    /**
-     * @var AclManagerInterface
-     */
-    protected $aclManager;
-
-    /**
-     * Set the ACL Manager
-     * 
-     * @param AclManagerInterface $aclManager
-     */
-    public function setAclManager(AclManagerInterface $aclManager)
-    {
-        $this->aclManager = $aclManager;
-    }
 
     /**
      * @param string $datagridName
@@ -64,9 +49,6 @@ class MassActionDispatcher extends OroMassActionDispatcher
         $datagridManager = $this->managerRegistry->getDatagridManager($datagridName);
 
         if ($datagridManager instanceof ProductDatagridManager) {
-            if (!$this->aclManager->isResourceGranted('pim_catalog_product_remove')) {
-                throw new \RuntimeException('Mass delete is not allowed by ACLs');
-            }
             $datagridManager->setFilterTreeId(isset($data['treeId']) ? $data['treeId'] : 0);
             $datagridManager->setFilterCategoryId(isset($data['categoryId']) ? $data['categoryId'] : 0);
         }
