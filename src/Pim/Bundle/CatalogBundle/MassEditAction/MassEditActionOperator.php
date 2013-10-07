@@ -6,7 +6,6 @@ use Oro\Bundle\UserBundle\Acl\ManagerInterface as AclManagerInterface;
 use JMS\Serializer\Annotation\Exclude;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
-
 /**
  * A batch operation operator
  * Contains a list of products and a batch operation to apply on them
@@ -178,7 +177,7 @@ class MassEditActionOperator
      *
      * @return ProductInterface[]
      *
-     * @throw InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     private function getProducts(array $productIds)
     {

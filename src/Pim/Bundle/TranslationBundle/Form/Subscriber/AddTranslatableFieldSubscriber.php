@@ -53,7 +53,6 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      */
     protected $localeManager;
 
-    
     /**
      * Constructor
      *
