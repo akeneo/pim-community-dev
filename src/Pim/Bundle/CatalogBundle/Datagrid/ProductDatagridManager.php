@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Symfony\Component\Security\Core\securityFacadeInterface;
+
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -18,7 +20,8 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
-use Oro\Bundle\UserBundle\Acl\ManagerInterface as AclManagerInterface;
+
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
@@ -59,11 +62,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
      * @var Pim\Bundle\CatalogBundle\Manager\LocaleManager
      */
     protected $localeManager;
-    
+
     /**
-     * @var AclManagerInterface
+     * @var SecurityFacade
      */
-    protected $aclManager;
+    protected $securityFacade;
 
     /**
      * Filter by tree id, 0 means not tree selected
@@ -89,6 +92,14 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
+     * @param SecurityFacade $securityFacade
+     */
+    public function setSecurityFacade(SecurityFacade $securityFacade)
+    {
+        $this->securityFacade = $securityFacade;
+    }
+
+    /**
      * Configure the category manager
      *
      * @param CategoryManager $manager
@@ -106,16 +117,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
     public function setLocaleManager(LocaleManager $manager)
     {
         $this->localeManager = $manager;
-    }
-
-    /**
-     * Set the ACL Manager
-     * 
-     * @param AclManagerInterface $aclManager
-     */
-    public function setAclManager(AclManagerInterface $aclManager)
-    {
-        $this->aclManager = $aclManager;
     }
 
     /**
@@ -389,7 +390,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected function getRowActions()
     {
         $actions = array();
-        if ($this->aclManager->isResourceGranted('pim_catalog_product_edit')) {
+        if ($this->securityFacade->isGranted('pim_catalog_product_edit')) {
             $editAction = array(
                 'name'         => 'edit',
                 'type'         => ActionInterface::TYPE_REDIRECT,
@@ -406,7 +407,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             $clickAction['options']['runOnRowClick'] = true;
             $actions[] = $editAction;
             $actions[] = $clickAction;
-            if ($this->aclManager->isResourceGranted('pim_catalog_product_categories_view')) {
+            if ($this->securityFacade->isGranted('pim_catalog_product_categories_view')) {
                 $actions[] = array(
                     'name'         => 'edit_categories',
                     'type'         => ActionInterface::TYPE_TAB_REDIRECT,
@@ -422,7 +423,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             }
         }
 
-        if ($this->aclManager->isResourceGranted('pim_catalog_product_remove')) {
+        if ($this->securityFacade->isGranted('pim_catalog_product_remove')) {
             $actions[] = array(
                 'name'         => 'delete',
                 'type'         => ActionInterface::TYPE_DELETE,
@@ -444,7 +445,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected function getMassActions()
     {
         $actions = array();
-        if ($this->aclManager->isResourceGranted('pim_catalog_product_remove')) {
+        if ($this->securityFacade->isGranted('pim_catalog_product_remove')) {
             $actions[] = new DeleteMassAction(
                 array(
                     'name'  => 'delete',
@@ -453,7 +454,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 )
             );
         }
-        if ($this->aclManager->isResourceGranted('pim_catalog_product_edit')) {
+        if ($this->securityFacade->isGranted('pim_catalog_product_edit')) {
             new RedirectMassAction(
                 array(
                     'name'  => 'redirect',

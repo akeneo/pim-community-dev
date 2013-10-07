@@ -124,7 +124,8 @@ services:
         class: %pim_catalog.mass_edit_action.operator.class%
         arguments:
             - '@pim_catalog.manager.product'
-            - '@oro_user.acl_manager'
+            - '@security.context'
+            - '@oro_security.security_facade'
 
     # Mass edit actions
     pim_catalog.mass_edit_action.change_status:

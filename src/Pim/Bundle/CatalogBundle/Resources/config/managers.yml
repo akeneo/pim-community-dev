@@ -51,7 +51,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@security.context'
-            - '@oro_user.acl_manager'
+            - '@oro_security.security_facade'
             - '%locale%'
         calls:
             - [ "setRequest", ["@?request="] ]

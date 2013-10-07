@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 use Oro\Bundle\UserBundle\Acl\ManagerInterface as AclManagerInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use JMS\Serializer\Annotation\Exclude;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
@@ -32,11 +33,11 @@ class MassEditActionOperator
      * @Exclude
      */
     protected $manager;
-    
+
     /**
-     * @var AclManagerInterface
+     * @var SecurityFacade
      */
-    protected $aclManager;
+    protected $securityFacade;
 
     /**
      * The defined operations, indexed by code
@@ -55,12 +56,12 @@ class MassEditActionOperator
 
     /**
      * @param ProductManager $manager
-     * @param AclManagerInterface $aclManager
+     * @param SecurityFacade $securityFacade
      */
-    public function __construct(ProductManager $manager, AclManagerInterface $aclManager)
+    public function __construct(ProductManager $manager, SecurityFacade $securityFacade)
     {
         $this->manager = $manager;
-        $this->aclManager = $aclManager;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -198,6 +199,6 @@ class MassEditActionOperator
     protected function isGranted($operationAlias)
     {
         return !isset($this->acls[$operationAlias]) ||
-            $this->aclManager->isResourceGranted($this->acls[$operationAlias]);
+            $this->securityFacade->isGranted($this->acls[$operationAlias]);
     }
 }

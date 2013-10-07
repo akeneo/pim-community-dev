@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Acl\ManagerInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 /**
  * Locale manager
@@ -27,10 +28,10 @@ class LocaleManager
     protected $securityContext;
 
     /**
-     * @var ManagerInterface
+     * @var SecurityFacade
      */
-    protected $aclManager;
-    
+    protected $securityFacade;
+
     /**
      * @var string
      */
@@ -57,12 +58,12 @@ class LocaleManager
     public function __construct(
         ObjectManager $objectManager,
         SecurityContextInterface $securityContext,
-        ManagerInterface $aclManager,
+        SecurityFacade $securityFacade,
         $defaultLocale
     ) {
         $this->objectManager = $objectManager;
         $this->securityContext = $securityContext;
-        $this->aclManager = $aclManager;
+        $this->securityFacade = $securityFacade;
         $this->defaultLocale = $defaultLocale;
     }
 
@@ -167,7 +168,7 @@ class LocaleManager
         if (!isset($this->userLocales)) {
             $this->userLocales = array();
             foreach ($this->getActiveLocales() as $code => $locale) {
-                if ($this->aclManager->isResourceGranted(sprintf('pim_catalog_locale_%s', $locale->getCode()))) {
+                if ($this->securityFacade->isGranted(sprintf('pim_catalog_locale_%s', $locale->getCode()))) {
                     $this->userLocales[] = $locale;
                 }
             }
@@ -237,8 +238,8 @@ class LocaleManager
         if ($this->securityContext->getToken()->getUser() === null) {
             return null;
         }
+        
         $user = $this->securityContext->getToken()->getUser();
-
         $localeCode = (string) $user->getValue('cataloglocale');
         $userLocales = $this->getUserLocales();
 

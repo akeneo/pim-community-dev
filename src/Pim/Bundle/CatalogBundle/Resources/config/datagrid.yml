@@ -18,7 +18,7 @@ services:
               entity_hint: attributes
               route_name: pim_catalog_productattribute_index
         calls:
-            - [ setProductManager, [@pim_catalog.manager.product] ]
+            - [ setProductManager, ['@pim_catalog.manager.product'] ]
             - [ setIdentifierField, ['id'] ]
 
     # Product grid manager
@@ -32,10 +32,10 @@ services:
               flexible: true
               route_name: pim_catalog_product_index
         calls:
-            - [ setCategoryManager, [@pim_catalog.manager.category] ]
-            - [ setDatagridBuilder, [@pim_grid.builder.datagrid] ]
-            - [ setLocaleManager, [@pim_catalog.manager.locale] ]
-            - [ setAclManager, [@oro_user.acl_manager] ]
+            - [ setCategoryManager, ['@pim_catalog.manager.category'] ]
+            - [ setDatagridBuilder, ['@pim_grid.builder.datagrid'] ]
+            - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
+            - [ setSecurityFacade, ['@oro_security.security_facade'] ]
 
     pim_catalog.datagrid.manager.history:
         class: Pim\Bundle\CatalogBundle\Datagrid\AuditDatagridManager
@@ -53,7 +53,7 @@ services:
               entity_hint: channels
               route_name: pim_catalog_channel_index
         calls:
-            - [ setCategoryManager, [@pim_catalog.manager.category] ]
+            - [ setCategoryManager, ['@pim_catalog.manager.category'] ]
             - [ setIdentifierField, ['id'] ]
 
     pim_catalog.datagrid.manager.currency:
