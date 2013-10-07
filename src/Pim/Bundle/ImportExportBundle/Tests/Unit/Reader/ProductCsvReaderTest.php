@@ -16,6 +16,8 @@ class ProductCsvReaderTest extends CsvReaderTest
     protected function setUp()
     {
         $this->reader = new ProductCsvReader($this->getEntityManagerMock(array('sku', 'name')));
+        $this->stepExecution = $this->getStepExecutionMock();
+        $this->reader->setStepExecution($this->stepExecution);
     }
 
     public function testExtendsCsvReader()
@@ -32,20 +34,21 @@ class ProductCsvReaderTest extends CsvReaderTest
     {
         $this->reader->setFilePath(__DIR__ . '/../../fixtures/duplicate_values.csv');
 
-        $stepExecution = $this->getStepExecutionMock();
-        $stepExecution
+        $this->stepExecution
             ->expects($this->once())
             ->method('addReaderWarning')
             ->with(
-                $this->reader,
-                'The "sku" attribute is unique, the value "SKU-001" was already read in this file.',
+                get_class($this->reader),
+                $this->stringStartsWith(
+                    'The "sku" attribute is unique, the value "SKU-001" was already read in this file'
+                ),
                 array('sku' => 'SKU-001', 'name' => 'window')
             );
 
-        $this->assertEquals(array('sku' => 'SKU-001', 'name' => 'door'), $this->reader->read($stepExecution));
-        $this->assertEquals(array('sku' => 'SKU-002', 'name' => 'hatch'), $this->reader->read($stepExecution));
-        $this->assertFalse($this->reader->read($stepExecution));
-        $this->assertNull($this->reader->read($stepExecution));
+        $this->assertEquals(array('sku' => 'SKU-001', 'name' => 'door'), $this->reader->read());
+        $this->assertEquals(array('sku' => 'SKU-002', 'name' => 'hatch'), $this->reader->read());
+        $this->assertFalse($this->reader->read());
+        $this->assertNull($this->reader->read());
     }
 
     /**

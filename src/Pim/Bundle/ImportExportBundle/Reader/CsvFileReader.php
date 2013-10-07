@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
-
 /**
  * Csv file reader
  * Reads the whole csv file
@@ -25,7 +23,7 @@ class CsvFileReader extends CsvReader
     /**
      * {@inheritdoc}
      */
-    public function read(StepExecution $stepExecution)
+    public function read()
     {
         if ($this->executed) {
             return null;
@@ -35,8 +33,9 @@ class CsvFileReader extends CsvReader
 
         $data = array();
 
-        while ($row = parent::read($stepExecution)) {
+        while ($row = parent::read()) {
             $data[] = $row;
+            $this->stepExecution->incrementReadCount();
         }
 
         return $data;

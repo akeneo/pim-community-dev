@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Doctrine\ORM\EntityManager;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Product csv reader
@@ -38,9 +37,9 @@ class ProductCsvReader extends CsvReader
     /**
      * {@inheritdoc}
      */
-    public function read(StepExecution $stepExecution)
+    public function read()
     {
-        $data = parent::read($stepExecution);
+        $data = parent::read();
 
         if (!is_array($data)) {
             return $data;
@@ -49,7 +48,7 @@ class ProductCsvReader extends CsvReader
         foreach ($data as $code => $value) {
             if (array_key_exists($code, $this->uniqueValues)) {
                 if (in_array($value, $this->uniqueValues[$code])) {
-                    $stepExecution->addReaderWarning(
+                    $this->stepExecution->addReaderWarning(
                         get_class($this),
                         sprintf(
                             'The "%s" attribute is unique, the value "%s" was already read in this file in %s:%s.',

@@ -74,8 +74,8 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('addReaderWarning')
             ->with(
-                $this->reader,
-                'Expecting to have 3 columns, actually have 4.',
+                get_class($this->reader),
+                $this->stringStartsWith('Expecting to have 3 columns, actually have 4'),
                 array('Severin', 'Gero', '28', 'error')
             );
 

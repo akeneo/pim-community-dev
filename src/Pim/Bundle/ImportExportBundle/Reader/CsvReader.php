@@ -225,7 +225,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
             $this->stepExecution->incrementReadCount();
 
             if (count($this->fieldNames) !== count($data)) {
-                $stepExecution->addReaderWarning(
+                $this->stepExecution->addReaderWarning(
                     get_class($this),
                     sprintf(
                         'Expecting to have %d columns, actually have %d in %s:%d.',
