@@ -94,22 +94,24 @@ class ProductValueConverter
      */
     private function convertPricesValue($value)
     {
+        $currencies = $this->currencyManager->getActiveCodes();
+
         $result = array();
-        if (strpos($value, ',') !== false) {
-            foreach (explode(',', $value) as $price) {
-                list($data, $currency) = explode(' ', $price);
-                $result[] = array(
-                    'data'     => $data,
-                    'currency' => $currency,
-                );
+        foreach (explode(',', $value) as $price) {
+            $price = trim($price);
+            if (empty($price) || false === strpos($price, ' ')) {
+                continue;
             }
-        } else {
-            foreach ($this->currencyManager->getActiveCodes() as $currency) {
-                $result[] = array(
-                    'data'     => '',
-                    'currency' => $currency,
-                );
+
+            list($data, $currency) = explode(' ', $price);
+            if (in_array($currency, $currencies)) {
+                $result[] = array('data' => $data, 'currency' => $currency);
+                unset($currencies[array_search($currency, $currencies)]);
             }
+        }
+
+        foreach ($currencies as $currency) {
+            $result[] = array('data' => '', 'currency' => $currency);
         }
 
         return $this->convertValue('prices', $result);
