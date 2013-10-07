@@ -97,7 +97,7 @@ class ProductValueConverter
         $result = array();
         if (strpos($value, ',') !== false) {
             foreach (explode(',', $value) as $price) {
-                list($data, $currency) = explode(' ', $price);
+                list($data, $currency) = explode(' ', trim($price));
                 $result[] = array(
                     'data'     => $data,
                     'currency' => $currency,
