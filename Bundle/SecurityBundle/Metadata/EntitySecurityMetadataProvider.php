@@ -129,7 +129,7 @@ class EntitySecurityMetadataProvider
      *
      * @return EntitySecurityMetadata
      */
-    public function  getMetadata($className, $securityType = self::ACL_SECURITY_TYPE)
+    public function getMetadata($className, $securityType = self::ACL_SECURITY_TYPE)
     {
         $this->ensureMetadataLoaded($securityType);
 
