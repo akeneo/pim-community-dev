@@ -3,9 +3,10 @@
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
+use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -45,6 +46,11 @@ class FlatProductNormalizer implements NormalizerInterface
     /**
      * @staticvar string
      */
+    const FIELD_VARIANT = 'variant_group';
+
+    /**
+     * @staticvar string
+     */
     const FIELD_CATEGORY = 'categories';
 
     /**
@@ -63,6 +69,8 @@ class FlatProductNormalizer implements NormalizerInterface
         $this->normalizeValue($identifier = $object->getIdentifier());
 
         $this->normalizeFamily($object->getFamily());
+
+        $this->normalizeVariantGroup($object->getVariantGroup());
 
         foreach ($object->getValues() as $value) {
             if ($value === $identifier) {
@@ -149,6 +157,18 @@ class FlatProductNormalizer implements NormalizerInterface
     {
         if (empty($this->fields) || isset($this->fields[self::FIELD_FAMILY])) {
             $this->results[self::FIELD_FAMILY] = $family ? $family->getCode() : '';
+        }
+    }
+
+    /**
+     * Normalizes a variant group
+     *
+     * @param VariantGroup $group
+     */
+    protected function normalizeVariantGroup(VariantGroup $group = null)
+    {
+        if (empty($this->fields) || isset($this->fields[self::FIELD_VARIANT])) {
+            $this->results[self::FIELD_VARIANT] = $group ? $group->getCode() : '';
         }
     }
 

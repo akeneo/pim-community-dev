@@ -180,6 +180,12 @@ info:
         change family to:        Change the family to
         merge attributes:        Current attributes will be merged with the ones in the new family.
         keep attributes:         No attributes will be removed.
+        enable:                  Enable
+        enabled:                 Enabled
+        disable:                 Disable
+        disabled:                Disabled
+    variant group:
+        axis: Variation axis: %attributes%
 
 # Form elements
 Options:                       Options

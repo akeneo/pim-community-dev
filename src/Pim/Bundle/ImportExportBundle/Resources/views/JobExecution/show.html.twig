@@ -15,7 +15,7 @@
         {{ elements.backLink(indexRoute) }}
 
         {% if isRunning %}
-            {{ elements.link('Refresh', path(refresh_route, { 'id': execution.id }), { icon: 'refresh', class:'no-hash' }) }}
+            {{ elements.link('Refresh', path(refresh_route, { 'id': execution.id }), { icon: 'refresh' }) }}
         {% else %}
             {{ elements.link('Download file', path(download_file_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }) }}
             {{ elements.link('Download log', path(download_log_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }) }}
@@ -53,6 +53,11 @@
                     <td>{{ step.startTime |date("Y-m-d h:i:s") }}</td>
                     <td>{{ step.endTime |date("Y-m-d h:i:s") }}</td>
                 </tr>
+                    {% for warning in step.readerWarnings %}
+                    <tr>
+                        <td colspan="7"><i class="validation-tooltip"></i> {{ warning.reason }}</td>
+                    </tr>
+                    {% endfor %}
                 {% endfor %}
             </tbody>
         </table>

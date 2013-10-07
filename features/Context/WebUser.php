@@ -4,12 +4,14 @@ namespace Context;
 
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ExpectationException;
-use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\Gherkin\Node\TableNode;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Oro\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
  * Context of the website
@@ -63,7 +65,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /* -------------------- Page-related methods -------------------- */
 
     /**
-     * @BeforeStep
+     * @BeforeScenario
      */
     public function maximize()
     {
@@ -1491,6 +1493,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iExecuteTheJob($type)
     {
         $this->getPage(sprintf('%s show', ucfirst($type)))->execute();
+        sleep(10);
+    }
+
+    /**
+     * @Given /^I upload and import the file "([^"]*)"$/
+     */
+    public function iUploadAndImportTheFile($file)
+    {
+        $this
+            ->getPage('Import show')
+            ->uploadAndImportFile($this->replacePlaceholders($file));
+        sleep(10);
     }
 
     /**
@@ -1837,6 +1851,45 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param TableNode $tableNode
+     * @Then /^I should see a confirm dialog with the following content:$/
+     */
+    public function iShouldSeeAConfirmDialog(TableNode $tableNode)
+    {
+        $tableHash = $tableNode->getHash();
+
+        if (isset($tableHash['title'])) {
+            $expectedTitle = $tableHash['title'];
+            $title = $this->getCurrentPage()->getConfirmDialogTitle();
+
+            if ($expectedTitle !== $title) {
+                $this->createExpectationException(
+                    sprintf('Expecting confirm dialog title "%s", saw "%s"', $expectedTitle, $title)
+                );
+            }
+        }
+
+        if (isset($tableHash['content'])) {
+            $expectedContent = $tableHash['content'];
+            $content = $this->getCurrentPage()->getConfirmDialogContent();
+
+            if ($expectedContent !== $content) {
+                $this->createExpectationException(
+                    sprintf('Expecting confirm dialog content "%s", saw "%s"', $expectedContent, $content)
+                );
+            }
+        }
+    }
+
+    /**
+     * @Then /^I click on the Akeneo logo$/
+     */
+    public function iClickOnTheAkeneoLogo()
+    {
+        $this->getCurrentPage()->clickOnAkeneoLogo();
+    }
+
+    /**
      * @param integer $y
      */
     private function scrollContainerTo($y)
@@ -2088,5 +2141,10 @@ JS;
     private function getMailRecorder()
     {
         return $this->getMainContext()->getMailRecorder();
+    }
+
+    private function replacePlaceholders($value)
+    {
+        return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
     }
 }

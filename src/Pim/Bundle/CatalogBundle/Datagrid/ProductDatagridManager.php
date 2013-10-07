@@ -243,6 +243,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
         $field = $this->createCompletenessField();
         $fieldsCollection->add($field);
+
+        $field = $this->createVariantGroupField();
+        $fieldsCollection->add($field);
     }
 
     /**
@@ -303,7 +306,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'type'            => FieldDescriptionInterface::TYPE_TEXT,
                 'label'           => $this->translate('Family'),
                 'field_name'      => 'familyLabel',
-                'expression'      => 'family',
+                'expression'      => 'productFamily',
                 'filter_type'     => FilterInterface::TYPE_ENTITY,
                 'required'        => false,
                 'sortable'        => true,
@@ -382,6 +385,36 @@ class ProductDatagridManager extends FlexibleDatagridManager
         );
 
         return $fieldCompleteness;
+    }
+
+    /**
+     * Create the variant group field
+     *
+     * @return FieldDescription
+     */
+    protected function createVariantGroupField()
+    {
+        $field = new FieldDescription();
+        $field->setName('variantGroup');
+        $field->setOptions(
+            array(
+                'type'            => FieldDescriptionInterface::TYPE_TEXT,
+                'label'           => $this->translate('Variant group'),
+                'field_name'      => 'variantGroup',
+                'expression'      => 'variantGroup',
+                'filter_type'     => FilterInterface::TYPE_ENTITY,
+                'required'        => false,
+                'sortable'        => true,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'multiple'        => true,
+                'class'           => 'PimCatalogBundle:VariantGroup',
+                'property'        => 'label',
+                'filter_by_where' => true,
+            )
+        );
+
+        return $field;
     }
 
     /**
@@ -536,6 +569,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $proxyQuery
             ->leftJoin($rootAlias .'.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
+            ->leftJoin($rootAlias .'.variantGroup', 'variantGroup')
+            ->leftJoin('variantGroup.translations', 'vt', 'WITH', 'vt.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
             ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices')

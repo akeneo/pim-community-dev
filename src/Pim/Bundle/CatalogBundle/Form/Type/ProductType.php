@@ -79,11 +79,9 @@ class ProductType extends FlexibleType
         $builder
             ->add(
                 'categories',
-                'oro_entity_identifier',
+                'entity',
                 array(
                     'class'    => 'PimCatalogBundle:Category',
-                    'required' => true,
-                    'mapped'   => true,
                     'multiple' => true,
                 )
             );
@@ -103,6 +101,15 @@ class ProductType extends FlexibleType
         $view->vars['groups'] = $this->productFormView->getView();
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function addEntityFields(FormBuilderInterface $builder)
+    {
+        parent::addEntityFields($builder);
+
+        $builder->add('enabled', 'hidden');
+    }
 
     /**
      * Add entity fieldsto form builder

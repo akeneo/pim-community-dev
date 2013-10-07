@@ -67,6 +67,29 @@ class ProductAttributeRepository extends AttributeRepository
     }
 
     /**
+     * Find all unique product attribute codes
+     *
+     * @return string[]
+     */
+    public function findUniqueAttributeCodes()
+    {
+        $codes = $this
+            ->createQueryBuilder('a')
+            ->select('a.code')
+            ->andWhere('a.unique = ?1')
+            ->setParameter(1, true)
+            ->getQuery()
+            ->getArrayResult();
+
+        return array_map(
+            function ($data) {
+                return $data['code'];
+            },
+            $codes
+        );
+    }
+
+    /**
      * Find all attributes of type axis
      * An axis define a variation of a variant group
      * Axes are attributes with options, not localizable and not scopable

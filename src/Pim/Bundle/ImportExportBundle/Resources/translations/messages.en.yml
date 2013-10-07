@@ -55,6 +55,24 @@ oro_batch:
             label: Allow file upload
             help: Whether or not to allow uploading the file directly
 
+    product_csv_reader:
+        title: CSV Reader
+        filePath:
+            label: File
+            help: The csv file to import
+        delimiter:
+            label: Delimiter
+            help: One character used to set the field delimiter
+        enclosure:
+            label: Enclosure
+            help: One character used to set the field enclosure
+        escape:
+            label: Escape
+            help: One character used to set the field escape
+        uploadAllowed:
+            label: Allow file upload
+            help: Whether or not to allow uploading the file directly
+
     csv_file_reader:
         title: CSV File Reader
         filePath:
