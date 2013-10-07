@@ -16,9 +16,11 @@ use Behat\Mink\Exception\ElementNotFoundException;
 class Base extends Page
 {
     protected $elements = array(
-        'Dialog'    => array('css' => 'div.modal'),
-        'Title'     => array('css' => '.navbar-title'),
-        'HeadTitle' => array('css' => 'title')
+        'Dialog'         => array('css' => 'div.modal'),
+        'Title'          => array('css' => '.navbar-title'),
+        'HeadTitle'      => array('css' => 'title'),
+        'Flash messages' => array('css' => '.flash-messages-holder'),
+        'Navigation Bar' => array('css' => 'header#oroplatform-header')
     );
 
     /**
@@ -99,7 +101,7 @@ class Base extends Page
      */
     public function pressButton($locator)
     {
-        # Search with exact name at first
+        // Search with exact name at first
         $button = $this->find('xpath', sprintf("//button[text() = '%s']", $locator));
 
         if (!$button) {
@@ -107,7 +109,7 @@ class Base extends Page
         }
 
         if (!$button) {
-            # Use Mink search, which use "contains" xpath condition
+            // Use Mink search, which use "contains" xpath condition
             $button = $this->findButton($locator);
         }
 
@@ -133,11 +135,7 @@ class Base extends Page
      */
     public function confirmDialog()
     {
-        $element = $this->getElement('Dialog');
-
-        if (!$element) {
-            throw new \Exception('Could not find dialog window');
-        }
+        $element = $this->getConfirmDialog();
 
         $button = $element->find('css', 'a.btn.ok');
 
@@ -146,6 +144,48 @@ class Base extends Page
         }
 
         $button->click();
+    }
+
+    /**
+     * Get the confirm dialog element
+     * @throws \Exception
+     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Element
+     */
+    protected function getConfirmDialog()
+    {
+        $element = $this->getElement('Dialog');
+
+        if (!$element) {
+            throw new \Exception('Could not find dialog window');
+        }
+
+        return $element;
+    }
+
+    /**
+     * Get the confirm dialog title
+     * @return string
+     */
+    public function getConfirmDialogTitle()
+    {
+        $element = $this->getConfirmDialog();
+
+        return $element
+            ->find('css', 'div.modal-header')
+            ->getText();
+    }
+
+    /**
+     * Get confirm dialog content
+     * @return string
+     */
+    public function getConfirmDialogContent()
+    {
+        $element = $this->getConfirmDialog();
+
+        return $element
+            ->find('css', 'div.modal-body')
+            ->getText();
     }
 
     /**
@@ -180,5 +220,35 @@ class Base extends Page
     public function findTooltip($text)
     {
         return $this->find('css', sprintf('.validation-tooltip[data-original-title="%s"]', $text));
+    }
+
+    /**
+     * Click on the akeneo logo
+     */
+    public function clickOnAkeneoLogo()
+    {
+        $this
+            ->getElement('Navigation Bar')
+            ->find('css', 'h1.logo a')
+            ->click();
+    }
+
+    /**
+     * Find a flash message containing text
+     *
+     * @param string $text
+     *
+     * @throws \Exception
+     * @return null|Element
+     */
+    public function findFlashMessage($text)
+    {
+        $holder = $this->getElement('Flash messages');
+
+        if (!$holder) {
+            throw new \Exception('Could not find the flash messages holder');
+        }
+
+        return $holder->find('css', sprintf('div.message:contains("%s")', $text));
     }
 }

@@ -18,12 +18,12 @@ Feature: Delete a channel
     And I should see channel FOO
     When I click on the "Delete" action of the row which contains "FOO"
     And I confirm the deletion
-    Then I should see "Item was deleted"
+    Then I should see flash message "Item deleted"
     And I should not see channel FOO
 
   Scenario: Successfully delete a channel
     Given I edit the "FOO" channel
     When I press the "Delete" button
     And I confirm the deletion
-    Then I should see "Channel successfully removed"
+    Then I should see flash message "Channel successfully removed"
     And I should not see channel FOO

@@ -19,8 +19,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Oro\Bundle\GridBundle\Renderer\GridRenderer;
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ProductCreateHandler;
@@ -44,13 +44,6 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Acl(
- *      id="pim_catalog_product",
- *      name="Product manipulation",
- *      description="Product manipulation",
- *      parent="pim_catalog"
- * )
  */
 class ProductController extends AbstractDoctrineController
 {
@@ -100,9 +93,9 @@ class ProductController extends AbstractDoctrineController
     private $auditManager;
 
     /**
-     * @var AclManager
+     * @var SecurityFacade
      */
-    private $aclManager;
+    private $securityFacade;
 
     /**
      * @staticvar int
@@ -129,7 +122,7 @@ class ProductController extends AbstractDoctrineController
      * @param CategoryManager          $categoryManager
      * @param LocaleManager            $localeManager
      * @param AuditManager             $auditManager
-     * @param AclManager               $aclManager
+     * @param SecurityFacade           $securityFacade
      */
     public function __construct(
         Request $request,
@@ -149,7 +142,7 @@ class ProductController extends AbstractDoctrineController
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
         AuditManager $auditManager,
-        AclManager $aclManager
+        SecurityFacade $securityFacade
     ) {
         parent::__construct(
             $request,
@@ -171,7 +164,7 @@ class ProductController extends AbstractDoctrineController
         $this->categoryManager      = $categoryManager;
         $this->localeManager        = $localeManager;
         $this->auditManager         = $auditManager;
-        $this->aclManager           = $aclManager;
+        $this->securityFacade       = $securityFacade;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -180,12 +173,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @param Request $request the request
      *
-     * @Acl(
-     *      id="pim_catalog_product_index",
-     *      name="View product list",
-     *      description="View product list",
-     *      parent="pim_catalog_product"
-     * )
+     * @AclAncestor("pim_catalog_product_index")
      * @return Response
      */
     public function indexAction(Request $request)
@@ -305,12 +293,7 @@ class ProductController extends AbstractDoctrineController
      * @param string  $dataLocale
      *
      * @Template
-     * @Acl(
-     *      id="pim_catalog_product_create",
-     *      name="Create a product",
-     *      description="Create a product",
-     *      parent="pim_catalog_product"
-     * )
+     * @AclAncestor("pim_catalog_product_create")
      * @return array
      */
     public function createAction(Request $request, $dataLocale)
@@ -319,7 +302,7 @@ class ProductController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_catalog_product_index');
         }
 
-        $entity = $this->productManager->createFlexible(true);
+        $entity = $this->productManager->createProduct();
 
         if ($this->productCreateHandler->process($entity)) {
 
@@ -350,12 +333,7 @@ class ProductController extends AbstractDoctrineController
      * @param integer $id
      *
      * @Template
-     * @Acl(
-     *      id="pim_catalog_product_edit",
-     *      name="Edit a product",
-     *      description="Edit a product",
-     *      parent="pim_catalog_product"
-     * )
+     * @AclAncestor("pim_catalog_product_edit")
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -382,10 +360,6 @@ class ProductController extends AbstractDoctrineController
             $product,
             array('currentLocale' => $this->getDataLocale())
         );
-
-        if (!$this->aclManager->isResourceGranted('pim_catalog_product_change_family')) {
-            $form->remove('family');
-        }
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -429,12 +403,7 @@ class ProductController extends AbstractDoctrineController
      * @param Request $request The request object
      * @param integer $id      The product id to which add attributes
      *
-     * @Acl(
-     *      id="pim_catalog_product_add_attribute",
-     *      name="Add an attribute to a product",
-     *      description="Add an attribute to a product",
-     *      parent="pim_catalog_product"
-     * )
+     * @AclAncestor("pim_catalog_product_add_attribute")
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addProductAttributesAction(Request $request, $id)
@@ -464,12 +433,7 @@ class ProductController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @Acl(
-     *      id="pim_catalog_product_remove",
-     *      name="Remove a product",
-     *      description="Remove a product",
-     *      parent="pim_catalog_product"
-     * )
+     * @AclAncestor("pim_catalog_product_remove")
      * @return Response|RedirectResponse
      */
     public function removeAction(Request $request, $id)
@@ -490,12 +454,7 @@ class ProductController extends AbstractDoctrineController
      * @param integer $productId
      * @param integer $attributeId
      *
-     * @Acl(
-     *      id="pim_catalog_product_remove_attribute",
-     *      name="Remove a product's attribute",
-     *      description="Remove a product's attribute",
-     *      parent="pim_catalog_product"
-     * )
+     * @AclAncestor("pim_catalog_product_remove_attribute")
      * @return RedirectResponse
      *
      * @throws NotFoundHttpException
@@ -529,12 +488,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @ParamConverter("parent", class="PimCatalogBundle:Category", options={"id" = "category_id"})
      * @Template
-     * @Acl(
-     *      id="pim_catalog_product_categories_view",
-     *      name="Consult the categories of a product",
-     *      description="Consult the categories of a product",
-     *      parent="pim_catalog_product"
-     * )
+     * @AclAncestor("pim_catalog_product_categories_view")
      * @return array
      */
     public function listCategoriesAction(Request $request, $id, Category $parent)
@@ -583,7 +537,7 @@ class ProductController extends AbstractDoctrineController
         if (!$dataLocale) {
             throw new \Exception('User must have a catalog locale defined');
         }
-        if (!$this->aclManager->isResourceGranted('pim_catalog_locale_'.$dataLocale)) {
+        if (!$this->securityFacade->isGranted('pim_catalog_locale_'.$dataLocale)) {
             throw new \Exception(sprintf("User doesn't have access to the locale '%s'", $dataLocale));
         }
 
@@ -643,8 +597,6 @@ class ProductController extends AbstractDoctrineController
                 sprintf('Product with id %d could not be found.', $id)
             );
         }
-
-        $this->productManager->addMissingPrices($product);
 
         return $product;
     }

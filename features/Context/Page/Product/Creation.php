@@ -60,18 +60,4 @@ class Creation extends Form
 
         return $field;
     }
-
-    /**
-     * @param string $locale
-     */
-    public function selectActivatedLocale($locale)
-    {
-        $elt = $this->getElement('Activated locales')->find('css', sprintf('li:contains("%s")', $locale));
-
-        if (!$elt) {
-            throw new \Exception(sprintf('Could not find locale "%s".', $locale));
-        }
-
-        $elt->click();
-    }
 }

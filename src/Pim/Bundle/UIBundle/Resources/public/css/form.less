@@ -516,6 +516,20 @@ div.ui-dialog {
   }
 }
 
+#pim_catalog_variant_group_create {
+  label {
+    width: 200px;
+    text-align: left;
+  }
+  .select2-search-field, .select2-container {
+      width: 314px!important;
+      min-width: 314px!important;
+  }
+  input {
+    width: 314px;
+  }
+}
+
 /* Attribute Form ***************************************************************************************************/
 
 #sortable_options {
@@ -798,7 +812,7 @@ h1 {
   .buffer-small-left {padding-left:10px;}
 }
 
-form .currency {
+form.form-horizontal .currency {
   margin-bottom: 10px;
   .control-group {
     margin: 0;
@@ -1082,6 +1096,36 @@ ul.medias label.remove-media {
     padding: 7px;
     margin: 0;
     color: #b9b9b9;
+  }
+}
+
+/* Selectize UI for metric attribute field */
+.selectize-control.input-small {
+  display: inline-block;
+  .selectize-input {
+    padding: 4px 10px 4px 10px;
+    &> * {
+      float: left;
+    }
+  }
+  &.prepend .selectize-input {
+    border-right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+.controls.metric.input-prepend {
+  margin-left: 10px;
+  .icons-container {
+    padding-top: 5px;
+  }
+}
+.selectize-dropdown {
+  [data-selectable].active {
+     #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
+  }
+  .active {
+    background-color: @color-purple_light;
   }
 }
 

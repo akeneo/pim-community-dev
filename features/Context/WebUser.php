@@ -4,12 +4,14 @@ namespace Context;
 
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ExpectationException;
-use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\Gherkin\Node\TableNode;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Oro\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
  * Context of the website
@@ -46,6 +48,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'user groups' => 'UserGroup index',
         'categories'  => 'Category tree creation',
         'home'        => 'Base index',
+        'variants'    => 'Variant index'
     );
 
     /**
@@ -62,7 +65,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /* -------------------- Page-related methods -------------------- */
 
     /**
-     * @BeforeStep
+     * @BeforeScenario
      */
     public function maximize()
     {
@@ -941,7 +944,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSelectRole($role)
     {
-        $this->wait(10000, null);
+        $this->scrollContainerTo(600);
         $this->getPage('User creation')->selectRole($role);
     }
 
@@ -1086,16 +1089,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->getCurrentPage()->pressButton($button);
         $this->wait();
-    }
-
-    /**
-     * @param string $locale
-     *
-     * @Given /^I select the (\w+) activated locale$/
-     */
-    public function iSelectTheActivatedLocale($locale)
-    {
-        $this->getCurrentPage()->selectActivatedLocale($locale);
     }
 
     /**
@@ -1500,6 +1493,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iExecuteTheJob($type)
     {
         $this->getPage(sprintf('%s show', ucfirst($type)))->execute();
+        sleep(10);
+    }
+
+    /**
+     * @Given /^I upload and import the file "([^"]*)"$/
+     */
+    public function iUploadAndImportTheFile($file)
+    {
+        $this
+            ->getPage('Import show')
+            ->uploadAndImportFile($this->replacePlaceholders($file));
+        sleep(10);
     }
 
     /**
@@ -1811,6 +1816,18 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $text
+     *
+     * @Then /^I should see (?:a )?flash message "([^"]*)"$/
+     */
+    public function iShouldSeeFlashMessage($text)
+    {
+        if (!$this->getCurrentPage()->findFlashMessage($text)) {
+            throw $this->createExpectationException(sprintf('No flash messages containing "%s" were found.', $text));
+        }
+    }
+
+    /**
      * @param string $fields
      *
      * @Given /^I display the (.*) attribute$/
@@ -1831,6 +1848,45 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->scrollContainerTo(900);
         $this->getCurrentPage()->confirm();
         $this->wait(10000);
+    }
+
+    /**
+     * @param TableNode $tableNode
+     * @Then /^I should see a confirm dialog with the following content:$/
+     */
+    public function iShouldSeeAConfirmDialog(TableNode $tableNode)
+    {
+        $tableHash = $tableNode->getHash();
+
+        if (isset($tableHash['title'])) {
+            $expectedTitle = $tableHash['title'];
+            $title = $this->getCurrentPage()->getConfirmDialogTitle();
+
+            if ($expectedTitle !== $title) {
+                $this->createExpectationException(
+                    sprintf('Expecting confirm dialog title "%s", saw "%s"', $expectedTitle, $title)
+                );
+            }
+        }
+
+        if (isset($tableHash['content'])) {
+            $expectedContent = $tableHash['content'];
+            $content = $this->getCurrentPage()->getConfirmDialogContent();
+
+            if ($expectedContent !== $content) {
+                $this->createExpectationException(
+                    sprintf('Expecting confirm dialog content "%s", saw "%s"', $expectedContent, $content)
+                );
+            }
+        }
+    }
+
+    /**
+     * @Then /^I click on the Akeneo logo$/
+     */
+    public function iClickOnTheAkeneoLogo()
+    {
+        $this->getCurrentPage()->clickOnAkeneoLogo();
     }
 
     /**
@@ -1939,7 +1995,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $condition = $condition ?: <<<JS
         document.readyState == "complete"                   // Page is ready
             && !$.active                                    // No ajax request is active
-            && $("#page").css("display") == "block"         // Page is displayed (no yellow progress bar)
+            && $("#page").css("display") == "block"         // Page is displayed (no progress bar)
             && $(".loading-mask").css("display") == "none"; // Page is not loading (no black mask loading page)
 JS;
 
@@ -2020,6 +2076,16 @@ JS;
     }
 
     /**
+     * @param string $code
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
+     */
+    private function getVariant($code)
+    {
+        return $this->getFixturesContext()->getVariant($code);
+    }
+
+    /**
      * @return FixturesContext
      */
     private function getFixturesContext()
@@ -2075,5 +2141,10 @@ JS;
     private function getMailRecorder()
     {
         return $this->getMainContext()->getMailRecorder();
+    }
+
+    private function replacePlaceholders($value)
+    {
+        return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
     }
 }

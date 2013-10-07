@@ -99,10 +99,11 @@ You must give write permission to the Apache user on the following directories:
 - app/cache
 - app/logs
 - app/entities
-- web/bundles
-- web/uploads/product
 - app/import
 - app/export
+- app/emails
+- web/bundles
+- web/uploads/product
 
 Checking your System Configuration
 ----------------------------------

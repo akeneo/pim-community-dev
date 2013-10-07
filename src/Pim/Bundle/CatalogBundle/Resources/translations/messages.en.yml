@@ -165,7 +165,7 @@ flash:
     variant group:
         created: Variant group successfully created
         updated: Variant group successfully updated
-        removed: Variant group successfully removed 
+        removed: Variant group successfully removed
     error ocurred: Action failed. Please retry.
 
 # Info messages
@@ -180,6 +180,12 @@ info:
         change family to:        Change the family to
         merge attributes:        Current attributes will be merged with the ones in the new family.
         keep attributes:         No attributes will be removed.
+        enable:                  Enable
+        enabled:                 Enabled
+        disable:                 Disable
+        disabled:                Disabled
+    variant group:
+        axis: Variation axis: %attributes%
 
 # Form elements
 Options:                       Options
@@ -306,7 +312,7 @@ Locales:                                     Locales
 Locales %locale.code% | Edit:                Locales %locale.code% | Edit
 Variant groups:                              Variant groups
 Variant groups | Create:                     Variant groups | Create
-Variant groups %variant.label% | Edit:       Variant groups | Edit
+Variant groups %variant.label% | Edit:       Variant groups %variant group.label% | Edit
 
 pim_catalog_identifier:       Identifier
 pim_catalog_text:             Text

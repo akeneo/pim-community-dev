@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
@@ -23,13 +23,6 @@ use Pim\Bundle\CatalogBundle\Entity\Currency;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Acl(
- *      id="pim_catalog_currency",
- *      name="Currency manipulation",
- *      description="Currency manipulation",
- *      parent="pim_catalog"
- * )
  */
 class CurrencyController extends AbstractDoctrineController
 {
@@ -80,12 +73,7 @@ class CurrencyController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @Acl(
-     *      id="pim_catalog_currency_index",
-     *      name="View currency list",
-     *      description="View currency list",
-     *      parent="pim_catalog_currency"
-     * )
+     * @AclAncestor("pim_catalog_currency_index")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -109,12 +97,7 @@ class CurrencyController extends AbstractDoctrineController
      *
      * @param Currency $currency
      *
-     * @Acl(
-     *      id="pim_catalog_currency_toggle",
-     *      name="Change currency status",
-     *      description="Change currency status",
-     *      parent="pim_catalog_currency"
-     * )
+     * @AclAncestor("pim_catalog_currency_toggle")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function toggleAction(Currency $currency)

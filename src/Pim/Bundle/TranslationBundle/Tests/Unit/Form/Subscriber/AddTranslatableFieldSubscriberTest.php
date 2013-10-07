@@ -370,7 +370,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Get LocaleHelperMock
-     * 
+     *
      * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
      */
     protected function getLocaleHelperMock()

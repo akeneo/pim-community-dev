@@ -19,7 +19,7 @@ Feature: Create an export
     And I check "With header"
     And I save the export
     Then I should see "Export profile - Mobile product export"
-    And I should see "The export has been successfully created."
+    And I should see flash message "The export has been successfully created."
 
   Scenario: Fail to create an unknown product export
     Given I am logged in as "admin"

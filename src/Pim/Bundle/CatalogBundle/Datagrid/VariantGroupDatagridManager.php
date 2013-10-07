@@ -8,9 +8,12 @@ use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Filter\FilterInterface;
-use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
+
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Manager\VariantGroupManager;
 
 /**
  * Variant group datagrid manager
@@ -21,6 +24,16 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
  */
 class VariantGroupDatagridManager extends DatagridManager
 {
+    /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
+     * @var VariantGroupManager
+     */
+    protected $variantGroupManager;
+
     /**
      * {@inheritdoc}
      */
@@ -59,13 +72,17 @@ class VariantGroupDatagridManager extends DatagridManager
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => $this->translate('Label'),
-                'field_name'  => 'label',
+                'field_name'  => 'variantLabel',
+                'expression'  => 'translation.label',
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'required'    => false,
                 'sortable'    => true,
                 'filterable'  => true,
                 'show_filter' => true,
             )
+        );
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_toString.html.twig')
         );
         $fieldsCollection->add($field);
 
@@ -80,21 +97,27 @@ class VariantGroupDatagridManager extends DatagridManager
      */
     protected function createAxisField()
     {
+        $choices = $this->variantGroupManager->getAvailableAxisChoices();
+
         $field = new FieldDescription();
         $field->setName('attribute');
         $field->setOptions(
             array(
-                'type'            => FieldDescriptionInterface::TYPE_OPTIONS,
+                'type'            => FieldDescriptionInterface::TYPE_HTML,
                 'label'           => $this->translate('Axis'),
-                'field_name'      => 'axisLabel',
-                'expression'      => 'axis.id',
-                'filter_type'     => false,
-                'required'        => false,
-                'sortable'        => false,
-                'filterable'      => false,
-                'show_filter'     => false,
-                'filter_by_where' => true
+                'field_name'      => 'attributes',
+                'expression'      => 'attribute.id',
+                'filter_type'     => FilterInterface::TYPE_CHOICE,
+                'required'        => true,
+                'multiple'        => true,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'field_options'   => array('choices' => $choices)
             )
+        );
+
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_optionsToString.html.twig')
         );
 
         return $field;
@@ -108,11 +131,11 @@ class VariantGroupDatagridManager extends DatagridManager
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_catalog_variant_group_edit',
             'options'      => array(
-                'label'   => $this->translate('Edit'),
-                'icon'    => 'edit',
-                'link'    => 'edit_link'
+                'label' => $this->translate('Edit'),
+                'icon'  => 'edit',
+                'link'  => 'edit_link'
             )
         );
 
@@ -123,7 +146,7 @@ class VariantGroupDatagridManager extends DatagridManager
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_catalog_variant_group_remove',
             'options'      => array(
                 'label' => $this->translate('Delete'),
                 'icon'  => 'trash',
@@ -141,7 +164,59 @@ class VariantGroupDatagridManager extends DatagridManager
     {
         $rootAlias = $proxyQuery->getRootAlias();
 
+        $labelExpr = sprintf(
+            "(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)",
+            $rootAlias
+        );
+
         $proxyQuery
-            ->addSelect($rootAlias);
+            ->addSelect($rootAlias)
+            ->addSelect(sprintf("%s AS variantLabel", $labelExpr), true)
+            ->addSelect('translation.label', true)
+            ->addSelect('attribute');
+
+        $proxyQuery
+            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
+            ->leftJoin($rootAlias .'.attributes', 'attribute');
+
+        $proxyQuery->setParameter('localeCode', $this->getCurrentLocale());
+    }
+
+    /**
+     * Set the locale manager
+     *
+     * @param LocaleManager $localeManager
+     *
+     * @return VariantGroupDatagridManager
+     */
+    public function setLocaleManager(LocaleManager $localeManager)
+    {
+        $this->localeManager = $localeManager;
+
+        return $this;
+    }
+
+    /**
+     * Set the variant group manager
+     *
+     * @param VariantGroupManager $variantGroupManager
+     *
+     * @return \Pim\Bundle\CatalogBundle\Datagrid\VariantGroupDatagridManager
+     */
+    public function setVariantGroupManager(VariantGroupManager $variantGroupManager)
+    {
+        $this->variantGroupManager = $variantGroupManager;
+
+        return $this;
+    }
+
+    /**
+     * Get the current locale code from the locale manager
+     *
+     * @return string
+     */
+    protected function getCurrentLocale()
+    {
+        return $this->localeManager->getUserLocaleCode();
     }
 }

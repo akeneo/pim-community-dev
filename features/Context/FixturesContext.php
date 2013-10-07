@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\Inflector;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
-use Oro\Bundle\UserBundle\Entity\Acl;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
@@ -20,8 +19,10 @@ use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Gherkin\Node\PyStringNode;
 
 /**
  * A context for creating entities
@@ -55,6 +56,16 @@ class FixturesContext extends RawMinkContext
         'multiselect' => 'pim_catalog_multiselect',
     );
 
+    private $placeholderValues = array();
+
+    /**
+     * @BeforeScenario
+     */
+    public function resetPlaceholderValues()
+    {
+        $this->placeholderValues = array();
+    }
+
     /**
      * @BeforeScenario
      */
@@ -84,31 +95,6 @@ class FixturesContext extends RawMinkContext
     public function createRequiredAttribute()
     {
         $this->createAttribute('SKU', false, 'identifier', true);
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function resetAcl()
-    {
-        $root = $this->createAcl('root', null, array(User::ROLE_DEFAULT, 'ROLE_SUPER_ADMIN'));
-
-        $oroSecurity = $this->createAcl('oro_security', $root, array('IS_AUTHENTICATED_ANONYMOUSLY'));
-        $this->createAcl('oro_login', $oroSecurity);
-        $this->createAcl('oro_login_check', $oroSecurity);
-        $this->createAcl('oro_logout', $oroSecurity);
-
-        $this->createAcl(
-            'template_controller',
-            $root,
-            array(),
-            'Symfony\Bundle\FrameworkBundle\Controller\TemplateController',
-            'templateAction'
-        );
-
-        $this->getContainer()->get('oro_user.acl_manager')->synchronizeAclResources();
-        $role = $this->getRoleOrCreate('ROLE_SUPER_ADMIN');
-        $this->getContainer()->get('oro_user.acl_manager')->saveRoleAcl($role);
     }
 
     /**
@@ -308,6 +294,20 @@ class FixturesContext extends RawMinkContext
 
         foreach ($channels as $channel) {
             $this->remove($channel);
+        }
+        $this->flush();
+    }
+
+    /**
+     * @Given /^there is no variant$/
+     */
+    public function thereIsNoVariant()
+    {
+        $em = $this->getEntityManager();
+        $variants = $em->getRepository('PimCatalogBundle:VariantGroup')->findAll();
+
+        foreach ($variants as $variant) {
+            $this->remove($variant);
         }
         $this->flush();
     }
@@ -548,21 +548,43 @@ class FixturesContext extends RawMinkContext
             $label = $data['label'];
 
             $locales = array();
-            if (isset($data['locales'])) {
+            if (isset($data['locales']) && !empty($data['locales'])) {
                 $locales = explode(', ', $data['locales']);
             }
 
             $category = null;
-            if (isset($data['category'])) {
+            if (isset($data['category']) && !empty($data['category'])) {
                 $category = $this->getCategory($data['category']);
             }
 
             $currencies = array();
-            if (isset($data['currencies'])) {
+            if (isset($data['currencies']) && !empty($data['currencies'])) {
                 $currencies = explode(', ', $data['currencies']);
             }
 
-            $this->createChannel($code, $label, $locales, $category, $currencies);
+            try {
+                $channel = $this->getChannel($code);
+
+                if (!empty($label)) {
+                    $channel->setLabel($label);
+                }
+
+                if ($category !== null) {
+                    $channel->setCategory($category);
+                }
+
+                foreach ($locales as $localeCode) {
+                    $channel->addLocale($this->getLocale($localeCode));
+                }
+
+                foreach ($currencies as $currencyCode) {
+                    $channel->addCurrency($this->getCurrency($currencyCode));
+                }
+
+                $this->persist($channel);
+            } catch (\InvalidArgumentException $e) {
+                $this->createChannel($code, $label, $locales, $category, $currencies);
+            }
         }
     }
 
@@ -574,15 +596,20 @@ class FixturesContext extends RawMinkContext
     public function theFollowingAttributes(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
+            $data = array_merge(
+                array(
+                    'scopable'    => 'no',
+                    'localizable' => 'no',
+                    'group'       => null,
+                ),
+                $data
+            );
+
             $attribute = $this->getProductManager()->createAttribute($data['type']);
 
             $attribute->setCode($data['code']);
-
-            $scopable = (isset($data['scopable'])) ? $data['scopable'] === 'yes' : false;
-            $attribute->setScopable($scopable);
-
-            $localizable = (isset($data['localizable'])) ? $data['localizable'] === 'yes' : false;
-            $attribute->setTranslatable($localizable);
+            $attribute->setScopable($data['scopable'] === 'yes');
+            $attribute->setTranslatable($data['localizable'] === 'yes');
 
             $attribute->setLocale('en_US');
             $attribute->setLabel($data['label']);
@@ -608,7 +635,7 @@ class FixturesContext extends RawMinkContext
         $entity = $this->{'get'.ucfirst($entityName)}($id);
 
         foreach ($table->getHash() as $data) {
-            $audit = new Audit;
+            $audit = new Audit();
             $audit->setAction($data['action']);
             $audit->setLoggedAt(new \DateTime($data['loggedAt']));
             $audit->setObjectId($entity->getId());
@@ -660,7 +687,11 @@ class FixturesContext extends RawMinkContext
         $steps       = $job->getSteps();
 
         foreach ($table->getHash() as $data) {
-            $config[$data['element']][$data['property']] = $data['value'];
+            $value = $this->replacePlaceholders($data['value']);
+            if (in_array($value, array('yes', 'no'))) {
+                $value = 'yes' === $value;
+            }
+            $config[$data['element']][$data['property']] = $value;
         }
         $config = array_merge(array('reader' => array(), 'processor' => array(), 'writer' => array()), $config);
         $steps[0]->setConfiguration($config);
@@ -694,6 +725,24 @@ class FixturesContext extends RawMinkContext
 
         $this->flush();
     }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following variants?:$/
+     */
+    public function theFollowingVariants(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $code = $data['code'];
+            $label = $data['label'];
+            $attributes = explode(', ', $data['attributes']);
+
+            $this->createVariant($code, $label, $attributes);
+        }
+    }
+
+
 
     /**
      * @Given /^there is no identifier attribute$/
@@ -814,33 +863,37 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $identifier
-     * @param string $attribute
-     * @param string $locale
-     * @param string $scope
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return ProductValue
+     * @Given /^the following file to import:$/
      */
-    private function getProductValue($identifier, $attribute, $locale = null, $scope = null)
+    public function theFollowingFileToImport(PyStringNode $string)
     {
-        $product = $this->getProductManager()->findByIdentifier($identifier);
-        if (!$product) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find product with identifier "%s"', $identifier)
-            );
-        }
+        $this->placeholderValues['file to import'] = $filename =
+            sprintf('/tmp/behat-import-%s.csv', substr(md5(rand()), 0, 7));
+        file_put_contents($filename, (string) $string);
+    }
 
-        $productValue = $product->getValue($attribute, $locale, $scope);
-        if (!$productValue) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find product value for attribute "%s" in locale "%s"', $attribute, $lang)
-            );
-        }
-        $this->getEntityManager()->refresh($productValue);
+    /**
+     * @Then /^there should be (\d+) products?$/
+     */
+    public function thereShouldBeProducts($expectedTotal)
+    {
+        $total = count($this->getProductManager()->getFlexibleRepository()->findAll());
 
-        return $productValue;
+        assertEquals($expectedTotal, $total);
+    }
+
+    /**
+     * @Given /^the product "([^"]*)" should have the following values?:$/
+     */
+    public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
+    {
+        $this->getEntityManager()->clear();
+        $product = $this->getProduct($identifier);
+        $this->getEntityManager()->refresh($product);
+
+        foreach ($table->getRowsHash() as $code => $value) {
+            assertEquals($value, (string) $product->getValue($code));
+        }
     }
 
     /**
@@ -860,11 +913,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getProduct($sku)
     {
-        $manager    = $this->getProductManager();
-        $repository = $manager->getFlexibleRepository();
-        $qb         = $repository->createQueryBuilder('p');
-        $repository->applyFilterByAttribute($qb, $manager->getIdentifierAttribute()->getCode(), $sku);
-        $product = $qb->getQuery()->getOneOrNullResult();
+        $product = $this->getProductManager()->findByIdentifier($sku);
 
         return $product ?: $this->createProduct($sku);
     }
@@ -958,6 +1007,80 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * Get currency
+     *
+     * @param string $code
+     *
+     * @return Currency
+     */
+    public function getCurrency($code)
+    {
+        return $this->getEntityOrException('PimCatalogBundle:Currency', array('code' => $code));
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Category
+     */
+    public function getCategory($code)
+    {
+        return $this->getEntityOrException('PimCatalogBundle:Category', array('code' => $code));
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Job
+     */
+    public function getJobInstance($code)
+    {
+        return $this->getEntityOrException('OroBatchBundle:JobInstance', array('code' => $code));
+    }
+
+    public function replacePlaceholders($value)
+    {
+        if (false !== strpos($value, '{{') && false !== strpos($value, '}}')) {
+            $key = trim(str_replace(array('{{', '}}'), '', $value));
+            if (array_key_exists($key, $this->placeholderValues)) {
+                return $this->placeholderValues[$key];
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $attribute
+     * @param string $locale
+     * @param string $scope
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return ProductValue
+     */
+    private function getProductValue($identifier, $attribute, $locale = null, $scope = null)
+    {
+        $product = $this->getProductManager()->findByIdentifier($identifier);
+        if (!$product) {
+            throw new \InvalidArgumentException(
+                sprintf('Could not find product with identifier "%s"', $identifier)
+            );
+        }
+
+        $productValue = $product->getValue($attribute, $locale, $scope);
+        if (!$productValue) {
+            throw new \InvalidArgumentException(
+                sprintf('Could not find product value for attribute "%s" in locale "%s"', $attribute, $lang)
+            );
+        }
+        $this->getEntityManager()->refresh($productValue);
+
+        return $productValue;
+    }
+
+    /**
      * @param mixed $data
      *
      * @return Product
@@ -990,6 +1113,10 @@ class FixturesContext extends RawMinkContext
         $attribute->setTranslatable($translatable);
         $attribute->setUseableAsGridColumn($showInGrid);
         $attribute->setUseableAsGridFilter($showInGrid);
+        if ('identifier' === $type) {
+            $attribute->setUnique(true);
+            $attribute->setRequired(true);
+        }
         $this->persist($attribute);
 
         return $attribute;
@@ -1060,23 +1187,11 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * Get currency
-     *
-     * @param string $code
-     *
-     * @return Currency
-     */
-    public function getCurrency($code)
-    {
-        return $this->getEntityOrException('PimCatalogBundle:Currency', array('code' => $code));
-    }
-
-    /**
      * @param string $code
      */
     private function createLocale($code)
     {
-        $locale = new Locale;
+        $locale = new Locale();
         $locale->setCode($code);
 
         $this->persist($locale);
@@ -1129,6 +1244,25 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $code
+     * @param string $label
+     * @param array  $attributes
+     */
+    private function createVariant($code, $label, array $attributes)
+    {
+        $variant = new VariantGroup();
+        $variant->setCode($code);
+        $variant->setLocale('en_US')->setLabel($label); // TODO translation refactoring
+
+        foreach ($attributes as $attributeCode) {
+            $attribute = $this->getAttribute($attributeCode);
+            $variant->addAttribute($attribute);
+        }
+
+        $this->persist($variant);
+    }
+
+    /**
      * @param string $label
      *
      * @return Role
@@ -1136,23 +1270,13 @@ class FixturesContext extends RawMinkContext
     private function getRoleOrCreate($label)
     {
         try {
-            $role = $this->getEntityOrException('OroUserBundle:Role', array('label' => $label));
+            $role = $this->getEntityOrException('OroUserBundle:Role', array('role' => $label));
         } catch (\InvalidArgumentException $e) {
             $role = new Role($label);
             $this->persist($role);
         }
 
         return $role;
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return Category
-     */
-    public function getCategory($code)
-    {
-        return $this->getEntityOrException('PimCatalogBundle:Category', array('code' => $code));
     }
 
     /**
@@ -1171,16 +1295,6 @@ class FixturesContext extends RawMinkContext
         }
 
         return $category;
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return Job
-     */
-    public function getJobInstance($code)
-    {
-        return $this->getEntityOrException('OroBatchBundle:JobInstance', array('code' => $code));
     }
 
     /**
@@ -1204,6 +1318,16 @@ class FixturesContext extends RawMinkContext
         }
 
         return $entity;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return VariantGroup
+     */
+    public function getVariant($code)
+    {
+        return $this->getEntityOrException('PimCatalogBundle:VariantGroup', array('code' => $code));
     }
 
     /**
@@ -1292,48 +1416,67 @@ class FixturesContext extends RawMinkContext
         $scope        = 'ecommerce';
         $scopeOption  = null;
 
-        $user = new User();
-        $user->setUsername($username);
-        $user->setFirstname('John');
-        $user->setLastname('Doe');
-        $user->setPlainPassword($password);
-        $user->setEmail($email);
-
-        $user->addRole($this->getRoleOrCreate(User::ROLE_DEFAULT));
-        $user->addRole($this->getRoleOrCreate(User::ROLE_ANONYMOUS));
+        $user = $this->getUserManager()->createUser();
+        $user
+            ->setUsername($username)
+            ->setPlainPassword($password)
+            ->setFirstname('John')
+            ->setLastname('Doe')
+            ->setEmail($email)
+            ->addRole($this->getRoleOrCreate('ROLE_ADMINISTRATOR'));
 
         $manager = $this->getContainer()->get('oro_user.manager.flexible');
 
-        $localeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
-        $localeAttribute->setCode('cataloglocale')->setLabel('cataloglocale');
-        foreach ($this->locales as $localeCode) {
-            $option = $manager->createAttributeOption();
-            $optionValue = $manager->createAttributeOptionValue()->setValue($localeCode);
-            $option->addOptionValue($optionValue);
-            $localeAttribute->addOption($option);
-            if ($locale == $localeCode) {
-                $localeOption = $option;
+        $localeAttribute = $manager->getAttributeRepository()->findOneBy(array('code' => 'cataloglocale'));
+
+        if (!$localeAttribute) {
+            $localeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
+            $localeAttribute->setCode('cataloglocale')->setLabel('cataloglocale');
+            foreach ($this->locales as $localeCode) {
+                $option = $manager->createAttributeOption();
+                $optionValue = $manager->createAttributeOptionValue()->setValue($localeCode);
+                $option->addOptionValue($optionValue);
+                $localeAttribute->addOption($option);
+                if ($locale == $localeCode) {
+                    $localeOption = $option;
+                }
             }
+            $this->persist($localeAttribute);
+        } else {
+            $localeOption = $localeAttribute->getOptions()->filter(
+                function ($option) use ($locale) {
+                    return $option->getOptionValue()->getValue() === $locale;
+                }
+            )->first();
         }
-        $this->persist($localeAttribute);
 
         $localeValue = $manager->createFlexibleValue();
         $localeValue->setAttribute($localeAttribute);
         $localeValue->setOption($localeOption);
         $user->addValue($localeValue);
 
-        $scopeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
-        $scopeAttribute->setCode('catalogscope')->setLabel('catalogscope');
-        foreach (array_keys($this->channels) as $scopeCode) {
-            $option = $manager->createAttributeOption();
-            $optionValue = $manager->createAttributeOptionValue()->setValue($scopeCode);
-            $option->addOptionValue($optionValue);
-            $scopeAttribute->addOption($option);
-            if ($scope == $scopeCode) {
-                $scopeOption = $option;
+        $scopeAttribute = $manager->getAttributeRepository()->findOneBy(array('code' => 'catalogscope'));
+
+        if (!$scopeAttribute) {
+            $scopeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
+            $scopeAttribute->setCode('catalogscope')->setLabel('catalogscope');
+            foreach (array_keys($this->channels) as $scopeCode) {
+                $option = $manager->createAttributeOption();
+                $optionValue = $manager->createAttributeOptionValue()->setValue($scopeCode);
+                $option->addOptionValue($optionValue);
+                $scopeAttribute->addOption($option);
+                if ($scope == $scopeCode) {
+                    $scopeOption = $option;
+                }
             }
+            $this->persist($scopeAttribute);
+        } else {
+            $scopeOption = $scopeAttribute->getOptions()->filter(
+                function ($option) use ($scope) {
+                    return $option->getOptionValue()->getValue() === $scope;
+                }
+            )->first();
         }
-        $this->persist($scopeAttribute);
 
         $scopeValue = $manager->createFlexibleValue();
         $scopeValue->setAttribute($scopeAttribute);
@@ -1348,38 +1491,6 @@ class FixturesContext extends RawMinkContext
         $this->persist($api);
 
         return $user;
-    }
-
-    /**
-     * @param string $name
-     * @param Acl    $parent
-     * @param array  $roles
-     * @param string $class
-     * @param string $method
-     *
-     * @return Acl
-     */
-    private function createAcl($name, $parent = null, array $roles = array(), $class = null, $method = null)
-    {
-        $acl = new Acl();
-        $acl->setId($name);
-        $acl->setName($this->camelize($name));
-        $acl->setDescription($this->camelize($name));
-        if ($parent) {
-            $acl->setParent($parent);
-        }
-        if ($class) {
-            $acl->setClass($class);
-        }
-        if ($method) {
-            $acl->setMethod($method);
-        }
-        foreach ($roles as $role) {
-            $acl->addAccessRole($this->getRoleOrCreate($role));
-        }
-        $this->persist($acl);
-
-        return $acl;
     }
 
     /**
