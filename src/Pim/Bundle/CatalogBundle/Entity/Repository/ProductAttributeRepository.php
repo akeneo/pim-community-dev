@@ -98,7 +98,7 @@ class ProductAttributeRepository extends AttributeRepository
         $qb = $this->createQueryBuilder('a');
         $qb
             ->andWhere(
-                $qb->expr()->in('a.attributeType', array('pim_catalog_simpleselect', 'pim_catalog_multiselect'))
+                $qb->expr()->in('a.attributeType', array('pim_catalog_simpleselect'))
             )
             ->andWhere($qb->expr()->neq('a.scopable', 1))
             ->andWhere($qb->expr()->neq('a.translatable', 1));
