@@ -184,6 +184,8 @@ info:
         enabled:                 Enabled
         disable:                 Disable
         disabled:                Disabled
+    variant group:
+        axis: Variation axis: %attributes%
 
 # Form elements
 Options:                       Options

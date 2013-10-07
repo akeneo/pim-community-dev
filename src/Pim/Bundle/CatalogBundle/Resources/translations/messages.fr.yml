@@ -184,6 +184,8 @@ info:
         enabled:                 __Enabled
         disable:                 __Disable
         disabled:                __Disabled
+    variant group:
+        axis: __Variation axis: %attributes%
 
 # Form elements
 Options:                       Options
