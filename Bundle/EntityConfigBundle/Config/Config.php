@@ -6,7 +6,7 @@ use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
 
 /**
- * Object of this class contain meta properties for Configurable Entities and his fields
+ * The aim of this class is to store configuration data for each configurable object (entity or field).
  */
 class Config implements ConfigInterface
 {
@@ -21,6 +21,8 @@ class Config implements ConfigInterface
     protected $values = array();
 
     /**
+     * Constructor.
+     *
      * @param ConfigIdInterface $id
      */
     public function __construct(ConfigIdInterface $id)
@@ -29,6 +31,8 @@ class Config implements ConfigInterface
     }
 
     /**
+     * Returns id of an object for which an instance of this class stores configuration data.
+     *
      * @return ConfigIdInterface
      */
     public function getId()
@@ -37,10 +41,14 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @param string $code
-     * @param bool   $strict
-     * @throws RuntimeException
-     * @return mixed|null
+     * Gets a value of a configuration parameter.
+     *
+     * @param string $code    The code (name) a configuration parameter
+     * @param bool   $strict  Set to true if this method must raise an exception
+     *                        when the requested parameter does not exist
+     * @return mixed|null     The parameter value of null if the requested parameter does not exist
+     *                        and $strict = false
+     * @throws RuntimeException When $strict = true and the requested parameter does not exist
      */
     public function get($code, $strict = false)
     {
@@ -56,6 +64,8 @@ class Config implements ConfigInterface
     }
 
     /**
+     * Sets a value of the given configuration parameter.
+     *
      * @param string $code
      * @param mixed  $value
      * @return $this
@@ -68,6 +78,8 @@ class Config implements ConfigInterface
     }
 
     /**
+     * Checks whether a configuration parameter with the given code exists on not.
+     *
      * @param string $code
      * @return bool
      */
@@ -77,8 +89,10 @@ class Config implements ConfigInterface
     }
 
     /**
+     * Checks id a value of a configuration parameter equals to $value.
+     *
      * @param string $code
-     * @param bool   $value
+     * @param mixed  $value
      * @return bool
      */
     public function is($code, $value = true)
@@ -87,15 +101,22 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @param callable $filter
+     * Returns parameters is filtered using the given callback function.
+     * Returns all parameters if $filter argument is not specified.
+     *
+     * @param callable|null $filter The callback function to be used to filter parameters
      * @return array
      */
     public function all(\Closure $filter = null)
     {
-        return $filter ? array_filter($this->values, $filter) : $this->values;
+        return $filter
+            ? array_filter($this->values, $filter)
+            : $this->values;
     }
 
     /**
+     * Replace all parameters with parameters specified in $values argument.
+     *
      * @param array $values
      * @return $this
      */
@@ -123,7 +144,7 @@ class Config implements ConfigInterface
     }
 
     /**
-     * Clone Config
+     * Creates a new object that is a copy of the current instance.
      */
     public function __clone()
     {

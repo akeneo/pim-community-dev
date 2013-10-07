@@ -20,10 +20,11 @@ function(_, Backbone, AbstractWidget) {
 
         initialize: function(options) {
             options = options || {};
-            this.initializeWidget(options);
 
             this.widget = this.$el;
             this.widget.addClass(this.options.cssClass);
+
+            this.initializeWidget(options);
         },
 
         setTitle: function(title) {

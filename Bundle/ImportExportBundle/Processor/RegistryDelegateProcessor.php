@@ -63,9 +63,9 @@ class RegistryDelegateProcessor implements ProcessorInterface, StepExecutionAwar
             throw new LogicException('Step execution entity must be injected to processor.');
         }
         $context = $this->contextRegistry->getByStepExecution($this->stepExecution);
-        if (!$context->getOption('entityName') || !$context->getOption('processorAlias')) {
+        if (!$context->getOption('processorAlias')) {
             throw new InvalidConfigurationException(
-                'Configuration of processor must contain "entityName" and "processorAlias" options.'
+                'Configuration of processor must contain "processorAlias" options.'
             );
         }
 

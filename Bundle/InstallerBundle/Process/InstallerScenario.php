@@ -12,7 +12,6 @@ class InstallerScenario extends ContainerAware implements ProcessScenarioInterfa
     public function build(ProcessBuilderInterface $builder)
     {
         $builder
-            ->add('check', new Step\CheckStep())
             ->add('configure', new Step\ConfigureStep())
             ->add('schema', new Step\SchemaStep())
             ->add('setup', new Step\SetupStep())

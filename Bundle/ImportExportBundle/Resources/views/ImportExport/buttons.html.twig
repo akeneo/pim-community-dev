@@ -17,9 +17,8 @@
 </div>
 
 <script type="text/javascript">
-    require(['jquery', 'oro/translator', 'oro/widget-manager', 'oro/dialog-widget', 'oro/messenger',
-        'oro/registry', 'oro/mediator'],
-    function($, __, WidgetManager, DialogWidget, Messanger, registry, mediator) {
+    require(['jquery', 'oro/translator', 'oro/dialog-widget', 'oro/messenger', 'oro/registry', 'oro/mediator'],
+    function($, __, DialogWidget, Messanger, registry, mediator) {
         $('.import-btn').on('click', function(e) {
             e.preventDefault();
 
@@ -34,7 +33,6 @@
                     'modal': true
                 }
             });
-            WidgetManager.addWidgetInstance(widget);
             widget.render();
 
             {% if dataGridName is defined %}

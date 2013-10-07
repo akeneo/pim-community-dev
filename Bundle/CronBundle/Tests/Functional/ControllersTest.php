@@ -42,16 +42,18 @@ class ControllersTest extends WebTestCase
      */
     public function testGetStatus()
     {
-        $this->client->request(
-            'GET',
-            $this->client->generate('oro_cron_job_status'),
-            array(),
-            array(),
-            array('HTTP_X-Requested-With' => 'XMLHttpRequest')
-        );
-        $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
-        $this->assertGreaterThan(0, (int)$result->getContent());
+        if (defined('PHP_WINDOWS_VERSION_BUILD')) {
+            $this->client->request(
+                'GET',
+                $this->client->generate('oro_cron_job_status'),
+                array(),
+                array(),
+                array('HTTP_X-Requested-With' => 'XMLHttpRequest')
+            );
+            $result = $this->client->getResponse();
+            ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
+            $this->assertGreaterThan(0, (int)$result->getContent());
+        }
     }
 
     /**

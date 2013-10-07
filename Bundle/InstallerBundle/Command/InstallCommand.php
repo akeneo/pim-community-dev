@@ -24,6 +24,10 @@ class InstallCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if ($this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')) {
+            throw new \RuntimeException('Oro Application already installed.');
+        }
+
         $output->writeln('<info>Installing Oro Application.</info>');
         $output->writeln('');
 
@@ -38,40 +42,19 @@ class InstallCommand extends ContainerAwareCommand
 
     protected function checkStep(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<info>Checking system requirements:</info>');
+        $output->writeln('<info>Oro requirements check:</info>');
 
-        $table     = $this->getHelperSet()->get('table');
-        $fulfilled = true;
-
-        foreach ($this->getContainer()->get('oro_installer.requirements') as $collection) {
-            $table->setHeaders(array(sprintf('%1$-30s', $collection->getLabel()), 'Check     '));
-
-            $rows = array();
-
-            foreach ($collection as $requirement) {
-                $row = array($requirement->getLabel());
-
-                if ($requirement->isFulfilled()) {
-                    $row[] = 'OK';
-                } else {
-                    if ($requirement->isRequired()) {
-                        $fulfilled = false;
-
-                        $row[] = 'ERROR'; // $requirement->getHelp()
-                    } else {
-                        $row[] = 'WARNING';
-                    }
-                }
-
-                $rows[] = $row;
-            }
-
-            $table
-                ->setRows($rows)
-                ->render($output);
+        if (!class_exists('OroRequirements')) {
+            require_once $this->getContainer()->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . 'OroRequirements.php';
         }
 
-        if (!$fulfilled) {
+        $collection = new \OroRequirements();
+
+        $this->renderTable($collection->getMandatoryRequirements(), 'Mandatory requirements', $output);
+        $this->renderTable($collection->getPhpIniRequirements(), 'PHP settings', $output);
+        $this->renderTable($collection->getRecommendations(), 'Optional recommendations', $output);
+
+        if (count($collection->getFailedRequirements())) {
             throw new \RuntimeException('Some system requirements are not fulfilled. Please check output messages and fix them.');
         }
 
@@ -80,6 +63,9 @@ class InstallCommand extends ContainerAwareCommand
         return $this;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
     protected function setupStep(InputInterface $input, OutputInterface $output)
     {
         $output->writeln('<info>Setting up database.</info>');
@@ -164,6 +150,34 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln('');
 
         return $this;
+    }
+
+    /**
+     * Render requirements table
+     *
+     * @param array  $collection
+     * @param string $header
+     */
+    protected function renderTable(array $collection, $header, OutputInterface $output)
+    {
+        $table = $this->getHelperSet()->get('table');
+
+        $table
+            ->setHeaders(array('Check  ', $header))
+            ->setRows(array());
+
+        foreach ($collection as $requirement) {
+            if ($requirement->isFulfilled()) {
+                $table->addRow(array('OK', $requirement->getTestMessage()));
+            } else {
+                $table->addRow(array(
+                    $requirement->isOptional() ? 'WARNING' : 'ERROR',
+                    $requirement->getHelpText()
+                ));
+            }
+        }
+
+        $table->render($output);
     }
 
     private function runCommand($command, OutputInterface $output, $params = array())
