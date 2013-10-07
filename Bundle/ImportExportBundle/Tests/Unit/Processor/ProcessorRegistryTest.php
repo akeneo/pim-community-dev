@@ -133,6 +133,22 @@ class ProcessorRegistryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetProcessorsByEntityUnknown()
+    {
+        $this->assertEquals(
+            array(),
+            $this->registry->getProcessorsByEntity('unknown', 'unknown')
+        );
+    }
+
+    public function testGetProcessorAliasesByEntityUnknown()
+    {
+        $this->assertEquals(
+            array(),
+            $this->registry->getProcessorAliasesByEntity('unknown', 'unknown')
+        );
+    }
+
     public function testGetProcessorAliasesByEntity()
     {
         $type = ProcessorRegistry::TYPE_IMPORT;

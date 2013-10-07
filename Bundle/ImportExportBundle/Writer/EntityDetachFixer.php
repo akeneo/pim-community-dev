@@ -101,9 +101,6 @@ class EntityDetachFixer
      */
     protected function isEntityDetached($entity)
     {
-        if (!is_object($entity)) {
-            $s = 1;
-        }
         return $this->entityManager->getUnitOfWork()->getEntityState($entity) == UnitOfWork::STATE_DETACHED;
     }
 }

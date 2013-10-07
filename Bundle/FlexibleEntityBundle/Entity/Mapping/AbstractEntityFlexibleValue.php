@@ -44,7 +44,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      * Locale code
      * @var string $locale
      *
-     * @ORM\Column(name="locale_code", type="string", length=5, nullable=true)
+     * @ORM\Column(name="locale_code", type="string", length=20, nullable=true)
      */
     protected $locale;
 
@@ -76,7 +76,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      * Store decimal value
      * @var double $decimal
      *
-     * @ORM\Column(name="value_decimal", type="decimal", nullable=true)
+     * @ORM\Column(name="value_decimal", type="decimal", precision=14, scale=4, nullable=true)
      */
     protected $decimal;
 
