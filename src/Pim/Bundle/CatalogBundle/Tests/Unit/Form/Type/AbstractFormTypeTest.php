@@ -185,7 +185,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
 
     /**
      * Get LocaleHelperMock
-     * 
+     *
      * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
      */
     protected function getLocaleHelperMock()

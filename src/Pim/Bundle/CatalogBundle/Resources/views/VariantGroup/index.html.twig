@@ -11,7 +11,24 @@
 
     {% set title = 'variant group.overview'|trans %}
 
-    {% set buttons = elements.createBtn('variant group', path('pim_catalog_variant_group_create')) %}
+    {% set buttons %}
+        {{ elements.createBtn(
+            'variant group',
+            null,
+            { 'id': 'create-variant-group', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_variant_group_create') }
+        ) }}
+        <script type="text/javascript">
+            require(
+                ['jquery', 'pim/dialogform'],
+                function ($, dialogForm) {
+                    'use strict';
+                    $(function() {
+                        new dialogForm('#create-variant-group');
+                    });
+                }
+            );
+        </script>
+    {% endset %}
 
     {{ elements.page_header(title, buttons) }}
 

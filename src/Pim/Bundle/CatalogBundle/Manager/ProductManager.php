@@ -182,7 +182,6 @@ class ProductManager extends FlexibleManager
         $this->storageManager->flush();
     }
 
-
     /**
      * Return the identifier attribute
      *

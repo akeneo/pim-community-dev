@@ -102,6 +102,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
                 )
             );
         }
+
         return $this->resolvedFilePath;
     }
 

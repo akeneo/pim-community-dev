@@ -42,3 +42,11 @@ services:
             - '@pim_catalog.form.currency'
             - '@request'
             - '@doctrine.orm.entity_manager'
+
+    pim_catalog.form.handler.variant_group:
+        class: %pim_catalog.form.handler.variant_group.class%
+        scope: request
+        arguments:
+            - '@pim_catalog.form.variant_group'
+            - '@request'
+            - '@doctrine.orm.entity_manager'

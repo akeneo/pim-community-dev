@@ -17,6 +17,10 @@ class Wizard extends Form
 
     protected $currentStep;
 
+    /**
+     * Go to the next step
+     * @return string
+     */
     public function next()
     {
         $this->pressButton('Next');
@@ -24,6 +28,10 @@ class Wizard extends Form
         return $this->currentStep;
     }
 
+    /**
+     * Press the confirm button
+     * @return string
+     */
     public function confirm()
     {
         $this->pressButton('Confirm');

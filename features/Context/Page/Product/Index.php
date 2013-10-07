@@ -140,6 +140,9 @@ class Index extends Grid
         $elt->selectOption($code);
     }
 
+    /**
+     * Press the mass edit button
+     */
     public function massEdit()
     {
         $this->pressButton('Mass Edition');

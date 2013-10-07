@@ -13,11 +13,17 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
  */
 class ProductEnabledConverterTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->converter = new ProductEnabledConverter();
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertProductEnabled()
     {
         $this->assertEquals(
@@ -26,6 +32,9 @@ class ProductEnabledConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertProductDisabled()
     {
         $this->assertEquals(
@@ -34,11 +43,17 @@ class ProductEnabledConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testUnresolvedEnabledKey()
     {
         $this->assertEquals(array(), $this->converter->convert(array('Enabled' => true)));
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
     protected function getEntityManagerMock()
     {
         return $this
@@ -47,6 +62,9 @@ class ProductEnabledConverterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
     protected function getRepositoryMock()
     {
         return $this
@@ -55,6 +73,11 @@ class ProductEnabledConverterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @param integer $id
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Family
+     */
     protected function getFamilyMock($id)
     {
         $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family');

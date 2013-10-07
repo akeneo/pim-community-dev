@@ -138,12 +138,10 @@ class ReportDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-        $acl = sprintf('pim_importexport_%s_report_show', $this->jobType);
-
         $showAction = array(
             'name'         => 'show',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => $acl,
+            'acl_resource' => sprintf('pim_importexport_%s_report_show', $this->jobType),
             'options'      => array(
                 'label'   => $this->translate('Show'),
                 'icon'    => 'list-alt',

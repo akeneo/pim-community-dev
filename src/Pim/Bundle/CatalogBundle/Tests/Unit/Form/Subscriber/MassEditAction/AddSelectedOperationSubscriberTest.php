@@ -157,7 +157,7 @@ class AddSelectedOperationSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMassEditActionMock($formType, array $formOptions)
     {
-        $operation = $this->getMock('Pim\Bundle\CatalogBundle\MassEditAction\MassEditAction');
+        $operation = $this->getMock('Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionInterface');
 
         $operation->expects($this->any())
             ->method('getFormType')

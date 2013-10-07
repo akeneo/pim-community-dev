@@ -42,17 +42,26 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('en_US', $this->localeExtension->localeLabel('en_US'));
     }
-    
+
+    /**
+     * Test related method
+     */
     public function testFlag()
     {
         $this->assertEquals('en_US', $this->localeExtension->flag('en_US'));
     }
 
+    /**
+     * Test related method
+     */
     public function testCurrencySymbol()
     {
         $this->assertEquals('USD', $this->localeExtension->currencySymbol('USD'));
     }
 
+    /**
+     * Test related method
+     */
     public function testLocaleCurrency()
     {
         $this->assertEquals('USD', $this->localeExtension->localeCurrency());
@@ -68,16 +77,19 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('locale_label', $twigFunctions);
         $this->assertTrue(method_exists($this->localeExtension, 'localeLabel'));
         $this->assertInstanceOf('\Twig_Function_Method', $twigFunctions['locale_label']);
-        
+
         $this->assertArrayHasKey('currency_symbol', $twigFunctions);
         $this->assertTrue(method_exists($this->localeExtension, 'currencySymbol'));
         $this->assertInstanceOf('\Twig_Function_Method', $twigFunctions['currency_symbol']);
-        
+
         $this->assertArrayHasKey('locale_currency', $twigFunctions);
         $this->assertTrue(method_exists($this->localeExtension, 'localeCurrency'));
         $this->assertInstanceOf('\Twig_Function_Method', $twigFunctions['locale_currency']);
     }
 
+    /**
+     * Test related method
+     */
     public function testGetFilters()
     {
         $twigFilters = $this->localeExtension->getFilters();
@@ -88,7 +100,7 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
     }
     /**
      * Get LocaleHelperMock
-     * 
+     *
      * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
      */
     protected function getLocaleHelperMock()
