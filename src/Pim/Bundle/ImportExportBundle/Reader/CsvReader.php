@@ -3,13 +3,13 @@
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\File;
 
 /**
  * Csv reader
@@ -25,7 +25,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
 {
     /**
      * @Assert\NotBlank(groups={"Execution"})
-     * @File(groups={"Execution"}, allowedExtensions={"csv"})
+     * @AssertFile(groups={"Execution"}, allowedExtensions={"csv"})
      */
     protected $filePath;
 
@@ -62,7 +62,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
     /**
      * @var SplFileObject
      */
-    private $csv;
+    protected $csv;
 
     /**
      * Get uploaded file constraints
@@ -73,7 +73,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
     {
         return array(
             new Assert\NotBlank(),
-            new File(array('allowedExtensions' => array('csv'))),
+            new AssertFile(array('allowedExtensions' => array('csv'))),
         );
     }
 
@@ -83,7 +83,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
      *
      * @return CsvReader
      */
-    public function setUploadedFile(UploadedFile $uploadedFile)
+    public function setUploadedFile(File $uploadedFile)
     {
         $this->filePath = $uploadedFile->getRealPath();
 
@@ -226,11 +226,13 @@ class CsvReader extends AbstractConfigurableStepElement implements
 
             if (count($this->fieldNames) !== count($data)) {
                 $this->stepExecution->addReaderWarning(
-                    $this,
+                    get_class($this),
                     sprintf(
-                        'Expecting to have %d columns, actually have %d.',
+                        'Expecting to have %d columns, actually have %d in %s:%d.',
                         count($this->fieldNames),
-                        count($data)
+                        count($data),
+                        $this->csv->getRealPath(),
+                        $this->csv->key()
                     ),
                     $data
                 );

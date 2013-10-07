@@ -62,11 +62,9 @@ class ProductType extends FlexibleType
         $builder
             ->add(
                 'categories',
-                'oro_entity_identifier',
+                'entity',
                 array(
                     'class'    => 'PimCatalogBundle:Category',
-                    'required' => true,
-                    'mapped'   => true,
                     'multiple' => true,
                 )
             );
