@@ -10,6 +10,7 @@ family:          __family
 import profile:  __import profile
 locale:          __locale
 product:         produit
+variant group:   __variant group
 
 # Page header titles
 attribute:
@@ -59,6 +60,10 @@ product:
     overview: __product overview
     create:   __create product
     edit:     __edit product
+variant group:
+    overview: __variant group overview
+    create:   __create variant group
+    edit:     __edit variant group
 
 # Custom titles
 products: produits
@@ -77,6 +82,7 @@ btn:
         import profile:  __create import profile
         locale:          __create locale
         product:         __create product
+        variant group:   __create variant group
     edit:      modifier
     save:      sauvegarder
     remove:    __remove
@@ -102,9 +108,13 @@ confirmation:
         product:         __Are you sure you want to delete the product %name%?
         export profile:  __Are you sure you want to delete the export profile %name%?
         import profile:  __Are you sure you want to delete the import profile %name%?
+        channel:         __Are you sure you want to delete the channel %name%?
+        variant group:   __Are you sure you want to delete the variant group %name%?
 
 # Flash messages
 flash:
+    entity:
+        removed:          __Item was deleted
     attribute:
         created:                  __Attribute successfully created
         updated:                  __Attribute successfully updated
@@ -124,9 +134,11 @@ flash:
         created: __Tree successfully created
         updated: __Tree successfully updated
         removed: __Tree successfully removed
+        not removable: __Trees connected to channels cannot be removed.
     channel:
         saved:   __Channel successfully saved
         removed: __Channel successfully removed
+        not removable: __The last channel cannot be removed
     currency:
         updated: __Currency successfully updated
     family:
@@ -146,6 +158,14 @@ flash:
         attributes added:         __Attributes successfully added to the product
         attribute removed:        __Attribute successfully removed from the product
         attribute not removable:  __The attribute can not be removed from this product
+    import:
+        removed:                  __The import has been removed
+    export:
+        removed:                  __The export has been removed
+    variant group:
+        created: __Variant group successfully created
+        updated: __Variant group successfully updated
+        removed: __Variant group successfully removed
     error ocurred: __Action failed. Please retry.
 
 # Info messages
@@ -255,7 +275,7 @@ Is dynamic: __Is dynamic
 Dashboard:                                   __Dashboard
 Attribute groups:                            __Attribute groups
 Attribute groups | Create:                   __Attribute groups | Create
-Attribute groups %group.name% | Edit:        __Attribute groups %group.name% | Edit
+Attribute groups %group.label% | Edit:       __Attribute groups %group.label% | Edit
 Attribute groups | Sort:                     __Attribute groups | Sort
 Category trees:                              __Category trees
 Category trees | List:                       __Category trees | List
@@ -280,10 +300,13 @@ Families | Create:                           __Families | Create
 Families %family.label% | Edit:              __Families %family.label% | Edit
 Channels:                                    __Channels
 Channels | Create:                           __Channels | Create
-Channels %channel.name% | Edit:              __Channels %channel.name% | Edit
+Channels %channel.label% | Edit:             __Channels %channel.label% | Edit
 Currencies:                                  __Currencies
 Locales:                                     __Locales
 Locales %locale.code% | Edit:                __Locales %locale.code% | Edit
+Variant groups:                              __Variant groups
+Variant groups | Create:                     __Variant groups | Create
+Variant groups %variant.label% | Edit:       __Variant groups | Edit
 
 pim_catalog_identifier:       __Identifier
 pim_catalog_text:             __Text

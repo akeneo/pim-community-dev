@@ -21,6 +21,8 @@
 
 {% set parametersSorterType = constant(parameterTypePrefix ~ 'SORT_PARAMETERS') %}
 {% set parametersFilterType = constant(parameterTypePrefix ~ 'FILTER_PARAMETERS') %}
+{% set parametersAdditionalType = constant(parameterTypePrefix ~ 'ADDITIONAL_PARAMETERS') %}
+{% set additionalParametersViewKey = constant('Oro\\Bundle\\GridBundle\\Datagrid\\Views\\AbstractViewsList::PARAM_KEY') %}
 
 {% set sorterData = [] %}
 {% if parametersSorterType in currentDatagridParameters|keys %}
@@ -32,6 +34,15 @@
 {% set filterData = currentDatagridParameters[parametersFilterType] %}
 {% endif %}
 
+{% set viewsData = [] %}
+{% set currentView = '' %}
+{% if datagrid.viewsList %}
+    {% if currentDatagridParameters[parametersAdditionalType][additionalParametersViewKey] is defined %}
+        {% set currentView = currentDatagridParameters[parametersAdditionalType][additionalParametersViewKey] %}
+    {% endif %}
+    {% set viewsData = datagrid.viewsList.toViewData() %}
+{% endif %}
+
 {% set entityHint = datagrid.entityHint ? datagrid.entityHint : 'records' %}
 
 require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'oro/loading-mask',
@@ -41,7 +52,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
     'oro/datagrid/delete-action', 'oro/datagrid/navigate-action', 'oro/datagrid/mass-action',
     'oro/datafilter/choice-filter', 'oro/datafilter/number-filter', 'oro/datafilter/date-filter',
     'oro/datafilter/datetime-filter', 'oro/datafilter/select-filter', 'oro/datafilter/multiselect-filter',
-    'oro/datafilter/select-row-filter', 'oro/datagrid/ajax-action',
+    'oro/datafilter/select-row-filter', 'oro/datagrid/ajax-action', 'oro/datagrid/grid-views/view',
 
     // Pim filters
     'pim/datafilter/currency-filter', 'pim/datafilter/scope-filter',
@@ -50,13 +61,13 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
     'pim/datagrid/export-action', 'pim/datagrid/tab-redirect-action'],
 
     function($, _, Backbone, mediator, registry, LoadingMask,
-        Grid, GridRouter, PageableCollection, FilterList,
-        MomentCell, NumberCell, IntegerCell, BooleanCell,
-        HtmlCell, SelectCell, StringCell, PercentCell,
-        DeleteAction, NavigateAction, MassAction,
-        ChoiceFilter, NumberFilter, DateFilter,
-        DatetimeFilter, SelectFilter, MultiselectFilter,
-        SelectRowFilter, AjaxAction,
+             Grid, GridRouter, PageableCollection, FilterList,
+             MomentCell, NumberCell, IntegerCell, BooleanCell,
+             HtmlCell, SelectCell, StringCell, PercentCell,
+             DeleteAction, NavigateAction, MassAction,
+             ChoiceFilter, NumberFilter, DateFilter,
+             DatetimeFilter, SelectFilter, MultiselectFilter,
+             SelectRowFilter, AjaxAction, GridViewsView,
 
         // Pim filters
         CurrencyFilter, ScopeFilter,
@@ -67,7 +78,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
         var datagridOptions = {
             grid: {
                 {% block javascript_grid_options  "" %}
-                name: '{{ datagrid.name }}',
+                name: {{ datagrid.name|json_encode|raw }},
                 columns: [
                     {% for column in datagrid.columns %}
                     {
@@ -79,12 +90,14 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                         {% if column.type == constant(columnTypePrefix ~ 'TYPE_DATE') %}
                             cell: MomentCell.extend({
                                 modelFormat:   "YYYY-MM-DD",
-                                displayFormat: "MM/DD/YYYY"
+                                displayFormat: {{ oro_config_moment_dateformat()|json_encode|raw }}
                             })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DATETIME') %}
                             cell: MomentCell.extend({
                                 modelFormat:   "YYYY-MM-DD hh:mm:ss",
-                                displayFormat: "MM/DD/YYYY hh:mm a"
+                                displayFormat: {{ oro_config_moment_datetimeformat()|json_encode|raw }},
+                                displayInUTC:  false,
+                                displayTimeZone: {{ oro_config_timezone()|json_encode|raw }}
                             })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DECIMAL') %}
                             cell: NumberCell
@@ -140,7 +153,8 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                 entityHint : {{ datagrid.entityHint|capitalize|json_encode|raw }},
                 noDataHint : {{ 'oro_grid.no_data_hint %entityHint%'|trans({'%entityHint%': entityHint})|json_encode|raw }},
                 noResultsHint : {{ 'oro_grid.not_found_hint %entityHint%'|trans({'%entityHint%': entityHint})|json_encode|raw }},
-                toolbarOptions: {{ datagrid.toolbarOptions|json_encode|raw }}
+                toolbarOptions: {{ datagrid.toolbarOptions|json_encode|raw }},
+                multipleSorting: {{ datagrid.multipleSorting|json_encode|raw }}
             },
             collection: {
                 inputName: {{ datagrid.name|json_encode|raw }},
@@ -150,8 +164,9 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                     currentPage:  {{ datagrid.pager.page|json_encode|raw }},
                     pageSize:     {{ datagrid.pager.maxPerPage|json_encode|raw }},
                     totalRecords: {{ datagrid.pager.nbResults|json_encode|raw }},
-                    filters:      {{ filterData ? filterData|json_encode|raw : '{}' }},
-                    sorters:      {{ sorterData ? sorterData|json_encode|raw : '{}' }}
+                    filters:      {{ filterData|default({})|json_encode|raw }},
+                    sorters:      {{ sorterData|default({})|json_encode|raw }},
+                    gridView:     {{ currentView|default({})|json_encode|raw }}
                 }
             },
             results: {{ oro_grid_render_results_json(datagridView) }}
@@ -161,14 +176,16 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
         var datagridTemplateSelector = {{ ("#" ~ templateElId)|json_encode|raw }};
         var datagridFiltersSelector = {{ ("#" ~ filtersElId)|json_encode|raw }};
         var datagridBodySelector = {{ ("#" ~ bodyElId)|json_encode|raw }};
+        var datagridGridViewsSelector = '.page-title > .navbar-extra .span9:last';
 
         var initDatagrid = function(
-                datagridOptions,
-                datagridTemplateSelector,
-                containerSelector,
-                datagridFiltersSelector,
-                datagridBodySelector
-                ) {
+            datagridOptions,
+            datagridTemplateSelector,
+            containerSelector,
+            datagridFiltersSelector,
+            datagridBodySelector,
+            datagridGridViewsSelector
+        ) {
             var datagridCollection = {};
             // Initialize grid collection
             datagridCollection.collection = new PageableCollection(
@@ -189,11 +206,13 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
             }, datagridOptions.grid);
             var datagrid = new Grid(datagridParameters);
             $(datagridBodySelector).html(datagrid.render().$el);
-            registry.setElement('datagrid', {{ datagrid.name|json_encode|raw }}, datagrid);
+            var datagridName = {{ datagrid.name|json_encode|raw }};
+            registry.setElement('datagrid', datagridName, datagrid);
+            mediator.trigger("datagrid:created:" + datagridName, datagrid);
 
             {# @TODO Filter should not know anything about collection. #}
             {% for filter in datagrid.filters if filter.needCollection is defined and filter.needCollection %}
-            datagridOptions.grid.filters.{{ filter.name }}.collection = datagridCollection.collection;
+                datagridOptions.grid.filters.{{ filter.name }}.collection = datagridCollection.collection;
             {% endfor %}
 
             // Title
@@ -208,33 +227,40 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                 collection: datagridCollection.collection
             }, datagridOptions.grid);
             var filtersList = new FilterList(filterListParameters);
-            $(datagridFiltersSelector).html(filtersList.render().$el);
 
-            /**
-             * @event datagrid_filters:initialized
-             */
+            $(datagridFiltersSelector).html(filtersList.render().$el);
+            /** @event datagrid_filters:initialized */
             mediator.trigger("datagrid_filters:rendered", datagridCollection.collection);
+            {% if (datagrid.pager.nbResults == 0) %}
+                filtersList.$el.hide();
+            {% endif %}
+
+            var gridViewsPanel = new GridViewsView(_.extend({}, { collection: datagridCollection.collection }, {{ viewsData|json_encode|raw }}));
+            $(datagridGridViewsSelector).append(gridViewsPanel.render().$el);
 
             {# Don't use router when grid is embedded in dialog #}
             {% if app.request.get('_widgetContainer') != 'dialog' %}
-            // Register router and start history
-            var router = new GridRouter({
-                collection: datagridCollection.collection
-            });
-        {% endif %}
+                // Register router and start history
+                var router = new GridRouter({
+                    collection: datagridCollection.collection
+                });
+            {% endif %}
         };
 
         initDatagrid(
-                datagridOptions,
-                datagridTemplateSelector,
-                containerSelector,
-                datagridFiltersSelector,
-                datagridBodySelector
+            datagridOptions,
+            datagridTemplateSelector,
+            containerSelector,
+            datagridFiltersSelector,
+            datagridBodySelector,
+            datagridGridViewsSelector
         );
+
         if (!Backbone.History.started) {
             Backbone.history.start();
         }
-    });
+    }
+);
 </script>
 
 <script type="text/template" id="{{ templateElId }}">

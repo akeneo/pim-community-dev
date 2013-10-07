@@ -12,7 +12,7 @@
             function($, _, mediator, TreeAssociate, Scopable, FormUpdateListener, Dialog){
                 'use strict';
                 $(function() {
-                    new TreeAssociate('#trees');
+                    new TreeAssociate('#trees', '#pim_product_categories');
 
                     _.each($('form div.scopable'), function(field) {
                         new Scopable({ el: $(field) });
@@ -112,7 +112,7 @@
                     {% for locale in locales %}
                         {% if resource_granted('pim_catalog_locale_' ~ locale.code) %}
                         <li class="{{ locale.code == dataLocale ? 'active' : '' }}">
-                            <a href="{{ path('pim_catalog_product_edit', {id: form.vars.value.id, dataLocale: locale.code}) }}" title="{{ localeLabel(locale.code) }}">
+                            <a href="{{ path('pim_catalog_product_edit', {id: form.vars.value.id, dataLocale: locale.code}) }}" title="{{ locale_label(locale.code) }}">
                                 <span class="icon pull-left">
                                     {% if locale == dataLocale %}
                                         <i class="icon-bullet"></i>

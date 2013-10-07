@@ -212,12 +212,12 @@
 
 {% block pim_catalog_price_collection_widget %}
     {% for child in form.children %}
-        {% if child.vars.value.currency == localeCurrency() %}
+        {% if child.vars.value.currency == locale_currency() %}
             {{ form_widget(child) }}
         {% endif %}
     {% endfor %}
     {% for child in form.children %}
-        {% if child.vars.value.currency != localeCurrency() %}
+        {% if child.vars.value.currency != locale_currency() %}
             {{ form_widget(child) }}
         {% endif %}
     {% endfor %}
@@ -226,7 +226,7 @@
 {% block pim_catalog_price_widget %}
 {% spaceless %}
     {{ form_widget(form.currency) }}
-    {{ form_row(form.data, {label:currencySymbol(form.currency.vars.value)} ) }}
+    {{ form_row(form.data, {label:currency_symbol(form.currency.vars.value)} ) }}
 {% endspaceless %}
 {% endblock pim_catalog_price_widget %}
 

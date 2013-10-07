@@ -1,0 +1,2 @@
+jms_di_extra:
+    doctrine_integration: false

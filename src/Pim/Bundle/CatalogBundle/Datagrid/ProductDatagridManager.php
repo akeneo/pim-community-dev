@@ -19,9 +19,9 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
-use Pim\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\GridBundle\Action\ActionInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Pim\Bundle\GridBundle\Action\Export\ExportCollectionAction;
 
@@ -283,18 +283,18 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setName('family');
         $field->setOptions(
             array(
-                'type'          => FieldDescriptionInterface::TYPE_TEXT,
-                'label'         => $this->translate('Family'),
-                'field_name'    => 'familyLabel',
-                'expression'    => 'family',
-                'filter_type'   => FilterInterface::TYPE_ENTITY,
-                'required'      => false,
-                'sortable'      => true,
-                'filterable'    => true,
-                'show_filter'   => true,
-                'multiple'      => true,
-                'class'         => 'PimCatalogBundle:Family',
-                'property'      => 'label',
+                'type'            => FieldDescriptionInterface::TYPE_TEXT,
+                'label'           => $this->translate('Family'),
+                'field_name'      => 'familyLabel',
+                'expression'      => 'family',
+                'filter_type'     => FilterInterface::TYPE_ENTITY,
+                'required'        => false,
+                'sortable'        => true,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'multiple'        => true,
+                'class'           => 'PimCatalogBundle:Family',
+                'property'        => 'label',
                 'filter_by_where' => true,
             )
         );
@@ -338,15 +338,15 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $fieldCompleteness->setName('completenesses');
         $fieldCompleteness->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_HTML,
-                'label'       => $this->translate('Complete'),
-                'field_name'  => 'completenesses',
-                'expression'  => 'pCompleteness',
-                'filter_type' => FilterInterface::TYPE_COMPLETENESS,
-                'sortable'    => true,
-                'filterable'  => true,
-                'show_filter' => true,
-                'filter_by_where' => true,
+                'type'               => FieldDescriptionInterface::TYPE_HTML,
+                'label'              => $this->translate('Complete'),
+                'field_name'         => 'completenesses',
+                'expression'         => 'pCompleteness',
+                'filter_type'        => FilterInterface::TYPE_COMPLETENESS,
+                'sortable'           => true,
+                'filterable'         => true,
+                'show_filter'        => true,
+                'filter_by_where'    => true,
                 'sort_field_mapping' => array(
                     'entityAlias' => 'pCompleteness',
                     'fieldName'   => 'ratio'
@@ -375,11 +375,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $editAction = array(
             'name'         => 'edit',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_catalog_product_edit',
             'options'      => array(
-                'label'   => $this->translate('Edit attributes of the product'),
-                'icon'    => 'edit',
-                'link'    => 'edit_link'
+                'label' => $this->translate('Edit attributes of the product'),
+                'icon'  => 'edit',
+                'link'  => 'edit_link'
             )
         );
 
@@ -390,7 +390,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $editCategoriesAction = array(
             'name'         => 'edit_categories',
             'type'         => ActionInterface::TYPE_TAB_REDIRECT,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_catalog_product_edit',
             'options'      => array(
                 'label'     => $this->translate('Classify the product'),
                 'tab'       => '#categories',
@@ -403,11 +403,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $deleteAction = array(
             'name'         => 'delete',
             'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'root',
+            'acl_resource' => 'pim_catalog_product_remove',
             'options'      => array(
-                'label'   => $this->translate('Delete the product'),
-                'icon'    => 'trash',
-                'link'    => 'delete_link'
+                'label' => $this->translate('Delete the product'),
+                'icon'  => 'trash',
+                'link'  => 'delete_link'
             )
         );
 
@@ -436,7 +436,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             array(
                 'name'  => 'redirect',
                 'label' => $this->translate('Mass Edition'),
-                'icon' => 'edit',
+                'icon'  => 'edit',
                 'route' => 'pim_catalog_mass_edit_action_choose',
             )
         );
@@ -453,11 +453,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         $exportCsv = new ExportCollectionAction(
             array(
-                'acl_resource' => 'root',
-                'baseUrl' => $this->router->generate('pim_catalog_product_index', array('_format' => 'csv')),
-                'name' =>  'exportCsv',
-                'label' => $this->translate('CSV export'),
-                'icon'  => 'icon-download',
+                'acl_resource'   => 'pim_catalog_product_index',
+                'baseUrl'        => $this->router->generate('pim_catalog_product_index', array('_format' => 'csv')),
+                'name'           =>  'exportCsv',
+                'label'          => $this->translate('CSV export'),
+                'icon'           => 'icon-download',
                 'keepParameters' => true
             )
         );
@@ -508,37 +508,50 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         $rootAlias = $proxyQuery->getRootAlias();
 
-        // @todo : must be THEN CONCAT("[", family.code, "]")
-        $selectConcat = "CASE WHEN ft.label IS NULL ".
-                        "THEN family.code ".
-                        "ELSE ft.label END ".
-                        "as familyLabel";
-
         // prepare query for family
         $proxyQuery
-            ->addSelect($selectConcat, true)
-            ->leftJoin($rootAlias .'.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
+            ->leftJoin($rootAlias .'.family', 'productFamily')
+            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
+            ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices')
-            ->groupBy($rootAlias);
+            ->leftJoin($rootAlias .'.categories', 'category');
 
-        // prepare query for completeness
+        $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
+        $proxyQuery
+            ->addSelect(sprintf("%s AS familyLabel", $familyExpr), true)
+            ->addSelect('values')
+            ->addSelect('valuePrices')
+            ->addSelect('valueOptions')
+            ->addSelect('category');
+
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
+        $this->prepareQueryForCategory($proxyQuery, $rootAlias);
 
         $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
         $proxyQuery->setParameter('channelCode', $this->flexibleManager->getScope());
+    }
 
-        // prepare query for categories
+    /**
+     * Prepare query for categories field
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     * @param string              $rootAlias
+     */
+    protected function prepareQueryForCategory(ProxyQueryInterface $proxyQuery, $rootAlias)
+    {
         if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
             $categoryRepository = $this->categoryManager->getEntityRepository();
+            $categoryExists = ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY)
+                && $categoryRepository->find($this->filterCategoryId) != null;
+            $treeExists = $categoryRepository->find($this->filterTreeId) != null;
 
-            if ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY) {
+            if ($categoryExists) {
                 $productIds = $categoryRepository->getLinkedProductIds($this->filterCategoryId, false);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
                 $expression = $proxyQuery->expr()->in($rootAlias .'.id', $productIds);
                 $proxyQuery->andWhere($expression);
-            } else {
+            } elseif ($treeExists) {
                 $productIds = $categoryRepository->getLinkedProductIds($this->filterTreeId, true);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
                 $expression = $proxyQuery->expr()->notIn($rootAlias .'.id', $productIds);
@@ -549,22 +562,25 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
     /**
      * Prepare query for completeness field
+     *
      * @param ProxyQueryInterface $proxyQuery
      * @param string              $rootAlias
      */
     protected function prepareQueryForCompleteness(ProxyQueryInterface $proxyQuery, $rootAlias)
     {
-        $exprLocaleAndScope      = $proxyQuery->expr()->andX(
+        $exprLocaleAndScope = $proxyQuery->expr()->andX(
             'locale.code = :localeCode',
             'channel.code = :channelCode'
         );
-        $exprWithoutCompleteness = $proxyQuery->expr()->isNull('pCompleteness');
-        $exprFamilyIsNull        = $proxyQuery->expr()->isNull($rootAlias .'.family');
+        $exprCompleteness = $proxyQuery->expr()->isNull('pCompleteness');
+        $exprFamilyIsNull = $proxyQuery->expr()->isNull($rootAlias .'.family');
+
         $proxyQuery
+            ->addSelect('pCompleteness')
             ->leftJoin($rootAlias .'.completenesses', 'pCompleteness')
             ->leftJoin('pCompleteness.locale', 'locale')
             ->leftJoin('pCompleteness.channel', 'channel')
-            ->orWhere($exprLocaleAndScope, $exprWithoutCompleteness, $exprFamilyIsNull);
+            ->orWhere($exprLocaleAndScope, $exprCompleteness, $exprFamilyIsNull);
     }
 
     /**
@@ -664,19 +680,14 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->resetDQLPart('groupBy')
             ->resetDQLPart('orderBy');
 
-        // join tables
-        $proxyQuery
-            ->leftJoin('values.options', 'valueOptions')
-            ->leftJoin('o.categories', 'categories');
-
         // select datas
         $proxyQuery
             ->select($proxyQuery->getRootAlias())
             ->addSelect('values')
-            ->addSelect('family')
+            ->addSelect('productFamily')
             ->addSelect('valuePrices')
             ->addSelect('valueOptions')
-            ->addSelect('categories');
+            ->addSelect('category');
 
         // where clause on attributes
         $exprIn = $proxyQuery->expr()->in('attribute', $attributeIds);

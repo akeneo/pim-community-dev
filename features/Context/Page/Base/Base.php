@@ -16,8 +16,10 @@ use Behat\Mink\Exception\ElementNotFoundException;
 class Base extends Page
 {
     protected $elements = array(
-        'Dialog' => array('css' => 'div.modal'),
-        'Title'  => array('css' => '.navbar-title')
+        'Dialog'         => array('css' => 'div.modal'),
+        'Title'          => array('css' => '.navbar-title'),
+        'HeadTitle'      => array('css' => 'title'),
+        'Flash messages' => array('css' => '.flash-messages-holder'),
     );
 
     /**
@@ -32,6 +34,22 @@ class Base extends Page
                 "$('.select2-drop-active input:visible').trigger($.Event('keydown', {which: 9, keyCode: 9}));"
             );
         } catch (UnsupportedDriverActionException $e) {
+        }
+    }
+
+    /**
+     * @param string $title
+     *
+     * @throws \Exception
+     */
+    public function checkHeadTitle($title)
+    {
+        $headTitle = $this->getElement('HeadTitle')->getHtml();
+
+        if (trim($headTitle) !== trim($title)) {
+            throw new \Exception(
+                sprintf('Incorrect title. Expected "%s", given "%s"', $title, $headTitle)
+            );
         }
     }
 
@@ -82,7 +100,7 @@ class Base extends Page
      */
     public function pressButton($locator)
     {
-        # Search with exact name at first
+        // Search with exact name at first
         $button = $this->find('xpath', sprintf("//button[text() = '%s']", $locator));
 
         if (!$button) {
@@ -90,7 +108,7 @@ class Base extends Page
         }
 
         if (!$button) {
-            # Use Mink search, which use "contains" xpath condition
+            // Use Mink search, which use "contains" xpath condition
             $button = $this->findButton($locator);
         }
 
@@ -163,5 +181,24 @@ class Base extends Page
     public function findTooltip($text)
     {
         return $this->find('css', sprintf('.validation-tooltip[data-original-title="%s"]', $text));
+    }
+
+    /**
+     * Find a flash message containing text
+     *
+     * @param string $text
+     *
+     * @throws \Exception
+     * @return null|Element
+     */
+    public function findFlashMessage($text)
+    {
+        $holder = $this->getElement('Flash messages');
+
+        if (!$holder) {
+            throw new \Exception('Could not find the flash messages holder');
+        }
+
+        return $holder->find('css', sprintf('div.message:contains("%s")', $text));
     }
 }

@@ -14,6 +14,10 @@ Feature: Expose product data via a REST API
 
   Scenario: Successfully retrieve a product
     Given a "Car" product
+    And the following currencies:
+      | code | activated |
+      | USD  | yes       |
+      | EUR  | yes       |
     And the following product attributes:
       | type   | label             | scopable | translatable |
       | prices | Price             | no       | no           |

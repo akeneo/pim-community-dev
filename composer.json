@@ -12,12 +12,13 @@
         "psr-0": {
             "": "src/",
             "Context": "features/",
-            "Extend\\": "app/entities/"
+            "Extend\\": "app/entities/",
+            "OroEmail\\": "app/emails/"
         }
     },
     "require": {
         "php": ">=5.3.3",
-        "oro/platform": "dev-maintenance/pim_alpha6",
+        "oro/platform": "dev-maintenance/pim_beta1",
         "akeneo/DemoBundle": "dev-master",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0"

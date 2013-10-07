@@ -43,7 +43,7 @@ class CategoryHelper
 
             $return[] = array(
                 'id' => $tree->getId(),
-                'title'  => $tree->getTitle(),
+                'label'  => $tree->getLabel(),
                 'selected' => $selectedTree ? "true" : "false"
             );
         }
@@ -56,7 +56,7 @@ class CategoryHelper
      * for JStree json_data plugin.
      *
      * @param array $categories        Data to format into an array
-     * @param array $withProductsCount Add product count for each category in its title
+     * @param array $withProductsCount Add product count for each category in its label
      * @param array $parent            If not null, will include this node as a parent node of the data
      *
      * @return array
@@ -67,17 +67,17 @@ class CategoryHelper
         $result = array();
 
         foreach ($categories as $category) {
-            $title = $category->getTitle();
+            $label = $category->getLabel();
 
             if ($withProductsCount) {
-                $title .= ' ('.$category->getProductsCount().')';
+                $label .= ' ('.$category->getProductsCount().')';
             }
 
             $result[] = array(
                 'attr' => array(
                     'id' => 'node_'. $category->getId()
                 ),
-                'data'  => $title,
+                'data'  => $label,
                 'state' => static::getState($category)
             );
         }
@@ -87,7 +87,7 @@ class CategoryHelper
                 'attr' => array(
                     'id' => 'node_' . $parent->getId()
                 ),
-                'data' => $parent->getTitle(),
+                'data' => $parent->getLabel(),
                 'state' => static::getState($parent),
                 'children' => $result
             );
@@ -104,7 +104,7 @@ class CategoryHelper
      *
      * @param array    $categories        categories
      * @param Category $selectCategory    select category
-     * @param array    $withProductsCount Add product count for each category in its title
+     * @param array    $withProductsCount Add product count for each category in its label
      * @param Category $parent            parent
      *
      * @return array
@@ -123,7 +123,7 @@ class CategoryHelper
                 'attr' => array(
                     'id' => 'node_' . $parent->getId()
                 ),
-                'data' => $parent->getTitle(),
+                'data' => $parent->getLabel(),
                 'state' => static::getState($parent),
                 'children' => $result
             );
@@ -167,10 +167,10 @@ class CategoryHelper
                 $state .= ' toselect';
             }
 
-            $title = $category['item']->getTitle();
+            $label = $category['item']->getLabel();
 
             if ($withProductsCount) {
-                $title .= ' ('.$category['item']->getProductsCount().')';
+                $label .= ' ('.$category['item']->getProductsCount().')';
             }
 
             if ($category['item']->getParent() == null) {
@@ -181,7 +181,7 @@ class CategoryHelper
                 'attr' => array(
                     'id' => 'node_'. $category['item']->getId()
                 ),
-                'data'  => $title,
+                'data'  => $label,
                 'state' => $state,
                 'children' => static::formatCategory($category['__children'], $selectCategory, $withProductsCount)
             );
@@ -313,10 +313,10 @@ class CategoryHelper
                 }
             }
 
-            $title = $category['item']->getTitle();
+            $label = $category['item']->getLabel();
 
             if ($selectedChildren > 0) {
-                $title = '<strong>'.$title.'</strong>';
+                $label = '<strong>'.$label.'</strong>';
             }
 
             if ($category['item']->getParent() == null) {
@@ -327,7 +327,7 @@ class CategoryHelper
                 'attr' => array(
                     'id' => 'node_'. $category['item']->getId()
                 ),
-                'data'  => $title,
+                'data'  => $label,
                 'state' => $state,
                 'children' => $children,
                 'selectedChildrenCount' => $selectedChildren

@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Validator\Constraints as PimAssert;
 
 /**
@@ -18,6 +19,15 @@ use Pim\Bundle\CatalogBundle\Validator\Constraints as PimAssert;
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository")
  * @UniqueEntity("code")
  * @PimAssert\ValidLocaleFallback
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Locale", "plural_label"="Locales"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
 class Locale
 {
@@ -33,7 +43,7 @@ class Locale
     /**
      * @var string $code
      *
-     * @ORM\Column(name="code", type="string", length=5, unique=true)
+     * @ORM\Column(name="code", type="string", length=20, unique=true)
      */
     protected $code;
 

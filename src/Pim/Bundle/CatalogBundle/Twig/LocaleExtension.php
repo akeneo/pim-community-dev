@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Twig;
 
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
  * Twig extension to render locales from twig templates
@@ -15,25 +14,18 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 class LocaleExtension extends \Twig_Extension
 {
     /**
-     * @var LocaleManager
-     */
-    protected $localeManager;
-
-    /**
-     * @var \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+     * @var LocaleHelper
      */
     protected $localeHelper;
 
     /**
      * Constructor
      *
-     * @param LocaleManager $localeManager
-     * @param LocaleHelper  $localeHelper
+     * @param LocaleHelper $localeHelper
      */
-    public function __construct(LocaleManager $localeManager, LocaleHelper $localeHelper)
+    public function __construct(LocaleHelper $localeHelper)
     {
-        $this->localeManager = $localeManager;
-        $this->localeHelper  = $localeHelper;
+        $this->localeHelper = $localeHelper;
     }
 
     /**
@@ -42,7 +34,19 @@ class LocaleExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'localizedLabel' => new \Twig_Function_Method($this, 'localizedLabel')
+            'locale_label' => new \Twig_Function_Method($this, 'localeLabel'),
+            'currency_symbol' => new \Twig_Function_Method($this, 'currencySymbol'),
+            'locale_currency' => new \Twig_Function_Method($this, 'localeCurrency'),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFilters()
+    {
+        return array(
+            'flag' => new \Twig_Filter_Method($this, 'flag', array('is_safe' => array('html'))),
         );
     }
 
@@ -50,12 +54,49 @@ class LocaleExtension extends \Twig_Extension
      * Get displayed locale from locale code
      *
      * @param string $code
+     * @param string $locale
      *
      * @return string
      */
-    public function localizedLabel($code)
+    public function localeLabel($code, $locale = null)
     {
-        return $this->localeHelper->getLocalizedLabel($code, $this->localeManager->getUserLocaleCode());
+        return $this->localeHelper->getLocaleLabel($code, $locale);
+    }
+
+    /**
+     * Returns the symbol for a currency
+     *
+     * @param string $code
+     * @param string $locale
+     *
+     * @return string
+     */
+    public function currencySymbol($code, $locale = null)
+    {
+        return $this->localeHelper->getCurrencySymbol($code, $locale);
+    }
+
+    /**
+     * Returns the catalog locale currency
+     *
+     * @return string
+     */
+    public function localeCurrency()
+    {
+        return $this->localeHelper->getLocaleCurrency();
+    }
+
+    /**
+     * Returns the flag icon for a locale
+     *
+     * @param string $code
+     * @param string $locale
+     *
+     * @return string
+     */
+    public function flag($code, $locale = null)
+    {
+        return $this->localeHelper->getFlag($code, $locale);
     }
 
     /**

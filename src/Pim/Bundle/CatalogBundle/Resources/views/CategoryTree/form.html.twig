@@ -8,7 +8,7 @@
 {% set entityName = parentId ? 'category' : 'tree' %}
 
 {% if form.vars.value.id %}
-    {% set title = (entityName ~ '.edit')|trans ~ ' - ' ~ form.vars.value.title %}
+    {% set title = (entityName ~ '.edit')|trans ~ ' - ' ~ form.vars.value.label %}
 {% else %}
     {% set title = (entityName ~ '.create')|trans %}
 {% endif %}
@@ -43,7 +43,7 @@
             {{ elements.deleteLink(
                 path('pim_catalog_categorytree_remove', { id: form.vars.value.id }),
                 path('pim_catalog_categorytree_create'),
-                'confirmation.remove.category'|trans({ '%name%': form.vars.value.title }) ~ '<br />'
+                'confirmation.remove.category'|trans({ '%name%': form.vars.value.label }) ~ '<br />'
                 ~ 'info.category.remove children'|trans ~ '<br />'
                 ~ 'info.category.keep products'|trans,
                 "",

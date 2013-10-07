@@ -30,33 +30,33 @@ class CategoryTranslation extends AbstractTranslation
     protected $foreignKey;
 
     /**
-     * @var string $title
+     * @var string $label
      *
-     * @ORM\Column(name="title", type="string", length=64, nullable=true)
+     * @ORM\Column(name="label", type="string", length=64, nullable=true)
      */
-    protected $title;
+    protected $label;
 
     /**
-     * Set title
+     * Set label
      *
-     * @param string $title
+     * @param string $label
      *
      * @return AbstractTranslation
      */
-    public function setTitle($title)
+    public function setLabel($label)
     {
-        $this->title = $title;
+        $this->label = $label;
 
         return $this;
     }
 
     /**
-     * Get title
+     * Get label
      *
-     * @return string $title
+     * @return string $label
      */
-    public function getTitle()
+    public function getLabel()
     {
-        return $this->title;
+        return $this->label;
     }
 }

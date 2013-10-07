@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
@@ -20,6 +21,15 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  *
  * @ORM\Table(name="pim_catalog_family")
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository")
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Family", "plural_label"="Families"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
 class Family implements TranslatableInterface, VersionableInterface
 {
@@ -277,7 +287,7 @@ class Family implements TranslatableInterface, VersionableInterface
     {
         $result = array();
         foreach ($this->attributes as $attribute) {
-            $result[$attribute->getVirtualGroup()->getName()][] = $attribute;
+            $result[(string) $attribute->getVirtualGroup()][] = $attribute;
         }
 
         return $result;
@@ -422,7 +432,7 @@ class Family implements TranslatableInterface, VersionableInterface
      *
      * @param string $label
      *
-     * @return string
+     * @return Family
      */
     public function setLabel($label)
     {

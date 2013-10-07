@@ -49,6 +49,7 @@ class DatagridWorker implements DatagridWorkerInterface
 
         return $datagridManager->getDatagrid();
     }
+
     /**
      * {@inheritdoc}
      */
