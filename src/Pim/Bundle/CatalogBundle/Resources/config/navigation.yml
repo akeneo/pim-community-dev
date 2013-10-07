@@ -65,12 +65,17 @@ oro_menu_config:
         pim_catalog_channel:
             label: Channels
             route: pim_catalog_channel_index
+        pim_enrich_variantgroup:
+            label: Variant groups
+            route: pim_catalog_variant_group_index
 
         oro_tag_list:
             display: false
         oro_business_unit_list:
             display: false
         oro_email_emailtemplate_list:
+            display: false
+        emails:
             display: false
         oro_notification_emailnotification_list:
             display: false
@@ -88,6 +93,7 @@ oro_menu_config:
                     children:
                         pim_enrich_product: ~
                         pim_enrich_categorytree: ~
+                        pim_enrich_variantgroup: ~
 
                 pim_configuration_tab:
                     children:
@@ -104,10 +110,10 @@ oro_menu_config:
 oro_titles:
     oro_default:                         Dashboard
     pim_catalog_attributegroup_create:   Attribute groups | Create
-    pim_catalog_attributegroup_edit:     Attribute groups %%group.name%% | Edit
+    pim_catalog_attributegroup_edit:     Attribute groups %%group.label%% | Edit
     pim_catalog_categorytree_listtree:   Category trees | List
     pim_catalog_categorytree_create:     Category trees | Create
-    pim_catalog_categorytree_edit:       Category trees %%category.title%% | Edit
+    pim_catalog_categorytree_edit:       Category trees %%category.label%% | Edit
     pim_catalog_productattribute_index:  Product attributes
     pim_catalog_productattribute_create: Product attributes | Create
     pim_catalog_productattribute_edit:   Product attributes %%attribute.label%% | Edit
@@ -118,7 +124,10 @@ oro_titles:
     pim_catalog_family_edit:             Families %%family.label%% | Edit
     pim_catalog_channel_index:           Channels
     pim_catalog_channel_create:          Channels | Create
-    pim_catalog_channel_edit:            Channels %%channel.name%% | Edit
+    pim_catalog_channel_edit:            Channels %%channel.label%% | Edit
     pim_catalog_currency_index:          Currencies
     pim_catalog_locale_index:            Locales
     pim_catalog_locale_edit:             Locales %%locale.code%% | Edit
+    pim_catalog_variant_group_index:     Variant groups
+    pim_catalog_variant_group_create:    Variant groups | Create
+    pim_catalog_variant_group_edit:      Variant groups %%variant.label%% | Edit

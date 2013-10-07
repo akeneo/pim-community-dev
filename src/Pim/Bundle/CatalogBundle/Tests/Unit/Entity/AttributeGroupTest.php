@@ -71,33 +71,33 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for name property
+     * Test getter/setter for label property
      */
-    public function testName()
+    public function testLabel()
     {
         // Change value and assert new
         $newCode = 'code';
         $expectedCode = '['. $newCode .']';
         $this->group->setCode($newCode);
-        $this->assertEquals($expectedCode, $this->group->getName());
+        $this->assertEquals($expectedCode, $this->group->getLabel());
 
-        $newName = 'test-name';
+        $newLabel = 'test-label';
         $this->assertEntity($this->group->setLocale('en_US'));
-        $this->assertEntity($this->group->setName($newName));
-        $this->assertEquals($newName, $this->group->getName());
+        $this->assertEntity($this->group->setLabel($newLabel));
+        $this->assertEquals($newLabel, $this->group->getLabel());
 
         // if no translation, assert the expected code is returned
         $this->group->setLocale('fr_FR');
-        $this->assertEquals($expectedCode, $this->group->getName());
+        $this->assertEquals($expectedCode, $this->group->getLabel());
 
         // if empty translation, assert the expected code is returned
-        $this->group->setName('');
-        $this->assertEquals($expectedCode, $this->group->getName());
+        $this->group->setLabel('');
+        $this->assertEquals($expectedCode, $this->group->getLabel());
 
         // if default code, assert the code is returned
         $this->group->setLocale('en_US');
         $this->group->setCode(AttributeGroup::DEFAULT_GROUP_CODE);
-        $this->assertEquals(AttributeGroup::DEFAULT_GROUP_CODE, $this->group->getName());
+        $this->assertEquals(AttributeGroup::DEFAULT_GROUP_CODE, $this->group->getLabel());
     }
 
     /**
@@ -111,17 +111,17 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
         $this->group->setCode($newCode);
         $this->assertEquals($expectedCode, $this->group->__toString());
 
-        $newName = 'test-name';
+        $newLabel = 'test-label';
         $this->assertEntity($this->group->setLocale('en_US'));
-        $this->assertEntity($this->group->setName($newName));
-        $this->assertEquals($newName, $this->group->__toString());
+        $this->assertEntity($this->group->setLabel($newLabel));
+        $this->assertEquals($newLabel, $this->group->__toString());
 
         // if no translation, assert the expected code is returned
         $this->group->setLocale('fr_FR');
         $this->assertEquals($expectedCode, $this->group->__toString());
 
         // if empty translation, assert the expected code is returned
-        $this->group->setName('');
+        $this->group->setLabel('');
         $this->assertEquals($expectedCode, $this->group->__toString());
 
         // if default code, assert the code is returned

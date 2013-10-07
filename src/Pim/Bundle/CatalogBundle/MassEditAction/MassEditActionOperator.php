@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 use Oro\Bundle\UserBundle\Acl\ManagerInterface as AclManagerInterface;
+use JMS\Serializer\Annotation\Exclude;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 
@@ -17,7 +18,8 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 class MassEditActionOperator
 {
     /**
-     * @var MassEditAction $operation
+     * @var MassEditActionInterface $operation
+     * @Exclude
      */
     protected $operation;
 
@@ -28,6 +30,7 @@ class MassEditActionOperator
 
     /**
      * @var ProductManager $manager
+     * @Exclude
      */
     protected $manager;
     
@@ -39,7 +42,8 @@ class MassEditActionOperator
     /**
      * The defined operations, indexed by code
      * 
-     * @var MassEditAction[] $operations
+     * @var MassEditActionInterface[] $operations
+     * @Exclude
      */
     protected $operations = array();
     
@@ -63,12 +67,12 @@ class MassEditActionOperator
     /**
      * Register a batch operation into the operator
      *
-     * @param string         $alias
-     * @param MassEditAction $operation
+     * @param string                  $alias
+     * @param MassEditActionInterface $operation
      *
      * @throws \InvalidArgumentException
      */
-    public function registerMassEditAction($alias, MassEditAction $operation, $acl = null)
+    public function registerMassEditAction($alias, MassEditActionInterface $operation, $acl = null)
     {
         if (array_key_exists($alias, $this->operations)) {
             throw new \InvalidArgumentException(sprintf('Operation "%s" is already registered', $alias));
@@ -97,10 +101,11 @@ class MassEditActionOperator
         return $choices;
     }
 
+
     /**
      * Get the batch operation
      *
-     * @return MassEditAction
+     * @return MassEditActionInterface
      */
     public function getOperation()
     {
@@ -114,7 +119,7 @@ class MassEditActionOperator
      * @param string $operationAlias
      *
      * @throws InvalidArgumentException when the alias is not registered
-     * @return MassEditAction
+     * @return MassEditActionInterface
      */
     public function setOperationAlias($operationAlias)
     {

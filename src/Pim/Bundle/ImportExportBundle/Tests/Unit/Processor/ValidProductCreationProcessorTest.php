@@ -43,7 +43,7 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         $product = $this->getProductMock();
         $this->productManager
             ->expects($this->any())
-            ->method('createFlexible')
+            ->method('createProduct')
             ->will($this->returnValue($product));
 
         $this->productManager
@@ -102,7 +102,7 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         $product = $this->getProductMock();
         $this->productManager
             ->expects($this->any())
-            ->method('createFlexible')
+            ->method('createProduct')
             ->will($this->returnValue($product));
 
         $form = $this->getFormMock(false);

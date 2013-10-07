@@ -1,29 +1,23 @@
 pim_navigation:
-    name: PIM Menus
-    description: Access to main menu entries
-    parent: root
+    type: action
+    label: Access to main menu entries
 
 pim_navigation_collect:
-    name: Collect menu entry
-    description: Collect menu entry
-    parent: pim_navigation
+    type: action
+    label: Collect menu entry
 
 pim_navigation_enrich:
-    name: Enrich menu entry
-    description: Enrich menu entry
-    parent: pim_navigation
+    type: action
+    label: Enrich menu entry
 
 pim_navigation_spread:
-    name: Spread menu entry
-    description: Spread menu entry
-    parent: pim_navigation
+    type: action
+    label: Spread menu entry
 
 pim_navigation_settings:
-    name: Settings menu entry
-    description: Settings menu entry
-    parent: pim_navigation
+    type: action
+    label: Settings menu entry
 
 pim_navigation_system:
-    name: System menu entry
-    description: System menu entry
-    parent: pim_navigation
+    type: action
+    label: System menu entry

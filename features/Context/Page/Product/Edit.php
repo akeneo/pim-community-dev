@@ -37,6 +37,8 @@ class Edit extends Form
                 'Image preview'    => array('css' => '#lbImage'),
                 'Completeness'     => array('css' => 'div#completeness'),
                 'Updates grid'     => array('css' => '#history table.grid'),
+                'Category pane'    => array('css' => '#categories'),
+                'Category tree'    => array('css' => '#trees'),
             )
         );
     }
@@ -380,5 +382,49 @@ class Edit extends Form
     public function getHistoryRows()
     {
         return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
+    }
+
+    /**
+     * @param string $category
+     *
+     * @return CategoryView
+     */
+    public function selectTree($category)
+    {
+        $link = $this->getElement('Category pane')
+            ->find('css', sprintf('#trees-list li a:contains(%s)', $category));
+        $link->click();
+
+        return $this;
+    }
+
+    /**
+     * @param string $category
+     *
+     * @return CategoryView
+     */
+    public function expandCategory($category)
+    {
+        $category = $this->findCategoryInTree($category);
+        $category->getParent()->find('css', 'ins')->click();
+
+        return $this;
+    }
+
+    /**
+     * @param string $category
+     *
+     * @return NodeElement
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function findCategoryInTree($category)
+    {
+        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains(%s)', $category));
+        if (!$elt) {
+            throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
+        }
+
+        return $elt;
     }
 }

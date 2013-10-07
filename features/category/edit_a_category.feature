@@ -5,7 +5,7 @@ Feature: Edit a category
 
   Background:
   Given the following categories:
-    | code        | title       | parent    |
+    | code        | label       | parent    |
     | computers   | Computers   |           |
     | laptops     | Laptops     | computers |
     | hard_drives | Hard drives | laptops   |
@@ -22,12 +22,14 @@ Feature: Edit a category
   @javascript
   Scenario: Go to category edit page from the category tree
     Given I am on the categories page
+    And I select the "Computers" tree
     And I click on the "Computers" category
     Then I should be on the category "computers" edit page
 
   @javascript
   Scenario: Move category to a different position in the tree
     Given I am on the categories page
+    And I select the "Computers" tree
     And I expand the "Laptops" category
     And I drag the "Hard drives" category to the "Computers" category
     Then I should see the "Hard drives" category under the "Computers" category

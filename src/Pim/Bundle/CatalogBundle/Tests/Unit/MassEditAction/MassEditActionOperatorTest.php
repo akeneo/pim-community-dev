@@ -135,11 +135,11 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Pim\Bundle\CatalogBundle\MassEditAction\MassEditAction
+     * @return Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionInterface
      */
     protected function getMassEditActionMock()
     {
-        return $this->getMock('Pim\Bundle\CatalogBundle\MassEditAction\MassEditAction');
+        return $this->getMock('Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionInterface');
     }
     
     protected function getAclManagerMock()

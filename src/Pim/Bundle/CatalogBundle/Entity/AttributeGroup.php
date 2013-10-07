@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
@@ -19,6 +20,15 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  *
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository")
  * @ORM\Table(name="pim_catalog_attribute_group")
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Attribute group", "plural_label"="Attribute groups"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
 class AttributeGroup implements TranslatableInterface, VersionableInterface
 {
@@ -113,13 +123,13 @@ class AttributeGroup implements TranslatableInterface, VersionableInterface
     }
 
     /**
-     * Returns the name of the attribute group
+     * Returns the label of the attribute group
      *
      * @return string
      */
     public function __toString()
     {
-        return $this->getName();
+        return $this->getLabel();
     }
 
     /**
@@ -380,31 +390,31 @@ class AttributeGroup implements TranslatableInterface, VersionableInterface
     }
 
     /**
-     * Get name
+     * Get label
      *
      * @return string
      */
-    public function getName()
+    public function getLabel()
     {
         if ($this->getCode() === self::DEFAULT_GROUP_CODE) {
             return self::DEFAULT_GROUP_CODE;
         }
 
-        $translated = $this->getTranslation() ? $this->getTranslation()->getName() : null;
+        $translated = $this->getTranslation() ? $this->getTranslation()->getLabel() : null;
 
         return ($translated !== '' && $translated !== null) ? $translated : '['. $this->getCode() .']';
     }
 
     /**
-     * Set name
+     * Set label
      *
-     * @param string $name
+     * @param string $label
      *
      * @return AttributeGroup
      */
-    public function setName($name)
+    public function setLabel($label)
     {
-        $this->getTranslation()->setName($name);
+        $this->getTranslation()->setLabel($label);
 
         return $this;
     }

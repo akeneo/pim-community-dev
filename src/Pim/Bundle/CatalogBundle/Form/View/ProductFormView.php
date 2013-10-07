@@ -17,6 +17,9 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  */
 class ProductFormView
 {
+    /**
+     * @var FormView|array
+     */
     protected $view = array();
 
     /**
@@ -69,7 +72,7 @@ class ProductFormView
     protected function initializeGroup(AttributeGroup $group)
     {
         $this->view[$group->getId()] = array(
-            'name'       => $group->getName(),
+            'label'      => $group->getLabel(),
             'attributes' => array(),
         );
     }

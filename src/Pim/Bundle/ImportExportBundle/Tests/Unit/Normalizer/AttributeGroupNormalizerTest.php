@@ -69,7 +69,7 @@ class AttributeGroupNormalizerTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'code'       => 'mycode',
-                    'name'       => array('en_US' => 'My name', 'fr_FR' => 'Mon nom'),
+                    'label'      => array('en_US' => 'My name', 'fr_FR' => 'Mon nom'),
                     'sortOrder'  => 5,
                     'attributes' => array('attribute1', 'attribute2', 'attribute3')
                 )
@@ -106,7 +106,7 @@ class AttributeGroupNormalizerTest extends \PHPUnit_Framework_TestCase
         foreach ($translations as $locale => $label) {
             $translation = new AttributeGroupTranslation();
             $translation->setLocale($locale);
-            $translation->setName($label);
+            $translation->setLabel($label);
             $group->addTranslation($translation);
         }
 

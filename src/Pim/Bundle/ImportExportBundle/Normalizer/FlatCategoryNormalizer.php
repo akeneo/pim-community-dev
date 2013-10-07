@@ -13,33 +13,40 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
  */
 class FlatCategoryNormalizer extends CategoryNormalizer
 {
+    /**
+     * @staticvar string
+     */
     const LOCALIZABLE_PATTERN = '{locale}:{value}';
+
+    /**
+     * @staticvar string
+     */
     const ITEM_SEPARATOR      = ',';
 
     /**
-     * @var array()
+     * @var array
      */
     protected $supportedFormats = array('csv');
 
     /**
-     * Normalize the title
+     * Normalize the label
      *
      * @param CategoryInterface $category
      *
      * @return string
      */
-    protected function normalizeTitle(CategoryInterface $category)
+    protected function normalizeLabel(CategoryInterface $category)
     {
         $pattern = self::LOCALIZABLE_PATTERN;
-        $titles = $category->getTranslations()->map(
+        $labels = $category->getTranslations()->map(
             function ($translation) use ($pattern) {
-                $title = str_replace('{locale}', $translation->getLocale(), $pattern);
-                $title = str_replace('{value}', $translation->getTitle(), $title);
+                $label = str_replace('{locale}', $translation->getLocale(), $pattern);
+                $label = str_replace('{value}', $translation->getLabel(), $label);
 
-                return $title;
+                return $label;
             }
         )->toArray();
 
-        return implode(self::ITEM_SEPARATOR, $titles);
+        return implode(self::ITEM_SEPARATOR, $labels);
     }
 }

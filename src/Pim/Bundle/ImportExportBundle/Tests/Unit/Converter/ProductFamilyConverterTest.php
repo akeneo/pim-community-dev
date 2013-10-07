@@ -13,6 +13,9 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
  */
 class ProductFamilyConverterTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $em = $this->getEntityManagerMock();
@@ -25,6 +28,9 @@ class ProductFamilyConverterTest extends \PHPUnit_Framework_TestCase
         $this->converter = new ProductFamilyConverter($em);
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertFamily()
     {
         $this->repository
@@ -36,6 +42,9 @@ class ProductFamilyConverterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('family' => 1987), $this->converter->convert(array('[family]' => 'bike')));
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertUnknownFamily()
     {
         $this->repository
@@ -47,11 +56,17 @@ class ProductFamilyConverterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $this->converter->convert(array('[family]' => 'moto')));
     }
 
+    /**
+     * Test related method
+     */
     public function testUnresolvedFamilyKey()
     {
         $this->assertEquals(array(), $this->converter->convert(array('Family' => 'moto')));
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
     protected function getEntityManagerMock()
     {
         return $this
@@ -60,6 +75,9 @@ class ProductFamilyConverterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
     protected function getRepositoryMock()
     {
         return $this
@@ -68,6 +86,11 @@ class ProductFamilyConverterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @param integer $id
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Family
+     */
     protected function getFamilyMock($id)
     {
         $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family');

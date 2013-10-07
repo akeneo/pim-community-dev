@@ -7,7 +7,7 @@ Feature: Add attributes to a product
   Background:
     Given a "Car" product
     And the following attribute group:
-      | name    |
+      | label   |
       | General |
       | Prices  |
     And the following product attribute:

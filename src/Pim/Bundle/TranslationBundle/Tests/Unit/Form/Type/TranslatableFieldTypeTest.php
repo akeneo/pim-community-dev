@@ -207,10 +207,10 @@ class TranslatableFieldTypeTest extends TypeTestCase
         $options = $this->buildOptions($entityClass, $fieldName, $translationClass);
         $form = $this->factory->create($this->type, null, $options);
     }
-    
+
     /**
      * Get LocaleHelperMock
-     * 
+     *
      * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
      */
     protected function getLocaleHelperMock()

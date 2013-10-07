@@ -16,6 +16,9 @@ use Symfony\Component\Console\Input\InputArgument;
  */
 class ReindexCommand extends ContainerAwareCommand
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function configure()
     {
         $this->setName('pim:search:reindex')
@@ -23,6 +26,9 @@ class ReindexCommand extends ContainerAwareCommand
              ->addArgument('locale', InputArgument::REQUIRED, 'Locale to use to index data (for product title)');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $locale = $input->getArgument('locale');

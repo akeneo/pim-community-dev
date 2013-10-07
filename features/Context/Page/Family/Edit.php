@@ -114,6 +114,12 @@ class Edit extends Creation
         return $this;
     }
 
+    /**
+     * @param string $attribute
+     * @param string $channel
+     *
+     * @return boolean
+     */
     public function isAttributeRequired($attribute, $channel)
     {
         $cell        = $this->getAttributeRequirementCell($attribute, $channel);
@@ -122,6 +128,10 @@ class Edit extends Creation
         return $requirement->isChecked();
     }
 
+    /**
+     * @param string $attribute
+     * @param string $channel
+     */
     public function switchAttributeRequirement($attribute, $channel)
     {
         $cell        = $this->getAttributeRequirementCell($attribute, $channel);
@@ -130,6 +140,13 @@ class Edit extends Creation
         $requirement->click();
     }
 
+    /**
+     * @param string $attribute
+     * @param string $channel
+     *
+     * @throws \Exception
+     * @return NodeElement
+     */
     private function getAttributeRequirementCell($attribute, $channel)
     {
         $attributesTable = $this->getElement('Attributes');

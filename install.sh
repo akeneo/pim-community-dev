@@ -13,6 +13,27 @@
 # You can use the "db" and "assets" arguments to install only "db" or "assets"
 
 set -e
+
+ORO_BUNDLE_PATH="vendor/oro/platform/src/Oro/Bundle/"
+ORO_FIXTURE_BUNDLES="
+    AddressBundle/DataFixtures
+    EmailBundle/DataFixtures
+    NotificationBundle/DataFixtures
+    OrganizationBundle/DataFixtures
+    SecurityBundle/DataFixtures
+    UserBundle/DataFixtures
+    TestFrameworkBundle/Fixtures
+    WorkflowBundle/DataFixtures
+"
+ORO_FIXTURES=`echo $ORO_FIXTURE_BUNDLES | sed -e "s# # --fixtures=$ORO_BUNDLE_PATH#g" -e "s#^# --fixtures=$ORO_BUNDLE_PATH#"`
+
+PIM_FIXTURE_PATHS="
+    src/Pim/Bundle/InstallerBundle/DataFixtures
+    src/Pim/Bundle/UserBundle/DataFixtures
+    vendor/akeneo/DemoBundle/Pim/Bundle/DemoBundle/DataFixtures
+"
+PIM_FIXTURES=`echo $PIM_FIXTURE_PATHS | sed -e "s# # --fixtures=#g" -e "s#^# --fixtures=#"`
+
 APP_ROOT=`dirname $0`
 DEFAULT_ENV="dev"
 
@@ -34,7 +55,7 @@ usage()
 }
 
 if [ ! -f $APP_ROOT/app/bootstrap.php.cache ]; then
-    echo "It seems that you forget to run composer install inside this directory !" >&2
+    echo "It seems that you forget to run composer install inside this directory!" >&2
     exit 2;
 fi
 
@@ -74,14 +95,17 @@ cd $APP_ROOT
 # Execute tasks
 if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     # Ignoring the case where the DB does not exist yet
+    php app/console oro:entity-extend:clear
     php app/console doctrine:database:drop --force 2>&1 > /dev/null || true
     php app/console doctrine:database:create
     php app/console doctrine:schema:create
-    php app/console doctrine:fixture:load --no-interaction
-    # Some segfault on cache purge from ACL load
-    php app/console oro:acl:load || true
-    php app/console oro:entity-config:update
-    php app/console oro:entity-extend:create
+    echo "Loading ORO fixtures"
+    php app/console doctrine:fixtures:load $ORO_FIXTURES --no-interaction
+    echo "Loading PIM fixtures"
+    php app/console doctrine:fixtures:load $PIM_FIXTURES --no-interaction --append
+    php app/console oro:entity-config:init
+    php app/console oro:entity-extend:init
+    php app/console oro:entity-extend:update-config
     php app/console cache:clear
     php app/console doctrine:schema:update --force
     php app/console oro:search:create-index
@@ -96,6 +120,7 @@ if [ $TASK = 'assets' ] || [ $TASK = 'all' ]; then
     php app/console assets:install web
     php app/console assetic:dump
     php app/console oro:assetic:dump
+    php app/console oro:translation:dump
     php app/console cache:clear
 fi
 

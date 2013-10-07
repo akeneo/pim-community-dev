@@ -5,9 +5,10 @@ parameters:
     pim_catalog.controller.currency.class:          Pim\Bundle\CatalogBundle\Controller\CurrencyController
     pim_catalog.controller.family.class:            Pim\Bundle\CatalogBundle\Controller\FamilyController
     pim_catalog.controller.locale.class:            Pim\Bundle\CatalogBundle\Controller\LocaleController
+    pim_catalog.controller.mass_edit_action.class:  Pim\Bundle\CatalogBundle\Controller\MassEditActionController
     pim_catalog.controller.product_attribute.class: Pim\Bundle\CatalogBundle\Controller\ProductAttributeController
     pim_catalog.controller.product.class:           Pim\Bundle\CatalogBundle\Controller\ProductController
-    pim_catalog.controller.mass_edit_action.class:  Pim\Bundle\CatalogBundle\Controller\MassEditActionController
+    pim_catalog.controller.variant_group.class:     Pim\Bundle\CatalogBundle\Controller\VariantGroupController
 
 services:
     pim_catalog.controller.abstract:
@@ -107,7 +108,7 @@ services:
             - '@pim_catalog.manager.category'
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.audit'
-            - '@oro_user.acl_manager'
+            - '@oro_security.security_facade'
 
     pim_catalog.controller.mass_edit_action:
         scope: request
@@ -117,3 +118,12 @@ services:
             - '@pim_catalog.mass_edit_action.operator'
             - '@pim_catalog.datagrid.worker'
             - '@oro_grid.mass_action.parameters_parser'
+
+    pim_catalog.controller.variant_group:
+        scope: request
+        class: %pim_catalog.controller.variant_group.class%
+        parent: pim_catalog.controller.abstract_doctrine
+        arguments:
+            - '@pim_catalog.datagrid.worker'
+            - '@pim_catalog.form.handler.variant_group'
+            - '@pim_catalog.form.variant_group'

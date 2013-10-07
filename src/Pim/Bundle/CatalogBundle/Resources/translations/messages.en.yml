@@ -10,6 +10,7 @@ family:          family
 import profile:  import profile
 locale:          locale
 product:         product
+variant group:   variant group
 
 # Page header titles
 attribute:
@@ -59,6 +60,10 @@ product:
     overview: product overview
     create:   create product
     edit:     edit product
+variant group:
+    overview: variant group overview
+    create:   create variant group
+    edit:     edit variant group
 
 # Custom titles
 products: products
@@ -77,6 +82,7 @@ btn:
         import profile:  create import profile
         locale:          create locale
         product:         create product
+        variant group:   create variant group
     edit:      edit
     save:      save
     remove:    remove
@@ -103,6 +109,7 @@ confirmation:
         export profile:  Are you sure you want to delete the export profile %name%?
         import profile:  Are you sure you want to delete the import profile %name%?
         channel:         Are you sure you want to delete the channel %name%?
+        variant group:   Are you sure you want to delete the variant group %name%?
 
 # Flash messages
 flash:
@@ -155,6 +162,10 @@ flash:
         removed:                  The import has been removed
     export:
         removed:                  The export has been removed
+    variant group:
+        created: Variant group successfully created
+        updated: Variant group successfully updated
+        removed: Variant group successfully removed
     error ocurred: Action failed. Please retry.
 
 # Info messages
@@ -264,7 +275,7 @@ Is dynamic: Is dynamic
 Dashboard:                                   Dashboard
 Attribute groups:                            Attribute groups
 Attribute groups | Create:                   Attribute groups | Create
-Attribute groups %group.name% | Edit:        Attribute groups %group.name% | Edit
+Attribute groups %group.label% | Edit:       Attribute groups %group.label% | Edit
 Attribute groups | Sort:                     Attribute groups | Sort
 Category trees:                              Category trees
 Category trees | List:                       Category trees | List
@@ -289,10 +300,13 @@ Families | Create:                           Families | Create
 Families %family.label% | Edit:              Families %family.label% | Edit
 Channels:                                    Channels
 Channels | Create:                           Channels | Create
-Channels %channel.name% | Edit:              Channels %channel.name% | Edit
+Channels %channel.label% | Edit:             Channels %channel.label% | Edit
 Currencies:                                  Currencies
 Locales:                                     Locales
 Locales %locale.code% | Edit:                Locales %locale.code% | Edit
+Variant groups:                              Variant groups
+Variant groups | Create:                     Variant groups | Create
+Variant groups %variant.label% | Edit:       Variant groups %variant group.label% | Edit
 
 pim_catalog_identifier:       Identifier
 pim_catalog_text:             Text

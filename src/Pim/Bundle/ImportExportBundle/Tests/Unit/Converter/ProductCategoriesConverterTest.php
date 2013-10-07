@@ -13,6 +13,9 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
  */
 class ProductCategoriesConverterTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $em = $this->getEntityManagerMock();
@@ -25,6 +28,9 @@ class ProductCategoriesConverterTest extends \PHPUnit_Framework_TestCase
         $this->converter = new ProductCategoriesConverter($em);
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertCategories()
     {
         $this->repository
@@ -46,6 +52,9 @@ class ProductCategoriesConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertUnknownFamily()
     {
         $this->repository
@@ -57,11 +66,17 @@ class ProductCategoriesConverterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $this->converter->convert(array('[family]' => 'moto')));
     }
 
+    /**
+     * Test related method
+     */
     public function testUnresolvedFamilyKey()
     {
         $this->assertEquals(array(), $this->converter->convert(array('Family' => 'moto')));
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
     protected function getEntityManagerMock()
     {
         return $this
@@ -70,6 +85,9 @@ class ProductCategoriesConverterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
     protected function getRepositoryMock()
     {
         return $this
@@ -78,6 +96,11 @@ class ProductCategoriesConverterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @param integer $id
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Category
+     */
     protected function getCategoryMock($id)
     {
         $category = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Category');

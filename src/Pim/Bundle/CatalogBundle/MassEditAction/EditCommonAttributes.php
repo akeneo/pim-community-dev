@@ -280,21 +280,21 @@ class EditCommonAttributes extends AbstractMassEditAction
         switch ($value->getAttribute()->getAttributeType()) {
             case 'pim_catalog_price_collection':
                 $this->setProductPrice($productValue, $value);
-                break;
 
+                break;
             case 'pim_catalog_multiselect':
                 $this->setProductOption($productValue, $value);
-                break;
 
+                break;
             case 'pim_catalog_file':
             case 'pim_catalog_image':
                 $this->setProductFile($productValue, $value);
-                break;
 
+                break;
             case 'pim_catalog_metric':
                 $this->setProductMetric($productValue, $value);
-                break;
 
+                break;
             default:
                 $productValue->setData($value->getData());
         }

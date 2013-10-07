@@ -1,6 +1,6 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
-{% oro_title_set({ params: { "%category.title%": form.vars.value.title } }) %}
+{% oro_title_set({ params: { "%category.label%": form.vars.value.label } }) %}
 
 {% block head_script %}
     {{ parent() }}

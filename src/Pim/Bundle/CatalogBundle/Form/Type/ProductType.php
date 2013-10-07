@@ -76,17 +76,20 @@ class ProductType extends FlexibleType
             );
         }
 
+        $builder
+            ->add(
+                'categories',
+                'oro_entity_identifier',
+                array(
+                    'class'    => 'PimCatalogBundle:Category',
+                    'required' => true,
+                    'mapped'   => true,
+                    'multiple' => true,
+                )
+            );
+
         if ($options['import_mode']) {
             $builder
-                ->add(
-                    'categories',
-                    'entity',
-                    array(
-                        'multiple'     => true,
-                        'class'        => 'PimCatalogBundle:Category',
-                        'by_reference' => false,
-                    )
-                )
                 ->addEventSubscriber($this->transformer)
                 ->addEventSubscriber(new IgnoreMissingFieldDataSubscriber());
         }

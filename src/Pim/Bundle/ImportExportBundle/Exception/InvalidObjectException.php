@@ -21,6 +21,11 @@ class InvalidObjectException extends \Exception
         parent::__construct($this->printErrorMessage($form));
     }
 
+    /**
+     * @param FormInterface $form
+     *
+     * @return string
+     */
     private function printErrorMessage(FormInterface $form)
     {
         $messages = $this->getErrorMessages($form);
@@ -28,6 +33,11 @@ class InvalidObjectException extends \Exception
         return str_replace(array("Array\n(","\n)\n", '    '), '', print_r($messages, true));
     }
 
+    /**
+     * @param FormInterface $form
+     *
+     * @return array
+     */
     private function getErrorMessages(FormInterface $form)
     {
         $errors = array();

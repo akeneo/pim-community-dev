@@ -28,8 +28,8 @@ define(
                 setCategory: function(treeId, categoryId) {
                     treeId = (categoryId === '') ? '' : treeId;
                     if (treeId !== this.state.treeId || categoryId !== this.state.categoryId) {
-                        this.updateState({ treeId: treeId, categoryId: categoryId })
-                        this.url = this.setCategoryInUrl(this.url)
+                        this.updateState({ treeId: treeId, categoryId: categoryId });
+                        this.url = this.setCategoryInUrl(this.url);
                         return true;
                     } else {
                         return false;
@@ -42,7 +42,7 @@ define(
                                 treeId: this.state.treeId
                             });
                     if ("?" === _.last(url)) {
-                        url += qs
+                        url += qs;
                     } else if (-1 === url.indexOf("?")) {
                         url += "?" + qs;
                     } else {
@@ -54,7 +54,7 @@ define(
                  * @inheritdoc
                  */
                 encodeStateData: function(stateObject) {
-                    var encodedStateData = parent.encodeStateData.call(this, stateObject)
+                    var encodedStateData = parent.encodeStateData.call(this, stateObject);
                     if (stateObject.treeId) {
                         encodedStateData += "&treeId=" + stateObject.treeId;
                     }
@@ -93,7 +93,7 @@ define(
                     if (!state) {
                         state = this.state;
                     }
-                    var queryParams = parent.processFiltersParams.call(this, data, state)
+                    var queryParams = parent.processFiltersParams.call(this, data, state);
                     if (state.categoryId) {
                         queryParams.categoryId = state.categoryId;
                     }
