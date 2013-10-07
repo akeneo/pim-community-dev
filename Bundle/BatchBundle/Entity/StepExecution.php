@@ -303,6 +303,14 @@ class StepExecution
     }
 
     /**
+     * Increment the write count by 1
+     */
+    public function incrementWriteCount()
+    {
+        $this->writeCount++;
+    }
+
+    /**
      * Returns the current number of items filtered out of this execution
      *
      * @return the current number of items filtered out of this execution
