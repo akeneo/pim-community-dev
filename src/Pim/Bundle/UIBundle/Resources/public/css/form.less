@@ -1120,6 +1120,14 @@ ul.medias label.remove-media {
     padding-top: 5px;
   }
 }
+.selectize-dropdown {
+  [data-selectable].active {
+     #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
+  }
+  .active {
+    background-color: @color-purple_light;
+  }
+}
 
 /** Product completeness *******************************************************************************/
 div#legend {
