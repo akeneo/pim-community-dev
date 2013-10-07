@@ -183,3 +183,32 @@ Feature: Execute a job
       | prices | 50.00 EUR |
 
   Scenario: Successfully update existing products prices
+    Given the following currencies:
+      | code | activated |
+      | USD  | yes       |
+      | EUR  | yes       |
+    And the following product values:
+      | product | attribute  | value            |
+      | SKU-001 | Prices     | 100 EUR, 150 USD |
+    And the following file to import:
+      """
+      sku;prices
+      SKU-001;"100 EUR, 90 USD"
+      """
+    And the following job "acme_product_import" configuration:
+      | element   | property          | value                |
+      | reader    | filePath          | {{ file to import }} |
+      | reader    | uploadAllowed     | no                   |
+      | reader    | delimiter         | ;                    |
+      | reader    | enclosure         | "                    |
+      | reader    | escape            | \                    |
+      | processor | enabled           | yes                  |
+      | processor | categories column | categories           |
+      | processor | family column     | families             |
+      | processor | channel           | ecommerce            |
+    And I am logged in as "Julia"
+    When I am on the "acme_product_import" import job page
+    And I launch the import job
+    Then there should be 1 products
+    And the product "SKU-001" should have the following value:
+      | prices | 100.00 EUR, 90.00 USD |
