@@ -13,7 +13,7 @@ use Pim\Bundle\ImportExportBundle\Reader\ProductCsvReader;
  */
 class ProductCsvReaderTest extends CsvReaderTest
 {
-    public function setUp()
+    protected function setUp()
     {
         $this->reader = new ProductCsvReader($this->getEntityManagerMock(array('sku', 'name')));
     }

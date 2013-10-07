@@ -17,8 +17,16 @@ use Oro\Bundle\BatchBundle\Entity\StepExecution;
  */
 class ProductCsvReader extends CsvReader
 {
+    /**
+     * @var array Unique attribute value data grouped by attribute codes
+     */
     protected $uniqueValues = array();
 
+    /**
+     * Constructor
+     *
+     * @param EntityManager $entityManager
+     */
     public function __construct(EntityManager $entityManager)
     {
         $repository = $entityManager->getRepository('PimCatalogBundle:ProductAttribute');
