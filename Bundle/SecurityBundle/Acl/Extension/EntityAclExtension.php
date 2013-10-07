@@ -379,15 +379,12 @@ class EntityAclExtension extends AbstractAclExtension
      */
     public function getAllowedPermissions(ObjectIdentity $oid)
     {
-        if ($oid->getType() == ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+        if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
             $result = array_keys($this->permissionToMaskBuilderIdentity);
         } else {
-            $config = $this->entityMetadataProvider->getMetadata(
-                EntitySecurityMetadataProvider::ACL_SECURITY_TYPE,
-                $oid->getType()
-            );
+            $config = $this->entityMetadataProvider->getMetadata($oid->getType());
             $result = $config->getPermissions();
-            if (count($result) == 0) {
+            if (empty($result)) {
                 $result = array_keys($this->map);
             }
 
