@@ -82,7 +82,7 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
             $this->extension->getViolationsFunction($violations, 0, 'Reader', 'foo')
         );
         $this->assertEquals(
-            '<span class="label label-important">The writer bar of step 1 is somehow wrong.</span> ' .
+            '<span class="label label-important">The writer bar of step 1 is somehow wrong.</span>&nbsp;' .
             '<span class="label label-important">The writer bar of step 1 is elsehow wrong.</span>',
             $this->extension->getViolationsFunction($violations, 1, 'Writer', 'bar')
         );
