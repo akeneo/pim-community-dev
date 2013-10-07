@@ -17,29 +17,35 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
     const EXPORT_FILE = 'test';
     const EXPECT_PATH = '/tmp/constat';
 
+    protected function setUp()
+    {
+        $this->writer = new FileWriter();
+        $this->stepExecution = $this->getStepExecutionMock();
+        $this->writer->setStepExecution($this->stepExecution);
+    }
     /**
      * {@inheritdoc}
      */
     protected function tearDown()
     {
-        $filename=sprintf('%s/%s', self::EXPORT_DIRECTORY, self::EXPORT_FILE);
         @unlink(self::EXPECT_PATH);
-        @unlink($filename);
+        @unlink(sprintf('%s/%s', self::EXPORT_DIRECTORY, self::EXPORT_FILE));
     }
 
-    /**
-     * Test related method
-     */
+    public function testIsAConfigurableStepExecutionAwareWriter()
+    {
+        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement', $this->writer);
+        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface', $this->writer);
+        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\ItemWriterInterface', $this->writer);
+    }
+
     public function testWrite()
     {
         file_put_contents(self::EXPECT_PATH, 'foo');
 
-        $writer = new FileWriter();
-        $stepExecution = $this->getStepExecutionMock();
-
-        $writer->setDirectoryName(self::EXPORT_DIRECTORY);
-        $writer->setFileName(self::EXPORT_FILE);
-        $writer->write($stepExecution, array('foo'));
+        $this->writer->setDirectoryName(self::EXPORT_DIRECTORY);
+        $this->writer->setFileName(self::EXPORT_FILE);
+        $this->writer->write(array('foo'));
 
         $filename = sprintf('%s/%s', self::EXPORT_DIRECTORY, self::EXPORT_FILE);
         $this->assertFileExists($filename);
@@ -48,15 +54,13 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
 
     public function testIncrementWriteCount()
     {
-        $writer = new FileWriter();
-        $writer->setDirectoryName(self::EXPORT_DIRECTORY);
-        $writer->setFileName(self::EXPORT_FILE);
+        $this->writer->setDirectoryName(self::EXPORT_DIRECTORY);
+        $this->writer->setFileName(self::EXPORT_FILE);
 
-        $stepExecution = $this->getStepExecutionMock();
-        $stepExecution->expects($this->exactly(2))
+        $this->stepExecution->expects($this->exactly(2))
             ->method('incrementWriteCount');
 
-        $writer->write($stepExecution, array('foo', 'bar'));
+        $this->writer->write(array('foo', 'bar'));
     }
 
     private function getStepExecutionMock()
