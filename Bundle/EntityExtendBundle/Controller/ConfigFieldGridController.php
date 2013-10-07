@@ -13,28 +13,27 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use FOS\Rest\Util\Codes;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
-
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
-use Oro\Bundle\EntityExtendBundle\Form\Type\FieldType;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
+use Oro\Bundle\EntityExtendBundle\Form\Type\FieldType;
+
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * Class ConfigGridController
  *
  * @package Oro\Bundle\EntityExtendBundle\Controller
  * @Route("/entity/extend/field")
- * @Acl(
- *      id="oro_entityextend",
- *      name="Entity extend manipulation",
- *      description="Entity extend manipulation"
- * )
+ * TODO: Discuss ACL impl., currently acl is disabled
+ * @AclAncestor("oro_entityconfig_manage")
  */
 class ConfigFieldGridController extends Controller
 {
@@ -44,11 +43,11 @@ class ConfigFieldGridController extends Controller
 
     /**
      * @Route("/create/{id}", name="oro_entityextend_field_create", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_field_create",
-     *      name="Create custom field",
-     *      description="Update entity create custom field",
-     *      parent="oro_entityextend"
+     *      label="Create custom field",
+     *      type="action",
+     *      group_name=""
      * )
      *
      * @Template
@@ -114,11 +113,11 @@ class ConfigFieldGridController extends Controller
 
     /**
      * @Route("/update/{id}", name="oro_entityextend_field_update", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_field_update",
-     *      name="Update custom field",
-     *      description="Update entity update custom field",
-     *      parent="oro_entityextend"
+     *      label="Update custom field",
+     *      type="action",
+     *      group_name=""
      * )
      */
     public function updateAction(EntityConfigModel $entity)
@@ -146,7 +145,7 @@ class ConfigFieldGridController extends Controller
         $extendFieldConfig = $configManager->getProvider('extend')->getConfig($entity->getClassName(), $fieldName);
         $extendFieldConfig->set('owner', ExtendManager::OWNER_CUSTOM);
         $extendFieldConfig->set('state', ExtendManager::STATE_NEW);
-        $extendFieldConfig->set('is_extend', true);
+        $extendFieldConfig->set('extend', true);
 
         $form = $this->createForm(
             'oro_entity_config_type',
@@ -161,14 +160,20 @@ class ConfigFieldGridController extends Controller
 
             if ($form->isValid()) {
                 //persist data inside the form
-                $this->get('session')->getFlashBag()->add('success', 'ConfigField successfully saved');
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('oro.entity_extend.controller.config_field.message.saved')
+                );
 
                 $extendEntityConfig = $configManager->getProvider('extend')->getConfig($entity->getClassName());
                 if ($extendEntityConfig->get('state') != ExtendManager::STATE_NEW) {
                     $extendEntityConfig->set('state', ExtendManager::STATE_UPDATED);
-                    $configManager->persist($extendEntityConfig);
-                    $configManager->flush();
                 }
+
+                $extendEntityConfig->set('upgradeable', true);
+
+                $configManager->persist($extendEntityConfig);
+                $configManager->flush();
 
                 return $this->get('oro_ui.router')->actionRedirect(
                     array(
@@ -198,7 +203,8 @@ class ConfigFieldGridController extends Controller
                 'field_config'  => $fieldConfig,
                 'field'         => $newFieldModel,
                 'form'          => $form->createView(),
-                'formAction'    => $this->generateUrl('oro_entityextend_field_update', array('id' => $entity->getId()))
+                'formAction'    => $this->generateUrl('oro_entityextend_field_update', array('id' => $entity->getId())),
+                'require_js'    => $configManager->getProvider('extend')->getPropertyConfig()->getRequireJsModules()
             )
         );
     }
@@ -210,11 +216,11 @@ class ConfigFieldGridController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_field_remove",
-     *      name="Remove custom field",
-     *      description="Update entity remove custom field",
-     *      parent="oro_entityextend"
+     *      label="Remove custom field",
+     *      type="action",
+     *      group_name=""
      * )
      */
     public function removeAction(FieldConfigModel $field)
@@ -223,21 +229,37 @@ class ConfigFieldGridController extends Controller
             throw $this->createNotFoundException('Unable to find FieldConfigModel entity.');
         }
 
+        $className = $field->getEntity()->getClassName();
+
         /** @var ExtendManager $extendManager */
         $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
         /** @var ConfigManager $configManager */
         $configManager = $this->get('oro_entity_config.config_manager');
 
-        $fieldConfig = $extendManager->getConfigProvider()->getConfig(
-            $field->getEntity()->getClassName(),
-            $field->getFieldName()
-        );
+        $fieldConfig = $extendManager->getConfigProvider()->getConfig($className, $field->getFieldName());
 
-        if (!$fieldConfig->is('is_extend')) {
+        if (!$fieldConfig->is('owner', ExtendManager::OWNER_CUSTOM)) {
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 
         $fieldConfig->set('state', ExtendManager::STATE_DELETED);
+
+        $fields = $extendManager->getConfigProvider()->filter(
+            function (ConfigInterface $config) {
+                return in_array(
+                    $config->get('state'),
+                    array(ExtendManager::STATE_ACTIVE, ExtendManager::STATE_UPDATED)
+                );
+            },
+            $className
+        );
+
+        if (!count($fields)) {
+            $entityConfig = $extendManager->getConfigProvider()->getConfig($className);
+
+            $entityConfig->set('upgradeable', false);
+            $configManager->persist($entityConfig);
+        }
 
         $configManager->persist($fieldConfig);
         $configManager->flush();
@@ -252,11 +274,11 @@ class ConfigFieldGridController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_field_unremove",
-     *      name="UnRemove custom field",
-     *      description="Update entity Unremove custom field",
-     *      parent="oro_entityextend"
+     *      label="UnRemove custom field",
+     *      type="action",
+     *      group_name=""
      * )
      */
     public function unremoveAction(FieldConfigModel $field)
@@ -265,23 +287,28 @@ class ConfigFieldGridController extends Controller
             throw $this->createNotFoundException('Unable to find FieldConfigModel entity.');
         }
 
+        $className = $field->getEntity()->getClassName();
+
         /** @var ExtendManager $extendManager */
         $extendManager = $this->get('oro_entity_extend.extend.extend_manager');
         /** @var ConfigManager $configManager */
         $configManager = $this->get('oro_entity_config.config_manager');
 
-        $fieldConfig = $extendManager->getConfigProvider()->getConfig(
-            $field->getEntity()->getClassName(),
-            $field->getFieldName()
-        );
+        $fieldConfig = $extendManager->getConfigProvider()->getConfig($className, $field->getFieldName());
 
-        if (!$fieldConfig->is('is_extend')) {
+        if (!$fieldConfig->is('owner', ExtendManager::OWNER_CUSTOM)) {
             return new Response('', Codes::HTTP_FORBIDDEN);
         }
 
         $fieldConfig->set('state', ExtendManager::STATE_UPDATED);
 
         $configManager->persist($fieldConfig);
+
+        $entityConfig = $extendManager->getConfigProvider()->getConfig($className);
+        $entityConfig->set('upgradeable', true);
+
+        $configManager->persist($entityConfig);
+
         $configManager->flush();
 
         return new JsonResponse(array('message' => 'Item was restored', 'successful' => true), Codes::HTTP_OK);

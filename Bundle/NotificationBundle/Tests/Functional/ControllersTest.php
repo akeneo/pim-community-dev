@@ -60,7 +60,7 @@ class ControllersTest extends WebTestCase
 
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
-        $this->assertContains("Email notification rule has been saved", $crawler->html());
+        $this->assertContains("Email notification rule saved", $crawler->html());
     }
 
     public function testUpdate()
@@ -103,7 +103,7 @@ class ControllersTest extends WebTestCase
 
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
-        $this->assertContains("Email notification rule has been saved", $crawler->html());
+        $this->assertContains("Email notification rule saved", $crawler->html());
     }
 
     /**

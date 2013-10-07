@@ -57,9 +57,8 @@ class TagTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdatedTime()
     {
-        $this->assertNotEquals(null, $this->tag->getUpdatedAt());
+        $this->tag->doUpdate();
         $oldUpdatedTime = $this->tag->getUpdatedAt();
-
         sleep(1);
         $this->tag->doUpdate();
         $this->assertInstanceOf('\DateTime', $this->tag->getUpdatedAt());

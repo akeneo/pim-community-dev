@@ -12,7 +12,14 @@ aside, nav, footer, header, section { display: block }
 header .dropdown-menu li > a{
     filter: none !important;
 }
-.navbar-inner{
+.form-signin .title-box .oro-title,
+.form-signin .title-box .title,
+.navbar-inner,
+#oroplatform-header>.navbar-inner,
+#oroplatform-header .oroplatform-menu>li.dropdown.active>a,
+.ui-dialog .ui-dialog-titlebar-buttonpane,
+.ui-dialog.ui-dialog-normal [class*='ui-dialog-titlebar-']:hover:before,
+.btn-primary {
     filter: none;
 }
 .btn-group{

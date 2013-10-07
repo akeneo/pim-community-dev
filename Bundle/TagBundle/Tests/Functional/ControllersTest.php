@@ -50,6 +50,6 @@ class ControllersTest extends WebTestCase
         $crawler = $this->client->submit($form);
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
-        $this->assertContains("Tag successfully saved", $crawler->html());
+        $this->assertContains("Tag saved", $crawler->html());
     }
 }

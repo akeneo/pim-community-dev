@@ -38,8 +38,12 @@ class EntityCacheWarmer extends CacheWarmer
      * @param string $entityCacheNamespace
      * @param string $entityProxyNameTemplate
      */
-    public function __construct(EmailOwnerProviderStorage $emailOwnerProviderStorage, $entityCacheDir, $entityCacheNamespace, $entityProxyNameTemplate)
-    {
+    public function __construct(
+        EmailOwnerProviderStorage $emailOwnerProviderStorage,
+        $entityCacheDir,
+        $entityCacheNamespace,
+        $entityProxyNameTemplate
+    ) {
         foreach ($emailOwnerProviderStorage->getProviders() as $provider) {
             $this->emailOwnerClasses[count($this->emailOwnerClasses) + 1] = $provider->getEmailOwnerClass();
         }
@@ -64,7 +68,14 @@ class EntityCacheWarmer extends CacheWarmer
             $fs->mkdir($entityCacheDir, 0777);
         }
 
-        $this->processEmailAddressTemplate($entityCacheDir, $twig);
+        // Temporary fix till EmailAddress will be moved to the cache folder
+        $className = sprintf($this->entityProxyNameTemplate, 'EmailAddress');
+        $fileName = sprintf('%s/%s.php', $entityCacheDir, $className);
+        if (!$fs->exists($fileName)) {
+            $this->processEmailAddressTemplate($entityCacheDir, $twig);
+        }
+
+        //$this->processEmailAddressTemplate($entityCacheDir, $twig);
     }
 
     /**
@@ -93,6 +104,7 @@ class EntityCacheWarmer extends CacheWarmer
     protected function createTwigEnvironment()
     {
         $entityTemplateDir = __DIR__ . '/../Resources/cache/Entity';
+
         return new \Twig_Environment(new \Twig_Loader_Filesystem($entityTemplateDir));
     }
 

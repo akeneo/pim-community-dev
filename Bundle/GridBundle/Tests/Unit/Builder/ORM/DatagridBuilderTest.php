@@ -5,6 +5,7 @@ namespace Oro\Bundle\GridBundle\Tests\Unit\Builder\ORM;
 use Oro\Bundle\GridBundle\Builder\ORM\DatagridBuilder;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
 class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -55,7 +56,8 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
             'eventDispatcher' => $this->getMockForAbstractClass(
                 'Symfony\Component\EventDispatcher\EventDispatcherInterface'
             ),
-            'aclManager'      => $this->getMockForAbstractClass('Oro\Bundle\UserBundle\Acl\ManagerInterface'),
+            'securityFacade'  => $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+                                 ->disableOriginalConstructor()->getMock(),
             'filterFactory'   => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Filter\FilterFactoryInterface'),
             'sorterFactory'   => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Sorter\SorterFactoryInterface'),
             'actionFactory'   => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Action\ActionFactoryInterface'),
@@ -67,7 +69,7 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
         $this->model = new DatagridBuilder(
             $arguments['formFactory'],
             $arguments['eventDispatcher'],
-            $arguments['aclManager'],
+            $arguments['securityFacade'],
             $arguments['filterFactory'],
             $arguments['sorterFactory'],
             $arguments['actionFactory'],
@@ -225,10 +227,11 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
     public function testAddRowAction($isGranted, array $actualParameters, array $expectedParameters)
     {
         // ACL manager mock
-        $aclManager = $this->getMockForAbstractClass('Oro\Bundle\UserBundle\Acl\ManagerInterface');
+        $securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+            ->disableOriginalConstructor()->getMock();
         if (!empty($actualParameters['aclResource'])) {
-            $aclManager->expects($this->once())
-                ->method('isResourceGranted')
+            $securityFacade->expects($this->once())
+                ->method('isGranted')
                 ->with($actualParameters['aclResource'])
                 ->will($this->returnValue($isGranted));
         }
@@ -275,7 +278,9 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
         }
 
         // test
-        $this->initializeDatagridBuilder(array('actionFactory' => $actionFactoryMock, 'aclManager' => $aclManager));
+        $this->initializeDatagridBuilder(
+            array('actionFactory' => $actionFactoryMock, 'securityFacade' => $securityFacade)
+        );
         $this->model->addRowAction($datagridMock, $actualParameters);
     }
 
@@ -319,18 +324,16 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
             ->method('getAclResource')
             ->will($this->returnValue($aclResource));
 
-        $aclManager = $this->getMockBuilder('Oro\Bundle\UserBundle\Acl\ManagerInterface')
-            ->setMethods(array('isResourceGranted'))
-            ->disableOriginalConstructor()
-            ->getMockForAbstractClass();
+        $securityFacade = $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+            ->disableOriginalConstructor()->getMock();
         if ($aclResource) {
-            $aclManager->expects($this->once())
-                ->method('isResourceGranted')
+            $securityFacade->expects($this->once())
+                ->method('isGranted')
                 ->with($aclResource)
                 ->will($this->returnValue($isGranted));
         } else {
-            $aclManager->expects($this->never())
-                ->method('isResourceGranted');
+            $securityFacade->expects($this->never())
+                ->method('isGranted');
         }
 
         $datagridMock = $this->getMockBuilder('Oro\Bundle\GridBundle\Datagrid\DatagridInterface')
@@ -347,7 +350,7 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
                 ->method('addMassAction');
         }
 
-        $this->initializeDatagridBuilder(array('aclManager' => $aclManager));
+        $this->initializeDatagridBuilder(array('securityFacade' => $securityFacade));
         $this->model->addMassAction($datagridMock, $massActionMock);
     }
 
@@ -372,8 +375,14 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetBaseDatagrid()
     {
+        // filter form
+        $filterForm = $this->getMock('Symfony\Component\Form\Form', array(), array(), '', false);
+
         // form builder
-        $formBuilderMock = $this->getMock('Symfony\Component\Form\FormBuilder', array(), array(), '', false);
+        $formBuilderMock = $this->getMock('Symfony\Component\Form\FormBuilder', array('getForm'), array(), '', false);
+        $formBuilderMock->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($filterForm));
 
         // form factory
         $formFactoryMock = $this->getMockForAbstractClass(
@@ -401,6 +410,18 @@ class DatagridBuilderTest extends \PHPUnit_Framework_TestCase
         $fieldDescriptionCollection = new FieldDescriptionCollection();
         $routeGeneratorMock = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Route\RouteGeneratorInterface');
         $parametersMock = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ParametersInterface');
+        $parametersMock->expects($this->at(0))
+            ->method('get')
+            ->with(ParametersInterface::FILTER_PARAMETERS)
+            ->will($this->returnValue(array()));
+        $parametersMock->expects($this->at(1))
+            ->method('get')
+            ->with(ParametersInterface::PAGER_PARAMETERS)
+            ->will($this->returnValue(array()));
+        $parametersMock->expects($this->at(2))
+            ->method('get')
+            ->with(ParametersInterface::SORT_PARAMETERS)
+            ->will($this->returnValue(array()));
 
         // test datagrid
         $this->initializeDatagridBuilder(

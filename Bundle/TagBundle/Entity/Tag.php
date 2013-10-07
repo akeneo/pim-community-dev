@@ -18,7 +18,15 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  * @Config(
  *  defaultValues={
  *      "entity"={"label"="Tag", "plural_label"="Tags"},
- *      "ownership"={"owner_type"="USER"}
+ *      "ownership"={
+ *          "owner_type"="USER",
+ *          "owner_field_name"="owner",
+ *          "owner_column_name"="user_owner_id"
+ *      },
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
  *  }
  * )
  */
@@ -88,9 +96,6 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
     {
         $this->setName($name);
         $this->tagging = new ArrayCollection();
-
-        $this->setCreatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
-        $this->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
     }
 
     /**
@@ -225,7 +230,18 @@ class Tag implements ContainAuthorInterface, ContainUpdaterInterface
      */
     public function __toString()
     {
-        return $this->getName();
+        return (string) $this->getName();
+    }
+
+    /**
+     * Pre persist event listener
+     *
+     * @ORM\PrePersist
+     */
+    public function beforeSave()
+    {
+        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**

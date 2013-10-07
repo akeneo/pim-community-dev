@@ -38,8 +38,9 @@ class BaseDatagrid extends DatagridManager
      * @param $properties
      * @param $actions
      * @param $filters
+     * @param $scope
      */
-    protected function prepareProperties($gridActions, &$properties, &$actions, &$filters)
+    protected function prepareProperties($gridActions, &$properties, &$actions, &$filters, $scope)
     {
         foreach ($gridActions as $config) {
             $properties[] = new UrlProperty(
@@ -50,6 +51,15 @@ class BaseDatagrid extends DatagridManager
             );
 
             if (isset($config['filter'])) {
+                $keys = array_map(
+                    function ($item) use ($scope) {
+                        return $scope . '_' . $item;
+                    },
+                    array_keys($config['filter'])
+                );
+
+                $config['filter'] = array_combine($keys, $config['filter']);
+
                 $filters[strtolower($config['name'])] = $config['filter'];
             }
 
@@ -67,16 +77,9 @@ class BaseDatagrid extends DatagridManager
             $gridActions = $provider->getPropertyConfig()->getGridActions($type);
 
             foreach ($gridActions as $config) {
-                if (isset($config['acl_resource'])) {
-                    $acl = $config['acl_resource'];
-                } else {
-                    $acl = 'root';
-                }
-
                 $configItem = array(
-                    'name'         => strtolower($config['name']),
-                    'acl_resource' => $acl,
-                    'options'      => array(
+                    'name'    => strtolower($config['name']),
+                    'options' => array(
                         'label' => ucfirst($config['name']),
                         'icon'  => isset($config['icon']) ? $config['icon'] : 'question-sign',
                         'link'  => strtolower($config['name']) . '_link'

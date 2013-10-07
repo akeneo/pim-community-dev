@@ -174,7 +174,7 @@ class EmailTemplateDatagridManager extends DatagridManager
         $cloneAction = array(
             'name'         => 'clone',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => 'oro_email_emailtemplate_clone',
+            'acl_resource' => 'oro_email_emailtemplate_create',
             'options'      => array(
                 'label' => $this->translate('oro.email.datagrid.emailtemplate.action.clone'),
                 'icon'  => 'share',

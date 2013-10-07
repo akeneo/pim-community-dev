@@ -17,6 +17,7 @@ class OroCronExtensionTest extends \PHPUnit_Framework_TestCase
         $this->createEmptyConfiguration();
 
         $this->assertParameter(5, 'oro_cron.max_jobs');
+        $this->assertParameter(true, 'oro_cron.jms_statistics');
     }
 
     public function testLoad()
@@ -24,6 +25,7 @@ class OroCronExtensionTest extends \PHPUnit_Framework_TestCase
         $this->createFullConfiguration();
 
         $this->assertParameter(10, 'oro_cron.max_jobs');
+        $this->assertParameter(false, 'oro_cron.jms_statistics');
     }
 
     protected function createEmptyConfiguration()
@@ -65,6 +67,7 @@ class OroCronExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $yaml = <<<EOF
 max_concurrent_jobs: 10
+jms_statistics: false
 EOF;
         $parser = new Parser();
 

@@ -1,0 +1,7 @@
+# Specify serialization type for relatedEntities because of the following error in 'prod' mode:
+# Cannot redeclare class Doctrine\ORM\Mapping\Annotation in vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Annotation.php
+JMS\JobQueueBundle\Entity\Job:
+    exclusion_policy: none
+    properties:
+        relatedEntities:
+            type: array

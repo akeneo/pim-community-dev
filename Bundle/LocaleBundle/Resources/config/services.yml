@@ -1,0 +1,10 @@
+parameters:
+    oro_locale.twig.dateformat.class: Oro\Bundle\LocaleBundle\Twig\DateFormatExtension
+
+services:
+    oro_locale.twig.dateformat:
+        class: %oro_locale.twig.dateformat.class%
+        arguments:
+            - @oro_config.global
+        tags:
+            - { name: twig.extension }

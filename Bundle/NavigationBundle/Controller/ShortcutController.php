@@ -12,17 +12,10 @@ use Knp\Menu\Iterator\RecursiveItemIterator;
 use Knp\Menu\ItemInterface;
 
 use Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider;
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 /**
  * @Route("/shortcut")
- *
- * @Acl(
- *     id="oro_shortcut",
- *     name="Shortcut",
- *     description="Shortcut",
- *     parent="root"
- * )
  */
 class ShortcutController extends Controller
 {
@@ -31,13 +24,6 @@ class ShortcutController extends Controller
     /**
      * @Route("actionslist", name="oro_shortcut_actionslist")
      * @Template
-     *
-     * @Acl(
-     *     id="oro_shortcut_actions_list",
-     *     name="List shortcuts",
-     *     description="List shortcuts",
-     *     parent="oro_shortcut"
-     * )
      */
     public function actionslistAction()
     {
@@ -66,6 +52,7 @@ class ShortcutController extends Controller
         $translator = $this->get('translator');
         $itemIterator = new RecursiveItemIterator($items);
         $iterator = new \RecursiveIteratorIterator($itemIterator, \RecursiveIteratorIterator::SELF_FIRST);
+        $result = array();
         /** @var $item ItemInterface */
         foreach ($iterator as $item) {
             if ($item->getExtra('isAllowed') && !in_array($item->getUri(), $this->uris) && $item->getUri() !== '#') {

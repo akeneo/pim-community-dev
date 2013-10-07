@@ -13,7 +13,8 @@ function(_, Backbone, AbstractWidget) {
             _.extend({}, AbstractWidget.prototype.options),
             {
                 cssClass: 'pull-left btn-group icons-holder',
-                type: 'buttons'
+                type: 'buttons',
+                loadingMaskEnabled: false
             }
         ),
 

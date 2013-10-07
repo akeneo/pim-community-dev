@@ -135,7 +135,8 @@ class OroWorkflowStepTest extends FormIntegrationTestCase
                 'formData' => $workflowData,
                 'formOptions' => array(
                     'workflowItem' => $this->createWorkflowItem(
-                        $workflowWithAttributes, $stepWithAttributes->getName()
+                        $workflowWithAttributes,
+                        $stepWithAttributes->getName()
                     ),
                     'stepName' => $stepWithAttributes->getName()
                 ),
@@ -150,7 +151,8 @@ class OroWorkflowStepTest extends FormIntegrationTestCase
                 'formData' => new WorkflowData(), // empty workflow data
                 'formOptions' => array(
                     'workflowItem' => $this->createWorkflowItem(
-                        $workflowWithAttributes, $stepWithAttributes->getName()
+                        $workflowWithAttributes,
+                        $stepWithAttributes->getName()
                     )->setClosed(true),
                 ),
                 'childrenOptions' => array(
@@ -164,7 +166,8 @@ class OroWorkflowStepTest extends FormIntegrationTestCase
                 'formData' => new WorkflowData(), // empty workflow data
                 'formOptions' => array(
                     'workflowItem' => $this->createWorkflowItem(
-                        $workflowWithAttributes, $step->getName()
+                        $workflowWithAttributes,
+                        $step->getName()
                     )->setClosed(true),
                     'stepName' => $stepWithAttributes->getName()
                 ),

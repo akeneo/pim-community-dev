@@ -9,17 +9,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\UserBundle\Entity\Group;
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\UserBundle\Datagrid\GroupUserDatagridManager;
 
 /**
  * @Route("/group")
- * @Acl(
- *      id="oro_user_group",
- *      name="Group manipulation",
- *      description="Group manipulation"
- * )
  */
 class GroupController extends Controller
 {
@@ -30,14 +25,14 @@ class GroupController extends Controller
      * @Template("OroUserBundle:Group:update.html.twig")
      * @Acl(
      *      id="oro_user_group_create",
-     *      name="Create group",
-     *      description="Create new group",
-     *      parent="oro_user_group"
+     *      type="entity",
+     *      class="OroUserBundle:Group",
+     *      permission="CREATE"
      * )
      */
     public function createAction()
     {
-        return $this->updateAction(new Group());
+        return $this->update(new Group());
     }
 
     /**
@@ -47,34 +42,14 @@ class GroupController extends Controller
      * @Template
      * @Acl(
      *      id="oro_user_group_update",
-     *      name="Edit group",
-     *      description="Edit group",
-     *      parent="oro_user_group"
+     *      type="entity",
+     *      class="OroUserBundle:Group",
+     *      permission="EDIT"
      * )
      */
     public function updateAction(Group $entity)
     {
-        if ($this->get('oro_user.form.handler.group')->process($entity)) {
-            $this->get('session')->getFlashBag()->add('success', 'Group successfully saved');
-
-            if (!$this->getRequest()->get('_widgetContainer')) {
-
-                return $this->get('oro_ui.router')->actionRedirect(
-                    array(
-                        'route' => 'oro_user_group_update',
-                        'parameters' => array('id' => $entity->getId()),
-                    ),
-                    array(
-                        'route' => 'oro_user_group_index',
-                    )
-                );
-            }
-        }
-
-        return array(
-            'datagrid' => $this->getGroupUserDatagridManager($entity)->getDatagrid()->createView(),
-            'form'     => $this->get('oro_user.form.group')->createView(),
-        );
+        return $this->update($entity);
     }
 
     /**
@@ -86,8 +61,7 @@ class GroupController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0, "_format"="json"}
      * )
-     * @Template("OroGridBundle:Datagrid:list.json.php")
-     * @AclAncestor("oro_user_group_update")
+     * @AclAncestor("oro_user_user_view")
      */
     public function gridDataAction(Group $entity = null)
     {
@@ -95,7 +69,9 @@ class GroupController extends Controller
             $entity = new Group();
         }
 
-        return array('datagrid' => $this->getGroupUserDatagridManager($entity)->getDatagrid()->createView());
+        $datagridView = $this->getGroupUserDatagridManager($entity)->getDatagrid()->createView();
+
+        return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
     }
 
     /**
@@ -120,22 +96,50 @@ class GroupController extends Controller
      *      defaults={"_format" = "html"}
      * )
      * @Acl(
-     *      id="oro_user_group_list",
-     *      name="View group list",
-     *      description="List of groups",
-     *      parent="oro_user_group"
+     *      id="oro_user_group_view",
+     *      type="entity",
+     *      class="OroUserBundle:Group",
+     *      permission="VIEW"
      * )
      */
     public function indexAction(Request $request)
     {
-        $datagrid = $this->get('oro_user.group_datagrid_manager')->getDatagrid();
-        $view     = 'json' == $request->getRequestFormat()
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'OroUserBundle:Group:index.html.twig';
+        $view = $this->get('oro_user.group_datagrid_manager')->getDatagrid()->createView();
 
-        return $this->render(
-            $view,
-            array('datagrid' => $datagrid->createView())
+        return 'json' == $this->getRequest()->getRequestFormat()
+            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
+            : $this->render('OroUserBundle:Group:index.html.twig', array('datagrid' => $view));
+    }
+
+    /**
+     * @param Group $entity
+     * @return array
+     */
+    protected function update(Group $entity)
+    {
+        if ($this->get('oro_user.form.handler.group')->process($entity)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('oro.user.controller.group.message.saved')
+            );
+
+            if (!$this->getRequest()->get('_widgetContainer')) {
+
+                return $this->get('oro_ui.router')->actionRedirect(
+                    array(
+                        'route' => 'oro_user_group_update',
+                        'parameters' => array('id' => $entity->getId()),
+                    ),
+                    array(
+                        'route' => 'oro_user_group_index',
+                    )
+                );
+            }
+        }
+
+        return array(
+            'datagrid' => $this->getGroupUserDatagridManager($entity)->getDatagrid()->createView(),
+            'form'     => $this->get('oro_user.form.group')->createView(),
         );
     }
 }

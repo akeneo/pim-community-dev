@@ -1,8 +1,8 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
 
-{% set title = 'Add Field ' %}
-{% oro_title_set({params : {"%username%": 'User' }}) %}
+{% set title = 'New Field ' %}
+{% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}
 
 {% set formAction = path('oro_entityextend_field_create', {id: entity_id}) %}
 
@@ -30,7 +30,6 @@
 
 {% block content_data %}
     {% set id = 'configfield-create' %}
-
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
         'dataBlocks': form_data_blocks(form),

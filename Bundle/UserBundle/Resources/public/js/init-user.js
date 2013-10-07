@@ -1,8 +1,8 @@
 /* jshint browser:true */
 /* global require */
-require(['jquery', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger',
+require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger',
     'oro/widget-manager', 'oro/dialog-widget', 'jquery.dialog.extended'],
-function($, __, app, mediator, messenger, widgetManager, dialogWidget) {
+function($, _, __, app, mediator, messenger, widgetManager, DialogWidget) {
     'use strict';
 
     /* ============================================================
@@ -12,6 +12,10 @@ function($, __, app, mediator, messenger, widgetManager, dialogWidget) {
         function checkRoleInputs() {
             var inputs = $('#roles-list .controls').find(':checkbox');
             inputs.attr('required', inputs.filter(':checked').length > 0 ? null : 'required');
+        }
+
+        function initFlashMessages() {
+            messenger.setup();
         }
 
         $(document).on('click', '#btn-apigen', function () {
@@ -35,6 +39,11 @@ function($, __, app, mediator, messenger, widgetManager, dialogWidget) {
          */
         mediator.on("hash_navigation_request:complete", checkRoleInputs);
 
+        /**
+         * Process flash messages stored in queue or storage
+         */
+        mediator.on("hash_navigation_request:complete", initFlashMessages);
+
         $(document).on('change', '#btn-enable input', function(e) {
             $('.status-enabled').toggleClass('hide');
             $('.status-disabled').toggleClass('hide');
@@ -42,20 +51,27 @@ function($, __, app, mediator, messenger, widgetManager, dialogWidget) {
 
         $(document).on('click', '#view-activity-btn', function (e) {
             e.stopImmediatePropagation();
+            var $el = $(this),
+                dialog = /** @var oro.DialogWidget */ $el.data('dialog');
+            if (dialog) {
+                // dialog already is opened
+                return false;
+            }
 
-            var historyWindow = new dialogWidget({
-                url: $(this).attr('href'),
+            $el.data('dialog', dialog = new DialogWidget({
+                url: $el.attr('href'),
                 dialogOptions: {
                     allowMaximize: true,
                     allowMinimize: true,
                     dblclick: 'maximize',
                     maximizedHeightDecreaseBy: 'minimize-bar',
                     width : 1000,
-                    title: $(this).attr('title')
+                    title: $el.attr('title')
                 }
-            });
-            widgetManager.addWidgetInstance(historyWindow);
-            historyWindow.render();
+            }));
+            dialog.once('widgetRemove', _.bind($el.removeData, $el, 'dialog'));
+            widgetManager.addWidgetInstance(dialog);
+            dialog.render();
 
             return false;
         });

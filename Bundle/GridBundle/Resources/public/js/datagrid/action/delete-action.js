@@ -37,7 +37,7 @@ function(_, messenger, __, Modal, ModelAction) {
                     self.getErrorDialog().open();
                 },
                 success: function() {
-                    var messageText = __('Item was deleted');
+                    var messageText = __('Item deleted');
                     messenger.notificationFlashMessage('success', messageText);
                 }
             });

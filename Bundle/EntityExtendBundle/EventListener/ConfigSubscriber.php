@@ -2,29 +2,32 @@
 
 namespace Oro\Bundle\EntityExtendBundle\EventListener;
 
+use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+use Oro\Bundle\EntityConfigBundle\Event\Events;
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
-use Oro\Bundle\EntityConfigBundle\Event\Events;
 
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class ConfigSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var ExtendManager
+     * @var ConfigProvider
      */
-    protected $extendManager;
+    protected $extendConfigProvider;
 
     /**
-     * @param ExtendManager $extendManager
+     * @param ConfigProvider $extendConfigProvider
      */
-    public function __construct(ExtendManager $extendManager)
+    public function __construct(ConfigProvider $extendConfigProvider)
     {
-        $this->extendManager = $extendManager;
+        $this->extendConfigProvider = $extendConfigProvider;
     }
 
     /**
@@ -33,30 +36,10 @@ class ConfigSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Events::NEW_ENTITY_CONFIG_MODEL => 'newConfigModel',
             Events::PRE_PERSIST_CONFIG      => 'persistConfig',
+            Events::NEW_ENTITY_CONFIG_MODEL => 'newEntity',
+            Events::NEW_FIELD_CONFIG_MODEL  => 'newField',
         );
-    }
-
-    /**
-     * @param NewEntityConfigModelEvent $event
-     */
-    public function newConfigModel(NewEntityConfigModelEvent $event)
-    {
-        $config = $this->extendManager->getConfigProvider()->getConfig($event->getClassName());
-        if ($config->get('is_extend')) {
-            $extendClass = $this->extendManager->getClassGenerator()->generateExtendClassName(
-                $event->getClassName()
-            );
-            $proxyClass  = $this->extendManager->getClassGenerator()->generateProxyClassName(
-                $event->getClassName()
-            );
-
-            $config->set('extend_class', $extendClass);
-            $config->set('proxy_class', $proxyClass);
-
-            $this->extendManager->getConfigProvider()->persist($config);
-        }
     }
 
     /**
@@ -71,7 +54,7 @@ class ConfigSubscriber implements EventSubscriberInterface
 
         if ($scope == 'extend'
             && $event->getConfig()->getId() instanceof FieldConfigIdInterface
-            && $event->getConfig()->is('is_extend')
+            && $event->getConfig()->is('owner', ExtendManager::OWNER_CUSTOM)
             && count(array_intersect_key(array_flip(array('length', 'precision', 'scale', 'state')), $change))
         ) {
             $entityConfig = $event->getConfigManager()
@@ -83,7 +66,6 @@ class ConfigSubscriber implements EventSubscriberInterface
                 && !isset($change['state'])
             ) {
                 $event->getConfig()->set('state', ExtendManager::STATE_UPDATED);
-
                 $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
             }
 
@@ -92,6 +74,62 @@ class ConfigSubscriber implements EventSubscriberInterface
 
                 $event->getConfigManager()->persist($entityConfig);
             }
+        }
+
+        if ($scope == 'datagrid'
+            && $event->getConfig()->getId() instanceof FieldConfigIdInterface
+            && !in_array($event->getConfig()->getId()->getFieldType(), array('text'))
+            && isset($change['is_visible'])
+
+        ) {
+            /** @var ConfigProvider $extendConfigProvider */
+            $extendConfigProvider = $event->getConfigManager()->getProvider('extend');
+            $extendConfig         = $extendConfigProvider->getConfig($className);
+            $index                = $extendConfig->has('index') ? $extendConfig->get('index') : array();
+
+            $index[$event->getConfig()->getId()->getFieldName()] = $event->getConfig()->get('is_visible');
+
+            $extendConfig->set('index', $index);
+
+            $event->getConfigManager()->persist($extendConfig);
+        }
+    }
+
+    /**
+     * @param NewEntityConfigModelEvent $event
+     */
+    public function newEntity(NewEntityConfigModelEvent $event)
+    {
+        $originalClassName       = $event->getClassName();
+        $originalParentClassName = get_parent_class($originalClassName);
+
+        $parentClassArray = explode('\\', $originalParentClassName);
+        $classArray       = explode('\\', $originalClassName);
+
+        $parentClassName = array_pop($parentClassArray);
+        $className       = array_pop($classArray);
+
+        if ($parentClassName == 'Extend' . $className) {
+            $config = $event->getConfigManager()->getProvider('extend')->getConfig($event->getClassName());
+            $config->set('is_extend', true);
+            $config->set('extend_class', ExtendConfigDumper::ENTITY . $parentClassName);
+
+            $event->getConfigManager()->persist($config);
+        }
+    }
+
+    /**
+     * @param NewFieldConfigModelEvent $event
+     */
+    public function newField(NewFieldConfigModelEvent $event)
+    {
+        /** @var ConfigProvider $configProvider */
+        $configProvider = $event->getConfigManager()->getProvider('extend');
+
+        $entityConfig = $configProvider->getConfig($event->getClassName());
+        if ($entityConfig->is('upgradeable', false)) {
+            $entityConfig->set('upgradeable', true);
+            $configProvider->persist($entityConfig);
         }
     }
 }

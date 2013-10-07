@@ -28,6 +28,11 @@ class EventsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $container->expects($this->once())
+            ->method('hasParameter')
+            ->with('installed')
+            ->will($this->returnValue(true));
+
+        $container->expects($this->once())
             ->method('getDefinition')
             ->with('event_dispatcher')
             ->will($this->returnValue($dispatcher));
@@ -37,9 +42,8 @@ class EventsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->with('doctrine.orm.entity_manager')
             ->will($this->returnValue($this->configureEntityManagerMock($repository)));
 
-        $container->expects($this->once())
+        $container->expects($this->any())
             ->method('getParameter')
-            ->with('oro_notification.event_entity.class')
             ->will($this->returnValue(self::CLASS_NAME));
 
         $repository->expects($this->once())
@@ -101,6 +105,9 @@ class EventsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $connection->expects($this->once())
             ->method('getSchemaManager')
             ->will($this->returnValue($schemaManager));
+        $connection->expects($this->any())
+            ->method('isConnected')
+            ->will($this->returnValue(true));
 
         $metadata->expects($this->once())
             ->method('getTableName')
@@ -116,7 +123,7 @@ class EventsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->with('Oro\Bundle\NotificationBundle\Entity\Event')
             ->will($this->returnValue($repository));
 
-        $em->expects($this->once())
+        $em->expects($this->exactly(2))
             ->method('getConnection')
             ->will($this->returnValue($connection));
 

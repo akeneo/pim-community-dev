@@ -3,6 +3,7 @@
 namespace Oro\Bundle\CronBundle\Job;
 
 use Symfony\Component\Process\Process;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 class Daemon
 {
@@ -21,14 +22,30 @@ class Daemon
     protected $maxJobs;
 
     /**
+     * Current environment
+     *
+     * @var string
+     */
+    protected $env;
+
+    /**
+     * Path to php executable
+     *
+     * @var string
+     */
+    protected $phpExec;
+
+    /**
      *
      * @param string $rootDir
-     * @param string $maxJobs
+     * @param int    $maxJobs [optional] Maximum number of concurent jobs. Default value is 5.
+     * @param string $env     [optional] Environment. Default value is "prod".
      */
-    public function __construct($rootDir, $maxJobs = 5)
+    public function __construct($rootDir, $maxJobs = 5, $env = 'prod')
     {
         $this->rootDir = $rootDir;
         $this->maxJobs = (int) $maxJobs;
+        $this->env     = $env;
     }
 
     /**
@@ -133,7 +150,7 @@ class Daemon
      */
     protected function getQueueStopProcess($pid)
     {
-        $cmd = defined('PHP_WINDOWS_VERSION_BUILD') ? 'taskkill /PID %u' : 'kill -9 %u';
+        $cmd = defined('PHP_WINDOWS_VERSION_BUILD') ? 'taskkill /F /PID %u' : 'kill -9 %u';
 
         return new Process(sprintf($cmd, $pid));
     }
@@ -145,10 +162,18 @@ class Daemon
      */
     protected function getQueueRunCmd()
     {
+        if (!$this->phpExec) {
+            $finder = new PhpExecutableFinder();
+
+            $this->phpExec = escapeshellarg($finder->find());
+        }
+
         return sprintf(
-            'php %sconsole jms-job-queue:run --max-runtime=999999999 --max-concurrent-jobs=%u',
+            '%s %sconsole jms-job-queue:run --max-runtime=999999999 --max-concurrent-jobs=%u --env=%s',
+            $this->phpExec,
             $this->rootDir . DIRECTORY_SEPARATOR,
-            max($this->maxJobs, 1)
+            max($this->maxJobs, 1),
+            escapeshellarg($this->env)
         );
     }
 }

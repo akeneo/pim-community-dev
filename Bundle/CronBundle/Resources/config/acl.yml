@@ -1,0 +1,5 @@
+oro_jobs:
+    label: Jobs management
+    type: action
+    group_name: ""
+    bindings: ~

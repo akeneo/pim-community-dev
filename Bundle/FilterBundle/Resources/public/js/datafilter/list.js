@@ -73,7 +73,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
         selectWidget: null,
 
         /**
-         * Widget button selector
+         * ImportExport button selector
          *
          * @property
          */
@@ -200,6 +200,9 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          * @return {*}
          */
         enableFilters: function(filters) {
+            if (_.isEmpty(filters)) {
+                return this;
+            }
             var optionsSelectors = [];
 
             _.each(filters, function(filter) {
@@ -212,7 +215,9 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                 options.attr('selected', true);
             }
 
-            this.selectWidget.multiselect('refresh');
+            if (optionsSelectors.length) {
+                this.selectWidget.multiselect('refresh');
+            }
 
             return this;
         },
@@ -224,6 +229,9 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          * @return {*}
          */
         disableFilters: function(filters) {
+            if (_.isEmpty(filters)) {
+                return this;
+            }
             var optionsSelectors = [];
 
             _.each(filters, function(filter) {
@@ -236,7 +244,9 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                 options.removeAttr('selected');
             }
 
-            this.selectWidget.multiselect('refresh');
+            if (optionsSelectors.length) {
+                this.selectWidget.multiselect('refresh');
+            }
 
             return this;
         },

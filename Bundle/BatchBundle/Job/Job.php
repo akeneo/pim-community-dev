@@ -144,9 +144,10 @@ class Job implements JobInterface
     /**
      * Convenience method for adding a single step to the job.
      *
+     * @param string $stepName
      * @param StepInterface $step a {@link Step} to add
      */
-    public function addStep(StepInterface $step)
+    public function addStep($stepName, StepInterface $step)
     {
         $this->steps[] = $step;
     }
@@ -182,7 +183,7 @@ class Job implements JobInterface
                 $this->updateStatus($jobExecution, BatchStatus::STARTED);
 
                 // Todo Listener beforeJob
-                 $this->doExecute($jobExecution);
+                $this->doExecute($jobExecution);
             } else {
                 // The job was already stopped before we even got this far. Deal
                 // with it in the same way as any other interruption.
@@ -209,7 +210,7 @@ class Job implements JobInterface
         }
 
         if (($jobExecution->getStatus()->getValue() <= BatchStatus::STOPPED)
-                && (count($jobExecution->getStepExecutions()) === 0)
+            && (count($jobExecution->getStepExecutions()) === 0)
         ) {
             /* @var ExitStatus */
             $exitStatus = $jobExecution->getExitStatus();
@@ -219,8 +220,6 @@ class Job implements JobInterface
         }
 
         $jobExecution->setEndTime(new \DateTime());
-        $this->jobRepository->updateJobExecution($jobExecution);
-        $this->jobRepository->flush();
 
         $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
     }
@@ -260,7 +259,6 @@ class Job implements JobInterface
     private function updateStatus(JobExecution $jobExecution, $status)
     {
         $jobExecution->setStatus(new BatchStatus($status));
-        $this->jobRepository->updateJobExecution($jobExecution);
     }
 
     /**
@@ -295,10 +293,10 @@ class Job implements JobInterface
      */
     public function setConfiguration(array $steps)
     {
-        foreach ($steps as $title => $config) {
-            $step = $this->getStep($title);
+        foreach ($steps as $name => $config) {
+            $step = $this->getStep($name);
             if (!$step) {
-                throw new \InvalidArgumentException(sprintf('Unknown step "%s"', $title));
+                throw new \InvalidArgumentException(sprintf('Unknown step "%s"', $name));
             }
 
             $step->setConfiguration($config);
@@ -365,7 +363,7 @@ class Job implements JobInterface
         }
 
         if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPING
-                || $stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
+            || $stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
             $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));
             throw new JobInterruptedException("Job interrupted by step execution");
         }

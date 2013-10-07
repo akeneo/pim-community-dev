@@ -5,7 +5,7 @@
 {# TODO: This is a temporary template created for demo purposes. It will be removed when 'display activities' functionality is implemented  #}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroEmailBundle::macros.html.twig' as EA %}
-{% set format = oro_config_value('oro_user.name_format') %}
+{% set format = oro_config_value('oro_locale.name_format') %}
 <div id="emails-grid">
     <div class="clearfix">
         <div class="clearfix">
@@ -16,6 +16,7 @@
                         <tr>
                             <th style="display: none;"><span>ID</span></th>
                             <th><span>From </span></th>
+                            <th><span>To </span></th>
                             <th><span>Subject </span></th>
                             <th><span>Sent </span></th>
                         </tr>

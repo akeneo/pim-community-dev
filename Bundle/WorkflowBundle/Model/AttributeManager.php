@@ -80,7 +80,7 @@ class AttributeManager
     {
         return $this->getAttributes()->filter(
             function (Attribute $attribute) {
-                return $attribute->getType('entity') && $attribute->getOption('bind');
+                return $attribute->getType() == 'entity' && $attribute->getOption('bind');
             }
         );
     }

@@ -1,0 +1,24 @@
+{% extends 'OroUIBundle:Form:fields.html.twig' %}
+
+{% block _oro_installer_configuration_mailer_oro_installer_mailer_transport_row %}
+<script type="text/javascript">
+    $(function () {
+        var con = $('#oro_installer_configuration_mailer');
+
+        checkTransport();
+
+        con.find('.control-group:first select').change(checkTransport);
+
+        function checkTransport() {
+            if (con.find('.control-group:first select').val() != 'smtp') {
+                con.find('.control-group:not(:first)').hide()
+                   .find('input').attr('disabled', 'disabled');
+            } else {
+                con.find('.control-group:not(:first)').show()
+                    .find('input').attr('disabled', null);
+            }
+        }
+    });
+</script>
+{{ block('form_row') }}
+{% endblock %}

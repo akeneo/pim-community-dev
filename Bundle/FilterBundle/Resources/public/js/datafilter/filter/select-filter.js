@@ -20,7 +20,6 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
             '<div class="btn filter-select filter-criteria-selector">' +
                 '<%= label %>: ' +
                 '<select>' +
-                    '<option value=""><%= placeholder %></option>' +
                     '<% _.each(options, function (hint, value) { %><option value="<%= value %>"><%= hint %></option><% }); %>' +
                 '</select>' +
             '</div>' +
@@ -40,6 +39,13 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          * @property
          */
         placeholder: 'All',
+
+        /**
+         * Should default value be added to options list
+         *
+         * @property
+         */
+        populateDefault: true,
 
         /**
          * Selector for filter area
@@ -133,10 +139,18 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          */
         render: function () {
             this.$el.empty();
+
+            var additionalOptions = {};
+            if (this.populateDefault) {
+                additionalOptions = {"": this.placeholder};
+            }
+
+            var options = _.extend(additionalOptions, this.options);
+
             this.$el.append(
                 this.template({
                     label: this.label,
-                    options: this.options,
+                    options: options,
                     placeholder: this.placeholder,
                     nullLink: this.nullLink
                 })

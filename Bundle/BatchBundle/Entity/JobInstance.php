@@ -5,7 +5,9 @@ namespace Oro\Bundle\BatchBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\BatchBundle\Job\Job;
 
 /**
@@ -94,11 +96,19 @@ class JobInstance
     /**
      * @var Job
      * @Assert\Valid
+     * @Exclude
      */
     protected $job;
 
     /**
-     * @ORM\OneToMany(targetEntity="JobExecution", mappedBy="jobInstance")
+     * @var Collection|JobExecution[]
+     * @ORM\OneToMany(
+     *      targetEntity="JobExecution",
+     *      mappedBy="jobInstance",
+     *      cascade={"persist", "remove"},
+     *      orphanRemoval=true
+     * )
+     * @Exclude
      */
     protected $jobExecutions;
 
@@ -115,6 +125,15 @@ class JobInstance
         $this->type          = $type;
         $this->alias         = $alias;
         $this->jobExecutions = new ArrayCollection();
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
+
+        if ($this->jobExecutions) {
+            $this->jobExecutions = clone $this->jobExecutions;
+        }
     }
 
     /**
@@ -279,7 +298,7 @@ class JobInstance
         $this->job = $job;
 
         if ($job) {
-            $this->setRawConfiguration($job->getConfiguration());
+            $this->rawConfiguration = $job->getConfiguration();
         }
 
         return $this;
@@ -293,5 +312,39 @@ class JobInstance
     public function getJob()
     {
         return $this->job;
+    }
+
+    /**
+     * @return ArrayCollection|JobExecution[]
+     */
+    public function getJobExecutions()
+    {
+        return $this->jobExecutions;
+    }
+
+    /**
+     * @param JobExecution $jobExecution
+     * @return JobInstance
+     */
+    public function addJobExecution(JobExecution $jobExecution)
+    {
+        if (!$this->jobExecutions->contains($jobExecution)) {
+            $this->jobExecutions->add($jobExecution);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param JobExecution $jobExecution
+     * @return JobInstance
+     */
+    public function removeJobExecution(JobExecution $jobExecution)
+    {
+        if ($this->jobExecutions->contains($jobExecution)) {
+            $this->jobExecutions->removeElement($jobExecution);
+        }
+
+        return $this;
     }
 }

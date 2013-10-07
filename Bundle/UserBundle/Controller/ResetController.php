@@ -8,16 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
-/**
- * @Acl(
- *      id = "oro_reset_controller",
- *      name="Reset user password",
- *      description = "Reset user password",
- *      parent = "oro_security"
- * )
- */
 class ResetController extends Controller
 {
     const SESSION_EMAIL = 'oro_user_reset_email';
@@ -26,12 +18,6 @@ class ResetController extends Controller
      * @Route("/reset-request", name="oro_user_reset_request")
      * @Method({"GET"})
      * @Template
-     * @Acl(
-     *      id = "oro_reset_request",
-     *      name="reset password",
-     *      description = "Oro Reset password page",
-     *      parent = "oro_reset_controller"
-     * )
      */
     public function requestAction()
     {
@@ -43,12 +29,6 @@ class ResetController extends Controller
      *
      * @Route("/send-email", name="oro_user_reset_send_email")
      * @Method({"POST"})
-     * @Acl(
-     *      id = "oro_reset_send_mail",
-     *      name="send reset mail",
-     *      description = "Request reset user password",
-     *      parent = "oro_reset_controller"
-     * )
      */
     public function sendEmailAction()
     {
@@ -100,12 +80,6 @@ class ResetController extends Controller
      * @Route("/check-email", name="oro_user_reset_check_email")
      * @Method({"GET"})
      * @Template
-     * @Acl(
-     *      id = "oro_reset_check_email",
-     *      name="reset password check email",
-     *      description = "Tell the user to check his email provider",
-     *      parent = "oro_reset_controller"
-     * )
      */
     public function checkEmailAction()
     {
@@ -130,12 +104,6 @@ class ResetController extends Controller
      * @Route("/reset/{token}", name="oro_user_reset_reset", requirements={"token"="\w+"})
      * @Method({"GET", "POST"})
      * @Template
-     * @Acl(
-     *      id = "oro_reset_password",
-     *      name="reset password",
-     *      description = "Reset user password",
-     *      parent = "oro_reset_controller"
-     * )
      */
     public function resetAction($token)
     {

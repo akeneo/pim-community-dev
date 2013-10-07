@@ -1,0 +1,45 @@
+<div class="widget-content">
+    <style type="text/css">
+        .ui-dialog .form-horizontal .control-group .controls {
+            margin-left: 130px;
+        }
+    </style>
+    <div class="form-container">
+        <form method="post"
+              data-nohash="true"
+              id="{{ form.vars.name }}"
+              action="{{ path('oro_importexport_import_form', {entity: entityName}) }}"
+              class="form-horizontal"
+              {{ form_enctype(form) }}>
+
+            <fieldset>
+                {{ form_row(form.file, {'label': 'File'}) }}
+                <div style="display: none;">
+                    {{ form_row(form.processorAlias, {'label': 'Strategy'}) }}
+                </div>
+                {{ form_rest(form) }}
+            </fieldset>
+
+            <div class="widget-actions">
+                <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                <button class="btn btn-primary" type="submit">{{ 'Submit'|trans }}</button>
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        require(['oro/widget-manager', 'oro/messenger'],
+        function(WidgetManager, Messanger) {
+            WidgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
+                widget.getAction('form_submit', 'adopted', function(action) {
+                    action.on('click', function() {
+                        Messanger.notificationFlashMessage(
+                            'info',
+                            {{ 'Import validation started, please wait...'|trans|json_encode|raw }}
+                        );
+                    });
+                });
+            });
+        });
+    </script>
+</div>

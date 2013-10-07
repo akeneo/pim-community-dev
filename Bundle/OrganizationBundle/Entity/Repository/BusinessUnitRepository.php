@@ -70,4 +70,17 @@ class BusinessUnitRepository extends EntityRepository
             ->getQuery()
             ->execute();
     }
+
+    /**
+     * Get count of business units
+     *
+     * @return int
+     */
+    public function getBusinessUnitsCount()
+    {
+        $qb = $this->createQueryBuilder('businessUnit');
+        $qb->select('count(businessUnit.id)');
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }

@@ -1,7 +1,9 @@
 <script type="text/html" id="template-addressbook-item">
     <div class="map-actions">
+        {% if address_edit_acl_resource is not defined or resource_granted(address_edit_acl_resource) %}
         <button class="btn" title="<%= _.__('Edit') %>"><i class="icon-pencil hide-text"><%= _.__('Edit') %></i></button>
         <% if (!primary) { %><button class="btn" title="<%= _.__('Remove') %>"><i class="icon-remove hide-text"><%= _.__('Remove') %></i></button><% } %>
+        {% endif %}
     </div>
     <div class="title-item"><%= label %></div>
     <ul class="inline">

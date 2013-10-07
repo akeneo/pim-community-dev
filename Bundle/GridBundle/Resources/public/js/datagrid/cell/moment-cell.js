@@ -21,6 +21,29 @@ function(_, Backgrid, MomentFormatter) {
         formatter: MomentFormatter,
 
         /**
+         * NOTE: overridden to use oro/momment formatter prototype in initialization
+         * Initializer. Accept Backgrid.Extension.MomentFormatter.options and
+         * Backgrid.Cell.initialize required parameters.
+         */
+        initialize: function (options) {
+
+            Backgrid.Cell.prototype.initialize.apply(this, arguments);
+
+            var formatterDefaults = MomentFormatter.prototype.defaults;
+            var formatterDefaultKeys = _.keys(formatterDefaults);
+            var classAttrs = _.pick(this, formatterDefaultKeys);
+            var formatterOptions = _.pick(options, formatterDefaultKeys);
+
+            this.formatter = new this.formatter(_.extend({}, formatterDefaults, classAttrs, formatterOptions));
+
+            this.editor = this.editor.extend({
+                attributes: _.extend({}, this.editor.prototype.attributes || this.editor.attributes || {}, {
+                    placeholder: this.formatter.displayFormat
+                })
+            });
+        },
+
+        /**
          * @inheritDoc
          */
         enterEditMode: function (e) {

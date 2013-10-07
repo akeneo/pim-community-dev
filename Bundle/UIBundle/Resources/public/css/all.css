@@ -123,10 +123,11 @@
 }
 
 .version-container {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding: 0 5px 40px 0;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1em;
 }
 
 .progress {
@@ -189,7 +190,7 @@
 }
 
 #progressbar .progress-striped .bar {
-    background-color: #ffd051;
+    background-color: #0480be;
     background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(255, 255, 255, 0.15)), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(255, 255, 255, 0.15)), color-stop(0.75, rgba(255, 255, 255, 0.15)), color-stop(0.75, transparent), to(transparent));
     background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
     background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
@@ -203,9 +204,9 @@
 }
 
 #progressbar .progress.active .bar {
-    -webkit-animation: progress-bar-stripes 0.5s linear infinite;
-    -moz-animation: progress-bar-stripes 0.5s linear infinite;
-    animation: progress-bar-stripes 0.5s linear infinite;
+    -webkit-animation: progress-bar-stripes 1s linear infinite;
+    -moz-animation: progress-bar-stripes 1s linear infinite;
+    animation: progress-bar-stripes 1s linear infinite;
 }
 
 @-webkit-keyframes progress-bar-stripes {

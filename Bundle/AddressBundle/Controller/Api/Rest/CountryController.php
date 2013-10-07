@@ -7,12 +7,13 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Oro\Bundle\UserBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @RouteResource("country")
  * @NamePrefix("oro_api_")
+ * TODO: Discuss ACL impl.
  */
 class CountryController extends FOSRestController
 {
@@ -23,7 +24,7 @@ class CountryController extends FOSRestController
      *  description="Get countries",
      *  resource=true
      * )
-     * @AclAncestor("oro_address")
+     * AclAncestor("oro_address")
      * @return Response
      */
     public function cgetAction()
@@ -44,7 +45,7 @@ class CountryController extends FOSRestController
      *  description="Get country",
      *  resource=true
      * )
-     * @AclAncestor("oro_address")
+     * AclAncestor("oro_address")
      * @return Response
      */
     public function getAction($id)

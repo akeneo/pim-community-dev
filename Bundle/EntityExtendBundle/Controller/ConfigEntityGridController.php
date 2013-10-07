@@ -2,38 +2,33 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
-use FOS\Rest\Util\Codes;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
+use FOS\Rest\Util\Codes;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
-
-use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-
-use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Form\Type\EntityType;
 use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
+
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * Class ConfigGridController
  * @package Oro\Bundle\EntityExtendBundle\Controller
  * @Route("/entity/extend/entity")
- * @Acl(
- *      id="oro_entityextend",
- *      name="Entity extend manipulation",
- *      description="Entity extend manipulation"
- * )
+ * TODO: Discuss ACL impl., currently acl is disabled
+ * @AclAncestor("oro_entityconfig_manage")
  */
 class ConfigEntityGridController extends Controller
 {
@@ -44,11 +39,11 @@ class ConfigEntityGridController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_entity_unique_key",
-     *      name="Unique keys",
-     *      description="Update entity unique keys",
-     *      parent="oro_entityextend"
+     *      label="Unique entity unique keys",
+     *      type="action",
+     *      group_name=""
      * )
      * @Template
      */
@@ -128,11 +123,11 @@ class ConfigEntityGridController extends Controller
 
     /**
      * @Route("/create", name="oro_entityextend_entity_create")
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_entity_create",
-     *      name="Create custom entity",
-     *      description="Create custom entity",
-     *      parent="oro_entityextend"
+     *      label="Create custom entity",
+     *      type="action",
+     *      group_name=""
      * )
      * @Template
      */
@@ -145,13 +140,18 @@ class ConfigEntityGridController extends Controller
 
         $className = '';
         if ($request->getMethod() == 'POST') {
-            $className = $request->request->get('oro_entity_config_type[model][className]', null, true);
+            $className = 'Extend\\Entity\\' . $request->request->get(
+                'oro_entity_config_type[model][className]',
+                null,
+                true
+            );
         }
 
         $entityModel  = $configManager->createConfigEntityModel($className);
         $extendConfig = $configManager->getProvider('extend')->getConfig($className);
         $extendConfig->set('owner', ExtendManager::OWNER_CUSTOM);
         $extendConfig->set('state', ExtendManager::STATE_NEW);
+        $extendConfig->set('upgradeable', false);
         $extendConfig->set('is_extend', true);
 
         $configManager->persist($extendConfig);
@@ -179,7 +179,10 @@ class ConfigEntityGridController extends Controller
 
             if ($form->isValid()) {
                 //persist data inside the form
-                $this->get('session')->getFlashBag()->add('success', 'ConfigEntity successfully saved');
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('oro.entity_extend.controller.config_entity.message.saved')
+                );
 
                 return $this->get('oro_ui.router')->actionRedirect(
                     array(
@@ -187,7 +190,7 @@ class ConfigEntityGridController extends Controller
                         'parameters' => array('id' => $entityModel->getId()),
                     ),
                     array(
-                        'route' => 'oro_entityconfig_view',
+                        'route'      => 'oro_entityconfig_view',
                         'parameters' => array('id' => $entityModel->getId()),
                     )
                 );
@@ -206,11 +209,11 @@ class ConfigEntityGridController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_entity_remove",
-     *      name="Remove custom entity",
-     *      description="Remove custom entity",
-     *      parent="oro_entityextend"
+     *      label="Remove custom entity",
+     *      type="action",
+     *      group_name=""
      * )
      */
     public function removeAction(EntityConfigModel $entity)
@@ -245,11 +248,11 @@ class ConfigEntityGridController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0}
      * )
-     * @Acl(
+     * Acl(
      *      id="oro_entityextend_entity_unremove",
-     *      name="Unremove custom entity",
-     *      description="Unremove custom entity",
-     *      parent="oro_entityextend"
+     *      label="Unremove custom entity",
+     *      type="action",
+     *      group_name=""
      * )
      */
     public function unremoveAction(EntityConfigModel $entity)

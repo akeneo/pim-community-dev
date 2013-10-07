@@ -30,7 +30,7 @@ services:
             - %oro_tag.tagging.entity.class%
             - @oro_search.mapper
             - @security.context
-            - @oro_user.acl_manager
+            - @oro_security.security_facade
             - @router
 
     oro_tag.docrine.event.listener:
