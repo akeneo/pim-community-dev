@@ -167,8 +167,15 @@ class VariantGroupController extends AbstractDoctrineController
             );
         }
 
+        $datagridManager = $this->datagridWorker->getDatagridManager('variant_product');
+        $datagridManager->getRouteGenerator()->setRouteParameters(
+            array('id' => $variant->getId())
+        );
+        $datagridManager->setVariantGroup($variant);
+
         return array(
-            'form' => $this->variantForm->createView()
+            'form' => $this->variantForm->createView(),
+            'datagrid' => $datagridManager->getDatagrid()->createView()
         );
     }
 
@@ -189,5 +196,16 @@ class VariantGroupController extends AbstractDoctrineController
         } else {
             return $this->redirectToRoute('pim_catalog_variant_group_index');
         }
+    }
+
+    /**
+     * Get data for product datagrid
+     * @param Request $request
+     *
+     * @AclAncestor("pim_catalog_variant_group_products")
+     */
+    public function productsAction(Request $request)
+    {
+
     }
 }

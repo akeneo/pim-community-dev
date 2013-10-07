@@ -44,12 +44,18 @@
             {{ form_row(form.attributes) }}
 
             {{ form_row(form._token) }}
+
+            <div id="variant-products-grid"></div>
         </div>
     </form>
 {% endblock %}
 
-{% block head_script_component %}
+
+{% block head_script %}
     {{ parent() }}
+
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#variant-products-grid'} %}
+    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
 
     <script type="text/javascript">
         require(
