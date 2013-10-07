@@ -572,7 +572,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
         $labels = array_map(
             function ($field) {
-                return $field->getText();
+                return str_replace('*', '', $field->getText());
             },
             $this->getPage('Product edit')->getFieldsForGroup($group)
         );
