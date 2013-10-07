@@ -5,8 +5,9 @@ namespace Pim\Bundle\ImportExportBundle\Writer;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Product writer using ORM method
@@ -15,7 +16,9 @@ use Oro\Bundle\BatchBundle\Entity\StepExecution;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmProductWriter extends AbstractConfigurableStepElement implements ItemWriterInterface
+class OrmProductWriter extends AbstractConfigurableStepElement implements
+    ItemWriterInterface,
+    StepExecutionAwareInterface
 {
     /**
      * @var ProductManager
@@ -31,6 +34,11 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements ItemWr
      * @var Attribute
      */
     protected $identifierAttribute;
+
+    /**
+     * @var StepExecution
+     */
+    protected $stepExecution;
 
     /**
      * @param ProductManager $productManager Product manager
@@ -53,11 +61,11 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements ItemWr
     /**
      * {@inheritdoc}
      */
-    public function write(StepExecution $stepExecution, array $items)
+    public function write(array $items)
     {
         foreach ($items as $product) {
             $this->productManager->getStorageManager()->persist($product);
-            $stepExecution->incrementWriteCount();
+            $this->stepExecution->incrementWriteCount();
         }
         $this->productManager->getStorageManager()->flush();
 
@@ -66,5 +74,13 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements ItemWr
         $this->productManager->getStorageManager()->clear('Pim\\Bundle\\CatalogBundle\\Entity\\Product');
         $this->productManager->getStorageManager()->clear('Oro\\Bundle\\SearchBundle\\Entity\\Item');
         $this->productManager->getStorageManager()->clear('Oro\\Bundle\\SearchBundle\\Entity\\IndexText');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 }

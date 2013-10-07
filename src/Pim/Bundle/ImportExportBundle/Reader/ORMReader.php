@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Doctrine\ORM\AbstractQuery;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 /**
  * ORM reader
@@ -14,9 +15,17 @@ use Oro\Bundle\BatchBundle\Entity\StepExecution;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMReader extends AbstractConfigurableStepElement implements ItemReaderInterface
+class ORMReader extends AbstractConfigurableStepElement implements
+    ItemReaderInterface,
+    StepExecutionAwareInterface
 {
     protected $query;
+
+    /**
+     * @var StepExecution
+     */
+    protected $stepExecution;
+
     private $executed = false;
 
     /**
@@ -31,13 +40,13 @@ class ORMReader extends AbstractConfigurableStepElement implements ItemReaderInt
     /**
      * {@inheritdoc}
      */
-    public function read(StepExecution $stepExecution)
+    public function read()
     {
         if (!$this->executed) {
             $this->executed = true;
 
             $result = $this->query->execute();
-            $stepExecution->setReadCount(count($result));
+            $this->stepExecution->setReadCount(count($result));
 
             return empty($result) ? null : $result;
         }
@@ -49,5 +58,13 @@ class ORMReader extends AbstractConfigurableStepElement implements ItemReaderInt
     public function getConfigurationFields()
     {
         return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 }

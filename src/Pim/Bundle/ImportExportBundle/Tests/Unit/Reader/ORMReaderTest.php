@@ -15,44 +15,45 @@ class ORMReaderTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->reader = new ORMReader();
+        $this->stepExecution = $this->getStepExecutionMock();
+
+        $this->reader->setStepExecution($this->stepExecution);
     }
 
-    public function testIsAConfigurableReader()
+    public function testIsAConfigurableStepExecutionAwareReader()
     {
         $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement', $this->reader);
         $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\ItemReaderInterface', $this->reader);
+        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface', $this->reader);
     }
 
     public function testRead()
     {
         $query = $this->getQueryMock(array('foo', 'bar'));
         $this->reader->setQuery($query);
-        $stepExecution = $this->getStepExecutionMock();
 
-        $this->assertEquals(array('foo', 'bar'), $this->reader->read($stepExecution));
+        $this->assertEquals(array('foo', 'bar'), $this->reader->read());
     }
 
     public function testIncrementReadCount()
     {
         $query = $this->getQueryMock(array('foo', 'bar'));
         $this->reader->setQuery($query);
-        $stepExecution = $this->getStepExecutionMock();
-        $stepExecution->expects($this->once())
+        $this->stepExecution->expects($this->once())
             ->method('setReadCount')
             ->with(2);
 
-        $this->assertEquals(array('foo', 'bar'), $this->reader->read($stepExecution));
-        $this->assertNull($this->reader->read($stepExecution));
+        $this->assertEquals(array('foo', 'bar'), $this->reader->read());
+        $this->assertNull($this->reader->read());
     }
 
     public function testOneShotRead()
     {
         $query = $this->getQueryMock(array('foo', 'bar'));
         $this->reader->setQuery($query);
-        $stepExecution = $this->getStepExecutionMock();
 
-        $this->assertEquals(array('foo', 'bar'), $this->reader->read($stepExecution));
-        $this->assertNull($this->reader->read($stepExecution));
+        $this->assertEquals(array('foo', 'bar'), $this->reader->read());
+        $this->assertNull($this->reader->read());
     }
 
     public function testNothingToRead()

@@ -4,7 +4,6 @@ namespace Pim\Bundle\ImportExportBundle\Writer;
 
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Dummy step, can be use to do nothing until you'll have concret implementation
@@ -18,7 +17,7 @@ class DummyWriter extends AbstractConfigurableStepElement implements ItemWriterI
     /**
      * {@inheritdoc}
      */
-    public function write(StepExecution $stepExecution, array $items)
+    public function write(array $items)
     {
         return null;
     }
