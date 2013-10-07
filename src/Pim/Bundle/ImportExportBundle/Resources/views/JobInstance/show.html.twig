@@ -1,24 +1,25 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
 {% macro configuration(title, config, stepIndex, violations, stepType) %}
-<thead>
-    <tr>
-        <td colspan="2">{{ ('oro_batch.' ~ title ~ '.title')|trans }}</td>
-    </tr>
-</thead>
-
-<tbody>
-    {% for field, value in config %}
-    <tr>
-        <td>{{ ('oro_batch.' ~ title ~ '.' ~ field ~ '.label')|trans }}</td>
-        <td>{{ value|normalizeValue }} {{ getViolations(violations, stepIndex, stepType, field) }}</td>
-    </tr>
-    {% else %}
-    <tr>
-        <td><i>{{ 'No configuration'|trans }}</i></td>
-    </tr>
-    {% endfor %}
-</tbody>
+<table class="configuration">
+    <thead>
+        <tr>
+            <td colspan="2">{{ ('oro_batch.' ~ title ~ '.title')|trans }}</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for field, value in config %}
+        <tr>
+            <td>{{ ('oro_batch.' ~ title ~ '.' ~ field ~ '.label')|trans }}</td>
+            <td>{{ value|normalizeValue }} {{ getViolations(violations, stepIndex, stepType, field) }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td><i>{{ 'No configuration'|trans }}</i></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endmacro %}
 
 {% block content %}
@@ -64,13 +65,11 @@
         {% set heading = 'Step %stepIndex%'|trans({ '%stepIndex%': loop.index }) ~ ' - ' ~ stepTitle|trans %}
 
         {% set content %}
-            <table class="configuration">
-                {% set step = jobInstance.job.step(stepTitle) %}
-                {% set stepIndex = loop.index - 1 %}
-                {{ _self.configuration(step.reader.name, stepConfig.reader, stepIndex, violations, 'reader') }}
-                {{ _self.configuration(step.processor.name, stepConfig.processor, stepIndex, violations, 'processor') }}
-                {{ _self.configuration(step.writer.name, stepConfig.writer, stepIndex, violations, 'writer') }}
-            </table>
+            {% set step = jobInstance.job.step(stepTitle) %}
+            {% set stepIndex = loop.index - 1 %}
+            {{ _self.configuration(step.reader.name, stepConfig.reader, stepIndex, violations, 'reader') }}
+            {{ _self.configuration(step.processor.name, stepConfig.processor, stepIndex, violations, 'processor') }}
+            {{ _self.configuration(step.writer.name, stepConfig.writer, stepIndex, violations, 'writer') }}
         {% endset %}
 
         {% set accordionContent = accordionContent|merge({ (heading): content }) %}
