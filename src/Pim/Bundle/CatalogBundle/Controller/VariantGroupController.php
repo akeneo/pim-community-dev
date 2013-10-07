@@ -173,6 +173,14 @@ class VariantGroupController extends AbstractDoctrineController
         );
         $datagridManager->setVariantGroup($variant);
 
+
+        if ('json' === $this->getRequest()->getRequestFormat()) {
+            return $this->render(
+                'OroGridBundle:Datagrid:list.json.php',
+                array('datagrid' => $datagridManager->getDatagrid()->createView())
+            );
+        }
+
         return array(
             'form' => $this->variantForm->createView(),
             'datagrid' => $datagridManager->getDatagrid()->createView()
