@@ -63,7 +63,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /* -------------------- Page-related methods -------------------- */
 
     /**
-     * @BeforeStep
+     * @BeforeScenario
      */
     public function maximize()
     {
@@ -1834,6 +1834,45 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->scrollContainerTo(900);
         $this->getCurrentPage()->confirm();
         $this->wait(10000);
+    }
+
+    /**
+     * @param TableNode $tableNode
+     * @Then /^I should see a confirm dialog with the following content:$/
+     */
+    public function iShouldSeeAConfirmDialog(TableNode $tableNode)
+    {
+        $tableHash = $tableNode->getHash();
+
+        if (isset($tableHash['title'])) {
+            $expectedTitle = $tableHash['title'];
+            $title = $this->getCurrentPage()->getConfirmDialogTitle();
+
+            if ($expectedTitle !== $title) {
+                $this->createExpectationException(
+                    sprintf('Expecting confirm dialog title "%s", saw "%s"', $expectedTitle, $title)
+                );
+            }
+        }
+
+        if (isset($tableHash['content'])) {
+            $expectedContent = $tableHash['content'];
+            $content = $this->getCurrentPage()->getConfirmDialogContent();
+
+            if ($expectedContent !== $content) {
+                $this->createExpectationException(
+                    sprintf('Expecting confirm dialog content "%s", saw "%s"', $expectedContent, $content)
+                );
+            }
+        }
+    }
+
+    /**
+     * @Then /^I click on the Akeneo logo$/
+     */
+    public function iClickOnTheAkeneoLogo()
+    {
+        $this->getCurrentPage()->clickOnAkeneoLogo();
     }
 
     /**

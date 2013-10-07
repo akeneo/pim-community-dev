@@ -20,6 +20,7 @@ class Base extends Page
         'Title'          => array('css' => '.navbar-title'),
         'HeadTitle'      => array('css' => 'title'),
         'Flash messages' => array('css' => '.flash-messages-holder'),
+        'Navigation Bar' => array('css' => 'header#oroplatform-header')
     );
 
     /**
@@ -134,11 +135,7 @@ class Base extends Page
      */
     public function confirmDialog()
     {
-        $element = $this->getElement('Dialog');
-
-        if (!$element) {
-            throw new \Exception('Could not find dialog window');
-        }
+        $element = $this->getConfirmDialog();
 
         $button = $element->find('css', 'a.btn.ok');
 
@@ -147,6 +144,48 @@ class Base extends Page
         }
 
         $button->click();
+    }
+
+    /**
+     * Get the confirm dialog element
+     * @throws \Exception
+     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Element
+     */
+    protected function getConfirmDialog()
+    {
+        $element = $this->getElement('Dialog');
+
+        if (!$element) {
+            throw new \Exception('Could not find dialog window');
+        }
+
+        return $element;
+    }
+
+    /**
+     * Get the confirm dialog title
+     * @return string
+     */
+    public function getConfirmDialogTitle()
+    {
+        $element = $this->getConfirmDialog();
+
+        return $element
+            ->find('css', 'div.modal-header')
+            ->getText();
+    }
+
+    /**
+     * Get confirm dialog content
+     * @return string
+     */
+    public function getConfirmDialogContent()
+    {
+        $element = $this->getConfirmDialog();
+
+        return $element
+            ->find('css', 'div.modal-body')
+            ->getText();
     }
 
     /**
@@ -181,6 +220,17 @@ class Base extends Page
     public function findTooltip($text)
     {
         return $this->find('css', sprintf('.validation-tooltip[data-original-title="%s"]', $text));
+    }
+
+    /**
+     * Click on the akeneo logo
+     */
+    public function clickOnAkeneoLogo()
+    {
+        $this
+            ->getElement('Navigation Bar')
+            ->find('css', 'h1.logo a')
+            ->click();
     }
 
     /**
