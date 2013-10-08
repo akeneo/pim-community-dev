@@ -89,7 +89,7 @@ class ProductAttributeRepository extends AttributeRepository
     /**
      * Find all attributes of type axis
      * An axis define a variation of a variant group
-     * Axes are attributes with options, not localizable and not scopable
+     * Axes are attributes with simple select option, not localizable and not scopable
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
