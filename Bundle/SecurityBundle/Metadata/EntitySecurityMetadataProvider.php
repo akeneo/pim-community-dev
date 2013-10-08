@@ -4,6 +4,7 @@ namespace Oro\Bundle\SecurityBundle\Metadata;
 
 use Doctrine\Common\Cache\CacheProvider;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\SecurityBundle\Metadata\EntitySecurityMetadata;
 
 class EntitySecurityMetadataProvider
 {
@@ -121,6 +122,26 @@ class EntitySecurityMetadataProvider
     }
 
     /**
+     * Get entity metadata
+     *
+     * @param string $className
+     * @param string $securityType
+     *
+     * @return EntitySecurityMetadata
+     */
+    public function getMetadata($className, $securityType = self::ACL_SECURITY_TYPE)
+    {
+        $this->ensureMetadataLoaded($securityType);
+
+        $result = $this->localCache[$securityType][$className];
+        if ($result === true) {
+            return new EntitySecurityMetadata();
+        }
+
+        return $result;
+    }
+
+    /**
      * Makes sure that metadata for the given security type is loaded
      *
      * @param string $securityType The security type.
@@ -143,11 +164,18 @@ class EntitySecurityMetadataProvider
                                 ->getConfig($className)
                                 ->get('label');
                         }
+                        $permissions = $securityConfig->get('permissions');
+                        if (!$permissions || $permissions == 'All') {
+                            $permissions = array();
+                        } else {
+                            $permissions = explode(';', $permissions);
+                        }
                         $data[$className] = new EntitySecurityMetadata(
                             $securityType,
                             $className,
                             $securityConfig->get('group_name'),
-                            $label
+                            $label,
+                            $permissions
                         );
                     }
                 }
