@@ -1,6 +1,7 @@
 parameters:
     oro_entity_config.config_manager.class:                     Oro\Bundle\EntityConfigBundle\Config\ConfigManager
     oro_entity_config.config_model_manager.class:               Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager
+    oro_entity_config.config_audit_mamanger.class:              Oro\Bundle\EntityConfigBundle\Audit\AuditManager
     oro_entity_config.cache.cache.class:                        Oro\Bundle\EntityConfigBundle\Config\ConfigCache
     oro_entity_config.provider_bag.class:                       Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderBag
 
@@ -8,6 +9,10 @@ services:
     oro_entity_config.link.entity_manager:
         tags:
             - { name: oro_service_link,  service: doctrine.orm.default_entity_manager }
+
+    oro_entity_config.link.config_manager:
+        tags:
+            - { name: oro_service_link,  service: oro_entity_config.config_manager }
 
     oro_entity_config.link.security_context:
         tags:
@@ -18,13 +23,13 @@ services:
             - { name: oro_service_link,  service: oro_entity_config.provider_bag }
 
     oro_entity_config.config_manager:
-        class:                                                  %oro_entity_config.config_manager.class%
+        class: %oro_entity_config.config_manager.class%
         arguments:
             - @oro_entity_config.metadata.annotation_metadata_factory
             - @event_dispatcher
             - @oro_entity_config.link.provider_bag
             - @oro_entity_config.config_model_manager
-            - @oro_entity_config.link.security_context
+            - @oro_entity_config.config_audit_mamanger
         calls:
             - [setCache, [@oro_entity_config.cache.cache]]
 
@@ -33,6 +38,13 @@ services:
         class: %oro_entity_config.config_model_manager.class%
         arguments:
             - @oro_entity_config.link.entity_manager
+
+    oro_entity_config.config_audit_mamanger:
+        public: false
+        class: %oro_entity_config.config_audit_mamanger.class%
+        arguments:
+            - @oro_entity_config.link.security_context
+            - @oro_entity_config.link.config_manager
 
     oro_entity_config.provider_bag:
         class:                                                  %oro_entity_config.provider_bag.class%

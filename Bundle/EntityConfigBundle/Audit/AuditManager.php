@@ -20,9 +20,9 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 class AuditManager
 {
     /**
-     * @var ConfigManager
+     * @var ServiceLink
      */
-    protected $configManager;
+    protected $configManagerLink;
 
     /**
      * @var ServiceLink
@@ -30,13 +30,13 @@ class AuditManager
     protected $securityLink;
 
     /**
-     * @param ConfigManager $configManager
-     * @param ServiceLink   $securityLink
+     * @param ServiceLink $configManagerLink
+     * @param ServiceLink $securityLink
      */
-    public function __construct(ConfigManager $configManager, ServiceLink $securityLink)
+    public function __construct(ServiceLink $configManagerLink, ServiceLink $securityLink)
     {
-        $this->configManager = $configManager;
-        $this->securityLink  = $securityLink;
+        $this->configManagerLink = $configManagerLink;
+        $this->securityLink      = $securityLink;
     }
 
     /**
@@ -51,12 +51,12 @@ class AuditManager
         $log = new ConfigLog();
         $log->setUser($this->getUser());
 
-        foreach ($this->configManager->getUpdateConfig() as $config) {
+        foreach ($this->getConfigManager()->getUpdateConfig() as $config) {
             $this->logConfig($config, $log);
         }
 
         if ($log->getDiffs()->count()) {
-            $this->configManager->getEntityManager()->persist($log);
+            $this->getConfigManager()->getEntityManager()->persist($log);
         }
     }
 
@@ -66,10 +66,10 @@ class AuditManager
      */
     protected function logConfig(ConfigInterface $config, ConfigLog $log)
     {
-        $changes = $this->configManager->getConfigChangeSet($config);
+        $changes = $this->getConfigManager()->getConfigChangeSet($config);
 
         $configId        = $config->getId();
-        $configContainer = $this->configManager->getProvider($configId->getScope())->getPropertyConfig();
+        $configContainer = $this->getConfigManager()->getProvider($configId->getScope())->getPropertyConfig();
         $internalValues  = $configContainer->getNotAuditableValues($configId);
 
         $changes = array_diff_key($changes, $internalValues);
@@ -101,5 +101,13 @@ class AuditManager
         }
 
         return $security->getToken()->getUser();
+    }
+
+    /**
+     * @return ConfigManager
+     */
+    protected function getConfigManager()
+    {
+        return $this->configManagerLink->getService();
     }
 }
