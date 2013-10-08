@@ -207,7 +207,7 @@ class ProductValueConverter
     /**
      * Get the value of the self::SCOPE_KEY
      *
-     * @param array $data
+     * @param array &$data
      *
      * @return string
      */

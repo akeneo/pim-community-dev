@@ -13,6 +13,9 @@ use Pim\Bundle\ImportExportBundle\Reader\ProductCsvReader;
  */
 class ProductCsvReaderTest extends CsvReaderTest
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->reader = new ProductCsvReader($this->getEntityManagerMock(array('sku', 'name')));
@@ -20,16 +23,25 @@ class ProductCsvReaderTest extends CsvReaderTest
         $this->reader->setStepExecution($this->stepExecution);
     }
 
+    /**
+     * Test related method
+     */
     public function testExtendsCsvReader()
     {
         $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Reader\CsvReader', $this->reader);
     }
 
+    /**
+     * Test related method
+     */
     public function testInitializeUniqueValuesWithAttributeRepository()
     {
         $this->assertAttributeEquals(array('sku' => array(), 'name' => array()), 'uniqueValues', $this->reader);
     }
 
+    /**
+     * Test related method
+     */
     public function testReadDuplicateUniqueValue()
     {
         $this->reader->setFilePath(__DIR__ . '/../../fixtures/duplicate_values.csv');
@@ -52,9 +64,11 @@ class ProductCsvReaderTest extends CsvReaderTest
     }
 
     /**
+     * @param array $uniqueAttributeCodes
+     *
      * @return Doctrine\ORM\EntityManager
      */
-    protected function getEntityManagerMock($uniqueAttributeCodes)
+    protected function getEntityManagerMock(array $uniqueAttributeCodes)
     {
         $em = $this
             ->getMockBuilder('Doctrine\ORM\EntityManager')
@@ -75,6 +89,8 @@ class ProductCsvReaderTest extends CsvReaderTest
     }
 
     /**
+     * @param array $uniqueAttributeCodes
+     *
      * @return \Doctrine\ORM\EntityRepository
      */
     protected function getEntityRepositoryMock(array $uniqueAttributeCodes)

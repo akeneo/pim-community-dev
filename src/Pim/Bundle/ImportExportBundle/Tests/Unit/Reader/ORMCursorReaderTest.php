@@ -13,6 +13,9 @@ use Pim\Bundle\ImportExportBundle\Reader\ORMCursorReader;
  */
 class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->reader = new ORMCursorReader();

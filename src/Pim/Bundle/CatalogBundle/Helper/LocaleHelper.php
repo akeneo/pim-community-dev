@@ -23,6 +23,10 @@ class LocaleHelper
      */
     protected $localeManager;
 
+    /**
+     * Constructor
+     * @param LocaleManager $localeManager
+     */
     public function __construct(LocaleManager $localeManager)
     {
         $this->localeManager = $localeManager;

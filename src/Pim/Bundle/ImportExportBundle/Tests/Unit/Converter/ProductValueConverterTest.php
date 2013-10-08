@@ -121,6 +121,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @return array
+     */
     public static function getConvertedPricesValue()
     {
         return array(
@@ -156,6 +159,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $data
+     * @param array  $prices
+     *
      * @dataProvider getConvertedPricesValue
      */
     public function testConvertPricesValue($data, $prices)
