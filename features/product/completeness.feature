@@ -75,7 +75,7 @@ Feature: Display the completeness of a product
     And I should see the completeness ratio 100% for channel "ecommerce" and locale "French (France)"
 
     And I should see the completeness state "danger" for channel "ecommerce" and locale "English (United States)"
-    And I should see the completeness message "1 missing values" for channel "ecommerce" and locale "English (United States)"
+    And I should see the completeness message "1 missing value" for channel "ecommerce" and locale "English (United States)"
     And I should see the completeness ratio 0% for channel "ecommerce" and locale "English (United States)"
 
     And I should see the completeness state "success" for channel "mobile" and locale "French (France)"
