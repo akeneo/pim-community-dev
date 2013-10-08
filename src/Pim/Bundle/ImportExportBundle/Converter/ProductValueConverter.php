@@ -15,8 +15,6 @@ use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
  */
 class ProductValueConverter
 {
-    const SCOPE_KEY = '[scope]';
-
     /**
      * @var EntityManager $entityManager
      */
@@ -46,8 +44,6 @@ class ProductValueConverter
      */
     public function convert($data)
     {
-        $scope = $this->getScope($data);
-
         $result = array();
         foreach ($data as $key => $value) {
             $attribute = $this->getAttribute($key);
@@ -73,7 +69,7 @@ class ProductValueConverter
                     default:
                         $value = $this->convertValue($attribute->getBackendType(), $value);
                 }
-                $key = $this->getProductValueKey($attribute, $key, $scope);
+                $key = $this->getProductValueKey($attribute, $key);
                 $result[$key] = $value;
             }
         }
@@ -205,23 +201,6 @@ class ProductValueConverter
     }
 
     /**
-     * Get the value of the self::SCOPE_KEY
-     *
-     * @param array &$data
-     *
-     * @return string
-     */
-    private function getScope(array &$data)
-    {
-        if (array_key_exists(self::SCOPE_KEY, $data)) {
-            $scope = $data[self::SCOPE_KEY];
-            unset($data[self::SCOPE_KEY]);
-
-            return $scope;
-        }
-    }
-
-    /**
      * Get ProductAttribute entity by code
      *
      * @param string $code
@@ -230,9 +209,7 @@ class ProductValueConverter
      */
     private function getAttribute($code)
     {
-        if ($this->isLocalized($code)) {
-            $code = $this->getAttributeCode($code);
-        }
+        $code = $this->getAttributeCode($code);
 
         return $this->entityManager
             ->getRepository('PimCatalogBundle:ProductAttribute')
@@ -258,38 +235,29 @@ class ProductValueConverter
      *
      * @param ProductAttribute $attribute
      * @param string           $key
-     * @param strint           $scope
      *
      * @return string
      */
-    private function getProductValueKey(ProductAttribute $attribute, $key, $scope)
+    private function getProductValueKey(ProductAttribute $attribute, $key)
     {
+        $code = $key;
         $suffix = '';
-        if ($attribute->getScopable()) {
-            $suffix = sprintf('_%s', $scope);
+
+        if (strpos($key, '-')) {
+            $tokens = explode('-', $key);
+            $code = $tokens[0];
+            if ($attribute->getScopable() && $attribute->getTranslatable()) {
+                $suffix = sprintf('_%s_%s', $tokens[2], $tokens[1]);
+            } else {
+                $suffix = sprintf('_%s', $tokens[1]);
+            }
         }
 
-        if ($this->isLocalized($key) && !$attribute->getTranslatable()) {
-            $key = substr($key, 0, strpos($key, '-'));
-        }
-
-        return str_replace('-', '_', $key).$suffix;
+        return $code.$suffix;
     }
 
     /**
-     * Wether or not the code is localised
-     *
-     * @param string $code
-     *
-     * @return boolean
-     */
-    private function isLocalized($code)
-    {
-        return false !== strpos($code, '-');
-    }
-
-    /**
-     * Return the code part of a localised attribute code
+     * Return the code part of a localised and or scoped attribute code
      *
      * @param string $code
      *
