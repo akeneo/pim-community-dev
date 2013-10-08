@@ -145,8 +145,6 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
      */
     protected function prepareQuery(ProxyQueryInterface $proxyQuery)
     {
-        // TODO : Add clause to get only product without variants
-
         $rootAlias = $proxyQuery->getRootAlias();
 
         $familyExpr  = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
@@ -158,8 +156,22 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias .'.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
 
+        $this->applyVariantExpression($proxyQuery);
 
-        // get all not linked products and all linked to the asked variant
+        $proxyQuery
+            ->setParameter('localeCode', $this->flexibleManager->getLocale());
+    }
+
+    /**
+     * Apply clauses to get all product not linked to a variant
+     * and all the product linked to the asked variant
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     */
+    protected function applyVariantExpression(ProxyQueryInterface $proxyQuery)
+    {
+        $rootAlias = $proxyQuery->getRootAlias();
+
         $variantField = $rootAlias .'.variantGroup';
         $variantExpr  = $proxyQuery->expr()->isNull($variantField);
         $productIds   = $this->getVariantGroup()->getProductIds();
@@ -170,9 +182,6 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         } else {
             $proxyQuery->andWhere($variantExpr);
         }
-
-        $proxyQuery
-            ->setParameter('localeCode', $this->flexibleManager->getLocale());
     }
 
     /**
