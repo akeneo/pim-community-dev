@@ -186,7 +186,7 @@
 
 {% block switch_widget %}
 {% spaceless %}
-    <div class="switch switch-{{ attr['size'] }}" data-on-label="{{ attr['data-on-label']|trans }}" data-off-label="{{ attr['data-off-label']|trans }}">
+    <div class="switch switch-{{ attr.size is defined ? attr.size : 'small' }}" data-on-label="{{ attr['data-on-label'] is defined ? attr['data-on-label']|trans : 'Yes'|trans }}" data-off-label="{{ attr['data-off-label'] is defined ? attr['data-off-label']|trans : 'No'|trans }}">
         {% if required %}{% set required = false %}{% endif %}
         <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
     </div>
