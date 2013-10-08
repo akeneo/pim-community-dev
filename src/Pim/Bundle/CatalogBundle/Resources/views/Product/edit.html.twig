@@ -112,6 +112,7 @@
             {{ elements.backLink(path('pim_catalog_product_index')) }}
             <div class="btn-group">
                 {% if form.enabled is defined %}
+                    {{ form_widget(form.enabled) }}
                     <button id="switch_status" type="button" class="btn">{{ ('info.product.' ~ (form.enabled.vars.value ? 'disable' : 'enable'))|trans }}</button>
                 {% endif %}
             </div>
