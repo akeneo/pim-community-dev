@@ -14,6 +14,7 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
+use Pim\Bundle\ImportExportBundle\Converter\ProductVariantGroupConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
 
@@ -61,6 +62,11 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      * @var string
      */
     protected $familyColumn  = 'family';
+
+    /**
+     * @var string
+     */
+    protected $variantGroupColumn  = 'variant_group';
 
     /**
      * @Assert\NotBlank
@@ -213,7 +219,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     {
         return array(
             'enabled'             => array(
-                'type' => 'checkbox',
+                'type' => 'switch',
             ),
             'categoriesColumn'    => array(),
             'familyColumn'        => array(),
@@ -247,7 +253,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         foreach (array_keys($item) as $code) {
             $locale = null;
 
-            if (in_array($code, array($this->categoriesColumn, $this->familyColumn))) {
+            if (in_array($code, array($this->categoriesColumn, $this->familyColumn, $this->variantGroupColumn))) {
                 continue;
             }
 
@@ -292,6 +298,11 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         if (array_key_exists($this->familyColumn, $item)) {
             $item[ProductFamilyConverter::FAMILY_KEY] = $item[$this->familyColumn];
             unset($item[$this->familyColumn]);
+        }
+
+        if (array_key_exists($this->variantGroupColumn, $item)) {
+            $item[ProductVariantGroupConverter::VARIANT_GROUP_KEY] = $item[$this->variantGroupColumn];
+            unset($item[$this->variantGroupColumn]);
         }
 
         if (array_key_exists($this->categoriesColumn, $item)) {

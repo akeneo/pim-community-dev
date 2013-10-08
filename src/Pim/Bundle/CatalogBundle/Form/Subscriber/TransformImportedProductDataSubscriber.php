@@ -16,6 +16,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class TransformImportedProductDataSubscriber implements EventSubscriberInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return array();

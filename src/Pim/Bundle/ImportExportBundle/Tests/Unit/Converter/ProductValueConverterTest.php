@@ -122,9 +122,49 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test related method
+     * @return array
      */
-    public function testConvertPricesValue()
+    public static function getConvertedPricesValue()
+    {
+        return array(
+            array(
+                '99.90 EUR,59.90 USD',
+                array(
+                    array('data' => '99.90', 'currency' => 'EUR'),
+                    array('data' => '59.90', 'currency' => 'USD')
+                )
+            ),
+            array(
+                '99.90 EUR, 59.90 USD',
+                array(
+                    array('data' => '99.90', 'currency' => 'EUR'),
+                    array('data' => '59.90', 'currency' => 'USD')
+                )
+            ),
+            array(
+                '50 EUR',
+                array(
+                    array('data' => '50.00', 'currency' => 'EUR'),
+                    array('data' => '', 'currency' => 'USD')
+                )
+            ),
+            array(
+                '50 EUR, USD',
+                array(
+                    array('data' => '50.00', 'currency' => 'EUR'),
+                    array('data' => '', 'currency' => 'USD')
+                )
+            ),
+        );
+    }
+
+    /**
+     * @param string $data
+     * @param array  $prices
+     *
+     * @dataProvider getConvertedPricesValue
+     */
+    public function testConvertPricesValue($data, $prices)
     {
         $this->attributeRepository
             ->expects($this->any())
@@ -136,20 +176,11 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             array(
                 'values' => array(
                     'public_prices' => array(
-                        'prices' => array(
-                            array(
-                                'data'     => '99.90',
-                                'currency' => 'EUR',
-                            ),
-                            array(
-                                'data'     => '59.90',
-                                'currency' => 'USD',
-                            )
-                        ),
+                        'prices' => $prices
                     )
                 )
             ),
-            $this->converter->convert(array('public_prices' => '99.90 EUR,59.90 USD'))
+            $this->converter->convert(array('public_prices' => $data))
         );
     }
 

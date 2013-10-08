@@ -16,7 +16,7 @@ class BooleanTypeTest extends AttributeTypeTestCase
 {
     protected $name = 'pim_catalog_boolean';
     protected $backendType = AbstractAttributeType::BACKEND_TYPE_BOOLEAN;
-    protected $formType = 'checkbox';
+    protected $formType = 'switch';
 
     /**
      * {@inheritdoc}

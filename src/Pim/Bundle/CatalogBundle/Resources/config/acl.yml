@@ -306,7 +306,10 @@ pim_catalog_product_categories_view:
     label: Consult the categories of a product
 pim_catalog_product_change_family:
     type: action
-    label: Change the family of products
+    label: Change product family
+pim_catalog_product_change_state:
+    label: Change state of product
+    type: action
 
 # Category
 pim_catalog_category:

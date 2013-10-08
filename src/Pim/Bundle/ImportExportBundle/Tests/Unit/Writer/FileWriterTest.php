@@ -17,6 +17,9 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
     const EXPORT_FILE = 'test';
     const EXPECT_PATH = '/tmp/constat';
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->writer = new FileWriter();
@@ -32,6 +35,9 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
         @unlink(sprintf('%s/%s', self::EXPORT_DIRECTORY, self::EXPORT_FILE));
     }
 
+    /**
+     * Test related method
+     */
     public function testIsAConfigurableStepExecutionAwareWriter()
     {
         $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement', $this->writer);
@@ -39,6 +45,9 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\ItemWriterInterface', $this->writer);
     }
 
+    /**
+     * Test related method
+     */
     public function testWrite()
     {
         file_put_contents(self::EXPECT_PATH, 'foo');
@@ -52,6 +61,9 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertFileEquals(self::EXPECT_PATH, $filename);
     }
 
+    /**
+     * Test related method
+     */
     public function testIncrementWriteCount()
     {
         $this->writer->setDirectoryName(self::EXPORT_DIRECTORY);
@@ -63,6 +75,9 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
         $this->writer->write(array('foo', 'bar'));
     }
 
+    /**
+     * @return \Oro\Bundle\BatchBundle\Entity\StepExecution
+     */
     private function getStepExecutionMock()
     {
         return $this

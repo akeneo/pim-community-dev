@@ -6,12 +6,10 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Gherkin\Node\PyStringNode;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
 
 /**
  * Context of the website
@@ -572,7 +570,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
         $labels = array_map(
             function ($field) {
-                return $field->getText();
+                return str_replace('*', '', $field->getText());
             },
             $this->getPage('Product edit')->getFieldsForGroup($group)
         );
@@ -1064,7 +1062,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         foreach ($table->getRowsHash() as $type => $fields) {
             $this->iSelectTheAttributeType($type);
-            $this->iShouldSeeTheFields($fields);
+            try {
+                $this->iShouldSeeTheFields($fields);
+            } catch (ExpectationException $e) {
+                throw $this->createExpectationException(sprintf('%s: %s', $type, $e->getMessage()));
+            }
         }
     }
 
@@ -1497,6 +1499,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $file
+     *
      * @Given /^I upload and import the file "([^"]*)"$/
      */
     public function iUploadAndImportTheFile($file)
@@ -1852,6 +1856,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @param TableNode $tableNode
+     *
      * @Then /^I should see a confirm dialog with the following content:$/
      */
     public function iShouldSeeAConfirmDialog(TableNode $tableNode)
@@ -2143,6 +2148,11 @@ JS;
         return $this->getMainContext()->getMailRecorder();
     }
 
+    /**
+     * @param string $value
+     *
+     * @return string
+     */
     private function replacePlaceholders($value)
     {
         return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);

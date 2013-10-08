@@ -48,29 +48,47 @@ class ProductType extends FlexibleType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($options['enable_state']) {
+            $builder->add('enabled', 'checkbox');
+        }
+
         parent::buildForm($builder, $options);
 
-        $builder->add(
-            'family',
-            'entity',
-            array(
-                'class'       => 'PimCatalogBundle:Family',
-                'empty_value' => ''
-            )
-        );
+        if ($options['enable_family']) {
+            $builder->add(
+                'family',
+                'entity',
+                array(
+                    'class'       => 'PimCatalogBundle:Family',
+                    'empty_value' => ''
+                )
+            );
+        }
 
         $builder
             ->add(
                 'categories',
-                'entity',
+                'oro_entity_identifier',
                 array(
                     'class'    => 'PimCatalogBundle:Category',
+                    'required' => true,
+                    'mapped'   => true,
                     'multiple' => true,
                 )
             );
 
         if ($options['import_mode']) {
+            // The product category converter works on a classic entity form type scheme
             $builder
+                ->remove('categories')
+                ->add(
+                    'categories',
+                    'entity',
+                    array(
+                        'class'    => 'PimCatalogBundle:Category',
+                        'multiple' => true,
+                    )
+                )
                 ->addEventSubscriber($this->transformer)
                 ->addEventSubscriber(new IgnoreMissingFieldDataSubscriber());
         }
@@ -104,7 +122,7 @@ class ProductType extends FlexibleType
     {
         $builder->add(
             'values',
-            new LocalizedCollectionType(),
+            'pim_catalog_localized_collection',
             array(
                 'type'               => $this->valueFormAlias,
                 'allow_add'          => true,
@@ -125,6 +143,8 @@ class ProductType extends FlexibleType
             array(
                 'currentLocale' => null,
                 'import_mode'   => false,
+                'enable_family' => true,
+                'enable_state'  => true
             )
         );
     }

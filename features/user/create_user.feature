@@ -20,4 +20,4 @@ Feature: Create a user
     And I select the owner "Main"
     And I select the role "User"
     When I save the user
-    Then I should see "Jack Doe"
+    Then there should be a "jack" user

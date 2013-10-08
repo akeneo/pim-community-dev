@@ -150,7 +150,7 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
             'labelDelimiter'      => array(),
             'localeDelimiter'     => array(),
             'circularRefsChecked' => array(
-                'type' => 'checkbox',
+                'type' => 'switch',
             ),
         );
     }

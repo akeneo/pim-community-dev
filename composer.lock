@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "5b95797bc3b9a7da3a7d6f1791447807",
+    "hash": "6815ecb51ab9d22d1e2f42e9950f80f8",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -3477,12 +3477,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/platform.git",
-                "reference": "f660784426c646eb25f08859e23ddce4e9c023f2"
+                "reference": "3931b2d5b533421810b8f738b6f43561ca23c81f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/platform/zipball/f660784426c646eb25f08859e23ddce4e9c023f2",
-                "reference": "f660784426c646eb25f08859e23ddce4e9c023f2",
+                "url": "https://api.github.com/repos/akeneo/platform/zipball/3931b2d5b533421810b8f738b6f43561ca23c81f",
+                "reference": "3931b2d5b533421810b8f738b6f43561ca23c81f",
                 "shasum": ""
             },
             "require": {
@@ -3524,7 +3524,7 @@
                 "symfony/assetic-bundle": "2.3.x-dev#65bd076341ac54ebfcd845d8471044fc4afa73d2",
                 "symfony/monolog-bundle": "2.3.x-dev#03ed73bc11367b3156cc21f22ac37c7f70fcd10a",
                 "symfony/swiftmailer-bundle": "v2.3.4",
-                "symfony/symfony": "v2.3.4",
+                "symfony/symfony": "v2.3.5",
                 "twig/extensions": "dev-master#3604161a4aa2e5c535cbc708810123fd3258b2dc",
                 "willdurand/expose-translation-bundle": "0.2.1",
                 "zendframework/zend-mail": "2.1.5"
@@ -3544,7 +3544,7 @@
                 "source": "https://github.com/akeneo/platform/tree/maintenance/pim_beta1",
                 "issues": "https://github.com/akeneo/platform/issues"
             },
-            "time": "2013-10-04 14:37:31"
+            "time": "2013-10-07 15:07:25"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -4144,13 +4144,13 @@
                 "symfony/framework-bundle": "~2.1"
             },
             "require-dev": {
-                "symfony/class-loader": ">=2.1,<3.0",
-                "symfony/console": ">=2.1,<3.0",
-                "symfony/css-selector": ">=2.1,<3.0",
-                "symfony/dom-crawler": ">=2.1,<3.0",
-                "symfony/form": ">=2.1,<3.0",
-                "symfony/twig-bundle": ">=2.1,<3.0",
-                "symfony/yaml": ">=2.1,<3.0"
+                "symfony/class-loader": "~2.1",
+                "symfony/console": "~2.1",
+                "symfony/css-selector": "~2.1",
+                "symfony/dom-crawler": "~2.1",
+                "symfony/form": "~2.1",
+                "symfony/twig-bundle": "~2.1",
+                "symfony/yaml": "~2.1"
             },
             "suggest": {
                 "symfony/twig-bundle": "~2.1"
@@ -4349,16 +4349,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.3.4",
+            "version": "v2.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "4fb225f4e315c11aa6d8935b1c0ceaf48ba39f1f"
+                "reference": "aa5626cd2a359567c948ebdeeca68d948640302f"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/symfony/zipball/4fb225f4e315c11aa6d8935b1c0ceaf48ba39f1f",
-                "reference": "4fb225f4e315c11aa6d8935b1c0ceaf48ba39f1f",
+                "reference": "aa5626cd2a359567c948ebdeeca68d948640302f",
                 "shasum": ""
             },
             "require": {
@@ -4508,12 +4508,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "f47c6d63a9806f795c7d892d5f2d1b10f230547d"
+                "reference": "09c386b3359cc22b4112197c2d8c6d6f7a49c918"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/f47c6d63a9806f795c7d892d5f2d1b10f230547d",
-                "reference": "f47c6d63a9806f795c7d892d5f2d1b10f230547d",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/09c386b3359cc22b4112197c2d8c6d6f7a49c918",
+                "reference": "09c386b3359cc22b4112197c2d8c6d6f7a49c918",
                 "shasum": ""
             },
             "require": {
@@ -4549,7 +4549,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-10-04 14:13:23"
+            "time": "2013-10-07 10:00:50"
         },
         {
             "name": "willdurand/expose-translation-bundle",
@@ -4558,12 +4558,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/willdurand/BazingaExposeTranslationBundle.git",
-                "reference": "86d94edb8960db6d818a9ee370e5892009f0be74"
+                "reference": "0.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/willdurand/BazingaExposeTranslationBundle/zipball/86d94edb8960db6d818a9ee370e5892009f0be74",
-                "reference": "86d94edb8960db6d818a9ee370e5892009f0be74",
+                "url": "https://api.github.com/repos/willdurand/BazingaExposeTranslationBundle/zipball/0.2.1",
+                "reference": "0.2.1",
                 "shasum": ""
             },
             "require": {
@@ -5185,27 +5185,27 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Behat.git",
-                "reference": "v2.4.6"
+                "reference": "f1d2964667cf4b21bb6c2c1564f26829a6954155"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Behat/zipball/v2.4.6",
-                "reference": "v2.4.6",
+                "url": "https://api.github.com/repos/Behat/Behat/zipball/f1d2964667cf4b21bb6c2c1564f26829a6954155",
+                "reference": "f1d2964667cf4b21bb6c2c1564f26829a6954155",
                 "shasum": ""
             },
             "require": {
-                "behat/gherkin": ">=2.2.9,<2.3",
+                "behat/gherkin": "~2.2.9",
                 "php": ">=5.3.1",
-                "symfony/config": ">=2.0,<3.0",
-                "symfony/console": ">=2.0,<3.0",
-                "symfony/dependency-injection": ">=2.0,<3.0",
-                "symfony/event-dispatcher": ">=2.0,<3.0",
-                "symfony/finder": ">=2.0,<3.0",
-                "symfony/translation": ">=2.0,<3.0",
-                "symfony/yaml": ">=2.0,<3.0"
+                "symfony/config": "~2.0",
+                "symfony/console": "~2.0",
+                "symfony/dependency-injection": "~2.0",
+                "symfony/event-dispatcher": "~2.0",
+                "symfony/finder": "~2.0",
+                "symfony/translation": "~2.0",
+                "symfony/yaml": "~2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": ">=3.7.19.0,<3.8"
+                "phpunit/phpunit": "~3.7.19"
             },
             "suggest": {
                 "behat/mink-extension": "for integration with Mink testing framework",

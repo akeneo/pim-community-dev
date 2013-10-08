@@ -22,14 +22,13 @@ Feature: Display the completeness of a product
       | image       | no       | no           | yes      |
       | description | no       | yes          | yes      |
     And the following product values:
-      | product    | attribute   | locale |scope      | value                    |
+      | product    | attribute   | locale | scope     | value                    |
       | postit     | SKU         |        |           | postit                   |
       | postit     | name        | en_US  |           | Post it                  |
       | postit     | name        | fr_FR  |           |                          |
       | postit     | image       |        | ecommerce | large.jpeg               |
       | postit     | image       |        | mobile    | small.jpeg               |
-      | postit     | description | en_US  | ecommerce |                          |
-      | postit     | description | en_US  | mobile    | My mobile description    |
+      | postit     | description | en_US  | ecommerce | My ecommerce description |
       | postit     | description | fr_FR  | ecommerce | Ma description ecommerce |
       | postit     | description | fr_FR  | mobile    |                          |
       | smartphone | name        | fr_FR  |           | smartphone               |
@@ -50,17 +49,17 @@ Feature: Display the completeness of a product
     When I visit the "Completeness" tab
     Then I should see the completeness summary
 
-    And I should see the completeness state "warning" for channel "ecommerce" and locale "English (United States)"
-    And I should see the completeness message "1 missing values" for channel "ecommerce" and locale "English (United States)"
-    And I should see the completeness ratio 67% for channel "ecommerce" and locale "English (United States)"
+    And I should see the completeness state "success" for channel "ecommerce" and locale "English (United States)"
+    And I should see the completeness message "Complete" for channel "ecommerce" and locale "English (United States)"
+    And I should see the completeness ratio 100% for channel "ecommerce" and locale "English (United States)"
 
     And I should see the completeness state "warning" for channel "ecommerce" and locale "French (France)"
-    And I should see the completeness message "1 missing values" for channel "ecommerce" and locale "French (France)"
+    And I should see the completeness message "1 missing value" for channel "ecommerce" and locale "French (France)"
     And I should see the completeness ratio 67% for channel "ecommerce" and locale "French (France)"
 
     And I should see the completeness state "disabled" for channel "mobile" and locale "English (United States)"
-    And I should see the completeness message "Complete" for channel "mobile" and locale "English (United States)"
-    And I should see the completeness ratio 100% for channel "mobile" and locale "English (United States)"
+    And I should see the completeness message "1 missing value" for channel "mobile" and locale "English (United States)"
+    And I should see the completeness ratio 50% for channel "mobile" and locale "English (United States)"
 
     And I should see the completeness state "danger" for channel "mobile" and locale "French (France)"
     And I should see the completeness message "2 missing values" for channel "mobile" and locale "French (France)"
@@ -76,7 +75,7 @@ Feature: Display the completeness of a product
     And I should see the completeness ratio 100% for channel "ecommerce" and locale "French (France)"
 
     And I should see the completeness state "danger" for channel "ecommerce" and locale "English (United States)"
-    And I should see the completeness message "1 missing values" for channel "ecommerce" and locale "English (United States)"
+    And I should see the completeness message "1 missing value" for channel "ecommerce" and locale "English (United States)"
     And I should see the completeness ratio 0% for channel "ecommerce" and locale "English (United States)"
 
     And I should see the completeness state "success" for channel "mobile" and locale "French (France)"

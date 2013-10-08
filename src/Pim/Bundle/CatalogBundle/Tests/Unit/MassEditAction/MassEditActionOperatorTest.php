@@ -18,7 +18,10 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->operator = new MassEditActionOperator($this->getFlexibleManagerMock());
+        $this->operator = new MassEditActionOperator(
+            $this->getFlexibleManagerMock(),
+            $this->getSecurityFacadeMock()
+        );
     }
 
     /**
@@ -137,5 +140,18 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
     protected function getMassEditActionMock()
     {
         return $this->getMock('Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionInterface');
+    }
+
+    /**
+     * Get ACL SecurityFacade mock
+     *
+     * @return \Oro\Bundle\SecurityBundle\SecurityFacade
+     */
+    protected function getSecurityFacadeMock()
+    {
+        return $this
+            ->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }

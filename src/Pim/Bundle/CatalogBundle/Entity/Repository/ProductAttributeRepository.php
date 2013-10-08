@@ -81,9 +81,12 @@ class ProductAttributeRepository extends AttributeRepository
             ->getQuery()
             ->getArrayResult();
 
-        return array_map(function ($data) {
-            return $data['code'];
-        }, $codes);
+        return array_map(
+            function ($data) {
+                return $data['code'];
+            },
+            $codes
+        );
     }
 
     /**

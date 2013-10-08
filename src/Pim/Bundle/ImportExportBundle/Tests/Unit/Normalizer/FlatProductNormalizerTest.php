@@ -81,6 +81,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             'exportedAt' => $now->format('r'),
             'elements'   => 'roue,poignées,benne',
             'categories' => 'cat1, cat2, cat3',
+            'variant_group' => '',
         );
 
         $this->assertEquals(
@@ -117,6 +118,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             'exportedAt' => $now->format('r'),
             'elements'   => 'roue,poignées,benne',
             'categories' => 'cat1, cat2, cat3',
+            'variant_group' => '',
         );
 
         $this->assertEquals(

@@ -6,3 +6,4 @@ parameters:
     pim_versioning.manager.pending.class:           Pim\Bundle\VersioningBundle\Manager\PendingManager
     pim_versioning.event_listener.addversion.class: Pim\Bundle\VersioningBundle\EventListener\AddVersionListener
     pim_versioning.event_listener.adduser.class:    Pim\Bundle\VersioningBundle\EventListener\AddUserListener
+    pim_versioning.event_listener.addcontext.class: Pim\Bundle\VersioningBundle\EventListener\AddContextListener

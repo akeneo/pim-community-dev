@@ -2,10 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Helper;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Intl;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
@@ -22,54 +19,17 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 class LocaleHelper
 {
     /**
-     * @var SecurityContextInterface
-     */
-    protected $securityContext;
-    /**
      * @var LocaleManager
      */
     protected $localeManager;
-    /**
-     * @var string
-     */
-    protected $defaultLocale;
-    /**
-     * @var Request
-     */
-    protected $request;
 
     /**
      * Constructor
-     *
-     * @param LocaleManager            $localeManager
-     * @param SecurityContextInterface $securityContext
-     * @param string                   $defaultLocale
+     * @param LocaleManager $localeManager
      */
-    public function __construct(LocaleManager $localeManager, SecurityContextInterface $securityContext, $defaultLocale)
+    public function __construct(LocaleManager $localeManager)
     {
         $this->localeManager = $localeManager;
-        $this->securityContext = $securityContext;
-        $this->defaultLocale = $defaultLocale;
-    }
-
-    /**
-     * Sets the current request
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     */
-    public function setRequest(Request $request = null)
-    {
-        $this->request = $request;
-    }
-
-    /**
-     * Returns the current locale from the request, or the default locale if no active request is found
-     *
-     * @return string
-     */
-    public function getCurrentLocale()
-    {
-        return $this->request ? $this->request->getLocale() : $this->defaultLocale;
     }
 
     /**
@@ -83,7 +43,7 @@ class LocaleHelper
     public function getLocaleLabel($code, $locale = null)
     {
         if (is_null($locale)) {
-            $locale = $this->getCurrentLocale();
+            $locale = $this->localeManager->getCurrentLocale();
         }
 
         return \Locale::getDisplayName($code, $locale);
@@ -100,7 +60,7 @@ class LocaleHelper
     public function getCurrencySymbol($currency, $locale = null)
     {
         if (is_null($locale)) {
-            $locale = $this->getCurrentLocale();
+            $locale = $this->localeManager->getCurrentLocale();
         }
 
         return Intl\Intl::getCurrencyBundle()->getCurrencySymbol($currency, $locale);
@@ -117,7 +77,7 @@ class LocaleHelper
     public function getCurrencyLabel($currency, $locale = null)
     {
         if (is_null($locale)) {
-            $locale = $this->getCurrentLocale();
+            $locale = $this->localeManager->getCurrentLocale();
         }
 
         return Intl\Intl::getCurrencyBundle()->getCurrencyName($currency, $locale);
@@ -133,7 +93,7 @@ class LocaleHelper
     public function getCurrencyLabels($locale = null)
     {
         if (is_null($locale)) {
-            $locale = $this->getCurrentLocale();
+            $locale = $this->localeManager->getCurrentLocale();
         }
 
         return Intl\Intl::getCurrencyBundle()->getCurrencyNames($locale);
@@ -146,8 +106,7 @@ class LocaleHelper
      */
     public function getLocaleCurrency()
     {
-        $localeCode = $this->getCatalogLocale();
-        $locale = $this->localeManager->getLocaleByCode($localeCode);
+        $locale = $this->localeManager->getUserLocale();
 
         return (null !== $locale && $locale->getDefaultCurrency()) ? $locale->getDefaultCurrency()->getCode() : null;
     }
@@ -164,7 +123,7 @@ class LocaleHelper
     public function getFlag($code, $fullLabel = false, $locale = null)
     {
         if (null === $locale) {
-            $locale = $this->getCurrentLocale();
+            $locale = $this->localeManager->getCurrentLocale();
         }
         $localeLabel = $this->getLocaleLabel($code, $locale);
 
@@ -175,23 +134,5 @@ class LocaleHelper
             $localeLabel,
             $fullLabel ? $localeLabel : \Locale::getPrimaryLanguage($code)
         );
-    }
-
-    /**
-     * Returns the locale for the catalog
-     *
-     * @return string|NULL
-     */
-    protected function getCatalogLocale()
-    {
-        if (null === $token = $this->securityContext->getToken()) {
-            return null;
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            return null;
-        }
-
-        return (string) $user->getCatalogLocale();
     }
 }
