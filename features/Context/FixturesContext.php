@@ -863,6 +863,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param PyStringNode $string
+     *
      * @Given /^the following file to import:$/
      */
     public function theFollowingFileToImport(PyStringNode $string)
@@ -873,6 +875,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param integer $expectedTotal
+     *
      * @Then /^there should be (\d+) products?$/
      */
     public function thereShouldBeProducts($expectedTotal)
@@ -883,6 +887,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string    $identifier
+     * @param TableNode $table
+     *
      * @Given /^the product "([^"]*)" should have the following values?:$/
      */
     public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
@@ -897,6 +904,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $username
+     *
      * @Then /^there should be a "([^"]*)" user$/
      */
     public function thereShouldBeAUser($username)
@@ -1046,6 +1055,11 @@ class FixturesContext extends RawMinkContext
         return $this->getEntityOrException('OroBatchBundle:JobInstance', array('code' => $code));
     }
 
+    /**
+     * @param string $value
+     *
+     * @return string
+     */
     public function replacePlaceholders($value)
     {
         if (false !== strpos($value, '{{') && false !== strpos($value, '}}')) {
