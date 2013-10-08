@@ -11,7 +11,7 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigLogDiff;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigLog;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
 /**
@@ -82,7 +82,7 @@ class AuditManager
         $diff->setDiff($changes);
         $diff->setClassName($configId->getClassName());
 
-        if ($configId instanceof FieldConfigIdInterface) {
+        if ($configId instanceof FieldConfigId) {
             $diff->setFieldName($configId->getFieldName());
         }
 

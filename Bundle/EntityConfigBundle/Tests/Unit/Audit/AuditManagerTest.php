@@ -88,7 +88,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
     public function testLogWithOutChanges()
     {
         $this->configManager->expects($this->any())->method('getConfigChangeSet')->will(
-            $this->returnValue(array('key' => 'value'))
+            $this->returnValue(array())
         );
 
         $this->auditManager->log();
