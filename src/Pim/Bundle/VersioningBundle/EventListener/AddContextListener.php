@@ -5,7 +5,7 @@ namespace Pim\Bundle\VersioningBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Oro\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Oro\Bundle\BatchBundle\Event\EventInterface;
-use oro\Bundle\BatchBundle\Entity\JobInstance;
+use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
 
 /**
@@ -23,6 +23,8 @@ class AddContextListener implements EventSubscriberInterface
     protected $auditBuilder;
 
     /**
+     * Constructor
+     *
      * @param AuditBuilder $builder
      */
     public function __construct($builder)
@@ -41,6 +43,8 @@ class AddContextListener implements EventSubscriberInterface
     }
 
     /**
+     * Add context in data audit builder
+     *
      * @param JobExecutionEvent $event
      */
     public function addContext(JobExecutionEvent $event)
