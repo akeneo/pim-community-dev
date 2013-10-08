@@ -52,7 +52,7 @@ class LocaleManager
      *
      * @param ObjectManager            $objectManager   the storage manager
      * @param SecurityContextInterface $securityContext the security context
-     * @param ManagerInterface         $aclManager      the ACL manager
+     * @param SecurityFacade           $securityFacade  the Security Facade
      * @param string                   $defaultLocale   the default locale for the UI
      */
     public function __construct(
