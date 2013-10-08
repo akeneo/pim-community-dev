@@ -244,7 +244,7 @@ class EditCommonAttributes extends AbstractMassEditAction
 
             $attribute
                 ->getVirtualGroup()
-                ->setLocale($this->getLocale()->getCode());
+                ->setLocale($currentLocaleCode);
 
             $this->commonAttributes[] = $attribute;
         }
