@@ -44,11 +44,11 @@ class TextType extends OroTextType
             ),
             array(
                 'name'      => 'searchable',
-                'fieldType' => 'checkbox'
+                'fieldType' => 'switch'
             ),
             array(
                 'name'      => 'translatable',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
@@ -68,7 +68,7 @@ class TextType extends OroTextType
             ),
             array(
                 'name'      => 'unique',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()

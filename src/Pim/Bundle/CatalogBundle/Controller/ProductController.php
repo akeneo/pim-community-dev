@@ -622,8 +622,9 @@ class ProductController extends AbstractDoctrineController
 
     /**
      * Returns the options for the form
-     * 
+     *
      * @param object $product
+     *
      * @return array
      */
     protected function getFormOptions($product)

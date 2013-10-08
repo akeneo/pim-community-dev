@@ -57,11 +57,11 @@ class DateType extends OroDateType
             ),
             array(
                 'name'      => 'searchable',
-                'fieldType' => 'checkbox'
+                'fieldType' => 'switch'
             ),
             array(
                 'name'      => 'translatable',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
@@ -81,7 +81,7 @@ class DateType extends OroDateType
             ),
             array(
                 'name'      => 'unique',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()

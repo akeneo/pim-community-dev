@@ -46,9 +46,9 @@ class ProductAttributeTypeTest extends AbstractFormTypeTest
         // Assert fields
         $this->assertField('label', 'pim_translatable_field');
         $this->assertField('variant', 'choice');
-        $this->assertField('smart', 'checkbox');
-        $this->assertField('useableAsGridColumn', 'checkbox');
-        $this->assertField('useableAsGridFilter', 'checkbox');
+        $this->assertField('smart', 'switch');
+        $this->assertField('useableAsGridColumn', 'switch');
+        $this->assertField('useableAsGridFilter', 'switch');
 
         $this->assertField('group', 'entity');
 
@@ -72,6 +72,6 @@ class ProductAttributeTypeTest extends AbstractFormTypeTest
         $this->assertField('id', 'hidden');
         $this->assertField('code', 'text');
         $this->assertField('attributeType', 'choice');
-        $this->assertField('required', 'checkbox');
+        $this->assertField('required', 'switch');
     }
 }
