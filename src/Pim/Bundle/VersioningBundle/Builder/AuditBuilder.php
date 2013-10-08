@@ -16,10 +16,14 @@ class AuditBuilder
 {
     /**
      * Context data to add to audit
+     *
+     * @var string
      */
     protected $context;
 
     /**
+     * Set context
+     *
      * @param string $context
      *
      * @return AuditBuilder
@@ -32,6 +36,8 @@ class AuditBuilder
     }
 
     /**
+     * Get context
+     *
      * @return string
      */
     public function getContext()
