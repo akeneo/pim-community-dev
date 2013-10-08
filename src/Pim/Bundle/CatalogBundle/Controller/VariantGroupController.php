@@ -168,22 +168,19 @@ class VariantGroupController extends AbstractDoctrineController
         }
 
         $datagridManager = $this->datagridWorker->getDatagridManager('variant_product');
-        $datagridManager->getRouteGenerator()->setRouteParameters(
-            array('id' => $variant->getId())
-        );
         $datagridManager->setVariantGroup($variant);
-
+        $datagridView = $datagridManager->getDatagrid()->createView();
 
         if ('json' === $this->getRequest()->getRequestFormat()) {
             return $this->render(
                 'OroGridBundle:Datagrid:list.json.php',
-                array('datagrid' => $datagridManager->getDatagrid()->createView())
+                array('datagrid' => $datagridView)
             );
         }
 
         return array(
             'form' => $this->variantForm->createView(),
-            'datagrid' => $datagridManager->getDatagrid()->createView()
+            'datagrid' => $datagridView
         );
     }
 

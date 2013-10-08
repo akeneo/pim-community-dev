@@ -335,4 +335,19 @@ class VariantGroup implements TranslatableInterface
 
         return $this;
     }
+
+    /**
+     * Get product ids
+     *
+     * @return array
+     */
+    public function getProductIds()
+    {
+        return array_map(
+            function ($product) {
+                return $product->getId();
+            },
+            $this->getProducts()->toArray()
+        );
+    }
 }

@@ -24,18 +24,21 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
     /**
      * @var VariantGroup $variantGroup
      */
-    protected $variantGroup;
+    private $variantGroup;
 
     /**
      * {@inheritdoc}
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
+        $field = $this->createAssignedField();
+        $fieldsCollection->add($field);
+
         $identifier = $this->flexibleManager->getIdentifierAttribute();
         $field = $this->createFlexibleField($identifier);
         $fieldsCollection->add($field);
 
-        foreach ($this->variantGroup->getAttributes() as $attribute) {
+        foreach ($this->getVariantGroup()->getAttributes() as $attribute) {
             $field = $this->createFlexibleField($attribute);
             $fieldsCollection->add($field);
         }
@@ -50,29 +53,28 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         $fieldsCollection->add($field);
     }
 
-    /**
-     * Create a datetime field
-     *
-     * @param string $code
-     * @param string $label
-     *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
-     */
-    protected function createDatetimeField($code, $label)
+    protected function createAssignedField()
     {
         $field = new FieldDescription();
-        $field->setName($code);
+        $field->setName('assigned');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
-                'label'       => $this->translate($label),
-                'field_name'  => $code,
-                'filter_type' => false,
-                'sortable'    => true
+                'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
+                'label'       => $this->translate('Assigned'),
+                'field_name'  => 'variantGroup',
+                'nullable'    => false,
+                'editable'    => true,
+                'sortable'    => false,
+                'filter_type' => false
             )
         );
 
         return $field;
+    }
+
+    protected function getIsAssignedProductExpression()
+    {
+
     }
 
     /**
@@ -114,10 +116,37 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
+     * Create a datetime field
+     *
+     * @param string $code
+     * @param string $label
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createDatetimeField($code, $label)
+    {
+        $field = new FieldDescription();
+        $field->setName($code);
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_DATETIME,
+                'label'       => $this->translate($label),
+                'field_name'  => $code,
+                'filter_type' => false,
+                'sortable'    => true
+            )
+        );
+
+        return $field;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function prepareQuery(ProxyQueryInterface $proxyQuery)
     {
+        // TODO : Add clause to get only product without variants
+
         $rootAlias = $proxyQuery->getRootAlias();
 
         $familyExpr  = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
@@ -129,6 +158,19 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias .'.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
 
+
+        // get all not linked products and all linked to the asked variant
+        $variantField = $rootAlias .'.variantGroup';
+        $variantExpr  = $proxyQuery->expr()->isNull($variantField);
+        $productIds   = $this->getVariantGroup()->getProductIds();
+
+        if (!empty($productIds)) {
+            $exprProductsIn = $proxyQuery->expr()->in($variantField, $productIds);
+            $proxyQuery->orWhere($exprProductsIn, $variantExpr);
+        } else {
+            $proxyQuery->andWhere($variantExpr);
+        }
+
         $proxyQuery
             ->setParameter('localeCode', $this->flexibleManager->getLocale());
     }
@@ -137,13 +179,29 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
      * Set a variant group
      *
      * @param VariantGroup $variantGroup
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\VariantProductDatagridManager
      */
     public function setVariantGroup(VariantGroup $variantGroup)
     {
         $this->variantGroup = $variantGroup;
 
-        return $this;
+        $this->routeGenerator->setRouteParameters(
+            array('id' => $this->variantGroup->getId())
+        );
+    }
+
+    /**
+     * Get the variant group
+     *
+     * @throws \LogicException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
+     */
+    public function getVariantGroup()
+    {
+        if (!$this->variantGroup) {
+            throw new \LogicException('Datagrid manager has no configured Variant group');
+        }
+
+        return $this->variantGroup;
     }
 }
