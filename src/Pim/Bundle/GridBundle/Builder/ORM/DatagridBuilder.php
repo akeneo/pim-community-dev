@@ -97,7 +97,7 @@ class DatagridBuilder extends OroDatagridBuilder
     public function addExportAction(DatagridInterface $datagrid, ExportActionInterface $exportAction)
     {
         $aclResource = $exportAction->getAclResource();
-        if ($aclResource || $this->aclManager->isResourceGranted($aclResource)) {
+        if (!$aclResource || $this->securityFacade->isGranted($aclResource)) {
             $datagrid->addExportAction($exportAction);
         }
     }

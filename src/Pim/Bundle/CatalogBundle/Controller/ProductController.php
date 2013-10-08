@@ -221,7 +221,7 @@ class ProductController extends AbstractDoctrineController
 
         $params = array(
             'datagrid'   => $datagrid->createView(),
-            'locales'    => $this->localeManager->getActiveLocales(),
+            'locales'    => $this->localeManager->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
             'dataScope' => $this->getDataScope(),
         );
@@ -358,7 +358,7 @@ class ProductController extends AbstractDoctrineController
         $form     = $this->createForm(
             'pim_product',
             $product,
-            array('currentLocale' => $this->getDataLocale())
+            $this->getFormOptions($product)
         );
 
         if ($request->isMethod('POST')) {
@@ -393,7 +393,7 @@ class ProductController extends AbstractDoctrineController
             'created'        => $this->auditManager->getOldestLogEntry($product),
             'updated'        => $this->auditManager->getNewestLogEntry($product),
             'datagrid'       => $datagrid->createView(),
-            'locales'        => $this->localeManager->getActiveLocales()
+            'locales'        => $this->localeManager->getUserLocales()
         );
     }
 
@@ -617,6 +617,21 @@ class ProductController extends AbstractDoctrineController
             new AvailableProductAttributesType(),
             $availableAttributes ?: new AvailableProductAttributes(),
             array('attributes' => $attributes)
+        );
+    }
+
+    /**
+     * Returns the options for the form
+     * 
+     * @param object $product
+     * @return array
+     */
+    protected function getFormOptions($product)
+    {
+        return array(
+            'enable_family' => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
+            'enable_state'  => $this->securityFacade->isGranted('pim_catalog_product_change_state'),
+            'currentLocale' => $this->getDataLocale()
         );
     }
 }

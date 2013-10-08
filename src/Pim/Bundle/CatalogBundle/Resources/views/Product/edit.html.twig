@@ -12,7 +12,9 @@
             function($, _, mediator, TreeAssociate, Scopable, FormUpdateListener, Dialog){
                 'use strict';
                 $(function() {
-                    new TreeAssociate('#trees', '#pim_product_categories');
+                    {% if resource_granted('pim_catalog_product_categories_view') %}
+                        new TreeAssociate('#trees', '#pim_product_categories');
+                    {% endif %}
 
                     _.each($('form div.scopable'), function(field) {
                         new Scopable({ el: $(field) });
@@ -109,10 +111,13 @@
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_product_index')) }}
             <div class="btn-group">
-                <button id="switch_status" type="button" class="btn">{{ ('info.product.' ~ (form.enabled.vars.value ? 'disable' : 'enable'))|trans }}</button>
+                {% if form.enabled is defined %}
+                    <button id="switch_status" type="button" class="btn">{{ ('info.product.' ~ (form.enabled.vars.value ? 'disable' : 'enable'))|trans }}</button>
+                {% endif %}
             </div>
-            {{ form_widget(form.enabled) }}
-            {{ elements.deleteLink(path('pim_catalog_product_remove', { id: form.vars.value.id }), path('pim_catalog_product_index'), 'confirmation.remove.product'|trans({ '%name%': product.label }), "", 'flash.product.removed'|trans) }}
+            {% if resource_granted("pim_catalog_product_remove") %}
+                {{ elements.deleteLink(path('pim_catalog_product_remove', { id: form.vars.value.id }), path('pim_catalog_product_index'), 'confirmation.remove.product'|trans({ '%name%': product.label }), "", 'flash.product.removed'|trans) }}
+            {% endif %}
             {{ elements.submitBtn }}
         {% endset %}
 
@@ -125,7 +130,6 @@
                 </span>
                 <ul class="dropdown-menu">
                     {% for locale in locales %}
-                        {% if resource_granted('pim_catalog_locale_' ~ locale.code) %}
                         <li class="{{ locale.code == dataLocale ? 'active' : '' }}">
                             <a href="{{ path('pim_catalog_product_edit', {id: form.vars.value.id, dataLocale: locale.code}) }}" title="{{ locale_label(locale.code) }}">
                                 <span class="icon pull-left">
@@ -139,7 +143,6 @@
                                 <span class="title">{{ product.label(locale.code) }}</span>
                             </a>
                         </li>
-                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>

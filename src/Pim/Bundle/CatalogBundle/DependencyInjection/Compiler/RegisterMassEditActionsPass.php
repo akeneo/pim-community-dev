@@ -27,7 +27,14 @@ class RegisterMassEditActionsPass implements CompilerPassInterface
         $def = $container->getDefinition('pim_catalog.mass_edit_action.operator');
 
         foreach ($container->findTaggedServiceIds('pim_catalog.mass_edit_action') as $id => $config) {
-            $def->addMethodCall('registerMassEditAction', array($config[0]['alias'], new Reference($id)));
+            $def->addMethodCall(
+                'registerMassEditAction',
+                array(
+                    $config[0]['alias'],
+                    new Reference($id),
+                    isset($config[0]['acl']) ? $config[0]['acl'] : null
+                )
+            );
         }
     }
 }
