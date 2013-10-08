@@ -31,15 +31,26 @@ Feature: Browse products by locale and scope
       | postit  | description | fr_FR  | mobile    | Ma description mobile    |
     And I am logged in as "admin"
 
-  Scenario: Successfully display relevant products data on products page
+  Scenario: Successfully display english ecomerce products data on products page
     Given I am on the products page
     When I switch the locale to "en_US"
     And I filter by "Channel" with value "Ecommerce"
     Then I should see product "postit" with data postit, Post it, large.jpeg and My ecommerce description
-    When I filter by "Channel" with value "Mobile"
-    Then I should see product "postit" with data postit, Post it, small.jpeg and My mobile description
+
+  Scenario: Successfully display english mobile products data on products page
+    Given I am on the products page
+    When I switch the locale to "en_US"
+    And I filter by "Channel" with value "Mobile"
+    Then I should see product "postit" with data postit, Post it and small.jpeg
+
+  Scenario: Successfully display french ecommerce products data on products page
+    Given I am on the products page
     When I switch the locale to "fr_FR"
     And I filter by "Channel" with value "Ecommerce"
     Then I should see product "postit" with data postit, Etiquette, large.jpeg and Ma description ecommerce
-    When I filter by "Channel" with value "Mobile"
+
+  Scenario: Successfully display french mobile  products data on products page
+    Given I am on the products page
+    When I switch the locale to "fr_FR"
+    And I filter by "Channel" with value "Mobile"
     Then I should see product "postit" with data postit, Etiquette, small.jpeg and Ma description mobile
