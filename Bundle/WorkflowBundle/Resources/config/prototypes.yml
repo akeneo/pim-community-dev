@@ -24,3 +24,5 @@ services:
             - @oro_workflow.prototype.step_manager
             - @oro_workflow.prototype.attribute_manager
             - @oro_workflow.prototype.transition_manager
+        calls:
+            - [setEntityBinder, [@oro_workflow.entity_binder]]
