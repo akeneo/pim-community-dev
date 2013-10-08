@@ -161,10 +161,6 @@ class VariantGroupController extends AbstractDoctrineController
     {
         if ($this->variantHandler->process($variant)) {
             $this->addFlash('success', 'flash.variant group.updated');
-
-            return $this->redirect(
-                $this->generateUrl('pim_catalog_variant_group_index')
-            );
         }
 
         $datagridManager = $this->datagridWorker->getDatagridManager('variant_product');
