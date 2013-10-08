@@ -52,7 +52,8 @@ class ProductVariantGroupConverter
      *
      * @param array $data The submitted data
      *
-     * @return int|null null if the self::VARIANT_GROUP_KEY wasn't sent in the data or the variant group code doesn't exist
+     * @return int|null null if the self::VARIANT_GROUP_KEY wasn't sent in the data or the variant group
+     * code doesn't exist
      */
     private function getVariantGroupId(array $data)
     {
