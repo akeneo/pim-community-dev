@@ -67,9 +67,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
                 )
             )
         );
-        $this->configManager->expects($this->any())->method('getConfigChangeSet')->will(
-            $this->returnValue(array('key' => 'value'))
-        );
+
         $this->configManager->expects($this->any())->method('getProvider')->will($this->returnValue($provider));
 
         $this->auditManager = new AuditManager($configManagerLink, $securityLink);
@@ -82,6 +80,10 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testLog()
     {
+        $this->configManager->expects($this->any())->method('getConfigChangeSet')->will(
+            $this->returnValue(array('key' => 'value'))
+        );
+
         $this->auditManager->log();
     }
 
