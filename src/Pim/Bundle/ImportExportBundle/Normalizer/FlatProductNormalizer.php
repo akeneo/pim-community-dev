@@ -141,8 +141,12 @@ class FlatProductNormalizer implements NormalizerInterface
     protected function getFieldValue($value)
     {
         $suffix = '';
+
+        if ($value->getAttribute()->getScopable()) {
+            $suffix = sprintf('-%s', $value->getScope());
+        }
         if ($value->getAttribute()->getTranslatable()) {
-            $suffix = $suffix = sprintf('-%s', $value->getLocale());
+            $suffix .= sprintf('-%s', $value->getLocale());
         }
 
         return $value->getAttribute()->getCode() . $suffix;
