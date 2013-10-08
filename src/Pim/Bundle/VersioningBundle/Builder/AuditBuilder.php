@@ -15,6 +15,31 @@ use Pim\Bundle\VersioningBundle\Entity\Version;
 class AuditBuilder
 {
     /**
+     * Context data to add to audit
+     */
+    protected $context;
+
+    /**
+     * @param string $context
+     *
+     * @return AuditBuilder
+     */
+    public function setContext($context)
+    {
+        $this->context = $context;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContext()
+    {
+        return $this->context;
+    }
+
+    /**
      * Create a log entry from current and previous version
      *
      * @param Version $current
@@ -32,6 +57,32 @@ class AuditBuilder
             $oldData = array();
         }
 
+        $diffData = $this->buildDiffData($oldData, $newData);
+
+        $action = ($versionNumber > 1) ? 'update' : 'create';
+        $audit = new Audit();
+        $audit->setAction($action);
+        $audit->setObjectClass($current->getResourceName());
+        $audit->setLoggedAt();
+        $audit->setObjectName($current->getResourceName());
+        $audit->setObjectId($current->getResourceId());
+        $audit->setVersion($versionNumber);
+        $audit->setData($diffData);
+        $audit->setUser($current->getUser());
+
+        return $audit;
+    }
+
+    /**
+     * Build diff data
+     *
+     * @param array $oldData
+     * @param array $newData
+     *
+     * @return array
+     */
+    protected function buildDiffData($oldData, $newData)
+    {
         $merge = array();
         foreach ($newData as $field => $value) {
             $merge[$field]= array('old' => '', 'new' => $value);
@@ -51,17 +102,10 @@ class AuditBuilder
             }
         }
 
-        $action = ($versionNumber > 1) ? 'update' : 'create';
-        $audit = new Audit();
-        $audit->setAction($action);
-        $audit->setObjectClass($current->getResourceName());
-        $audit->setLoggedAt();
-        $audit->setObjectName($current->getResourceName());
-        $audit->setObjectId($current->getResourceId());
-        $audit->setVersion($versionNumber);
-        $audit->setData($diffData);
-        $audit->setUser($current->getUser());
+        if (!empty($diffData) && $this->context) {
+            $diffData['context']= array('old' => '', 'new' => $this->context);
+        }
 
-        return $audit;
+        return $diffData;
     }
 }
