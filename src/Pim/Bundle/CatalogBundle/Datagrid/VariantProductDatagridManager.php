@@ -53,6 +53,11 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         $fieldsCollection->add($field);
     }
 
+    /**
+     * It creates an editable checkbox to add/remove product to the edited variant
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
     protected function createAssignedField()
     {
         $field = new FieldDescription();
@@ -70,11 +75,6 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         );
 
         return $field;
-    }
-
-    protected function getIsAssignedProductExpression()
-    {
-
     }
 
     /**
@@ -157,6 +157,14 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
 
         $this->applyVariantExpression($proxyQuery);
+
+        // apply join clause for attributes
+        $attributeIds = $this->getVariantGroup()->getAttributeIds();
+        $exprAttrIn = $proxyQuery->expr()->in('v.attribute', $attributeIds);
+        $proxyQuery
+            ->leftJoin($rootAlias .'.values', 'v', 'WITH', $exprAttrIn)
+            ->andWhere($proxyQuery->expr()->isNotNull('v.option'));
+
 
         $proxyQuery
             ->setParameter('localeCode', $this->flexibleManager->getLocale());

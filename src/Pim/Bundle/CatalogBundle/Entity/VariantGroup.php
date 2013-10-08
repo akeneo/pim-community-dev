@@ -339,7 +339,7 @@ class VariantGroup implements TranslatableInterface
     /**
      * Get product ids
      *
-     * @return array
+     * @return integer[]
      */
     public function getProductIds()
     {
@@ -348,6 +348,21 @@ class VariantGroup implements TranslatableInterface
                 return $product->getId();
             },
             $this->getProducts()->toArray()
+        );
+    }
+
+    /**
+     * Get attribute ids
+     *
+     * @return integer[]
+     */
+    public function getAttributeIds()
+    {
+        return array_map(
+            function ($attribute) {
+                return $attribute->getId();
+            },
+            $this->getAttributes()->toArray()
         );
     }
 }
