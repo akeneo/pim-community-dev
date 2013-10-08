@@ -48,7 +48,9 @@ class AddContextListener implements EventSubscriberInterface
         $jobExecution = $event->getJobExecution();
         $jobInstance  = $jobExecution->getJobInstance();
         if ($jobInstance->getType() === JobInstance::TYPE_IMPORT) {
-            $this->auditBuilder->setContext($jobInstance->getCode());
+            $this->auditBuilder->setContext(
+                sprintf('%s "%s"', JobInstance::TYPE_IMPORT, $jobInstance->getCode())
+            );
         }
     }
 }
