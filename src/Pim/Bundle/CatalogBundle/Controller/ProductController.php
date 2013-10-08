@@ -629,8 +629,8 @@ class ProductController extends AbstractDoctrineController
     protected function getFormOptions($product)
     {
         return array(
-            'enable_family' => $this->aclManager->isResourceGranted('pim_catalog_product_change_family'),
-            'enable_state'  => $this->aclManager->isResourceGranted('pim_catalog_product_change_state'),
+            'enable_family' => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
+            'enable_state'  => $this->securityFacade->isGranted('pim_catalog_product_change_state'),
             'currentLocale' => $this->getDataLocale()
         );
     }
