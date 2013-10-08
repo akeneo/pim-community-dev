@@ -111,7 +111,7 @@ abstract class CsvSerializerProcessor extends AbstractConfigurableStepElement im
             'delimiter' => array(),
             'enclosure' => array(),
             'withHeader' => array(
-                'type' => 'checkbox',
+                'type' => 'switch',
             ),
         );
     }

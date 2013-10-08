@@ -40,25 +40,25 @@ class NumberType extends OroNumberType
             ),
             array(
                 'name'      => 'decimalsAllowed',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
                 )
             ),
             array(
                 'name'      => 'negativeAllowed',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
                 )
             ),
             array(
                 'name'      => 'searchable',
-                'fieldType' => 'checkbox'
+                'fieldType' => 'switch'
             ),
             array(
                 'name'      => 'translatable',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
@@ -78,7 +78,7 @@ class NumberType extends OroNumberType
             ),
             array(
                 'name'      => 'unique',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
