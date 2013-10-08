@@ -187,6 +187,7 @@ class LoadCategoryData extends AbstractDemoFixture
     protected function prepareCode($code)
     {
         $code = str_replace(' ', '_', strtolower($code));
+
         return preg_replace('/__+/', '_', preg_replace('/[^a-zA-Z0-9_]/', '', $code));
     }
 
