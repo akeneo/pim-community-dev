@@ -41,8 +41,8 @@ EOF;
     {
         $bundles = "array(\n";
 
-        foreach ($this->bundles as $bundle => $kernel) {
-            $bundles .= sprintf("    new %s(%s),\n", $bundle, $kernel ? '$this' : '');
+        foreach ($this->bundles as $class => $params) {
+            $bundles .= sprintf("    new %s(%s),\n", $class, $params['kernel'] ? '$this' : '');
         }
 
         $bundles .= ');';

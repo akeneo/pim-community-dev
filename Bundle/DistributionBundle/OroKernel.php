@@ -21,10 +21,10 @@ abstract class OroKernel extends Kernel
         $bundles = array();
 
         if (!$this->getCacheDir()) {
-            foreach ($this->collectBundles() as $bundle) {
-                $bundles[] = $bundle['kernel']
-                    ? new $bundle['class']($this)
-                    : new $bundle['class'];
+            foreach ($this->collectBundles() as $class => $params) {
+                $bundles[] = $params['kernel']
+                    ? new $class($this)
+                    : new $class;
             }
         } else {
             $file  = $this->getCacheDir() . '/bundles.php';
@@ -59,19 +59,36 @@ abstract class OroKernel extends Kernel
             $import = Yaml::parse($file->getRealpath());
 
             foreach ($import['bundles'] as $bundle) {
+                $kernel   = false;
+                $priority = 0;
+
                 if (is_array($bundle)) {
-                    $class  = $bundle['name'];
-                    $kernel = isset($bundle['kernel']) && true == $bundle['kernel'];
+                    $class    = $bundle['name'];
+                    $kernel   = isset($bundle['kernel']) && true == $bundle['kernel'];
+                    $priority = isset($bundle['priority']) ? (int) $bundle['priority'] : 0;
                 } else {
-                    $class  = $bundle;
-                    $kernel = false;
+                    $class    = $bundle;
                 }
 
                 if (!isset($bundles[$class])) {
-                    $bundles[$class] = $kernel;
+                    $bundles[$class] = array(
+                        'kernel'   => $kernel,
+                        'priority' => $priority,
+                    );
                 }
             }
         }
+
+        uasort($bundles, function ($a, $b) {
+            $p1 = (int) $a['priority'];
+            $p2 = (int) $b['priority'];
+
+            if ($p1 == $p2) {
+                return 0;
+            }
+
+            return ($p1 < $p2) ? -1 : 1;
+        });
 
         return $bundles;
     }

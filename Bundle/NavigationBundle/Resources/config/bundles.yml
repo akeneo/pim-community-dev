@@ -1,2 +1,2 @@
 bundles:
-    - Oro\Bundle\NavigationBundle\OroNavigationBundle
+    - { name: Oro\Bundle\NavigationBundle\OroNavigationBundle, priority: 10 }
