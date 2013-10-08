@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
 use Doctrine\ORM\AbstractQuery;
 
 /**
@@ -109,5 +110,40 @@ class ProductRepository extends FlexibleEntityRepository
             ->from($this->_entityName, 'p', 'p.id');
 
         return array_keys($qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY));
+    }
+
+    /**
+     * Find all products in a variant group (by variant axis attribute values)
+     *
+     * @param VariantGroup $variantGroup
+     * @param array        $criteria
+     *
+     * @return array
+     */
+    public function findAllForVariantGroup(VariantGroup $variantGroup, array $criteria = array())
+    {
+        $qb = $this->createQueryBuilder('Product');
+
+        $qb
+            ->where(
+                $qb->expr()->eq('Product.variantGroup', '?1')
+            )
+            ->setParameter(1, $variantGroup);
+
+        $i = 1;
+        foreach ($criteria as $item) {
+            $code = $item['attribute']->getCode();
+            $qb
+                ->innerJoin(
+                    'Product.values',
+                    sprintf('Value_%s', $code),
+                    'WITH',
+                    sprintf('Value_%s.attribute = ?%d AND Value_%s.option = ?%d', $code, ++$i, $code, ++$i)
+                )
+                ->setParameter($i - 1, $item['attribute'])
+                ->setParameter($i, $item['option']);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }
