@@ -388,7 +388,7 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Get LocaleHelperMock
-     * 
+     *
      * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
      */
     protected function getLocaleManagerMock()
@@ -400,10 +400,9 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         $manager->expects($this->any())
             ->method('getUserCodes')
             ->will($this->returnValue(array('en_US', 'fr_FR')));
-        
+
         return $manager;
     }
-
 
     /**
      * Create FormFactory mock

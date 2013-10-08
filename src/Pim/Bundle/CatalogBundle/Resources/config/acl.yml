@@ -308,7 +308,7 @@ pim_catalog_product_change_family:
     type: action
     label: Change product family
 pim_catalog_product_change_state:
-    label: Change state of product 
+    label: Change state of product
     type: action
 
 # Category

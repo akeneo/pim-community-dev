@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
-use Symfony\Component\Security\Core\securityFacadeInterface;
-
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;

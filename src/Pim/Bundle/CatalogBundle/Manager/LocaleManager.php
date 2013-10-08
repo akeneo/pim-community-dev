@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\UserBundle\Acl\ManagerInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 /**
@@ -69,7 +68,7 @@ class LocaleManager
 
     /**
      * Sets the current request
-     * 
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
     public function setRequest(Request $request = null)
@@ -79,7 +78,7 @@ class LocaleManager
 
     /**
      * Returns the current locale from the request, or the default locale if no active request is found
-     * 
+     *
      * @return string
      */
     public function getCurrentLocale()
@@ -160,7 +159,7 @@ class LocaleManager
 
     /**
      * Get active locales for which the user has ACLs
-     * 
+     *
      * @return array
      */
     public function getUserLocales()
@@ -173,12 +172,13 @@ class LocaleManager
                 }
             }
         }
+
         return $this->userLocales;
     }
-    
+
     /**
      * Get active locale codes for which the user has ACLs
-     * 
+     *
      * @return array
      */
     public function getUserCodes()
@@ -238,7 +238,7 @@ class LocaleManager
         if ($this->securityContext->getToken()->getUser() === null) {
             return null;
         }
-        
+
         $user = $this->securityContext->getToken()->getUser();
         $localeCode = (string) $user->getValue('cataloglocale');
         $userLocales = $this->getUserLocales();
