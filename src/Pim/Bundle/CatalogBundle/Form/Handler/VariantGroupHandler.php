@@ -55,7 +55,9 @@ class VariantGroupHandler
         $this->form->setData($variantGroup);
 
         if ($this->request->isMethod('POST')) {
-            $this->form->bind($this->request);
+            $this->form->submit($this->request);
+            $appendProducts = $this->form->get('appendProducts')->getData();
+            $removeProducts = $this->form->get('removeProducts')->getData();
 
             if ($this->form->isValid()) {
                 $this->onSuccess($variantGroup);

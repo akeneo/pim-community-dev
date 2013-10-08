@@ -43,6 +43,9 @@
 
             {{ form_row(form.attributes) }}
 
+            {{ form_widget(form.appendProducts) }}
+            {{ form_widget(form.removeProducts) }}
+
             {{ form_row(form._token) }}
 
             <div id="variant-products-grid"></div>
@@ -68,4 +71,14 @@
             }
         );
     </script>
+
+    {% set listenerParameters = {
+        'columnName': 'has_product',
+        'selectors': {
+            'included': '#variantAppendProducts',
+            'excluded': '#variantRemoveProducts'
+        }
+    } %}
+
+    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#variant-products-grid', 'parameters': listenerParameters } %}
 {% endblock %}

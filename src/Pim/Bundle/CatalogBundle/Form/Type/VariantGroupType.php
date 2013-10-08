@@ -25,32 +25,52 @@ class VariantGroupType extends AbstractType
     {
         $builder->add('code');
 
-        $builder
-            ->add(
-                'label',
-                'pim_translatable_field',
-                array(
-                    'field'             => 'label',
-                    'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\VariantGroupTranslation',
-                    'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\VariantGroup',
-                    'property_path'     => 'translations'
-                )
-            );
+        $builder->add(
+            'label',
+            'pim_translatable_field',
+            array(
+                'field'             => 'label',
+                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\VariantGroupTranslation',
+                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\VariantGroup',
+                'property_path'     => 'translations'
+            )
+        );
 
-        $builder
-            ->add(
-                'attributes',
-                'entity',
-                array(
-                    'label'    => 'Axis',
-                    'required' => true,
-                    'multiple' => true,
-                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
-                    'query_builder' => function (ProductAttributeRepository $repository) {
-                        return $repository->findAllAxisQB();
-                    }
-                )
-            );
+        $builder->add(
+            'attributes',
+            'entity',
+            array(
+                'label'    => 'Axis',
+                'required' => true,
+                'multiple' => true,
+                'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                'query_builder' => function (ProductAttributeRepository $repository) {
+                    return $repository->findAllAxisQB();
+                }
+            )
+        );
+
+        $builder->add(
+            'appendProducts',
+            'oro_entity_identifier',
+            array(
+                'class'    => 'Pim\Bundle\CatalogBundle\Entity\Product',
+                'required' => false,
+                'mapped'   => false,
+                'multiple' => true
+            )
+        );
+
+        $builder->add(
+            'removeProducts',
+            'oro_entity_identifier',
+            array(
+                'class'    => 'Pim\Bundle\CatalogBundle\Entity\Product',
+                'required' => false,
+                'mapped'   => false,
+                'multiple' => true
+            )
+        );
 
         $builder->addEventSubscriber(new VariantGroupSubscriber());
     }

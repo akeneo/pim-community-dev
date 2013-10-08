@@ -61,12 +61,12 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
     protected function createAssignedField()
     {
         $field = new FieldDescription();
-        $field->setName('assigned');
+        $field->setName('has_product');
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
                 'label'       => $this->translate('Assigned'),
-                'field_name'  => 'variantGroup',
+                'field_name'  => 'has_product',
                 'nullable'    => false,
                 'editable'    => true,
                 'sortable'    => false,
