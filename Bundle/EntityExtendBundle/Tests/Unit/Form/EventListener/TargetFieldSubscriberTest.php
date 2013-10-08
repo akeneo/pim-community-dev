@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Tests\Unit\Form\EventListener;
 
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityExtendBundle\Form\EventListener\TargetFieldSubscriber;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -11,12 +13,11 @@ class TargetFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     public function testPreSetSubmitData()
     {
-        $data         = array();
-        $expectedData = array();
+        $data     = array('target_field' => 'firstName');
 
         $targetFieldMock = $this->getMockBuilder('Oro\Bundle\EntityExtendBundle\Form\Type\TargetFieldType')
             ->disableOriginalConstructor()
-            ->setMethods(array('getConfig', 'getOptions', 'getData'))
+            ->setMethods(array('getConfig', 'getOptions', 'getData', 'get'))
             ->getMock();
         $targetFieldMock
             ->expects($this->any())
@@ -26,9 +27,14 @@ class TargetFieldSubscriberTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getOptions')
             ->will($this->returnValue(array('auto_initialize' => true)));
+        $targetFieldMock
+            ->expects($this->exactly(3))
+            ->method('get')
+            ->with($this->equalTo('label'))
+            ->will($this->returnValue(null));
 
         $formMock = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')
-            ->setMethods(array('getParent'))
+            ->setMethods(array('getParent', 'getData'))
             ->getMockForAbstractClass();
         $formMock
             ->expects($this->exactly(4))
@@ -37,14 +43,12 @@ class TargetFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         $formMock
             ->expects($this->exactly(2))
             ->method('get')
-            ->with(
-                $this->logicalOr(
-                    $this->equalTo('target_field'),
-                    $this->equalTo('target_entity')
-                )
-            )
+            ->with($this->logicalOr($this->equalTo('target_field'), $this->equalTo('target_entity')))
             ->will($this->returnValue($targetFieldMock));
-
+        $formMock
+            ->expects($this->once())
+            ->method('getData')
+            ->will($this->returnValue($data));
 
         /** @var FormEvent $event */
         $event = new FormEvent($formMock, $data);
@@ -54,7 +58,8 @@ class TargetFieldSubscriberTest extends \PHPUnit_Framework_TestCase
             $request = array(
                 'oro_entity_config_type' => array(
                     'extend' => array(
-                        'target_entity' => 'Oro\Bundle\UserBundle\Entity\User'
+                        'target_entity' => 'Oro\Bundle\UserBundle\Entity\User',
+                        'target_field'  => 'firstName'
                     )
                 )
             )
@@ -67,18 +72,39 @@ class TargetFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $repositoryMock = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
-            ->setMethods(array('findOneBy'))
+            ->setMethods(array('findOneBy', 'findBy', 'getId'))
             ->getMock();
-//        $repositoryMock
-//            ->expects($this->once())
-//            ->method('get')
+        $repositoryMock
+            ->expects($this->once())
+            ->method('findOneBy')
+            ->will($this->returnSelf());
+        $repositoryMock
+            ->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(1));
+        $repositoryMock
+            ->expects($this->once())
+            ->method('findBy')
+            ->will(
+                $this->returnValue(
+                    array(
+                        new FieldConfigId('Oro\Bundle\UserBundle\Entity\User', 'entity', 'firstName'),
+                        new FieldConfigId('Oro\Bundle\UserBundle\Entity\User', 'entity', 'lastName'),
+                        new FieldConfigId('Oro\Bundle\UserBundle\Entity\User', 'entity', 'email'),
+                    )
+                )
+            );
 
         $configManagerMock
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getEntityManager')
             ->will($this->returnSelf());
         $configManagerMock
             ->expects($this->once())
+            ->method('getProvider')
+            ->will($this->returnValue($targetFieldMock));
+        $configManagerMock
+            ->expects($this->exactly(2))
             ->method('getRepository')
             ->will($this->returnValue($repositoryMock));
 
@@ -86,8 +112,7 @@ class TargetFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         $listener = new TargetFieldSubscriber($request, $configManagerMock);
         $listener->preSetSubmitData($event);
 
-        //var_dump($event->getData());
-        //$this->assertEquals($expectedData, $event->getData());
+        $this->assertEquals($data, $event->getData());
     }
 
     public function testGetSubscribedEvents()
