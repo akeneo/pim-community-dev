@@ -27,9 +27,9 @@ class EmailController extends Controller
      * @Route("/view/{id}", name="oro_email_view", requirements={"id"="\d+"})
      * @Acl(
      *      id="oro_email_view",
-     *      type="action",
-     *      label="View email",
-     *      group_name=""
+     *      type="entity",
+     *      class="OroEmailBundle:Email",
+     *      permission="VIEW"
      * )
      * @Template
      */

@@ -5,4 +5,6 @@ oro_entity_config:
                 type:
                     options:
                         auditable: false
+                        internal: true
+                permissions: ~
                 group_name: ~

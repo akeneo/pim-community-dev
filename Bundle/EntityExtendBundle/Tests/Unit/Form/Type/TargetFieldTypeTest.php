@@ -2,16 +2,16 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Tests\Unit\Form\Type;
 
-use Oro\Bundle\EntityExtendBundle\Form\Type\TargetFieldType;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
+use Oro\Bundle\EntityExtendBundle\Form\Type\TargetFieldType;
+
 class TargetFieldTypeTest extends TypeTestCase
 {
-    /** @var  ConfigManager */
     protected $configManager;
-
-    /** @var  Request */
     protected $request;
 
     /** @var  TargetFieldType */
@@ -23,17 +23,11 @@ class TargetFieldTypeTest extends TypeTestCase
 
         $this->configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()
-            ->setMethods(array('getEntityManager', 'getIds'))
             ->getMock();
 
         $this->request = new Request();
 
         $this->type = new TargetFieldType($this->configManager, $this->request);
-    }
-
-    public function testType()
-    {
-
     }
 
     public function testNames()

@@ -60,7 +60,6 @@ class EntityConfigRepositoryTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         //$entityConfig->expects($this->once())->method('setActiveConfig');
-
         //$this->repository->createConfig($this->config);
     }
 
