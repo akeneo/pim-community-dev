@@ -116,7 +116,7 @@
                     {{ form_widget(form.file) }}
                 {% else %}
                     {{ form_widget(form.file, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
-                    {{ form_widget(form.removed, {'attr': { 'class': 'noswitch hide' }}) }}
+                    {{ form_widget(form.removed, {'attr': { 'class': 'hide' }}) }}
                 {% endif %}
             </label>
             <div class="icons-container">
@@ -153,7 +153,7 @@
                     {{ form_widget(form.file) }}
                 {% else %}
                     {{ form_widget(form.file, { 'attr': { 'class': 'hide', 'disabled': 'disabled' }}) }}
-                    {{ form_widget(form.removed, { 'attr': { 'class': 'noswitch hide' }}) }}
+                    {{ form_widget(form.removed, { 'attr': { 'class': 'hide' }}) }}
                 {% endif %}
             </label>
             <div class="icons-container">
@@ -166,14 +166,16 @@
 {% endblock %}
 
 {% block widget_attributes %}
-{% if attr.class is defined %}
-    {% if 'noswitch' not in attr.class and 'input-' not in attr.class %}
-        {% set class = attr.class ~ ' input-large' %}
+{% if attr.size is not defined %}
+    {% if attr.class is defined %}
+        {% if 'input-' not in attr.class %}
+            {% set class = attr.class ~ ' input-large' %}
+        {% else %}
+            {% set class = attr.class %}
+        {% endif %}
     {% else %}
-        {% set class = attr.class %}
+        {% set class = 'input-large' %}
     {% endif %}
-{% else %}
-    {% set class = 'input-large' %}
 {% endif %}
 {% set attr = attr|merge({'class': class }) %}
 {% spaceless %}
