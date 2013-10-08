@@ -24,13 +24,11 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $this->formFactory    = $this->getFormFactoryMock();
         $this->productManager = $this->getProductManagerMock();
-        $this->channelManager = $this->getChannelManagerMock();
         $this->localeManager  = $this->getLocaleManagerMock();
 
         $this->processor = new ValidProductCreationProcessor(
             $this->formFactory,
             $this->productManager,
-            $this->channelManager,
             $this->localeManager
         );
     }
@@ -63,7 +61,6 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->with(
                 array(
                     ProductEnabledConverter::ENABLED_KEY       => true,
-                    ProductValueConverter::SCOPE_KEY           => 'ecommerce',
                     ProductFamilyConverter::FAMILY_KEY         => 'vehicle',
                     ProductCategoriesConverter::CATEGORIES_KEY => 'cat_1,cat_2,cat_3',
                     'sku'                                      => 'foo-1',
@@ -73,7 +70,6 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $this->processor->setChannel('ecommerce');
         $this->processor->setEnabled(true);
         $this->processor->setFamilyColumn('family');
         $this->processor->setCategoriesColumn('categories');
@@ -192,17 +188,6 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(null));
 
         return $repo;
-    }
-
-    /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\ChannelManager
-     */
-    protected function getChannelManagerMock()
-    {
-        return $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 
     /**
