@@ -1,0 +1,3 @@
+bundles:
+    - Lexik\Bundle\MaintenanceBundle\LexikMaintenanceBundle
+    - Oro\Bundle\PlatformBundle\OroPlatformBundle
