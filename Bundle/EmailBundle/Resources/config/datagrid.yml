@@ -1,21 +1,133 @@
-parameters:
-    oro_email.emailtemplate.datagrid_manager.class:   Oro\Bundle\EmailBundle\Datagrid\EmailTemplateDatagridManager
-    oro_email.emailtemplate.datagrid_view_list.class: Oro\Bundle\EmailBundle\Datagrid\EmailTemplatesViewList
+datagrid:
+    emailtemplate:
+        columns:
+            entityName:
+                type: html                         # cell type (JS)
+                label: Entity name                 # jsmessages.en.yml
+                sortable: true                     # can use sorting (JS, PHP)
+                options:                           # custom options (PHP)
+                    renderer:
+                        type: TwigTemplateProperty
+                        params:
+                            template: "OroNotificationBundle:EmailNotification:Datagrid/Property/entityName.html.twig"
 
-services:
-    oro_email.emailtemplate.datagrid_view_list:
-        class: %oro_email.emailtemplate.datagrid_view_list.class%
-        arguments:
-            - @translator
+            name:
+                type: text
+                label: Template name
+                sortable: true
 
-    oro_email.emailtemplate.datagrid_manager:
-        class: %oro_email.emailtemplate.datagrid_manager.class%
-        arguments: [%oro_config.entities%]
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: emailtemplate
-              entity_name: %oro_email.emailtemplate.entity.class%
-              entity_hint: email template
-              route_name: oro_email_emailtemplate_index
-              identifier_field: "id"
-              views_list: oro_email.emailtemplate.datagrid_view_list
+            isSystem:
+                type: options
+                label: Is System
+                sortable: true
+
+            type:
+                type: options
+                label: Type
+                sortable: true
+
+        ############  FILTERS  ################
+        filters:
+            entityName:
+                type: choice                      # filter type (JS, PHP)
+                show: true                        # show by default
+                options:                          # pass options to filter form type
+                    translation_domain: config    # only if custom (PHP)
+                    choices: @TODO                # implement service/static class call
+
+            name:
+                type: text
+                show: true
+
+            isSystem:
+                type: choice
+                show: true
+                options:
+                    choices: [No, Yes]
+
+            type:
+                type: choice
+                show: true
+                options:
+                    choices:
+                        html: Html
+                        txt:  Plain text
+
+        ############  ROW ACTIONS  ################
+        actions:
+            rowClick:
+                type: redirect
+                acl_resource: oro_email_emailtemplate_update
+                options:
+                    label: Update
+                    link:  update_link
+                    runOnRowClick: true
+
+            update:
+                type: redirect
+                acl_resource: oro_email_emailtemplate_update
+                options:
+                    label: Update
+                    link:  update_link
+                    icon:  edit
+
+            clone:
+                type: redirect
+                acl_resource: oro_email_emailtemplate_create
+                options:
+                    label: Clone
+                    link:  clone_link
+                    icon:  share
+
+            delete:
+                type: delete
+                acl_resource: oro_email_emailtemplate_remove
+                options:
+                    label: Delete
+                    link:  delete_link
+                    icon:  trash
+
+        ############  PROPERTIES  ################
+        properies:
+            id:
+                type: FieldProperty
+
+            update_link:
+                type: UrlProperty
+                params:
+                    - oro_email_emailtemplate_update
+                    - [ id ]
+
+            clone_link:
+                type: UrlProperty
+                params:
+                    - oro_email_emailtemplate_clone
+                    - [ id ]
+
+            delete_link:
+                type: UrlProperty
+                params:
+                    - oro_api_delete_emailtemplate
+                    - [ id ]
+
+            action_configuration:
+                type: ActionConfigurationProperty
+                params:
+                    - @TODO
+
+        ############  OPTIONS  ################
+        options:
+            entity_name: %oro_email.emailtemplate.entity.class%
+            entity_hint: email template
+            route_name:  oro_email_emailtemplate_index
+            views_list:  @TODO
+
+
+
+
+
+
+
+
+
+
