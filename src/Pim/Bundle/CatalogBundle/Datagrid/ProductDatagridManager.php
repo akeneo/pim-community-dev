@@ -488,7 +488,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             );
         }
         if ($this->securityFacade->isGranted('pim_catalog_product_edit')) {
-            new RedirectMassAction(
+            $actions[] = new RedirectMassAction(
                 array(
                     'name'  => 'redirect',
                     'label' => $this->translate('Mass Edition'),
