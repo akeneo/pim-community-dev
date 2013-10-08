@@ -21,10 +21,22 @@ class AuditBuilder
 
     /**
      * @param string $context
+     *
+     * @return AuditBuilder
      */
     public function setContext($context)
     {
         $this->context = $context;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContext()
+    {
+        return $this->context;
     }
 
     /**
