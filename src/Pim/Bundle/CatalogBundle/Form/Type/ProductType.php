@@ -50,27 +50,38 @@ class ProductType extends FlexibleType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add(
-            'family',
-            'entity',
-            array(
-                'class'       => 'PimCatalogBundle:Family',
-                'empty_value' => ''
-            )
-        );
-
         $builder
             ->add(
-                'categories',
+                'family',
                 'entity',
                 array(
+                    'class'       => 'PimCatalogBundle:Family',
+                    'empty_value' => ''
+                )
+            )
+            ->add(
+                'categories',
+                'oro_entity_identifier',
+                array(
                     'class'    => 'PimCatalogBundle:Category',
+                    'required' => true,
+                    'mapped'   => true,
                     'multiple' => true,
                 )
             );
 
         if ($options['import_mode']) {
+            // The product category converter works on a classic entity form type scheme
             $builder
+                ->remove('categories')
+                ->add(
+                    'categories',
+                    'entity',
+                    array(
+                        'class'    => 'PimCatalogBundle:Category',
+                        'multiple' => true,
+                    )
+                )
                 ->addEventSubscriber($this->transformer)
                 ->addEventSubscriber(new IgnoreMissingFieldDataSubscriber());
         }
