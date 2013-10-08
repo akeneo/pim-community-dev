@@ -224,10 +224,10 @@ class TranslatableFieldTypeTest extends TypeTestCase
 
         return $helper;
     }
-    
+
     /**
      * Get ACL SecurityFacade mock
-     * 
+     *
      * @return \Oro\Bundle\SecurityBundle\SecurityFacade
      */
     protected function getSecurityFacadeMock()

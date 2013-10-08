@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
-use Oro\Bundle\UserBundle\Acl\ManagerInterface as AclManagerInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use JMS\Serializer\Annotation\Exclude;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -42,15 +41,15 @@ class MassEditActionOperator
 
     /**
      * The defined operations, indexed by code
-     * 
+     *
      * @var MassEditActionInterface[] $operations
      * @Exclude
      */
     protected $operations = array();
-    
+
     /**
      * The default acls for each configured operation, indexed by code
-     * 
+     *
      * @var string[] $acls
      */
     protected $acls = array();
@@ -70,6 +69,7 @@ class MassEditActionOperator
      *
      * @param string                  $alias
      * @param MassEditActionInterface $operation
+     * @param string                  $acl
      *
      * @throws \InvalidArgumentException
      */
@@ -101,7 +101,6 @@ class MassEditActionOperator
 
         return $choices;
     }
-
 
     /**
      * Get the batch operation
@@ -193,8 +192,9 @@ class MassEditActionOperator
 
     /**
      * Returns true if the operation is allowed for the current user
-     * 
+     *
      * @param string $operationAlias
+     *
      * @return boolean
      */
     protected function isGranted($operationAlias)

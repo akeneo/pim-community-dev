@@ -256,7 +256,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
         return array(
             'filePath'      => array(),
             'uploadAllowed' => array(
-                'type' => 'checkbox',
+                'type' => 'switch',
             ),
             'delimiter'     => array(),
             'enclosure'     => array(),

@@ -68,7 +68,7 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
             'labelDelimiter'      => array(),
             'localeDelimiter'     => array(),
             'circularRefsChecked' => array(
-                'type' => 'checkbox',
+                'type' => 'switch',
             ),
         );
         $this->assertEquals($configurationFields, $this->processor->getConfigurationFields());

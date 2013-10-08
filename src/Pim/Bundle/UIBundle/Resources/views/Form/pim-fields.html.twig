@@ -116,7 +116,7 @@
                     {{ form_widget(form.file) }}
                 {% else %}
                     {{ form_widget(form.file, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
-                    {{ form_widget(form.removed, {'attr': { 'class': 'noswitch hide' }}) }}
+                    {{ form_widget(form.removed, {'attr': { 'class': 'hide' }}) }}
                 {% endif %}
             </label>
             <div class="icons-container">
@@ -153,7 +153,7 @@
                     {{ form_widget(form.file) }}
                 {% else %}
                     {{ form_widget(form.file, { 'attr': { 'class': 'hide', 'disabled': 'disabled' }}) }}
-                    {{ form_widget(form.removed, { 'attr': { 'class': 'noswitch hide' }}) }}
+                    {{ form_widget(form.removed, { 'attr': { 'class': 'hide' }}) }}
                 {% endif %}
             </label>
             <div class="icons-container">
@@ -166,34 +166,32 @@
 {% endblock %}
 
 {% block widget_attributes %}
-{% if attr.class is defined %}
-    {% if 'noswitch' not in attr.class and 'input-' not in attr.class %}
-        {% set class = attr.class ~ ' input-large' %}
+{% if attr.size is not defined %}
+    {% if attr.class is defined %}
+        {% if 'input-' not in attr.class %}
+            {% set class = attr.class ~ ' input-large' %}
+        {% else %}
+            {% set class = attr.class %}
+        {% endif %}
     {% else %}
-        {% set class = attr.class %}
+        {% set class = 'input-large' %}
     {% endif %}
-{% else %}
-    {% set class = 'input-large' %}
+    {% set attr = attr|merge({'class': class }) %}
 {% endif %}
-{% set attr = attr|merge({'class': class }) %}
 {% spaceless %}
     id="{{ id }}" name="{{ full_name }}"{% if read_only %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif %}
     {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
 {% endspaceless %}
 {% endblock widget_attributes %}
 
-{% block checkbox_widget %}
+{% block switch_widget %}
 {% spaceless %}
-    {% if attr.class is defined and 'noswitch' in attr.class %}
+    <div class="switch switch-{{ attr['size'] }}" data-on-label="{{ attr['data-on-label']|trans }}" data-off-label="{{ attr['data-off-label']|trans }}">
+        {% if required %}{% set required = false %}{% endif %}
         <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
-    {% else %}
-        <div class="switch {% if attr['size'] is defined %}{{ attr['size'] ? 'switch-' ~ attr['size'] : '' }}{% else %}switch-small{% endif %}" data-on-label="{% if attr['data-on-label'] is defined %}{{ attr['data-on-label']|trans }}{% else %}{{ 'Yes'|trans }}{% endif %}" data-off-label="{% if attr['data-off-label'] is defined %}{{ attr['data-off-label']|trans }}{% else %}{{ 'No'|trans }}{% endif %}">
-            {% if required %}{% set required = false %}{% endif %}
-            <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
-        </div>
-    {% endif %}
+    </div>
 {% endspaceless %}
-{% endblock checkbox_widget %}
+{% endblock switch_widget %}
 
 {% block oro_flexibleentity_metric_row %}
 {% spaceless %}

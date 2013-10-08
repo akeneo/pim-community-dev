@@ -54,7 +54,7 @@ class OptionMultiSelectType extends AbstractAttributeType
         $properties = array(
             array(
                 'name'      => 'searchable',
-                'fieldType' => 'checkbox'
+                'fieldType' => 'switch'
             ),
             array(
                 'name'      => 'options',
@@ -62,7 +62,7 @@ class OptionMultiSelectType extends AbstractAttributeType
             ),
             array(
                 'name'      => 'translatable',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
@@ -82,7 +82,7 @@ class OptionMultiSelectType extends AbstractAttributeType
             ),
             array(
                 'name'      => 'unique',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'disabled'  => true,
                     'read_only' => true

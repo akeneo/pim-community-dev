@@ -11,6 +11,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
+use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 
 /**
  * Abstract form type test
@@ -74,6 +75,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
         // redefine form factory and builder to add translatable field
         $this->builder->add('pim_translatable_field');
         $this->builder->add('entity');
+        $this->builder->add('switch');
 
         $this->factory = Forms::createFormFactoryBuilder()
             ->addTypeExtension(
@@ -89,6 +91,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
                 )
             )
             ->addType($this->createEntityType())
+            ->addType(new SwitchType())
             ->getFormFactory();
     }
 
@@ -203,7 +206,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
 
     /**
      * Get ACL SecurityFacade mock
-     * 
+     *
      * @return \Oro\Bundle\SecurityBundle\SecurityFacade
      */
     protected function getSecurityFacadeMock()

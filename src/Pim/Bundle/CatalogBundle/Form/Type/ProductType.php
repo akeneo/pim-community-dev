@@ -49,18 +49,7 @@ class ProductType extends FlexibleType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['enable_state']) {
-            $builder
-                ->add(
-                    'enabled',
-                    'checkbox',
-                    array(
-                        'attr' => array(
-                            'data-on-label'  => 'Enabled',
-                            'data-off-label' => 'Disabled',
-                            'size'           => null
-                        )
-                    )
-                );
+            $builder->add('enabled', 'checkbox');
         }
 
         parent::buildForm($builder, $options);

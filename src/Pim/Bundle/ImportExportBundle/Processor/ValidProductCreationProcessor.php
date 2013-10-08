@@ -213,7 +213,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     {
         return array(
             'enabled'             => array(
-                'type' => 'checkbox',
+                'type' => 'switch',
             ),
             'categoriesColumn'    => array(),
             'familyColumn'        => array(),

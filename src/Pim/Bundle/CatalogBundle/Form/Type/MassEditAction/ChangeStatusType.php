@@ -20,7 +20,7 @@ class ChangeStatusType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('toEnable', 'checkbox');
+        $builder->add('toEnable', 'switch');
     }
 
     /**
