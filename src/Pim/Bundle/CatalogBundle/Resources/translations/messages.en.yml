@@ -361,3 +361,11 @@ pim_catalog.mass_edit_action:
         label:         Change the family of products
         description:   The family of the selected products will be changed to the chosen family
         success_flash: The family of selected product(s) has been successfully changed
+
+# Product completeness
+pim_catalog.completeness:
+    progress_bar.title: '%ratio%% complete (1 required value)|%ratio%% complete (%count% required values)'
+    subtitle:           '{0} Complete|{1} 1 missing value|]1,Inf] %count% missing values'
+    missing_attributes: Missing value|Missing values
+    legend:
+        locale_not_associated: Locale not associated to this channel
