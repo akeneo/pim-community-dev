@@ -67,7 +67,7 @@ services:
         class: Pim\Bundle\CatalogBundle\AttributeType\BooleanType
         arguments:
             - boolean
-            - checkbox
+            - switch
             - '@oro_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: oro_flexibleentity.attributetype, alias: pim_catalog_boolean }
