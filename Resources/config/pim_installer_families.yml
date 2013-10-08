@@ -71,3 +71,26 @@ families:
                 - short_description
                 - color
                 - size
+    dress:
+        labels:
+            en_US: Dress
+            fr_FR: Robe
+        attributes:
+            - sku
+            - name
+            - short_description
+            - size
+            - unique_color
+            - price
+        attributeAsLabel: name
+        requirements:
+            ecommerce:
+                - name
+                - short_description
+                - unique_color
+                - size
+                - price
+            mobile:
+                - name
+                - unique_color
+                - size
