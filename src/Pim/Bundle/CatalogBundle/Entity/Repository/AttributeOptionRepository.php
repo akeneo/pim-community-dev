@@ -25,6 +25,7 @@ class AttributeOptionRepository extends OroAttributeOptionRepository
         return $this->createQueryBuilder('o')
             ->addSelect('OptionValue')
             ->leftJoin('o.optionValues', 'OptionValue')
-            ->where('o.attribute = '.(int) $attribute->getId());
+            ->where('o.attribute = '.(int) $attribute->getId())
+            ->orderBy('o.sortOrder');
     }
 }
