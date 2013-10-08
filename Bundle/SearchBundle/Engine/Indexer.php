@@ -9,6 +9,7 @@ use Oro\Bundle\SearchBundle\Query\Parser;
 use Oro\Bundle\SearchBundle\Query\Result;
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Oro\Bundle\SearchBundle\Engine\AbstractEngine;
+use Oro\Bundle\SearchBundle\Security\SecurityProvider;
 
 class Indexer
 {
@@ -36,23 +37,23 @@ class Indexer
      */
     protected $mapper;
 
-    protected $securityFacade;
-
-    protected $entitySecurityMetadataProvider;
+    /**
+     * @var SecurityProvider
+     */
+    protected $securityProvider;
 
     /**
      * @param ObjectManager $em
      * @param AbstractEngine $adapter
      * @param ObjectMapper $mapper
-     * @param $entitySecurityMetadataProvider
+     * @param SecurityProvider $securityProvider
      */
-    public function __construct(ObjectManager $em, AbstractEngine $adapter, ObjectMapper $mapper, $securityFacade = null,  $entitySecurityMetadataProvider = null)
+    public function __construct(ObjectManager $em, AbstractEngine $adapter, ObjectMapper $mapper, SecurityProvider $securityProvider)
     {
         $this->em      = $em;
         $this->adapter = $adapter;
         $this->mapper  = $mapper;
-        $this->securityFacade = $securityFacade;
-        $this->entitySecurityMetadataProvider = $entitySecurityMetadataProvider;
+        $this->securityProvider = $securityProvider;
     }
 
     /**
@@ -72,9 +73,7 @@ class Indexer
      */
     public function getAllowedEntitiesListAliases()
     {
-        return $this->entitySecurityMetadataProvider
-            ? $this->filterAllowedEntities(self::SEARCH_ENTITY_PERMISSION, $this->getEntitiesListAliases())
-            : $this->getEntitiesListAliases();
+        return $this->filterAllowedEntities(self::SEARCH_ENTITY_PERMISSION, $this->getEntitiesListAliases());
     }
 
     /**
@@ -135,16 +134,14 @@ class Indexer
      */
     public function query(Query $query)
     {
-        if ($this->securityFacade) {
-            $this->applyAclToQuery($query);
-            // we haven't allowed entities, so return null search result
-            if (count($query->getFrom()) == 0) {
+        $this->applyAclToQuery($query);
+        // we haven't allowed entities, so return null search result
+        if (count($query->getFrom()) == 0) {
 
-                return new Result($query, array(), 0);
-            }
-        } else {
-            return $this->adapter->search($query);
+            return new Result($query, array(), 0);
         }
+
+        return $this->adapter->search($query);
     }
 
     /**
@@ -197,8 +194,8 @@ class Indexer
         foreach (array_keys($entities) as $entityClass) {
             $objectString = 'Entity:' . $entityClass;
 
-            if ($this->entitySecurityMetadataProvider->isProtectedEntity($entityClass)
-                && !$this->securityFacade->isGranted($attribute, $objectString))
+            if ($this->securityProvider->isProtectedEntity($entityClass)
+                && !$this->securityProvider->isGranted($attribute, $objectString))
             {
                 unset ($entities[$entityClass]);
             }
