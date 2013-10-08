@@ -1062,7 +1062,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         foreach ($table->getRowsHash() as $type => $fields) {
             $this->iSelectTheAttributeType($type);
-            $this->iShouldSeeTheFields($fields);
+            try {
+                $this->iShouldSeeTheFields($fields);
+            } catch (ExpectationException $e) {
+                throw $this->createExpectationException(sprintf('%s: %s', $type, $e->getMessage()));
+            }
         }
     }
 
