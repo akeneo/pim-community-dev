@@ -897,6 +897,14 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Then /^there should be a "([^"]*)" user$/
+     */
+    public function thereShouldBeAUser($username)
+    {
+        $this->getUser($username);
+    }
+
+    /**
      * @param string $username
      *
      * @return User
