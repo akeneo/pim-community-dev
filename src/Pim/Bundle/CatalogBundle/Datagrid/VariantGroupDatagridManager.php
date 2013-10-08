@@ -217,6 +217,6 @@ class VariantGroupDatagridManager extends DatagridManager
      */
     protected function getCurrentLocale()
     {
-        return $this->localeManager->getUserLocaleCode();
+        return $this->localeManager->getUserLocale()->getCode();
     }
 }
