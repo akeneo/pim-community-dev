@@ -79,6 +79,7 @@ class TranslatableFieldType extends AbstractType
         $subscriber = new AddTranslatableFieldSubscriber(
             $builder->getFormFactory(),
             $this->validator,
+            $this->localeManager,
             $this->localeHelper,
             $options
         );

@@ -12,6 +12,7 @@ use Doctrine\Common\Inflector\Inflector;
 use Pim\Bundle\TranslationBundle\Exception\MissingOptionException;
 use Pim\Bundle\TranslationBundle\Factory\TranslationFactory;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
  * Define subscriber for translation fields
@@ -48,6 +49,11 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     protected $localeHelper;
 
     /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
      * Constructor
      *
      * @param FormFactoryInterface $formFactory
@@ -58,12 +64,14 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     public function __construct(
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
+        LocaleManager $localeManager,
         LocaleHelper $localeHelper,
         array $options
     ) {
         $this->formFactory        = $formFactory;
         $this->validator          = $validator;
-        $this->localeHelper = $localeHelper;
+        $this->localeManager      = $localeManager;
+        $this->localeHelper       = $localeHelper;
         $this->options            = $options;
 
         $this->translationFactory = new TranslationFactory(
@@ -171,10 +179,10 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         $entity = $form->getParent()->getData();
 
         $translations = $this->bindTranslations($data);
+
         foreach ($translations as $binded) {
             $content = $form->get($binded['fieldName'])->getData();
             $translation = $binded['translation'];
-
             if ($content !== null) {
                 $method = 'set'.Inflector::camelize($this->getOption('field'));
                 $translation->$method($content);
@@ -228,10 +236,13 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      */
     protected function getFieldNames()
     {
+        $userLocales = $this->localeManager->getUserCodes();
         $collection = array();
 
         foreach ($this->getOption('locales') as $locale) {
-            $collection[$locale] = $locale;
+            if (in_array($locale, $userLocales)) {
+                $collection[$locale] = $locale;
+            }
         }
 
         return $collection;

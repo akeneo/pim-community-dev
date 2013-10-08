@@ -5,14 +5,16 @@ namespace Pim\Bundle\GridBundle\Action\MassAction;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionMediator;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionResponseInterface;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionDispatcher as OroMassActionDispatcher;
-use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
+
+use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
 
 /**
  * Extends Oro MassActionDispatcher to add category filters
  */
 class MassActionDispatcher extends OroMassActionDispatcher
 {
+
     /**
      * @param string $datagridName
      * @param string $actionName

@@ -24,7 +24,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Form\Type\CategoryType;
 use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
@@ -54,11 +53,6 @@ class CategoryTreeController extends AbstractDoctrineController
     private $categoryManager;
 
     /**
-     * @var CategoryType
-     */
-    private $categoryType;
-
-    /**
      * Constructor
      *
      * @param Request                  $request
@@ -72,7 +66,6 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param GridRenderer             $gridRenderer
      * @param DatagridWorkerInterface  $dataGridWorker
      * @param CategoryManager          $categoryManager
-     * @param CategoryType             $categoryType
      */
     public function __construct(
         Request $request,
@@ -85,8 +78,7 @@ class CategoryTreeController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $dataGridWorker,
-        CategoryManager $categoryManager,
-        CategoryType $categoryType
+        CategoryManager $categoryManager
     ) {
         parent::__construct(
             $request,
@@ -102,7 +94,6 @@ class CategoryTreeController extends AbstractDoctrineController
         $this->gridRenderer    = $gridRenderer;
         $this->dataGridWorker  = $dataGridWorker;
         $this->categoryManager = $categoryManager;
-        $this->categoryType    = $categoryType;
     }
 
     /**
@@ -263,7 +254,7 @@ class CategoryTreeController extends AbstractDoctrineController
 
         $category->setCode($request->get('label'));
 
-        $form = $this->createForm($this->categoryType, $category);
+        $form = $this->createForm('pim_category', $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -310,7 +301,7 @@ class CategoryTreeController extends AbstractDoctrineController
             return $this->gridRenderer->renderResultsJsonResponse($datagrid->createView());
         }
 
-        $form = $this->createForm($this->categoryType, $category);
+        $form = $this->createForm('pim_category', $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -375,5 +366,16 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         return $category;
+    }
+
+    /**
+     * Gets the options for the form
+     * 
+     * @param Category $category
+     * @return array
+     */
+    protected function getFormOptions(Category $category)
+    {
+        return array();
     }
 }
