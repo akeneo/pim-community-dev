@@ -138,8 +138,7 @@ class InstallCommand extends ContainerAwareCommand
             ->runCommand('assets:install', $output)
             ->runCommand('assetic:dump', $output)
             ->runCommand('oro:assetic:dump', $output)
-            ->runCommand('oro:translation:dump', $output)
-            ->runCommand('oro:requirejs:config', $output);
+            ->runCommand('oro:translation:dump', $output);
 
         $params = $this->getContainer()->get('oro_installer.yaml_persister')->parse();
 

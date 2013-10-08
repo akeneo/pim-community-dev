@@ -28,9 +28,9 @@ class OroRequireJSExtension extends \Twig_Extension
     {
         $container = $this->container;
         return array(
-            new \Twig_SimpleFunction('get_requirejs_config_path', function () use ($container) {
-                return $container->getParameter('oro_require_js.config_path');
-            }),
+            new \Twig_SimpleFunction('get_requirejs_config', function () use ($container) {
+                return $container->get('oro_requirejs_config_provider')->getMainConfig();
+            }, array('is_safe' => array('html'))),
             new \Twig_SimpleFunction('get_requirejs_build_path', function () use ($container) {
                 return $container->getParameter('oro_require_js.build_path');
             }),

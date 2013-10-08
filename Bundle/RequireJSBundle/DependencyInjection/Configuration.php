@@ -19,7 +19,6 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $treeBuilder->root('oro_require_js')
             ->children()
-                ->scalarNode('config_path')->defaultValue('js/require-config.js')->end()
                 ->arrayNode('config')
                     ->addDefaultsIfNotSet()
                     ->children()

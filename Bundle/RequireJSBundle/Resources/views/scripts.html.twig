@@ -11,7 +11,9 @@
     <script type="text/javascript" src="{{ asset(get_requirejs_build_path()) }}"></script>
 {% else %}
     <script type="text/javascript" src="{{ asset('bundles/ororequirejs/lib/require.js') }}"></script>
-    <script type="text/javascript" src="{{ asset(get_requirejs_config_path()) }}"></script>
+    <script type="text/javascript">
+        {{ get_requirejs_config() }}
+    </script>
     <script type="text/javascript">
         {% placeholder requirejs_config_extend %}
     </script>

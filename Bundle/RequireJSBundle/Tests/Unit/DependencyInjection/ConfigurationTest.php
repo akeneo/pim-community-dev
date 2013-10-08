@@ -78,7 +78,6 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     'js_engine' => 'node',
-                    'config_path' => 'js/require-config.js',
                     'config' => array(),
                     'web_root' => '%kernel.root_dir%/../web',
                     'build_path' => 'js/app.min.js',
@@ -91,7 +90,6 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    'config_path' => 'js/test/require-config.js',
                     'config' => array(
                         'waitSeconds' => 0,
                         'enforceDefine' => true,
@@ -109,7 +107,6 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                     )
                 ),
                 array(
-                    'config_path' => 'js/test/require-config.js',
                     'config' => array(
                         'waitSeconds' => 0,
                         'enforceDefine' => true,

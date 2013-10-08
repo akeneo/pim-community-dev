@@ -6,17 +6,29 @@ use Oro\Bundle\RequireJSBundle\Twig\OroRequireJSExtension;
 class OroRequireJSExtensionTest extends \PHPUnit_Framework_TestCase
 {
     protected $functions = array(
-        'get_requirejs_config_path' => array('oro_require_js.config_path', 'require-config.js'),
-        'get_requirejs_build_path' => array('oro_require_js.build_path', 'oro.min.js'),
+        'get_requirejs_config' => '{"config": "test"}',
+        'get_requirejs_build_path' => 'oro.min.js',
         'requirejs_build_exists' => array(),
+    );
+
+    protected $parameters = array(
+        array('oro_require_js.build_path', 'oro.min.js')
     );
 
     public function testGetFunctions()
     {
+        $configProvider = $this->getMock('Oro\Bundle\RequireJSBundle\Provider\Config', array(), array(), '', false);
+        $configProvider->expects($this->any())
+            ->method('getMainConfig')
+            ->will($this->returnValue($this->functions['get_requirejs_config']));
+
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $container->expects($this->any())
             ->method('getParameter')
-            ->will($this->returnValueMap(array_values($this->functions)));
+            ->will($this->returnValueMap($this->parameters));
+        $container->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue($configProvider));
 
         $extension = new OroRequireJSExtension($container);
 
@@ -29,7 +41,7 @@ class OroRequireJSExtensionTest extends \PHPUnit_Framework_TestCase
                 $this->assertInternalType('boolean', call_user_func($function->getCallable()));
             } else {
                 $this->assertEquals(
-                    $this->functions[$function->getName()][1],
+                    $this->functions[$function->getName()],
                     call_user_func($function->getCallable())
                 );
             }

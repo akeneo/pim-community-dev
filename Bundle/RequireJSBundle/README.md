@@ -2,19 +2,18 @@ OroRequireJSBundle
 ====================
 This bundle provides easy way to:
 
- -  generates requirejs-config file for a project;
+ -  generates require.js config file for a project;
  -  optimizes, minify and merge all JS-file into one resources.
 
 For details of configuration options see [RequireJS API].<br />
 For details of build options see [example.build.js].
 
-## Requirejs-config generation
+## Require.js config generation
 ### Configuration
-Common options for requirejs-config are placed in ```app/config.yml```:
+Common options for require.js config are placed in ```app/config.yml```:
 
     oro_require_js:
-        config_path: "js/require-config.js"     # relative path from document root folder to requirejs-config file
-        config:                                 # common options which will eventually get into requirejs-config file
+        config:                                 # common options which will eventually get into require.js config file
             waitSeconds: 0
             enforceDefine: true
             scriptType: 'text/javascript'
@@ -39,19 +38,11 @@ Each bundle's javascript module have to be defined in ```paths``` section, where
             'oro/jquery-setup': 'bundles/oroui/js/jquery-setup.js'
 
 ### Generation
-Config generation process is run with command:
+Main require.js config is generated automatically and embedded in HTML-page. The config is stored in application cache. So if you want, for some reason, renew a require.js configuration, then just clean a cache.
 
-    php app/console oro:requirejs:config
+## Runtime main require.js config extension
 
-Script will:
-
- 1. take initial configuration from ```oro_require_js.config``` (```app/config.yml```);
- 1. go over all defined bundles and extend it with configuration from ```requirejs.yml``` files;
- 1. save generated config in to ```oro_require_js.config_path``` (by default it is ```js/require-config.js```).
-
-## Runtime requirejs-config extension
-
-Sometimes it is necessary to modify requirejs configuration on a fly (e.g. to set ```baseUrl``` for all JS-resources or define module with dynamic URL).
+Sometimes it is necessary to modify require.js configuration on a fly (e.g. to set ```baseUrl``` for all JS-resources or define module with dynamic URL).
 It is possible to do over Twig extension ```placeholder``` (provided by OroUIBundle).
 In ```%BundleName%\Resources\config\placeholders.yml``` define a twig template for placeholder ```requirejs_config_extend```:
 
