@@ -33,7 +33,7 @@ class AddContextListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
-    public function testCddContext()
+    public function testAddContext()
     {
         $builder  = new AuditBuilder();
         $listener = new AddContextListener($builder);
