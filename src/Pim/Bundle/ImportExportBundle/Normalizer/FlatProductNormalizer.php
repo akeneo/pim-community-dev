@@ -64,12 +64,7 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $this->results = array();
-
-        $this->results = array_merge(
-            $this->results, 
-            $this->normalizeValue($identifier = $object->getIdentifier())
-        );
+        $this->results = $this->normalizeValue($identifier = $object->getIdentifier());
 
         $this->normalizeFamily($object->getFamily());
 
