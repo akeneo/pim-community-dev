@@ -31,7 +31,7 @@ class OroEntityExtension extends Extension
         $loader->load('orm.yml');
         $loader->load('ownership.yml');
         $loader->load('form_type.yml');
-        $loader->load('datagrid.yml');
+//        $loader->load('datagrid.yml');
         $loader->load('services.yml');
     }
 

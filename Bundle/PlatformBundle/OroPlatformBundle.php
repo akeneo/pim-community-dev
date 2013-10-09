@@ -25,7 +25,7 @@ class OroPlatformBundle extends Bundle
             new \Oro\Bundle\NavigationBundle\OroNavigationBundle(),
             new \Oro\Bundle\ConfigBundle\OroConfigBundle(),
             new \Oro\Bundle\FilterBundle\OroFilterBundle(),
-            new \Oro\Bundle\GridBundle\OroGridBundle(),
+//            new \Oro\Bundle\GridBundle\OroGridBundle(),
             new \Oro\Bundle\WindowsBundle\OroWindowsBundle(),
             new \Oro\Bundle\AddressBundle\OroAddressBundle(),
             new \Oro\Bundle\DataAuditBundle\OroDataAuditBundle(),
@@ -48,6 +48,7 @@ class OroPlatformBundle extends Bundle
             new \Oro\Bundle\BatchBundle\OroBatchBundle(),
             new \Oro\Bundle\ImportExportBundle\OroImportExportBundle(),
             new \Oro\Bundle\RequireJSBundle\OroRequireJSBundle(),
+            new \Oro\Bundle\DataGridBundle\OroDataGridBundle(),
         );
     }
 }
