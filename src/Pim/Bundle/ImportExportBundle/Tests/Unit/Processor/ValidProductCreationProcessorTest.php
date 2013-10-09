@@ -7,6 +7,7 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
  * Test related class
@@ -254,7 +255,25 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getProductMock()
     {
-        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+
+        $attName = new ProductAttribute();
+        $attName->setCode('name');
+        $attName->setTranslatable(true);
+        $attName->setScopable(false);
+        $attDesc = new ProductAttribute();
+        $attDesc->setCode('name');
+        $attDesc->setTranslatable(false);
+        $attDesc->setScopable(false);
+        $attributes = array(
+            'name' => $attName,
+            'description' => $attDesc
+        );
+        $product->expects($this->any())
+            ->method('getAllAttributes')
+            ->will($this->returnValue($attributes));
+
+        return $product;
     }
 
     /**
