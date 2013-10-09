@@ -68,7 +68,6 @@ class LoadJobInstanceData extends AbstractDemoFixture
                         'enabled'          => true,
                         'categoriesColumn' => 'categories',
                         'familyColumn'     => 'family',
-                        'channel'          => 'ecommerce'
                     ),
                     'writer' => array()
                 )
