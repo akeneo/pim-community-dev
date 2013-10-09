@@ -2,16 +2,17 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Oro\Bundle\GridBundle\Filter\FilterInterface;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
+use Pim\Bundle\GridBundle\Filter\FilterInterface;
 
 /**
  * Product datagrid to link products to variant groups
@@ -33,6 +34,17 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
     protected $hasProductExpression;
 
     /**
+     * Define constructor to add new price type
+     */
+    public function __construct()
+    {
+        self::$typeMatches['prices'] = array(
+            'field'  => FieldDescriptionInterface::TYPE_OPTIONS,
+            'filter' => FilterInterface::TYPE_CURRENCY
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
@@ -48,6 +60,8 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
             $field = $this->createFlexibleField($attribute);
             $fieldsCollection->add($field);
         }
+
+        $this->createFlexibleFilters($fieldsCollection);
 
         $field = $this->createFamilyField();
         $fieldsCollection->add($field);
@@ -93,6 +107,10 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
 
         $result['show_filter'] = $attribute->getAttributeType() === 'pim_catalog_identifier';
 
+        if (!in_array($attribute->getId(), $this->getVariantGroup()->getAttributeIds())) {
+            $result['show_column'] = false;
+        }
+
         return $result;
     }
 
@@ -118,6 +136,36 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         }
 
         return $this->hasProductExpression;
+    }
+
+    /**
+     * Create flexible filters when attributes are defined as filterable
+     * and are not already in the fields collection
+     *
+     * @param FieldDescriptionCollection $fieldsCollection
+     */
+    protected function createFlexibleFilters(FieldDescriptionCollection $fieldsCollection)
+    {
+        $excludedBackend = array(
+            AbstractAttributeType::BACKEND_TYPE_MEDIA
+        );
+
+        foreach ($this->getFlexibleAttributes() as $attribute) {
+            if (!$attribute->isUseableAsGridColumn() || !$attribute->isUseableAsGridFilter()) {
+                continue;
+            }
+
+            if (in_array($attribute->getBackendType(), $excludedBackend)) {
+                continue;
+            }
+
+            if (in_array($attribute->getId(), $this->getVariantGroup()->getAttributeIds())) {
+                continue;
+            }
+
+            $field = $this->createFlexibleField($attribute);
+            $fieldsCollection->add($field);
+        }
     }
 
     /**
