@@ -205,8 +205,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         $product = $this->productManager->findByIdentifier(reset($item));
         if (!$product) {
             $product = $this->productManager->createProduct();
-        } else {
-            $product->getCategories()->count();
         }
 
         $allAttributes = $product->getAllAttributes();
@@ -234,19 +232,9 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
                 }
             }
 
-            /*
-             * TODO : why reset data ?
-             */
-            if ($locale) {
-                $product->setLocale($locale);
-            }
-
-            if ($scope) {
-                $product->setScope($scope);
-            }
-
-            if (false === $product->{'get'.ucfirst($code)}()) {
-                $product->{'set'.ucfirst($code)}(null);
+            if (false === $product->getValue($code, $locale, $scope)) {
+                $value = $product->createValue($code, $locale, $scope);
+                $product->addValue($value);
             }
         }
 
