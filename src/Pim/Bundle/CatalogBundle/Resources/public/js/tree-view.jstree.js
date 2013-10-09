@@ -67,7 +67,7 @@
             };
 
             function updateGrid(treeId, categoryId) {
-                var collection = Registry.getElement('datagrid', 'products').collection;
+                var collection = Registry.getElement('datagrid', 'product').collection;
                 if (collection.setCategory(treeId, categoryId)) {
                     $('.grid-toolbar .icon-refresh').click();
                 }
