@@ -42,7 +42,17 @@ define(
                 // Save and restore activated form tabs and groups
                 function saveFormState() {
                     var activeTab   = $('#form-navbar').find('li.active').find('a').attr('href'),
-                        activeGroup = $('.tab-groups').find('li.tab.active').find('a').attr('href');
+                        $activeGroup = $('.tab-pane.active').find('.tab-groups').find('li.active').find('a'),
+                        activeGroup;
+
+                    if ($activeGroup.length) {
+                        activeGroup = $activeGroup.attr('href');
+                        if (!activeGroup || activeGroup === '#' || activeGroup.indexOf('javascript') === 0) {
+                            activeGroup = $activeGroup.attr('id') ? '#' + $activeGroup.attr('id') : null;
+                        }
+                    } else {
+                        activeGroup = null;
+                    }
 
                     if (activeTab) {
                         sessionStorage.activeTab = activeTab;
@@ -67,6 +77,12 @@ define(
                         if ($activeGroup.length && !$('.loading-mask').is(':visible')) {
                             $activeGroup.tab('show');
                             sessionStorage.removeItem('activeGroup');
+                        } else {
+                            var $tree = $('[data-selected-tree]');
+                            if ($tree.length && !$('.loading-mask').is(':visible')) {
+                                $tree.attr('data-selected-tree', sessionStorage.activeGroup.match(/\d/g).join(''));
+                                sessionStorage.removeItem('activeGroup');
+                            }
                         }
                     }
                 }

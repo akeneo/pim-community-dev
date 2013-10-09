@@ -301,6 +301,10 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
             ->method('getTranslatable')
             ->will($this->returnValue($translatable));
 
+        $attribute->expects($this->any())
+            ->method('getVirtualGroup')
+            ->will($this->returnValue($this->getMock('Pim\Bundle\CatalogBundle\Entity\AttributeGroup')));
+
         return $attribute;
     }
 
