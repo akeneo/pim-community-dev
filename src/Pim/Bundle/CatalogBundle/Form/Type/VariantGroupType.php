@@ -25,34 +25,84 @@ class VariantGroupType extends AbstractType
     {
         $builder->add('code');
 
-        $builder
-            ->add(
-                'label',
-                'pim_translatable_field',
-                array(
-                    'field'             => 'label',
-                    'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\VariantGroupTranslation',
-                    'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\VariantGroup',
-                    'property_path'     => 'translations'
-                )
-            );
+        $this->addLabelField($builder);
 
-        $builder
-            ->add(
-                'attributes',
-                'entity',
-                array(
-                    'label'    => 'Axis',
-                    'required' => true,
-                    'multiple' => true,
-                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
-                    'query_builder' => function (ProductAttributeRepository $repository) {
-                        return $repository->findAllAxisQB();
-                    }
-                )
-            );
+        $this->addAttributesField($builder);
+
+        $this->addProductsField($builder);
 
         $builder->addEventSubscriber(new VariantGroupSubscriber());
+    }
+
+    /**
+     * Add label field
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addLabelField(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            'label',
+            'pim_translatable_field',
+            array(
+                'field'             => 'label',
+                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\VariantGroupTranslation',
+                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\VariantGroup',
+                'property_path'     => 'translations'
+            )
+        );
+    }
+
+    /**
+     * Add attributes field
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addAttributesField(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            'attributes',
+            'entity',
+            array(
+                'label'    => 'Axis',
+                'required' => true,
+                'multiple' => true,
+                'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                'query_builder' => function (ProductAttributeRepository $repository) {
+                    return $repository->findAllAxisQB();
+                }
+            )
+        );
+    }
+
+    /**
+     * Add products field with append/remove hidden fields
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addProductsField(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            'appendProducts',
+            'oro_entity_identifier',
+            array(
+                'class'    => 'Pim\Bundle\CatalogBundle\Entity\Product',
+                'required' => false,
+                'mapped'   => false,
+                'multiple' => true
+            )
+        );
+
+        $builder->add(
+            'removeProducts',
+            'oro_entity_identifier',
+            array(
+                'class'    => 'Pim\Bundle\CatalogBundle\Entity\Product',
+                'required' => false,
+                'mapped'   => false,
+                'multiple' => true
+            )
+        );
     }
 
     /**
