@@ -42,7 +42,7 @@
         {% if form.vars.value.id and resource_granted("pim_catalog_category_remove") %}
             {{ elements.deleteLink(
                 path('pim_catalog_categorytree_remove', { id: form.vars.value.id }),
-                path('pim_catalog_categorytree_create'),
+                form.vars.value.parent ? path('pim_catalog_categorytree_edit', { id: form.vars.value.parent.id }) : path('pim_catalog_categorytree_create'),
                 'confirmation.remove.category'|trans({ '%name%': form.vars.value.label }) ~ '<br />'
                 ~ 'info.category.remove children'|trans ~ '<br />'
                 ~ 'info.category.keep products'|trans,
