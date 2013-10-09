@@ -17,4 +17,4 @@ services:
             - %oro_grid.datagrid.base.class%
 
     oro_email.grid.query_builder:
-        class: Oro\Bundle\EmailBundle\Provider\QueryBuilder
+        class: Oro\Bundle\DataGridBundle\Provider\QueryBuilder

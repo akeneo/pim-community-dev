@@ -32,28 +32,31 @@ class SystemAwareResolver implements ContainerAwareInterface
             }
 
             switch (true) {
-                // static call @class:method
-                case preg_match('#@([\w\._]+)::([\w\._]+)#', $val, $match):
-                    $class = $match[1];
+                // static call class:method or class::const
+                case preg_match('#%([\w\._]+)%::([\w\._]+)#', $val, $match):
+                    // with class as param
+                    $class = $this->container->getParameter($match[1]);
+                    // fall-through
+                case preg_match('#([^%:\s]+)::([\w\._]+)#', $val, $match):
+                    // with class real name
+                    $class = isset($class) ? $class : $match[1];
                     $method = $match[2];
-
-                    $val = $class::$method($datagridName, $key);
+                    if (is_callable(array($class, $method))) {
+                        $val = $class::$method($datagridName, $key);
+                    }
+                    if (defined("$class::$method")) {
+                        $val = constant("$class::$method");
+                    }
                     break;
-
                 // service method call @service->method
                 case preg_match('#@([\w\._]+)->([\w\._]+)#', $val, $match):
                     $service = $match[1];
                     $method = $match[2];
-
-                    $val = $this->container->get($service)->$method($datagridName, $key);
+                    $val = $this->container
+                        ->get($service)
+                        ->$method($datagridName, $key);
                     break;
-
-                // constant class::method
-                case preg_match('#([\w\._]+)::([\w\._]+)#i', $val, $match):
-                    $class = $match[1];
-                    $constant = $match[2];
-
-                    $val = $class::$constant;
+                default:
                     break;
             }
 
@@ -61,29 +64,6 @@ class SystemAwareResolver implements ContainerAwareInterface
         }
 
         return $datagridDefinition;
-    }
-
-    /**
-     * @param $content
-     *
-     * @return array
-     */
-    public function parse($content)
-    {
-        $data = Yaml::parse($content, false, true);
-
-        if (empty($data['datagrid'])) {
-            return false;
-        }
-
-        $datagridArray = $data['datagrid'];
-
-        $iterator = new \ArrayIterator($datagridArray);
-        foreach ($iterator as $datagridName => $datagrid) {
-            $datagridArray[$datagridName] = $this->resolve($datagridName, $datagrid);
-        }
-
-        return $datagridArray;
     }
 
     /**
