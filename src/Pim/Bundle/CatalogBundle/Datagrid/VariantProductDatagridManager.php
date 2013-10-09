@@ -85,6 +85,18 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function getFlexibleFieldOptions(AbstractAttribute $attribute, array $options = array())
+    {
+        $result = parent::getFlexibleFieldOptions($attribute, $options);
+
+        $result['show_filter'] = $attribute->getAttributeType() === 'pim_catalog_identifier';
+
+        return $result;
+    }
+
+    /**
      * Get expression for assigned checkbox
      *
      * @return string
