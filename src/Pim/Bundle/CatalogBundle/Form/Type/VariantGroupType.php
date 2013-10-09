@@ -25,6 +25,22 @@ class VariantGroupType extends AbstractType
     {
         $builder->add('code');
 
+        $this->addLabelField($builder);
+
+        $this->addAttributesField($builder);
+
+        $this->addProductsField($builder);
+
+        $builder->addEventSubscriber(new VariantGroupSubscriber());
+    }
+
+    /**
+     * Add label field
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addLabelField(FormBuilderInterface $builder)
+    {
         $builder->add(
             'label',
             'pim_translatable_field',
@@ -35,7 +51,15 @@ class VariantGroupType extends AbstractType
                 'property_path'     => 'translations'
             )
         );
+    }
 
+    /**
+     * Add attributes field
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addAttributesField(FormBuilderInterface $builder)
+    {
         $builder->add(
             'attributes',
             'entity',
@@ -49,7 +73,15 @@ class VariantGroupType extends AbstractType
                 }
             )
         );
+    }
 
+    /**
+     * Add products field with append/remove hidden fields
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addProductsField(FormBuilderInterface $builder)
+    {
         $builder->add(
             'appendProducts',
             'oro_entity_identifier',
@@ -71,8 +103,6 @@ class VariantGroupType extends AbstractType
                 'multiple' => true
             )
         );
-
-        $builder->addEventSubscriber(new VariantGroupSubscriber());
     }
 
     /**
