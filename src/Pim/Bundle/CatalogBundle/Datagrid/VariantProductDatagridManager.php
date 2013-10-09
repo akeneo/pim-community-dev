@@ -259,9 +259,9 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
     {
         $rootAlias = $proxyQuery->getRootAlias();
 
-        $variantField     = $rootAlias .'.variantGroup';
-        $exprVariantNull  = $proxyQuery->expr()->isNull($variantField);
-        $exprVariantEq    = $proxyQuery->expr()->eq($variantField, $this->getVariantGroup()->getId());
+        $variantField    = $rootAlias .'.variantGroup';
+        $exprVariantNull = $proxyQuery->expr()->isNull($variantField);
+        $exprVariantEq   = $proxyQuery->expr()->eq($variantField, $this->getVariantGroup()->getId());
         $proxyQuery->orWhere($exprVariantEq, $exprVariantNull);
     }
 
