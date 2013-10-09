@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\EmailBundle\Provider;
+namespace Oro\Bundle\DataGridBundle\Provider;
 
 class QueryBuilder
 {
