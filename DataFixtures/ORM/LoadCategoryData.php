@@ -40,7 +40,7 @@ class LoadCategoryData extends AbstractDemoFixture
         $product5 = $this->getReference('product.sku-005');
 
         // create trees
-        $treeCatalog     = $this->createCategory('Master Catalog');
+        $treeCatalog     = $this->getCategory('default');
         $treeCollections = $this->createCategory('Collections');
         $treeColors      = $this->createCategory('Colors');
         $treeSales       = $this->createCategory('Europe Sales Catalog');
@@ -153,6 +153,18 @@ class LoadCategoryData extends AbstractDemoFixture
         $translation->setLabel($label);
 
         return $translation;
+    }
+
+    /**
+     * Get category by code
+     *
+     * @param string $code
+     *
+     * @return Category
+     */
+    public function getCategory($code)
+    {
+        return $this->manager->getRepository('PimCatalogBundle:Category')->findOneByCode($code);
     }
 
     /**
