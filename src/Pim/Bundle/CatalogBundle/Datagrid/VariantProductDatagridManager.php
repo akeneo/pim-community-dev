@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
+
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -27,11 +29,16 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
     private $variantGroup;
 
     /**
+     * @var string
+     */
+    protected $hasProductExpression;
+
+    /**
      * {@inheritdoc}
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $field = $this->createAssignedField();
+        $field = $this->createProductRelationField();
         $fieldsCollection->add($field);
 
         $identifier = $this->flexibleManager->getIdentifierAttribute();
@@ -58,23 +65,43 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
      *
      * @return \Oro\Bundle\GridBundle\Field\FieldDescription
      */
-    protected function createAssignedField()
+    protected function createProductRelationField()
     {
         $field = new FieldDescription();
         $field->setName('has_product');
         $field->setOptions(
             array(
                 'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
-                'label'       => $this->translate('Assigned'),
-                'field_name'  => 'has_product',
+                'label'       => $this->translate('Has product'),
+                'field_name'  => 'hasCurrentProduct',
+                'expression'  => $this->getHasProductExpression(),
                 'nullable'    => false,
                 'editable'    => true,
                 'sortable'    => false,
-                'filter_type' => false
+                'filter_type'     => false
             )
         );
 
         return $field;
+    }
+
+    protected function getHasProductExpression()
+    {
+        if (null === $this->hasProductExpression) {
+            /** @var EntityQueryFactory $queryFactory */
+            $queryFactory = $this->queryFactory;
+            $entityAlias  = $queryFactory->getAlias();
+
+            $this->hasProductExpression =
+                "(CASE WHEN ".
+                "(o.variantGroup = %s OR o.id IN (:data_in)) ".
+                "AND o.id NOT IN (:data_not_in)".
+                "THEN true ELSE false END)";
+            $this->hasProductExpression =
+                sprintf($this->hasProductExpression, $this->variantGroup->getId());
+        }
+
+        return $this->hasProductExpression;
     }
 
     /**
@@ -150,7 +177,8 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         $familyExpr  = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
         $proxyQuery
             ->addSelect($rootAlias)
-            ->addSelect(sprintf("%s AS familyLabel", $familyExpr), true);
+            ->addSelect(sprintf("%s AS familyLabel", $familyExpr), true)
+            ->addSelect($this->getHasProductExpression() .' AS hasCurrentProduct', true);
 
         $proxyQuery
             ->leftJoin($rootAlias .'.family', 'productFamily')
@@ -158,13 +186,7 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
 
         $this->applyVariantExpression($proxyQuery);
 
-        // apply join clause for attributes
-        $attributeIds = $this->getVariantGroup()->getAttributeIds();
-        $exprAttrIn = $proxyQuery->expr()->in('v.attribute', $attributeIds);
-        $proxyQuery
-            ->leftJoin($rootAlias .'.values', 'v', 'WITH', $exprAttrIn)
-            ->andWhere($proxyQuery->expr()->isNotNull('v.option'));
-
+        $this->applyAttributeExpression($proxyQuery);
 
         $proxyQuery
             ->setParameter('localeCode', $this->flexibleManager->getLocale());
@@ -190,6 +212,38 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         } else {
             $proxyQuery->andWhere($variantExpr);
         }
+    }
+
+    /**
+     * Apply clause to get only product with values for each attributes
+     * of the variant group
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     */
+    protected function applyAttributeExpression(ProxyQueryInterface $proxyQuery)
+    {
+        $rootAlias = $proxyQuery->getRootAlias();
+
+        $attributeIds = $this->getVariantGroup()->getAttributeIds();
+        $exprAttrIn = $proxyQuery->expr()->in('v.attribute', $attributeIds);
+        $proxyQuery
+            ->innerJoin($rootAlias .'.values', 'v', 'WITH', $exprAttrIn)
+            ->andWhere($proxyQuery->expr()->isNotNull('v.option'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getQueryParameters()
+    {
+        $additionalParameters = $this->parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
+        $dataIn    = !empty($additionalParameters['data_in']) ? $additionalParameters['data_in'] : array(0);
+        $dataNotIn = !empty($additionalParameters['data_not_in']) ? $additionalParameters['data_not_in'] : array(0);
+
+        return array(
+            'data_in'     => $dataIn,
+            'data_not_in' => $dataNotIn,
+        );
     }
 
     /**

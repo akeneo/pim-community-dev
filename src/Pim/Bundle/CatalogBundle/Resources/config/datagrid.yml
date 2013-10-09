@@ -91,7 +91,7 @@ services:
             - name: oro_grid.datagrid.manager
               datagrid_name: variant_products
               entity_name: %pim_catalog.entity.product.class%
-              entity_hint: products
+              entity_hint: product
               flexible: true
               route_name: pim_catalog_variant_group_edit
         calls:
