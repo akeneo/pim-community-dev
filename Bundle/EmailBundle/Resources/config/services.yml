@@ -254,5 +254,3 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: oro_email.variables_validator }
 
-    oro_email.grid.query_builder:
-        class: Oro\Bundle\EmailBundle\Provider\QueryBuilder

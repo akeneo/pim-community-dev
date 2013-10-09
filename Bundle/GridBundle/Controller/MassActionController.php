@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\GridBundle\Controller;
 
+use Oro\Bundle\GridBundle\Provider\SystemAwareYamlParser;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

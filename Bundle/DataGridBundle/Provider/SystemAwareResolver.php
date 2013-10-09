@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\GridBundle\Provider;
+namespace Oro\Bundle\DataGridBundle\Provider;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
