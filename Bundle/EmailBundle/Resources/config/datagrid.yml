@@ -33,7 +33,7 @@ datagrid:
                 show: true                        # show by default
                 options:                          # pass options to filter form type
                     translation_domain: config    # only if custom (PHP)
-                    choices: @oro_email.grid.query_builder::getChoicesQuery # implement service/static class call
+                    choices: @oro_email.grid.query_builder->getChoicesQuery # implement service/static class call
 
             name:
                 type: text
