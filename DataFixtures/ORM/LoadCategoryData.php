@@ -4,9 +4,11 @@ namespace Pim\Bundle\DemoBundle\DataFixtures\ORM;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+
 use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 
@@ -16,7 +18,6 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class LoadCategoryData extends AbstractDemoFixture
 {
@@ -187,6 +188,7 @@ class LoadCategoryData extends AbstractDemoFixture
     protected function prepareCode($code)
     {
         $code = str_replace(' ', '_', strtolower($code));
+
         return preg_replace('/__+/', '_', preg_replace('/[^a-zA-Z0-9_]/', '', $code));
     }
 

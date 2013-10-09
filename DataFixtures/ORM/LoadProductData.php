@@ -37,13 +37,18 @@ class LoadProductData extends AbstractDemoFixture
      * @var AttributeOption[]
      */
     protected $manufacturerOptions = null;
-    
+
+    /**
+     * @var AttributeOption[]
+     */
+    protected $uniqueColorOptions = null;
+
     /**
      * Number of products to load
      * @staticvar int
      */
     const PRODUCT_COUNT = 100;
-    
+
     /**
      * @staticvar int
      */
@@ -88,12 +93,10 @@ class LoadProductData extends AbstractDemoFixture
             $product->setFamily($family);
 
             foreach ($channels as $channel) {
-
                 $attributes = $this->getRandomAttributesToFulfill($family, $channel);
                 foreach ($attributes as $attribute) {
                     $this->addValues($product, $attribute, $channel);
                 }
-
             }
 
             $this->persist($product);
@@ -129,7 +132,7 @@ class LoadProductData extends AbstractDemoFixture
      */
     protected function getRandomFamily()
     {
-        $families = array('mug', 'shirt', 'shoe');
+        $families = array('mug', 'shirt', 'shoe', 'dress');
         $familyCode = $families[rand(0, count($families)-1)];
 
         return $this->getReference('attribute-family.'.$familyCode);
@@ -203,6 +206,22 @@ class LoadProductData extends AbstractDemoFixture
     }
 
     /**
+     * @return AttributeOption[]
+     */
+    protected function getUniqueColorOptions()
+    {
+        if (!$this->uniqueColorOptions) {
+            $attribute = $this->getReference('product-attribute.unique_color');
+            $options = $this->getProductManager()->getAttributeOptionRepository()->findBy(
+                array('attribute' => $attribute)
+            );
+            $this->uniqueColorOptions = $options;
+        }
+
+        return $this->uniqueColorOptions;
+    }
+
+    /**
      * Add values
      *
      * @param Product          $product
@@ -269,6 +288,12 @@ class LoadProductData extends AbstractDemoFixture
                 $options = $this->getManufacturerOptions();
                 $option  = $options[rand(0, count($options)-1)];
                 $product->setManufacturer($option);
+            }
+        } elseif ($attribute->getCode() === 'unique_color') {
+            $uniqueColors = $product->getUniqueColor();
+            if (empty($uniqueColors)) {
+                $options = $this->getUniqueColorOptions();
+                $product->setUniqueColor($options[rand(0, count($options)-1)]);
             }
         }
     }
