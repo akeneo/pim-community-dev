@@ -1842,9 +1842,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $fields
      *
-     * @Given /^I display the (.*) attribute$/
+     * @Given /^I display the (.*) attributes?$/
      */
-    public function iDisplayTheNameAttribute($fields)
+    public function iDisplayTheAttributes($fields)
     {
         $this->getCurrentPage()->addAvailableAttributes($this->listToArray($fields));
         $this->wait();

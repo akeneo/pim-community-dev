@@ -20,6 +20,7 @@ class EditCommonAttributes extends Wizard
         'Available attributes form'       => array(
             'css' => '#pim_catalog_mass_edit_action_operation_attributesToDisplay'
         ),
+        'Locales dropdown' => array('css' => '#pim_catalog_mass_edit_action_operation_locale'),
     );
 
     /**
@@ -79,6 +80,11 @@ class EditCommonAttributes extends Wizard
 
             $this->fillField($subLabelContent, $value, $label->getParent());
         }
+    }
+
+    public function switchLocale($locale)
+    {
+        $this->getElement('Locales dropdown')->selectOption($locale);
     }
 
     /**
