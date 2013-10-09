@@ -24,9 +24,9 @@ class SecurityProvider
     }
 
     /**
-     * Checks whether an entity is protected using the given security type.
+     * Checks whether an entity is protected.
      *
-     * @param string $entityClass
+     * @param  string $entityClass
      * @return bool
      */
     public function isProtectedEntity($entityClass)
@@ -37,8 +37,8 @@ class SecurityProvider
     /**
      * Checks if an access to a resource is granted to the caller
      *
-     * @param string $attribute
-     * @param string $objectString
+     * @param  string $attribute
+     * @param  string $objectString
      * @return bool
      */
     public function isGranted($attribute, $objectString)

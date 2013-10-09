@@ -190,7 +190,7 @@ services:
 #        tags:
 #            - { name: oro_entity.orm.sql_filter, filter_name: ownershipFilter, enabled: true }
 #            - { name: kernel.event_listener, priority: -255, event: kernel.request, method: setUserParameter }
-    
+
     oro_security.form.type.collection_type:
         class: %oro_security.type.oro_acl_collection.class%
         tags:
@@ -210,7 +210,7 @@ services:
         class: %oro_security.type.oro_acl_label.class%
         tags:
             - { name: form.type, alias: oro_acl_label }
-            
+
     oro_security.entity_security_metadata_provider:
         public: false
         class: %oro_security.entity_security_metadata_provider.class%

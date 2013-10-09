@@ -3,7 +3,6 @@
 namespace Oro\Bundle\SecurityBundle\ORM\SqlFilter;
 
 use Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilterBuilder;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Mapping\ClassMetaData;
 use Doctrine\ORM\Query\Filter\SQLFilter;
 

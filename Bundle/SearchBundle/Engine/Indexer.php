@@ -137,7 +137,6 @@ class Indexer
         $this->applyAclToQuery($query);
         // we haven't allowed entities, so return null search result
         if (count($query->getFrom()) == 0) {
-
             return new Result($query, array(), 0);
         }
 
@@ -158,10 +157,10 @@ class Indexer
     }
 
     /**
-     * Check indexed entities list in search query
+     * Apply ACL to search Query.
+     * Removes all entities of the request to which the user has no access
      *
      * @param Query $query
-     * @return bool
      */
     protected function applyAclToQuery(Query $query)
     {
@@ -171,7 +170,7 @@ class Indexer
 
         // in query, from record !== '*'
         if (!empty($queryFromEntities) && $queryFromEntities[0] !== '*') {
-            foreach($queryFromEntities as $key => $fromEntityAlias) {
+            foreach ($queryFromEntities as $key => $fromEntityAlias) {
                 if (!in_array($fromEntityAlias, $entitiesList)) {
                     unset ($queryFromEntities[$key]);
                 }
@@ -185,8 +184,8 @@ class Indexer
     /**
      * Filter array of entities. Return array of allowed entities
      *
-     * @param $attribute
-     * @param string[] $entities The list of entity class names to be checked
+     * @param  string   $attribute Permission
+     * @param  string[] $entities  The list of entity class names to be checked
      * @return string[]
      */
     protected function filterAllowedEntities($attribute, $entities)
