@@ -271,20 +271,6 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
-     * Return a response
-     *
-     * @param string  $content
-     * @param integer $status
-     * @param array   $headers
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function returnResponse($content, $status = 200, $headers = array())
-    {
-        return new Response($content, $status, $headers);
-    }
-
-    /**
      * Create product
      *
      * @param Request $request

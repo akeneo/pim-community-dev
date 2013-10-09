@@ -258,7 +258,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             }
             $locale = $tokens[1];
             $scope  = $tokens[2];
-        } else if ($attribute->getScopable()) {
+        } elseif ($attribute->getScopable()) {
             if (count($tokens) < 2) {
                 throw new \Exception(
                     sprintf(
@@ -268,7 +268,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
                 );
             }
             $scope = $tokens[1];
-        } else if ($attribute->getTranslatable()) {
+        } elseif ($attribute->getTranslatable()) {
             if (count($tokens) < 2) {
                 throw new \Exception(
                     sprintf(
