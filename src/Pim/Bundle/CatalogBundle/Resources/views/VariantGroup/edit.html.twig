@@ -69,8 +69,8 @@
 
             {{ form_row(form.attributes) }}
 
-            {{ form_widget(form.appendProducts) }}
-            {{ form_widget(form.removeProducts) }}
+            {{ form_widget(form.appendProducts, {'id': 'variantAppendProducts'}) }}
+            {{ form_widget(form.removeProducts, {'id': 'variantRemoveProducts'}) }}
 
             {{ form_row(form._token) }}
 
