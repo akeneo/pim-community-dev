@@ -1,0 +1,10 @@
+datagrid:
+    contact_group_grid:
+        data_source:
+            type: orm
+            query:
+                select:
+                    - g.id
+                    - g.label
+                from:
+                    - { table: OroCRMContactBundle:Group, alias: g }

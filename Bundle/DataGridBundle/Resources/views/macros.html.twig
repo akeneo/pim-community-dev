@@ -1,0 +1,16 @@
+{#
+    Renders datagrid widget
+
+    parameters:
+        name: datagrid name
+#}
+{% macro renderGrid(name) %}
+    <div data-type="datagrid" data-result-data="{# @TODO API call here #}" data-meta-data="{# @TODO Twig extension here #}"></div>
+    <script type="text/javascript">
+        require(['jquery'], function ($) {
+            $(function () {
+                {# @TODO add require JS builder here and call init method #}
+            });
+        });
+    </script>
+{% endmacro %}

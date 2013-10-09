@@ -30,6 +30,5 @@ class ConfigurationPass implements CompilerPassInterface
         }
 
         // @TODO add passing to builder service
-        // @TODO add tree validation
     }
 }

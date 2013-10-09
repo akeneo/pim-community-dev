@@ -5,16 +5,11 @@ namespace Oro\Bundle\DataGridBundle\Datagrid;
 interface ManagerInterface
 {
     /**
-     * Builds datagrid from configuration using builder
+     * Returns prepared datagrid object for further operations
+     *
+     * @param string $name
      *
      * @return DatagridInterface
      */
-    public function getDatagrid();
-
-    /**
-     * Returns datagrid builder
-     *
-     * @return Builder
-     */
-    public function getDatagridBuilder();
+    public function getDatagrid($name);
 }
