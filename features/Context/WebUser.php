@@ -233,6 +233,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iExpandTheCategory($category)
     {
+        $this->wait(); // Make sure that the tree is loaded
         $this->getCurrentPage()->expandCategory($category);
         $this->wait();
     }
@@ -258,6 +259,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSeeTheCategoryUnderTheCategory($not, $child, $parent)
     {
+        $this->wait(); // Make sure that the tree is loaded
         $not = ($not !== '') ? true : false;
 
         $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
