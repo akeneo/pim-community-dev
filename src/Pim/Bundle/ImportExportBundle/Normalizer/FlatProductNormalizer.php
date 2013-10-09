@@ -153,11 +153,11 @@ class FlatProductNormalizer implements NormalizerInterface
     {
         $suffix = '';
 
-        if ($value->getAttribute()->getScopable()) {
-            $suffix = sprintf('-%s', $value->getScope());
-        }
         if ($value->getAttribute()->getTranslatable()) {
-            $suffix .= sprintf('-%s', $value->getLocale());
+            $suffix = sprintf('-%s', $value->getLocale());
+        }
+        if ($value->getAttribute()->getScopable()) {
+            $suffix .= sprintf('-%s', $value->getScope());
         }
 
         return $value->getAttribute()->getCode() . $suffix;
