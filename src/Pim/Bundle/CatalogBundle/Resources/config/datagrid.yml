@@ -76,7 +76,7 @@ services:
         class: %pim_catalog.datagrid.manager.variant_group_datagrid.class%
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: variant_groups
+              datagrid_name: variant-group
               entity_hint: variant group
               route_name: pim_catalog_variant_group_index
         calls:
