@@ -4,6 +4,8 @@ namespace Oro\Bundle\DataGridBundle\Datagrid;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+use Oro\Bundle\DataGridBundle\Event\BuildBefore;
+
 class Builder
 {
     /** @var string */
@@ -20,6 +22,17 @@ class Builder
 
     public function build(array $config)
     {
+        $datagrid = new $this->baseDatagridClass();
 
+        $event = new BuildBefore($datagrid, $config);
+        $this->eventDispatcher->dispatch(BuildBefore::NAME, $event);
+        $config = $event->getConfig();
+
+    }
+
+    protected function getBaseDatagridClass(array $config)
+    {
+        return !empty($config['options']['base_datagrid_class'])
+            ? $config['options']['base_datagrid_class'] : $this->baseDatagridClass;
     }
 }
