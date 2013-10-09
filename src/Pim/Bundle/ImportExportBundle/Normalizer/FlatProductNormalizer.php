@@ -108,7 +108,7 @@ class FlatProductNormalizer implements NormalizerInterface
             $data = $value->getData();
 
             if ($data instanceof \DateTime) {
-                $data = $data->format('r');
+                $data = $data->format('m/d/Y');
             } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
                 $data = $data->getCode();
             } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
