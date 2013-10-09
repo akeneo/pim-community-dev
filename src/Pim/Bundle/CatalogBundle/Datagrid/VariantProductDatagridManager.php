@@ -109,19 +109,6 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function getFlexibleFieldOptions(AbstractAttribute $attribute, array $options = array())
-    {
-        $result = parent::getFlexibleFieldOptions($attribute);
-
-        $result['filterable']  = false;
-        $result['show_filter'] = false;
-
-        return $result;
-    }
-
-    /**
      * Create family field description
      *
      * @return \Oro\Bundle\GridBundle\Field\FieldDescription
@@ -135,10 +122,16 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
                 'type'            => FieldDescriptionInterface::TYPE_TEXT,
                 'label'           => $this->translate('Family'),
                 'field_name'      => 'familyLabel',
-                'expression'      => 'family',
-                'filter_type'     => false,
+                'expression'      => 'productFamily',
+                'filter_type'     => FilterInterface::TYPE_ENTITY,
                 'required'        => false,
-                'sortable'        => true
+                'sortable'        => true,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'multiple'        => true,
+                'class'           => 'PimCatalogBundle:Family',
+                'property'        => 'label',
+                'filter_by_where' => true,
             )
         );
 
