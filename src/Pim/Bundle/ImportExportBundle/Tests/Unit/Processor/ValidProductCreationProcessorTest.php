@@ -257,17 +257,20 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
 
+        $attSku = new ProductAttribute();
+        $attSku->setCode('sku');
+        $attFoo = new ProductAttribute();
+        $attFoo->setCode('foo');
         $attName = new ProductAttribute();
         $attName->setCode('name');
         $attName->setTranslatable(true);
-        $attName->setScopable(false);
         $attDesc = new ProductAttribute();
-        $attDesc->setCode('name');
-        $attDesc->setTranslatable(false);
-        $attDesc->setScopable(false);
+        $attDesc->setCode('description');
         $attributes = array(
+            'sku' => $attSku,
             'name' => $attName,
-            'description' => $attDesc
+            'description' => $attDesc,
+            'foo' => $attFoo
         );
         $product->expects($this->any())
             ->method('getAllAttributes')
