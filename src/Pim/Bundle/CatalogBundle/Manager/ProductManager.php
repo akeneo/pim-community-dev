@@ -212,6 +212,7 @@ class ProductManager extends FlexibleManager
         $this->storageManager->flush();
         if ($calculateCompleteness) {
             $this->storageManager->refresh($product);
+            $this->completenessCalculator->calculateForAProduct($product);
             $this->storageManager->flush();
         }
     }
