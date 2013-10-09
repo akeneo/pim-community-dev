@@ -63,7 +63,8 @@ class VariantGroup implements TranslatableInterface
      *
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
-     *     mappedBy="variantGroup"
+     *     mappedBy="variantGroup",
+     *     cascade={"persist"}
      * )
      */
     protected $products;
