@@ -108,7 +108,7 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         $result['show_filter'] = $attribute->getAttributeType() === 'pim_catalog_identifier';
 
         if (!in_array($attribute->getId(), $this->getVariantGroup()->getAttributeIds())) {
-            $result['show_column'] = false;
+            $result['show_column'] = $attribute->getAttributeType() === 'pim_catalog_identifier';
         }
 
         return $result;
