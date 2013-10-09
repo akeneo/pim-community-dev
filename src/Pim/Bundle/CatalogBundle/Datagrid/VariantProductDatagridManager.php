@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
-use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
-
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
@@ -85,6 +84,11 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         return $field;
     }
 
+    /**
+     * Get expression for assigned checkbox
+     *
+     * @return string
+     */
     protected function getHasProductExpression()
     {
         if (null === $this->hasProductExpression) {
@@ -98,7 +102,7 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
                 "AND o.id NOT IN (:data_not_in)".
                 "THEN true ELSE false END)";
             $this->hasProductExpression =
-                sprintf($this->hasProductExpression, $this->variantGroup->getId());
+                sprintf($this->hasProductExpression, $this->getVariantGroup()->getId());
         }
 
         return $this->hasProductExpression;
