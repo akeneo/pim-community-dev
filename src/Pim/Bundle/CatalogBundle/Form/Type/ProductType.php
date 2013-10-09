@@ -85,8 +85,9 @@ class ProductType extends FlexibleType
                     'categories',
                     'entity',
                     array(
-                        'class'    => 'PimCatalogBundle:Category',
-                        'multiple' => true,
+                        'class'        => 'PimCatalogBundle:Category',
+                        'multiple'     => true,
+                        'by_reference' => false
                     )
                 )
                 ->addEventSubscriber($this->transformer)
