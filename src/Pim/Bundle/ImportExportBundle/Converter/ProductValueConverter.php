@@ -247,8 +247,25 @@ class ProductValueConverter
             $tokens = explode('-', $key);
             $code = $tokens[0];
             if ($attribute->getScopable() && $attribute->getTranslatable()) {
-                $suffix = sprintf('_%s_%s', $tokens[2], $tokens[1]);
+                if (count($tokens) < 3) {
+                    throw new \Exception(
+                        sprintf(
+                            'The column "%s" must contains attribute, locale and scope codes',
+                            $key
+                        )
+                    );
+                }
+                $suffix = sprintf('_%s_%s', $tokens[1], $tokens[2]);
             } else {
+                if (count($tokens) < 2) {
+                    throw new \Exception(
+                        sprintf(
+                            'The column "%s" must contains attribute and %s code',
+                            $key,
+                            ($attribute->getScopable()) ? 'scope' : 'locale'
+                        )
+                    );
+                }
                 $suffix = sprintf('_%s', $tokens[1]);
             }
         }
