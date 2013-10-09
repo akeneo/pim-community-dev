@@ -1,5 +1,6 @@
 parameters:
     oro_search.index.class:                               Oro\Bundle\SearchBundle\Engine\Indexer
+    oro_search.security_provider.class:                   Oro\Bundle\SearchBundle\Security\SecurityProvider
     oro_search.index_listener.class:                      Oro\Bundle\SearchBundle\EventListener\IndexListener
     oro_search.twig_extension.class:                      Oro\Bundle\SearchBundle\Twig\OroSearchExtension
     oro_search.mapper.class:                              Oro\Bundle\SearchBundle\Engine\ObjectMapper
@@ -10,7 +11,18 @@ parameters:
 services:
     oro_search.index:
         class:                        %oro_search.index.class%
-        arguments:                    ["@doctrine.orm.entity_manager", "@oro_search.search.engine", "@oro_search.mapper"]
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@oro_search.search.engine"
+            - "@oro_search.mapper"
+            - "@oro_search.security_provider"
+
+    oro_search.security_provider:
+        class:                        %oro_search.security_provider.class%
+        public:                       false
+        arguments:
+            - "@oro_security.security_facade"
+            - "@oro_security.entity_security_metadata_provider"
 
     oro_search.index_listener:
         class:                        %oro_search.index_listener.class%

@@ -51,12 +51,12 @@ class OwnershipFilterBuilder
     /**
      * Constructor
      *
-     * @param ServiceLink $securityContextLink
-     * @param ObjectIdAccessor $objectIdAccessor
+     * @param ServiceLink                    $securityContextLink
+     * @param ObjectIdAccessor               $objectIdAccessor
      * @param EntitySecurityMetadataProvider $entityMetadataProvider
-     * @param OwnershipMetadataProvider $metadataProvider
-     * @param OwnerTree $tree
-     * @param AclVoter $aclVoter
+     * @param OwnershipMetadataProvider      $metadataProvider
+     * @param OwnerTree                      $tree
+     * @param AclVoter                       $aclVoter
      */
     public function __construct(
         ServiceLink $securityContextLink,
@@ -77,8 +77,8 @@ class OwnershipFilterBuilder
     /**
      * Gets the SQL query part to add to a query.
      *
-     * @param string $targetEntityClassName
-     * @param string $targetTableAlias
+     * @param  string $targetEntityClassName
+     * @param  string $targetTableAlias
      * @return string The constraint SQL if there is available, empty string otherwise
      */
     public function buildFilterConstraint($targetEntityClassName, $targetTableAlias)
@@ -117,10 +117,10 @@ class OwnershipFilterBuilder
     }
 
     /**
-     * @param string $targetEntityClassName
-     * @param string $targetTableAlias
-     * @param int $accessLevel
-     * @param OwnershipMetadata $metadata
+     * @param  string            $targetEntityClassName
+     * @param  string            $targetTableAlias
+     * @param  int               $accessLevel
+     * @param  OwnershipMetadata $metadata
      * @return string|null
      *
      * The cyclomatic complexity warning is suppressed by performance reasons
@@ -223,7 +223,7 @@ class OwnershipFilterBuilder
      * Adds all business unit ids within all subordinate business units the given user is associated
      *
      * @param int|string $userId
-     * @param array $result [output]
+     * @param array      $result [output]
      */
     protected function fillSubordinateBusinessUnitIds($userId, array &$result)
     {
@@ -241,7 +241,7 @@ class OwnershipFilterBuilder
      * Adds all user ids within all business units the given user is associated
      *
      * @param int|string $userId
-     * @param array $result [output]
+     * @param array      $result [output]
      */
     protected function fillBusinessUnitUserIds($userId, array &$result)
     {
@@ -257,7 +257,7 @@ class OwnershipFilterBuilder
      * Adds all user ids within all subordinate business units the given user is associated
      *
      * @param int|string $userId
-     * @param array $result [output]
+     * @param array      $result [output]
      */
     protected function fillSubordinateBusinessUnitUserIds($userId, array &$result)
     {
@@ -275,7 +275,7 @@ class OwnershipFilterBuilder
      * Adds all business unit ids within all organizations the given user is associated
      *
      * @param int|string $userId
-     * @param array $result [output]
+     * @param array      $result [output]
      */
     protected function fillOrganizationBusinessUnitIds($userId, array &$result)
     {
@@ -291,7 +291,7 @@ class OwnershipFilterBuilder
      * Adds all user ids within all organizations the given user is associated
      *
      * @param int|string $userId
-     * @param array $result [output]
+     * @param array      $result [output]
      */
     protected function fillOrganizationUserIds($userId, array &$result)
     {
@@ -308,17 +308,17 @@ class OwnershipFilterBuilder
     /**
      * Gets SQL condition for the given owner id or ids
      *
-     * @param int|int[]|null $idOrIds
-     * @param OwnershipMetadata $metadata
-     * @param string $targetTableAlias
-     * @param string|null $columnName
-     * @return string|null A string represents SQL condition or null if the given owner id(s) is not provided
+     * @param  int|int[]|null    $idOrIds
+     * @param  OwnershipMetadata $metadata
+     * @param  string            $targetTableAlias
+     * @param  string|null       $columnName
+     * @return string|null       A string represents SQL condition or null if the given owner id(s) is not provided
      */
     protected function getCondition($idOrIds, OwnershipMetadata $metadata, $targetTableAlias, $columnName = null)
     {
         $result = null;
         if (!empty($idOrIds)) {
-            $idOrIds = (array)$idOrIds;
+            $idOrIds = (array) $idOrIds;
             if (count($idOrIds) > 1) {
                 $result = sprintf(
                     '%s IN (%s)',
@@ -336,9 +336,9 @@ class OwnershipFilterBuilder
     /**
      * Gets the name of owner column
      *
-     * @param OwnershipMetadata $metadata
-     * @param string $targetTableAlias
-     * @param string|null $columnName
+     * @param  OwnershipMetadata $metadata
+     * @param  string            $targetTableAlias
+     * @param  string|null       $columnName
      * @return string
      */
     protected function getColumnName(OwnershipMetadata $metadata, $targetTableAlias, $columnName = null)

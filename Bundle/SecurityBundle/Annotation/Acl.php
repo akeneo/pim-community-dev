@@ -46,7 +46,7 @@ class Acl implements \Serializable
     /**
      * Constructor
      *
-     * @param array $data
+     * @param  array                     $data
      * @throws \InvalidArgumentException
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -67,7 +67,7 @@ class Acl implements \Serializable
             throw new \InvalidArgumentException(sprintf('ACL type must not be empty. Id: %s.', $this->id));
         }
 
-        $this->ignoreClassAcl = isset($data['ignore_class_acl']) ? (bool)$data['ignore_class_acl'] : false;
+        $this->ignoreClassAcl = isset($data['ignore_class_acl']) ? (bool) $data['ignore_class_acl'] : false;
         $this->permission = isset($data['permission']) ? $data['permission'] : '';
         $this->class = isset($data['class']) ? $data['class'] : '';
         $this->group = isset($data['group_name']) ? $data['group_name'] : '';

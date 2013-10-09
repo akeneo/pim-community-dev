@@ -37,8 +37,8 @@ class EntitySecurityMetadataProvider
     protected $localCache = array();
 
     /**
-     * @param ConfigProvider $securityConfigProvider
-     * @param ConfigProvider $entityConfigProvider
+     * @param ConfigProvider     $securityConfigProvider
+     * @param ConfigProvider     $entityConfigProvider
      * @param CacheProvider|null $cache
      */
     public function __construct(
@@ -57,8 +57,8 @@ class EntitySecurityMetadataProvider
     /**
      * Checks whether an entity is protected using the given security type.
      *
-     * @param string $className The entity class name
-     * @param string $securityType The security type. Defaults to ACL.
+     * @param  string $className    The entity class name
+     * @param  string $securityType The security type. Defaults to ACL.
      * @return bool
      */
     public function isProtectedEntity($className, $securityType = self::ACL_SECURITY_TYPE)
@@ -71,7 +71,7 @@ class EntitySecurityMetadataProvider
     /**
      * Gets metadata for all entities marked with the given security type.
      *
-     * @param string $securityType The security type. Defaults to ACL.
+     * @param  string                   $securityType The security type. Defaults to ACL.
      * @return EntitySecurityMetadata[]
      */
     public function getEntities($securityType = self::ACL_SECURITY_TYPE)
@@ -129,7 +129,7 @@ class EntitySecurityMetadataProvider
      *
      * @return EntitySecurityMetadata
      */
-    public function  getMetadata($className, $securityType = self::ACL_SECURITY_TYPE)
+    public function getMetadata($className, $securityType = self::ACL_SECURITY_TYPE)
     {
         $this->ensureMetadataLoaded($securityType);
 
