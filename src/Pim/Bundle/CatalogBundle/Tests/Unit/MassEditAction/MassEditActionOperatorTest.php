@@ -154,5 +154,4 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
     }
-
 }

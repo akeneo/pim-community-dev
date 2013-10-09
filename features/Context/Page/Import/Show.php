@@ -28,6 +28,7 @@ class Show extends JobShow
 
     /**
      * Click the job execution link
+     * @param string $fileToImport
      */
     public function uploadAndImportFile($fileToImport)
     {

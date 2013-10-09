@@ -11,6 +11,11 @@
     %}
     <link rel="stylesheet" media="all" href="{{ asset_url }}" />
     {% endstylesheets %}
+    <script>
+        if (sessionStorage) {
+            sessionStorage.clear()
+        }
+    </script>
 {% endblock %}
 
 {% block bodyClass %}login-page{% endblock %}

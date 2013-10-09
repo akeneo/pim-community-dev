@@ -13,3 +13,8 @@ fos_rest:
             xml: fos_rest.decoder.xml
     routing_loader:
         default_format: json
+    exception:
+        codes:
+            'Pim\Bundle\CatalogBundle\Exception\DeleteException': HTTP_CONFLICT
+        messages:
+            'Pim\Bundle\CatalogBundle\Exception\DeleteException': true

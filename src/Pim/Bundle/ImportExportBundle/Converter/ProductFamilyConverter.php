@@ -13,8 +13,14 @@ use Doctrine\ORM\EntityManager;
  */
 class ProductFamilyConverter
 {
+    /**
+     * @var string
+     */
     const FAMILY_KEY = '[family]';
 
+    /**
+     * @var EntityManager $entityManager
+     */
     protected $entityManager;
 
     /**

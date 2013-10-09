@@ -53,6 +53,11 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
                ->method('getAttributes')
                ->will($this->returnValue($this->getArrayCollectionMock($attribute)));
 
+        $product->expects($this->any())
+                ->method('isAttributeRemovable')
+                ->with($attribute)
+                ->will($this->returnValue(!$family->getAttributes()->contains($attribute)));
+
         $target->setEntity($product);
         $target->setAttribute($attribute);
 
@@ -77,6 +82,11 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
                ->method('getAttributes')
                ->will($this->returnValue($this->getArrayCollectionMock($attribute, false)));
 
+        $product->expects($this->any())
+                ->method('isAttributeRemovable')
+                ->with($attribute)
+                ->will($this->returnValue(!$family->getAttributes()->contains($attribute)));
+
         $target->setEntity($product);
         $target->setAttribute($attribute);
 
@@ -95,6 +105,11 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
         $product->expects($this->any())
                 ->method('getFamily')
                 ->will($this->returnValue(null));
+
+        $product->expects($this->any())
+                ->method('isAttributeRemovable')
+                ->with($attribute)
+                ->will($this->returnValue($product->getFamily() === null));
 
         $target->setEntity($product);
         $target->setAttribute($attribute);

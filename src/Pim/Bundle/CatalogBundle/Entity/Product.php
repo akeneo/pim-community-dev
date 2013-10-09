@@ -354,11 +354,13 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
             return false;
         }
 
-        if (null === $this->getFamily()) {
-            return true;
+        if (null === $this->family || !$this->family->getAttributes()->contains($attribute)) {
+            if (null === $this->variantGroup || !$this->variantGroup->getAttributes()->contains($attribute)) {
+                return true;
+            }
         }
 
-        return !$this->getFamily()->getAttributes()->contains($attribute);
+        return false;
     }
 
     /**

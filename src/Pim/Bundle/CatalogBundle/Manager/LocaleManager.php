@@ -166,7 +166,7 @@ class LocaleManager
     {
         if (!isset($this->userLocales)) {
             $this->userLocales = array();
-            foreach ($this->getActiveLocales() as $code => $locale) {
+            foreach ($this->getActiveLocales() as $locale) {
                 if ($this->securityFacade->isGranted(sprintf('pim_catalog_locale_%s', $locale->getCode()))) {
                     $this->userLocales[] = $locale;
                 }

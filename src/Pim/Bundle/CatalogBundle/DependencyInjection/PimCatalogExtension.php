@@ -55,15 +55,6 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         }
 
         $container->setParameter('validator.mapping.loader.yaml_files_loader.mapping_files', $yamlMappingFiles);
-
-        //Add DeleteException to list of safe message exceptions
-        $exceptionCodes = $container->getParameter('fos_rest.exception.codes');
-        $exceptionCodes['Pim\Bundle\CatalogBundle\Exception\DeleteException'] = 409;
-        $container->setParameter('fos_rest.exception.codes', $exceptionCodes);
-
-        $exceptionMessages = $container->getParameter('fos_rest.exception.messages');
-        $exceptionMessages['Pim\Bundle\CatalogBundle\Exception\DeleteException'] = true;
-        $container->setParameter('fos_rest.exception.messages', $exceptionMessages);
     }
 
     /**
