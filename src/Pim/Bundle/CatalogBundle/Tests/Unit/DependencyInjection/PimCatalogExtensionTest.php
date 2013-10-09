@@ -39,8 +39,6 @@ class PimCatalogExtensionTest extends \PHPUnit_Framework_TestCase
         $this->extension = new PimCatalogExtension();
         $this->container = new ContainerBuilder();
         $this->container->setParameter('validator.mapping.loader.yaml_files_loader.mapping_files', array());
-        $this->container->setParameter('fos_rest.exception.codes', array());
-        $this->container->setParameter('fos_rest.exception.messages', array());
     }
 
     /**
@@ -55,14 +53,5 @@ class PimCatalogExtensionTest extends \PHPUnit_Framework_TestCase
         // assert validation configuration
         $yamlMappingFiles = $this->container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files');
         $this->assertGreaterThanOrEqual(5, count($yamlMappingFiles));
-
-        // assert delete exception code and message
-        $codes = $this->container->getParameter('fos_rest.exception.codes');
-        $expectedCodes = array('Pim\Bundle\CatalogBundle\Exception\DeleteException' => 409);
-        $this->assertEquals($expectedCodes, $codes);
-
-        $messages = $this->container->getParameter('fos_rest.exception.messages');
-        $expectedMessages = array('Pim\Bundle\CatalogBundle\Exception\DeleteException' => true);
-        $this->assertEquals($expectedMessages, $messages);
     }
 }
