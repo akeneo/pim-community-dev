@@ -616,6 +616,7 @@ class FixturesContext extends RawMinkContext
                     'scopable'    => 'no',
                     'localizable' => 'no',
                     'group'       => null,
+                    'type'        => 'pim_catalog_text'
                 ),
                 $data
             );
