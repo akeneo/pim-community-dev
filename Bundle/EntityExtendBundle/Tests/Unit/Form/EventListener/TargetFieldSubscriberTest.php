@@ -2,18 +2,18 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Tests\Unit\Form\EventListener;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
-use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
-use Oro\Bundle\EntityExtendBundle\Form\EventListener\TargetFieldSubscriber;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Request;
+
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+use Oro\Bundle\EntityExtendBundle\Form\EventListener\TargetFieldSubscriber;
 
 class TargetFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     public function testPreSetSubmitData()
     {
-        $data     = array('target_field' => 'firstName');
+        $data = array('target_field' => 'firstName');
 
         $targetFieldMock = $this->getMockBuilder('Oro\Bundle\EntityExtendBundle\Form\Type\TargetFieldType')
             ->disableOriginalConstructor()
@@ -74,16 +74,13 @@ class TargetFieldSubscriberTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods(array('findOneBy', 'findBy', 'getId'))
             ->getMock();
-        $repositoryMock
-            ->expects($this->once())
+        $repositoryMock->expects($this->once())
             ->method('findOneBy')
             ->will($this->returnSelf());
-        $repositoryMock
-            ->expects($this->once())
+        $repositoryMock->expects($this->once())
             ->method('getId')
             ->will($this->returnValue(1));
-        $repositoryMock
-            ->expects($this->once())
+        $repositoryMock->expects($this->once())
             ->method('findBy')
             ->will(
                 $this->returnValue(
