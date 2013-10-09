@@ -34,6 +34,7 @@ use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Product Controller
@@ -276,7 +277,7 @@ class ProductController extends AbstractDoctrineController
         }
 
         $entity = $this->productManager->createProduct();
-        $form = $this->createForm('pim_product_create', $entity);
+        $form = $this->createForm('pim_product_create', $entity, $this->getCreateFormOptions($entity));
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
@@ -586,25 +587,37 @@ class ProductController extends AbstractDoctrineController
         AvailableProductAttributes $availableAttributes = null
     ) {
         return $this->createForm(
-            new AvailableProductAttributesType(),
+            'pim_available_product_attributes',
             $availableAttributes ?: new AvailableProductAttributes(),
             array('attributes' => $attributes)
         );
     }
 
     /**
-     * Returns the options for the form
+     * Returns the options for the edit form
      *
-     * @param object $product
+     * @param ProductInterface $product
      *
      * @return array
      */
-    protected function getFormOptions($product)
+    protected function getFormOptions(ProductInterface $product)
     {
         return array(
             'enable_family' => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
             'enable_state'  => $this->securityFacade->isGranted('pim_catalog_product_change_state'),
             'currentLocale' => $this->getDataLocale()
         );
+    }
+
+    /**
+     * Returns the options for the create form
+     *
+     * @param ProductInterface $product
+     *
+     * @return array
+     */
+    protected function getCreateFormOptions(ProductInterface $product)
+    {
+        return array();
     }
 }
