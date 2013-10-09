@@ -195,6 +195,7 @@ class ProductManager extends FlexibleManager
      * Save a product
      *
      * @param ProductInterface $product
+     * @param boolean          $calculateCompleteness
      *
      * @return null
      */
