@@ -120,7 +120,8 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
             $this->getEventDispatcherInterfaceMock(),
             $this->getAttributeTypeFactoryMock(),
             $mediaManager ?: $this->getMediaManagerMock(),
-            $this->getCurrencyManagerMock()
+            $this->getCurrencyManagerMock(),
+            $this->getCompletenessCalculatorMock()
         );
     }
 
@@ -381,5 +382,14 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
             ->getMock();
+    }
+    
+    protected function getCompletenessCalculatorMock()
+    {
+        return $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator')
+            ->disableOriginalConstructor()
+            ->getMock();
+                
     }
 }
