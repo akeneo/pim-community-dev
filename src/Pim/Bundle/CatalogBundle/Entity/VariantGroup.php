@@ -63,7 +63,8 @@ class VariantGroup implements TranslatableInterface
      *
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
-     *     mappedBy="variantGroup"
+     *     mappedBy="variantGroup",
+     *     cascade={"persist"}
      * )
      */
     protected $products;
@@ -334,5 +335,20 @@ class VariantGroup implements TranslatableInterface
         $this->products = new ArrayCollection($products);
 
         return $this;
+    }
+
+    /**
+     * Get attribute ids
+     *
+     * @return integer[]
+     */
+    public function getAttributeIds()
+    {
+        return array_map(
+            function ($attribute) {
+                return $attribute->getId();
+            },
+            $this->getAttributes()->toArray()
+        );
     }
 }

@@ -161,14 +161,22 @@ class VariantGroupController extends AbstractDoctrineController
     {
         if ($this->variantHandler->process($variant)) {
             $this->addFlash('success', 'flash.variant group.updated');
+        }
 
-            return $this->redirect(
-                $this->generateUrl('pim_catalog_variant_group_index')
+        $datagridManager = $this->datagridWorker->getDatagridManager('variant_product');
+        $datagridManager->setVariantGroup($variant);
+        $datagridView = $datagridManager->getDatagrid()->createView();
+
+        if ('json' === $this->getRequest()->getRequestFormat()) {
+            return $this->render(
+                'OroGridBundle:Datagrid:list.json.php',
+                array('datagrid' => $datagridView)
             );
         }
 
         return array(
-            'form' => $this->variantForm->createView()
+            'form' => $this->variantForm->createView(),
+            'datagrid' => $datagridView
         );
     }
 
