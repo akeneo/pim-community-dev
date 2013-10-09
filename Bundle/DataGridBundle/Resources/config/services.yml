@@ -1,8 +1,9 @@
 parameters:
     oro_grid.datagrid.base.class: Oro\Bundle\DataGridBundle\Datagrid\Datagrid
 
-    oro_grid.datagrid.manager.class: Oro\Bundle\DataGridBundle\Datagrid\Manager
-    oro_grid.datagrid.builder.class: Oro\Bundle\DataGridBundle\Datagrid\Builder
+    oro_grid.datagrid.manager.class:  Oro\Bundle\DataGridBundle\Datagrid\Manager
+    oro_grid.datagrid.builder.class:  Oro\Bundle\DataGridBundle\Datagrid\Builder
+    oro_grid.provider.resolver.class: Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver
 
 services:
     oro_grid.datagrid.manager:
@@ -10,11 +11,15 @@ services:
         arguments:
             - []
             - @oro_grid.datagrid.builder
+            - @oro_grid.provider.resolver
 
     oro_grid.datagrid.builder:
         class: %oro_grid.datagrid.builder.class%
         arguments:
             - %oro_grid.datagrid.base.class%
+            - @event_dispatcher
 
-    oro_email.grid.query_builder:
-        class: Oro\Bundle\DataGridBundle\Provider\QueryBuilder
+    oro_grid.provider.resolver:
+        class: %oro_grid.provider.resolver.class%
+        arguments:
+            - @service_container

@@ -3,6 +3,7 @@
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
+use Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver;
 
 /**
  * Class Manager
@@ -16,13 +17,16 @@ class Manager implements ManagerInterface
     /** @var Builder */
     protected $datagridBuilder;
 
+    /** @var SystemAwareResolver */
+    protected $resolver;
+
     /** @var array */
     protected $rawConfiguration;
 
     /** @var array */
     protected $processedConfiguration;
 
-    public function __construct(array $rawConfiguration, Builder $builder)
+    public function __construct(array $rawConfiguration, Builder $builder, SystemAwareResolver $resolver)
     {
         $this->rawConfiguration = $rawConfiguration;
         $this->datagridBuilder  = $builder;
@@ -65,7 +69,7 @@ class Manager implements ManagerInterface
         if (!isset($this->processedConfiguration[$name])) {
             $result = $this->rawConfiguration[$name];
 
-            // @TODO process configuration here
+            $this->processedConfiguration[$name] = $this->resolver->resolve($name, $result);
         }
 
         return $this->processedConfiguration[$name];
