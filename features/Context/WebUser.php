@@ -1099,6 +1099,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iDisableTheProduct()
     {
         $this->getPage('Product edit')->disableProduct()->save();
+        $this->wait();
     }
 
     /**
@@ -1117,6 +1118,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iEnableTheProduct()
     {
         $this->getPage('Product edit')->enableProduct()->save();
+        $this->wait();
     }
 
     /**
