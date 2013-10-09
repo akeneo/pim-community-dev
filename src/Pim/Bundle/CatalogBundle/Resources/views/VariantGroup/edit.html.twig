@@ -2,6 +2,32 @@
 
 {% oro_title_set({ params: { "%variant group.label%": form.vars.data.label } }) %}
 
+{% block head_script %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/formupdatelistener'],
+            function ($, FormUpdateListener){
+                'use strict';
+                $(function() {
+                    new FormUpdateListener($('#{{ form.vars.id }}'));
+                });
+            }
+        );
+    </script>
+
+    {% set listenerParameters = {
+        'columnName': 'has_product',
+        'selectors': {
+            'included': '#variantAppendProducts',
+            'excluded': '#variantRemoveProducts'
+        }
+    } %}
+
+    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#variant-products-grid', 'parameters': listenerParameters } %}
+{% endblock %}
+
 {% block content %}
     {{ JSFV(form) }}
     <form id="{{ form.vars.id }}" class="form-horizontal"
@@ -43,23 +69,12 @@
 
             {{ form_row(form.attributes) }}
 
+            {{ form_widget(form.appendProducts, {'id': 'variantAppendProducts'}) }}
+            {{ form_widget(form.removeProducts, {'id': 'variantRemoveProducts'}) }}
+
             {{ form_row(form._token) }}
+
+            <div id="variant-products-grid"></div>
         </div>
     </form>
-{% endblock %}
-
-{% block head_script_component %}
-    {{ parent() }}
-
-    <script type="text/javascript">
-        require(
-            ['jquery', 'pim/formupdatelistener'],
-            function ($, FormUpdateListener){
-                'use strict';
-                $(function() {
-                    new FormUpdateListener($('#{{ form.vars.id }}'));
-                });
-            }
-        );
-    </script>
 {% endblock %}

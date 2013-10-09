@@ -55,7 +55,9 @@ class VariantGroupHandler
         $this->form->setData($variantGroup);
 
         if ($this->request->isMethod('POST')) {
-            $this->form->bind($this->request);
+            $this->form->submit($this->request);
+
+            $this->bindProducts($variantGroup);
 
             if ($this->form->isValid()) {
                 $this->onSuccess($variantGroup);
@@ -65,6 +67,27 @@ class VariantGroupHandler
         }
 
         return false;
+    }
+
+    /**
+     * Bind products
+     *
+     * @param VariantGroup $variantGroup
+     */
+    private function bindProducts(VariantGroup $variantGroup)
+    {
+        $appendProducts = $this->form->get('appendProducts')->getData();
+        $removeProducts = $this->form->get('removeProducts')->getData();
+
+        foreach ($appendProducts as $product) {
+            $variantGroup->addProduct($product);
+            $product->setVariantGroup($variantGroup);
+        }
+
+        foreach ($removeProducts as $product) {
+            $variantGroup->removeProduct($product);
+            $product->setVariantGroup(null);
+        }
     }
 
     /**
