@@ -208,7 +208,7 @@ class ProductController extends AbstractDoctrineController
                 $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $fileName);
                 $response->headers->set('Content-Type', 'text/csv');
                 $response->headers->set('Content-Disposition', $attachment);
-                $response->setCallback($this->quickExportCallback($gridManager, $scope, static::BATCH_SIZE));
+                $response->setCallback($this->quickExportCallback($gridManager, static::BATCH_SIZE));
 
                 return $response->send();
 
@@ -233,14 +233,13 @@ class ProductController extends AbstractDoctrineController
      * Quick export callback
      *
      * @param ProductDatagridManager $gridManager
-     * @param string                 $scope
      * @param integer                $limit
      *
      * @return \Closure
      */
-    protected function quickExportCallback(ProductDatagridManager $gridManager, $scope, $limit)
+    protected function quickExportCallback(ProductDatagridManager $gridManager, $limit)
     {
-        return function () use ($gridManager, $scope, $limit) {
+        return function () use ($gridManager, $limit) {
             flush();
 
             $proxyQuery = $gridManager->getDatagrid()->getQueryWithParametersApplied();
@@ -254,7 +253,6 @@ class ProductController extends AbstractDoctrineController
             $context = array(
                 'withHeader' => true,
                 'heterogeneous' => false,
-                'scope' => $scope,
                 'fields' => $fieldsList
             );
 
