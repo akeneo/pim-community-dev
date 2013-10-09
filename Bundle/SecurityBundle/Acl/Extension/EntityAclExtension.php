@@ -262,7 +262,6 @@ class EntityAclExtension extends AbstractAclExtension
         return $maskBuilderClassName::getPatternFor($mask);
     }
 
-
     /**
      * {@inheritdoc}
      */
