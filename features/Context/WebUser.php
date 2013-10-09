@@ -1500,6 +1500,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->getPage(sprintf('%s show', ucfirst($type)))->execute();
         sleep(10);
+        $this->getMainContext()->reload();
+        $this->wait();
     }
 
     /**
@@ -1513,6 +1515,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ->getPage('Import show')
             ->uploadAndImportFile($this->replacePlaceholders($file));
         sleep(10);
+        $this->getMainContext()->reload();
+        $this->wait();
     }
 
     /**
