@@ -257,7 +257,7 @@ class ProductValueConverter
     }
 
     /**
-     * Return the code part of a localised and or scoped attribute code
+     * Return the code part of a localised and / or scoped attribute code
      *
      * @param string $code
      *
