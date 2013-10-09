@@ -215,8 +215,10 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
                 'type'        => FieldDescriptionInterface::TYPE_DATETIME,
                 'label'       => $this->translate($label),
                 'field_name'  => $code,
-                'filter_type' => false,
-                'sortable'    => true
+                'filter_type' => FilterInterface::TYPE_DATETIME,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => false
             )
         );
 
