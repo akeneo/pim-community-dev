@@ -232,25 +232,6 @@ class EditCommonAttributes extends AbstractMassEditAction
     }
 
     /**
-     * Initializes self::commonAtributes with values from the repository
-     */
-    protected function initializeCommonAttributes()
-    {
-        $attributes = $this->productManager->getAttributeRepository()->findAll();
-
-        $currentLocaleCode = $this->getLocale()->getCode();
-        foreach ($attributes as $attribute) {
-            $attribute->setLocale($currentLocaleCode);
-
-            $attribute
-                ->getVirtualGroup()
-                ->setLocale($currentLocaleCode);
-
-            $this->commonAttributes[] = $attribute;
-        }
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function perform(array $products)
@@ -259,6 +240,29 @@ class EditCommonAttributes extends AbstractMassEditAction
             $this->setProductValues($product);
             $this->productManager->handleMedia($product);
             $this->productManager->save($product);
+        }
+    }
+
+    /**
+     * Initializes self::commonAtributes with values from the repository
+     */
+    protected function initializeCommonAttributes()
+    {
+        $attributes = $this->productManager->getAttributeRepository()->findAll();
+
+        $currentLocaleCode = $this->getLocale()->getCode();
+
+        // Set attribute options locale
+        $this->productManager->setLocale($currentLocaleCode);
+
+        foreach ($attributes as $attribute) {
+            $attribute->setLocale($currentLocaleCode);
+
+            $attribute
+                ->getVirtualGroup()
+                ->setLocale($currentLocaleCode);
+
+            $this->commonAttributes[] = $attribute;
         }
     }
 
