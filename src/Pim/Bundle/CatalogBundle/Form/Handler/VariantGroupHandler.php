@@ -59,11 +59,6 @@ class VariantGroupHandler
             $appendProducts = $this->form->get('appendProducts')->getData();
             $removeProducts = $this->form->get('removeProducts')->getData();
 
-            var_dump(count($appendProducts));
-            var_dump(count($removeProducts));
-
-            die;
-
             if ($this->form->isValid()) {
                 $this->onSuccess($variantGroup);
 
