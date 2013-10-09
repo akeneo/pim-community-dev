@@ -179,7 +179,6 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
 
         $familyExpr  = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
         $proxyQuery
-            ->addSelect($rootAlias)
             ->addSelect(sprintf("%s AS familyLabel", $familyExpr), true)
             ->addSelect($this->getHasProductExpression() .' AS hasCurrentProduct', true);
 
@@ -227,11 +226,17 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
     {
         $rootAlias = $proxyQuery->getRootAlias();
 
-        $attributeIds = $this->getVariantGroup()->getAttributeIds();
-        $exprAttrIn = $proxyQuery->expr()->in('v.attribute', $attributeIds);
-        $proxyQuery
-            ->innerJoin($rootAlias .'.values', 'v', 'WITH', $exprAttrIn)
-            ->andWhere($proxyQuery->expr()->isNotNull('v.option'));
+        foreach ($this->getVariantGroup()->getAttributes() as $attribute) {
+            $valueField = sprintf('v_%s', $attribute->getId());
+            $proxyQuery
+                ->innerJoin(
+                    $rootAlias .'.values',
+                    $valueField,
+                    'WITH',
+                    $valueField .'.attribute = '. $attribute->getId()
+                )
+                ->andWhere($proxyQuery->expr()->isNotNull($valueField.'.option'));
+        }
     }
 
     /**
