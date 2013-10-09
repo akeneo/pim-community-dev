@@ -2,6 +2,10 @@
 
 namespace Oro\Bundle\InstallerBundle\Process\Step;
 
+use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
+
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 
 class SetupStep extends AbstractStep
@@ -26,8 +30,19 @@ class SetupStep extends AbstractStep
 
         if ($form->isValid()) {
             // load demo fixtures
-            if ($form->has('load_fixtures') && $form->get('load_fixtures')->getData()) {
+            if ($form->has('loadFixtures') && $form->get('loadFixtures')->getData()) {
+                $em     = $this->getDoctrine()->getManager();
+                $loader = new ContainerAwareLoader($this->container);
 
+                foreach ($this->get('kernel')->getBundles() as $bundle) {
+                    if (is_dir($path = $bundle->getPath() . '/DataFixtures/Demo')) {
+                        $loader->loadFromDirectory($path);
+                    }
+                }
+
+                $executor = new ORMExecutor($em);
+
+                $executor->execute($loader->getFixtures(), true);
             }
 
             $user = $form->getData();
@@ -36,11 +51,10 @@ class SetupStep extends AbstractStep
                 ->getRepository('OroUserBundle:Role')
                 ->findOneBy(array('role' => 'ROLE_ADMINISTRATOR'));
 
-            $businessUnit = $this->get('oro_organization.business_unit_manager')->getBusinessUnit();
-
-            $user->setEnabled(true)
-                ->addRole($role)
-                ->setOwner($businessUnit);
+            $user
+                ->setEnabled(true)
+                ->setOwner($this->get('oro_organization.business_unit_manager')->getBusinessUnit())
+                ->addRole($role);
 
             $this->get('oro_user.manager')->updateUser($user);
 
