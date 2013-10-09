@@ -58,6 +58,13 @@ class VariantGroupHandler
             $this->form->submit($this->request);
             $appendProducts = $this->form->get('appendProducts')->getData();
             $removeProducts = $this->form->get('removeProducts')->getData();
+            foreach ($appendProducts as $product) {
+                $variantGroup->addProduct($product);
+            }
+
+            foreach ($removeProducts as $product) {
+                $variantGroup->removeProduct($product);
+            }
 
             if ($this->form->isValid()) {
                 $this->onSuccess($variantGroup);
