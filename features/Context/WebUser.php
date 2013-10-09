@@ -233,6 +233,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iExpandTheCategory($category)
     {
+        $this->wait(); // Make sure that the tree is loaded
         $this->getCurrentPage()->expandCategory($category);
         $this->wait();
     }
@@ -258,6 +259,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldSeeTheCategoryUnderTheCategory($not, $child, $parent)
     {
+        $this->wait(); // Make sure that the tree is loaded
         $not = ($not !== '') ? true : false;
 
         $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
@@ -1099,6 +1101,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iDisableTheProduct()
     {
         $this->getPage('Product edit')->disableProduct()->save();
+        $this->wait();
     }
 
     /**
@@ -1117,6 +1120,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iEnableTheProduct()
     {
         $this->getPage('Product edit')->enableProduct()->save();
+        $this->wait();
     }
 
     /**
@@ -1496,6 +1500,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->getPage(sprintf('%s show', ucfirst($type)))->execute();
         sleep(10);
+        $this->getMainContext()->reload();
+        $this->wait();
     }
 
     /**
@@ -1509,6 +1515,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ->getPage('Import show')
             ->uploadAndImportFile($this->replacePlaceholders($file));
         sleep(10);
+        $this->getMainContext()->reload();
+        $this->wait();
     }
 
     /**
@@ -1834,9 +1842,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $fields
      *
-     * @Given /^I display the (.*) attribute$/
+     * @Given /^I display the (.*) attributes?$/
      */
-    public function iDisplayTheNameAttribute($fields)
+    public function iDisplayTheAttributes($fields)
     {
         $this->getCurrentPage()->addAvailableAttributes($this->listToArray($fields));
         $this->wait();

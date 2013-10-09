@@ -74,12 +74,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/DemoBundle.git",
-                "reference": "eb0a010634891c9736f455efdf763b64bcbeedd5"
+                "reference": "b38f8adb4f6155e6e817b1b52423763d470e4d11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/eb0a010634891c9736f455efdf763b64bcbeedd5",
-                "reference": "eb0a010634891c9736f455efdf763b64bcbeedd5",
+                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/b38f8adb4f6155e6e817b1b52423763d470e4d11",
+                "reference": "b38f8adb4f6155e6e817b1b52423763d470e4d11",
                 "shasum": ""
             },
             "require": {

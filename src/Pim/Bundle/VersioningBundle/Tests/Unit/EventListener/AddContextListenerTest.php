@@ -39,7 +39,6 @@ class AddContextListenerTest extends \PHPUnit_Framework_TestCase
         $listener = new AddContextListener($builder);
         $this->assertEquals($builder->getContext(), '');
 
-
         $instance = new JobInstance('connector', 'import', 'alias1');
         $instance->setCode('my code');
         $execution = new JobExecution();

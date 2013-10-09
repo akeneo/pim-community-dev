@@ -39,11 +39,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     protected $productManager;
 
     /**
-     * @var ChannelManager $channelManager
-     */
-    protected $channelManager;
-
-    /**
      * @var LocaleManager $localeManager
      */
     protected $localeManager;
@@ -69,28 +64,19 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     protected $variantGroupColumn  = 'variant_group';
 
     /**
-     * @Assert\NotBlank
-     * @Channel
-     */
-    protected $channel;
-
-    /**
      * Constructor
      *
      * @param FormFactoryInterface $formFactory
      * @param ProductManager       $productManager
-     * @param ChannelManager       $channelManager
      * @param LocaleManager        $localeManager
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         ProductManager $productManager,
-        ChannelManager $channelManager,
         LocaleManager $localeManager
     ) {
         $this->formFactory    = $formFactory;
         $this->productManager = $productManager;
-        $this->channelManager = $channelManager;
         $this->localeManager  = $localeManager;
     }
 
@@ -155,25 +141,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     }
 
     /**
-     * Set channel
-     *
-     * @param string $channel
-     */
-    public function setChannel($channel)
-    {
-        $this->channel = $channel;
-    }
-
-    /**
-     * Get channel
-     * @return string
-     */
-    public function getChannel()
-    {
-        return $this->channel;
-    }
-
-    /**
      * Goal is to transform an array like this:
      * array(
      *     'sku'        => 'sku-001',
@@ -223,13 +190,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             ),
             'categoriesColumn'    => array(),
             'familyColumn'        => array(),
-            'channel'             => array(
-                'type' => 'choice',
-                'options' => array(
-                    'choices'  => $this->channelManager->getChannelChoices(),
-                    'required' => true
-                )
-            )
         );
     }
 
@@ -245,32 +205,82 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         $product = $this->productManager->findByIdentifier(reset($item));
         if (!$product) {
             $product = $this->productManager->createProduct();
-        } else {
-            $product->getCategories()->count();
         }
 
-        $product->setScope($this->channel);
-        foreach (array_keys($item) as $code) {
-            $locale = null;
+        $allAttributes = $product->getAllAttributes();
 
-            if (in_array($code, array($this->categoriesColumn, $this->familyColumn, $this->variantGroupColumn))) {
+        foreach (array_keys($item) as $key) {
+
+            if (in_array($key, array($this->categoriesColumn, $this->familyColumn, $this->variantGroupColumn))) {
                 continue;
             }
 
-            if (strpos($code, '-')) {
-                list($code, $locale) = explode('-', $code);
-            }
+            list($code, $locale, $scope) = $this->parseProductValueKey($product, $key);
 
-            if ($locale) {
-                $product->setLocale($locale);
-            }
-
-            if (false === $product->{'get'.ucfirst($code)}()) {
-                $product->{'set'.ucfirst($code)}(null);
+            if (false === $product->getValue($code, $locale, $scope)) {
+                $value = $product->createValue($code, $locale, $scope);
+                $product->addValue($value);
             }
         }
 
         return $product;
+    }
+
+    /**
+     * Return attribute, locale and scope code
+     *
+     * @param Product $product
+     * @param string  $key
+     *
+     * @return array
+     */
+    protected function parseProductValueKey($product, $key)
+    {
+        $tokens = explode('-', $key);
+        $code   = $tokens[0];
+        $locale = null;
+        $scope  = null;
+
+        $allAttributes = $product->getAllAttributes();
+        if (!isset($allAttributes[$code])) {
+            throw new \Exception(sprintf('Unknown attribute "%s"', $code));
+        }
+        $attribute = $allAttributes[$code];
+
+        if ($attribute->getScopable() && $attribute->getTranslatable()) {
+            if (count($tokens) < 3) {
+                throw new \Exception(
+                    sprintf(
+                        'The column "%s" must contains attribute, locale and scope codes',
+                        $key
+                    )
+                );
+            }
+            $locale = $tokens[1];
+            $scope  = $tokens[2];
+        } elseif ($attribute->getScopable()) {
+            if (count($tokens) < 2) {
+                throw new \Exception(
+                    sprintf(
+                        'The column "%s" must contains attribute and scope codes',
+                        $key
+                    )
+                );
+            }
+            $scope = $tokens[1];
+        } elseif ($attribute->getTranslatable()) {
+            if (count($tokens) < 2) {
+                throw new \Exception(
+                    sprintf(
+                        'The column "%s" must contains attribute and locale codes',
+                        $key
+                    )
+                );
+            }
+            $locale = $tokens[1];
+        }
+
+        return array($code, $locale, $scope);
     }
 
     /**
@@ -293,7 +303,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         );
 
         $item[ProductEnabledConverter::ENABLED_KEY] = $this->enabled;
-        $item[ProductValueConverter::SCOPE_KEY]     = $this->channel;
 
         if (array_key_exists($this->familyColumn, $item)) {
             $item[ProductFamilyConverter::FAMILY_KEY] = $item[$this->familyColumn];
@@ -337,7 +346,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
 
         $excludedKeys = array(
             ProductEnabledConverter::ENABLED_KEY,
-            ProductValueConverter::SCOPE_KEY,
             ProductFamilyConverter::FAMILY_KEY,
             ProductCategoriesConverter::CATEGORIES_KEY
         );

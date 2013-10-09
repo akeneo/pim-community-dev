@@ -32,7 +32,7 @@ class Edit extends Form
             array(
                 'Locales dropdown' => array('css' => '#locale-switcher'),
                 'Locales selector' => array('css' => '#pim_product_locales'),
-                'Enable switcher'  => array('css' => '#pim_product_enabled'),
+                'Enable switcher'  => array('css' => '#switch_status'),
                 'Updates grid'     => array('css' => '#history table.grid'),
                 'Image preview'    => array('css' => '#lbImage'),
                 'Completeness'     => array('css' => 'div#completeness'),
@@ -161,7 +161,7 @@ class Edit extends Form
      */
     public function disableProduct()
     {
-        $this->getElement('Enable switcher')->uncheck();
+        $this->getElement('Enable switcher')->click();
 
         return $this;
     }
@@ -173,7 +173,7 @@ class Edit extends Form
      */
     public function enableProduct()
     {
-        $this->getElement('Enable switcher')->check();
+        $this->getElement('Enable switcher')->click();
 
         return $this;
     }

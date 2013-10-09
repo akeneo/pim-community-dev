@@ -349,10 +349,25 @@ class FixturesContext extends RawMinkContext
     public function theFollowingAttributeGroups(TableNode $table)
     {
         foreach ($table->getHash() as $index => $data) {
-            $group = new AttributeGroup();
-            $group->setCode($this->camelize($data['label']));
-            $group->setLocale('en_US')->setLabel($data['label']); // TODO translation refactoring
-            $group->setSortOrder($index);
+            $data = array_merge(
+                array(
+                    'locale' => 'english'
+                ),
+                $data
+            );
+
+            $group = $this->getGroup($data['code']);
+
+            if (!$group) {
+                $group = new AttributeGroup();
+                $group->setSortOrder($index);
+                $group->setCode($data['code']);
+            }
+
+            $group
+                ->setLocale($this->getLocaleCode($data['locale']))
+                ->setLabel($data['label']);
+
 
             $this->persist($group);
         }
@@ -601,6 +616,7 @@ class FixturesContext extends RawMinkContext
                     'scopable'    => 'no',
                     'localizable' => 'no',
                     'group'       => null,
+                    'type'        => 'pim_catalog_text'
                 ),
                 $data
             );
@@ -621,6 +637,21 @@ class FixturesContext extends RawMinkContext
 
             $this->persist($attribute);
         }
+    }
+
+    /**
+     * @Given /^the following attribute label translations:$/
+     */
+    public function theFollowingAttributeLabelTranslations(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this
+                ->getAttribute($data['attribute'])
+                ->setLocale($this->getLocaleCode($data['lang']))
+                ->setLabel($data['label']);
+        }
+
+        $this->flush();
     }
 
     /**
