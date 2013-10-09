@@ -10,7 +10,7 @@ services:
         class: %pim_import_export.datagrid.manager.job_instance.class%
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: exports
+              datagrid_name: export
               entity_name: %pim_import_export.entity.job_instance.class%
               query_entity_alias: job
               entity_hint: jobs
@@ -23,7 +23,7 @@ services:
         class: %pim_import_export.datagrid.manager.job_instance.class%
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: imports
+              datagrid_name: import
               entity_name: %pim_import_export.entity.job_instance.class%
               query_entity_alias: job
               entity_hint: jobs
@@ -36,7 +36,7 @@ services:
         class: %pim_import_export.datagrid.manager.report.class%
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: export_reports
+              datagrid_name: export_report
               entity_name: %pim_import_export.entity.job_execution.class%
               query_entity_alias: job_report
               entity_hint: job_reports
@@ -48,7 +48,7 @@ services:
         class: %pim_import_export.datagrid.manager.report.class%
         tags:
             - name: oro_grid.datagrid.manager
-              datagrid_name: import_reports
+              datagrid_name: import_report
               entity_name: %pim_import_export.entity.job_execution.class%
               query_entity_alias: job_report
               entity_hint: job_reports
