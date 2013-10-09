@@ -59,7 +59,14 @@ class ProductManager extends FlexibleManager
         CurrencyManager $currencyManager,
         CompletenessCalculator $completenessCalculator
     ) {
-        parent::__construct($flexibleName, $flexibleConfig, $storageManager, $eventDispatcher, $attributeTypeFactory, $completenessCalculator);
+        parent::__construct(
+            $flexibleName,
+            $flexibleConfig,
+            $storageManager,
+            $eventDispatcher,
+            $attributeTypeFactory,
+            $completenessCalculator
+        );
 
         $this->mediaManager           = $mediaManager;
         $this->currencyManager        = $currencyManager;
