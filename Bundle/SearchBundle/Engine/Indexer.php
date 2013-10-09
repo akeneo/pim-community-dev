@@ -194,8 +194,8 @@ class Indexer
             $objectString = 'Entity:' . $entityClass;
 
             if ($this->securityProvider->isProtectedEntity($entityClass)
-                && !$this->securityProvider->isGranted($attribute, $objectString))
-            {
+                && !$this->securityProvider->isGranted($attribute, $objectString)
+            ) {
                 unset ($entities[$entityClass]);
             }
         }
