@@ -33,7 +33,7 @@ class LocaleManagerTest extends WebTestCase
      * Count of all locales
      * @staticvar integer
      */
-    protected static $totalCount = 82;
+    protected static $totalCount = 210;
 
     /**
      * {@inheritdoc}
