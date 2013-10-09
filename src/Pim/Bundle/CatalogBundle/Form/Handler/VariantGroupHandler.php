@@ -81,10 +81,12 @@ class VariantGroupHandler
 
         foreach ($appendProducts as $product) {
             $variantGroup->addProduct($product);
+            $product->setVariantGroup($variantGroup);
         }
 
         foreach ($removeProducts as $product) {
             $variantGroup->removeProduct($product);
+            $product->setVariantGroup(null);
         }
     }
 

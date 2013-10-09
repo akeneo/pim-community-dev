@@ -94,8 +94,6 @@ services:
               entity_hint: product
               flexible: true
               route_name: pim_catalog_variant_group_edit
-        calls:
-            - [ setIdentifierField, ['id'] ]
 
     pim_catalog.datagrid.worker:
         class: %pim_catalog.datagrid.worker.class%

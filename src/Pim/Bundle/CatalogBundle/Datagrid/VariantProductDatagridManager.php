@@ -77,7 +77,7 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
                 'nullable'    => false,
                 'editable'    => true,
                 'sortable'    => false,
-                'filter_type'     => false
+                'filter_type' => false
             )
         );
 
@@ -117,7 +117,6 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
 
         $result['filterable']  = false;
         $result['show_filter'] = false;
-        $result['sortable']    = $attribute->getAttributeType() === 'pim_catalog_identifier';
 
         return $result;
     }
