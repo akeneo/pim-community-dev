@@ -66,18 +66,27 @@ class FlatProductNormalizer implements NormalizerInterface
     {
         $this->results = array();
 
-        $this->normalizeValue($identifier = $object->getIdentifier());
+        $this->results = array_merge(
+            $this->results, 
+            $this->normalizeValue($identifier = $object->getIdentifier())
+        );
 
         $this->normalizeFamily($object->getFamily());
 
         $this->normalizeVariantGroup($object->getVariantGroup());
 
+        $values = array();
         foreach ($object->getValues() as $value) {
             if ($value === $identifier) {
                 continue;
             }
-            $this->normalizeValue($value);
+            $values = array_merge(
+                $values,
+                $this->normalizeValue($value)
+            );
         }
+        ksort($values);
+        $this->results = array_merge($this->results, $values);
 
         $this->normalizeCategories($object->getCategoryCodes());
 
@@ -101,6 +110,8 @@ class FlatProductNormalizer implements NormalizerInterface
      * Normalizes a value
      *
      * @param mixed $value
+     *
+     * @return array
      */
     protected function normalizeValue($value)
     {
@@ -128,7 +139,7 @@ class FlatProductNormalizer implements NormalizerInterface
             return;
         }
 
-        $this->results[$this->getFieldValue($value)] = (string) $data;
+        return array($this->getFieldValue($value) => (string) $data);
     }
 
     /**
