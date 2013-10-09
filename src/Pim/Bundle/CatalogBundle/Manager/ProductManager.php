@@ -199,7 +199,7 @@ class ProductManager extends FlexibleManager
      *
      * @return null
      */
-    public function save(ProductInterface $product, $calculateCompleteness=true)
+    public function save(ProductInterface $product, $calculateCompleteness = true)
     {
         $this->storageManager->persist($product);
         $this->storageManager->flush();
