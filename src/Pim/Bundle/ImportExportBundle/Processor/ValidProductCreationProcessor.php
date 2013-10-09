@@ -209,28 +209,13 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
 
         $allAttributes = $product->getAllAttributes();
 
-        foreach (array_keys($item) as $code) {
+        foreach (array_keys($item) as $key) {
 
-            $locale = null;
-            $scope = null;
-
-            if (in_array($code, array($this->categoriesColumn, $this->familyColumn, $this->variantGroupColumn))) {
+            if (in_array($key, array($this->categoriesColumn, $this->familyColumn, $this->variantGroupColumn))) {
                 continue;
             }
 
-            if (strpos($code, '-')) {
-                $tokens = explode('-', $code);
-                $code = $tokens[0];
-                $attribute = $allAttributes[$code];
-                if ($attribute->getScopable() && $attribute->getTranslatable()) {
-                    $scope  = $tokens[1];
-                    $locale = $tokens[2];
-                } else if ($attribute->getScopable()) {
-                    $scope = $tokens[1];
-                } else if ($attribute->getTranslatable()) {
-                    $locale = $tokens[1];
-                }
-            }
+            list($code, $locale, $scope) = $this->parseProductValueKey($product, $key);
 
             if (false === $product->getValue($code, $locale, $scope)) {
                 $value = $product->createValue($code, $locale, $scope);
@@ -239,6 +224,63 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         }
 
         return $product;
+    }
+
+    /**
+     * Return attribute, locale and scope code
+     *
+     * @param Product $product
+     * @param string  $key
+     *
+     * @return array
+     */
+    protected function parseProductValueKey($product, $key)
+    {
+        $tokens = explode('-', $key);
+        $code   = $tokens[0];
+        $locale = null;
+        $scope  = null;
+
+        $allAttributes = $product->getAllAttributes();
+        if (!isset($allAttributes[$code])) {
+            throw new \Exception(sprintf('Unknown attribute "%s"', $code));
+        }
+        $attribute = $allAttributes[$code];
+
+        if ($attribute->getScopable() && $attribute->getTranslatable()) {
+            if (count($tokens) < 3) {
+                throw new \Exception(
+                    sprintf(
+                        'The column "%s" must contains attribute, locale and scope codes',
+                        $key
+                    )
+                );
+            }
+            $locale = $tokens[1];
+            $scope  = $tokens[2];
+        } else if ($attribute->getScopable()) {
+            if (count($tokens) < 2) {
+                throw new \Exception(
+                    sprintf(
+                        'The column "%s" must contains attribute and scope codes',
+                        $key
+                    )
+                );
+            }
+            $scope = $tokens[1];
+        } else if ($attribute->getTranslatable()) {
+            if (count($tokens) < 2) {
+                throw new \Exception(
+                    sprintf(
+                        'The column "%s" must contains attribute and locale codes',
+                        $key
+                    )
+                );
+            }
+            $locale = $tokens[1];
+        }
+
+        return array($code, $locale, $scope);
     }
 
     /**
