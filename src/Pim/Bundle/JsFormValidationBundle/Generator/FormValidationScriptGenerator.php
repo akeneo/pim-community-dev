@@ -64,6 +64,9 @@ class FormValidationScriptGenerator extends OroFormValidationScriptGenerator
      * APY\JsFormValidationBundle\Generator\FormValidationScriptGenerator::generate
      * and returns parameters to be passed to the validation template
      *
+     * Until an extensibility point is provided, we have to override the entire content of the 'generate' method,
+     * thus the script generation code has been copied here
+     *
      * @param FormView $formView
      *
      * @return array
