@@ -80,7 +80,7 @@ services:
         class: %pim_import_export.processor.valid_category_creation.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - '@form.factory'
+            - '@validator'
 
     # writers
     pim_import_export.writer.file:

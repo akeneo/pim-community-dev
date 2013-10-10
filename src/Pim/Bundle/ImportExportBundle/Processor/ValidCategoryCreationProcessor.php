@@ -2,13 +2,15 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
 use Pim\Bundle\CatalogBundle\Entity\Category;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Category form processor
@@ -18,7 +20,9 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
+class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement implements
+    ItemProcessorInterface,
+    StepExecutionAwareInterface
 {
     /**
      * Entity manager
@@ -26,13 +30,6 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      * @var EntityManager
      */
     protected $entityManager;
-
-    /**
-     * Form factory
-     *
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
 
     /**
      * Delimiter separating the translated labels
@@ -70,15 +67,22 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     protected $categories;
 
     /**
+     * @var StepExecution
+     */
+    protected $stepExecution;
+
+    /**
      * Constructor
      *
      * @param EntityManager        $entityManager
      * @param FormFactoryInterface $formFactory
      */
-    public function __construct(EntityManager $entityManager, FormFactoryInterface $formFactory)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        ValidatorInterface $validator
+    ) {
         $this->entityManager = $entityManager;
-        $this->formFactory   = $formFactory;
+        $this->validator     = $validator;
     }
 
     /**
@@ -144,6 +148,14 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     /**
      * {@inheritdoc}
      */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getConfigurationFields()
     {
         return array(
@@ -203,13 +215,37 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     private function processItem($item)
     {
         $category = $this->getCategory($item);
-        $form     = $this->createAndSubmitForm($category, $item);
 
-        if (!$form->isValid()) {
-            throw new InvalidObjectException($form);
+        $labels = explode($this->labelDelimiter, $item['label']);
+        $labelData = array();
+        foreach ($labels as $labelItem) {
+            $parsedLabelItem = explode($this->localeDelimiter, $labelItem);
+            if (count($parsedLabelItem) === 2) {
+                list($locale, $label) = $parsedLabelItem;
+                $labelData[$locale] = $label;
+            } else {
+                $this->stepExecution->addError(sprintf('Label "%s" cannot be parsed, it has been ignored', $labelItem));
+            }
         }
 
-        $this->categories[] = $category;
+        $category->setCode($item['code']);
+        $category->setDynamic((bool) $item['dynamic']);
+
+        foreach ($labelData as $locale => $label) {
+            $category->setLocale($locale);
+            $category->setLabel($label);
+        }
+        $category->setLocale(null);
+
+        $violations = $this->validator->validate($category);
+        if ($violations->count() > 0) {
+            foreach ($violations as $violation) {
+                $this->stepExecution->addError((string) $violation);
+            }
+            return;
+        } else {
+            $this->categories[] = $category;
+        }
     }
 
     /**
@@ -347,53 +383,9 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
         $category = $this->findCategory($item['code']);
         if (!$category) {
             $category = new Category();
-            $category->setCode($item['code']);
         }
 
         return $category;
-    }
-
-    /**
-     * Create and submit the category form
-     *
-     * @param Category $category
-     * @param array    $item
-     *
-     * @return FormInterface
-     */
-    private function createAndSubmitForm(Category $category, array $item)
-    {
-        $form = $this->formFactory->create(
-            'pim_category',
-            $category,
-            array(
-                'csrf_protection' => false,
-                'import_mode'     => true,
-            )
-        );
-
-        $labelData = array();
-
-        $labels = explode($this->labelDelimiter, $item['label']);
-        foreach ($labels as $labelItem) {
-            $labelItem = explode($this->localeDelimiter, $labelItem);
-            if (count($labelItem) === 2) {
-                list($locale, $label) = $labelItem;
-                $labelData[$locale] = $label;
-            } else {
-                // TODO: Log an error = translation for this category will not be imported
-            }
-        }
-
-        $data = array(
-            'code' => $item['code'],
-            'label' => $labelData,
-            'dynamic' => (bool) $item['dynamic'],
-        );
-
-        $form->submit($data);
-
-        return $form;
     }
 
     /**
