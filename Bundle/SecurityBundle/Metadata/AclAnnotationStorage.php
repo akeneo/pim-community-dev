@@ -26,8 +26,8 @@ class AclAnnotationStorage implements \Serializable
     /**
      * Gets an annotation by its id
      *
-     * @param string $id
-     * @return AclAnnotation|null AclAnnotation object or null if ACL annotation was not found
+     * @param  string                    $id
+     * @return AclAnnotation|null        AclAnnotation object or null if ACL annotation was not found
      * @throws \InvalidArgumentException
      */
     public function findById($id)
@@ -44,9 +44,9 @@ class AclAnnotationStorage implements \Serializable
     /**
      * Gets an annotation bound to the given class/method
      *
-     * @param string $class
-     * @param string|null $method
-     * @return AclAnnotation|null AclAnnotation object or null if ACL annotation was not found
+     * @param  string                    $class
+     * @param  string|null               $method
+     * @return AclAnnotation|null        AclAnnotation object or null if ACL annotation was not found
      * @throws \InvalidArgumentException
      */
     public function find($class, $method = null)
@@ -75,8 +75,8 @@ class AclAnnotationStorage implements \Serializable
     /**
      * Determines whether the given class/method has an annotation
      *
-     * @param string $class
-     * @param string|null $method
+     * @param  string      $class
+     * @param  string|null $method
      * @return bool
      */
     public function has($class, $method = null)
@@ -99,7 +99,7 @@ class AclAnnotationStorage implements \Serializable
     /**
      * Gets annotations
      *
-     * @param string|null $type The annotation type
+     * @param  string|null     $type The annotation type
      * @return AclAnnotation[]
      */
     public function getAnnotations($type = null)
@@ -121,8 +121,8 @@ class AclAnnotationStorage implements \Serializable
     /**
      * Checks whether the given class is registered in this storage
      *
-     * @param string $class
-     * @return bool true if the class is registered in this storage; otherwise, false
+     * @param  string $class
+     * @return bool   true if the class is registered in this storage; otherwise, false
      */
     public function isKnownClass($class)
     {
@@ -132,9 +132,9 @@ class AclAnnotationStorage implements \Serializable
     /**
      * Checks whether the given method is registered in this storage
      *
-     * @param string $class
-     * @param string $method
-     * @return bool true if the method is registered in this storage; otherwise, false
+     * @param  string $class
+     * @param  string $method
+     * @return bool   true if the method is registered in this storage; otherwise, false
      */
     public function isKnownMethod($class, $method)
     {
@@ -144,9 +144,9 @@ class AclAnnotationStorage implements \Serializable
     /**
      * Adds an annotation
      *
-     * @param AclAnnotation $annotation
-     * @param string|null $class
-     * @param string|null $method
+     * @param  AclAnnotation             $annotation
+     * @param  string|null               $class
+     * @param  string|null               $method
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
@@ -162,9 +162,9 @@ class AclAnnotationStorage implements \Serializable
     /**
      * Adds an annotation ancestor
      *
-     * @param AclAnnotationAncestor $ancestor
-     * @param string|null $class
-     * @param string|null $method
+     * @param  AclAnnotationAncestor     $ancestor
+     * @param  string|null               $class
+     * @param  string|null               $method
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      */
@@ -178,9 +178,9 @@ class AclAnnotationStorage implements \Serializable
     /**
      * Adds an annotation binding
      *
-     * @param string $id
-     * @param string $class
-     * @param string|null $method
+     * @param  string                    $id
+     * @param  string                    $class
+     * @param  string|null               $method
      * @throws \RuntimeException
      * @throws \InvalidArgumentException
      *
