@@ -242,6 +242,7 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
             foreach ($violations as $violation) {
                 $this->stepExecution->addError((string) $violation);
             }
+
             return;
         } else {
             $this->categories[] = $category;
