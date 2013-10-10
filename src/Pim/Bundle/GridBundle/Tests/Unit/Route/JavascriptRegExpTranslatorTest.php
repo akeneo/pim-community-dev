@@ -18,11 +18,19 @@ class JavascriptRegExpTranslatorTest extends \PHPUnit_Framework_TestCase
      */
     protected $translator;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->translator = new JavascriptRegExpTranslator('/root');
     }
 
+    /**
+     * Data provider for testTranslate
+     * 
+     * @return array
+     */
     public function getTranslateData()
     {
         return array(
@@ -36,6 +44,8 @@ class JavascriptRegExpTranslatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests translate
+     * 
      * @dataProvider getTranslateData
      * @param string $phpRegexp
      * @param string $javascriptRegexp
@@ -45,6 +55,11 @@ class JavascriptRegExpTranslatorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($javascriptRegexp, $this->translator->translate($phpRegexp));
     }
 
+    /**
+     * Data provider for testTranslateException
+     * 
+     * @return array
+     */
     public function getTranslateExceptionData()
     {
         return array(
@@ -59,11 +74,14 @@ class JavascriptRegExpTranslatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test unsupported regexps
+     * 
      * @expectedException Pim\Bundle\GridBundle\Exception\JavascriptRegexpTranslatorException
      * @dataProvider getTranslateExceptionData
      * @param string $phpRegexp
      */
-    public function testTranslateException($phpRegexp) {
+    public function testTranslateException($phpRegexp)
+    {
         $this->translator->translate($phpRegexp);
     }
 }

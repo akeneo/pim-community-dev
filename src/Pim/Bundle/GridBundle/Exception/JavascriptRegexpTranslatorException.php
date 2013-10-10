@@ -11,5 +11,4 @@ namespace Pim\Bundle\GridBundle\Exception;
  */
 class JavascriptRegexpTranslatorException extends \RuntimeException
 {
-    
 }

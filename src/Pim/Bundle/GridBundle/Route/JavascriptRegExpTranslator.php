@@ -18,6 +18,11 @@ class JavascriptRegExpTranslator
      */
     protected $prefix;
     
+    /**
+     * Replacement regexps
+     * 
+     * @var array
+     */
     protected $replacements = array(
         '/#(.+)#.*/'             => '\1',
         '/^\^/'                  => '^%prefix%',
@@ -25,6 +30,11 @@ class JavascriptRegExpTranslator
         '/\(\?(:|P<[a-z_]+>)/i'  => '(',
     );
 
+    /**
+     * Unsupported regexp features regexps
+     * 
+     * @var array
+     */
     protected $unsupported = array(
         '/\+\+/',
         '/\(\?<?[=!]/',

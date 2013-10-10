@@ -31,31 +31,32 @@ class DatagridExtension extends \Twig_Extension
         return 'pim_grid';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getFunctions()
     {
         return array(
             'grid_route_regexps' => new \Twig_Function_Method(
                 $this,
-                'getRouteRegexps',
+                'getGridRouteRegexps',
                 array('is_safe' => array('html'))
             )
         );
     }
 
-    public function getRouteRegexps()
+    /**
+     * Return a json encoded collection of grid route regexps
+     * 
+     * @return string
+     */
+    public function getGridRouteRegexps()
     {
         $members = array();
         foreach ($this->routeRegistry->getRegexps() as $datagridName => $regexp) {
-            $members[] = sprintf('"%s": %s', $datagridName, $this->getJsRegexp($regexp));
+            $members[] = sprintf('"%s": %s', $datagridName, $regexp);
         }
 
         return sprintf('{%s}', implode(",\n", $members));
-    }
-
-    protected function getJsRegexp($regexp)
-    {
-        return $regexp;
-        preg_match('/^#(.+)#/', $regexp, $matches);
-        return sprintf('/%s/', str_replace('/', '\\/', str_replace('(?:/(?P<_format>html|json))?', '', $matches[1])));
     }
 }

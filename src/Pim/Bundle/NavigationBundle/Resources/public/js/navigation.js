@@ -9,6 +9,7 @@ define(
     function(OroNavigation, app, messenger, _) {
 
         var QUERY_STRING_REGEX = /^[^\?]+\??/,
+            URL_PATH_REGEX = /\?.+/,
             flashMessages = [],
             parent = OroNavigation.prototype,
             instance,
@@ -30,7 +31,7 @@ define(
                         return _.reduce(gridRegexps, function(memo, regexp, gridName) {
                             return regexp.test(url) ? gridName : memo;
                         }, null)
-                    })(this.url.replace(/\?.+/, ''), this.gridRegexps)
+                    })(this.url.replace(URL_PATH_REGEX, ''), this.gridRegexps)
                     if (gridName) {
                         var qs = this.url.replace(QUERY_STRING_REGEX, ''),
                             args = qs ? app.unpackFromQueryString(qs) : {},

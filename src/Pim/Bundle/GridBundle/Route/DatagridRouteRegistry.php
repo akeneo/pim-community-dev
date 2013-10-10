@@ -4,6 +4,7 @@ namespace Pim\Bundle\GridBundle\Route;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Pim\Bundle\GridBundle\Exception\JavascriptRegexpTranslatorException;
+
 /**
  * Registry of datagrid routes
  * 
