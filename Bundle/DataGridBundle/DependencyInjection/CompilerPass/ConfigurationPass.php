@@ -12,8 +12,8 @@ class ConfigurationPass implements CompilerPassInterface
     const MANAGER_SERVICE_ID = 'oro_grid.datagrid.manager';
     const BUILDER_SERVICE_ID = 'oro_grid.datagrid.builder';
 
-    const SOURCE_TAG_NAME     = 'oro_grid.datasource';
-    const EXTGENSION_TAG_NAME = 'oro_grid.extension';
+    const SOURCE_TAG_NAME    = 'oro_grid.datasource';
+    const EXTENSION_TAG_NAME = 'oro_grid.extension';
 
     const CONFIG_FILE_NAME = 'datagrid.yml';
     const ROOT_PARAMETER   = 'datagrid';
@@ -55,7 +55,7 @@ class ConfigurationPass implements CompilerPassInterface
                 $builder->addMethodCall('addDatasource', array($tagAttrs['type'], new Reference($serviceId)));
             }
 
-            $extensions = $container->findTaggedServiceIds(self::EXTGENSION_TAG_NAME);
+            $extensions = $container->findTaggedServiceIds(self::EXTENSION_TAG_NAME);
             foreach ($extensions as $serviceId => $tags) {
                 $builder->addMethodCall('addExtension', array(new Reference($serviceId)));
             }

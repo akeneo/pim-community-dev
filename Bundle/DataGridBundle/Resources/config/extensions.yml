@@ -1,0 +1,11 @@
+parameters:
+    oro_grid.extension.formatter.class:  Oro\Bundle\DataGridBundle\Extension\Formatter\FormatterExtension
+
+services:
+    oro_grid.extension.formatter:
+        class: %oro_grid.extension.formatter.class%
+        calls:
+            - [ addProperty, [ 'field',  @oro_grid.extension.formatter.field_property ] ]
+            - [ addProperty, [ 'url',    @oro_grid.extension.formatter.property.url_property ] ]
+        tags:
+            - { name: oro_grid.extension, type: formatter }

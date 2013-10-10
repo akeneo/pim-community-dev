@@ -1,0 +1,12 @@
+parameters:
+    oro_grid.extension.formatter.property.field_property.class:  Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty
+    oro_grid.extension.formatter.property.url_property.class:    Oro\Bundle\DataGridBundle\Extension\Formatter\Property\UrlProperty
+
+services:
+    oro_grid.extension.formatter.field_property:
+        class: %oro_grid.extension.formatter.property.field_property.class%
+
+    oro_grid.extension.formatter.property.url_property:
+        class: %oro_grid.extension.formatter.property.url_property.class%
+        arguments:
+            - @router

@@ -6,10 +6,6 @@ parameters:
     oro_grid.datagrid.builder.class:     Oro\Bundle\DataGridBundle\Datagrid\Builder
     oro_grid.provider.resolver.class:    Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver
 
-    oro_grid.datasource.orm.class:       Oro\Bundle\DataGridBundle\Datasource\OrmDatasource
-
-    oro_grid.extension.formatter.class:  Oro\Bundle\DataGridBundle\Extension\Formatter\FormatterExtension
-
 services:
     oro_grid.datagrid.manager:
         class: %oro_grid.datagrid.manager.class%
@@ -29,15 +25,3 @@ services:
         class: %oro_grid.provider.resolver.class%
         arguments:
             - @service_container
-
-    oro_grid.datasource.orm:
-        class: %oro_grid.datasource.orm.class%
-        arguments:
-            - @doctrine.orm.entity_manager
-        tags:
-            - { name: oro_grid.datasource, type: orm }
-
-    oro_grid.extension.formatter:
-        class: %oro_grid.extension.formatter.class%
-        tags:
-            - { name: oro_grid.etension, name: formatter }

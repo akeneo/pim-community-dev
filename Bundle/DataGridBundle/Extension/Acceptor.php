@@ -18,7 +18,7 @@ class Acceptor
     public function acceptDatasourceVisitors(array $extensions, DatagridInterface $grid)
     {
         foreach ($extensions as $extension) {
-            $extension->visitDatasource($grid->getDatasource());
+            $extension->visitDatasource($this->getConfig(), $grid->getDatasource());
         }
     }
 
@@ -31,7 +31,7 @@ class Acceptor
     public function acceptResult(array $extensions, \stdClass $result)
     {
         foreach ($extensions as $extension) {
-            $extension->visitResult($result);
+            $extension->visitResult($this->getConfig(), $result);
         }
     }
 
