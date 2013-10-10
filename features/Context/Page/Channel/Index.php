@@ -16,7 +16,7 @@ class Index extends Grid
     /**
      * @var string
      */
-    protected $path = '/configuration/channel/';
+    protected $path = '/configuration/channel/_grid_';
 
     /**
      * @param string $channel

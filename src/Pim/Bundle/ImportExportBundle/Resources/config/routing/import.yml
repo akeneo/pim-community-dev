@@ -1,5 +1,5 @@
 pim_importexport_import_index:
-    path: /.{_format}
+    path: /_grid_.{_format}
     defaults: { _controller: pim_import_export.controller.import:indexAction, _format: html }
     requirements:
         _format: html|json

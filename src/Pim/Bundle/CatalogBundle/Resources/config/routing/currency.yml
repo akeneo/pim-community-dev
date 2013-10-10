@@ -1,5 +1,5 @@
 pim_catalog_currency_index:
-    path: /.{_format}
+    path: /_grid_.{_format}
     defaults: { _controller: pim_catalog.controller.currency:indexAction, _format: html }
     requirements:
         _format: html|json

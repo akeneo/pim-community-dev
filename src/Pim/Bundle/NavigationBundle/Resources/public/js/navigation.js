@@ -8,7 +8,7 @@ define(
     ['oro/navigation-orig', 'oro/app', 'oro/messenger'],
     function(OroNavigation, app, messenger) {
 
-        var GRID_URL_REGEX = /enrich\/product\/(\?.*)?$/,
+        var GRID_URL_REGEX = /\/([^\/]+)\/_grid_$/i,
             QUERY_STRING_REGEX = /^[^\?]+\??/,
             flashMessages = [],
             parent = OroNavigation.prototype,
@@ -24,11 +24,17 @@ define(
                     if (!this.url) {
                         this.url = window.location.href.replace(this.baseUrl, '');
                     }
-                    if (this.url.match(GRID_URL_REGEX)) {
+                    var gridName = (function(url){
+                        var matches = url.match(GRID_URL_REGEX)
+                        return (matches && matches.length) ? matches[1] : null
+                    })(this.url)
+                    if (gridName) {
                         var qs = this.url.replace(QUERY_STRING_REGEX, ''),
-                            args = qs ? app.unpackFromQueryString(qs) : {};
-                        if (!encodedStateData && sessionStorage && sessionStorage.gridURL_products) {
-                            this.encodedStateData = sessionStorage.gridURL_products;
+                            args = qs ? app.unpackFromQueryString(qs) : {},
+                            storageKey = "gridURL_" + gridName,
+                            sessionStateData = sessionStorage ? sessionStorage.getItem(storageKey) : null;
+                        if (!encodedStateData && sessionStateData) {
+                            this.encodedStateData = sessionStateData;
                             this.skipAjaxCall = false;
                         } else if (!this.encodedStateData) {
                             this.encodedStateData = "";
@@ -36,7 +42,7 @@ define(
                         if (args.dataLocale) {
                             this.encodedStateData += (this.encodedStateData ? '&' : '') +
                                     'dataLocale=' + args.dataLocale;
-                            sessionStorage.gridURL_products = this.encodedStateData;
+                            sessionStorage.setItem(storageKey, this.encodedStateData);
                             this.skipAjaxCall = false;
                         }
                         if (!this.skipAjaxCall) {
