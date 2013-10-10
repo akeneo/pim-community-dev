@@ -1,6 +1,6 @@
 datagrid:
-    contact_group_grid:
-        data_source:
+    demo:
+        source:
             type: orm
             query:
                 select:

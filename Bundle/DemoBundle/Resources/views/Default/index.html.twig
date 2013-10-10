@@ -1,0 +1,12 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% set gridId = 'accounts-grid' %}
+
+{% block content %}
+    {% set buttons = [] %}
+
+    {{ dataGrid.renderGrid('demo') }}
+    {{ parent() }}
+{% endblock %}
