@@ -27,7 +27,6 @@ use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
-use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
@@ -279,7 +278,7 @@ class ProductController extends AbstractDoctrineController
         $entity = $this->productManager->createProduct();
         $form = $this->createForm('pim_product_create', $entity, $this->getCreateFormOptions($entity));
         if ($request->isMethod('POST')) {
-            $form->bind($request);
+            $form->submit($request);
             if ($form->isValid()) {
                 $this->productManager->save($entity);
                 $this->addFlash('success', 'flash.product.created');
@@ -335,11 +334,11 @@ class ProductController extends AbstractDoctrineController
         $form     = $this->createForm(
             'pim_product',
             $product,
-            $this->getFormOptions($product)
+            $this->getEditFormOptions($product)
         );
 
         if ($request->isMethod('POST')) {
-            $form->bind($request);
+            $form->submit($request);
 
             if ($form->isValid()) {
                 $this->productManager->handleMedia($product);
@@ -387,7 +386,7 @@ class ProductController extends AbstractDoctrineController
             $product->getAttributes(),
             $availableAttributes
         );
-        $attributesForm->bind($request);
+        $attributesForm->submit($request);
 
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $this->productManager->addAttributeToProduct($product, $attribute);
@@ -600,7 +599,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @return array
      */
-    protected function getFormOptions(ProductInterface $product)
+    protected function getEditFormOptions(ProductInterface $product)
     {
         return array(
             'enable_family' => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
