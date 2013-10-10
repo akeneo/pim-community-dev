@@ -32,9 +32,9 @@ class VariantGroupType extends AbstractType
 
         $this->addProductsField($builder);
 
-        $builder->addEventSubscriber(new VariantGroupSubscriber());
-
-        $builder->addEventSubscriber(new BindVariantGroupProductsSubscriber());
+        $builder
+            ->addEventSubscriber(new VariantGroupSubscriber())
+            ->addEventSubscriber(new BindVariantGroupProductsSubscriber());
     }
 
     /**
