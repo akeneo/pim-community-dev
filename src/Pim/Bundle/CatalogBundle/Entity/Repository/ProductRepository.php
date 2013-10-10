@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
+use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
-use Doctrine\ORM\AbstractQuery;
 
 /**
  * Product repository
