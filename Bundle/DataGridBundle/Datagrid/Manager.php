@@ -38,7 +38,7 @@ class Manager implements ManagerInterface
      */
     public function getDatagrid($name)
     {
-        $config = $this->getConfigurationForGrid($name);
+        $config   = $this->getConfigurationForGrid($name);
         $datagrid = $this->getDatagridBuilder()->build($name, $config);
 
         return $datagrid;

@@ -25,14 +25,14 @@ class FormatterExtension implements ExtensionVisitorInterface
         $applicable = !empty($config[self::COLUMNS_KEY]) || !empty($config[self::PROPERTIES_KEY]);
 
         // validate extension configuration
-        $this->validateConfiguration($config, array(self::COLUMNS_KEY, self::PROPERTIES_KEY));
+        //$this->validateConfiguration($config, array(self::COLUMNS_KEY, self::PROPERTIES_KEY));
 
         return $applicable;
     }
 
     /**
      * @param array $config config array
-     * @param array $keys keys to validate
+     * @param array $keys   keys to validate
      *
      * @return bool
      */

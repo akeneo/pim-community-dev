@@ -58,7 +58,7 @@ class Datagrid implements DatagridInterface
      */
     public function addExtension(ExtensionVisitorInterface $extension)
     {
-        $this->extensions[] = $extension;
+        $this->extensions[] = clone $extension;
 
         return $this;
     }

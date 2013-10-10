@@ -10,6 +10,9 @@ use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
  */
 interface DatasourceInterface
 {
+    const SOURCE_KEY = 'source';
+    const TYPE_KEY   = 'type';
+
     /**
      * Accept source to datagrid
      *

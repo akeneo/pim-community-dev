@@ -112,12 +112,12 @@ class Builder
      */
     protected function buildDataSource(DatagridInterface $grid, array $config)
     {
-        if (!isset($config['source'], $config['source']['type'])) {
+        if (!isset($config[DatasourceInterface::SOURCE_KEY], $config[DatasourceInterface::SOURCE_KEY]['type'])) {
             throw new \RuntimeException('Datagrid source does not configured');
         }
 
-        $sourceConfig = $config['source'];
-        $sourceType   = $sourceConfig['type'];
+        $sourceConfig = $config[DatasourceInterface::SOURCE_KEY];
+        $sourceType   = $sourceConfig[DatasourceInterface::TYPE_KEY];
         if (!isset($this->dataSources[$sourceType])) {
             throw new \RuntimeException(sprintf('Datagrid source "%s" does not exist', $sourceType));
         }

@@ -1,5 +1,7 @@
 parameters:
-    oro_grid.extension.formatter.class:  Oro\Bundle\DataGridBundle\Extension\Formatter\FormatterExtension
+    oro_grid.extension.formatter.class:        Oro\Bundle\DataGridBundle\Extension\Formatter\FormatterExtension
+    oro_grid.extension.orm_pager.class:        Oro\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension
+    oro_grid.extension.pager.orm.pager.class:  Oro\Bundle\DataGridBundle\Extension\Pager\Orm\Pager
 
 services:
     oro_grid.extension.formatter:
@@ -9,3 +11,13 @@ services:
             - [ addProperty, [ 'url',    @oro_grid.extension.formatter.property.url_property ] ]
         tags:
             - { name: oro_grid.extension, type: formatter }
+
+    oro_grid.extension.orm_pager:
+        class: %oro_grid.extension.orm_pager.class%
+        arguments:
+            - @oro_grid.extension.pager.orm.pager
+        tags:
+            - { name: oro_grid.extension, type: formatter }
+
+    oro_grid.extension.pager.orm.pager:
+        class: %oro_grid.extension.pager.orm.pager.class%

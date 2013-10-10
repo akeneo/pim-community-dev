@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\DataGridBundle\Datasource\QueryConverter;
+namespace Oro\Bundle\DataGridBundle\Datasource\Orm\QueryConverter;
 
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Config\Definition\Processor;
@@ -31,7 +31,7 @@ class YamlConverter implements QueryConverterInterface
             throw new \RuntimeException('Missing mandatory "from" section');
         }
 
-        foreach ((array) $value['from'] as $from) {
+        foreach ((array)$value['from'] as $from) {
             $qb->from($from['table'], $from['alias']);
         }
 
@@ -42,7 +42,7 @@ class YamlConverter implements QueryConverterInterface
         }
 
         if (isset($value['distinct'])) {
-            $qb->distinct((bool) $value['distinct']);
+            $qb->distinct((bool)$value['distinct']);
         }
 
         if (isset($value['groupBy'])) {
@@ -76,13 +76,13 @@ class YamlConverter implements QueryConverterInterface
     {
         if (isset($value['join'])) {
             if (isset($value['join']['inner'])) {
-                foreach ((array) $value['join']['inner'] as $join) {
+                foreach ((array)$value['join']['inner'] as $join) {
                     $qb->innerJoin($join['join'], $join['alias']);
                 }
             }
 
             if (isset($value['join']['left'])) {
-                foreach ((array) $value['join']['left'] as $join) {
+                foreach ((array)$value['join']['left'] as $join) {
                     $qb->leftJoin($join['join'], $join['alias']);
                 }
             }
@@ -97,13 +97,13 @@ class YamlConverter implements QueryConverterInterface
     {
         if (isset($value['where'])) {
             if (isset($value['where']['and'])) {
-                foreach ((array) $value['where']['and'] as $where) {
+                foreach ((array)$value['where']['and'] as $where) {
                     $qb->andWhere($where);
                 }
             }
 
             if (isset($value['where']['or'])) {
-                foreach ((array) $value['where']['or'] as $where) {
+                foreach ((array)$value['where']['or'] as $where) {
                     $qb->orWhere($where);
                 }
             }
@@ -119,7 +119,7 @@ class YamlConverter implements QueryConverterInterface
         if (isset($value['orderBy'])) {
             $qb->resetDQLPart('orderBy');
 
-            foreach ((array) $value['orderBy'] as $order) {
+            foreach ((array)$value['orderBy'] as $order) {
                 $qb->addOrderBy($order['column'], $order['dir']);
             }
         }
