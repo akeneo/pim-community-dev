@@ -18,7 +18,16 @@ class PimInstallerExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $prefix = 'pim_installer_';
-        $entities = array('channels', 'locales', 'currencies', 'families', 'groups', 'attributes', 'categories', 'variant_groups');
+        $entities = array(
+            'channels',
+            'locales',
+            'currencies',
+            'families',
+            'groups',
+            'attributes',
+            'categories',
+            'variant_groups'
+        );
         $installerFiles = array();
 
         foreach ($entities as $entity) {
