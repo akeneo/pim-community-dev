@@ -73,7 +73,7 @@ class CsvFileWriterTest extends \PHPUnit_Framework_TestCase
             'header' => array('one', 'two')
         );
 
-        $this->assertAttributeEquals(';', 'delimiter', $this->writer);
+        $this->assertAttributeEquals(',', 'delimiter', $this->writer);
         $this->assertAttributeEquals('"', 'enclosure', $this->writer);
         $this->assertAttributeEquals(true, 'firstLineIsHeader', $this->writer);
         $this->assertAttributeEmpty('header', $this->writer);
@@ -147,6 +147,29 @@ class CsvFileWriterTest extends \PHPUnit_Framework_TestCase
                 __DIR__ . '/fixtures/no_header.csv'
             )
         );
+    }
+
+    /**
+     * @dataProvider optionsDataProvider
+     * @param array $options
+     * @param array $data
+     * @param string $expected
+     */
+    public function testWriteWithClearWriter($options, $data, $expected)
+    {
+        $stepExecution = $this->getMockStepExecution($options);
+        $this->writer->setStepExecution($stepExecution);
+        $clearWriter = $this->getMockBuilder('Oro\Bundle\ImportExportBundle\Writer\DoctrineClearWriter')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $clearWriter->expects($this->once())
+            ->method('write')
+            ->with($data);
+        $this->writer->setClearWriter($clearWriter);
+        $this->writer->write($data);
+        $this->assertFileExists($expected);
+        $this->assertFileEquals($expected, $options['filePath']);
+
     }
 
     /**

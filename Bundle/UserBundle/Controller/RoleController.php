@@ -57,7 +57,6 @@ class RoleController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0, "_format"="json"}
      * )
-     * @Template("OroGridBundle:Datagrid:list.json.php")
      * @AclAncestor("oro_user_user_view")
      */
     public function gridDataAction(Role $entity = null)
@@ -66,7 +65,9 @@ class RoleController extends Controller
             $entity = new Role();
         }
 
-        return array('datagrid' => $this->getRoleUserDatagridManager($entity)->getDatagrid()->createView());
+        $datagridView = $this->getRoleUserDatagridManager($entity)->getDatagrid()->createView();
+
+        return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
     }
 
     /**
@@ -99,15 +100,11 @@ class RoleController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $datagrid = $this->get('oro_user.role_datagrid_manager')->getDatagrid();
-        $view     = 'json' == $request->getRequestFormat()
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'OroUserBundle:Role:index.html.twig';
+        $view = $this->get('oro_user.role_datagrid_manager')->getDatagrid()->createView();
 
-        return $this->render(
-            $view,
-            array('datagrid' => $datagrid->createView())
-        );
+        return 'json' == $this->getRequest()->getRequestFormat()
+            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
+            : $this->render('OroUserBundle:Role:index.html.twig', array('datagrid' => $view));
     }
 
     /**
@@ -120,8 +117,10 @@ class RoleController extends Controller
         $aclRoleHandler->createForm($entity);
 
         if ($aclRoleHandler->process($entity)) {
-
-            $this->get('session')->getFlashBag()->add('success', 'Role successfully saved');
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('oro.user.controller.role.message.saved')
+            );
 
             return $this->get('oro_ui.router')->actionRedirect(
                 array(

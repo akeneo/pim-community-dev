@@ -225,6 +225,7 @@ class ResultFormatterTest extends \PHPUnit_Framework_TestCase
                 $indexerRows[] = $stubElement['indexer_item'];
             }
         }
+
         return $indexerRows;
     }
 
@@ -241,6 +242,7 @@ class ResultFormatterTest extends \PHPUnit_Framework_TestCase
                 $entities[] = $stubElement['entity'];
             }
         }
+
         return $entities;
     }
 

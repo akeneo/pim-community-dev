@@ -1,5 +1,6 @@
 {% extends bap.layout%}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 
 {% block page_container %}
     {% block content %}
@@ -20,8 +21,8 @@
                             <ul class="inline-decorate">
                             {% set audit_entity_id = audit_entity_id|default ? audit_entity_id : form.vars.value.id|default %}
 
-                            {% if (entityClass is defined and audit_entity_id and resource_granted('oro_dataaudit_history')) %}
-                                {% placeholder change_history_block with {'entity': entityClass, 'id': audit_entity_id, 'title': audit_title|default(form.vars.value), 'audit_path': audit_path|default('oro_dataaudit_history') } %}
+                            {% if (audit_entity_class is defined and audit_entity_id and resource_granted('oro_dataaudit_history')) %}
+                                {% placeholder change_history_block with {'entity': audit_entity_class, 'id': audit_entity_id, 'title': audit_title|default(form.vars.value), 'audit_path': audit_path|default('oro_dataaudit_history') } %}
                             {% endif %}
                             </ul>
                         </div>
@@ -54,8 +55,8 @@
                                         <ul class="inline">
                                             {% block stats %}
                                                 {% if breadcrumbs.entity.createdAt is defined and breadcrumbs.entity.updatedAt is defined %}
-                                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? UI.time(breadcrumbs.entity.createdAt) : 'N/A' }}</li>
-                                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? UI.time(breadcrumbs.entity.updatedAt) : 'N/A' }}</li>
+                                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? Locale.time(breadcrumbs.entity.createdAt) : 'N/A' }}</li>
+                                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? Locale.time(breadcrumbs.entity.updatedAt) : 'N/A' }}</li>
                                                 {% endif %}
                                             {% endblock stats %}
                                         </ul>

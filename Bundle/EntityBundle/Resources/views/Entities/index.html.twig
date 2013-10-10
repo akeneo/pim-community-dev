@@ -3,17 +3,29 @@
 
 {% set gridId = 'custom_entity' %}
 {% set pageTitle = 'Entities' %}
+{% oro_title_set({params : {"%entityName%": label|default('N/A') }}) %}
 
-{% block content %}
-    {% if resource_granted('CREATE', 'entity:'~entity_class) %}
-		{% set buttons = [
-		    UI.addButton({
-		        'path': path('oro_entity_update', {'entity_id': entity_id}),
-		        'title': 'Create '~label,
-		        'label': 'Create '~label,
-		    })
-		] %}
-    {% endif %}
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('oro_entityconfig_index'),
+        'indexLabel': 'Entities',
+        'entityTitle': 'Item #'~entity.id|default('N/A'),
+        'additional': [{
+            'indexPath'  : path('oro_entity_index', {id: parent}),
+            'indexLabel' : entity_config.get('label')|default('N/A')
+        }]
+    }%}
 
     {{ parent() }}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {% if resource_granted('CREATE', 'entity:'~entity_class) %}
+        {{ UI.addButton({
+            'path': path('oro_entity_update', {'entity_id': entity_id}),
+            'title': 'Create '~label,
+            'label': 'Create '~label,
+        }) }}
+    {% endif %}
 {% endblock %}

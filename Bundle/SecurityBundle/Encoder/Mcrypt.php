@@ -28,6 +28,6 @@ class Mcrypt extends Origin
      */
     public function decryptData($data)
     {
-        return  str_replace("\x0", '', trim(parent::decryptData(base64_decode((string)$data))));
+        return  str_replace("\x0", '', trim(parent::decryptData(base64_decode((string) $data))));
     }
 }

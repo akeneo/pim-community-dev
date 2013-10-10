@@ -38,7 +38,7 @@ class GroupsTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit()
             ->openGroups()
-            ->assertTitle('Groups - System');
+            ->assertTitle('Groups - Users Management - System');
     }
 
     public function testGroupsGridDefaultContent()
@@ -83,16 +83,13 @@ class GroupsTest extends \PHPUnit_Extensions_Selenium2TestCase
         $groups = $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
             ->setPassword(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS)
             ->submit()
-            ->openNavigation()
-            ->tab('System')
-            ->menu('Groups')
-            ->openGroups(false)
+            ->openGroups()
             ->add()
             ->setName($this->newGroup['NAME'] . $randomPrefix)
             ->setOwner('Main')
             //->setRoles(array($this->newGroup['ROLE']))
             ->save()
-            ->assertMessage('Group successfully saved')
+            ->assertMessage('Group saved')
             ->close();
 
         $this->assertTrue($groups->entityExists(array('name' => $this->newGroup['NAME'] . $randomPrefix)));

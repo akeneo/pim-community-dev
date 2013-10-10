@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% oro_title_set({params : {"%business_unit.name%": entity.name|default('N/A') }}) %}
+{% set audit_entity_class = 'Oro_Bundle_OrganizationBundle_Entity_BusinessUnit' %}
 {% set gridId = 'users-grid' %}
 {% block head_script %}
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
@@ -9,7 +10,7 @@
     {% if resource_granted('oro_business_unit_update') %}
         {{ UI.button({'path' : path('oro_business_unit_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit business unit', 'label' : 'Edit'}) }}
     {% endif %}
-    {% if resource_granted('oro_business_unit_delete') %}
+    {% if oro_get_business_units_count() > 1 and resource_granted('oro_business_unit_delete') %}
         {{ UI.deleteButton({
             'dataUrl': path('oro_api_delete_businessunit', {'id': entity.id}),
             'dataRedirect': path('oro_business_unit_index'),

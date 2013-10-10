@@ -20,6 +20,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('max_concurrent_jobs')
                     ->defaultValue(5)
                 ->end()
+                ->booleanNode('jms_statistics')->defaultTrue()->end()
             ->end();
 
         return $builder;

@@ -262,7 +262,6 @@ class EntityAclExtension extends AbstractAclExtension
         return $maskBuilderClassName::getPatternFor($mask);
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -379,8 +378,15 @@ class EntityAclExtension extends AbstractAclExtension
      */
     public function getAllowedPermissions(ObjectIdentity $oid)
     {
-        $result = array_keys($this->permissionToMaskBuilderIdentity);
-        if ($oid->getType() !== ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+        if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+            $result = array_keys($this->permissionToMaskBuilderIdentity);
+        } else {
+            $config = $this->entityMetadataProvider->getMetadata($oid->getType());
+            $result = $config->getPermissions();
+            if (empty($result)) {
+                $result = array_keys($this->map);
+            }
+
             $metadata = $this->getMetadata($oid);
             if (!$metadata->hasOwner()) {
                 foreach ($result as $key => $value) {

@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use JMS\DiExtraBundle\Annotation as DI;
 use JMS\JobQueueBundle\Entity\Job;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
@@ -19,9 +18,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
  */
 class JobController extends Controller
 {
-    /** @DI\Inject("%jms_job_queue.statistics%") */
-    protected $statisticsEnabled;
-
     /**
      * @Route(
      *      "/{page}/{limit}",
@@ -52,7 +48,9 @@ class JobController extends Controller
     public function viewAction(Job $job)
     {
         $manager    = $this->get('oro_cron.job_manager');
-        $statistics = $this->statisticsEnabled
+        $statisticsEnabled = $this->container->hasParameter('jms_job_queue.statistics')
+            && $this->container->getParameter('jms_job_queue.statistics');
+        $statistics = $statisticsEnabled
             ? $manager->getJobStatistics($job)
             : array();
 
@@ -94,7 +92,10 @@ class JobController extends Controller
             if ($ret['error']) {
                 $this->get('session')->getFlashBag()->add('error', $ret['message']);
             } else {
-                $this->get('session')->getFlashBag()->add('success', $translator->trans('oro.cron.message.start.success'));
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $translator->trans('oro.cron.message.start.success')
+                );
             }
 
             return $this->redirect($this->generateUrl('oro_cron_job_index'));

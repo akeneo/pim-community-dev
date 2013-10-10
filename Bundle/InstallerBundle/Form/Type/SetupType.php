@@ -30,6 +30,7 @@ class SetupType extends AbstractType
                 'repeated',
                 array(
                     'type'           => 'password',
+                    'invalid_message' => 'The password fields must match.',
                     'first_options'  => array('label' => 'form.setup.password'),
                     'second_options' => array('label' => 'form.setup.password_re'),
                 )
@@ -55,15 +56,15 @@ class SetupType extends AbstractType
                     'label' => 'form.setup.lastname',
                 )
             )
-            /*->add(
-                'load_fixtures',
+            ->add(
+                'loadFixtures',
                 'checkbox',
                 array(
                     'label'    => 'form.setup.load_fixtures',
                     'required' => false,
                     'mapped'   => false,
                 )
-            )*/;
+            );
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

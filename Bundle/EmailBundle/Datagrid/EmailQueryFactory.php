@@ -47,7 +47,7 @@ class EmailQueryFactory extends EntityQueryFactory
         }
         $firstName = sprintf('COALESCE(%s, \'\')', implode(', ', $firstNames));
         $lastName = sprintf('COALESCE(%s, \'\')', implode(', ', $lastNames));
-        $nameFormat = $userConfigManager->get('oro_user.name_format');
+        $nameFormat = $userConfigManager->get('oro_locale.name_format');
         $this->fromEmailExpression = $this->buildFromEmailExpression($nameFormat, $firstName, $lastName);
     }
 

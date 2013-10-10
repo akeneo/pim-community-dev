@@ -2,10 +2,10 @@
 /* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger', 'oro/registry',
     'oro/modal', 'oro/loading-mask', 'oro/navigation/pagestate/view', 'oro/navigation/pagestate/model',
-    'oro/pageable-collection', 'jquery.form'],
+    'oro/pageable-collection', 'oro/widget-manager','jquery.form'],
 function($, _, Backbone, __, app, mediator, messenger, registry,
          Modal, LoadingMask, PagestateView, PagestateModel,
-         PageableCollection) {
+         PageableCollection, widgetManager) {
     'use strict';
 
     var Navigation,
@@ -67,22 +67,23 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
          * @property
          */
         selectors: {
-            links:          'a:not([href^=#],[href^=javascript],[href^=mailto],[href^=skype],[href^=ftp],[href^=callto],[href^=tel]),span[data-url]',
-            scrollLinks:    'a[href^=#]',
-            forms:          'form',
-            content:        '#content',
-            container:      '#container',
-            loadingMask:    '.hash-loading-mask',
-            searchDropdown: '#search-div',
-            menuDropdowns:  '.pin-menus.dropdown, .nav .dropdown',
-            pinbarHelp:     '.pin-bar-empty',
-            historyTab:     '#history-content',
-            mostViewedTab:  '#mostviewed-content',
-            flashMessages:  '#flash-messages',
-            menu:           '#main-menu',
-            breadcrumb:     '#breadcrumb',
-            pinButton:      '#pin-button-div',
-            gridContainer:  '.grid-container'
+            links:               'a:not([href^=#],[href^=javascript],[href^=mailto],[href^=skype],[href^=ftp],[href^=callto],[href^=tel]),span[data-url]',
+            scrollLinks:         'a[href^=#]',
+            forms:               'form',
+            content:             '#content',
+            container:           '#container',
+            loadingMask:         '.hash-loading-mask',
+            searchDropdown:      '#search-div',
+            menuDropdowns:       '.pin-menus.dropdown, .nav .dropdown',
+            pinbarHelp:          '.pin-bar-empty',
+            historyTab:          '#history-content',
+            mostViewedTab:       '#mostviewed-content',
+            flashMessages:       '#flash-messages',
+            menu:                '#main-menu',
+            breadcrumb:          '#breadcrumb',
+            pinButtonsContainer: '#pin-button-div',
+            gridContainer:       '.grid-container',
+            pinButtons:          '.minimize-button, .favorite-button'
         },
         selectorCached: {},
 
@@ -239,6 +240,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                 this.beforeRequest();
                 var cacheData;
                 if (cacheData = this.getCachedData()) {
+                    widgetManager.resetWidgets();
                     this.tempCache = cacheData;
                     this.handleResponse(cacheData, {fromCache: true});
                     this.validatePageCache(cacheData);
@@ -317,8 +319,16 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
             this.cacheTimer = setInterval(_.bind(function() {
                 var cacheData = this.getCachedData();
                 if (cacheData) {
-                    this.validateMd5Request(cacheData);
-                    //this.validateGridStates(cacheData);
+                    if (!cacheData.is_entity_page) {
+                        //validating grid states only for non-entity pages
+                        var hasGridCache = this.validateGridStates(cacheData);
+                        //validating content md5 only if no cached grids found on page
+                        if (!hasGridCache) {
+                            this.validateMd5Request(cacheData);
+                        }
+                    } else {
+                        this.validateMd5Request(cacheData);
+                    }
                 }
             }, this), 5000);
         },
@@ -356,6 +366,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
          * Validate grid state based on grid collection
          *
          * @param cacheData
+         * @return true if grid cache is found and false otherwise
          */
         validateGridStates: function(cacheData) {
             if (cacheData.states) {
@@ -377,8 +388,11 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                     }, this);
                     options.error = _.bind(this.showOutdatedMessage, this, url);
                     collection.fetch(options);
+                    return true;
                 }
             }
+
+            return false;
         },
 
         /**
@@ -781,10 +795,16 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
         },
 
         /**
-         * Clearing content area with native js, prevents freezing of firefox with firebug enabled
+         * Clearing content area with native js, prevents freezing of firefox with firebug enabled.
+         * If no container found, reload the page
          */
         clearContainer: function() {
-            document.getElementById('container').innerHTML = '';
+            var container = document.getElementById('container');
+            if (container) {
+                container.innerHTML = '';
+            } else {
+                location.reload();
+            }
         },
 
         /**
@@ -873,20 +893,12 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                          * Setting page title
                          */
                         document.title = data.title;
-                        /**
-                         * Setting serialized titles for pinbar and favourites buttons
-                         */
-                        var titleSerialized = data.titleSerialized;
-                        if (titleSerialized) {
-                            titleSerialized = $.parseJSON(titleSerialized);
-                            $('.top-action-box .btn').filter('.minimize-button, .favorite-button').data('title', titleSerialized);
-                        }
                         this.processClicks(this.selectorCached.menu.find(this.selectors.links));
                         this.disableEmptyLinks(this.selectorCached.menu.find(this.selectors.scrollLinks));
                         this.processClicks(this.selectorCached.container.find(this.selectors.links));
                         this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
                         this.processForms(this.selectorCached.container.find(this.selectors.forms));
-                        this.processPinButton(data.showPinButton);
+                        this.processPinButton(data);
                         this.restoreFormState(this.tempCache);
                         if (!options.fromCache) {
                             this.updateMenuTabs(data);
@@ -994,15 +1006,24 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
         },
 
         /**
-         * View / hide pins div
+         * View / hide pins div and set titles
          *
          * @param showPinButton
          */
-        processPinButton: function(showPinButton) {
-            if (showPinButton) {
-                this.selectorCached.pinButton.show();
+        processPinButton: function(data) {
+            if (data.showPinButton) {
+                this.selectorCached.pinButtonsContainer.show();
+                /**
+                 * Setting serialized titles for pinbar and favourites buttons
+                 */
+                var titleSerialized = data.titleSerialized;
+                if (titleSerialized) {
+                    titleSerialized = $.parseJSON(titleSerialized);
+                    this.selectorCached.pinButtonsContainer.find(this.selectors.pinButtons).data('title', titleSerialized);
+                }
+                this.selectorCached.pinButtonsContainer.find(this.selectors.pinButtons).data('title-rendered-short', data.titleShort);
             } else {
-                this.selectorCached.pinButton.hide();
+                this.selectorCached.pinButtonsContainer.hide();
             }
         },
 
@@ -1101,30 +1122,38 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
          */
         processForms: function(selector) {
             $(selector).on('submit', _.bind(function (e) {
-                var target = e.currentTarget;
-                if ($(target).data('nohash')) {
+                var $form = $(e.currentTarget);
+                if ($form.data('nohash')) {
                     return;
                 }
                 e.preventDefault();
+                if ($form.data('sent')) {
+                    return;
+                }
 
-                var url = $(target).attr('action');
-                this.method = $(target).attr('method') ? $(target).attr('method') : "get";
+                var url = $form.attr('action');
+                this.method = $form.attr('method') || "get";
 
                 if (url) {
+                    $form.data('sent', true);
                     registry.setElement('form_validate', true);
-                    mediator.trigger("hash_navigation_request:form-start", target);
+                    mediator.trigger("hash_navigation_request:form-start", $form.get(0));
                     if (registry.getElement('form_validate')) {
-                        var data = $(target).serialize();
+                        var data = $form.serialize();
                         if (this.method === 'get') {
                             if (data) {
                                 url += '?' + data;
                             }
                             this.setLocation(url);
+                            $form.removeData('sent');
                         } else {
                             this.beforeRequest();
-                            $(target).ajaxSubmit({
+                            $form.ajaxSubmit({
                                 data: this.headerObject,
                                 headers: this.headerObject,
+                                complete: function(){
+                                    $form.removeData('sent');
+                                },
                                 error: _.bind(this.processError, this),
                                 success: _.bind(function (data) {
                                     this.handleResponse(data, {'skipCache' : true}); //don't cache form submit response

@@ -13,16 +13,18 @@ function(_, Backbone, AbstractWidget) {
             _.extend({}, AbstractWidget.prototype.options),
             {
                 cssClass: 'pull-left btn-group icons-holder',
-                type: 'buttons'
+                type: 'buttons',
+                loadingMaskEnabled: false
             }
         ),
 
         initialize: function(options) {
             options = options || {};
-            this.initializeWidget(options);
 
             this.widget = this.$el;
             this.widget.addClass(this.options.cssClass);
+
+            this.initializeWidget(options);
         },
 
         setTitle: function(title) {

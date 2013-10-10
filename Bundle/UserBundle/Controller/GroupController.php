@@ -61,7 +61,6 @@ class GroupController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0, "_format"="json"}
      * )
-     * @Template("OroGridBundle:Datagrid:list.json.php")
      * @AclAncestor("oro_user_user_view")
      */
     public function gridDataAction(Group $entity = null)
@@ -70,7 +69,9 @@ class GroupController extends Controller
             $entity = new Group();
         }
 
-        return array('datagrid' => $this->getGroupUserDatagridManager($entity)->getDatagrid()->createView());
+        $datagridView = $this->getGroupUserDatagridManager($entity)->getDatagrid()->createView();
+
+        return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
     }
 
     /**
@@ -103,15 +104,11 @@ class GroupController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $datagrid = $this->get('oro_user.group_datagrid_manager')->getDatagrid();
-        $view     = 'json' == $request->getRequestFormat()
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'OroUserBundle:Group:index.html.twig';
+        $view = $this->get('oro_user.group_datagrid_manager')->getDatagrid()->createView();
 
-        return $this->render(
-            $view,
-            array('datagrid' => $datagrid->createView())
-        );
+        return 'json' == $this->getRequest()->getRequestFormat()
+            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
+            : $this->render('OroUserBundle:Group:index.html.twig', array('datagrid' => $view));
     }
 
     /**
@@ -121,7 +118,10 @@ class GroupController extends Controller
     protected function update(Group $entity)
     {
         if ($this->get('oro_user.form.handler.group')->process($entity)) {
-            $this->get('session')->getFlashBag()->add('success', 'Group successfully saved');
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('oro.user.controller.group.message.saved')
+            );
 
             if (!$this->getRequest()->get('_widgetContainer')) {
 

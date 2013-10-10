@@ -2,6 +2,7 @@
 {% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
 {% set title = form.vars.value.id ? 'Update Business Unit'|trans : 'New Business Unit'|trans %}
 {% oro_title_set({params : { "%business_unit.name%": form.vars.value.name } }) %}
+{% set audit_entity_class = 'Oro_Bundle_OrganizationBundle_Entity_BusinessUnit' %}
 {% set gridId = 'users-grid' %}
 {% set formAction = form.vars.value.id ? path('oro_business_unit_update', { 'id': form.vars.value.id}) : path('oro_business_unit_create') %}
 {% block head_script %}
@@ -19,7 +20,7 @@
 {% endblock %}
 
 {% block navButtons %}
-    {% if form.vars.value.id and resource_granted('oro_business_unit_delete') %}
+    {% if form.vars.value.id and oro_get_business_units_count() > 1 and resource_granted('oro_business_unit_delete') %}
         {{ UI.deleteButton({
             'dataUrl': path('oro_api_delete_businessunit', {'id': form.vars.value.id}),
             'dataRedirect': path('oro_business_unit_index'),

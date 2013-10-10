@@ -20,7 +20,7 @@ class ControllersTest extends WebTestCase
         'lastName' => 'LastNameAudit',
         'birthday' => '07/01/2013',
         'enabled' => 1,
-        'roles' => 'Superadmin',
+        'roles' => 'Administrator',
         'groups' => 'Sales',
         'company' => 'company',
         'gender' => 'Male'
@@ -51,7 +51,7 @@ class ControllersTest extends WebTestCase
         $form['oro_user_user_form[birthday]'] = $this->userData['birthday'];
         $form['oro_user_user_form[email]'] = $this->userData['email'];
         $form['oro_user_user_form[groups][1]'] = 2;
-        $form['oro_user_user_form[rolesCollection][2]'] = 4;
+        $form['oro_user_user_form[rolesCollection][1]'] = true;
         $form['oro_user_user_form[values][company][varchar]'] = $this->userData['company'];
         $form['oro_user_user_form[owner]'] = 1;
 
@@ -60,7 +60,7 @@ class ControllersTest extends WebTestCase
 
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
-        $this->assertContains("User successfully saved", $crawler->html());
+        $this->assertContains("User saved", $crawler->html());
     }
 
     public function testIndex()

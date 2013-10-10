@@ -79,8 +79,8 @@ class ConfigScopeType extends AbstractType
                     if (isset($property['config_id'])) {
                         $configId = $property['config_id'];
 
-                        $fieldName = isset($configId['field_name']) ? $configId['field_name'] : null;
-                        if (!$fieldName && $this->config->getId() instanceof FieldConfigId) {
+                        $fieldName = array_key_exists('field_name', $configId) ? $configId['field_name'] : false;
+                        if ($fieldName === false && $this->config->getId() instanceof FieldConfigId) {
                             $fieldName = $this->config->getId()->getFieldName();
                         }
 

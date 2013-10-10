@@ -9,9 +9,9 @@ function(mediator) {
         }, 50);
     });
 });
-require(['jquery', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout', 'oro/navigation', 'oro/modal', 'oro/messenger',
+require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout', 'oro/navigation', 'oro/modal', 'oro/messenger',
     'bootstrap', 'jquery-ui', 'jquery-ui-timepicker'],
-function($, __, app, mediator, layout, Navigation, Modal, messenger) {
+function($, _, __, app, mediator, layout, Navigation, Modal, messenger) {
     'use strict';
 
     /* ============================================================
@@ -132,9 +132,9 @@ function($, __, app, mediator, layout, Navigation, Modal, messenger) {
                 $parent.find('input[type=text]').first().focus().select();
             }
         });
-        $('body').on('focus.dropdown.data-api', '[data-toggle=dropdown]', function(e) {
+        $('body').on('focus.dropdown.data-api', '[data-toggle=dropdown]', _.debounce(function(e) {
             $(e.target).parent().find('input[type=text]').first().focus();
-        });
+        }, 10));
 
         $('html').click(function(e) {
             var $target = $(e.target),
@@ -252,6 +252,11 @@ function($, __, app, mediator, layout, Navigation, Modal, messenger) {
             });
 
             confirm.on('ok', function() {
+                var navigation = Navigation.getInstance();
+                if (navigation) {
+                    navigation.loadingMask.show();
+                }
+
                 $.ajax({
                     url: el.data('url'),
                     type: 'DELETE',
@@ -259,13 +264,22 @@ function($, __, app, mediator, layout, Navigation, Modal, messenger) {
                         el.trigger('removesuccess');
                         messenger.addMessage('success', el.data('success-message'), {'hashNavEnabled': Navigation.isEnabled()});
                         if (el.data('redirect')) {
-                            var navigation = Navigation.getInstance();
                             if (navigation) {
                                 navigation.setLocation(el.data('redirect'));
                             } else {
                                 window.location.href = el.data('redirect');
                             }
                         }
+                    },
+                    error: function () {
+                        if (navigation) {
+                            navigation.loadingMask.hide();
+                        }
+
+                        messenger.notificationMessage(
+                            'error',
+                            el.data('error-message') ||  __('Unexpected error occured. Please contact system administrator.')
+                        );
                     }
                 });
             });

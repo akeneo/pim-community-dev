@@ -105,6 +105,9 @@ class EventsCompilerPassTest extends \PHPUnit_Framework_TestCase
         $connection->expects($this->once())
             ->method('getSchemaManager')
             ->will($this->returnValue($schemaManager));
+        $connection->expects($this->any())
+            ->method('isConnected')
+            ->will($this->returnValue(true));
 
         $metadata->expects($this->once())
             ->method('getTableName')
@@ -120,7 +123,7 @@ class EventsCompilerPassTest extends \PHPUnit_Framework_TestCase
             ->with('Oro\Bundle\NotificationBundle\Entity\Event')
             ->will($this->returnValue($repository));
 
-        $em->expects($this->once())
+        $em->expects($this->exactly(2))
             ->method('getConnection')
             ->will($this->returnValue($connection));
 

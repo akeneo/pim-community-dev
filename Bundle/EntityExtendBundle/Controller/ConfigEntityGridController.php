@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
-use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,8 +12,6 @@ use FOS\Rest\Util\Codes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
@@ -24,11 +21,14 @@ use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Form\Type\EntityType;
 use Oro\Bundle\EntityExtendBundle\Form\Type\UniqueKeyCollectionType;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+
 /**
  * Class ConfigGridController
  * @package Oro\Bundle\EntityExtendBundle\Controller
  * @Route("/entity/extend/entity")
  * TODO: Discuss ACL impl., currently acl is disabled
+ * @AclAncestor("oro_entityconfig_manage")
  */
 class ConfigEntityGridController extends Controller
 {
@@ -151,6 +151,7 @@ class ConfigEntityGridController extends Controller
         $extendConfig = $configManager->getProvider('extend')->getConfig($className);
         $extendConfig->set('owner', ExtendManager::OWNER_CUSTOM);
         $extendConfig->set('state', ExtendManager::STATE_NEW);
+        $extendConfig->set('upgradeable', false);
         $extendConfig->set('is_extend', true);
 
         $configManager->persist($extendConfig);
@@ -178,7 +179,10 @@ class ConfigEntityGridController extends Controller
 
             if ($form->isValid()) {
                 //persist data inside the form
-                $this->get('session')->getFlashBag()->add('success', 'ConfigEntity successfully saved');
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('oro.entity_extend.controller.config_entity.message.saved')
+                );
 
                 return $this->get('oro_ui.router')->actionRedirect(
                     array(

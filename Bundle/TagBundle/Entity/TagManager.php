@@ -171,7 +171,7 @@ class TagManager
             $taggingCollection = $tag->getTagging()->filter(
                 function (Tagging $tagging) use ($entity) {
                     // only use tagging entities that related to current entity
-                    return $tagging->getEntityName() == get_class($entity)
+                    return $tagging->getEntityName() == ClassUtils::getClass($entity)
                     && $tagging->getRecordId() == $entity->getTaggableId();
                 }
             );
@@ -221,7 +221,7 @@ class TagManager
             ) {
                 $this->deleteTaggingByParams(
                     $tagsToDelete,
-                    get_class($resource),
+                    ClassUtils::getClass($resource),
                     $resource->getTaggableId(),
                     $this->getUser()->getId()
                 );
@@ -239,7 +239,7 @@ class TagManager
                 if (!$tagsToDelete->isEmpty()) {
                     $this->deleteTaggingByParams(
                         $tagsToDelete,
-                        get_class($resource),
+                        ClassUtils::getClass($resource),
                         $resource->getTaggableId()
                     );
                 }

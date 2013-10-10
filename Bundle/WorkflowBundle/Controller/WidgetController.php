@@ -29,7 +29,8 @@ class WidgetController extends Controller
      */
     public function stepFormAction(WorkflowItem $workflowItem)
     {
-        //$showStepName = $this->getRequest()->get('stepName', 'closed');
+        $this->get('oro_workflow.http.workflow_item_validator')->validate($workflowItem);
+
         $showStepName = $this->getRequest()->get('stepName', $workflowItem->getCurrentStepName());
 
         /** @var WorkflowManager $workflowManager */
@@ -128,6 +129,8 @@ class WidgetController extends Controller
      */
     public function wizardButtonsAction(WorkflowItem $workflowItem)
     {
+        $this->get('oro_workflow.http.workflow_item_validator')->validate($workflowItem);
+
         $transitionsData = array();
 
         if (!$workflowItem->isClosed()) {

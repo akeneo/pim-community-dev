@@ -6,8 +6,6 @@ use Doctrine\Common\Annotations\Reader as AnnotationReader;
 use Symfony\Component\Finder\Finder;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
 
-use JMS\DiExtraBundle\Finder\PatternFinder;
-
 class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderInterface
 {
     const ANNOTATION_CLASS = 'Oro\Bundle\SecurityBundle\Annotation\Acl';
@@ -59,7 +57,8 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
             $directories = $this->bundleDirectories;
         }
 
-        $files = $this->getFinder()->findFiles($directories);
+        $files = $this->findFiles('*.php', $directories);
+
         foreach ($files as $file) {
             $className = $this->getClassName($file);
             if ($className !== null) {
@@ -97,12 +96,15 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
      *      - only one class must be declared in a file
      *      - a namespace must be declared in a file
      *
-     * @param string $fileName
+     * @param  string      $fileName
      * @return null|string the fully qualified class name or null if the class name cannot be extracted
      */
     protected function getClassName($fileName)
     {
         $src = $this->getFileContent($fileName);
+        if (!preg_match('#' . str_replace("\\", "\\\\", self::ANNOTATION_CLASS) . '#', $src)) {
+            return null;
+        }
 
         if (!preg_match('/\bnamespace\s+([^;]+);/s', $src, $match)) {
             return null;
@@ -117,19 +119,9 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
     }
 
     /**
-     * Creates PatternFinder object
-     *
-     * @return PatternFinder
-     */
-    protected function getFinder()
-    {
-        return new PatternFinder(self::ANNOTATION_CLASS, '*.php');
-    }
-
-    /**
      * Creates ReflectionClass object
      *
-     * @param string $className
+     * @param  string           $className
      * @return \ReflectionClass
      */
     protected function getReflectionClass($className)
@@ -140,11 +132,28 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
     /**
      * Reads the given file into a string
      *
-     * @param string $fileName
+     * @param  string $fileName
      * @return string
      */
     protected function getFileContent($fileName)
     {
         return file_get_contents($fileName);
+    }
+
+    /**
+     * @param $filePattern
+     * @param  array $dirs
+     * @return array
+     */
+    private function findFiles($filePattern, array $dirs)
+    {
+        $finder = new Finder();
+        $finder
+            ->files()
+            ->name($filePattern)
+            ->in($dirs)
+            ->ignoreVCS(true);
+
+        return array_map('realpath', array_keys(iterator_to_array($finder)));
     }
 }

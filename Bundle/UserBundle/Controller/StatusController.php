@@ -56,7 +56,10 @@ class StatusController extends Controller
                 return new Response((string) $result);
             }
         } elseif ($result) {
-            $this->get('session')->getFlashBag()->add('success', 'Status saved');
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('oro.user.controller.status.message.saved')
+            );
 
             return $this->redirect($this->generateUrl('oro_user_status_list'));
         }
@@ -75,7 +78,7 @@ class StatusController extends Controller
         if ($this->get('oro_user.status_manager')->deleteStatus($this->getUser(), $status, true)) {
             $this->get('session')->getFlashBag()->add('success', 'Status deleted');
         } else {
-            $this->get('session')->getFlashBag()->add('alert', 'Status has not been deleted');
+            $this->get('session')->getFlashBag()->add('alert', 'Status is not deleted');
         }
 
         return $this->redirect($this->generateUrl('oro_user_status_list'));

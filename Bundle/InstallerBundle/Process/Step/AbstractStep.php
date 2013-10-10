@@ -23,8 +23,8 @@ abstract class AbstractStep extends ControllerStep
     /**
      * Execute Symfony2 command
      *
-     * @param string             $command Command name (for example, "cache:clear")
-     * @param array              $params  [optional] Additional command parameters, like "--no-interaction", "--force" etc
+     * @param  string            $command Command name (for example, "cache:clear")
+     * @param  array             $params  [optional] Additional command parameters, like "--force" etc
      * @return AbstractStep
      * @throws \Exception
      * @throws \RuntimeException
@@ -34,9 +34,8 @@ abstract class AbstractStep extends ControllerStep
         $output = $this->getOutput();
         $params = array_merge(
             array(
-                'command'             => $command,
-                '--no-debug'          => true,
-                '--process-isolation' => true
+                'command'    => $command,
+                '--no-debug' => true,
             ),
             $params
         );
@@ -61,7 +60,9 @@ abstract class AbstractStep extends ControllerStep
 
         // check for any error
         if ($code) {
-            throw new \RuntimeException(sprintf('There was an error while running "%s" command. Exit code: %u.', $command, $code));
+            throw new \RuntimeException(
+                sprintf('There was an error while running "%s" command. Exit code: %u.', $command, $code)
+            );
         }
 
         return $this;

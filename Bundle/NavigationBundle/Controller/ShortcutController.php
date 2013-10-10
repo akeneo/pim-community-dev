@@ -52,6 +52,7 @@ class ShortcutController extends Controller
         $translator = $this->get('translator');
         $itemIterator = new RecursiveItemIterator($items);
         $iterator = new \RecursiveIteratorIterator($itemIterator, \RecursiveIteratorIterator::SELF_FIRST);
+        $result = array();
         /** @var $item ItemInterface */
         foreach ($iterator as $item) {
             if ($item->getExtra('isAllowed') && !in_array($item->getUri(), $this->uris) && $item->getUri() !== '#') {

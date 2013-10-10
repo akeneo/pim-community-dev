@@ -6,6 +6,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
+
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
 use Oro\Bundle\EntityExtendBundle\Entity\EntityConfig;
@@ -13,6 +14,7 @@ use Oro\Bundle\EntityExtendBundle\Entity\Repository\EntityConfigRepository;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory;
+use Oro\Bundle\EntityExtendBundle\Exception\RuntimeException;
 
 class ExtendConfigDumper
 {
@@ -31,7 +33,7 @@ class ExtendConfigDumper
 
     /**
      * @param OroEntityManager $em
-     * @param string           $cacheDir
+     * @param string $cacheDir
      */
     public function __construct(OroEntityManager $em, $cacheDir)
     {
@@ -46,7 +48,7 @@ class ExtendConfigDumper
         $yml     = array();
         $configs = $this->em->getExtendManager()->getConfigProvider()->getConfigs();
         foreach ($configs as $config) {
-            if ($config->is('is_extend')) {
+            if ($config->is('is_extend') && $config->is('upgradeable')) {
                 $yml[] = $this->dumpByConfig($config);
             }
         }
@@ -69,7 +71,7 @@ class ExtendConfigDumper
         if ($config) {
             file_put_contents(
                 $this->cacheDir . '/entity_config.yml',
-                Yaml::dump($config, 6)
+                Yaml::dump($config, 8)
             );
         }
     }
@@ -92,39 +94,30 @@ class ExtendConfigDumper
     {
         $configProvider = $this->em->getExtendManager()->getConfigProvider();
         $className      = $entityConfig->getId()->getClassName();
+        $doctrine       = array();
 
         if (strpos($className, self::ENTITY) !== false) {
-            $entityName = $className;
-            $type       = 'Custom';
-            $doctrine   = array(
-                $entityName => array(
-                    'type'       => 'entity',
-                    'table'      => 'oro_extend_' . strtolower(str_replace('\\', '', $entityName)),
-                    'fields'     => array(
-                        'id' => array(
-                            'type'      => 'integer',
-                            'id'        => true,
-                            'generator' => array(
-                                'strategy' => 'AUTO'
-                            )
-                        )
-                    ),
-                    'oneToMany'  => array(),
-                    'manyToOne'  => array(),
-                    'manyToMany' => array(),
-                )
+            $entityName            = $className;
+            $type                  = 'Custom';
+            $doctrine[$entityName] = array(
+                'type'       => 'entity',
+                'table'      => 'oro_extend_' . strtolower(str_replace('\\', '', $entityName)),
+                'fields'     => array(
+                    'id' => array('type' => 'integer', 'id' => true, 'generator' => array('strategy' => 'AUTO'))
+                ),
+                'oneToMany'  => array(),
+                'manyToOne'  => array(),
+                'manyToMany' => array(),
             );
         } else {
-            $entityName = $entityConfig->get('extend_class');
-            $type       = 'Extend';
-            $doctrine   = array(
-                $entityName => array(
-                    'type'       => 'mappedSuperclass',
-                    'fields'     => array(),
-                    'oneToMany'  => array(),
-                    'manyToOne'  => array(),
-                    'manyToMany' => array(),
-                )
+            $entityName            = $entityConfig->get('extend_class');
+            $type                  = 'Extend';
+            $doctrine[$entityName] = array(
+                'type'       => 'mappedSuperclass',
+                'fields'     => array(),
+                'oneToMany'  => array(),
+                'manyToOne'  => array(),
+                'manyToMany' => array(),
             );
         }
 
@@ -137,14 +130,23 @@ class ExtendConfigDumper
                     $fieldName              = self::PREFIX . $fieldConfig->getId()->getFieldName();
                     $fieldType              = $fieldConfig->getId()->getFieldType();
                     $properties[$fieldName] = $fieldConfig->getId()->getFieldName();
-
-                    $doctrine[$entityName]['fields'][$fieldName]['code']     = $fieldName;
-                    $doctrine[$entityName]['fields'][$fieldName]['type']     = $fieldType;
-                    $doctrine[$entityName]['fields'][$fieldName]['nullable'] = true;
-
-                    $doctrine[$entityName]['fields'][$fieldName]['length']    = $fieldConfig->get('length');
-                    $doctrine[$entityName]['fields'][$fieldName]['precision'] = $fieldConfig->get('precision');
-                    $doctrine[$entityName]['fields'][$fieldName]['scale']     = $fieldConfig->get('scale');
+                    if (in_array($fieldType, array('oneToMany', 'manyToOne', 'manyToMany'))) {
+                        $this->prepareRelation(
+                            $doctrine,
+                            $fieldType,
+                            $fieldName,
+                            $entityName,
+                            $className,
+                            $fieldConfig->get('target_entity')
+                        );
+                    } else {
+                        $doctrine[$entityName]['fields'][$fieldName]['code']      = $fieldName;
+                        $doctrine[$entityName]['fields'][$fieldName]['type']      = $fieldType;
+                        $doctrine[$entityName]['fields'][$fieldName]['nullable']  = true;
+                        $doctrine[$entityName]['fields'][$fieldName]['length']    = $fieldConfig->get('length');
+                        $doctrine[$entityName]['fields'][$fieldName]['precision'] = $fieldConfig->get('precision');
+                        $doctrine[$entityName]['fields'][$fieldName]['scale']     = $fieldConfig->get('scale');
+                    }
                 }
 
                 if ($fieldConfig->get('state') != ExtendManager::STATE_DELETED) {
@@ -186,5 +188,46 @@ class ExtendConfigDumper
         $configProvider->flush();
 
         return $result;
+    }
+
+    /**
+     * @param $config
+     * @param $relType
+     * @param $entityName
+     * @param $fieldName
+     * @param $from
+     * @param $to
+     * @throws RuntimeException
+     */
+    protected function prepareRelation(&$config, $relType, $fieldName, $entityName, $from, $to)
+    {
+        switch ($relType) {
+            case 'manyToOne':
+                $config[$entityName][$relType][$fieldName]['targetEntity'] = $to;
+                $config[$entityName][$relType][$fieldName]['joinColumn']   = array(
+                    'name'                 => strtolower($fieldName) . '_id',
+                    'referencedColumnName' => $this->getEntityIdentifier($to)
+                );
+
+                break;
+            default:
+                throw new RuntimeException(sprintf('Rel type "%s" is not valid', $relType));
+        }
+    }
+
+    /**
+     * Get Entity Identifier By a class name
+     *
+     * @param $className
+     * @return string
+     */
+    protected function getEntityIdentifier($className)
+    {
+        // Extend entity always have "id" identifier
+        if (strpos($className, self::ENTITY) !== false) {
+            return 'id';
+        }
+
+        return $this->em->getClassMetadata($className)->getSingleIdentifierColumnName();
     }
 }

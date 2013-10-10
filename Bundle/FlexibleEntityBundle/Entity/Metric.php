@@ -25,7 +25,7 @@ class Metric
      * Store decimal value
      * @var double $decimal
      *
-     * @ORM\Column(name="data", type="decimal", nullable=true)
+     * @ORM\Column(name="data", type="decimal", precision=14, scale=4, nullable=true)
      */
     protected $data;
 

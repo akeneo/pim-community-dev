@@ -15,6 +15,15 @@
     {{ form_javascript(form) }}
 {% endblock %}
 
+{% block percent_widget %}
+    {% set type = type|default('text') %}
+    <div class="input-append">
+        {% set type = type|default('text') %}
+        <input class="input-addon" type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        <span class="add-on">%</span>
+    </div>
+{% endblock %}
+
 {% block genemu_jqueryselect2_javascript %}
     <script type="text/javascript">
         require(['jquery', 'oro/select2-config', 'jquery.select2'],
@@ -170,6 +179,29 @@
                 'per_page': {{ configs.per_page|default(10) }},
                 'name': "{{ configs.autocomplete_alias }}",
                 'query': query
+            };
+        },
+        'results': function (data, page) {
+            return data;
+        }
+    };
+{% endblock %}
+
+{% block oro_combobox_dataconfig_relation %}
+    {% set url = '' %}
+    {% if configs.ajax.url is defined and configs.ajax.url%}
+    {% set url = configs.ajax.url %}
+    {% elseif configs.route_name is defined and configs.route_name %}
+        {% set url = path(configs.route_name) %}
+    {% endif %}
+    select2Config.ajax = {
+        'url': {{ url|json_encode|raw }},
+        'data': function (query, page) {
+            return {
+                'page': page,
+                'per_page': {{ configs.per_page|default(10) }},
+                'name': "{{ configs.autocomplete_alias }}",
+                'query': query + ',{{ configs.target_entity }},{{ configs.target_field }}'
             };
         },
         'results': function (data, page) {

@@ -1,7 +1,7 @@
 /* jshint devel:true*/
 /* global define, require */
-define(['underscore', 'backbone', 'oro/mediator', 'jquery.form'],
-function(_, Backbone, mediator) {
+define(['underscore', 'backbone', 'oro/mediator', 'oro/loading-mask', 'oro/layout', 'jquery.form'],
+function(_, Backbone, mediator, LoadingMask, layout) {
     'use strict';
 
     var $ = Backbone.$;
@@ -19,22 +19,39 @@ function(_, Backbone, mediator) {
             elementFirst: true,
             title: '',
             alias: null,
-            wid: null
+            wid: null,
+            loadingMaskEnabled: true,
+            loadingElement: null
         },
+
+        loadingElement: null,
+        loadingMask: null,
+        loading: false,
 
         initialize: function(options) {
             options = options || {};
             this.initializeWidget(options);
         },
 
+        /**
+         * Set widget title.
+         *
+         * @param {string} title
+         */
         setTitle: function(title) {
             console.warn('Implement setTitle');
         },
 
+        /**
+         * Get actions container element
+         */
         getActionsElement: function() {
             console.warn('Implement getActionsElement');
         },
 
+        /**
+         * Remove widget
+         */
         remove: function() {
             this.trigger('widgetRemove', this.$el);
             mediator.trigger('widget_remove', this.getWid());
@@ -43,6 +60,8 @@ function(_, Backbone, mediator) {
 
         /**
          * Initialize
+         *
+         * @para {Object} options Widget options
          */
         initializeWidget: function(options) {
             if (this.options.wid) {
@@ -52,11 +71,58 @@ function(_, Backbone, mediator) {
             this.on('adoptedFormSubmitClick', _.bind(this._onAdoptedFormSubmitClick, this));
             this.on('adoptedFormResetClick', _.bind(this._onAdoptedFormResetClick, this));
             this.on('adoptedFormSubmit', _.bind(this._onAdoptedFormSubmit, this));
+            if (this.options.loadingMaskEnabled) {
+                this.on('beforeContentLoad', _.bind(this._showLoading, this));
+                this.on('contentLoad', _.bind(this._hideLoading, this));
+                this.on('renderStart', _.bind(function(el) {
+                    this.loadingElement = el;
+                }, this));
+            }
 
             this.actions = {};
             this.firstRun = true;
+            this.loadingElement = $('body');
+
+            mediator.trigger('widget_initialize', this);
         },
 
+        /**
+         * Show loading indicator
+         *
+         * @private
+         */
+        _showLoading: function() {
+            if (this.options.loadingMaskEnabled) {
+                var loadingElement = this.options.loadingElement || this.loadingElement;
+                loadingElement = $(loadingElement);
+                if (loadingElement && loadingElement.length) {
+                    if (loadingElement[0].tagName.toLowerCase() !== 'body' && loadingElement.css('position') == 'static') {
+                        loadingElement.css('position', 'relative');
+                    }
+                    this.loadingMask = new LoadingMask();
+                    loadingElement.append(this.loadingMask.render().$el);
+                    this.loadingMask.show();
+                }
+            }
+        },
+
+        /**
+         * Hide loading indicator
+         *
+         * @private
+         */
+        _hideLoading: function() {
+            if (this.loadingMask) {
+                this.loadingMask.remove();
+                this.loadingMask = null;
+            }
+        },
+
+        /**
+         * Get unique widget identifier
+         *
+         * @returns {string}
+         */
         getWid: function() {
             if (!this._wid) {
                 this._wid = this._getUniqueIdentifier();
@@ -64,10 +130,21 @@ function(_, Backbone, mediator) {
             return this._wid;
         },
 
+        /**
+         * Get widget alias
+         *
+         * @returns {string|null}
+         */
         getAlias: function() {
             return this.$el.data('alias') || this.options.alias;
         },
 
+        /**
+         * Generate unique widget identifier
+         *
+         * @returns {string}
+         * @private
+         */
         _getUniqueIdentifier: function() {
             /*jslint bitwise:true */
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -78,7 +155,9 @@ function(_, Backbone, mediator) {
         },
 
         /**
-         * Move form actions to widget actions
+         * Convert form actions to widget actions
+         *
+         *  @private
          */
         _adoptWidgetActions: function() {
             this.actions['adopted'] = {};
@@ -96,6 +175,7 @@ function(_, Backbone, mediator) {
                         this.options.url = formAction;
                     }
                     this.form.submit(function(e) {
+                        e.preventDefault();
                         e.stopImmediatePropagation();
                         self.trigger('adoptedFormSubmit', self.form, self);
                         return false;
@@ -107,6 +187,14 @@ function(_, Backbone, mediator) {
                     var actionId = $action.data('action-name') || 'adopted_action_' + idx;
                     switch (action.type.toLowerCase()) {
                         case 'submit':
+                            var submitReplacement = $('<input type="submit"/>');
+                            submitReplacement.css({
+                                position: 'absolute',
+                                left: '-9999px',
+                                width: '1px',
+                                height: '1px'
+                            });
+                            form.append(submitReplacement);
                             actionId = 'form_submit';
                             break;
                         case 'reset':
@@ -119,6 +207,12 @@ function(_, Backbone, mediator) {
             }
         },
 
+        /**
+         * Get container with adopted form actions
+         *
+         * @returns {HTMLElement}
+         * @private
+         */
         _getAdoptedActionsContainer: function() {
             if (this.options.actionsEl !== undefined) {
                 if (typeof this.options.actionsEl === 'string') {
@@ -130,57 +224,113 @@ function(_, Backbone, mediator) {
             return false;
         },
 
+        /**
+         * Handle adopted form submit button click
+         *
+         * @param {HTMLElement} form
+         * @private
+         */
         _onAdoptedFormSubmitClick: function(form) {
             form.submit();
         },
 
+        /**
+         * Handle adopted form submit
+         *
+         * @param {HTMLElement} form
+         * @private
+         */
         _onAdoptedFormSubmit: function(form) {
+            if (this.loading) {
+                return;
+            }
             if (form.find('[type="file"]').length) {
                 this.trigger('beforeContentLoad', this);
+                this.loading = true;
                 form.ajaxSubmit({
                     data: {
                         '_widgetContainer': this.options.type,
                         '_wid': this.getWid()
                     },
-                    success: _.bind(this.onContentLoad, this),
-                    error: _.bind(this.onContentLoadFail, this)
+                    success: _.bind(this._onContentLoad, this),
+                    error: _.bind(this._onContentLoadFail, this)
                 });
             } else {
                 this.loadContent(form.serialize(), form.attr('method'));
             }
         },
 
+        /**
+         * Handle adopted form reset button click
+         *
+         * @param {HTMLElement} form
+         * @private
+         */
         _onAdoptedFormResetClick: function(form) {
             $(form).trigger('reset');
         },
 
+        /**
+         * Create container for actions section
+         *
+         * @param {string} section
+         * @returns {HTMLElement}
+         * @private
+         */
         _createWidgetActionsSection: function(section) {
             return $('<div id="' + section + '" class="widget-actions-section"/>');
         },
 
-        addAction: function(key, actionElement, section) {
+        /**
+         * Add action element to specified section
+         *
+         * @param {string} key action name
+         * @param {string} section section name
+         * @param {HTMLElement} actionElement
+         */
+        addAction: function(key, section, actionElement) {
             if (section === undefined) {
                 section = 'main';
             }
             if (!this.hasAction(key, section)) {
-                this.actions[key] = actionElement;
+                if (!this.actions.hasOwnProperty(section)) {
+                    this.actions[section] = {};
+                }
+                this.actions[section][key] = actionElement;
                 var sectionContainer = this.getActionsElement().find('#' + section);
                 if (!sectionContainer.length) {
                     sectionContainer = this._createWidgetActionsSection(section);
                     sectionContainer.appendTo(this.getActionsElement());
                 }
                 sectionContainer.append(actionElement);
+                this.trigger('widget:add:action:' + section + ':' + key, $(actionElement));
             }
         },
 
+        /**
+         * Get all registered actions
+         *
+         * @returns {Object}
+         */
         getActions: function() {
             return this.actions;
         },
 
+        /**
+         * Set url
+         *
+         * @param {string} url
+         */
         setUrl: function(url) {
             this.options.url = url;
         },
 
+        /**
+         * Remove action from section
+         *
+         * @param {string} key action name
+         * @param {string} section section name
+         */
         removeAction: function(key, section) {
             var self = this,
                 remove = function(actions, key) {
@@ -202,6 +352,13 @@ function(_, Backbone, mediator) {
             }
         },
 
+        /**
+         * Check action availability.
+         *
+         * @param {string} key action name
+         * @param {string} section section name
+         * @returns {boolean}
+         */
         hasAction: function(key, section) {
             if (section !== undefined) {
                 return this.actions.hasOwnProperty(section) && this.actions[section].hasOwnProperty(key);
@@ -216,9 +373,16 @@ function(_, Backbone, mediator) {
             }
         },
 
-        getAction: function(key, section) {
-            var action = null;
+        /**
+         * Get action element when after render.
+         *
+         * @param {string} key action name
+         * @param {string} section section name
+         * @param {function} callback callback method for processing action element
+         */
+        getAction: function(key, section, callback) {
             if (this.hasAction(key, section)) {
+                var action = null;
                 if (section !== undefined) {
                     action = this.actions[section][key];
                 } else {
@@ -228,10 +392,17 @@ function(_, Backbone, mediator) {
                         }
                     });
                 }
+                callback(action);
+            } else {
+                this.once('widget:add:action:' + section + ':' + key, callback);
             }
-            return action;
         },
 
+        /**
+         * Render widget actions
+         *
+         * @private
+         */
         _renderActions: function() {
             var self = this;
             this._clearActionsContainer();
@@ -240,18 +411,29 @@ function(_, Backbone, mediator) {
             if (container) {
                 _.each(this.actions, function(actions, section) {
                     var sectionContainer = self._createWidgetActionsSection(section);
-                    _.each(actions, function(action) {
+                    _.each(actions, function(action, key) {
                         self._initActionEvents(action);
                         sectionContainer.append(action);
+                        self.trigger('widget:add:action:' + section + ':' + key, $(action));
                     });
                     container.append(sectionContainer);
                 });
             }
         },
 
+        /**
+         * Initialize adopted action event handlers
+         *
+         * @param {HTMLElement} action
+         * @private
+         */
         _initActionEvents: function(action) {
             var self = this;
-            switch ($(action).attr('type').toLowerCase()) {
+            var type = $(action).attr('type');
+            if (!type) {
+                return;
+            }
+            switch (type.toLowerCase()) {
                 case 'submit':
                     action.on('click', function() {
                         self.trigger('adoptedFormSubmitClick', self.form, self);
@@ -267,6 +449,11 @@ function(_, Backbone, mediator) {
             }
         },
 
+        /**
+         * Clear actions container.
+         *
+         * @private
+         */
         _clearActionsContainer: function() {
             var actionsEl = this.getActionsElement();
             if (actionsEl) {
@@ -295,6 +482,7 @@ function(_, Backbone, mediator) {
          * @param {String|null} method
          */
         loadContent: function(data, method) {
+            this.loading = true;
             var url = this.options.url;
             if (url === undefined || !url) {
                 url = window.location.href;
@@ -314,51 +502,72 @@ function(_, Backbone, mediator) {
 
             this.trigger('beforeContentLoad', this);
             Backbone.$.ajax(options)
-                .done(_.bind(this.onContentLoad, this))
-                .fail(_.bind(this.onContentLoadFail, this))
+                .done(_.bind(this._onContentLoad, this))
+                .fail(_.bind(this._onContentLoadFail, this))
             ;
         },
 
-        onContentLoadFail: function() {
+        /**
+         * Handle content loading failure.
+         * @private
+         */
+        _onContentLoadFail: function() {
             var failContent = '<div class="widget-content">' +
                 '<div class="alert alert-error">Widget content loading failed</div>' +
                 '</div>';
-            this.onContentLoad(failContent);
+            this._onContentLoad(failContent);
         },
 
         /**
          * Handle loaded content.
          *
          * @param {String} content
+         * @private
          */
-        onContentLoad: function(content) {
+        _onContentLoad: function(content) {
+            this.loading = false;
             try {
                 this.trigger('contentLoad', content, this);
                 this.actionsEl = null;
                 this.actions = {};
                 this.setElement($(content).filter('.widget-content'));
+                layout.init(this.$el);
                 this._show();
                 mediator.trigger('hash_navigation_request:complete');
             } catch (error) {
-                console.warn(error)
+                console.warn(error);
                 // Remove state with unrestorable content
                 this.trigger('contentLoadError', this);
             }
         },
 
+        /**
+         * Show widget content
+         *
+         * @private
+         */
         _show: function() {
-            this.trigger('renderStart', this.$el, this);
             this._adoptWidgetActions();
+            this.trigger('renderStart', this.$el, this);
             this.show();
             this.trigger('renderComplete', this.$el, this);
         },
 
+        /**
+         * General implementation of show logic.
+         */
         show: function() {
             this.setWidToElement(this.$el);
             this._renderActions();
             this.trigger('widgetRender', this.$el, this);
+            mediator.trigger('widget:render:' + this.getWid(), this.$el, this);
         },
 
+        /**
+         * Add data-wid attribute to given element.
+         *
+         * @param {HTMLElement} el
+         */
         setWidToElement: function(el) {
             el.attr('data-wid', this.getWid());
         }

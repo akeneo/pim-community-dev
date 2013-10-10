@@ -128,6 +128,8 @@ class WorkflowController extends FOSRestController
      */
     public function transitAction(WorkflowItem $workflowItem, $transitionName)
     {
+        $this->get('oro_workflow.http.workflow_item_validator')->validate($workflowItem);
+
         try {
             $this->get('oro_workflow.manager')->transit($workflowItem, $transitionName);
         } catch (WorkflowNotFoundException $e) {
@@ -164,6 +166,8 @@ class WorkflowController extends FOSRestController
      */
     public function getAction(WorkflowItem $workflowItem)
     {
+        $this->get('oro_workflow.http.workflow_item_validator')->validate($workflowItem);
+
         return $this->handleView(
             $this->view(
                 array(

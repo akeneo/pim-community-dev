@@ -1,10 +1,5 @@
 title:                    Oro Application installation
 
-welcome:
-    header:               Welcome to Oro Installer
-    content:              This wizard will guide you through the setup process.
-    button:               Begin Installation
-
 switch:
     off:                  off
     on:                   on
@@ -40,16 +35,12 @@ form:
         lastname:         Last name
         password:         Password
         password_re:      Re-enter password
-        load_fixtures:    Load fixtures
+        load_fixtures:    Load Sample Data
 
 process:
     step:
         check:
             header:       System requirements check
-            invalid:      Some of the requirements are not met and the installation process cannot continue. Please check below for the minimum requirements to Install Oro.
-            table:
-                current:  Current
-                required: Required
         configure:
             header:       Configuration
         setup:
@@ -62,5 +53,4 @@ process:
         back:             Back
         next:             Next
         install:          Install
-        refresh:          Refresh
         finish:           Launch application

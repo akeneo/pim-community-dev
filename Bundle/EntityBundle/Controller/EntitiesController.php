@@ -2,11 +2,12 @@
 
 namespace Oro\Bundle\EntityBundle\Controller;
 
+use Doctrine\Common\Inflector\Inflector;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-
-use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use FOS\Rest\Util\Codes;
 
@@ -22,8 +23,6 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 
 /**
  * Entities controller.
@@ -69,10 +68,10 @@ class EntitiesController extends Controller
             : $this->render(
                 'OroEntityBundle:Entities:index.html.twig',
                 array(
-                    'datagrid'      => $view,
-                    'entity_id'     => $id,
-                    'entity_class'  => $extendEntityName,
-                    'label'         => $entityConfig->get('label')
+                    'datagrid'     => $view,
+                    'entity_id'    => $id,
+                    'entity_class' => $extendEntityName,
+                    'label'        => $entityConfig->get('label')
                 )
             );
     }
@@ -94,28 +93,28 @@ class EntitiesController extends Controller
         /** @var OroEntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
-        /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
-        /** @var ConfigProvider $entityConfigProvider */
-        $viewConfigProvider = $this->get('oro_entity_config.provider.view');
+        $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
+        $viewConfigProvider   = $this->get('oro_entity_config.provider.view');
 
         $extendEntityRepository = $em->getRepository($extendEntityName);
 
         $record = $extendEntityRepository->find($id);
 
-
         $fields = $viewConfigProvider->filter(
-            function (ConfigInterface $config) {
-                return $config->is('is_displayable');
+            function (ConfigInterface $config) use ($extendConfigProvider) {
+                $extendConfig = $extendConfigProvider->getConfigById($config->getId());
+                return $config->is('is_displayable') && $extendConfig->is('is_deleted', false);
             },
             $extendEntityName
         );
 
         $result = array();
         foreach ($fields as $field) {
-            $value = $record->{'get' . $field->getId()->getFieldName()}();
+            $value = $record->{'get' . Inflector::classify($field->getId()->getFieldName())}();
             if ($value instanceof \DateTime) {
-                $value = $value->format('Y-m-d');
+                $configFormat = $this->get('oro_config.global')->get('oro_locale.date_format') ? : 'Y-m-d';
+                $value        = $value->format($configFormat);
             }
 
             $fieldConfig = $entityConfigProvider->getConfigById($field->getId());
@@ -176,7 +175,10 @@ class EntitiesController extends Controller
 
                 $id = $record->getId();
 
-                $this->get('session')->getFlashBag()->add('success', 'Entity successfully saved');
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('oro.entity.controller.message.saved')
+                );
 
                 return $this->get('oro_ui.router')->actionRedirect(
                     array(
@@ -247,7 +249,7 @@ class EntitiesController extends Controller
     {
         /** @var SecurityFacade $securityFacade */
         $securityFacade = $this->get('oro_security.security_facade');
-        $isGranted = $securityFacade->isGranted($permission, 'entity:' . $entityName);
+        $isGranted      = $securityFacade->isGranted($permission, 'entity:' . $entityName);
         if (!$isGranted) {
             throw new AccessDeniedException('Access denied.');
         }

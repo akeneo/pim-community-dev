@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\EventListener;
 
+use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\EntityConfigBundle\Event\Events;
@@ -37,6 +38,7 @@ class ConfigSubscriber implements EventSubscriberInterface
         return array(
             Events::PRE_PERSIST_CONFIG      => 'persistConfig',
             Events::NEW_ENTITY_CONFIG_MODEL => 'newEntity',
+            Events::NEW_FIELD_CONFIG_MODEL  => 'newField',
         );
     }
 
@@ -113,6 +115,21 @@ class ConfigSubscriber implements EventSubscriberInterface
             $config->set('extend_class', ExtendConfigDumper::ENTITY . $parentClassName);
 
             $event->getConfigManager()->persist($config);
+        }
+    }
+
+    /**
+     * @param NewFieldConfigModelEvent $event
+     */
+    public function newField(NewFieldConfigModelEvent $event)
+    {
+        /** @var ConfigProvider $configProvider */
+        $configProvider = $event->getConfigManager()->getProvider('extend');
+
+        $entityConfig = $configProvider->getConfig($event->getClassName());
+        if ($entityConfig->is('upgradeable', false)) {
+            $entityConfig->set('upgradeable', true);
+            $configProvider->persist($entityConfig);
         }
     }
 }

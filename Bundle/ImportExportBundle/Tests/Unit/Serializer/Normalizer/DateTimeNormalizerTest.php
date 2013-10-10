@@ -37,8 +37,16 @@ class DateTimeNormalizerTest extends \PHPUnit_Framework_TestCase
             $this->normalizer->normalize($date, null)
         );
         $this->assertEquals(
+            '2013-12-31T23:59:59+0200',
+            $this->normalizer->normalize($date, null, array('format' => \DateTime::ISO8601))
+        );
+        $this->assertEquals(
             '2013-12-31',
             $this->normalizer->normalize($date, null, array('type' => 'date'))
+        );
+        $this->assertEquals(
+            '2013-12-31T23:59:59+0200',
+            $this->normalizer->normalize($date, null, array('type' => 'unknown'))
         );
         $this->assertEquals(
             '23:59:59',
@@ -60,5 +68,14 @@ class DateTimeNormalizerTest extends \PHPUnit_Framework_TestCase
             new \DateTime('1970-01-01 23:59:58', new \DateTimeZone('UTC')),
             $this->normalizer->denormalize('23:59:58', 'DateTime', null, array('type' => 'time'))
         );
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Serializer\Exception\RuntimeException
+     * @expectedExceptionMessage Invalid datetime "qwerty", expected format Y-m-d\TH:i:sO.
+     */
+    public function testDenormalizeException()
+    {
+        $this->normalizer->denormalize('qwerty', 'DateTime', null);
     }
 }

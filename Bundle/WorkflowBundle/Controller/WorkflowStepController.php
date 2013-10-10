@@ -2,20 +2,16 @@
 
 namespace Oro\Bundle\WorkflowBundle\Controller;
 
-use Doctrine\ORM\EntityManager;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Exception\WorkflowNotFoundException;
-use Oro\Bundle\WorkflowBundle\Model\Step;
-use Oro\Bundle\WorkflowBundle\Model\Workflow;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class WorkflowStepController extends Controller
 {
@@ -26,6 +22,8 @@ class WorkflowStepController extends Controller
      */
     public function editAction(WorkflowItem $workflowItem)
     {
+        $this->get('oro_workflow.http.workflow_item_validator')->validate($workflowItem);
+
         /** @var WorkflowManager $workflowManager */
         $workflowManager = $this->get('oro_workflow.manager');
         $workflow = $workflowManager->getWorkflow($workflowItem);
@@ -34,7 +32,8 @@ class WorkflowStepController extends Controller
         $data = array(
             'workflow' => $workflow,
             'currentStep' => $currentStep,
-            'workflowItem' => $workflowItem
+            'workflowItem' => $workflowItem,
+            'entity' => $workflowItem
         );
 
         $customTemplate = $currentStep->getTemplate();
