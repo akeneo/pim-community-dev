@@ -4,7 +4,10 @@ namespace Oro\Bundle\DataGridBundle\Extension\Formatter;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
+
+use Symfony\Component\Config\Definition\Processor;
 
 class FormatterExtension implements ExtensionVisitorInterface
 {
@@ -19,7 +22,28 @@ class FormatterExtension implements ExtensionVisitorInterface
      */
     public function isApplicable(array $config)
     {
-        return !empty($config[self::COLUMNS_KEY]) || !empty($config[self::PROPERTIES_KEY]);
+        $applicable = !empty($config[self::COLUMNS_KEY]) || !empty($config[self::PROPERTIES_KEY]);
+
+        // validate extension configuration
+        $this->validateConfiguration($config, array(self::COLUMNS_KEY, self::PROPERTIES_KEY));
+
+        return $applicable;
+    }
+
+    /**
+     * @param array $config config array
+     * @param array $keys keys to validate
+     *
+     * @return bool
+     */
+    public function validateConfiguration($config, $keys)
+    {
+        $config = array_intersect_key($config, array_flip($keys));
+
+        $processor = new Processor();
+        $processor->processConfiguration(new Configuration\Columns(), $config);
+
+        return true;
     }
 
     /**

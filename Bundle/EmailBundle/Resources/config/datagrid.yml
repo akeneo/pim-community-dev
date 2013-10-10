@@ -100,9 +100,8 @@ datagrid:
 
             clone_link:
                 type: UrlProperty
-                params:
-                    - oro_email_emailtemplate_clone
-                    - [ id ]
+                route: oro_email_emailtemplate_clone
+                params: [ id ]
 
             delete_link:
                 type: UrlProperty
