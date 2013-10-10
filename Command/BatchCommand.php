@@ -41,7 +41,7 @@ class BatchCommand extends ContainerAwareCommand
     {
         $noDebug = $input->getOption('no-debug');
         if (!$noDebug) {
-            $logger = $this->getContainer()->get('logger');
+            $logger = $this->getContainer()->get('monolog.logger.batch');
             // Fixme: Use ConsoleHandler available on next Symfony version (2.4 ?)
             $logger->pushHandler(new StreamHandler('php://stdout'));
         }
