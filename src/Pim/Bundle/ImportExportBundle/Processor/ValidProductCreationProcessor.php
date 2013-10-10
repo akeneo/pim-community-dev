@@ -2,20 +2,16 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
-use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductVariantGroupConverter;
-use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
 
 /**

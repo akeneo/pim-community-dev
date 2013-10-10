@@ -4,7 +4,6 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
 use Pim\Bundle\ImportExportBundle\Processor\ValidProductCreationProcessor;
 use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
-use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
