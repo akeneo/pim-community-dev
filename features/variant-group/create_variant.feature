@@ -8,7 +8,7 @@ Feature: Variant group creation
     Given the following attributes:
       | code      | label      | type                     |
       | color     | Color      | pim_catalog_simpleselect |
-      | size      | Size       | pim_catalog_simpleselect |
+      | size      | Size       | pim_catalog_simpleselect |
       | dimension | Dimensions | pim_catalog_simpleselect |
     And I am logged in as "admin"
 
@@ -48,8 +48,8 @@ Feature: Variant group creation
   Scenario: Fail to create a variant filling an already used code
     Given I am on the variants page
     And the following variants:
-      | code    | label          | attributes    |
-      | TSHIRT  | T-Shirt Akeneo | size, color   |
+      | code    | label          | attributes  |
+      | TSHIRT  | T-Shirt Akeneo | size,color |
     When I create a new variant
     And I fill in the following information:
       | Code | TSHIRT |

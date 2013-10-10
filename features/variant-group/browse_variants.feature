@@ -15,7 +15,7 @@ Feature: Browse variant groups
     And the following variants:
       | code           | label          | attributes  |
       | tshirt_akeneo  | T-Shirt Akeneo | size, color |
-      | mug_akeneo     | Mug Akeneo     | color       |
+      | mug_akeneo     | Mug Akeneo     | color       |
       | sticker_akeneo | Sticker Akeneo | dimension   |
     And I am logged in as "admin"
 

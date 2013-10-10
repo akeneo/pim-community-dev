@@ -9,13 +9,13 @@ Feature: Filter variants
     And the following attributes:
       | code      | label      | type                     |
       | color     | Color      | pim_catalog_simpleselect |
-      | size      | Size       | pim_catalog_simpleselect |
+      | size      | Size       | pim_catalog_simpleselect |
       | dimension | Dimensions | pim_catalog_simpleselect |
     And the following variants:
-      | code           | label         | attributes  |
-      | TSHIRT_ORO    | T-Shirt Oro    | size, color |
-      | MUG           | Mug Akeneo     | color       |
-      | TSHIRT_AKENEO | T-Shirt Akeneo | size        |
+      | code           | label         | attributes |
+      | TSHIRT_ORO    | T-Shirt Oro    | size,color |
+      | MUG           | Mug Akeneo     | color      |
+      | TSHIRT_AKENEO | T-Shirt Akeneo | size       |
     And I am logged in as "admin"
 
   Scenario: Successfully display filters

@@ -10,9 +10,9 @@ Feature: Edit a variant group
       | color | Color | pim_catalog_simpleselect |
       | size  | Size  | pim_catalog_simpleselect |
     And the following variants:
-      | code   | label          | attributes  |
-      | TSHIRT | T-Shirt Akeneo | size, color |
-      | MUG    | MUG Akeneo     | color       |
+      | code   | label          | attributes |
+      | TSHIRT | T-Shirt Akeneo | size,color |
+      | MUG    | MUG Akeneo     | color      |
     And I am logged in as "admin"
 
   Scenario: Successfully display the edit view for a variant group
