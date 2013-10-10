@@ -4,11 +4,14 @@ define(
     function ($, __, mediator, Navigation, messenger, Dialog, initSelect2) {
         'use strict';
         var initialized = false;
-        return function() {
+        return function(gridRegexps) {
             if (initialized) {
                 return
             }
             initialized = true;
+            
+            Navigation.getInstance().setGridRegexps(gridRegexps);
+            
             function pageInit() {
                 // Place code that we need to run on every page load here
 
@@ -153,6 +156,7 @@ define(
                     $(this).hide();
                 });
             }
+            
             $(function(){
                 if ($.isPlainObject($.uniform)) {
                     $.uniform.restore();

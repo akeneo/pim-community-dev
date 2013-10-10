@@ -2,6 +2,9 @@ parameters:
     pim_grid.datagrid.class:               Pim\Bundle\GridBundle\Datagrid\Datagrid
     pim_grid.builder.datagrid.class:       Pim\Bundle\GridBundle\Builder\ORM\DatagridBuilder
     pim_grid.action.tab_redirect.class:    Pim\Bundle\GridBundle\Action\TabRedirectAction
+    pim_grid.routes_registry.class:        Pim\Bundle\GridBundle\Route\DatagridRouteRegistry
+    pim_grid.twig_extension.class:         Pim\Bundle\GridBundle\Twig\DatagridExtension
+
     oro_grid.mass_action.dispatcher.class: Pim\Bundle\GridBundle\Action\MassAction\MassActionDispatcher
 
 services:
@@ -21,3 +24,15 @@ services:
         class: %pim_grid.action.tab_redirect.class%
         tags:
             - { name: oro_grid.action.type, alias: pim_grid_action_tab_redirect }
+
+    pim_grid.routes_registry:
+        class: %pim_grid.routes_registry.class%
+        arguments:
+            - '@router'
+
+    pim_grid.twig_extension: 
+        class: %pim_grid.twig_extension.class%
+        arguments:
+            - '@pim_grid.routes_registry'
+        tags:
+            - { name: twig.extension }
