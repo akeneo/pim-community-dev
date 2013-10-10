@@ -83,7 +83,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      * @var VariantGroup $variantGroup
      *
      * @ORM\ManyToOne(targetEntity="VariantGroup", inversedBy="products")
-     * @ORM\JoinColumn(name="variant_group_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="variant_group_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $variantGroup;
 

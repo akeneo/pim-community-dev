@@ -8,7 +8,7 @@ Feature: Filter variants
     Given there is no variant
     And the following attributes:
       | code      | label      | type                     |
-      | color     | Color      | pim_catalog_multiselect  |
+      | color     | Color      | pim_catalog_simpleselect |
       | size      | Size       | pim_catalog_simpleselect |
       | dimension | Dimensions | pim_catalog_simpleselect |
     And the following variants:
