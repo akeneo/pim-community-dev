@@ -30,6 +30,7 @@ class Manager implements ManagerInterface
     {
         $this->rawConfiguration = $rawConfiguration;
         $this->datagridBuilder  = $builder;
+        $this->resolver         = $resolver;
     }
 
     /**
@@ -37,7 +38,10 @@ class Manager implements ManagerInterface
      */
     public function getDatagrid($name)
     {
-        $this->getDatagridBuilder()->build($this->getConfigurationForGrid($name));
+        $config = $this->getConfigurationForGrid($name);
+        $datagrid = $this->getDatagridBuilder()->build($name, $config);
+
+        return $datagrid;
     }
 
     /**
@@ -63,7 +67,7 @@ class Manager implements ManagerInterface
     protected function getConfigurationForGrid($name)
     {
         if (!isset($this->rawConfiguration[$name])) {
-            throw new \RuntimeException(sprintf('Configuration for datagrid %s not found', $name));
+            throw new \RuntimeException(sprintf('Configuration for datagrid "%s" not found', $name));
         }
 
         if (!isset($this->processedConfiguration[$name])) {

@@ -24,7 +24,7 @@ class YamlConverter implements QueryConverterInterface
 
         $processor = new Processor();
 
-        $value = $processor->processConfiguration(new QueryConfiguration(), array('report' => $value));
+        $value = $processor->processConfiguration(new QueryConfiguration(), $value);
         $qb    = $em->createQueryBuilder();
 
         if (!isset($value['from'])) {

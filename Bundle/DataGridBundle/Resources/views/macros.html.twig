@@ -5,7 +5,7 @@
         name: datagrid name
 #}
 {% macro renderGrid(name) %}
-    <div data-type="datagrid" data-result-data="{# @TODO API call here #}" data-meta-data="{# @TODO Twig extension here #}"></div>
+    <div data-type="datagrid" data-result-data="{{ render(path('oro_datagrid_index', { 'gridName': name }))}}" data-meta-data="{# @TODO Twig extension here #}"></div>
     <script type="text/javascript">
         require(['jquery'], function ($) {
             $(function () {
@@ -13,4 +13,5 @@
             });
         });
     </script>
+    {{ render(path('oro_datagrid_index', { 'gridName': name }))}}
 {% endmacro %}

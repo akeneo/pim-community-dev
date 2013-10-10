@@ -15,13 +15,9 @@ class QueryConfiguration implements ConfigurationInterface
     {
         $builder = new TreeBuilder();
 
-        $builder->root('report')
+        $builder->root('query')
             ->addDefaultsIfNotSet()
             ->children()
-                ->scalarNode('name')
-                    ->isRequired()
-                    ->cannotBeEmpty()
-                ->end()
                 ->booleanNode('distinct')
                     ->defaultFalse()
                 ->end()

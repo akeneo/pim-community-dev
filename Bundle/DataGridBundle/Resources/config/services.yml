@@ -1,9 +1,14 @@
 parameters:
-    oro_grid.datagrid.base.class: Oro\Bundle\DataGridBundle\Datagrid\Datagrid
+    oro_grid.datagrid.base.class:        Oro\Bundle\DataGridBundle\Datagrid\Datagrid
+    oro_grid.extension.acceptor.class:   Oro\Bundle\DataGridBundle\Extension\Acceptor
 
-    oro_grid.datagrid.manager.class:  Oro\Bundle\DataGridBundle\Datagrid\Manager
-    oro_grid.datagrid.builder.class:  Oro\Bundle\DataGridBundle\Datagrid\Builder
-    oro_grid.provider.resolver.class: Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver
+    oro_grid.datagrid.manager.class:     Oro\Bundle\DataGridBundle\Datagrid\Manager
+    oro_grid.datagrid.builder.class:     Oro\Bundle\DataGridBundle\Datagrid\Builder
+    oro_grid.provider.resolver.class:    Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver
+
+    oro_grid.datasource.orm.class:       Oro\Bundle\DataGridBundle\Datasource\OrmDatasource
+
+    oro_grid.extension.formatter.class:  Oro\Bundle\DataGridBundle\Extension\Formatter\FormatterExtension
 
 services:
     oro_grid.datagrid.manager:
@@ -17,9 +22,22 @@ services:
         class: %oro_grid.datagrid.builder.class%
         arguments:
             - %oro_grid.datagrid.base.class%
+            - %oro_grid.extension.acceptor.class%
             - @event_dispatcher
 
     oro_grid.provider.resolver:
         class: %oro_grid.provider.resolver.class%
         arguments:
             - @service_container
+
+    oro_grid.datasource.orm:
+        class: %oro_grid.datasource.orm.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: oro_grid.datasource, type: orm }
+
+    oro_grid.extension.formatter:
+        class: %oro_grid.extension.formatter.class%
+        tags:
+            - { name: kernel.event_listener, event: oro_grid.datgrid.build.before , method: buildBeforeHandler }
