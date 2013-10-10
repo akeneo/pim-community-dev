@@ -7,9 +7,9 @@ Feature: Browse attributes
   Background:
     Given there is no attribute
     And the following attribute groups:
-      | label     |
-      | General   |
-      | Marketing |
+      | code      | label     |
+      | general   | General   |
+      | marketing | Marketing |
     And the following attributes:
       | code        | label       | type                   | scopable | localizable | group     |
       | sku         | Sku         | pim_catalog_identifier | false    | false       | General   |
