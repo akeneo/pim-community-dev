@@ -350,8 +350,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param array $entities
      *
-     * @Then /^I should not see products? ((?!with data).)*$/
-     * @Then /^I should not see attributes? ((?!in group).)*$/
+     * @Then /^I should not see products? ((?!with data).*)$/
+     * @Then /^I should not see attributes? ((?!in group).*)$/
      * @Then /^I should not see channels? (.*)$/
      * @Then /^I should not see locales? (.*)$/
      * @Then /^I should not see (?:import|export) profiles? (.*)$/
