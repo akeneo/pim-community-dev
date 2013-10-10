@@ -1,7 +1,7 @@
 Pim\Bundle\CatalogBundle\Entity\VariantGroup:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupMatrix: ~
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxis: ~
     properties:
         code:
             - NotBlank: ~

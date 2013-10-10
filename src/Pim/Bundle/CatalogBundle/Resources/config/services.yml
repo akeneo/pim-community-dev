@@ -65,12 +65,12 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_single_identifier_attribute_validator }
 
-    pim_catalog.form.validator.variant_group_matrix:
-        class: Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupMatrixValidator
+    pim_catalog.form.validator.unique_variant_axis:
+        class: Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator
         arguments:
             - '@pim_catalog.manager.product'
         tags:
-            - { name: validator.constraint_validator, alias: pim_variant_group_matrix_validator }
+            - { name: validator.constraint_validator, alias: pim_unique_variant_axis_validator }
 
     pim_catalog.validator.constraints.unique_value:
         class: Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValueValidator
