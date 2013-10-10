@@ -60,7 +60,8 @@ class VariantGroupMatrixValidator extends ConstraintValidator
             $values = array();
             foreach ($variantGroup->getAttributes() as $attribute) {
                 $code = $attribute->getCode();
-                $values[] = sprintf('%s: %s', $code, (string) $product->getValue($code)->getOption());
+                $option = $product->getValue($code) ? (string) $product->getValue($code)->getOption() : '';
+                $values[] = sprintf('%s: %s', $code, $option);
             }
             $combination = implode(', ', $values);
 
@@ -85,9 +86,10 @@ class VariantGroupMatrixValidator extends ConstraintValidator
         if (null !== $variantGroup = $entity->getVariantGroup()) {
             $criteria = array();
             foreach ($variantGroup->getAttributes() as $attribute) {
+                $value = $entity->getValue($attribute->getCode());
                 $criteria[] = array(
                     'attribute' => $attribute,
-                    'option'    => $entity->getValue($attribute->getCode())->getOption()
+                    'option'    => $value ? (string) $value->getOption() : '',
                 );
             }
 
