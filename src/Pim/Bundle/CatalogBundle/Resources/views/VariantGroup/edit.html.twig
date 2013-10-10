@@ -60,21 +60,30 @@
 
         {{ elements.page_header(title, buttons, null, null, right) }}
 
+        {% set tabs = ['Properties', 'Products'] %}
+
+        {{ elements.form_navbar(tabs) }}
+
         <div class="row-fluid">
+
             {{ elements.form_errors(form) }}
 
-            {{ form_row(form.code) }}
+            {% set generalProperties %}
+                {{ form_row(form.code) }}
+                {{ form_row(form.attributes) }}
+            {% endset %}
 
-            {{ form_row(form.label) }}
-
-            {{ form_row(form.attributes) }}
+            {{ elements.accordion({
+                'General Properties': generalProperties,
+                'Labels': form_row(form.label)
+            }) }}
 
             {{ form_widget(form.appendProducts, {'id': 'variantAppendProducts'}) }}
             {{ form_widget(form.removeProducts, {'id': 'variantRemoveProducts'}) }}
 
-            {{ form_row(form._token) }}
-
             <div id="variant-products-grid"></div>
+
+            {{ form_row(form._token) }}
         </div>
     </form>
 {% endblock %}
