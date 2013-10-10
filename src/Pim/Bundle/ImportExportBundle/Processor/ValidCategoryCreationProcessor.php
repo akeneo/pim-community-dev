@@ -13,8 +13,9 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
- * Category form processor
- * Allows to bind data to the category form and validate it
+ * Valid category creation (or update) processor
+ *
+ * Allow to bind input data to a category and validate it
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -74,8 +75,8 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     /**
      * Constructor
      *
-     * @param EntityManager        $entityManager
-     * @param FormFactoryInterface $formFactory
+     * @param EntityManager      $entityManager
+     * @param ValidatorInterface $validator
      */
     public function __construct(
         EntityManager $entityManager,
