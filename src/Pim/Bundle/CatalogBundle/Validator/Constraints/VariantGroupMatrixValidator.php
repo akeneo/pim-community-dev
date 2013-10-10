@@ -5,6 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
 
 /**
  * Validator for valid variant group axis values constraint
@@ -32,12 +34,53 @@ class VariantGroupMatrixValidator extends ConstraintValidator
     /**
      * Don't allow having multiple products with same combination of values for axis of the variant group
      *
+     * @param object     $entity
+     * @param Constraint $constraint
+     */
+    public function validate($entity, Constraint $constraint)
+    {
+        if ($entity instanceof VariantGroup) {
+            $this->validateVariantGroup($entity, $constraint);
+        } elseif ($entity instanceof ProductInterface) {
+            $this->validateProduct($entity, $constraint);
+        }
+    }
+
+    /**
+     * Validate variant group
+     *
+     * @param VariantGroup $variantGroup
+     * @param Constraint   $constraint
+     */
+    protected function validateVariantGroup(VariantGroup $variantGroup, Constraint $constraint)
+    {
+        $existingCombinations = array();
+
+        foreach ($variantGroup->getProducts() as $product) {
+            $values = array();
+            foreach ($variantGroup->getAttributes() as $attribute) {
+                $code = $attribute->getCode();
+                $values[] = sprintf('%s: %s', $code, (string) $product->getValue($code)->getOption());
+            }
+            $combination = implode(', ', $values);
+
+            if (in_array($combination, $existingCombinations)) {
+                $this->addViolation($constraint, $combination, $variantGroup->getLabel());
+            } else {
+                $existingCombinations[] = $combination;
+            }
+        }
+    }
+
+    /**
+     * Validate product
+     *
      * @param ProductInterface $entity
      * @param Constraint       $constraint
      *
      * @return null
      */
-    public function validate($entity, Constraint $constraint)
+    protected function validateProduct(ProductInterface $entity, Constraint $constraint)
     {
         if (null !== $variantGroup = $entity->getVariantGroup()) {
             $criteria = array();
@@ -63,14 +106,26 @@ class VariantGroupMatrixValidator extends ConstraintValidator
                 foreach ($criteria as $item) {
                     $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $item['option']);
                 }
-                $this->context->addViolation(
-                    $constraint->message,
-                    array(
-                        '%values%'        => implode(', ', $values),
-                        '%variant group%' => $variantGroup->getLabel()
-                    )
-                );
+                $this->addViolation($constraint, implode(', ', $values), $variantGroup->getLabel());
             }
         }
+    }
+
+    /**
+     * Add violation to the executioncontext
+     *
+     * @param Constraint $constraint
+     * @param string     $values
+     * @param string     $variantLabel
+     */
+    protected function addViolation(Constraint $constraint, $values, $variantLabel)
+    {
+        $this->context->addViolation(
+            $constraint->message,
+            array(
+                '%values%'        => $values,
+                '%variant group%' => $variantLabel
+            )
+        );
     }
 }

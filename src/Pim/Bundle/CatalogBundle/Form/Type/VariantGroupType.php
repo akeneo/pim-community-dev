@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\VariantGroupSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\BindVariantGroupProductsSubscriber;
 
 /**
  * Type for variant group form
@@ -32,6 +33,8 @@ class VariantGroupType extends AbstractType
         $this->addProductsField($builder);
 
         $builder->addEventSubscriber(new VariantGroupSubscriber());
+
+        $builder->addEventSubscriber(new BindVariantGroupProductsSubscriber());
     }
 
     /**
@@ -57,6 +60,8 @@ class VariantGroupType extends AbstractType
      * Add attributes field
      *
      * @param FormBuilderInterface $builder
+     *
+     * @return null
      */
     protected function addAttributesField(FormBuilderInterface $builder)
     {
