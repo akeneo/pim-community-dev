@@ -49,7 +49,7 @@ Feature: Variant group creation
     Given I am on the variants page
     And the following variants:
       | code    | label          | attributes  |
-      | TSHIRT  | T-Shirt Akeneo | size,color |
+      | TSHIRT  | T-Shirt Akeneo | size, color |
     When I create a new variant
     And I fill in the following information:
       | Code | TSHIRT |
