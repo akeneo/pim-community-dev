@@ -655,6 +655,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following attribute label translations:$/
      */
     public function theFollowingAttributeLabelTranslations(TableNode $table)
