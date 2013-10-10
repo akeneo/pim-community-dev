@@ -89,7 +89,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                 $value = $entity->getValue($attribute->getCode());
                 $criteria[] = array(
                     'attribute' => $attribute,
-                    'option'    => $value ? (string) $value->getOption() : '',
+                    'option'    => $value ? $value->getOption() : null,
                 );
             }
 
