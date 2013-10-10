@@ -40,4 +40,4 @@ services:
     oro_grid.extension.formatter:
         class: %oro_grid.extension.formatter.class%
         tags:
-            - { name: kernel.event_listener, event: oro_grid.datgrid.build.before , method: buildBeforeHandler }
+            - { name: oro_grid.etension, name: formatter }

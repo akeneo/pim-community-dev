@@ -4,9 +4,11 @@ namespace Oro\Bundle\DataGridBundle\Datagrid;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
+use Oro\Bundle\DataGridBundle\Event\BuildBefore;
+use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 
 class Builder
 {
@@ -21,6 +23,9 @@ class Builder
 
     /** @var DatasourceInterface[] */
     protected $dataSources = array();
+
+    /** @var ExtensionVisitorInterface[] */
+    protected $extensions = array();
 
     public function __construct($baseDatagridClass, $acceptorClass, EventDispatcher $eventDispatcher)
     {
@@ -39,14 +44,25 @@ class Builder
      */
     public function build($name, array $config)
     {
-        $class    = $this->getBaseDatagridClass($config);
-        $datagrid = new $class($name, new $this->acceptorClass());
+        $class = $this->getBaseDatagridClass($config);
+
+        /** @var Acceptor $acceptor */
+        $acceptor = new $this->acceptorClass();
+        /** @var DatagridInterface $datagrid */
+        $datagrid = new $class($name, $acceptor);
 
         $event = new BuildBefore($datagrid, $config);
         $this->eventDispatcher->dispatch(BuildBefore::NAME, $event);
         $config = $event->getConfig();
 
         $this->buildDataSource($datagrid, $config);
+
+        foreach ($this->extensions as $extension) {
+            if ($extension->isApplicable($config)) {
+                $datagrid->addExtension($extension);
+            }
+        }
+        $acceptor->setConfig($config);
 
         $event = new BuildAfter($datagrid);
         $this->eventDispatcher->dispatch(BuildAfter::NAME, $event);
@@ -66,6 +82,21 @@ class Builder
     public function addDatasource($type, DatasourceInterface $dataSource)
     {
         $this->dataSources[$type] = $dataSource;
+
+        return $this;
+    }
+
+    /**
+     * Add extension
+     * Automatically added services tagged by oro_grid.extension tag
+     *
+     * @param ExtensionVisitorInterface $extension
+     *
+     * @return $this
+     */
+    public function addExtension(ExtensionVisitorInterface $extension)
+    {
+        $this->extensions[] = $extension;
 
         return $this;
     }

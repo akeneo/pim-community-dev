@@ -2,32 +2,11 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
-use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
 class FieldProperty extends AbstractProperty
 {
-    /**
-     * @var FieldDescriptionInterface
-     */
-    protected $field;
-
-    /**
-     * @param FieldDescriptionInterface $field
-     */
-    public function __construct(FieldDescriptionInterface $field)
-    {
-        $this->field = $field;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->field->getName();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -40,12 +19,13 @@ class FieldProperty extends AbstractProperty
      * Get raw value from object
      *
      * @param ResultRecordInterface $record
+     *
      * @return mixed
      */
     protected function getRawValue(ResultRecordInterface $record)
     {
         try {
-            $value = $record->getValue($this->field->getFieldName());
+            $value = $record->getValue($this->get('name'));
         } catch (\LogicException $e) {
             // default value if there is no flexible attribute
             $value = null;
@@ -58,6 +38,7 @@ class FieldProperty extends AbstractProperty
      * Format raw value.
      *
      * @param mixed $value
+     *
      * @return mixed
      */
     protected function format($value)
@@ -69,8 +50,8 @@ class FieldProperty extends AbstractProperty
         // TODO : to fix the case where $value is a flexible value
         if (is_object($value) && is_callable(array($value, '__toString'))) {
             $value = $value->__toString();
-        } elseif (false === $value && $this->field->getOption('flexible_name')) {
-            return null; // TODO : temporary fix value when attribute is not exist
+        } elseif (false === $value && $this->getOr('flexible_name')) {
+            return null;
         }
 
         $result = $this->convertValue($value);
@@ -86,11 +67,12 @@ class FieldProperty extends AbstractProperty
      * Convert value to appropriate type
      *
      * @param mixed $value
+     *
      * @return mixed
      */
     protected function convertValue($value)
     {
-        switch ($this->field->getType()) {
+        switch ($this->get('type')) {
             case FieldDescriptionInterface::TYPE_DATETIME:
             case FieldDescriptionInterface::TYPE_DATE:
                 if ($value instanceof \DateTime) {

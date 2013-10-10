@@ -6,9 +6,13 @@ use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 
 class Acceptor
 {
+    /** @var array */
+    protected $config;
+
     /**
      * @param ExtensionVisitorInterface[] $extensions
      * @param DatagridInterface           $grid
+     *
      * @return void
      */
     public function acceptDatasourceVisitors(array $extensions, DatagridInterface $grid)
@@ -29,5 +33,29 @@ class Acceptor
         foreach ($extensions as $extension) {
             $extension->visitResult($result);
         }
+    }
+
+    /**
+     * Setter for config
+     *
+     * @param array $config
+     *
+     * @return mixed
+     */
+    public function setConfig(array $config)
+    {
+        $this->config = $config;
+
+        return $config;
+    }
+
+    /**
+     * Getter for config
+     *
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 }

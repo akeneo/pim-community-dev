@@ -7,16 +7,19 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 interface PropertyInterface
 {
     /**
-     * Get value name
+     * Prepare state for property state for current field
      *
-     * @return string
+     * @param $params
+     *
+     * @return mixed
      */
-    public function getName();
+    public function init(array $params);
 
     /**
      * Get field value from data
      *
      * @param ResultRecordInterface $record
+     *
      * @return mixed
      */
     public function getValue(ResultRecordInterface $record);

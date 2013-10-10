@@ -13,7 +13,7 @@ interface ExtensionVisitorInterface
      */
     public function isApplicable(array $config);
 
-    public function visitDatasource(DatasourceInterface $datasource);
+    public function visitDatasource(array $config, DatasourceInterface $datasource);
 
-    public function visitResult(\stdClass $result);
+    public function visitResult(array $config, \stdClass $result);
 }

@@ -2,30 +2,13 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter;
 
-use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 
 class FormatterExtension implements ExtensionVisitorInterface
 {
-    /** @var array */
-    protected $config;
-
-    /**
-     * Add extension to datagrid if needed
-     *
-     * @param BuildBefore $event
-     */
-    public function buildBeforeHandler(BuildBefore $event)
-    {
-        $grid = $event->getDatagrid();
-        $config = $event->getConfig();
-
-        if ($this->isApplicable($config)) {
-            $grid->addExtension($this);
-        }
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -45,34 +28,32 @@ class FormatterExtension implements ExtensionVisitorInterface
     /**
      * {@inheritDoc}
      */
-    public function visitResult(\stdClass $result)
+    public function visitResult(array $config, \stdClass $result)
     {
-        $rows = (array)$result->rows;
+        $rows    = (array)$result->rows;
+        $results = array();
 
-    }
+        foreach ($rows as $row) {
+            $result = array();
+            $row    = new ResultRecord($row);
 
-    protected function getProperties()
-    {
-        $properties = array();
-        if (!empty($this->config['properties'])) {
-            foreach ($this->config['properties'] as $propertyConfig) {
-                $properties['name'] = new $propertyConfig['type'];
+            foreach ($row as $name => $field) {
+
+                $fieldConfig   = isset($config['columns'][$name]) ? $config['columns'][$name] : array();
+                $property      = $this->getPropertyObject($name, $fieldConfig);
+                $result[$name] = $property->getValue($row);
             }
         }
     }
 
-
     /**
-     * Setter for config
+     * @param string $name
+     * @param array  $config
      *
-     * @param array $config
-     *
-     * @return $this
+     * @return PropertyInterface
      */
-    protected function setConfig(array $config)
+    protected function getPropertyObject($name, array $config)
     {
-        $this->config = $config;
-
-        return $this;
+        return new FieldProperty();
     }
 }
