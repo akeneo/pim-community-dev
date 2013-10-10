@@ -8,6 +8,9 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 
 class FormatterExtension implements ExtensionVisitorInterface
 {
+    const COLUMNS_KEY    = 'columns';
+    const PROPERTIES_KEY = 'properties';
+
     /** @var PropertyInterface[] */
     protected $properties;
 
@@ -16,7 +19,7 @@ class FormatterExtension implements ExtensionVisitorInterface
      */
     public function isApplicable(array $config)
     {
-        return true;
+        return !empty($config[self::COLUMNS_KEY]) || !empty($config[self::PROPERTIES_KEY]);
     }
 
     /**
@@ -32,27 +35,22 @@ class FormatterExtension implements ExtensionVisitorInterface
      */
     public function visitResult(array $config, \stdClass $result)
     {
-        $rows    = (array)$result->rows;
-        $results = array();
+        $rows       = (array)$result->rows;
+        $results    = array();
+        $columns    = !empty($config[self::COLUMNS_KEY]) ? $config[self::COLUMNS_KEY] : array();
+        $properties = !empty($config[self::PROPERTIES_KEY]) ? $config[self::PROPERTIES_KEY] : array();
+        $toProcess  = array_merge($columns, $properties);
 
         foreach ($rows as $row) {
             $resultRecord = array();
-            $record = new ResultRecord($row);
+            $record       = new ResultRecord($row);
 
-            foreach ($row as $name => $field) {
-                $fieldConfig   = isset($config['columns'][$name]) ? $config['columns'][$name] : array();
-                $property      = $this->getPropertyObject($name, $fieldConfig);
+            foreach ($toProcess as $name => $fieldConfig) {
+                $property            = $this->getPropertyObject($name, $fieldConfig);
                 $resultRecord[$name] = $property->getValue($record);
             }
 
-            if (!empty($config['properties'])) {
-                foreach ($config['properties'] as $name => $fieldConfig) {
-                    $property      = $this->getPropertyObject($name, $fieldConfig);
-                    $resultRecord[$name] = $property->getValue($record);
-                }
-            }
-
-            $results[] = $resultRecord;
+            $results[] = array_merge($row, $resultRecord);
         }
 
         $result->rows = $results;

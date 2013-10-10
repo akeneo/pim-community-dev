@@ -15,3 +15,9 @@ datagrid:
                 route: orocrm_contact_group_update
                 params:
                     - id
+
+            delete_link:
+                type: url
+                route: oro_api_delete_contactgroup
+                params:
+                    - id
