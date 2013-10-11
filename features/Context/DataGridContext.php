@@ -386,6 +386,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should see sorted attributes (.*)$/
      * @Then /^I should see sorted (?:import|export) profiles (.*)$/
      * @Then /^I should see sorted (?:entities) (.*)$/
+     * @Then /^I should see sorted products (.*)$/
      * @Then /^I should see sorted variants (.*)$/
      */
     public function iShouldSeeSortedEntities($elements)
