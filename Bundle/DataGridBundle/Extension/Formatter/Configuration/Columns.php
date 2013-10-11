@@ -4,11 +4,33 @@ namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 
 use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
 
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Columns implements ConfigurationInterface
 {
+    /** @var array */
+    protected $propertyTypes;
+
+    /** @var array */
+    protected $columns;
+
+    /** @var array */
+    protected $properties;
+
+    /**
+     * @param $propertyTypes
+     * @param $columns
+     * @param $props
+     */
+    public function __construct($propertyTypes, $columns, $props)
+    {
+        $this->propertyTypes = $propertyTypes;
+        $this->columns = $columns;
+        $this->properties = $props;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -19,51 +41,67 @@ class Columns implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('columns')
-                    ->children()
-                    ->end()
-                ->end()
-                ->arrayNode('properties')
-                    ->children()
-                        ->arrayNode('update_link')
-                            ->append($this->getLinkProperty('update_link'))
-                        ->end()
-                        ->arrayNode('delete_link')
-                            ->append($this->getLinkProperty('delete_link'))
-                        ->end()
-                    ->end()
-                ->end()
+                ->append($this->getColumnTree())
+                ->append($this->getPropertyTree())
             ->end();
 
         return $builder;
     }
 
     /**
-     * @param string $name
      *
      * @throws InvalidConfigurationException
+     * @return NodeDefinition
      */
-    public function getLinkProperty($name)
+    public function getPropertyTree()
     {
-        if (!in_array($name, array('update_link', 'delete_link'))) {
-            throw new InvalidConfigurationException(sprintf('Invalid property type "%s"', $name));
-        }
-
         $builder = new TreeBuilder();
+        $self = $this;
 
-        return $builder->root($name)
-            ->requiresAtLeastOneElement()
-            ->prototype('scalar')
+        return $builder->root('properties')
+            ->prototype('array')
                 ->children()
                     ->scalarNode('type')
                         ->isRequired()
-                        ->cannotBeEmpty()
+                    ->end()
+
+                ->end()
+            ->end();
+    }
+
+    public function getUrlPropertyTree()
+    {
+        $builder = new TreeBuilder();
+
+        return $builder->root('properties')
+            ->prototype('array')
+                ->children()
+                    ->scalarNode('type')
+                        ->isRequired()
                     ->end()
                     ->scalarNode('route')
-                        ->isRequired()
                         ->cannotBeEmpty()
                     ->end()
                     ->arrayNode('params')
+                        ->prototype('scalar')->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    /**
+     *
+     */
+    public function getColumnTree()
+    {
+        $builder = new TreeBuilder();
+
+        return $builder->root('columns')
+            ->prototype('array')
+                ->children()
+                    ->enumNode('type')
+                        ->isRequired()
+                        ->values($this->propertyTypes)
                     ->end()
                 ->end()
             ->end();

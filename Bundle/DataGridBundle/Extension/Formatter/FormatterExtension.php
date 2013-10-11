@@ -40,8 +40,16 @@ class FormatterExtension implements ExtensionVisitorInterface
     {
         $config = array_intersect_key($config, array_flip($keys));
 
+        $columns = isset($config[self::COLUMNS_KEY]) ? $config[self::COLUMNS_KEY] : null;
+        $props = isset($config[self::PROPERTIES_KEY]) ? $config[self::PROPERTIES_KEY] : null;
+
         $processor = new Processor();
-        $processor->processConfiguration(new Configuration\Columns(), $config);
+        $processor->processConfiguration(
+            new Configuration\Columns(array_keys($this->properties), $columns, $props),
+            array(
+                'columns_and_properties' => $config
+            )
+        );
 
         return true;
     }
