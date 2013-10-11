@@ -82,6 +82,9 @@ class EditCommonAttributes extends Wizard
         }
     }
 
+    /**
+     * @param string $locale
+     */
     public function switchLocale($locale)
     {
         $this->getElement('Locales dropdown')->selectOption($locale);
