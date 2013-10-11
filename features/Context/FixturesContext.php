@@ -484,7 +484,7 @@ class FixturesContext extends RawMinkContext
                         }
 
                         if ($optionValue === null) {
-                            throw new \Exception(sprintf('Unknown option value "%s"', $data['value']));
+                            throw new \InvalidArgumentException(sprintf('Unknown option value "%s"', $data['value']));
                         }
 
                         $value->setData($optionValue);
