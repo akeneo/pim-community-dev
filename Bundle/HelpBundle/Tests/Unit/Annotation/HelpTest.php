@@ -31,6 +31,7 @@ class HelpTest extends \PHPUnit_Framework_TestCase
         $accessor = PropertyAccess::createPropertyAccessor();
         $accessor->setValue($obj, $property, $value);
         $this->assertEquals($value, $accessor->getValue($obj, $property));
+        $this->assertEquals(array($property => $value), $obj->getConfigurationArray());
     }
 
     public function propertiesDataProvider()

@@ -36,11 +36,28 @@ class Help extends ConfigurationAnnotation
      */
     protected $uri;
 
+    /**
+     * @return array
+     */
     public function getConfigurationArray()
     {
+        $configuration = array();
         if ($this->getAlias()) {
-
+            $configuration['alias'] = $this->getAlias();
         }
+        if ($this->getLink()) {
+            $configuration['link'] = $this->getLink();
+        }
+        if ($this->getPrefix()) {
+            $configuration['prefix'] = $this->getPrefix();
+        }
+        if ($this->getServer()) {
+            $configuration['server'] = $this->getServer();
+        }
+        if ($this->getUri()) {
+            $configuration['uri'] = $this->getUri();
+        }
+        return $configuration;
     }
 
     /**
