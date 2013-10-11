@@ -175,7 +175,7 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
         $stepExecution = $this->getMockStepExecution($context);
         $stepExecution->expects($this->once())
             ->method('addReaderWarning')
-            ->with($this->reader, 'Expecting to get 3 columns, actually got 2');
+            ->with(get_class($this->reader), 'Expecting to get 3 columns, actually got 2');
         $this->reader->setStepExecution($stepExecution);
         $this->reader->read($stepExecution);
     }
