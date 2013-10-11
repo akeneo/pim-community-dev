@@ -26,6 +26,9 @@ class AclConfigurationPass implements CompilerPassInterface
 
     const DEFAULT_ACL_CACHE_CLASS = 'Oro\Bundle\SecurityBundle\Acl\Cache\AclCache';
 
+    const ACL_PROVIDER_SERVICE = 'security.acl.dbal.provider';
+    const ACL_PROVIDER_SERVICE_CLASS = 'Oro\Bundle\SecurityBundle\Acl\Dbal\AclProvider';
+
     /**
      * {@inheritDoc}
      */
@@ -34,7 +37,18 @@ class AclConfigurationPass implements CompilerPassInterface
         $this->configureAclExtensionSelector($container);
         $this->configureDefaultAclProvider($container);
         $this->configureDefaultAclCache($container);
+        $this->configureAclProvider($container);
         $this->configureDefaultAclVoter($container);
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    protected function configureAclProvider(ContainerBuilder $container)
+    {
+        if ($container->hasDefinition(self::ACL_PROVIDER_SERVICE)) {
+            $container->getDefinition(self::ACL_PROVIDER_SERVICE)->setClass(self::ACL_PROVIDER_SERVICE_CLASS)->addArgument(new Reference('oro_security.oid_cache.cache'));
+        }
     }
 
     /**

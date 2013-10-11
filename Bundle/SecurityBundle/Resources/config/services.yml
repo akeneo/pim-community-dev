@@ -46,10 +46,12 @@ parameters:
     oro_security.listener.config_subscriber.class:             Oro\Bundle\SecurityBundle\EventListener\ConfigSubscriber
     oro_security.listener.controller.class:                    Oro\Bundle\SecurityBundle\EventListener\ControllerListener
 
-    oro_user.acl.manager.api.class:     Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    oro_user.acl.manager.api.class:                            Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_security.twig.security_extension:                      Oro\Bundle\SecurityBundle\Twig\OroSecurityExtension
 
     oro_security.encoder.mcrypt.class:                         Oro\Bundle\SecurityBundle\Encoder\Mcrypt
+
+    oro_security.cache.cache.class:                            Oro\Bundle\SecurityBundle\Acl\Cache\OidCache
 
 services:
     oro_security.security_facade:
@@ -342,3 +344,19 @@ services:
     oro_security.encoder.mcrypt:
         class: %oro_security.encoder.mcrypt.class%
         arguments: [ %kernel.secret% ]
+
+    oro_security.oid_cache.cache:
+            class:                                                  %oro_security.cache.cache.class%
+            arguments:
+                - @oro_security.cache.file_cache
+                - @oro_security.model.file_cache
+
+    oro_security.cache.file_cache:
+        parent: oro.cache.abstract
+        calls:
+            - [setNamespace, ['oro_security_oid_ancesstor.cache']]
+
+    oro_security.model.file_cache:
+        parent: oro.cache.abstract
+        calls:
+            - [setNamespace, ['oro_security_oid_ancesstor.model']]
