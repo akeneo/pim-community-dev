@@ -93,7 +93,7 @@ class ConfigModelManager
     /**
      * @param      $className
      * @param null $fieldName
-     * @return null|AbstractConfigModel
+     * @return null|bool|AbstractConfigModel
      */
     public function findModel($className, $fieldName = null)
     {
@@ -140,7 +140,7 @@ class ConfigModelManager
     {
         if (!$model = $this->findModel($className, $fieldName)) {
             $message = $fieldName
-                ? sprintf('FieldConfigModel "%s","%s" is not found ', $className, $fieldName)
+                ? sprintf('FieldConfigModel "%s::%s" is not found ', $className, $fieldName)
                 : sprintf('EntityConfigModel "%s" is not found ', $className);
 
             throw new RuntimeException($message);
