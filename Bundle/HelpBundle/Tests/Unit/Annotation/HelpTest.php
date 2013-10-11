@@ -22,25 +22,30 @@ class HelpTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider propertiesDataProvider
      * @param string $property
-     * @param mixed $value
+     * @param string $value
+     * @param string $optionKey
      */
-    public function testSettersAndGetters($property, $value)
+    public function testSettersAndGetters($property, $value, $optionKey)
     {
         $obj = new Help(array());
 
         $accessor = PropertyAccess::createPropertyAccessor();
         $accessor->setValue($obj, $property, $value);
         $this->assertEquals($value, $accessor->getValue($obj, $property));
+        $this->assertEquals(array($optionKey => $value), $obj->getConfigurationArray());
     }
 
     public function propertiesDataProvider()
     {
         return array(
-            array('alias', 'alias'),
-            array('link', 'link'),
-            array('prefix', 'prefix'),
-            array('server', 'server'),
-            array('uri', 'uri'),
+            array('controllerAlias', 'controller', 'controller'),
+            array('actionAlias', 'action', 'action'),
+            array('bundleAlias', 'bundle', 'bundle'),
+            array('vendorAlias', 'vendor', 'vendor'),
+            array('link', 'link', 'link'),
+            array('prefix', 'prefix', 'prefix'),
+            array('server', 'server', 'server'),
+            array('uri', 'uri', 'uri'),
         );
     }
 }

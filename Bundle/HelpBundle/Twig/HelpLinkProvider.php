@@ -30,6 +30,16 @@ class HelpLinkProvider
     protected $parser;
 
     /**
+     * @var string
+     */
+    protected $groupSeparator = '/';
+
+    /**
+     * @var string
+     */
+    protected $format = '%server%/%vendor%/%bundle%:%controller%_%action%';
+
+    /**
      * @param ControllerNameParser $parser
      * @param Request $request
      */
@@ -58,32 +68,88 @@ class HelpLinkProvider
     public function getHelpLinkUrl()
     {
         $configuration = $this->getConfiguration();
+        if (isset($configuration['link'])) {
+            return $configuration['link'];
+        }
 
-        return '';
+        $configuration['server'] = rtrim($configuration['server'], '/');
+        if (isset($configuration['prefix'])) {
+            $configuration['vendor'] = $configuration['prefix'] . $this->groupSeparator . $configuration['vendor'];
+        }
+
+        $keys = array('server', 'vendor', 'bundle', 'controller', 'action', 'uri');
+        $replaceParams = array();
+        foreach ($keys as $key) {
+            $replaceParams['%' . $key . '%'] = isset($configuration[$key]) ? $configuration[$key]: '';
+        }
+
+        if (isset($configuration['uri'])) {
+            return strtr('%server%/%uri%', $replaceParams);
+        } else {
+            return strtr($this->format, $replaceParams);
+        }
     }
 
+    /**
+     * Get merged flat configuration for requested controller.
+     *
+     * @return array
+     */
     protected function getConfiguration()
     {
         $controllerActionKey = $this->parser->build($this->controller);
         $controllerNameParts = explode('::', $this->controller);
 
         $controllerNamespaceInfo = explode('\\', $controllerNameParts[0]);
-        $vendorKey = $controllerNamespaceInfo[0];
+        $vendorName = $controllerNamespaceInfo[0];
 
-        $controllerNamespaceInfo = explode(':', $controllerActionKey);
-        $bundleKey = $controllerNamespaceInfo[0];
-        $controllerKey = $bundleKey . ':' . $controllerNamespaceInfo[1];
+        list($bundleName, $controllerName, $actionName) = explode(':', $controllerActionKey);
+        $configData = array(
+            'vendor' => array(
+                'key' => $vendorName,
+                'alias' => $vendorName,
+                'section' => 'vendors'
+            ),
+            'bundle' => array(
+                'key' => $bundleName,
+                'alias' => $bundleName,
+                'section' => 'resources'
+            ),
+            'controller' => array(
+                'key' => $bundleName . ':' . $controllerName,
+                'alias' => $controllerName,
+                'section' => 'resources'
+            ),
+            'action' => array(
+                'key' => $controllerActionKey,
+                'alias' => $actionName,
+                'section' => 'resources'
+            )
+        );
 
-        $configuration = array();
-        $searchKeys = array($vendorKey, $bundleKey, $controllerKey, $controllerActionKey);
-        foreach ($searchKeys as $searchKey) {
-            if (array_key_exists($searchKey, $this->rawConfiguration)) {
-                $configuration += $this->rawConfiguration[$searchKey];
+        $configuration = $this->rawConfiguration['defaults'];
+        foreach ($configData as $keyName => $searchData) {
+            $keyIdentifier = $searchData['alias'];
+            $section = $searchData['section'];
+            $key = $searchData['key'];
+            if (array_key_exists($section, $this->rawConfiguration)
+                && array_key_exists($key, $this->rawConfiguration[$section])
+            ) {
+                $rawConfiguration = $this->rawConfiguration[$section][$key];
+                if (isset($rawConfiguration['alias'])) {
+                    $keyIdentifier = $rawConfiguration['alias'];
+                    unset($rawConfiguration['alias']);
+                }
+                $configuration = array_merge($configuration, $rawConfiguration);
             }
+            $configuration[$keyName] = $keyIdentifier;
         }
 
         if ($this->configurationAnnotation) {
-
+            $configuration = array_merge(
+                $configuration,
+                $this->configurationAnnotation->getConfigurationArray()
+            );
         }
 
         return $configuration;
