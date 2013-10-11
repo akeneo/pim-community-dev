@@ -22,7 +22,7 @@ class SetupStep extends AbstractStep
 
     public function forwardAction(ProcessContextInterface $context)
     {
-        set_time_limit(60);
+        set_time_limit(600);
 
         $form = $this->createForm('oro_installer_setup');
 

@@ -1,0 +1,21 @@
+require({
+    shim: {
+        'oro/translations': {
+            deps: ['oro/translator', 'translator'],
+            init: function(__) {
+                return __;
+            }
+        }
+    },
+    map: {
+        '*': {
+            'oro/translator': 'oro/translations'
+        },
+        'oro/translations': {
+            'oro/translator': 'oro/translator'
+        }
+    },
+    paths: {
+        'oro/translations': '{{ url('oro_translation_jstranslation')[0:-3] }}'
+    }
+});

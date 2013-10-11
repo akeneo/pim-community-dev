@@ -1,15 +1,9 @@
 placeholders:
-    scripts_before:
-        items:
-            assets_js:
-                order: 300
     head_style:
         items:
             assets_css:
                 order: 100
 
 items:
-    assets_js:
-        template: OroAsseticBundle:Assets:oro_js.html.twig
     assets_css:
         template: OroAsseticBundle:Assets:oro_css.html.twig

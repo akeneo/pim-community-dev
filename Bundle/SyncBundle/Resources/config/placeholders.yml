@@ -1,5 +1,5 @@
 placeholders:
-    scripts_before:
+    scripts_after:
         items:
             sync_js:
                 order: 310
