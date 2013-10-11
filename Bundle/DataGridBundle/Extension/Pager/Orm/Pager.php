@@ -5,10 +5,18 @@ namespace Oro\Bundle\DataGridBundle\Extension\Pager\Orm;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
+use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
+use Oro\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\ProxyQueryInterface;
 
 class Pager extends AbstractPager implements PagerInterface
 {
+    public function __construct($maxPerPage = 10, ProxyQueryInterface $query = null)
+    {
+        $this->setQuery($query);
+        parent::__construct($maxPerPage);
+    }
+
     /**
      * @var QueryBuilder|null
      */

@@ -1,8 +1,7 @@
 <?php
 
-namespace Oro\Bundle\DataGridBundle\Extension\Pager\Orm;
+namespace Oro\Bundle\DataGridBundle\Extension\Pager;
 
-use Oro\Bundle\DataGridBundle\Extension\Pager\Orm\PagerInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\ProxyQueryInterface;
 
 /**
@@ -225,7 +224,7 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
      *
      * @return integer
      */
-    public function getLastIndice()
+    public function getLastIndex()
     {
         if ($this->page == 0) {
             return $this->nbResults;

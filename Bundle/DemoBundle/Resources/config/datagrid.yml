@@ -10,8 +10,7 @@ datagrid:
                     - { table: OroCRMContactBundle:Group, alias: g }
 
         columns:
-            label:
-                type: field
+            label: []
 
         properties:
             update_link:

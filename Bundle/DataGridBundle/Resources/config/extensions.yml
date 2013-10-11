@@ -20,6 +20,7 @@ services:
         class: %oro_grid.extension.orm_pager.class%
         arguments:
             - @oro_grid.extension.pager.orm.pager
+            - @oro_grid.datagrid.prequest_params
         tags:
             - { name: oro_grid.extension, type: formatter }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\DataGridBundle\Extension\Pager\Orm;
+namespace Oro\Bundle\DataGridBundle\Extension\Pager;
 
 use Oro\Bundle\DataGridBundle\Datasource\Orm\ProxyQueryInterface;
 

@@ -7,14 +7,13 @@ class ResultRecord implements ResultRecordInterface
     /**
      * @var array
      */
-    private $valueContainers;
+    private $valueContainers = array();
 
     /**
      * @param mixed $data
      */
     public function __construct($data)
     {
-        $this->valueContainers = array();
         if (is_array($data)) {
             $arrayData = array();
             foreach ($data as $name => $value) {
@@ -35,7 +34,8 @@ class ResultRecord implements ResultRecordInterface
     /**
      * Get value of property by name
      *
-     * @param  string          $name
+     * @param  string $name
+     *
      * @return mixed
      * @throws \LogicException When cannot get value
      */
@@ -45,11 +45,11 @@ class ResultRecord implements ResultRecordInterface
             if (is_array($data) && array_key_exists($name, $data)) {
                 return $data[$name];
             } elseif (is_object($data)) {
-                $fieldName = $name;
+                $fieldName          = $name;
                 $camelizedFieldName = self::camelize($fieldName);
-                $getters = array();
-                $getters[] = 'get' . $camelizedFieldName;
-                $getters[] = 'is' . $camelizedFieldName;
+                $getters            = array();
+                $getters[]          = 'get' . $camelizedFieldName;
+                $getters[]          = 'is' . $camelizedFieldName;
 
                 foreach ($getters as $getter) {
                     if (method_exists($data, $getter)) {
@@ -70,7 +70,9 @@ class ResultRecord implements ResultRecordInterface
      * Camelize a string
      *
      * @static
+     *
      * @param  string $property
+     *
      * @return string
      */
     private static function camelize($property)

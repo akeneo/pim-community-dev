@@ -54,16 +54,6 @@ interface ProxyQueryInterface
     public function addSelect($select = null, $addToWhitelist = false);
 
     /**
-     * Set query parameter
-     *
-     * @param  string $name
-     * @param  mixed  $value
-     *
-     * @return ProxyQueryInterface
-     */
-    public function setParameter($name, $value);
-
-    /**
      * Gets the root alias of the query
      *
      * @return string
@@ -119,38 +109,6 @@ interface ProxyQueryInterface
      * @return mixed
      */
     public function getSingleScalarResult();
-
-    /**
-     * Set first result
-     *
-     * @param  int $firstResult
-     *
-     * @return ProxyQueryInterface
-     */
-    public function setFirstResult($firstResult);
-
-    /**
-     * Get first result
-     *
-     * @return mixed
-     */
-    public function getFirstResult();
-
-    /**
-     * Set max records
-     *
-     * @param  int $maxResults
-     *
-     * @return ProxyQueryInterface
-     */
-    public function setMaxResults($maxResults);
-
-    /**
-     * Get max records
-     *
-     * @return mixed
-     */
-    public function getMaxResults();
 
     /**
      * Get unique parameter ID

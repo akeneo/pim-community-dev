@@ -8,10 +8,6 @@ use Doctrine\ORM\AbstractQuery;
 
 use Oro\Bundle\BatchBundle\ORM\Query\QueryCountCalculator;
 
-/**
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- * TODO: This class should be refactored  (BAP-969).
- */
 class ProxyQuery implements ProxyQueryInterface
 {
     /**
@@ -386,21 +382,6 @@ class ProxyQuery implements ProxyQueryInterface
     }
 
     /**
-     * Set query parameter
-     *
-     * @param  string $name
-     * @param  mixed  $value
-     *
-     * @return ProxyQuery
-     */
-    public function setParameter($name, $value)
-    {
-        $this->getQueryBuilder()->setParameter($name, $value);
-
-        return $this;
-    }
-
-    /**
      * Sets a query hint
      *
      * @param  string $name
@@ -505,42 +486,6 @@ class ProxyQuery implements ProxyQueryInterface
     public function __clone()
     {
         $this->queryBuilder = clone $this->queryBuilder;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFirstResult($firstResult)
-    {
-        $this->queryBuilder->setFirstResult($firstResult);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFirstResult()
-    {
-        return $this->queryBuilder->getFirstResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setMaxResults($maxResults)
-    {
-        $this->queryBuilder->setMaxResults($maxResults);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMaxResults()
-    {
-        return $this->queryBuilder->getMaxResults();
     }
 
     /**
