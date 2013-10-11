@@ -566,6 +566,23 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Then /^there should be the following categories:$/
+     */
+    public function thereShouldBeTheFollowingCategories(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $category = $this->getCategory($data['code']);
+
+            assertEquals($data['label'], $category->getTranslation('en_US')->getLabel());
+            if (empty($data['parent'])) {
+                assertNull($category->getParent());
+            } else {
+                assertEquals($data['parent'], $category->getParent()->getCode());
+            }
+        }
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^the following channels?:$/
