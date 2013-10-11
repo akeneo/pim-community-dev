@@ -173,6 +173,9 @@ class ItemStep extends AbstractStep
             }
 
             if (null !== $processedItem = $this->processor->process($item)) {
+                if (false === $processedItem) {
+                    continue;
+                }
                 $itemsToWrite[] = $processedItem;
                 $writeCount++;
                 if (0 === $writeCount % $this->batchSize) {
