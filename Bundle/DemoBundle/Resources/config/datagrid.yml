@@ -14,9 +14,6 @@ datagrid:
                 type: field
 
         properties:
-            id:
-                type: field
-
             update_link:
                 type: url
                 route: orocrm_contact_group_update
