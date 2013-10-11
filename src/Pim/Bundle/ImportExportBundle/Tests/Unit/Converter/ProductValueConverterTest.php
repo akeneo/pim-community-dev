@@ -100,14 +100,14 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array('values' => array('name' => array('varchar' => 'car'))),
-            $this->converter->convert(array('name-en_US' => 'car'))
+            $this->converter->convert(array('name' => 'car'))
         );
     }
 
     /**
      * Test related method
      */
-    public function testConvertScopableValue()
+    public function testConvertScopedValue()
     {
         $this->attributeRepository
             ->expects($this->any())
@@ -117,7 +117,24 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array('values' => array('description_ecommerce' => array('varchar' => 'an awesome vehicle'))),
-            $this->converter->convert(array('description' => 'an awesome vehicle', '[scope]' => 'ecommerce'))
+            $this->converter->convert(array('description-ecommerce' => 'an awesome vehicle'))
+        );
+    }
+
+    /**
+     * Test related method
+     */
+    public function testConvertLocalizedAndScopedValue()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'description'))
+            ->will($this->returnValue($this->getAttributeMock('varchar', true, true)));
+
+        $this->assertEquals(
+            array('values' => array('description_en_US_ecommerce' => array('varchar' => 'an awesome vehicle'))),
+            $this->converter->convert(array('description-en_US-ecommerce' => 'an awesome vehicle'))
         );
     }
 

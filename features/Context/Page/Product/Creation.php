@@ -40,7 +40,6 @@ class Creation extends Form
         parent::pressButton($locator);
     }
 
-
     /**
      * {@inheritdoc}
      */

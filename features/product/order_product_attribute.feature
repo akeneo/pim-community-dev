@@ -7,8 +7,8 @@ Feature: Order product attributes
   Scenario: Successfully update an attribute position
     Given a "Car" product
     And the following attribute group:
-      | label   |
-      | General |
+      | code    | label   |
+      | general | General |
     And the following product attribute:
       | product | label        | group   | position |
       | Car     | Release Date | General | 1        |
@@ -27,9 +27,9 @@ Feature: Order product attributes
   Scenario: Display product attribute fields ordered by their position
     Given a "Car" product
     And the following attribute groups:
-      | label   |
-      | General |
-      | Shape   |
+      | code    | label   |
+      | general | General |
+      | shape   | Shape   |
     And the following product attributes:
       | product | label        | position | group   |
       | Car     | Release date | 20       | General |
