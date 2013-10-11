@@ -20,16 +20,18 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
      */
     protected function setUp()
     {
-        $this->productEnabledConverter    = $this->getConverterMock('ProductEnabledConverter');
-        $this->productValueConverter      = $this->getConverterMock('ProductValueConverter');
-        $this->productFamilyConverter     = $this->getConverterMock('ProductFamilyConverter');
-        $this->productCategoriesConverter = $this->getConverterMock('ProductCategoriesConverter');
+        $this->productEnabledConverter      = $this->getConverterMock('ProductEnabledConverter');
+        $this->productValueConverter        = $this->getConverterMock('ProductValueConverter');
+        $this->productFamilyConverter       = $this->getConverterMock('ProductFamilyConverter');
+        $this->productCategoriesConverter   = $this->getConverterMock('ProductCategoriesConverter');
+        $this->productVariantGroupConverter = $this->getConverterMock('ProductVariantGroupConverter');
 
         $this->subscriber = new TransformImportedProductDataSubscriber(
             $this->productEnabledConverter,
             $this->productValueConverter,
             $this->productFamilyConverter,
-            $this->productCategoriesConverter
+            $this->productCategoriesConverter,
+            $this->productVariantGroupConverter
         );
 
         $this->form = $this->getFormMock();
@@ -84,6 +86,11 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
             ->method('convert')
             ->will($this->returnValue(array('categories' => array(1, 2, 3))));
 
+        $this->productVariantGroupConverter
+            ->expects($this->any())
+            ->method('convert')
+            ->will($this->returnValue(array('variantGroup' => 1)));
+
         $this->subscriber->preSubmit($event);
 
         $data = $event->getData();
@@ -92,6 +99,7 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         $this->assertArrayHasKey('values', $data);
         $this->assertArrayHasKey('family', $data);
         $this->assertArrayHasKey('categories', $data);
+        $this->assertArrayHasKey('variantGroup', $data);
 
         $this->assertEquals('1', $data['enabled']);
         $this->assertEquals(array('sku' => 'sku-001'), $data['values']);

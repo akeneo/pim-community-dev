@@ -7,13 +7,13 @@ Feature: Delete a variant group
   Background:
     Given there is no variant
     And the following attributes:
-      | code      | label      | type                     |
-      | color     | Color      | pim_catalog_multiselect  |
-      | size      | Size       | pim_catalog_simpleselect |
+      | code  | label | type                     |
+      | color | Color | pim_catalog_simpleselect |
+      | size  | Size  | pim_catalog_simpleselect |
     And the following variants:
-      | code    | label          | attributes    |
-      | TSHIRT  | T-Shirt Akeneo | size, color   |
-      | MUG     | Mug Akeneo     | color         |
+      | code   | label          | attributes  |
+      | TSHIRT | T-Shirt Akeneo | size, color |
+      | MUG    | Mug Akeneo     | color       |
     And I am logged in as "admin"
 
   Scenario: Successfully delete a variant from the grid

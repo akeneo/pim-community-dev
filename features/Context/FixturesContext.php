@@ -54,6 +54,7 @@ class FixturesContext extends RawMinkContext
         'image'       => 'pim_catalog_image',
         'file'        => 'pim_catalog_file',
         'multiselect' => 'pim_catalog_multiselect',
+        'simpleselect' => 'pim_catalog_simpleselect',
     );
 
     private $placeholderValues = array();
@@ -473,6 +474,20 @@ class FixturesContext extends RawMinkContext
                         foreach ($prices as $price) {
                             $value->addPrice($price);
                         }
+                    } elseif ($value->getAttribute()->getAttributeType() === $this->attributeTypes['simpleselect']) {
+                        $options = $value->getAttribute()->getOptions();
+                        $optionValue = null;
+                        foreach ($options as $option) {
+                            if ($option->getCode() === $data['value']) {
+                                $optionValue = $option;
+                            }
+                        }
+
+                        if ($optionValue === null) {
+                            throw new \Exception(sprintf('Unknown option value "%s"', $data['value']));
+                        }
+
+                        $value->setData($optionValue);
                     } else {
                         $value->setData($data['value']);
                     }
@@ -547,6 +562,23 @@ class FixturesContext extends RawMinkContext
             }
 
             $this->persist($category);
+        }
+    }
+
+    /**
+     * @Then /^there should be the following categories:$/
+     */
+    public function thereShouldBeTheFollowingCategories(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $category = $this->getCategory($data['code']);
+
+            assertEquals($data['label'], $category->getTranslation('en_US')->getLabel());
+            if (empty($data['parent'])) {
+                assertNull($category->getParent());
+            } else {
+                assertEquals($data['parent'], $category->getParent()->getCode());
+            }
         }
     }
 
@@ -640,6 +672,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Given /^the following attribute label translations:$/
      */
     public function theFollowingAttributeLabelTranslations(TableNode $table)

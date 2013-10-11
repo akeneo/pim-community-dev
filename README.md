@@ -10,6 +10,8 @@ this repository and send us pull requests.
 
 Important Note: this application is not production ready and is intendant for evaluation and development only!
 
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/badges/quality-score.png?s=05ef3d5d2bbfae2f9a659060b21711d275f0c1ff)](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/)
+
 Requirements
 ------------
  - PHP 5.3.3 or above
@@ -18,6 +20,7 @@ Requirements
     - php5-gd
     - php5-intl
     - php5-mysql
+    - php5-mcrypt
  - a PHP opcode cache (Akeneo is tested mainly with APC)
  - PHP memory_limit at least at 256 MB on Apache side and 512 MB on CLI side
  - MySQL 5.1 or above

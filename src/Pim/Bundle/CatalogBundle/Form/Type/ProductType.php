@@ -90,6 +90,15 @@ class ProductType extends FlexibleType
                         'by_reference' => false
                     )
                 )
+                ->add(
+                    'variantGroup',
+                    'entity',
+                    array(
+                        'class'        => 'PimCatalogBundle:VariantGroup',
+                        'multiple'     => false,
+                        'by_reference' => false
+                    )
+                )
                 ->addEventSubscriber($this->transformer)
                 ->addEventSubscriber(new IgnoreMissingFieldDataSubscriber());
         }

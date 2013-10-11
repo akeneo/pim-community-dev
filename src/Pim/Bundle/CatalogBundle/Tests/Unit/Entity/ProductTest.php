@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Completeness;
 use Pim\Bundle\CatalogBundle\Entity\Product;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
 
 /**
  * Test related class
@@ -273,6 +274,22 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test getter/setter for variant group
+     */
+    public function testGetSetVariantGroup()
+    {
+        $this->assertEmpty($this->product->getVariantGroup());
+
+        // Change value and assert new
+        $newVariant = new VariantGroup();
+        $this->product->setVariantGroup($newVariant);
+        $this->assertEquals($newVariant, $this->product->getVariantGroup());
+
+        $this->product->setVariantGroup(null);
+        $this->assertNull($this->product->getVariantGroup());
+    }
+
+    /**
      * Create completeness entity
      *
      * @param string $channelCode
@@ -317,6 +334,21 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $locale->setCode($localeCode);
 
         return $locale;
+    }
+
+    /**
+     * Create a variant group entity
+     *
+     * @param string $code
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
+     */
+    protected function createVariantGroup($code)
+    {
+        $variant = new VariantGroup();
+        $variant->setCode($code);
+
+        return $variant;
     }
 
     /**

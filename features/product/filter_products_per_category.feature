@@ -20,12 +20,14 @@ Feature: Filter products per category
       | trousers       | catalog | Trousers |                            |
     And I am logged in as "admin"
 
+  @insulated
   Scenario: Successfully display all products classified in T-shirts on products page
     Given I am on the products page
     And I filter per category "tshirts"
     Then I should see products purple-tshirt and green-tshirt
     And I should not see products akeneo-mug
 
+  @insulated
   Scenario: Successfully display all products classified in Trousers on products page
     Given I am on the products page
     And I filter per category "trousers"
