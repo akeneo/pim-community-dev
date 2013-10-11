@@ -40,7 +40,7 @@ class DatagridExtension extends \Twig_Extension
             'grid_route_regexps' => new \Twig_Function_Method(
                 $this,
                 'getGridRouteRegexps',
-                array('is_safe' => array('html'))
+                array('is_safe' => array('js'))
             )
         );
     }

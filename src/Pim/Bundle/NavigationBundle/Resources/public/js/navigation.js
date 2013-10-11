@@ -14,8 +14,12 @@ define(
             parent = OroNavigation.prototype,
             instance,
             Navigation = OroNavigation.extend({
-                setGridRegexps: function(gridRegexps) {
-                    this.gridRegexps = gridRegexps;
+                /**
+                 * @inheritdoc
+                 */
+                initialize: function (options) {
+                    this.gridRegexps = options.gridRegexps;
+                    parent.initialize.call(this, options);
                 },
                 /**
                  * @inheritdoc
