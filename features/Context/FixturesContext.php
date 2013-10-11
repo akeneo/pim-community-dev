@@ -1140,7 +1140,7 @@ class FixturesContext extends RawMinkContext
         $productValue = $product->getValue($attribute, $locale, $scope);
         if (!$productValue) {
             throw new \InvalidArgumentException(
-                sprintf('Could not find product value for attribute "%s" in locale "%s"', $attribute, $lang)
+                sprintf('Could not find product value for attribute "%s" in locale "%s"', $attribute, $locale)
             );
         }
         $this->getEntityManager()->refresh($productValue);
