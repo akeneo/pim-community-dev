@@ -4,14 +4,17 @@ namespace Oro\Bundle\EntityBundle\Form\Handler;
 
 use Doctrine\ORM\QueryBuilder;
 
-use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 
 use Oro\Bundle\EntityBundle\Form\Type\EntitySelectType;
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
+
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
+
 use Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface;
+
 use Oro\Bundle\SearchBundle\Engine\Indexer;
 
 class EntitySelectHandler implements SearchHandlerInterface
