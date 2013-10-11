@@ -1,0 +1,43 @@
+config:
+    shim:
+        'cryptojs/enc-base64':
+            deps:
+                - 'cryptojs/core'
+        'cryptojs/hmac':
+            deps:
+                - 'cryptojs/core'
+        'cryptojs/sha256':
+            deps:
+                - 'cryptojs/core'
+        'cryptojs/pbkdf2':
+            deps:
+                - 'cryptojs/core'
+        'autobahn':
+            deps:
+                - 'when'
+                - 'cryptojs/core'
+                - 'cryptojs/enc-base64'
+                - 'cryptojs/hmac'
+                - 'cryptojs/sha256'
+                - 'cryptojs/pbkdf2'
+            exports: 'ab'
+    map:
+        '*':
+            'when': 'oro/when-setup'
+        'oro/when-setup':
+            'when': 'when'
+    paths:
+        'cryptojs/core': 'bundles/orosync/lib/cryptojs/core-min.js'
+        'cryptojs/enc-base64': 'bundles/orosync/lib/cryptojs/enc-base64-min.js'
+        'cryptojs/hmac': 'bundles/orosync/lib/cryptojs/hmac-min.js'
+        'cryptojs/sha256': 'bundles/orosync/lib/cryptojs/sha256-min.js'
+        'cryptojs/pbkdf2': 'bundles/orosync/lib/cryptojs/pbkdf2-min.js'
+        'when': 'bundles/orosync/lib/when.js'
+        'autobahn': 'bundles/orosync/lib/autobahn.js'
+        'oro/sync': 'bundles/orosync/js/sync.js'
+        'oro/sync/wamp': 'bundles/orosync/js/sync/wamp.js'
+        'oro/when-setup': 'bundles/orosync/js/when-setup.js'
+
+build:
+    paths:
+        'autobahn': 'empty:'

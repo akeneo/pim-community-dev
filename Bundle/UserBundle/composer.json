@@ -24,7 +24,8 @@
         "oro/jsfv-bundle": "dev-master",
         "oro/form-bundle": "dev-master",
         "oro/email-bundle": "dev-master",
-        "oro/organization-bundle": "dev-master"
+        "oro/organization-bundle": "dev-master",
+        "oro/requirejs-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\UserBundle": "" }

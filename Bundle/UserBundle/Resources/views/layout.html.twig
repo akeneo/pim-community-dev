@@ -23,34 +23,15 @@
         {% endstylesheets %}
     {% endif %}
 
-    {# % javascripts
-        '@OroUIBundle/Resources/public/lib/jquery-1.10.2.js'
-        '@OroUIBundle/Resources/public/lib/bootstrap.min.js'
-        '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap-tooltip.js'
-        '@OroUIBundle/Resources/public/lib/bootstrap/js/bootstrap-popover.js'
-        '@OroUIBundle/Resources/public/js/layout.js'
-        '@OroUserBundle/Resources/public/js/signin.js'
-
-        filter='?yui_js'
-        output='js/oro.user.js'
-    % }
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-    { % endjavascripts % #}
-    {% include 'OroUIBundle:Default:require.js.config.html.twig' %}
+    {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: false} %}
     <script type="text/javascript">
-        var require = require || {};
-        require.paths['oro/init-signin'] = 'orouser/js/init-signin';
-    </script>
-    <script type="text/javascript" src="{{ asset('bundles/oroui/lib/require.js') }}"></script>
-    <script type="text/javascript">
-        require(['jquery'],
+        require(['jquery', 'bootstrap', 'oro/init-layout', 'orouser/js/init-signin'],
         function($) {
             $(function() {
                 // emulates 'document ready state' for selenium tests
                 document['page-rendered'] = true;
             });
         });
-        require(['jquery', 'bootstrap', 'oro/init-layout', 'oro/init-signin'])
     </script>
 
     <!--[if lte IE 9]>

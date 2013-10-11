@@ -1,0 +1,27 @@
+config:
+    shim:
+        'routing':
+            exports: 'window.Routing'
+        'jquery.form':
+            deps:
+                - 'jquery'
+        'url':
+            exports: 'Url'
+    paths:
+        'routing': 'bundles/fosjsrouting/js/router.js'
+        'jquery.form': 'bundles/oronavigation/lib/jquery.form.js'
+        'url': 'bundles/oronavigation/lib/url.min.js'
+        'oro/navigation': 'bundles/oronavigation/js/navigation.js'
+        'oro/navigation/abstract-view': 'bundles/oronavigation/js/navigation/abstract-view.js'
+        'oro/navigation/collection': 'bundles/oronavigation/js/navigation/collection.js'
+        'oro/navigation/dotmenu/item-view': 'bundles/oronavigation/js/navigation/dotmenu/item-view.js'
+        'oro/navigation/dotmenu/view': 'bundles/oronavigation/js/navigation/dotmenu/view.js'
+        'oro/navigation/favorites/view': 'bundles/oronavigation/js/navigation/favorites/view.js'
+        'oro/navigation/model': 'bundles/oronavigation/js/navigation/model.js'
+        'oro/navigation/pagestate/model': 'bundles/oronavigation/js/navigation/pagestate/model.js'
+        'oro/navigation/pagestate/view': 'bundles/oronavigation/js/navigation/pagestate/view.js'
+        'oro/navigation/pinbar/collection': 'bundles/oronavigation/js/navigation/pinbar/collection.js'
+        'oro/navigation/pinbar/item-view': 'bundles/oronavigation/js/navigation/pinbar/item-view.js'
+        'oro/navigation/pinbar/model': 'bundles/oronavigation/js/navigation/pinbar/model.js'
+        'oro/navigation/pinbar/view': 'bundles/oronavigation/js/navigation/pinbar/view.js'
+        'oro/navigation/shortcuts/view': 'bundles/oronavigation/js/navigation/shortcuts/view.js'

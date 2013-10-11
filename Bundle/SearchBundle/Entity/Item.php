@@ -13,7 +13,7 @@ use Oro\Bundle\SearchBundle\Engine\Indexer;
  * @ORM\Table(
  *  name="oro_search_item",
  *  uniqueConstraints={@ORM\UniqueConstraint(name="IDX_ENTITY", columns={"entity", "record_id"})},
- *  indexes={@ORM\Index(name="IDX_ALIAS", columns={"alias"})}
+ *  indexes={@ORM\Index(name="IDX_ALIAS", columns={"alias"}), @ORM\Index(name="IDX_ENTITIES", columns={"entity"})}
  * )
  * @ORM\Entity(repositoryClass="Oro\Bundle\SearchBundle\Entity\Repository\SearchIndexRepository")
  * @ORM\HasLifecycleCallbacks

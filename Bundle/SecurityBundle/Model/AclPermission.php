@@ -18,7 +18,7 @@ class AclPermission
      * Constructor
      *
      * @param string|null $name
-     * @param int|null $accessLevel Can be any AccessLevel::*_LEVEL
+     * @param int|null    $accessLevel Can be any AccessLevel::*_LEVEL
      */
     public function __construct($name = null, $accessLevel = null)
     {
@@ -35,7 +35,7 @@ class AclPermission
     }
 
     /**
-     * @param string $name
+     * @param  string        $name
      * @return AclPermission
      */
     public function setName($name)
@@ -56,7 +56,7 @@ class AclPermission
     }
 
     /**
-     * @param int $accessLevel Can be any AccessLevel::*_LEVEL
+     * @param  int           $accessLevel Can be any AccessLevel::*_LEVEL
      * @return AclPermission
      */
     public function setAccessLevel($accessLevel)
