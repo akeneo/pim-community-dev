@@ -136,7 +136,7 @@ class HelpLinkProvider
                     $keyIdentifier = $rawConfiguration['alias'];
                     unset($rawConfiguration['alias']);
                 }
-                $configuration += $rawConfiguration;
+                $configuration = array_merge($configuration, $rawConfiguration);
             }
             $configuration[$keyName] = $keyIdentifier;
         }

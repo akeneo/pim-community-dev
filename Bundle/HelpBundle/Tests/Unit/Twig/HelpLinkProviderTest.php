@@ -76,15 +76,22 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 null,
                 'http://wiki.test.com/'
             ),
-            'bundle' => array(
+            'vendor' => array(
                 array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
+                    ),
+                    'vendors' => array(
+                        'Acme' => array(
+                            'server' => 'http://custom.org/wiki/',
+                            'prefix' => null,
+                            'alias' => 'CustomVendor'
+                        )
                     )
                 ),
                 null,
-                'http://test.com/wiki/Third_Party/Acme/AcmeDemoBundle:Test_run'
+                'http://custom.org/wiki/CustomVendor/AcmeDemoBundle:Test_run'
             ),
         );
     }
