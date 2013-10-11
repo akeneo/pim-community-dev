@@ -14,6 +14,7 @@ abstract class AbstractConfiguration implements ConfigurationInterface
 
         return
             $resourcesNode
+                ->useAttributeAsKey(true)
                 ->beforeNormalization()
                     ->always(
                         function (array $resources) use ($self) {
