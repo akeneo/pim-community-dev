@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class DatagridRoutesPass implements CompilerPassInterface
 {
     const TAG_NAME = 'oro_grid.datagrid.manager';
-    const REGISTRY_SERVICE = 'pim_grid.routes_registry';
+    const REGISTRY_SERVICE = 'pim_grid.routes_registry.builder';
 
     /**
      * {@inheritdoc}

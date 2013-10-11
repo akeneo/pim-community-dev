@@ -23,7 +23,7 @@ class JavascriptRegExpTranslatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->translator = new JavascriptRegExpTranslator('/root');
+        $this->translator = new JavascriptRegExpTranslator();
     }
 
     /**
@@ -34,11 +34,11 @@ class JavascriptRegExpTranslatorTest extends \PHPUnit_Framework_TestCase
     public function getTranslateData()
     {
         return array(
-            "oro_search_results"=> array('#^/search/ajax$#s', '/^\/root\/search\/ajax$/'),
-            "users" => array('#^/user(?:/(?P<_format>html|json))?$#s', '/^\/root\/user(\/(html|json))?$/'),
+            "oro_search_results"=> array('#^/search/ajax$#s', '/^%prefix%\/search\/ajax$/'),
+            "users" => array('#^/user(?:/(?P<_format>html|json))?$#s', '/^%prefix%\/user(\/(html|json))?$/'),
             "products" => array(
                 '#^/enrich/product/(?:\.(?P<_format>html|json|csv))?$#s',
-                '/^\/root\/enrich\/product\/(\.(html|json|csv))?$/'
+                '/^%prefix%\/enrich\/product\/(\.(html|json|csv))?$/'
             ),
         );
     }

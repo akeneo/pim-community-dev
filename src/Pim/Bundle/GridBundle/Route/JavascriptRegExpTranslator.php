@@ -13,10 +13,6 @@ use Pim\Bundle\GridBundle\Exception\JavascriptRegexpTranslatorException;
  */
 class JavascriptRegExpTranslator
 {
-    /**
-     * @var string
-     */
-    protected $prefix;
     
     /**
      * Replacement regexps
@@ -41,16 +37,6 @@ class JavascriptRegExpTranslator
     );
     
     /**
-     * The prefix to all generated routes
-     * 
-     * @param string $prefix
-     */
-    public function __construct($prefix)
-    {
-        $this->prefix = $prefix;
-    }
-
-    /**
      * Translates a PHP regexp to Javascript
      * 
      * @param string $regexp
@@ -65,18 +51,11 @@ class JavascriptRegExpTranslator
             }
         }
 
-        $prefix = $this->prefix;
-
         return sprintf(
             '/%s/',
             preg_replace(
                 array_keys($this->replacements),
-                array_map(
-                    function ($replacement) use ($prefix) {
-                        return str_replace('%prefix%', $prefix, $replacement);
-                    },
-                    array_values($this->replacements)
-                ),
+                array_values($this->replacements),
                 $regexp
             )
         );

@@ -2,12 +2,10 @@
 
 namespace Pim\Bundle\GridBundle\Route;
 
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Pim\Bundle\GridBundle\Exception\JavascriptRegexpTranslatorException;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
- * Registry of datagrid routes
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -15,28 +13,35 @@ use Pim\Bundle\GridBundle\Exception\JavascriptRegexpTranslatorException;
 class DatagridRouteRegistry
 {
     /**
-     * @var Router
+     * @var RouterInterface
      */
     protected $router;
 
     /**
-     * @var array An array of datagrid routes indexed by datagrid name
+     * @var DatagridRouteRegistryBuilder
      */
-    protected $routes;
+    protected $builder;
 
-    public function __construct(Router $router)
+    /**
+     * @var array
+     */
+    protected $regexps;
+
+    /**
+     * Constructor 
+     * 
+     * @param RouterInterface $router
+     * @param DatagridRouteRegistryBuilder $builder
+     * @param string $cacheDir
+     */
+    public function __construct(RouterInterface $router, DatagridRouteRegistryBuilder $builder, $cacheDir = null)
     {
         $this->router = $router;
-    }
-    /**
-     * Adds a route to the registry
-     * 
-     * @param string $datagridName
-     * @param string $routeName
-     */
-    public function addRoute($datagridName, $routeName)
-    {
-        $this->routes[$datagridName] = $routeName;
+        $this->builder = $builder;
+
+        if (null !== $cacheDir && is_file($cache = $cacheDir.'/pim_datagrid_js_routes.php')) {
+            $this->regexps = require $cache;
+        }
     }
 
     /**
@@ -46,19 +51,16 @@ class DatagridRouteRegistry
      */
     public function getRegexps()
     {
-        $regexps = array();
-        $routes = $this->router->getRouteCollection();
-        $translator = new JavascriptRegExpTranslator($this->router->getContext()->getBaseUrl());
-        foreach ($this->routes as $datagridName => $routeName) {
-            $route = $routes->get($routeName);
-            if ($route) {
-                try {
-                    $regexps[$datagridName] = $translator->translate($route->compile()->getRegex());
-                } catch (JavascriptRegexpTranslatorException $ex) {
-                }
-            }
+        if (!isset($this->regexps)) {
+            $this->regexps = $this->builder->getRegexps();
         }
-        
-        return $regexps;
+        $prefix = str_replace('/', '\\/', $this->router->getContext()->getBaseUrl());
+
+        return array_map(
+            function ($regexp) use ($prefix) {
+                return str_replace('%prefix%', $prefix, $regexp);
+            },
+            $this->regexps
+        );
     }
 }
