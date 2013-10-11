@@ -1,5 +1,6 @@
 parameters:
     oro_help.twig.help_link_provider.class: Oro\Bundle\HelpBundle\Twig\HelpLinkProvider
+    oro_help.twig.extension.class: Oro\Bundle\HelpBundle\Twig\HelpExtension
 
 services:
     oro_help.twig.help_link_provider:
@@ -8,3 +9,10 @@ services:
         arguments:
             - @controller_name_converter
             - @request
+
+    oro_help.twig.extension:
+        class: %oro_help.twig.extension.class%
+        arguments:
+            - @oro_help.twig.help_link_provider
+        tags:
+            - { name: twig.extension }

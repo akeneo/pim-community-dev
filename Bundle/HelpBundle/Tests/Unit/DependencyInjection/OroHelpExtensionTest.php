@@ -18,6 +18,27 @@ class OroHelpExtensionTest extends \PHPUnit_Framework_TestCase
         $this->extension = new OroHelpExtension();
     }
 
+    public function testLoadServices()
+    {
+        $container = $this->createContainer();
+
+        $this->extension->load(
+            array(
+                'oro_help' => array(
+                    'defaults' => array(
+                        'server' => 'http://server.com'
+                    )
+                )
+            ),
+            $container
+        );
+
+        $this->assertTrue($container->hasDefinition('oro_help.twig.help_link_provider'));
+        $this->assertTrue($container->hasDefinition('oro_help.twig.extension'));
+        $twigExtension = $container->getDefinition('oro_help.twig.extension');
+        $this->assertTrue($twigExtension->hasTag('twig.extension'));
+    }
+
     /**
      * @dataProvider loadConfigurationDataProvider
      */
@@ -103,7 +124,7 @@ class OroHelpExtensionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    protected function createContainer(array $bundles)
+    protected function createContainer(array $bundles = array())
     {
         $container = new ContainerBuilder(
             new ParameterBag(
