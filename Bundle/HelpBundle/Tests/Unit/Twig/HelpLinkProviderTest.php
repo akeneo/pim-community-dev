@@ -43,6 +43,10 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($link, $provider->getHelpLinkUrl());
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     * @return array
+     */
     public function configurationDataProvider()
     {
         return array(
@@ -76,7 +80,7 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 null,
                 'http://wiki.test.com/'
             ),
-            'vendor' => array(
+            'vendor link' => array(
                 array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
@@ -84,14 +88,229 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                     ),
                     'vendors' => array(
                         'Acme' => array(
-                            'server' => 'http://custom.org/wiki/',
-                            'prefix' => null,
-                            'alias' => 'CustomVendor'
+                            'link' => 'http://wiki.test.com/'
                         )
                     )
                 ),
                 null,
-                'http://custom.org/wiki/CustomVendor/AcmeDemoBundle:Test_run'
+                'http://wiki.test.com/'
+            ),
+            'vendor config' => array(
+                array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    ),
+                    'vendors' => array(
+                        'Acme' => array(
+                            'alias' => 'CustomVendor',
+                            'prefix' => 'Prefix',
+                            'server' => 'http://wiki.test.com/'
+                        )
+                    )
+                ),
+                null,
+                'http://wiki.test.com/Prefix/CustomVendor/AcmeDemoBundle:Test_run'
+            ),
+            'vendor uri' => array(
+                array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    ),
+                    'vendors' => array(
+                        'Acme' => array(
+                            'uri' => 'test'
+                        )
+                    )
+                ),
+                null,
+                'http://test.com/wiki/test'
+            ),
+            'bundle config' => array(
+                array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    ),
+                    'resources' => array(
+                        'AcmeDemoBundle' => array(
+                            'alias' => 'CustomBundle',
+                            'prefix' => 'Prefix',
+                            'server' => 'http://wiki.test.com/'
+                        )
+                    )
+                ),
+                null,
+                'http://wiki.test.com/Prefix/Acme/CustomBundle:Test_run'
+            ),
+            'bundle link' => array(
+                array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    ),
+                    'resources' => array(
+                        'AcmeDemoBundle' => array(
+                            'link' => 'http://wiki.test.com/'
+                        )
+                    )
+                ),
+                null,
+                'http://wiki.test.com/'
+            ),
+            'bundle uri' => array(
+                array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    ),
+                    'resources' => array(
+                        'AcmeDemoBundle' => array(
+                            'uri' => 'test'
+                        )
+                    )
+                ),
+                null,
+                'http://test.com/wiki/test'
+            ),
+            'controller config' => array(
+                array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    ),
+                    'resources' => array(
+                        'AcmeDemoBundle:Test' => array(
+                            'alias' => 'MyTest',
+                            'prefix' => 'Prefix',
+                            'server' => 'http://wiki.test.com/'
+                        )
+                    )
+                ),
+                null,
+                'http://wiki.test.com/Prefix/Acme/AcmeDemoBundle:MyTest_run'
+            ),
+            'controller link' => array(
+                array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    ),
+                    'resources' => array(
+                        'AcmeDemoBundle:Test' => array(
+                            'link' => 'http://wiki.test.com/'
+                        )
+                    )
+                ),
+                null,
+                'http://wiki.test.com/'
+            ),
+            'controller uri' => array(
+                array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    ),
+                    'resources' => array(
+                        'AcmeDemoBundle:Test' => array(
+                            'uri' => 'test'
+                        )
+                    )
+                ),
+                null,
+                'http://test.com/wiki/test'
+            ),
+            'action config' => array(
+                array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    ),
+                    'resources' => array(
+                        'AcmeDemoBundle:Test:run' => array(
+                            'alias' => 'execute',
+                            'prefix' => 'Prefix',
+                            'server' => 'http://wiki.test.com/'
+                        )
+                    )
+                ),
+                null,
+                'http://wiki.test.com/Prefix/Acme/AcmeDemoBundle:Test_execute'
+            ),
+            'action link' => array(
+                array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    ),
+                    'resources' => array(
+                        'AcmeDemoBundle:Test:run' => array(
+                            'link' => 'http://wiki.test.com/'
+                        )
+                    )
+                ),
+                null,
+                'http://wiki.test.com/'
+            ),
+            'action uri' => array(
+                array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    ),
+                    'resources' => array(
+                        'AcmeDemoBundle:Test:run' => array(
+                            'uri' => 'test'
+                        )
+                    )
+                ),
+                null,
+                'http://test.com/wiki/test'
+            ),
+            'annotation link' => array(
+                array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    )
+                ),
+                new Help(array('link' => 'http://wiki.test.com/')),
+                'http://wiki.test.com/'
+            ),
+            'annotation configuration' => array(
+                array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    )
+                ),
+                new Help(
+                    array(
+                        'actionAlias' => 'execute',
+                        'controllerAlias' => 'Executor',
+                        'bundleAlias' => 'Bundle',
+                        'vendorAlias' => 'Vendor',
+                        'prefix' => 'Prefix',
+                        'server' => 'http://wiki.test.com/'
+                    )
+                ),
+                'http://wiki.test.com/Prefix/Vendor/Bundle:Executor_execute'
+            ),
+            'annotation uri' => array(
+                array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    )
+                ),
+                new Help(
+                    array(
+                        'uri' => 'test',
+                        'server' => 'http://wiki.test.com/'
+                    )
+                ),
+                'http://wiki.test.com/test'
             ),
         );
     }

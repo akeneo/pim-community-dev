@@ -77,13 +77,17 @@ class HelpLinkProvider
             $configuration['vendor'] = $configuration['prefix'] . $this->groupSeparator . $configuration['vendor'];
         }
 
-        $keys = array('server', 'vendor', 'bundle', 'controller', 'action');
+        $keys = array('server', 'vendor', 'bundle', 'controller', 'action', 'uri');
         $replaceParams = array();
         foreach ($keys as $key) {
             $replaceParams['%' . $key . '%'] = isset($configuration[$key]) ? $configuration[$key]: '';
         }
 
-        return strtr($this->format, $replaceParams);
+        if (isset($configuration['uri'])) {
+            return strtr('%server%/%uri%', $replaceParams);
+        } else {
+            return strtr($this->format, $replaceParams);
+        }
     }
 
     /**
@@ -142,7 +146,10 @@ class HelpLinkProvider
         }
 
         if ($this->configurationAnnotation) {
-            $configuration += $this->configurationAnnotation->getConfigurationArray();
+            $configuration = array_merge(
+                $configuration,
+                $this->configurationAnnotation->getConfigurationArray()
+            );
         }
 
         return $configuration;

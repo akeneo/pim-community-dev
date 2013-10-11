@@ -14,7 +14,22 @@ class Help extends ConfigurationAnnotation
     /**
      * @var string
      */
-    protected $alias;
+    protected $controllerAlias;
+
+    /**
+     * @var string
+     */
+    protected $vendorAlias;
+
+    /**
+     * @var string
+     */
+    protected $actionAlias;
+
+    /**
+     * @var string
+     */
+    protected $bundleAlias;
 
     /**
      * @var string
@@ -41,21 +56,22 @@ class Help extends ConfigurationAnnotation
      */
     public function getConfigurationArray()
     {
+        $optionsMap = array(
+            'vendorAlias' => 'vendor',
+            'bundleAlias' => 'bundle',
+            'controllerAlias' => 'controller',
+            'actionAlias' => 'action',
+            'link' => 'link',
+            'prefix' => 'prefix',
+            'server' => 'server',
+            'uri' => 'uri'
+        );
+
         $configuration = array();
-        if ($this->getAlias()) {
-            $configuration['alias'] = $this->getAlias();
-        }
-        if ($this->getLink()) {
-            $configuration['link'] = $this->getLink();
-        }
-        if ($this->getPrefix()) {
-            $configuration['prefix'] = $this->getPrefix();
-        }
-        if ($this->getServer()) {
-            $configuration['server'] = $this->getServer();
-        }
-        if ($this->getUri()) {
-            $configuration['uri'] = $this->getUri();
+        foreach ($optionsMap as $property => $key) {
+            if (isset($this->$property)) {
+                $configuration[$key] = $this->$property;
+            }
         }
         return $configuration;
     }
@@ -74,22 +90,6 @@ class Help extends ConfigurationAnnotation
     public function getAliasName()
     {
         return static::ALIAS;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAlias()
-    {
-        return $this->alias;
-    }
-
-    /**
-     * @param string $alias
-     */
-    public function setAlias($alias)
-    {
-        $this->alias = $alias;
     }
 
     /**
@@ -154,5 +154,69 @@ class Help extends ConfigurationAnnotation
     public function setUri($uri)
     {
         $this->uri = $uri;
+    }
+
+    /**
+     * @return string
+     */
+    public function getControllerAlias()
+    {
+        return $this->controllerAlias;
+    }
+
+    /**
+     * @param string $controllerAlias
+     */
+    public function setControllerAlias($controllerAlias)
+    {
+        $this->controllerAlias = $controllerAlias;
+    }
+
+    /**
+     * @return string
+     */
+    public function getActionAlias()
+    {
+        return $this->actionAlias;
+    }
+
+    /**
+     * @param string $actionAlias
+     */
+    public function setActionAlias($actionAlias)
+    {
+        $this->actionAlias = $actionAlias;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBundleAlias()
+    {
+        return $this->bundleAlias;
+    }
+
+    /**
+     * @param string $bundleAlias
+     */
+    public function setBundleAlias($bundleAlias)
+    {
+        $this->bundleAlias = $bundleAlias;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVendorAlias()
+    {
+        return $this->vendorAlias;
+    }
+
+    /**
+     * @param string $vendorAlias
+     */
+    public function setVendorAlias($vendorAlias)
+    {
+        $this->vendorAlias = $vendorAlias;
     }
 }
