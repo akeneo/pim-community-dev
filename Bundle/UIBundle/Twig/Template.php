@@ -36,13 +36,17 @@ abstract class Template extends Twig_Template
      */
     protected function wrapContent($originalContent)
     {
-        $content = '<!-- Start Template: ' . $this->getTemplateName();
-        if ($this->parent) {
-            $content.= ' (Parent Template: ' . $this->parent->getTemplateName(). ')';
+        $content = $originalContent;
+        $templateName = $this->getTemplateName();
+        if ('.html.twig' === substr($templateName, -10)) {
+            $content = '<!-- Start Template: ' . $this->getTemplateName();
+            if ($this->parent) {
+                $content.= ' (Parent Template: ' . $this->parent->getTemplateName(). ')';
+            }
+            $content.= " -->\n";
+            $content.= $originalContent;
+            $content.= '<!-- End Template: ' . $this->getTemplateName() . ' -->';
         }
-        $content.= " -->\n";
-        $content.= $originalContent;
-        $content.= '<!-- End Template: ' . $this->getTemplateName() . ' -->';
         return $content;
     }
 }
