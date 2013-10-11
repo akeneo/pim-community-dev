@@ -58,13 +58,6 @@ class TimeGuesserTest extends ConstraintGuesserTest
             )
         );
 
-        $attr = $this->getAttributeMock(
-            array(
-                'attributeType' => 'pim_catalog_date',
-                'dateType'      => 'time',
-            )
-        );
-
         $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Time', $constraints);
     }
 

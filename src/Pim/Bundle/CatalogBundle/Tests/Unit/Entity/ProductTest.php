@@ -86,7 +86,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetGroups()
     {
-        $groups           = array(
+        $groups = array(
             $otherGroup   = $this->getGroupMock(1, 'Other', -1),
             $generalGroup = $this->getGroupMock(2, 'General', 0),
             $alphaGroup   = $this->getGroupMock(3, 'Alpha', 20),
@@ -239,8 +239,8 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $channel1 = $completeness->getChannel();
 
         $completeness2 = $this->createCompleteness('channel2', 'fr_FR');
-        $localeFR = $completeness2->getLocale();
-        $channel2 = $completeness2->getChannel();
+        $completeness2->getLocale();
+        $completeness2->getChannel();
 
         // assert no return if nothing found
         $this->assertNull($this->product->getCompleteness($localeUS, $channel1));

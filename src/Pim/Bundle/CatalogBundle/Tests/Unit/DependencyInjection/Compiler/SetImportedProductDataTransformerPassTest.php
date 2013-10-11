@@ -106,12 +106,4 @@ class SetImportedProductDataTransformerPassTest extends \PHPUnit_Framework_TestC
 
         return $container;
     }
-
-    /**
-     * @return /Symfony\Component\DependencyInjection\Definition
-     */
-    private function getDefinitionMock()
-    {
-        return $this->getMock('Symfony\Component\DependencyInjection\Definition');
-    }
 }
