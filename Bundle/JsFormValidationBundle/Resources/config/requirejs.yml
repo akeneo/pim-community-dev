@@ -1,0 +1,7 @@
+config:
+    shim:
+        'jquery.bind-first':
+            deps:
+                - 'jquery'
+    paths:
+        'jquery.bind-first': 'bundles/orojsformvalidation/lib/jquery.bind-first-0.2.1.js'

@@ -1,0 +1,8 @@
+config:
+    paths:
+        'oro/email/template/collection': 'bundles/oroemail/js/email/template/collection.js'
+        'oro/email/template/model': 'bundles/oroemail/js/email/template/model.js'
+        'oro/email/template/view': 'bundles/oroemail/js/email/template/view.js'
+        'oro/email/variable/model': 'bundles/oroemail/js/email/variable/model.js'
+        'oro/email/variable/view': 'bundles/oroemail/js/email/variable/view.js'
+        'oro/init-email': 'bundles/oroemail/js/init-email.js'
