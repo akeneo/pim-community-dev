@@ -34,13 +34,13 @@
     <div class="container-fluid grid-container">
         <table class="table table-bordered groups">
             <thead>
-                <th>{{ 'Step'|upper }}</th>
-                <th>{{ 'Status'|upper }}</th>
-                <th>{{ 'Read count'|upper }}</th>
-                <th>{{ 'Filter'|upper }}</th>
-                <th>{{ 'Write'|upper }}</th>
-                <th>{{ 'Start'|upper }}</th>
-                <th>{{ 'End'|upper }}</th>
+                <th>{{ 'Step' | trans | upper }}</th>
+                <th>{{ 'Status' | trans | upper }}</th>
+                <th>{{ 'Read count' | trans | upper }}</th>
+                <th>{{ 'Filter' | trans | upper }}</th>
+                <th>{{ 'Write' | trans |upper }}</th>
+                <th>{{ 'Start' | trans | upper }}</th>
+                <th>{{ 'End' | trans | upper }}</th>
             </thead>
             <tbody>
                 {% for step in execution.stepExecutions %}
@@ -53,7 +53,32 @@
                     <td>{{ step.startTime |date("Y-m-d h:i:s") }}</td>
                     <td>{{ step.endTime |date("Y-m-d h:i:s") }}</td>
                 </tr>
+                    {% if step.readerWarnings is not empty %}
+                    <tr>
+                        <td colspan="7">{{ "Reader" | trans }}</td>
+                    </tr>
+                    {% endif %}
                     {% for warning in step.readerWarnings %}
+                    <tr>
+                        <td colspan="7"><i class="validation-tooltip"></i> {{ warning.reason }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% if step.filterWarnings is not empty %}
+                    <tr>
+                        <td colspan="7">{{ "Filter" | trans }}</td>
+                    </tr>
+                    {% endif %}
+                    {% for warning in step.filterWarnings %}
+                    <tr>
+                        <td colspan="7"><i class="validation-tooltip"></i> {{ warning.reason }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% if step.writerWarnings is not empty %}
+                    <tr>
+                        <td colspan="7">{{ "Writer" | trans }}</td>
+                    </tr>
+                    {% endif %}
+                    {% for warning in step.writerWarnings %}
                     <tr>
                         <td colspan="7"><i class="validation-tooltip"></i> {{ warning.reason }}</td>
                     </tr>
