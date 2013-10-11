@@ -4,7 +4,7 @@
     {{ parent() }}
     <script type="text/javascript">
         require(['pim/init'], function(init){ 
-            init({{ grid_route_regexps() }})
+            init()
         });
     </script>
     {{ block('head_script_component') }}
