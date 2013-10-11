@@ -3,6 +3,7 @@
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
 use Symfony\Component\Routing\Router;
+
 use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
 class UrlProperty extends AbstractProperty
@@ -11,15 +12,6 @@ class UrlProperty extends AbstractProperty
      * @var Router
      */
     protected $router;
-
-    public function init(array $params)
-    {
-        if (!isset($params['placeholders'])) {
-            $params['placeholders'] = array();
-        }
-        parent::init($params);
-    }
-
 
     /**
      * @param Router $router

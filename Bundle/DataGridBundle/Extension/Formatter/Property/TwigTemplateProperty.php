@@ -3,9 +3,8 @@
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
 use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
-use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 
-class TwigTemplateProperty extends AbstractProperty implements TwigPropertyInterface
+class TwigTemplateProperty extends AbstractProperty
 {
     /**
      * @var \Twig_Environment
@@ -13,54 +12,36 @@ class TwigTemplateProperty extends AbstractProperty implements TwigPropertyInter
     protected $environment;
 
     /**
-     * @var string
-     */
-    protected $templateName;
-
-    /**
      * @var \Twig_TemplateInterface
      */
     protected $template;
 
     /**
-     * @var FieldDescriptionInterface
-     */
-    protected $field;
-
-    /**
-     * @var array
-     */
-    protected $context;
-
-    /**
      * @var array
      */
     protected $reservedKeys = array(
-        'field',
         'record',
         'value',
     );
 
+    public function __construct(\Twig_Environment $environment)
+    {
+        $this->environment = $environment;
+    }
 
     /**
-     * @param FieldDescriptionInterface $field
-     * @param string                    $templateName
-     * @param array                     $context
-     * @throws \InvalidArgumentException
+     * {@inheritdoc}
      */
-    public function __construct(FieldDescriptionInterface $field, $templateName, $context = array())
+    public function init(array $params)
     {
-        $this->field        = $field;
-        $this->templateName = $templateName;
-        $this->context      = $context;
-
-        $checkInvalidArgument = array_intersect_key($context, array_flip($this->reservedKeys));
+        parent::init($params);
+        $checkInvalidArgument = array_intersect(array_keys($this->getOr('context', array())), $this->reservedKeys);
         if (count($checkInvalidArgument)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Context of template "%s" includes reserved key(s) - (%s)',
-                    $this->templateName,
-                    implode(', ', array_keys($checkInvalidArgument))
+                    $this->get('template'),
+                    implode(', ', array_values($checkInvalidArgument))
                 )
             );
         }
@@ -69,47 +50,31 @@ class TwigTemplateProperty extends AbstractProperty implements TwigPropertyInter
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return $this->field->getName();
-    }
-
-    /**
-     * @param \Twig_Environment $environment
-     */
-    public function setEnvironment(\Twig_Environment $environment)
-    {
-        $this->environment = $environment;
-    }
-
-    /**
-     * @return \Twig_TemplateInterface
-     */
-    protected function getTemplate()
-    {
-        if (!$this->template) {
-            $this->template = $this->environment->loadTemplate($this->templateName);
-        }
-
-        return $this->template;
-    }
-
-    /**
-     * Render field template
-     * @param ResultRecordInterface $record
-     * @return string
-     */
     public function getValue(ResultRecordInterface $record)
     {
         $context = array_merge(
-            $this->context,
+            $this->getOr('context', array()),
             array(
-                'field'  => $this->field,
                 'record' => $record,
-                'value'  => $record->getValue($this->field->getFieldName()),
+                'value'  => $record->getValue($this->get('name')),
             )
         );
 
         return $this->getTemplate()->render($context);
     }
+
+    /**
+     * Load twig template
+     *
+     * @return \Twig_TemplateInterface
+     */
+    protected function getTemplate()
+    {
+        if (!$this->template) {
+            $this->template = $this->environment->loadTemplate($this->get('template'));
+        }
+
+        return $this->template;
+    }
+
 }

@@ -14,34 +14,11 @@ class TranslateableProperty extends AbstractProperty
     protected $translator;
 
     /**
-     * @var null|string
-     */
-    protected $domain = null;
-
-    /**
-     * @var null|string
-     */
-    protected $locale = null;
-
-    /**
-     * @var null|string
-     */
-    protected $alias = null;
-
-    /**
-     * @param string $name
      * @param TranslatorInterface $translator
-     * @param string $alias
-     * @param string $domain
-     * @param string $locale
      */
-    public function __construct($name, TranslatorInterface $translator, $alias = null, $domain = null, $locale = null)
+    public function __construct(TranslatorInterface $translator)
     {
-        $this->name = $name;
         $this->translator = $translator;
-        $this->alias = $alias;
-        $this->domain = $domain;
-        $this->locale = $locale;
     }
 
     /**
@@ -49,9 +26,9 @@ class TranslateableProperty extends AbstractProperty
      */
     public function getValue(ResultRecordInterface $record)
     {
-        $dataField = $this->alias ? : $this->getName();
-        $value = $record->getValue($dataField);
+        $dataField = $this->getOr('alias', $this->get('name'));
+        $value     = $record->getValue($dataField);
 
-        return $this->translator->trans($value, array(), $this->domain, $this->locale);
+        return $this->translator->trans($value, array(), $this->getOr('domain'), $this->getOr('locale'));
     }
 }

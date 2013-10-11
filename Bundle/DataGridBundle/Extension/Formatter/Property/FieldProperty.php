@@ -72,7 +72,7 @@ class FieldProperty extends AbstractProperty
      */
     protected function convertValue($value)
     {
-        switch ($this->get('type')) {
+        switch ($this->getOr('frontend_type')) {
             case FieldDescriptionInterface::TYPE_DATETIME:
             case FieldDescriptionInterface::TYPE_DATE:
                 if ($value instanceof \DateTime) {

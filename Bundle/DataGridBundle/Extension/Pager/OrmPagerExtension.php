@@ -44,10 +44,10 @@ class OrmPagerExtension implements ExtensionVisitorInterface
         // $this->pager->setPage(isset($pagerParameters['_page']) ? $pagerParameters['_page'] : 1);
         // $this->pager->setMaxPerPage(isset($pagerParameters['_per_page']) ? (int) $pagerParameters['_per_page'] : 10);
 
-        $this->pager->setQuery($datasource->getQuery());
-        $this->pager->setPage(2);
-        $this->pager->setMaxPerPage(2);
-        $this->pager->init();
+//        $this->pager->setQuery($datasource->getQuery());
+//        $this->pager->setPage(2);
+//        $this->pager->setMaxPerPage(2);
+//        $this->pager->init();
     }
 
     /**
