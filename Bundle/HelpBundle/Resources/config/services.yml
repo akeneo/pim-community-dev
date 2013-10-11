@@ -1,3 +1,10 @@
 parameters:
+    oro_help.twig.help_link_provider.class: Oro\Bundle\HelpBundle\Twig\HelpLinkProvider
 
 services:
+    oro_help.twig.help_link_provider:
+        class: %oro_help.twig.help_link_provider.class%
+        scope: request
+        arguments:
+            - @controller_name_converter
+            - @request

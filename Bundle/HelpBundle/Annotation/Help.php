@@ -36,6 +36,13 @@ class Help extends ConfigurationAnnotation
      */
     protected $uri;
 
+    public function getConfigurationArray()
+    {
+        if ($this->getAlias()) {
+
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
