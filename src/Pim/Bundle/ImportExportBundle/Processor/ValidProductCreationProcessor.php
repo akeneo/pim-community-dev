@@ -5,6 +5,8 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
 use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -13,6 +15,7 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductVariantGroupConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
+use Pim\Bundle\ImportExportBundle\Converter\ProductErrorConverter;
 
 /**
  * Product form processor
@@ -22,7 +25,7 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValidProductCreationProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
+class ValidProductCreationProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     /**
      * @var FormFactoryInterface $formFactory
@@ -169,7 +172,26 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         $form    = $this->createAndSubmitForm($product, $item);
 
         if (!$form->isValid()) {
-            throw new InvalidObjectException($form);
+
+            $converter = new ProductErrorConverter();
+            $warnings = $converter->convert($form);
+            if (!empty($warnings)) {
+                foreach ($warnings as $warning) {
+                    $this->stepExecution->addFilterWarning(
+                        get_class($this),
+                        sprintf(
+                            'Product %s : %s',
+                            (string) $product->getIdentifier(),
+                            $warning
+                        ),
+                        $item
+                    );
+                }
+
+                return false;
+            } else {
+                throw new InvalidObjectException($form);
+            }
         }
 
         return $product;
@@ -425,5 +447,13 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         }
 
         return array_unique($requiredValues);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 }
