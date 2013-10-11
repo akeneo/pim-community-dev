@@ -10,10 +10,14 @@
 } %}
 
 {{ JSFV(form) }}
-
-<form id="{{ form.vars.id }}" class="form-horizontal" data-updated-title="{{ 'confirmation.leave'|trans }}"
-    data-updated-message="{{ 'confirmation.discard changes.'|trans({ '%entity%': 'family'|trans }) }}"
-    action="{{ path('pim_catalog_family_edit', { id: family.id }) }}" method="POST">
+{{ form_start(form, {
+    'action': path('pim_catalog_family_edit', { id: family.id }),
+    'attr': {
+        'class': 'form-horizontal',
+        'data-updated-title': 'confirmation.leave'|trans,
+        'data-updated-message': 'confirmation.discard changes.'|trans({ '%entity%': 'family'|trans })
+    }
+}) }}
 
     {% set title = 'family.edit'|trans ~ ' - ' ~ family.label %}
 
