@@ -2,20 +2,16 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
-use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductVariantGroupConverter;
-use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
 
 /**
@@ -340,12 +336,19 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             $familyCode = null;
         }
 
-        $requiredValues = $this->getRequiredValues($product, $familyCode);
+        if (array_key_exists(ProductVariantGroupConverter::VARIANT_GROUP_KEY, $values)) {
+            $variantGroupCode = $values[ProductVariantGroupConverter::VARIANT_GROUP_KEY];
+        } else {
+            $variantGroupCode = null;
+        }
+
+        $requiredValues = $this->getRequiredValues($product, $familyCode, $variantGroupCode);
 
         $excludedKeys = array(
             ProductEnabledConverter::ENABLED_KEY,
             ProductFamilyConverter::FAMILY_KEY,
-            ProductCategoriesConverter::CATEGORIES_KEY
+            ProductCategoriesConverter::CATEGORIES_KEY,
+            ProductVariantGroupConverter::VARIANT_GROUP_KEY
         );
 
         foreach ($values as $key => $value) {
@@ -358,19 +361,21 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     }
 
     /**
-     * Get required values for a product based on the existing attributes and the family
+     * Get required values for a product based on the existing attributes, the family and the variant group
      *
      * @param ProductInterface $product
      * @param string           $familyCode
+     * @param string           $variantGroupCode
      *
      * @return array
      */
-    private function getRequiredValues(ProductInterface $product, $familyCode = null)
+    private function getRequiredValues(ProductInterface $product, $familyCode = null, $variantGroupCode = null)
     {
         $requiredAttributes = array();
+        $storageManager = $this->productManager->getStorageManager();
 
         if ($familyCode !== null) {
-            $family = $this->productManager->getStorageManager()->getRepository('PimCatalogBundle:Family')->findOneBy(
+            $family = $storageManager->getRepository('PimCatalogBundle:Family')->findOneBy(
                 array(
                     'code' => $familyCode
                 )
@@ -378,6 +383,18 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
 
             if ($family) {
                 $requiredAttributes = $family->getAttributes()->toArray();
+            }
+        }
+
+        if ($variantGroupCode !== null) {
+            $variantGroup = $storageManager->getRepository('PimCatalogBundle:VariantGroup')->findOneBy(
+                array(
+                    'code' => $variantGroupCode
+                )
+            );
+
+            if ($variantGroup) {
+                $requiredAttributes = array_merge($requiredAttributes, $variantGroup->getAttributes()->toArray());
             }
         }
 

@@ -10,6 +10,8 @@ this repository and send us pull requests.
 
 Important Note: this application is not production ready and is intendant for evaluation and development only!
 
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/badges/quality-score.png?s=05ef3d5d2bbfae2f9a659060b21711d275f0c1ff)](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/)
+
 Requirements
 ------------
  - PHP 5.3.3 or above

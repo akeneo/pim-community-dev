@@ -41,7 +41,7 @@ class ProductVariantGroupConverter
     public function convert($data)
     {
         if (null !== $id = $this->getVariantGroupId($data)) {
-            return array('variant_group' => $id);
+            return array('variantGroup' => $id);
         }
 
         return array();

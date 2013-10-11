@@ -103,7 +103,7 @@ class AuditBuilder
 
         $diffData = array();
         foreach ($merge as $changedField => $data) {
-            if ($data['old'] != $data['new'] or !isset($oldData[$changedField])) {
+            if ($data['old'] != $data['new'] || !isset($oldData[$changedField])) {
                 $diffData[$changedField]= $data;
             }
         }
