@@ -506,8 +506,7 @@ class StepExecution
     /**
      * Accessor for the execution context information of the enclosing job.
      *
-     * @return the that was used to start this step execution.
-     *
+     * @return JobExecution that was used to start this step execution.
      */
     public function getJobExecution()
     {
