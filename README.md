@@ -8,13 +8,13 @@ Practically, it means the Akeneo PIM bundles are present in the src/ directory.
 If you want to contribute to the Akeneo PIM (and we would be pleased you do !), you can fork
 this repository and send us pull requests.
 
-Important Note: this application is not production ready and is intendant for evaluation and development only!
+Important Note: this application is not production ready and is intending for evaluation and development purposes only!
 
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/badges/quality-score.png?s=05ef3d5d2bbfae2f9a659060b21711d275f0c1ff)](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/)
 
 Requirements
 ------------
- - PHP 5.3.3 or above
+ - PHP 5.4.4 or above
  - PHP Modules:
     - php5-curl
     - php5-gd
@@ -111,9 +111,9 @@ You must give write permission to the Apache user on the following directories:
 Configure crontab
 -----------------
 
-To run following command every minute :
-
-php app/console pim:product:completeness-calculator
+To ensure that completeness is as up to date as possible, you can configure the following crontab
+line:
+*/5 * * * * php app/console pim:product:completeness-calculator > /tmp/completeness.log
 
 Checking your System Configuration
 ----------------------------------
