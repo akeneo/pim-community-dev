@@ -30,11 +30,10 @@ interface ProxyQueryInterface
     /**
      * Adds sorting order
      *
-     * @param array  $parentAssociationMappings
-     * @param array  $fieldMapping
+     * @param array  $sorter
      * @param string $direction
      */
-    public function addSortOrder(array $parentAssociationMappings, array $fieldMapping, $direction = null);
+    public function addSortOrder($sorter, $direction = null);
 
     /**
      * Get records total count
@@ -69,39 +68,6 @@ interface ProxyQueryInterface
      * @return ProxyQueryInterface
      */
     public function setQueryHint($name, $value);
-
-    /**
-     * Set sort by field
-     *
-     * @param  array $parentAssociationMappings
-     * @param  array $fieldMapping
-     *
-     * @return ProxyQueryInterface
-     */
-    public function setSortBy($parentAssociationMappings, $fieldMapping);
-
-    /**
-     * Get sort by field
-     *
-     * @return mixed
-     */
-    public function getSortBy();
-
-    /**
-     * Set sort order
-     *
-     * @param  mixed $sortOrder
-     *
-     * @return ProxyQueryInterface
-     */
-    public function setSortOrder($sortOrder);
-
-    /**
-     * Get sort order
-     *
-     * @return mixed
-     */
-    public function getSortOrder();
 
     /**
      * Get single scalar result

@@ -10,9 +10,15 @@ use Symfony\Component\Config\Definition\Processor;
 
 class FormatterExtension extends AbstractExtension
 {
+    /**
+     * Configuration tree keys
+     */
     const COLUMNS_KEY    = 'columns';
     const PROPERTIES_KEY = 'properties';
 
+    /**
+     * Configuration tree paths
+     */
     const COLUMNS_PATH    = '[columns]';
     const PROPERTIES_PATH = '[properties]';
 

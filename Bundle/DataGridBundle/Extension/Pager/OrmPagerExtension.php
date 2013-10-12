@@ -11,9 +11,15 @@ use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 
 class OrmPagerExtension extends AbstractExtension
 {
+    /**
+     * Configuration tree paths
+     */
     const PAGER_ENABLE_OPTION_PATH           = '[pager][enabled]';
     const PAGER_DEFAULT_PER_PAGE_OPTION_PATH = '[pager][default_per_page]';
 
+    /**
+     * Query params
+     */
     const PAGER_ROOT_PARAM = '_pager';
     const PAGE_PARAM       = '_page';
     const PER_PAGE_PARAM   = '_per_page';

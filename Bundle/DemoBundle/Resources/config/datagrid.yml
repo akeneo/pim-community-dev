@@ -25,3 +25,13 @@ datagrid:
                 route: oro_api_delete_contactgroup
                 params:
                     - id
+        sorters:
+            columns:
+                label:
+                    data_name: label
+
+                id:
+                    data_name: id
+
+            default:
+                label: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC

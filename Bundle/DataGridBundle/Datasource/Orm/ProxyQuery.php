@@ -163,21 +163,10 @@ class ProxyQuery implements ProxyQueryInterface
     protected function applyOrderByParameters(QueryBuilder $queryBuilder)
     {
         foreach ($this->sortOrderList as $sortOrder) {
-            $this->applySortOrderParameters($queryBuilder, $sortOrder);
-        }
-    }
-
-    /**
-     * Apply sorting
-     *
-     * @param QueryBuilder $queryBuilder
-     * @param array        $sortOrder
-     */
-    protected function applySortOrderParameters(QueryBuilder $queryBuilder, array $sortOrder)
-    {
-        list($sortExpression, $extraSelect) = $sortOrder;
-        if ($extraSelect && !$this->hasSelectItem($queryBuilder, $sortExpression)) {
-            $queryBuilder->addSelect($extraSelect);
+            list($sortExpression, $extraSelect) = $sortOrder;
+            if ($extraSelect && !$this->hasSelectItem($queryBuilder, $sortExpression)) {
+                $queryBuilder->addSelect($extraSelect);
+            }
         }
     }
 
@@ -230,21 +219,13 @@ class ProxyQuery implements ProxyQueryInterface
     /**
      * {@inheritdoc}
      */
-    public function addSortOrder(array $parentAssociationMappings, array $fieldMapping, $direction = null)
+    public function addSortOrder($sorter, $direction = null)
     {
-        $alias = $this->entityJoin($parentAssociationMappings);
-        if (!empty($fieldMapping['entityAlias'])) {
-            $alias = $fieldMapping['entityAlias'];
-        }
-
         $extraSelect = null;
-        if (!empty($fieldMapping['fieldExpression']) && !empty($fieldMapping['fieldName'])) {
-            $sortExpression = $fieldMapping['fieldName'];
-            $extraSelect    = sprintf('%s AS %s', $fieldMapping['fieldExpression'], $fieldMapping['fieldName']);
-        } elseif (!empty($fieldMapping['fieldName'])) {
-            $sortExpression = $this->getFieldFQN($fieldMapping['fieldName'], $alias);
+        if (!empty($sorter['data_name'])) {
+            $sortExpression = $this->getFieldFQN($sorter['data_name']);
         } else {
-            throw new \LogicException('Cannot add sorting order, unknown field name in $fieldMapping.');
+            throw new \LogicException('Cannot add sorting order, unknown "data_name" in definition.');
         }
 
         $this->getQueryBuilder()->addOrderBy($sortExpression, $direction);
@@ -430,43 +411,6 @@ class ProxyQuery implements ProxyQueryInterface
     public function __get($name)
     {
         return $this->queryBuilder->$name;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSortBy($parentAssociationMappings, $fieldMapping)
-    {
-        $alias        = $this->entityJoin($parentAssociationMappings);
-        $this->sortBy = $alias . '.' . $fieldMapping['fieldName'];
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSortBy()
-    {
-        return $this->sortBy;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSortOrder($sortOrder)
-    {
-        $this->sortOrder = $sortOrder;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSortOrder()
-    {
-        return $this->sortOrder;
     }
 
     /**
