@@ -90,6 +90,25 @@ class Generator
         } else {
             $class->setProperty(PhpProperty::create('id')->setVisibility('protected'));
             $class->setMethod($this->generateClassMethod('getId', 'return $this->id;'));
+
+            /**
+             * TODO
+             * custom entity instance as manyToOne relation
+             * find the way to show it on view
+             * we should mark some field as
+             */
+            $toString = array();
+            foreach ($item['property'] as $propKey => $propValue) {
+                if ($item['doctrine'][$item['entity']]['fields'][$propKey]['type'] == 'string') {
+                    $toString[] = '$this->get' . ucfirst(Inflector::camelize($propValue)) . '()';
+                }
+            }
+
+            $toStringBody = '(string) return $this->getId();';
+            if (count($toString) > 0) {
+                $toStringBody = 'return (string)' . implode(' . ', $toString) . ';';
+            }
+            $class->setMethod($this->generateClassMethod('__toString', $toStringBody));
         }
 
         $class->setInterfaceNames(array('Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface'));
