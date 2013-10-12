@@ -2,17 +2,17 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Pager;
 
+use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
-use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 
-class OrmPagerExtension implements ExtensionVisitorInterface
+class OrmPagerExtension extends AbstractExtension
 {
-    const PAGER_KEY            = 'pager';
-    const ENABLED_KEY          = 'enabled';
-    const DEFAULT_PER_PAGE_KEY = 'default_per_page';
+    const PAGER_ENABLE_OPTION_PATH           = '[pager][enabled]';
+    const PAGER_DEFAULT_PER_PAGE_OPTION_PATH = '[pager][default_per_page]';
 
     const PAGER_ROOT_PARAM = '_pager';
     const PAGE_PARAM       = '_page';
@@ -23,13 +23,10 @@ class OrmPagerExtension implements ExtensionVisitorInterface
     /** @var PagerInterface */
     protected $pager;
 
-    /** @var RequestParameters */
-    protected $requestParams;
-
     public function __construct(PagerInterface $pager, RequestParameters $requestParams)
     {
-        $this->pager         = $pager;
-        $this->requestParams = $requestParams;
+        $this->pager = $pager;
+        parent::__construct($requestParams);
     }
 
     /**
@@ -37,11 +34,8 @@ class OrmPagerExtension implements ExtensionVisitorInterface
      */
     public function isApplicable(array $config)
     {
-        $enabled = $config[OrmDatasource::SOURCE_KEY][OrmDatasource::TYPE_KEY] == OrmDatasource::TYPE;
-
-        if (isset($config[self::PAGER_KEY][self::ENABLED_KEY])) {
-            $enabled = $enabled && (bool)$config[self::PAGER_KEY][self::ENABLED_KEY];
-        }
+        $enabled = $this->accessor->getValue($config, Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE
+            && $this->accessor->getValue($config, self::PAGER_ENABLE_OPTION_PATH) !== false;
 
         return $enabled;
     }
@@ -51,8 +45,7 @@ class OrmPagerExtension implements ExtensionVisitorInterface
      */
     public function visitDatasource(array $config, DatasourceInterface $datasource)
     {
-        $defaultPerPage = !empty($config[self::PAGER_KEY][self::DEFAULT_PER_PAGE_KEY]) ?
-            $config[self::PAGER_KEY][self::DEFAULT_PER_PAGE_KEY] : 10;
+        $defaultPerPage = $this->accessor->getValue($config, self::PAGER_DEFAULT_PER_PAGE_OPTION_PATH) ? : 10;
 
         $this->pager->setQuery($datasource->getQuery());
         $this->pager->setPage($this->getOr(self::PAGE_PARAM, 1));
@@ -65,9 +58,16 @@ class OrmPagerExtension implements ExtensionVisitorInterface
      */
     public function visitResult(array $config, \stdClass $result)
     {
-        $result->options = isset($result->options) ? $result->options : array();
-
+        $result->options                    = isset($result->options) ? $result->options : array();
         $result->options[self::TOTAL_PARAM] = $this->pager->getNbResults();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function visitMetadata(array $config, \stdClass $result)
+    {
+        // TODO: Implement visitMetadata() method.
     }
 
     /**

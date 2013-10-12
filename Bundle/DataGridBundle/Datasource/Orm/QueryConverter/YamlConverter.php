@@ -9,8 +9,6 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr;
 
-use Oro\Bundle\DataGridBundle\DependencyInjection\Configuration\QueryConfiguration;
-
 class YamlConverter implements QueryConverterInterface
 {
     /**

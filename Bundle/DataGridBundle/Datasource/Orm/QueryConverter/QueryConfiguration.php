@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\DataGridBundle\DependencyInjection\Configuration;
+namespace Oro\Bundle\DataGridBundle\Datasource\Orm\QueryConverter;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

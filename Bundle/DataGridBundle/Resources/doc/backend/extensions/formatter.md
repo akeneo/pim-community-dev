@@ -1,13 +1,12 @@
-Formatters extension:
+Formatter extension:
 =======
 This extension do not affects Datasource, it applies after result set is fetched by datagrid and provides changes using formatters that described in config.
 Also this extension responsible for passing columns configuration to view layer.
 
-Formatters:
-==========
+Formatters
+-----------
 
-Field
------
+### Field
 ```
 column_name:
     type: field
@@ -15,8 +14,7 @@ column_name:
 ```
 Represents default data field.
 
-Fixed
------
+### Fixed
 ```
 column_name:
     type: fixed
@@ -24,8 +22,7 @@ column_name:
 ```
 Represent field that contains data from another field
 
-Url
-----
+### Url
 ```
 column_name:
     type: url
@@ -36,8 +33,7 @@ column_name:
 ```
 Represents url field, mostly used for generating urls for actions.
 
-Twig
------
+### Twig
 ```
 column_name:
     type: twig
@@ -46,8 +42,7 @@ column_name:
 ```
 Represents twig template formatted field.
 
-Translatable
--------------
+### Translatable
 ```
 column_name:
     type: translatable
@@ -57,11 +52,19 @@ column_name:
 ```
 Used when field should be translated by symfony translator.
 
-Callback
--------------
+### Callback
 ```
 column_name:
     type: callback
     callable: @link # required
 ```
 Used when field should be formatted using some callback, format [see](./../../link.md).
+
+Customization
+-----------
+
+To implement your own formatter you have to do following:
+
+ - Develop class that implement PropertyInterface (also there is basic implementation in AbstractProperty)
+ - Register you formatter as service
+ - Add method call to oro_grid.extension.formatter (e.g.) - [ addProperty, [ 'fixed', @oro_grid.extension.formatter.property.fixed_property ] ]

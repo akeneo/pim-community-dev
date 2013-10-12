@@ -14,7 +14,7 @@ services:
             - [ addProperty, [ 'translateable', @oro_grid.extension.formatter.property.translateable_property ] ]
             - [ addProperty, [ 'callback',      @oro_grid.extension.formatter.property.callback_property ] ]
         tags:
-            - { name: oro_grid.extension, type: formatter }
+            - { name: oro_grid.extension }
 
     oro_grid.extension.orm_pager:
         class: %oro_grid.extension.orm_pager.class%
@@ -22,7 +22,7 @@ services:
             - @oro_grid.extension.pager.orm.pager
             - @oro_grid.datagrid.prequest_params
         tags:
-            - { name: oro_grid.extension, type: formatter }
+            - { name: oro_grid.extension }
 
     oro_grid.extension.pager.orm.pager:
         class: %oro_grid.extension.pager.orm.pager.class%

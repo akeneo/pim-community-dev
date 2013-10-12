@@ -63,6 +63,25 @@ class RequestParameters
     }
 
     /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->getRequest()->getLocale();
+    }
+
+    /**
+     * @return string
+     */
+    public function getScope()
+    {
+        /** @TODO MOVE TO FLEXIBLE */
+        $rootValue = $this->getRootParameterValue();
+
+        return isset($rootValue[self::SCOPE_PARAMETER]) ? $rootValue[self::SCOPE_PARAMETER] : null;
+    }
+
+    /**
      * @return array
      */
     protected function getRootParameterValue()
@@ -80,24 +99,5 @@ class RequestParameters
         }
 
         return $this->request;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->getRequest()->getLocale();
-    }
-
-    /**
-     * @return string
-     */
-    public function getScope()
-    {
-        /** @TODO MOVE TO FLEXIBLE */
-        $rootValue = $this->getRootParameterValue();
-
-        return isset($rootValue[self::SCOPE_PARAMETER]) ? $rootValue[self::SCOPE_PARAMETER] : null;
     }
 }

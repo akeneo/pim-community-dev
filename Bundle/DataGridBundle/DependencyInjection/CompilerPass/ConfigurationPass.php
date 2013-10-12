@@ -45,7 +45,7 @@ class ConfigurationPass implements CompilerPassInterface
         }
 
         /**
-         * Find and add available datasources to grid builder
+         * Find and add available datasources and extensions to grid builder
          */
         $builder = $container->getDefinition(self::BUILDER_SERVICE_ID);
         if ($builder) {

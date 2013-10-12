@@ -8,6 +8,13 @@ use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 interface DatagridInterface
 {
     /**
+     * Returns datagrid name
+     *
+     * @return string
+     */
+    public function getName();
+
+    /**
      * Adds extension to extension list
      *
      * @param ExtensionVisitorInterface $extension
@@ -15,8 +22,6 @@ interface DatagridInterface
      * @return $this
      */
     public function addExtension(ExtensionVisitorInterface $extension);
-
-    public function getName();
 
     /**
      * Returns array of registered extensions
@@ -40,6 +45,13 @@ interface DatagridInterface
      * @return DatasourceInterface
      */
     public function getDatasource();
+
+    /**
+     * Returns datasource object accepted by extensions
+     *
+     * @return DatasourceInterface
+     */
+    public function getAcceptedDatasource();
 
     /**
      * Converts datasource into the result array

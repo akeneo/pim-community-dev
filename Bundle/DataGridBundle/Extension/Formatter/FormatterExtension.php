@@ -2,17 +2,19 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter;
 
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
-use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
+use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 
 use Symfony\Component\Config\Definition\Processor;
 
-class FormatterExtension implements ExtensionVisitorInterface
+class FormatterExtension extends AbstractExtension
 {
     const COLUMNS_KEY    = 'columns';
     const PROPERTIES_KEY = 'properties';
+
+    const COLUMNS_PATH    = '[columns]';
+    const PROPERTIES_PATH = '[properties]';
 
     /** @var PropertyInterface[] */
     protected $properties;
@@ -22,32 +24,30 @@ class FormatterExtension implements ExtensionVisitorInterface
      */
     public function isApplicable(array $config)
     {
-        $applicable = !empty($config[self::COLUMNS_KEY]) || !empty($config[self::PROPERTIES_KEY]);
+        $applicable = $this->accessor->getValue($config, self::COLUMNS_PATH)
+            || $this->accessor->getValue($config, self::PROPERTIES_PATH);
 
         // validate extension configuration
-        //$this->validateConfiguration($config, array(self::COLUMNS_KEY, self::PROPERTIES_KEY));
+        //$this->validateConfiguration($config);
 
         return $applicable;
     }
 
     /**
      * @param array $config config array
-     * @param array $keys   keys to validate
      *
      * @return bool
      */
-    public function validateConfiguration($config, $keys)
+    public function validateConfiguration($config)
     {
-        $config = array_intersect_key($config, array_flip($keys));
-
-        $columns = isset($config[self::COLUMNS_KEY]) ? $config[self::COLUMNS_KEY] : null;
-        $props = isset($config[self::PROPERTIES_KEY]) ? $config[self::PROPERTIES_KEY] : null;
+        $columns    = $this->accessor->getValue($config, self::COLUMNS_PATH) ? : array();
+        $properties = $this->accessor->getValue($config, self::PROPERTIES_PATH) ? : array();
 
         $processor = new Processor();
         $processor->processConfiguration(
-            new Configuration\Columns(array_keys($this->properties), $columns, $props),
+            new Configuration\Columns(array_keys($this->properties), $columns, $properties),
             array(
-                'columns_and_properties' => $config
+                'columns_and_properties' => array_merge($columns, $properties)
             )
         );
 
@@ -57,20 +57,12 @@ class FormatterExtension implements ExtensionVisitorInterface
     /**
      * {@inheritDoc}
      */
-    public function visitDatasource(array $config, DatasourceInterface $datasource)
-    {
-        // this extension do not affect source, do nothing
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function visitResult(array $config, \stdClass $result)
     {
         $rows       = (array)$result->rows;
         $results    = array();
-        $columns    = !empty($config[self::COLUMNS_KEY]) ? $config[self::COLUMNS_KEY] : array();
-        $properties = !empty($config[self::PROPERTIES_KEY]) ? $config[self::PROPERTIES_KEY] : array();
+        $columns    = $this->accessor->getValue($config, self::COLUMNS_PATH) ? : array();
+        $properties = $this->accessor->getValue($config, self::PROPERTIES_PATH) ? : array();
         $toProcess  = array_merge($columns, $properties);
 
         foreach ($rows as $row) {
@@ -86,6 +78,14 @@ class FormatterExtension implements ExtensionVisitorInterface
         }
 
         $result->rows = $results;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function visitMetadata(array $config, \stdClass $result)
+    {
+        // TODO: Implement visitMetadata() method.
     }
 
     /**
@@ -113,14 +113,11 @@ class FormatterExtension implements ExtensionVisitorInterface
     protected function getPropertyObject($name, array $config)
     {
         $config['name'] = $name;
-        $config['type'] = isset($config['type']) ? $config['type'] : 'field';
-        $propertyType   = $config['type'];
+        $config['type'] = $propertyType = $this->accessor->getValue($config, '[type]') ? : 'field';
 
-        if (!isset($this->properties[$propertyType])) {
+        if (!$property = $this->accessor->getValue($this->properties, "[$propertyType]")) {
             throw new \RuntimeException(sprintf('Property type "%s" not found', $propertyType));
         }
-
-        $property = $this->properties[$propertyType];
         $property->init($config);
 
         return $property;

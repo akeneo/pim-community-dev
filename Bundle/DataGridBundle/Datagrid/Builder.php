@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
@@ -12,6 +13,10 @@ use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 
 class Builder
 {
+    const DATASOURCE_PATH          = '[source]';
+    const DATASOURCE_TYPE_PATH     = '[source][type]';
+    const BASE_DATAGRID_CLASS_PATH = '[options][base_datagrid_class]';
+
     /** @var string */
     protected $baseDatagridClass;
 
@@ -27,11 +32,16 @@ class Builder
     /** @var ExtensionVisitorInterface[] */
     protected $extensions = array();
 
+    /** @var PropertyAccess */
+    protected $accessor;
+
     public function __construct($baseDatagridClass, $acceptorClass, EventDispatcher $eventDispatcher)
     {
         $this->baseDatagridClass = $baseDatagridClass;
         $this->acceptorClass     = $acceptorClass;
         $this->eventDispatcher   = $eventDispatcher;
+
+        $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -47,13 +57,16 @@ class Builder
         $class = $this->getBaseDatagridClass($config);
 
         /** @var Acceptor $acceptor */
-        $acceptor = new $this->acceptorClass();
+        $acceptor = new $this->acceptorClass($config);
         /** @var DatagridInterface $datagrid */
         $datagrid = new $class($name, $acceptor);
 
         $event = new BuildBefore($datagrid, $config);
         $this->eventDispatcher->dispatch(BuildBefore::NAME, $event);
+
+        // replace to config from event in case external changes
         $config = $event->getConfig();
+        $acceptor->setConfig($config);
 
         $this->buildDataSource($datagrid, $config);
 
@@ -62,7 +75,6 @@ class Builder
                 $datagrid->addExtension($extension);
             }
         }
-        $acceptor->setConfig($config);
 
         $event = new BuildAfter($datagrid);
         $this->eventDispatcher->dispatch(BuildAfter::NAME, $event);
@@ -112,17 +124,15 @@ class Builder
      */
     protected function buildDataSource(DatagridInterface $grid, array $config)
     {
-        if (!isset($config[DatasourceInterface::SOURCE_KEY], $config[DatasourceInterface::SOURCE_KEY]['type'])) {
+        if (!$sourceType = $this->accessor->getValue($config, self::DATASOURCE_TYPE_PATH)) {
             throw new \RuntimeException('Datagrid source does not configured');
         }
 
-        $sourceConfig = $config[DatasourceInterface::SOURCE_KEY];
-        $sourceType   = $sourceConfig[DatasourceInterface::TYPE_KEY];
         if (!isset($this->dataSources[$sourceType])) {
             throw new \RuntimeException(sprintf('Datagrid source "%s" does not exist', $sourceType));
         }
 
-        $this->dataSources[$sourceType]->process($grid, $sourceConfig);
+        $this->dataSources[$sourceType]->process($grid, $this->accessor->getValue($config, self::DATASOURCE_PATH));
     }
 
     /**
@@ -134,7 +144,6 @@ class Builder
      */
     protected function getBaseDatagridClass(array $config)
     {
-        return !empty($config['options']['base_datagrid_class'])
-            ? $config['options']['base_datagrid_class'] : $this->baseDatagridClass;
+        return $this->accessor->getValue($config, self::BASE_DATAGRID_CLASS_PATH) ? : $this->baseDatagridClass;
     }
 }

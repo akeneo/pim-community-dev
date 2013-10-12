@@ -9,28 +9,32 @@ class Acceptor
     /** @var array */
     protected $config;
 
+    public function __construct(array $config)
+    {
+        $this->setConfig($config);
+    }
+
     /**
-     * @param ExtensionVisitorInterface[] $extensions
-     * @param DatagridInterface           $grid
+     * @param DatagridInterface $grid
      *
      * @return void
      */
-    public function acceptDatasourceVisitors(array $extensions, DatagridInterface $grid)
+    public function acceptDatasourceVisitors(DatagridInterface $grid)
     {
-        foreach ($extensions as $extension) {
+        foreach ($grid->getExtensions() as $extension) {
             $extension->visitDatasource($this->getConfig(), $grid->getDatasource());
         }
     }
 
     /**
-     * @param ExtensionVisitorInterface[] $extensions
-     * @param \stdClass                   $result
+     * @param DatagridInterface $grid
+     * @param \stdClass         $result
      *
      * @return void
      */
-    public function acceptResult(array $extensions, \stdClass $result)
+    public function acceptResult(DatagridInterface $grid, \stdClass $result)
     {
-        foreach ($extensions as $extension) {
+        foreach ($grid->getExtensions() as $extension) {
             $extension->visitResult($this->getConfig(), $result);
         }
     }

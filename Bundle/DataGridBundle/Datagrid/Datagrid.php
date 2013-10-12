@@ -40,15 +40,13 @@ class Datagrid implements DatagridInterface
      */
     public function getData()
     {
-        $this->acceptor->acceptDatasourceVisitors($this->getExtensions(), $this);
-
         $result = new \stdClass();
 
         /** @var array $rows */
-        $rows = $this->getDatasource()->getResults();
+        $rows = $this->getAcceptedDatasource()->getResults();
 
         $result->rows = $rows;
-        $this->acceptor->acceptResult($this->getExtensions(), $result);
+        $this->acceptor->acceptResult($this, $result);
 
         return $result;
     }
@@ -87,5 +85,15 @@ class Datagrid implements DatagridInterface
     public function getDatasource()
     {
         return $this->datasource;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAcceptedDatasource()
+    {
+        $this->acceptor->acceptDatasourceVisitors($this);
+
+        return $this->getDatasource();
     }
 }
