@@ -108,6 +108,13 @@ You must give write permission to the Apache user on the following directories:
 - web/bundles
 - web/uploads/product
 
+Configure crontab
+-----------------
+
+To run following command every minute :
+
+php app/console pim:product:completeness-calculator
+
 Checking your System Configuration
 ----------------------------------
 
