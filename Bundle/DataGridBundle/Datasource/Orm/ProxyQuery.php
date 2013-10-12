@@ -18,16 +18,6 @@ class ProxyQuery implements ProxyQueryInterface
     /**
      * @var string
      */
-    protected $sortBy;
-
-    /**
-     * @var string
-     */
-    protected $sortOrder;
-
-    /**
-     * @var string
-     */
     protected $parameterUniqueId;
 
     /**
@@ -44,16 +34,6 @@ class ProxyQuery implements ProxyQueryInterface
      * @var string
      */
     protected $rootAlias;
-
-    /**
-     * @var array
-     */
-    protected $sortOrderList = array();
-
-    /**
-     * @var array
-     */
-    protected $selectWhitelist = array();
 
     /**
      * @var array
@@ -116,8 +96,6 @@ class ProxyQuery implements ProxyQueryInterface
     {
         $qb = clone $this->getQueryBuilder();
 
-        $this->applyOrderByParameters($qb);
-
         return $qb;
     }
 
@@ -148,23 +126,6 @@ class ProxyQuery implements ProxyQueryInterface
         }
 
         return (bool)preg_match($pattern, $dql . ' ');
-    }
-
-    /**
-     * Apply order by part
-     *
-     * @param  QueryBuilder $queryBuilder
-     *
-     * @return QueryBuilder
-     */
-    protected function applyOrderByParameters(QueryBuilder $queryBuilder)
-    {
-        foreach ($this->sortOrderList as $sortOrder) {
-            list($sortExpression, $extraSelect) = $sortOrder;
-            if ($extraSelect && !$this->hasSelectItem($queryBuilder, $sortExpression)) {
-                $queryBuilder->addSelect($extraSelect);
-            }
-        }
     }
 
     /**
@@ -225,7 +186,6 @@ class ProxyQuery implements ProxyQueryInterface
         $sortExpression = $this->getFieldFQN($sorter['data_name']);
 
         $this->getQueryBuilder()->addOrderBy($sortExpression, $direction);
-        $this->sortOrderList[] = array($sortExpression);
     }
 
     /**

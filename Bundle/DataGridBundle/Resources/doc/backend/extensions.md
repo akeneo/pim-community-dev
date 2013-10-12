@@ -10,6 +10,7 @@ Here's list of already implemented extensions:
 - [Formatter](extensions/formatter.md) - responsible for backend field formatting(e.g generating url using router, translate using symfony translator, etc..).
                                          Also this extension take care about passing columns configuration to view layer.
 - [Pager](extensions/pager.md) - responsible for pagination and passing "pager" configuration to view layer.
+- [Sorter](extensions/sorter.md) - responsible for sorting
 
 Customization
 -------------

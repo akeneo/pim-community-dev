@@ -63,4 +63,12 @@ interface DatagridInterface
      * @return array
      */
     public function getData();
+
+    /**
+     * Retrieve metadata from all extensions
+     * Metadata needed to create view layer
+     *
+     * @return \stdClass
+     */
+    public function getMetadata();
 }

@@ -40,6 +40,17 @@ class Acceptor
     }
 
     /**
+     * @param DatagridInterface $grid
+     * @param \stdClass         $data
+     */
+    public function acceptMetadata(DatagridInterface $grid, \stdClass $data)
+    {
+        foreach ($grid->getExtensions() as $extension) {
+            $extension->visitMetadata($this->getConfig(), $data);
+        }
+    }
+
+    /**
      * Setter for config
      *
      * @param array $config

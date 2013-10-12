@@ -8,6 +8,8 @@ parameters:
 
     oro_grid.provider.resolver.class:            Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver
 
+    oro_grid.twig.metadata.class:                Oro\Bundle\DataGridBundle\Twig\MetadataExtension
+
 services:
     oro_grid.datagrid.manager:
         class: %oro_grid.datagrid.manager.class%
@@ -32,3 +34,10 @@ services:
         class: %oro_grid.provider.resolver.class%
         arguments:
             - @service_container
+
+    oro_grid.twig.metadata:
+        class: %oro_grid.twig.metadata.class%
+        arguments:
+            - @oro_grid.datagrid.manager
+        tags:
+            - { name: twig.extension }

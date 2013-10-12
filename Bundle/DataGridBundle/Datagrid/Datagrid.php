@@ -54,6 +54,18 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritDoc}
      */
+    public function getMetadata()
+    {
+        $data = new \stdClass();
+
+        $this->acceptor->acceptMetadata($this, $data);
+
+        return $data;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function addExtension(ExtensionVisitorInterface $extension)
     {
         $this->extensions[] = clone $extension;
