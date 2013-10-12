@@ -122,10 +122,6 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
     protected function getHasProductExpression()
     {
         if (null === $this->hasProductExpression) {
-            /** @var EntityQueryFactory $queryFactory */
-            $queryFactory = $this->queryFactory;
-            $entityAlias  = $queryFactory->getAlias();
-
             $this->hasProductExpression =
                 "(CASE WHEN ".
                 "(o.variantGroup = %s OR o.id IN (:data_in)) ".
