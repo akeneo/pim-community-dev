@@ -76,5 +76,4 @@ class TwigTemplateProperty extends AbstractProperty
 
         return $this->template;
     }
-
 }

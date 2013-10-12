@@ -60,9 +60,6 @@ class ProxyQuery implements ProxyQueryInterface
      */
     protected $queryHints = array();
 
-    /**
-     * @param mixed $queryBuilder
-     */
     public function __construct($queryBuilder)
     {
         $this->queryBuilder      = $queryBuilder;
@@ -221,15 +218,14 @@ class ProxyQuery implements ProxyQueryInterface
      */
     public function addSortOrder($sorter, $direction = null)
     {
-        $extraSelect = null;
-        if (!empty($sorter['data_name'])) {
-            $sortExpression = $this->getFieldFQN($sorter['data_name']);
-        } else {
+        if (empty($sorter['data_name'])) {
             throw new \LogicException('Cannot add sorting order, unknown "data_name" in definition.');
         }
 
+        $sortExpression = $this->getFieldFQN($sorter['data_name']);
+
         $this->getQueryBuilder()->addOrderBy($sortExpression, $direction);
-        $this->sortOrderList[] = array($sortExpression, $extraSelect);
+        $this->sortOrderList[] = array($sortExpression);
     }
 
     /**
@@ -271,40 +267,6 @@ class ProxyQuery implements ProxyQueryInterface
     }
 
     /**
-     * Retrieve the column id of the targeted class
-     *
-     * @return string
-     */
-    protected function getIdFieldName()
-    {
-        if (!$this->idFieldName) {
-            /** @var $from \Doctrine\ORM\Query\Expr\From */
-            $from  = current($this->getQueryBuilder()->getDQLPart('from'));
-            $class = $from->getFrom();
-
-            $idNames = $this->getQueryBuilder()
-                ->getEntityManager()
-                ->getMetadataFactory()
-                ->getMetadataFor($class)
-                ->getIdentifierFieldNames();
-
-            $this->idFieldName = current($idNames);
-        }
-
-        return $this->idFieldName;
-    }
-
-    /**
-     * Get id field fully qualified name
-     *
-     * @return string
-     */
-    protected function getIdFieldFQN()
-    {
-        return $this->getFieldFQN($this->getIdFieldName());
-    }
-
-    /**
      * Get fields fully qualified name
      *
      * @param  string      $fieldName
@@ -319,47 +281,6 @@ class ProxyQuery implements ProxyQueryInterface
         }
 
         return $fieldName;
-    }
-
-    /**
-     * Proxy of QueryBuilder::addSelect with flag that specified whether add select to internal whitelist
-     *
-     * @param  string $select
-     * @param  bool   $addToWhitelist
-     *
-     * @return ProxyQuery
-     */
-    public function addSelect($select = null, $addToWhitelist = false)
-    {
-        if (empty($select)) {
-            return $this;
-        }
-
-        if (is_array($select)) {
-            $selects = $select;
-        } else {
-            $arguments   = func_get_args();
-            $lastElement = end($arguments);
-            if (is_bool($lastElement)) {
-                $selects        = array_slice($arguments, 0, -1);
-                $addToWhitelist = $lastElement;
-            } else {
-                $selects = $arguments;
-            }
-        }
-
-        if ($addToWhitelist) {
-            $this->selectWhitelist = array_merge($this->selectWhitelist, $selects);
-        }
-
-        $queryBuilder = $this->getQueryBuilder();
-        foreach ($selects as $select) {
-            if (!$addToWhitelist || $addToWhitelist && !$this->isInSelectExpression($queryBuilder, $select)) {
-                $queryBuilder->addSelect($select);
-            }
-        }
-
-        return $this;
     }
 
     /**

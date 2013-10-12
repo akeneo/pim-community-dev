@@ -30,8 +30,8 @@ interface ProxyQueryInterface
     /**
      * Adds sorting order
      *
-     * @param array  $sorter
-     * @param string $direction
+     * @param array       $sorter
+     * @param null|string $direction
      */
     public function addSortOrder($sorter, $direction = null);
 
@@ -41,16 +41,6 @@ interface ProxyQueryInterface
      * @return array
      */
     public function getTotalCount();
-
-    /**
-     * Adds select part to internal whitelist
-     *
-     * @param  string $select
-     * @param  bool   $addToWhitelist
-     *
-     * @return ProxyQueryInterface
-     */
-    public function addSelect($select = null, $addToWhitelist = false);
 
     /**
      * Gets the root alias of the query
