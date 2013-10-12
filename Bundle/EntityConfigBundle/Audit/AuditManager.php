@@ -69,11 +69,10 @@ class AuditManager
         $changes = $this->configManager->getConfigChangeSet($config);
 
         $configId        = $config->getId();
-        $configContainer = $this->configManager->getProvider($config->getId()->getScope())->getPropertyConfig();
-        $internalValues  = $configContainer->getInternalValues($configId);
+        $configContainer = $this->configManager->getProvider($configId->getScope())->getPropertyConfig();
+        $internalValues  = $configContainer->getNotAuditableValues($configId);
 
         $changes = array_diff_key($changes, $internalValues);
-
         if (!count($changes)) {
             return;
         }
