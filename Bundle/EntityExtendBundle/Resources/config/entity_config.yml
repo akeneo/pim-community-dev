@@ -255,7 +255,7 @@ oro_entity_config:
 
                 target_field:
                     options:
-                        allowed_type:       [oneToMany, manyToOne, manyToMany]
+                        allowed_type:       [manyToOne]
                         required_property:
                             config_id:
                                 field_name:  null
@@ -271,6 +271,54 @@ oro_entity_config:
                             attr:           {class: 'extend-rel-target-field'}
                             required:       true
                             label:          'Target field'
+                            empty_value:    'Please choice target field...'
+                            block:          entity
+                            subblock:       properties
+
+                target_grid:
+                    options:
+                        allowed_type:       [oneToMany, manyToMany]
+                        required_property:
+                            config_id:
+                                field_name:  null
+                                scope:      extend
+                            code:           is_extend
+                            value:          true
+                        serializable:       true
+                    constraints:
+                        - NotBlank:
+                            message: 'Please choice target field...'
+                    form:
+                        type:               oro_entity_target_field_type
+                        options:
+                            attr:           {class: 'extend-rel-target-field'}
+                            required:       true
+                            multiple:       true
+                            label:          'Grid field(s)'
+                            empty_value:    'Please choice target field...'
+                            block:          entity
+                            subblock:       properties
+
+                target_view:
+                    options:
+                        allowed_type:       [oneToMany, manyToMany]
+                        required_property:
+                            config_id:
+                                field_name:  null
+                                scope:      extend
+                            code:           is_extend
+                            value:          true
+                        serializable:       true
+                    constraints:
+                        - NotBlank:
+                            message: 'Please choice target field...'
+                    form:
+                        type:               oro_entity_target_field_type
+                        options:
+                            attr:           {class: 'extend-rel-target-field'}
+                            required:       true
+                            multiple:       true
+                            label:          'View field(s)'
                             empty_value:    'Please choice target field...'
                             block:          entity
                             subblock:       properties

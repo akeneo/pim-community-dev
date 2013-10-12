@@ -35,8 +35,9 @@ class TargetFieldSubscriber implements EventSubscriberInterface
     {
         $form = $event->getForm();
         $data = $form->getParent()->getData();
+        $name = $form->getName();
 
-        $config = $form->getParent()->get('target_field')->getConfig()->getOptions();
+        $config = $form->getParent()->get($name)->getConfig()->getOptions();
         if (array_key_exists('auto_initialize', $config)) {
             $config['auto_initialize'] = false;
         }
@@ -69,10 +70,7 @@ class TargetFieldSubscriber implements EventSubscriberInterface
                     );
 
                 foreach ($entityFields as $field) {
-                    $label                           = $entityConfigProvider->getConfig(
-                        $className,
-                        $field->getFieldName()
-                    )->get('label');
+                    $label = $entityConfigProvider->getConfig($className, $field->getFieldName())->get('label');
                     $choices[$field->getFieldName()] = $label ? : $field->getFieldName();
                 }
             }
@@ -85,11 +83,11 @@ class TargetFieldSubscriber implements EventSubscriberInterface
             $config['choices'] = $choices;
         }
 
-        $form->getParent()->add('target_field', 'choice', $config);
+        $form->getParent()->add($name, 'choice', $config);
 
-        if (isset($data['target_field']) && empty($data['target_field'])) {
+        if (isset($data[$name]) && empty($data[$name])) {
             $data['target_field'] = $this->request->request->get(
-                'oro_entity_config_type[extend][target_field]',
+                'oro_entity_config_type[extend]['.$name.']',
                 null,
                 true
             );
