@@ -226,8 +226,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             $product = $this->productManager->createProduct();
         }
 
-        $allAttributes = $product->getAllAttributes();
-
         foreach (array_keys($item) as $key) {
 
             if (in_array($key, array($this->categoriesColumn, $this->familyColumn, $this->variantGroupColumn))) {
