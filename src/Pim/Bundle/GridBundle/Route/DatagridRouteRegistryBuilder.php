@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\GridBundle\Route;
 
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 use Pim\Bundle\GridBundle\Exception\JavascriptRegexpTranslatorException;
 
 /**
@@ -29,7 +29,7 @@ class DatagridRouteRegistryBuilder
      * 
      * @param Router $router
      */
-    public function __construct(Router $router)
+    public function __construct(RouterInterface $router)
     {
         $this->router = $router;
     }
