@@ -53,10 +53,11 @@ class DatagridRouteRegistryBuilder
     public function getRegexps()
     {
         $regexps = array();
-        $routes = $this->router->getRouteCollection();
+        $routeCollection = $this->router->getRouteCollection();
         $translator = new JavascriptRegExpTranslator();
+
         foreach ($this->routes as $datagridName => $routeName) {
-            $route = $routes->get($routeName);
+            $route = $routeCollection->get($routeName);
             if ($route) {
                 try {
                     $regexps[$datagridName] = $translator->translate($route->compile()->getRegex());

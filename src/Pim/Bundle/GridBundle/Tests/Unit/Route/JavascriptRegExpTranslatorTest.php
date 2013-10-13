@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\GridBundle\Tests\Unit;
+namespace Pim\Bundle\GridBundle\Tests\Unit\Route;
 
 use Pim\Bundle\GridBundle\Route\JavascriptRegExpTranslator;
 

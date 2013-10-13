@@ -3,6 +3,7 @@
 namespace Pim\Bundle\GridBundle\Route;
 
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Config\ConfigCache;
 
 /**
  *
@@ -12,6 +13,11 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class DatagridRouteRegistry
 {
+    /**
+     * The name of the cache file
+     */
+    const CACHE_FILE = 'pim_datagrid_js_routes';
+
     /**
      * @var RouterInterface
      */
@@ -28,20 +34,33 @@ class DatagridRouteRegistry
     protected $regexps;
 
     /**
+     * @var boolean
+     */
+    protected $debugMode;
+
+    /**
+     * @var string
+     */
+    protected $cacheDir;
+
+    /**
      * Constructor 
      * 
      * @param RouterInterface $router
      * @param DatagridRouteRegistryBuilder $builder
      * @param string $cacheDir
+     * @paral bollean $debugMode
      */
-    public function __construct(RouterInterface $router, DatagridRouteRegistryBuilder $builder, $cacheDir = null)
-    {
+    public function __construct(
+        RouterInterface $router,
+        DatagridRouteRegistryBuilder $builder,
+        $cacheDir = null,
+        $debugMode = false
+    ) {
         $this->router = $router;
         $this->builder = $builder;
-
-        if (null !== $cacheDir && is_file($cache = $cacheDir.'/pim_datagrid_js_routes.php')) {
-            $this->regexps = require $cache;
-        }
+        $this->cacheDir = $cacheDir;
+        $this->debugMode = $debugMode;
     }
 
     /**
@@ -52,7 +71,7 @@ class DatagridRouteRegistry
     public function getRegexps()
     {
         if (!isset($this->regexps)) {
-            $this->regexps = $this->builder->getRegexps();
+            $this->setRegexpsFromCache();
         }
         $prefix = str_replace('/', '\\/', $this->router->getContext()->getBaseUrl());
 
@@ -62,5 +81,27 @@ class DatagridRouteRegistry
             },
             $this->regexps
         );
+    }
+
+    /**
+     * Sets the regexps from the cache
+     */
+    protected function setRegexpsFromCache()
+    {
+        if (null == $this->cacheDir) {
+            $this->regexps = $this->builder->getRegexps();
+
+            return;
+        }
+        
+        $cache = new ConfigCache(sprintf('%s/%s', $this->cacheDir, self::CACHE_FILE), $this->debugMode);
+        if (!$cache->isFresh()){
+            $cache->write(
+                sprintf('<?php return %s;', var_export($this->builder->getRegexps(), true)),
+                $this->router->getRouteCollection()->getResources()
+            );
+        }
+
+        $this->regexps = include $cache;
     }
 }

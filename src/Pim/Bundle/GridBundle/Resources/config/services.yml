@@ -31,6 +31,7 @@ services:
     pim_grid.routes_registry.builder:
         class: %pim_grid.routes_registry.builder.class%
         private: true
+        lazy: true
         arguments:
             - '@router'
 

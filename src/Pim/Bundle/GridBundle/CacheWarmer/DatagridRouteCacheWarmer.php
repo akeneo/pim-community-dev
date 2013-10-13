@@ -4,6 +4,7 @@ namespace Pim\Bundle\GridBundle\CacheWarmer;
 
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmer;
 use Pim\Bundle\GridBundle\Route\DatagridRouteRegistryBuilder;
+use Pim\Bundle\GridBundle\Route\DatagridRouteRegistry;
 
 /**
  * Creates cache of datagrid routes
@@ -43,7 +44,7 @@ class DatagridRouteCacheWarmer extends CacheWarmer
     public function warmUp($cacheDir)
     {
         $this->writeCacheFile(
-            sprintf('%s/pim_datagrid_js_routes.php', $cacheDir),
+            sprintf('%s/%s', $cacheDir, DatagridRouteRegistry::CACHE_FILE),
             sprintf('<?php return %s;', var_export($this->builder->getRegexps(), true))
         );
     }
