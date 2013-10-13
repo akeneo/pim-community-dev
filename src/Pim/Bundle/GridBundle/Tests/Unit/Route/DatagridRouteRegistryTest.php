@@ -23,7 +23,7 @@ class DatagridRouteRegistryTest extends \PHPUnit_Framework_TestCase
     {
         if ($this->cacheDir) {
             $f = new Filesystem;
-            $f->remove($this->CacheDir);
+            $f->remove($this->cacheDir);
         }
     }
 
@@ -65,7 +65,7 @@ class DatagridRouteRegistryTest extends \PHPUnit_Framework_TestCase
 
         $routingContext = $this->getMockBuilder('Symfony\Component\Routing\RequestContext')
             ->getMock();
-        $routingContext->expects($this->once())
+        $routingContext->expects($this->any())
             ->method('getBaseUrl')
             ->will($this->returnValue('/base_url/'));
 
@@ -92,12 +92,15 @@ class DatagridRouteRegistryTest extends \PHPUnit_Framework_TestCase
             fwrite($f, sprintf('<?php return %s;', var_export($input, true)));
             fclose($f);
         } else {
-            $builder->expects($this->any())
+            $builder->expects($this->once())
                 ->method('getRegexps')
                 ->will($this->returnValue($input));
         }
 
         $registry = new DatagridRouteRegistry($router, $builder, $this->cacheDir, FALSE);
+        $this->assertEquals($expected, $registry->getRegexps());
+
+        //Call a second time to ensure data is cached
         $this->assertEquals($expected, $registry->getRegexps());
     }
 
