@@ -23,7 +23,7 @@ class DatagridRouteRegistryTest extends \PHPUnit_Framework_TestCase
     {
         if ($this->cacheDir) {
             $f = new Filesystem;
-            $f->remove($this->cacheDir);
+            $f->remove($this->CacheDir);
         }
     }
 
@@ -73,6 +73,7 @@ class DatagridRouteRegistryTest extends \PHPUnit_Framework_TestCase
         $router->expects($this->any())
                 ->method('getRouteCollection')
                 ->will($this->returnValue($routeCollection));
+        
         $router->expects($this->any())
             ->method('getContext')
             ->will($this->returnValue($routingContext));
@@ -80,21 +81,23 @@ class DatagridRouteRegistryTest extends \PHPUnit_Framework_TestCase
         $builder = $this->getMockBuilder('Pim\Bundle\GridBundle\Route\DatagridRouteRegistryBuilder')
                 ->disableOriginalConstructor()
                 ->getMock();
-        $builder->expects($this->any())
-                ->method('getRegexps')
-                ->will($this->returnValue($input));
-
-        if ($cacheMode && !$expired) {
+        if ($cacheMode) {
             $this->cacheDir = tempnam('/tmp', 'pim_tests_dategridrouteregistry');
             unlink($this->cacheDir);
             mkdir($this->cacheDir);
+        }
+        if ($cacheMode && !$expired) {
             $cacheFile = sprintf('%s/%s', $this->cacheDir, DatagridRouteRegistry::CACHE_FILE);
             $f = fopen($cacheFile, 'w');
             fwrite($f, sprintf('<?php return %s;', var_export($input, true)));
             fclose($f);
+        } else {
+            $builder->expects($this->any())
+                ->method('getRegexps')
+                ->will($this->returnValue($input));
         }
 
-        $registry = new DatagridRouteRegistry($router, $builder, $this->cacheDir, TRUE);
+        $registry = new DatagridRouteRegistry($router, $builder, $this->cacheDir, FALSE);
         $this->assertEquals($expected, $registry->getRegexps());
     }
 
