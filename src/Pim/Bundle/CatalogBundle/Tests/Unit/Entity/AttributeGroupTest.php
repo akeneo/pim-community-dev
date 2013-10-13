@@ -191,6 +191,21 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test getter for max attribute sort order
+     */
+    public function testGetMaxAttributeSortOrder()
+    {
+        $max = 5;
+        for ($i = 1; $i <= $max; $i++) {
+            $attribute = new ProductAttribute();
+            $attribute->setSortOrder($i);
+            $this->group->addAttribute($attribute);
+        }
+
+        $this->assertEquals($this->group->getMaxAttributeSortOrder(), $max);
+    }
+
+    /**
      * Test getter/setter for translations property
      */
     public function testTranslations()
