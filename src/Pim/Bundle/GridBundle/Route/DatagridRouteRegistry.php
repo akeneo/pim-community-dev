@@ -6,6 +6,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Config\ConfigCache;
 
 /**
+ * Registry of datagrid routes
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

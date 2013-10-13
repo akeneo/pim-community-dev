@@ -24,7 +24,7 @@ class DatagridRouteRegistryBuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-        /**
+    /**
      * @dataProvider getTestData
      * @param array $input
      * @param array $expected
