@@ -64,8 +64,7 @@ class ProductManager extends FlexibleManager
             $flexibleConfig,
             $storageManager,
             $eventDispatcher,
-            $attributeTypeFactory,
-            $completenessCalculator
+            $attributeTypeFactory
         );
 
         $this->mediaManager           = $mediaManager;
