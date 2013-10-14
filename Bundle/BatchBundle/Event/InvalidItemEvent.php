@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\BatchBundle\Event;
 
-use Oro\Bundle\NotificationBundle\Entity\Event;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Invalid Item Event
