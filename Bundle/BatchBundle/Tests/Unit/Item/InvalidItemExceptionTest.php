@@ -1,6 +1,8 @@
 <?php
 
-namespace Oro\Bundle\BatchBundle\Item;
+namespace Oro\Bundle\BatchBundle\Tests\Unit\Item;
+
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Test related class
