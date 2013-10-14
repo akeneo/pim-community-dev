@@ -176,6 +176,12 @@ class ItemStep extends AbstractStep
                     continue;
                 }
             } catch (InvalidItemException $e) {
+                $stepExecution->addError(
+                    get_class($this->reader),
+                    $e->getMessage(),
+                    $e->getItem()
+                );
+
                 $this->dispatchInvalidItemEvent(
                     get_class($this->reader),
                     $e->getMessage(),
@@ -197,6 +203,12 @@ class ItemStep extends AbstractStep
                     );
                 }
             } catch (InvalidItemException $e) {
+                $stepExecution->addError(
+                    get_class($this->processor),
+                    $e->getMessage(),
+                    $e->getItem()
+                );
+
                 $this->dispatchInvalidItemEvent(
                     get_class($this->processor),
                     $e->getMessage(),
@@ -213,6 +225,12 @@ class ItemStep extends AbstractStep
                     $this->writer->write($itemsToWrite);
                     $itemsToWrite = array();
                 } catch (InvalidItemException $e) {
+                    $stepExecution->addError(
+                        get_class($this->writer),
+                        $e->getMessage(),
+                        $e->getItem()
+                    );
+
                     $this->dispatchInvalidItemEvent(
                         get_class($this->processor),
                         $e->getMessage(),
@@ -229,6 +247,12 @@ class ItemStep extends AbstractStep
                 $this->writer->write($itemsToWrite);
                 $itemsToWrite = array();
             } catch (InvalidItemException $e) {
+                $stepExecution->addError(
+                    get_class($this->writer),
+                    $e->getMessage(),
+                    $e->getItem()
+                );
+
                 $this->dispatchInvalidItemEvent(
                     get_class($this->processor),
                     $e->getMessage(),

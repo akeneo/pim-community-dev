@@ -126,30 +126,17 @@ class StepExecution
     /**
      * @var array
      *
-     * @ORM\Column(name="errors", type="array", nullable=true)
+     * @ORM\Column(name="errors", type="array")
      */
-    private $errors = null;
+    private $errors = array();
 
     /**
      * @var array
      *
-     * @ORM\Column(name="reader_warnings", type="array", nullable=true)
+     * @ORM\Column(name="warnings", type="array")
      */
-    private $readerWarnings = array();
+    private $warnings = array();
 
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="filter_warnings", type="array", nullable=true)
-     */
-    private $filterWarnings = array();
-
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="writer_warnings", type="array", nullable=true)
-     */
-    private $writerWarnings = array();
 
     /**
      * Constructor with mandatory properties.
@@ -267,32 +254,6 @@ class StepExecution
     }
 
     /**
-     * Add a reader warning
-     *
-     * @param string $reader
-     * @param string $message
-     * @param mixed  $data
-     */
-    public function addReaderWarning($reader, $message, $data)
-    {
-        $this->readerWarnings[] = array(
-            'reader' => $reader,
-            'reason' => $message,
-            'data'   => $data,
-        );
-    }
-
-    /**
-     * Get the reader warnings
-     *
-     * @return array[]
-     */
-    public function getReaderWarnings()
-    {
-        return $this->readerWarnings;
-    }
-
-    /**
      * Returns the current number of items written for this execution
      *
      * @return the current number of items written for this execution
@@ -325,32 +286,6 @@ class StepExecution
     }
 
     /**
-     * Add a writer warning
-     *
-     * @param string $writer
-     * @param string $message
-     * @param mixed  $data
-     */
-    public function addWriterWarning($writer, $message, $data)
-    {
-        $this->writerWarnings[] = array(
-            'writer' => $writer,
-            'reason' => $message,
-            'data'   => $data,
-        );
-    }
-
-    /**
-     * Get the writer warnings
-     *
-     * @return array[]
-     */
-    public function getWriterWarnings()
-    {
-        return $this->writerWarnings;
-    }
-
-    /**
      * Returns the current number of items filtered out of this execution
      *
      * @return the current number of items filtered out of this execution
@@ -374,16 +309,6 @@ class StepExecution
             'reason' => $message,
             'data'   => $data,
         );
-    }
-
-    /**
-     * Get the filter warnings
-     *
-     * @return array[]
-     */
-    public function getFilterWarnings()
-    {
-        return $this->filterWarnings;
     }
 
     /**
@@ -564,6 +489,32 @@ class StepExecution
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    /**
+     * Add a warning
+     *
+     * @param string $class
+     * @param string $reason
+     * @param mixed  $item
+     */
+    public function addWarning($class, $reason, $item)
+    {
+        $this->warnings[] = array(
+            'class'  => $class,
+            'reason' => $reason,
+            'item'   => $item,
+        );
+    }
+
+    /**
+     * Get the warnings
+     *
+     * @return array[]
+     */
+    public function getWarnings()
+    {
+        return $this->warnings;
     }
 
     /**
