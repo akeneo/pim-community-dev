@@ -4,6 +4,7 @@ namespace Pim\Bundle\GridBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Pim\Bundle\GridBundle\Route\DatagridRouteRegistry;
 
 /**
  * Registers routes for the datagrids
@@ -29,6 +30,11 @@ class DatagridRoutesPass implements CompilerPassInterface
             if (isset($tag[0]['datagrid_name']) && isset($tag[0]['route_name'])) {
                 $registryService->addMethodCall('addRoute', array($tag[0]['datagrid_name'], $tag[0]['route_name']));
             }
+        }
+
+        $cacheFile = sprintf('%s/%s', $container->getParameter('kernel.cache_dir'), DatagridRouteRegistry::CACHE_FILE);
+        if (is_file($cacheFile)) {
+            unlink($cacheFile);
         }
     }
 }
