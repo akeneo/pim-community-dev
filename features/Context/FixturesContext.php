@@ -54,6 +54,7 @@ class FixturesContext extends RawMinkContext
         'image'       => 'pim_catalog_image',
         'file'        => 'pim_catalog_file',
         'multiselect' => 'pim_catalog_multiselect',
+        'simpleselect' => 'pim_catalog_simpleselect',
     );
 
     private $placeholderValues = array();
@@ -349,10 +350,25 @@ class FixturesContext extends RawMinkContext
     public function theFollowingAttributeGroups(TableNode $table)
     {
         foreach ($table->getHash() as $index => $data) {
-            $group = new AttributeGroup();
-            $group->setCode($this->camelize($data['label']));
-            $group->setLocale('en_US')->setLabel($data['label']); // TODO translation refactoring
-            $group->setSortOrder($index);
+            $data = array_merge(
+                array(
+                    'locale' => 'english'
+                ),
+                $data
+            );
+
+            $group = $this->getGroup($data['code']);
+
+            if (!$group) {
+                $group = new AttributeGroup();
+                $group->setSortOrder($index);
+                $group->setCode($data['code']);
+            }
+
+            $group
+                ->setLocale($this->getLocaleCode($data['locale']))
+                ->setLabel($data['label']);
+
 
             $this->persist($group);
         }
@@ -458,6 +474,20 @@ class FixturesContext extends RawMinkContext
                         foreach ($prices as $price) {
                             $value->addPrice($price);
                         }
+                    } elseif ($value->getAttribute()->getAttributeType() === $this->attributeTypes['simpleselect']) {
+                        $options = $value->getAttribute()->getOptions();
+                        $optionValue = null;
+                        foreach ($options as $option) {
+                            if ($option->getCode() === $data['value']) {
+                                $optionValue = $option;
+                            }
+                        }
+
+                        if ($optionValue === null) {
+                            throw new \Exception(sprintf('Unknown option value "%s"', $data['value']));
+                        }
+
+                        $value->setData($optionValue);
                     } else {
                         $value->setData($data['value']);
                     }
@@ -536,6 +566,23 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Then /^there should be the following categories:$/
+     */
+    public function thereShouldBeTheFollowingCategories(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $category = $this->getCategory($data['code']);
+
+            assertEquals($data['label'], $category->getTranslation('en_US')->getLabel());
+            if (empty($data['parent'])) {
+                assertNull($category->getParent());
+            } else {
+                assertEquals($data['parent'], $category->getParent()->getCode());
+            }
+        }
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^the following channels?:$/
@@ -601,6 +648,7 @@ class FixturesContext extends RawMinkContext
                     'scopable'    => 'no',
                     'localizable' => 'no',
                     'group'       => null,
+                    'type'        => 'pim_catalog_text'
                 ),
                 $data
             );
@@ -621,6 +669,23 @@ class FixturesContext extends RawMinkContext
 
             $this->persist($attribute);
         }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following attribute label translations:$/
+     */
+    public function theFollowingAttributeLabelTranslations(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this
+                ->getAttribute($data['attribute'])
+                ->setLocale($this->getLocaleCode($data['lang']))
+                ->setLabel($data['label']);
+        }
+
+        $this->flush();
     }
 
     /**

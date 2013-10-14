@@ -52,7 +52,6 @@ Feature: Execute a job
       | processor | enabled           | yes                  |
       | processor | categories column | categories           |
       | processor | family column     | families             |
-      | processor | channel           | ecommerce            |
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
@@ -81,7 +80,6 @@ Feature: Execute a job
       | processor | enabled           | yes                  |
       | processor | categories column | categories           |
       | processor | family column     | families             |
-      | processor | channel           | ecommerce            |
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
@@ -111,7 +109,6 @@ Feature: Execute a job
       | processor | enabled           | yes                  |
       | processor | categories column | categories           |
       | processor | family column     | families             |
-      | processor | channel           | ecommerce            |
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
@@ -145,7 +142,6 @@ Feature: Execute a job
       | processor | enabled           | yes        |
       | processor | categories column | categories |
       | processor | family column     | families   |
-      | processor | channel           | ecommerce  |
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I upload and import the file "{{ file to import }}"
@@ -172,7 +168,6 @@ Feature: Execute a job
       | processor | enabled           | yes                  |
       | processor | categories column | categories           |
       | processor | family column     | families             |
-      | processor | channel           | ecommerce            |
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
@@ -205,7 +200,6 @@ Feature: Execute a job
       | processor | enabled           | yes                  |
       | processor | categories column | categories           |
       | processor | family column     | families             |
-      | processor | channel           | ecommerce            |
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job

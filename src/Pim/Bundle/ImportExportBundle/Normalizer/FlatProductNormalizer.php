@@ -64,20 +64,24 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $this->results = array();
-
-        $this->normalizeValue($identifier = $object->getIdentifier());
+        $this->results = $this->normalizeValue($identifier = $object->getIdentifier());
 
         $this->normalizeFamily($object->getFamily());
 
         $this->normalizeVariantGroup($object->getVariantGroup());
 
+        $values = array();
         foreach ($object->getValues() as $value) {
             if ($value === $identifier) {
                 continue;
             }
-            $this->normalizeValue($value);
+            $values = array_merge(
+                $values,
+                $this->normalizeValue($value)
+            );
         }
+        ksort($values);
+        $this->results = array_merge($this->results, $values);
 
         $this->normalizeCategories($object->getCategoryCodes());
 
@@ -101,6 +105,8 @@ class FlatProductNormalizer implements NormalizerInterface
      * Normalizes a value
      *
      * @param mixed $value
+     *
+     * @return array
      */
     protected function normalizeValue($value)
     {
@@ -108,7 +114,7 @@ class FlatProductNormalizer implements NormalizerInterface
             $data = $value->getData();
 
             if ($data instanceof \DateTime) {
-                $data = $data->format('r');
+                $data = $data->format('m/d/Y');
             } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
                 $data = $data->getCode();
             } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
@@ -128,7 +134,7 @@ class FlatProductNormalizer implements NormalizerInterface
             return;
         }
 
-        $this->results[$this->getFieldValue($value)] = (string) $data;
+        return array($this->getFieldValue($value) => (string) $data);
     }
 
     /**
@@ -141,8 +147,12 @@ class FlatProductNormalizer implements NormalizerInterface
     protected function getFieldValue($value)
     {
         $suffix = '';
+
         if ($value->getAttribute()->getTranslatable()) {
-            $suffix = $suffix = sprintf('-%s', $value->getLocale());
+            $suffix = sprintf('-%s', $value->getLocale());
+        }
+        if ($value->getAttribute()->getScopable()) {
+            $suffix .= sprintf('-%s', $value->getScope());
         }
 
         return $value->getAttribute()->getCode() . $suffix;

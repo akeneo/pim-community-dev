@@ -4,9 +4,9 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
 use Pim\Bundle\ImportExportBundle\Processor\ValidProductCreationProcessor;
 use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
-use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
  * Test related class
@@ -24,13 +24,11 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $this->formFactory    = $this->getFormFactoryMock();
         $this->productManager = $this->getProductManagerMock();
-        $this->channelManager = $this->getChannelManagerMock();
         $this->localeManager  = $this->getLocaleManagerMock();
 
         $this->processor = new ValidProductCreationProcessor(
             $this->formFactory,
             $this->productManager,
-            $this->channelManager,
             $this->localeManager
         );
     }
@@ -63,7 +61,6 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->with(
                 array(
                     ProductEnabledConverter::ENABLED_KEY       => true,
-                    ProductValueConverter::SCOPE_KEY           => 'ecommerce',
                     ProductFamilyConverter::FAMILY_KEY         => 'vehicle',
                     ProductCategoriesConverter::CATEGORIES_KEY => 'cat_1,cat_2,cat_3',
                     'sku'                                      => 'foo-1',
@@ -73,7 +70,6 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $this->processor->setChannel('ecommerce');
         $this->processor->setEnabled(true);
         $this->processor->setFamilyColumn('family');
         $this->processor->setCategoriesColumn('categories');
@@ -195,17 +191,6 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\ChannelManager
-     */
-    protected function getChannelManagerMock()
-    {
-        return $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
      * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
      */
     protected function getLocaleManagerMock()
@@ -269,7 +254,28 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getProductMock()
     {
-        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+
+        $attSku = new ProductAttribute();
+        $attSku->setCode('sku');
+        $attFoo = new ProductAttribute();
+        $attFoo->setCode('foo');
+        $attName = new ProductAttribute();
+        $attName->setCode('name');
+        $attName->setTranslatable(true);
+        $attDesc = new ProductAttribute();
+        $attDesc->setCode('description');
+        $attributes = array(
+            'sku' => $attSku,
+            'name' => $attName,
+            'description' => $attDesc,
+            'foo' => $attFoo
+        );
+        $product->expects($this->any())
+            ->method('getAllAttributes')
+            ->will($this->returnValue($attributes));
+
+        return $product;
     }
 
     /**

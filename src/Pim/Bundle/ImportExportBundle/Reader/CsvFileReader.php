@@ -35,7 +35,6 @@ class CsvFileReader extends CsvReader
 
         while ($row = parent::read()) {
             $data[] = $row;
-            $this->stepExecution->incrementReadCount();
         }
 
         return $data;

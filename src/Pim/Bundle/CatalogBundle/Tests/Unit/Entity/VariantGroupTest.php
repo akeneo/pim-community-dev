@@ -46,6 +46,14 @@ class VariantGroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test getter for id property
+     */
+    public function testId()
+    {
+        $this->assertEmpty($this->variant->getId());
+    }
+
+    /**
      * Test getter/setter for code property
      */
     public function testGetSetCode()
@@ -127,6 +135,21 @@ class VariantGroupTest extends \PHPUnit_Framework_TestCase
             $this->variant->getAttributes()->first()
         );
         $this->assertCount(0, $this->variant->getAttributes());
+    }
+
+    /**
+     * Test getter for attribute ids
+     */
+    public function testGetAttributeIds()
+    {
+        $expectedIds = array(1, 4, 6);
+        foreach ($expectedIds as $id) {
+            $attribute = new ProductAttribute();
+            $attribute->setId($id);
+            $this->variant->addAttribute($attribute);
+        }
+
+        $this->assertEquals($expectedIds, $this->variant->getAttributeIds());
     }
 
     /**

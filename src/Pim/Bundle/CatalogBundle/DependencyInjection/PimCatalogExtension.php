@@ -64,80 +64,32 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
     {
         $bundles = $container->getParameter('kernel.bundles');
 
-        if (isset($bundles['TwigBundle'])) {
-            $this->prependExtensionConfig($container, 'twig');
-        }
+        $prependConfig = array(
+            'TwigBundle'                     => 'twig',
+            'AsseticBundle'                  => 'assetic',
+            'DoctrineBundle'                 => 'doctrine',
+            'KnpPaginatorBundle'             => 'knp_paginator',
+            'FOSRestBundle'                  => 'fos_rest',
+            'FOSJsRoutingBundle'             => 'fos_js_routing',
+            'BeSimpleSoapBundle'             => 'be_simple_soap',
+            'StofDoctrineExtensionsBundle'   => 'stof_doctrine_extensions',
+            'EscapeWSSEAuthenticationBundle' => 'escape_wsse_authentication',
+            'LiipImagineBundle'              => 'liip_imagine',
+            'GenemuFormBundle'               => 'genemu_form',
+            'OroSearchBundle'                => 'oro_search',
+            'OroUIBundle'                    => 'oro_ui',
+            'OroTranslationBundle'           => 'oro_translation',
+            'JMSDiExtraBundle'               => 'jms_di_extra',
+            'OroEntityExtendBundle'          => 'oro_entity_extend',
+            'OroFilterBundle'                => 'oro_filter',
+            'OroBatchBundle'                 => 'oro_batch',
+            'KnpGaufretteBundle'             => 'knp_gaufrette',
+        );
 
-        if (isset($bundles['AsseticBundle'])) {
-            $this->prependExtensionConfig($container, 'assetic');
-        }
-
-        if (isset($bundles['DoctrineBundle'])) {
-            $this->prependExtensionConfig($container, 'doctrine');
-        }
-
-        if (isset($bundles['KnpPaginatorBundle'])) {
-            $this->prependExtensionConfig($container, 'knp_paginator');
-        }
-
-        if (isset($bundles['FOSRestBundle'])) {
-            $this->prependExtensionConfig($container, 'fos_rest');
-        }
-
-        if (isset($bundles['FOSJsRoutingBundle'])) {
-            $this->prependExtensionConfig($container, 'fos_js_routing');
-        }
-
-        if (isset($bundles['BeSimpleSoapBundle'])) {
-            $this->prependExtensionConfig($container, 'be_simple_soap');
-        }
-
-        if (isset($bundles['StofDoctrineExtensionsBundle'])) {
-            $this->prependExtensionConfig($container, 'stof_doctrine_extensions');
-        }
-
-        if (isset($bundles['EscapeWSSEAuthenticationBundle'])) {
-            $this->prependExtensionConfig($container, 'escape_wsse_authentication');
-        }
-
-        if (isset($bundles['LiipImagineBundle'])) {
-            $this->prependExtensionConfig($container, 'liip_imagine');
-        }
-
-        if (isset($bundles['GenemuFormBundle'])) {
-            $this->prependExtensionConfig($container, 'genemu_form');
-        }
-
-        if (isset($bundles['OroSearchBundle'])) {
-            $this->prependExtensionConfig($container, 'oro_search');
-        }
-
-        if (isset($bundles['OroUIBundle'])) {
-            $this->prependExtensionConfig($container, 'oro_ui');
-        }
-
-        if (isset($bundles['OroTranslationBundle'])) {
-            $this->prependExtensionConfig($container, 'oro_translation');
-        }
-
-        if (isset($bundles['JMSDiExtraBundle'])) {
-            $this->prependExtensionConfig($container, 'jms_di_extra');
-        }
-
-        if (isset($bundles['OroEntityExtendBundle'])) {
-            $this->prependExtensionConfig($container, 'oro_entity_extend');
-        }
-
-        if (isset($bundles['OroFilterBundle'])) {
-            $this->prependExtensionConfig($container, 'oro_filter');
-        }
-
-        if (isset($bundles['OroBatchBundle'])) {
-            $this->prependExtensionConfig($container, 'oro_batch');
-        }
-
-        if (isset($bundles['KnpGaufretteBundle'])) {
-            $this->prependExtensionConfig($container, 'knp_gaufrette');
+        foreach ($prependConfig as $bundle => $alias) {
+            if (isset($bundles[$bundle])) {
+                $this->prependExtensionConfig($container, $alias);
+            }
         }
     }
 
