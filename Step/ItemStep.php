@@ -188,7 +188,13 @@ class ItemStep extends AbstractStep
             // Processing
             try {
                 if (null === $processedItem = $this->processor->process($item)) {
-                    continue;
+                    throw new \Exception(
+                        sprintf(
+                            'Processor %s returned unexpected value: NULL. ' .
+                            'Use Oro\Bundle\BatchBundle\Item\InvalidItemException to warn invalid value.',
+                            get_class($this->processor)
+                        )
+                    );
                 }
             } catch (InvalidItemException $e) {
                 $this->dispatchInvalidItemEvent(

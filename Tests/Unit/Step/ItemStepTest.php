@@ -133,7 +133,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->with($stepExecution);
         $processor->expects($this->exactly(7))
             ->method('process')
-            ->will($this->onConsecutiveCalls(1, null, 3, 4, 5, 6, 7, null));
+            ->will($this->onConsecutiveCalls(1, 2, 3, 4, 5, 6, 7));
 
         $writer = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\WriterStub')
             ->setMethods(array('setStepExecution', 'write'))
@@ -296,6 +296,47 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $this->itemStep->setWriter($writer);
 
         $this->itemStep->setBatchSize(5);
+        $this->itemStep->execute($stepExecution);
+    }
+
+    public function testProcessShouldNotReturnNull()
+    {
+        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $stepExecution->expects($this->any())
+            ->method('getStatus')
+            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
+
+        $stepExecution->expects($this->once())
+            ->method('addFailureException');
+
+
+        $this->eventDispatcher
+            ->expects($this->at(1))
+            ->method('dispatch')
+            ->with(
+                EventInterface::STEP_EXECUTION_ERRORED,
+                $this->anything()
+            );
+
+
+        $reader = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
+        $reader->expects($this->any())
+            ->method('read')
+            ->will($this->returnValue(array('foo' => 'bar')));
+
+        $processor = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemProcessorInterface');
+        $processor->expects($this->any())
+            ->method('process')
+            ->will($this->returnValue(null));
+
+        $writer = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemWriterInterface');
+
+        $this->itemStep->setReader($reader);
+        $this->itemStep->setProcessor($processor);
+        $this->itemStep->setWriter($writer);
+
         $this->itemStep->execute($stepExecution);
     }
 
