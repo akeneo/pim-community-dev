@@ -22,8 +22,7 @@ use Oro\Bundle\SecurityBundle\Acl\Cache\OidAncestorsCache;
 /**
  * This is a copy of Symfony\Component\Security\Acl\Dbal\MutableAclProvider class
  *
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ * @SuppressWarnings(PHPMD)
  */
 class BaseMutableAclProvider extends AclProvider implements MutableAclProviderInterface, PropertyChangedListener
 {
@@ -419,8 +418,18 @@ class BaseMutableAclProvider extends AclProvider implements MutableAclProviderIn
      * @param Boolean      $auditFailure
      * @return string
      */
-    protected function getInsertAccessControlEntrySql($classId, $objectIdentityId, $field, $aceOrder, $securityIdentityId, $strategy, $mask, $granting, $auditSuccess, $auditFailure)
-    {
+    protected function getInsertAccessControlEntrySql(
+        $classId,
+        $objectIdentityId,
+        $field,
+        $aceOrder,
+        $securityIdentityId,
+        $strategy,
+        $mask,
+        $granting,
+        $auditSuccess,
+        $auditFailure
+    ) {
         $query = <<<QUERY
             INSERT INTO %s (
                 class_id,
@@ -552,10 +561,12 @@ QUERY;
             $this->options['entry_table_name'],
             $classId,
             null === $oid ?
-                $this->connection->getDatabasePlatform()->getIsNullExpression('object_identity_id')
+                $this->connection->getDatabasePlatform()
+                    ->getIsNullExpression('object_identity_id')
                 : 'object_identity_id = '.intval($oid),
             null === $field ?
-                $this->connection->getDatabasePlatform()->getIsNullExpression('field_name')
+                $this->connection->getDatabasePlatform()
+                    ->getIsNullExpression('field_name')
                 : 'field_name = '.$this->connection->quote($field),
             $order
         );
@@ -779,7 +790,20 @@ QUERY;
 
                     $objectIdentityId = $name === 'classFieldAces' ? null : $ace->getAcl()->getId();
 
-                    $this->connection->executeQuery($this->getInsertAccessControlEntrySql($classId, $objectIdentityId, $field, $i, $sid, $ace->getStrategy(), $ace->getMask(), $ace->isGranting(), $ace->isAuditSuccess(), $ace->isAuditFailure()));
+                    $this->connection->executeQuery(
+                        $this->getInsertAccessControlEntrySql(
+                            $classId,
+                            $objectIdentityId,
+                            $field,
+                            $i,
+                            $sid,
+                            $ace->getStrategy(),
+                            $ace->getMask(),
+                            $ace->isGranting(),
+                            $ace->isAuditSuccess(),
+                            $ace->isAuditFailure()
+                        )
+                    );
                     $aceId = $this->connection->executeQuery($this->getSelectAccessControlEntryIdSql($classId, $objectIdentityId, $field, $i))->fetchColumn();
                     $this->loadedAces[$aceId] = $ace;
 
@@ -836,7 +860,20 @@ QUERY;
 
                 $objectIdentityId = $name === 'classAces' ? null : $ace->getAcl()->getId();
 
-                $this->connection->executeQuery($this->getInsertAccessControlEntrySql($classId, $objectIdentityId, null, $i, $sid, $ace->getStrategy(), $ace->getMask(), $ace->isGranting(), $ace->isAuditSuccess(), $ace->isAuditFailure()));
+                $this->connection->executeQuery(
+                    $this->getInsertAccessControlEntrySql(
+                        $classId,
+                        $objectIdentityId,
+                        null,
+                        $i,
+                        $sid,
+                        $ace->getStrategy(),
+                        $ace->getMask(),
+                        $ace->isGranting(),
+                        $ace->isAuditSuccess(),
+                        $ace->isAuditFailure()
+                    )
+                );
                 $aceId = $this->connection->executeQuery($this->getSelectAccessControlEntryIdSql($classId, $objectIdentityId, null, $i))->fetchColumn();
                 $this->loadedAces[$aceId] = $ace;
 

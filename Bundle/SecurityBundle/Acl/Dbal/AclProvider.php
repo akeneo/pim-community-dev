@@ -24,8 +24,7 @@ use Oro\Bundle\SecurityBundle\Acl\Cache\OidAncestorsCacheCache;
 /**
  * This is a copy of Symfony\Component\Security\Acl\Dbal\AclProvider class
  *
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ * @SuppressWarnings(PHPMD)
  */
 class AclProvider implements AclProviderInterface
 {
@@ -236,7 +235,8 @@ class AclProvider implements AclProviderInterface
                 {$this->options['oid_table_name']} o
             INNER JOIN {$this->options['class_table_name']} c ON c.id = o.class_id
             LEFT JOIN {$this->options['entry_table_name']} e ON (
-                e.class_id = o.class_id AND (e.object_identity_id = o.id OR {$this->connection->getDatabasePlatform()->getIsNullExpression('e.object_identity_id')})
+                e.class_id = o.class_id
+                AND (e.object_identity_id = o.id OR {$this->connection->getDatabasePlatform()->getIsNullExpression('e.object_identity_id')})
             )
             LEFT JOIN {$this->options['sid_table_name']} s ON (
                 s.id = e.security_identity_id
@@ -615,9 +615,28 @@ QUERY;
                     }
 
                     if (null === $fieldName) {
-                        $loadedAces[$aceId] = new Entry((integer) $aceId, $acl, $sids[$key], $grantingStrategy, (integer) $mask, !!$granting, !!$auditFailure, !!$auditSuccess);
+                        $loadedAces[$aceId] = new Entry(
+                            (integer) $aceId,
+                            $acl,
+                            $sids[$key],
+                            $grantingStrategy,
+                            (integer) $mask,
+                            !!$granting,
+                            !!$auditFailure,
+                            !!$auditSuccess
+                        );
                     } else {
-                        $loadedAces[$aceId] = new FieldEntry((integer) $aceId, $acl, $fieldName, $sids[$key], $grantingStrategy, (integer) $mask, !!$granting, !!$auditFailure, !!$auditSuccess);
+                        $loadedAces[$aceId] = new FieldEntry(
+                            (integer) $aceId,
+                            $acl,
+                            $fieldName,
+                            $sids[$key],
+                            $grantingStrategy,
+                            (integer) $mask,
+                            !!$granting,
+                            !!$auditFailure,
+                            !!$auditSuccess
+                        );
                     }
                 }
                 $ace = $loadedAces[$aceId];
