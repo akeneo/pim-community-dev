@@ -36,20 +36,26 @@ Feature: Browse products by locale and scope
     When I switch the locale to "en_US"
     And I filter by "Channel" with value "Ecommerce"
     Then I should see product postit
-    And the column "SKU" of the row "postit" should contain the value "postit"
-    And the column "name" of the row "postit" should contain the value "Post it"
-    And the column "image" of the row "postit" should contain the value "large.jpeg"
-    And the column "description" of the row "postit" should contain the value "My ecommerce description"
+    And the row "postit" should contain:
+      | column      | value                    |
+      | SKU         | postit                   |
+      | name        | Post it                  |
+      | image       | large.jpeg               |
+      | description | My ecommerce description |
+      | family      | furniture                |
 
   Scenario: Successfully display english mobile products data on products page
     Given I am on the products page
     When I switch the locale to "en_US"
     And I filter by "Channel" with value "Mobile"
     Then I should see product postit
-    And the column "SKU" of the row "postit" should contain the value "postit"
-    And the column "name" of the row "postit" should contain the value "Post it"
-    And the column "image" of the row "postit" should contain the value "small.jpeg"
-    And the column "description" of the row "postit" should contain the value ""
+    And the row "postit" should contain:
+      | column      | value      |
+      | SKU         | postit     |
+      | name        | Post it    |
+      | image       | small.jpeg |
+      | description |            |
+      | family      | furniture  |
     #en_US is not enable to mobile
 
   Scenario: Successfully display french ecommerce products data on products page
@@ -57,17 +63,23 @@ Feature: Browse products by locale and scope
     When I switch the locale to "fr_FR"
     And I filter by "Channel" with value "Ecommerce"
     Then I should see product postit
-    And the column "[SKU]" of the row "postit" should contain the value "postit"
-    And the column "[name]" of the row "postit" should contain the value "Etiquette"
-    And the column "[image]" of the row "postit" should contain the value "large.jpeg"
-    And the column "[description]" of the row "postit" should contain the value "Ma description ecommerce"
+    And the row "postit" should contain:
+      | column        | value                    |
+      | [SKU]         | postit                   |
+      | [name]        | Etiquette                |
+      | [image]       | large.jpeg               |
+      | [description] | Ma description ecommerce |
+      | family        | furniture                |
 
   Scenario: Successfully display french mobile products data on products page
     Given I am on the products page
     When I switch the locale to "fr_FR"
     And I filter by "Channel" with value "Mobile"
     Then I should see product postit
-    And the column "[SKU]" of the row "postit" should contain the value "postit"
-    And the column "[name]" of the row "postit" should contain the value "Etiquette"
-    And the column "[image]" of the row "postit" should contain the value "small.jpeg"
-    And the column "[description]" of the row "postit" should contain the value "Ma description mobile"
+    And the row "postit" should contain:
+      | column        | value                 |
+      | [SKU]         | postit                |
+      | [name]        | Etiquette             |
+      | [image]       | small.jpeg            |
+      | [description] | Ma description mobile |
+      | family        | furniture             |

@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Context\Step;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
@@ -114,14 +116,55 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $expectation
      *
      * @Given /^Value of column "([^"]*)" of the row which contains "([^"]*)" should be "([^"]*)"$/
+     *
+     * @deprecated
      */
     public function valueOfColumnOfTheRowWhichContainsShouldBe($column, $row, $expectation)
     {
+        throw new \Exception('This method is deprecated !!! Please, remove it.');
         $column = strtoupper($column);
-        if ($expectation !== $actual = $this->datagrid->getColumnValue($column, $row)) {
+        $actual = $this->datagrid->getColumnValue($column, $row);
+        if ($expectation !== $actual) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting column "%s" to contain "%s", got "%s".',
+                    $column,
+                    $expectation,
+                    $actual
+                )
+            );
+        }
+    }
+
+    /**
+     * @param string
+     * @param TableNode $table
+     *
+     * @Then /^the row "([^"]*)" should contain:$/
+     */
+    public function theRowShouldContain($code, TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->assertColumnContainsValue($code, $data['column'], $data['value']);
+        }
+    }
+
+    /**
+     * @param string $row
+     * @param string $column
+     * @param string $expectation
+     *
+     * @throws ExpectationException
+     */
+    protected function assertColumnContainsValue($row, $column, $expectation)
+    {
+        $column = strtoupper($column);
+        $actual = $this->datagrid->getColumnValue($column, $row);
+
+        if ($expectation !== $actual) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting column "%s" to contain "%s", got "%s"',
                     $column,
                     $expectation,
                     $actual
