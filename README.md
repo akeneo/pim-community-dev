@@ -8,7 +8,7 @@ Practically, it means the Akeneo PIM bundles are present in the src/ directory.
 If you want to contribute to the Akeneo PIM (and we would be pleased you do !), you can fork
 this repository and send us pull requests.
 
-Important Note: this application is not production ready and is intending for evaluation and development purposes only!
+Important Note: this application is not production ready and is intended for evaluation and development purposes only!
 
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/badges/quality-score.png?s=05ef3d5d2bbfae2f9a659060b21711d275f0c1ff)](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/)
 
