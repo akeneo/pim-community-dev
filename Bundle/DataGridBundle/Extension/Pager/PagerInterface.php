@@ -2,7 +2,8 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Pager;
 
-use Oro\Bundle\DataGridBundle\Datasource\Orm\ProxyQueryInterface;
+
+use Doctrine\ORM\QueryBuilder;
 
 interface PagerInterface
 {
@@ -12,15 +13,6 @@ interface PagerInterface
      * @return void
      */
     public function init();
-
-    /**
-     * Set query
-     *
-     * @param  ProxyQueryInterface $query
-     *
-     * @return void
-     */
-    public function setQuery($query);
 
     /**
      * Set max records per page

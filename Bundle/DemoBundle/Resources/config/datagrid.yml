@@ -1,5 +1,5 @@
 datagrid:
-    demo:
+    contactGroup:
         source:
             type: orm
             query:
@@ -35,10 +35,31 @@ datagrid:
         sorters:
             columns:
                 label:
-                    data_name: label
+                    data_name: g.label
 
                 id:
-                    data_name: id
+                    data_name: g.id
 
             default:
                 label: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
+
+    adminUsers:
+        source:
+            type: orm
+            query:
+                select:
+                    - u.id
+                    - u.firstName
+                    - u.lastName
+                    - u.username
+                    - u.email
+                from:
+                    - { table: OroUserBundle:User, alias: u }
+
+        sorters:
+            columns:
+                hasRole:
+                    data_name: hasRole
+
+            default:
+                hasRole: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC

@@ -1,3 +1,4 @@
-oro_demo_homepage:
-    path:  /test
-    defaults: { _controller: OroDemoBundle:Default:index }
+oro_demo_bundle:
+    resource: "@OroDemoBundle/Controller"
+    type:     annotation
+    prefix:   /demo

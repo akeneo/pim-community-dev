@@ -17,7 +17,7 @@ class GridController extends Controller
      *
      * @return Response
      */
-    public function massActionAction($gridName)
+    public function getAction($gridName)
     {
         /**
          * @TODO add ACL check here

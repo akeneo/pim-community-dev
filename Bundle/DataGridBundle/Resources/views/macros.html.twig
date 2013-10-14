@@ -3,9 +3,11 @@
 
     parameters:
         name: datagrid name
+        params: additional parameters for url
 #}
-{% macro renderGrid(name) %}
-    <div data-type="datagrid" data-data="{{ render(path('oro_datagrid_index', { 'gridName': name }))}}" data-metadata="{{ oro_grid_metadata(name)|json_encode|raw }}"></div>
+{% macro renderGrid(name, params = {}) %}
+    {% set dataUrl = path('oro_datagrid_index', { 'gridName': name }|merge(params)) %}
+    <div data-type="datagrid" data-data="{{ render(dataUrl) }}" data-metadata="{{ oro_grid_metadata(name)|json_encode|raw }}"></div>
     <script type="text/javascript">
         require(['jquery'], function ($) {
             $(function () {
@@ -13,6 +15,6 @@
             });
         });
     </script>
-    {{ render(path('oro_datagrid_index', { 'gridName': name }))}}
+    {{ render(dataUrl) }}
     {{ dump(oro_grid_metadata(name)) }}
 {% endmacro %}
