@@ -1,0 +1,3 @@
+oro_demo_homepage:
+    path:  /test
+    defaults: { _controller: OroDemoBundle:Default:index }

@@ -1,0 +1,18 @@
+{#
+    Renders datagrid widget
+
+    parameters:
+        name: datagrid name
+#}
+{% macro renderGrid(name) %}
+    <div data-type="datagrid" data-data="{{ render(path('oro_datagrid_index', { 'gridName': name }))}}" data-metadata="{{ oro_grid_metadata(name)|json_encode|raw }}"></div>
+    <script type="text/javascript">
+        require(['jquery'], function ($) {
+            $(function () {
+                {# @TODO add require JS builder here and call init method #}
+            });
+        });
+    </script>
+    {{ render(path('oro_datagrid_index', { 'gridName': name }))}}
+    {{ dump(oro_grid_metadata(name)) }}
+{% endmacro %}

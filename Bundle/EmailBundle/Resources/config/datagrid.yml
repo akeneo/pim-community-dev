@@ -94,21 +94,18 @@ datagrid:
 
             update_link:
                 type: UrlProperty
-                params:
-                    - oro_email_emailtemplate_update
-                    - [ id ]
+                route: oro_email_emailtemplate_update
+                params: [ id ]
 
             clone_link:
                 type: UrlProperty
-                params:
-                    - oro_email_emailtemplate_clone
-                    - [ id ]
+                route: oro_email_emailtemplate_clone
+                params: [ id ]
 
             delete_link:
                 type: UrlProperty
-                params:
-                    - oro_api_delete_emailtemplate
-                    - [ id ]
+                route: oro_api_delete_emailtemplate
+                params: [ id ]
 
             action_configuration:
                 type: ActionConfigurationProperty

@@ -4,7 +4,6 @@ namespace Oro\Bundle\DataGridBundle\Provider;
 
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Yaml\Yaml;
 
 class SystemAwareResolver implements ContainerAwareInterface
 {
@@ -20,7 +19,8 @@ class SystemAwareResolver implements ContainerAwareInterface
 
     /**
      * @param string $datagridName
-     * @param array $datagridDefinition
+     * @param array  $datagridDefinition
+     *
      * @return array
      */
     public function resolve($datagridName, $datagridDefinition)
@@ -40,6 +40,7 @@ class SystemAwareResolver implements ContainerAwareInterface
                 case preg_match('#([^%:\s]+)::([\w\._]+)#', $val, $match):
                     // with class real name
                     $class = isset($class) ? $class : $match[1];
+
                     $method = $match[2];
                     if (is_callable(array($class, $method))) {
                         $val = $class::$method($datagridName, $key);
@@ -51,8 +52,8 @@ class SystemAwareResolver implements ContainerAwareInterface
                 // service method call @service->method
                 case preg_match('#@([\w\._]+)->([\w\._]+)#', $val, $match):
                     $service = $match[1];
-                    $method = $match[2];
-                    $val = $this->container
+                    $method  = $match[2];
+                    $val     = $this->container
                         ->get($service)
                         ->$method($datagridName, $key);
                     break;

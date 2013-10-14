@@ -1,0 +1,36 @@
+parameters:
+    oro_grid.extension.formatter.class:        Oro\Bundle\DataGridBundle\Extension\Formatter\FormatterExtension
+    oro_grid.extension.orm_pager.class:        Oro\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension
+    oro_grid.extension.pager.orm.pager.class:  Oro\Bundle\DataGridBundle\Extension\Pager\Orm\Pager
+    oro_grid.extension.orm_sorter.class:       Oro\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension
+
+services:
+    oro_grid.extension.formatter:
+        class: %oro_grid.extension.formatter.class%
+        calls:
+            - [ addProperty, [ 'field',         @oro_grid.extension.formatter.field_property ] ]
+            - [ addProperty, [ 'fixed',         @oro_grid.extension.formatter.property.fixed_property ] ]
+            - [ addProperty, [ 'url',           @oro_grid.extension.formatter.property.url_property ] ]
+            - [ addProperty, [ 'twig',          @oro_grid.extension.formatter.property.twig_property ] ]
+            - [ addProperty, [ 'translateable', @oro_grid.extension.formatter.property.translateable_property ] ]
+            - [ addProperty, [ 'callback',      @oro_grid.extension.formatter.property.callback_property ] ]
+        tags:
+            - { name: oro_grid.extension }
+
+    oro_grid.extension.orm_pager:
+        class: %oro_grid.extension.orm_pager.class%
+        arguments:
+            - @oro_grid.extension.pager.orm.pager
+            - @oro_grid.datagrid.prequest_params
+        tags:
+            - { name: oro_grid.extension }
+
+    oro_grid.extension.pager.orm.pager:
+        class: %oro_grid.extension.pager.orm.pager.class%
+
+    oro_grid.extension.orm_sorter:
+        class: %oro_grid.extension.orm_sorter.class%
+        arguments:
+            - @oro_grid.datagrid.prequest_params
+        tags:
+            - { name: oro_grid.extension }

@@ -1,3 +1,46 @@
 parameters:
 
 services:
+    oro_grid.datagrid.base.class:                Oro\Bundle\DataGridBundle\Datagrid\Datagrid
+    oro_grid.extension.acceptor.class:           Oro\Bundle\DataGridBundle\Extension\Acceptor
+
+    oro_grid.datagrid.manager.class:             Oro\Bundle\DataGridBundle\Datagrid\Manager
+    oro_grid.datagrid.builder.class:             Oro\Bundle\DataGridBundle\Datagrid\Builder
+    oro_grid.datagrid.prequest_params.class:     Oro\Bundle\DataGridBundle\Datagrid\RequestParameters
+
+    oro_grid.provider.resolver.class:            Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver
+
+    oro_grid.twig.metadata.class:                Oro\Bundle\DataGridBundle\Twig\MetadataExtension
+
+services:
+    oro_grid.datagrid.manager:
+        class: %oro_grid.datagrid.manager.class%
+        arguments:
+            - []
+            - @oro_grid.datagrid.builder
+            - @oro_grid.provider.resolver
+
+    oro_grid.datagrid.builder:
+        class: %oro_grid.datagrid.builder.class%
+        arguments:
+            - %oro_grid.datagrid.base.class%
+            - %oro_grid.extension.acceptor.class%
+            - @event_dispatcher
+
+    oro_grid.datagrid.prequest_params:
+        class: %oro_grid.datagrid.prequest_params.class%
+        arguments:
+            - @service_container
+
+    oro_grid.provider.resolver:
+        class: %oro_grid.provider.resolver.class%
+        arguments:
+            - @service_container
+
+    oro_grid.twig.metadata:
+        class: %oro_grid.twig.metadata.class%
+        arguments:
+            - @oro_grid.datagrid.manager
+        tags:
+            - { name: twig.extension }
+

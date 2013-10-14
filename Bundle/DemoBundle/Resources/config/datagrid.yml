@@ -1,0 +1,44 @@
+datagrid:
+    demo:
+        source:
+            type: orm
+            query:
+                select:
+                    - g.id
+                    - g.label
+                from:
+                    - { table: OroCRMContactBundle:Group, alias: g }
+
+        columns:
+            label:
+                type: field
+                label: Template name
+                sortable: true
+                options: # custom options (PHP)
+                    renderer:
+                        type: TwigTemplateProperty
+                        params:
+                            template: "OroNotificationBundle:EmailNotification:Datagrid/Property/entityName.html.twig"
+
+        properties:
+            update_link:
+                type: url
+                route: orocrm_contact_group_update
+                params:
+                    - id
+
+            delete_link:
+                type: url
+                route: oro_api_delete_contactgroup
+                params:
+                    - id
+        sorters:
+            columns:
+                label:
+                    data_name: label
+
+                id:
+                    data_name: id
+
+            default:
+                label: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC

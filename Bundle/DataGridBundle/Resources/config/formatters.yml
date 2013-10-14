@@ -1,0 +1,32 @@
+parameters:
+    oro_grid.extension.formatter.property.field_property.class:           Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty
+    oro_grid.extension.formatter.property.fixed_property.class:           Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FixedProperty
+    oro_grid.extension.formatter.property.url_property.class:             Oro\Bundle\DataGridBundle\Extension\Formatter\Property\UrlProperty
+    oro_grid.extension.formatter.property.twig_property.class:            Oro\Bundle\DataGridBundle\Extension\Formatter\Property\TwigTemplateProperty
+    oro_grid.extension.formatter.property.translateable_property.class:   Oro\Bundle\DataGridBundle\Extension\Formatter\Property\TranslateableProperty
+    oro_grid.extension.formatter.property.callback_property.class:        Oro\Bundle\DataGridBundle\Extension\Formatter\Property\CallbackProperty
+
+services:
+    oro_grid.extension.formatter.field_property:
+        class: %oro_grid.extension.formatter.property.field_property.class%
+
+    oro_grid.extension.formatter.property.fixed_property:
+        class : %oro_grid.extension.formatter.property.fixed_property.class%
+
+    oro_grid.extension.formatter.property.url_property:
+        class: %oro_grid.extension.formatter.property.url_property.class%
+        arguments:
+            - @router
+
+    oro_grid.extension.formatter.property.twig_property:
+        class: %oro_grid.extension.formatter.property.twig_property.class%
+        arguments:
+            - @twig
+
+    oro_grid.extension.formatter.property.translateable_property:
+        class: %oro_grid.extension.formatter.property.translateable_property.class%
+        arguments:
+            - @translator
+
+    oro_grid.extension.formatter.property.callback_property:
+        class : %oro_grid.extension.formatter.property.callback_property.class%

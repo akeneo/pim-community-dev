@@ -1,0 +1,10 @@
+oro_menu_config:
+    items:
+        demo_tab:
+            label: 'DEMO'
+            route: 'oro_demo_homepage'
+
+    tree:
+        application_menu:
+            children:
+                demo_tab: ~
