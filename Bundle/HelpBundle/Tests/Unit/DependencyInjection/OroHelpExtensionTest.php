@@ -57,7 +57,7 @@ class OroHelpExtensionTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'setConfiguration',
-                    $expectedConfiguration
+                    array($expectedConfiguration)
                 )
             ),
             $linkProvider->getMethodCalls()

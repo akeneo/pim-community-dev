@@ -21,6 +21,13 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
         $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
             ->disableOriginalConstructor()
             ->getMock();
+
+        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $container->expects($this->exactly(2))
+            ->method('get')
+            ->with('request')
+            ->will($this->returnValue($request));
+
         $request->expects($this->at(0))
             ->method('get')
             ->with('_controller')
@@ -38,7 +45,7 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
             ->with($controller)
             ->will($this->returnValue($shortName));
 
-        $provider = new HelpLinkProvider($parser, $request);
+        $provider = new HelpLinkProvider($parser, $container);
         $provider->setConfiguration($configuration);
         $this->assertEquals($link, $provider->getHelpLinkUrl());
     }

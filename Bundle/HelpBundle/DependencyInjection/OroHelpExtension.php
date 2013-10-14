@@ -39,7 +39,7 @@ class OroHelpExtension extends Extension
         $configuration = array_merge_recursive($bundleConfig, $applicationConfig);
 
         $linkProvider = $container->getDefinition('oro_help.twig.help_link_provider');
-        $linkProvider->addMethodCall('setConfiguration', $configuration);
+        $linkProvider->addMethodCall('setConfiguration', array($configuration));
     }
 
     /**
