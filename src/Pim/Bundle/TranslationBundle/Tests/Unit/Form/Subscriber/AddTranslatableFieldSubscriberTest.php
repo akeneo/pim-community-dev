@@ -245,8 +245,6 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         $requiredLocales = $options['required_locale'];
 
         foreach ($locales as $index => $locale) {
-            $translation = $this->getTranslationMock($options['field'], $locale);
-
             $this->formFactory->expects($this->at($index))
                 ->method('createNamed')
                 ->with(

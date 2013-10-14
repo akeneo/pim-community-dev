@@ -3,10 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Functional\EventListener;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Doctrine\ORM\EntityManager;
+use Oro\Bundle\UserBundle\Entity\UserManager;
 use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Test related class
@@ -20,11 +20,12 @@ class UserPreferencesListenerTest extends WebTestCase
     /**
      * @var UserManager
      */
-    private $userManager;
+    protected $userManager;
+
     /**
      * @var EntityManager
      */
-    private $entityManager;
+    protected $entityManager;
 
     /**
      * {@inheritdoc}

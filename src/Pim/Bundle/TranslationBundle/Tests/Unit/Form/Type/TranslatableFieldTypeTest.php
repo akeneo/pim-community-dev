@@ -123,7 +123,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
 
         $securityContext = new SecurityContext($authManager, $decisionManager);
         $securityContext->setToken(
-            $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
+            $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
         );
 
         return $securityContext;
@@ -205,7 +205,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
     public function testAssertException($entityClass, $fieldName, $translationClass)
     {
         $options = $this->buildOptions($entityClass, $fieldName, $translationClass);
-        $form = $this->factory->create($this->type, null, $options);
+        $this->factory->create($this->type, null, $options);
     }
 
     /**

@@ -51,7 +51,7 @@ class VariantGroup implements TranslatableInterface
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttribute")
      * @ORM\JoinTable(
-     *     name="pim_catalog_variant_attribute",
+     *     name="pim_catalog_variant_group_attribute",
      *     joinColumns={@ORM\JoinColumn(name="variant_id", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id")}
      * )

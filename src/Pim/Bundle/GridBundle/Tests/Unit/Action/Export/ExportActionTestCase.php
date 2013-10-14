@@ -63,7 +63,7 @@ abstract class ExportActionTestCase extends \PHPUnit_Framework_TestCase
      */
     public function testThrowsInvalidArgumentException(array $inputOptions)
     {
-        $exportAction = $this->createExportAction($inputOptions);
+        $this->createExportAction($inputOptions);
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Context\Step;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
@@ -109,19 +111,34 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $column
+     * @param string
+     * @param TableNode $table
+     *
+     * @Then /^the row "([^"]*)" should contain:$/
+     */
+    public function theRowShouldContain($code, TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->assertColumnContainsValue($code, $data['column'], $data['value']);
+        }
+    }
+
+    /**
      * @param string $row
+     * @param string $column
      * @param string $expectation
      *
-     * @Given /^Value of column "([^"]*)" of the row which contains "([^"]*)" should be "([^"]*)"$/
+     * @throws ExpectationException
      */
-    public function valueOfColumnOfTheRowWhichContainsShouldBe($column, $row, $expectation)
+    protected function assertColumnContainsValue($row, $column, $expectation)
     {
         $column = strtoupper($column);
-        if ($expectation !== $actual = $this->datagrid->getColumnValue($column, $row)) {
+        $actual = $this->datagrid->getColumnValue($column, $row);
+
+        if ($expectation !== $actual) {
             throw $this->createExpectationException(
                 sprintf(
-                    'Expecting column "%s" to contain "%s", got "%s".',
+                    'Expecting column "%s" to contain "%s", got "%s"',
                     $column,
                     $expectation,
                     $actual
@@ -328,8 +345,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @throws ExpectationException
      *
-     * @Then /^I should see products? ((?!with data).)*$/
-     * @Then /^I should see attributes? ((?!in group).)*$/
+     * @Then /^I should see products? (.*)$/
+     * @Then /^I should see attributes? (?!(.*)in group )(.*)$/
      * @Then /^I should see channels? (.*)$/
      * @Then /^I should see locales? (.*)$/
      * @Then /^I should see (?:import|export) profiles? (.*)$/
@@ -350,8 +367,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param array $entities
      *
-     * @Then /^I should not see products? ((?!with data).)*$/
-     * @Then /^I should not see attributes? ((?!in group).)*$/
+     * @Then /^I should not see products? (.*)$/
+     * @Then /^I should not see attributes? (?!(.*)in group )(.*)$/
      * @Then /^I should not see channels? (.*)$/
      * @Then /^I should not see locales? (.*)$/
      * @Then /^I should not see (?:import|export) profiles? (.*)$/
@@ -386,6 +403,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should see sorted attributes (.*)$/
      * @Then /^I should see sorted (?:import|export) profiles (.*)$/
      * @Then /^I should see sorted (?:entities) (.*)$/
+     * @Then /^I should see sorted products (.*)$/
      * @Then /^I should see sorted variants (.*)$/
      */
     public function iShouldSeeSortedEntities($elements)
