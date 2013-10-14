@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EntityExtendBundle\Form\Type;
 
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
+use Oro\Bundle\EntityExtendBundle\Form\EventListener\TargetSubscriber;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\AbstractType;
 
@@ -32,7 +33,7 @@ class TargetType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
+        $builder->addEventSubscriber(new TargetSubscriber($this->request, $this->configManager));
     }
 
     /**
