@@ -43,8 +43,8 @@ services:
         public: false
         class: %oro_entity_config.config_audit_mamanger.class%
         arguments:
-            - @oro_entity_config.link.security_context
             - @oro_entity_config.link.config_manager
+            - @oro_entity_config.link.security_context
 
     oro_entity_config.provider_bag:
         class:                                                  %oro_entity_config.provider_bag.class%
