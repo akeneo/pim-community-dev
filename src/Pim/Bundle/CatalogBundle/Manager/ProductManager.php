@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductValue;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
 
 /**
  * Product manager
@@ -22,12 +23,31 @@ use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 class ProductManager extends FlexibleManager
 {
     /**
-     * @var \Pim\Bundle\CatalogBundle\Manager\MediaManager $mediaManager
+     * @var MediaManager $mediaManager
      */
     protected $mediaManager;
 
     /**
-     * {@inheritdoc}
+     * @var CurrencyManager
+     */
+    protected $currencyManager;
+
+    /**
+     * @var CompletenessCalculator
+     */
+    protected $completenessCalculator;
+
+    /**
+     * Constructor
+     *
+     * @param string                   $flexibleName            Entity name
+     * @param array                    $flexibleConfig          Global flexible entities configuration array
+     * @param ObjectManager            $storageManager          Storage manager
+     * @param EventDispatcherInterface $eventDispatcher         Event dispatcher
+     * @param AttributeTypeFactory     $attributeTypeFactory    Attribute type factory
+     * @param MediaManager             $mediaManager            Media manager
+     * @param CurrencyManager          $currencyManager         Currency manager
+     * @param CompletenessCalculator   $completenessCalculator  Completeness calculator
      */
     public function __construct(
         $flexibleName,
@@ -36,12 +56,20 @@ class ProductManager extends FlexibleManager
         EventDispatcherInterface $eventDispatcher,
         AttributeTypeFactory $attributeTypeFactory,
         MediaManager $mediaManager,
-        CurrencyManager $currencyManager
+        CurrencyManager $currencyManager,
+        CompletenessCalculator $completenessCalculator
     ) {
-        parent::__construct($flexibleName, $flexibleConfig, $storageManager, $eventDispatcher, $attributeTypeFactory);
+        parent::__construct(
+            $flexibleName,
+            $flexibleConfig,
+            $storageManager,
+            $eventDispatcher,
+            $attributeTypeFactory
+        );
 
-        $this->mediaManager    = $mediaManager;
-        $this->currencyManager = $currencyManager;
+        $this->mediaManager           = $mediaManager;
+        $this->currencyManager        = $currencyManager;
+        $this->completenessCalculator = $completenessCalculator;
     }
 
     /**
@@ -173,13 +201,19 @@ class ProductManager extends FlexibleManager
      * Save a product
      *
      * @param ProductInterface $product
+     * @param boolean          $calculateCompleteness
      *
      * @return null
      */
-    public function save(ProductInterface $product)
+    public function save(ProductInterface $product, $calculateCompleteness = true)
     {
         $this->storageManager->persist($product);
         $this->storageManager->flush();
+        if ($calculateCompleteness) {
+            $this->storageManager->refresh($product);
+            $this->completenessCalculator->calculateForAProduct($product);
+            $this->storageManager->flush();
+        }
     }
 
     /**

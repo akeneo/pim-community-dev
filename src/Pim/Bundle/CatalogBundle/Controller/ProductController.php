@@ -10,7 +10,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -23,20 +22,18 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
-use Pim\Bundle\CatalogBundle\Form\Handler\ProductCreateHandler;
-use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
-use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Product Controller
@@ -56,21 +53,6 @@ class ProductController extends AbstractDoctrineController
      * @var DatagridWorkerInterface
      */
     private $datagridWorker;
-
-    /**
-     * @var ProductCreateHandler
-     */
-    private $productCreateHandler;
-
-    /**
-     * @var Form
-     */
-    private $productCreateForm;
-
-    /**
-     * @var CompletenessCalculator
-     */
-    private $calculator;
 
     /**
      * @var ProductManager
@@ -115,9 +97,6 @@ class ProductController extends AbstractDoctrineController
      * @param RegistryInterface        $doctrine
      * @param GridRenderer             $gridRenderer
      * @param DatagridWorkerInterface  $datagridWorker
-     * @param ProductCreateHandler     $productCreateHandler
-     * @param Form                     $productCreateForm
-     * @param CompletenessCalculator   $calculator
      * @param ProductManager           $productManager
      * @param CategoryManager          $categoryManager
      * @param LocaleManager            $localeManager
@@ -135,9 +114,6 @@ class ProductController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $datagridWorker,
-        ProductCreateHandler $productCreateHandler,
-        Form $productCreateForm,
-        CompletenessCalculator $calculator,
         ProductManager $productManager,
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
@@ -157,9 +133,6 @@ class ProductController extends AbstractDoctrineController
 
         $this->gridRenderer         = $gridRenderer;
         $this->datagridWorker       = $datagridWorker;
-        $this->productCreateHandler = $productCreateHandler;
-        $this->productCreateForm    = $productCreateForm;
-        $this->calculator           = $calculator;
         $this->productManager       = $productManager;
         $this->categoryManager      = $categoryManager;
         $this->localeManager        = $localeManager;
@@ -287,25 +260,28 @@ class ProductController extends AbstractDoctrineController
         }
 
         $entity = $this->productManager->createProduct();
+        $form = $this->createForm('pim_product_create', $entity, $this->getCreateFormOptions($entity));
+        if ($request->isMethod('POST')) {
+            $form->submit($request);
+            if ($form->isValid()) {
+                $this->productManager->save($entity);
+                $this->addFlash('success', 'flash.product.created');
 
-        if ($this->productCreateHandler->process($entity)) {
+                if ($dataLocale === null) {
+                    $dataLocale = $this->getDataLocale();
+                }
+                $url = $this->generateUrl(
+                    'pim_catalog_product_edit',
+                    array('id' => $entity->getId(), 'dataLocale' => $dataLocale)
+                );
+                $response = array('status' => 1, 'url' => $url);
 
-            $this->addFlash('success', 'flash.product.created');
-
-            if ($dataLocale === null) {
-                $dataLocale = $this->getDataLocale();
+                return new Response(json_encode($response));
             }
-            $url = $this->generateUrl(
-                'pim_catalog_product_edit',
-                array('id' => $entity->getId(), 'dataLocale' => $dataLocale)
-            );
-            $response = array('status' => 1, 'url' => $url);
-
-            return new Response(json_encode($response));
         }
 
         return array(
-            'form'       => $this->productCreateForm->createView(),
+            'form'       => $form->createView(),
             'dataLocale' => $this->getDataLocale()
         );
     }
@@ -342,18 +318,14 @@ class ProductController extends AbstractDoctrineController
         $form     = $this->createForm(
             'pim_product',
             $product,
-            $this->getFormOptions($product)
+            $this->getEditFormOptions($product)
         );
 
         if ($request->isMethod('POST')) {
-            $form->bind($request);
+            $form->submit($request);
 
             if ($form->isValid()) {
                 $this->productManager->handleMedia($product);
-                $this->productManager->save($product);
-                // Call completeness calculator after validating data and saving product
-                // so all values for all locale are loaded now
-                $this->calculator->calculateForAProduct($product);
                 $this->productManager->save($product);
 
                 $this->addFlash('success', 'flash.product.updated');
@@ -398,7 +370,7 @@ class ProductController extends AbstractDoctrineController
             $product->getAttributes(),
             $availableAttributes
         );
-        $attributesForm->bind($request);
+        $attributesForm->submit($request);
 
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $this->productManager->addAttributeToProduct($product, $attribute);
@@ -598,25 +570,37 @@ class ProductController extends AbstractDoctrineController
         AvailableProductAttributes $availableAttributes = null
     ) {
         return $this->createForm(
-            new AvailableProductAttributesType(),
+            'pim_available_product_attributes',
             $availableAttributes ?: new AvailableProductAttributes(),
             array('attributes' => $attributes)
         );
     }
 
     /**
-     * Returns the options for the form
+     * Returns the options for the edit form
      *
-     * @param object $product
+     * @param ProductInterface $product
      *
      * @return array
      */
-    protected function getFormOptions($product)
+    protected function getEditFormOptions(ProductInterface $product)
     {
         return array(
             'enable_family' => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
             'enable_state'  => $this->securityFacade->isGranted('pim_catalog_product_change_state'),
             'currentLocale' => $this->getDataLocale()
         );
+    }
+
+    /**
+     * Returns the options for the create form
+     *
+     * @param ProductInterface $product
+     *
+     * @return array
+     */
+    protected function getCreateFormOptions(ProductInterface $product)
+    {
+        return array();
     }
 }

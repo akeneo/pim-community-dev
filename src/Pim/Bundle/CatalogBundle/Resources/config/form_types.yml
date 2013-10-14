@@ -104,3 +104,8 @@ services:
         class: %pim_catalog.form.type.variant_group.class%
         tags:
             - { name: form.type, alias: pim_catalog_variant_group }
+
+    pim_catalog.form.type.available_product_attributes:
+        class: %pim_catalog.form.type.available_product_attributes.class%
+        tags:
+            - { name: form.type, alias: pim_available_product_attributes }
