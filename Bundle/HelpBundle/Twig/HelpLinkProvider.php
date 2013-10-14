@@ -4,6 +4,7 @@ namespace Oro\Bundle\HelpBundle\Twig;
 
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\HelpBundle\Annotation\Help;
 
@@ -30,6 +31,11 @@ class HelpLinkProvider
     protected $parser;
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * @var string
      */
     protected $groupSeparator = '/';
@@ -41,13 +47,42 @@ class HelpLinkProvider
 
     /**
      * @param ControllerNameParser $parser
-     * @param Request $request
+     * @param ContainerInterface $container
      */
-    public function __construct(ControllerNameParser $parser, Request $request)
+    public function __construct(ControllerNameParser $parser, ContainerInterface $container)
     {
         $this->parser = $parser;
-        $this->controller = $request->get('_controller');
-        $this->configurationAnnotation = $request->get(Help::ALIAS);
+        $this->container = $container;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getController()
+    {
+        if (!$this->controller) {
+            $this->controller = $this->getRequest()->get('_controller');
+        }
+        return $this->controller;
+    }
+
+    /**
+     * @return Help
+     */
+    protected function getConfigurationAnnotation()
+    {
+        if (!$this->configurationAnnotation) {
+            $this->configurationAnnotation = $this->getRequest()->get(Help::ALIAS);
+        }
+        return $this->configurationAnnotation;
+    }
+
+    /**
+     * @return Request
+     */
+    protected function getRequest()
+    {
+        return $this->container->get('request');
     }
 
     /**
@@ -97,8 +132,8 @@ class HelpLinkProvider
      */
     protected function getConfiguration()
     {
-        $controllerActionKey = $this->parser->build($this->controller);
-        $controllerNameParts = explode('::', $this->controller);
+        $controllerActionKey = $this->parser->build($this->getController());
+        $controllerNameParts = explode('::', $this->getController());
 
         $controllerNamespaceInfo = explode('\\', $controllerNameParts[0]);
         $vendorName = $controllerNamespaceInfo[0];
@@ -145,10 +180,10 @@ class HelpLinkProvider
             $configuration[$keyName] = $keyIdentifier;
         }
 
-        if ($this->configurationAnnotation) {
+        if ($this->getConfigurationAnnotation()) {
             $configuration = array_merge(
                 $configuration,
-                $this->configurationAnnotation->getConfigurationArray()
+                $this->getConfigurationAnnotation()->getConfigurationArray()
             );
         }
 

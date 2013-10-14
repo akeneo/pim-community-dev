@@ -5,10 +5,9 @@ parameters:
 services:
     oro_help.twig.help_link_provider:
         class: %oro_help.twig.help_link_provider.class%
-        scope: request
         arguments:
             - @controller_name_converter
-            - @request
+            - @service_container
 
     oro_help.twig.extension:
         class: %oro_help.twig.extension.class%
