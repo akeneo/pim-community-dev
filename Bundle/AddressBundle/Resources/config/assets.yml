@@ -1,18 +1,3 @@
-js:
-  'address_region':
-      - '@OroAddressBundle/Resources/public/js/views/region.updater.js'
-      - '@OroAddressBundle/Resources/public/js/models/region.updater.js'
-      - '@OroAddressBundle/Resources/public/js/collections/region.updater.js'
-
-  'map':
-      - '@OroAddressBundle/Resources/public/js/views/map.googlemaps.js'
-
-  'addressbook':
-      - '@OroAddressBundle/Resources/public/js/models/address.js'
-      - '@OroAddressBundle/Resources/public/js/collections/address.js'
-      - '@OroAddressBundle/Resources/public/js/views/address.js'
-      - '@OroAddressBundle/Resources/public/js/views/address_book.js'
-
 css:
   'address':
       - 'bundles/oroaddress/css/address.css'

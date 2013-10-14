@@ -82,7 +82,7 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
             if ($this->firstLineIsHeader) {
                 if (count($this->header) !== count($data)) {
                     $stepExecution->addReaderWarning(
-                        $this,
+                        get_class($this),
                         sprintf(
                             'Expecting to get %d columns, actually got %d',
                             count($this->header),
