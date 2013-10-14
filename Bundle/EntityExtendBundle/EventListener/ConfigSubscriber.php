@@ -10,7 +10,7 @@ use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
@@ -53,7 +53,7 @@ class ConfigSubscriber implements EventSubscriberInterface
         $className = $event->getConfig()->getId()->getClassName();
 
         if ($scope == 'extend'
-            && $event->getConfig()->getId() instanceof FieldConfigIdInterface
+            && $event->getConfig()->getId() instanceof FieldConfigId
             && $event->getConfig()->is('owner', ExtendManager::OWNER_CUSTOM)
             && count(array_intersect_key(array_flip(array('length', 'precision', 'scale', 'state')), $change))
         ) {
@@ -77,7 +77,7 @@ class ConfigSubscriber implements EventSubscriberInterface
         }
 
         if ($scope == 'datagrid'
-            && $event->getConfig()->getId() instanceof FieldConfigIdInterface
+            && $event->getConfig()->getId() instanceof FieldConfigId
             && !in_array($event->getConfig()->getId()->getFieldType(), array('text'))
             && isset($change['is_visible'])
 

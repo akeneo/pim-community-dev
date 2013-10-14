@@ -74,32 +74,20 @@ class TargetFieldSubscriberTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods(array('findOneBy', 'findBy', 'getId'))
             ->getMock();
-        $repositoryMock->expects($this->once())
-            ->method('findOneBy')
-            ->will($this->returnSelf());
-        $repositoryMock->expects($this->once())
-            ->method('getId')
-            ->will($this->returnValue(1));
-        $repositoryMock->expects($this->once())
-            ->method('findBy')
-            ->will(
-                $this->returnValue(
-                    array(
-                        new FieldConfigId('Oro\Bundle\UserBundle\Entity\User', 'entity', 'firstName'),
-                        new FieldConfigId('Oro\Bundle\UserBundle\Entity\User', 'entity', 'lastName'),
-                        new FieldConfigId('Oro\Bundle\UserBundle\Entity\User', 'entity', 'email'),
-                    )
+        $repositoryMock->expects($this->once())->method('findOneBy')->will($this->returnSelf());
+        $repositoryMock->expects($this->once())->method('getId')->will($this->returnValue(1));
+        $repositoryMock->expects($this->once())->method('findBy')->will(
+            $this->returnValue(
+                array(
+                    new FieldConfigId('Oro\Bundle\UserBundle\Entity\User', 'entity', 'firstName'),
+                    new FieldConfigId('Oro\Bundle\UserBundle\Entity\User', 'entity', 'lastName'),
+                    new FieldConfigId('Oro\Bundle\UserBundle\Entity\User', 'entity', 'email'),
                 )
-            );
+            )
+        );
 
-        $configManagerMock
-            ->expects($this->exactly(2))
-            ->method('getEntityManager')
-            ->will($this->returnSelf());
-        $configManagerMock
-            ->expects($this->once())
-            ->method('getProvider')
-            ->will($this->returnValue($targetFieldMock));
+        $configManagerMock->expects($this->exactly(2))->method('getEntityManager')->will($this->returnSelf());
+        $configManagerMock->expects($this->once())->method('getProvider')->will($this->returnValue($targetFieldMock));
         $configManagerMock
             ->expects($this->exactly(2))
             ->method('getRepository')

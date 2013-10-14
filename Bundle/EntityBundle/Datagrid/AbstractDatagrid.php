@@ -10,7 +10,8 @@ use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
@@ -32,12 +33,12 @@ class AbstractDatagrid extends DatagridManager
 
     /**
      * @param FieldDescriptionCollection $fieldsCollection
-     * @param FieldConfigIdInterface     $field
+     * @param FieldConfigId     $field
      * @param Config                     $fieldConfig
      */
     public function addDynamicField(
         FieldDescriptionCollection $fieldsCollection,
-        FieldConfigIdInterface $field,
+        FieldConfigId $field,
         Config $fieldConfig
     ) {
         $fieldObject = new FieldDescription();

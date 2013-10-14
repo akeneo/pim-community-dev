@@ -3,7 +3,7 @@
 namespace Oro\Bundle\EntityConfigBundle\Provider;
 
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -276,7 +276,7 @@ class PropertyConfigContainer
     protected function getConfigType($type)
     {
         if ($type instanceof ConfigIdInterface) {
-            return $type instanceof FieldConfigIdInterface
+            return $type instanceof FieldConfigId
                 ? PropertyConfigContainer::TYPE_FIELD
                 : PropertyConfigContainer::TYPE_ENTITY;
         }
