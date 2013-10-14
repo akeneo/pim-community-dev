@@ -110,4 +110,3 @@ _imagine:
 
 _apy_jsformvalidation:
     resource: "@APYJsFormValidationBundle/Resources/config/routing/routing.yml"
-

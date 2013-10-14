@@ -212,6 +212,7 @@
             <arg value="install" />
             <arg value="--no-progress" />
             <arg value="--prefer-dist" />
+            <arg value="--optimize-autoloader" />
         </exec>
     </target>
 

@@ -25,7 +25,8 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductErrorConverter;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValidProductCreationProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface, StepExecutionAwareInterface
+class ValidProductCreationProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface,
+ StepExecutionAwareInterface
 {
     /**
      * @var FormFactoryInterface $formFactory
@@ -224,8 +225,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         if (!$product) {
             $product = $this->productManager->createProduct();
         }
-
-        $allAttributes = $product->getAllAttributes();
 
         foreach (array_keys($item) as $key) {
 
