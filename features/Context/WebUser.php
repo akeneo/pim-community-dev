@@ -1408,28 +1408,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $column
-     * @param string $exportCode
-     * @param string $status
-     *
-     * @return Step\Given
-     * @Then /^the column "([^"]*)" of the row "([^"]*)" should contain the value "([^"]*)"$/
-     *
-     * @deprecated
-     */
-    public function theColumnOfTheRowShouldContainTheValue($column, $exportCode, $status)
-    {
-        return new Step\Given(
-            sprintf(
-                'Value of column "%s" of the row which contains "%s" should be "%s"',
-                $column,
-                $exportCode,
-                $status
-            )
-        );
-    }
-
-    /**
      * @param string $code
      *
      * @Then /^I should be on the "([^"]*)" export job page$/
