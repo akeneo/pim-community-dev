@@ -204,7 +204,7 @@ class ConfigManager
         }
 
         $result = $this->cache->getConfigurable($className, $fieldName);
-        if ($result === null) {
+        if ($result == null) {
             $result = (bool) $this->modelManager->findModel($className, $fieldName);
 
             $this->cache->setConfigurable($result, $className, $fieldName);
