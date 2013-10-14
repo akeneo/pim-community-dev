@@ -372,7 +372,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @throws ExpectationException
      *
      * @Then /^I should see products? (.*)$/
-     * @Then /^I should see attributes? (.*)$/
+     * @Then /^I should see attributes? (?!(.*)in group )(.*)$/
      * @Then /^I should see channels? (.*)$/
      * @Then /^I should see locales? (.*)$/
      * @Then /^I should see (?:import|export) profiles? (.*)$/
@@ -394,7 +394,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param array $entities
      *
      * @Then /^I should not see products? (.*)$/
-     * @Then /^I should not see attributes? (.*)$/
+     * @Then /^I should not see (?!(.*)in group )(.*)$/
      * @Then /^I should not see channels? (.*)$/
      * @Then /^I should not see locales? (.*)$/
      * @Then /^I should not see (?:import|export) profiles? (.*)$/
