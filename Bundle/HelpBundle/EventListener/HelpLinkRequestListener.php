@@ -48,6 +48,7 @@ class HelpLinkRequestListener
         $provider = $this->getHelpLinkProvider();
         $provider->setRequestController($request->get('_controller'));
         $provider->setHelpConfigurationAnnotation($request->get('_' . Help::ALIAS));
+        $provider->setRequest($request);
     }
 
     /**

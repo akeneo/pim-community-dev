@@ -41,6 +41,11 @@ class HelpLinkProvider
     protected $groupSeparator = '/';
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
      * @var string
      */
     protected $format = '%server%/%vendor%/%bundle%:%controller%_%action%';
@@ -51,6 +56,14 @@ class HelpLinkProvider
     public function __construct(ControllerNameParser $parser)
     {
         $this->parser = $parser;
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request)
+    {
+        $this->request = $request;
     }
 
     /**
@@ -115,10 +128,25 @@ class HelpLinkProvider
         }
 
         if (isset($configuration['uri'])) {
-            return strtr('%server%/%uri%', $replaceParams);
+            $link = strtr('%server%/%uri%', $replaceParams);
         } else {
-            return strtr($this->format, $replaceParams);
+            $link = strtr($this->format, $replaceParams);
         }
+
+        $request = $this->request;
+        $link = preg_replace_callback(
+            '/{(\w+)}/',
+            function ($matches) use ($request) {
+                if (count($matches) > 1) {
+                    return $request->get($matches[1]);
+                } else {
+                    return '';
+                }
+            },
+            $link
+        );
+
+        return preg_replace('/(^:)\/+/', '/', $link);
     }
 
     /**
