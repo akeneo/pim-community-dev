@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension;
 
+use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -42,6 +44,30 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
      */
     public function visitResult(array $config, \stdClass $result)
     {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isApplicable(array $config)
+    {
+        return true;
+    }
+
+    /**
+     * @param ConfigurationInterface $configuration
+     * @param $config
+     * @return mixed
+     */
+    protected function validateConfiguration(ConfigurationInterface $configuration, $config)
+    {
+        $processor = new Processor();
+        $processor->processConfiguration(
+            $configuration,
+            $config
+        );
+
+        return true;
     }
 
     /**

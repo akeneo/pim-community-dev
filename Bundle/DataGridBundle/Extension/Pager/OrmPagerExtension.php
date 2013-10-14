@@ -14,6 +14,7 @@ class OrmPagerExtension extends AbstractExtension
     /**
      * Configuration tree paths
      */
+    const PAGER_OPTION_PATH                  = '[pager]';
     const PAGER_ENABLE_OPTION_PATH           = '[pager][enabled]';
     const PAGER_DEFAULT_PER_PAGE_OPTION_PATH = '[pager][default_per_page]';
 
@@ -42,6 +43,11 @@ class OrmPagerExtension extends AbstractExtension
     {
         $enabled = $this->accessor->getValue($config, Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE
             && $this->accessor->getValue($config, self::PAGER_ENABLE_OPTION_PATH) !== false;
+
+        $this->validateConfiguration(
+            new Configuration(),
+            array_intersect_key($config, array_flip(array('pager')))
+        );
 
         return $enabled;
     }
