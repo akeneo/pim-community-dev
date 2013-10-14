@@ -497,7 +497,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iChangeTheAttributePositionTo($attribute, $position)
     {
         $this->getCurrentPage()->dragAttributeToPosition($attribute, $position)->save();
-        $this->wait(10000);
+        $this->wait();
     }
 
     /**
@@ -1330,9 +1330,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iBlur()
     {
         $this->getCurrentPage()->find('css', 'body')->click();
-
-        //TODO Otherwise, it  makes the features/category/create_a_category.feature:28 scenario fails
-        $this->wait(4000, null);
+        $this->wait();
+        $this->wait();
     }
 
     /**
@@ -1812,7 +1811,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ->chooseOperation($operation)
             ->next();
 
-        $this->wait(10000);
+        $this->wait();
     }
 
     /**
@@ -1859,7 +1858,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $this->getCurrentPage()->next();
         $this->scrollContainerTo(900);
         $this->getCurrentPage()->confirm();
-        $this->wait(10000);
+        $this->wait();
     }
 
     /**
@@ -2005,19 +2004,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     private function wait($time = 5000, $condition = null)
     {
-        $condition = $condition ?: <<<JS
-        document.readyState == 'complete'                  // Page is ready
-            && typeof $ != 'undefined'                     // jQuery is loaded
-            && !$.active                                   // No ajax request is active
-            && $('#page').css('display') == 'block'        // Page is displayed (no progress bar)
-            && $('.loading-mask').css('display') == 'none' // Page is not loading (no black mask loading page)
-            && $('.jstree-loading').length == 0;           // Jstree has finished loading
-JS;
-
-        try {
-            return $this->getMainContext()->wait($time, $condition);
-        } catch (UnsupportedDriverActionException $e) {
-        }
+        $this->getMainContext()->wait($time, $condition);
     }
 
     /**
