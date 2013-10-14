@@ -12,13 +12,6 @@ datagrid:
         columns:
             label:
                 type: field
-                label: Template name
-                sortable: true
-                options: # custom options (PHP)
-                    renderer:
-                        type: TwigTemplateProperty
-                        params:
-                            template: "OroNotificationBundle:EmailNotification:Datagrid/Property/entityName.html.twig"
 
         properties:
             update_link:

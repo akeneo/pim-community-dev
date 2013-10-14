@@ -14,6 +14,9 @@ class Pager extends AbstractPager implements PagerInterface
     /** @var QueryBuilder */
     protected $qb;
 
+    /** @var array */
+    protected $parameters = array();
+
     public function __construct($maxPerPage = 10, QueryBuilder $qb = null)
     {
         $this->qb = $qb;
@@ -102,6 +105,52 @@ class Pager extends AbstractPager implements PagerInterface
             $query->setFirstResult($offset);
             $query->setMaxResults($this->getMaxPerPage());
         }
+    }
+
+    /**
+     * Returns the current pager's parameter holder.
+     *
+     * @return array
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * Returns a parameter.
+     *
+     * @param string $name
+     * @param mixed  $default
+     *
+     * @return mixed
+     */
+    public function getParameter($name, $default = null)
+    {
+        return isset($this->parameters[$name]) ? $this->parameters[$name] : $default;
+    }
+
+    /**
+     * Checks whether a parameter has been set.
+     *
+     * @param string $name
+     *
+     * @return boolean
+     */
+    public function hasParameter($name)
+    {
+        return isset($this->parameters[$name]);
+    }
+
+    /**
+     * Sets a parameter.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setParameter($name, $value)
+    {
+        $this->parameters[$name] = $value;
     }
 
     /**
