@@ -1,5 +1,5 @@
 @javascript
-Feature: Back to the grid
+Feature: Products back to the grid
   In order to restore the product grid filters
   As a user
   I need to be able to set filters and retrieve them after going back to the page
@@ -43,6 +43,7 @@ Feature: Back to the grid
       | book    | description | fr_FR  | mobile    | Ma descr livre mobile    |
     And I am logged in as "admin"
 
+  @insulated
   Scenario: Successfully restore filters without hashnav
     Given I am on the products page
     When I filter by "SKU" with value "book"
@@ -51,11 +52,12 @@ Feature: Back to the grid
     And I should see products book
     And I should not see products postit
 
+  @insulated
   Scenario: Successfully restore filters with hashnav
     Given I am on the products page
     When I filter by "SKU" with value "book"
     And I click on the "book" row
-    And I follow "Back to grid"
+    And I click back to grid
     Then the grid should contain 1 element
     And I should see products book
     And I should not see products postit
