@@ -34,30 +34,16 @@ class FormatterExtension extends AbstractExtension
             || $this->accessor->getValue($config, self::PROPERTIES_PATH);
 
         // validate extension configuration
-        $this->validateConfiguration($config);
-
-        return $applicable;
-    }
-
-    /**
-     * @param array $config config array
-     *
-     * @return bool
-     */
-    public function validateConfiguration($config)
-    {
         $columns    = $this->accessor->getValue($config, self::COLUMNS_PATH) ? : array();
         $properties = $this->accessor->getValue($config, self::PROPERTIES_PATH) ? : array();
-
-        $processor = new Processor();
-        $processor->processConfiguration(
-            new Configuration\Columns(array_merge(array_keys($this->properties), array_keys($columns))),
+        $this->validateConfiguration(
+            new Configuration(array_merge(array_keys($this->properties), array_keys($columns))),
             array(
                 'columns_and_properties' => array_merge($columns, $properties)
             )
         );
 
-        return true;
+        return $applicable;
     }
 
     /**
