@@ -6,6 +6,7 @@ use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\AbstractType;
 
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -27,6 +28,11 @@ class TargetType extends AbstractType
     {
         $this->configManager = $configManager;
         $this->request       = $request;
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        parent::buildForm($builder, $options);
     }
 
     /**
