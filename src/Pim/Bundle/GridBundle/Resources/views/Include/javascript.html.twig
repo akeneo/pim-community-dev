@@ -58,7 +58,8 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
     'pim/datafilter/currency-filter', 'pim/datafilter/scope-filter',
 
     //Pim Actions
-    'pim/datagrid/export-action', 'pim/datagrid/tab-redirect-action'],
+    'pim/datagrid/export-action', 'pim/datagrid/tab-redirect-action',
+    'pim/datagrid/product-delete-action'],
 
     function($, _, Backbone, mediator, registry, LoadingMask,
              Grid, GridRouter, PageableCollection, FilterList,
@@ -73,7 +74,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
         CurrencyFilter, ScopeFilter,
 
         //Pim actions
-        ExportCollectionAction, TabRedirectAction
+        ExportCollectionAction, TabRedirectAction, ProductDeleteAction
         ) {
         var datagridOptions = {
             grid: {
@@ -133,6 +134,9 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                         {% if action.type == constant(actionTypePrefix ~ 'TYPE_DELETE') %}
                             {% set currentOptions = currentOptions|merge({'name': action.name}) %}
                             DeleteAction.extend({{ currentOptions|json_encode|raw }})
+                        {% elseif action.type == constant(actionTypePrefix ~ 'TYPE_PRODUCT_DELETE') %}
+                            {% set currentOptions = currentOptions|merge({'name': action.name}) %}
+                            ProductDeleteAction.extend({{ currentOptions|json_encode|raw }})
                         {% elseif action.type == constant(actionTypePrefix ~ 'TYPE_AJAX') %}
                             {% set currentOptions = currentOptions|merge({'name': action.name}) %}
                             AjaxAction.extend({{ currentOptions|json_encode|raw }})

@@ -2,6 +2,7 @@ parameters:
     pim_grid.datagrid.class:               Pim\Bundle\GridBundle\Datagrid\Datagrid
     pim_grid.builder.datagrid.class:       Pim\Bundle\GridBundle\Builder\ORM\DatagridBuilder
     pim_grid.action.tab_redirect.class:    Pim\Bundle\GridBundle\Action\TabRedirectAction
+    pim_grid.action.product_delete.class:  Pim\Bundle\GridBundle\Action\ProductDeleteAction
     oro_grid.mass_action.dispatcher.class: Pim\Bundle\GridBundle\Action\MassAction\MassActionDispatcher
 
 services:
@@ -21,3 +22,8 @@ services:
         class: %pim_grid.action.tab_redirect.class%
         tags:
             - { name: oro_grid.action.type, alias: pim_grid_action_tab_redirect }
+
+    pim_grid.action.product_delete:
+        class: %pim_grid.action.product_delete.class%
+        tags:
+            - { name: oro_grid.action.type, alias: pim_grid_action_product_delete }
