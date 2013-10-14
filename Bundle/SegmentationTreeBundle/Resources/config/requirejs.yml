@@ -4,4 +4,4 @@ config:
             deps:
                 - 'jquery.jstree'
     paths:
-        jstree/jquery.jstree.tree_selector': 'bundles/orosegmentationtree/js/lib/jstree/jquery.jstree.tree_selector.js'
+        'jstree/jquery.jstree.tree_selector': 'bundles/orosegmentationtree/lib/jstree/jquery.jstree.tree_selector.js'

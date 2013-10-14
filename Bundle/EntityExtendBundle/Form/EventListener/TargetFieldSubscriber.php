@@ -33,15 +33,14 @@ class TargetFieldSubscriber implements EventSubscriberInterface
 
     public function preSetSubmitData(FormEvent $event)
     {
-        $form = $event->getForm();
-        $data = $form->getParent()->getData();
+        $form    = $event->getForm();
+        $data    = $form->getParent()->getData();
+        $choices = array();
 
         $config = $form->getParent()->get('target_field')->getConfig()->getOptions();
         if (array_key_exists('auto_initialize', $config)) {
             $config['auto_initialize'] = false;
         }
-
-        $choices = array();
 
         $className = $form->getParent()->get('target_entity')->getData();
         if (null == $className) {
@@ -61,18 +60,12 @@ class TargetFieldSubscriber implements EventSubscriberInterface
                 $entityFields = $this->configManager->getEntityManager()
                     ->getRepository(FieldConfigModel::ENTITY_NAME)
                     ->findBy(
-                        array(
-                            'entity' => $entity->getId(),
-                            'type'   => 'string'
-                        ),
+                        array('entity' => $entity->getId(), 'type' => 'string'),
                         array('fieldName' => 'ASC')
                     );
 
                 foreach ($entityFields as $field) {
-                    $label                           = $entityConfigProvider->getConfig(
-                        $className,
-                        $field->getFieldName()
-                    )->get('label');
+                    $label = $entityConfigProvider->getConfig($className, $field->getFieldName())->get('label');
                     $choices[$field->getFieldName()] = $label ? : $field->getFieldName();
                 }
             }
