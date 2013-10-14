@@ -130,6 +130,10 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     * @return null
+     */
     public function testInvalidProcess()
     {
         $repository = $this->getRepositoryMock();
@@ -318,6 +322,11 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
         return $category;
     }
 
+    /**
+     * @param array $violations
+     *
+     * @return \Symfony\Component\Validator\ConstraintViolationList
+     */
     protected function getConstraintViolationListMock(array $violations = array())
     {
         $list = $this->getMock('Symfony\Component\Validator\ConstraintViolationList');
@@ -333,6 +342,9 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
         return $list;
     }
 
+    /**
+     * @return \Oro\Bundle\BatchBundle\Entity\StepExecution
+     */
     protected function getStepExecutionMock()
     {
         return $this

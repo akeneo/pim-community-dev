@@ -566,6 +566,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Then /^there should be the following categories:$/
      */
     public function thereShouldBeTheFollowingCategories(TableNode $table)

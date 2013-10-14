@@ -70,8 +70,8 @@ class UserPreferencesListenerTest extends WebTestCase
         $user
             ->setUsername($prefix)
             ->setEmail($prefix . '@test.com')
-            ->setPassword($prefix);
-        $user->setCatalogscope($removedOption);
+            ->setPassword($prefix)
+            ->setCatalogscope($removedOption);
         $this->userManager->updateUser($user);
         $this->entityManager->flush();
 

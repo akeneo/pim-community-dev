@@ -27,6 +27,40 @@ class MassActionDispatcher extends OroMassActionDispatcher
      */
     public function dispatch($datagridName, $actionName, array $parameters, array $data = array())
     {
+        list($inset, $filters, $values) = $this->prepareParameters($parameters, $actionName);
+
+        $datagridManager = $this->managerRegistry->getDatagridManager($datagridName);
+
+        if ($datagridManager instanceof ProductDatagridManager) {
+            $datagridManager->setFilterTreeId(isset($data['treeId']) ? $data['treeId'] : 0);
+            $datagridManager->setFilterCategoryId(isset($data['categoryId']) ? $data['categoryId'] : 0);
+        }
+
+        $datagrid = $datagridManager->getDatagrid();
+        $datagrid->getParameters()->set(ParametersInterface::FILTER_PARAMETERS, $filters);
+        $datagrid->applyFilters();
+
+        $massAction = $this->getMassActionByName($datagrid, $actionName);
+        $proxyQuery = $this->getDatagridQuery($datagrid, $inset, $values);
+        $resultIterator = $this->getResultIterator($proxyQuery);
+        $mediator = new MassActionMediator($massAction, $datagrid, $resultIterator, $data);
+
+        $handle = $this->getMassActionHandler($massAction);
+        $result = $handle->handle($mediator);
+
+        return $result;
+    }
+
+    /**
+     * Prepare parameters to get filters and values
+     *
+     * @param array  $parameters
+     * @param string $actionName
+     *
+     * @return array
+     */
+    protected function prepareParameters($parameters, $actionName)
+    {
         $inset = true;
         if (isset($parameters['inset'])) {
             $inset = $parameters['inset'];
@@ -46,27 +80,6 @@ class MassActionDispatcher extends OroMassActionDispatcher
             throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $actionName));
         }
 
-        $datagridManager = $this->managerRegistry->getDatagridManager($datagridName);
-
-        if ($datagridManager instanceof ProductDatagridManager) {
-            $datagridManager->setFilterTreeId(isset($data['treeId']) ? $data['treeId'] : 0);
-            $datagridManager->setFilterCategoryId(isset($data['categoryId']) ? $data['categoryId'] : 0);
-        }
-        // create datagrid
-        $datagrid = $datagridManager->getDatagrid();
-        $datagrid->getParameters()->set(ParametersInterface::FILTER_PARAMETERS, $filters);
-        $datagrid->applyFilters();
-
-        // create mediator
-        $massAction = $this->getMassActionByName($datagrid, $actionName);
-        $proxyQuery = $this->getDatagridQuery($datagrid, $inset, $values);
-        $resultIterator = $this->getResultIterator($proxyQuery);
-        $mediator = new MassActionMediator($massAction, $datagrid, $resultIterator, $data);
-
-        // perform mass action
-        $handle = $this->getMassActionHandler($massAction);
-        $result = $handle->handle($mediator);
-
-        return $result;
+        return array($inset, $filters, $values);
     }
 }
