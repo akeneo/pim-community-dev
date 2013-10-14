@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\HelpBundle\Unit\Twig;
+namespace Oro\Bundle\HelpBundle\Unit\Model;
 
 use Oro\Bundle\HelpBundle\Annotation\Help;
-use Oro\Bundle\HelpBundle\Twig\HelpLinkProvider;
+use Oro\Bundle\HelpBundle\Model\HelpLinkProvider;
 
 class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,25 +18,6 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
         $controller = 'Acme\\Bundle\\DemoBundle\\Controller\\TestController::runAction';
         $shortName = 'AcmeDemoBundle:Test:run';
 
-        $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $container->expects($this->exactly(2))
-            ->method('get')
-            ->with('request')
-            ->will($this->returnValue($request));
-
-        $request->expects($this->at(0))
-            ->method('get')
-            ->with('_controller')
-            ->will($this->returnValue($controller));
-        $request->expects($this->at(1))
-            ->method('get')
-            ->with('oro_help')
-            ->will($this->returnValue($annotation));
-
         $parser = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser')
             ->disableOriginalConstructor()
             ->getMock();
@@ -45,8 +26,10 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
             ->with($controller)
             ->will($this->returnValue($shortName));
 
-        $provider = new HelpLinkProvider($parser, $container);
+        $provider = new HelpLinkProvider($parser);
         $provider->setConfiguration($configuration);
+        $provider->setRequestController($controller);
+        $provider->setHelpConfigurationAnnotation($annotation);
         $this->assertEquals($link, $provider->getHelpLinkUrl());
     }
 

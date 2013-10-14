@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\TranslationBundle\Tests\Unit\DependencyInjection;
+namespace Oro\Bundle\HelpBundle\Tests\Unit\DependencyInjection;
 
 use Oro\Bundle\HelpBundle\DependencyInjection\OroHelpExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -33,7 +33,7 @@ class OroHelpExtensionTest extends \PHPUnit_Framework_TestCase
             $container
         );
 
-        $this->assertTrue($container->hasDefinition('oro_help.twig.help_link_provider'));
+        $this->assertTrue($container->hasDefinition('oro_help.model.help_link_provider'));
         $this->assertTrue($container->hasDefinition('oro_help.twig.extension'));
         $twigExtension = $container->getDefinition('oro_help.twig.extension');
         $this->assertTrue($twigExtension->hasTag('twig.extension'));
@@ -51,8 +51,8 @@ class OroHelpExtensionTest extends \PHPUnit_Framework_TestCase
             $container
         );
 
-        $this->assertTrue($container->hasDefinition('oro_help.twig.help_link_provider'));
-        $linkProvider = $container->getDefinition('oro_help.twig.help_link_provider');
+        $this->assertTrue($container->hasDefinition('oro_help.model.help_link_provider'));
+        $linkProvider = $container->getDefinition('oro_help.model.help_link_provider');
         $this->assertEquals(
             array(
                 array(
@@ -79,8 +79,8 @@ class OroHelpExtensionTest extends \PHPUnit_Framework_TestCase
                 'expectedConfiguration' => array(
                     'defaults' => array(
                         'server' => 'http://server.com',
-                        'vendors' => array(),
                     ),
+                    'vendors' => array(),
                     'resources' => array(),
                 )
             ),
@@ -99,7 +99,14 @@ class OroHelpExtensionTest extends \PHPUnit_Framework_TestCase
                 'expectedConfiguration' => array(
                     'defaults' => array(
                         'server' => 'http://server.com',
-                        'vendors' => array(),
+                    ),
+                    'vendors' => array(
+                        'Bar' => array(
+                            'alias' => 'BarAliasOverride'
+                        ),
+                        'Foo' => array(
+                            'alias' => 'FooAlias'
+                        ),
                     ),
                     'resources' => array(
                         'FooBundle' => array(

@@ -1,10 +1,11 @@
 parameters:
-    oro_help.twig.help_link_provider.class: Oro\Bundle\HelpBundle\Twig\HelpLinkProvider
+    oro_help.model.help_link_provider.class: Oro\Bundle\HelpBundle\Model\HelpLinkProvider
     oro_help.twig.extension.class: Oro\Bundle\HelpBundle\Twig\HelpExtension
+    oro_help.listener.help_link.class: Oro\Bundle\HelpBundle\EventListener\HelpLinkRequestListener
 
 services:
-    oro_help.twig.help_link_provider:
-        class: %oro_help.twig.help_link_provider.class%
+    oro_help.model.help_link_provider:
+        class: %oro_help.model.help_link_provider.class%
         arguments:
             - @controller_name_converter
             - @service_container
@@ -12,6 +13,15 @@ services:
     oro_help.twig.extension:
         class: %oro_help.twig.extension.class%
         arguments:
-            - @oro_help.twig.help_link_provider
+            - @oro_help.model.help_link_provider
         tags:
             - { name: twig.extension }
+
+    oro_help.listener.help_link:
+        class: %oro_help.listener.help_link.class%
+        arguments:
+            - @service_container
+        tags:
+            - { name: kernel.event_listener, priority: -200, event: kernel.request, method: onKernelRequest }
+            - { name: kernel.event_listener, priority: -200, event: kernel.response, method: onKernelResponse }
+            - { name: kernel.event_listener, priority: -200, event: kernel.controller, method: onKernelController }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\TranslationBundle\Tests\Unit\DependencyInjection;
+namespace Oro\Bundle\HelpBundle\Tests\Unit\DependencyInjection;
 
 use Oro\Bundle\HelpBundle\DependencyInjection\BundleConfiguration;
 use Symfony\Component\Config\Definition\Processor;
@@ -25,11 +25,17 @@ class BundleConfigurationTest extends \PHPUnit_Framework_TestCase
             'minimal_config' => array(
                 array(),
                 array(
-                    'resources' => array()
+                    'vendors' => array(),
+                    'resources' => array(),
                 )
             ),
             'extend_config' => array(
                 array(
+                    'vendors' => array(
+                        'Oro' => array(
+                            'alias' => 'Platform'
+                        ),
+                    ),
                     'resources' => array(
                         'AcmeFooBundle' => array(
                             'server' => 'http://server.com',
@@ -55,6 +61,11 @@ class BundleConfigurationTest extends \PHPUnit_Framework_TestCase
                     )
                 ),
                 array(
+                    'vendors' => array(
+                        'Oro' => array(
+                            'alias' => 'Platform'
+                        ),
+                    ),
                     'resources' => array(
                         'AcmeFooBundle' => array(
                             'server' => 'http://server.com',

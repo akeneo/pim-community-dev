@@ -18,7 +18,7 @@ class HelpExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->linkProvider = $this->getMockBuilder('Oro\Bundle\HelpBundle\Twig\HelpLinkProvider')
+        $this->linkProvider = $this->getMockBuilder('Oro\Bundle\HelpBundle\Model\HelpLinkProvider')
             ->disableOriginalConstructor()
             ->getMock();
 

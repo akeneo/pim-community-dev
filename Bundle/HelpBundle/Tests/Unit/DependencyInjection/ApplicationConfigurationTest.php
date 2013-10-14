@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\TranslationBundle\Tests\Unit\DependencyInjection;
+namespace Oro\Bundle\HelpBundle\Tests\Unit\DependencyInjection;
 
 use Oro\Bundle\HelpBundle\DependencyInjection\ApplicationConfiguration;
 use Symfony\Component\Config\Definition\Processor;
@@ -30,10 +30,10 @@ class ApplicationConfigurationTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     'defaults' => array(
-                        'server' => 'http://server',
-                        'vendors' => array()
+                        'server' => 'http://server'
                     ),
-                    'resources' => array()
+                    'vendors' => array(),
+                    'resources' => array(),
                 )
             ),
             'extended_config' => array(
@@ -42,12 +42,12 @@ class ApplicationConfigurationTest extends \PHPUnit_Framework_TestCase
                         'server' => 'http://server',
                         'prefix' => 'prefix',
                         'uri' => 'uri',
-                        'link' => 'http://server/link',
-                        'vendors' => array(
-                            'Oro' => array(
-                                'alias' => 'Platform'
-                            ),
-                        )
+                        'link' => 'http://server/link'
+                    ),
+                    'vendors' => array(
+                        'Oro' => array(
+                            'alias' => 'Platform'
+                        ),
                     ),
                     'resources' => array(
                         'AcmeFooBundle' => array(
@@ -79,11 +79,11 @@ class ApplicationConfigurationTest extends \PHPUnit_Framework_TestCase
                         'server' => 'http://server',
                         'prefix' => 'prefix',
                         'uri' => 'uri',
-                        'link' => 'http://server/link',
-                        'vendors' => array(
-                            'Oro' => array(
-                                'alias' => 'Platform'
-                            )
+                        'link' => 'http://server/link'
+                    ),
+                    'vendors' => array(
+                        'Oro' => array(
+                            'alias' => 'Platform'
                         )
                     ),
                     'resources' => array(
@@ -165,10 +165,10 @@ class ApplicationConfigurationTest extends \PHPUnit_Framework_TestCase
             'invalid_vendor_name' => array(
                 array(
                     'defaults' => array(
-                        'server' => 'http://server',
-                        'vendors' => array(
-                            '123' => array()
-                        )
+                        'server' => 'http://server'
+                    ),
+                    'vendors' => array(
+                        '123' => array()
                     )
                 ),
                 'Symfony\Component\Config\Definition\Exception\InvalidConfigurationException',

@@ -16,8 +16,6 @@ class ApplicationConfiguration extends AbstractConfiguration
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('oro_help');
 
-        $self = $this;
-
         $nodeBuilder = $rootNode
             ->children()
                 ->arrayNode('defaults')
@@ -47,41 +45,12 @@ class ApplicationConfiguration extends AbstractConfiguration
                                 ->thenInvalid('Invalid URL %s.')
                             ->end()
                         ->end()
-                        ->arrayNode('vendors')
-                            ->beforeNormalization()
-                                ->always(
-                                    function (array $vendors) use ($self) {
-                                        $self->assertKeysAreValidVendorNames($vendors);
-                                        return $vendors;
-                                    }
-                                )
-                            ->end()
-                            ->prototype('array')
-                                ->children()
-                                    ->scalarNode('server')->end()
-                                    ->scalarNode('prefix')->end()
-                                    ->scalarNode('alias')->end()
-                                    ->scalarNode('uri')->end()
-                                    ->scalarNode('link')->end()
-                                ->end()
-                            ->end()
-                        ->end()
                     ->end()
                 ->end();
 
         $this->configureResourcesNodeDefinition($nodeBuilder->arrayNode('resources'));
+        $this->configureVendorsNodeDefinition($nodeBuilder->arrayNode('vendors'));
 
         return $treeBuilder;
-    }
-
-    public function assertKeysAreValidVendorNames(array $vendors)
-    {
-        foreach (array_keys($vendors) as $vendorName) {
-            if (!preg_match('/^[a-z_][a-z0-9_]*$/i', $vendorName)) {
-                throw new InvalidConfigurationException(
-                    sprintf('Node "vendors" contains invalid vendor name "%s".', $vendorName)
-                );
-            }
-        }
     }
 }
