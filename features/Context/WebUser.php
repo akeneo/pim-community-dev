@@ -2006,10 +2006,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function wait($time = 5000, $condition = null)
     {
         $condition = $condition ?: <<<JS
-        document.readyState == "complete"                   // Page is ready
-            && !$.active                                    // No ajax request is active
-            && $("#page").css("display") == "block"         // Page is displayed (no progress bar)
-            && $(".loading-mask").css("display") == "none"; // Page is not loading (no black mask loading page)
+        document.readyState == 'complete'                  // Page is ready
+            && typeof $ != 'undefined'                     // jQuery is loaded
+            && !$.active                                   // No ajax request is active
+            && $('#page').css('display') == 'block'        // Page is displayed (no progress bar)
+            && $('.loading-mask').css('display') == 'none' // Page is not loading (no black mask loading page)
+            && $('.jstree-loading').length == 0;           // Jstree has finished loading
 JS;
 
         try {
