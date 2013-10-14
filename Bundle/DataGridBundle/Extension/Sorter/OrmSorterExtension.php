@@ -36,8 +36,15 @@ class OrmSorterExtension extends AbstractExtension
      */
     public function isApplicable(array $config)
     {
-        return $this->accessor->getValue($config, Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE
+        $isApplicable = $this->accessor->getValue($config, Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE
             && is_array($this->accessor->getValue($config, self::COLUMNS_PATH));
+
+        $this->validateConfiguration(
+            new Configuration(),
+            array_intersect_key($config, array_flip(array('sorters')))
+        );
+
+        return $isApplicable;
     }
 
     /**
