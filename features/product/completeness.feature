@@ -48,40 +48,20 @@ Feature: Display the completeness of a product
     Given I am on the "postit" product page
     When I visit the "Completeness" tab
     Then I should see the completeness summary
-
-    And I should see the completeness state "success" for channel "ecommerce" and locale "English (United States)"
-    And I should see the completeness message "Complete" for channel "ecommerce" and locale "English (United States)"
-    And I should see the completeness ratio 100% for channel "ecommerce" and locale "English (United States)"
-
-    And I should see the completeness state "warning" for channel "ecommerce" and locale "French (France)"
-    And I should see the completeness message "1 missing value" for channel "ecommerce" and locale "French (France)"
-    And I should see the completeness ratio 67% for channel "ecommerce" and locale "French (France)"
-
-    And I should see the completeness state "disabled" for channel "mobile" and locale "English (United States)"
-    And I should see the completeness message "1 missing value" for channel "mobile" and locale "English (United States)"
-    And I should see the completeness ratio 50% for channel "mobile" and locale "English (United States)"
-
-    And I should see the completeness state "danger" for channel "mobile" and locale "French (France)"
-    And I should see the completeness message "2 missing values" for channel "mobile" and locale "French (France)"
-    And I should see the completeness ratio 0% for channel "mobile" and locale "French (France)"
+    And I should see the completeness:
+      | channel   | locale                  | state    | message          | ratio |
+      | ecommerce | English (United States) | success  | Complete         | 100%  |
+      | ecommerce | French (France)         | warning  | 1 missing value  | 67%   |
+      | mobile    | English (United States) | disabled | 1 missing value  | 50%   |
+      | mobile    | French (France)         | danger   | 2 missing values | 0%    |
 
   Scenario: Successfully display the completeness for a second product
     Given I am on the "smartphone" product page
     When I visit the "Completeness" tab
     Then I should see the completeness summary
-
-    And I should see the completeness state "success" for channel "ecommerce" and locale "French (France)"
-    And I should see the completeness message "Complete" for channel "ecommerce" and locale "French (France)"
-    And I should see the completeness ratio 100% for channel "ecommerce" and locale "French (France)"
-
-    And I should see the completeness state "danger" for channel "ecommerce" and locale "English (United States)"
-    And I should see the completeness message "1 missing value" for channel "ecommerce" and locale "English (United States)"
-    And I should see the completeness ratio 0% for channel "ecommerce" and locale "English (United States)"
-
-    And I should see the completeness state "success" for channel "mobile" and locale "French (France)"
-    And I should see the completeness message "Complete" for channel "mobile" and locale "French (France)"
-    And I should see the completeness ratio 100% for channel "mobile" and locale "French (France)"
-
-    And I should see the completeness state "disabled" for channel "mobile" and locale "English (United States)"
-    And I should see the completeness message "Complete" for channel "mobile" and locale "English (United States)"
-    And I should see the completeness ratio 100% for channel "mobile" and locale "English (United States)"
+    And I should see the completeness:
+      | channel   | locale                  | state    | message         | ratio |
+      | ecommerce | English (United States) | danger   | 1 missing value | 0%    |
+      | ecommerce | French (France)         | success  | Complete        | 100%  |
+      | mobile    | English (United States) | disabled | Complete        | 100%  |
+      | mobile    | French (France)         | success  | Complete        | 100%  |
