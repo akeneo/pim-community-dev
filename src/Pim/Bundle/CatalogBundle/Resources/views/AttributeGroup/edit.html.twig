@@ -7,12 +7,7 @@
 
 {% block groupTab %}
 {{ JSFV(form) }}
-{{ form_start(form, {
-    'action': path('pim_catalog_attributegroup_edit', { id: form.vars.value.id }),
-    'attr': {
-        'class': 'form-horizontal'
-    }
-}) }}
+{{ form_start(form, { 'action': path('pim_catalog_attributegroup_edit', { id: form.vars.value.id }) }) }}
 
     {% set title = 'attribute group.edit'|trans ~ ' - ' ~ form.vars.data.label %}
 

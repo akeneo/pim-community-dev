@@ -8,6 +8,13 @@
     {% else %}
         {% set form_method = "POST" %}
     {% endif %}
+    {% set formClass = class is defined ? class : 'form-horizontal' %}
+    {% if attr.class is defined %}
+        {% set class = attr.class ~ ' ' ~ formClass %}
+    {% else %}
+        {% set class = formClass %}
+    {% endif %}
+    {% set attr = attr|merge({'class': class }) %}
     <form id="{{ id }}" method="{{ form_method|lower }}" action="{{ action }}"{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% if multipart %} enctype="multipart/form-data"{% endif %}>
     {% if form_method != method %}
         <input type="hidden" name="_method" value="{{ method }}" />

@@ -36,7 +36,6 @@
         path('pim_catalog_categorytree_edit', { id: form.vars.value.id }) :
         path('pim_catalog_categorytree_create', { parent: parentId }),
     'attr': {
-        'class': 'form-horizontal',
         'data-updated-title': 'confirmation.leave'|trans,
         'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': entityName|trans })
     }

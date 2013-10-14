@@ -106,9 +106,8 @@
     {{ JSFV(form) }}
     {{ form_start(form, {
         'action': path('pim_catalog_product_edit', { id: form.vars.value.id, dataLocale: dataLocale }),
-        'multipart': true,
         'attr': {
-            'class': 'form-horizontal product-edit',
+            'class': 'product-edit',
             'data-updated-title': 'confirmation.leave'|trans,
             'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'product'|trans })
         }

@@ -1,4 +1,7 @@
-{{ form_start(form, { 'action': path('pim_catalog_productattribute_sort') }) }}
+{% set sortFormId   = 'pim_catalog_productattribute_sort' %}
+{% set sortFormPath = path('pim_catalog_productattribute_sort') %}
+
+{{ form_start(form, { 'id': sortFormId, 'action': sortFormPath }) }}
     {% for attribute in attributes %}
         <input name="{{ attribute.id }}" type="hidden" value="{{ attribute.sortOrder }}">
     {% endfor %}
@@ -11,7 +14,7 @@ require(
         'use strict';
 
         $(function () {
-            var $form = $('#{{ form.vars.id }}');
+            var $form = $('#{{ sortFormId }}');
             var $list = $('{{ list }}');
 
             function updateAttributeSortOrder() {
@@ -25,7 +28,7 @@ require(
                 });
 
                 $.ajax({
-                    url: '{{ path("pim_catalog_productattribute_sort") }}',
+                    url: '{{ sortFormPath }}',
                     type: 'POST',
                     data: $form.serialize()
                 });

@@ -2,12 +2,7 @@
 
 {% block groupTab %}
 {{ JSFV(form) }}
-{{ form_start(form, {
-    'action': path('pim_catalog_attributegroup_create'),
-    'attr': {
-        'class': 'form-horizontal'
-    }
-}) }}
+{{ form_start(form, { 'action': path('pim_catalog_attributegroup_create') }) }}
 
     {{ elements.page_header('attribute group.create'|trans, elements.submitBtn) }}
 

@@ -2,12 +2,7 @@
 
 {% block familyTab %}
 {{ JSFV(form) }}
-{{ form_start(form, {
-    'action': path('pim_catalog_family_create'),
-    'attr': {
-        'class': 'form-horizontal'
-    }
-}) }}
+{{ form_start(form, { 'action': path('pim_catalog_family_create') }) }}
 
     {% set title = 'family.create'|trans %}
 

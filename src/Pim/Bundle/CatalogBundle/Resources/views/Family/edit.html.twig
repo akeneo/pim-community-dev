@@ -5,15 +5,14 @@
 {% block familyTab %}
 
 {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
-'form': attributesForm,
-'action': path('pim_catalog_family_addproductattributes', {'id': family.id})
+    'form': attributesForm,
+    'action': path('pim_catalog_family_addproductattributes', {'id': family.id})
 } %}
 
 {{ JSFV(form) }}
 {{ form_start(form, {
     'action': path('pim_catalog_family_edit', { id: family.id }),
     'attr': {
-        'class': 'form-horizontal',
         'data-updated-title': 'confirmation.leave'|trans,
         'data-updated-message': 'confirmation.discard changes.'|trans({ '%entity%': 'family'|trans })
     }

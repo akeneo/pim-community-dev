@@ -8,10 +8,7 @@
     {{ form_start(form, {
         'action': form.vars.value.id ?
             path('pim_catalog_channel_edit', { id: form.vars.value.id }) :
-            path('pim_catalog_channel_create'),
-        'attr': {
-            'class': 'form-horizontal'
-        }
+            path('pim_catalog_channel_create')
     }) }}
 
         {% set title = form.vars.value.id ? 'channel.edit'|trans ~ ' - ' ~ form.vars.value.label : 'channel.create'|trans %}
