@@ -51,7 +51,7 @@ parameters:
 
     oro_security.encoder.mcrypt.class:                         Oro\Bundle\SecurityBundle\Encoder\Mcrypt
 
-    oro_security.cache.cache.class:                            Oro\Bundle\SecurityBundle\Acl\Cache\OidCache
+    oro_security.oid_ancestor.cache.class:                     Oro\Bundle\SecurityBundle\Acl\Cache\OidAncestorsCache
 
 services:
     oro_security.security_facade:
@@ -345,18 +345,13 @@ services:
         class: %oro_security.encoder.mcrypt.class%
         arguments: [ %kernel.secret% ]
 
-    oro_security.oid_cache.cache:
-            class:                                                  %oro_security.cache.cache.class%
-            arguments:
-                - @oro_security.cache.file_cache
-                - @oro_security.model.file_cache
+    oro_security.oid_ancestor.cache:
+        class: %oro_security.oid_ancestor.cache.class%
+        arguments:
+            - @oro_security.oid_ancestor.file_cache
 
-    oro_security.cache.file_cache:
+    oro_security.oid_ancestor.file_cache:
+        public: false
         parent: oro.cache.abstract
         calls:
             - [setNamespace, ['oro_security_oid_ancesstor.cache']]
-
-    oro_security.model.file_cache:
-        parent: oro.cache.abstract
-        calls:
-            - [setNamespace, ['oro_security_oid_ancesstor.model']]

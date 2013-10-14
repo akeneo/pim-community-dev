@@ -4,6 +4,7 @@ namespace Oro\Bundle\SecurityBundle\Acl\Dbal;
 
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Driver\Statement;
+use Oro\Bundle\SecurityBundle\Acl\Cache\OidAncestorsCache;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Domain\Acl;
 use Symfony\Component\Security\Acl\Domain\Entry;
@@ -18,14 +19,13 @@ use Symfony\Component\Security\Acl\Model\AclProviderInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
 
-use Oro\Bundle\SecurityBundle\Acl\Cache\OidCache;
+use Oro\Bundle\SecurityBundle\Acl\Cache\OidAncestorsCacheCache;
 
 /**
- * An ACL provider implementation.
+ * This is a copy of Symfony\Component\Security\Acl\Dbal\AclProvider class
  *
- * This provider assumes that all ACLs share the same PermissionGrantingStrategy.
- *
- * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
 class AclProvider implements AclProviderInterface
 {
@@ -39,27 +39,31 @@ class AclProvider implements AclProviderInterface
     private $permissionGrantingStrategy;
 
     /**
-     * @var OidCache
+     * @var OidAncestorsCache
      */
-    protected $oidCache;
+    protected $oidAncestorCache;
 
     /**
-     * Constructor.
-     *
-     * @param Connection                          $connection
+     * @param Connection $connection
      * @param PermissionGrantingStrategyInterface $permissionGrantingStrategy
-     * @param array                               $options
-     * @param AclCacheInterface                   $cache
+     * @param array $options
+     * @param AclCacheInterface $cache
+     * @param OidAncestorsCache $oidAncestorCache
      */
-    public function __construct(Connection $connection, PermissionGrantingStrategyInterface $permissionGrantingStrategy, array $options, AclCacheInterface $cache = null, $oidCache = null)
-    {
+    public function __construct(
+        Connection $connection,
+        PermissionGrantingStrategyInterface $permissionGrantingStrategy,
+        array $options,
+        AclCacheInterface $cache = null,
+        OidAncestorsCache $oidAncestorCache = null
+    ) {
         $this->cache = $cache;
         $this->connection = $connection;
         $this->loadedAces = array();
         $this->loadedAcls = array();
         $this->options = $options;
         $this->permissionGrantingStrategy = $permissionGrantingStrategy;
-        $this->oidCache = $oidCache;
+        $this->oidAncestorCacheCache = $oidAncestorCache;
     }
 
     /**
@@ -406,38 +410,39 @@ QUERY;
      */
     private function getAncestorIds(array $batch)
     {
-        $ancestorIds = array();
+        if ($this->oidAncestorCacheCache) {
+            $ancestorIds = array();
 
-        foreach ($batch as $oid) {
-            $ancestors = $this->oidCache->getAncestorsFromCache($oid);
-            if ($ancestors) {
-                $ancestorIds = array_merge($ancestorIds, $ancestors);
-            } else {
-                $sql = $this->getAncestorLookupSql(array($oid));
+            foreach ($batch as $oid) {
+                $ancestors = $this->oidAncestorCacheCache->getAncestorsFromCache($oid);
+                if ($ancestors !== false) {
+                    if (!empty($ancestors)) {
+                        $ancestorIds = array_merge($ancestorIds, $ancestors);
+                    }
+                } else {
+                    $sql = $this->getAncestorLookupSql(array($oid));
 
-                $ancestors = $this->connection->executeQuery($sql)->fetchAll();
-                $ancestorArray = array();
-                foreach ($ancestors as $data) {
-                    $ancestorArray[] = $data['ancestor_id'];
+                    $ancestors = $this->connection->executeQuery($sql)->fetchAll();
+                    $ancestorArray = array();
+                    foreach ($ancestors as $data) {
+                        $ancestorArray[] = $data['ancestor_id'];
+                    }
+                    $this->oidAncestorCacheCache->putAncestorsInCache($oid, $ancestorArray);
+                    $ancestorIds = array_merge($ancestorIds, $ancestorArray);
                 }
-                $this->oidCache->putAncestorsInCache($oid, $ancestorArray);
-                $ancestorIds = array_merge($ancestorIds, $ancestorArray);
+            }
+        } else {
+            $sql = $this->getAncestorLookupSql($batch);
+
+            $ancestorIds = array();
+            foreach ($this->connection->executeQuery($sql)->fetchAll() as $data) {
+                // FIXME: skip ancestors which are cached
+
+                $ancestorIds[] = $data['ancestor_id'];
             }
         }
 
         return $ancestorIds;
-        /**
-
-        $sql = $this->getAncestorLookupSql($batch);
-
-        $ancestorIds = array();
-        foreach ($this->connection->executeQuery($sql)->fetchAll() as $data) {
-            // FIXME: skip ancestors which are cached
-
-            $ancestorIds[] = $data['ancestor_id'];
-        }
-
-        return $ancestorIds;*/
     }
 
     /**
