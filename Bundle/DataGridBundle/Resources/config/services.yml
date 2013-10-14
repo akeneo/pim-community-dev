@@ -1,5 +1,3 @@
 parameters:
 
 services:
-    oro_email.grid.query_builder:
-        class: Oro\Bundle\DataGridBundle\Provider\QueryBuilder
