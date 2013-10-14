@@ -56,7 +56,8 @@ class OroBuildCommand extends ContainerAwareCommand
         }
 
         $output->writeln('Running code optimizer');
-        $command = $config['js_engine'] . ' ' . self::OPTIMIZER_FILE_PATH . ' -o ' . basename($buildConfigFilePath);
+        $command = $config['js_engine'] . ' ' .
+            self::OPTIMIZER_FILE_PATH . ' -o ' . basename($buildConfigFilePath) . ' 1>&2';
         $process = new Process($command, $webRoot);
         $process->setTimeout($config['building_timeout']);
         $process->run();
