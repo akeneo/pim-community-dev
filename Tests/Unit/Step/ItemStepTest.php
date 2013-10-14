@@ -5,6 +5,7 @@ namespace Oro\Bundle\BatchBundle\Tests\Unit\Step;
 use Oro\Bundle\BatchBundle\Step\ItemStep;
 use Oro\Bundle\BatchBundle\Job\BatchStatus;
 use Oro\Bundle\BatchBundle\Event\EventInterface;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Tests related to the ItemStep class
@@ -105,6 +106,208 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testExecute()
+    {
+        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $stepExecution->expects($this->any())
+            ->method('getStatus')
+            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
+
+        $reader = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ReaderStub')
+            ->setMethods(array('setStepExecution', 'read'))
+            ->getMock();
+        $reader->expects($this->once())
+            ->method('setStepExecution')
+            ->with($stepExecution);
+        $reader->expects($this->exactly(8))
+            ->method('read')
+            ->will($this->onConsecutiveCalls(1, 2, 3, 4, 5, 6, 7, null));
+
+        $processor = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ProcessorStub')
+            ->setMethods(array('setStepExecution', 'process'))
+            ->getMock();
+        $processor->expects($this->once())
+            ->method('setStepExecution')
+            ->with($stepExecution);
+        $processor->expects($this->exactly(7))
+            ->method('process')
+            ->will($this->onConsecutiveCalls(1, null, 3, 4, 5, 6, 7, null));
+
+        $writer = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\WriterStub')
+            ->setMethods(array('setStepExecution', 'write'))
+            ->getMock();
+        $writer->expects($this->once())
+            ->method('setStepExecution')
+            ->with($stepExecution);
+        $writer->expects($this->exactly(2))
+            ->method('write');
+
+        $this->itemStep->setReader($reader);
+        $this->itemStep->setProcessor($processor);
+        $this->itemStep->setWriter($writer);
+        $this->itemStep->setBatchSize(5);
+        $this->itemStep->execute($stepExecution);
+    }
+
+    public function testDispatchReaderInvalidItemException()
+    {
+        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $stepExecution->expects($this->any())
+            ->method('getStatus')
+            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
+
+        $this->eventDispatcher
+            ->expects($this->at(1))
+            ->method('dispatch')
+            ->with(
+                EventInterface::INVALID_ITEM,
+                $this->logicalAnd(
+                    $this->isInstanceOf('Oro\Bundle\BatchBundle\Event\InvalidItemEvent'),
+                    $this->attributeEqualTo('reason', 'The read item is invalid'),
+                    $this->attributeEqualTo('item', array('foo' => 'bar'))
+                )
+            );
+
+        $reader = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
+        $reader->expects($this->exactly(2))
+            ->method('read')
+            ->will($this->onConsecutiveCalls(
+                $this->throwException(new InvalidItemException('The read item is invalid', array('foo' => 'bar'))),
+                $this->returnValue(null)
+            ));
+
+        $processor = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemProcessorInterface');
+        $processor->expects($this->never())
+            ->method('process');
+
+        $writer = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemWriterInterface');
+        $writer->expects($this->never())
+            ->method('write');
+
+        $this->itemStep->setReader($reader);
+        $this->itemStep->setProcessor($processor);
+        $this->itemStep->setWriter($writer);
+
+        $this->itemStep->setBatchSize(5);
+        $this->itemStep->execute($stepExecution);
+    }
+
+    public function testDispatchProcessInvalidItemException()
+    {
+        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $stepExecution->expects($this->any())
+            ->method('getStatus')
+            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
+
+        $this->eventDispatcher
+            ->expects($this->at(1))
+            ->method('dispatch')
+            ->with(
+                EventInterface::INVALID_ITEM,
+                $this->logicalAnd(
+                    $this->isInstanceOf('Oro\Bundle\BatchBundle\Event\InvalidItemEvent'),
+                    $this->attributeEqualTo('reason', 'The processed item is invalid'),
+                    $this->attributeEqualTo('item', array('foo' => 'bar'))
+                )
+            );
+
+        $reader = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
+        $reader->expects($this->exactly(2))
+            ->method('read')
+            ->will($this->onConsecutiveCalls(
+                $this->returnValue(array('foo' => 'bar')),
+                $this->returnValue(null)
+            ));
+
+        $processor = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemProcessorInterface');
+        $processor->expects($this->exactly(1))
+            ->method('process')
+            ->will(
+                $this->throwException(
+                    new InvalidItemException('The processed item is invalid', array('foo' => 'bar'))
+                )
+            );
+
+        $writer = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemWriterInterface');
+        $writer->expects($this->never())
+            ->method('write');
+
+        $this->itemStep->setReader($reader);
+        $this->itemStep->setProcessor($processor);
+        $this->itemStep->setWriter($writer);
+
+        $this->itemStep->setBatchSize(5);
+        $this->itemStep->execute($stepExecution);
+    }
+
+    public function testDispatchWriteInvalidItemException()
+    {
+        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $stepExecution->expects($this->any())
+            ->method('getStatus')
+            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
+
+        $this->eventDispatcher
+            ->expects($this->at(1))
+            ->method('dispatch')
+            ->with(
+                EventInterface::INVALID_ITEM,
+                $this->logicalAnd(
+                    $this->isInstanceOf('Oro\Bundle\BatchBundle\Event\InvalidItemEvent'),
+                    $this->attributeEqualTo('reason', 'The written item is invalid'),
+                    $this->attributeEqualTo('item', array('foo' => 'bar'))
+                )
+            );
+
+        $reader = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
+        $reader->expects($this->exactly(2))
+            ->method('read')
+            ->will($this->onConsecutiveCalls(
+                $this->returnValue(array('foo' => 'bar')),
+                $this->returnValue(null)
+            ));
+
+        $processor = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemProcessorInterface');
+        $processor->expects($this->exactly(1))
+            ->method('process')
+            ->will(
+                $this->returnValue(array('foo' => 'bar'))
+            );
+
+        $writer = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemWriterInterface');
+        $writer->expects($this->exactly(1))
+            ->method('write')
+            ->will(
+                $this->throwException(
+                    new InvalidItemException('The written item is invalid', array('foo' => 'bar'))
+                )
+            );
+
+        $this->itemStep->setReader($reader);
+        $this->itemStep->setProcessor($processor);
+        $this->itemStep->setWriter($writer);
+
+        $this->itemStep->setBatchSize(5);
+        $this->itemStep->execute($stepExecution);
+    }
+
+    /**
+     * Assert the entity tested
+     *
+     * @param object $entity
+     */
+    protected function assertEntity($entity)
+    {
+        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Step\ItemStep', $entity);
+    }
     private function getReaderMock(array $configuration, array $fields = array())
     {
         $reader = $this
@@ -159,96 +362,4 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         return $writer;
     }
 
-    public function testExecute()
-    {
-        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $stepExecution->expects($this->any())
-            ->method('getStatus')
-            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
-
-        $reader = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ReaderStub')
-            ->setMethods(array('setStepExecution', 'read'))
-            ->getMock();
-        $reader->expects($this->once())
-            ->method('setStepExecution')
-            ->with($stepExecution);
-        $reader->expects($this->exactly(8))
-            ->method('read')
-            ->will($this->onConsecutiveCalls(1, 2, 3, 4, 5, 6, 7, null));
-
-        $processor = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\ProcessorStub')
-            ->setMethods(array('setStepExecution', 'process'))
-            ->getMock();
-        $processor->expects($this->once())
-            ->method('setStepExecution')
-            ->with($stepExecution);
-        $processor->expects($this->exactly(7))
-            ->method('process')
-            ->will($this->onConsecutiveCalls(1, null, 3, 4, 5, 6, 7, null));
-
-        $writer = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Step\\Stub\\WriterStub')
-            ->setMethods(array('setStepExecution', 'write'))
-            ->getMock();
-        $writer->expects($this->once())
-            ->method('setStepExecution')
-            ->with($stepExecution);
-        $writer->expects($this->exactly(2))
-            ->method('write');
-
-        $this->itemStep->setReader($reader);
-        $this->itemStep->setProcessor($processor);
-        $this->itemStep->setWriter($writer);
-        $this->itemStep->setBatchSize(5);
-        $this->itemStep->execute($stepExecution);
-    }
-
-    public function testDispatchReaderWarning()
-    {
-        $reader = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
-        $reader->expects($this->exactly(2))
-            ->method('read')
-            ->will($this->onConsecutiveCalls(false, null));
-        $this->eventDispatcher
-            ->expects($this->at(1))
-            ->method('dispatch')
-            ->with(
-                EventInterface::INVALID_READER_EXECUTION,
-                $this->isInstanceOf('Oro\Bundle\BatchBundle\Event\StepExecutionEvent')
-            );
-
-        $processor = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemProcessorInterface');
-        $processor->expects($this->never())
-            ->method('process');
-
-        $writer = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemWriterInterface');
-        $writer->expects($this->never())
-            ->method('write');
-
-        $this->itemStep->setReader($reader);
-        $this->itemStep->setProcessor($processor);
-        $this->itemStep->setWriter($writer);
-
-        $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $stepExecution->expects($this->any())
-            ->method('getStatus')
-            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTING)));
-
-        $this->itemStep->setBatchSize(5);
-        $this->itemStep->execute($stepExecution);
-    }
-
-    /**
-     * Assert the entity tested
-     *
-     * @param object $entity
-     */
-    protected function assertEntity($entity)
-    {
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Step\ItemStep', $entity);
-    }
 }

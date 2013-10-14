@@ -3,13 +3,13 @@
 namespace Oro\Bundle\BatchBundle\Step;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Oro\Bundle\BatchBundle\Event\EventInterface;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Basic step implementation that read items, process them and write them
@@ -161,33 +161,74 @@ class ItemStep extends AbstractStep
      */
     public function doExecute(StepExecution $stepExecution)
     {
-        $itemsToWrite = array();
-        $writeCount = 0;
+        $itemsToWrite  = array();
+        $writeCount    = 0;
+        $stopExecution = false;
 
         $this->initializeStepComponents($stepExecution);
 
-        while (($item = $this->reader->read()) !== null) {
-            if (false === $item) {
-                $this->dispatchStepExecutionEvent(EventInterface::INVALID_READER_EXECUTION, $stepExecution);
+        while (!$stopExecution) {
+            // Reading
+            try {
+                if (null === $item = $this->reader->read()) {
+                    $stopExecution = true;
+
+                    continue;
+                }
+            } catch (InvalidItemException $e) {
+                $this->dispatchInvalidItemEvent(
+                    get_class($this->reader),
+                    $e->getMessage(),
+                    $e->getItem()
+                );
+
                 continue;
             }
 
-            if (null !== $processedItem = $this->processor->process($item)) {
-                if (false === $processedItem) {
+            // Processing
+            try {
+                if (null === $processedItem = $this->processor->process($item)) {
                     continue;
                 }
-                $itemsToWrite[] = $processedItem;
-                $writeCount++;
-                if (0 === $writeCount % $this->batchSize) {
+            } catch (InvalidItemException $e) {
+                $this->dispatchInvalidItemEvent(
+                    get_class($this->processor),
+                    $e->getMessage(),
+                    $e->getItem()
+                );
+
+                continue;
+            }
+
+            // Writing
+            $itemsToWrite[] = $processedItem;
+            if (0 === ++$writeCount % $this->batchSize) {
+                try {
                     $this->writer->write($itemsToWrite);
                     $itemsToWrite = array();
+                } catch (InvalidItemException $e) {
+                    $this->dispatchInvalidItemEvent(
+                        get_class($this->processor),
+                        $e->getMessage(),
+                        $e->getItem()
+                    );
+
+                    continue;
                 }
             }
         }
 
         if (count($itemsToWrite) > 0) {
-            $this->writer->write($itemsToWrite);
-            $itemsToWrite = array();
+            try {
+                $this->writer->write($itemsToWrite);
+                $itemsToWrite = array();
+            } catch (InvalidItemException $e) {
+                $this->dispatchInvalidItemEvent(
+                    get_class($this->processor),
+                    $e->getMessage(),
+                    $e->getItem()
+                );
+            }
         }
     }
 
