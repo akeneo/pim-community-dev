@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\HelpBundle\Twig;
+namespace Oro\Bundle\HelpBundle\Model;
 
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,12 +13,12 @@ class HelpLinkProvider
     /**
      * @var string
      */
-    protected $controller;
+    protected $requestController;
 
     /**
      * @var Help|null
      */
-    protected $configurationAnnotation;
+    protected $helpConfigurationAnnotation;
 
     /**
      * @var array
@@ -47,42 +47,38 @@ class HelpLinkProvider
 
     /**
      * @param ControllerNameParser $parser
-     * @param ContainerInterface $container
      */
-    public function __construct(ControllerNameParser $parser, ContainerInterface $container)
+    public function __construct(ControllerNameParser $parser)
     {
         $this->parser = $parser;
-        $this->container = $container;
+    }
+
+    /**
+     * @param string $controller
+     */
+    public function setRequestController($controller)
+    {
+        $this->requestController = $controller;
     }
 
     /**
      * @return string
+     * @throws \RuntimeException
      */
-    protected function getController()
+    protected function getRequestController()
     {
-        if (!$this->controller) {
-            $this->controller = $this->getRequest()->get('_controller');
+        if (!$this->requestController) {
+            throw new \RuntimeException('Request controller must be set.');
         }
-        return $this->controller;
+        return $this->requestController;
     }
 
     /**
-     * @return Help
+     * @param Help|null $configurationAnnotation
      */
-    protected function getConfigurationAnnotation()
+    public function setHelpConfigurationAnnotation(Help $configurationAnnotation = null)
     {
-        if (!$this->configurationAnnotation) {
-            $this->configurationAnnotation = $this->getRequest()->get(Help::ALIAS);
-        }
-        return $this->configurationAnnotation;
-    }
-
-    /**
-     * @return Request
-     */
-    protected function getRequest()
-    {
-        return $this->container->get('request');
+        $this->helpConfigurationAnnotation = $configurationAnnotation;
     }
 
     /**
@@ -132,8 +128,8 @@ class HelpLinkProvider
      */
     protected function getConfiguration()
     {
-        $controllerActionKey = $this->parser->build($this->getController());
-        $controllerNameParts = explode('::', $this->getController());
+        $controllerActionKey = $this->parser->build($this->getRequestController());
+        $controllerNameParts = explode('::', $this->getRequestController());
 
         $controllerNamespaceInfo = explode('\\', $controllerNameParts[0]);
         $vendorName = $controllerNamespaceInfo[0];
@@ -180,10 +176,10 @@ class HelpLinkProvider
             $configuration[$keyName] = $keyIdentifier;
         }
 
-        if ($this->getConfigurationAnnotation()) {
+        if ($this->helpConfigurationAnnotation) {
             $configuration = array_merge(
                 $configuration,
-                $this->getConfigurationAnnotation()->getConfigurationArray()
+                $this->helpConfigurationAnnotation->getConfigurationArray()
             );
         }
 

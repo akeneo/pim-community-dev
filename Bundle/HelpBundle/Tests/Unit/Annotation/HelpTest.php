@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\TranslationBundle\Tests\Unit\Annotation;
+namespace Oro\Bundle\HelpBundle\Tests\Unit\Annotation;
 
 use Oro\Bundle\HelpBundle\Annotation\Help;
 use Symfony\Component\PropertyAccess\PropertyAccess;

@@ -1,3 +1,7 @@
+vendors:
+    Bar:
+        alias: BarAlias
+
 resources:
     BarBundle:
         alias: Bar

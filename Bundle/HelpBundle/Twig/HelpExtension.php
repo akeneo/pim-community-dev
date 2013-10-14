@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\HelpBundle\Twig;
 
-use Oro\Bundle\HelpBundle\Twig\HelpLinkProvider;
+use Oro\Bundle\HelpBundle\Model\HelpLinkProvider;
 
 class HelpExtension extends \Twig_Extension
 {

@@ -25,7 +25,7 @@ class OroHelpExtension extends Extension
     }
 
     /**
-     * Reads configuration from all bundles and from the application and injects to oro_help.twig.help_link_provider
+     * Reads configuration from all bundles and from the application and injects to oro_help.model.help_link_provider
      *
      * @param array $configs
      * @param ContainerBuilder $container
@@ -38,7 +38,7 @@ class OroHelpExtension extends Extension
 
         $configuration = array_merge_recursive($bundleConfig, $applicationConfig);
 
-        $linkProvider = $container->getDefinition('oro_help.twig.help_link_provider');
+        $linkProvider = $container->getDefinition('oro_help.model.help_link_provider');
         $linkProvider->addMethodCall('setConfiguration', array($configuration));
     }
 

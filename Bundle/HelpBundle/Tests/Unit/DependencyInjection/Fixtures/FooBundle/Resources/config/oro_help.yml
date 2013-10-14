@@ -1,3 +1,9 @@
+vendors:
+    Bar:
+        alias: BarAliasOverride
+    Foo:
+        alias: FooAlias
+
 resources:
     BarBundle:
       alias: BarOverride
