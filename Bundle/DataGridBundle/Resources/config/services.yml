@@ -41,3 +41,4 @@ services:
             - @oro_grid.datagrid.manager
         tags:
             - { name: twig.extension }
+

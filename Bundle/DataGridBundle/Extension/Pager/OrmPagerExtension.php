@@ -7,7 +7,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
-use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
+use Oro\Bundle\DataGridBundle\Extension\Pager\Orm\Pager;
 
 class OrmPagerExtension extends AbstractExtension
 {
@@ -27,10 +27,10 @@ class OrmPagerExtension extends AbstractExtension
 
     const TOTAL_PARAM = 'totalRecords';
 
-    /** @var PagerInterface */
+    /** @var Pager */
     protected $pager;
 
-    public function __construct(PagerInterface $pager, RequestParameters $requestParams)
+    public function __construct(Pager $pager, RequestParameters $requestParams)
     {
         $this->pager = $pager;
         parent::__construct($requestParams);
@@ -59,7 +59,7 @@ class OrmPagerExtension extends AbstractExtension
     {
         $defaultPerPage = $this->accessor->getValue($config, self::PAGER_DEFAULT_PER_PAGE_OPTION_PATH) ? : 10;
 
-        $this->pager->setQuery($datasource->getQuery());
+        $this->pager->setQueryBuilder($datasource->getQuery());
         $this->pager->setPage($this->getOr(self::PAGE_PARAM, 1));
         $this->pager->setMaxPerPage($this->getOr(self::PER_PAGE_PARAM, $defaultPerPage));
         $this->pager->init();

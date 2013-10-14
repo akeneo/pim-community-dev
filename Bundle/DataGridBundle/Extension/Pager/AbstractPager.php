@@ -2,14 +2,10 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Pager;
 
-use Oro\Bundle\DataGridBundle\Datasource\Orm\ProxyQueryInterface;
-
 /**
- * Copy of SonataAdminBundle pager class.
- * http://github.com/sonata-project/SonataAdminBundle.git
- *
+ * Class AbstractPager
+ * @package Oro\Bundle\DataGridBundle\Extension\Pager
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- * TODO: This class should be refactored  (BAP-969).
  */
 abstract class AbstractPager implements \Iterator, \Countable, \Serializable, PagerInterface
 {
@@ -18,16 +14,13 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
     protected $lastPage = 1;
     protected $nbResults = 0;
     protected $cursor = 1;
-    protected $parameters = array();
     protected $currentMaxLink = 1;
     protected $maxRecordLimit = false;
-    protected $maxPageLinks = 0;
+    protected $maxPageLinks = 10;
 
     // used by iterator interface
     protected $results = null;
     protected $resultsCounter = 0;
-    protected $query = null;
-    protected $countColumn = array('id');
 
     /**
      * Constructor.
@@ -54,26 +47,6 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
     public function getCurrentMaxLink()
     {
         return $this->currentMaxLink;
-    }
-
-    /**
-     * Returns the current pager's max record limit.
-     *
-     * @return integer
-     */
-    public function getMaxRecordLimit()
-    {
-        return $this->maxRecordLimit;
-    }
-
-    /**
-     * Sets the current pager's max record limit.
-     *
-     * @param integer $limit
-     */
-    public function setMaxRecordLimit($limit)
-    {
-        $this->maxRecordLimit = $limit;
     }
 
     /**
@@ -116,7 +89,7 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
     }
 
     /**
-     * Returns true if the current query requires pagination.
+     * Returns true if the current datasource requires pagination.
      *
      * @return boolean
      */
@@ -184,11 +157,11 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
      */
     public function getNext()
     {
-        if ($this->cursor + 1 > $this->nbResults) {
-            return null;
-        } else {
+        if (!$this->cursor + 1 > $this->nbResults) {
             return $this->retrieveObject($this->cursor + 1);
         }
+
+        return null;
     }
 
     /**
@@ -198,11 +171,11 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
      */
     public function getPrevious()
     {
-        if ($this->cursor - 1 < 1) {
-            return null;
-        } else {
-            return $this->retrieveObject($this->cursor - 1);
+        if ($this->cursor - 1 >= 1) {
+            $this->retrieveObject($this->cursor - 1);
         }
+
+        return null;
     }
 
     /**
@@ -210,7 +183,7 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
      *
      * @return integer
      */
-    public function getFirstIndice()
+    public function getFirstIndex()
     {
         if ($this->page == 0) {
             return 1;
@@ -244,7 +217,7 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
      */
     public function getNbResults()
     {
-        return $this->nbResults;
+        return (int)$this->nbResults;
     }
 
     /**
@@ -412,52 +385,6 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
     }
 
     /**
-     * Returns the current pager's parameter holder.
-     *
-     * @return array
-     */
-    public function getParameters()
-    {
-        return $this->parameters;
-    }
-
-    /**
-     * Returns a parameter.
-     *
-     * @param string $name
-     * @param mixed  $default
-     *
-     * @return mixed
-     */
-    public function getParameter($name, $default = null)
-    {
-        return isset($this->parameters[$name]) ? $this->parameters[$name] : $default;
-    }
-
-    /**
-     * Checks whether a parameter has been set.
-     *
-     * @param string $name
-     *
-     * @return boolean
-     */
-    public function hasParameter($name)
-    {
-        return isset($this->parameters[$name]);
-    }
-
-    /**
-     * Sets a parameter.
-     *
-     * @param string $name
-     * @param mixed  $value
-     */
-    public function setParameter($name, $value)
-    {
-        $this->parameters[$name] = $value;
-    }
-
-    /**
      * Returns true if the properties used for iteration have been initialized.
      *
      * @return boolean
@@ -477,6 +404,16 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
     }
 
     /**
+     * Initialize iterator if not initialized yet
+     */
+    protected function initializeIteratorIfNotInitialized()
+    {
+        if (!$this->isIteratorInitialized()) {
+            $this->initializeIterator();
+        }
+    }
+
+    /**
      * Empties properties used for iteration.
      */
     protected function resetIterator()
@@ -490,9 +427,7 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
      */
     public function current()
     {
-        if (!$this->isIteratorInitialized()) {
-            $this->initializeIterator();
-        }
+        $this->initializeIteratorIfNotInitialized();
 
         return current($this->results);
     }
@@ -502,9 +437,7 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
      */
     public function key()
     {
-        if (!$this->isIteratorInitialized()) {
-            $this->initializeIterator();
-        }
+        $this->initializeIteratorIfNotInitialized();
 
         return key($this->results);
     }
@@ -514,9 +447,7 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
      */
     public function next()
     {
-        if (!$this->isIteratorInitialized()) {
-            $this->initializeIterator();
-        }
+        $this->initializeIteratorIfNotInitialized();
 
         --$this->resultsCounter;
 
@@ -528,9 +459,7 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
      */
     public function rewind()
     {
-        if (!$this->isIteratorInitialized()) {
-            $this->initializeIterator();
-        }
+        $this->initializeIteratorIfNotInitialized();
 
         $this->resultsCounter = count($this->results);
 
@@ -542,9 +471,7 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
      */
     public function valid()
     {
-        if (!$this->isIteratorInitialized()) {
-            $this->initializeIterator();
-        }
+        $this->initializeIteratorIfNotInitialized();
 
         return $this->resultsCounter > 0;
     }
@@ -563,7 +490,6 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
     public function serialize()
     {
         $vars = get_object_vars($this);
-        unset($vars['query']);
 
         return serialize($vars);
     }
@@ -581,55 +507,11 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
     }
 
     /**
-     * @return array
-     */
-    public function getCountColumn()
-    {
-        return $this->countColumn;
-    }
-
-    /**
-     * @param array $countColumn
-     *
-     * @return array
-     */
-    public function setCountColumn(array $countColumn)
-    {
-        return $this->countColumn = $countColumn;
-    }
-
-    /**
      * Retrieve the object for a certain offset
      *
      * @param integer $offset
      *
      * @return object
      */
-    protected function retrieveObject($offset)
-    {
-        $queryForRetrieve = clone $this->getQuery();
-        $queryForRetrieve
-            ->setFirstResult($offset - 1)
-            ->setMaxResults(1);
-
-        $results = $queryForRetrieve->execute();
-
-        return $results[0];
-    }
-
-    /**
-     * @param mixed $query
-     */
-    public function setQuery($query)
-    {
-        $this->query = $query;
-    }
-
-    /**
-     * @return ProxyQueryInterface
-     */
-    public function getQuery()
-    {
-        return $this->query;
-    }
+    abstract protected function retrieveObject($offset);
 }

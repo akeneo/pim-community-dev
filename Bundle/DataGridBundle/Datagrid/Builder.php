@@ -63,6 +63,8 @@ class Builder
 
         $event = new BuildBefore($datagrid, $config);
         $this->eventDispatcher->dispatch(BuildBefore::NAME, $event);
+        // duplicate event dispatch with grid name
+        $this->eventDispatcher->dispatch(BuildBefore::NAME . '.' . $name, $event);
 
         // replace to config from event in case external changes
         $config = $event->getConfig();
@@ -78,6 +80,8 @@ class Builder
 
         $event = new BuildAfter($datagrid);
         $this->eventDispatcher->dispatch(BuildAfter::NAME, $event);
+        // duplicate event dispatch with grid name
+        $this->eventDispatcher->dispatch(BuildAfter::NAME . '.' . $name, $event);
 
         return $datagrid;
     }

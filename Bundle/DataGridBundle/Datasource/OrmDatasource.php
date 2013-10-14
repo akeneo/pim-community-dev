@@ -6,16 +6,14 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\ProxyQuery;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\ProxyQueryInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\QueryConverter\YamlConverter;
 
 class OrmDatasource implements DatasourceInterface
 {
     const TYPE = 'orm';
 
-    /** @var ProxyQueryInterface */
-    protected $proxyQuery;
+    /** @var QueryBuilder */
+    protected $qb;
 
     /** @var EntityManager */
     protected $em;
@@ -32,8 +30,8 @@ class OrmDatasource implements DatasourceInterface
     {
         $queryConfig = array_intersect_key($config, array_flip(array('query')));
 
-        $converter        = new YamlConverter();
-        $this->proxyQuery = new ProxyQuery($converter->parse($queryConfig, $this->em));
+        $converter = new YamlConverter();
+        $this->qb  = $converter->parse($queryConfig, $this->em);
 
         $grid->setDatasource($this);
     }
@@ -43,7 +41,7 @@ class OrmDatasource implements DatasourceInterface
      */
     public function getResults()
     {
-        $results = $this->proxyQuery->execute();
+        $results = $this->qb->getQuery()->execute();
 
         return $results;
     }
@@ -55,6 +53,6 @@ class OrmDatasource implements DatasourceInterface
      */
     public function getQuery()
     {
-        return $this->proxyQuery;
+        return $this->qb;
     }
 }

@@ -5,29 +5,39 @@ namespace Oro\Bundle\DataGridBundle\Extension\Pager\Orm;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
+use Oro\Bundle\BatchBundle\ORM\Query\QueryCountCalculator;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Oro\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\ProxyQueryInterface;
 
 class Pager extends AbstractPager implements PagerInterface
 {
-    public function __construct($maxPerPage = 10, ProxyQueryInterface $query = null)
+    /** @var QueryBuilder */
+    protected $qb;
+
+    public function __construct($maxPerPage = 10, QueryBuilder $qb = null)
     {
-        $this->setQuery($query);
+        $this->qb = $qb;
         parent::__construct($maxPerPage);
     }
 
     /**
-     * @var QueryBuilder|null
+     * @param QueryBuilder $qb
+     *
+     * @return $this
      */
-    protected $queryBuilder = null;
+    public function setQueryBuilder(QueryBuilder $qb)
+    {
+        $this->qb = $qb;
+
+        return $this;
+    }
 
     /**
-     * {@inheritdoc}
+     * @return QueryBuilder
      */
-    public function getNbResults()
+    public function getQueryBuilder()
     {
-        return intval(parent::getNbResults());
+        return $this->qb;
     }
 
     /**
@@ -35,15 +45,13 @@ class Pager extends AbstractPager implements PagerInterface
      */
     public function computeNbResult()
     {
-        return $this->getQuery()->getTotalCount();
-    }
+        $qb    = clone $this->getQueryBuilder();
+        $query = $qb->setFirstResult(null)
+            ->setMaxResults(null)
+            ->resetDQLPart('orderBy')
+            ->getQuery();
 
-    /**
-     * @return ProxyQueryInterface
-     */
-    public function getQuery()
-    {
-        return $this->query;
+        return QueryCountCalculator::calculateCount($query);
     }
 
     /**
@@ -51,7 +59,18 @@ class Pager extends AbstractPager implements PagerInterface
      */
     public function getResults($hydrationMode = Query::HYDRATE_OBJECT)
     {
-        return $this->getQuery()->execute(array(), $hydrationMode);
+        return $this->getQueryBuilder()->getQuery()->execute(array(), $hydrationMode);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize()
+    {
+        $vars = get_object_vars($this);
+        unset($vars['qb']);
+
+        return serialize($vars);
     }
 
     /**
@@ -64,7 +83,7 @@ class Pager extends AbstractPager implements PagerInterface
         $this->setNbResults($this->computeNbResult());
 
         /** @var QueryBuilder $query */
-        $query = $this->getQuery();
+        $query = $this->getQueryBuilder();
 
         $query->setFirstResult(null);
         $query->setMaxResults(null);
@@ -83,5 +102,20 @@ class Pager extends AbstractPager implements PagerInterface
             $query->setFirstResult($offset);
             $query->setMaxResults($this->getMaxPerPage());
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function retrieveObject($offset)
+    {
+        $queryForRetrieve = clone $this->getQueryBuilder();
+        $queryForRetrieve
+            ->setFirstResult($offset - 1)
+            ->setMaxResults(1);
+
+        $results = $queryForRetrieve->getQuery()->execute();
+
+        return $results[0];
     }
 }

@@ -7,6 +7,6 @@
 {% block content %}
     {% set buttons = [] %}
 
-    {{ dataGrid.renderGrid(gridName) }}
+    {{ dataGrid.renderGrid(gridName, params) }}
     {{ parent() }}
 {% endblock %}

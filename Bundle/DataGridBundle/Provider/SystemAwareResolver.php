@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\DataGridBundle\Provider;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class SystemAwareResolver implements ContainerAwareInterface
 {
@@ -39,7 +39,8 @@ class SystemAwareResolver implements ContainerAwareInterface
                     // fall-through
                 case preg_match('#([^%:\s]+)::([\w\._]+)#', $val, $match):
                     // with class real name
-                    $class  = isset($class) ? $class : $match[1];
+                    $class = isset($class) ? $class : $match[1];
+
                     $method = $match[2];
                     if (is_callable(array($class, $method))) {
                         $val = $class::$method($datagridName, $key);

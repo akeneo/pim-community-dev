@@ -37,7 +37,7 @@ class OrmSorterExtension extends AbstractExtension
     public function isApplicable(array $config)
     {
         return $this->accessor->getValue($config, Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE
-        && is_array($this->accessor->getValue($config, self::COLUMNS_PATH));
+            && is_array($this->accessor->getValue($config, self::COLUMNS_PATH));
     }
 
     /**
@@ -48,7 +48,12 @@ class OrmSorterExtension extends AbstractExtension
         $sorters = $this->getSortersToApply($config);
         foreach ($sorters as $definition) {
             list($direction, $sorter) = $definition;
-            $datasource->getQuery()->addSortOrder($sorter, $direction);
+            if (empty($sorter['data_name'])) {
+                throw new \LogicException('Could not retrieve "data_name" param for sorter.');
+            }
+
+            $sortKey = $sorter['data_name'];
+            $datasource->getQuery()->addOrderBy($sortKey, $direction);
         }
     }
 
