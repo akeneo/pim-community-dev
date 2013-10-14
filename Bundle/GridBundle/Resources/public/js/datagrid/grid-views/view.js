@@ -1,5 +1,5 @@
 /* global define */
-define(['backbone', 'underscore', 'oro/translations', 'oro/datagrid/grid-views/collection', 'oro/datagrid/grid-views/collection'],
+define(['backbone', 'underscore', 'oro/translator', 'oro/datagrid/grid-views/collection', 'oro/datagrid/grid-views/collection'],
 function (Backbone, _, __, GridViewsCollection, GridViewsModel) {
     'use strict';
 

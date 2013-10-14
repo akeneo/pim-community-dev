@@ -246,6 +246,16 @@ class User extends AbstractEntity implements Entity
         return $this;
     }
 
+    public function checkRoleSelector()
+    {
+        $this->byXPath("//div[@class='pull-left btn-group icons-holder']/a[@title = 'Edit profile']")->click();
+        $this->waitPageToLoad();
+        $this->assertElementPresent(
+            "//div[@id='oro_user_user_form_rolesCollection']//input[@checked='checked' and @disabled='disabled']",
+            'Role selector are not disabled for user'
+        );
+    }
+
     public function checkHistoryWindow()
     {
         $this->byXpath("//div[@class='navigation clearfix navbar-extra navbar-extra-right']//a[contains(., 'Change History')]")->click();

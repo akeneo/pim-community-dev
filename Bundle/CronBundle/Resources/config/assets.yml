@@ -1,3 +1,0 @@
-js:
-  'cron':
-      - '@OroCronBundle/Resources/public/js/job.js'
