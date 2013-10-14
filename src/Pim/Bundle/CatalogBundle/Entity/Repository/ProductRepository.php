@@ -26,16 +26,16 @@ class ProductRepository extends FlexibleEntityRepository
         $qb = $this->findByWithAttributesQB();
         $qb
             ->andWhere(
-                $qb->expr()->eq('Entity.enabled', '?1')
+                $qb->expr()->eq('Entity.enabled', ':enabled')
             )
             ->andWhere(
                 $qb->expr()->orX(
-                    $qb->expr()->eq('Value.scope', '?2'),
+                    $qb->expr()->eq('Value.scope', ':scope'),
                     $qb->expr()->isNull('Value.scope')
                 )
             )
-            ->setParameter(1, true)
-            ->setParameter(2, $scope);
+            ->setParameter('enabled', true)
+            ->setParameter('scope', $scope);
 
         return $qb;
     }
@@ -126,11 +126,11 @@ class ProductRepository extends FlexibleEntityRepository
 
         $qb
             ->where(
-                $qb->expr()->eq('Product.variantGroup', '?1')
+                $qb->expr()->eq('Product.variantGroup', ':variantGroup')
             )
-            ->setParameter(1, $variantGroup);
+            ->setParameter('variantGroup', $variantGroup);
 
-        $i = 1;
+        $i = 0;
         foreach ($criteria as $item) {
             $code = $item['attribute']->getCode();
             $qb
