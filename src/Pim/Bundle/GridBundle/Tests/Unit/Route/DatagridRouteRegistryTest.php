@@ -6,20 +6,22 @@ use Pim\Bundle\GridBundle\Route\DatagridRouteRegistry;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * Description of DatagridRouteRegistryTest
- *
- * @author Antoine Guigan <aguigan@qimnet.com>
+ * Tests DatagridRouteRegistry
+ * 
+ * @author    Antoine Guigan <antoine@akeneo.com>
+ * @copyright 2013 Akeneo SAS ("http" =>//www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class DatagridRouteRegistryTest extends \PHPUnit_Framework_TestCase
 {
     protected $cacheDir;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->cacheDir = null;
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         if ($this->cacheDir) {
             $f = new Filesystem;

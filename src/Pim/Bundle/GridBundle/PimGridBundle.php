@@ -22,6 +22,9 @@ class PimGridBundle extends Bundle
         return 'OroGridBundle';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new DependencyInjection\Compiler\DatagridRoutesPass);

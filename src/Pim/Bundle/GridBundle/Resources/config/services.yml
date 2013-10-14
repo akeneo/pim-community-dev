@@ -27,7 +27,6 @@ services:
         tags:
             - { name: oro_grid.action.type, alias: pim_grid_action_tab_redirect }
 
-
     pim_grid.routes_registry.builder:
         class: %pim_grid.routes_registry.builder.class%
         private: true

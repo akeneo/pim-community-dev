@@ -50,7 +50,7 @@ class DatagridRouteRegistry
      * @param RouterInterface $router
      * @param DatagridRouteRegistryBuilder $builder
      * @param string $cacheDir
-     * @paral bollean $debugMode
+     * @param boolean $debugMode
      */
     public function __construct(
         RouterInterface $router,
@@ -86,6 +86,8 @@ class DatagridRouteRegistry
 
     /**
      * Sets the regexps from the cache
+     * 
+     * @return null
      */
     protected function setRegexpsFromCache()
     {
@@ -94,9 +96,9 @@ class DatagridRouteRegistry
 
             return;
         }
-        
+
         $cache = new ConfigCache(sprintf('%s/%s', $this->cacheDir, self::CACHE_FILE), $this->debugMode);
-        if (!$cache->isFresh()){
+        if (!$cache->isFresh()) {
             $cache->write(
                 sprintf('<?php return %s;', var_export($this->builder->getRegexps(), true)),
                 $this->router->getRouteCollection()->getResources()

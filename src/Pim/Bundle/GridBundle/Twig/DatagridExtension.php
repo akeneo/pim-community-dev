@@ -18,6 +18,11 @@ class DatagridExtension extends \Twig_Extension
      */
     protected $routeRegistry;
 
+    /**
+     * Constructor
+     * 
+     * @param DatagridRouteRegistry $routeRegistry
+     */
     public function __construct(DatagridRouteRegistry $routeRegistry)
     {
         $this->routeRegistry = $routeRegistry;

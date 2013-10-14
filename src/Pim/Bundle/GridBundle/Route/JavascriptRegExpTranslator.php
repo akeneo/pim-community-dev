@@ -13,17 +13,16 @@ use Pim\Bundle\GridBundle\Exception\JavascriptRegexpTranslatorException;
  */
 class JavascriptRegExpTranslator
 {
-    
     /**
      * Replacement regexps
      * 
      * @var array
      */
     protected $replacements = array(
-        '/#(.+)#.*/'             => '\1',
-        '/^\^/'                  => '^%prefix%',
-        '#/#'                    => '\\/',
-        '/\(\?(:|P<[a-z_]+>)/i'  => '(',
+        '/#(.+)#.*/'             => '\1',        // Removes regex boundaries and modifier 
+        '/^\^/'                  => '^%prefix%', // Adds the prefix at the start of the regex
+        '#/#'                    => '\\/',       // Escapes slashes
+        '/\(\?(:|P<[a-z_]+>)/i'  => '(',         // Replaces non capturing and named groups by simple groups
     );
 
     /**
@@ -32,8 +31,8 @@ class JavascriptRegExpTranslator
      * @var array
      */
     protected $unsupported = array(
-        '/\+\+/',
-        '/\(\?<?[=!]/',
+        '/\+\+/',                                // Greedy + operator
+        '/\(\?<?[=!]/',                          // Assertions
     );
     
     /**
