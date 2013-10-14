@@ -68,12 +68,6 @@ function($, __) {
             });
 
             container.find('[data-toggle="tooltip"]').tooltip();
-            container.find('[data-toggle="popover"]').popover({
-                animation: true,
-                delay: { show: 0, hide: 0 },
-                trigger: 'click',
-                html: true
-            });
         },
 
         hideProgressBar: function() {

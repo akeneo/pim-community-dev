@@ -16,7 +16,6 @@ class TooltipFormExtension extends AbstractTypeExtension
         'tooltip',
         'tooltip_details_anchor',
         'tooltip_details_link',
-        'tooltip_details_disabled',
         'tooltip_placement'
     );
 

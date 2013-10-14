@@ -18,7 +18,6 @@ class TooltipFormExtensionTest extends \PHPUnit_Framework_TestCase
                     'tooltip',
                     'tooltip_details_anchor',
                     'tooltip_details_link',
-                    'tooltip_details_disabled',
                     'tooltip_placement'
                 )
             );
@@ -34,7 +33,6 @@ class TooltipFormExtensionTest extends \PHPUnit_Framework_TestCase
             'tooltip' => 'test',
             'tooltip_details_anchor' => 'test',
             'tooltip_details_link' => 'test',
-            'tooltip_details_disabled' => 'test',
             'tooltip_placement' => 'test'
         );
         $view = new FormView();
