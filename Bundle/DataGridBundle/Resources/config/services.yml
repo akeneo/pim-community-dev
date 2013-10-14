@@ -1,6 +1,4 @@
 parameters:
-
-services:
     oro_grid.datagrid.base.class:                Oro\Bundle\DataGridBundle\Datagrid\Datagrid
     oro_grid.extension.acceptor.class:           Oro\Bundle\DataGridBundle\Extension\Acceptor
 
