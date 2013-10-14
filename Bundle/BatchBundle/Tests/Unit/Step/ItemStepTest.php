@@ -192,6 +192,14 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $this->itemStep->setProcessor($processor);
         $this->itemStep->setWriter($writer);
 
+        $stepExecution->expects($this->once())
+            ->method('addError')
+            ->with(
+                get_class($reader),
+                'The read item is invalid',
+                array('foo' => 'bar')
+            );
+
         $this->itemStep->setBatchSize(5);
         $this->itemStep->execute($stepExecution);
     }
@@ -241,6 +249,14 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $this->itemStep->setReader($reader);
         $this->itemStep->setProcessor($processor);
         $this->itemStep->setWriter($writer);
+
+        $stepExecution->expects($this->once())
+            ->method('addError')
+            ->with(
+                get_class($processor),
+                'The processed item is invalid',
+                array('foo' => 'bar')
+            );
 
         $this->itemStep->setBatchSize(5);
         $this->itemStep->execute($stepExecution);
@@ -294,6 +310,14 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $this->itemStep->setReader($reader);
         $this->itemStep->setProcessor($processor);
         $this->itemStep->setWriter($writer);
+
+        $stepExecution->expects($this->once())
+            ->method('addError')
+            ->with(
+                get_class($writer),
+                'The written item is invalid',
+                array('foo' => 'bar')
+            );
 
         $this->itemStep->setBatchSize(5);
         $this->itemStep->execute($stepExecution);
