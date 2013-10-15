@@ -50,7 +50,14 @@ class OrmFilterExtension extends AbstractExtension
      */
     public function visitDatasource(array $config, DatasourceInterface $datasource)
     {
+        $toApply = $this->getFiltersToApply($config);
 
+        foreach ($toApply as $column => $filter) {
+            list($definition, $value) = $filter;
+
+            $filter = $this->getFilterObject($definition);
+
+        }
     }
 
     /**
@@ -68,6 +75,13 @@ class OrmFilterExtension extends AbstractExtension
         return $this;
     }
 
+    /**
+     * Prepare filters array
+     *
+     * @param array $config
+     *
+     * @return array
+     */
     protected function getFiltersToApply(array $config)
     {
         $result = array();
@@ -78,11 +92,28 @@ class OrmFilterExtension extends AbstractExtension
         $filterBy       = $this->requestParams->get(self::FILTER_ROOT_PARAM) ? : $defaultFilters;
 
         foreach ($filterBy as $column => $value) {
-            if ($sorter = $this->accessor->getValue($filters, "[$column]")) {
-                $result[$column] = $value;
+            if ($filter = $this->accessor->getValue($filters, "[$column]")) {
+                $result[$column] = array($filter, $value);
             }
         }
 
         return $result;
+    }
+
+    /**
+     * Returns prepared filter object
+     *
+     * @param array  $config
+     *
+     * @return FilterInterface
+     */
+    protected function getFilterObject(array $config)
+    {
+        $type = $this->accessor->getValue($config, '[type]');
+
+        $property = $this->filters[$type];
+        $property->init($config);
+
+        return $property;
     }
 }

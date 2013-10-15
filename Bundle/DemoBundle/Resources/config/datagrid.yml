@@ -43,6 +43,9 @@ datagrid:
                     type: string
                     data_name: g.label
 
+            default:
+                label: test
+
     adminUsers:
         source:
             type: orm

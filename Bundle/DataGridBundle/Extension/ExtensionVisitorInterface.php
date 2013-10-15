@@ -4,6 +4,7 @@ namespace Oro\Bundle\DataGridBundle\Extension;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
+/** @TODO write PHPDoc */
 interface ExtensionVisitorInterface
 {
     public function isApplicable(array $config);

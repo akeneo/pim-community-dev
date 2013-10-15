@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension;
 
-use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
@@ -44,14 +44,6 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
      */
     public function visitResult(array $config, \stdClass $result)
     {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function isApplicable(array $config)
-    {
-        return true;
     }
 
     /**

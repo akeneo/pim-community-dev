@@ -87,20 +87,19 @@ class FormatterExtension extends AbstractExtension
     }
 
     /**
+     * Returns prepared property object
+     *
      * @param string $name
      * @param array  $config
      *
-     * @throws \RuntimeException
      * @return PropertyInterface
      */
     protected function getPropertyObject($name, array $config)
     {
         $config['name'] = $name;
-        $propertyType = $this->accessor->getValue($config, '[type]');
+        $type = $this->accessor->getValue($config, '[type]');
 
-        if (!$property = $this->accessor->getValue($this->properties, "[$propertyType]")) {
-            throw new \RuntimeException(sprintf('Property type "%s" not found', $propertyType));
-        }
+        $property = $this->properties[$type];
         $property->init($config);
 
         return $property;

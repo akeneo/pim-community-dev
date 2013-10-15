@@ -48,8 +48,8 @@ class SelectRowFilterType extends AbstractChoiceType
     {
         $resolver->setDefaults(
             array(
-                'field_type'       => 'choice',
-                'field_options'    => array('choices' => array()),
+                'field_type'    => 'choice',
+                'field_options' => array('choices' => array()),
             )
         );
     }
