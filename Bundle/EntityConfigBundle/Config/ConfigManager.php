@@ -35,6 +35,9 @@ use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
 
+/**
+ * @SuppressWarnings(PHPMD)
+ */
 class ConfigManager
 {
     /**
