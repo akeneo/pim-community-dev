@@ -27,6 +27,7 @@ class BundleConfigurationTest extends \PHPUnit_Framework_TestCase
                 array(
                     'vendors' => array(),
                     'resources' => array(),
+                    'routes' => array(),
                 )
             ),
             'extend_config' => array(
@@ -58,7 +59,14 @@ class BundleConfigurationTest extends \PHPUnit_Framework_TestCase
                             'uri' => 'uri',
                             'link' => 'http://server.com/link',
                         ),
-                    )
+                    ),
+                    'routes' => array(
+                        'test_route' => array(
+                            'server' => 'http://server.com',
+                            'uri' => 'uri',
+                            'link' => 'link',
+                        ),
+                    ),
                 ),
                 array(
                     'vendors' => array(
@@ -88,7 +96,14 @@ class BundleConfigurationTest extends \PHPUnit_Framework_TestCase
                             'uri' => 'uri',
                             'link' => 'http://server.com/link',
                         )
-                    )
+                    ),
+                    'routes' => array(
+                        'test_route' => array(
+                            'server' => 'http://server.com',
+                            'uri' => 'uri',
+                            'link' => 'link',
+                        ),
+                    ),
                 )
             ),
         );

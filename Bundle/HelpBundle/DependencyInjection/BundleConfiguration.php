@@ -18,6 +18,7 @@ class BundleConfiguration extends AbstractConfiguration
 
         $this->configureResourcesNodeDefinition($nodeBuilder->arrayNode('resources'));
         $this->configureVendorsNodeDefinition($nodeBuilder->arrayNode('vendors'));
+        $this->configureRoutesNodeDefinition($nodeBuilder->arrayNode('routes'));
 
         return $treeBuilder;
     }
