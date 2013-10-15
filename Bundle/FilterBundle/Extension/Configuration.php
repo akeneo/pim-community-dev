@@ -1,12 +1,23 @@
 <?php
 
-namespace Oro\Bundle\DataGridBundle\Extension\Sorter;
+namespace Oro\Bundle\FilterBundle\Extension;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
+    /** @var array */
+    protected $types;
+
+    /**
+     * @param $types
+     */
+    public function __construct($types)
+    {
+        $this->types = $types;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -14,19 +25,25 @@ class Configuration implements ConfigurationInterface
     {
         $builder = new TreeBuilder();
 
-        $builder->root('sorters')
+        $builder->root('filters')
             ->children()
                 ->arrayNode('columns')
                     ->prototype('array')
                         ->ignoreExtraKeys()
                         ->children()
-                            ->scalarNode('data_name')->isRequired()->end()
+                            ->scalarNode('type')
+                                ->isRequired()
+                                ->validate()
+                                ->ifNotInArray($this->types)
+                                    ->thenInvalid('Invalid filter type "%s"')
+                                ->end()
+                            ->end()
+                            ->scalarNode('data_name')->end()
                         ->end()
                     ->end()
                 ->end()
                 ->arrayNode('default')
-                        ->prototype('enum')
-                            ->values(array(OrmSorterExtension::DIRECTION_DESC, OrmSorterExtension::DIRECTION_ASC))
+                        ->prototype('variable')
                         ->end()
                     ->end()
                 ->end()

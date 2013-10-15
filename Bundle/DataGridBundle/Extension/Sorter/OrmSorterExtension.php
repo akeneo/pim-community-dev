@@ -12,6 +12,7 @@ class OrmSorterExtension extends AbstractExtension
     /**
      * Configuration tree paths
      */
+    const SORTERS_PATH         = '[sorters]';
     const COLUMNS_PATH         = '[sorters][columns]';
     const MULTISORT_PATH       = '[sorters][enable_multisort]';
     const DEFAULT_SORTERS_PATH = '[sorters][default]';
@@ -41,7 +42,7 @@ class OrmSorterExtension extends AbstractExtension
 
         $this->validateConfiguration(
             new Configuration(),
-            array_intersect_key($config, array_flip(array('sorters')))
+            array('sorters' => $this->accessor->getValue($config, self::SORTERS_PATH))
         );
 
         return $isApplicable;

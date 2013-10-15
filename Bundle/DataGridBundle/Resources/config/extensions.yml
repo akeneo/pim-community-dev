@@ -21,7 +21,7 @@ services:
         class: %oro_grid.extension.orm_pager.class%
         arguments:
             - @oro_grid.extension.pager.orm.pager
-            - @oro_grid.datagrid.prequest_params
+            - @oro_grid.datagrid.request_params
         tags:
             - { name: oro_grid.extension }
 
@@ -31,6 +31,6 @@ services:
     oro_grid.extension.orm_sorter:
         class: %oro_grid.extension.orm_sorter.class%
         arguments:
-            - @oro_grid.datagrid.prequest_params
+            - @oro_grid.datagrid.request_params
         tags:
             - { name: oro_grid.extension }

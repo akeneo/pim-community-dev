@@ -1,0 +1,12 @@
+parameters:
+    oro_filter.extension.orm_filter.class: Oro\Bundle\FilterBundle\Extension\OrmFilterExtension
+
+services:
+    oro_filter.extension.orm_filter:
+        class: %oro_filter.extension.orm_filter.class%
+        arguments:
+            - @oro_grid.datagrid.request_params
+        calls:
+            - [ addFilter, [ 'string',          @oro_filter.extension.orm.string_filter ] ]
+        tags:
+            - { name: oro_grid.extension }

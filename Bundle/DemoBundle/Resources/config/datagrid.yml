@@ -37,6 +37,12 @@ datagrid:
             default:
                 label: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
 
+        filters:
+            columns:
+                label:
+                    type: string
+                    data_name: g.label
+
     adminUsers:
         source:
             type: orm

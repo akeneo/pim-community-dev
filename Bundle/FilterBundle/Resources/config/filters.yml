@@ -1,0 +1,7 @@
+parameters:
+    oro_filter.extension.orm.string_filter.class: Oro\Bundle\FilterBundle\Extension\Orm\StringFilter
+
+services:
+    oro_filter.extension.orm.string_filter:
+        class: %oro_filter.extension.orm.string_filter.class%
+        arguments: []
