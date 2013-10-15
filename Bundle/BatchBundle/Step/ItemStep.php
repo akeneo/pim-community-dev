@@ -176,17 +176,7 @@ class ItemStep extends AbstractStep
                     continue;
                 }
             } catch (InvalidItemException $e) {
-                $stepExecution->addError(
-                    get_class($this->reader),
-                    $e->getMessage(),
-                    $e->getItem()
-                );
-
-                $this->dispatchInvalidItemEvent(
-                    get_class($this->reader),
-                    $e->getMessage(),
-                    $e->getItem()
-                );
+                $this->handleStepExecutionWarning($stepExecution, get_class($this->reader), $e);
 
                 continue;
             }
@@ -203,17 +193,7 @@ class ItemStep extends AbstractStep
                     );
                 }
             } catch (InvalidItemException $e) {
-                $stepExecution->addError(
-                    get_class($this->processor),
-                    $e->getMessage(),
-                    $e->getItem()
-                );
-
-                $this->dispatchInvalidItemEvent(
-                    get_class($this->processor),
-                    $e->getMessage(),
-                    $e->getItem()
-                );
+                $this->handleStepExecutionWarning($stepExecution, get_class($this->processor), $e);
 
                 continue;
             }
@@ -225,17 +205,7 @@ class ItemStep extends AbstractStep
                     $this->writer->write($itemsToWrite);
                     $itemsToWrite = array();
                 } catch (InvalidItemException $e) {
-                    $stepExecution->addError(
-                        get_class($this->writer),
-                        $e->getMessage(),
-                        $e->getItem()
-                    );
-
-                    $this->dispatchInvalidItemEvent(
-                        get_class($this->processor),
-                        $e->getMessage(),
-                        $e->getItem()
-                    );
+                    $this->handleStepExecutionWarning($stepExecution, get_class($this->writer), $e);
 
                     continue;
                 }
@@ -247,17 +217,7 @@ class ItemStep extends AbstractStep
                 $this->writer->write($itemsToWrite);
                 $itemsToWrite = array();
             } catch (InvalidItemException $e) {
-                $stepExecution->addError(
-                    get_class($this->writer),
-                    $e->getMessage(),
-                    $e->getItem()
-                );
-
-                $this->dispatchInvalidItemEvent(
-                    get_class($this->processor),
-                    $e->getMessage(),
-                    $e->getItem()
-                );
+                $this->handleStepExecutionWarning($stepExecution, get_class($this->writer), $e);
             }
         }
     }
@@ -278,5 +238,18 @@ class ItemStep extends AbstractStep
         if ($this->writer instanceof StepExecutionAwareInterface) {
             $this->writer->setStepExecution($stepExecution);
         }
+    }
+
+    /**
+     * Handle step execution warning
+     *
+     * @param StepExecution        $stepExecution
+     * @param string               $class
+     * @param InvalidItemException $e
+     */
+    private function handleStepExecutionWarning(StepExecution $stepExecution, $class, InvalidItemException $e)
+    {
+        $stepExecution->addError($class, $e->getMessage(), $e->getItem());
+        $this->dispatchInvalidItemEvent($class, $e->getMessage(), $e->getItem());
     }
 }
