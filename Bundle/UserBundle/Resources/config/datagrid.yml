@@ -1,77 +1,58 @@
-parameters:
-    oro_user.user_datagrid_manager.class:                 Oro\Bundle\UserBundle\Datagrid\UserDatagridManager
-    oro_user.role_datagrid_manager.class:                 Oro\Bundle\UserBundle\Datagrid\RoleDatagridManager
-    oro_user.group_datagrid_manager.class:                Oro\Bundle\UserBundle\Datagrid\GroupDatagridManager
-    oro_user.role_user_datagrid_manager.class:            Oro\Bundle\UserBundle\Datagrid\RoleUserDatagridManager
-    oro_user.group_user_datagrid_manager.class:           Oro\Bundle\UserBundle\Datagrid\GroupUserDatagridManager
-    oro_user.email.datagrid_manager.class:                Oro\Bundle\UserBundle\Datagrid\UserEmailDatagridManager
-    oro_user.email.datagrid_query_factory.class:          Oro\Bundle\UserBundle\Datagrid\UserEmailQueryFactory
+datagrid:
+    users-grid:
+        source:
+            acl_resource: oro_user_user_view
+            type: orm
+            query:
+                select:
+                    - u.id
+                    - u.username
+                    - u.email
+                    - u.firstName
+                    - u.lastName
+                    - u.created
+                    - u.updated
+                    - u.enabled
+                from:
+                    - { table: OroUserBundle:User, alias: u }
 
-services:
-    oro_user.user_datagrid_manager:
-        class: %oro_user.user_datagrid_manager.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: users
-              entity_name: Oro\Bundle\UserBundle\Entity\User
-              entity_hint: user
-              flexible: true
-              route_name: oro_user_index
+        columns:
+            id:
+                type: field
 
-    oro_user.role_datagrid_manager:
-        class: %oro_user.role_datagrid_manager.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: user_roles
-              entity_name: Oro\Bundle\UserBundle\Entity\Role
-              query_entity_alias: user_role
-              entity_hint: role
-              route_name: oro_user_role_index
+            firstname:
+                type: field
 
-    oro_user.group_datagrid_manager:
-        class: %oro_user.group_datagrid_manager.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: user_groups
-              entity_name: Oro\Bundle\UserBundle\Entity\Group
-              query_entity_alias: user_group
-              entity_hint: group
-              route_name: oro_user_group_index
+        properties:
+            update_link:
+                type: url
+                route: oro_user_update
+                params:
+                    - id
 
-    oro_user.role_user_datagrid_manager:
-        class: %oro_user.role_user_datagrid_manager.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: user_roleusers
-              entity_name: Oro\Bundle\UserBundle\Entity\User
-              query_entity_alias: user
-              entity_hint: user
-              route_name: oro_user_role_user_grid
+            view_link:
+                type: url
+                route: oro_user_view
+                params:
+                    - id
 
-    oro_user.group_user_datagrid_manager:
-        class: %oro_user.group_user_datagrid_manager.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: user_groupusers
-              entity_name: Oro\Bundle\UserBundle\Entity\User
-              query_entity_alias: user
-              entity_hint: user
-              route_name: oro_user_group_user_grid
+            delete_link:
+                type: url
+                route: oro_api_delete_user
+                params:
+                    - id
+        sorters:
+            columns:
+                id:
+                    data_name: u.id
+                username:
+                    data_name: u.username
+                email:
+                    data_name: u.email
+                firstname:
+                    data_name: u.firstName
+                lastname:
+                    data_name: u.lastName
 
-    oro_user.email.datagrid_manager:
-        class: %oro_user.email.datagrid_manager.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: user_emails
-              entity_name: %oro_email.email.entity.class%
-              query_factory: oro_user.email.datagrid_query_factory
-              entity_hint: email
-              route_name: oro_user_view
-
-    oro_user.email.datagrid_query_factory:
-        class: %oro_user.email.datagrid_query_factory.class%
-        arguments:
-            - @doctrine
-            - %oro_email.email.entity.class%
-            - @oro_email.email.owner.provider.storage
-            - @oro_config.user
+            default:
+                label: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC

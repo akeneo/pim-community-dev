@@ -126,15 +126,12 @@ class UserController extends Controller
      *      requirements={"_format"="html|json"},
      *      defaults={"_format" = "html"}
      * )
+     * @Template
      * @AclAncestor("oro_user_user_view")
      */
     public function indexAction()
     {
-        $view = $this->get('oro_user.user_datagrid_manager')->getDatagrid()->createView();
-
-        return 'json' == $this->getRequest()->getRequestFormat()
-            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
-            : $this->render('OroUserBundle:User:index.html.twig', array('datagrid' => $view));
+        return array();
     }
 
     /**
