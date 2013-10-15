@@ -16,7 +16,7 @@ class HelpTest extends \PHPUnit_Framework_TestCase
     public function testAllowArray()
     {
         $annotation = new Help(array());
-        $this->assertFalse($annotation->allowArray());
+        $this->assertTrue($annotation->allowArray());
     }
 
     /**

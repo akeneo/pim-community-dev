@@ -46,9 +46,9 @@ class HelpLinkProvider
     protected $request;
 
     /**
-     * @var Help|null
+     * @var Help|Help[]|null
      */
-    protected $helpConfigurationAnnotation;
+    protected $helpAnnotation;
 
     /**
      * @var string
@@ -67,7 +67,7 @@ class HelpLinkProvider
     {
         $this->requestController = $request->get('_controller');
         $this->requestRoute = $request->get('_route');
-        $this->helpConfigurationAnnotation = $request->get('_' . Help::ALIAS);
+        $this->helpAnnotation = $request->get('_' . Help::ALIAS);
         $this->request = $request;
     }
 
@@ -163,8 +163,21 @@ class HelpLinkProvider
      */
     protected function mergeAnnotationConfig(array &$resultConfig)
     {
-        if ($this->helpConfigurationAnnotation) {
-            $resultConfig = array_merge($resultConfig, $this->helpConfigurationAnnotation->getConfigurationArray());
+        if (!$this->helpAnnotation) {
+            return;
+        }
+
+        if (!is_array($this->helpAnnotation)) {
+            $helpList = array($this->helpAnnotation);
+        } else {
+            $helpList = $this->helpAnnotation;
+        }
+
+        /** @var $help Help */
+        foreach ($helpList as $help) {
+            if ($help instanceof Help) {
+                $resultConfig = array_merge($resultConfig, $help->getConfigurationArray());
+            }
         }
     }
 
@@ -219,26 +232,22 @@ class HelpLinkProvider
         $configData[] = array(
             'id' => $vendor,
             'section' => 'vendors',
-            'key' => 'vendor',
-            'value' => $vendor
+            'key' => 'vendor'
         );
         $configData[] = array(
             'id' => $bundle,
             'section' => 'resources',
-            'key' => 'bundle',
-            'value' => $bundle
+            'key' => 'bundle'
         );
         $configData[] = array(
             'id' => $bundle . ':' . $controller,
             'section' => 'resources',
-            'key' => 'controller',
-            'value' => $controller
+            'key' => 'controller'
         );
         $configData[] = array(
             'id' => sprintf('%s:%s:%s', $bundle, $controller, $action),
             'section' => 'resources',
-            'key' => 'action',
-            'value' => $action
+            'key' => 'action'
         );
 
         foreach ($configData as $searchData) {
@@ -246,16 +255,14 @@ class HelpLinkProvider
             $section = $searchData['section'];
 
             $key = $searchData['key'];
-            $value = isset($searchData['value']) ? $searchData['value'] : null;
 
             if (isset($this->rawConfiguration[$section][$id])) {
                 $rawConfiguration = $this->rawConfiguration[$section][$id];
                 if (isset($rawConfiguration['alias'])) {
-                    $value = $rawConfiguration['alias'];
+                    $rawConfiguration[$key] = $rawConfiguration['alias'];
                     unset($rawConfiguration['alias']);
                 }
                 $resultConfig = array_merge($resultConfig, $rawConfiguration);
-                $resultConfig[$key] = $value;
 
             }
         }

@@ -81,7 +81,7 @@ class Help extends ConfigurationAnnotation
      */
     public function allowArray()
     {
-        return false;
+        return true;
     }
 
     /**

@@ -352,6 +352,41 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
                 'expectedLink' => 'http://wiki.test.com/Prefix/Vendor/Bundle:Executor_execute'
             ),
+            'annotation configuration override' => array(
+                'configuration' => array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    )
+                ),
+                'requestAttributes' => array(
+                    '_controller' => 'Acme\DemoBundle\Controller\TestController::runAction',
+                    '_' . Help::ALIAS => array(
+                        new Help(
+                            array(
+                                'actionAlias' => 'executeFoo',
+                                'controllerAlias' => 'ExecutorFoo',
+                                'bundleAlias' => 'BundleFoo',
+                                'vendorAlias' => 'VendorFoo',
+                                'prefix' => 'PrefixFoo',
+                                'server' => 'http://wiki.test.com/foo'
+                            )
+                        ),
+                        new Help(
+                            array(
+                                'actionAlias' => 'executeBar',
+                                'controllerAlias' => 'ExecutorBar',
+                                'bundleAlias' => 'BundleBar',
+                                'vendorAlias' => 'VendorBar',
+                                'prefix' => 'PrefixBar',
+                                'server' => 'http://wiki.test.com/bar'
+                            )
+                        )
+                    )
+                ),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://wiki.test.com/bar/PrefixBar/VendorBar/BundleBar:ExecutorBar_executeBar'
+            ),
             'annotation uri' => array(
                 'configuration' => array(
                     'defaults' => array(
@@ -467,40 +502,39 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
                 'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle:Test_run'
             ),
+            'with parameters' => array(
+                'configuration' => array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/'
+                    )
+                ),
+                'requestAttributes' => array(
+                    '_controller' => 'Acme\DemoBundle\Controller\TestController::runAction',
+                    '_' . Help::ALIAS => new Help(
+                        array('actionAlias' => 'run/{optionOne}/{option_two}/{option_3}')
+                    ),
+                    'optionOne' => 'test1',
+                    'option_two' => 'test2',
+                    'option_3' => 'test3'
+                ),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle:Test_run/test1/test2/test3'
+            ),
+            'with parameters without parameter value' => array(
+                'configuration' => array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/'
+                    )
+                ),
+                'requestAttributes' => array(
+                    '_controller' => 'Acme\DemoBundle\Controller\TestController::runAction',
+                    '_' . Help::ALIAS => new Help(
+                        array('actionAlias' => 'run/{option}')
+                    )
+                ),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle:Test_run/'
+            ),
         );
-    }
-
-    public function testGetHelpLinkUrlWithParameters()
-    {
-        $configuration = array(
-            'defaults' => array(
-                'server' => 'http://test.com/wiki/{optionOne}/{option_two}/{option_3}'
-            )
-        );
-        $parameters = array(
-            'optionOne' => 'test1',
-            'option_two' => 'test2',
-            'option_3' => 'test3'
-        );
-        $link = 'http://test.com/wiki/test1/test2/test3/Acme/AcmeDemoBundle:Test_run';
-        $controller = 'Acme\Bundle\DemoBundle\Controller\TestController::runAction';
-        $shortName = 'AcmeDemoBundle:Test:run';
-
-        $parser = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $parser->expects($this->once())
-            ->method('build')
-            ->with($controller)
-            ->will($this->returnValue($shortName));
-
-        $request = new Request();
-        $request->attributes->set('_controller', $controller);
-        $request->request->add($parameters);
-
-        $provider = new HelpLinkProvider($parser);
-        $provider->setConfiguration($configuration);
-        $provider->setRequest($request);
-        $this->assertEquals($link, $provider->getHelpLinkUrl());
     }
 }
