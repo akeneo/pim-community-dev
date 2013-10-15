@@ -229,7 +229,7 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
 
         // change the user channel
         $expectedArray = array_reverse($expectedArray);
-        $manager = $this->createChannelManager('mobile');
+        $this->createChannelManager('mobile');
 
         $channelChoices = $this->manager->getChannelChoiceWithUserChannel();
         $this->assertEquals($expectedArray, $channelChoices);

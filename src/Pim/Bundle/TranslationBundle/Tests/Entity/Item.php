@@ -102,7 +102,7 @@ class Item implements TranslatableInterface
      */
     public function setName($name)
     {
-        $translation = $this->getTranslation()->setName($name);
+        $this->getTranslation()->setName($name);
 
         return $this;
     }

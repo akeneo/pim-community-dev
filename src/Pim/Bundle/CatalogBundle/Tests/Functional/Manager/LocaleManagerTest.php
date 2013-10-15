@@ -101,7 +101,6 @@ class LocaleManagerTest extends WebTestCase
     public function testGetLocales()
     {
         $locales = $this->localeManager->getLocales();
-        $expectedLocales = static::$activatedLocales;
 
         $this->assertCount(self::$totalCount, $locales);
         foreach ($locales as $locale) {

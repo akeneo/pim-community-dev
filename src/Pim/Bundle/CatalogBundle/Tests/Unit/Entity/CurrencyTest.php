@@ -102,8 +102,6 @@ class CurrencyTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(0, $this->currency->getLocales());
 
         // create locales
-        $listLocales = array('fr_FR', 'en_US', 'en_EN');
-
         $langFr = $this->createLocale('fr_FR', 'fr_FR');
         $langUs = $this->createLocale('en_US', 'en_EN');
         $langEn = $this->createLocale('en_EN', 'en_EN');

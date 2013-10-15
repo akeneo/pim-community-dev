@@ -1407,26 +1407,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $column
-     * @param string $exportCode
-     * @param string $status
-     *
-     * @return Step\Given
-     * @Then /^the column "([^"]*)" of the row "([^"]*)" should contain the value "([^"]*)"$/
-     */
-    public function theColumnOfTheRowShouldContainTheValue($column, $exportCode, $status)
-    {
-        return new Step\Given(
-            sprintf(
-                'Value of column "%s" of the row which contains "%s" should be "%s"',
-                $column,
-                $exportCode,
-                $status
-            )
-        );
-    }
-
-    /**
      * @param string $code
      *
      * @Then /^I should be on the "([^"]*)" export job page$/
@@ -1701,56 +1681,21 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $state
-     * @param string $channel
-     * @param string $locale
-     *
-     * @Given /^I should see the completeness state "([^"]*)" for channel "([^"]*)" and locale "([^"]*)"$/
+     * @Then /^I should see the completeness:$/
      */
-    public function iShouldSeeCompletenessStateForChannelAndLocale($state, $channel, $locale)
+    public function iShouldSeeTheCompleteness(TableNode $tableNode)
     {
-        $channelCode = strtoupper($channel);
+        foreach ($tableNode->getHash() as $data) {
+            $channel = strtoupper($data['channel']);
+            $locale  = $data['locale'];
 
-        try {
-            $this->getPage('Product edit')->checkCompletenessState($channelCode, $locale, $state);
-        } catch (\InvalidArgumentException $e) {
-            throw $this->createExpectationException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param string $ratio
-     * @param string $channel
-     * @param string $locale
-     *
-     * @Given /^I should see the completeness ratio (\d+)% for channel "([^"]*)" and locale "([^"]*)"$/
-     */
-    public function iShouldSeeTheCompletenessRatioForChannelAndLocale($ratio, $channel, $locale)
-    {
-        $channelCode = strtoupper($channel);
-
-        try {
-            $this->getPage('Product edit')->checkCompletenessRatio($channelCode, $locale, $ratio);
-        } catch (\InvalidArgumentException $e) {
-            throw $this->createExpectationException($e->getMessage());
-        }
-    }
-
-    /**
-     * @param string $message
-     * @param string $channel
-     * @param string $locale
-     *
-     * @Given /^I should see the completeness message "([^"]*)" for channel "([^"]*)" and locale "([^"]*)"$/
-     */
-    public function iShouldSeeTheCompletenesssMessageForChannelAndLocale($message, $channel, $locale)
-    {
-        $channelCode = strtoupper($channel);
-
-        try {
-            $this->getPage('Product edit')->checkCompletenessMessage($channelCode, $locale, $message);
-        } catch (\InvalidArgumentException $e) {
-            throw $this->createExpectationException($e->getMessage());
+            try {
+                $this->getPage('Product edit')->checkCompletenessState($channel, $locale, $data['state']);
+                $this->getPage('Product edit')->checkCompletenessRatio($channel, $locale, $data['ratio']);
+                $this->getPage('Product edit')->checkCompletenessMessage($channel, $locale, $data['message']);
+            } catch (\InvalidArgumentException $e) {
+                throw $this->createExpectationException($e->getMessage());
+            }
         }
     }
 
