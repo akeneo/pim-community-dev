@@ -75,7 +75,7 @@ class VariableProviderTest extends \PHPUnit_Framework_TestCase
         $this->configProvider->expects($this->once())->method('getIds')
             ->will($this->returnValue($configurableEntities));
 
-        $field1Id = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface')
+        $field1Id = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId')
             ->disableOriginalConstructor()
             ->getMock();
         $field1Id->expects($this->any())
@@ -116,7 +116,7 @@ class VariableProviderTest extends \PHPUnit_Framework_TestCase
         $fieldsCollection[] = $field2;
 
         if (!$entityIsUser) {
-            $field3Id = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface')
+            $field3Id = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId')
                 ->disableOriginalConstructor()
                 ->getMock();
             $field3Id->expects($this->any())->method('getFieldName')->will($this->returnValue('someAnotherCode'));

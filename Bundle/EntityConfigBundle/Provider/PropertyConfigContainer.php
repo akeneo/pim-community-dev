@@ -3,7 +3,7 @@
 namespace Oro\Bundle\EntityConfigBundle\Provider;
 
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -96,14 +96,14 @@ class PropertyConfigContainer
      * @param string $type
      * @return array
      */
-    public function getInternalValues($type = self::TYPE_ENTITY)
+    public function getNotAuditableValues($type = self::TYPE_ENTITY)
     {
         $type = $this->getConfigType($type);
 
         $result = array();
         foreach ($this->getItems($type) as $code => $item) {
-            if (isset($item['options']['internal']) && $item['options']['internal']) {
-                $result[$code] = 0;
+            if (isset($item['options']['internal']) || $item['options']['internal'] === false) {
+                $result[$code] = true;
             }
         }
 
@@ -276,7 +276,7 @@ class PropertyConfigContainer
     protected function getConfigType($type)
     {
         if ($type instanceof ConfigIdInterface) {
-            return $type instanceof FieldConfigIdInterface
+            return $type instanceof FieldConfigId
                 ? PropertyConfigContainer::TYPE_FIELD
                 : PropertyConfigContainer::TYPE_ENTITY;
         }
