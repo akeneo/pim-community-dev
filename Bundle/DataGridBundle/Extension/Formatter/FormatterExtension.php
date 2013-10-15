@@ -9,12 +9,6 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 class FormatterExtension extends AbstractExtension
 {
     /**
-     * Configuration tree keys
-     */
-    const COLUMNS_KEY    = 'columns';
-    const PROPERTIES_KEY = 'properties';
-
-    /**
      * Configuration tree paths
      */
     const COLUMNS_PATH    = '[columns]';
@@ -32,16 +26,9 @@ class FormatterExtension extends AbstractExtension
         $properties = $this->accessor->getValue($config, self::PROPERTIES_PATH) ? : array();
         $applicable = $columns || $properties;
 
-        $columnTypes = array();
-        foreach ($columns as $column) {
-            if (isset($column['type'])) {
-                $columnTypes[] = $column['type'];
-            }
-        }
-
         // validate extension configuration
         $this->validateConfiguration(
-            new Configuration(array_merge(array_keys($this->properties), $columnTypes)),
+            new Configuration(array_keys($this->properties)),
             array(
                 'columns_and_properties' => array_merge($columns, $properties)
             )
@@ -109,7 +96,7 @@ class FormatterExtension extends AbstractExtension
     protected function getPropertyObject($name, array $config)
     {
         $config['name'] = $name;
-        $config['type'] = $propertyType = $this->accessor->getValue($config, '[type]') ? : 'field';
+        $propertyType = $this->accessor->getValue($config, '[type]');
 
         if (!$property = $this->accessor->getValue($this->properties, "[$propertyType]")) {
             throw new \RuntimeException(sprintf('Property type "%s" not found', $propertyType));

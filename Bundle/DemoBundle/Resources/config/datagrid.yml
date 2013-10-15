@@ -54,5 +54,9 @@ datagrid:
                 hasRole:
                     data_name: hasRole
 
+                firstName:
+                    data_name: u.firstName
+
             default:
                 hasRole: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
+                firstName: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC

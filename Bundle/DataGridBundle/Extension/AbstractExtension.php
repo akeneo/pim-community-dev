@@ -55,8 +55,9 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
     }
 
     /**
-     * @param ConfigurationInterface $configuration
-     * @param $config
+     * @param ConfigurationInterface      $configuration
+     * @param                             $config
+     *
      * @return mixed
      */
     protected function validateConfiguration(ConfigurationInterface $configuration, $config)
