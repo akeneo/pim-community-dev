@@ -6,8 +6,6 @@ use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 
-use Symfony\Component\Config\Definition\Processor;
-
 class FormatterExtension extends AbstractExtension
 {
     /**
