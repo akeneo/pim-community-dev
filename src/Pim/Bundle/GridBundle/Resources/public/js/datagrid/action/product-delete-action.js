@@ -1,6 +1,6 @@
 /* global define */
-define(['oro/datagrid/delete-action', 'oro/translator', 'oro/navigation', 'jquery'],
-function(DeleteAction, __, Navigation, $) {
+define(['oro/datagrid/delete-action', 'oro/navigation', 'jquery', 'underscore', 'oro/translator'],
+function(DeleteAction, Navigation, $, _, __) {
     'use strict';
 
     /**
@@ -16,7 +16,8 @@ function(DeleteAction, __, Navigation, $) {
              * Confirm delete item
              */
             doDelete: function() {
-                var self = this;
+                var self = this,
+                    collection = self.datagrid.collection;
                 $.ajax(
                     this.getLink(),
                     {
@@ -26,10 +27,17 @@ function(DeleteAction, __, Navigation, $) {
                         },
 
                         success: function() {
-                            (function(navigation, messageText) {
+                            (function(navigation, stateData, messageText) {
                                 navigation.addFlashMessage('success', messageText);
-                                navigation.refreshPage()
-                            })(Navigation.getInstance(), __('Item deleted'))
+                                navigation.navigate(
+                                    "url=" + navigation.url.split("?").shift() + "|g/" +  
+                                    stateData + '&boost=' + new Date().getTime(),
+                                    {trigger: true}
+                                )
+                            })(
+                                Navigation.getInstance(), 
+                                collection.encodeStateData(collection.state), 
+                                __('Item deleted'))
                         }
                     }
                 )
