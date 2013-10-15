@@ -320,7 +320,7 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
      */
-    public function getVariantGroup()
+    protected function getVariantGroup()
     {
         if (!$this->variantGroup) {
             throw new \LogicException('Datagrid manager has no configured Variant group');
