@@ -587,17 +587,17 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
         $localeCode = $this->flexibleManager->getLocale();
         $channelCode = $this->flexibleManager->getScope();
-                
+
         $locale = $this->flexibleManager
             ->getStorageManager()
             ->getRepository('PimCatalogBundle:Locale')
             ->findBy(array('code' => $localeCode));
-        
+
         $channel = $this->flexibleManager
             ->getStorageManager()
             ->getRepository('PimCatalogBundle:Channel')
             ->findBy(array('code' => $channelCode));
-        
+
         $proxyQuery->setParameter('localeCode', $localeCode);
         $proxyQuery->setParameter('locale', $locale);
         $proxyQuery->setParameter('channel', $channel);
