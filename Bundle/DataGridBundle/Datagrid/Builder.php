@@ -4,7 +4,9 @@ namespace Oro\Bundle\DataGridBundle\Datagrid;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Extension\Acceptor;
@@ -15,6 +17,7 @@ class Builder
 {
     const DATASOURCE_PATH          = '[source]';
     const DATASOURCE_TYPE_PATH     = '[source][type]';
+    const DATASOURCE_ACL_PATH      = '[source][acl_resource]';
     const BASE_DATAGRID_CLASS_PATH = '[options][base_datagrid_class]';
 
     /** @var string */
@@ -35,11 +38,19 @@ class Builder
     /** @var PropertyAccess */
     protected $accessor;
 
-    public function __construct($baseDatagridClass, $acceptorClass, EventDispatcher $eventDispatcher)
-    {
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
+    public function __construct(
+        $baseDatagridClass,
+        $acceptorClass,
+        EventDispatcher $eventDispatcher,
+        SecurityFacade $securityFacade
+    ) {
         $this->baseDatagridClass = $baseDatagridClass;
         $this->acceptorClass     = $acceptorClass;
         $this->eventDispatcher   = $eventDispatcher;
+        $this->securityFacade    = $securityFacade;
 
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
@@ -136,6 +147,11 @@ class Builder
             throw new \RuntimeException(sprintf('Datagrid source "%s" does not exist', $sourceType));
         }
 
+        $acl = $this->accessor->getValue($config, self::DATASOURCE_ACL_PATH);
+        if ($acl && !$this->isResourceGranted($acl)) {
+            throw new AccessDeniedException('Access denied.');
+        }
+
         $this->dataSources[$sourceType]->process($grid, $this->accessor->getValue($config, self::DATASOURCE_PATH));
     }
 
@@ -149,5 +165,24 @@ class Builder
     protected function getBaseDatagridClass(array $config)
     {
         return $this->accessor->getValue($config, self::BASE_DATAGRID_CLASS_PATH) ? : $this->baseDatagridClass;
+    }
+
+    /**
+     * Checks if an access to a resource is granted or not
+     *
+     * @param string $aclResource An ACL annotation id or "permission;descriptor"
+     * @return bool
+     */
+    protected function isResourceGranted($aclResource)
+    {
+        $delim = strpos($aclResource, ';');
+        if ($delim) {
+            $permission = substr($aclResource, 0, $delim);
+            $descriptor = substr($aclResource, $delim + 1);
+
+            return $this->securityFacade->isGranted($permission, $descriptor);
+        }
+
+        return $this->securityFacade->isGranted($aclResource);
     }
 }

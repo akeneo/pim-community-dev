@@ -1,9 +1,7 @@
 datagrid:
     contactGroup:
-        pager:
-            enabled: false
-
         source:
+            acl_resource: orocrm_contact_group_view
             type: orm
             query:
                 select:

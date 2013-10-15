@@ -19,11 +19,6 @@ class GridController extends Controller
      */
     public function getAction($gridName)
     {
-        /**
-         * @TODO add ACL check here
-         */
-        $request = $this->getRequest();
-
         $grid =  $this->get('oro_grid.datagrid.manager')->getDatagrid($gridName);
         $result = $grid->getData();
         return new JsonResponse($result);

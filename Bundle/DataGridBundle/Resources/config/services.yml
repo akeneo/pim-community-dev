@@ -24,6 +24,7 @@ services:
             - %oro_grid.datagrid.base.class%
             - %oro_grid.extension.acceptor.class%
             - @event_dispatcher
+            - @oro_security.security_facade
 
     oro_grid.datagrid.prequest_params:
         class: %oro_grid.datagrid.prequest_params.class%

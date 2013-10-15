@@ -9,6 +9,8 @@ Here's list of currently implemented datasource adapters:
 
  - [ORM](datasources/orm.md)
 
+Datasource could be secured by adding `acl_resource` node under source tree.
+
 Customization
 -------------
 
