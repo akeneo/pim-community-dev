@@ -297,7 +297,8 @@
         <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
             {% if tooltip is defined and tooltip %}
                 {% set tooltip = tooltip|trans %}
-                {% if tooltip_details_anchor is defined or tooltip_details_link is defined %}
+                {% if (tooltip_details_enabled is defined and tooltip_details_enabled)
+                    or (tooltip_details_anchor is defined or tooltip_details_link is defined) %}
                     {% set helpLink = tooltip_details_link|default(get_help_link()) %}
                     {% if tooltip_details_anchor is defined and tooltip_details_anchor %}
                         {% set helpLink = helpLink ~ '#' ~ tooltip_details_anchor %}

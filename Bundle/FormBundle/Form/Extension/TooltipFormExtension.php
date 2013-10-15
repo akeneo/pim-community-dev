@@ -14,6 +14,7 @@ class TooltipFormExtension extends AbstractTypeExtension
      */
     protected $optionalParameters = array(
         'tooltip',
+        'tooltip_details_enabled',
         'tooltip_details_anchor',
         'tooltip_details_link',
         'tooltip_placement'

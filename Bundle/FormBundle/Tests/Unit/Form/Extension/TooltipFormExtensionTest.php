@@ -16,6 +16,7 @@ class TooltipFormExtensionTest extends \PHPUnit_Framework_TestCase
             ->with(
                 array(
                     'tooltip',
+                    'tooltip_details_enabled',
                     'tooltip_details_anchor',
                     'tooltip_details_link',
                     'tooltip_placement'
@@ -31,6 +32,7 @@ class TooltipFormExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $options = array(
             'tooltip' => 'test',
+            'tooltip_details_enabled' => true,
             'tooltip_details_anchor' => 'test',
             'tooltip_details_link' => 'test',
             'tooltip_placement' => 'test'
