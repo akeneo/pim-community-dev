@@ -19,8 +19,9 @@ function($, _, Backgrid) {
          */
         render: function() {
             Backgrid.BooleanCell.prototype.render.apply(this, arguments);
+            this.$input = this.$el.find('input');
             if (!this.column.get('editable')) {
-                this.$el.find('input').attr('disabled', 'disabled');
+                this.$input.attr('disabled', 'disabled');
             }
             return this;
         },
@@ -41,7 +42,9 @@ function($, _, Backgrid) {
          * @param {Event} e
          */
         onRowClicked: function(row, e) {
-            this.enterEditMode(e);
+            if (!this.$input.is(e.target) && !this.$el.is(e.target) && !this.$el.has(e.target).length){
+                this.enterEditMode(e);
+            }
         }
     });
 });
