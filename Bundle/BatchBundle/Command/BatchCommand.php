@@ -31,7 +31,20 @@ class BatchCommand extends ContainerAwareCommand
             ->setDescription('Launch a registered job instance')
             ->addArgument('code', InputArgument::REQUIRED, 'Job instance code')
             ->addArgument('execution', InputArgument::OPTIONAL, 'Job execution id')
-            ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Override job configuration (formatted as json. ie: php app/console oro:batch:job -c \'[{"reader":{"filePath":"/tmp/foo.csv"}}]\' acme_product_import)');
+            ->addOption(
+                'config',
+                'c',
+                InputOption::VALUE_REQUIRED,
+                'Override job configuration (formatted as json. ie: ' .
+                'php app/console oro:batch:job -c \'[{"reader":{"filePath":"/tmp/foo.csv"}}]\' ' .
+                'acme_product_import)'
+            )
+            ->addOption(
+                'email',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'The email to notify at the end of the job execution'
+            );
     }
 
     /**
@@ -62,6 +75,13 @@ class BatchCommand extends ContainerAwareCommand
             );
         }
 
+        // Override mail notifier recipient email
+        if ($email = $input->getOption('email')) {
+            $this
+                ->getMailNotifier()
+                ->setRecipientEmail($email);
+        }
+
         $errors = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
         if (count($errors) > 0) {
             throw new \RuntimeException(sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors)));
@@ -72,7 +92,7 @@ class BatchCommand extends ContainerAwareCommand
             $jobExecution = $this->getEntityManager()->getRepository('OroBatchBundle:JobExecution')->find($executionId);
             if (!$jobExecution) {
                 throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $id));
-                }
+            }
             if (!$jobExecution->getStatus()->isStarting()) {
                 throw new \RuntimeException(
                     sprintf('Job execution "%s" has invalid status: %s', $executionId, $jobExecution->getStatus())
@@ -122,6 +142,14 @@ class BatchCommand extends ContainerAwareCommand
     protected function getValidator()
     {
         return $this->getContainer()->get('validator');
+    }
+
+    /**
+     * @return Validator
+     */
+    protected function getMailNotifier()
+    {
+        return $this->getContainer()->get('oro_batch.mail_notifier');
     }
 
     /**
