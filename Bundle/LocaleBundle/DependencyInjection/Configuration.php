@@ -21,26 +21,43 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder
             ->root('oro_locale')
             ->children()
-                ->variableNode('name_format')
-                    ->defaultValue(array(1, 2, 3))
-                    ->validate()
-                    ->always(
-                        function ($value) {
-                            $g = 1;
-                            return array_merge($value, array('key' => 'value'));
-                        }
-                    )
+                ->arrayNode('name_format')
+                    ->prototype('scalar')
                     ->end()
                 ->end()
-                ->variableNode('address_format')
-                    ->defaultValue(array(2, 3, 4))
-                    ->validate()
-                    ->always(
-                        function ($value) {
-                            $g = 2;
-                            return $value;
-                        }
-                    )
+                ->arrayNode('address_format')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('format')
+                                ->cannotBeEmpty()
+                                ->defaultValue('%name%\n%organization%\n%street%\n%CITY%')
+                            ->end()
+                            ->scalarNode('latin_format')
+                                ->cannotBeEmpty()
+                                ->defaultValue('%name%\n%organization%\n%street%\n%CITY%')
+                            ->end()
+                            ->arrayNode('require')
+                                ->treatNullLike(array())
+                                ->prototype('scalar')->end()
+                                ->defaultValue(array('street', 'city'))
+                            ->end()
+                            ->scalarNode('zip_name_type')
+                                ->cannotBeEmpty()
+                                ->defaultValue('postal')
+                            ->end()
+                            ->scalarNode('state_name_type')
+                                ->cannotBeEmpty()
+                                ->defaultValue('province')
+                            ->end()
+                            ->scalarNode('direction')
+                                ->cannotBeEmpty()
+                                ->defaultValue('ltr')
+                            ->end()
+                            ->scalarNode('format_charset')
+                                ->cannotBeEmpty()
+                                ->defaultValue('UTF-8')
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end();
