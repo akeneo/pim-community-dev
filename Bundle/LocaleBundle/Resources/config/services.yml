@@ -1,7 +1,14 @@
 parameters:
+    oro_locale.provider.locale_settings.class: Oro\Bundle\LocaleBundle\Provider\LocaleSettingsProvider
     oro_locale.twig.dateformat.class: Oro\Bundle\LocaleBundle\Twig\DateFormatExtension
 
 services:
+    oro_locale.provider.locale_settings:
+        class: %oro_locale.provider.locale_settings.class%
+        calls:
+            - [addNameFormats, [%oro_locale.format.name%]]
+            - [addAddressFormats, [%oro_locale.format.address%]]
+
     oro_locale.twig.dateformat:
         class: %oro_locale.twig.dateformat.class%
         arguments:

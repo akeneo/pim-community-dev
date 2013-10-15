@@ -1,1 +1,1 @@
-full: %prefix% %first_name% %middle_name% %last_name% %suffix%
+en: %prefix% %first_name% %middle_name% %last_name% %suffix%
