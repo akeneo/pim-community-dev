@@ -5,7 +5,7 @@ namespace Oro\Bundle\EntityBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
-use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
+use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
 
 class OwnershipConfigSubscriber implements EventSubscriberInterface
 {
@@ -28,18 +28,30 @@ class OwnershipConfigSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Events::NEW_ENTITY_CONFIG_MODEL => 'newEntityConfig'
+            Events::PRE_PERSIST_CONFIG => 'prePersistEntityConfig'
         );
     }
 
     /**
-     * @param NewEntityConfigModelEvent $event
+     * @param PersistConfigEvent $event
      */
-    public function newEntityConfig(NewEntityConfigModelEvent $event)
+    public function prePersistEntityConfig(PersistConfigEvent $event)
     {
+        $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
+        $change = $event->getConfigManager()->getConfigChangeSet($event->getConfig());
+
+        $isDeleted = false;
+        if (isset($change['state']) && $change['state'][1] === 'Deleted') {
+            $isDeleted = true;
+        }
+
         $cp = $event->getConfigManager()->getProvider('ownership');
-        if ($cp->hasConfig($event->getClassName())) {
-            $this->provider->warmUpCache($event->getClassName());
+        $className = $event->getConfig()->getId()->getClassName();
+        if ($cp->hasConfig($className)) {
+            $this->provider->clearCache($className);
+            if (!$isDeleted) {
+                $this->provider->warmUpCache($className);
+            }
         }
     }
 }
