@@ -7,6 +7,7 @@ use Symfony\Component\Yaml\Parser;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Mink\Exception\ExpectationException;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 
 /**
  * Main feature context
@@ -123,9 +124,22 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      * @param integer $time
      * @param string  $condition
      */
-    public function wait($time = 4000, $condition = 'document.readyState == "complete" && !$.active')
+    public function wait($time = 5000, $condition = null)
     {
-        $this->getSession()->wait($time, $condition);
+        $condition = $condition !== null ? $condition : <<<JS
+        document.readyState == 'complete'                  // Page is ready
+            && typeof $ != 'undefined'                     // jQuery is loaded
+            && !$.active                                   // No ajax request is active
+            && $('#page').css('display') == 'block'        // Page is displayed (no progress bar)
+            && $('.loading-mask').css('display') == 'none' // Page is not loading (no black mask loading page)
+            && $('.jstree-loading').length == 0;           // Jstree has finished loading
+JS;
+
+        try {
+            $this->getSession()->wait(100, false);
+            $this->getSession()->wait($time, $condition);
+        } catch (UnsupportedDriverActionException $e) {
+        }
     }
 
     /**
