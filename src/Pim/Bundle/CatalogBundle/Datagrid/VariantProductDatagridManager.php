@@ -237,7 +237,10 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
 
         $proxyQuery
             ->leftJoin($rootAlias .'.family', 'productFamily')
-            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
+            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
+            ->leftJoin($rootAlias .'.values', 'values')
+            ->leftJoin('values.options', 'valueOptions')
+            ->leftJoin('values.prices', 'valuePrices');
 
         $this->applyVariantExpression($proxyQuery);
 
