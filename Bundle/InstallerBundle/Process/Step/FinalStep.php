@@ -22,15 +22,7 @@ class FinalStep extends AbstractStep
 
         $this->get('oro_installer.yaml_persister')->dump($params);
 
-        $this
-            ->runCommand('doctrine:schema:update', array('--force' => true))
-            ->runCommand('oro:search:create-index')
-            ->runCommand('oro:navigation:init')
-            ->runCommand('assets:install', array('target' => './'))
-            ->runCommand('assetic:dump')
-            ->runCommand('oro:assetic:dump')
-            ->runCommand('oro:translation:dump')
-            ->runCommand('cache:clear', array('--no-warmup' => true));
+        $this->runCommand('cache:clear', array('--no-warmup' => true));
 
         $this->complete();
 
