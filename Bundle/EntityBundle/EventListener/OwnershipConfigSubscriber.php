@@ -38,10 +38,12 @@ class OwnershipConfigSubscriber implements EventSubscriberInterface
     public function prePersistEntityConfig(PersistConfigEvent $event)
     {
         $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
-        $change = $event->getConfigManager()->getConfigChangeSet($event->getConfig());
+        $changes = $event->getConfigManager()->getConfigChangeSet($event->getConfig());
 
         $isDeleted = false;
-        if (isset($change['state']) && $change['state'][1] === 'Deleted') {
+        // Now if you press delete entity button, in state variable, in 1st position will be "Deleted" string.
+        // If you press restore entity, then "Deleted" string will be at 0 position.
+        if (isset($changes['state']) && $changes['state'][1] === 'Deleted') {
             $isDeleted = true;
         }
 
