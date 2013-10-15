@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator;
+use Symfony\Component\Validator\Constraints as Assert;
 use Monolog\Handler\StreamHandler;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
@@ -75,16 +76,24 @@ class BatchCommand extends ContainerAwareCommand
             );
         }
 
+        $validator = $this->getValidator();
+
         // Override mail notifier recipient email
         if ($email = $input->getOption('email')) {
+            if ($errors = $validator->validateValue($email, new Assert\Email())) {
+                throw new \RuntimeException(
+                    sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
+                );
+            }
             $this
                 ->getMailNotifier()
                 ->setRecipientEmail($email);
         }
 
-        $errors = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
-        if (count($errors) > 0) {
-            throw new \RuntimeException(sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors)));
+        if ($errors = $validator->validate($jobInstance, array('Default', 'Execution'))) {
+            throw new \RuntimeException(
+                sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors))
+            );
         }
 
         $executionId = $input->getArgument('execution');
