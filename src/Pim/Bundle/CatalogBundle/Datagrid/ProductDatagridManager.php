@@ -457,7 +457,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         if ($this->securityFacade->isGranted('pim_catalog_product_remove')) {
             $actions[] = array(
                 'name'         => 'delete',
-                'type'         => ActionInterface::TYPE_DELETE,
+                'type'         => ActionInterface::TYPE_PRODUCT_DELETE,
                 'acl_resource' => 'pim_catalog_product_remove',
                 'options'      => array(
                     'label' => $this->translate('Delete the product'),
