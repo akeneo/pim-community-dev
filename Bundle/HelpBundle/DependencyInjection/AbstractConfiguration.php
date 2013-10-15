@@ -83,6 +83,32 @@ abstract class AbstractConfiguration implements ConfigurationInterface
     }
 
     /**
+     * @param ArrayNodeDefinition $routesNode
+     */
+    protected function configureRoutesNodeDefinition(ArrayNodeDefinition $routesNode)
+    {
+        $self = $this;
+
+        $routesNode
+            ->useAttributeAsKey(true)
+            ->beforeNormalization()
+                ->always(
+                    function (array $vendors) use ($self) {
+                        $self->assertKeysAreValidVendorNames($vendors);
+                        return $vendors;
+                    }
+                )
+                ->end()
+            ->prototype('array')
+                ->children()
+                    ->scalarNode('server')->end()
+                    ->scalarNode('uri')->end()
+                    ->scalarNode('link')->end()
+                ->end()
+            ->end();
+    }
+
+    /**
      * @param array $vendors
      * @throws InvalidConfigurationException
      */

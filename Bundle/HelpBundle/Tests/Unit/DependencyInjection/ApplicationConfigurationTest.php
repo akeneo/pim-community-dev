@@ -34,6 +34,7 @@ class ApplicationConfigurationTest extends \PHPUnit_Framework_TestCase
                     ),
                     'vendors' => array(),
                     'resources' => array(),
+                    'routes' => array(),
                 )
             ),
             'extended_config' => array(
@@ -72,6 +73,13 @@ class ApplicationConfigurationTest extends \PHPUnit_Framework_TestCase
                             'link' => 'http://server/link',
                         ),
                         'AcmeBarBundle' => array(),
+                    ),
+                    'routes' => array(
+                        'test_route' => array(
+                            'server' => 'http://server.com',
+                            'uri' => 'uri',
+                            'link' => 'link',
+                        ),
                     )
                 ),
                 array(
@@ -110,6 +118,13 @@ class ApplicationConfigurationTest extends \PHPUnit_Framework_TestCase
                         ),
                         'AcmeBarBundle' => array(
                         )
+                    ),
+                    'routes' => array(
+                        'test_route' => array(
+                            'server' => 'http://server.com',
+                            'uri' => 'uri',
+                            'link' => 'link',
+                        ),
                     )
                 )
             ),

@@ -4,33 +4,52 @@ namespace Oro\Bundle\HelpBundle\Unit\Model;
 
 use Oro\Bundle\HelpBundle\Annotation\Help;
 use Oro\Bundle\HelpBundle\Model\HelpLinkProvider;
+use Symfony\Component\HttpFoundation\Request;
 
 class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider configurationDataProvider
      * @param array $configuration
-     * @param Help $annotation
-     * @param string $link
+     * @param array $requestAttributes
+     * @param array $parserResults
+     * @param string $expectedLink
      */
-    public function testGetHelpLinkUrl($configuration, $annotation, $link)
-    {
-        $controller = 'Acme\\Bundle\\DemoBundle\\Controller\\TestController::runAction';
-        $shortName = 'AcmeDemoBundle:Test:run';
-
+    public function testGetHelpLinkUrl(
+        array $configuration,
+        array $requestAttributes,
+        array $parserResults,
+        $expectedLink
+    ) {
         $parser = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser')
             ->disableOriginalConstructor()
             ->getMock();
-        $parser->expects($this->once())
-            ->method('build')
-            ->with($controller)
-            ->will($this->returnValue($shortName));
+
+        if (isset($parserResults['buildResult'])) {
+            $this->assertArrayHasKey('_controller', $requestAttributes);
+            $parser->expects($this->once())
+                ->method('build')
+                ->with($requestAttributes['_controller'])
+                ->will($this->returnValue($parserResults['buildResult']));
+        } elseif (isset($parserResults['parseResult'])) {
+            $this->assertArrayHasKey('_controller', $requestAttributes);
+            $parser->expects($this->once())
+                ->method('parse')
+                ->with($requestAttributes['_controller'])
+                ->will($this->returnValue($parserResults['parseResult']));
+        } else {
+            $parser->expects($this->never())->method($this->anything());
+        }
 
         $provider = new HelpLinkProvider($parser);
         $provider->setConfiguration($configuration);
-        $provider->setRequestController($controller);
-        $provider->setHelpConfigurationAnnotation($annotation);
-        $this->assertEquals($link, $provider->getHelpLinkUrl());
+
+        $request = new Request();
+        $request->attributes->add($requestAttributes);
+
+        $provider->setRequest($request);
+
+        $this->assertEquals($expectedLink, $provider->getHelpLinkUrl());
     }
 
     /**
@@ -41,37 +60,52 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'simple default' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/'
                     )
                 ),
-                null,
-                'http://test.com/wiki/Acme/AcmeDemoBundle:Test_run'
+                'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle:Test_run'
+            ),
+            'simple default with controller short name' => array(
+                'configuration' => array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/'
+                    )
+                ),
+                'requestAttributes' => array(
+                    '_controller' => 'AcmeDemoBundle:Test:run'
+                ),
+                'parserResults' => array('parseResult' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle:Test_run'
             ),
             'default with prefix' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
                     )
                 ),
-                null,
-                'http://test.com/wiki/Third_Party/Acme/AcmeDemoBundle:Test_run'
+                'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://test.com/wiki/Third_Party/Acme/AcmeDemoBundle:Test_run'
             ),
             'default with link' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party',
                         'link' => 'http://wiki.test.com/'
                     )
                 ),
-                null,
-                'http://wiki.test.com/'
+                'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://wiki.test.com/'
             ),
             'vendor link' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
@@ -82,11 +116,12 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                null,
-                'http://wiki.test.com/'
+                'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://wiki.test.com/'
             ),
             'vendor config' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
@@ -99,11 +134,12 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                null,
-                'http://wiki.test.com/Prefix/CustomVendor/AcmeDemoBundle:Test_run'
+                'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://wiki.test.com/Prefix/CustomVendor/AcmeDemoBundle:Test_run'
             ),
             'vendor uri' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
@@ -114,11 +150,12 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                null,
+                'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
                 'http://test.com/wiki/test'
             ),
             'bundle config' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
@@ -131,11 +168,12 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                null,
-                'http://wiki.test.com/Prefix/Acme/CustomBundle:Test_run'
+                'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://wiki.test.com/Prefix/Acme/CustomBundle:Test_run'
             ),
             'bundle link' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
@@ -146,11 +184,12 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                null,
-                'http://wiki.test.com/'
+                'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://wiki.test.com/'
             ),
             'bundle uri' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
@@ -161,11 +200,12 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                null,
-                'http://test.com/wiki/test'
+                'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://test.com/wiki/test'
             ),
             'controller config' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
@@ -178,11 +218,12 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                null,
-                'http://wiki.test.com/Prefix/Acme/AcmeDemoBundle:MyTest_run'
+                'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://wiki.test.com/Prefix/Acme/AcmeDemoBundle:MyTest_run'
             ),
             'controller link' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
@@ -193,11 +234,13 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                null,
-                'http://wiki.test.com/'
+
+                'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://wiki.test.com/'
             ),
             'controller uri' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
@@ -208,11 +251,12 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                null,
-                'http://test.com/wiki/test'
+                'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://test.com/wiki/test'
             ),
             'action config' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
@@ -225,11 +269,12 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                null,
-                'http://wiki.test.com/Prefix/Acme/AcmeDemoBundle:Test_execute'
+                'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://wiki.test.com/Prefix/Acme/AcmeDemoBundle:Test_execute'
             ),
             'action link' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
@@ -240,11 +285,12 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                null,
-                'http://wiki.test.com/'
+                'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://wiki.test.com/'
             ),
             'action uri' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
@@ -255,52 +301,171 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                         )
                     )
                 ),
-                null,
-                'http://test.com/wiki/test'
+                'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://test.com/wiki/test'
+            ),
+            'service id controller' => array(
+                'configuration' => array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/'
+                    )
+                ),
+                'requestAttributes' => array('_controller' => 'controller_service:runAction'),
+                'parserResults' => array(),
+                'expectedLink' => 'http://test.com/wiki'
             ),
             'annotation link' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
                     )
                 ),
-                new Help(array('link' => 'http://wiki.test.com/')),
-                'http://wiki.test.com/'
+                'requestAttributes' => array(
+                    '_controller' => 'Acme\DemoBundle\Controller\TestController::runAction',
+                    '_' . Help::ALIAS => new Help(array('link' => 'http://wiki.test.com/'))
+                ),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://wiki.test.com/'
             ),
             'annotation configuration' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
                     )
                 ),
-                new Help(
-                    array(
-                        'actionAlias' => 'execute',
-                        'controllerAlias' => 'Executor',
-                        'bundleAlias' => 'Bundle',
-                        'vendorAlias' => 'Vendor',
-                        'prefix' => 'Prefix',
-                        'server' => 'http://wiki.test.com/'
+                'requestAttributes' => array(
+                    '_controller' => 'Acme\DemoBundle\Controller\TestController::runAction',
+                    '_' . Help::ALIAS => new Help(
+                        array(
+                            'actionAlias' => 'execute',
+                            'controllerAlias' => 'Executor',
+                            'bundleAlias' => 'Bundle',
+                            'vendorAlias' => 'Vendor',
+                            'prefix' => 'Prefix',
+                            'server' => 'http://wiki.test.com/'
+                        )
                     )
                 ),
-                'http://wiki.test.com/Prefix/Vendor/Bundle:Executor_execute'
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://wiki.test.com/Prefix/Vendor/Bundle:Executor_execute'
             ),
             'annotation uri' => array(
-                array(
+                'configuration' => array(
                     'defaults' => array(
                         'server' => 'http://test.com/wiki/',
                         'prefix' => 'Third_Party'
                     )
                 ),
-                new Help(
-                    array(
-                        'uri' => 'test',
-                        'server' => 'http://wiki.test.com/'
+                'requestAttributes' => array(
+                    '_controller' => 'Acme\DemoBundle\Controller\TestController::runAction',
+                    '_' . Help::ALIAS => new Help(
+                        array(
+                            'uri' => 'test',
+                            'server' => 'http://wiki.test.com/'
+                        )
+                    ),
+                ),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://wiki.test.com/test'
+            ),
+            'annotation uri unset with resource config' => array(
+                'configuration' => array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/',
+                        'prefix' => 'Third_Party'
+                    ),
+                    'resources' => array(
+                        'AcmeDemoBundle:Test:run' => array(
+                            'uri' => null,
+                        )
                     )
                 ),
-                'http://wiki.test.com/test'
+                'requestAttributes' => array(
+                    '_controller' => 'Acme\DemoBundle\Controller\TestController::runAction',
+                    '_' . Help::ALIAS => new Help(
+                        array(
+                            'uri' => 'test',
+                        )
+                    ),
+                ),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://test.com/wiki/Third_Party/Acme/AcmeDemoBundle:Test_run'
+            ),
+            'route config' => array(
+                'configuration' => array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/'
+                    ),
+                    'routes' => array(
+                        'test_route' => array(
+                            'action' => 'execute',
+                            'controller' => 'Executor',
+                            'bundle' => 'Bundle',
+                            'vendor' => 'Vendor',
+                            'prefix' => 'Prefix',
+                            'server' => 'http://wiki.test.com/'
+                        )
+                    )
+                ),
+                'requestAttributes' => array('_route' => 'test_route'),
+                'parserResults' => array(),
+                'expectedLink' => 'http://wiki.test.com/Prefix/Vendor/Bundle:Executor_execute'
+            ),
+            'route uri' => array(
+                'configuration' => array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/'
+                    ),
+                    'routes' => array(
+                        'test_route' => array(
+                            'uri' => 'test'
+                        )
+                    )
+                ),
+                'requestAttributes' => array('_route' => 'test_route'),
+                'parserResults' => array(),
+                'expectedLink' => 'http://test.com/wiki/test'
+            ),
+            'route link' => array(
+                'configuration' => array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/'
+                    ),
+                    'routes' => array(
+                        'test_route' => array(
+                            'link' => 'http://wiki.test.com/test'
+                        )
+                    )
+                ),
+                'requestAttributes' => array('_route' => 'test_route'),
+                'parserResults' => array(),
+                'expectedLink' => 'http://wiki.test.com/test'
+            ),
+            'route link override by resources' => array(
+                'configuration' => array(
+                    'defaults' => array(
+                        'server' => 'http://test.com/wiki/'
+                    ),
+                    'routes' => array(
+                        'test_route' => array(
+                            'link' => 'http://wiki.test.com/test'
+                        )
+                    ),
+                    'resources' => array(
+                        'AcmeDemoBundle:Test:run' => array(
+                            'link' => null
+                        )
+                    )
+                ),
+                'requestAttributes' => array(
+                    '_controller' => 'Acme\DemoBundle\Controller\TestController::runAction',
+                    '_route' => 'test_route'
+                ),
+                'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
+                'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle:Test_run'
             ),
         );
     }

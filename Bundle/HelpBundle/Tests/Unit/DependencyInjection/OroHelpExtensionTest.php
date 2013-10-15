@@ -82,6 +82,7 @@ class OroHelpExtensionTest extends \PHPUnit_Framework_TestCase
                     ),
                     'vendors' => array(),
                     'resources' => array(),
+                    'routes' => array(),
                 )
             ),
             'with_bundles' => array(
@@ -125,7 +126,19 @@ class OroHelpExtensionTest extends \PHPUnit_Framework_TestCase
                             'uri' => 'bar/uri',
                             'link' => 'http://server.com/foo/custom',
                         )
-                    )
+                    ),
+                    'routes' => array(
+                        'bar_route' => array(
+                            'server' => 'http://server.com/',
+                            'uri' => 'bar/override',
+                            'link' => 'http://server.com/bar/custom',
+                        ),
+                        'foo_route' => array(
+                            'server' => 'http://server.com/',
+                            'uri' => 'foo/uri',
+                            'link' => 'http://server.com/foo',
+                        )
+                    ),
                 )
             ),
         );

@@ -21,7 +21,6 @@ services:
         class: %oro_help.listener.help_link.class%
         arguments:
             - @service_container
+            - @oro_help.model.help_link_provider
         tags:
-            - { name: kernel.event_listener, priority: -200, event: kernel.request, method: onKernelRequest }
-            - { name: kernel.event_listener, priority: -200, event: kernel.response, method: onKernelResponse }
             - { name: kernel.event_listener, priority: -200, event: kernel.controller, method: onKernelController }
