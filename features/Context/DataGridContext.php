@@ -465,7 +465,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $this->getSession()->getPage()->clickLink('Back to grid');
         $this->wait();
     }
-    
+
     /**
      * Create an expectation exception
      *

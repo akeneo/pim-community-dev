@@ -7,7 +7,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Tests DatagridRouteRegistry
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS ("http" =>//www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -75,7 +75,7 @@ class DatagridRouteRegistryTest extends \PHPUnit_Framework_TestCase
         $router->expects($this->any())
                 ->method('getRouteCollection')
                 ->will($this->returnValue($routeCollection));
-        
+
         $router->expects($this->any())
             ->method('getContext')
             ->will($this->returnValue($routingContext));

@@ -6,7 +6,7 @@ use Pim\Bundle\GridBundle\Route\DatagridRouteRegistry;
 
 /**
  * Gives access to datagrid route regexps in twig templates
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -20,7 +20,7 @@ class DatagridExtension extends \Twig_Extension
 
     /**
      * Constructor
-     * 
+     *
      * @param DatagridRouteRegistry $routeRegistry
      */
     public function __construct(DatagridRouteRegistry $routeRegistry)
@@ -52,7 +52,7 @@ class DatagridExtension extends \Twig_Extension
 
     /**
      * Return a json encoded collection of grid route regexps
-     * 
+     *
      * @return string
      */
     public function getGridRouteRegexps()

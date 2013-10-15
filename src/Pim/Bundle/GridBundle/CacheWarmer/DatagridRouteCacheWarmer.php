@@ -8,7 +8,7 @@ use Pim\Bundle\GridBundle\Route\DatagridRouteRegistry;
 
 /**
  * Creates cache of datagrid routes
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -22,7 +22,7 @@ class DatagridRouteCacheWarmer extends CacheWarmer
 
     /**
      * Constructor
-     * 
+     *
      * @param DatagridRouteRegistryBuilder $builder
      */
     public function __construct(DatagridRouteRegistryBuilder $builder)

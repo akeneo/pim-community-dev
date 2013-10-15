@@ -45,12 +45,12 @@ class DatagridRouteRegistry
     protected $cacheDir;
 
     /**
-     * Constructor 
-     * 
-     * @param RouterInterface $router
+     * Constructor
+     *
+     * @param RouterInterface              $router
      * @param DatagridRouteRegistryBuilder $builder
-     * @param string $cacheDir
-     * @param boolean $debugMode
+     * @param string                       $cacheDir
+     * @param boolean                      $debugMode
      */
     public function __construct(
         RouterInterface $router,
@@ -66,7 +66,7 @@ class DatagridRouteRegistry
 
     /**
      * Returns an array of regexps for each configured route, indexed by datagrid name
-     * 
+     *
      * @return array
      */
     public function getRegexps()
@@ -86,7 +86,7 @@ class DatagridRouteRegistry
 
     /**
      * Sets the regexps from the cache
-     * 
+     *
      * @return null
      */
     protected function setRegexpsFromCache()

@@ -6,7 +6,7 @@ use Pim\Bundle\GridBundle\Exception\JavascriptRegexpTranslatorException;
 
 /**
  * Translates a php grid route regexp in a javascript regexp
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -15,11 +15,11 @@ class JavascriptRegExpTranslator
 {
     /**
      * Replacement regexps
-     * 
+     *
      * @var array
      */
     protected $replacements = array(
-        '/#(.+)#.*/'             => '\1',        // Removes regex boundaries and modifier 
+        '/#(.+)#.*/'             => '\1',        // Removes regex boundaries and modifier
         '/^\^/'                  => '^%prefix%', // Adds the prefix at the start of the regex
         '#/#'                    => '\\/',       // Escapes slashes
         '/\(\?(:|P<[a-z_]+>)/i'  => '(',         // Replaces non capturing and named groups by simple groups
@@ -27,18 +27,18 @@ class JavascriptRegExpTranslator
 
     /**
      * Unsupported regexp features regexps
-     * 
+     *
      * @var array
      */
     protected $unsupported = array(
         '/\+\+/',                                // Greedy + operator
         '/\(\?<?[=!]/',                          // Assertions
     );
-    
+
     /**
      * Translates a PHP regexp to Javascript
-     * 
-     * @param string $regexp
+     *
+     * @param  string                              $regexp
      * @return string
      * @throws JavascriptRegexpTranslatorException
      */
