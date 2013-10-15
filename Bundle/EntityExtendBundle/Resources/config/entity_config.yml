@@ -25,7 +25,7 @@ oro_entity_config:
                 owner:
                     options:
                         priority:           40
-                        internal:           true
+                        auditable:          false
                         default_value:      'System'
                     grid:
                         type:               string
@@ -75,7 +75,7 @@ oro_entity_config:
                 is_deleted:
                     options:
                         default_value:      false
-                        internal:           true
+                        auditable:          false
                     grid:
                         show_column:        false
                         query:
@@ -84,17 +84,17 @@ oro_entity_config:
 
                 unique_key:
                     options:
-                        internal:           true
+                        auditable:          false
                         serializable:       true
 
                 index:
                     options:
-                        internal:           true
+                        auditable:          false
                         serializable:       true
 
                 upgradeable:
                     options:
-                        internal:           true
+                        auditable:          false
                         default_value:      true
 
         field:
@@ -136,7 +136,7 @@ oro_entity_config:
                     options:
                         priority:           20
                         default_value:      'System'
-                        internal:           true
+                        auditable:        false
                     grid:
                         type:               string
                         label:              'Type'
@@ -165,7 +165,7 @@ oro_entity_config:
                     options:
                         priority:           40
                         default_value:      false
-                        internal:           true
+                        auditable:        false
 
                 length:
                     options:
@@ -278,7 +278,7 @@ oro_entity_config:
                 is_deleted:
                     options:
                         default_value:      false
-                        internal:           true
+                        auditable:          false
                     grid:
                         show_column:        false
                         query:

@@ -130,7 +130,9 @@ class OroEntityExtendBundle extends Bundle
     {
         $phpFinder = new PhpExecutableFinder();
         if (!$phpPath = $phpFinder->find()) {
-            throw new \RuntimeException('The php executable could not be found, add it to your PATH environment variable and try again');
+            throw new \RuntimeException(
+                'The php executable could not be found, add it to your PATH environment variable and try again'
+            );
         }
 
         return $phpPath;

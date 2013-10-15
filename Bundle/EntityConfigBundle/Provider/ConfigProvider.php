@@ -12,7 +12,6 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
@@ -92,7 +91,7 @@ class ConfigProvider implements ConfigProviderInterface
      */
     public function copyId(ConfigIdInterface $configId)
     {
-        if ($configId instanceof FieldConfigIdInterface) {
+        if ($configId instanceof FieldConfigId) {
             return $this->getId($configId->getClassName(), $configId->getFieldName(), $configId->getFieldType());
         } else {
             return $this->getId($configId->getClassName());
@@ -148,7 +147,7 @@ class ConfigProvider implements ConfigProviderInterface
     public function createConfig(ConfigIdInterface $configId, array $values)
     {
         $config = new Config($configId);
-        if ($configId instanceof FieldConfigIdInterface) {
+        if ($configId instanceof FieldConfigId) {
             $type          = PropertyConfigContainer::TYPE_FIELD;
             $defaultValues = $this->getPropertyConfig()->getDefaultValues($type, $configId->getFieldType());
         } else {
