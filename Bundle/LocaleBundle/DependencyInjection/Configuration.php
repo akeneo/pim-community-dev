@@ -18,9 +18,35 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
+        $rootNode = $treeBuilder
+            ->root('oro_locale')
+            ->children()
+                ->variableNode('name_format')
+                    ->defaultValue(array(1, 2, 3))
+                    ->validate()
+                    ->always(
+                        function ($value) {
+                            $g = 1;
+                            return array_merge($value, array('key' => 'value'));
+                        }
+                    )
+                    ->end()
+                ->end()
+                ->variableNode('address_format')
+                    ->defaultValue(array(2, 3, 4))
+                    ->validate()
+                    ->always(
+                        function ($value) {
+                            $g = 2;
+                            return $value;
+                        }
+                    )
+                    ->end()
+                ->end()
+            ->end();
 
         SettingsBuilder::append(
-            $treeBuilder->root('oro_locale'),
+            $rootNode,
             array(
                 'date_format'         => array('value' => 'm/d/y'),
                 'time_format'         => array('value' => 'h:i a'),
