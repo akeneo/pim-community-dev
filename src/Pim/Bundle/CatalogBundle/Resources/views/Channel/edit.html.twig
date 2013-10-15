@@ -5,9 +5,11 @@
 {% block content %}
 
     {{ JSFV(form) }}
-    <form id="{{ form.vars.id }}" class="form-horizontal" action="{{ form.vars.value.id ?
-        path('pim_catalog_channel_edit', { id: form.vars.value.id }) :
-        path('pim_catalog_channel_create') }}" method="POST">
+    {{ form_start(form, {
+        'action': form.vars.value.id ?
+            path('pim_catalog_channel_edit', { id: form.vars.value.id }) :
+            path('pim_catalog_channel_create')
+    }) }}
 
         {% set title = form.vars.value.id ? 'channel.edit'|trans ~ ' - ' ~ form.vars.value.label : 'channel.create'|trans %}
 
