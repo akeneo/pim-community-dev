@@ -137,7 +137,7 @@ class ExtendConfigDumper
                             $fieldName,
                             $entityName,
                             $className,
-                            $fieldConfig->get('target_entity')
+                            $fieldConfig
                         );
                     } else {
                         $doctrine[$entityName]['fields'][$fieldName]['code']      = $fieldName;
@@ -202,11 +202,17 @@ class ExtendConfigDumper
     protected function prepareRelation(&$config, $relType, $fieldName, $entityName, $from, $to)
     {
         switch ($relType) {
+            /*
+            case 'oneToMany':
+                $config[$entityName][$relType][$fieldName]['targetEntity'] = $to->get('target_entity');
+                $config[$entityName][$relType][$fieldName]['mappedBy'] = $to->get('mappedBy');
+                break;
+            */
             case 'manyToOne':
-                $config[$entityName][$relType][$fieldName]['targetEntity'] = $to;
+                $config[$entityName][$relType][$fieldName]['targetEntity'] = $to->get('target_entity');
                 $config[$entityName][$relType][$fieldName]['joinColumn']   = array(
                     'name'                 => strtolower($fieldName) . '_id',
-                    'referencedColumnName' => $this->getEntityIdentifier($to)
+                    'referencedColumnName' => $this->getEntityIdentifier($to->get('target_entity'))
                 );
 
                 break;
@@ -214,6 +220,7 @@ class ExtendConfigDumper
                 throw new RuntimeException(sprintf('Rel type "%s" is not valid', $relType));
         }
     }
+
 
     /**
      * Get Entity Identifier By a class name
