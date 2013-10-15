@@ -469,4 +469,38 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
             ),
         );
     }
+
+    public function testGetHelpLinkUrlWithParameters()
+    {
+        $configuration = array(
+            'defaults' => array(
+                'server' => 'http://test.com/wiki/{optionOne}/{option_two}/{option_3}'
+            )
+        );
+        $parameters = array(
+            'optionOne' => 'test1',
+            'option_two' => 'test2',
+            'option_3' => 'test3'
+        );
+        $link = 'http://test.com/wiki/test1/test2/test3/Acme/AcmeDemoBundle:Test_run';
+        $controller = 'Acme\Bundle\DemoBundle\Controller\TestController::runAction';
+        $shortName = 'AcmeDemoBundle:Test:run';
+
+        $parser = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $parser->expects($this->once())
+            ->method('build')
+            ->with($controller)
+            ->will($this->returnValue($shortName));
+
+        $request = new Request();
+        $request->attributes->set('_controller', $controller);
+        $request->request->add($parameters);
+
+        $provider = new HelpLinkProvider($parser);
+        $provider->setConfiguration($configuration);
+        $provider->setRequest($request);
+        $this->assertEquals($link, $provider->getHelpLinkUrl());
+    }
 }

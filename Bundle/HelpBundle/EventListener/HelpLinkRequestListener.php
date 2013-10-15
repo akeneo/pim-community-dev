@@ -36,7 +36,7 @@ class HelpLinkRequestListener
     public function onKernelController(FilterControllerEvent $event)
     {
         if (HttpKernel::MASTER_REQUEST == $event->getRequestType()) {
-            //$this->linkProvider->setRequest($event->getRequest());
+            $this->linkProvider->setRequest($event->getRequest());
         }
 
         return;

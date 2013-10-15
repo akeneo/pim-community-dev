@@ -41,6 +41,11 @@ class HelpLinkProvider
     protected $requestRoute;
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
      * @var Help|null
      */
     protected $helpConfigurationAnnotation;
@@ -63,6 +68,7 @@ class HelpLinkProvider
         $this->requestController = $request->get('_controller');
         $this->requestRoute = $request->get('_route');
         $this->helpConfigurationAnnotation = $request->get('_' . Help::ALIAS);
+        $this->request = $request;
     }
 
     /**
@@ -99,12 +105,27 @@ class HelpLinkProvider
         }
 
         if (isset($config['uri'])) {
-            return strtr('%server%/%uri%', $replaceParams);
+            $link = strtr('%server%/%uri%', $replaceParams);
         } elseif (isset($config['vendor'], $config['bundle'], $config['controller'], $config['action'])) {
-            return strtr($this->format, $replaceParams);
+            $link = strtr($this->format, $replaceParams);
         } else {
-            return $config['server'];
+            $link = $config['server'];
         }
+
+        $request = $this->request;
+        $link = preg_replace_callback(
+            '/{(\w+)}/',
+            function ($matches) use ($request) {
+                if (count($matches) > 1) {
+                    return $request->get($matches[1]);
+                } else {
+                    return '';
+                }
+            },
+            $link
+        );
+
+        return preg_replace('/(^:)\/+/', '/', $link);
     }
 
     /**
