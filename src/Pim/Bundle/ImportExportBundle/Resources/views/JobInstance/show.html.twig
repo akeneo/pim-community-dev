@@ -49,7 +49,13 @@
     {{ elements.page_header(title, buttons, null, left) }}
 
     {% if form is defined and form is not empty and uploadAllowed and uploadViolations|length == 0 %}
-        <form id="pim_importexport_import_upload" method="POST" class="form-horizontal form-upload hide" action="{{ path('pim_importexport_import_launch', { id: jobInstance.id }) }}" {{ form_enctype(form) }}>
+        {{ form_start(form, {
+            'id': 'pim_importexport_import_upload',
+            'action': path('pim_importexport_import_launch', { id: jobInstance.id }),
+            'attr': {
+                'class': 'form-upload hide'
+            }
+        }) }}
             {{ elements.form_errors(form) }}
             <div class="row-fluid">
                 {{ form_row(form.file) }}

@@ -7,7 +7,7 @@
 
 {% block groupTab %}
 {{ JSFV(form) }}
-<form id="{{ form.vars.id }}" class="form-horizontal" action="{{ path('pim_catalog_attributegroup_edit', { id: form.vars.value.id }) }}" method="POST">
+{{ form_start(form, { 'action': path('pim_catalog_attributegroup_edit', { id: form.vars.value.id }) }) }}
 
     {% set title = 'attribute group.edit'|trans ~ ' - ' ~ form.vars.data.label %}
 

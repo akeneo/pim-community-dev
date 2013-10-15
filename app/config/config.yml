@@ -117,7 +117,7 @@ a2lix_translation_form:
     templating:               "OroUIBundle:Form:translateable.html.twig"
 
 apy_js_form_validation:
-    check_modes: [submit]
+    check_modes: [submit, blur, change]
 
 lexik_maintenance:
     authorized:

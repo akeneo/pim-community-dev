@@ -31,12 +31,15 @@
 </script>
 
 {{ JSFV(form) }}
-<form id="{{ form.vars.id }}" class="form-horizontal"
-    data-updated-title="{{ 'confirmation.leave'|trans }}"
-    data-updated-message="{{ 'confirmation.discard changes'|trans({ '%entity%': entityName|trans }) }}"
-    action="{{ form.vars.value.id ?
-    path('pim_catalog_categorytree_edit', { id: form.vars.value.id }) :
-    path('pim_catalog_categorytree_create', { parent: parentId }) }}" method="POST" {{ form_enctype(form) }}>
+{{ form_start(form, {
+    'action': form.vars.value.id ?
+        path('pim_catalog_categorytree_edit', { id: form.vars.value.id }) :
+        path('pim_catalog_categorytree_create', { parent: parentId }),
+    'attr': {
+        'data-updated-title': 'confirmation.leave'|trans,
+        'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': entityName|trans })
+    }
+}) }}
 
     {% set buttons %}
         {% if form.vars.value.id and resource_granted("pim_catalog_category_remove") %}

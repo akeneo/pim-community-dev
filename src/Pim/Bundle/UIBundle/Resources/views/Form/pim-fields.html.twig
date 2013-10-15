@@ -1,5 +1,27 @@
 {% extends 'OroUIBundle:Form:fields.html.twig' %}
 
+{% block form_start %}
+{% spaceless %}
+    {% set method = method|upper %}
+    {% if method in ["GET", "POST"] %}
+        {% set form_method = method %}
+    {% else %}
+        {% set form_method = "POST" %}
+    {% endif %}
+    {% set formClass = class is defined ? class : 'form-horizontal' %}
+    {% if attr.class is defined %}
+        {% set class = attr.class ~ ' ' ~ formClass %}
+    {% else %}
+        {% set class = formClass %}
+    {% endif %}
+    {% set attr = attr|merge({'class': class }) %}
+    <form id="{{ id }}" method="{{ form_method|lower }}" action="{{ action }}"{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% if multipart %} enctype="multipart/form-data"{% endif %}>
+    {% if form_method != method %}
+        <input type="hidden" name="_method" value="{{ method }}" />
+    {% endif %}
+{% endspaceless %}
+{% endblock form_start %}
+
 {% block form_row %}
     {% spaceless %}
         {% if form|is_flexible %}

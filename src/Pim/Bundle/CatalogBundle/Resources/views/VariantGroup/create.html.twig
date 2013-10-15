@@ -4,12 +4,15 @@
 {% endif %}
 {% endspaceless %}
 
-<form id="pim_catalog_variant_group_create" method="POST" class="form-horizontal"
-    data-title="{{ 'Create a new variant group'|trans }}"
-    data-button-submit="{{ 'btn.save'|trans|capitalize }}"
-    data-button-cancel="{{ 'btn.cancel'|trans|capitalize }}"
-    action="{{ path('pim_catalog_variant_group_create') }}" {{ form_enctype(form) }}>
-
+{{ form_start(form, {
+    'action': path('pim_catalog_variant_group_create'),
+    'class': 'form-inline',
+    'attr': {
+        'data-title': 'Create a new variant group'|trans,
+        'data-button-submit': 'btn.save'|trans|capitalize,
+        'data-button-cancel': 'btn.cancel'|trans|capitalize
+    }
+}) }}
     {{ JSFV(form) }}
 
     {{ elements.form_errors(form) }}
