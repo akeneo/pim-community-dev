@@ -7,7 +7,7 @@
 
     {{ parent() }}
 
-    <form id="{{ form.vars.id }}" action="{{ path('pim_catalog_mass_edit_action_perform', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) }}" method="POST" class="form-horizontal" {{ form_enctype(form) }}>
+    {{ form_start(form, { 'action': path('pim_catalog_mass_edit_action_perform', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) }) }}
 
         <div class="row">
             <div class="offset1 span12">
