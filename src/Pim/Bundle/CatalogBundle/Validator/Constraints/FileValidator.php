@@ -32,6 +32,17 @@ class FileValidator extends BaseFileValidator
 
         parent::validate($value, $constraint);
 
+        $this->validateAllowedExtension($value, $constraint);
+    }
+
+    /**
+     * Validate if extension is allowed
+     *
+     * @param mixed      $value      The value that should be validated
+     * @param Constraint $constraint The constraint for the validation
+     */
+    protected function validateAllowedExtension($value, Constraint $constraint)
+    {
         if ($constraint->allowedExtensions) {
             $file = $value instanceof \SplFileInfo ? $value : new \SplFileInfo($value);
 
