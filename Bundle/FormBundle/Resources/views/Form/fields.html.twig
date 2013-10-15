@@ -318,7 +318,12 @@
                         var handlePopoverMouseout = function (e, popover) {
                             var popoverHandler = $(e.relatedTarget).closest('.popover');
                             if (!popoverHandler.length) {
-                                popover.popover('hide');
+                                popover.data('popover-timer',
+                                    setTimeout(function() {
+                                        popover.popover('hide');
+                                        popover.data('popover-active', false);
+                                    }, 500)
+                                );
                             } else {
                                 popoverHandler.one('mouseout', function(evt) {
                                     handlePopoverMouseout(evt, popover);
@@ -333,13 +338,18 @@
                                 trigger: 'manual'
                             })
                             .mouseover(function() {
-                                $(this).popover('show');
+                                var popoverEl = $(this);
+                                clearTimeout(popoverEl.data('popover-timer'));
+                                if (!popoverEl.data('popover-active')) {
+                                    popoverEl.data('popover-active', true);
+                                    $(this).popover('show');
+                                }
                             })
                             .mouseout(function(e) {
                                 var popover = $(this);
                                 setTimeout(function() {
                                     handlePopoverMouseout(e, popover);
-                                }, 100);
+                                }, 500);
                             });
                     });
                 </script>
