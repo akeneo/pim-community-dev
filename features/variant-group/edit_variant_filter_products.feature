@@ -41,6 +41,7 @@ Feature: Edit a variant group adding/removing products
       | POSTIT | Postit     | color, size |
     And I am logged in as "admin"
 
+  @insulated
   Scenario: Successfully display filters on the product datagrid when I edit a variant group
     Given I am on the "MUG" variant page
     Then I should see the filters SKU and Family
@@ -49,6 +50,7 @@ Feature: Edit a variant group adding/removing products
     And I should see products MUG_1, MUG_2 and POSTIT
     And I should not see product MUG_3
 
+  @insulated
   Scenario: Successfully display filters on the product datagrid when I edit a variant group with 2 axes
     Given I am on the "POSTIT" variant page
     Then I should see the filters SKU and Family
@@ -83,7 +85,7 @@ Feature: Edit a variant group adding/removing products
     And I should not see products MUG_2, MUG_3 and POSTIT
 
   @insulated
-  Scenario: Successfully filter by size
+  Scenario: Successfully filter by Size
     Given I am on the "POSTIT" variant page
     When I make visible the filter "Size"
     And I filter by "Size" with value "XL"
