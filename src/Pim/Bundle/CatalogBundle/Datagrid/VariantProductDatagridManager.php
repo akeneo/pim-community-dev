@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
@@ -296,6 +298,7 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         return array(
             'data_in'     => $dataIn,
             'data_not_in' => $dataNotIn,
+            'scopeCode'   => $this->flexibleManager->getScope()
         );
     }
 
@@ -327,5 +330,10 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         }
 
         return $this->variantGroup;
+    }
+
+    public function setFlexibleManager(FlexibleManager $flexibleManager)
+    {
+        $this->flexibleManager = $flexibleManager;
     }
 }
