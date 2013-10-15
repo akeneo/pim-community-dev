@@ -27,7 +27,7 @@ abstract class AbstractStep extends ControllerStep
      * @param  array  $params
      * @return mixed
      */
-    protected function handleSchemeAction($command, $params = array())
+    protected function handleAjaxAction($command, $params = array())
     {
         $this->runCommand($command, $params);
 

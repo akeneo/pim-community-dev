@@ -11,29 +11,29 @@ class InstallationStep extends AbstractStep
         set_time_limit(600);
 
         switch ($this->getRequest()->query->get('action')) {
-            case 'config':
-                return $this->handleSchemeAction('oro:entity-extend:update-config');
-
             case 'schema':
-                return $this->handleSchemeAction('doctrine:schema:update', array('--force' => true));
+                return $this->handleAjaxAction('doctrine:schema:update', array('--force' => true));
 
             case 'search':
-                return $this->handleSchemeAction('oro:search:create-index');
+                return $this->handleAjaxAction('oro:search:create-index');
 
             case 'navigation':
-                return $this->handleSchemeAction('oro:navigation:init');
+                return $this->handleAjaxAction('oro:navigation:init');
 
             case 'assets':
-                return $this->handleSchemeAction('assets:install', array('target' => './'));
+                return $this->handleAjaxAction('assets:install', array('target' => './'));
 
             case 'assetic':
-                return $this->handleSchemeAction('assetic:dump');
+                return $this->handleAjaxAction('assetic:dump');
 
             case 'assetic-oro':
-                return $this->handleSchemeAction('oro:assetic:dump');
+                return $this->handleAjaxAction('oro:assetic:dump');
 
             case 'translation':
-                return $this->handleSchemeAction('oro:translation:dump');
+                return $this->handleAjaxAction('oro:translation:dump');
+
+            case 'requirejs':
+                return $this->handleAjaxAction('oro:requirejs:build');
         }
 
         return $this->render('OroInstallerBundle:Process/Step:installation.html.twig');

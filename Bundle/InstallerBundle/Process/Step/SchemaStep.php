@@ -12,25 +12,28 @@ class SchemaStep extends AbstractStep
 
         switch ($this->getRequest()->query->get('action')) {
             case 'cache':
-                return $this->handleSchemeAction('cache:clear');
+                return $this->handleAjaxAction('cache:clear');
 
             case 'drop':
-                return $this->handleSchemeAction('doctrine:schema:drop', array('--force' => true, '--full-database' => true));
+                return $this->handleAjaxAction('doctrine:schema:drop', array('--force' => true, '--full-database' => true));
 
             case 'clear':
-                return $this->handleSchemeAction('oro:entity-extend:clear');
+                return $this->handleAjaxAction('oro:entity-extend:clear');
 
             case 'create':
-                return $this->handleSchemeAction('doctrine:schema:create');
+                return $this->handleAjaxAction('doctrine:schema:create');
 
             case 'fixtures':
-                return $this->handleSchemeAction('doctrine:fixtures:load', array('--no-interaction' => true));
+                return $this->handleAjaxAction('doctrine:fixtures:load', array('--no-interaction' => true));
 
             case 'init-config':
-                return $this->handleSchemeAction('oro:entity-config:init');
+                return $this->handleAjaxAction('oro:entity-config:init');
 
             case 'init-extend':
-                return $this->handleSchemeAction('oro:entity-extend:init');
+                return $this->handleAjaxAction('oro:entity-extend:init');
+
+            case 'update-config':
+                return $this->handleAjaxAction('oro:entity-extend:update-config');
         }
 
         return $this->render('OroInstallerBundle:Process/Step:schema.html.twig');

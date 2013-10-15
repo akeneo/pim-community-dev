@@ -51,11 +51,11 @@ process:
             fixtures:     Load fixtures
             init-config:  Init entities config
             init-extend:  Init extended entities
+            update-config: Update extended entities config
         setup:
             header:       Administration setup
         installation:
             header:       Installation
-            config:       Update entity config
             schema:       Schema update
             search:       Create search index
             navigation:   Init navigation
@@ -63,6 +63,7 @@ process:
             assetic:      Dump assetic
             assetic-oro:  Dump Oro assetic
             translation:  Prepare translations
+            requirejs:    Optimize RequireJS resources
             cache:        Clear cache
         final:
             header:       Finish

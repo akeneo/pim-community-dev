@@ -31,7 +31,6 @@ class SetupStep extends AbstractStep
         if ($form->isValid()) {
             // load demo fixtures
             if ($form->has('loadFixtures') && $form->get('loadFixtures')->getData()) {
-                $em     = $this->getDoctrine()->getManager();
                 $loader = new ContainerAwareLoader($this->container);
 
                 foreach ($this->get('kernel')->getBundles() as $bundle) {
@@ -40,7 +39,7 @@ class SetupStep extends AbstractStep
                     }
                 }
 
-                $executor = new ORMExecutor($em);
+                $executor = new ORMExecutor($this->getDoctrine()->getManager());
 
                 $executor->execute($loader->getFixtures(), true);
             }

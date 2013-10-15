@@ -1,7 +1,7 @@
 {% extends 'OroInstallerBundle::layout.html.twig' %}
 {% use 'OroInstallerBundle::progress.html.twig' %}
 
-{% set step, steps = 'administration', ['config', 'schema', 'search', 'navigation', 'assets', 'assetic', 'assetic-oro', 'translation'] %}
+{% set step, steps = 'administration', ['schema', 'search', 'navigation', 'assets', 'assetic', 'assetic-oro', 'translation', 'requirejs'] %}
 
 {% block title %}{{ 'process.step.installation.header'|trans }} - {{ parent() }}{% endblock %}
 
