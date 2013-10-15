@@ -105,7 +105,7 @@
     {% endif %}
 {% endmacro %}
 
-{% macro accordion(items = {}, counter = 1) %}
+{% macro accordion(items = {}, counter = 1, no_buffer = false) %}
     <div class="accordion">
         {% for title, content in items %}
             <div class="accordion-group">
@@ -116,7 +116,7 @@
                     </a>
                 </div>
                 <div id="collapse-{{ counter }}-{{ loop.index }}" class="accordion-body in">
-                    <div class="accordion-inner">
+                    <div class="accordion-inner{{ no_buffer ? '-unbuffered' : '' }}">
                         {{ content|raw }}
                     </div>
                 </div>

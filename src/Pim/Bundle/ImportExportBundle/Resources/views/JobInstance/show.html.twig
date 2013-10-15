@@ -10,7 +10,7 @@
     <tbody>
         {% for field, value in config %}
         <tr>
-            <td>{{ ('oro_batch.' ~ title ~ '.' ~ field ~ '.label')|trans }}</td>
+            <td><b>{{ ('oro_batch.' ~ title ~ '.' ~ field ~ '.label')|trans }}</b></td>
             <td>{{ value|normalizeValue }} {{ getViolations(violations, stepIndex, stepType, field) }}</td>
         </tr>
         {% else %}
@@ -81,6 +81,6 @@
         {% set accordionContent = accordionContent|merge({ (heading): content }) %}
     {% endfor %}
 
-    {{ elements.accordion(accordionContent) }}
+    {{ elements.accordion(accordionContent, 1, true) }}
 
 {% endblock %}
