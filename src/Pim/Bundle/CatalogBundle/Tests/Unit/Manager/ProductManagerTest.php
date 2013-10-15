@@ -383,13 +383,13 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
     }
-    
+
     protected function getCompletenessCalculatorMock()
     {
         return $this
             ->getMockBuilder('Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator')
             ->disableOriginalConstructor()
             ->getMock();
-                
+
     }
 }
