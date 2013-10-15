@@ -249,7 +249,7 @@ class ItemStep extends AbstractStep
      */
     private function handleStepExecutionWarning(StepExecution $stepExecution, $class, InvalidItemException $e)
     {
-        $stepExecution->addError($class, $e->getMessage(), $e->getItem());
+        $stepExecution->addWarning($class, $e->getMessage(), $e->getItem());
         $this->dispatchInvalidItemEvent($class, $e->getMessage(), $e->getItem());
     }
 }

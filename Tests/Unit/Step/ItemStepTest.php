@@ -193,7 +193,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $this->itemStep->setWriter($writer);
 
         $stepExecution->expects($this->once())
-            ->method('addError')
+            ->method('addWarning')
             ->with(
                 get_class($reader),
                 'The read item is invalid',
@@ -251,7 +251,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $this->itemStep->setWriter($writer);
 
         $stepExecution->expects($this->once())
-            ->method('addError')
+            ->method('addWarning')
             ->with(
                 get_class($processor),
                 'The processed item is invalid',
@@ -312,7 +312,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $this->itemStep->setWriter($writer);
 
         $stepExecution->expects($this->once())
-            ->method('addError')
+            ->method('addWarning')
             ->with(
                 get_class($writer),
                 'The written item is invalid',
