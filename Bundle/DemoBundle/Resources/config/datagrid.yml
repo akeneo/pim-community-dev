@@ -1,5 +1,8 @@
 datagrid:
     contactGroup:
+        pager:
+            enabled: false
+
         source:
             type: orm
             query:
