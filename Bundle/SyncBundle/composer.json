@@ -9,7 +9,8 @@
         "php": ">=5.3.3",
         "symfony/symfony": "2.3.*",
         "jdare/clank-bundle": "dev-master",
-        "oro/platform-bundle": "dev-master"
+        "oro/platform-bundle": "dev-master",
+        "oro/requirejs-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\SyncBundle": "" }

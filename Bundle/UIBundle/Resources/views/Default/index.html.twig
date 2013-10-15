@@ -12,17 +12,13 @@
             {% endblock %}
 
             {% block script %}
-                {% include 'OroUIBundle:Default:require.js.config.html.twig' %}
-                {% placeholder requirejs_config_extend %}
-                <script type="text/javascript" src="{{ asset('bundles/oroui/lib/require.js') }}"></script>
-                <script type="text/javascript">
-                    require(['oro/init-layout', 'oro/init-user', 'oro/widget-manager', 'jquery.uniform']);
-                </script>
-
                 {% block scripts_before %}
                     {% placeholder scripts_before %}
                 {% endblock %}
-
+                {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: not app.debug} %}
+                <script type="text/javascript">
+                    require(['oro/init-layout', 'oro/init-user', 'oro/widget-manager', 'jquery.uniform']);
+                </script>
                 {% if app.debug %}
                     <script type="text/javascript">
                         require(['routing'], function() { require(['{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}']); });

@@ -104,7 +104,7 @@ class Page
     {
         $this->test->waitUntil(
             function ($testCase) {
-                $status = $testCase->execute(array('script' => 'return jQuery.active == 0', 'args' => array()));
+                $status = $testCase->execute(array('script' => 'return !jQuery.isActive()', 'args' => array()));
                 if ($status) {
                     return true;
                 } else {
