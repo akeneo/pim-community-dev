@@ -63,7 +63,7 @@ class DatagridRouteRegistryTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $routeCollection->expects($this->any())
             ->method('getResources')
-            ->will($this->returnValue(NULL));
+            ->will($this->returnValue(null));
 
         $routingContext = $this->getMockBuilder('Symfony\Component\Routing\RequestContext')
             ->getMock();
@@ -99,11 +99,10 @@ class DatagridRouteRegistryTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue($input));
         }
 
-        $registry = new DatagridRouteRegistry($router, $builder, $this->cacheDir, FALSE);
+        $registry = new DatagridRouteRegistry($router, $builder, $this->cacheDir, false);
         $this->assertEquals($expected, $registry->getRegexps());
 
         //Call a second time to ensure data is cached
         $this->assertEquals($expected, $registry->getRegexps());
     }
-
 }
