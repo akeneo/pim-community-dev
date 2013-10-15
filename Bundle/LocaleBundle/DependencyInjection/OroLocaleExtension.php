@@ -8,13 +8,10 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Intl\Intl;
 
-/**
- * This is the class that loads and manages your bundle configuration
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
- */
 class OroLocaleExtension extends Extension
 {
+    const DEFAULT_COUNTRY = 'US';
+
     /**
      * {@inheritDoc}
      */
@@ -23,12 +20,14 @@ class OroLocaleExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $config['settings']['locale']['value'] = $this->getDisplayLocale(
-            $this->getFinalizedParameter($config['settings']['locale']['value'], $container)
-        );
-        $config['settings']['language']['value'] = $this->getDisplayLanguage(
-            $this->getFinalizedParameter($config['settings']['language']['value'], $container)
-        );
+        $locale = $this->getFinalizedParameter($config['settings']['locale']['value'], $container);
+        $config['settings']['locale']['value'] = $this->getDefaultLocale($locale);
+        if (empty($config['settings']['language']['value'])) {
+            $config['settings']['language']['value'] = $this->getDefaultLanguageByLocale($locale);
+        }
+        if (empty($config['settings']['country']['value'])) {
+            $config['settings']['country']['value'] = $this->getDefaultCountryByLocale($locale);
+        }
         $container->prependExtensionConfig('oro_locale', $config);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -41,7 +40,7 @@ class OroLocaleExtension extends Extension
      * @param string $locale
      * @return string
      */
-    protected function getDisplayLanguage($locale)
+    protected function getDefaultLanguageByLocale($locale)
     {
         $displayLocaleParts = \Locale::parseLocale($locale);
         $language = $displayLocaleParts[\Locale::LANG_TAG];
@@ -62,7 +61,7 @@ class OroLocaleExtension extends Extension
      * @param string $locale
      * @return string
      */
-    protected function getDisplayLocale($locale)
+    protected function getDefaultLocale($locale)
     {
         $displayLocaleParts = \Locale::parseLocale($locale);
         $displayPartKeys = array('language', 'script', 'region');
@@ -73,6 +72,22 @@ class OroLocaleExtension extends Extension
             }
         }
         return implode('_', $displayLocaleData);
+    }
+
+    /**
+     * Get country name based on locale.
+     *
+     * @param string $locale
+     * @return string
+     */
+    protected function getDefaultCountryByLocale($locale)
+    {
+        $region = \Locale::getRegion($locale);
+        $countries = Intl::getRegionBundle()->getCountryNames();
+        if (array_key_exists($region, $countries)) {
+            return $region;
+        }
+        return static::DEFAULT_COUNTRY;
     }
 
     /**

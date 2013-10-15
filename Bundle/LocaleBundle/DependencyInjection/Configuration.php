@@ -69,12 +69,12 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append(
             $rootNode,
             array(
-                'language' => array('value' => '%locale%'),
+                'language' => array('value' => null),
                 'locale' => array('value' => '%locale%'),
+                'country' => array('value' => null),
                 'timezone' => array('value' => $date->getTimezone()->getName()),
                 'default_currency' => array('value' => 'USD'),
-                'name_format' => array('value' => '%%first%% %%last%%'),
-                'address_format' => array('value' => '%%first%% %%last%%'),
+                'name_format' => array('value' => '%%first%% %%last%%')
             )
         );
 

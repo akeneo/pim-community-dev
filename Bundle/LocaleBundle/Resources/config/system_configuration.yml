@@ -13,7 +13,7 @@ oro_system_configuration:
     fields:
         oro_locale.language:
             type: language
-            priority: 60
+            priority: 70
             options:
                 label: 'Language'
                 required: true
@@ -22,7 +22,7 @@ oro_system_configuration:
 
         oro_locale.locale:
             type: locale
-            priority: 50
+            priority: 60
             options:
                 label: 'Locale'
                 required: true
@@ -31,12 +31,21 @@ oro_system_configuration:
 
         oro_locale.timezone:
             type: timezone
-            priority: 40
+            priority: 50
             options:
                 label: 'Timezone'
                 required: true
                 constraints:
                     - NotBlank: ~
+
+        oro_locale.country:
+              type: country
+              priority: 40
+              options:
+                  label: 'Country'
+                  required: true
+                  constraints:
+                      - NotBlank: ~
 
         oro_locale.default_currency:
             type: currency
@@ -57,15 +66,6 @@ oro_system_configuration:
                 constraints:
                     - NotBlank: ~
 
-        oro_locale.address_format:
-            type: textarea
-            priority: 10
-            options:
-                label: 'Address format'
-                required: true
-                constraints:
-                    - NotBlank: ~
-
     tree:
         system_configuration:
             platform:
@@ -80,10 +80,10 @@ oro_system_configuration:
                                         children:
                                             - oro_locale.language
                                             - oro_locale.locale
+                                            - oro_locale.country
                                             - oro_locale.default_currency
                                             - oro_locale.timezone
                                     locale_options:
                                         priority: 50
                                         children:
                                             - oro_locale.name_format
-                                            - oro_locale.address_format
