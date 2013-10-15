@@ -11,10 +11,10 @@ use Oro\Bundle\GridBundle\Action\DeleteAction;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductDeleteAction extends DeleteAction implements ActionInterface
+class ProductDeleteAction extends DeleteAction
 {
     /**
      * @var string
      */
-    protected $type = self::TYPE_PRODUCT_DELETE;
+    protected $type = ActionInterface::TYPE_PRODUCT_DELETE;
 }
