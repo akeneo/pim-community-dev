@@ -92,6 +92,9 @@
                             'attr': { 'class': 'jstree-unclassified', 'id': 'node_0' },
                             'data': { 'title': _.__('jstree.unclassified') }
                         }, null, true);
+                        if ('0' === selectedNode) {
+                            $el.jstree('select_node', '#node_0');
+                        }
                     });
                 }).on('select_node.jstree', function () {
                     function getNodeId(node) {

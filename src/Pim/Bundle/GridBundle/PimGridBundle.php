@@ -3,6 +3,7 @@
 namespace Pim\Bundle\GridBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Override OroGridBundle
@@ -19,5 +20,13 @@ class PimGridBundle extends Bundle
     public function getParent()
     {
         return 'OroGridBundle';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new DependencyInjection\Compiler\DatagridRoutesPass);
     }
 }

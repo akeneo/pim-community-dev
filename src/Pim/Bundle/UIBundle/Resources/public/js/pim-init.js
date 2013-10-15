@@ -9,6 +9,7 @@ define(
                 return
             }
             initialized = true;
+            
             function pageInit() {
                 // Place code that we need to run on every page load here
 
@@ -153,6 +154,7 @@ define(
                     $(this).hide();
                 });
             }
+            
             $(function(){
                 if ($.isPlainObject($.uniform)) {
                     $.uniform.restore();

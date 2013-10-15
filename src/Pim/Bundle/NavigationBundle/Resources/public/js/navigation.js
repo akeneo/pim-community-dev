@@ -5,15 +5,22 @@
  * @returns {unresolved}
  */
 define(
-    ['oro/navigation-orig', 'oro/app', 'oro/messenger'],
-    function(OroNavigation, app, messenger) {
+    ['oro/navigation-orig', 'oro/app', 'oro/messenger', 'underscore'],
+    function(OroNavigation, app, messenger, _) {
 
-        var GRID_URL_REGEX = /enrich\/product\/(\?.*)?$/,
-            QUERY_STRING_REGEX = /^[^\?]+\??/,
+        var QUERY_STRING_REGEX = /^[^\?]+\??/,
+            URL_PATH_REGEX = /\?.+/,
             flashMessages = [],
             parent = OroNavigation.prototype,
             instance,
             Navigation = OroNavigation.extend({
+                /**
+                 * @inheritdoc
+                 */
+                initialize: function (options) {
+                    this.gridRegexps = options.gridRegexps;
+                    parent.initialize.call(this, options);
+                },
                 /**
                  * @inheritdoc
                  */
@@ -24,11 +31,18 @@ define(
                     if (!this.url) {
                         this.url = window.location.href.replace(this.baseUrl, '');
                     }
-                    if (this.url.match(GRID_URL_REGEX)) {
+                    var gridName = (function(url, gridRegexps) {
+                        return _.reduce(gridRegexps, function(memo, regexp, gridName) {
+                            return regexp.test(url) ? gridName : memo;
+                        }, null)
+                    })(this.url.replace(URL_PATH_REGEX, ''), this.gridRegexps)
+                    if (gridName) {
                         var qs = this.url.replace(QUERY_STRING_REGEX, ''),
-                            args = qs ? app.unpackFromQueryString(qs) : {};
-                        if (!encodedStateData && sessionStorage && sessionStorage.gridURL_products) {
-                            this.encodedStateData = sessionStorage.gridURL_products;
+                            args = qs ? app.unpackFromQueryString(qs) : {},
+                            sessionStorageKey = "gridURL_" + gridName,
+                            storageUrl = sessionStorage ? sessionStorage.getItem(sessionStorageKey) : null;
+                        if (!encodedStateData && storageUrl) {
+                            this.encodedStateData = storageUrl;
                             this.skipAjaxCall = false;
                         } else if (!this.encodedStateData) {
                             this.encodedStateData = "";
@@ -36,7 +50,7 @@ define(
                         if (args.dataLocale) {
                             this.encodedStateData += (this.encodedStateData ? '&' : '') +
                                     'dataLocale=' + args.dataLocale;
-                            sessionStorage.gridURL_products = this.encodedStateData;
+                            sessionStorage.setItem(sessionStorageKey, this.encodedStateData);
                             this.skipAjaxCall = false;
                         }
                         if (!this.skipAjaxCall) {
