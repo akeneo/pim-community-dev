@@ -31,6 +31,21 @@ class JsFormValidationTwigExtension extends APYJsFormValidationTwigExtension
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getFunctions()
+    {
+        $functions = parent::getFunctions();
+        $functions['JSFV'] = new \Twig_Function_Method(
+            $this,
+            'jsFormValidationFunction',
+            array('is_safe' => array('all'))
+        );
+
+        return $functions;
+    }
+
+    /**
      * Retrieves validation javascript as an inline script
      *
      * @param FormView $formView
@@ -38,7 +53,7 @@ class JsFormValidationTwigExtension extends APYJsFormValidationTwigExtension
      *
      * @return string
      */
-    public function JsFormValidationFunction(FormView $formView, $getPlainScript = false)
+    public function jsFormValidationFunction(FormView $formView, $getPlainScript = false)
     {
         if ($this->container->getParameter('apy_js_form_validation.enabled')) {
             // Generate the script
