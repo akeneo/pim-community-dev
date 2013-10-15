@@ -23,11 +23,17 @@ class ConfigSubscriber implements EventSubscriberInterface
     protected $extendConfigProvider;
 
     /**
-     * @param ConfigProvider $extendConfigProvider
+     * @var  ExtendManager
      */
-    public function __construct(ConfigProvider $extendConfigProvider)
+    protected $extendManager;
+
+    /**
+     * @param ExtendManager $extendManager
+     */
+    public function __construct(ExtendManager $extendManager)
     {
-        $this->extendConfigProvider = $extendConfigProvider;
+        $this->extendConfigProvider = $extendManager->getConfigProvider();
+        $this->extendManager        = $extendManager;
     }
 
     /**
@@ -130,6 +136,13 @@ class ConfigSubscriber implements EventSubscriberInterface
         if ($entityConfig->is('upgradeable', false)) {
             $entityConfig->set('upgradeable', true);
             $configProvider->persist($entityConfig);
+        }
+
+        $fieldConfig = $configProvider->getConfig($event->getClassName(), $event->getFieldName());
+        if (in_array($event->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))
+            && $fieldConfig->is('is_inverse', false)
+        ) {
+            //$this->extendManager->createField();
         }
     }
 }

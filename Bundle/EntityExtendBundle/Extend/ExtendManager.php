@@ -100,4 +100,9 @@ class ExtendManager
         $entityFieldConfig = $configManager->getProvider('entity')->getConfig($entityName, 'id');
         $entityFieldConfig->set('label', 'Id');
     }
+
+    public function createRelation()
+    {
+
+    }
 }
