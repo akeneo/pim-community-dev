@@ -26,7 +26,7 @@ class DatagridRoutesPass implements CompilerPassInterface
         $tags = $container->findTaggedServiceIds(self::TAG_NAME);
         $registryService = $container->getDefinition(self::REGISTRY_SERVICE);
 
-        foreach ($tags as $id => $tag) {
+        foreach ($tags as $tag) {
             if (isset($tag[0]['datagrid_name']) && isset($tag[0]['route_name'])) {
                 $registryService->addMethodCall('addRoute', array($tag[0]['datagrid_name'], $tag[0]['route_name']));
             }
