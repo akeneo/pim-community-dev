@@ -30,14 +30,20 @@ class FormatterExtension extends AbstractExtension
      */
     public function isApplicable(array $config)
     {
-        $applicable = $this->accessor->getValue($config, self::COLUMNS_PATH)
-            || $this->accessor->getValue($config, self::PROPERTIES_PATH);
-
-        // validate extension configuration
         $columns    = $this->accessor->getValue($config, self::COLUMNS_PATH) ? : array();
         $properties = $this->accessor->getValue($config, self::PROPERTIES_PATH) ? : array();
+        $applicable = $columns || $properties;
+
+        $columnTypes = array();
+        foreach ($columns as $column) {
+            if (isset($column['type'])) {
+                $columnTypes[] = $column['type'];
+            }
+        }
+
+        // validate extension configuration
         $this->validateConfiguration(
-            new Configuration(array_merge(array_keys($this->properties), array_keys($columns))),
+            new Configuration(array_merge(array_keys($this->properties), $columnTypes)),
             array(
                 'columns_and_properties' => array_merge($columns, $properties)
             )
