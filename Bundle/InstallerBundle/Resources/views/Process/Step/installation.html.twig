@@ -47,7 +47,7 @@
     <script type="text/javascript">
         $(function() {
             ajaxQueue(
-                [{% for step in steps %}ajaxCall('{{ step}}'){{ loop.last ? '' : ', ' }}{% endfor %}],
+                [{% for step in steps %}'{{ step}}'{{ loop.last ? '' : ', ' }}{% endfor %}],
                 '{{ path('sylius_flow_forward', { scenarioAlias: 'oro_installer', stepName: 'installation' }) }}'
             );
         });

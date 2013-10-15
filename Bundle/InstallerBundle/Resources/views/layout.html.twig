@@ -25,40 +25,31 @@
 
         });
 
-        function ajaxQueue(callbacks, url) {
-            $.when(callbacks).done(function(a) {
-                var result = true;
+        /*! jQuery Ajax Queue v0.1.2pre | (c) 2013 Corey Frang | Licensed MIT */
+        (function(a){var b=a({});a.ajaxQueue=function(c){function g(b){d=a.ajax(c).done(e.resolve).fail(e.reject).then(b,b)}var d,e=a.Deferred(),f=e.promise();b.queue(g),f.abort=function(h){if(d)return d.abort(h);var i=b.queue(),j=a.inArray(g,i);j>-1&&i.splice(j,1),e.rejectWith(c.context||c,[f,h,""]);return f};return f}})(jQuery);
 
-                $.each(a, function() {
-                    try {
-                        data = $.parseJSON(this.responseText);
-                    } catch (e) {
-                        data = null;
+        function ajaxQueue(actions, url) {
+            var finRes = true;
+
+            $.each(actions, function(i) {
+                var stepCon = $('#step-' + this);
+
+                stepCon.closest('tr').find('td:last').text('{{ 'wait'|trans }}');
+
+                $.ajaxQueue({
+                    url: '?action=' + this,
+                }).done(function(data) {
+                    var curRes = typeof data.result != 'undefined' && data.result;
+                        finRes = finRes || curRes;
+
+                    stepCon
+                        .addClass('icon-' + (curRes ? 'yes' : 'no'))
+                        .closest('tr').find('td:last').text('{{ 'passed'|trans }}');
+
+                    if (i == actions.length - 1 && finRes) {
+                        $('a.primary').removeClass('disabled').attr('href', url);
                     }
-//console.log(typeof data.result != 'undefined' && data.result);
-//console.log(result || (typeof data.result != 'undefined' && data.result));
-                    result = result || (typeof data.result != 'undefined' && data.result);
                 });
-
-                if (result) {
-                    $('a.primary').removeClass('disabled').attr('href', url);
-                }
-            });
-        }
-
-        function ajaxCall(step) {
-            var stepCon = $('#step-' + step);
-
-            stepCon.closest('tr').find('td:last').text('{{ 'wait'|trans }}');
-
-            return $.ajax({
-                async: false,
-                url: '?action=' + step
-            })
-            .done(function (data) {
-                stepCon
-                    .addClass('icon-' + (data.result ? 'yes' : 'no'))
-                    .closest('tr').find('td:last').text('{{ 'passed'|trans }}');
             });
         }
     </script>

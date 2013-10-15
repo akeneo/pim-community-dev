@@ -34,9 +34,6 @@ class InstallationStep extends AbstractStep
 
             case 'translation':
                 return $this->handleSchemeAction('oro:translation:dump');
-
-            case 'cache':
-                return $this->handleSchemeAction('cache:clear', array('--no-warmup' => true));
         }
 
         return $this->render('OroInstallerBundle:Process/Step:installation.html.twig');

@@ -42,6 +42,9 @@ class SetupStep extends AbstractStep
 
                 $executor = new ORMExecutor($em);
 
+                foreach ($loader->getFixtures() as $f) {
+                        echo get_class($f) . '<br>';
+                }
                 $executor->execute($loader->getFixtures(), true);
             }
 

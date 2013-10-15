@@ -19,12 +19,12 @@
 </div>
 {% endblock %}
 
-{#% block javascript %}
+{% block javascript %}
     {{ parent() }}
 
     <script type="text/javascript">
         $(function() {
-            $.get('{{ path('sylius_flow_display', { scenarioAlias: 'oro_installer', stepName: 'installation' }) }}?action=cache');
+            $.get('{{ path('sylius_flow_display', { scenarioAlias: 'oro_installer', stepName: 'schema' }) }}?action=cache');
         });
     </script>
-{% endblock javascript %#}
+{% endblock javascript %}
