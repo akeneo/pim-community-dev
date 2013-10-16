@@ -4,6 +4,7 @@ namespace Oro\Bundle\ImportExportBundle\Reader;
 
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
@@ -79,8 +80,7 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
 
             if ($this->firstLineIsHeader) {
                 if (count($this->header) !== count($data)) {
-                    $this->stepExecution->addReaderWarning(
-                        $this,
+                    throw new InvalidItemException(
                         sprintf(
                             'Expecting to get %d columns, actually got %d',
                             count($this->header),
@@ -88,8 +88,6 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
                         ),
                         $data
                     );
-
-                    return false;
                 }
 
                 $data = array_combine($this->header, $data);

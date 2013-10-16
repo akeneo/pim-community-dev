@@ -171,15 +171,16 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
+     * @expectedExceptionMessage Expecting to get 3 columns, actually got 2
+     */
     public function testReadError()
     {
         $context = $this->getContextWithOptionsMock(array('filePath' => __DIR__ . '/fixtures/import_incorrect.csv'));
         $stepExecution = $this->getMockStepExecution($context);
-        $stepExecution->expects($this->once())
-            ->method('addReaderWarning')
-            ->with($this->reader, 'Expecting to get 3 columns, actually got 2');
         $this->reader->setStepExecution($stepExecution);
-        $this->reader->read($stepExecution);
+        $this->reader->read();
     }
 
     /**
