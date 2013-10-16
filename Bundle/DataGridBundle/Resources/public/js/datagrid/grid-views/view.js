@@ -1,6 +1,6 @@
 /* global define */
-define(['backbone', 'underscore', 'oro/translations', 'oro/datagrid/grid-views/collection', 'oro/datagrid/grid-views/collection'],
-function (Backbone, _, __, GridViewsCollection, GridViewsModel) {
+define(['backbone', 'underscore', 'oro/translator', 'oro/datagrid/grid-views/collection'],
+function (Backbone, _, __, GridViewsCollection) {
     'use strict';
 
     /**
@@ -72,7 +72,7 @@ function (Backbone, _, __, GridViewsCollection, GridViewsModel) {
         },
 
         /**
-         * Disable page size
+         * Disable view selector
          *
          * @return {*}
          */
@@ -84,7 +84,7 @@ function (Backbone, _, __, GridViewsCollection, GridViewsModel) {
         },
 
         /**
-         * Enable page size
+         * Enable view selector
          *
          * @return {*}
          */
