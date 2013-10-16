@@ -2,13 +2,14 @@
 
 namespace Oro\Bundle\LocaleBundle\DependencyInjection;
 
-use Oro\Bundle\LocaleBundle\Provider\LocaleSettingsProvider;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Intl\Intl;
+
+use Oro\Bundle\LocaleBundle\Provider\LocaleSettingsProvider;
 
 class OroLocaleExtension extends Extension
 {
@@ -21,7 +22,7 @@ class OroLocaleExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $configs = $this->processNameAndAddressFormatConfiguration($configs, $container);
-        
+
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
@@ -47,7 +48,7 @@ class OroLocaleExtension extends Extension
      */
     protected function prepareSettings(array $config, ContainerBuilder $container)
     {
-        $locale = $this->getDefaultLocale(
+        $locale = LocaleSettingsProvider::getValidLocale(
             $this->getFinalizedParameter($config['settings']['locale']['value'], $container)
         );
         $config['settings']['locale']['value'] = $locale;
@@ -55,51 +56,9 @@ class OroLocaleExtension extends Extension
             $config['settings']['language']['value'] = $locale;
         }
         if (empty($config['settings']['country']['value'])) {
-            $config['settings']['country']['value'] = $this->getDefaultCountryByLocale($locale);
+            $config['settings']['country']['value'] = LocaleSettingsProvider::getCountryByLocale($locale);
         }
         $container->prependExtensionConfig('oro_locale', $config);
-    }
-
-    /**
-     * Get locale default value.
-     *
-     * @param string $locale
-     * @return string
-     */
-    protected function getDefaultLocale($locale)
-    {
-        if ($locale) {
-            $displayLocaleParts = \Locale::parseLocale($locale);
-            $displayPartKeys = array(\Locale::LANG_TAG, \Locale::SCRIPT_TAG, \Locale::REGION_TAG);
-            $displayLocaleData = array();
-            foreach ($displayPartKeys as $localePartKey) {
-                if (isset($displayLocaleParts[$localePartKey])) {
-                    $displayLocaleData[] = $displayLocaleParts[$localePartKey];
-                }
-            }
-            if ($displayLocaleData) {
-                return implode('_', $displayLocaleData);
-            }
-        }
-
-        return LocaleSettingsProvider::DEFAULT_LOCALE;
-    }
-
-    /**
-     * Get country name based on locale.
-     *
-     * @param string $locale
-     * @return string
-     */
-    protected function getDefaultCountryByLocale($locale)
-    {
-        $region = \Locale::getRegion($locale);
-        $countries = Intl::getRegionBundle()->getCountryNames();
-        if (array_key_exists($region, $countries)) {
-            return $region;
-        }
-
-        return LocaleSettingsProvider::DEFAULT_COUNTRY;
     }
 
     /**

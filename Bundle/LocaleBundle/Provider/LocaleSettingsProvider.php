@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\LocaleBundle\Provider;
 
+use Symfony\Component\Intl\Intl;
+
 class LocaleSettingsProvider
 {
     const ADDRESS_FORMAT = 'format';
@@ -83,5 +85,46 @@ class LocaleSettingsProvider
         } else {
             return $this->nameFormats[self::DEFAULT_LOCALE];
         }
+    }
+
+    /**
+     * Try to parse locale and return it in format "language"_"script"_"region",
+     * if locale is empty or cannot be parsed then return locale
+     *
+     * @param string $locale
+     * @return string
+     */
+    public static function getValidLocale($locale = null)
+    {
+        $result = LocaleSettingsProvider::DEFAULT_LOCALE;
+
+        if ($result !== $locale) {
+            $localeParts = \Locale::parseLocale($locale);
+            $localeKeys = array(\Locale::LANG_TAG, \Locale::SCRIPT_TAG, \Locale::REGION_TAG);
+            $localeParts = array_intersect_key($localeParts, array_flip($localeKeys));
+
+            if ($localeParts) {
+                $result = implode('_', $localeParts);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get country by locale if country is supported, otherwise return default country (US)
+     *
+     * @param string $locale
+     * @return string
+     */
+    public static function getCountryByLocale($locale)
+    {
+        $region = \Locale::getRegion($locale);
+        $countries = Intl::getRegionBundle()->getCountryNames();
+        if (array_key_exists($region, $countries)) {
+            return $region;
+        }
+
+        return LocaleSettingsProvider::DEFAULT_COUNTRY;
     }
 }
