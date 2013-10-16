@@ -23,6 +23,7 @@ use Oro\Bundle\SecurityBundle\Acl\Cache\OidAncestorsCacheCache;
 
 /**
  * This is a copy of Symfony\Component\Security\Acl\Dbal\AclProvider class
+ * We had to make a copy of this class, because in original class was a mistake of cache usage.
  *
  * @SuppressWarnings(PHPMD)
  */

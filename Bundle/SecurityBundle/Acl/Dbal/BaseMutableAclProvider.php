@@ -20,7 +20,8 @@ use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 use Oro\Bundle\SecurityBundle\Acl\Cache\OidAncestorsCache;
 
 /**
- * This is a copy of Symfony\Component\Security\Acl\Dbal\MutableAclProvider class
+ * This is a copy of Symfony\Component\Security\Acl\Dbal\MutableAclProvider class.
+ * We had to make a copy of this class, because in the parent AclProvider class was a mistake of cache usage.
  *
  * @SuppressWarnings(PHPMD)
  */
