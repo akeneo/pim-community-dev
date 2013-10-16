@@ -7,6 +7,7 @@ parameters:
     pim_catalog.datagrid.manager.variant_group_datagrid.class:   Pim\Bundle\CatalogBundle\Datagrid\VariantGroupDatagridManager
     pim_catalog.datagrid.manager.variant_product_datagrid.class: Pim\Bundle\CatalogBundle\Datagrid\VariantProductDatagridManager
     pim_catalog.datagrid.manager.group_datagrid.class:           Pim\Bundle\CatalogBundle\Datagrid\GroupDatagridManager
+    pim_catalog.datagrid.manager.group_product_datagrid.class:   Pim\Bundle\CatalogBundle\Datagrid\GroupProductDatagridManager
     pim_catalog.datagrid.worker.class:                           Pim\Bundle\CatalogBundle\Datagrid\DatagridWorker
 
 services:
@@ -104,6 +105,16 @@ services:
         calls:
             - [ setIdentifierField, ['id'] ]
             - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
+
+    pim_catalog.datagrid.manager.group_product:
+        class: %pim_catalog.datagrid.manager.group_product_datagrid.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: group_products
+              entity_name: %pim_catalog.entity.product.class%
+              entity_hint: product
+              flexible: true
+              route_name: pim_catalog_group_edit
 
     pim_catalog.datagrid.worker:
         class: %pim_catalog.datagrid.worker.class%
