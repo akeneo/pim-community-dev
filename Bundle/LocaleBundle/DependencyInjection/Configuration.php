@@ -48,7 +48,7 @@ class Configuration implements ConfigurationInterface
                                 ->cannotBeEmpty()
                                 ->defaultValue('postal')
                             ->end()
-                            ->scalarNode('state_name_type')
+                            ->scalarNode('region_name_type')
                                 ->cannotBeEmpty()
                                 ->defaultValue('province')
                             ->end()

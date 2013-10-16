@@ -4,7 +4,6 @@ namespace Oro\Bundle\LocaleBundle\Provider;
 
 class LocaleSettingsProvider
 {
-    const NAME_FORMAT_FULL = 'full';
     const ADDRESS_FORMAT = 'format';
     const DEFAULT_LOCALE = 'en';
     const DEFAULT_COUNTRY = 'US';
@@ -34,10 +33,13 @@ class LocaleSettingsProvider
      * - %organization% / %ORGANIZATION%
      * - %street%       / %STREET%
      * - %city%         / %CITY%
-     * - %state%        / %STATE%
+     * - %region%       / %REGION%
+     * - %region_code%  / %REGION_CODE%
      * - %country%      / %COUNTRY%
+     * - %country_iso2% / %COUNTRY_ISO2%
+     * - %country_iso3% / %COUNTRY_ISO3%
      *
-     * Format:
+     * Array format:
      * array(
      *     '<countryCode>' => array(
      *          'format' => '<formatString>',
