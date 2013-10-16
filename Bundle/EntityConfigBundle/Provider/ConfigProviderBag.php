@@ -24,11 +24,6 @@ class ConfigProviderBag
         return $this->providers;
     }
 
-    public function testAction()
-    {
-        return array('hi', 'haha');
-    }
-
     /**
      * @param ConfigProvider $provider
      * @return $this

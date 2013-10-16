@@ -16,9 +16,6 @@ config:
         'moment':
             exports:
                 - 'moment'
-    map:
-        'backbone/pageable-collection':
-            'backbone/../../../../UIBundle/Resources/public/lib/underscore': 'underscore'
     paths:
         'backbone/pageable-collection': 'bundles/orogrid/lib/backbone-pageable.js'
         'backgrid': 'bundles/orogrid/lib/backgrid/backgrid.js'
