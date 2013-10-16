@@ -59,6 +59,30 @@ class Country implements Translatable
     protected $regions;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="currency_code", type="string", length=16, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $currencyCode;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="phone_prefix", type="string", length=16, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $phonePrefix;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="default_locale", type="string", length=16, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $defaultLocale;
+
+    /**
      * @Gedmo\Locale
      */
     protected $locale;
@@ -184,6 +208,63 @@ class Country implements Translatable
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param string $currencyCode
+     * @return Country
+     */
+    public function setCurrencyCode($currencyCode)
+    {
+        $this->currencyCode = $currencyCode;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrencyCode()
+    {
+        return $this->currencyCode;
+    }
+
+    /**
+     * @param string $defaultLocale
+     * @return Country
+     */
+    public function setDefaultLocale($defaultLocale)
+    {
+        $this->defaultLocale = $defaultLocale;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultLocale()
+    {
+        return $this->defaultLocale;
+    }
+
+    /**
+     * @param string $phonePrefix
+     * @return Country
+     */
+    public function setPhonePrefix($phonePrefix)
+    {
+        $this->phonePrefix = $phonePrefix;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhonePrefix()
+    {
+        return $this->phonePrefix;
     }
 
     /**
