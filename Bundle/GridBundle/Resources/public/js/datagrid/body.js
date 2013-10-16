@@ -7,7 +7,6 @@ function(_, Backgrid, Row) {
      * Grid body widget
      *
      * Triggers events:
-     *  - "cellEdited" when one of cell of body row is edited
      *  - "rowClicked" when row of body is clicked
      *
      * @export  oro/datagrid/body
@@ -73,16 +72,12 @@ function(_, Backgrid, Row) {
         },
 
         /**
-         * Listen to events of row, proxies events "cellEdited" and "clicked" to "rowClicked"
+         * Listen to events of row
          *
          * @param {Backgrid.Row} row
          * @private
          */
         _listenToOneRowEvents: function(row) {
-            this.listenTo(row, 'cellEdited', function(row, cell) {
-                this.trigger('cellEdited', row, cell);
-            });
-
             this.listenTo(row, 'clicked', function(row, e) {
                 this.trigger('rowClicked', row, e);
             });

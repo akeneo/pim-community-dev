@@ -66,6 +66,6 @@ class OidAncestorsCache
      */
     protected function getObjectIdentityStringId(ObjectIdentity $oid)
     {
-        return $oid->getIdentifier() . $oid->getType();
+        return 'oid_ancestor_' . $oid->getIdentifier() . $oid->getType();
     }
 }

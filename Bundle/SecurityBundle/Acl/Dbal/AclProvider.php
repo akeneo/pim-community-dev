@@ -23,9 +23,13 @@ use Oro\Bundle\SecurityBundle\Acl\Cache\OidAncestorsCacheCache;
 
 /**
  * This is a copy of Symfony\Component\Security\Acl\Dbal\AclProvider class
+ * In the source file was a bug with Object Identity ancestor caching.
+ * Because of this, we had too many requests to the database in getAncestorIds function on each page.
+ * To get rid of it, has been added extra cash for OId ancestors $oidAncestorCache witch cash this data and
+ * was changed getAncestorIds function implementation.
+ * The bug occurs in case the acl access data for object identity not exists in database
  *
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ * @SuppressWarnings(PHPMD)
  */
 class AclProvider implements AclProviderInterface
 {
@@ -63,7 +67,7 @@ class AclProvider implements AclProviderInterface
         $this->loadedAcls = array();
         $this->options = $options;
         $this->permissionGrantingStrategy = $permissionGrantingStrategy;
-        $this->oidAncestorCacheCache = $oidAncestorCache;
+        $this->oidAncestorCache = $oidAncestorCache;
     }
 
     /**
@@ -236,7 +240,8 @@ class AclProvider implements AclProviderInterface
                 {$this->options['oid_table_name']} o
             INNER JOIN {$this->options['class_table_name']} c ON c.id = o.class_id
             LEFT JOIN {$this->options['entry_table_name']} e ON (
-                e.class_id = o.class_id AND (e.object_identity_id = o.id OR {$this->connection->getDatabasePlatform()->getIsNullExpression('e.object_identity_id')})
+                e.class_id = o.class_id
+                AND (e.object_identity_id = o.id OR {$this->connection->getDatabasePlatform()->getIsNullExpression('e.object_identity_id')})
             )
             LEFT JOIN {$this->options['sid_table_name']} s ON (
                 s.id = e.security_identity_id
@@ -410,11 +415,11 @@ QUERY;
      */
     private function getAncestorIds(array $batch)
     {
-        if ($this->oidAncestorCacheCache) {
+        if ($this->oidAncestorCache) {
             $ancestorIds = array();
 
             foreach ($batch as $oid) {
-                $ancestors = $this->oidAncestorCacheCache->getAncestorsFromCache($oid);
+                $ancestors = $this->oidAncestorCache->getAncestorsFromCache($oid);
                 if ($ancestors !== false) {
                     if (!empty($ancestors)) {
                         $ancestorIds = array_merge($ancestorIds, $ancestors);
@@ -427,7 +432,7 @@ QUERY;
                     foreach ($ancestors as $data) {
                         $ancestorArray[] = $data['ancestor_id'];
                     }
-                    $this->oidAncestorCacheCache->putAncestorsInCache($oid, $ancestorArray);
+                    $this->oidAncestorCache->putAncestorsInCache($oid, $ancestorArray);
                     $ancestorIds = array_merge($ancestorIds, $ancestorArray);
                 }
             }
@@ -615,9 +620,28 @@ QUERY;
                     }
 
                     if (null === $fieldName) {
-                        $loadedAces[$aceId] = new Entry((integer) $aceId, $acl, $sids[$key], $grantingStrategy, (integer) $mask, !!$granting, !!$auditFailure, !!$auditSuccess);
+                        $loadedAces[$aceId] = new Entry(
+                            (integer) $aceId,
+                            $acl,
+                            $sids[$key],
+                            $grantingStrategy,
+                            (integer) $mask,
+                            !!$granting,
+                            !!$auditFailure,
+                            !!$auditSuccess
+                        );
                     } else {
-                        $loadedAces[$aceId] = new FieldEntry((integer) $aceId, $acl, $fieldName, $sids[$key], $grantingStrategy, (integer) $mask, !!$granting, !!$auditFailure, !!$auditSuccess);
+                        $loadedAces[$aceId] = new FieldEntry(
+                            (integer) $aceId,
+                            $acl,
+                            $fieldName,
+                            $sids[$key],
+                            $grantingStrategy,
+                            (integer) $mask,
+                            !!$granting,
+                            !!$auditFailure,
+                            !!$auditSuccess
+                        );
                     }
                 }
                 $ace = $loadedAces[$aceId];

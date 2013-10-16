@@ -2,10 +2,12 @@
 
 namespace Oro\Bundle\LocaleBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
+use Symfony\Component\Intl\Intl;
 
 /**
  * This is the class that validates and merges configuration from your app/config files
@@ -18,19 +20,67 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
+        /** @var ArrayNodeDefinition $rootNode */
+        $rootNode = $treeBuilder
+            ->root('oro_locale')
+            ->children()
+                ->arrayNode('name_format')
+                    ->prototype('scalar')
+                    ->end()
+                ->end()
+                ->arrayNode('address_format')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('format')
+                                ->cannotBeEmpty()
+                                ->defaultValue('%name%\n%organization%\n%street%\n%CITY%\n%COUNTRY%')
+                            ->end()
+                            ->scalarNode('latin_format')
+                                ->cannotBeEmpty()
+                                ->defaultValue('%name%\n%organization%\n%street%\n%CITY%\n%COUNTRY%')
+                            ->end()
+                            ->arrayNode('require')
+                                ->treatNullLike(array())
+                                ->prototype('scalar')->end()
+                                ->defaultValue(array('street', 'city'))
+                            ->end()
+                            ->scalarNode('zip_name_type')
+                                ->cannotBeEmpty()
+                                ->defaultValue('postal')
+                            ->end()
+                            ->scalarNode('region_name_type')
+                                ->cannotBeEmpty()
+                                ->defaultValue('province')
+                            ->end()
+                            ->scalarNode('direction')
+                                ->cannotBeEmpty()
+                                ->defaultValue('ltr')
+                            ->end()
+                            ->scalarNode('postprefix')
+                                ->defaultNull()
+                            ->end()
+                            ->booleanNode('has_disputed')
+                                ->defaultFalse()
+                            ->end()
+                            ->scalarNode('format_charset')
+                                ->cannotBeEmpty()
+                                ->defaultValue('UTF-8')
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
 
+        $date = new \DateTime('now');
         SettingsBuilder::append(
-            $treeBuilder->root('oro_locale'),
+            $rootNode,
             array(
-                'date_format'         => array('value' => 'm/d/y'),
-                'time_format'         => array('value' => 'h:i a'),
-                'locale'              => array('value' => 'en_US'),
-                'timezone'            => array('value' => 'America/New_York'),
-                'default_currency'    => array('value' => 'USD'),
-                'decimal_symbol'      => array('value' => '.'),
-                'thousands_separator' => array('value' => ','),
-                'number_of_decimals'  => array('value' => 2),
-                'name_format'         => array('value' => '%%first%% %%last%%'),
+                'language' => array('value' => null),
+                'locale' => array('value' => '%locale%'),
+                'country' => array('value' => null),
+                'timezone' => array('value' => $date->getTimezone()->getName()),
+                'default_currency' => array('value' => 'USD'),
+                'name_format' => array('value' => null)
             )
         );
 
