@@ -5,7 +5,6 @@ namespace Oro\Bundle\EntityConfigBundle\Config;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 use Metadata\MetadataFactory;
 
@@ -20,7 +19,6 @@ use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
 use Oro\Bundle\EntityConfigBundle\Metadata\FieldMetadata;
 
-use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderBag;
 
@@ -93,18 +91,18 @@ class ConfigManager
     protected $configChangeSets;
 
     /**
-     * @param MetadataFactory     $metadataFactory
-     * @param EventDispatcher     $eventDispatcher
-     * @param ServiceLink         $providerBagLink
-     * @param ConfigModelManager  $modelManager
-     * @param ServiceLink         $securityLink
+     * @param MetadataFactory    $metadataFactory
+     * @param EventDispatcher    $eventDispatcher
+     * @param ServiceLink        $providerBagLink
+     * @param ConfigModelManager $modelManager
+     * @param AuditManager       $auditManager
      */
     public function __construct(
         MetadataFactory $metadataFactory,
         EventDispatcher $eventDispatcher,
         ServiceLink $providerBagLink,
         ConfigModelManager $modelManager,
-        ServiceLink $securityLink
+        AuditManager $auditManager
     ) {
         $this->metadataFactory = $metadataFactory;
         $this->eventDispatcher = $eventDispatcher;
@@ -116,7 +114,7 @@ class ConfigManager
         $this->configChangeSets = new ArrayCollection;
 
         $this->modelManager = $modelManager;
-        $this->auditManager = new AuditManager($this, $securityLink);
+        $this->auditManager = $auditManager;
     }
 
     /**
@@ -204,8 +202,8 @@ class ConfigManager
         }
 
         $result = $this->cache->getConfigurable($className, $fieldName);
-        if ($result === null) {
-            $result = (bool)$this->modelManager->findModel($className, $fieldName);
+        if ($result == null) {
+            $result = (bool) $this->modelManager->findModel($className, $fieldName);
 
             $this->cache->setConfigurable($result, $className, $fieldName);
         }
