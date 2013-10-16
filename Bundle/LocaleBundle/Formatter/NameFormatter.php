@@ -55,7 +55,10 @@ class NameFormatter
                 if ($hasData && $key !== $lowerCaseKey) {
                     $nameParts[$lowerCaseKey] = strtoupper($nameParts[$lowerCaseKey]);
                 }
-                return $hasData ? $nameParts[$lowerCaseKey] : '';
+                if ($hasData) {
+                    return $nameParts[$lowerCaseKey];
+                }
+                return '';
             },
             $format
         );
