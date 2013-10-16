@@ -43,6 +43,10 @@ datagrid:
                     type: string
                     data_name: g.label
 
+                select_row:
+                    type: select_row
+                    data_name: g.id
+
             default:
                 label:
                     type: \Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType::TYPE_STARTS_WITH

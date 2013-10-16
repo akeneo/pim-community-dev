@@ -8,5 +8,6 @@ services:
             - @oro_grid.datagrid.request_params
         calls:
             - [ addFilter, [ 'string',          @oro_filter.extension.orm.string_filter ] ]
+            - [ addFilter, [ 'select_row',      @oro_filter.extension.orm.select_row_filter ] ]
         tags:
             - { name: oro_grid.extension }

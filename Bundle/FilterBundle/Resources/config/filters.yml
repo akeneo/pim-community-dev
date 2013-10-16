@@ -1,8 +1,14 @@
 parameters:
-    oro_filter.extension.orm.string_filter.class: Oro\Bundle\FilterBundle\Extension\Orm\StringFilter
+    oro_filter.extension.orm.string_filter.class:       Oro\Bundle\FilterBundle\Extension\Orm\StringFilter
+    oro_filter.extension.orm.select_row_filter.class:   Oro\Bundle\FilterBundle\Extension\Orm\SelectRowFilter
 
 services:
     oro_filter.extension.orm.string_filter:
         class: %oro_filter.extension.orm.string_filter.class%
         arguments:
           - @form.factory
+
+    oro_filter.extension.orm.select_row_filter:
+        class: %oro_filter.extension.orm.select_row_filter.class%
+        arguments:
+                  - @form.factory
