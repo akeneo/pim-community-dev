@@ -78,9 +78,6 @@ class InstallCommand extends ContainerAwareCommand
         $dialog    = $this->getHelperSet()->get('dialog');
         $container = $this->getContainer();
         $options   = $input->getOptions();
-        $demo      = isset($options['sample-data'])
-            ? true
-            : $dialog->askConfirmation($output, '<question>Load sample data (y/n)?</question> ', false);
 
         $input->setInteractive(false);
 
@@ -92,21 +89,6 @@ class InstallCommand extends ContainerAwareCommand
             ->runCommand('oro:entity-config:init', $output)
             ->runCommand('oro:entity-extend:init', $output)
             ->runCommand('oro:entity-extend:update-config', $output);
-
-        // load demo fixtures
-        if ($demo) {
-            $loader = new ContainerAwareLoader($container);
-
-            foreach ($container->get('kernel')->getBundles() as $bundle) {
-                if (is_dir($path = $bundle->getPath() . '/DataFixtures/Demo')) {
-                    $loader->loadFromDirectory($path);
-                }
-            }
-
-            $executor = new ORMExecutor($container->get('doctrine.orm.entity_manager'));
-
-            $executor->execute($loader->getFixtures(), true);
-        }
 
         $output->writeln('');
         $output->writeln('<info>Administration setup.</info>');
@@ -150,6 +132,25 @@ class InstallCommand extends ContainerAwareCommand
             ->addRole($role);
 
         $container->get('oro_user.manager')->updateUser($user);
+
+        $demo = isset($options['sample-data'])
+            ? true
+            : $dialog->askConfirmation($output, '<question>Load sample data (y/n)?</question> ', false);
+
+        // load demo fixtures
+        if ($demo) {
+            $loader = new ContainerAwareLoader($container);
+
+            foreach ($container->get('kernel')->getBundles() as $bundle) {
+                if (is_dir($path = $bundle->getPath() . '/DataFixtures/Demo')) {
+                    $loader->loadFromDirectory($path);
+                }
+            }
+
+            $executor = new ORMExecutor($container->get('doctrine.orm.entity_manager'));
+
+            $executor->execute($loader->getFixtures(), true);
+        }
 
         $output->writeln('');
 
