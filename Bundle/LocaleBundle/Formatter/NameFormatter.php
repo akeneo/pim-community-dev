@@ -3,6 +3,7 @@
 namespace Oro\Bundle\LocaleBundle\Formatter;
 
 use Oro\Bundle\LocaleBundle\Model\FirstNameInterface;
+use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
 use Oro\Bundle\LocaleBundle\Model\LastNameInterface;
 use Oro\Bundle\LocaleBundle\Model\MiddleNameInterface;
 use Oro\Bundle\LocaleBundle\Model\NamePrefixInterface;
@@ -22,6 +23,7 @@ class NameFormatter
     }
 
     /**
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      * @param object $person
      * @param null|string $locale
      * @return string
@@ -29,19 +31,19 @@ class NameFormatter
     public function format($person, $locale = null)
     {
         $nameParts = array();
-        if ($person instanceof NamePrefixInterface) {
+        if ($person instanceof NamePrefixInterface || $person instanceof FullNameInterface) {
             $nameParts['prefix'] = $person->getNamePrefix();
         }
-        if ($person instanceof FirstNameInterface) {
+        if ($person instanceof FirstNameInterface || $person instanceof FullNameInterface) {
             $nameParts['first_name'] = $person->getFirstName();
         }
-        if ($person instanceof MiddleNameInterface) {
+        if ($person instanceof MiddleNameInterface || $person instanceof FullNameInterface) {
             $nameParts['middle_name'] = $person->getMiddleName();
         }
-        if ($person instanceof LastNameInterface) {
+        if ($person instanceof LastNameInterface || $person instanceof FullNameInterface) {
             $nameParts['last_name'] = $person->getLastName();
         }
-        if ($person instanceof NameSuffixInterface) {
+        if ($person instanceof NameSuffixInterface || $person instanceof FullNameInterface) {
             $nameParts['suffix'] = $person->getNameSuffix();
         }
 
@@ -51,11 +53,10 @@ class NameFormatter
             function ($data) use ($nameParts) {
                 $key = $data[1];
                 $lowerCaseKey = strtolower($key);
-                $hasData = isset($nameParts[$lowerCaseKey]);
-                if ($hasData && $key !== $lowerCaseKey) {
-                    $nameParts[$lowerCaseKey] = strtoupper($nameParts[$lowerCaseKey]);
-                }
-                if ($hasData) {
+                if (isset($nameParts[$lowerCaseKey])) {
+                    if ($key !== $lowerCaseKey) {
+                        $nameParts[$lowerCaseKey] = strtoupper($nameParts[$lowerCaseKey]);
+                    }
                     return $nameParts[$lowerCaseKey];
                 }
                 return '';

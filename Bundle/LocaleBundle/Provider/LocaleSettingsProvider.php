@@ -34,6 +34,8 @@ class LocaleSettingsProvider
      * - %name%         / %NAME%
      * - %organization% / %ORGANIZATION%
      * - %street%       / %STREET%
+     * - %street1%      / %STREET1%
+     * - %street2%      / %STREET2%
      * - %city%         / %CITY%
      * - %region%       / %REGION%
      * - %region_code%  / %REGION_CODE%
@@ -135,6 +137,11 @@ class LocaleSettingsProvider
     public static function getNumberFormatterAttribute($attribute, $locale = null)
     {
 
+    }
+
+    public function getLocaleByCountry($country)
+    {
+        return self::DEFAULT_LOCALE;
     }
 
     /**
