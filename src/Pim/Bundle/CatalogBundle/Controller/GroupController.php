@@ -20,6 +20,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler;
 
 /**
  * Group controller
@@ -36,6 +37,16 @@ class GroupController extends AbstractDoctrineController
     protected $datagridWorker;
 
     /**
+     * @var GroupHandler
+     */
+    protected $groupHandler;
+
+    /**
+     * @var Form
+     */
+    protected $groupForm;
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -47,6 +58,8 @@ class GroupController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
      * @param DatagridWorkerInterface  $datagridWorker
+     * @param GroupHandler             $groupHandler
+     * @param Form                     $groupForm
      */
     public function __construct(
         Request $request,
@@ -57,7 +70,9 @@ class GroupController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridWorkerInterface $datagridWorker
+        DatagridWorkerInterface $datagridWorker,
+        GroupHandler $groupHandler,
+        Form $groupForm
     ) {
         parent::__construct(
             $request,
@@ -71,6 +86,8 @@ class GroupController extends AbstractDoctrineController
         );
 
         $this->datagridWorker = $datagridWorker;
+        $this->groupHandler   = $groupHandler;
+        $this->groupForm      = $groupForm;
     }
 
     /**
@@ -97,5 +114,38 @@ class GroupController extends AbstractDoctrineController
             : 'PimCatalogBundle:Group:index.html.twig';
 
         return $this->render($view, array('datagrid' => $datagrid->createView()));
+    }
+
+    /**
+     * Create a group
+     * @param Request $request
+     *
+     * @Template
+     * @AclAncestor("pim_catalog_group_create")
+     * @return Response|RedirectResponse
+     */
+    public function createAction(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return $this->redirectToRoute('pim_catalog_group_index');
+        }
+
+        $group = new Group();
+
+        if ($this->groupHandler->process($group)) {
+            $this->addFlash('success', 'flash.group group.created');
+
+            $url = $this->generateUrl(
+                'pim_catalog_group_edit',
+                array('id' => $group->getId())
+            );
+            $response = array('status' => 1, 'url' => $url);
+
+            return new Response(json_encode($response));
+        }
+
+        return array(
+            'form' => $this->groupForm->createView()
+        );
     }
 }
