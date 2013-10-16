@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Sorter\SorterInterface;
+
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
@@ -86,14 +88,16 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         $field->setName('has_product');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
-                'label'       => $this->translate('Has product'),
-                'field_name'  => 'hasCurrentProduct',
-                'expression'  => $this->getHasProductExpression(),
-                'nullable'    => false,
-                'editable'    => true,
-                'sortable'    => false,
-                'filter_type' => false
+                'type'            => FieldDescriptionInterface::TYPE_BOOLEAN,
+                'label'           => $this->translate('Has product'),
+                'field_name'      => 'hasCurrentProduct',
+                'expression'      => $this->getHasProductExpression(),
+                'nullable'        => false,
+                'editable'        => true,
+                'sortable'        => true,
+                'filter_type'     => FilterInterface::TYPE_BOOLEAN,
+                'filterable'      => true,
+                'filter_by_where' => true
             )
         );
 
