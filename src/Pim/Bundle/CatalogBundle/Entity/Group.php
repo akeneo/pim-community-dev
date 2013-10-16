@@ -51,11 +51,12 @@ class Group implements TranslatableInterface
     /**
      * @var ArrayCollection $products
      *
-     * @ORM\OneToMany(
+     * @ORM\ManyToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
-     *     mappedBy="variantGroup",
+     *     inversedBy="groups",
      *     cascade={"persist"}
      * )
+     * @ORM\JoinTable(name="pim_catalog_group_product")
      */
     protected $products;
 
