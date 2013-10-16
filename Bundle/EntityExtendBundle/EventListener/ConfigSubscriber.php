@@ -162,20 +162,6 @@ class ConfigSubscriber implements EventSubscriberInterface
                 default:
                     $type = '';
             }
-
-            $relationConfig = array(
-                'type' => $type,
-                'options' => array(
-                    'is_inverse' => true,
-                    'target_entity' => $event->getClassName(),
-                 )
-            );
-
-            $this->extendManager->createField(
-                $fieldConfig->get('target_entity'),
-                $relationName,
-                $relationConfig
-            );
         }
     }
 }
