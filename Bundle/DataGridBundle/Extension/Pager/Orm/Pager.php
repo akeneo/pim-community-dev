@@ -51,7 +51,7 @@ class Pager extends AbstractPager implements PagerInterface
         $qb    = clone $this->getQueryBuilder();
         $query = $qb->setFirstResult(null)
             ->setMaxResults(null)
-            ->resetDQLPart('orderBy')
+            ->resetDQLParts(array('orderBy', 'where', 'having'))
             ->getQuery();
 
         return QueryCountCalculator::calculateCount($query);

@@ -3,10 +3,13 @@
 namespace Oro\Bundle\FilterBundle\Extension;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class OrmFilterExtension extends AbstractExtension
 {
@@ -50,13 +53,46 @@ class OrmFilterExtension extends AbstractExtension
      */
     public function visitDatasource(array $config, DatasourceInterface $datasource)
     {
-        $toApply = $this->getFiltersToApply($config);
+        $filters = $this->getFiltersToApply($config);
+        $values  = $this->getValuesToApply($config);
 
-        foreach ($toApply as $column => $filter) {
-            list($definition, $value) = $filter;
+        foreach ($filters as $filter) {
+            if ($value = $this->accessor->getValue($values, '[' . $filter->getName() .']')) {
+                $form = $filter->getForm();
+                if (!$form->isSubmitted()) {
+                    $form->submit($value);
+                }
 
-            $filter = $this->getFilterObject($definition);
 
+                if ($form->isValid()) {
+                    $filter->apply($datasource->getQuery(), $value);
+                }
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function visitMetadata(array $config, \stdClass $data)
+    {
+        $data->filters            = array();
+        $data->filters['state']   = array();
+
+        $filters = $this->getFiltersToApply($config);
+        $values  = $this->getValuesToApply($config);
+
+        foreach ($filters as $filter) {
+            if ($value = $this->accessor->getValue($values, '[' . $filter->getName() .']')) {
+                $form = $filter->getForm();
+                if (!$form->isSubmitted()) {
+                    $form->submit($value);
+                }
+
+                if ($form->isValid()) {
+                    $data->filters['state'][$filter->getName()] = $value;
+                }
+            }
         }
     }
 
@@ -80,9 +116,28 @@ class OrmFilterExtension extends AbstractExtension
      *
      * @param array $config
      *
-     * @return array
+     * @return FilterInterface[]
      */
     protected function getFiltersToApply(array $config)
+    {
+        $filters       = array();
+        $filtersConfig = $this->accessor->getValue($config, self::COLUMNS_PATH);
+
+        foreach ($filtersConfig as $column => $filter) {
+            $filters[] = $this->getFilterObject($column, $filter);
+        }
+
+        return $filters;
+    }
+
+    /**
+     * Takes param from request and merge with default filters
+     *
+     * @param array $config
+     *
+     * @return array
+     */
+    protected function getValuesToApply(array $config)
     {
         $result = array();
 
@@ -92,8 +147,8 @@ class OrmFilterExtension extends AbstractExtension
         $filterBy       = $this->requestParams->get(self::FILTER_ROOT_PARAM) ? : $defaultFilters;
 
         foreach ($filterBy as $column => $value) {
-            if ($filter = $this->accessor->getValue($filters, "[$column]")) {
-                $result[$column] = array($filter, $value);
+            if ($this->accessor->getValue($filters, "[$column]")) {
+                $result[$column] = $value;
             }
         }
 
@@ -103,16 +158,17 @@ class OrmFilterExtension extends AbstractExtension
     /**
      * Returns prepared filter object
      *
+     * @param string $name
      * @param array  $config
      *
      * @return FilterInterface
      */
-    protected function getFilterObject(array $config)
+    protected function getFilterObject($name, array $config)
     {
         $type = $this->accessor->getValue($config, '[type]');
 
         $property = $this->filters[$type];
-        $property->init($config);
+        $property->init($name, $config);
 
         return $property;
     }

@@ -44,7 +44,8 @@ datagrid:
                     data_name: g.label
 
             default:
-                label: test
+                label:
+                    value: test
 
     adminUsers:
         source:
