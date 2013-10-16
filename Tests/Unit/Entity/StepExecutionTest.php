@@ -171,12 +171,12 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
     public function testAddWarning()
     {
         $this->stepExecution->addWarning(
-            'Oro\Bundle\BatchBundle\Item\ItemReaderInterface',
+            'foo',
             'something is wrong on line 1',
             array('foo' => 'bar')
         );
         $this->stepExecution->addWarning(
-            'Oro\Bundle\BatchBundle\Item\ItemReaderInterface',
+            'bar',
             'something is wrong on line 2',
             array('baz' => false)
         );
@@ -184,12 +184,12 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 array(
-                    'class'  => 'Oro\Bundle\BatchBundle\Item\ItemReaderInterface',
+                    'name'   => 'oro_batch.foo.title',
                     'reason' => 'something is wrong on line 1',
                     'item'   => array('foo' => 'bar')
                 ),
                 array(
-                    'class'  => 'Oro\Bundle\BatchBundle\Item\ItemReaderInterface',
+                    'name'   => 'oro_batch.bar.title',
                     'reason' => 'something is wrong on line 2',
                     'item'   => array('baz' => false)
                 )

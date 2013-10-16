@@ -176,7 +176,7 @@ class ItemStep extends AbstractStep
                     continue;
                 }
             } catch (InvalidItemException $e) {
-                $this->handleStepExecutionWarning($stepExecution, get_class($this->reader), $e);
+                $this->handleStepExecutionWarning($stepExecution, $this->reader, $e);
 
                 continue;
             }
@@ -193,7 +193,7 @@ class ItemStep extends AbstractStep
                     );
                 }
             } catch (InvalidItemException $e) {
-                $this->handleStepExecutionWarning($stepExecution, get_class($this->processor), $e);
+                $this->handleStepExecutionWarning($stepExecution, $this->processor, $e);
 
                 continue;
             }
@@ -205,7 +205,7 @@ class ItemStep extends AbstractStep
                     $this->writer->write($itemsToWrite);
                     $itemsToWrite = array();
                 } catch (InvalidItemException $e) {
-                    $this->handleStepExecutionWarning($stepExecution, get_class($this->writer), $e);
+                    $this->handleStepExecutionWarning($stepExecution, $this->writer, $e);
 
                     continue;
                 }
@@ -217,7 +217,7 @@ class ItemStep extends AbstractStep
                 $this->writer->write($itemsToWrite);
                 $itemsToWrite = array();
             } catch (InvalidItemException $e) {
-                $this->handleStepExecutionWarning($stepExecution, get_class($this->writer), $e);
+                $this->handleStepExecutionWarning($stepExecution, $this->writer, $e);
             }
         }
     }
@@ -247,9 +247,12 @@ class ItemStep extends AbstractStep
      * @param string               $class
      * @param InvalidItemException $e
      */
-    private function handleStepExecutionWarning(StepExecution $stepExecution, $class, InvalidItemException $e)
-    {
-        $stepExecution->addWarning($class, $e->getMessage(), $e->getItem());
-        $this->dispatchInvalidItemEvent($class, $e->getMessage(), $e->getItem());
+    private function handleStepExecutionWarning(
+        StepExecution $stepExecution,
+        AbstractConfigurableStepElement $element,
+        InvalidItemException $e
+    ) {
+        $stepExecution->addWarning($element->getName(), $e->getMessage(), $e->getItem());
+        $this->dispatchInvalidItemEvent(get_class($element), $e->getMessage(), $e->getItem());
     }
 }
