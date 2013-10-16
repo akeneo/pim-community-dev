@@ -3,6 +3,7 @@
 namespace Oro\Bundle\SearchBundle\Query;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\SearchBundle\Entity\IndexText;
 
 class Query
 {
@@ -427,7 +428,9 @@ class Query
      */
     private function clearString($inputString)
     {
-        return trim(preg_replace('/ +/', ' ', preg_replace('/[^a-zA-Z0-9:*_]/s', ' ', $inputString)));
+        $clearedString = str_replace('-', IndexText::HYPHEN_SUBSTITUTION, $inputString);
+        $clearedString = trim(preg_replace('/ +/', ' ', preg_replace('/[^a-zA-Z0-9:*_]/s', ' ', $clearedString)));
+        return $clearedString;
     }
 
     /**
