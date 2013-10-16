@@ -101,6 +101,7 @@ class GroupController extends Controller
      *      class="OroUserBundle:Group",
      *      permission="VIEW"
      * )
+     * @Template
      */
     public function indexAction(Request $request)
     {
