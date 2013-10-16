@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\BindGroupProductsSubscriber;
 
 /**
  * Type for group form
@@ -25,6 +26,9 @@ class GroupType extends AbstractType
         $this->addLabelField($builder);
 
         $this->addProductsField($builder);
+
+        $builder
+            ->addEventSubscriber(new BindGroupProductsSubscriber());
     }
 
     /**
