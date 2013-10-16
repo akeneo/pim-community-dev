@@ -11,6 +11,7 @@ import profile:  import profile
 locale:          locale
 product:         product
 variant group:   variant group
+association:     association
 
 # Page header titles
 attribute:
@@ -64,6 +65,10 @@ variant group:
     overview: variant group overview
     create:   create variant group
     edit:     edit variant group
+association:
+    overview: association overview
+    create:   create association
+    edit:     edit association
 
 # Custom titles
 products: products
@@ -83,6 +88,7 @@ btn:
         locale:          create locale
         product:         create product
         variant group:   create variant group
+        association:     create association
     edit:      edit
     save:      save
     remove:    remove
@@ -110,11 +116,12 @@ confirmation:
         import profile:  Are you sure you want to delete the import profile %name%?
         channel:         Are you sure you want to delete the channel %name%?
         variant group:   Are you sure you want to delete the variant group %name%?
+        association:     Are you sure you want to delete the association %name%?
 
 # Flash messages
 flash:
     entity:
-        removed:          Item was deleted
+        removed: Item was deleted
     attribute:
         created:                  Attribute successfully created
         updated:                  Attribute successfully updated
@@ -166,6 +173,10 @@ flash:
         created: Variant group successfully created
         updated: Variant group successfully updated
         removed: Variant group successfully removed
+    association:
+        created: Association successfully created
+        updated: Association successfully updated
+        removed: Association successfully removed
     error ocurred: Action failed. Please retry.
 
 # Info messages
@@ -230,10 +241,11 @@ Locale specific:               Locale specific
 Label translations:            Label translations
 default:                       Default
 
-Create:               Create
-Cancel:               Cancel
-Create a new product: Create a new product
-Choose a family:      Choose a family
+Create:                   Create
+Cancel:                   Cancel
+Create a new product:     Create a new product
+Create a new association: Create a new association
+Choose a family:          Choose a family
 
 # Scopes
 Global:  Global
@@ -312,7 +324,11 @@ Locales:                                     Locales
 Locales %locale.code% | Edit:                Locales %locale.code% | Edit
 Variant groups:                              Variant groups
 Variant groups | Create:                     Variant groups | Create
-Variant groups %variant.label% | Edit:       Variant groups %variant group.label% | Edit
+Variant groups %variant.label% | Edit:       Variant groups %variant.label% | Edit
+Associations:                                Associations
+Associations | Create:                       Associations | Create
+Associations %association.label% | Edit:     Associations %association.label% | Edit
+
 
 pim_catalog_identifier:       Identifier
 pim_catalog_text:             Text
