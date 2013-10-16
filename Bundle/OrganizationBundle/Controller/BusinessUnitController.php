@@ -71,7 +71,7 @@ class BusinessUnitController extends Controller
     {
         return $this->update($entity);
     }
-    
+
     /**
      * @Route(
      *      "/{_format}",
@@ -84,15 +84,7 @@ class BusinessUnitController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /** @var BusinessUnitDatagridManager $gridManager */
-        $gridManager = $this->get('oro_organization.business_unit_datagrid_manager');
-        $datagridView = $gridManager->getDatagrid()->createView();
-
-        if ('json' == $this->getRequest()->getRequestFormat()) {
-            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
-        }
-
-        return array('datagrid' => $datagridView);
+        return array();
     }
 
     /**

@@ -1,34 +1,95 @@
-parameters:
-    oro_organization.business_unit_datagrid_manager.class: Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitDatagridManager
-    oro_organization.business_unit_update_user_datagrid_manager.class: Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitUpdateUserDatagridManager
-    oro_organization.business_unit_view_user_datagrid_manager.class: Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitViewUserDatagridManager
+datagrid:
+    business-unit-grid:
+        source:
+            acl_resource: oro_business_unit_view
+            type: orm
+            query:
+                select:
+                    - u.id
+                    - u.name
+                    - u.email
+                    - u.phone
+                    - u.owner
+                    - u.organization
+                    - u.createdAt
+                from:
+                    - { table: OroOrganizationBundle:BusinessUnit, alias: u }
 
-services:
-    oro_organization.business_unit_datagrid_manager:
-        class: %oro_organization.business_unit_datagrid_manager.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: business_units
-              entity_name: Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
-              entity_hint: business unit
-              route_name: oro_business_unit_index
+        columns:
+            id:
+                type: field
+            name:
+                type: field
+            email:
+                type: field
+            phone:
+                type: field
+            owner:
+                type: field
+            organization:
+                type: field
+            createdAt:
+                type: field
 
-    oro_organization.business_unit_update_user_datagrid_manager:
-            class: %oro_organization.business_unit_update_user_datagrid_manager.class%
-            tags:
-                - name: oro_grid.datagrid.manager
-                  datagrid_name: business_units_update_users
-                  entity_name: Oro\Bundle\UserBundle\Entity\User
-                  query_entity_alias: user
-                  entity_hint: user
-                  route_name: oro_business_update_unit_user_grid
+        properties:
+            update_link:
+                type: url
+                route: oro_business_unit_update
+                params:
+                    - id
 
-    oro_organization.business_unit_view_user_datagrid_manager:
-            class: %oro_organization.business_unit_view_user_datagrid_manager.class%
-            tags:
-                - name: oro_grid.datagrid.manager
-                  datagrid_name: business_units_view_users
-                  entity_name: Oro\Bundle\UserBundle\Entity\User
-                  query_entity_alias: user
-                  entity_hint: user
-                  route_name: oro_business_view_unit_user_grid
+            view_link:
+                type: url
+                route: oro_business_unit_view
+                params:
+                    - id
+
+            delete_link:
+                type: url
+                route: oro_api_delete_businessunit
+                params:
+                    - id
+        sorters:
+            columns:
+                id:
+                    data_name: u.id
+                name:
+                    data_name: u.name
+                email:
+                    data_name: u.email
+                phone:
+                    data_name: u.phone
+                ownerName:
+                    data_name: u.ownerName
+                organizationName:
+                    data_name: u.organizationName
+                createdAt:
+                    data_name: u.createdAt
+
+            default:
+                label: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
+
+        filters:
+            columns:
+                id:
+                    type: string
+                    data_name: u.id
+                name:
+                    type: string
+                    data_name: u.name
+                email:
+                    type: string
+                    data_name: u.email
+                phone:
+                    type: string
+                    data_name: u.phone
+                ownerName:
+                    type: string
+                    data_name: u.ownerName
+                organizationName:
+                    type: string
+                    data_name: u.organizationName
+                createdAt:
+                    type: string
+                    data_name: u.createdAt
+
