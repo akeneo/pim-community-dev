@@ -50,3 +50,6 @@ class MyListener
 }
 
 ```
+
+## Sample data ##
+To provide demo fixtures for your bundle just place them in "YourBundle\DataFixtures\Demo" directory.

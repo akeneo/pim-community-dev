@@ -2,9 +2,6 @@
 
 namespace Oro\Bundle\InstallerBundle\Process\Step;
 
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\PhpExecutableFinder;
-
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 
 class SchemaStep extends AbstractStep
@@ -13,23 +10,32 @@ class SchemaStep extends AbstractStep
     {
         set_time_limit(600);
 
-        $this
-            ->runCommand('doctrine:schema:drop', array('--force' => true, '--full-database' => true))
-            ->runCommand('oro:entity-extend:clear')
-            ->runCommand('doctrine:schema:create')
-            ->runCommand('doctrine:fixtures:load', array('--no-interaction' => true))
-            ->runCommand('oro:entity-config:init');
+        switch ($this->getRequest()->query->get('action')) {
+            case 'cache':
+                return $this->handleAjaxAction('cache:clear');
 
-        /**
-         * @todo Refactor isolate process execution
-         */
-        $finder  = new PhpExecutableFinder();
-        $kernel  = $this->get('kernel');
-        $console = escapeshellarg($finder->find()) . ' ' . escapeshellarg($kernel->getRootDir() . '/console');
-        $process = new Process($console . ' oro:entity-extend:init --env=' . $kernel->getEnvironment());
+            case 'drop':
+                return $this->handleAjaxAction('doctrine:schema:drop', array('--force' => true, '--full-database' => true));
 
-        $process->run();
+            case 'clear':
+                return $this->handleAjaxAction('oro:entity-extend:clear');
 
-        return $this->complete();
+            case 'create':
+                return $this->handleAjaxAction('doctrine:schema:create');
+
+            case 'fixtures':
+                return $this->handleAjaxAction('doctrine:fixtures:load', array('--no-interaction' => true));
+
+            case 'init-config':
+                return $this->handleAjaxAction('oro:entity-config:init');
+
+            case 'init-extend':
+                return $this->handleAjaxAction('oro:entity-extend:init');
+
+            case 'update-config':
+                return $this->handleAjaxAction('oro:entity-extend:update-config');
+        }
+
+        return $this->render('OroInstallerBundle:Process/Step:schema.html.twig');
     }
 }
