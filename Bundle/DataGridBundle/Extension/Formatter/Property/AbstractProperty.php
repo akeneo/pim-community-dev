@@ -25,7 +25,7 @@ abstract class AbstractProperty implements PropertyInterface
      * @throws \LogicException
      * @return mixed
      */
-    public function get($paramName)
+    protected function get($paramName)
     {
         if (!isset($this->params[$paramName])) {
             throw new \LogicException(sprintf('Trying to access not existing parameter: "%s"', $paramName));
@@ -42,7 +42,7 @@ abstract class AbstractProperty implements PropertyInterface
      *
      * @return mixed
      */
-    public function getOr($paramName, $default = null)
+    protected function getOr($paramName, $default = null)
     {
         return isset($this->params[$paramName]) ? $this->params[$paramName] : $default;
     }

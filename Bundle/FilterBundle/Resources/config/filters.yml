@@ -4,4 +4,5 @@ parameters:
 services:
     oro_filter.extension.orm.string_filter:
         class: %oro_filter.extension.orm.string_filter.class%
-        arguments: []
+        arguments:
+          - @form.factory
