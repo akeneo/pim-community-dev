@@ -5,3 +5,4 @@ config:
                 - 'jquery'
     paths:
         'jquery.bind-first': 'bundles/orojsformvalidation/lib/jquery.bind-first-0.2.1.js'
+        'oro/form-validation': 'orojsformvalidation/js/form-validation'

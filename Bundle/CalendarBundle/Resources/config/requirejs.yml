@@ -1,0 +1,15 @@
+config:
+    shim:
+        'jquery.fullcalendar':
+            deps:
+                - 'jquery'
+                - 'jquery-ui'
+        'oro/calendar':
+            deps:
+                - 'jquery.fullcalendar'
+    paths:
+        'jquery.fullcalendar': 'orocalendar/lib/fullcalendar/fullcalendar'
+        'oro/calendar': 'orocalendar/js/calendar/calendar'
+        'oro/calendar/collection': 'orocalendar/js/calendar/collection'
+        'oro/calendar/model': 'orocalendar/js/calendar/model'
+        'oro/calendar/view': 'orocalendar/js/calendar/view'
