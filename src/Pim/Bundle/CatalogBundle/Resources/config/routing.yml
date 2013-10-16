@@ -46,3 +46,7 @@ variant_group:
 group:
     resource: '@PimCatalogBundle/Resources/config/routing/group.yml'
     prefix: /enrich/group
+
+association:
+    resource: '@PimCatalogBundle/Resources/config/routing/association.yml'
+    prefix: /configuration/association

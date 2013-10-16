@@ -109,6 +109,11 @@ services:
         tags:
             - { name: form.type, alias: pim_catalog_group }
 
+    pim_catalog.form.type.association:
+        class: %pim_catalog.form.type.association.class%
+        tags:
+            - { name: form.type, alias: pim_catalog_association }
+
     pim_catalog.form.type.available_product_attributes:
         class: %pim_catalog.form.type.available_product_attributes.class%
         tags:
