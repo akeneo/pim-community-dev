@@ -71,20 +71,70 @@ class LocaleSettingsProvider
     }
 
     /**
-     * Get name format based on locale.
+     * Get name format based on locale, if locale is not passed default locale will be used. Fallback to return value
+     * by full locale, locale language part and default locale (DEFAULT_LOCALE constant).
      *
-     * @param null|string $locale
+     * @param string|null $locale
+     * @throws \RuntimeException
      */
     public function getNameFormat($locale = null)
     {
         if (!$locale) {
-            $locale = \Locale::getDefault();
+            $locale = self::getDefaultLocale();
         }
         if (isset($this->nameFormats[$locale])) {
+            // matched by locale (for example - "fr_CA")
             return $this->nameFormats[$locale];
         } else {
-            return $this->nameFormats[self::DEFAULT_LOCALE];
+            $localeParts = \Locale::parseLocale($locale);
+            if (isset($localeParts[\Locale::LANG_TAG], $this->nameFormats[$localeParts[\Locale::LANG_TAG]])) {
+                // matched by locale language (for example - "fr")
+                return $this->nameFormats[$localeParts[\Locale::LANG_TAG]];
+            } elseif (isset($this->nameFormats[self::DEFAULT_LOCALE])) {
+                // fallback to default language
+                return $this->nameFormats[self::DEFAULT_LOCALE];
+            } else {
+                throw new \RuntimeException(sprintf('Cannot get name format for "%s"', $locale));
+            }
         }
+    }
+
+    /**
+     * Get name format based on locale, if locale is not passed default locale will be used. Fallback to return value
+     * by full locale, locale region part and default locale (DEFAULT_LOCALE constant).
+     *
+     * @param string|null $localeOrRegion
+     * @throws \RuntimeException
+     */
+    public function getAddressFormat($localeOrRegion = null)
+    {
+        if (!$localeOrRegion) {
+            $localeOrRegion = self::getDefaultLocale();
+        }
+        if (isset($this->addressFormats[$localeOrRegion])) {
+            // matched by country (for example - "RU")
+            return $this->addressFormats[$localeOrRegion];
+        } else {
+            $localeParts = \Locale::parseLocale($localeOrRegion);
+            if (isset($localeParts[\Locale::REGION_TAG], $this->addressFormats[$localeParts[\Locale::REGION_TAG]])) {
+                // matched by locale region - "CA"
+                return $this->addressFormats[$localeParts[\Locale::LANG_TAG]];
+            } elseif (isset($this->addressFormats[self::DEFAULT_COUNTRY])) {
+                // fallback to default country
+                return $this->addressFormats[self::DEFAULT_COUNTRY];
+            } else {
+                throw new \RuntimeException(sprintf('Cannot get address format for "%s"', $localeOrRegion));
+            }
+        }
+    }
+
+    /**
+     * @param int $attribute
+     * @param null $locale
+     */
+    public static function getNumberFormatterAttribute($attribute, $locale = null)
+    {
+
     }
 
     /**
@@ -126,5 +176,15 @@ class LocaleSettingsProvider
         }
 
         return LocaleSettingsProvider::DEFAULT_COUNTRY;
+    }
+
+    /**
+     * Get default locale
+     *
+     * @return string
+     */
+    public static function getDefaultLocale()
+    {
+        return \Locale::getDefault();
     }
 }
