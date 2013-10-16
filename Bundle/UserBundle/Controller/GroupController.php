@@ -104,11 +104,7 @@ class GroupController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $view = $this->get('oro_user.group_datagrid_manager')->getDatagrid()->createView();
-
-        return 'json' == $this->getRequest()->getRequestFormat()
-            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
-            : $this->render('OroUserBundle:Group:index.html.twig', array('datagrid' => $view));
+        return array();
     }
 
     /**

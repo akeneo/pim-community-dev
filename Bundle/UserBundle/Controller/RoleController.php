@@ -12,6 +12,7 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\UserBundle\Datagrid\RoleUserDatagridManager;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/role")
@@ -97,14 +98,11 @@ class RoleController extends Controller
      *      class="OroUserBundle:Role",
      *      permission="VIEW"
      * )
+     * @Template
      */
     public function indexAction(Request $request)
     {
-        $view = $this->get('oro_user.role_datagrid_manager')->getDatagrid()->createView();
-
-        return 'json' == $this->getRequest()->getRequestFormat()
-            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
-            : $this->render('OroUserBundle:Role:index.html.twig', array('datagrid' => $view));
+        return array();
     }
 
     /**
