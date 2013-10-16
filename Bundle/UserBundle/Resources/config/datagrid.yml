@@ -20,7 +20,7 @@ datagrid:
             id:
                 type: field
 
-            firstname:
+            firstName:
                 type: field
 
         properties:
@@ -56,3 +56,113 @@ datagrid:
 
             default:
                 label: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
+
+        filters:
+            columns:
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email
+                firstname:
+                    type: string
+                    data_name: u.firstName
+                lastname:
+                    type: string
+                    data_name: u.lastName
+                created:
+                    type: datetime
+                    data_name: u.created
+                updated:
+                    type: datetime
+                    data_name: u.updated
+                enabled:
+                    type: choice
+                    data_name: u.enabled
+
+    groups-grid:
+        source:
+            acl_resource: oro_user_group_view
+            type: orm
+            query:
+                select:
+                    - g.id
+                    - g.name
+                from:
+                    - { table: OroUserBundle:Group, alias: g }
+        columns:
+            id:
+                type: field
+            name:
+                type: field
+
+        properties:
+            update_link:
+                type: url
+                route: oro_user_group_update
+                params:
+                    - id
+
+            delete_link:
+                type: url
+                route: oro_api_delete_group
+                params:
+                    - id
+        sorters:
+            columns:
+                name:
+                    data_name: g.name
+            default:
+                label: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: g.name
+
+    roles-grid:
+        source:
+            acl_resource: oro_user_role_view
+            type: orm
+            query:
+                select:
+                    - r.id
+                    - r.role
+                    - r.label
+                from:
+                    - { table: OroUserBundle:Role, alias: r }
+                where:
+                    and:
+                        - r.role <> '%oro_user.entity.class%::ROLE_ANONYMOUS'
+        columns:
+            id:
+                type: field
+            label:
+                type: field
+
+        properties:
+            update_link:
+                type: url
+                route: oro_user_role_update
+                params:
+                    - id
+
+            delete_link:
+                type: url
+                route: oro_api_delete_role
+                params:
+                    - id
+        sorters:
+            columns:
+                label:
+                    data_name: r.label
+            default:
+                label: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                label:
+                    type: string
+                    data_name: r.label
