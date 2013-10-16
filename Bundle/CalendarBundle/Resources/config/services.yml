@@ -1,0 +1,10 @@
+parameters:
+    oro_calendar.calendar_event.entity.class:                   Oro\Bundle\CalendarBundle\Entity\CalendarEvent
+    oro_calendar.calendar_event.manager.api.class:              Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+
+services:
+    oro_calendar.calendar_event.manager.api:
+        class: %oro_calendar.calendar_event.manager.api.class%
+        arguments:
+            - %oro_calendar.calendar_event.entity.class%
+            - @doctrine.orm.entity_manager

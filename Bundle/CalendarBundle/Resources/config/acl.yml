@@ -1,0 +1,27 @@
+oro_calendar_view:
+    type: entity
+    class: OroCalendarBundle:Calendar
+    permission: VIEW
+    group_name: ""
+    bindings: ~
+
+oro_calendar_create:
+    type: entity
+    class: OroCalendarBundle:Calendar
+    permission: CREATE
+    group_name: ""
+    bindings: ~
+
+oro_calendar_update:
+    type: entity
+    class: OroCalendarBundle:Calendar
+    permission: EDIT
+    group_name: ""
+    bindings: ~
+
+oro_calendar_delete:
+    type: entity
+    class: OroCalendarBundle:Calendar
+    permission: DELETE
+    group_name: ""
+    bindings: ~

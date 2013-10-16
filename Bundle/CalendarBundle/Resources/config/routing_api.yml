@@ -1,0 +1,3 @@
+oro_calendar_event_api:
+    resource: "@OroCalendarBundle/Controller/Api/Rest/CalendarEventController.php"
+    type:     rest
