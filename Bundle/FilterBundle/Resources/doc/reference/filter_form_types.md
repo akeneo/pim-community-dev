@@ -426,13 +426,13 @@ class MyFilterFormType extends AbstractType
         // Add filters
         $builder->add('name', 'oro_type_text_filter');
         $builder->add('salary', 'oro_type_number_filter');
-    	$builder->add('hobby', 'oro_type_choice_filter', array(
-			'field_options' => array(
-				'choices' => array(1 => 'Coding', 2 => 'Hiking', 3 => 'Photography'), 
-				'multiple' => true
-			)
-		)); 
-	}
+        $builder->add('hobby', 'oro_type_choice_filter', array(
+        field_options' => array(
+                'choices' => array(1 => 'Coding', 2 => 'Hiking', 3 => 'Photography'),
+                'multiple' => true
+            )
+        ));
+    }
 }
 ```
 
