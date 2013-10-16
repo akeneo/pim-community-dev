@@ -80,7 +80,8 @@ class BatchCommand extends ContainerAwareCommand
 
         // Override mail notifier recipient email
         if ($email = $input->getOption('email')) {
-            if ($errors = $validator->validateValue($email, new Assert\Email())) {
+            $errors = $validator->validateValue($email, new Assert\Email());
+            if (count($errors) > 0) {
                 throw new \RuntimeException(
                     sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
                 );
@@ -90,7 +91,8 @@ class BatchCommand extends ContainerAwareCommand
                 ->setRecipientEmail($email);
         }
 
-        if ($errors = $validator->validate($jobInstance, array('Default', 'Execution'))) {
+        $errors = $validator->validate($jobInstance, array('Default', 'Execution'));
+        if (count($errors) > 0) {
             throw new \RuntimeException(
                 sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors))
             );
