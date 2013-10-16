@@ -23,7 +23,11 @@ use Oro\Bundle\SecurityBundle\Acl\Cache\OidAncestorsCacheCache;
 
 /**
  * This is a copy of Symfony\Component\Security\Acl\Dbal\AclProvider class
- * We had to make a copy of this class, because in original class was a mistake of cache usage.
+ * In the source file was a bug with Object Identity ancestor caching.
+ * Because of this, we had too many requests to the database in getAncestorIds function on each page.
+ * To get rid of it, has been added extra cash for OId ancestors $oidAncestorCache witch cash this data and
+ * was changed getAncestorIds function implementation.
+ * The bug occurs in case the acl access data for object identity not exists in database
  *
  * @SuppressWarnings(PHPMD)
  */

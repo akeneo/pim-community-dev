@@ -21,7 +21,9 @@ use Oro\Bundle\SecurityBundle\Acl\Cache\OidAncestorsCache;
 
 /**
  * This is a copy of Symfony\Component\Security\Acl\Dbal\MutableAclProvider class.
- * We had to make a copy of this class, because in the parent AclProvider class was a mistake of cache usage.
+ * We had to make a copy of this class, because in the parent AclProvider class was a mistake of cache usage for
+ * OId ancestors.
+ * Additionally was changed createAcl, deleteAcl, updateAcl functions to work with OId Ancestors cache.
  *
  * @SuppressWarnings(PHPMD)
  */
