@@ -1,8 +1,8 @@
 /*
-  backgrid-moment-cell
+  backgrid-select-all
   http://github.com/wyuenho/backgrid
 
   Copyright (c) 2013 Jimmy Yuen Ho Wong and contributors
   Licensed under the MIT @license.
 */
-.backgrid .moment-cell{text-align:right}.backgrid .moment-cell.editor input[type=text]{text-align:right}
+.backgrid .select-row-cell,.backgrid .select-all-header-cell{text-align:center}
