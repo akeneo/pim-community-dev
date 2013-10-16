@@ -16,5 +16,5 @@
         });
     </script>
     {{ render(dataUrl) }}
-    {{ dump(oro_grid_metadata(name)) }}
+    {{ oro_grid_metadata(name)|json_encode|raw }}
 {% endmacro %}

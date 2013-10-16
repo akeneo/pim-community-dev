@@ -47,7 +47,6 @@ class OroPlatformBundle extends Bundle
             new \Oro\Bundle\BatchBundle\OroBatchBundle(),
             new \Oro\Bundle\ImportExportBundle\OroImportExportBundle(),
             new \Oro\Bundle\RequireJSBundle\OroRequireJSBundle(),
-//            new \Oro\Bundle\GridBundle\OroGridBundle(),
             new \Oro\Bundle\DataGridBundle\OroDataGridBundle(),
             new \Oro\Bundle\DemoBundle\OroDemoBundle(),
         );
