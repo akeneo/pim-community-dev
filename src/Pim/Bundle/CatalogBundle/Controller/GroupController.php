@@ -133,7 +133,7 @@ class GroupController extends AbstractDoctrineController
         $group = new Group();
 
         if ($this->groupHandler->process($group)) {
-            $this->addFlash('success', 'flash.group group.created');
+            $this->addFlash('success', 'flash.group.created');
 
             $url = $this->generateUrl(
                 'pim_catalog_group_edit',
@@ -161,7 +161,7 @@ class GroupController extends AbstractDoctrineController
     public function editAction(Group $group)
     {
         if ($this->groupHandler->process($group)) {
-            $this->addFlash('success', 'flash.group group.updated');
+            $this->addFlash('success', 'flash.group.updated');
         }
 
         $datagridManager = $this->datagridWorker->getDatagridManager('group_product');
