@@ -47,7 +47,6 @@ class OroPlatformBundle extends Bundle
             new \Oro\Bundle\LocaleBundle\OroLocaleBundle(),
             new \Oro\Bundle\BatchBundle\OroBatchBundle(),
             new \Oro\Bundle\ImportExportBundle\OroImportExportBundle(),
-            new \Oro\Bundle\CalendarBundle\OroCalendarBundle(),
         );
     }
 }
