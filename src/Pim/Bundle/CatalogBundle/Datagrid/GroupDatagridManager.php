@@ -86,8 +86,33 @@ class GroupDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
+        $editAction = array(
+            'name'         => 'edit',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'pim_catalog_group_edit',
+            'options'      => array(
+                'label' => $this->translate('Edit'),
+                'icon'  => 'edit',
+                'link'  => 'edit_link'
+            )
+        );
 
-        return array();
+        $clickAction = $editAction;
+        $clickAction['name'] = 'rowClick';
+        $clickAction['options']['runOnRowClick'] = true;
+
+        $deleteAction = array(
+            'name'         => 'delete',
+            'type'         => ActionInterface::TYPE_DELETE,
+            'acl_resource' => 'pim_catalog_group_remove',
+            'options'      => array(
+                'label' => $this->translate('Delete'),
+                'icon'  => 'trash',
+                'link'  => 'delete_link'
+            )
+        );
+
+        return array($clickAction, $editAction, $deleteAction);
     }
 
     /**
