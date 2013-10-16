@@ -2,14 +2,9 @@
 
 namespace Oro\Bundle\LocaleBundle\Tests\Unit\Formatter\Stubs;
 
-use Oro\Bundle\LocaleBundle\Model\FirstNameInterface;
-use Oro\Bundle\LocaleBundle\Model\LastNameInterface;
-use Oro\Bundle\LocaleBundle\Model\MiddleNameInterface;
-use Oro\Bundle\LocaleBundle\Model\NamePrefixInterface;
-use Oro\Bundle\LocaleBundle\Model\NameSuffixInterface;
+use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
 
-class PersonAllNamePartsStub implements FirstNameInterface, MiddleNameInterface, LastNameInterface, NamePrefixInterface,
- NameSuffixInterface
+class PersonFullNameStub implements FullNameInterface
 {
     /**
      * @return string

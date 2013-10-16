@@ -3,7 +3,8 @@
 namespace Oro\Bundle\LocaleBundle\Test\Unit\Formatter;
 
 use Oro\Bundle\LocaleBundle\Formatter\NameFormatter;
-use Oro\Bundle\LocaleBundle\Test\Unit\Formatter\Stubs\PersonAllNamePartsStub;
+use Oro\Bundle\LocaleBundle\Tests\Unit\Formatter\Stubs\PersonAllNamePartsStub;
+use Oro\Bundle\LocaleBundle\Tests\Unit\Formatter\Stubs\PersonFullNameStub;
 
 class NameFormatterTest extends \PHPUnit_Framework_TestCase
 {
@@ -11,8 +12,9 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
      * @dataProvider formatDataProvider
      * @param string $format
      * @param string $expected
+     * @param object $person
      */
-    public function testFormat($format, $expected)
+    public function testFormat($format, $expected, $person)
     {
         $provider = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Provider\LocaleSettingsProvider')
             ->disableOriginalConstructor()
@@ -21,7 +23,6 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
             ->method('getNameFormat')
             ->will($this->returnValue($format));
         $formatter = new NameFormatter($provider);
-        $person = new PersonAllNamePartsStub();
         $this->assertEquals($expected, $formatter->format($person));
     }
 
@@ -30,11 +31,13 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 '%last_name% %FIRST_NAME% %middle_name% %PREFIX% %suffix%',
-                'ln FN mn NP ns'
+                'ln FN mn NP ns',
+                new PersonAllNamePartsStub()
             ),
             array(
                 '%unknown_data_one% %last_name% %FIRST_NAME% %middle_name% %PREFIX% %suffix% %unknown_data_two%',
-                'ln FN mn NP ns'
+                'ln FN mn NP ns',
+                new PersonFullNameStub()
             )
         );
     }
