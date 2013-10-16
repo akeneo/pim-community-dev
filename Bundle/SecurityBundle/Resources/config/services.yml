@@ -348,10 +348,4 @@ services:
     oro_security.oid_ancestor.cache:
         class: %oro_security.oid_ancestor.cache.class%
         arguments:
-            - @oro_security.oid_ancestor.file_cache
-
-    oro_security.oid_ancestor.file_cache:
-        public: false
-        parent: oro.cache.abstract
-        calls:
-            - [setNamespace, ['oro_security_oid_ancesstor.cache']]
+            - @security.acl.cache.doctrine.cache_impl

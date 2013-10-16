@@ -35,7 +35,7 @@ class OidAncestorsCacheTest extends \PHPUnit_Framework_TestCase
             ->getMockForAbstractClass();
 
         $this->oidAncestorCache = new OidAncestorsCache($this->cacheProvider);
-        $this->oidKey = 'testIdtestType';
+        $this->oidKey = 'oid_ancestor_testIdtestType';
     }
 
     public function testGetAncestorsFromCache()
