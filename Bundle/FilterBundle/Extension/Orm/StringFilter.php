@@ -18,27 +18,17 @@ class StringFilter extends AbstractFilter
      */
     public function apply(QueryBuilder $qb, $value)
     {
-        if (is_array($value) && array_key_exists("value", $value)) {
-            $data = $this->parseData($value);
-            if (!$data) {
-                return;
-            }
-
+        $data = $this->parseData($value);
+        if ($data) {
             $operator      = $this->getOperator($data['type']);
-            $parameterName = $this->getNewParameterName($qb);
+            $parameterName = $this->generateQueryParameterName();
 
             $this->applyFilterToClause(
                 $qb,
-                $this->createCompareFieldExpression($field, $alias, $operator, $parameterName)
+                $this->createComparisonExpression($this->get('data_name'), $operator, $parameterName)
             );
 
-            /** @var $queryBuilder QueryBuilder */
-            if ('=' == $operator) {
-                $value = $data['value'];
-            } else {
-                $value = sprintf($this->getFormatByComparisonType($data['type']), $data['value']);
-            }
-            $queryBuilder->setParameter($parameterName, $value);
+            $qb->setParameter($parameterName, sprintf($this->getFormatByComparisonType($data['type']), $data['value']));
         }
     }
 
@@ -55,7 +45,7 @@ class StringFilter extends AbstractFilter
      *
      * @return array|bool
      */
-    public function parseData($data)
+    protected function parseData($data)
     {
         if (!is_array($data) || !array_key_exists('value', $data) || !$data['value']) {
             return false;
@@ -73,7 +63,7 @@ class StringFilter extends AbstractFilter
      *
      * @return string
      */
-    public function getOperator($type)
+    protected function getOperator($type)
     {
         $type = (int)$type;
 
@@ -95,7 +85,7 @@ class StringFilter extends AbstractFilter
      *
      * @return string
      */
-    public function getFormatByComparisonType($comparisonType)
+    protected function getFormatByComparisonType($comparisonType)
     {
         // for other than listed comparison types - use default format
         switch ($comparisonType) {
@@ -105,8 +95,12 @@ class StringFilter extends AbstractFilter
             case TextFilterType::TYPE_ENDS_WITH:
                 $format = '%%%s';
                 break;
-            default:
+            case TextFilterType::TYPE_CONTAINS:
+            case TextFilterType::TYPE_NOT_CONTAINS:
                 $format = '%%%s%%';
+                break;
+            default:
+                $format = '%s';
         }
 
         return $format;

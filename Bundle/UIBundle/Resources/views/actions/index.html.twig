@@ -5,12 +5,12 @@
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
 {% endblock %}
 {% block content %}
-     <div class="container-fluid page-title">
-         <div class="navigation clearfix navbar-extra">
-             <div class="row">
-                 <div class="pull-right title-buttons-container">
+    <div class="container-fluid page-title">
+        <div class="navigation clearfix navbar-extra">
+            <div class="row">
+                <div class="pull-right title-buttons-container">
                     {% placeholder index_navButtons_before %}
-                     {% block navButtons %}{% endblock navButtons %}
+                    {% block navButtons %}{% endblock navButtons %}
                     {% placeholder index_navButtons_after %}
                  </div>
                  <div class="span9">
@@ -23,5 +23,9 @@
              </div>
          </div>
      </div>
-     {{ UI.gridBlock(gridId) }}
+    {% if params is defined %}
+        {{ dataGrid.renderGrid(gridName, params) }}
+    {% else %}
+        {{ dataGrid.renderGrid(gridName) }}
+    {% endif %}
 {% endblock content %}

@@ -38,7 +38,7 @@ class Configuration implements ConfigurationInterface
                                     ->thenInvalid('Invalid filter type "%s"')
                                 ->end()
                             ->end()
-                            ->scalarNode('data_name')->end()
+                            ->scalarNode('data_name')->isRequired()->end()
                         ->end()
                     ->end()
                 ->end()
