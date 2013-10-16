@@ -339,6 +339,9 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         return $this->variantGroup;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setFlexibleManager(FlexibleManager $flexibleManager)
     {
         $this->flexibleManager = $flexibleManager;
