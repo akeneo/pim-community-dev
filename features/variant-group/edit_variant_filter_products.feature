@@ -156,3 +156,12 @@ Feature: Edit a variant group adding/removing products
     Then the grid should contain 2 elements
     And I should see product MUG_1 and MUG_2
     And I should not see products MUG_3 and POSTIT
+
+  @insulated
+  Scenario: Successfully filter by has product
+    Given I am on the "MUG" variant page
+    When I make visible the filter "Has product"
+    And I filter by "Has product" with value "no"
+    Then the grid should contain 3 elements
+    And I should see product MUG_1, MUG_2 and POSTIT
+    And I should not see products MUG_3
