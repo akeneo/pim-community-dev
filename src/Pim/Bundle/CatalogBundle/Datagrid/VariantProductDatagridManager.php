@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Sorter\SorterInterface;
+
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
@@ -84,14 +88,16 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         $field->setName('has_product');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
-                'label'       => $this->translate('Has product'),
-                'field_name'  => 'hasCurrentProduct',
-                'expression'  => $this->getHasProductExpression(),
-                'nullable'    => false,
-                'editable'    => true,
-                'sortable'    => false,
-                'filter_type' => false
+                'type'            => FieldDescriptionInterface::TYPE_BOOLEAN,
+                'label'           => $this->translate('Has product'),
+                'field_name'      => 'hasCurrentProduct',
+                'expression'      => $this->getHasProductExpression(),
+                'nullable'        => false,
+                'editable'        => true,
+                'sortable'        => true,
+                'filter_type'     => FilterInterface::TYPE_BOOLEAN,
+                'filterable'      => true,
+                'filter_by_where' => true
             )
         );
 
@@ -235,7 +241,10 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
 
         $proxyQuery
             ->leftJoin($rootAlias .'.family', 'productFamily')
-            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
+            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
+            ->leftJoin($rootAlias .'.values', 'values')
+            ->leftJoin('values.options', 'valueOptions')
+            ->leftJoin('values.prices', 'valuePrices');
 
         $this->applyVariantExpression($proxyQuery);
 
@@ -296,6 +305,7 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         return array(
             'data_in'     => $dataIn,
             'data_not_in' => $dataNotIn,
+            'scopeCode'   => $this->flexibleManager->getScope()
         );
     }
 
@@ -320,12 +330,30 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
      */
-    public function getVariantGroup()
+    protected function getVariantGroup()
     {
         if (!$this->variantGroup) {
             throw new \LogicException('Datagrid manager has no configured Variant group');
         }
 
         return $this->variantGroup;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFlexibleManager(FlexibleManager $flexibleManager)
+    {
+        $this->flexibleManager = $flexibleManager;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDefaultSorters()
+    {
+        return array(
+            $this->flexibleManager->getIdentifierAttribute()->getCode() => SorterInterface::DIRECTION_ASC
+        );
     }
 }
