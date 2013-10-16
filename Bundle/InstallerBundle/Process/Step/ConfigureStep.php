@@ -33,8 +33,6 @@ class ConfigureStep extends AbstractStep
 
             $this->get('oro_installer.yaml_persister')->dump($data);
 
-            $this->runCommand('cache:clear');
-
             return $this->complete();
         }
 
