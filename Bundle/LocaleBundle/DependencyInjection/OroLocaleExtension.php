@@ -52,33 +52,12 @@ class OroLocaleExtension extends Extension
         );
         $config['settings']['locale']['value'] = $locale;
         if (empty($config['settings']['language']['value'])) {
-            $config['settings']['language']['value'] = $this->getDefaultLanguageByLocale($locale);
+            $config['settings']['language']['value'] = $locale;
         }
         if (empty($config['settings']['country']['value'])) {
             $config['settings']['country']['value'] = $this->getDefaultCountryByLocale($locale);
         }
         $container->prependExtensionConfig('oro_locale', $config);
-    }
-
-    /**
-     * Get language default value.
-     *
-     * @param string $locale
-     * @return string
-     */
-    protected function getDefaultLanguageByLocale($locale)
-    {
-        $displayLocaleParts = \Locale::parseLocale($locale);
-        $language = $displayLocaleParts[\Locale::LANG_TAG];
-        $region = isset($displayLocaleParts[\Locale::REGION_TAG]) ? $displayLocaleParts[\Locale::REGION_TAG] : null;
-        $availableLanguages = Intl::getLanguageBundle()->getLanguageNames();
-
-        $regionLang = $language . '_' . $region;
-        if (array_key_exists($regionLang, $availableLanguages)) {
-            $language = $regionLang;
-        }
-
-        return $language;
     }
 
     /**

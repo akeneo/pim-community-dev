@@ -5,14 +5,14 @@ oro_system_configuration:
             icon:  'icon-flag'
 
         locale_settings:
-            title: 'Localization settings'
+            title: 'Localization options'
 
         locale_options:
-            title: 'Locale options'
+            title: 'Formatting options'
 
     fields:
         oro_locale.language:
-            type: language
+            type: locale
             priority: 70
             options:
                 label: 'Language'
@@ -79,11 +79,11 @@ oro_system_configuration:
                                         priority: 100
                                         children:
                                             - oro_locale.language
-                                            - oro_locale.locale
                                             - oro_locale.country
                                             - oro_locale.default_currency
                                             - oro_locale.timezone
                                     locale_options:
                                         priority: 50
                                         children:
+                                            - oro_locale.locale
                                             - oro_locale.name_format
