@@ -46,7 +46,7 @@ class NameFormatter
         }
 
         $format = $this->settingsProvider->getNameFormat($locale);
-        return preg_replace_callback(
+        $name = preg_replace_callback(
             '/%(\w+)%/',
             function ($data) use ($nameParts) {
                 $key = $data[1];
@@ -59,5 +59,7 @@ class NameFormatter
             },
             $format
         );
+
+        return trim($name);
     }
 }
