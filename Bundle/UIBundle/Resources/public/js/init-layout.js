@@ -263,6 +263,7 @@ function($, _, __, app, mediator, layout, Navigation, DeleteConfirmation, messen
                         el.trigger('removesuccess');
                         messenger.addMessage('success', el.data('success-message'), {'hashNavEnabled': Navigation.isEnabled()});
                         if (el.data('redirect')) {
+                            $.isActive(true);
                             if (navigation) {
                                 navigation.setLocation(el.data('redirect'));
                             } else {

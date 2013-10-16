@@ -273,6 +273,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                         headers: this.headerObject,
                         data: stringState,
                         beforeSend: function( xhr ) {
+                            $.isActive(false);
                             //remove standard ajax header because we already have a custom header sent
                             xhr.setRequestHeader('X-Requested-With', {toString: function(){ return ''; }});
                         },
@@ -946,6 +947,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
             if (urlParts[1]) {
                 redirectUrl = urlParts[1];
             }
+            $.isActive(true);
             if(data.fullRedirect) {
                 var delimiter = '?';
                 if (redirectUrl.indexOf(delimiter) !== -1) {

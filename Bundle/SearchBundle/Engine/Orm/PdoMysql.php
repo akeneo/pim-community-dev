@@ -48,10 +48,10 @@ class PdoMysql extends BaseDriver
     /**
      * Add text search to qb
      *
-     * @param QueryBuilder $qb
-     * @param integer $index
-     * @param array $searchCondition
-     * @param boolean $setOrderBy
+     * @param  QueryBuilder $qb
+     * @param  integer      $index
+     * @param  array        $searchCondition
+     * @param  boolean      $setOrderBy
      * @return string
      */
     protected function addTextField(QueryBuilder $qb, $index, $searchCondition, $setOrderBy = true)
@@ -80,7 +80,7 @@ class PdoMysql extends BaseDriver
     /**
      * Get array of words retrieved from $value string
      *
-     * @param string $value
+     * @param  string $value
      * @return array
      */
     protected function getWords($value)
@@ -91,12 +91,13 @@ class PdoMysql extends BaseDriver
     /**
      * Get words that have length less than $this->fullTextMinWordLength
      *
-     * @param string $value
+     * @param  string $value
      * @return array
      */
     protected function getWordsLessThanFullTextMinWordLength($value)
     {
         $length = $this->getFullTextMinWordLength();
+
         return array_filter(
             $this->getWords($value),
             function ($value) use ($length) {
@@ -111,12 +112,13 @@ class PdoMysql extends BaseDriver
     protected function getFullTextMinWordLength()
     {
         if (null === $this->fullTextMinWordLength) {
-            $this->fullTextMinWordLength = (int)$this->em->getConnection()->fetchColumn(
+            $this->fullTextMinWordLength = (int) $this->em->getConnection()->fetchColumn(
                 "SHOW VARIABLES LIKE 'ft_min_word_len'",
                 array(),
                 1
             );
         }
+
         return $this->fullTextMinWordLength;
     }
 
@@ -124,11 +126,11 @@ class PdoMysql extends BaseDriver
      * Creates expression like MATCH_AGAINST(textField.value, :value0 'IN BOOLEAN MODE') and adds parameters
      * to $qb.
      *
-     * @param QueryBuilder $qb
-     * @param array $words
-     * @param string $index
-     * @param array $searchCondition
-     * @param bool $setOrderBy
+     * @param  QueryBuilder $qb
+     * @param  array        $words
+     * @param  string       $index
+     * @param  array        $searchCondition
+     * @param  bool         $setOrderBy
      * @return string
      */
     protected function createMatchAgainstWordsExpr(
@@ -165,7 +167,7 @@ class PdoMysql extends BaseDriver
             )->setParameter($rawValueParameter, $fieldValue)->orderBy('rankField', 'DESC');
         }
 
-        return (string)$result;
+        return (string) $result;
     }
 
     /**
@@ -173,9 +175,9 @@ class PdoMysql extends BaseDriver
      * and adds parameters to $qb.
      *
      * @param QueryBuilder $qb
-     * @param array $words
+     * @param array        $words
      * @param $index
-     * @param array $searchCondition
+     * @param  array  $searchCondition
      * @return string
      */
     protected function createLikeWordsExpr(
@@ -199,14 +201,14 @@ class PdoMysql extends BaseDriver
             $qb->setParameter($fieldParameter, $fieldValue);
         }
 
-        return (string)$result;
+        return (string) $result;
     }
 
     /**
-     * @param QueryBuilder $qb
-     * @param int $index
-     * @param array $words,
-     * @param array $searchCondition
+     * @param  QueryBuilder $qb
+     * @param  int          $index
+     * @param  array        $words,
+     * @param  array        $searchCondition
      * @return string
      */
     protected function createNotLikeWordsExpr(
@@ -226,13 +228,15 @@ class PdoMysql extends BaseDriver
         if ($this->isConcreteField($fieldName)) {
             $whereExpr .= ' AND textField.field = :' . $fieldParameter;
             $qb->setParameter($fieldParameter, $fieldName);
+
             return $whereExpr;
         }
+
         return $whereExpr;
     }
 
     /**
-     * @param array $fieldName
+     * @param  array $fieldName
      * @return bool
      */
     protected function isConcreteField($fieldName)
@@ -241,7 +245,7 @@ class PdoMysql extends BaseDriver
     }
 
     /**
-     * @param array $fieldName
+     * @param  array $fieldName
      * @return bool
      */
     protected function isAllDataField($fieldName)

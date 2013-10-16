@@ -20,6 +20,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
     protected $repository;
     protected $connector;
     protected $dispatcher;
+    protected $securityProvider;
 
     public function setUp()
     {
@@ -28,6 +29,10 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->om = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->securityProvider = $this->getMockBuilder('Oro\Bundle\SearchBundle\Security\SecurityProvider')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -107,7 +112,8 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
         $this->indexService = new Indexer(
             $this->om,
             $this->connector,
-            $this->mapper
+            $this->mapper,
+            $this->securityProvider
         );
     }
 
@@ -132,6 +138,24 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
         $this->mapper->expects($this->once())
             ->method('getMappingConfig')
             ->will($this->returnValue($this->config));
+
+        $this->securityProvider->expects($this->any())
+            ->method('isProtectedEntity')
+            ->will($this->returnValue(true));
+
+        $this->securityProvider->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(true));
+
+        $this->mapper->expects($this->once())
+            ->method('getEntitiesListAliases')
+            ->will(
+                $this->returnValue(
+                    array(
+                        'Oro\Bundle\DataBundle\Entity\Product' => 'test_alias'
+                    )
+                )
+            );
 
         $select = $this->indexService->select();
 
@@ -161,12 +185,30 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
             ->method('getMappingConfig')
             ->will($this->returnValue($this->config));
 
+        $this->securityProvider->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(true));
+
+        $this->securityProvider->expects($this->any())
+            ->method('isProtectedEntity')
+            ->will($this->returnValue(true));
+
+        $this->mapper->expects($this->any())
+            ->method('getEntitiesListAliases')
+            ->will(
+                $this->returnValue(
+                    array(
+                        'Oro\Bundle\DataBundle\Entity\Product' => 'test_alias'
+                    )
+                )
+            );
+
         $select = $this->indexService->simpleSearch('test', 0, 0);
         $query = $select->getQuery();
         $from = $query->getFrom();
         $searchCondition = $query->getOptions();
 
-        $this->assertEquals('*', $from[0]);
+        $this->assertEquals('test_alias', $from['Oro\Bundle\DataBundle\Entity\Product']);
         $this->assertEquals(Indexer::TEXT_ALL_DATA_FIELD, $searchCondition[0]['fieldName']);
         $this->assertEquals(Query::OPERATOR_CONTAINS, $searchCondition[0]['condition']);
         $this->assertEquals('test', $searchCondition[0]['fieldValue']);
@@ -175,6 +217,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
         $this->indexService->simpleSearch('test', 0, 10, 'test_product', 2);
         $this->indexService->simpleSearch('test', 2, 10);
+        $this->indexService->simpleSearch('test', 2, 10, 'test_product1');
     }
 
     /**
@@ -182,6 +225,25 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
      */
     public function testAdvancedSearch()
     {
+        $this->mapper->expects($this->any())
+            ->method('getEntitiesListAliases')
+            ->will(
+                $this->returnValue(
+                    array(
+                        'Oro\Bundle\DataBundle\Entity\Product' => 'test_product',
+                        'Oro\Bundle\DataBundle\Entity\Category' => 'test_category',
+                    )
+                )
+            );
+
+        $this->securityProvider->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(true));
+
+        $this->securityProvider->expects($this->any())
+            ->method('isProtectedEntity')
+            ->will($this->returnValue(true));
+
         $this->connector->expects($this->any())
             ->method('doSearch')
             ->will($this->returnValue(array('results' => array(), 'records_count' => 10)));
@@ -199,8 +261,8 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
         $from = $query->getFrom();
         $searchCondition = $query->getOptions();
 
-        $this->assertEquals('test_product', $from[0]);
-        $this->assertEquals('test_category', $from[1]);
+        $this->assertEquals('test_product', $from['Oro\Bundle\DataBundle\Entity\Product']);
+        $this->assertEquals('test_category', $from['Oro\Bundle\DataBundle\Entity\Category']);
 
         $this->assertEquals('name', $searchCondition[0]['fieldName']);
         $this->assertEquals(Query::OPERATOR_CONTAINS, $searchCondition[0]['condition']);

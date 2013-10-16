@@ -132,7 +132,7 @@ class EmailRendererTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $field1Id = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface')
+        $field1Id = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId')
             ->disableOriginalConstructor()
             ->getMock();
         $field1Id->expects($this->once())

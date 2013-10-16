@@ -33,11 +33,10 @@ class FilesystemCacheTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-
     /**
-     * @param mixed $obj
+     * @param mixed  $obj
      * @param string $propName
-     * @param mixed $val
+     * @param mixed  $val
      */
     public static function setProtectedProperty($obj, $propName, $val)
     {
@@ -49,9 +48,9 @@ class FilesystemCacheTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param mixed $obj
-     * @param string $methodName
-     * @param array $args
+     * @param  mixed  $obj
+     * @param  string $methodName
+     * @param  array  $args
      * @return mixed
      */
     public static function callProtectedMethod($obj, $methodName, array $args)

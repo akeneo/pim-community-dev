@@ -4,6 +4,8 @@ namespace Oro\Bundle\InstallerBundle\Process\Step;
 
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 
+use Oro\Bundle\InstallerBundle\InstallerEvents;
+
 class FinalStep extends AbstractStep
 {
     public function displayAction(ProcessContextInterface $context)
@@ -12,7 +14,7 @@ class FinalStep extends AbstractStep
             return $this->redirect($this->getRequest()->getBasePath() . '/install.php');
         }
 
-        set_time_limit(600);
+        set_time_limit(120);
 
         $params = $this->get('oro_installer.yaml_persister')->parse();
 
@@ -21,18 +23,7 @@ class FinalStep extends AbstractStep
         $params['session']['session_handler'] = 'session.handler.native_file';
 
         $this->get('oro_installer.yaml_persister')->dump($params);
-
-        $this
-            ->runCommand('doctrine:schema:update', array('--force' => true))
-            ->runCommand('oro:search:create-index')
-            ->runCommand('oro:navigation:init')
-            ->runCommand('assets:install', array('target' => './'))
-            ->runCommand('assetic:dump')
-            ->runCommand('oro:assetic:dump')
-            ->runCommand('oro:translation:dump')
-            ->runCommand('cache:clear', array('--no-warmup' => true));
-
-        $this->complete();
+        $this->get('event_dispatcher')->dispatch(InstallerEvents::FINISH);
 
         return $this->render('OroInstallerBundle:Process/Step:final.html.twig');
     }

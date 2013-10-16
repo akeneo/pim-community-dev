@@ -5,8 +5,6 @@ namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Persistence;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
-use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\Batch\BatchItem;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface;
@@ -78,7 +76,6 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new AclManager($factory, $extensionSelector);
 
         $this->assertFalse($manager->isAclEnabled());
-
 
         $aclProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider')
             ->disableOriginalConstructor()
