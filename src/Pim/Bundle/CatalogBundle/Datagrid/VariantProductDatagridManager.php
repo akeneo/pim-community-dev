@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
@@ -235,7 +237,10 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
 
         $proxyQuery
             ->leftJoin($rootAlias .'.family', 'productFamily')
-            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode');
+            ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
+            ->leftJoin($rootAlias .'.values', 'values')
+            ->leftJoin('values.options', 'valueOptions')
+            ->leftJoin('values.prices', 'valuePrices');
 
         $this->applyVariantExpression($proxyQuery);
 
@@ -296,6 +301,7 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         return array(
             'data_in'     => $dataIn,
             'data_not_in' => $dataNotIn,
+            'scopeCode'   => $this->flexibleManager->getScope()
         );
     }
 
@@ -320,12 +326,17 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
      */
-    public function getVariantGroup()
+    protected function getVariantGroup()
     {
         if (!$this->variantGroup) {
             throw new \LogicException('Datagrid manager has no configured Variant group');
         }
 
         return $this->variantGroup;
+    }
+
+    public function setFlexibleManager(FlexibleManager $flexibleManager)
+    {
+        $this->flexibleManager = $flexibleManager;
     }
 }

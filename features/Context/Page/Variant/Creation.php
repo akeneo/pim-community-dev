@@ -2,6 +2,7 @@
 
 namespace Context\Page\Variant;
 
+use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Form;
 
 /**
