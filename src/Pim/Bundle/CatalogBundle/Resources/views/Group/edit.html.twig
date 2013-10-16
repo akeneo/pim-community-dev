@@ -46,9 +46,9 @@
                 elements.deleteLink(
                     path('pim_catalog_group_remove', { id: form.vars.value.id }),
                     path('pim_catalog_group_index'),
-                    'confirmation.remove.group group'|trans({"%name%": form.vars.value.label}),
+                    'confirmation.remove.group'|trans({"%name%": form.vars.value.label}),
                     "",
-                    "flash.group group.removed"|trans
+                    "flash.group.removed"|trans
                 )
             }}
             {{ elements.submitBtn() }}
