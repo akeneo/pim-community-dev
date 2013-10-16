@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\EventListener;
 
+use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -141,8 +142,40 @@ class ConfigSubscriber implements EventSubscriberInterface
         $fieldConfig = $configProvider->getConfig($event->getClassName(), $event->getFieldName());
         if (in_array($event->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))
             && $fieldConfig->is('is_inverse', false)
+            && $fieldConfig->is('target_entity')
         ) {
-            //$this->extendManager->createField();
+
+            $classArray = explode('\\', $fieldConfig->getId()->getClassName());
+            $relationName  = strtolower(array_pop($classArray)) . '_' . $event->getFieldName();
+
+            switch ($event->getFieldType()) {
+                case 'oneToMany':
+                    $type = 'manyToOne';
+                    $fieldConfig->set('mappedBy', $relationName);
+                    break;
+                case 'manyToOne':
+                    $type = 'oneToMany';
+                    break;
+                case 'manyToMany':
+                    $type = 'manyToMany';
+                    break;
+                default:
+                    $type = '';
+            }
+
+            $relationConfig = array(
+                'type' => $type,
+                'options' => array(
+                    'is_inverse' => true,
+                    'target_entity' => $event->getClassName(),
+                 )
+            );
+
+            $this->extendManager->createField(
+                $fieldConfig->get('target_entity'),
+                $relationName,
+                $relationConfig
+            );
         }
     }
 }
