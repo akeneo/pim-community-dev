@@ -63,7 +63,7 @@ class AclProvider implements AclProviderInterface
         $this->loadedAcls = array();
         $this->options = $options;
         $this->permissionGrantingStrategy = $permissionGrantingStrategy;
-        $this->oidAncestorCacheCache = $oidAncestorCache;
+        $this->oidAncestorCache = $oidAncestorCache;
     }
 
     /**
@@ -411,11 +411,11 @@ QUERY;
      */
     private function getAncestorIds(array $batch)
     {
-        if ($this->oidAncestorCacheCache) {
+        if ($this->oidAncestorCache) {
             $ancestorIds = array();
 
             foreach ($batch as $oid) {
-                $ancestors = $this->oidAncestorCacheCache->getAncestorsFromCache($oid);
+                $ancestors = $this->oidAncestorCache->getAncestorsFromCache($oid);
                 if ($ancestors !== false) {
                     if (!empty($ancestors)) {
                         $ancestorIds = array_merge($ancestorIds, $ancestors);
@@ -428,7 +428,7 @@ QUERY;
                     foreach ($ancestors as $data) {
                         $ancestorArray[] = $data['ancestor_id'];
                     }
-                    $this->oidAncestorCacheCache->putAncestorsInCache($oid, $ancestorArray);
+                    $this->oidAncestorCache->putAncestorsInCache($oid, $ancestorArray);
                     $ancestorIds = array_merge($ancestorIds, $ancestorArray);
                 }
             }

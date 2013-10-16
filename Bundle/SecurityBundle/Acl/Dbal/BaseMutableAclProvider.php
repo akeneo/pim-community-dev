@@ -67,8 +67,8 @@ class BaseMutableAclProvider extends AclProvider implements MutableAclProviderIn
             throw $failed;
         }
 
-        if ($this->oidAncestorCacheCache) {
-            $this->oidAncestorCacheCache->removeAncestorsFromCache($oid);
+        if ($this->oidAncestorCache) {
+            $this->oidAncestorCache->removeAncestorsFromCache($oid);
         }
 
         // re-read the ACL from the database to ensure proper caching, etc.
@@ -109,8 +109,8 @@ class BaseMutableAclProvider extends AclProvider implements MutableAclProviderIn
         if (null !== $this->cache) {
             $this->cache->evictFromCacheByIdentity($oid);
         }
-        if ($this->oidAncestorCacheCache) {
-            $this->oidAncestorCacheCache->removeAncestorsFromCache($oid);
+        if ($this->oidAncestorCache) {
+            $this->oidAncestorCache->removeAncestorsFromCache($oid);
         }
     }
 
@@ -338,8 +338,8 @@ class BaseMutableAclProvider extends AclProvider implements MutableAclProviderIn
                     $this->cache->evictFromCacheByIdentity($childOid);
                 }
             }
-            if ($this->oidAncestorCacheCache) {
-                $this->oidAncestorCacheCache->removeAll();
+            if ($this->oidAncestorCache) {
+                $this->oidAncestorCache->removeAll();
             }
         }
     }
