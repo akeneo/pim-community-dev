@@ -110,15 +110,15 @@ class Association implements TranslatableInterface, VersionableInterface
     }
 
     /**
-     * Set code
+     * Set id
      *
-     * @param string $code
+     * @param integer $id
      *
      * @return Association
      */
-    public function setCode($code)
+    public function setId($id)
     {
-        $this->code = $code;
+        $this->id = $id;
 
         return $this;
     }
@@ -131,6 +131,20 @@ class Association implements TranslatableInterface, VersionableInterface
     public function getCode()
     {
         return $this->code;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     *
+     * @return Association
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
     }
 
     /**
