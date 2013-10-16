@@ -480,6 +480,28 @@ pim_catalog_variant_group_remove:
     class: PimCatalogBundle:VariantGroup
     permission: DELETE
 
+# Groups
+pim_catalog_group:
+    type: action
+    label: Group manipulation
+
+pim_catalog_group_index:
+    type: entity
+    class: PimCatalogBundle:Group
+    permission: VIEW
+pim_catalog_group_create:
+    type: entity
+    class: PimCatalogBundle:Group
+    permission: CREATE
+pim_catalog_group_edit:
+    type: entity
+    class: PimCatalogBundle:Group
+    permission: EDIT
+pim_catalog_group_remove:
+    type: entity
+    class: PimCatalogBundle:Group
+    permission: DELETE
+
 # Association
 pim_catalog_association:
     type: action
