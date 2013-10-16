@@ -9,5 +9,7 @@ services:
         calls:
             - [ addFilter, [ 'string',          @oro_filter.extension.orm.string_filter ] ]
             - [ addFilter, [ 'select_row',      @oro_filter.extension.orm.select_row_filter ] ]
+            - [ addFilter, [ 'number',          @oro_filter.extension.orm.number_filter ] ]
+            - [ addFilter, [ 'percent',         @oro_filter.extension.orm.percent_filter ] ]
         tags:
             - { name: oro_grid.extension }

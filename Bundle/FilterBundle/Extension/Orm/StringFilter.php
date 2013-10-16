@@ -9,12 +9,7 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 class StringFilter extends AbstractFilter
 {
     /**
-     * Applies filter to query builder
-     *
-     * @param QueryBuilder $qb
-     * @param mixed        $value
-     *
-     * @return mixed
+     * {@inheritDoc}
      */
     public function apply(QueryBuilder $qb, $value)
     {
