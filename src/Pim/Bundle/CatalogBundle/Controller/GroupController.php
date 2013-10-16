@@ -180,4 +180,23 @@ class GroupController extends AbstractDoctrineController
             'datagrid' => $datagridView
         );
     }
+
+    /**
+     * Remove a group
+     * @param Group $group
+     *
+     * @AclAncestor("pim_catalog_group_remove")
+     * @return Response|RedirectResponse
+     */
+    public function removeAction(Group $group)
+    {
+        $this->getManager()->remove($group);
+        $this->getManager()->flush();
+
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            return new Response('', 204);
+        } else {
+            return $this->redirectToRoute('pim_catalog_group_index');
+        }
+    }
 }
