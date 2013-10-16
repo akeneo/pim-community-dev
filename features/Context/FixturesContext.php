@@ -9,6 +9,7 @@ use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
+use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
@@ -809,7 +810,20 @@ class FixturesContext extends RawMinkContext
         }
     }
 
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following associations?:$/
+     */
+    public function theFollowingAssociations(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $code = $data['code'];
+            $label = isset($data['label']) ? $data['label'] : null;
 
+            $this->createAssociation($code, $label);
+        }
+    }
 
     /**
      * @Given /^there is no identifier attribute$/
@@ -1123,6 +1137,16 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $code
+     *
+     * @return Association
+     */
+    public function getAssociation($code)
+    {
+        return $this->getEntityOrException('PimCatalogBundle:Association', array('code' => $code));
+    }
+
+    /**
      * @param string $value
      *
      * @return string
@@ -1349,6 +1373,19 @@ class FixturesContext extends RawMinkContext
         }
 
         $this->persist($variant);
+    }
+
+    /**
+     * @param string $code
+     * @param string $label
+     */
+    private function createAssociation($code, $label)
+    {
+        $association = new Association();
+        $association->setCode($code);
+        $association->setLocale('en_US')->setLabel($label);
+
+        $this->persist($association);
     }
 
     /**

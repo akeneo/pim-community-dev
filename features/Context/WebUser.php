@@ -33,20 +33,21 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private $windowHeight;
 
     private $pageMapping = array(
-        'attributes'  => 'Attribute index',
-        'channels'    => 'Channel index',
-        'currencies'  => 'Currency index',
-        'exports'     => 'Export index',
-        'families'    => 'Family index',
-        'imports'     => 'Import index',
-        'locales'     => 'Locale index',
-        'products'    => 'Product index',
-        'users'       => 'User index',
-        'user roles'  => 'UserRole index',
-        'user groups' => 'UserGroup index',
-        'categories'  => 'Category tree creation',
-        'home'        => 'Base index',
-        'variants'    => 'Variant index'
+        'associations' => 'Association index',
+        'attributes'   => 'Attribute index',
+        'categories'   => 'Category tree creation',
+        'channels'     => 'Channel index',
+        'currencies'   => 'Currency index',
+        'exports'      => 'Export index',
+        'families'     => 'Family index',
+        'home'         => 'Base index',
+        'imports'      => 'Import index',
+        'locales'      => 'Locale index',
+        'products'     => 'Product index',
+        'users'        => 'User index',
+        'user roles'   => 'UserRole index',
+        'user groups'  => 'UserGroup index',
+        'variants'     => 'Variant index',
     );
 
     /**
@@ -783,6 +784,19 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $association
+     *
+     * @Given /^I should be on the "([^"]*)" association page$/
+     */
+    public function iShouldBeOnTheAssociationPage($association)
+    {
+        $expectedAddress = $this->getPage('Association edit')->getUrl(
+            array('id' => $this->getAssociation($association)->getId())
+        );
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
      * @param string $not
      * @param string $field
      *
@@ -966,7 +980,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $fields
      *
-     * @Given /^the fields (.*) should be disabled$/
+     * @Given /^the fields? (.*) should be disabled$/
      */
     public function theFieldsShouldBeDisabled($fields)
     {
@@ -1681,11 +1695,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Then /^I should see the completeness:$/
      */
-    public function iShouldSeeTheCompleteness(TableNode $tableNode)
+    public function iShouldSeeTheCompleteness(TableNode $table)
     {
-        foreach ($tableNode->getHash() as $data) {
+        foreach ($table->getHash() as $data) {
             $channel = strtoupper($data['channel']);
             $locale  = $data['locale'];
 
@@ -2030,6 +2046,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getVariant($code)
     {
         return $this->getFixturesContext()->getVariant($code);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Association
+     */
+    private function getAssociation($code)
+    {
+        return $this->getFixturesContext()->getAssociation($code);
     }
 
     /**
