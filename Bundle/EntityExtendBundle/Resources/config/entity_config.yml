@@ -97,6 +97,12 @@ oro_entity_config:
                         auditable:          false
                         default_value:      true
 
+                relation:
+                    options:
+                        auditable:          false
+                        serializable:       true
+                        default_value:      []
+
         field:
             grid_action:
                 -
