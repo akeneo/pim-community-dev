@@ -132,3 +132,5 @@ services:
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
             - '@pim_catalog.datagrid.worker'
+            - '@pim_catalog.form.handler.group'
+            - '@pim_catalog.form.group'
