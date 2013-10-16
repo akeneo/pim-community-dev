@@ -1,8 +1,9 @@
 {% extends bap.layout %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 {% block head_script %}
     {{ parent() }}
-    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
+    {#{% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}#}
 {% endblock %}
 {% block content %}
      <div class="container-fluid page-title">
@@ -23,5 +24,6 @@
              </div>
          </div>
      </div>
-     {{ UI.gridBlock(gridId) }}
+     {#{{ UI.gridBlock(gridId) }}#}
+     {{ dataGrid.renderGrid(gridName) }}
 {% endblock content %}
