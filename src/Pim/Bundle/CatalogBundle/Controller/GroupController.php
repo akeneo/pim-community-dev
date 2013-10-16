@@ -148,4 +148,36 @@ class GroupController extends AbstractDoctrineController
             'form' => $this->groupForm->createView()
         );
     }
+
+    /**
+     * Edit a group
+     *
+     * @param Group $group
+     *
+     * @Template
+     * @AclAncestor("pim_catalog_group_edit")
+     * @return array
+     */
+    public function editAction(Group $group)
+    {
+        if ($this->groupHandler->process($group)) {
+            $this->addFlash('success', 'flash.group group.updated');
+        }
+
+        $datagridManager = $this->datagridWorker->getDatagridManager('group_product');
+        $datagridManager->setGroup($group);
+        $datagridView = $datagridManager->getDatagrid()->createView();
+
+        if ('json' === $this->getRequest()->getRequestFormat()) {
+            return $this->render(
+                'OroGridBundle:Datagrid:list.json.php',
+                array('datagrid' => $datagridView)
+            );
+        }
+
+        return array(
+            'form' => $this->groupForm->createView(),
+            'datagrid' => $datagridView
+        );
+    }
 }
