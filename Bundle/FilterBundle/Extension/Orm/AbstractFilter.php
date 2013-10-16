@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\FilterBundle\Extension\Orm;
 
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
+
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -66,6 +68,8 @@ abstract class AbstractFilter implements FilterInterface
     abstract protected function getFormType();
 
     /**
+     * Applies expression to where clause
+     *
      * @param QueryBuilder $qb
      * @param mixed        $parameter
      */
@@ -80,7 +84,7 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
-     * Apply expression to having clause
+     * Applies expression to having clause
      *
      * @param QueryBuilder $qb
      * @param mixed        $parameter
@@ -108,6 +112,33 @@ abstract class AbstractFilter implements FilterInterface
         } else {
             $this->applyWhere($qb, $expression);
         }
+    }
+
+    /**
+     * Create filter expression that will be applied
+     *
+     * @param mixed  $leftExpression
+     * @param string $operator
+     * @param mixed  $rightExpression
+     * @param bool   $withParam
+     *
+     * @return \Doctrine\ORM\Query\Expr\Comparison
+     */
+    protected function createComparisonExpression($leftExpression, $operator, $rightExpression, $withParam = true)
+    {
+        $rightExpression = $withParam ? ':' . $rightExpression : $rightExpression;
+
+        return new Expr\Comparison($leftExpression, $operator, $rightExpression);
+    }
+
+    /**
+     * Generates unique param name
+     *
+     * @return string
+     */
+    protected function generateQueryParameterName()
+    {
+        return preg_replace('#[^a-z0-9]#i', '', $this->getName()) . mt_rand();
     }
 
     /**
