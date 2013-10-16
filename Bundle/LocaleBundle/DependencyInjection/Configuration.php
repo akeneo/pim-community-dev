@@ -80,7 +80,7 @@ class Configuration implements ConfigurationInterface
                 'country' => array('value' => null),
                 'timezone' => array('value' => $date->getTimezone()->getName()),
                 'default_currency' => array('value' => 'USD'),
-                'name_format' => array('value' => '%%first%% %%last%%')
+                'name_format' => array('value' => null)
             )
         );
 

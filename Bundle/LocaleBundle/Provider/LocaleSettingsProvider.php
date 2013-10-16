@@ -6,6 +6,8 @@ class LocaleSettingsProvider
 {
     const NAME_FORMAT_FULL = 'full';
     const ADDRESS_FORMAT = 'format';
+    const DEFAULT_LOCALE = 'en';
+    const DEFAULT_COUNTRY = 'US';
 
     /**
      * Format placeholders (lowercase and uppercase):
@@ -62,5 +64,22 @@ class LocaleSettingsProvider
     public function addAddressFormats(array $formats)
     {
         $this->addressFormats = array_merge($this->addressFormats, $formats);
+    }
+
+    /**
+     * Get name format based on locale.
+     *
+     * @param null|string $locale
+     */
+    public function getNameFormat($locale = null)
+    {
+        if (!$locale) {
+            $locale = \Locale::getDefault();
+        }
+        if (isset($this->nameFormats[$locale])) {
+            return $this->nameFormats[$locale];
+        } else {
+            return $this->nameFormats[self::DEFAULT_LOCALE];
+        }
     }
 }

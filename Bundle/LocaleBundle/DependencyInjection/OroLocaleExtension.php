@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\LocaleBundle\DependencyInjection;
 
+use Oro\Bundle\LocaleBundle\Provider\LocaleSettingsProvider;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -11,8 +12,6 @@ use Symfony\Component\Intl\Intl;
 
 class OroLocaleExtension extends Extension
 {
-    const DEFAULT_COUNTRY = 'US';
-
     const PARAMETER_NAME_FORMATS = 'oro_locale.format.name';
     const PARAMETER_ADDRESS_FORMATS = 'oro_locale.format.address';
 
@@ -26,16 +25,7 @@ class OroLocaleExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $locale = $this->getFinalizedParameter($config['settings']['locale']['value'], $container);
-        $config['settings']['locale']['value'] = $this->getDefaultLocale($locale);
-        if (empty($config['settings']['language']['value'])) {
-            $config['settings']['language']['value'] = $this->getDefaultLanguageByLocale($locale);
-        }
-        if (empty($config['settings']['country']['value'])) {
-            $config['settings']['country']['value'] = $this->getDefaultCountryByLocale($locale);
-        }
-        $container->prependExtensionConfig('oro_locale', $config);
-
+        $this->prepareSettings($config, $container);
         $container->setParameter(
             self::PARAMETER_NAME_FORMATS,
             $this->escapePercentSymbols($config['name_format'])
@@ -47,6 +37,27 @@ class OroLocaleExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+    }
+
+    /**
+     * Prepare locale system settings default values.
+     *
+     * @param array $config
+     * @param ContainerBuilder $container
+     */
+    protected function prepareSettings(array $config, ContainerBuilder $container)
+    {
+        $locale = $this->getDefaultLocale(
+            $this->getFinalizedParameter($config['settings']['locale']['value'], $container)
+        );
+        $config['settings']['locale']['value'] = $locale;
+        if (empty($config['settings']['language']['value'])) {
+            $config['settings']['language']['value'] = $this->getDefaultLanguageByLocale($locale);
+        }
+        if (empty($config['settings']['country']['value'])) {
+            $config['settings']['country']['value'] = $this->getDefaultCountryByLocale($locale);
+        }
+        $container->prependExtensionConfig('oro_locale', $config);
     }
 
     /**
@@ -78,15 +89,21 @@ class OroLocaleExtension extends Extension
      */
     protected function getDefaultLocale($locale)
     {
-        $displayLocaleParts = \Locale::parseLocale($locale);
-        $displayPartKeys = array('language', 'script', 'region');
-        $displayLocaleData = array();
-        foreach ($displayPartKeys as $localePartKey) {
-            if (isset($displayLocaleParts[$localePartKey])) {
-                $displayLocaleData[] = $displayLocaleParts[$localePartKey];
+        if ($locale) {
+            $displayLocaleParts = \Locale::parseLocale($locale);
+            $displayPartKeys = array(\Locale::LANG_TAG, \Locale::SCRIPT_TAG, \Locale::REGION_TAG);
+            $displayLocaleData = array();
+            foreach ($displayPartKeys as $localePartKey) {
+                if (isset($displayLocaleParts[$localePartKey])) {
+                    $displayLocaleData[] = $displayLocaleParts[$localePartKey];
+                }
+            }
+            if ($displayLocaleData) {
+                return implode('_', $displayLocaleData);
             }
         }
-        return implode('_', $displayLocaleData);
+
+        return LocaleSettingsProvider::DEFAULT_LOCALE;
     }
 
     /**
@@ -102,7 +119,8 @@ class OroLocaleExtension extends Extension
         if (array_key_exists($region, $countries)) {
             return $region;
         }
-        return static::DEFAULT_COUNTRY;
+
+        return LocaleSettingsProvider::DEFAULT_COUNTRY;
     }
 
     /**
@@ -119,17 +137,17 @@ class OroLocaleExtension extends Extension
     }
 
     /**
-     * @param array $data
-     * @return array
+     * @param array|string $data
+     * @return array|string
      */
-    protected function escapePercentSymbols(array $data)
+    protected function escapePercentSymbols($data)
     {
-        foreach ($data as $key => $value) {
-            if (is_array($value)) {
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
                 $data[$key] = $this->escapePercentSymbols($value);
-            } else {
-                $data[$key] = str_replace('%', '%%', $value);
             }
+        } else {
+            $data = str_replace('%', '%%', $data);
         }
 
         return $data;

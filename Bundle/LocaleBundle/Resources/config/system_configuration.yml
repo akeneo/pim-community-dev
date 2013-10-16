@@ -57,7 +57,7 @@ oro_system_configuration:
                     - NotBlank: ~
 
         oro_locale.name_format:
-            type: text
+            type: oro_name_format
             priority: 20
             options:
                 label: 'Name format'

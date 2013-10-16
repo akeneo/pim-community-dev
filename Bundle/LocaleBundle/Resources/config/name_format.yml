@@ -1,1 +1,2 @@
 en: %prefix% %first_name% %middle_name% %last_name% %suffix%
+ru_RU: %last_name% %first_name% %middle_name%
