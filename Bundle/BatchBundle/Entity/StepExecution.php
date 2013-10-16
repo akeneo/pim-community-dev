@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\BatchBundle\Item\ExecutionContext;
 use Oro\Bundle\BatchBundle\Job\BatchStatus;
 use Oro\Bundle\BatchBundle\Job\ExitStatus;
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 
 /**
  * Batch domain object representation the execution of a step. Unlike
@@ -136,7 +135,6 @@ class StepExecution
      * @ORM\Column(name="warnings", type="array")
      */
     private $warnings = array();
-
 
     /**
      * Constructor with mandatory properties.
@@ -498,10 +496,10 @@ class StepExecution
      * @param string $reason
      * @param mixed  $item
      */
-    public function addWarning($class, $reason, $item)
+    public function addWarning($name, $reason, $item)
     {
         $this->warnings[] = array(
-            'class'  => $class,
+            'name'   => sprintf('oro_batch.%s.title', $name),
             'reason' => $reason,
             'item'   => $item,
         );

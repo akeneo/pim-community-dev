@@ -151,7 +151,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $this->itemStep->execute($stepExecution);
     }
 
-    public function testDispatchReaderInvalidItemException()
+    public function testDispatchReadInvalidItemException()
     {
         $stepExecution = $this->getMockBuilder('Oro\\Bundle\\BatchBundle\\Entity\\StepExecution')
             ->disableOriginalConstructor()
@@ -166,25 +166,28 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->with(
                 EventInterface::INVALID_ITEM,
                 $this->logicalAnd(
-                    $this->isInstanceOf('Oro\Bundle\BatchBundle\Event\InvalidItemEvent'),
+                    $this->isInstanceOf('Oro\\Bundle\\BatchBundle\\Event\\InvalidItemEvent'),
                     $this->attributeEqualTo('reason', 'The read item is invalid'),
                     $this->attributeEqualTo('item', array('foo' => 'bar'))
                 )
             );
 
-        $reader = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
+        $reader = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
         $reader->expects($this->exactly(2))
             ->method('read')
             ->will($this->onConsecutiveCalls(
                 $this->throwException(new InvalidItemException('The read item is invalid', array('foo' => 'bar'))),
                 $this->returnValue(null)
             ));
+        $reader->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('stub_reader'));
 
-        $processor = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemProcessorInterface');
+        $processor = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
         $processor->expects($this->never())
             ->method('process');
 
-        $writer = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemWriterInterface');
+        $writer = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
         $writer->expects($this->never())
             ->method('write');
 
@@ -195,7 +198,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $stepExecution->expects($this->once())
             ->method('addWarning')
             ->with(
-                get_class($reader),
+                'stub_reader',
                 'The read item is invalid',
                 array('foo' => 'bar')
             );
@@ -219,13 +222,13 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->with(
                 EventInterface::INVALID_ITEM,
                 $this->logicalAnd(
-                    $this->isInstanceOf('Oro\Bundle\BatchBundle\Event\InvalidItemEvent'),
+                    $this->isInstanceOf('Oro\\Bundle\\BatchBundle\\Event\\InvalidItemEvent'),
                     $this->attributeEqualTo('reason', 'The processed item is invalid'),
                     $this->attributeEqualTo('item', array('foo' => 'bar'))
                 )
             );
 
-        $reader = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
+        $reader = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
         $reader->expects($this->exactly(2))
             ->method('read')
             ->will($this->onConsecutiveCalls(
@@ -233,7 +236,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
                 $this->returnValue(null)
             ));
 
-        $processor = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemProcessorInterface');
+        $processor = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
         $processor->expects($this->exactly(1))
             ->method('process')
             ->will(
@@ -241,8 +244,11 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
                     new InvalidItemException('The processed item is invalid', array('foo' => 'bar'))
                 )
             );
+        $processor->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('stub_processor'));
 
-        $writer = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemWriterInterface');
+        $writer = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
         $writer->expects($this->never())
             ->method('write');
 
@@ -253,7 +259,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $stepExecution->expects($this->once())
             ->method('addWarning')
             ->with(
-                get_class($processor),
+                'stub_processor',
                 'The processed item is invalid',
                 array('foo' => 'bar')
             );
@@ -277,13 +283,13 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             ->with(
                 EventInterface::INVALID_ITEM,
                 $this->logicalAnd(
-                    $this->isInstanceOf('Oro\Bundle\BatchBundle\Event\InvalidItemEvent'),
+                    $this->isInstanceOf('Oro\\Bundle\\BatchBundle\\Event\\InvalidItemEvent'),
                     $this->attributeEqualTo('reason', 'The written item is invalid'),
                     $this->attributeEqualTo('item', array('foo' => 'bar'))
                 )
             );
 
-        $reader = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
+        $reader = $this->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
         $reader->expects($this->exactly(2))
             ->method('read')
             ->will($this->onConsecutiveCalls(
@@ -291,14 +297,14 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
                 $this->returnValue(null)
             ));
 
-        $processor = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemProcessorInterface');
+        $processor = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
         $processor->expects($this->exactly(1))
             ->method('process')
             ->will(
                 $this->returnValue(array('foo' => 'bar'))
             );
 
-        $writer = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemWriterInterface');
+        $writer = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
         $writer->expects($this->exactly(1))
             ->method('write')
             ->will(
@@ -306,6 +312,9 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
                     new InvalidItemException('The written item is invalid', array('foo' => 'bar'))
                 )
             );
+        $writer->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue('stub_writer'));
 
         $this->itemStep->setReader($reader);
         $this->itemStep->setProcessor($processor);
@@ -314,7 +323,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $stepExecution->expects($this->once())
             ->method('addWarning')
             ->with(
-                get_class($writer),
+                'stub_writer',
                 'The written item is invalid',
                 array('foo' => 'bar')
             );
@@ -335,7 +344,6 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
         $stepExecution->expects($this->once())
             ->method('addFailureException');
 
-
         $this->eventDispatcher
             ->expects($this->at(1))
             ->method('dispatch')
@@ -344,18 +352,17 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
                 $this->anything()
             );
 
-
-        $reader = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemReaderInterface');
+        $reader = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
         $reader->expects($this->any())
             ->method('read')
             ->will($this->returnValue(array('foo' => 'bar')));
 
-        $processor = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemProcessorInterface');
+        $processor = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
         $processor->expects($this->any())
             ->method('process')
             ->will($this->returnValue(null));
 
-        $writer = $this ->getMock('Oro\\Bundle\\BatchBundle\\Item\\ItemWriterInterface');
+        $writer = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper');
 
         $this->itemStep->setReader($reader);
         $this->itemStep->setProcessor($processor);
@@ -371,12 +378,13 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Step\ItemStep', $entity);
+        $this->assertInstanceOf('Oro\\Bundle\\BatchBundle\\Step\\ItemStep', $entity);
     }
+
     private function getReaderMock(array $configuration, array $fields = array())
     {
         $reader = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Tests\Unit\Item\ItemReaderTestHelper')
+            ->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -394,7 +402,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
     private function getProcessorMock(array $configuration, array $fields = array())
     {
         $processor = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Tests\Unit\Item\ItemProcessorTestHelper')
+            ->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -412,7 +420,7 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
     private function getWriterMock(array $configuration, array $fields = array())
     {
         $writer = $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Tests\Unit\Item\ItemWriterTestHelper')
+            ->getMockBuilder('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemWriterTestHelper')
             ->disableOriginalConstructor()
             ->getMock();
 
