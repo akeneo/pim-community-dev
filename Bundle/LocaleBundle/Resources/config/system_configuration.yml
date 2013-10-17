@@ -2,17 +2,27 @@ oro_system_configuration:
     groups:
         localization:
             title: 'Localization'
-            icon:  'icon-time'
+            icon:  'icon-flag'
+
+        locale_settings:
+            title: 'Localization options'
 
         locale_options:
-            title: 'Locale options'
-
-        number_formats:
-            title: 'Nubmer formats'
+            title: 'Formatting options'
 
     fields:
+        oro_locale.language:
+            type: locale
+            priority: 70
+            options:
+                label: 'Language'
+                required: true
+                constraints:
+                    - NotBlank: ~
+
         oro_locale.locale:
             type: locale
+            priority: 60
             options:
                 label: 'Locale'
                 required: true
@@ -21,87 +31,34 @@ oro_system_configuration:
 
         oro_locale.timezone:
             type: timezone
-            priority: 253
+            priority: 50
             options:
                 label: 'Timezone'
                 required: true
                 constraints:
                     - NotBlank: ~
 
+        oro_locale.country:
+              type: country
+              priority: 40
+              options:
+                  label: 'Country'
+                  required: true
+                  constraints:
+                      - NotBlank: ~
+
         oro_locale.default_currency:
             type: currency
+            priority: 30
             options:
                 label: 'Default currency'
                 required: true
                 constraints:
                     - NotBlank: ~
 
-        oro_locale.date_format:
-            type: choice
-            priority: 255
-            options:
-                label: 'Date format'
-                required: true
-                choices:
-                      "d M Y": "dd MMM yyyy"
-                      "m/d/y": "mm/dd/yy"
-                      "d.m.Y": "dd.mm.yyyy"
-                      "d.m.y": "dd.mm.yy"
-                      "j.n.y": "d.m.yy"
-                      "d/m/y": "dd/mm/yy"
-                      "y/m/d": "yy/mm/dd"
-                      "Y-m-d": "yyyyy-mm-dd"
-                constraints:
-                    - NotBlank: ~
-
-        oro_locale.time_format:
-            type: choice
-            priority: 254
-            options:
-                label: 'Time format'
-                required: true
-                choices:
-                      "H:i":  "HH:mm (24H)"
-                      "G:i": "H:mm (24H)"
-                      "h:i a": "HH:mm am/pm"
-                      "g:i a": "H:mm am/pm"
-                      "h:i A": "HH:mm AM/PM"
-                      "g:i A": "H:mm AM/PM"
-                constraints:
-                    - NotBlank: ~
-
-        oro_locale.decimal_symbol:
-            type: text
-            options:
-                label: 'Decimal symbol'
-                required: true
-                constraints:
-                    - NotBlank: ~
-                    - Length:   1
-
-        oro_locale.thousands_separator:
-            type: text
-            options:
-                label: '1000s separator'
-                required: false
-                constraints:
-                    - Length:
-                        max: 1
-
-        oro_locale.number_of_decimals:
-            type: text
-            options:
-                label: 'Number of digits after decimal'
-                required: true
-                constraints:
-                    - NotBlank: ~
-                    - Length:   1
-                    - Regex:    "/^[0-9]{1}$/"
-                    - Range:
-                        min:    0
-
         oro_locale.name_format:
-            type: text
+            type: oro_name_format
+            priority: 20
             options:
                 label: 'Name format'
                 required: true
@@ -118,16 +75,15 @@ oro_system_configuration:
                             localization:
                                 priority: 254
                                 children:
-                                    locale_options:
+                                    locale_settings:
+                                        priority: 100
                                         children:
-#                                            - oro_locale.locale
-#                                            - oro_locale.default_currency
+                                            - oro_locale.language
+                                            - oro_locale.country
+                                            - oro_locale.default_currency
                                             - oro_locale.timezone
-                                            - oro_locale.date_format
-                                            - oro_locale.time_format
+                                    locale_options:
+                                        priority: 50
+                                        children:
+                                            - oro_locale.locale
                                             - oro_locale.name_format
-#                                    number_formats:
-#                                        children:
-#                                            - oro_locale.decimal_symbol
-#                                            - oro_locale.thousands_separator
-#                                            - oro_locale.number_of_decimals

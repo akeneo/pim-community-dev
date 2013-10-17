@@ -1,0 +1,7 @@
+config:
+    paths:
+        'oro/test': 'bundles/orotest/js/test.js'
+
+build:
+    paths:
+        'oro/test': 'empty:'

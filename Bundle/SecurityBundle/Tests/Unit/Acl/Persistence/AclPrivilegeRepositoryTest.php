@@ -181,9 +181,9 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         );
 
         $allowedPermissions = array();
-        $allowedPermissions[(string)$rootOid] = array('VIEW', 'CREATE', 'EDIT');
-        $allowedPermissions[(string)$oid1] = array('VIEW', 'CREATE', 'EDIT');
-        $allowedPermissions[(string)$oid2] = array('VIEW', 'CREATE');
+        $allowedPermissions[(string) $rootOid] = array('VIEW', 'CREATE', 'EDIT');
+        $allowedPermissions[(string) $oid1] = array('VIEW', 'CREATE', 'EDIT');
+        $allowedPermissions[(string) $oid2] = array('VIEW', 'CREATE');
 
         $rootAce = $this->getAce('root', $sid);
         $rootAcl->expects($this->any())
@@ -211,7 +211,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
             ->will(
                 $this->returnCallback(
                     function ($oid) use (&$allowedPermissions) {
-                        return $allowedPermissions[(string)$oid];
+                        return $allowedPermissions[(string) $oid];
                     }
                 )
             );
@@ -688,8 +688,8 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $id
-     * @param array $permissions
+     * @param  string       $id
+     * @param  array        $permissions
      * @return AclPrivilege
      */
     public static function getPrivilege($id, array $permissions)
@@ -716,7 +716,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array $src
+     * @param  array                    $src
      * @return \SplObjectStorage
      * @throws NotAllAclsFoundException
      */

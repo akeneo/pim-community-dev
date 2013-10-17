@@ -2,7 +2,7 @@
   backgrid-moment-cell
   http://github.com/wyuenho/backgrid
 
-  Copyright (c) 2013 Jimmy Yuen Ho Wong
+  Copyright (c) 2013 Jimmy Yuen Ho Wong and contributors
   Licensed under the MIT @license.
 */
 (function ($, _, Backbone, Backgrid, moment) {
@@ -27,6 +27,12 @@
     /**
        @cfg {Object} options
 
+       @cfg {boolean} [options.modelInUnixOffset=false] Whether the model values
+       should be read/written as the number of milliseconds since UNIX Epoch.
+
+       @cfg {boolean} [options.modelInUnixTimestamp=false] Whether the model
+       values should be read/written as the number of seconds since UNIX Epoch.
+
        @cfg {boolean} [options.modelInUTC=true] Whether the model values should
        be read/written in UTC mode or local mode.
 
@@ -36,6 +42,13 @@
        @cfg {string} [options.modelFormat=moment.defaultFormat] The format this
        moment formatter should use to read/write model values. Only meaningful if
        the values are strings.
+
+       @cfg {boolean} [options.displayInUnixOffset=false] Whether the display
+       values should be read/written as the number of milliseconds since UNIX
+       Epoch.
+
+       @cfg {boolean} [options.displayInUnixTimestamp=false] Whether the display
+       values should be read/written as the number of seconds since UNIX Epoch.
 
        @cfg {boolean} [options.displayInUTC=true] Whether the display values
        should be read/written in UTC mode or local mode.
@@ -47,9 +60,13 @@
        this moment formatter should use to read/write dislay values.
      */
     defaults: {
+      modelInUnixOffset: false,
+      modelInUnixTimestamp: false,
       modelInUTC: true,
       modelLang: moment.lang(),
       modelFormat: moment.defaultFormat,
+      displayInUnixOffset: false,
+      displayInUnixTimestamp: false,
       displayInUTC: true,
       displayLang: moment.lang(),
       displayFormat: moment.defaultFormat
@@ -63,26 +80,21 @@
        @return {string}
      */
     fromRaw: function (rawData) {
-      var m;
+      if (rawData == null) return '';
 
-      // moment.js doesn't support switch lang locally yet as of 1.7.2
-      // I don't know what kind of subtle nasty bugs this will bring.
-      // See [here](https://github.com/timrwood/moment/issues/508#issuecomment-10768334).
-      if (this.modelLang) {
-        var oldLang = moment.lang();
-        moment.lang(this.modelLang);
-        m = this.modelInUTC ? moment.utc(rawData, this.modelFormat) : moment(rawData, this.modelFormat);
-        moment.lang(oldLang);
-      }
-      else {
-        m = this.modelInUTC ? moment.utc(rawData, this.modelFormat) : moment(rawData, this.modelFormat);
-      }
+      var m = this.modelInUnixOffset ? moment(rawData) :
+        this.modelInUnixTimestamp ? moment.unix(rawData) :
+        this.modelInUTC ?
+        moment.utc(rawData, this.modelFormat, this.modelLang) :
+        moment(rawData, this.modelFormat, this.modelLang);
 
-      if (this.displayLang) {
-        m.lang(this.displayLang);
-      }
+      if (this.displayInUnixOffset) return +m;
 
-      this.displayInUTC ? m.utc() : m.local();
+      if (this.displayInUnixTimestamp) return m.unix();
+
+      if (this.displayLang) m.lang(this.displayLang);
+
+      if (this.displayInUTC) m.utc(); else m.local();
 
       return m.format(this.displayFormat);
     },
@@ -95,25 +107,22 @@
        @return {string}
      */
     toRaw: function (formattedData) {
-      var m;
 
-      if (this.displayLang) {
-        var oldLang = moment.lang();
-        moment.lang(this.displayLang);
-        m = this.displayInUTC ? moment.utc(formattedData, this.displayFormat) : moment(formattedData, this.displayFormat);
-        moment.lang(oldLang);
-      }
-      else {
-        m = this.displayInUTC ? moment.utc(formattedData, this.displayFormat) : moment(formattedData, this.displayFormat);
-      }
+      var m = this.displayInUnixOffset ? moment(+formattedData) :
+        this.displayInUnixTimestamp ? moment.unix(+formattedData) :
+        this.displayInUTC ?
+        moment.utc(formattedData, this.displayFormat, this.displayLang) :
+        moment(formattedData, this.displayFormat, this.displayLang);
 
       if (!m || !m.isValid()) return;
 
-      if (this.modelLang) {
-        m.lang(this.modelLang);
-      }
+      if (this.modelInUnixOffset) return +m;
 
-      this.modelInUTC ? m.utc() : m.local();
+      if (this.modelInUnixTimestamp) return m.unix();
+
+      if (this.modelLang) m.lang(this.modelLang);
+
+      if (this.modelInUTC) m.utc(); else m.local();
 
       return m.format(this.modelFormat);
     }

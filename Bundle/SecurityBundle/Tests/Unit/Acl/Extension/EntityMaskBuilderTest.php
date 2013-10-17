@@ -87,7 +87,7 @@ class EntityMaskBuilderTest extends \PHPUnit_Framework_TestCase
                 $delim + 2,
                 strlen(EntityMaskBuilder::PATTERN_ALL_OFF) - $delim - 2
             );
-        $this->assertEquals($expected, EntityMaskBuilder::getPatternFor((integer)2147483648));
+        $this->assertEquals($expected, EntityMaskBuilder::getPatternFor((integer) 2147483648));
     }
 
     public function testReset()

@@ -5,7 +5,6 @@ namespace Oro\Bundle\SecurityBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Definition;
 
 class AclConfigurationPass implements CompilerPassInterface
 {
@@ -27,6 +26,8 @@ class AclConfigurationPass implements CompilerPassInterface
 
     const DEFAULT_ACL_CACHE_CLASS = 'Oro\Bundle\SecurityBundle\Acl\Cache\AclCache';
 
+    const ACL_OID_ANCESTOR_CACHE = 'oro_security.oid_ancestor.cache';
+
     /**
      * {@inheritDoc}
      */
@@ -37,6 +38,7 @@ class AclConfigurationPass implements CompilerPassInterface
         $this->configureDefaultAclCache($container);
         $this->configureDefaultAclVoter($container);
     }
+
 
     /**
      * @param ContainerBuilder $container
@@ -72,6 +74,8 @@ class AclConfigurationPass implements CompilerPassInterface
             if ($container->hasDefinition(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY)) {
                 $providerDef->replaceArgument(1, new Reference(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY));
             }
+            // add OID ancestor cache
+            $providerDef->addArgument(new Reference(self::ACL_OID_ANCESTOR_CACHE));
         }
     }
 
@@ -135,7 +139,7 @@ class AclConfigurationPass implements CompilerPassInterface
     /**
      * Load ACL extensions and sort them by priority.
      *
-     * @param ContainerBuilder $container
+     * @param  ContainerBuilder $container
      * @return array
      */
     protected function loadAclExtensions(ContainerBuilder $container)
@@ -145,7 +149,7 @@ class AclConfigurationPass implements CompilerPassInterface
             $priority = 0;
             foreach ($attributes as $attr) {
                 if (isset($attr['priority'])) {
-                    $priority = (int)$attr['priority'];
+                    $priority = (int) $attr['priority'];
                     break;
                 }
             }

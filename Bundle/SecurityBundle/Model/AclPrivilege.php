@@ -40,7 +40,7 @@ class AclPrivilege
     }
 
     /**
-     * @param AclPrivilegeIdentity $identity
+     * @param  AclPrivilegeIdentity $identity
      * @return AclPrivilege
      */
     public function setIdentity($identity)
@@ -59,7 +59,7 @@ class AclPrivilege
     }
 
     /**
-     * @param string $group
+     * @param  string       $group
      * @return AclPrivilege
      */
     public function setGroup($group)
@@ -78,7 +78,7 @@ class AclPrivilege
     }
 
     /**
-     * @param string $extensionKey
+     * @param  string       $extensionKey
      * @return AclPrivilege
      */
     public function setExtensionKey($extensionKey)
@@ -105,7 +105,7 @@ class AclPrivilege
     }
 
     /**
-     * @param AclPermission $permission
+     * @param  AclPermission $permission
      * @return AclPrivilege
      */
     public function addPermission(AclPermission $permission)
@@ -127,7 +127,7 @@ class AclPrivilege
     }
 
     /**
-     * @param string $name
+     * @param  string $name
      * @return bool
      */
     public function hasPermission($name)

@@ -2,6 +2,10 @@
 
 namespace Oro\Bundle\InstallerBundle\Process\Step;
 
+use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
+
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 
 class SetupStep extends AbstractStep
@@ -18,7 +22,7 @@ class SetupStep extends AbstractStep
 
     public function forwardAction(ProcessContextInterface $context)
     {
-        set_time_limit(60);
+        set_time_limit(600);
 
         $form = $this->createForm('oro_installer_setup');
 
@@ -26,8 +30,18 @@ class SetupStep extends AbstractStep
 
         if ($form->isValid()) {
             // load demo fixtures
-            if ($form->has('load_fixtures') && $form->get('load_fixtures')->getData()) {
+            if ($form->has('loadFixtures') && $form->get('loadFixtures')->getData()) {
+                $loader = new ContainerAwareLoader($this->container);
 
+                foreach ($this->get('kernel')->getBundles() as $bundle) {
+                    if (is_dir($path = $bundle->getPath() . '/DataFixtures/Demo')) {
+                        $loader->loadFromDirectory($path);
+                    }
+                }
+
+                $executor = new ORMExecutor($this->getDoctrine()->getManager());
+
+                $executor->execute($loader->getFixtures(), true);
             }
 
             $user = $form->getData();
@@ -36,15 +50,12 @@ class SetupStep extends AbstractStep
                 ->getRepository('OroUserBundle:Role')
                 ->findOneBy(array('role' => 'ROLE_ADMINISTRATOR'));
 
-            $businessUnit = $this->get('oro_organization.business_unit_manager')->getBusinessUnit();
-
-            $user->setEnabled(true)
-                ->addRole($role)
-                ->setOwner($businessUnit);
+            $user
+                ->setEnabled(true)
+                ->setOwner($this->get('oro_organization.business_unit_manager')->getBusinessUnit())
+                ->addRole($role);
 
             $this->get('oro_user.manager')->updateUser($user);
-
-            $this->runCommand('oro:entity-extend:update-config');
 
             return $this->complete();
         }

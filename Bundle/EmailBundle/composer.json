@@ -9,7 +9,8 @@
         "symfony/symfony": "2.1.*",
         "doctrine/orm": ">=2.3,<2.4-dev",
         "a2lix/translation-form-bundle" : "1.*@dev",
-        "oro/user-bundle": "dev-master"
+        "oro/user-bundle": "dev-master",
+        "oro/requirejs-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\EmailBundle": "" }

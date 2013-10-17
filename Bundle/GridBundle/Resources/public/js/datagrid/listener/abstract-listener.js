@@ -67,23 +67,21 @@ function(_, Backbone, registry, mediator) {
          */
         setDatagridAndSubscribe: function(datagrid) {
             this.datagrid = datagrid;
-            this.datagrid.on('cellEdited', this._onCellEdited, this);
+            this.datagrid.collection.on('backgrid:edited', this._onModelEdited, this);
         },
 
         /**
          * Process cell editing
          *
-         * @param {oro.datagrid.Grid} datagrid
-         * @param {oro.datagrid.Row} row
-         * @param {Backgrid.Cell} cell
+         * @param {Backbone.Model} model
+         * @param {Backgrid.Column} column
          * @protected
          */
-        _onCellEdited: function (datagrid, row, cell) {
-            var columnName = cell.column.get('name');
-            if (columnName == this.columnName) {
-                var fieldValue = cell.model.get(this.dataField);
-                if (fieldValue !== undefined) {
-                    this._processValue(fieldValue, cell.model);
+        _onModelEdited: function (model, column) {
+            if (this.columnName === column.get('name')) {
+                var value = model.get(this.dataField);
+                if (!_.isUndefined(value)) {
+                    this._processValue(value, model);
                 }
             }
         },
