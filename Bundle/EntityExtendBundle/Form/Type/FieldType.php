@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Form\Type;
 
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -50,22 +51,35 @@ class FieldType extends AbstractType
             )
         );
 
+        $entityProvider = $this->configManager->getProvider('entity');
         $extendProvider = $this->configManager->getProvider('extend');
-        $entityConfig = $extendProvider->getConfig($options['class_name']);
 
+        $entityConfig = $extendProvider->getConfig($options['class_name']);
         if ($entityConfig->is('relation')) {
+            $types = array();
             foreach ($entityConfig->get('relation') as $relation) {
+                $fieldId       = $relation['field_id'];
+                $targetFieldId = $relation['target_field_id'];
+
                 if ($relation['assign'] == true
-                    && $relation['field_id']
-                    && !$extendProvider->hasConfig(
-                        $relation['field_id']->getClassName(),
-                        $relation['field_id']->getFieldName()
-                    )
+                    && $fieldId
+                    && !$extendProvider->hasConfig($fieldId->getClassName(), $fieldId->getFieldName())
                 ) {
-                    var_dump($relation);
-                    //die('asd');
+                    $fieldType = ExtendHelper::getReversRelationType($targetFieldId->getFieldType());
+
+                    $entityLabel = $entityProvider->getConfig($targetFieldId->getClassName())->get('label');
+                    $fieldLabel  = $entityProvider->getConfig(
+                        $targetFieldId->getClassName(),
+                        $targetFieldId->getFieldName()
+                    )->get('label');
+
+                    $key = 'relation' . '|' . $fieldType . '|' . $fieldId->getFieldName();
+
+                    $types[$key] = 'Relation (' . $entityLabel . ') ' . $fieldLabel;
                 }
             }
+
+            $this->types = array_merge($this->types, $types);
         }
 
         $builder->add(
