@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Dbal;
 
-use Symfony\Component\Security\Acl\Dbal\MutableAclProvider as BaseMutableAclProvider;
+use Oro\Bundle\SecurityBundle\Acl\Dbal\BaseMutableAclProvider;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
