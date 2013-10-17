@@ -41,7 +41,7 @@ class UniqueValueValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         $entity = $this->getEntity();
-        if (!$entity instanceof ProductValueInterface) {
+        if (!$entity instanceof ProductValueInterface || empty($value)) {
             return;
         }
 
