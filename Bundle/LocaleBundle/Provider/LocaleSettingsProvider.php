@@ -4,11 +4,33 @@ namespace Oro\Bundle\LocaleBundle\Provider;
 
 use Symfony\Component\Intl\Intl;
 
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+
 class LocaleSettingsProvider
 {
     const ADDRESS_FORMAT = 'format';
     const DEFAULT_LOCALE = 'en';
     const DEFAULT_COUNTRY = 'US';
+
+    /**
+     * @var \NumberFormatter[]
+     */
+    static protected $numberFormatters;
+
+    /**
+     * @var \IntlDateFormatter[]
+     */
+    static protected $dateFormatters;
+
+    /**
+     * @var string
+     */
+    protected $defaultLocale;
+
+    /**
+     * @var string
+     */
+    protected $defaultCountry;
 
     /**
      * Format placeholders (lowercase and uppercase):
@@ -57,6 +79,14 @@ class LocaleSettingsProvider
     protected $addressFormats = array();
 
     /**
+     * @param ConfigManager $configManager
+     */
+    public function __construct(ConfigManager $configManager)
+    {
+        $this->configManager = $configManager;
+    }
+
+    /**
      * @param array $formats
      */
     public function addNameFormats(array $formats)
@@ -73,8 +103,7 @@ class LocaleSettingsProvider
     }
 
     /**
-     * Get name format based on locale, if locale is not passed default locale will be used. Fallback to return value
-     * by full locale, locale language part and default locale (DEFAULT_LOCALE constant).
+     * Get name format based on locale, if locale is not passed locale from system configuration will be used.
      *
      * @param string|null $locale
      * @throws \RuntimeException
@@ -82,28 +111,41 @@ class LocaleSettingsProvider
     public function getNameFormat($locale = null)
     {
         if (!$locale) {
-            $locale = self::getDefaultLocale();
+            $locale = $this->getDefaultLocale();
         }
+
+        // match by locale (for example - "fr_CA")
         if (isset($this->nameFormats[$locale])) {
-            // matched by locale (for example - "fr_CA")
             return $this->nameFormats[$locale];
-        } else {
-            $localeParts = \Locale::parseLocale($locale);
-            if (isset($localeParts[\Locale::LANG_TAG], $this->nameFormats[$localeParts[\Locale::LANG_TAG]])) {
-                // matched by locale language (for example - "fr")
-                return $this->nameFormats[$localeParts[\Locale::LANG_TAG]];
-            } elseif (isset($this->nameFormats[self::DEFAULT_LOCALE])) {
-                // fallback to default language
-                return $this->nameFormats[self::DEFAULT_LOCALE];
-            } else {
-                throw new \RuntimeException(sprintf('Cannot get name format for "%s"', $locale));
+        }
+
+        // match by locale language (for example - "fr")
+        $localeParts = \Locale::parseLocale($locale);
+        if (isset($localeParts[\Locale::LANG_TAG])) {
+            $match = $localeParts[\Locale::LANG_TAG];
+            if (isset($match, $this->nameFormats[$match])) {
+                return $this->nameFormats[$match];
             }
         }
+
+        // match by default locale in system configuration settings
+        $match = $this->getDefaultLocale();
+        if ($match !== $locale && isset($this->nameFormats[$match])) {
+            return $this->nameFormats[$match];
+        }
+
+        // fallback to default constant locale
+        $match = self::DEFAULT_LOCALE;
+        if (isset($this->nameFormats[$match])) {
+            return $this->nameFormats[$match];
+        }
+
+        throw new \RuntimeException(sprintf('Cannot get name format for "%s"', $locale));
     }
 
     /**
-     * Get name format based on locale, if locale is not passed default locale will be used. Fallback to return value
-     * by full locale, locale region part and default locale (DEFAULT_LOCALE constant).
+     * Get address format based on locale or region, if argument is not passed locale from
+     * system configuration will be used.
      *
      * @param string|null $localeOrRegion
      * @throws \RuntimeException
@@ -111,32 +153,113 @@ class LocaleSettingsProvider
     public function getAddressFormat($localeOrRegion = null)
     {
         if (!$localeOrRegion) {
-            $localeOrRegion = self::getDefaultLocale();
+            $localeOrRegion = $this->getDefaultLocale();
         }
+
+        // matched by country (for example - "RU")
         if (isset($this->addressFormats[$localeOrRegion])) {
-            // matched by country (for example - "RU")
             return $this->addressFormats[$localeOrRegion];
-        } else {
-            $localeParts = \Locale::parseLocale($localeOrRegion);
-            if (isset($localeParts[\Locale::REGION_TAG], $this->addressFormats[$localeParts[\Locale::REGION_TAG]])) {
-                // matched by locale region - "CA"
-                return $this->addressFormats[$localeParts[\Locale::LANG_TAG]];
-            } elseif (isset($this->addressFormats[self::DEFAULT_COUNTRY])) {
-                // fallback to default country
-                return $this->addressFormats[self::DEFAULT_COUNTRY];
-            } else {
-                throw new \RuntimeException(sprintf('Cannot get address format for "%s"', $localeOrRegion));
+        }
+
+        // matched by locale region - "CA"
+        $localeParts = \Locale::parseLocale($localeOrRegion);
+        if (isset($localeParts[\Locale::REGION_TAG])) {
+            $match = $localeParts[\Locale::REGION_TAG];
+            if (isset($match, $this->addressFormats[$match])) {
+                return $this->addressFormats[$match];
             }
         }
+
+        // match by default country in system configuration settings
+        $match = $this->getDefaultCountry();
+        if ($match !== $localeOrRegion && isset($this->addressFormats[$match])) {
+            return $this->addressFormats[$match];
+        }
+
+        // fallback to default country
+        $match = self::DEFAULT_COUNTRY;
+        if (isset($this->addressFormats[$match])) {
+            return $this->addressFormats[$match];
+        }
+
+        throw new \RuntimeException(sprintf('Cannot get address format for "%s"', $localeOrRegion));
     }
 
     /**
-     * @param int $attribute
-     * @param null $locale
+     * Gets a return value of NumberFormatter::getAttribute call with given parameters
+     *
+     * @param int $attribute Constant like NumberFormatter::MAX_FRACTION_DIGITS
+     * @param string $locale Locale string line "en_US"
+     * @param int $style Constant like \NumberFormatter::DECIMAL
+     * @param string|null $pattern Pattern string if the chosen style requires a pattern
+     * @return int
      */
-    public static function getNumberFormatterAttribute($attribute, $locale = null)
+    public static function getNumberFormatterAttribute($attribute, $locale, $style, $pattern = null)
     {
+        $formatter = self::getNumberFormatter($locale, $style, $pattern);
+        return $formatter->getAttribute($attribute);
+    }
 
+    /**
+     * Gets a return value of NumberFormatter::getTextAttribute call with given parameters
+     *
+     * @param int $attribute Constant like NumberFormatter::MAX_FRACTION_DIGITS
+     * @param string $locale Locale string line "en_US"
+     * @param int $style Constant like \NumberFormatter::DECIMAL
+     * @param string|null $pattern Pattern string if the chosen style requires a pattern
+     * @return string
+     */
+    public static function getNumberFormatterTextAttribute($attribute, $locale, $style, $pattern = null)
+    {
+        $formatter = self::getNumberFormatter($locale, $style, $pattern);
+        return $formatter->getTextAttribute($attribute);
+    }
+
+    /**
+     * Gets single instance fo NumberFormatter by passed parameters
+     *
+     * @param $locale
+     * @param $style
+     * @param null $pattern
+     * @return \NumberFormatter
+     */
+    protected static function getNumberFormatter($locale, $style, $pattern = null)
+    {
+        $key = sprintf("%s:%s:%s", $locale, $style, $pattern);
+        if (!isset(self::$numberFormatters[$key])) {
+            self::$numberFormatters[$key] = new \NumberFormatter($locale, $style, $pattern);
+        }
+        return self::$numberFormatters[$key];
+    }
+
+    /**
+     * Get the pattern used for the IntlDateFormatter
+     *
+     * @param string $locale
+     * @param int $dateType One of the constant of IntlDateFormatter: NONE, FULL, LONG, MEDIUM, SHORT
+     * @param int $timeType One of the constant IntlDateFormatter: NONE, FULL, LONG, MEDIUM, SHORT
+     * @return string
+     */
+    public static function getDatePattern($locale, $dateType, $timeType)
+    {
+        return self::getDateFormatter($locale, $dateType, $timeType)->getPattern();
+    }
+
+    /**
+     * Gets single instance fo IntlDateFormatter by passed parameters
+     *
+     * @param string $locale
+     * @param int $dateType
+     * @param int $timeType
+     * @return \IntlDateFormatter
+     */
+    protected static function getDateFormatter($locale, $dateType, $timeType)
+    {
+        $key = sprintf("%s:%s:%s", $locale, $dateType, $timeType);
+        if (!isset(self::$numberFormatters[$key])) {
+            self::$numberFormatters[$key] = new \IntlDateFormatter($locale, $dateType, $timeType);
+        }
+        return self::$numberFormatters[$key];
     }
 
     public function getLocaleByCountry($country)
@@ -190,8 +313,44 @@ class LocaleSettingsProvider
      *
      * @return string
      */
-    public static function getDefaultLocale()
+    public function getDefaultLocale()
     {
-        return \Locale::getDefault();
+        if (null === $this->defaultLocale) {
+            $this->defaultLocale = $this->configManager->get('oro_locale.locale', \Locale::getDefault());
+        }
+        return $this->defaultLocale;
+    }
+
+    /**
+     * Set default locale
+     *
+     * @param string $locale
+     */
+    public function setDefaultLocale($locale)
+    {
+        $this->defaultLocale = $locale;
+    }
+
+    /**
+     * Get default country
+     *
+     * @return string
+     */
+    public function getDefaultCountry()
+    {
+        if (null === $this->defaultCountry) {
+            $this->defaultCountry = $this->configManager->get('oro_locale.country', self::DEFAULT_COUNTRY);
+        }
+        return $this->defaultCountry;
+    }
+
+    /**
+     * Set default country
+     *
+     * @param string $country
+     */
+    public function setDefaultCountry($country)
+    {
+        $this->defaultCountry = $country;
     }
 }
