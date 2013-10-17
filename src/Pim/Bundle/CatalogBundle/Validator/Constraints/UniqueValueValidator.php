@@ -58,13 +58,7 @@ class UniqueValueValidator extends ConstraintValidator
             return;
         }
 
-        $this->context->addViolation(
-            $constraint->message,
-            array(
-                '{{ value }}'     => $entity->getData(),
-                '{{ attribute }}' => $entity->getAttribute()->getCode(),
-            )
-        );
+        $this->context->addViolation($constraint->message);
     }
 
     /**

@@ -1,0 +1,12 @@
+Feature: Attribute group creation
+  In order to organize attributes into group
+  As Julia
+  I need to be able to create an attribute group
+
+  Scenario: Succesfully create an attribute group
+    Given I am logged in as "Julia"
+    When I am on the attribute group creation page
+    And I change the Code to "seo"
+    And I save the attribute group
+    Then I should see "Attribute group successfully created"
+    And I should be on the "seo" attribute group page
