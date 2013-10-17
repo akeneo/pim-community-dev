@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
+use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -325,10 +327,14 @@ class ProductController extends AbstractDoctrineController
             $form->submit($request);
 
             if ($form->isValid()) {
-                $this->productManager->handleMedia($product);
-                $this->productManager->save($product);
+                try {
+                    $this->productManager->handleMedia($product);
+                    $this->productManager->save($product);
 
-                $this->addFlash('success', 'flash.product.updated');
+                    $this->addFlash('success', 'flash.product.updated');
+                } catch (MediaManagementException $e) {
+                    $this->addFlash('error', $e->getMessage());
+                }
 
                 // TODO : Check if the locale exists and is activated
                 $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());

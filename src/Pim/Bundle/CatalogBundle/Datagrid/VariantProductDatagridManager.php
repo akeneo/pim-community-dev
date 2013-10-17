@@ -346,14 +346,4 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
     {
         $this->flexibleManager = $flexibleManager;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDefaultSorters()
-    {
-        return array(
-            $this->flexibleManager->getIdentifierAttribute()->getCode() => SorterInterface::DIRECTION_ASC
-        );
-    }
 }
