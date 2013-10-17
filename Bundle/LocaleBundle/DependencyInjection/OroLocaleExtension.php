@@ -15,6 +15,7 @@ class OroLocaleExtension extends Extension
 {
     const PARAMETER_NAME_FORMATS = 'oro_locale.format.name';
     const PARAMETER_ADDRESS_FORMATS = 'oro_locale.format.address';
+    const PARAMETER_LOCALE_DATA = 'oro_locale.locale_data';
 
     /**
      * {@inheritDoc}
@@ -34,6 +35,10 @@ class OroLocaleExtension extends Extension
         $container->setParameter(
             self::PARAMETER_ADDRESS_FORMATS,
             $this->escapePercentSymbols($config['address_format'])
+        );
+        $container->setParameter(
+            self::PARAMETER_LOCALE_DATA,
+            $this->escapePercentSymbols($config['locale_data'])
         );
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -100,8 +105,9 @@ class OroLocaleExtension extends Extension
     {
         $externalNameFormat = array();
         $externalAddressFormat = array();
+        $externalLocaleData = array();
 
-        // read formats
+        // read configuration from external files
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);
 
@@ -113,6 +119,11 @@ class OroLocaleExtension extends Extension
             // read address format files
             if (file_exists($file = dirname($reflection->getFilename()) . '/Resources/config/address_format.yml')) {
                 $externalAddressFormat = array_merge($externalAddressFormat, Yaml::parse(realpath($file)));
+            }
+
+            // read locale data files
+            if (file_exists($file = dirname($reflection->getFilename()) . '/Resources/config/locale_data.yml')) {
+                $externalLocaleData = array_merge($externalLocaleData, Yaml::parse(realpath($file)));
             }
         }
 
@@ -133,6 +144,12 @@ class OroLocaleExtension extends Extension
             $configData['address_format'] = array_merge($externalAddressFormat, $configData['address_format']);
         } else {
             $configData['address_format'] = $externalAddressFormat;
+        }
+
+        if (!empty($configData['locale_data'])) {
+            $configData['locale_data'] = array_merge($externalLocaleData, $configData['locale_data']);
+        } else {
+            $configData['locale_data'] = $externalLocaleData;
         }
 
         array_unshift($configs, $configData);

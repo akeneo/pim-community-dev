@@ -38,9 +38,6 @@ class CountryTest extends \PHPUnit_Framework_TestCase
             array('name'),
             array('iso3code'),
             array('regions'),
-            array('currencyCode'),
-            array('phonePrefix'),
-            array('defaultLocale'),
             array('locale'),
         );
     }

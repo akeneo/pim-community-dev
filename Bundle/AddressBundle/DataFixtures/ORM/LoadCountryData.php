@@ -100,18 +100,6 @@ class LoadCountryData extends AbstractTranslatableEntityFixture
         $country->setLocale($locale)
             ->setName($countryName);
 
-        if (!empty($countryData['currencyCode'])) {
-            $country->setCurrencyCode($countryData['currencyCode']);
-        }
-
-        if (!empty($countryData['phonePrefix'])) {
-            $country->setPhonePrefix($countryData['phonePrefix']);
-        }
-
-        if (!empty($countryData['defaultLocale'])) {
-            $country->setDefaultLocale($countryData['defaultLocale']);
-        }
-
         return $country;
     }
 

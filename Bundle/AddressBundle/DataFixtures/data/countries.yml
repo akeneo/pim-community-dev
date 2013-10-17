@@ -23,9 +23,6 @@ AD:
         AD.08:
             combinedCode: AD.08
             code: '08'
-    currencyCode: EUR
-    phonePrefix: '376'
-    defaultLocale: ca
 AE:
     iso2Code: AE
     iso3Code: ARE
@@ -51,9 +48,6 @@ AE:
         AE.01:
             combinedCode: AE.01
             code: '01'
-    currencyCode: AED
-    phonePrefix: '971'
-    defaultLocale: ar_AE
 AF:
     iso2Code: AF
     iso3Code: AFG
@@ -160,9 +154,6 @@ AF:
         AF.42:
             combinedCode: AF.42
             code: '42'
-    currencyCode: AFN
-    phonePrefix: '93'
-    defaultLocale: fa_AF
 AG:
     iso2Code: AG
     iso3Code: ATG
@@ -191,16 +182,10 @@ AG:
         AG.01:
             combinedCode: AG.01
             code: '01'
-    currencyCode: XCD
-    phonePrefix: +1-268
-    defaultLocale: en_AG
 AI:
     iso2Code: AI
     iso3Code: AIA
     regions: {  }
-    currencyCode: XCD
-    phonePrefix: +1-264
-    defaultLocale: en
 AL:
     iso2Code: AL
     iso3Code: ALB
@@ -241,9 +226,6 @@ AL:
         AL.51:
             combinedCode: AL.51
             code: '51'
-    currencyCode: ALL
-    phonePrefix: '355'
-    defaultLocale: sq
 AM:
     iso2Code: AM
     iso3Code: ARM
@@ -281,9 +263,6 @@ AM:
         AM.09:
             combinedCode: AM.09
             code: '09'
-    currencyCode: AMD
-    phonePrefix: '374'
-    defaultLocale: hy
 AO:
     iso2Code: AO
     iso3Code: AGO
@@ -342,9 +321,6 @@ AO:
         AO.01:
             combinedCode: AO.01
             code: '01'
-    currencyCode: AOA
-    phonePrefix: '244'
-    defaultLocale: pt_AO
 AQ:
     iso2Code: AQ
     iso3Code: ATA
@@ -425,9 +401,6 @@ AR:
         AR.02:
             combinedCode: AR.02
             code: '02'
-    currencyCode: ARS
-    phonePrefix: '54'
-    defaultLocale: es_AR
 AS:
     iso2Code: AS
     iso3Code: ASM
@@ -447,9 +420,6 @@ AS:
         AS.030:
             combinedCode: AS.030
             code: '030'
-    currencyCode: USD
-    phonePrefix: +1-684
-    defaultLocale: en_AS
 AT:
     iso2Code: AT
     iso3Code: AUT
@@ -481,9 +451,6 @@ AT:
         AT.01:
             combinedCode: AT.01
             code: '01'
-    currencyCode: EUR
-    phonePrefix: '43'
-    defaultLocale: de_AT
 AU:
     iso2Code: AU
     iso3Code: AUS
@@ -512,16 +479,10 @@ AU:
         AU.01:
             combinedCode: AU.01
             code: '01'
-    currencyCode: AUD
-    phonePrefix: '61'
-    defaultLocale: en_AU
 AW:
     iso2Code: AW
     iso3Code: ABW
     regions: {  }
-    currencyCode: AWG
-    phonePrefix: '297'
-    defaultLocale: nl_AW
 AX:
     iso2Code: AX
     iso3Code: ALA
@@ -574,9 +535,6 @@ AX:
         AX.043:
             combinedCode: AX.043
             code: '043'
-    currencyCode: EUR
-    phonePrefix: +358-18
-    defaultLocale: sv_AX
 AZ:
     iso2Code: AZ
     iso3Code: AZE
@@ -797,9 +755,6 @@ AZ:
         AZ.75:
             combinedCode: AZ.75
             code: '75'
-    currencyCode: AZN
-    phonePrefix: '994'
-    defaultLocale: az
 BA:
     iso2Code: BA
     iso3Code: BIH
@@ -813,9 +768,6 @@ BA:
         BA.BRC:
             combinedCode: BA.BRC
             code: BRC
-    currencyCode: BAM
-    phonePrefix: '387'
-    defaultLocale: bs
 BB:
     iso2Code: BB
     iso3Code: BRB
@@ -853,9 +805,6 @@ BB:
         BB.01:
             combinedCode: BB.01
             code: '01'
-    currencyCode: BBD
-    phonePrefix: +1-246
-    defaultLocale: en_BB
 BD:
     iso2Code: BD
     iso3Code: BGD
@@ -881,9 +830,6 @@ BD:
         BD.87:
             combinedCode: BD.87
             code: '87'
-    currencyCode: BDT
-    phonePrefix: '880'
-    defaultLocale: bn_BD
 BE:
     iso2Code: BE
     iso3Code: BEL
@@ -897,9 +843,6 @@ BE:
         BE.VLG:
             combinedCode: BE.VLG
             code: VLG
-    currencyCode: EUR
-    phonePrefix: '32'
-    defaultLocale: nl_BE
 BF:
     iso2Code: BF
     iso3Code: BFA
@@ -943,9 +886,6 @@ BF:
         BF.13:
             combinedCode: BF.13
             code: '13'
-    currencyCode: XOF
-    phonePrefix: '226'
-    defaultLocale: fr_BF
 BG:
     iso2Code: BG
     iso3Code: BGR
@@ -1034,9 +974,6 @@ BG:
         BG.65:
             combinedCode: BG.65
             code: '65'
-    currencyCode: BGN
-    phonePrefix: '359'
-    defaultLocale: bg
 BH:
     iso2Code: BH
     iso3Code: BHR
@@ -1056,9 +993,6 @@ BH:
         BH.19:
             combinedCode: BH.19
             code: '19'
-    currencyCode: BHD
-    phonePrefix: '973'
-    defaultLocale: ar_BH
 BI:
     iso2Code: BI
     iso3Code: BDI
@@ -1114,9 +1048,6 @@ BI:
         BI.25:
             combinedCode: BI.25
             code: '25'
-    currencyCode: BIF
-    phonePrefix: '257'
-    defaultLocale: fr_BI
 BJ:
     iso2Code: BJ
     iso3Code: BEN
@@ -1157,16 +1088,10 @@ BJ:
         BJ.17:
             combinedCode: BJ.17
             code: '17'
-    currencyCode: XOF
-    phonePrefix: '229'
-    defaultLocale: fr_BJ
 BL:
     iso2Code: BL
     iso3Code: BLM
     regions: {  }
-    currencyCode: EUR
-    phonePrefix: '590'
-    defaultLocale: fr
 BM:
     iso2Code: BM
     iso3Code: BMU
@@ -1204,9 +1129,6 @@ BM:
         BM.01:
             combinedCode: BM.01
             code: '01'
-    currencyCode: BMD
-    phonePrefix: +1-441
-    defaultLocale: en_BM
 BN:
     iso2Code: BN
     iso3Code: BRN
@@ -1223,9 +1145,6 @@ BN:
         BN.01:
             combinedCode: BN.01
             code: '01'
-    currencyCode: BND
-    phonePrefix: '673'
-    defaultLocale: ms_BN
 BO:
     iso2Code: BO
     iso3Code: BOL
@@ -1257,9 +1176,6 @@ BO:
         BO.03:
             combinedCode: BO.03
             code: '03'
-    currencyCode: BOB
-    phonePrefix: '591'
-    defaultLocale: es_BO
 BQ:
     iso2Code: BQ
     iso3Code: BES
@@ -1273,9 +1189,6 @@ BQ:
         BQ.SE:
             combinedCode: BQ.SE
             code: SE
-    currencyCode: USD
-    phonePrefix: '599'
-    defaultLocale: nl
 BR:
     iso2Code: BR
     iso3Code: BRA
@@ -1361,9 +1274,6 @@ BR:
         BR.24:
             combinedCode: BR.24
             code: '24'
-    currencyCode: BRL
-    phonePrefix: '55'
-    defaultLocale: pt_BR
 BS:
     iso2Code: BS
     iso3Code: BHS
@@ -1488,9 +1398,6 @@ BS:
         BS.54:
             combinedCode: BS.54
             code: '54'
-    currencyCode: BSD
-    phonePrefix: +1-242
-    defaultLocale: en_BS
 BT:
     iso2Code: BT
     iso3Code: BTN
@@ -1555,14 +1462,10 @@ BT:
         BT.24:
             combinedCode: BT.24
             code: '24'
-    currencyCode: BTN
-    phonePrefix: '975'
-    defaultLocale: dz
 BV:
     iso2Code: BV
     iso3Code: BVT
     regions: {  }
-    currencyCode: NOK
 BW:
     iso2Code: BW
     iso3Code: BWA
@@ -1594,9 +1497,6 @@ BW:
         BW.01:
             combinedCode: BW.01
             code: '01'
-    currencyCode: BWP
-    phonePrefix: '267'
-    defaultLocale: en_BW
 BY:
     iso2Code: BY
     iso3Code: BLR
@@ -1622,9 +1522,6 @@ BY:
         BY.01:
             combinedCode: BY.01
             code: '01'
-    currencyCode: BYR
-    phonePrefix: '375'
-    defaultLocale: be
 BZ:
     iso2Code: BZ
     iso3Code: BLZ
@@ -1647,9 +1544,6 @@ BZ:
         BZ.01:
             combinedCode: BZ.01
             code: '01'
-    currencyCode: BZD
-    phonePrefix: '501'
-    defaultLocale: en_BZ
 CA:
     iso2Code: CA
     iso3Code: CAN
@@ -1693,16 +1587,10 @@ CA:
         CA.05:
             combinedCode: CA.05
             code: '05'
-    currencyCode: CAD
-    phonePrefix: '1'
-    defaultLocale: en_CA
 CC:
     iso2Code: CC
     iso3Code: CCK
     regions: {  }
-    currencyCode: AUD
-    phonePrefix: '61'
-    defaultLocale: ms
 CD:
     iso2Code: CD
     iso3Code: COD
@@ -1740,9 +1628,6 @@ CD:
         CD.01:
             combinedCode: CD.01
             code: '01'
-    currencyCode: CDF
-    phonePrefix: '243'
-    defaultLocale: fr_CD
 CF:
     iso2Code: CF
     iso3Code: CAF
@@ -1798,9 +1683,6 @@ CF:
         CF.18:
             combinedCode: CF.18
             code: '18'
-    currencyCode: XAF
-    phonePrefix: '236'
-    defaultLocale: fr_CF
 CG:
     iso2Code: CG
     iso3Code: COG
@@ -1841,9 +1723,6 @@ CG:
         CG.7280295:
             combinedCode: CG.7280295
             code: '7280295'
-    currencyCode: XAF
-    phonePrefix: '242'
-    defaultLocale: fr_CG
 CH:
     iso2Code: CH
     iso3Code: CHE
@@ -1926,9 +1805,6 @@ CH:
         CH.AG:
             combinedCode: CH.AG
             code: AG
-    currencyCode: CHF
-    phonePrefix: '41'
-    defaultLocale: de_CH
 CI:
     iso2Code: CI
     iso3Code: CIV
@@ -1990,16 +1866,10 @@ CI:
         CI.75:
             combinedCode: CI.75
             code: '75'
-    currencyCode: XOF
-    phonePrefix: '225'
-    defaultLocale: fr_CI
 CK:
     iso2Code: CK
     iso3Code: COK
     regions: {  }
-    currencyCode: NZD
-    phonePrefix: '682'
-    defaultLocale: en
 CL:
     iso2Code: CL
     iso3Code: CHL
@@ -2049,9 +1919,6 @@ CL:
         CL.17:
             combinedCode: CL.17
             code: '17'
-    currencyCode: CLP
-    phonePrefix: '56'
-    defaultLocale: es_CL
 CM:
     iso2Code: CM
     iso3Code: CMR
@@ -2086,9 +1953,6 @@ CM:
         CM.10:
             combinedCode: CM.10
             code: '10'
-    currencyCode: XAF
-    phonePrefix: '237'
-    defaultLocale: en_CM
 CN:
     iso2Code: CN
     iso3Code: CHN
@@ -2186,9 +2050,6 @@ CN:
         CN.22:
             combinedCode: CN.22
             code: '22'
-    currencyCode: CNY
-    phonePrefix: '86'
-    defaultLocale: zh_CN
 CO:
     iso2Code: CO
     iso3Code: COL
@@ -2292,9 +2153,6 @@ CO:
         CO.01:
             combinedCode: CO.01
             code: '01'
-    currencyCode: COP
-    phonePrefix: '57'
-    defaultLocale: es_CO
 CR:
     iso2Code: CR
     iso3Code: CRI
@@ -2320,9 +2178,6 @@ CR:
         CR.01:
             combinedCode: CR.01
             code: '01'
-    currencyCode: CRC
-    phonePrefix: '506'
-    defaultLocale: es_CR
 CU:
     iso2Code: CU
     iso3Code: CUB
@@ -2375,9 +2230,6 @@ CU:
         CU.MA:
             combinedCode: CU.MA
             code: MA
-    currencyCode: CUP
-    phonePrefix: '53'
-    defaultLocale: es_CU
 CV:
     iso2Code: CV
     iso3Code: CPV
@@ -2448,23 +2300,14 @@ CV:
         CV.23:
             combinedCode: CV.23
             code: '23'
-    currencyCode: CVE
-    phonePrefix: '238'
-    defaultLocale: pt_CV
 CW:
     iso2Code: CW
     iso3Code: CUW
     regions: {  }
-    currencyCode: ANG
-    phonePrefix: '599'
-    defaultLocale: nl
 CX:
     iso2Code: CX
     iso3Code: CXR
     regions: {  }
-    currencyCode: AUD
-    phonePrefix: '61'
-    defaultLocale: en
 CY:
     iso2Code: CY
     iso3Code: CYP
@@ -2487,9 +2330,6 @@ CY:
         CY.01:
             combinedCode: CY.01
             code: '01'
-    currencyCode: EUR
-    phonePrefix: '357'
-    defaultLocale: el_CY
 CZ:
     iso2Code: CZ
     iso3Code: CZE
@@ -2536,9 +2376,6 @@ CZ:
         CZ.90:
             combinedCode: CZ.90
             code: '90'
-    currencyCode: CZK
-    phonePrefix: '420'
-    defaultLocale: cs
 DE:
     iso2Code: DE
     iso3Code: DEU
@@ -2591,9 +2428,6 @@ DE:
         DE.01:
             combinedCode: DE.01
             code: '01'
-    currencyCode: EUR
-    phonePrefix: '49'
-    defaultLocale: de
 DJ:
     iso2Code: DJ
     iso3Code: DJI
@@ -2616,9 +2450,6 @@ DJ:
         DJ.08:
             combinedCode: DJ.08
             code: '08'
-    currencyCode: DJF
-    phonePrefix: '253'
-    defaultLocale: fr_DJ
 DK:
     iso2Code: DK
     iso3Code: DNK
@@ -2638,9 +2469,6 @@ DK:
         DK.21:
             combinedCode: DK.21
             code: '21'
-    currencyCode: DKK
-    phonePrefix: '45'
-    defaultLocale: da_DK
 DM:
     iso2Code: DM
     iso3Code: DMA
@@ -2675,9 +2503,6 @@ DM:
         DM.02:
             combinedCode: DM.02
             code: '02'
-    currencyCode: XCD
-    phonePrefix: +1-767
-    defaultLocale: en_DM
 DO:
     iso2Code: DO
     iso3Code: DOM
@@ -2778,9 +2603,6 @@ DO:
         DO.37:
             combinedCode: DO.37
             code: '37'
-    currencyCode: DOP
-    phonePrefix: +1-809
-    defaultLocale: es_DO
 DZ:
     iso2Code: DZ
     iso3Code: DZA
@@ -2929,9 +2751,6 @@ DZ:
         DZ.34:
             combinedCode: DZ.34
             code: '34'
-    currencyCode: DZD
-    phonePrefix: '213'
-    defaultLocale: ar_DZ
 EC:
     iso2Code: EC
     iso3Code: ECU
@@ -3008,9 +2827,6 @@ EC:
         EC.25:
             combinedCode: EC.25
             code: '25'
-    currencyCode: USD
-    phonePrefix: '593'
-    defaultLocale: es_EC
 EE:
     iso2Code: EE
     iso3Code: EST
@@ -3060,9 +2876,6 @@ EE:
         EE.01:
             combinedCode: EE.01
             code: '01'
-    currencyCode: EUR
-    phonePrefix: '372'
-    defaultLocale: et
 EG:
     iso2Code: EG
     iso3Code: EGY
@@ -3148,9 +2961,6 @@ EG:
         EG.28:
             combinedCode: EG.28
             code: '28'
-    currencyCode: EGP
-    phonePrefix: '20'
-    defaultLocale: ar_EG
 EH:
     iso2Code: EH
     iso3Code: ESH
@@ -3158,9 +2968,6 @@ EH:
         EH.CE:
             combinedCode: EH.CE
             code: CE
-    currencyCode: MAD
-    phonePrefix: '212'
-    defaultLocale: ar
 ER:
     iso2Code: ER
     iso3Code: ERI
@@ -3183,9 +2990,6 @@ ER:
         ER.06:
             combinedCode: ER.06
             code: '06'
-    currencyCode: ERN
-    phonePrefix: '291'
-    defaultLocale: ti_ER
 ES:
     iso2Code: ES
     iso3Code: ESP
@@ -3247,9 +3051,6 @@ ES:
         ES.ML:
             combinedCode: ES.ML
             code: ML
-    currencyCode: EUR
-    phonePrefix: '34'
-    defaultLocale: es_ES
 ET:
     iso2Code: ET
     iso3Code: ETH
@@ -3287,9 +3088,6 @@ ET:
         ET.54:
             combinedCode: ET.54
             code: '54'
-    currencyCode: ETB
-    phonePrefix: '251'
-    defaultLocale: am
 FI:
     iso2Code: FI
     iso3Code: FIN
@@ -3309,9 +3107,6 @@ FI:
         FI.15:
             combinedCode: FI.15
             code: '15'
-    currencyCode: EUR
-    phonePrefix: '358'
-    defaultLocale: fi_FI
 FJ:
     iso2Code: FJ
     iso3Code: FJI
@@ -3331,16 +3126,10 @@ FJ:
         FJ.04:
             combinedCode: FJ.04
             code: '04'
-    currencyCode: FJD
-    phonePrefix: '679'
-    defaultLocale: en_FJ
 FK:
     iso2Code: FK
     iso3Code: FLK
     regions: {  }
-    currencyCode: FKP
-    phonePrefix: '500'
-    defaultLocale: en
 FM:
     iso2Code: FM
     iso3Code: FSM
@@ -3357,9 +3146,6 @@ FM:
         FM.03:
             combinedCode: FM.03
             code: '03'
-    currencyCode: USD
-    phonePrefix: '691'
-    defaultLocale: en_FM
 FO:
     iso2Code: FO
     iso3Code: FRO
@@ -3382,9 +3168,6 @@ FO:
         FO.OS:
             combinedCode: FO.OS
             code: OS
-    currencyCode: DKK
-    phonePrefix: '298'
-    defaultLocale: fo
 FR:
     iso2Code: FR
     iso3Code: FRA
@@ -3455,9 +3238,6 @@ FR:
         FR.C1:
             combinedCode: FR.C1
             code: C1
-    currencyCode: EUR
-    phonePrefix: '33'
-    defaultLocale: fr_FR
 GA:
     iso2Code: GA
     iso3Code: GAB
@@ -3489,9 +3269,6 @@ GA:
         GA.01:
             combinedCode: GA.01
             code: '01'
-    currencyCode: XAF
-    phonePrefix: '241'
-    defaultLocale: fr_GA
 GB:
     iso2Code: GB
     iso3Code: GBR
@@ -3508,9 +3285,6 @@ GB:
         GB.ENG:
             combinedCode: GB.ENG
             code: ENG
-    currencyCode: GBP
-    phonePrefix: '44'
-    defaultLocale: en_GB
 GD:
     iso2Code: GD
     iso3Code: GRD
@@ -3536,9 +3310,6 @@ GD:
         GD.10:
             combinedCode: GD.10
             code: '10'
-    currencyCode: XCD
-    phonePrefix: +1-473
-    defaultLocale: en_GD
 GE:
     iso2Code: GE
     iso3Code: GEO
@@ -3579,9 +3350,6 @@ GE:
         GE.02:
             combinedCode: GE.02
             code: '02'
-    currencyCode: GEL
-    phonePrefix: '995'
-    defaultLocale: ka
 GF:
     iso2Code: GF
     iso3Code: GUF
@@ -3589,16 +3357,10 @@ GF:
         GF.GF:
             combinedCode: GF.GF
             code: GF
-    currencyCode: EUR
-    phonePrefix: '594'
-    defaultLocale: fr_GF
 GG:
     iso2Code: GG
     iso3Code: GGY
     regions: {  }
-    currencyCode: GBP
-    phonePrefix: +44-1481
-    defaultLocale: en
 GH:
     iso2Code: GH
     iso3Code: GHA
@@ -3633,16 +3395,10 @@ GH:
         GH.02:
             combinedCode: GH.02
             code: '02'
-    currencyCode: GHS
-    phonePrefix: '233'
-    defaultLocale: en_GH
 GI:
     iso2Code: GI
     iso3Code: GIB
     regions: {  }
-    currencyCode: GIP
-    phonePrefix: '350'
-    defaultLocale: en_GI
 GL:
     iso2Code: GL
     iso3Code: GRL
@@ -3659,9 +3415,6 @@ GL:
         GL.07:
             combinedCode: GL.07
             code: '07'
-    currencyCode: DKK
-    phonePrefix: '299'
-    defaultLocale: kl
 GM:
     iso2Code: GM
     iso3Code: GMB
@@ -3684,9 +3437,6 @@ GM:
         GM.01:
             combinedCode: GM.01
             code: '01'
-    currencyCode: GMD
-    phonePrefix: '220'
-    defaultLocale: en_GM
 GN:
     iso2Code: GN
     iso3Code: GIN
@@ -3715,9 +3465,6 @@ GN:
         GN.N:
             combinedCode: GN.N
             code: N
-    currencyCode: GNF
-    phonePrefix: '224'
-    defaultLocale: fr_GN
 GP:
     iso2Code: GP
     iso3Code: GLP
@@ -3725,9 +3472,6 @@ GP:
         GP.GP:
             combinedCode: GP.GP
             code: GP
-    currencyCode: EUR
-    phonePrefix: '590'
-    defaultLocale: fr_GP
 GQ:
     iso2Code: GQ
     iso3Code: GNQ
@@ -3753,9 +3497,6 @@ GQ:
         GQ.09:
             combinedCode: GQ.09
             code: '09'
-    currencyCode: XAF
-    phonePrefix: '240'
-    defaultLocale: es_GQ
 GR:
     iso2Code: GR
     iso3Code: GRC
@@ -3802,15 +3543,10 @@ GR:
         GR.ESYE13:
             combinedCode: GR.ESYE13
             code: ESYE13
-    currencyCode: EUR
-    phonePrefix: '30'
-    defaultLocale: el_GR
 GS:
     iso2Code: GS
     iso3Code: SGS
     regions: {  }
-    currencyCode: GBP
-    defaultLocale: en
 GT:
     iso2Code: GT
     iso3Code: GTM
@@ -3881,9 +3617,6 @@ GT:
         GT.01:
             combinedCode: GT.01
             code: '01'
-    currencyCode: GTQ
-    phonePrefix: '502'
-    defaultLocale: es_GT
 GU:
     iso2Code: GU
     iso3Code: GUM
@@ -3945,9 +3678,6 @@ GU:
         GU.MT:
             combinedCode: GU.MT
             code: MT
-    currencyCode: USD
-    phonePrefix: +1-671
-    defaultLocale: en_GU
 GW:
     iso2Code: GW
     iso3Code: GNB
@@ -3979,9 +3709,6 @@ GW:
         GW.01:
             combinedCode: GW.01
             code: '01'
-    currencyCode: XOF
-    phonePrefix: '245'
-    defaultLocale: pt_GW
 GY:
     iso2Code: GY
     iso3Code: GUY
@@ -4016,9 +3743,6 @@ GY:
         GY.10:
             combinedCode: GY.10
             code: '10'
-    currencyCode: GYD
-    phonePrefix: '592'
-    defaultLocale: en_GY
 HK:
     iso2Code: HK
     iso3Code: HKG
@@ -4077,15 +3801,10 @@ HK:
         HK.NST:
             combinedCode: HK.NST
             code: NST
-    currencyCode: HKD
-    phonePrefix: '852'
-    defaultLocale: zh_HK
 HM:
     iso2Code: HM
     iso3Code: HMD
     regions: {  }
-    currencyCode: AUD
-    phonePrefix: ''
 HN:
     iso2Code: HN
     iso3Code: HND
@@ -4144,9 +3863,6 @@ HN:
         HN.01:
             combinedCode: HN.01
             code: '01'
-    currencyCode: HNL
-    phonePrefix: '504'
-    defaultLocale: es_HN
 HR:
     iso2Code: HR
     iso3Code: HRV
@@ -4214,9 +3930,6 @@ HR:
         HR.17:
             combinedCode: HR.17
             code: '17'
-    currencyCode: HRK
-    phonePrefix: '385'
-    defaultLocale: hr_HR
 HT:
     iso2Code: HT
     iso3Code: HTI
@@ -4251,9 +3964,6 @@ HT:
         HT.15:
             combinedCode: HT.15
             code: '15'
-    currencyCode: HTG
-    phonePrefix: '509'
-    defaultLocale: fr
 HU:
     iso2Code: HU
     iso3Code: HUN
@@ -4318,9 +4028,6 @@ HU:
         HU.01:
             combinedCode: HU.01
             code: '01'
-    currencyCode: HUF
-    phonePrefix: '36'
-    defaultLocale: hu_HU
 ID:
     iso2Code: ID
     iso3Code: IDN
@@ -4424,9 +4131,6 @@ ID:
         ID.40:
             combinedCode: ID.40
             code: '40'
-    currencyCode: IDR
-    phonePrefix: '62'
-    defaultLocale: id
 IE:
     iso2Code: IE
     iso3Code: IRL
@@ -4443,9 +4147,6 @@ IE:
         IE.U:
             combinedCode: IE.U
             code: U
-    currencyCode: EUR
-    phonePrefix: '353'
-    defaultLocale: en_IE
 IL:
     iso2Code: IL
     iso3Code: ISR
@@ -4468,16 +4169,10 @@ IL:
         IL.01:
             combinedCode: IL.01
             code: '01'
-    currencyCode: ILS
-    phonePrefix: '972'
-    defaultLocale: he
 IM:
     iso2Code: IM
     iso3Code: IMN
     regions: {  }
-    currencyCode: GBP
-    phonePrefix: +44-1624
-    defaultLocale: en
 IN:
     iso2Code: IN
     iso3Code: IND
@@ -4587,16 +4282,10 @@ IN:
         IN.39:
             combinedCode: IN.39
             code: '39'
-    currencyCode: INR
-    phonePrefix: '91'
-    defaultLocale: en_IN
 IO:
     iso2Code: IO
     iso3Code: IOT
     regions: {  }
-    currencyCode: USD
-    phonePrefix: '246'
-    defaultLocale: en
 IQ:
     iso2Code: IQ
     iso3Code: IRQ
@@ -4655,9 +4344,6 @@ IQ:
         IQ.01:
             combinedCode: IQ.01
             code: '01'
-    currencyCode: IQD
-    phonePrefix: '964'
-    defaultLocale: ar_IQ
 IR:
     iso2Code: IR
     iso3Code: IRN
@@ -4755,9 +4441,6 @@ IR:
         IR.44:
             combinedCode: IR.44
             code: '44'
-    currencyCode: IRR
-    phonePrefix: '98'
-    defaultLocale: fa_IR
 IS:
     iso2Code: IS
     iso3Code: ISL
@@ -4786,9 +4469,6 @@ IS:
         IS.44:
             combinedCode: IS.44
             code: '44'
-    currencyCode: ISK
-    phonePrefix: '354'
-    defaultLocale: is
 IT:
     iso2Code: IT
     iso3Code: ITA
@@ -4853,16 +4533,10 @@ IT:
         IT.01:
             combinedCode: IT.01
             code: '01'
-    currencyCode: EUR
-    phonePrefix: '39'
-    defaultLocale: it_IT
 JE:
     iso2Code: JE
     iso3Code: JEY
     regions: {  }
-    currencyCode: GBP
-    phonePrefix: +44-1534
-    defaultLocale: en
 JM:
     iso2Code: JM
     iso3Code: JAM
@@ -4909,9 +4583,6 @@ JM:
         JM.01:
             combinedCode: JM.01
             code: '01'
-    currencyCode: JMD
-    phonePrefix: +1-876
-    defaultLocale: en_JM
 JO:
     iso2Code: JO
     iso3Code: JOR
@@ -4952,9 +4623,6 @@ JO:
         JO.23:
             combinedCode: JO.23
             code: '23'
-    currencyCode: JOD
-    phonePrefix: '962'
-    defaultLocale: ar_JO
 JP:
     iso2Code: JP
     iso3Code: JPN
@@ -5100,9 +4768,6 @@ JP:
         JP.03:
             combinedCode: JP.03
             code: '03'
-    currencyCode: JPY
-    phonePrefix: '81'
-    defaultLocale: ja
 KE:
     iso2Code: KE
     iso3Code: KEN
@@ -5248,9 +4913,6 @@ KE:
         KE.40:
             combinedCode: KE.40
             code: '40'
-    currencyCode: KES
-    phonePrefix: '254'
-    defaultLocale: en_KE
 KG:
     iso2Code: KG
     iso3Code: KGZ
@@ -5279,9 +4941,6 @@ KG:
         KG.02:
             combinedCode: KG.02
             code: '02'
-    currencyCode: KGS
-    phonePrefix: '996'
-    defaultLocale: ru
 KH:
     iso2Code: KH
     iso3Code: KHM
@@ -5358,9 +5017,6 @@ KH:
         KH.25:
             combinedCode: KH.25
             code: '25'
-    currencyCode: KHR
-    phonePrefix: '855'
-    defaultLocale: km
 KI:
     iso2Code: KI
     iso3Code: KIR
@@ -5374,9 +5030,6 @@ KI:
         KI.03:
             combinedCode: KI.03
             code: '03'
-    currencyCode: AUD
-    phonePrefix: '686'
-    defaultLocale: en_KI
 KM:
     iso2Code: KM
     iso3Code: COM
@@ -5390,9 +5043,6 @@ KM:
         KM.01:
             combinedCode: KM.01
             code: '01'
-    currencyCode: KMF
-    phonePrefix: '269'
-    defaultLocale: ar
 KN:
     iso2Code: KN
     iso3Code: KNA
@@ -5439,9 +5089,6 @@ KN:
         KN.01:
             combinedCode: KN.01
             code: '01'
-    currencyCode: XCD
-    phonePrefix: +1-869
-    defaultLocale: en_KN
 KP:
     iso2Code: KP
     iso3Code: PRK
@@ -5479,9 +5126,6 @@ KP:
         KP.18:
             combinedCode: KP.18
             code: '18'
-    currencyCode: KPW
-    phonePrefix: '850'
-    defaultLocale: ko_KP
 KR:
     iso2Code: KR
     iso3Code: KOR
@@ -5537,9 +5181,6 @@ KR:
         KR.22:
             combinedCode: KR.22
             code: '22'
-    currencyCode: KRW
-    phonePrefix: '82'
-    defaultLocale: ko_KR
 XK:
     iso2Code: XK
     iso3Code: XKX
@@ -5655,8 +5296,6 @@ XK:
         XK.37:
             combinedCode: XK.37
             code: '37'
-    currencyCode: EUR
-    defaultLocale: sq
 KW:
     iso2Code: KW
     iso3Code: KWT
@@ -5679,16 +5318,10 @@ KW:
         KW.09:
             combinedCode: KW.09
             code: '09'
-    currencyCode: KWD
-    phonePrefix: '965'
-    defaultLocale: ar_KW
 KY:
     iso2Code: KY
     iso3Code: CYM
     regions: {  }
-    currencyCode: KYD
-    phonePrefix: +1-345
-    defaultLocale: en_KY
 KZ:
     iso2Code: KZ
     iso3Code: KAZ
@@ -5744,9 +5377,6 @@ KZ:
         KZ.05:
             combinedCode: KZ.05
             code: '05'
-    currencyCode: KZT
-    phonePrefix: '7'
-    defaultLocale: kk
 LA:
     iso2Code: LA
     iso3Code: LAO
@@ -5802,9 +5432,6 @@ LA:
         LA.24:
             combinedCode: LA.24
             code: '24'
-    currencyCode: LAK
-    phonePrefix: '856'
-    defaultLocale: lo
 LB:
     iso2Code: LB
     iso3Code: LBN
@@ -5833,9 +5460,6 @@ LB:
         LB.11:
             combinedCode: LB.11
             code: '11'
-    currencyCode: LBP
-    phonePrefix: '961'
-    defaultLocale: ar_LB
 LC:
     iso2Code: LC
     iso3Code: LCA
@@ -5873,9 +5497,6 @@ LC:
         LC.01:
             combinedCode: LC.01
             code: '01'
-    currencyCode: XCD
-    phonePrefix: +1-758
-    defaultLocale: en_LC
 LI:
     iso2Code: LI
     iso3Code: LIE
@@ -5913,9 +5534,6 @@ LI:
         LI.01:
             combinedCode: LI.01
             code: '01'
-    currencyCode: CHF
-    phonePrefix: '423'
-    defaultLocale: de_LI
 LK:
     iso2Code: LK
     iso3Code: LKA
@@ -5947,9 +5565,6 @@ LK:
         LK.37:
             combinedCode: LK.37
             code: '37'
-    currencyCode: LKR
-    phonePrefix: '94'
-    defaultLocale: si
 LR:
     iso2Code: LR
     iso3Code: LBR
@@ -5999,9 +5614,6 @@ LR:
         LR.22:
             combinedCode: LR.22
             code: '22'
-    currencyCode: LRD
-    phonePrefix: '231'
-    defaultLocale: en_LR
 LS:
     iso2Code: LS
     iso3Code: LSO
@@ -6036,9 +5648,6 @@ LS:
         LS.10:
             combinedCode: LS.10
             code: '10'
-    currencyCode: LSL
-    phonePrefix: '266'
-    defaultLocale: en_LS
 LT:
     iso2Code: LT
     iso3Code: LTU
@@ -6073,9 +5682,6 @@ LT:
         LT.65:
             combinedCode: LT.65
             code: '65'
-    currencyCode: LTL
-    phonePrefix: '370'
-    defaultLocale: lt
 LU:
     iso2Code: LU
     iso3Code: LUX
@@ -6089,9 +5695,6 @@ LU:
         LU.01:
             combinedCode: LU.01
             code: '01'
-    currencyCode: EUR
-    phonePrefix: '352'
-    defaultLocale: fr
 LV:
     iso2Code: LV
     iso3Code: LVA
@@ -6453,9 +6056,6 @@ LV:
         LV.F1:
             combinedCode: LV.F1
             code: F1
-    currencyCode: LVL
-    phonePrefix: '371'
-    defaultLocale: lv
 LY:
     iso2Code: LY
     iso3Code: LBY
@@ -6526,9 +6126,6 @@ LY:
         LY.84:
             combinedCode: LY.84
             code: '84'
-    currencyCode: LYD
-    phonePrefix: '218'
-    defaultLocale: ar_LY
 MA:
     iso2Code: MA
     iso3Code: MAR
@@ -6581,9 +6178,6 @@ MA:
         MA.EH:
             combinedCode: MA.EH
             code: EH
-    currencyCode: MAD
-    phonePrefix: '212'
-    defaultLocale: ar_MA
 MC:
     iso2Code: MC
     iso3Code: MCO
@@ -6591,9 +6185,6 @@ MC:
         MC.00:
             combinedCode: MC.00
             code: '00'
-    currencyCode: EUR
-    phonePrefix: '377'
-    defaultLocale: fr_MC
 MD:
     iso2Code: MD
     iso3Code: MDA
@@ -6709,9 +6300,6 @@ MD:
         MD.60:
             combinedCode: MD.60
             code: '60'
-    currencyCode: MDL
-    phonePrefix: '373'
-    defaultLocale: ro
 ME:
     iso2Code: ME
     iso3Code: MNE
@@ -6779,16 +6367,10 @@ ME:
         ME.01:
             combinedCode: ME.01
             code: '01'
-    currencyCode: EUR
-    phonePrefix: '382'
-    defaultLocale: sr
 MF:
     iso2Code: MF
     iso3Code: MAF
     regions: {  }
-    currencyCode: EUR
-    phonePrefix: '590'
-    defaultLocale: fr
 MG:
     iso2Code: MG
     iso3Code: MDG
@@ -6859,9 +6441,6 @@ MG:
         MG.7670913:
             combinedCode: MG.7670913
             code: '7670913'
-    currencyCode: MGA
-    phonePrefix: '261'
-    defaultLocale: fr_MG
 MH:
     iso2Code: MH
     iso3Code: MHL
@@ -6965,9 +6544,6 @@ MH:
         MH.310:
             combinedCode: MH.310
             code: '310'
-    currencyCode: USD
-    phonePrefix: '692'
-    defaultLocale: en
 MK:
     iso2Code: MK
     iso3Code: MKD
@@ -7224,9 +6800,6 @@ MK:
         MK.F5:
             combinedCode: MK.F5
             code: F5
-    currencyCode: MKD
-    phonePrefix: '389'
-    defaultLocale: mk
 ML:
     iso2Code: ML
     iso3Code: MLI
@@ -7258,9 +6831,6 @@ ML:
         ML.10:
             combinedCode: ML.10
             code: '10'
-    currencyCode: XOF
-    phonePrefix: '223'
-    defaultLocale: fr_ML
 MM:
     iso2Code: MM
     iso3Code: MMR
@@ -7307,9 +6877,6 @@ MM:
         MM.02:
             combinedCode: MM.02
             code: '02'
-    currencyCode: MMK
-    phonePrefix: '95'
-    defaultLocale: my
 MN:
     iso2Code: MN
     iso3Code: MNG
@@ -7380,9 +6947,6 @@ MN:
         MN.25:
             combinedCode: MN.25
             code: '25'
-    currencyCode: MNT
-    phonePrefix: '976'
-    defaultLocale: mn
 MO:
     iso2Code: MO
     iso3Code: MAC
@@ -7393,9 +6957,6 @@ MO:
         MO.01:
             combinedCode: MO.01
             code: '01'
-    currencyCode: MOP
-    phonePrefix: '853'
-    defaultLocale: zh
 MP:
     iso2Code: MP
     iso3Code: MNP
@@ -7412,9 +6973,6 @@ MP:
         MP.085:
             combinedCode: MP.085
             code: '085'
-    currencyCode: USD
-    phonePrefix: +1-670
-    defaultLocale: fil
 MQ:
     iso2Code: MQ
     iso3Code: MTQ
@@ -7422,9 +6980,6 @@ MQ:
         MQ.MQ:
             combinedCode: MQ.MQ
             code: MQ
-    currencyCode: EUR
-    phonePrefix: '596'
-    defaultLocale: fr_MQ
 MR:
     iso2Code: MR
     iso3Code: MRT
@@ -7468,9 +7023,6 @@ MR:
         MR.07:
             combinedCode: MR.07
             code: '07'
-    currencyCode: MRO
-    phonePrefix: '222'
-    defaultLocale: ar_MR
 MS:
     iso2Code: MS
     iso3Code: MSR
@@ -7484,9 +7036,6 @@ MS:
         MS.01:
             combinedCode: MS.01
             code: '01'
-    currencyCode: XCD
-    phonePrefix: +1-664
-    defaultLocale: en
 MT:
     iso2Code: MT
     iso3Code: MLT
@@ -7692,9 +7241,6 @@ MT:
         MT.60:
             combinedCode: MT.60
             code: '60'
-    currencyCode: EUR
-    phonePrefix: '356'
-    defaultLocale: mt
 MU:
     iso2Code: MU
     iso3Code: MUS
@@ -7735,9 +7281,6 @@ MU:
         MU.23:
             combinedCode: MU.23
             code: '23'
-    currencyCode: MUR
-    phonePrefix: '230'
-    defaultLocale: en_MU
 MV:
     iso2Code: MV
     iso3Code: MDV
@@ -7823,8 +7366,6 @@ MV:
         MV.54:
             combinedCode: MV.54
             code: '54'
-    currencyCode: MVR
-    phonePrefix: '960'
 MW:
     iso2Code: MW
     iso3Code: MWI
@@ -7838,9 +7379,6 @@ MW:
         MW.C:
             combinedCode: MW.C
             code: C
-    currencyCode: MWK
-    phonePrefix: '265'
-    defaultLocale: en
 MX:
     iso2Code: MX
     iso3Code: MEX
@@ -7941,9 +7479,6 @@ MX:
         MX.01:
             combinedCode: MX.01
             code: '01'
-    currencyCode: MXN
-    phonePrefix: '52'
-    defaultLocale: es_MX
 MY:
     iso2Code: MY
     iso3Code: MYS
@@ -7996,9 +7531,6 @@ MY:
         MY.17:
             combinedCode: MY.17
             code: '17'
-    currencyCode: MYR
-    phonePrefix: '60'
-    defaultLocale: ms_MY
 MZ:
     iso2Code: MZ
     iso3Code: MOZ
@@ -8036,9 +7568,6 @@ MZ:
         MZ.11:
             combinedCode: MZ.11
             code: '11'
-    currencyCode: MZN
-    phonePrefix: '258'
-    defaultLocale: pt_MZ
 NA:
     iso2Code: NA
     iso3Code: NAM
@@ -8082,9 +7611,6 @@ NA:
         NA.39:
             combinedCode: NA.39
             code: '39'
-    currencyCode: NAD
-    phonePrefix: '264'
-    defaultLocale: en_NA
 NC:
     iso2Code: NC
     iso3Code: NCL
@@ -8098,9 +7624,6 @@ NC:
         NC.03:
             combinedCode: NC.03
             code: '03'
-    currencyCode: XPF
-    phonePrefix: '687'
-    defaultLocale: fr_NC
 NE:
     iso2Code: NE
     iso3Code: NER
@@ -8129,16 +7652,10 @@ NE:
         NE.08:
             combinedCode: NE.08
             code: '08'
-    currencyCode: XOF
-    phonePrefix: '227'
-    defaultLocale: fr_NE
 NF:
     iso2Code: NF
     iso3Code: NFK
     regions: {  }
-    currencyCode: AUD
-    phonePrefix: '672'
-    defaultLocale: en
 NG:
     iso2Code: NG
     iso3Code: NGA
@@ -8254,9 +7771,6 @@ NG:
         NG.44:
             combinedCode: NG.44
             code: '44'
-    currencyCode: NGN
-    phonePrefix: '234'
-    defaultLocale: en_NG
 NI:
     iso2Code: NI
     iso3Code: NIC
@@ -8312,9 +7826,6 @@ NI:
         NI.18:
             combinedCode: NI.18
             code: '18'
-    currencyCode: NIO
-    phonePrefix: '505'
-    defaultLocale: es_NI
 NL:
     iso2Code: NL
     iso3Code: NLD
@@ -8355,9 +7866,6 @@ NL:
         NL.16:
             combinedCode: NL.16
             code: '16'
-    currencyCode: EUR
-    phonePrefix: '31'
-    defaultLocale: nl_NL
 NO:
     iso2Code: NO
     iso3Code: NOR
@@ -8419,9 +7927,6 @@ NO:
         NO.01:
             combinedCode: NO.01
             code: '01'
-    currencyCode: NOK
-    phonePrefix: '47'
-    defaultLocale: no
 NP:
     iso2Code: NP
     iso3Code: NPL
@@ -8441,9 +7946,6 @@ NP:
         NP.WR:
             combinedCode: NP.WR
             code: WR
-    currencyCode: NPR
-    phonePrefix: '977'
-    defaultLocale: ne
 NR:
     iso2Code: NR
     iso3Code: NRU
@@ -8490,16 +7992,10 @@ NR:
         NR.01:
             combinedCode: NR.01
             code: '01'
-    currencyCode: AUD
-    phonePrefix: '674'
-    defaultLocale: en
 NU:
     iso2Code: NU
     iso3Code: NIU
     regions: {  }
-    currencyCode: NZD
-    phonePrefix: '683'
-    defaultLocale: en
 NZ:
     iso2Code: NZ
     iso3Code: NZL
@@ -8555,9 +8051,6 @@ NZ:
         NZ.G3:
             combinedCode: NZ.G3
             code: G3
-    currencyCode: NZD
-    phonePrefix: '64'
-    defaultLocale: en_NZ
 OM:
     iso2Code: OM
     iso3Code: OMN
@@ -8595,9 +8088,6 @@ OM:
         OM.11:
             combinedCode: OM.11
             code: '11'
-    currencyCode: OMR
-    phonePrefix: '968'
-    defaultLocale: ar_OM
 PA:
     iso2Code: PA
     iso3Code: PAN
@@ -8638,9 +8128,6 @@ PA:
         PA.12:
             combinedCode: PA.12
             code: '12'
-    currencyCode: PAB
-    phonePrefix: '507'
-    defaultLocale: es_PA
 PE:
     iso2Code: PE
     iso3Code: PER
@@ -8723,9 +8210,6 @@ PE:
         PE.03:
             combinedCode: PE.03
             code: '03'
-    currencyCode: PEN
-    phonePrefix: '51'
-    defaultLocale: es_PE
 PF:
     iso2Code: PF
     iso3Code: PYF
@@ -8745,9 +8229,6 @@ PF:
         PF.05:
             combinedCode: PF.05
             code: '05'
-    currencyCode: XPF
-    phonePrefix: '689'
-    defaultLocale: fr_PF
 PG:
     iso2Code: PG
     iso3Code: PNG
@@ -8818,9 +8299,6 @@ PG:
         PG.22:
             combinedCode: PG.22
             code: '22'
-    currencyCode: PGK
-    phonePrefix: '675'
-    defaultLocale: en_PG
 PH:
     iso2Code: PH
     iso3Code: PHL
@@ -8876,9 +8354,6 @@ PH:
         PH.NCR:
             combinedCode: PH.NCR
             code: NCR
-    currencyCode: PHP
-    phonePrefix: '63'
-    defaultLocale: tl
 PK:
     iso2Code: PK
     iso3Code: PAK
@@ -8907,9 +8382,6 @@ PK:
         PK.06:
             combinedCode: PK.06
             code: '06'
-    currencyCode: PKR
-    phonePrefix: '92'
-    defaultLocale: ur_PK
 PL:
     iso2Code: PL
     iso3Code: POL
@@ -8962,9 +8434,6 @@ PL:
         PL.73:
             combinedCode: PL.73
             code: '73'
-    currencyCode: PLN
-    phonePrefix: '48'
-    defaultLocale: pl
 PM:
     iso2Code: PM
     iso3Code: SPM
@@ -8975,16 +8444,10 @@ PM:
         PM.97501:
             combinedCode: PM.97501
             code: '97501'
-    currencyCode: EUR
-    phonePrefix: '508'
-    defaultLocale: fr
 PN:
     iso2Code: PN
     iso3Code: PCN
     regions: {  }
-    currencyCode: NZD
-    phonePrefix: '870'
-    defaultLocale: en
 PR:
     iso2Code: PR
     iso3Code: PRI
@@ -9223,9 +8686,6 @@ PR:
         PR.147:
             combinedCode: PR.147
             code: '147'
-    currencyCode: USD
-    phonePrefix: +1-787
-    defaultLocale: en_PR
 PS:
     iso2Code: PS
     iso3Code: PSE
@@ -9236,9 +8696,6 @@ PS:
         PS.WE:
             combinedCode: PS.WE
             code: WE
-    currencyCode: ILS
-    phonePrefix: '970'
-    defaultLocale: ar_PS
 PT:
     iso2Code: PT
     iso3Code: PRT
@@ -9303,9 +8760,6 @@ PT:
         PT.23:
             combinedCode: PT.23
             code: '23'
-    currencyCode: EUR
-    phonePrefix: '351'
-    defaultLocale: pt_PT
 PW:
     iso2Code: PW
     iso3Code: PLW
@@ -9358,9 +8812,6 @@ PW:
         PW.15:
             combinedCode: PW.15
             code: '15'
-    currencyCode: USD
-    phonePrefix: '680'
-    defaultLocale: en
 PY:
     iso2Code: PY
     iso3Code: PRY
@@ -9419,9 +8870,6 @@ PY:
         PY.24:
             combinedCode: PY.24
             code: '24'
-    currencyCode: PYG
-    phonePrefix: '595'
-    defaultLocale: es_PY
 QA:
     iso2Code: QA
     iso3Code: QAT
@@ -9459,9 +8907,6 @@ QA:
         QA.13:
             combinedCode: QA.13
             code: '13'
-    currencyCode: QAR
-    phonePrefix: '974'
-    defaultLocale: ar_QA
 RE:
     iso2Code: RE
     iso3Code: REU
@@ -9469,9 +8914,6 @@ RE:
         RE.RE:
             combinedCode: RE.RE
             code: RE
-    currencyCode: EUR
-    phonePrefix: '262'
-    defaultLocale: fr_RE
 RO:
     iso2Code: RO
     iso3Code: ROU
@@ -9602,9 +9044,6 @@ RO:
         RO.43:
             combinedCode: RO.43
             code: '43'
-    currencyCode: RON
-    phonePrefix: '40'
-    defaultLocale: ro
 RS:
     iso2Code: RS
     iso3Code: SRB
@@ -9615,9 +9054,6 @@ RS:
         RS.SE:
             combinedCode: RS.SE
             code: SE
-    currencyCode: RSD
-    phonePrefix: '381'
-    defaultLocale: sr
 RU:
     iso2Code: RU
     iso3Code: RUS
@@ -9871,9 +9307,6 @@ RU:
         RU.93:
             combinedCode: RU.93
             code: '93'
-    currencyCode: RUB
-    phonePrefix: '7'
-    defaultLocale: ru
 RW:
     iso2Code: RW
     iso3Code: RWA
@@ -9893,9 +9326,6 @@ RW:
         RW.15:
             combinedCode: RW.15
             code: '15'
-    currencyCode: RWF
-    phonePrefix: '250'
-    defaultLocale: rw
 SA:
     iso2Code: SA
     iso3Code: SAU
@@ -9939,9 +9369,6 @@ SA:
         SA.02:
             combinedCode: SA.02
             code: '02'
-    currencyCode: SAR
-    phonePrefix: '966'
-    defaultLocale: ar_SA
 SB:
     iso2Code: SB
     iso3Code: SLB
@@ -9973,9 +9400,6 @@ SB:
         SB.13:
             combinedCode: SB.13
             code: '13'
-    currencyCode: SBD
-    phonePrefix: '677'
-    defaultLocale: en_SB
 SC:
     iso2Code: SC
     iso3Code: SYC
@@ -10055,9 +9479,6 @@ SC:
         SC.28:
             combinedCode: SC.28
             code: '28'
-    currencyCode: SCR
-    phonePrefix: '248'
-    defaultLocale: en_SC
 SD:
     iso2Code: SD
     iso3Code: SDN
@@ -10113,9 +9534,6 @@ SD:
         SD.61:
             combinedCode: SD.61
             code: '61'
-    currencyCode: SDG
-    phonePrefix: '249'
-    defaultLocale: ar_SD
 SS:
     iso2Code: SS
     iso3Code: SSD
@@ -10150,9 +9568,6 @@ SS:
         SS.08:
             combinedCode: SS.08
             code: '08'
-    currencyCode: SSP
-    phonePrefix: '211'
-    defaultLocale: en
 SE:
     iso2Code: SE
     iso3Code: SWE
@@ -10220,9 +9635,6 @@ SE:
         SE.28:
             combinedCode: SE.28
             code: '28'
-    currencyCode: SEK
-    phonePrefix: '46'
-    defaultLocale: sv_SE
 SG:
     iso2Code: SG
     iso3Code: SGP
@@ -10242,9 +9654,6 @@ SG:
         SG.03:
             combinedCode: SG.03
             code: '03'
-    currencyCode: SGD
-    phonePrefix: '65'
-    defaultLocale: en
 SH:
     iso2Code: SH
     iso3Code: SHN
@@ -10258,9 +9667,6 @@ SH:
         SH.02:
             combinedCode: SH.02
             code: '02'
-    currencyCode: SHP
-    phonePrefix: '290'
-    defaultLocale: en
 SI:
     iso2Code: SI
     iso3Code: SVN
@@ -10892,9 +10298,6 @@ SI:
         SI.P7:
             combinedCode: SI.P7
             code: P7
-    currencyCode: EUR
-    phonePrefix: '386'
-    defaultLocale: sl
 SJ:
     iso2Code: SJ
     iso3Code: SJM
@@ -10905,9 +10308,6 @@ SJ:
         SJ.21:
             combinedCode: SJ.21
             code: '21'
-    currencyCode: NOK
-    phonePrefix: '47'
-    defaultLocale: no
 SK:
     iso2Code: SK
     iso3Code: SVK
@@ -10936,9 +10336,6 @@ SK:
         SK.07:
             combinedCode: SK.07
             code: '07'
-    currencyCode: EUR
-    phonePrefix: '421'
-    defaultLocale: sk
 SL:
     iso2Code: SL
     iso3Code: SLE
@@ -10955,9 +10352,6 @@ SL:
         SL.01:
             combinedCode: SL.01
             code: '01'
-    currencyCode: SLL
-    phonePrefix: '232'
-    defaultLocale: en_SL
 SM:
     iso2Code: SM
     iso3Code: SMR
@@ -10989,9 +10383,6 @@ SM:
         SM.08:
             combinedCode: SM.08
             code: '08'
-    currencyCode: EUR
-    phonePrefix: '378'
-    defaultLocale: it_SM
 SN:
     iso2Code: SN
     iso3Code: SEN
@@ -11038,9 +10429,6 @@ SN:
         SN.18:
             combinedCode: SN.18
             code: '18'
-    currencyCode: XOF
-    phonePrefix: '221'
-    defaultLocale: fr_SN
 SO:
     iso2Code: SO
     iso3Code: SOM
@@ -11099,9 +10487,6 @@ SO:
         SO.22:
             combinedCode: SO.22
             code: '22'
-    currencyCode: SOS
-    phonePrefix: '252'
-    defaultLocale: so_SO
 SR:
     iso2Code: SR
     iso3Code: SUR
@@ -11136,9 +10521,6 @@ SR:
         SR.10:
             combinedCode: SR.10
             code: '10'
-    currencyCode: SRD
-    phonePrefix: '597'
-    defaultLocale: nl_SR
 ST:
     iso2Code: ST
     iso3Code: STP
@@ -11149,9 +10531,6 @@ ST:
         ST.01:
             combinedCode: ST.01
             code: '01'
-    currencyCode: STD
-    phonePrefix: '239'
-    defaultLocale: pt_ST
 SV:
     iso2Code: SV
     iso3Code: SLV
@@ -11198,16 +10577,10 @@ SV:
         SV.01:
             combinedCode: SV.01
             code: '01'
-    currencyCode: USD
-    phonePrefix: '503'
-    defaultLocale: es_SV
 SX:
     iso2Code: SX
     iso3Code: SXM
     regions: {  }
-    currencyCode: ANG
-    phonePrefix: '599'
-    defaultLocale: nl
 SY:
     iso2Code: SY
     iso3Code: SYR
@@ -11254,9 +10627,6 @@ SY:
         SY.01:
             combinedCode: SY.01
             code: '01'
-    currencyCode: SYP
-    phonePrefix: '963'
-    defaultLocale: ar_SY
 SZ:
     iso2Code: SZ
     iso3Code: SWZ
@@ -11273,16 +10643,10 @@ SZ:
         SZ.01:
             combinedCode: SZ.01
             code: '01'
-    currencyCode: SZL
-    phonePrefix: '268'
-    defaultLocale: en_SZ
 TC:
     iso2Code: TC
     iso3Code: TCA
     regions: {  }
-    currencyCode: USD
-    phonePrefix: +1-649
-    defaultLocale: en_TC
 TD:
     iso2Code: TD
     iso3Code: TCD
@@ -11353,9 +10717,6 @@ TD:
         TD.26:
             combinedCode: TD.26
             code: '26'
-    currencyCode: XAF
-    phonePrefix: '235'
-    defaultLocale: fr_TD
 TF:
     iso2Code: TF
     iso3Code: ATF
@@ -11375,8 +10736,6 @@ TF:
         TF.04:
             combinedCode: TF.04
             code: '04'
-    currencyCode: EUR
-    defaultLocale: fr
 TG:
     iso2Code: TG
     iso3Code: TGO
@@ -11396,9 +10755,6 @@ TG:
         TG.23:
             combinedCode: TG.23
             code: '23'
-    currencyCode: XOF
-    phonePrefix: '228'
-    defaultLocale: fr_TG
 TH:
     iso2Code: TH
     iso3Code: THA
@@ -11634,9 +10990,6 @@ TH:
         TH.81:
             combinedCode: TH.81
             code: '81'
-    currencyCode: THB
-    phonePrefix: '66'
-    defaultLocale: th
 TJ:
     iso2Code: TJ
     iso3Code: TJK
@@ -11656,9 +11009,6 @@ TJ:
         TJ.7280679:
             combinedCode: TJ.7280679
             code: '7280679'
-    currencyCode: TJS
-    phonePrefix: '992'
-    defaultLocale: fr
 TK:
     iso2Code: TK
     iso3Code: TKL
@@ -11672,9 +11022,6 @@ TK:
         TK.A:
             combinedCode: TK.A
             code: A
-    currencyCode: NZD
-    phonePrefix: '690'
-    defaultLocale: en
 TL:
     iso2Code: TL
     iso3Code: TLS
@@ -11718,9 +11065,6 @@ TL:
         TL.AL:
             combinedCode: TL.AL
             code: AL
-    currencyCode: USD
-    phonePrefix: '670'
-    defaultLocale: pt
 TM:
     iso2Code: TM
     iso3Code: TKM
@@ -11740,9 +11084,6 @@ TM:
         TM.04:
             combinedCode: TM.04
             code: '04'
-    currencyCode: TMT
-    phonePrefix: '993'
-    defaultLocale: ru
 TN:
     iso2Code: TN
     iso3Code: TUN
@@ -11819,9 +11160,6 @@ TN:
         TN.39:
             combinedCode: TN.39
             code: '39'
-    currencyCode: TND
-    phonePrefix: '216'
-    defaultLocale: ar_TN
 TO:
     iso2Code: TO
     iso3Code: TON
@@ -11841,9 +11179,6 @@ TO:
         TO.NI:
             combinedCode: TO.NI
             code: NI
-    currencyCode: TOP
-    phonePrefix: '676'
-    defaultLocale: to
 TR:
     iso2Code: TR
     iso3Code: TUR
@@ -12091,9 +11426,6 @@ TR:
         TR.93:
             combinedCode: TR.93
             code: '93'
-    currencyCode: TRY
-    phonePrefix: '90'
-    defaultLocale: tr_TR
 TT:
     iso2Code: TT
     iso3Code: TTO
@@ -12146,9 +11478,6 @@ TT:
         TT.TUP:
             combinedCode: TT.TUP
             code: TUP
-    currencyCode: TTD
-    phonePrefix: +1-868
-    defaultLocale: en_TT
 TV:
     iso2Code: TV
     iso3Code: TUV
@@ -12177,9 +11506,6 @@ TV:
         TV.NKL:
             combinedCode: TV.NKL
             code: NKL
-    currencyCode: AUD
-    phonePrefix: '688'
-    defaultLocale: en
 TW:
     iso2Code: TW
     iso3Code: TWN
@@ -12196,9 +11522,6 @@ TW:
         TW.04:
             combinedCode: TW.04
             code: '04'
-    currencyCode: TWD
-    phonePrefix: '886'
-    defaultLocale: zh_TW
 TZ:
     iso2Code: TZ
     iso3Code: TZA
@@ -12293,9 +11616,6 @@ TZ:
         TZ.30:
             combinedCode: TZ.30
             code: '30'
-    currencyCode: TZS
-    phonePrefix: '255'
-    defaultLocale: sw_TZ
 UA:
     iso2Code: UA
     iso3Code: UKR
@@ -12381,9 +11701,6 @@ UA:
         UA.01:
             combinedCode: UA.01
             code: '01'
-    currencyCode: UAH
-    phonePrefix: '380'
-    defaultLocale: uk
 UG:
     iso2Code: UG
     iso3Code: UGA
@@ -12400,9 +11717,6 @@ UG:
         UG.W:
             combinedCode: UG.W
             code: W
-    currencyCode: UGX
-    phonePrefix: '256'
-    defaultLocale: en_UG
 UM:
     iso2Code: UM
     iso3Code: UMI
@@ -12434,9 +11748,6 @@ UM:
         UM.400:
             combinedCode: UM.400
             code: '400'
-    currencyCode: USD
-    phonePrefix: '1'
-    defaultLocale: en_UM
 US:
     iso2Code: US
     iso3Code: USA
@@ -12594,9 +11905,6 @@ US:
         US.VA:
             combinedCode: US.VA
             code: VA
-    currencyCode: USD
-    phonePrefix: '1'
-    defaultLocale: en_US
 UY:
     iso2Code: UY
     iso3Code: URY
@@ -12658,9 +11966,6 @@ UY:
         UY.01:
             combinedCode: UY.01
             code: '01'
-    currencyCode: UYU
-    phonePrefix: '598'
-    defaultLocale: es_UY
 UZ:
     iso2Code: UZ
     iso3Code: UZB
@@ -12707,16 +12012,10 @@ UZ:
         UZ.01:
             combinedCode: UZ.01
             code: '01'
-    currencyCode: UZS
-    phonePrefix: '998'
-    defaultLocale: uz
 VA:
     iso2Code: VA
     iso3Code: VAT
     regions: {  }
-    currencyCode: EUR
-    phonePrefix: '379'
-    defaultLocale: it
 VC:
     iso2Code: VC
     iso3Code: VCT
@@ -12739,9 +12038,6 @@ VC:
         VC.01:
             combinedCode: VC.01
             code: '01'
-    currencyCode: XCD
-    phonePrefix: +1-784
-    defaultLocale: en_VC
 VE:
     iso2Code: VE
     iso3Code: VEN
@@ -12821,16 +12117,10 @@ VE:
         VE.26:
             combinedCode: VE.26
             code: '26'
-    currencyCode: VEF
-    phonePrefix: '58'
-    defaultLocale: es_VE
 VG:
     iso2Code: VG
     iso3Code: VGB
     regions: {  }
-    currencyCode: USD
-    phonePrefix: +1-284
-    defaultLocale: en_VG
 VI:
     iso2Code: VI
     iso3Code: VIR
@@ -12844,9 +12134,6 @@ VI:
         VI.030:
             combinedCode: VI.030
             code: '030'
-    currencyCode: USD
-    phonePrefix: +1-340
-    defaultLocale: en_VI
 VN:
     iso2Code: VN
     iso3Code: VNM
@@ -13043,9 +12330,6 @@ VN:
         VN.93:
             combinedCode: VN.93
             code: '93'
-    currencyCode: VND
-    phonePrefix: '84'
-    defaultLocale: vi
 VU:
     iso2Code: VU
     iso3Code: VUT
@@ -13068,9 +12352,6 @@ VU:
         VU.18:
             combinedCode: VU.18
             code: '18'
-    currencyCode: VUV
-    phonePrefix: '678'
-    defaultLocale: fr
 WF:
     iso2Code: WF
     iso3Code: WLF
@@ -13084,9 +12365,6 @@ WF:
         WF.98611:
             combinedCode: WF.98611
             code: '98611'
-    currencyCode: XPF
-    phonePrefix: '681'
-    defaultLocale: fr
 WS:
     iso2Code: WS
     iso3Code: WSM
@@ -13124,9 +12402,6 @@ WS:
         WS.01:
             combinedCode: WS.01
             code: '01'
-    currencyCode: WST
-    phonePrefix: '685'
-    defaultLocale: en
 YE:
     iso2Code: YE
     iso3Code: YEM
@@ -13194,9 +12469,6 @@ YE:
         YE.26:
             combinedCode: YE.26
             code: '26'
-    currencyCode: YER
-    phonePrefix: '967'
-    defaultLocale: ar_YE
 YT:
     iso2Code: YT
     iso3Code: MYT
@@ -13252,9 +12524,6 @@ YT:
         YT.97617:
             combinedCode: YT.97617
             code: '97617'
-    currencyCode: EUR
-    phonePrefix: '262'
-    defaultLocale: fr_YT
 ZA:
     iso2Code: ZA
     iso3Code: ZAF
@@ -13286,9 +12555,6 @@ ZA:
         ZA.11:
             combinedCode: ZA.11
             code: '11'
-    currencyCode: ZAR
-    phonePrefix: '27'
-    defaultLocale: zu
 ZM:
     iso2Code: ZM
     iso3Code: ZMB
@@ -13320,9 +12586,6 @@ ZM:
         ZM.02:
             combinedCode: ZM.02
             code: '02'
-    currencyCode: ZMK
-    phonePrefix: '260'
-    defaultLocale: en_ZM
 ZW:
     iso2Code: ZW
     iso3Code: ZWE
@@ -13357,20 +12620,11 @@ ZW:
         ZW.10:
             combinedCode: ZW.10
             code: '10'
-    currencyCode: ZWL
-    phonePrefix: '263'
-    defaultLocale: en_ZW
 CS:
     iso2Code: CS
     iso3Code: SCG
     regions: {  }
-    currencyCode: RSD
-    phonePrefix: '381'
-    defaultLocale: sr
 AN:
     iso2Code: AN
     iso3Code: ANT
     regions: {  }
-    currencyCode: ANG
-    phonePrefix: '599'
-    defaultLocale: nl

@@ -49,9 +49,18 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testAddAddressFormats()
     {
-        $usFormat = '%name%\n%organization%\n%street%\n%CITY% %REGION% %COUNTRY% %postal_code%';
-        $usFormatModified = '%name%\n%organization%\n%street%\n%CITY% %REGION_CODE% %COUNTRY% %postal_code%';
-        $ruFormat = '%postal_code% %COUNTRY% %CITY%\n%STREET%\n%organization%\n%name%';
+        $usFormat = array(
+            LocaleSettingsProvider::ADDRESS_FORMAT_KEY
+                => '%name%\n%organization%\n%street%\n%CITY% %REGION% %COUNTRY% %postal_code%'
+        );
+        $usFormatModified = array(
+            LocaleSettingsProvider::ADDRESS_FORMAT_KEY
+                => '%name%\n%organization%\n%street%\n%CITY% %REGION_CODE% %COUNTRY% %postal_code%'
+        );
+        $ruFormat = array(
+            LocaleSettingsProvider::ADDRESS_FORMAT_KEY
+                => '%postal_code% %COUNTRY% %CITY%\n%STREET%\n%organization%\n%name%'
+        );
 
         $this->assertAttributeEmpty('addressFormats', $this->provider);
 
@@ -66,6 +75,29 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals(
             array('US' => $usFormatModified, 'RU' => $ruFormat),
             'addressFormats',
+            $this->provider
+        );
+    }
+
+    public function testAddLocaleData()
+    {
+        $usData = array(LocaleSettingsProvider::DEFAULT_LOCALE => 'en_US');
+        $usDataModified = array(LocaleSettingsProvider::DEFAULT_LOCALE => 'en');
+        $ruFormat = array(LocaleSettingsProvider::DEFAULT_LOCALE => 'ru');
+
+        $this->assertAttributeEmpty('localeData', $this->provider);
+
+        $this->provider->addLocaleData(array('US' => $usData));
+        $this->assertAttributeEquals(
+            array('US' => $usData),
+            'localeData',
+            $this->provider
+        );
+
+        $this->provider->addLocaleData(array('US' => $usDataModified, 'RU' => $ruFormat));
+        $this->assertAttributeEquals(
+            array('US' => $usDataModified, 'RU' => $ruFormat),
+            'localeData',
             $this->provider
         );
     }
