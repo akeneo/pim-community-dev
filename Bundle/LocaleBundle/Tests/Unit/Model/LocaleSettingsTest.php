@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\LocaleBundle\Tests\Unit\Provider;
 
-use Oro\Bundle\LocaleBundle\Provider\LocaleSettingsProvider;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
-class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
+class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -12,7 +12,7 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
     protected $configManager;
 
     /**
-     * @var LocaleSettingsProvider
+     * @var LocaleSettings
      */
     protected $provider;
 
@@ -21,7 +21,7 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
         $this->configManager = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->provider = new LocaleSettingsProvider($this->configManager);
+        $this->provider = new LocaleSettings($this->configManager);
     }
 
     public function testAddNameFormats()
@@ -50,15 +50,15 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
     public function testAddAddressFormats()
     {
         $usFormat = array(
-            LocaleSettingsProvider::ADDRESS_FORMAT_KEY
+            LocaleSettings::ADDRESS_FORMAT_KEY
                 => '%name%\n%organization%\n%street%\n%CITY% %REGION% %COUNTRY% %postal_code%'
         );
         $usFormatModified = array(
-            LocaleSettingsProvider::ADDRESS_FORMAT_KEY
+            LocaleSettings::ADDRESS_FORMAT_KEY
                 => '%name%\n%organization%\n%street%\n%CITY% %REGION_CODE% %COUNTRY% %postal_code%'
         );
         $ruFormat = array(
-            LocaleSettingsProvider::ADDRESS_FORMAT_KEY
+            LocaleSettings::ADDRESS_FORMAT_KEY
                 => '%postal_code% %COUNTRY% %CITY%\n%STREET%\n%organization%\n%name%'
         );
 
@@ -81,9 +81,9 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testAddLocaleData()
     {
-        $usData = array(LocaleSettingsProvider::DEFAULT_LOCALE => 'en_US');
-        $usDataModified = array(LocaleSettingsProvider::DEFAULT_LOCALE => 'en');
-        $ruFormat = array(LocaleSettingsProvider::DEFAULT_LOCALE => 'ru');
+        $usData = array(LocaleSettings::DEFAULT_LOCALE => 'en_US');
+        $usDataModified = array(LocaleSettings::DEFAULT_LOCALE => 'en');
+        $ruFormat = array(LocaleSettings::DEFAULT_LOCALE => 'ru');
 
         $this->assertAttributeEmpty('localeData', $this->provider);
 
@@ -164,7 +164,7 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
             ),
             'default_fallback' => array(
                 'nameFormats' => array(
-                    LocaleSettingsProvider::DEFAULT_LOCALE => '%name_format%'
+                    LocaleSettings::DEFAULT_LOCALE => '%name_format%'
                 ),
                 'locale' => 'fr_CA',
                 'expectedFormat' => '%name_format%'
@@ -208,21 +208,21 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
         return array(
             'direct' => array(
                 'addressFormats' => array(
-                    'US' => array(LocaleSettingsProvider::ADDRESS_FORMAT_KEY => '%address_format%')
+                    'US' => array(LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%')
                 ),
                 'localeOrRegion' => 'US',
                 'expectedFormat' => '%address_format%'
             ),
             'parse_country' => array(
                 'addressFormats' => array(
-                    'CA' => array(LocaleSettingsProvider::ADDRESS_FORMAT_KEY => '%address_format%')
+                    'CA' => array(LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%')
                 ),
                 'localeOrRegion' => 'fr_CA',
                 'expectedFormat' => '%address_format%'
             ),
             'empty_locale_or_region' => array(
                 'addressFormats' => array(
-                    'RU' => array(LocaleSettingsProvider::ADDRESS_FORMAT_KEY => '%address_format%')
+                    'RU' => array(LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%')
                 ),
                 'localeOrRegion' => false,
                 'expectedFormat' => '%address_format%',
@@ -230,7 +230,7 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
             ),
             'default_system_country' => array(
                 'addressFormats' => array(
-                    'RU' => array(LocaleSettingsProvider::ADDRESS_FORMAT_KEY => '%address_format%')
+                    'RU' => array(LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%')
                 ),
                 'localeOrRegion' => 'fr_CA',
                 'expectedFormat' => '%address_format%',
@@ -238,8 +238,8 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
             ),
             'default_fallback' => array(
                 'addressFormats' => array(
-                    LocaleSettingsProvider::DEFAULT_COUNTRY => array(
-                        LocaleSettingsProvider::ADDRESS_FORMAT_KEY => '%address_format%'
+                    LocaleSettings::DEFAULT_COUNTRY => array(
+                        LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%'
                     )
                 ),
                 'localeOrRegion' => 'fr_CA',
@@ -255,7 +255,7 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             $expected,
-            LocaleSettingsProvider::getNumberFormatterAttribute(
+            LocaleSettings::getNumberFormatterAttribute(
                 $attribute,
                 $locale,
                 $style
@@ -295,7 +295,7 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             $expected,
-            LocaleSettingsProvider::getNumberFormatterTextAttribute(
+            LocaleSettings::getNumberFormatterTextAttribute(
                 $attribute,
                 $locale,
                 $style
@@ -357,15 +357,15 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetValidLocale($locale, $expectedLocale)
     {
-        $this->assertEquals($expectedLocale, LocaleSettingsProvider::getValidLocale($locale));
+        $this->assertEquals($expectedLocale, LocaleSettings::getValidLocale($locale));
     }
 
     public function getValidLocaleDataProvider()
     {
         return array(
             array('ru_RU', 'ru_RU'),
-            array('en', LocaleSettingsProvider::DEFAULT_LOCALE),
-            array(null, LocaleSettingsProvider::DEFAULT_LOCALE),
+            array('en', LocaleSettings::DEFAULT_LOCALE),
+            array(null, LocaleSettings::DEFAULT_LOCALE),
             array('ru', 'ru'),
             array('en_Hans_CN_nedis_rozaj_x_prv1_prv2', 'en_US'),
             array('en_Hans_unknown', 'en'),
@@ -380,18 +380,18 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCountryByLocale($locale, $expectedCountry)
     {
-        $this->assertEquals($expectedCountry, LocaleSettingsProvider::getCountryByLocale($locale));
+        $this->assertEquals($expectedCountry, LocaleSettings::getCountryByLocale($locale));
     }
 
     public function getCountryByLocaleDataProvider()
     {
         return array(
             array('ru_RU', 'RU'),
-            array('EN', LocaleSettingsProvider::DEFAULT_COUNTRY),
-            array('RU', LocaleSettingsProvider::DEFAULT_COUNTRY),
+            array('EN', LocaleSettings::DEFAULT_COUNTRY),
+            array('RU', LocaleSettings::DEFAULT_COUNTRY),
             array('en_CA', 'CA'),
             array('en_CN', 'CN'),
-            array('en_XX', LocaleSettingsProvider::DEFAULT_COUNTRY),
+            array('en_XX', LocaleSettings::DEFAULT_COUNTRY),
         );
     }
 
@@ -409,7 +409,7 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                array('GB' => array(LocaleSettingsProvider::DEFAULT_LOCALE_KEY => 'en_GB')),
+                array('GB' => array(LocaleSettings::DEFAULT_LOCALE_KEY => 'en_GB')),
                 'GB',
                 'en_GB'
             ),

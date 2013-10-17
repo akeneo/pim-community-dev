@@ -16,7 +16,7 @@ class AddressFormatterTest extends \PHPUnit_Framework_TestCase
     {
         $address = new AddressStub();
 
-        $provider = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Provider\LocaleSettingsProvider')
+        $provider = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
             ->disableOriginalConstructor()
             ->getMock();
         $provider->expects($this->once())

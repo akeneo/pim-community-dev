@@ -3,7 +3,7 @@
 namespace Oro\Bundle\LocaleBundle\Formatter;
 
 use Oro\Bundle\LocaleBundle\Model\AddressInterface;
-use Oro\Bundle\LocaleBundle\Provider\LocaleSettingsProvider;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -11,7 +11,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 class AddressFormatter
 {
     /**
-     * @var LocaleSettingsProvider
+     * @var LocaleSettings
      */
     protected $settingsProvider;
 
@@ -26,10 +26,10 @@ class AddressFormatter
     protected $propertyAccessor;
 
     /**
-     * @param LocaleSettingsProvider $settingsProvider
+     * @param LocaleSettings $settingsProvider
      * @param NameFormatter $nameFormatter
      */
-    public function __construct(LocaleSettingsProvider $settingsProvider, NameFormatter $nameFormatter)
+    public function __construct(LocaleSettings $settingsProvider, NameFormatter $nameFormatter)
     {
         $this->settingsProvider = $settingsProvider;
         $this->nameFormatter = $nameFormatter;

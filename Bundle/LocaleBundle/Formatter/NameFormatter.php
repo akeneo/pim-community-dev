@@ -8,16 +8,16 @@ use Oro\Bundle\LocaleBundle\Model\LastNameInterface;
 use Oro\Bundle\LocaleBundle\Model\MiddleNameInterface;
 use Oro\Bundle\LocaleBundle\Model\NamePrefixInterface;
 use Oro\Bundle\LocaleBundle\Model\NameSuffixInterface;
-use Oro\Bundle\LocaleBundle\Provider\LocaleSettingsProvider;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 class NameFormatter
 {
     /**
-     * @var LocaleSettingsProvider
+     * @var LocaleSettings
      */
     protected $settingsProvider;
 
-    public function __construct(LocaleSettingsProvider $settingsProvider)
+    public function __construct(LocaleSettings $settingsProvider)
     {
         $this->settingsProvider = $settingsProvider;
     }

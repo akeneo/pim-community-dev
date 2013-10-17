@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Intl\Intl;
 
-use Oro\Bundle\LocaleBundle\Provider\LocaleSettingsProvider;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 class OroLocaleExtension extends Extension
 {
@@ -53,7 +53,7 @@ class OroLocaleExtension extends Extension
      */
     protected function prepareSettings(array $config, ContainerBuilder $container)
     {
-        $locale = LocaleSettingsProvider::getValidLocale(
+        $locale = LocaleSettings::getValidLocale(
             $this->getFinalizedParameter($config['settings']['locale']['value'], $container)
         );
         $config['settings']['locale']['value'] = $locale;
@@ -61,7 +61,7 @@ class OroLocaleExtension extends Extension
             $config['settings']['language']['value'] = $locale;
         }
         if (empty($config['settings']['country']['value'])) {
-            $config['settings']['country']['value'] = LocaleSettingsProvider::getCountryByLocale($locale);
+            $config['settings']['country']['value'] = LocaleSettings::getCountryByLocale($locale);
         }
         $container->prependExtensionConfig('oro_locale', $config);
     }

@@ -8,7 +8,7 @@ class NameFormatTypeTest extends \PHPUnit_Framework_TestCase
 {
     public function testFormType()
     {
-        $provider = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Provider\LocaleSettingsProvider')
+        $provider = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
             ->disableOriginalConstructor()
             ->getMock();
         $format = '%test%';

@@ -1,12 +1,12 @@
 <?php
 
-namespace Oro\Bundle\LocaleBundle\Provider;
+namespace Oro\Bundle\LocaleBundle\Model;
 
 use Symfony\Component\Intl\Intl;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
-class LocaleSettingsProvider
+class LocaleSettings
 {
     const ADDRESS_FORMAT_KEY = 'format';
     const PHONE_PREFIX_KEY   = 'phone_prefix';
@@ -431,6 +431,6 @@ class LocaleSettingsProvider
             return $region;
         }
 
-        return LocaleSettingsProvider::DEFAULT_COUNTRY;
+        return LocaleSettings::DEFAULT_COUNTRY;
     }
 }

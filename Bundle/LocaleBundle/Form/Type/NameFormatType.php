@@ -2,21 +2,21 @@
 
 namespace Oro\Bundle\LocaleBundle\Form\Type;
 
-use Oro\Bundle\LocaleBundle\Provider\LocaleSettingsProvider;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class NameFormatType extends AbstractType
 {
     /**
-     * @var LocaleSettingsProvider
+     * @var LocaleSettings
      */
     protected $settingsProvider;
 
     /**
-     * @param LocaleSettingsProvider $settingsProvider
+     * @param LocaleSettings $settingsProvider
      */
-    public function __construct(LocaleSettingsProvider $settingsProvider)
+    public function __construct(LocaleSettings $settingsProvider)
     {
         $this->settingsProvider = $settingsProvider;
     }

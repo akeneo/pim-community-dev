@@ -16,7 +16,7 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormat($format, $expected, $person)
     {
-        $provider = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Provider\LocaleSettingsProvider')
+        $provider = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
             ->disableOriginalConstructor()
             ->getMock();
         $provider->expects($this->once())
