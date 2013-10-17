@@ -2,14 +2,15 @@
 
 namespace Oro\Bundle\FilterBundle\Extension;
 
+use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class OrmFilterExtension extends AbstractExtension
 {

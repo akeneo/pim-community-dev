@@ -76,3 +76,14 @@ datagrid:
             default:
                 hasRole: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
                 firstName: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                id:
+                    type: percent
+                    data_name: u.id
+
+            default:
+                id:
+                    type: \Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType::TYPE_LESS_THAN
+                    value: 3
