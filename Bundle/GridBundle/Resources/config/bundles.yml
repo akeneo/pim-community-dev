@@ -1,2 +1,2 @@
-bundles:
-    - Oro\Bundle\GridBundle\OroGridBundle
+#bundles:
+#    - Oro\Bundle\GridBundle\OroGridBundle
