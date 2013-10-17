@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
+
 use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
@@ -47,13 +49,17 @@ class MediaManager
      */
     public function handle(Media $media, $filenamePrefix)
     {
-        if ($file = $media->getFile()) {
-            if ($media->getFilename() && $this->fileExists($media)) {
+        try {
+            if ($file = $media->getFile()) {
+                if ($media->getFilename() && $this->fileExists($media)) {
+                    $this->delete($media);
+                }
+                $this->upload($media, $this->generateFilename($file, $filenamePrefix));
+            } elseif ($media->isRemoved() && $this->fileExists($media)) {
                 $this->delete($media);
             }
-            $this->upload($media, $this->generateFilename($file, $filenamePrefix));
-        } elseif ($media->isRemoved() && $this->fileExists($media)) {
-            $this->delete($media);
+        } catch (\Exception $e) {
+            throw new MediaManagementException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
