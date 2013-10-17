@@ -1,17 +1,22 @@
 <?php
 
+use Symfony\Component\ClassLoader\ApcClassLoader;
 use Symfony\Component\HttpFoundation\Request;
 
 $loader = require_once __DIR__.'/../app/bootstrap.php.cache';
 
-require_once __DIR__.'/../app/AppKernel.php';
-
 // Use APC for autoloading to improve performance.
-// Change 'sf2' to a unique prefix in order to prevent cache key conflicts
-// with other applications also using APC.
-//$loader = new ApcClassLoader('pim-behat', $loader);
-//$loader->register(true);
+// Use the HOST variable if available to define prefix
+$prefix = 'pim-behat';
 
+if (isset($_SERVER['HTTP_HOST'])) {
+    $prefix .= '-'.$_SERVER['HTTP_HOST'];
+}
+
+$loader = new ApcClassLoader($prefix, $loader);
+$loader->register(true);
+
+require_once __DIR__.'/../app/AppKernel.php';
 
 $kernel = new AppKernel('behat', false);
 $kernel->loadClassCache();
