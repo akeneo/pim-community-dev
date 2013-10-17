@@ -221,7 +221,7 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNumberFormatterAttribute($attribute, $locale, $style, $expected)
     {
-        $this->assertEquals(
+        $this->assertSame(
             $expected,
             LocaleSettingsProvider::getNumberFormatterAttribute(
                 $attribute,
@@ -246,13 +246,120 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
             array(\NumberFormatter::MULTIPLIER, 'en_US', \NumberFormatter::DECIMAL, 1),
             array(\NumberFormatter::GROUPING_SIZE, 'en_US', \NumberFormatter::DECIMAL, 3),
             array(\NumberFormatter::ROUNDING_MODE, 'en_US', \NumberFormatter::DECIMAL, 4),
-            array(\NumberFormatter::ROUNDING_INCREMENT, 'en_US', \NumberFormatter::DECIMAL, 0),
+            array(\NumberFormatter::ROUNDING_INCREMENT, 'en_US', \NumberFormatter::DECIMAL, 0.0),
             array(\NumberFormatter::FORMAT_WIDTH, 'en_US', \NumberFormatter::DECIMAL, 0),
             array(\NumberFormatter::PADDING_POSITION, 'en_US', \NumberFormatter::DECIMAL, 0),
             array(\NumberFormatter::SECONDARY_GROUPING_SIZE, 'en_US', \NumberFormatter::DECIMAL, 0),
             array(\NumberFormatter::SIGNIFICANT_DIGITS_USED, 'en_US', \NumberFormatter::DECIMAL, 0),
             array(\NumberFormatter::MIN_SIGNIFICANT_DIGITS, 'en_US', \NumberFormatter::DECIMAL, 1),
             array(\NumberFormatter::MAX_SIGNIFICANT_DIGITS, 'en_US', \NumberFormatter::DECIMAL, 6),
+        );
+    }
+
+    /**
+     * @dataProvider getNumberFormatterTextAttributeDataProvider
+     */
+    public function testGetNumberFormatterTestAttribute($attribute, $locale, $style, $expected)
+    {
+        $this->assertSame(
+            $expected,
+            LocaleSettingsProvider::getNumberFormatterTextAttribute(
+                $attribute,
+                $locale,
+                $style
+            )
+        );
+    }
+
+    public function getNumberFormatterTextAttributeDataProvider()
+    {
+        return array(
+            array(\NumberFormatter::POSITIVE_PREFIX, 'en_US', \NumberFormatter::DECIMAL, ''),
+            array(\NumberFormatter::POSITIVE_SUFFIX, 'en_US', \NumberFormatter::DECIMAL, ''),
+            array(\NumberFormatter::NEGATIVE_PREFIX, 'en_US', \NumberFormatter::DECIMAL, '-'),
+            array(\NumberFormatter::NEGATIVE_SUFFIX, 'en_US', \NumberFormatter::DECIMAL, ''),
+            array(\NumberFormatter::PADDING_CHARACTER, 'en_US', \NumberFormatter::DECIMAL, '*'),
+            array(\NumberFormatter::CURRENCY_CODE, 'en_US', \NumberFormatter::CURRENCY, 'USD'),
+            //array(\NumberFormatter::DEFAULT_RULESET, 'en_US', \NumberFormatter::DECIMAL, false),
+            //array(\NumberFormatter::PUBLIC_RULESETS, 'en_US', \NumberFormatter::DECIMAL, false),
+            //array(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, false),
+            //array(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, false),
+            array(\NumberFormatter::PATTERN_SEPARATOR_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, '-'),
+            array(\NumberFormatter::PERCENT_SYMBOL, 'en_US', \NumberFormatter::PERCENT, '%'),
+            array(\NumberFormatter::ZERO_DIGIT_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, '*'),
+            array(\NumberFormatter::DIGIT_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, ''),
+            //array(\NumberFormatter::MINUS_SIGN_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, false),
+            //array(\NumberFormatter::PLUS_SIGN_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, false),
+            //array(\NumberFormatter::CURRENCY_SYMBOL, 'en_US', \NumberFormatter::CURRENCY, false),
+            //array(\NumberFormatter::INTL_CURRENCY_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, false),
+            //array(\NumberFormatter::MONETARY_SEPARATOR_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, false),
+            //array(\NumberFormatter::EXPONENTIAL_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, false),
+            //array(\NumberFormatter::PERMILL_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, false),
+            //array(\NumberFormatter::PAD_ESCAPE_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, false),
+            //array(\NumberFormatter::INFINITY_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, false),
+            //array(\NumberFormatter::NAN_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, false),
+            //array(\NumberFormatter::SIGNIFICANT_DIGIT_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, false),
+            //array(\NumberFormatter::MONETARY_GROUPING_SEPARATOR_SYMBOL, 'en_US', \NumberFormatter::DECIMAL, false),
+        );
+    }
+
+    /**
+     * @dataProvider getDatePatternDataProvider
+     */
+    public function testGetDatePattern($locale, $dateType, $timeType, $expected)
+    {
+        $this->assertEquals($expected, $this->provider->getDatePattern($locale, $dateType, $timeType));
+    }
+
+    public function getDatePatternDataProvider()
+    {
+        return array(
+            array('en_US', \IntlDateFormatter::FULL, \IntlDateFormatter::FULL, 'EEEE, MMMM d, y h:mm:ss a zzzz'),
+            array('ru_RU', \IntlDateFormatter::FULL, \IntlDateFormatter::FULL, 'EEEE, d MMMM y \'г\'. H:mm:ss zzzz'),
+            array('fr_FR', \IntlDateFormatter::FULL, \IntlDateFormatter::FULL, 'EEEE d MMMM y HH:mm:ss zzzz'),
+        );
+    }
+
+    /**
+     * @dataProvider getValidLocaleDataProvider
+     */
+    public function testGetValidLocale($locale, $expectedLocale)
+    {
+        $this->assertEquals($expectedLocale, LocaleSettingsProvider::getValidLocale($locale));
+    }
+
+    public function getValidLocaleDataProvider()
+    {
+        return array(
+            array('ru_RU', 'ru_RU'),
+            array('en', LocaleSettingsProvider::DEFAULT_LOCALE),
+            array(null, LocaleSettingsProvider::DEFAULT_LOCALE),
+            array('ru', 'ru'),
+            array('en_Hans_CN_nedis_rozaj_x_prv1_prv2', 'en_US'),
+            array('en_Hans_unknown', 'en'),
+            array('en_Hans_CA_nedis_rozaj_x_prv1_prv2', 'en_CA'),
+            array('bs_Latn_BA', 'bs_Latn_BA'),
+            array('unknown', 'en_US'),
+        );
+    }
+
+    /**
+     * @dataProvider getCountryByLocaleDataProvider
+     */
+    public function testGetCountryByLocale($locale, $expectedCountry)
+    {
+        $this->assertEquals($expectedCountry, LocaleSettingsProvider::getCountryByLocale($locale));
+    }
+
+    public function getCountryByLocaleDataProvider()
+    {
+        return array(
+            array('ru_RU', 'RU'),
+            array('EN', LocaleSettingsProvider::DEFAULT_COUNTRY),
+            array('RU', LocaleSettingsProvider::DEFAULT_COUNTRY),
+            array('en_CA', 'CA'),
+            array('en_CN', 'CN'),
+            array('en_XX', LocaleSettingsProvider::DEFAULT_COUNTRY),
         );
     }
 }

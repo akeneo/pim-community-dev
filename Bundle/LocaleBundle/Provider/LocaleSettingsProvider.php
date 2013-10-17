@@ -27,6 +27,11 @@ class LocaleSettingsProvider
     static protected $dateFormatters;
 
     /**
+     * @var string[]
+     */
+    static protected $locales;
+
+    /**
      * @var string
      */
     protected $defaultLocale;
@@ -294,47 +299,6 @@ class LocaleSettingsProvider
     }
 
     /**
-     * Try to parse locale and return it in format "language"_"script"_"region",
-     * if locale is empty or cannot be parsed then return locale
-     *
-     * @param string $locale
-     * @return string
-     */
-    public static function getValidLocale($locale = null)
-    {
-        $result = LocaleSettingsProvider::DEFAULT_LOCALE;
-
-        if ($result !== $locale) {
-            $localeParts = \Locale::parseLocale($locale);
-            $localeKeys = array(\Locale::LANG_TAG, \Locale::SCRIPT_TAG, \Locale::REGION_TAG);
-            $localeParts = array_intersect_key($localeParts, array_flip($localeKeys));
-
-            if ($localeParts) {
-                $result = implode('_', $localeParts);
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Get country by locale if country is supported, otherwise return default country (US)
-     *
-     * @param string $locale
-     * @return string
-     */
-    public static function getCountryByLocale($locale)
-    {
-        $region = \Locale::getRegion($locale);
-        $countries = Intl::getRegionBundle()->getCountryNames();
-        if (array_key_exists($region, $countries)) {
-            return $region;
-        }
-
-        return LocaleSettingsProvider::DEFAULT_COUNTRY;
-    }
-
-    /**
      * Get default locale
      *
      * @return string
@@ -378,5 +342,88 @@ class LocaleSettingsProvider
     public function setDefaultCountry($country)
     {
         $this->defaultCountry = $country;
+    }
+
+    /**
+     * Try to parse locale and return it in format "language"_"region",
+     * if locale is empty or cannot be parsed then return locale
+     *
+     * @param string $locale
+     * @return string
+     * @throws \RuntimeException
+     */
+    public static function getValidLocale($locale = null)
+    {
+        if (!$locale) {
+            $locale = self::DEFAULT_LOCALE;
+        }
+
+        $localeParts = \Locale::parseLocale($locale);
+        $lang = null;
+        $script = null;
+        $region = null;
+
+        if (isset($localeParts[\Locale::LANG_TAG])) {
+            $lang = $localeParts[\Locale::LANG_TAG];
+        }
+        if (isset($localeParts[\Locale::SCRIPT_TAG])) {
+            $script = $localeParts[\Locale::SCRIPT_TAG];
+        }
+        if (isset($localeParts[\Locale::REGION_TAG])) {
+            $region = $localeParts[\Locale::REGION_TAG];
+        }
+
+        $variants = array(
+            array($lang, $script, $region),
+            array($lang, $region),
+            array($lang, $script, self::DEFAULT_COUNTRY),
+            array($lang, self::DEFAULT_COUNTRY),
+            array($lang),
+            array(self::DEFAULT_LOCALE, self::DEFAULT_COUNTRY),
+            array(self::DEFAULT_LOCALE),
+        );
+
+        $locales = self::getLocales();
+        foreach ($variants as $elements) {
+            $locale = implode('_', array_filter($elements));
+            if (isset($locales[$locale])) {
+                return $locale;
+            }
+        }
+
+        throw new \RuntimeException(sprintf('Cannot validate locale "%s"', $locale));
+    }
+
+    /**
+     * Returns list of all locales
+     *
+     * @return string[]
+     */
+    public static function getLocales()
+    {
+        if (null === self::$locales) {
+            self::$locales = array();
+            foreach (Intl::getLocaleBundle()->getLocales() as $locale) {
+                self::$locales[$locale] = $locale;
+            }
+        }
+        return self::$locales;
+    }
+
+    /**
+     * Get country by locale if country is supported, otherwise return default country (US)
+     *
+     * @param string $locale
+     * @return string
+     */
+    public static function getCountryByLocale($locale)
+    {
+        $region = \Locale::getRegion($locale);
+        $countries = Intl::getRegionBundle()->getCountryNames();
+        if (array_key_exists($region, $countries)) {
+            return $region;
+        }
+
+        return LocaleSettingsProvider::DEFAULT_COUNTRY;
     }
 }
