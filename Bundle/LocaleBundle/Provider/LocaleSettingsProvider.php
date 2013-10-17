@@ -8,8 +8,12 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class LocaleSettingsProvider
 {
-    const ADDRESS_FORMAT = 'format';
-    const DEFAULT_LOCALE = 'en';
+    const ADDRESS_FORMAT_KEY = 'format';
+    const CURRENCY_CODE_KEY  = 'currencyCode';
+    const PHONE_PREFIX_KEY   = 'phonePrefix';
+    const DEFAULT_LOCALE_KEY = 'defaultLocale';
+
+    const DEFAULT_LOCALE  = 'en';
     const DEFAULT_COUNTRY = 'US';
 
     /**
@@ -79,6 +83,20 @@ class LocaleSettingsProvider
     protected $addressFormats = array();
 
     /**
+     * Array format:
+     * array(
+     *     '<countryCode>' => array(
+     *          'currencyCode'  => '<currencyCodeString>',  // optional
+     *          'phonePrefix'   => '<phonePrefixString>',   // optional
+     *          'defaultLocale' => '<defaultLocaleString>', // optional
+     *     ),
+     * )
+     *
+     * @var array
+     */
+    protected $localeData = array();
+
+    /**
      * @param ConfigManager $configManager
      */
     public function __construct(ConfigManager $configManager)
@@ -100,6 +118,14 @@ class LocaleSettingsProvider
     public function addAddressFormats(array $formats)
     {
         $this->addressFormats = array_merge($this->addressFormats, $formats);
+    }
+
+    /**
+     * @param array $data
+     */
+    public function addLocaleData(array $data)
+    {
+        $this->localeData = array_merge($this->localeData, $data);
     }
 
     /**
