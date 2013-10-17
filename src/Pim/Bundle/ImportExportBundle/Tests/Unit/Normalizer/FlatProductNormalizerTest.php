@@ -57,7 +57,9 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testNormalizeProduct()
     {
-        $now = new \DateTime();
+        $now    = new \DateTime();
+        $media  = $this->getMediaMock('kb0001.jpg');
+
         $values = array(
             $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
             $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
@@ -67,20 +69,25 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
                 $this->getAttributeMock('elements'),
                 new ArrayCollection(array('roue', 'poignées', 'benne'))
             ),
+            $this->getValueMock($this->getAttributeMock('visual'), $media)
         );
-        $identifier = $this->getValueMock($this->getAttributeMock('sku', false, 'pim_catalog_identifier'), 'KB0001');
-        $family     = $this->getFamilyMock('garden-tool');
-        $product    = $this->getProductMock($identifier, $values, $family, 'cat1, cat2, cat3');
+        $identifier = $this->getValueMock(
+            $this->getAttributeMock('sku', false, 'pim_catalog_identifier'),
+            'KB0001'
+        );
+        $family  = $this->getFamilyMock('garden-tool');
+        $product = $this->getProductMock($identifier, $values, $family, 'cat1, cat2, cat3');
 
         $result = array(
-            'sku'        => 'KB0001',
-            'family'     => 'garden-tool',
-            'name-fr_FR' => 'Brouette',
-            'name-en_US' => 'Wheelbarrow',
-            'name-es_ES' => 'Carretilla',
-            'exportedAt' => $now->format('m/d/Y'),
-            'elements'   => 'roue,poignées,benne',
-            'categories' => 'cat1, cat2, cat3',
+            'sku'           => 'KB0001',
+            'family'        => 'garden-tool',
+            'name-fr_FR'    => 'Brouette',
+            'name-en_US'    => 'Wheelbarrow',
+            'name-es_ES'    => 'Carretilla',
+            'exportedAt'    => $now->format('m/d/Y'),
+            'elements'      => 'roue,poignées,benne',
+            'visual'        => 'kb0001.jpg',
+            'categories'    => 'cat1, cat2, cat3',
             'variant_group' => '',
         );
 
@@ -110,14 +117,14 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $product    = $this->getProductMock($identifier, $values, null, 'cat1, cat2, cat3');
 
         $result = array(
-            'sku'        => 'KB0001',
-            'family'     => '',
-            'name-fr_FR' => 'Brouette',
-            'name-en_US' => 'Wheelbarrow',
-            'name-es_ES' => 'Carretilla',
-            'exportedAt' => $now->format('m/d/Y'),
-            'elements'   => 'roue,poignées,benne',
-            'categories' => 'cat1, cat2, cat3',
+            'sku'           => 'KB0001',
+            'family'        => '',
+            'name-fr_FR'    => 'Brouette',
+            'name-en_US'    => 'Wheelbarrow',
+            'name-es_ES'    => 'Carretilla',
+            'exportedAt'    => $now->format('m/d/Y'),
+            'elements'      => 'roue,poignées,benne',
+            'categories'    => 'cat1, cat2, cat3',
             'variant_group' => '',
         );
 
@@ -251,5 +258,16 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($code));
 
         return $family;
+    }
+
+    private function getMediaMock($filename)
+    {
+        $media = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media');
+
+        $media->expects($this->any())
+            ->method('getFilename')
+            ->will($this->returnValue($filename));
+
+        return $media;
     }
 }

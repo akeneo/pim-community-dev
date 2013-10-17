@@ -7,6 +7,7 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -17,19 +18,22 @@ use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
  */
 class FlatProductNormalizer implements NormalizerInterface
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
+    const FIELD_FAMILY = 'family';
+
+    /** @staticvar string */
+    const FIELD_VARIANT = 'variant_group';
+
+    /** @staticvar string */
+    const FIELD_CATEGORY = 'categories';
+
+    /** @staticvar string */
     const ITEM_SEPARATOR = ',';
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $supportedFormats = array('csv');
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $results;
 
     /**
@@ -37,21 +41,6 @@ class FlatProductNormalizer implements NormalizerInterface
      * @var array
      */
     protected $fields = array();
-
-    /**
-     * @staticvar string
-     */
-    const FIELD_FAMILY = 'family';
-
-    /**
-     * @staticvar string
-     */
-    const FIELD_VARIANT = 'variant_group';
-
-    /**
-     * @staticvar string
-     */
-    const FIELD_CATEGORY = 'categories';
 
     /**
      * Transforms an object into a flat array
@@ -112,12 +101,6 @@ class FlatProductNormalizer implements NormalizerInterface
     {
         $data = $value->getData();
 
-        if ($data instanceof Media) {
-            // TODO Handle media export
-            // They are ignored for now (both file and image type)
-            return array();
-        }
-
         if (empty($this->fields) || isset($this->fields[$this->getFieldValue($value)])) {
             if ($data instanceof \DateTime) {
                 $data = $data->format('m/d/Y');
@@ -133,6 +116,8 @@ class FlatProductNormalizer implements NormalizerInterface
                     }
                 }
                 $data = join(self::ITEM_SEPARATOR, $result);
+            } elseif ($data instanceof Media) {
+                $data = $data->getFilename();
             }
         }
 
