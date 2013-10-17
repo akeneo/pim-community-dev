@@ -167,7 +167,7 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
 
         $hasAssociationExpression =
             'CASE WHEN ' .
-            '(pa is not null OR o.id IN (:data_in)) ' .
+            '(pa IS NOT NULL OR o.id IN (:data_in)) ' .
             'AND o.id NOT IN (:data_not_in) ' .
             'THEN true ELSE false END';
 
