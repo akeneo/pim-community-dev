@@ -54,6 +54,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(null, $this->config->get('thirdKey'));
 
+        $this->assertEquals($this->config, unserialize(serialize($this->config)));
+
         $this->config->set('secondKey', 'secondValue2');
         $this->assertEquals('secondValue2', $this->config->get('secondKey'));
 

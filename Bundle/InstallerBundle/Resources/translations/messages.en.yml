@@ -1,8 +1,7 @@
 title:                    Oro Application installation
 
-switch:
-    off:                  off
-    on:                   on
+wait:                     In progress...
+passed:                   Passed
 
 form:
     configuration:
@@ -43,8 +42,29 @@ process:
             header:       System requirements check
         configure:
             header:       Configuration
+        schema:
+            header:       Database initialization
+            cache:        Clear cache before database initialization
+            drop:         Drop current schema
+            clear:        Clear extended entities data
+            create:       Create schema
+            fixtures:     Load fixtures
+            init-config:  Init entities config
+            init-extend:  Init extended entities
+            update-config: Update extended entities config
         setup:
             header:       Administration setup
+        installation:
+            header:       Installation
+            schema:       Schema update
+            search:       Create search index
+            navigation:   Init navigation
+            assets:       Install assets
+            assetic:      Dump assetic
+            assetic-oro:  Dump Oro assetic
+            translation:  Prepare translations
+            requirejs:    Optimize RequireJS resources
+            cache:        Clear cache
         final:
             header:       Finish
             greeting:     Success!!!
@@ -54,3 +74,6 @@ process:
         next:             Next
         install:          Install
         finish:           Launch application
+    operation:            Operation
+    status:               Status
+
