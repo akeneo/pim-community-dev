@@ -35,7 +35,7 @@ class UniqueValueTest extends \PHPUnit_Framework_TestCase
     public function testMessage()
     {
         $this->assertEquals(
-            'The value {{ value }} of attribute {{ attribute }} is already set on another product.',
+            'This value is already set on another product.',
             $this->constraint->message
         );
     }

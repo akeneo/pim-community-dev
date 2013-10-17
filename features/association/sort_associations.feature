@@ -18,22 +18,16 @@ Feature: Sort associations
     And the rows should be sorted ascending by code
     And I should see sorted associations cross_sell, substitution and up_sell
 
-  Scenario: Successfully sort associations by code ascending
+  Scenario: Successfully sort associations by code
     Given I am on the associations page
     When I sort by "code" value ascending
     Then I should see sorted associations cross_sell, substitution and up_sell
-
-  Scenario: Successfully sort associations by code descending
-    Given I am on the associations page
     When I sort by "code" value descending
     Then I should see sorted associations up_sell, substitution and cross_sell
 
-  Scenario: Successfully sort associations by label ascending
+  Scenario: Successfully sort associations by label
     Given I am on the associations page
     When I sort by "label" value ascending
     Then I should see sorted associations substitution, cross_sell and up_sell
-
-  Scenario: Successfully sort associations by label descending
-    Given I am on the associations page
     When I sort by "label" value descending
     Then I should see sorted associations up_sell, cross_sell and substitution

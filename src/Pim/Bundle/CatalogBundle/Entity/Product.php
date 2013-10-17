@@ -89,15 +89,12 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     protected $variantGroup;
 
     /**
-     * @var ArrayCollection $completenesses
+     * @var ArrayCollection $groups
      *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Completeness",
-     *     mappedBy="product",
-     *     cascade={"persist", "remove"}
-     * )
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\Group", mappedBy="products")
      */
-    protected $completenesses;
+    protected $groups;
+
 
     /**
      * @var ArrayCollection $associations
@@ -111,6 +108,17 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     protected $associations;
 
     /**
+     * @var ArrayCollection $completenesses
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Completeness",
+     *     mappedBy="product",
+     *     cascade={"persist", "remove"}
+     * )
+     */
+    protected $completenesses;
+
+    /**
      * {@inheritdoc}
      */
     public function __construct()
@@ -119,6 +127,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
 
         $this->categories     = new ArrayCollection();
         $this->completenesses = new ArrayCollection();
+        $this->groups         = new ArrayCollection();
         $this->associations   = new ArrayCollection();
     }
 
@@ -396,6 +405,46 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function setVariantGroup(VariantGroup $variantGroup = null)
     {
         $this->variantGroup = $variantGroup;
+
+        return $this;
+    }
+
+    /**
+     * Get the product groups
+     *
+     * @return ArrayCollection
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
+    /**
+     * Add a group
+     * @param Group $group
+     *
+     * @return Group
+     */
+    public function addGroup(Group $group)
+    {
+        if (!$this->groups->contains($group)) {
+            $group->addProduct($this);
+            $this->groups->add($group);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a group
+     * @param Group $group
+     *
+     * @return Product
+     */
+    public function removeGroup(Group $group)
+    {
+        $this->groups->removeElement($group);
+        $group->removeProduct($this);
 
         return $this;
     }

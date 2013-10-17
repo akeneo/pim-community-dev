@@ -20,56 +20,41 @@ Feature: Sort attributes
 
   Scenario: Successfully display the sortable columns
     Given I am on the attributes page
-    Then the datas can be sorted by code, label, scopable, localizable and group
-    And the datas are sorted ascending by code
+    Then the rows should be sortable by code, label, scopable, localizable and group
+    And the rows should be sorted ascending by code
     And I should see sorted attributes count, name, short_descr and sku
 
-  Scenario: Successfully sort attributes by code ascending
+  Scenario: Successfully sort attributes by code
     Given I am on the attributes page
     When I sort by "code" value ascending
     Then I should see sorted attributes count, name, short_descr and sku
-
-  Scenario: Successfully sort attributes by code descending
-    Given I am on the attributes page
     When I sort by "code" value descending
     Then I should see sorted attributes sku, short_desc, name and count
 
-  Scenario: Successfully sort attributes by label ascending
+  Scenario: Successfully sort attributes by label
     Given I am on the attributes page
     When I sort by "code" value ascending
     Then I should see sorted attributes count, name, short_descr and sku
-
-  Scenario: Successfully sort attributes by label descending
-    Given I am on the attributes page
     When I sort by "code" value descending
     Then I should see sorted attributes sku, short_desc, name and count
 
-  Scenario: Successfully sort attributes by scopable ascending
+  Scenario: Successfully sort attributes by scopable
     Given I am on the attributes page
     When I sort by "scopable" value ascending
     Then I should see sorted attributes sku, name, count and short_desc
-
-  Scenario: Successfully sort attributes by scopable descending
-    Given I am on the attributes page
     When I sort by "scopable" value descending
     Then I should see sorted attributes short_desc, sku, name and count
 
-  Scenario: Successfully sort attributes by localizable ascending
+  Scenario: Successfully sort attributes by localizable
     Given I am on the attributes page
     When I sort by "localizable" value ascending
     Then I should see sorted attributes sku, count, name and short_desc
-
-  Scenario: Successfully sort attributes by localizable descending
-    Given I am on the attributes page
     When I sort by "localizable" value descending
     Then I should see sorted attributes name, short_desc, sku and count
 
-  Scenario: Successfully sort attributes by group ascending
+  Scenario: Successfully sort attributes by group
     Given I am on the attributes page
     When I sort by "group" value ascending
     Then I should see sorted attributes sku, name, count and short_desc
-
-  Scenario: Successfully sort attributes by group descending
-    Given I am on the attributes page
     When I sort by "group" value descending
     Then I should see sorted attributes short_desc, sku, name and count

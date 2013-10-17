@@ -6,12 +6,13 @@ parameters:
     pim_catalog.datagrid.manager.locale_datagrid.class:          Pim\Bundle\CatalogBundle\Datagrid\LocaleDatagridManager
     pim_catalog.datagrid.manager.variant_group_datagrid.class:   Pim\Bundle\CatalogBundle\Datagrid\VariantGroupDatagridManager
     pim_catalog.datagrid.manager.variant_product_datagrid.class: Pim\Bundle\CatalogBundle\Datagrid\VariantProductDatagridManager
+    pim_catalog.datagrid.manager.group_datagrid.class:           Pim\Bundle\CatalogBundle\Datagrid\GroupDatagridManager
+    pim_catalog.datagrid.manager.group_product_datagrid.class:   Pim\Bundle\CatalogBundle\Datagrid\GroupProductDatagridManager
     pim_catalog.datagrid.manager.association_datagrid.class:     Pim\Bundle\CatalogBundle\Datagrid\AssociationDatagridManager
     pim_catalog.datagrid.manager.product_association_datagrid.class: Pim\Bundle\CatalogBundle\Datagrid\ProductAssociationDatagridManager
     pim_catalog.datagrid.worker.class:                           Pim\Bundle\CatalogBundle\Datagrid\DatagridWorker
 
 services:
-    # Product attribute grid manager
     pim_catalog.datagrid.manager.productattribute:
         class: %pim_catalog.datagrid.manager.productattribute.class%
         tags:
@@ -24,7 +25,6 @@ services:
             - [ setProductManager, ['@pim_catalog.manager.product'] ]
             - [ setIdentifierField, ['id'] ]
 
-    # Product grid manager
     pim_catalog.datagrid.manager.product:
         class: %pim_catalog.datagrid.manager.product.class%
         tags:
@@ -96,6 +96,27 @@ services:
               entity_hint: product
               flexible: true
               route_name: pim_catalog_variant_group_edit
+
+    pim_catalog.datagrid.manager.group:
+        class: %pim_catalog.datagrid.manager.group_datagrid.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: groups
+              entity_hint: group
+              route_name: pim_catalog_group_index
+        calls:
+            - [ setIdentifierField, ['id'] ]
+            - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
+
+    pim_catalog.datagrid.manager.group_product:
+        class: %pim_catalog.datagrid.manager.group_product_datagrid.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: group_products
+              entity_name: %pim_catalog.entity.product.class%
+              entity_hint: product
+              flexible: true
+              route_name: pim_catalog_group_edit
 
     pim_catalog.datagrid.manager.association:
         class: %pim_catalog.datagrid.manager.association_datagrid.class%

@@ -14,26 +14,20 @@ Feature: Sort locales
 
   Scenario: Successfully display the sortable columns
     Given I am on the locales page
-    Then the datas can be sorted by code and activated
-    And the datas are sorted ascending by code
+    Then the rows should be sortable by code and activated
+    And the rows should be sorted ascending by code
     And I should see sorted locales de_DE, en_US and fr_FR
 
-  Scenario: Successfully sort locales by code ascending
+  Scenario: Successfully sort locales by code
     Given I am on the locales page
     When I sort by "code" value ascending
     Then I should see sorted locales de_DE, en_US and fr_FR
-
-  Scenario: Successfully sort locales by code descending
-    Given I am on the locales page
     When I sort by "code" value descending
     Then I should see sorted locales fr_FR, en_US and de_DE
 
-  Scenario: Successfully sort locales by activated ascending
+  Scenario: Successfully sort locales by activated
     Given I am on the locales page
     When I sort by "Activated" value ascending
     Then I should see sorted locales de_DE, en_US and fr_FR
-
-  Scenario: Successfully sort locales by activated descending
-    Given I am on the locales page
     When I sort by "Activated" value descending
     Then I should see sorted locales en_US, fr_FR and de_DE

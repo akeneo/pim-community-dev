@@ -34,55 +34,40 @@ Feature: Edit a variant group adding/removing products
 
   Scenario: Successfully display the sortable columns
     Given I am on the "POSTIT" variant page
-    Then the datas can be sorted by Has product, SKU, Color, Size, Family, Created at and Updated at
-    And the datas are sorted ascending by SKU
+    Then the rows should be sortable by Has product, SKU, Color, Size, Family, Created at and Updated at
+    And the rows should be sorted ascending by SKU
 
-  Scenario: Successfully sort products by Has product ascending
+  Scenario: Successfully sort products by Has product
     Given I am on the "POSTIT" variant page
     When I sort by "Has product" value ascending
     Then I should see sorted products MUG_1 and POSTIT
-
-  Scenario: Successfully sort products by Has product descending
-    Given I am on the "POSTIT" variant page
     When I sort by "Has product" value descending
     Then I should see sorted products MUG_1 and POSTIT
 
-  Scenario: Successfully sort products by SKU ascending
+  Scenario: Successfully sort products by SKU
     Given I am on the "POSTIT" variant page
     When I sort by "SKU" value ascending
     Then I should see sorted products MUG_1 and POSTIT
-
-  Scenario: Successfully sort products by SKU descending
-    Given I am on the "POSTIT" variant page
     When I sort by "SKU" value descending
     Then I should see sorted products POSTIT and MUG_1
 
-  Scenario: Successfully sort products by color ascending
+  Scenario: Successfully sort products by color
     Given I am on the "POSTIT" variant page
     When I sort by "Color" value ascending
     Then I should see sorted products POSTIT and MUG_1
-
-  Scenario: Successfully sort products by color descending
-    Given I am on the "POSTIT" variant page
     When I sort by "Color" value descending
     Then I should see sorted products MUG_1 and POSTIT
 
-  Scenario: Successfully sort products by size ascending
+  Scenario: Successfully sort products by size
     Given I am on the "POSTIT" variant page
     When I sort by "Size" value ascending
     Then I should see sorted products MUG_1 and POSTIT
-
-  Scenario: Successfully sort products by size descending
-    Given I am on the "POSTIT" variant page
     When I sort by "Size" value descending
     Then I should see sorted products POSTIT and MUG_1
 
-  Scenario: Successfully sort products by family ascending
+  Scenario: Successfully sort products by family
     Given I am on the "POSTIT" variant page
     When I sort by "Family" value ascending
     Then I should see sorted products POSTIT and MUG_1
-
-  Scenario: Successfully sort products by family descending
-    Given I am on the "POSTIT" variant page
     When I sort by "Family" value descending
     Then I should see sorted products MUG_1 and POSTIT
