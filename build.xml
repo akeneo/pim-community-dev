@@ -213,6 +213,7 @@
             <arg value="--no-progress" />
             <arg value="--prefer-dist" />
             <arg value="--optimize-autoloader" />
+            <arg value="--no-debug" />
         </exec>
     </target>
 

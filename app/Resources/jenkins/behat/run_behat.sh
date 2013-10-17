@@ -35,26 +35,70 @@ if [ "$XDEBUG" = 'xdebug' ]; then
     fi
 fi
 
+if [ "$XDEBUG" = 'xdebug' ]; then
+    BEHAT_CMD="php -d zend_extension=$PHP_EXTENSION_DIR/$XDEBUG_EXTENSION $BEHAT_CMD"
+fi
+
 export DISPLAY=:0
+
+FEATURES_NAMES=""
+
+COUNT=0
+
+# Install the db
+pushd .
+cd $FEATURES_DIR/..
+#./install.sh db behat1
+#./install.sh db behat2
+#./install.sh db behat3
+#./install.sh db behat4
+popd
+
+PROC_1=0
 
 FEATURES=`find $FEATURES_DIR/ -name *.feature`
 for FEATURE in $FEATURES; do
+    COUNT=`expr $COUNT + 1`
+    
     FEATURE_NAME=`echo $FEATURE | sed -e 's#^.*/features/\(.*\)$#features/\1#'`
-    echo "Executing feature $FEATURE_NAME"
-    if [ "$XDEBUG" = 'xdebug' ]; then
-        php -d zend_extension=$PHP_EXTENSION_DIR/$XDEBUG_EXTENSION $BEHAT_CMD $FEATURE
-    else
-        $BEHAT_CMD $FEATURE
-    fi
 
-    if [ $? -ne 0 ]; then
-        RESULT="KO"
-    fi
+    while [ ! -z $FEATURE_NAME ]; do
+        ps -opid | grep "^$PROC_1\$" > /dev/null
+        if [ $? -eq 1 ]; then
+            echo "Executing feature $FEATURE_NAME"
+            $BEHAT_CMD --profile=jenkins-1 $FEATURE_NAME &
+            PROC_1=$!
+            FEATURE_NAME=""
+        fi
+
+        ps -opid | grep "^$PROC_2\$" > /dev/null
+        if [ $? -eq 1 ] && [ ! -z $FEATURE_NAME ]; then
+            echo "Executing feature $FEATURE_NAME"
+            $BEHAT_CMD --profile=jenkins-2 $FEATURE_NAME &
+            PROC_2=$!
+            FEATURE_NAME=""
+        fi
+
+        ps -opid | grep "^$PROC_3\$" > /dev/null
+        if [ $? -eq 1 ] && [ ! -z $FEATURE_NAME ]; then
+            echo "Executing feature $FEATURE_NAME"
+            $BEHAT_CMD --profile=jenkins-3 $FEATURE_NAME &
+            PROC_3=$!
+            FEATURE_NAME=""
+        fi
+
+        ps -opid | grep "^$PROC_4\$" > /dev/null
+        if [ $? -eq 1 ] && [ ! -z $FEATURE_NAME ]; then
+            echo "Executing feature $FEATURE_NAME"
+            $BEHAT_CMD --profile=jenkins-4 $FEATURE_NAME &
+            PROC_4=$!
+            FEATURE_NAME=""
+        fi
+        
+        if [ ! -z $FEATURE_NAME ]; then
+            sleep 5
+        fi
+    done
 done
 
-if [ "$RESULT" = KO ]; then
-    exit 1;
-else
-    exit 0;
-fi
 
