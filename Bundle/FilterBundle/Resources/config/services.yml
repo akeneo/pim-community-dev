@@ -11,5 +11,10 @@ services:
             - [ addFilter, [ 'select_row',      @oro_filter.extension.orm.select_row_filter ] ]
             - [ addFilter, [ 'number',          @oro_filter.extension.orm.number_filter ] ]
             - [ addFilter, [ 'percent',         @oro_filter.extension.orm.percent_filter ] ]
+            - [ addFilter, [ 'choice',          @oro_filter.extension.orm.choice_filter ] ]
+            - [ addFilter, [ 'entity',          @oro_filter.extension.orm.entity_filter ] ]
+            - [ addFilter, [ 'boolean',         @oro_filter.extension.orm.boolean_filter ] ]
+            - [ addFilter, [ 'date',            @oro_filter.extension.orm.date_range_filter ] ]
+            - [ addFilter, [ 'datetime',        @oro_filter.extension.orm.datetime_range_filter ] ]
         tags:
             - { name: oro_grid.extension }

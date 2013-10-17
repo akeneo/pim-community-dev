@@ -19,12 +19,12 @@ class SelectRowFilter extends AbstractFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(QueryBuilder $qb, $value)
+    public function apply(QueryBuilder $qb, $data)
     {
-        $data = $this->parseData($value);
+        $data = $this->parseData($data);
 
         if (!$data) {
-            return;
+            return false;
         }
 
         $expression = false;
@@ -45,6 +45,8 @@ class SelectRowFilter extends AbstractFilter
 
         if ($expression) {
             $this->applyFilterToClause($qb, $expression);
+
+            return true;
         }
     }
 

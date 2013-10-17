@@ -58,15 +58,14 @@ class OrmFilterExtension extends AbstractExtension
         $values  = $this->getValuesToApply($config);
 
         foreach ($filters as $filter) {
-            if ($value = $this->accessor->getValue($values, '[' . $filter->getName() .']')) {
+            if ($value = $this->accessor->getValue($values, '[' . $filter->getName() . ']')) {
                 $form = $filter->getForm();
                 if (!$form->isSubmitted()) {
                     $form->submit($value);
                 }
 
-
-                if ($form->isValid()) {
-                    $filter->apply($datasource->getQuery(), $value);
+                if (!($form->isValid() && $filter->apply($datasource->getQuery(), $form->getData()))) {
+                    throw new \LogicException(sprintf('Filter %s is not valid', $filter->getName()));
                 }
             }
         }
@@ -77,14 +76,14 @@ class OrmFilterExtension extends AbstractExtension
      */
     public function visitMetadata(array $config, \stdClass $data)
     {
-        $data->filters            = array();
-        $data->filters['state']   = array();
+        $data->filters          = array();
+        $data->filters['state'] = array();
 
         $filters = $this->getFiltersToApply($config);
         $values  = $this->getValuesToApply($config);
 
         foreach ($filters as $filter) {
-            if ($value = $this->accessor->getValue($values, '[' . $filter->getName() .']')) {
+            if ($value = $this->accessor->getValue($values, '[' . $filter->getName() . ']')) {
                 $form = $filter->getForm();
                 if (!$form->isSubmitted()) {
                     $form->submit($value);

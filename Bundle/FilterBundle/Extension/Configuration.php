@@ -44,7 +44,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('default')
                         ->prototype('array')
-                            ->prototype('scalar')->end()
+                            ->prototype('variable')->end()
                         ->end()
                     ->end()
                 ->end()

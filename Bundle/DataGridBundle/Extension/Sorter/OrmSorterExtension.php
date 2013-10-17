@@ -53,12 +53,17 @@ class OrmSorterExtension extends AbstractExtension
      */
     public function visitDatasource(array $config, DatasourceInterface $datasource)
     {
-        $sorters = $this->getSortersToApply($config);
+        $sorters   = $this->getSortersToApply($config);
+        $multisort = $this->accessor->getValue($config, self::MULTISORT_PATH) ? : false;
         foreach ($sorters as $definition) {
             list($direction, $sorter) = $definition;
 
             $sortKey = $sorter['data_name'];
             $datasource->getQuery()->addOrderBy($sortKey, $direction);
+
+            if (!$multisort) {
+                break;
+            }
         }
     }
 
@@ -67,16 +72,22 @@ class OrmSorterExtension extends AbstractExtension
      */
     public function visitMetadata(array $config, \stdClass $data)
     {
+        $multisort = $this->accessor->getValue($config, self::MULTISORT_PATH) ? : false;
+
         $data->sorter            = array();
         $data->sorter['state']   = array();
         $data->sorter['options'] = array(
-            'multiple_sorting' => $this->accessor->getValue($config, self::MULTISORT_PATH) ? : false,
+            'multiple_sorting' => $multisort
         );
 
         $sorters = $this->getSortersToApply($config);
         foreach ($sorters as $column => $definition) {
             list($direction) = $definition;
             $data->sorter['state'][$column] = $this->normalizeDirection($direction);
+
+            if (!$multisort) {
+                break;
+            }
         }
     }
 

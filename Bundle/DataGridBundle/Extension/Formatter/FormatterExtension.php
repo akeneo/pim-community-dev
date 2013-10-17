@@ -57,7 +57,7 @@ class FormatterExtension extends AbstractExtension
                 $resultRecord[$name] = $property->getValue($record);
             }
 
-            $results[] = array_merge($row, $resultRecord);
+            $results[] = $resultRecord;
         }
 
         $result->rows = $results;

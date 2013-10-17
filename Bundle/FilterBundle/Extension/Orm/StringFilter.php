@@ -11,9 +11,9 @@ class StringFilter extends AbstractFilter
     /**
      * {@inheritDoc}
      */
-    public function apply(QueryBuilder $qb, $value)
+    public function apply(QueryBuilder $qb, $data)
     {
-        $data = $this->parseData($value);
+        $data = $this->parseData($data);
         if ($data) {
             $operator      = $this->getOperator($data['type']);
             $parameterName = $this->generateQueryParameterName();
@@ -24,7 +24,11 @@ class StringFilter extends AbstractFilter
             );
 
             $qb->setParameter($parameterName, sprintf($this->getFormatByComparisonType($data['type']), $data['value']));
+
+            return true;
         }
+
+        return false;
     }
 
     /**

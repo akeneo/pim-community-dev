@@ -19,11 +19,11 @@ class NumberFilter extends AbstractFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(QueryBuilder $qb, $value)
+    public function apply(QueryBuilder $qb, $data)
     {
-        $data = $this->parseData($value);
+        $data = $this->parseData($data);
         if (!$data) {
-            return;
+            return false;
         }
 
         $operator = $this->getOperator($data['type']);
@@ -37,6 +37,8 @@ class NumberFilter extends AbstractFilter
         );
 
         $qb->setParameter($parameterName, $data['value']);
+
+        return true;
     }
 
     /**
