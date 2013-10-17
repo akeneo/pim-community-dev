@@ -31,6 +31,11 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
     private $product;
 
     /**
+     * @var Association $association
+     */
+    private $association;
+
+    /**
      * @var SecurityFacade
      */
     protected $securityFacade;
@@ -156,27 +161,15 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
      */
     protected function getHasAssociationExpression()
     {
-        if (null === $this->association || null === $this->product) {
-            return null;
+        if (null === $this->association) {
+            return 0;
         }
-
-        $associations = $this->product->getAssociations();
-        if (empty($associations)) {
-            return null;
-        }
-
-        return true;
 
         $hasAssociationExpression =
-            "(CASE WHEN ".
-            "(o.associations = %d OR o.id IN (:data_in)) ".
-            "AND o.id NOT IN (:data_not_in)".
-            "THEN true ELSE false END)";
-        $hasAssociationExpression = sprintf(
-            $hasAssociationExpression,
-            $this->product->getId(),
-            $this->association->getId()
-        );
+            'CASE WHEN ' .
+            '(pa is not null OR o.id IN (:data_in)) ' .
+            'AND o.id NOT IN (:data_not_in) ' .
+            'THEN true ELSE false END';
 
         return $hasAssociationExpression;
     }
@@ -272,20 +265,25 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
     {
         $rootAlias = $proxyQuery->getRootAlias();
 
-        $familyExpr = "(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)";
+        $familyExpr = '(CASE WHEN ft.label IS NULL THEN productFamily.code ELSE ft.label END)';
         $proxyQuery
-            ->addSelect(sprintf("%s AS familyLabel", $familyExpr), true)
+            ->addSelect(sprintf('%s AS familyLabel', $familyExpr), true)
             ->addSelect($this->getHasAssociationExpression() . ' AS hasCurrentAssociation', true);
 
         $proxyQuery
             ->leftJoin($rootAlias .'.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
-            ->leftJoin($rootAlias . '.associations', 'productAssociations')
-            ;
+            ->leftJoin(
+                'PimCatalogBundle:ProductAssociation',
+                'pa',
+                'WITH',
+                sprintf('pa.association = :association AND pa.owner = :product AND pa.target = %s', $rootAlias)
+            );
 
         $this->applyProductExclusionExpression($proxyQuery);
 
         $proxyQuery->setParameter('localeCode', $this->flexibleManager->getLocale());
+        $proxyQuery->setParameter('product', $this->getProduct());
     }
 
     /**
@@ -312,6 +310,9 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
         return array(
             'data_in'     => $dataIn,
             'data_not_in' => $dataNotIn,
+            'scopeCode'   => $this->flexibleManager->getScope(),
+            'association' => $this->association,
+            'product'     => $this->getProduct()
         );
     }
 }

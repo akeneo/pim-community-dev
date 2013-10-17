@@ -39,7 +39,7 @@ class ProductAssociation
      * @var ProductInterface $owner
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface", inversedBy="associations")
-     * @ORM\JoinColumn(name="product_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
+     * @ORM\JoinColumn(name="owner_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
      */
     protected $owner;
 
