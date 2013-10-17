@@ -51,19 +51,20 @@ class AddressFormatter
         }
         $format = $this->settingsProvider->getAddressFormat($country);
         $countryLocale = $this->settingsProvider->getLocaleByCountry($country);
+        $self = $this;
         $formatted = preg_replace_callback(
             '/%(\w+)%/',
-            function ($data) use ($address, $countryLocale, $newLineSeparator) {
+            function ($data) use ($address, $countryLocale, $newLineSeparator, $self) {
                 $key = $data[1];
                 $lowerCaseKey = strtolower($key);
                 if ('name' === $lowerCaseKey) {
-                    $value = $this->nameFormatter->format($address, $countryLocale);
+                    $value = $self->nameFormatter->format($address, $countryLocale);
                 } elseif ('street' == $lowerCaseKey) {
-                    $value = $this->getValue($address, 'street') . ' ' . $this->getValue($address, 'street2');
+                    $value = $self->getValue($address, 'street') . ' ' . $self->getValue($address, 'street2');
                 } elseif ('street1' == $lowerCaseKey) {
-                    $value = $this->getValue($address, 'street');
+                    $value = $self->getValue($address, 'street');
                 } else {
-                    $value = $this->getValue($address, $lowerCaseKey);
+                    $value = $self->getValue($address, $lowerCaseKey);
                 }
                 if ($value) {
                     if ($key !== $lowerCaseKey) {
