@@ -5321,26 +5321,26 @@
         },
         {
             "name": "behat/gherkin",
-            "version": "v2.2.9",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Gherkin.git",
-                "reference": "cca2c477921ca38578d6e9759ea5e450f29c2d8f"
+                "reference": "c1f7d89e7e609e45fe40a8a8774f3e43cbe4ffcb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Gherkin/zipball/cca2c477921ca38578d6e9759ea5e450f29c2d8f",
-                "reference": "cca2c477921ca38578d6e9759ea5e450f29c2d8f",
+                "url": "https://api.github.com/repos/Behat/Gherkin/zipball/c1f7d89e7e609e45fe40a8a8774f3e43cbe4ffcb",
+                "reference": "c1f7d89e7e609e45fe40a8a8774f3e43cbe4ffcb",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.1",
-                "symfony/finder": ">=2.0,<2.4-dev"
+                "symfony/finder": "~2.0"
             },
             "require-dev": {
-                "symfony/config": ">=2.0,<2.4-dev",
-                "symfony/translation": ">=2.0,<2.4-dev",
-                "symfony/yaml": ">=2.0,<2.4-dev"
+                "symfony/config": ">=2.0,<3.0",
+                "symfony/translation": ">=2.0,<3.0",
+                "symfony/yaml": ">=2.0,<3.0"
             },
             "suggest": {
                 "symfony/config": "If you want to use Config component to manage resources",
@@ -5378,7 +5378,7 @@
                 "Symfony2",
                 "parser"
             ],
-            "time": "2013-03-02 10:38:40"
+            "time": "2013-05-09 15:20:54"
         },
         {
             "name": "behat/mink",
@@ -5386,12 +5386,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Mink.git",
-                "reference": "8d0458afb33d366d361a041a009be3fcaf880f05"
+                "reference": "79b6cd328f34c298b720d68223db48c1a0ab4c6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Mink/zipball/8d0458afb33d366d361a041a009be3fcaf880f05",
-                "reference": "8d0458afb33d366d361a041a009be3fcaf880f05",
+                "url": "https://api.github.com/repos/Behat/Mink/zipball/79b6cd328f34c298b720d68223db48c1a0ab4c6d",
+                "reference": "79b6cd328f34c298b720d68223db48c1a0ab4c6d",
                 "shasum": ""
             },
             "require": {
@@ -5433,7 +5433,7 @@
                 "testing",
                 "web"
             ],
-            "time": "2013-09-12 16:08:40"
+            "time": "2013-07-17 08:21:36"
         },
         {
             "name": "behat/mink-browserkit-driver",
@@ -5441,12 +5441,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/MinkBrowserKitDriver.git",
-                "reference": "6580790c180a34ae4344005bb9383b83588da851"
+                "reference": "c1b6d20b85280e19e774dc7e316225c61c833d7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/MinkBrowserKitDriver/zipball/6580790c180a34ae4344005bb9383b83588da851",
-                "reference": "6580790c180a34ae4344005bb9383b83588da851",
+                "url": "https://api.github.com/repos/Behat/MinkBrowserKitDriver/zipball/c1b6d20b85280e19e774dc7e316225c61c833d7d",
+                "reference": "c1b6d20b85280e19e774dc7e316225c61c833d7d",
                 "shasum": ""
             },
             "require": {
@@ -5488,20 +5488,20 @@
                 "browser",
                 "testing"
             ],
-            "time": "2013-09-06 09:22:29"
+            "time": "2013-07-17 08:22:56"
         },
         {
             "name": "behat/mink-extension",
-            "version": "v1.1.4",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/MinkExtension.git",
-                "reference": "b4522f19fe96d423883f2e3650615e19d3a48c05"
+                "reference": "6ed67ce283cd5ee882fefefd9358a670a13d404c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/MinkExtension/zipball/b4522f19fe96d423883f2e3650615e19d3a48c05",
-                "reference": "b4522f19fe96d423883f2e3650615e19d3a48c05",
+                "url": "https://api.github.com/repos/Behat/MinkExtension/zipball/6ed67ce283cd5ee882fefefd9358a670a13d404c",
+                "reference": "6ed67ce283cd5ee882fefefd9358a670a13d404c",
                 "shasum": ""
             },
             "require": {
@@ -5510,7 +5510,7 @@
                 "php": ">=5.3.2"
             },
             "require-dev": {
-                "behat/mink-goutte-driver": "~1.0"
+                "behat/mink-goutte-driver": ">=1.0,<2.0"
             },
             "type": "behat-extension",
             "extra": {
@@ -5542,7 +5542,7 @@
                 "test",
                 "web"
             ],
-            "time": "2013-06-04 12:18:22"
+            "time": "2013-06-04 17:35:37"
         },
         {
             "name": "behat/mink-selenium2-driver",
@@ -5550,17 +5550,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/MinkSelenium2Driver.git",
-                "reference": "8278166e9a7727490c4f0371450cff5091c6a8f3"
+                "reference": "d385cbab655b175914e928032442131924ff6c89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/MinkSelenium2Driver/zipball/8278166e9a7727490c4f0371450cff5091c6a8f3",
-                "reference": "8278166e9a7727490c4f0371450cff5091c6a8f3",
+                "url": "https://api.github.com/repos/Behat/MinkSelenium2Driver/zipball/d385cbab655b175914e928032442131924ff6c89",
+                "reference": "d385cbab655b175914e928032442131924ff6c89",
                 "shasum": ""
             },
             "require": {
                 "behat/mink": "~1.5.0",
-                "instaclick/php-webdriver": "~1.1",
+                "instaclick/php-webdriver": "~1.0.12",
                 "php": ">=5.3.1"
             },
             "type": "mink-driver",
@@ -5600,20 +5600,20 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2013-10-16 14:17:54"
+            "time": "2013-06-06 13:26:24"
         },
         {
             "name": "behat/symfony2-extension",
-            "version": "v1.0.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Symfony2Extension.git",
-                "reference": "cb68f8b30b33ad51b0832a39c3886c7244889ace"
+                "reference": "17b306a2f3904dc478aef006d3412dfbae542fea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Symfony2Extension/zipball/cb68f8b30b33ad51b0832a39c3886c7244889ace",
-                "reference": "cb68f8b30b33ad51b0832a39c3886c7244889ace",
+                "url": "https://api.github.com/repos/Behat/Symfony2Extension/zipball/17b306a2f3904dc478aef006d3412dfbae542fea",
+                "reference": "17b306a2f3904dc478aef006d3412dfbae542fea",
                 "shasum": ""
             },
             "require": {
@@ -5656,20 +5656,20 @@
                 "framework",
                 "symfony"
             ],
-            "time": "2013-06-06 20:36:08"
+            "time": "2013-07-09 08:46:53"
         },
         {
             "name": "instaclick/php-webdriver",
-            "version": "1.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/instaclick/php-webdriver.git",
-                "reference": "786ba0dc9c594fb0b9b8171db852b2224b23811e"
+                "reference": "5ff757c6daf1cfc223928e860385952abbbdb531"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/instaclick/php-webdriver/zipball/786ba0dc9c594fb0b9b8171db852b2224b23811e",
-                "reference": "786ba0dc9c594fb0b9b8171db852b2224b23811e",
+                "url": "https://api.github.com/repos/instaclick/php-webdriver/zipball/5ff757c6daf1cfc223928e860385952abbbdb531",
+                "reference": "5ff757c6daf1cfc223928e860385952abbbdb531",
                 "shasum": ""
             },
             "require": {
@@ -5714,7 +5714,7 @@
                 "webdriver",
                 "webtest"
             ],
-            "time": "2013-10-15 14:53:05"
+            "time": "2013-08-08 14:22:54"
         },
         {
             "name": "kriswallsmith/buzz",
@@ -5770,12 +5770,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/BehatPageObjectExtension.git",
-                "reference": "f49b8fe3789ba866b141baf851c5a6843326917b"
+                "reference": "6692ad7237597d1f7acfdacf1c7bbb138f56e3a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/BehatPageObjectExtension/zipball/f49b8fe3789ba866b141baf851c5a6843326917b",
-                "reference": "f49b8fe3789ba866b141baf851c5a6843326917b",
+                "url": "https://api.github.com/repos/sensiolabs/BehatPageObjectExtension/zipball/6692ad7237597d1f7acfdacf1c7bbb138f56e3a9",
+                "reference": "6692ad7237597d1f7acfdacf1c7bbb138f56e3a9",
                 "shasum": ""
             },
             "require": {
@@ -5790,11 +5790,6 @@
                 "bossa/phpspec2-expect": "Allows to use PHPSpec2 matchers in Behat context files"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "SensioLabs\\Behat\\PageObjectExtension\\": "src/"
@@ -5821,7 +5816,7 @@
                 "Behat",
                 "page"
             ],
-            "time": "2013-08-13 09:40:20"
+            "time": "2013-05-24 08:09:10"
         }
     ],
     "aliases": [
