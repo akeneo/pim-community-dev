@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'oro/locale-settings'],
-function(_, localeSettings) {
+define(['oro/locale-settings'],
+function(localeSettings) {
     'use strict';
 
     /**
@@ -10,9 +10,20 @@ function(_, localeSettings) {
      * @class   oro.NameFormatter
      */
     return {
-        format: function(person, format) {
-            format = format || localeSettings.nameFormat;
-
+        format: function(person, locale) {
+            var format = localeSettings.getNameFormat(locale);
+            var formatted = format.replace(/%(\w+)%/g, function(pattern, key) {
+                var lowerCaseKey = key.toLowerCase();
+                var value = '';
+                if (person.hasOwnProperty(lowerCaseKey)) {
+                    value = person[lowerCaseKey];
+                    if (key !== lowerCaseKey) {
+                        value = value.toLocaleUpperCase();
+                    }
+                }
+                return value;
+            });
+            return formatted.replace(/^\s+|\s+$/g, '');
         }
     }
 });

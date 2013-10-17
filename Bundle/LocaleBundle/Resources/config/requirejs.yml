@@ -6,4 +6,6 @@ config:
     paths:
         'moment': 'bundles/orolocale/lib/moment.js'
         'numeral': 'bundles/orolocale/lib/numeral.js'
+        'oro/locale-settings': 'bundles/orolocale/js/locale_settings.js'
         'oro/formatter/name': 'bundles/orolocale/js/formatter/name.js'
+        'oro/formatter/address': 'bundles/orolocale/js/formatter/address.js'
