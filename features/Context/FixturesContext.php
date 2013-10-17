@@ -479,7 +479,7 @@ class FixturesContext extends RawMinkContext
                     $value->setLocale($data['locale']);
                 }
                 if ($data['value']) {
-                    if ($value->getAttribute()->getAttributeType() == $this->attributeTypes['prices']) {
+                    if ($value->getAttribute()->getAttributeType() === $this->attributeTypes['prices']) {
                         foreach ($value->getPrices() as $price) {
                             $value->removePrice($price);
                         }
