@@ -13,14 +13,10 @@ config:
                 - 'backbone'
                 - 'backgrid'
                 - 'moment'
-        'moment':
-            exports:
-                - 'moment'
     paths:
         'backbone/pageable-collection': 'bundles/orogrid/lib/backbone-pageable.js'
         'backgrid': 'bundles/orogrid/lib/backgrid/backgrid.js'
         'backgrid/moment': 'bundles/orogrid/lib/backgrid/extensions/moment-cell/backgrid-moment-cell.js'
-        'moment': 'bundles/orogrid/lib/moment/moment.js'
         'oro/datagrid/action-launcher': 'bundles/orogrid/js/datagrid/action-launcher.js'
         'oro/datagrid/abstract-action': 'bundles/orogrid/js/datagrid/action/abstract-action.js'
         'oro/datagrid/delete-action': 'bundles/orogrid/js/datagrid/action/delete-action.js'

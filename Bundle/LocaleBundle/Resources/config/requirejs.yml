@@ -1,0 +1,9 @@
+config:
+    shim:
+        'moment':
+            exports:
+                - 'moment'
+    paths:
+        'moment': 'bundles/orolocale/lib/moment.js'
+        'numeral': 'bundles/orolocale/lib/numeral.js'
+        'oro/formatter/name': 'bundles/orolocale/js/formatter/name.js'
