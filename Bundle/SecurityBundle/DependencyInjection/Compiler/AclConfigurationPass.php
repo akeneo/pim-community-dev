@@ -26,6 +26,8 @@ class AclConfigurationPass implements CompilerPassInterface
 
     const DEFAULT_ACL_CACHE_CLASS = 'Oro\Bundle\SecurityBundle\Acl\Cache\AclCache';
 
+    const ACL_OID_ANCESTOR_CACHE = 'oro_security.oid_ancestor.cache';
+
     /**
      * {@inheritDoc}
      */
@@ -36,6 +38,7 @@ class AclConfigurationPass implements CompilerPassInterface
         $this->configureDefaultAclCache($container);
         $this->configureDefaultAclVoter($container);
     }
+
 
     /**
      * @param ContainerBuilder $container
@@ -71,6 +74,8 @@ class AclConfigurationPass implements CompilerPassInterface
             if ($container->hasDefinition(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY)) {
                 $providerDef->replaceArgument(1, new Reference(self::NEW_ACL_PERMISSION_GRANTING_STRATEGY));
             }
+            // add OID ancestor cache
+            $providerDef->addArgument(new Reference(self::ACL_OID_ANCESTOR_CACHE));
         }
     }
 
