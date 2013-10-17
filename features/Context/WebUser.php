@@ -1877,6 +1877,35 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^export directory of "([^"]*)" should contain the following media:$/
+     */
+    public function exportDirectoryOfShouldContainTheFollowingMedia($code, TableNode $table)
+    {
+        $path = $this
+            ->getJobInstance($code)
+            ->getJob()
+            ->getSteps()[0]
+            ->getWriter()
+            ->getDirectoryName();
+
+        if (!is_dir($path)) {
+            throw $this->createExpectationException(
+                sprintf('Directory "%s" doesn\'t exist', $path)
+            );
+        }
+
+        foreach ($table->getRows() as $data) {
+            $file = rtrim($path, '/') . '/' .$data[0];
+
+            if (!is_file($file)) {
+                throw $this->createExpectationException(
+                    sprintf('File \"%s\" doesn\'t exist', $file)
+                );
+            }
+        }
+    }
+
+    /**
      * @param integer $y
      */
     private function scrollContainerTo($y)

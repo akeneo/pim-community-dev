@@ -46,3 +46,6 @@ Feature: Export media with products
     bic-core-148;funboard;;behat-bic-core-148.gif;"Bic Core 148";behat-bic-core-148.txt;sport
 
     """
+    Then export directory of "acme_product_export" should contain the following media:
+      | behat-bic-core-148.gif |
+      | behat-bic-core-148.txt |
