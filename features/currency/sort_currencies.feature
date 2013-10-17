@@ -18,22 +18,16 @@ Feature: Sort currencies
     And the rows should be sorted ascending by code
     And I should see sorted currencies EUR, GBP and USD
 
-  Scenario: Successfully sort currencies by code ascending
+  Scenario: Successfully sort currencies by code
     Given I am on the currencies page
     When I sort by "code" value ascending
     Then I should see sorted currencies EUR, GBP and USD
-
-  Scenario: Successfully sort currencies by code descending
-    Given I am on the currencies page
     When I sort by "code" value descending
     Then I should see sorted currencies USD, GBP and EUR
 
-  Scenario: Successfully sort currencies by activated ascending
+  Scenario: Successfully sort currencies by activated
     Given I am on the currencies page
     When I sort by "Activated" value ascending
     Then I should see sorted currencies GBP, USD and EUR
-
-  Scenario: Successfully sort currencies by activated descending
-    Given I am on the currencies page
     When I sort by "Activated" value descending
     Then I should see sorted currencies USD, EUR and GBP

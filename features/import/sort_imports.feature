@@ -19,52 +19,37 @@ Feature: Sort import profiles
     And the rows should be sorted ascending by code
     And I should see sorted locales acme_attribute, acme_category, acme_product and foo_product
 
-  Scenario: Successfully sort import profiles by code ascending
+  Scenario: Successfully sort import profiles by code
     Given I am on the imports page
     When I sort by "code" value ascending
     Then I should see sorted import profiles acme_attribute, acme_category, acme_product and foo_product
-
-  Scenario: Successfully sort import profiles by code descending
-    Given I am on the imports page
     When I sort by "code" value descending
     Then I should see sorted import profiles foo_product, acme_product, acme_category and acme_attribute
 
-  Scenario: Successfully sort import profiles by label ascending
+  Scenario: Successfully sort import profiles by label
     Given I am on the imports page
     When I sort by "label" value ascending
     Then I should see sorted import profiles acme_attribute, acme_category, foo_product and acme_product
-
-  Scenario: Successfully sort import profiles by label descending
-    Given I am on the imports page
     When I sort by "label" value descending
     Then I should see sorted import profiles acme_product, foo_product, acme_category and acme_attribute
 
-  Scenario: Successfully sort import profiles by job ascending
+  Scenario: Successfully sort import profiles by job
     Given I am on the imports page
     When I sort by "job" value ascending
     Then I should see sorted import profiles acme_attribute, acme_category, acme_product, foo_product
-
-  Scenario: Successfully sort import profiles by job descending
-    Given I am on the imports page
     When I sort by "job" value descending
     Then I should see sorted import profiles acme_product, foo_product, acme_category and acme_attribute
 
-  Scenario: Successfully sort import profiles by connector ascending
+  Scenario: Successfully sort import profiles by connector
     Given I am on the imports page
     When I sort by "connector" value ascending
     Then I should see sorted import profiles acme_product, acme_attribute, foo_product and acme_category
-
-  Scenario: Successfully sort import profiles by connector descending
-    Given I am on the imports page
     When I sort by "connector" value descending
     Then I should see sorted import profiles acme_product, acme_attribute, foo_product and acme_category
 
-  Scenario: Successfully sort import profiles by status ascending
+  Scenario: Successfully sort import profiles by status
     Given I am on the imports page
     When I sort by "status" value ascending
     Then I should see sorted import profiles acme_product, acme_attribute, foo_product and acme_category
-
-  Scenario: Successfully sort import profiles by status descending
-    Given I am on the imports page
     When I sort by "status" value descending
     Then I should see sorted import profiles acme_product, acme_attribute, foo_product and acme_category

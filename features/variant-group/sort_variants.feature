@@ -24,22 +24,16 @@ Feature: Sort variants
     And the rows should be sorted ascending by code
     And I should see sorted variants MUG, TSHIRT_AKENEO and TSHIRT_ORO
 
-  Scenario: Successfully sort variants by code ascending
+  Scenario: Successfully sort variants by code
     Given I am on the variants page
     When I sort by "code" value ascending
     Then I should see sorted variants MUG, TSHIRT_AKENEO and TSHIRT_ORO
-
-  Scenario: Successfully sort variants by code descending
-    Given I am on the variants page
     When I sort by "code" value descending
     Then I should see sorted variants TSHIRT_ORO, TSHIRT_AKENEO and MUG
 
-  Scenario: Successfully sort variants by label ascending
+  Scenario: Successfully sort variants by label
     Given I am on the variants page
     When I sort by "label" value ascending
     Then I should see sorted variants MUG, TSHIRT_AKENEO and TSHIRT_ORO
-
-  Scenario: Successfully sort variants by label descending
-    Given I am on the variants page
     When I sort by "label" value descending
     Then I should see sorted variants TSHIRT_ORO, TSHIRT_AKENEO and MUG

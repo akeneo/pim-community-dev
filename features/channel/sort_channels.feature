@@ -27,32 +27,23 @@ Feature: Sort channels
     And the rows should be sorted ascending by code
     And I should see sorted channels BAR, BAZ, ecommerce, FOO, mobile and QUX
 
-  Scenario: Successfully sort channels by code ascending
+  Scenario: Successfully sort channels by code
     Given I am on the channels page
     When I sort by "code" value ascending
     Then I should see sorted channels BAR, BAZ, ecommerce, FOO, mobile and QUX
-
-  Scenario: Successfully sort channels by code descending
-    Given I am on the channels page
     When I sort by "code" value descending
     Then I should see sorted channels QUX, mobile, FOO, ecommerce, BAZ and BAR
 
-  Scenario: Successfully sort channels by label ascending
+  Scenario: Successfully sort channels by label
     Given I am on the channels page
     When I sort by "label" value ascending
     Then I should see sorted channels BAR, BAZ, ecommerce, FOO, mobile and QUX
-
-  Scenario: Successfully sort channels by label descending
-    Given I am on the channels page
     When I sort by "label" value descending
     Then I should see sorted channels QUX, mobile, FOO, ecommerce, BAZ and BAR
 
-  Scenario: Successfully sort channels by tree ascending
+  Scenario: Successfully sort channels by tree
     Given I am on the channels page
     When I sort by "category tree" value ascending
     Then I should see sorted channels ecommerce, mobile, BAR, QUX, FOO and BAZ
-
-  Scenario: Successfully sort channels by tree descending
-    Given I am on the channels page
     When I sort by "category tree" value descending
     Then I should see sorted channels BAZ, FOO, QUX, BAR, ecommerce and mobile
