@@ -13,10 +13,10 @@ Feature: Browse variant groups
       | size      | Size       | pim_catalog_simpleselect |
       | dimension | Dimensions | pim_catalog_simpleselect |
     And the following variants:
-      | code           | label          | attributes  |
-      | tshirt_akeneo  | T-Shirt Akeneo | size, color |
-      | mug_akeneo     | Mug Akeneo     | color       |
-      | sticker_akeneo | Sticker Akeneo | dimension   |
+      | code           | label          | attributes  | type    |
+      | tshirt_akeneo  | T-Shirt Akeneo | size, color | VARIANT |
+      | mug_akeneo     | Mug Akeneo     | color       | VARIANT |
+      | sticker_akeneo | Sticker Akeneo | dimension   | VARIANT |
     And I am logged in as "admin"
 
   Scenario: Successfully display variant groups

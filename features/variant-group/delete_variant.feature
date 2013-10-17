@@ -35,9 +35,9 @@ Feature: Delete a variant group
       | POSTIT  | color     | Blue  |
       | POSTIT  | size      | M     |
     And the following variants:
-      | code   | label      | attributes  |
-      | MUG    | MUG Akeneo | color       |
-      | POSTIT | Postit     | color, size |
+      | code   | label      | attributes  | type    |
+      | MUG    | MUG Akeneo | color       | VARIANT |
+      | POSTIT | Postit     | color, size | VARIANT |
     And I am logged in as "admin"
 
   Scenario: Successfully delete a variant from the grid
