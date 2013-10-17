@@ -110,9 +110,15 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizeValue($value)
     {
-        if (empty($this->fields) || isset($this->fields[$this->getFieldValue($value)])) {
-            $data = $value->getData();
+        $data = $value->getData();
 
+        if ($data instanceof Media) {
+            // TODO Handle media export
+            // They are ignored for now (both file and image type)
+            return array();
+        }
+
+        if (empty($this->fields) || isset($this->fields[$this->getFieldValue($value)])) {
             if ($data instanceof \DateTime) {
                 $data = $data->format('m/d/Y');
             } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
@@ -128,10 +134,6 @@ class FlatProductNormalizer implements NormalizerInterface
                 }
                 $data = join(self::ITEM_SEPARATOR, $result);
             }
-        } elseif ($data instanceof Media) {
-            // TODO Handle media export
-            // They are ignored for now (both file and image type)
-            return;
         }
 
         return array($this->getFieldValue($value) => (string) $data);
