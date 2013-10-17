@@ -13,7 +13,7 @@ class AddressFormatter
     /**
      * @var LocaleSettings
      */
-    protected $settingsProvider;
+    protected $localeSettings;
 
     /**
      * @var NameFormatter
@@ -26,12 +26,12 @@ class AddressFormatter
     protected $propertyAccessor;
 
     /**
-     * @param LocaleSettings $settingsProvider
+     * @param LocaleSettings $localeSettings
      * @param NameFormatter $nameFormatter
      */
-    public function __construct(LocaleSettings $settingsProvider, NameFormatter $nameFormatter)
+    public function __construct(LocaleSettings $localeSettings, NameFormatter $nameFormatter)
     {
-        $this->settingsProvider = $settingsProvider;
+        $this->localeSettings = $localeSettings;
         $this->nameFormatter = $nameFormatter;
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
@@ -49,8 +49,8 @@ class AddressFormatter
         if (!$country) {
             $country = $address->getCountry();
         }
-        $format = $this->settingsProvider->getAddressFormat($country);
-        $countryLocale = $this->settingsProvider->getLocaleByCountry($country);
+        $format = $this->localeSettings->getAddressFormat($country);
+        $countryLocale = $this->localeSettings->getLocaleByCountry($country);
         $self = $this;
         $formatted = preg_replace_callback(
             '/%(\w+)%/',

@@ -11,14 +11,14 @@ class NameFormatType extends AbstractType
     /**
      * @var LocaleSettings
      */
-    protected $settingsProvider;
+    protected $localeSettings;
 
     /**
-     * @param LocaleSettings $settingsProvider
+     * @param LocaleSettings $localeSettings
      */
-    public function __construct(LocaleSettings $settingsProvider)
+    public function __construct(LocaleSettings $localeSettings)
     {
-        $this->settingsProvider = $settingsProvider;
+        $this->localeSettings = $localeSettings;
     }
 
     /**
@@ -28,7 +28,7 @@ class NameFormatType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data' => $this->settingsProvider->getNameFormat()
+                'data' => $this->localeSettings->getNameFormat()
             )
         );
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LocaleBundle\Tests\Unit\Provider;
+namespace Oro\Bundle\LocaleBundle\Tests\Unit\Model;
 
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
@@ -122,7 +122,7 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
     public function testGetNameFormat(array $nameFormats, $locale, $expectedFormat, $defaultLocale = null)
     {
         $this->localeSettings->addNameFormats($nameFormats);
-        $this->localeSettings->setDefaultLocale($defaultLocale);
+        $this->localeSettings->setLocale($defaultLocale);
         $this->assertEquals($expectedFormat, $this->localeSettings->getNameFormat($locale));
     }
 
@@ -196,7 +196,7 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
         $defaultCountry = null
     ) {
         $this->localeSettings->addAddressFormats($addressFormats);
-        $this->localeSettings->setDefaultCountry($defaultCountry);
+        $this->localeSettings->setCountry($defaultCountry);
         $this->assertEquals($expectedFormat, $this->localeSettings->getAddressFormat($localeOrRegion));
     }
 
@@ -401,7 +401,7 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
     public function testGetLocaleByCountry(array $localeData, $countryCode, $expectedLocale, $defaultLocale = null)
     {
         $this->localeSettings->addLocaleData($localeData);
-        $this->localeSettings->setDefaultLocale($defaultLocale);
+        $this->localeSettings->setLocale($defaultLocale);
         $this->assertEquals($expectedLocale, $this->localeSettings->getLocaleByCountry($countryCode));
     }
 
@@ -422,7 +422,7 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetDefaultLocale()
+    public function testGetLocale()
     {
         $defaultLocale = 'ru_RU';
 
@@ -431,11 +431,11 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
             ->with('oro_locale.locale')
             ->will($this->returnValue($defaultLocale));
 
-        $this->assertEquals($defaultLocale, $this->localeSettings->getDefaultLocale());
-        $this->assertEquals($defaultLocale, $this->localeSettings->getDefaultLocale());
+        $this->assertEquals($defaultLocale, $this->localeSettings->getLocale());
+        $this->assertEquals($defaultLocale, $this->localeSettings->getLocale());
     }
 
-    public function testGetDefaultCountry()
+    public function testGetCountry()
     {
         $defaultCountry = 'US';
 
@@ -444,7 +444,7 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
             ->with('oro_locale.country')
             ->will($this->returnValue($defaultCountry));
 
-        $this->assertEquals($defaultCountry, $this->localeSettings->getDefaultCountry());
-        $this->assertEquals($defaultCountry, $this->localeSettings->getDefaultCountry());
+        $this->assertEquals($defaultCountry, $this->localeSettings->getCountry());
+        $this->assertEquals($defaultCountry, $this->localeSettings->getCountry());
     }
 }

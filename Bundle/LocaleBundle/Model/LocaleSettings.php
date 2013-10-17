@@ -140,7 +140,7 @@ class LocaleSettings
     public function getNameFormat($locale = null)
     {
         if (!$locale) {
-            $locale = $this->getDefaultLocale();
+            $locale = $this->getLocale();
         }
 
         // match by locale (for example - "fr_CA")
@@ -158,7 +158,7 @@ class LocaleSettings
         }
 
         // match by default locale in system configuration settings
-        $match = $this->getDefaultLocale();
+        $match = $this->getLocale();
         if ($match !== $locale && isset($this->nameFormats[$match])) {
             return $this->nameFormats[$match];
         }
@@ -182,7 +182,7 @@ class LocaleSettings
     public function getAddressFormat($localeOrRegion = null)
     {
         if (!$localeOrRegion) {
-            $localeOrRegion = $this->getDefaultLocale();
+            $localeOrRegion = $this->getLocale();
         }
 
         // matched by country (for example - "RU")
@@ -200,7 +200,7 @@ class LocaleSettings
         }
 
         // match by default country in system configuration settings
-        $match = $this->getDefaultCountry();
+        $match = $this->getCountry();
         if ($match !== $localeOrRegion && isset($this->addressFormats[$match][self::ADDRESS_FORMAT_KEY])) {
             return $this->addressFormats[$match][self::ADDRESS_FORMAT_KEY];
         }
@@ -302,7 +302,7 @@ class LocaleSettings
         if (isset($this->localeData[$country][self::DEFAULT_LOCALE_KEY])) {
             return $this->localeData[$country][self::DEFAULT_LOCALE_KEY];
         }
-        return $this->getDefaultLocale();
+        return $this->getLocale();
     }
 
     /**
@@ -310,7 +310,7 @@ class LocaleSettings
      *
      * @return string
      */
-    public function getDefaultLocale()
+    public function getLocale()
     {
         if (null === $this->defaultLocale) {
             $this->defaultLocale = $this->configManager->get('oro_locale.locale', \Locale::getDefault());
@@ -323,7 +323,7 @@ class LocaleSettings
      *
      * @param string $locale
      */
-    public function setDefaultLocale($locale)
+    public function setLocale($locale)
     {
         $this->defaultLocale = $locale;
     }
@@ -333,7 +333,7 @@ class LocaleSettings
      *
      * @return string
      */
-    public function getDefaultCountry()
+    public function getCountry()
     {
         if (null === $this->defaultCountry) {
             $this->defaultCountry = $this->configManager->get('oro_locale.country', self::DEFAULT_COUNTRY);
@@ -346,7 +346,7 @@ class LocaleSettings
      *
      * @param string $country
      */
-    public function setDefaultCountry($country)
+    public function setCountry($country)
     {
         $this->defaultCountry = $country;
     }

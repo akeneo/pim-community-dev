@@ -15,11 +15,11 @@ class NameFormatter
     /**
      * @var LocaleSettings
      */
-    protected $settingsProvider;
+    protected $localeSettings;
 
-    public function __construct(LocaleSettings $settingsProvider)
+    public function __construct(LocaleSettings $localeSettings)
     {
-        $this->settingsProvider = $settingsProvider;
+        $this->localeSettings = $localeSettings;
     }
 
     /**
@@ -47,7 +47,7 @@ class NameFormatter
             $nameParts['suffix'] = $person->getNameSuffix();
         }
 
-        $format = $this->settingsProvider->getNameFormat($locale);
+        $format = $this->localeSettings->getNameFormat($locale);
         $name = preg_replace_callback(
             '/%(\w+)%/',
             function ($data) use ($nameParts) {
