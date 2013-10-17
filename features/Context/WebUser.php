@@ -161,6 +161,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      * @param string $identifier
      *
      * @Given /^I am on the "([^"]*)" attribute group page$/
+     * @Given /^I edit the "([^"]*)" attribute group$/
      */
     public function iAmOnTheAttributeGroupEditPage($identifier)
     {
