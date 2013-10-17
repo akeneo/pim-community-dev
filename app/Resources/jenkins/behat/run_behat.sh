@@ -55,6 +55,9 @@ cd $FEATURES_DIR/..
 popd
 
 PROC_1=0
+PROC_2=0
+PROC_3=0
+PROC_4=0
 
 FEATURES=`find $FEATURES_DIR/ -name *.feature`
 for FEATURE in $FEATURES; do
@@ -63,32 +66,32 @@ for FEATURE in $FEATURES; do
     FEATURE_NAME=`echo $FEATURE | sed -e 's#^.*/features/\(.*\)$#features/\1#'`
 
     while [ ! -z $FEATURE_NAME ]; do
-        ps -opid | grep "^$PROC_1\$" > /dev/null
-        if [ $? -eq 1 ]; then
+        ls /proc/$PROC_1 > /dev/null 2>&1
+        if [ $? -ne 0 ]; then
             echo "Executing feature $FEATURE_NAME"
             $BEHAT_CMD --profile=jenkins-1 $FEATURE_NAME &
             PROC_1=$!
             FEATURE_NAME=""
         fi
 
-        ps -opid | grep "^$PROC_2\$" > /dev/null
-        if [ $? -eq 1 ] && [ ! -z $FEATURE_NAME ]; then
+        ls /proc/$PROC_2 > /dev/null 2>&1
+        if [ $? -ne 0 ] && [ ! -z $FEATURE_NAME ]; then
             echo "Executing feature $FEATURE_NAME"
             $BEHAT_CMD --profile=jenkins-2 $FEATURE_NAME &
             PROC_2=$!
             FEATURE_NAME=""
         fi
 
-        ps -opid | grep "^$PROC_3\$" > /dev/null
-        if [ $? -eq 1 ] && [ ! -z $FEATURE_NAME ]; then
+        ls /proc/$PROC_3 > /dev/null 2>&1
+        if [ $? -ne 0 ] && [ ! -z $FEATURE_NAME ]; then
             echo "Executing feature $FEATURE_NAME"
             $BEHAT_CMD --profile=jenkins-3 $FEATURE_NAME &
             PROC_3=$!
             FEATURE_NAME=""
         fi
 
-        ps -opid | grep "^$PROC_4\$" > /dev/null
-        if [ $? -eq 1 ] && [ ! -z $FEATURE_NAME ]; then
+        ls /proc/$PROC_4 > /dev/null 2>&1
+        if [ $? -ne 0 ] && [ ! -z $FEATURE_NAME ]; then
             echo "Executing feature $FEATURE_NAME"
             $BEHAT_CMD --profile=jenkins-4 $FEATURE_NAME &
             PROC_4=$!
