@@ -69,6 +69,16 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('locale_data')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('phone_prefix')
+                            ->end()
+                            ->scalarNode('default_locale')
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         $date = new \DateTime('now');

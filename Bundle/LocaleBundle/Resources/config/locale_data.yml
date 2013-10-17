@@ -1,0 +1,746 @@
+AD:
+    phone_prefix: '376'
+    default_locale: ca
+AE:
+    phone_prefix: '971'
+    default_locale: ar_AE
+AF:
+    phone_prefix: '93'
+    default_locale: fa_AF
+AG:
+    phone_prefix: +1-268
+    default_locale: en_AG
+AI:
+    phone_prefix: +1-264
+    default_locale: en
+AL:
+    phone_prefix: '355'
+    default_locale: sq
+AM:
+    phone_prefix: '374'
+    default_locale: hy
+AO:
+    phone_prefix: '244'
+    default_locale: pt_AO
+AR:
+    phone_prefix: '54'
+    default_locale: es_AR
+AS:
+    phone_prefix: +1-684
+    default_locale: en_AS
+AT:
+    phone_prefix: '43'
+    default_locale: de_AT
+AU:
+    phone_prefix: '61'
+    default_locale: en_AU
+AW:
+    phone_prefix: '297'
+    default_locale: nl_AW
+AX:
+    phone_prefix: +358-18
+    default_locale: sv_AX
+AZ:
+    phone_prefix: '994'
+    default_locale: az
+BA:
+    phone_prefix: '387'
+    default_locale: bs
+BB:
+    phone_prefix: +1-246
+    default_locale: en_BB
+BD:
+    phone_prefix: '880'
+    default_locale: bn_BD
+BE:
+    phone_prefix: '32'
+    default_locale: nl_BE
+BF:
+    phone_prefix: '226'
+    default_locale: fr_BF
+BG:
+    phone_prefix: '359'
+    default_locale: bg
+BH:
+    phone_prefix: '973'
+    default_locale: ar_BH
+BI:
+    phone_prefix: '257'
+    default_locale: fr_BI
+BJ:
+    phone_prefix: '229'
+    default_locale: fr_BJ
+BL:
+    phone_prefix: '590'
+    default_locale: fr
+BM:
+    phone_prefix: +1-441
+    default_locale: en_BM
+BN:
+    phone_prefix: '673'
+    default_locale: ms_BN
+BO:
+    phone_prefix: '591'
+    default_locale: es_BO
+BQ:
+    phone_prefix: '599'
+    default_locale: nl
+BR:
+    phone_prefix: '55'
+    default_locale: pt_BR
+BS:
+    phone_prefix: +1-242
+    default_locale: en_BS
+BT:
+    phone_prefix: '975'
+    default_locale: dz
+BV:
+BW:
+    phone_prefix: '267'
+    default_locale: en_BW
+BY:
+    phone_prefix: '375'
+    default_locale: be
+BZ:
+    phone_prefix: '501'
+    default_locale: en_BZ
+CA:
+    phone_prefix: '1'
+    default_locale: en_CA
+CC:
+    phone_prefix: '61'
+    default_locale: ms
+CD:
+    phone_prefix: '243'
+    default_locale: fr_CD
+CF:
+    phone_prefix: '236'
+    default_locale: fr_CF
+CG:
+    phone_prefix: '242'
+    default_locale: fr_CG
+CH:
+    phone_prefix: '41'
+    default_locale: de_CH
+CI:
+    phone_prefix: '225'
+    default_locale: fr_CI
+CK:
+    phone_prefix: '682'
+    default_locale: en
+CL:
+    phone_prefix: '56'
+    default_locale: es_CL
+CM:
+    phone_prefix: '237'
+    default_locale: en_CM
+CN:
+    phone_prefix: '86'
+    default_locale: zh_CN
+CO:
+    phone_prefix: '57'
+    default_locale: es_CO
+CR:
+    phone_prefix: '506'
+    default_locale: es_CR
+CU:
+    phone_prefix: '53'
+    default_locale: es_CU
+CV:
+    phone_prefix: '238'
+    default_locale: pt_CV
+CW:
+    phone_prefix: '599'
+    default_locale: nl
+CX:
+    phone_prefix: '61'
+    default_locale: en
+CY:
+    phone_prefix: '357'
+    default_locale: el_CY
+CZ:
+    phone_prefix: '420'
+    default_locale: cs
+DE:
+    phone_prefix: '49'
+    default_locale: de
+DJ:
+    phone_prefix: '253'
+    default_locale: fr_DJ
+DK:
+    phone_prefix: '45'
+    default_locale: da_DK
+DM:
+    phone_prefix: +1-767
+    default_locale: en_DM
+DO:
+    phone_prefix: +1-809
+    default_locale: es_DO
+DZ:
+    phone_prefix: '213'
+    default_locale: ar_DZ
+EC:
+    phone_prefix: '593'
+    default_locale: es_EC
+EE:
+    phone_prefix: '372'
+    default_locale: et
+EG:
+    phone_prefix: '20'
+    default_locale: ar_EG
+EH:
+    phone_prefix: '212'
+    default_locale: ar
+ER:
+    phone_prefix: '291'
+    default_locale: ti_ER
+ES:
+    phone_prefix: '34'
+    default_locale: es_ES
+ET:
+    phone_prefix: '251'
+    default_locale: am
+FI:
+    phone_prefix: '358'
+    default_locale: fi_FI
+FJ:
+    phone_prefix: '679'
+    default_locale: en_FJ
+FK:
+    phone_prefix: '500'
+    default_locale: en
+FM:
+    phone_prefix: '691'
+    default_locale: en_FM
+FO:
+    phone_prefix: '298'
+    default_locale: fo
+FR:
+    phone_prefix: '33'
+    default_locale: fr_FR
+GA:
+    phone_prefix: '241'
+    default_locale: fr_GA
+GB:
+    phone_prefix: '44'
+    default_locale: en_GB
+GD:
+    phone_prefix: +1-473
+    default_locale: en_GD
+GE:
+    phone_prefix: '995'
+    default_locale: ka
+GF:
+    phone_prefix: '594'
+    default_locale: fr_GF
+GG:
+    phone_prefix: +44-1481
+    default_locale: en
+GH:
+    phone_prefix: '233'
+    default_locale: en_GH
+GI:
+    phone_prefix: '350'
+    default_locale: en_GI
+GL:
+    phone_prefix: '299'
+    default_locale: kl
+GM:
+    phone_prefix: '220'
+    default_locale: en_GM
+GN:
+    phone_prefix: '224'
+    default_locale: fr_GN
+GP:
+    phone_prefix: '590'
+    default_locale: fr_GP
+GQ:
+    phone_prefix: '240'
+    default_locale: es_GQ
+GR:
+    phone_prefix: '30'
+    default_locale: el_GR
+GS:
+    default_locale: en
+GT:
+    phone_prefix: '502'
+    default_locale: es_GT
+GU:
+    phone_prefix: +1-671
+    default_locale: en_GU
+GW:
+    phone_prefix: '245'
+    default_locale: pt_GW
+GY:
+    phone_prefix: '592'
+    default_locale: en_GY
+HK:
+    phone_prefix: '852'
+    default_locale: zh_HK
+HM:
+    phone_prefix: ''
+HN:
+    phone_prefix: '504'
+    default_locale: es_HN
+HR:
+    phone_prefix: '385'
+    default_locale: hr_HR
+HT:
+    phone_prefix: '509'
+    default_locale: fr
+HU:
+    phone_prefix: '36'
+    default_locale: hu_HU
+ID:
+    phone_prefix: '62'
+    default_locale: id
+IE:
+    phone_prefix: '353'
+    default_locale: en_IE
+IL:
+    phone_prefix: '972'
+    default_locale: he
+IM:
+    phone_prefix: +44-1624
+    default_locale: en
+IN:
+    phone_prefix: '91'
+    default_locale: en_IN
+IO:
+    phone_prefix: '246'
+    default_locale: en
+IQ:
+    phone_prefix: '964'
+    default_locale: ar_IQ
+IR:
+    phone_prefix: '98'
+    default_locale: fa_IR
+IS:
+    phone_prefix: '354'
+    default_locale: is
+IT:
+    phone_prefix: '39'
+    default_locale: it_IT
+JE:
+    phone_prefix: +44-1534
+    default_locale: en
+JM:
+    phone_prefix: +1-876
+    default_locale: en_JM
+JO:
+    phone_prefix: '962'
+    default_locale: ar_JO
+JP:
+    phone_prefix: '81'
+    default_locale: ja
+KE:
+    phone_prefix: '254'
+    default_locale: en_KE
+KG:
+    phone_prefix: '996'
+    default_locale: ru
+KH:
+    phone_prefix: '855'
+    default_locale: km
+KI:
+    phone_prefix: '686'
+    default_locale: en_KI
+KM:
+    phone_prefix: '269'
+    default_locale: ar
+KN:
+    phone_prefix: +1-869
+    default_locale: en_KN
+KP:
+    phone_prefix: '850'
+    default_locale: ko_KP
+KR:
+    phone_prefix: '82'
+    default_locale: ko_KR
+XK:
+    default_locale: sq
+KW:
+    phone_prefix: '965'
+    default_locale: ar_KW
+KY:
+    phone_prefix: +1-345
+    default_locale: en_KY
+KZ:
+    phone_prefix: '7'
+    default_locale: kk
+LA:
+    phone_prefix: '856'
+    default_locale: lo
+LB:
+    phone_prefix: '961'
+    default_locale: ar_LB
+LC:
+    phone_prefix: +1-758
+    default_locale: en_LC
+LI:
+    phone_prefix: '423'
+    default_locale: de_LI
+LK:
+    phone_prefix: '94'
+    default_locale: si
+LR:
+    phone_prefix: '231'
+    default_locale: en_LR
+LS:
+    phone_prefix: '266'
+    default_locale: en_LS
+LT:
+    phone_prefix: '370'
+    default_locale: lt
+LU:
+    phone_prefix: '352'
+    default_locale: fr
+LV:
+    phone_prefix: '371'
+    default_locale: lv
+LY:
+    phone_prefix: '218'
+    default_locale: ar_LY
+MA:
+    phone_prefix: '212'
+    default_locale: ar_MA
+MC:
+    phone_prefix: '377'
+    default_locale: fr_MC
+MD:
+    phone_prefix: '373'
+    default_locale: ro
+ME:
+    phone_prefix: '382'
+    default_locale: sr
+MF:
+    phone_prefix: '590'
+    default_locale: fr
+MG:
+    phone_prefix: '261'
+    default_locale: fr_MG
+MH:
+    phone_prefix: '692'
+    default_locale: en
+MK:
+    phone_prefix: '389'
+    default_locale: mk
+ML:
+    phone_prefix: '223'
+    default_locale: fr_ML
+MM:
+    phone_prefix: '95'
+    default_locale: my
+MN:
+    phone_prefix: '976'
+    default_locale: mn
+MO:
+    phone_prefix: '853'
+    default_locale: zh
+MP:
+    phone_prefix: +1-670
+    default_locale: fil
+MQ:
+    phone_prefix: '596'
+    default_locale: fr_MQ
+MR:
+    phone_prefix: '222'
+    default_locale: ar_MR
+MS:
+    phone_prefix: +1-664
+    default_locale: en
+MT:
+    phone_prefix: '356'
+    default_locale: mt
+MU:
+    phone_prefix: '230'
+    default_locale: en_MU
+MV:
+    phone_prefix: '960'
+MW:
+    phone_prefix: '265'
+    default_locale: en
+MX:
+    phone_prefix: '52'
+    default_locale: es_MX
+MY:
+    phone_prefix: '60'
+    default_locale: ms_MY
+MZ:
+    phone_prefix: '258'
+    default_locale: pt_MZ
+NA:
+    phone_prefix: '264'
+    default_locale: en_NA
+NC:
+    phone_prefix: '687'
+    default_locale: fr_NC
+NE:
+    phone_prefix: '227'
+    default_locale: fr_NE
+NF:
+    phone_prefix: '672'
+    default_locale: en
+NG:
+    phone_prefix: '234'
+    default_locale: en_NG
+NI:
+    phone_prefix: '505'
+    default_locale: es_NI
+NL:
+    phone_prefix: '31'
+    default_locale: nl_NL
+NO:
+    phone_prefix: '47'
+    default_locale: no
+NP:
+    phone_prefix: '977'
+    default_locale: ne
+NR:
+    phone_prefix: '674'
+    default_locale: en
+NU:
+    phone_prefix: '683'
+    default_locale: en
+NZ:
+    phone_prefix: '64'
+    default_locale: en_NZ
+OM:
+    phone_prefix: '968'
+    default_locale: ar_OM
+PA:
+    phone_prefix: '507'
+    default_locale: es_PA
+PE:
+    phone_prefix: '51'
+    default_locale: es_PE
+PF:
+    phone_prefix: '689'
+    default_locale: fr_PF
+PG:
+    phone_prefix: '675'
+    default_locale: en_PG
+PH:
+    phone_prefix: '63'
+    default_locale: tl
+PK:
+    phone_prefix: '92'
+    default_locale: ur_PK
+PL:
+    phone_prefix: '48'
+    default_locale: pl
+PM:
+    phone_prefix: '508'
+    default_locale: fr
+PN:
+    phone_prefix: '870'
+    default_locale: en
+PR:
+    phone_prefix: +1-787
+    default_locale: en_PR
+PS:
+    phone_prefix: '970'
+    default_locale: ar_PS
+PT:
+    phone_prefix: '351'
+    default_locale: pt_PT
+PW:
+    phone_prefix: '680'
+    default_locale: en
+PY:
+    phone_prefix: '595'
+    default_locale: es_PY
+QA:
+    phone_prefix: '974'
+    default_locale: ar_QA
+RE:
+    phone_prefix: '262'
+    default_locale: fr_RE
+RO:
+    phone_prefix: '40'
+    default_locale: ro
+RS:
+    phone_prefix: '381'
+    default_locale: sr
+RU:
+    phone_prefix: '7'
+    default_locale: ru
+RW:
+    phone_prefix: '250'
+    default_locale: rw
+SA:
+    phone_prefix: '966'
+    default_locale: ar_SA
+SB:
+    phone_prefix: '677'
+    default_locale: en_SB
+SC:
+    phone_prefix: '248'
+    default_locale: en_SC
+SD:
+    phone_prefix: '249'
+    default_locale: ar_SD
+SS:
+    phone_prefix: '211'
+    default_locale: en
+SE:
+    phone_prefix: '46'
+    default_locale: sv_SE
+SG:
+    phone_prefix: '65'
+    default_locale: en
+SH:
+    phone_prefix: '290'
+    default_locale: en
+SI:
+    phone_prefix: '386'
+    default_locale: sl
+SJ:
+    phone_prefix: '47'
+    default_locale: no
+SK:
+    phone_prefix: '421'
+    default_locale: sk
+SL:
+    phone_prefix: '232'
+    default_locale: en_SL
+SM:
+    phone_prefix: '378'
+    default_locale: it_SM
+SN:
+    phone_prefix: '221'
+    default_locale: fr_SN
+SO:
+    phone_prefix: '252'
+    default_locale: so_SO
+SR:
+    phone_prefix: '597'
+    default_locale: nl_SR
+ST:
+    phone_prefix: '239'
+    default_locale: pt_ST
+SV:
+    phone_prefix: '503'
+    default_locale: es_SV
+SX:
+    phone_prefix: '599'
+    default_locale: nl
+SY:
+    phone_prefix: '963'
+    default_locale: ar_SY
+SZ:
+    phone_prefix: '268'
+    default_locale: en_SZ
+TC:
+    phone_prefix: +1-649
+    default_locale: en_TC
+TD:
+    phone_prefix: '235'
+    default_locale: fr_TD
+TF:
+    default_locale: fr
+TG:
+    phone_prefix: '228'
+    default_locale: fr_TG
+TH:
+    phone_prefix: '66'
+    default_locale: th
+TJ:
+    phone_prefix: '992'
+    default_locale: fr
+TK:
+    phone_prefix: '690'
+    default_locale: en
+TL:
+    phone_prefix: '670'
+    default_locale: pt
+TM:
+    phone_prefix: '993'
+    default_locale: ru
+TN:
+    phone_prefix: '216'
+    default_locale: ar_TN
+TO:
+    phone_prefix: '676'
+    default_locale: to
+TR:
+    phone_prefix: '90'
+    default_locale: tr_TR
+TT:
+    phone_prefix: +1-868
+    default_locale: en_TT
+TV:
+    phone_prefix: '688'
+    default_locale: en
+TW:
+    phone_prefix: '886'
+    default_locale: zh_TW
+TZ:
+    phone_prefix: '255'
+    default_locale: sw_TZ
+UA:
+    phone_prefix: '380'
+    default_locale: uk
+UG:
+    phone_prefix: '256'
+    default_locale: en_UG
+UM:
+    phone_prefix: '1'
+    default_locale: en_UM
+US:
+    phone_prefix: '1'
+    default_locale: en_US
+UY:
+    phone_prefix: '598'
+    default_locale: es_UY
+UZ:
+    phone_prefix: '998'
+    default_locale: uz
+VA:
+    phone_prefix: '379'
+    default_locale: it
+VC:
+    phone_prefix: +1-784
+    default_locale: en_VC
+VE:
+    phone_prefix: '58'
+    default_locale: es_VE
+VG:
+    phone_prefix: +1-284
+    default_locale: en_VG
+VI:
+    phone_prefix: +1-340
+    default_locale: en_VI
+VN:
+    phone_prefix: '84'
+    default_locale: vi
+VU:
+    phone_prefix: '678'
+    default_locale: fr
+WF:
+    phone_prefix: '681'
+    default_locale: fr
+WS:
+    phone_prefix: '685'
+    default_locale: en
+YE:
+    phone_prefix: '967'
+    default_locale: ar_YE
+YT:
+    phone_prefix: '262'
+    default_locale: fr_YT
+ZA:
+    phone_prefix: '27'
+    default_locale: zu
+ZM:
+    phone_prefix: '260'
+    default_locale: en_ZM
+ZW:
+    phone_prefix: '263'
+    default_locale: en_ZW
+CS:
+    phone_prefix: '381'
+    default_locale: sr
+AN:
+    phone_prefix: '599'
+    default_locale: nl

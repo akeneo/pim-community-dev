@@ -6,9 +6,12 @@ parameters:
 services:
     oro_locale.provider.locale_settings:
         class: %oro_locale.provider.locale_settings.class%
+        arguments:
+            - @oro_config.global
         calls:
             - [addNameFormats, [%oro_locale.format.name%]]
             - [addAddressFormats, [%oro_locale.format.address%]]
+            - [addLocaleData, [%oro_locale.locale_data%]]
 
     oro_locale.twig.dateformat:
         class: %oro_locale.twig.dateformat.class%
