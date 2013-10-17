@@ -5,6 +5,7 @@
 {% block head_script %}
     {{ parent() }}
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': associationDatagrid, 'selector': '#association-grid'} %}
 
     <script type="text/javascript">
         require(
@@ -87,6 +88,12 @@
                             $(this).height($('.scrollable-container').height() - $(this).position().top + $('.scrollable-container').position().top);
                         })
                     }
+
+                    $('#association-list').on('click', 'a', function() {
+                        $(this).parent().siblings('li').removeClass('active');
+                        $(this).parent().addClass('active');
+                        // Association grid logic here
+                    });
 
                     $('a[data-toggle="tab"]').on('shown', setFullHeight);
                     setFullHeight();

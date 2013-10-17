@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 
 /**
@@ -99,6 +100,17 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     protected $completenesses;
 
     /**
+     * @var ArrayCollection $associations
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAssociation",
+     *     mappedBy="owner",
+     *     cascade={"persist", "remove"}
+     * )
+     */
+    protected $associations;
+
+    /**
      * {@inheritdoc}
      */
     public function __construct()
@@ -107,6 +119,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
 
         $this->categories     = new ArrayCollection();
         $this->completenesses = new ArrayCollection();
+        $this->associations   = new ArrayCollection();
     }
 
     /**
@@ -470,6 +483,60 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function setCompletenesses(array $completenesses = array())
     {
         $this->completenesses = new ArrayCollection($completenesses);
+
+        return $this;
+    }
+
+    /**
+     * Add product association
+     *
+     * @param ProductAssociation $association
+     *
+     * @return Product
+     */
+    public function addAssociation(ProductAssociation $association)
+    {
+        if (!$this->associations->contains($association)) {
+            $this->associations->add($association);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove product association
+     *
+     * @param ProductAssociation $association
+     *
+     * @return Product
+     */
+    public function removeAssociation(ProductAssociation $association)
+    {
+        $this->associations->removeElement($association);
+
+        return $this;
+    }
+
+    /**
+     * Get the product associations
+     *
+     * @return ArrayCollection|null
+     */
+    public function getAssociations()
+    {
+        return $this->associations;
+    }
+
+    /**
+     * Set product associations
+     *
+     * @param ProductAssociation[] $associations
+     *
+     * @return Product
+     */
+    public function setAssociations(array $associations = array())
+    {
+        $this->associations = new ArrayCollection($associations);
 
         return $this;
     }

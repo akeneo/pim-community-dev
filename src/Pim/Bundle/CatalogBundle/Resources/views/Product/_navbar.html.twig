@@ -2,5 +2,5 @@
 {% if resource_granted("pim_catalog_product_categories_view") %}
     {% set form_tabs = form_tabs|merge(['Categories']) %}
 {% endif %}
-{% set form_tabs = form_tabs|merge(['Completeness', 'History']) %}
+{% set form_tabs = form_tabs|merge(['Associations', 'Completeness', 'History']) %}
 {{ elements.form_navbar(form_tabs) }}

@@ -1,0 +1,24 @@
+<div id="association-list" class="tab-groups">
+    <ul class="nav nav-list">
+        {% for association in associations %}
+            <li{% if loop.first %} class="active"{% endif %}>
+                <a id="association-link-{{ association.id }}" href="javascript:void(0);">
+                    <i class="icon-ok"></i>
+                    {{ association.label }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="tab-content fullheight">
+    {% if associations %}
+        {% set firstAssociation = associations|first %}
+        {% set selectedAssociation = firstAssociation.id %}
+    {% endif %}
+    {% for association in associations %}
+        <input type="hidden" id="apply-on-association-{{ association.id }}" name="apply_on_association_{{ association.id }}" value="0"/>
+    {% endfor %}
+    <div id="association-grid" data-id="{{ product.id }}" data-datalocale="{{ dataLocale }}"{% if selectedAssociation is defined %} data-selected-association="{{ selectedAssociation }}"{% endif %}></div>
+</div>
+

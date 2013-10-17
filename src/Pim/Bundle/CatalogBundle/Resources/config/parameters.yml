@@ -61,6 +61,8 @@ parameters:
     pim_catalog.form.handler.association.class: Pim\Bundle\CatalogBundle\Form\Handler\AssociationHandler
     pim_catalog.form.type.association.class:    Pim\Bundle\CatalogBundle\Form\Type\AssociationType
 
+    pim_catalog.entity.product_association.class: Pim\Bundle\CatalogBundle\Entity\ProductAssociation
+
     pim_catalog.event_listener.user_preferences.class:    Pim\Bundle\CatalogBundle\EventListener\UserPreferencesListener
     pim_catalog.event_listener.update_completeness.class: Pim\Bundle\CatalogBundle\EventListener\UpdateCompletenessListener
 
