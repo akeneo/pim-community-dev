@@ -394,4 +394,57 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
             array('en_XX', LocaleSettingsProvider::DEFAULT_COUNTRY),
         );
     }
+
+    /**
+     * @dataProvider getLocaleByCountryDataProvider
+     */
+    public function testGetLocaleByCountry(array $localeData, $countryCode, $expectedLocale, $defaultLocale = null)
+    {
+        $this->provider->addLocaleData($localeData);
+        $this->provider->setDefaultLocale($defaultLocale);
+        $this->assertEquals($expectedLocale, $this->provider->getLocaleByCountry($countryCode));
+    }
+
+    public function getLocaleByCountryDataProvider()
+    {
+        return array(
+            array(
+                array('GB' => array(LocaleSettingsProvider::DEFAULT_LOCALE_KEY => 'en_GB')),
+                'GB',
+                'en_GB'
+            ),
+            array(
+                array(),
+                'GB',
+                'en_US',
+                'en_US'
+            ),
+        );
+    }
+
+    public function testGetDefaultLocale()
+    {
+        $defaultLocale = 'ru_RU';
+
+        $this->configManager->expects($this->once())
+            ->method('get')
+            ->with('oro_locale.locale')
+            ->will($this->returnValue($defaultLocale));
+
+        $this->assertEquals($defaultLocale, $this->provider->getDefaultLocale());
+        $this->assertEquals($defaultLocale, $this->provider->getDefaultLocale());
+    }
+
+    public function testGetDefaultCountry()
+    {
+        $defaultCountry = 'US';
+
+        $this->configManager->expects($this->once())
+            ->method('get')
+            ->with('oro_locale.country')
+            ->will($this->returnValue($defaultCountry));
+
+        $this->assertEquals($defaultCountry, $this->provider->getDefaultCountry());
+        $this->assertEquals($defaultCountry, $this->provider->getDefaultCountry());
+    }
 }

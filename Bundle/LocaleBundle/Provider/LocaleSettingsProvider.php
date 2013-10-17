@@ -291,9 +291,18 @@ class LocaleSettingsProvider
         return self::$numberFormatters[$key];
     }
 
+    /**
+     * Gets locale by country
+     *
+     * @param string $country Country code
+     * @return string
+     */
     public function getLocaleByCountry($country)
     {
-        return self::DEFAULT_LOCALE;
+        if (isset($this->localeData[$country][self::DEFAULT_LOCALE_KEY])) {
+            return $this->localeData[$country][self::DEFAULT_LOCALE_KEY];
+        }
+        return $this->getDefaultLocale();
     }
 
     /**
