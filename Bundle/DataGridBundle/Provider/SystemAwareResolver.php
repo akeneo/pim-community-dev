@@ -31,10 +31,6 @@ class SystemAwareResolver implements ContainerAwareInterface
                 continue;
             }
 
-            if ($datagridName == 'roles-grid') {
-                $a = 1;
-            }
-
             switch (true) {
                 // static call class:method or class::const
                 case preg_match('#%([\w\._]+)%::([\w\._]+)#', $val, $match):
@@ -64,7 +60,10 @@ class SystemAwareResolver implements ContainerAwareInterface
                     $method  = $match[2];
                     $val     = $this->container
                         ->get($service)
-                        ->$method($datagridName, $key);
+                        ->$method(
+                            $datagridName,
+                            $key
+                        );
                     break;
                 default:
                     break;

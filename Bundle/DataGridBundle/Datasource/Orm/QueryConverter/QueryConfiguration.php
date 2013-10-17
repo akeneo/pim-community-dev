@@ -65,7 +65,6 @@ class QueryConfiguration implements ConfigurationInterface
     }
 
     /**
-     *
      * @param  string $name Join type ('left', 'inner')
      *
      * @throws \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
@@ -108,7 +107,6 @@ class QueryConfiguration implements ConfigurationInterface
 
         return $builder->root($name)
             ->requiresAtLeastOneElement()
-            ->prototype('scalar')
-            ->end();
+            ->prototype('scalar')->end();
     }
 }

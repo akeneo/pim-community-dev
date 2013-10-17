@@ -27,7 +27,7 @@ class OrmFilterExtension extends AbstractExtension
     const FILTER_ROOT_PARAM = '_filter';
 
     /** @var FilterInterface[] */
-    protected $filters;
+    protected $filters = array();
 
     /**
      * {@inheritDoc}

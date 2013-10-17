@@ -11,7 +11,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
  * @package Oro\Bundle\DataGridBundle\Event
  *
  * This event dispatched before datagrid builder starts build datagrid
- * Listeners should apply validation of config and add extensions to datagrid object
+ * Listeners could apply validation of config and provide changes of config
  */
 class BuildBefore extends Event implements GridEventInterface
 {

@@ -19,6 +19,8 @@ interface DatasourceInterface
     public function process(DatagridInterface $grid, array $config);
 
     /**
+     * Returns data extracted via datasource
+     *
      * @return array
      */
     public function getResults();

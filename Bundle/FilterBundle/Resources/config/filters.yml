@@ -13,44 +13,63 @@ services:
     oro_filter.extension.orm.string_filter:
         class: %oro_filter.extension.orm.string_filter.class%
         arguments:
-          - @form.factory
+            - @form.factory
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: string }
 
     oro_filter.extension.orm.select_row_filter:
         class: %oro_filter.extension.orm.select_row_filter.class%
         arguments:
             - @form.factory
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: select_row }
 
     oro_filter.extension.orm.number_filter:
         class: %oro_filter.extension.orm.number_filter.class%
         arguments:
             - @form.factory
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: number }
 
     oro_filter.extension.orm.percent_filter:
         class: %oro_filter.extension.orm.percent_filter.class%
         arguments:
             - @form.factory
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: percent }
 
     oro_filter.extension.orm.choice_filter:
         class: %oro_filter.extension.orm.choice_filter.class%
         arguments:
             - @form.factory
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: choice }
 
     oro_filter.extension.orm.entity_filter:
         class: %oro_filter.extension.orm.entity_filter.class%
         arguments:
             - @form.factory
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: entity }
 
     oro_filter.extension.orm.boolean_filter:
         class: %oro_filter.extension.orm.boolean_filter.class%
         arguments:
             - @form.factory
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: boolean }
 
     oro_filter.extension.orm.date_range_filter:
         class: %oro_filter.extension.orm.date_range_filter.class%
         arguments:
             - @form.factory
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: date }
 
     oro_filter.extension.orm.datetime_range_filter:
         class: %oro_filter.extension.orm.datetime_range_filter.class%
         arguments:
             - @form.factory
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: datetime }
+

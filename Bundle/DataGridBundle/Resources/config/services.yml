@@ -4,7 +4,7 @@ parameters:
 
     oro_grid.datagrid.manager.class:             Oro\Bundle\DataGridBundle\Datagrid\Manager
     oro_grid.datagrid.builder.class:             Oro\Bundle\DataGridBundle\Datagrid\Builder
-    oro_grid.datagrid.request_params.class:     Oro\Bundle\DataGridBundle\Datagrid\RequestParameters
+    oro_grid.datagrid.request_params.class:      Oro\Bundle\DataGridBundle\Datagrid\RequestParameters
 
     oro_grid.provider.resolver.class:            Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver
 

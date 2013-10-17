@@ -7,13 +7,6 @@ parameters:
 services:
     oro_grid.extension.formatter:
         class: %oro_grid.extension.formatter.class%
-        calls:
-            - [ addProperty, [ 'field',         @oro_grid.extension.formatter.field_property ] ]
-            - [ addProperty, [ 'fixed',         @oro_grid.extension.formatter.property.fixed_property ] ]
-            - [ addProperty, [ 'url',           @oro_grid.extension.formatter.property.url_property ] ]
-            - [ addProperty, [ 'twig',          @oro_grid.extension.formatter.property.twig_property ] ]
-            - [ addProperty, [ 'translateable', @oro_grid.extension.formatter.property.translateable_property ] ]
-            - [ addProperty, [ 'callback',      @oro_grid.extension.formatter.property.callback_property ] ]
         tags:
             - { name: oro_grid.extension }
 

@@ -15,7 +15,7 @@ class FormatterExtension extends AbstractExtension
     const PROPERTIES_PATH = '[properties]';
 
     /** @var PropertyInterface[] */
-    protected $properties;
+    protected $properties = array();
 
     /**
      * {@inheritDoc}
