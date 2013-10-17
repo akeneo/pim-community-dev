@@ -89,9 +89,20 @@ class ConfigSubscriber implements EventSubscriberInterface
                  */
                 $targetFieldId = false;
                 if ($selfFieldType == 'oneToMany') {
+                    $classNameArray = explode('\\', $className);
+                    $relationFieldName = strtolower(array_pop($classNameArray)) . '_' . $selfFieldName;
+
+                    $targetFieldId = new FieldConfigId(
+                        $targetEntityClass,
+                        $scope,
+                        $relationFieldName,
+                        ExtendHelper::getReversRelationType($selfFieldType)
+                    );
+
+                    /*
                     $this->extendManager->createField(
                         $targetEntityClass,
-                        $relationFieldName = strtolower(array_pop(explode('\\', $className))) . '_' . $selfFieldName,
+                        $relationFieldName,
                         array(
                             'type' => ExtendHelper::getReversRelationType($selfFieldType),
                             'options' => array(
@@ -100,11 +111,7 @@ class ConfigSubscriber implements EventSubscriberInterface
                             )
                         )
                     );
-
-                    $targetFieldId = $this->extendManager->getConfigProvider('extend')->getConfig(
-                        $targetEntityClass,
-                        $relationFieldName
-                    );
+                    */
                 }
 
                 $selfRelationConfig = array(
