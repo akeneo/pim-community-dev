@@ -83,8 +83,8 @@ Feature: Well display navigation titles
     And I edit the "tshirt" family
     Then I should see the title "Families T-Shirt | Edit"
 
-  Scenario: Successfully display the group create view title
-    Given I am on the group creation page
+  Scenario: Successfully display the attribute group create view title
+    Given I am on the attribute group creation page
     Then I should see the title "Attribute groups | Create"
 
   Scenario: Successfully display the group edit view title
