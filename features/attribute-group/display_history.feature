@@ -11,7 +11,7 @@ Feature: Display the attribute group history
 
   @javascript
   Scenario: Succesfully edit a group and see the history
-    Given I am on the group creation page
+    Given I am on the attribute group creation page
     And I change the Code to "Tecnical"
     And I save the group
     When I visit the "History" tab
