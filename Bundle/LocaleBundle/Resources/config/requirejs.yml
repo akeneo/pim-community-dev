@@ -7,3 +7,4 @@ config:
         'moment': 'bundles/orolocale/lib/moment.js'
         'numeral': 'bundles/orolocale/lib/numeral.js'
         'oro/formatter/name': 'bundles/orolocale/js/formatter/name.js'
+        'oro/formatter/address': 'bundles/orolocale/js/formatter/address.js'
