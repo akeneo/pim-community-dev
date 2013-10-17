@@ -21,7 +21,13 @@ class UniqueValueGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AbstractAttribute $attribute)
     {
-        return AbstractAttributeType::BACKEND_TYPE_VARCHAR === $attribute->getBackendType();
+        $backendType = $attribute->getBackendType();
+
+        return AbstractAttributeType::BACKEND_TYPE_VARCHAR  === $backendType
+            || AbstractAttributeType::BACKEND_TYPE_DECIMAL  === $backendType
+            || AbstractAttributeType::BACKEND_TYPE_INTEGER  === $backendType
+            || AbstractAttributeType::BACKEND_TYPE_DATE     === $backendType
+            || AbstractAttributeType::BACKEND_TYPE_DATETIME === $backendType;
     }
 
     /**
