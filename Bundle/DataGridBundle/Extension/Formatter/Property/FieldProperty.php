@@ -2,11 +2,20 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
-use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
 class FieldProperty extends AbstractProperty
 {
+    const TYPE_DATE     = 'date';
+    const TYPE_DATETIME = 'datetime';
+    const TYPE_DECIMAL  = 'decimal';
+    const TYPE_INTEGER  = 'integer';
+    const TYPE_PERCENT  = 'percent';
+    const TYPE_OPTIONS  = 'options';
+    const TYPE_TEXT     = 'text';
+    const TYPE_HTML     = 'html';
+    const TYPE_BOOLEAN  = 'boolean';
+
     /**
      * {@inheritdoc}
      */
@@ -73,23 +82,23 @@ class FieldProperty extends AbstractProperty
     protected function convertValue($value)
     {
         switch ($this->getOr('frontend_type')) {
-            case FieldDescriptionInterface::TYPE_DATETIME:
-            case FieldDescriptionInterface::TYPE_DATE:
+            case self::TYPE_DATETIME:
+            case self::TYPE_DATE:
                 if ($value instanceof \DateTime) {
                     $value = $value->format(\DateTime::ISO8601);
                 }
                 $result = (string)$value;
                 break;
-            case FieldDescriptionInterface::TYPE_TEXT:
+            case self::TYPE_TEXT:
                 $result = (string)$value;
                 break;
-            case FieldDescriptionInterface::TYPE_DECIMAL:
+            case self::TYPE_DECIMAL:
                 $result = floatval($value);
                 break;
-            case FieldDescriptionInterface::TYPE_INTEGER:
+            case self::TYPE_INTEGER:
                 $result = intval($value);
                 break;
-            case FieldDescriptionInterface::TYPE_BOOLEAN:
+            case self::TYPE_BOOLEAN:
                 $result = (bool)$value;
                 break;
             default:

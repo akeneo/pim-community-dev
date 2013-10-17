@@ -15,7 +15,7 @@ class FormatterExtension extends AbstractExtension
     const PROPERTIES_PATH = '[properties]';
 
     /** @var PropertyInterface[] */
-    protected $properties;
+    protected $properties = array();
 
     /**
      * {@inheritDoc}
@@ -57,7 +57,7 @@ class FormatterExtension extends AbstractExtension
                 $resultRecord[$name] = $property->getValue($record);
             }
 
-            $results[] = array_merge($row, $resultRecord);
+            $results[] = $resultRecord;
         }
 
         $result->rows = $results;

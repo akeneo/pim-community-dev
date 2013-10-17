@@ -66,5 +66,4 @@ Customization
 To implement your own formatter you have to do following:
 
  - Develop class that implement PropertyInterface (also there is basic implementation in AbstractProperty)
- - Register you formatter as service
- - Add method call to oro_grid.extension.formatter (e.g.) - [ addProperty, [ 'fixed', @oro_grid.extension.formatter.property.fixed_property ] ]
+ - Register you formatter as service tagged as { name:  oro_grid.extension.formatter.property, type: YOUR_TYPE }

@@ -39,9 +39,9 @@ interface FilterInterface
      * Applies filter to query builder
      *
      * @param QueryBuilder $qb
-     * @param mixed        $value
+     * @param mixed        $data
      *
      * @return mixed
      */
-    public function apply(QueryBuilder $qb, $value);
+    public function apply(QueryBuilder $qb, $data);
 }

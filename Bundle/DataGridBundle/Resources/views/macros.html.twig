@@ -7,14 +7,17 @@
 #}
 {% macro renderGrid(name, params = {}) %}
     {% set dataUrl = path('oro_datagrid_index', { 'gridName': name }|merge(params)) %}
-    <div data-type="datagrid" data-data="{{ render(dataUrl) }}" data-metadata="{{ oro_grid_metadata(name)|json_encode|raw }}"></div>
+    <div data-type="datagrid" data-data="{{ render(dataUrl)|escape }}" data-metadata="{{ oro_grid_metadata(name)|json_encode }}"></div>
     <script type="text/javascript">
         require(['jquery'], function ($) {
             $(function () {
+                var datagrid = $('div[data-type="datagrid"]');
+                console.group('Datagrid "{{ name }}" rendered:');
+                console.info(datagrid.data('data'));
+                console.info(datagrid.data('metadata'));
+                console.groupEnd();
                 {# @TODO add require JS builder here and call init method #}
             });
         });
     </script>
-    {{ render(dataUrl) }}
-    {{ oro_grid_metadata(name)|json_encode|raw }}
 {% endmacro %}

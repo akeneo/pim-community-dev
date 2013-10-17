@@ -11,7 +11,6 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
      * Basic grid class.
      *
      * Triggers events:
-     *  - "cellEdited" when one of cell of grid body row is edited
      *  - "rowClicked" when row of grid body is clicked
      *
      * @export  oro/datagrid/grid
@@ -341,7 +340,7 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
         },
 
         /**
-         * Listen to events of body, proxies events "rowClicked" and "rowEdited", handle run of rowClickAction if required
+         * Listen to events of body, proxies events "rowClicked", handle run of rowClickAction if required
          *
          * @private
          */
@@ -349,9 +348,6 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
             this.listenTo(this.body, 'rowClicked', function(row) {
                 this.trigger('rowClicked', this, row);
                 this._runRowClickAction(row);
-            });
-            this.listenTo(this.body, 'cellEdited', function(row, cell) {
-                this.trigger('cellEdited', this, row, cell);
             });
         },
 

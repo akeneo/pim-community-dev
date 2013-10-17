@@ -171,14 +171,15 @@ class Builder
      * Checks if an access to a resource is granted or not
      *
      * @param string $aclResource An ACL annotation id or "permission;descriptor"
+     *
      * @return bool
      */
     protected function isResourceGranted($aclResource)
     {
-        $delim = strpos($aclResource, ';');
-        if ($delim) {
-            $permission = substr($aclResource, 0, $delim);
-            $descriptor = substr($aclResource, $delim + 1);
+        $delimiter = strpos($aclResource, ';');
+        if ($delimiter) {
+            $permission = substr($aclResource, 0, $delimiter);
+            $descriptor = substr($aclResource, $delimiter + 1);
 
             return $this->securityFacade->isGranted($permission, $descriptor);
         }
