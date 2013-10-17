@@ -20,8 +20,8 @@ Feature: Sort variants
 
   Scenario: Successfully display the sortable columns
     Given I am on the variants page
-    Then the datas can be sorted by code and label
-    And the datas are sorted ascending by code
+    Then the rows should be sortable by code and label
+    And the rows should be sorted ascending by code
     And I should see sorted variants MUG, TSHIRT_AKENEO and TSHIRT_ORO
 
   Scenario: Successfully sort variants by code ascending

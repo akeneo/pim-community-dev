@@ -20,8 +20,8 @@ Feature: Sort attributes
 
   Scenario: Successfully display the sortable columns
     Given I am on the attributes page
-    Then the datas can be sorted by code, label, scopable, localizable and group
-    And the datas are sorted ascending by code
+    Then the rows should be sortable by code, label, scopable, localizable and group
+    And the rows should be sorted ascending by code
     And I should see sorted attributes count, name, short_descr and sku
 
   Scenario: Successfully sort attributes by code ascending

@@ -23,8 +23,8 @@ Feature: Sort channels
 
   Scenario: Successfully display the sortable columns
     Given I am on the channels page
-    Then the datas can be sorted by code, label and category tree
-    And the datas are sorted ascending by code
+    Then the rows should be sortable by code, label and category tree
+    And the rows should be sorted ascending by code
     And I should see sorted channels BAR, BAZ, ecommerce, FOO, mobile and QUX
 
   Scenario: Successfully sort channels by code ascending

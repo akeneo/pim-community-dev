@@ -34,8 +34,8 @@ Feature: Edit a variant group adding/removing products
 
   Scenario: Successfully display the sortable columns
     Given I am on the "POSTIT" variant page
-    Then the datas can be sorted by Has product, SKU, Color, Size, Family, Created at and Updated at
-    And the datas are sorted ascending by SKU
+    Then the rows should be sortable by Has product, SKU, Color, Size, Family, Created at and Updated at
+    And the rows should be sorted ascending by SKU
 
   Scenario: Successfully sort products by Has product ascending
     Given I am on the "POSTIT" variant page

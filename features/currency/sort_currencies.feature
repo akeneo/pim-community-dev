@@ -14,8 +14,8 @@ Feature: Sort currencies
 
   Scenario: Successfully display the sortable columns
     Given I am on the currencies page
-    Then the datas can be sorted by code and activated
-    And the datas are sorted ascending by code
+    Then the rows should be sortable by code and activated
+    And the rows should be sorted ascending by code
     And I should see sorted currencies EUR, GBP and USD
 
   Scenario: Successfully sort currencies by code ascending

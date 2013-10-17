@@ -15,8 +15,8 @@ Feature: Sort export profiles
 
   Scenario: Successfully display the sortable columns
     Given I am on the exports page
-    Then the datas can be sorted by Code, Label, Job, Connector and Status
-    And the datas are sorted ascending by code
+    Then the rows should be sortable by Code, Label, Job, Connector and Status
+    And the rows should be sorted ascending by code
     And I should see sorted locales acme_attribute, acme_category, acme_product and foo_product
 
   Scenario: Successfully sort export profiles by code ascending

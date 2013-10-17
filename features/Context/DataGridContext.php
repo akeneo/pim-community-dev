@@ -232,7 +232,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $order
      * @param string $columnName
      *
-     * @Then /^the (?:rows|datas?) (?:is|are|should be) sorted (ascending|descending) by (.*)$/
+     * @Then /^the rows should be sorted (ascending|descending) by (.*)$/
      */
     public function theRowsShouldBeSortedBy($order, $columnName)
     {
@@ -324,7 +324,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $columns
      *
-     * @Then /^the (?:rows|datas?) (?:is|are|should be|can be) (?:sortable|sorted) by (.*)$/
+     * @Then /^the rows should be sortable by (.*)$/
      */
     public function theRowsShouldBeSortableBy($columns)
     {
