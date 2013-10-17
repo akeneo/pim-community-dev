@@ -3,7 +3,7 @@
 namespace Oro\Bundle\SecurityBundle\Cache;
 
 use Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface;
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 
 class OwnershipMetadataCacheClearer implements CacheClearerInterface
 {
