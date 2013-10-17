@@ -176,21 +176,21 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
         return array(
             'direct' => array(
                 'addressFormats' => array(
-                    'US' => '%address_format%'
+                    'US' => array(LocaleSettingsProvider::ADDRESS_FORMAT_KEY => '%address_format%')
                 ),
                 'localeOrRegion' => 'US',
                 'expectedFormat' => '%address_format%'
             ),
             'parse_country' => array(
                 'addressFormats' => array(
-                    'CA' => '%address_format%'
+                    'CA' => array(LocaleSettingsProvider::ADDRESS_FORMAT_KEY => '%address_format%')
                 ),
                 'localeOrRegion' => 'fr_CA',
                 'expectedFormat' => '%address_format%'
             ),
             'empty_locale_or_region' => array(
                 'addressFormats' => array(
-                    'RU' => '%address_format%'
+                    'RU' => array(LocaleSettingsProvider::ADDRESS_FORMAT_KEY => '%address_format%')
                 ),
                 'localeOrRegion' => false,
                 'expectedFormat' => '%address_format%',
@@ -198,7 +198,7 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
             ),
             'default_system_country' => array(
                 'addressFormats' => array(
-                    'RU' => '%address_format%'
+                    'RU' => array(LocaleSettingsProvider::ADDRESS_FORMAT_KEY => '%address_format%')
                 ),
                 'localeOrRegion' => 'fr_CA',
                 'expectedFormat' => '%address_format%',
@@ -206,7 +206,9 @@ class LocaleSettingsProviderTest extends \PHPUnit_Framework_TestCase
             ),
             'default_fallback' => array(
                 'addressFormats' => array(
-                    LocaleSettingsProvider::DEFAULT_COUNTRY => '%address_format%'
+                    LocaleSettingsProvider::DEFAULT_COUNTRY => array(
+                        LocaleSettingsProvider::ADDRESS_FORMAT_KEY => '%address_format%'
+                    )
                 ),
                 'localeOrRegion' => 'fr_CA',
                 'expectedFormat' => '%address_format%'

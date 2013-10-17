@@ -183,29 +183,29 @@ class LocaleSettingsProvider
         }
 
         // matched by country (for example - "RU")
-        if (isset($this->addressFormats[$localeOrRegion])) {
-            return $this->addressFormats[$localeOrRegion];
+        if (isset($this->addressFormats[$localeOrRegion][self::ADDRESS_FORMAT_KEY])) {
+            return $this->addressFormats[$localeOrRegion][self::ADDRESS_FORMAT_KEY];
         }
 
         // matched by locale region - "CA"
         $localeParts = \Locale::parseLocale($localeOrRegion);
         if (isset($localeParts[\Locale::REGION_TAG])) {
             $match = $localeParts[\Locale::REGION_TAG];
-            if (isset($match, $this->addressFormats[$match])) {
-                return $this->addressFormats[$match];
+            if (isset($match, $this->addressFormats[$match][self::ADDRESS_FORMAT_KEY])) {
+                return $this->addressFormats[$match][self::ADDRESS_FORMAT_KEY];
             }
         }
 
         // match by default country in system configuration settings
         $match = $this->getDefaultCountry();
-        if ($match !== $localeOrRegion && isset($this->addressFormats[$match])) {
-            return $this->addressFormats[$match];
+        if ($match !== $localeOrRegion && isset($this->addressFormats[$match][self::ADDRESS_FORMAT_KEY])) {
+            return $this->addressFormats[$match][self::ADDRESS_FORMAT_KEY];
         }
 
         // fallback to default country
         $match = self::DEFAULT_COUNTRY;
-        if (isset($this->addressFormats[$match])) {
-            return $this->addressFormats[$match];
+        if (isset($this->addressFormats[$match][self::ADDRESS_FORMAT_KEY])) {
+            return $this->addressFormats[$match][self::ADDRESS_FORMAT_KEY];
         }
 
         throw new \RuntimeException(sprintf('Cannot get address format for "%s"', $localeOrRegion));
