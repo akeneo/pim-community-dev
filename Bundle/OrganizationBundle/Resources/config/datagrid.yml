@@ -9,11 +9,19 @@ datagrid:
                     - u.name
                     - u.email
                     - u.phone
-                    - u.owner
-                    - u.organization
                     - u.createdAt
+                    - owner.name as ownerName
+                    - organization.name as organizationName
                 from:
                     - { table: OroOrganizationBundle:BusinessUnit, alias: u }
+                join:
+                    left:
+                        organization:
+                            join: u.organization
+                            alias: organization
+                        owner:
+                            join: u.owner
+                            alias: owner
 
         columns:
             id:
