@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\BindGroupProductsSubscriber;
 
 /**
@@ -23,12 +24,37 @@ class GroupType extends AbstractType
     {
         $builder->add('code');
 
+        $this->addTypeField($builder);
+
         $this->addLabelField($builder);
 
         $this->addProductsField($builder);
 
         $builder
             ->addEventSubscriber(new BindGroupProductsSubscriber());
+    }
+
+    /**
+     * Add type field
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addTypeField(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            'type',
+            'entity',
+            array(
+                'class' => 'PimCatalogBundle:GroupType',
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository->buildAllByEntity(
+                        'Pim\Bundle\CatalogBundle\Entity\Group'
+                    );
+                },
+                'multiple' => false,
+                'expanded' => false
+            )
+        );
     }
 
     /**
