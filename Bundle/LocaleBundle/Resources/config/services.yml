@@ -1,25 +1,10 @@
 parameters:
-    oro_locale.provider.locale_settings.class: Oro\Bundle\LocaleBundle\Provider\LocaleSettingsProvider
     oro_locale.twig.dateformat.class: Oro\Bundle\LocaleBundle\Twig\DateFormatExtension
-    oro_locale.form.type.name_format.type.class: Oro\Bundle\LocaleBundle\Form\Type\NameFormatType
 
 services:
-    oro_locale.provider.locale_settings:
-        class: %oro_locale.provider.locale_settings.class%
-        calls:
-            - [addNameFormats, [%oro_locale.format.name%]]
-            - [addAddressFormats, [%oro_locale.format.address%]]
-
     oro_locale.twig.dateformat:
         class: %oro_locale.twig.dateformat.class%
         arguments:
             - @oro_config.global
         tags:
             - { name: twig.extension }
-
-    oro_locale.form.type.name_format.type:
-        class: %oro_locale.form.type.name_format.type.class%
-        arguments:
-            - @oro_locale.provider.locale_settings
-        tags:
-            - { name: form.type, alias: "oro_name_format" }
