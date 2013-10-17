@@ -6,6 +6,7 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
@@ -1844,6 +1845,29 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iClickOnTheAkeneoLogo()
     {
         $this->getCurrentPage()->clickOnAkeneoLogo();
+    }
+
+    /**
+     * @Then /^exported file of "([^"]*)" should contain:$/
+     */
+    public function exportedFileOfShouldContain($code, PyStringNode $csv)
+    {
+        $path = $this
+            ->getJobInstance($code)
+            ->getJob()
+            ->getSteps()[0]
+            ->getWriter()
+            ->getPath();
+
+        if (md5_file($path) !== md5((string) $csv)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    "File \"%s\" doesn't contains the expected csv:\n%s",
+                    $path,
+                    file_get_contents($path)
+                )
+            );
+        }
     }
 
     /**
