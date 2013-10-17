@@ -57,6 +57,18 @@ class MediaManager
         }
     }
 
+    public function copy(Media $media, $targetDir)
+    {
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+
+        $targetFilePath = sprintf('%s/%s', rtrim($targetDir, '/'), $media->getFilename());
+        copy($media->getFilePath(), $targetFilePath);
+
+        return $targetFilePath;
+    }
+
     /**
      * @param File   $file
      * @param string $filenamePrefix

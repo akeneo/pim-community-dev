@@ -22,13 +22,15 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->filesystem = $this->getFilesystemMock();
-        $this->manager    = new MediaManager($this->filesystem, '/tmp/upload');
+        $this->uploadDir  = '/tmp/upload';
+        $this->manager    = new MediaManager($this->filesystem, $this->uploadDir);
     }
 
     protected function tearDown()
     {
         $this->filesystem = null;
         $this->manager    = null;
+        @unlink($this->uploadDir . '/phpunit-file.txt');
     }
 
     public function testUploadIfAFileIsPresent()
@@ -50,7 +52,6 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
                    ->will($this->returnValue(true));
 
         $media = $this->getMediaMock($this->getFileMock());
-
 
         $media->expects($this->any())
               ->method('getFilename')
@@ -97,26 +98,28 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         $this->manager->handle($media, '');
     }
 
-    /**
-     * @param string $name
-     * @param mixed  $filesystem
-     *
-     * @return \Knp\Bundle\GaufretteBundle\FilesystemMap
-     */
-    private function getFilesystemMapMock($name, $filesystem)
+    public function testExportMedia()
     {
-        $filesystemMap = $this
-            ->getMockBuilder('Knp\Bundle\GaufretteBundle\FilesystemMap')
-            ->disableOriginalConstructor()
-            ->setMethods(array('get'))
-            ->getMock();
+        @mkdir($this->uploadDir, 0777, true);
+        file_put_contents($this->uploadDir . '/phpunit-file.txt', 'Lorem ipsum');
 
-        $filesystemMap->expects($this->any())
-                      ->method('get')
-                      ->with($this->equalTo($name))
-                      ->will($this->returnValue($filesystem));
+        $media = $this->getMediaMock();
+        $media->expects($this->any())
+            ->method('getFilePath')
+            ->will($this->returnValue($this->uploadDir . '/phpunit-file.txt'));
+        $media->expects($this->any())
+            ->method('getFilename')
+            ->will($this->returnValue('phpunit-file.txt'));
 
-        return $filesystemMap;
+        $this->assertEquals(
+            '/tmp/behat/phpunit-file.txt',
+            $this->manager->copy($media, '/tmp/behat/')
+        );
+
+        $this->assertFileEquals(
+            $this->uploadDir . '/phpunit-file.txt',
+            '/tmp/behat/phpunit-file.txt'
+        );
     }
 
     /**
@@ -124,7 +127,7 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
      *
      * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
      */
-    private function getMediaMock($file = null)
+    protected function getMediaMock($file = null)
     {
         $media = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media');
 
@@ -138,7 +141,7 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \Symfony\Component\HttpFoundation\File\UploadedFile
      */
-    private function getFileMock()
+    protected function getFileMock()
     {
         $file = $this
             ->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
@@ -162,11 +165,10 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         return $file;
     }
 
-
     /**
      * @return \Knp\Bundle\GaufretteBundle\Filesystem
      */
-    private function getFilesystemMock()
+    protected function getFilesystemMock()
     {
         $filesystem = $this
             ->getMockBuilder('Gaufrette\Filesystem')
