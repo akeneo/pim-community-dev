@@ -32,12 +32,21 @@ class ProductFileWriter extends FileWriter
     /**
      * {@inheritdoc}
      */
-    public function write(array $data)
+    public function write(array $items)
     {
-        parent::write($data['entries']);
+        parent::write(
+            array_map(
+                function ($item) {
+                    return $item['entry'];
+                },
+                $items
+            )
+        );
 
-        foreach ($data['media'] as $media) {
-            $this->mediaManager->copy($media, $this->directoryName);
+        foreach ($items as $data) {
+            foreach ($data['media'] as $media) {
+                $this->mediaManager->copy($media, $this->directoryName);
+            }
         }
     }
 }

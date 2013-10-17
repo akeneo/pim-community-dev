@@ -1859,6 +1859,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             ->getWriter()
             ->getPath();
 
+        if (!is_file($path)) {
+            throw $this->createExpectationException(
+                sprintf('File "%s" doesn\'t exist', $path)
+            );
+        }
+
         if (md5_file($path) !== md5((string) $csv)) {
             throw $this->createExpectationException(
                 sprintf(

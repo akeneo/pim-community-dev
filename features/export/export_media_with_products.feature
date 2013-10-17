@@ -42,6 +42,7 @@ Feature: Export media with products
     When I launch the export job
     Then exported file of "acme_product_export" should contain:
     """
-    sku;family;variant_group;name;frontView;userManualcategories
-    bic-core-148;funboard;;"Bic Core 148";"files/frontView/behat-bic-core-148.gif";"files/userManual/behat-bic-core-148.txt";sport
+    sku;family;variant_group;frontView;name;userManual;categories
+    bic-core-148;funboard;;behat-bic-core-148.gif;"Bic Core 148";behat-bic-core-148.txt;sport
+
     """
