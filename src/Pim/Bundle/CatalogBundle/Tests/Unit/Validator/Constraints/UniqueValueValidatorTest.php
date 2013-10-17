@@ -328,11 +328,7 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->once())
             ->method('addViolation')
             ->with(
-                $constraint->message,
-                array(
-                    '{{ value }}' => null,
-                    '{{ attribute }}' => null
-                )
+                $constraint->message
             );
 
         $this->validator->validate('bar', $constraint);
