@@ -16,10 +16,10 @@ class AddressFormatterTest extends \PHPUnit_Framework_TestCase
     {
         $address = new AddressStub();
 
-        $provider = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
+        $localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
             ->disableOriginalConstructor()
             ->getMock();
-        $provider->expects($this->once())
+        $localeSettings->expects($this->once())
             ->method('getAddressFormat')
             ->will($this->returnValue($format));
         $nameFormatter = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Formatter\NameFormatter')
@@ -30,7 +30,7 @@ class AddressFormatterTest extends \PHPUnit_Framework_TestCase
             ->with($address)
             ->will($this->returnValue('Formatted User NAME'));
 
-        $formatter = new AddressFormatter($provider, $nameFormatter);
+        $formatter = new AddressFormatter($localeSettings, $nameFormatter);
         $this->assertEquals($expected, $formatter->format($address));
     }
 

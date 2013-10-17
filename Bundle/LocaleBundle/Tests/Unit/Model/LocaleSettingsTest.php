@@ -14,14 +14,14 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
     /**
      * @var LocaleSettings
      */
-    protected $provider;
+    protected $localeSettings;
 
     protected function setUp()
     {
         $this->configManager = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->provider = new LocaleSettings($this->configManager);
+        $this->localeSettings = new LocaleSettings($this->configManager);
     }
 
     public function testAddNameFormats()
@@ -30,20 +30,20 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
         $enFormatModified = '%prefix% %%first_name% %middle_name% %last_name% %suffix%';
         $ruFormat = '%last_name% %first_name% %middle_name%';
 
-        $this->assertAttributeEmpty('nameFormats', $this->provider);
+        $this->assertAttributeEmpty('nameFormats', $this->localeSettings);
 
-        $this->provider->addNameFormats(array('en' => $enFormat));
+        $this->localeSettings->addNameFormats(array('en' => $enFormat));
         $this->assertAttributeEquals(
             array('en' => $enFormat),
             'nameFormats',
-            $this->provider
+            $this->localeSettings
         );
 
-        $this->provider->addNameFormats(array('en' => $enFormatModified, 'ru' => $ruFormat));
+        $this->localeSettings->addNameFormats(array('en' => $enFormatModified, 'ru' => $ruFormat));
         $this->assertAttributeEquals(
             array('en' => $enFormatModified, 'ru' => $ruFormat),
             'nameFormats',
-            $this->provider
+            $this->localeSettings
         );
     }
 
@@ -62,20 +62,20 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
                 => '%postal_code% %COUNTRY% %CITY%\n%STREET%\n%organization%\n%name%'
         );
 
-        $this->assertAttributeEmpty('addressFormats', $this->provider);
+        $this->assertAttributeEmpty('addressFormats', $this->localeSettings);
 
-        $this->provider->addAddressFormats(array('US' => $usFormat));
+        $this->localeSettings->addAddressFormats(array('US' => $usFormat));
         $this->assertAttributeEquals(
             array('US' => $usFormat),
             'addressFormats',
-            $this->provider
+            $this->localeSettings
         );
 
-        $this->provider->addAddressFormats(array('US' => $usFormatModified, 'RU' => $ruFormat));
+        $this->localeSettings->addAddressFormats(array('US' => $usFormatModified, 'RU' => $ruFormat));
         $this->assertAttributeEquals(
             array('US' => $usFormatModified, 'RU' => $ruFormat),
             'addressFormats',
-            $this->provider
+            $this->localeSettings
         );
     }
 
@@ -85,20 +85,20 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
         $usDataModified = array(LocaleSettings::DEFAULT_LOCALE => 'en');
         $ruFormat = array(LocaleSettings::DEFAULT_LOCALE => 'ru');
 
-        $this->assertAttributeEmpty('localeData', $this->provider);
+        $this->assertAttributeEmpty('localeData', $this->localeSettings);
 
-        $this->provider->addLocaleData(array('US' => $usData));
+        $this->localeSettings->addLocaleData(array('US' => $usData));
         $this->assertAttributeEquals(
             array('US' => $usData),
             'localeData',
-            $this->provider
+            $this->localeSettings
         );
 
-        $this->provider->addLocaleData(array('US' => $usDataModified, 'RU' => $ruFormat));
+        $this->localeSettings->addLocaleData(array('US' => $usDataModified, 'RU' => $ruFormat));
         $this->assertAttributeEquals(
             array('US' => $usDataModified, 'RU' => $ruFormat),
             'localeData',
-            $this->provider
+            $this->localeSettings
         );
     }
 
@@ -108,7 +108,7 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNameFormatFails()
     {
-        $this->provider->getNameFormat('fr_CA');
+        $this->localeSettings->getNameFormat('fr_CA');
     }
 
     /**
@@ -121,9 +121,9 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNameFormat(array $nameFormats, $locale, $expectedFormat, $defaultLocale = null)
     {
-        $this->provider->addNameFormats($nameFormats);
-        $this->provider->setDefaultLocale($defaultLocale);
-        $this->assertEquals($expectedFormat, $this->provider->getNameFormat($locale));
+        $this->localeSettings->addNameFormats($nameFormats);
+        $this->localeSettings->setDefaultLocale($defaultLocale);
+        $this->assertEquals($expectedFormat, $this->localeSettings->getNameFormat($locale));
     }
 
     /**
@@ -178,7 +178,7 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAddressFormatFails()
     {
-        $this->provider->getAddressFormat('CA');
+        $this->localeSettings->getAddressFormat('CA');
     }
 
     /**
@@ -195,9 +195,9 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
         $expectedFormat,
         $defaultCountry = null
     ) {
-        $this->provider->addAddressFormats($addressFormats);
-        $this->provider->setDefaultCountry($defaultCountry);
-        $this->assertEquals($expectedFormat, $this->provider->getAddressFormat($localeOrRegion));
+        $this->localeSettings->addAddressFormats($addressFormats);
+        $this->localeSettings->setDefaultCountry($defaultCountry);
+        $this->assertEquals($expectedFormat, $this->localeSettings->getAddressFormat($localeOrRegion));
     }
 
     /**
@@ -340,7 +340,7 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDatePattern($locale, $dateType, $timeType, $expected)
     {
-        $this->assertEquals($expected, $this->provider->getDatePattern($locale, $dateType, $timeType));
+        $this->assertEquals($expected, $this->localeSettings->getDatePattern($locale, $dateType, $timeType));
     }
 
     public function getDatePatternDataProvider()
@@ -400,9 +400,9 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetLocaleByCountry(array $localeData, $countryCode, $expectedLocale, $defaultLocale = null)
     {
-        $this->provider->addLocaleData($localeData);
-        $this->provider->setDefaultLocale($defaultLocale);
-        $this->assertEquals($expectedLocale, $this->provider->getLocaleByCountry($countryCode));
+        $this->localeSettings->addLocaleData($localeData);
+        $this->localeSettings->setDefaultLocale($defaultLocale);
+        $this->assertEquals($expectedLocale, $this->localeSettings->getLocaleByCountry($countryCode));
     }
 
     public function getLocaleByCountryDataProvider()
@@ -431,8 +431,8 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
             ->with('oro_locale.locale')
             ->will($this->returnValue($defaultLocale));
 
-        $this->assertEquals($defaultLocale, $this->provider->getDefaultLocale());
-        $this->assertEquals($defaultLocale, $this->provider->getDefaultLocale());
+        $this->assertEquals($defaultLocale, $this->localeSettings->getDefaultLocale());
+        $this->assertEquals($defaultLocale, $this->localeSettings->getDefaultLocale());
     }
 
     public function testGetDefaultCountry()
@@ -444,7 +444,7 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
             ->with('oro_locale.country')
             ->will($this->returnValue($defaultCountry));
 
-        $this->assertEquals($defaultCountry, $this->provider->getDefaultCountry());
-        $this->assertEquals($defaultCountry, $this->provider->getDefaultCountry());
+        $this->assertEquals($defaultCountry, $this->localeSettings->getDefaultCountry());
+        $this->assertEquals($defaultCountry, $this->localeSettings->getDefaultCountry());
     }
 }
