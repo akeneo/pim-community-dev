@@ -806,7 +806,9 @@ class FixturesContext extends RawMinkContext
             $label = $data['label'];
             $attributes = explode(', ', $data['attributes']);
 
-            $this->createVariant($code, $label, $attributes);
+            $products = (isset($data['products'])) ? explode(', ', $data['products']) : array();
+
+            $this->createVariant($code, $label, $attributes, $products);
         }
     }
 
@@ -1360,8 +1362,9 @@ class FixturesContext extends RawMinkContext
      * @param string $code
      * @param string $label
      * @param array  $attributes
+     * @param array  $products
      */
-    private function createVariant($code, $label, array $attributes)
+    private function createVariant($code, $label, array $attributes, array $products = array())
     {
         $variant = new VariantGroup();
         $variant->setCode($code);
@@ -1370,6 +1373,12 @@ class FixturesContext extends RawMinkContext
         foreach ($attributes as $attributeCode) {
             $attribute = $this->getAttribute($attributeCode);
             $variant->addAttribute($attribute);
+        }
+
+        foreach ($products as $sku) {
+            $product = $this->getProduct($sku);
+            $variant->addProduct($product);
+            $product->setVariantGroup($variant);
         }
 
         $this->persist($variant);
