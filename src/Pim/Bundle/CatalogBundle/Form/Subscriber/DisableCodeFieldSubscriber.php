@@ -39,9 +39,13 @@ class DisableCodeFieldSubscriber implements EventSubscriberInterface
 
         $form = $event->getForm();
 
-        $form->add('code', 'text', array(
-            'disabled'  => true,
-            'read_only' => true
-        ));
+        $form->add(
+            'code',
+            'text',
+            array(
+                'disabled'  => true,
+                'read_only' => true
+            )
+        );
     }
 }

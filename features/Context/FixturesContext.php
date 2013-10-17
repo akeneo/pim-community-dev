@@ -358,7 +358,7 @@ class FixturesContext extends RawMinkContext
                 $data
             );
 
-            $group = $this->getGroup($data['code']);
+            $group = $this->getAttributeGroup($data['code']);
 
             if (!$group) {
                 $group = new AttributeGroup();
@@ -406,7 +406,7 @@ class FixturesContext extends RawMinkContext
             }
 
             $attribute->setSortOrder($data['position']);
-            $attribute->setGroup($this->getGroup($data['group']));
+            $attribute->setGroup($this->getAttributeGroup($data['group']));
             $attribute->setRequired(strtolower($data['required']) === 'yes');
             $attribute->setScopable(strtolower($data['scopable']) === 'yes');
             $attribute->setTranslatable(strtolower($data['translatable']) === 'yes');
@@ -666,7 +666,7 @@ class FixturesContext extends RawMinkContext
             $attribute->setLabel($data['label']);
 
             if (isset($data['group'])) {
-                $group = $this->getGroup($data['group']);
+                $group = $this->getAttributeGroup($data['group']);
                 $attribute->setGroup($group);
             }
 
@@ -1070,7 +1070,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return AttributeGroup|null
      */
-    public function getGroup($name)
+    public function getAttributeGroup($name)
     {
         try {
             return $this->getEntityOrException(

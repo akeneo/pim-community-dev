@@ -15,11 +15,11 @@ Feature: Order product attributes
       | Car     | Color        | General | 2        |
       | Car     | Price        | General | 3        |
     And I am logged in as "admin"
-    When I am on the "General" group page
+    When I am on the "General" attribute group page
     And I visit the "Attributes" tab
     Then the attribute "Price" should be in position 3
     And I change the attribute "Price" position to 1
-    When I am on the "General" group page
+    When I am on the "General" attribute group page
     And I visit the "Attributes" tab
     Then the attribute "Price" should be in position 1
     And the attribute "Color" should be in position 3

@@ -59,9 +59,9 @@ Feature: Well display navigation titles
     Given the following attribute group:
       | code  | label |
       | sizes | Sizes |
-    When I am on the group creation page
+    When I am on the attribute group creation page
     Then I should see the title "Attribute groups | Create"
-    When I edit the "sizes" group
+    When I edit the "sizes" attribute group
     Then I should see the title "Attribute groups Sizes | Edit"
 
   Scenario: Successfully display the import page titles

@@ -299,7 +299,7 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
     protected function getDefaultSorters()
     {
         return array(
-            'has_product' => SorterInterface::DIRECTION_ASC, 
+            'has_product' => SorterInterface::DIRECTION_ASC,
             $this->flexibleManager->getIdentifierAttribute()->getCode() => SorterInterface::DIRECTION_ASC
         );
     }

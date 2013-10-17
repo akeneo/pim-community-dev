@@ -1,6 +1,6 @@
 <?php
 
-namespace Context\Page\Group;
+namespace Context\Page\AttributeGroup;
 
 /**
  * Attribute group edit page
