@@ -52,4 +52,4 @@ Feature: Set the attribute used as label
     When I am on the "Bags" family page
     And I visit the "Attributes" tab
     And I remove the "Brand" attribute
-    Then I should see flash message "The element could not be deleted"
+    Then I should see flash message "This attribute can not be removed because it is used as the label of the family"
