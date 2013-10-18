@@ -7,6 +7,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\BindGroupProductsSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\VariantGroupSubscriber;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository;
 
 /**
  * Type for group form
@@ -28,9 +30,12 @@ class GroupType extends AbstractType
 
         $this->addLabelField($builder);
 
+        $this->addAttributesField($builder);
+
         $this->addProductsField($builder);
 
         $builder
+            ->addEventSubscriber(new VariantGroupSubscriber())
             ->addEventSubscriber(new BindGroupProductsSubscriber());
     }
 
@@ -70,6 +75,30 @@ class GroupType extends AbstractType
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\GroupTranslation',
                 'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Group',
                 'property_path'     => 'translations'
+            )
+        );
+    }
+
+    /**
+     * Add attributes field
+     *
+     * @param FormBuilderInterface $builder
+     *
+     * @return null
+     */
+    protected function addAttributesField(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            'attributes',
+            'entity',
+            array(
+                'label'    => 'Axis',
+                'required' => true,
+                'multiple' => true,
+                'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                'query_builder' => function (ProductAttributeRepository $repository) {
+                    return $repository->findAllAxisQB();
+                }
             )
         );
     }
