@@ -47,6 +47,15 @@ class ProductAssociation
      * @var ProductInterface[] $targets
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface")
+     * @ORM\JoinTable(
+     *     name="pim_catalog_product_association_product",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="productassociation_id", referencedColumnName="id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
+     *     }
+     * )
      */
     protected $targets;
 
