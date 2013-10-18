@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\UserBundle\Datagrid;
 
+use Doctrine\ORM\QueryBuilder;
+
 use Oro\Bundle\EmailBundle\Datagrid\EmailDatagridManager;
-use Oro\Bundle\EmailBundle\Entity\Repository\EmailRepository;
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class UserEmailDatagridManager extends EmailDatagridManager
@@ -39,7 +39,7 @@ class UserEmailDatagridManager extends EmailDatagridManager
     /**
      * {@inheritDoc}
      */
-    protected function prepareQuery(ProxyQueryInterface $query)
+    protected function prepareQuery(QueryBuilder $query)
     {
         $origin = $this->user->getImapConfiguration();
         $query->setParameter('origin_id', $origin !== null ? $origin->getId() : null);

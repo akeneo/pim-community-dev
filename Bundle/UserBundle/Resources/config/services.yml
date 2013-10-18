@@ -23,7 +23,6 @@ parameters:
     oro_user.gender_provider.class:     Oro\Bundle\UserBundle\Provider\GenderProvider
     oro_user.change_password.subscriber.class:  Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber
     oro_user.event_listener.user_email_grid_listener.class: Oro\Bundle\UserBundle\EventListener\UserEmailGridListener
-    oro_user.email.datagrid_query_factory.class:            Oro\Bundle\UserBundle\Datagrid\UserEmailQueryFactory
 
 services:
     oro_user.manager.flexible:
@@ -153,18 +152,9 @@ services:
             - @form.factory
             - @security.context
 
-    oro_user.email.datagrid_query_factory:
-        class: %oro_user.email.datagrid_query_factory.class%
-        arguments:
-            - @doctrine
-            - %oro_email.email.entity.class%
-            - @oro_email.email.owner.provider.storage
-            - @oro_config.user
-
     oro_user.event_listener.user_email_grid_listener:
         class: %oro_user.event_listener.user_email_grid_listener.class%
         arguments:
-          - @service_container
-          - @oro_user.email.datagrid_query_factory
+          - @oro_email.datagrid_query_factory
         tags:
           - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.users-email-grid, method: onBuildAfter }

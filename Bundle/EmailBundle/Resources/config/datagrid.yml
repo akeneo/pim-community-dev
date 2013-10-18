@@ -11,8 +11,14 @@ datagrid:
                     - e.subject
                     - e.sentAt
                     - e.recipients
+                    - a
                 from:
                     - { table: OroEmailBundle:Email, alias: e }
+                join:
+                    inner:
+                        from_email_address:
+                            join: e.fromEmailAddress
+                            alias: a
 
         columns:
             id:

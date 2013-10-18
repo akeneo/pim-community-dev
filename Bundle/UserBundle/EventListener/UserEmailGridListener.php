@@ -3,40 +3,35 @@
 namespace Oro\Bundle\UserBundle\EventListener;
 
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\UserBundle\Datagrid\UserEmailQueryFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Oro\Bundle\EmailBundle\Datagrid\EmailQueryFactory;
 use Oro\Bundle\DataGridBundle\Datasource\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 
 class UserEmailGridListener
 {
-    protected $request;
-    protected $em;
-
-    /** @var  UserEmailQueryFactory */
+    /** @var  EmailQueryFactory */
     protected $queryFactory;
 
-    public function __construct(ContainerInterface $container, UserEmailQueryFactory $factory)
+    public function __construct(EmailQueryFactory $factory)
     {
-        $this->request = $container->get('request');
-        $this->em      = $container->get('doctrine.orm.entity_manager');
         $this->queryFactory = $factory;
     }
 
     public function onBuildAfter(BuildAfter $event)
     {
         $datasource = $event->getDatagrid()->getDatasource();
-
         if ($datasource instanceof OrmDatasource) {
             /** @var QueryBuilder $query */
-            $query = $datasource->getQuery();
+            $queryBuilder = $datasource->getQuery();
 
-            /** @var QueryBuilder $query */
-            $queryBuilder = $this->queryFactory
-                ->createQuery()
-                ->getQueryBuilder();
-            $datasource->setQuery($queryBuilder);
+            $this->queryFactory->prepareQuery($queryBuilder);
+
+            // TODO: find user, current user you're viewing
+            $user = 'something';
+            $origin = $user->getImapConfiguration();
+            $queryBuilder->setParameter('origin_id', $origin !== null ? $origin->getId() : null);
         }
     }
 }
