@@ -360,7 +360,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         }
 
         foreach ($this->groups as $group) {
-            if ($group->getType()->getCode() === GroupType::CODE_VARIANT) {
+            if ($group->getType()->isVariant()) {
                 if ($this->variantGroup->getAttributes()->contains($attribute)) {
                     return false;
                 }
