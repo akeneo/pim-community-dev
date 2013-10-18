@@ -45,7 +45,7 @@ class DoctrineSubscriber implements EventSubscriber
                     foreach ($config->get('index') as $columnName => $enabled) {
                         $fieldConfig = $configProvider->getConfig($className, $columnName);
 
-                        if ($enabled && $fieldConfig->is('state', ExtendManager::STATE_ACTIVE)) {
+                        if ($enabled && !$fieldConfig->is('state', ExtendManager::STATE_NEW)) {
                             $cmBuilder->addIndex(
                                 array(ExtendConfigDumper::PREFIX . $columnName),
                                 'oro_idx_' . $columnName
@@ -54,52 +54,51 @@ class DoctrineSubscriber implements EventSubscriber
                     }
                 }
 
-                if ($config->is('owner', ExtendManager::OWNER_SYSTEM)
-                    && $config->is('relation')
-                ) {
+                if ($config->is('owner', ExtendManager::OWNER_SYSTEM) && $config->is('relation')) {
                     foreach ($config->get('relation') as $relation) {
-                        /** @var FieldConfigId $fieldId */
-                        $fieldId = $relation['field_id'];
-                        /** @var FieldConfigId $targetFieldId */
-                        $targetFieldId = $relation['target_field_id'];
+                        if ($relation['assign']) {
+                            /** @var FieldConfigId $fieldId */
+                            $fieldId = $relation['field_id'];
+                            /** @var FieldConfigId $targetFieldId */
+                            $targetFieldId = $relation['target_field_id'];
 
-                        switch ($fieldId->getFieldType()) {
-                            case 'manyToOne':
-                                $cmBuilder->addManyToOne(
-                                    $fieldId->getFieldName(),
-                                    $relation['target_entity'],
-                                    $targetFieldId ? $targetFieldId->getFieldName() : null
-                                );
-                                break;
-                            case 'oneToMany':
-                                $cmBuilder->addOneToMany(
-                                    $fieldId->getFieldName(),
-                                    $relation['target_entity'],
-                                    $targetFieldId->getFieldName()
-                                );
-                                break;
-                            case 'manyToMany':
-                                if ($relation['owner']) {
-                                    $cmBuilder->addOwningManyToMany(
+                            switch ($fieldId->getFieldType()) {
+                                case 'manyToOne':
+                                    $cmBuilder->addManyToOne(
                                         $fieldId->getFieldName(),
                                         $relation['target_entity'],
                                         $targetFieldId ? $targetFieldId->getFieldName() : null
                                     );
-                                } else {
-                                    $cmBuilder->addInverseManyToMany(
-                                        $targetFieldId->getFieldName(),
-                                        $fieldId->getClassName(),
-                                        $fieldId->getFieldName()
+                                    break;
+                                case 'oneToMany':
+                                    $cmBuilder->addOneToMany(
+                                        $fieldId->getFieldName(),
+                                        $relation['target_entity'],
+                                        $targetFieldId->getFieldName()
                                     );
-                                }
-                                break;
+                                    break;
+                                case 'manyToMany':
+                                    if ($relation['owner']) {
+                                        $cmBuilder->addOwningManyToMany(
+                                            $fieldId->getFieldName(),
+                                            $relation['target_entity'],
+                                            $targetFieldId ? $targetFieldId->getFieldName() : null
+                                        );
+                                    } else {
+                                        $cmBuilder->addInverseManyToMany(
+                                            $targetFieldId->getFieldName(),
+                                            $fieldId->getClassName(),
+                                            $fieldId->getFieldName()
+                                        );
+                                    }
+                                    break;
+                            }
                         }
-
                     }
                 }
             }
 
-            //$em->getMetadataFactory()->getCacheDriver()->clear
+            $em->getMetadataFactory()->setMetadataFor($className, $event->getClassMetadata());
         }
     }
 }
