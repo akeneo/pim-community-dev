@@ -171,14 +171,14 @@
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
             <arg value="noxdebug" />
-            <arg value="${basedir}/bin/behat --profile=jenkins --ansi" />
+            <arg value="${basedir}/bin/behat --ansi" />
         </exec>
     </target>
 
     <target name="behat-pr" description="Run acceptance tests with Behat for the pull request">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
             <arg value="noxdebug" />
-            <arg value="${basedir}/bin/behat --profile=jenkins-pr --ansi" />
+            <arg value="${basedir}/bin/behat --ansi" />
         </exec>
     </target>
 
