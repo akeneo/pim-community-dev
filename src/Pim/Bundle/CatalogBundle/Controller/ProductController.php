@@ -314,6 +314,13 @@ class ProductController extends AbstractDoctrineController
             return $this->gridRenderer->renderResultsJsonResponse($datagrid->createView());
         }
 
+        $missingAssociations = $this->getRepository('PimCatalogBundle:Association')->findMissingAssociations($product);
+        foreach ($missingAssociations as $association) {
+            $productAssociation = new \Pim\Bundle\CatalogBundle\Entity\ProductAssociation();
+            $productAssociation->setAssociation($association);
+            $product->addProductAssociation($productAssociation);
+        }
+
         $form     = $this->createForm(
             'pim_product',
             $product,

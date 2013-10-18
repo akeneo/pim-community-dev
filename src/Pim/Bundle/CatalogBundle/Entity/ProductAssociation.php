@@ -46,10 +46,9 @@ class ProductAssociation
     /**
      * @var ProductInterface $target
      *
-     * @ORM\OneToOne(targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface")
-     * @ORM\JoinColumn(name="target_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface")
      */
-    protected $target;
+    protected $targets;
 
     /**
      * Get id
@@ -116,20 +115,18 @@ class ProductAssociation
      *
      * @return ProductAssociation
      */
-    public function setTarget(ProductInterface $target)
+    public function setTargets($targets)
     {
-        $this->target = $target;
+        $this->targets = $targets;
 
         return $this;
     }
 
     /**
      * Get target
-     *
-     * @return ProductInterface
      */
-    public function getTarget()
+    public function getTargets()
     {
-        return $this->target;
+        return $this->targets;
     }
 }

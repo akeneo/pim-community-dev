@@ -97,7 +97,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
 
 
     /**
-     * @var ArrayCollection $associations
+     * @var ArrayCollection $productAssociations
      *
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAssociation",
@@ -105,7 +105,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      *     cascade={"persist", "remove"}
      * )
      */
-    protected $associations;
+    protected $productAssociations;
 
     /**
      * @var ArrayCollection $completenesses
@@ -128,7 +128,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         $this->categories     = new ArrayCollection();
         $this->completenesses = new ArrayCollection();
         $this->groups         = new ArrayCollection();
-        $this->associations   = new ArrayCollection();
+        $this->productAssociations   = new ArrayCollection();
     }
 
     /**
@@ -537,55 +537,56 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     }
 
     /**
-     * Add product association
+     * Add product productAssociation
      *
-     * @param ProductAssociation $association
+     * @param ProductAssociation $productAssociation
      *
      * @return Product
      */
-    public function addAssociation(ProductAssociation $association)
+    public function addProductAssociation(ProductAssociation $productAssociation)
     {
-        if (!$this->associations->contains($association)) {
-            $this->associations->add($association);
+        if (!$this->productAssociations->contains($productAssociation)) {
+            $productAssociation->setOwner($this);
+            $this->productAssociations->add($productAssociation);
         }
 
         return $this;
     }
 
     /**
-     * Remove product association
+     * Remove product productAssociation
      *
-     * @param ProductAssociation $association
+     * @param ProductAssociation $productAssociation
      *
      * @return Product
      */
-    public function removeAssociation(ProductAssociation $association)
+    public function removeProductAssociation(ProductAssociation $productAssociation)
     {
-        $this->associations->removeElement($association);
+        $this->productAssociations->removeElement($productAssociation);
 
         return $this;
     }
 
     /**
-     * Get the product associations
+     * Get the product productAssociations
      *
      * @return ArrayCollection|null
      */
-    public function getAssociations()
+    public function getProductAssociations()
     {
-        return $this->associations;
+        return $this->productAssociations;
     }
 
     /**
-     * Set product associations
+     * Set product productAssociations
      *
-     * @param ProductAssociation[] $associations
+     * @param ProductAssociation[] $productAssociations
      *
      * @return Product
      */
-    public function setAssociations(array $associations = array())
+    public function setProductAssociations(array $productAssociations = array())
     {
-        $this->associations = new ArrayCollection($associations);
+        $this->productAssociations = new ArrayCollection($productAssociations);
 
         return $this;
     }
