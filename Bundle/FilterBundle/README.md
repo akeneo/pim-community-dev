@@ -10,5 +10,4 @@ It also means that filtering logic itself is out of scope of this bundle.
 
 - [Filters Form Types](./Resources/doc/reference/filter_form_types.md)
 - [Javascript Widgets](./Resources/doc/reference/javascript_widgets.md)
-- [Templates and Blocks](./Resources/doc/reference/templates_and_blocks.md)
-- [Twig Extensions](./Resources/doc/reference/twig_extensions.md)
+- [Grid Extension](./Resources/doc/reference/grid_extension.md)

@@ -1,9 +1,0 @@
-placeholders:
-    prepare_grid:
-        label: Prepare grid tempaltes
-        items:
-            datagrid:
-                order: 100
-items:
-   datagrid:
-        template: OroGridBundle:Include:datagrid.html.twig
