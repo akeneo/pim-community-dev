@@ -241,7 +241,7 @@ oro_entity_config:
                             block:          entity
                             subblock:       properties
 
-                target_entity:
+                relation:
                     options:
                         allowed_type:       [oneToMany, manyToOne, manyToMany]
                         required_property:
@@ -250,152 +250,42 @@ oro_entity_config:
                                 scope:      extend
                             code:           is_extend
                             value:          true
-                    constraints:
-                        - NotBlank:
-                            message: 'Please choice target entity...'
                     form:
-                        type:               oro_entity_target_type
+                        type:               oro_entity_relation_type
                         options:
-                            attr:           {class: 'extend-rel-target-name'}
-                            required:       true
-                            label:          'Target entity'
-                            empty_value:    'Please choice target entity...'
                             block:          entity
                             subblock:       properties
+
+#                target_entity:
+#                    options:
+#                        auditable:          false
 
                 target_field:
                     options:
-                        allowed_type:       [manyToOne]
-                        required_property:
-                            config_id:
-                                field_name:  null
-                                scope:      extend
-                            code:           is_extend
-                            value:          true
-                    constraints:
-                        - NotBlank:
-                            message: 'Please choice target field...'
-                    form:
-                        type:               oro_entity_target_field_type
-                        options:
-                            attr:           {class: 'extend-rel-target-field'}
-                            required:       true
-                            label:          'Target field'
-                            empty_value:    'Please choice target field...'
-                            block:          entity
-                            subblock:       properties
+                        auditable:          false
 
                 target_grid:
                     options:
-                        allowed_type:       [oneToMany, manyToMany]
-                        required_property:
-                            config_id:
-                                field_name:  null
-                                scope:      extend
-                            code:           is_extend
-                            value:          true
+                        auditable:          false
                         serializable:       true
-                    constraints:
-                        - NotBlank:
-                            message: 'Please choice target field...'
-                    form:
-                        type:               oro_entity_target_field_type
-                        options:
-                            attr:           {class: 'extend-rel-target-field'}
-                            required:       true
-                            multiple:       true
-                            label:          'Relations grid'
-                            empty_value:    'Please choice target field...'
-                            block:          entity
-                            subblock:       properties
 
                 target_view:
                     options:
-                        allowed_type:       [oneToMany, manyToMany]
-                        required_property:
-                            config_id:
-                                field_name:  null
-                                scope:      extend
-                            code:           is_extend
-                            value:          true
+                        auditable:          false
                         serializable:       true
-                    constraints:
-                        - NotBlank:
-                            message: 'Please choice target field...'
-                    form:
-                        type:               oro_entity_target_field_type
-                        options:
-                            attr:           {class: 'extend-rel-target-field'}
-                            required:       true
-                            multiple:       true
-                            label:          'Related entity info'
-                            empty_value:    'Please choice target field...'
-                            block:          entity
-                            subblock:       properties
 
                 target_title:
                     options:
-                        allowed_type:       [oneToMany, manyToMany]
-                        required_property:
-                            config_id:
-                                field_name:  null
-                                scope:      extend
-                            code:           is_extend
-                            value:          true
-                    constraints:
-                        - NotBlank:
-                            message: 'Please choice target field...'
-                    form:
-                        type:               oro_entity_target_field_type
-                        options:
-                            attr:           {class: 'extend-rel-target-field'}
-                            required:       true
-                            label:          'Related entity info title'
-                            empty_value:    'Please choice target field...'
-                            block:          entity
-                            subblock:       properties
+                        auditable:          false
 
                 target_detailed:
                     options:
-                        allowed_type:       [oneToMany, manyToMany]
-                        required_property:
-                            config_id:
-                                field_name:  null
-                                scope:      extend
-                            code:           is_extend
-                            value:          true
+                        auditable:          false
                         serializable:       true
-                    constraints:
-                        - NotBlank:
-                            message: 'Please choice target field...'
-                    form:
-                        type:               oro_entity_target_field_type
-                        options:
-                            attr:           {class: 'extend-rel-target-field'}
-                            required:       true
-                            multiple:       true
-                            label:          'Related entity detailed info'
-                            empty_value:    'Please choice target field...'
-                            block:          entity
-                            subblock:       properties
 
                 target_default:
                     options:
-                        allowed_type:       [oneToMany, manyToMany]
-                        required_property:
-                            config_id:
-                                field_name:  null
-                                scope:      extend
-                            code:           is_extend
-                            value:          true
-                    form:
-                        type:               choice
-                        options:
-                            choices:        ['No', 'Yes']
-                            empty_value:    false
-                            block:          entity
-                            subblock:       properties
-                            label:          'Can have default'
+                        auditable:          false
 
                 is_deleted:
                     options:

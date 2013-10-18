@@ -2,15 +2,13 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Form\EventListener;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
-use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
-use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Request;
 
+use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 class TargetSubscriber implements EventSubscriberInterface
@@ -37,9 +35,18 @@ class TargetSubscriber implements EventSubscriberInterface
         $form    = $event->getForm();
         $choices = array();
 
+        $entityIds = $this->configManager->getIds('extend');
+
         $fieldConfigModel = $form->getRoot()->getConfig()->getOption('config_model');
-        if (!in_array($fieldConfigModel->getType(), array('oneToMany', 'manyToMany'))) {
-            return;
+
+        if (in_array($fieldConfigModel->getType(), array('oneToMany', 'manyToMany'))) {
+            $cm = $this->configManager;
+            $entityIds = array_filter(
+                $entityIds,
+                function (EntityConfigId $configId) use ($cm) {
+                    return $cm->getConfig($configId)->is('is_extend');
+                }
+            );
         }
 
         $config = $form->getParent()->get($form->getName())->getConfig()->getOptions();
@@ -59,26 +66,21 @@ class TargetSubscriber implements EventSubscriberInterface
             $entityClassName = $this->request->get('entity')->getClassName();
         }
 
-        /** @var EntityConfigId $entities */
-        $entities = $this->configManager->getIds('extend');
-        foreach ($entities as $entity) {
-            if ($this->configManager->getConfig($entity)->is('is_extend')) {
-                $entityName = $moduleName = '';
-
-                if ($entity->getClassName() != $entityClassName) {
-                    $className  = explode('\\', $entity->getClassName());
-                    if (count($className) > 1) {
-                        foreach ($className as $i => $name) {
-                            if (count($className) - 1 == $i) {
-                                $entityName = $name;
-                            } elseif (!in_array($name, array('Bundle', 'Entity'))) {
-                                $moduleName .= $name;
-                            }
+        foreach ($entityIds as $entity) {
+            $entityName = $moduleName = '';
+            if ($entity->getClassName() != $entityClassName) {
+                $className  = explode('\\', $entity->getClassName());
+                if (count($className) > 1) {
+                    foreach ($className as $i => $name) {
+                        if (count($className) - 1 == $i) {
+                            $entityName = $name;
+                        } elseif (!in_array($name, array('Bundle', 'Entity'))) {
+                            $moduleName .= $name;
                         }
                     }
-
-                    $choices[$entity->getClassName()] = $moduleName . ':' . $entityName;
                 }
+
+                $choices[$entity->getClassName()] = $moduleName . ':' . $entityName;
             }
         }
 
