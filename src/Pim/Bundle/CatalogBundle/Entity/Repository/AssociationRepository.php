@@ -31,7 +31,7 @@ class AssociationRepository extends EntityRepository
             }
         );
 
-        if (!empty($associationIds)) {
+        if (!$associationIds->isEmpty()) {
             $qb->andWhere(
                 $qb->expr()->notIn('pa.id', $associationIds->toArray())
             );
