@@ -94,16 +94,15 @@ class FilterType extends AbstractType
                 'operator_options' => array(),
                 'show_filter'      => false,
             )
-        )
-            ->setRequired(
-                array(
-                    'field_type',
-                    'field_options',
-                    'operator_choices',
-                    'operator_type',
-                    'operator_options',
-                    'show_filter'
-                )
-            );
+        )->setRequired(
+            array(
+                'field_type',
+                'field_options',
+                'operator_choices',
+                'operator_type',
+                'operator_options',
+                'show_filter'
+            )
+        );
     }
 }

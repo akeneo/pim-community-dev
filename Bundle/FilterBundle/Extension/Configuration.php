@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Extension;
 
+use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -39,6 +40,10 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                             ->scalarNode('data_name')->isRequired()->end()
+                            ->enumNode('filter_condition')
+                                ->values(array(FilterInterface::CONDITION_AND, FilterInterface::CONDITION_OR))
+                            ->end()
+                            ->booleanNode('filter_by_having')->end()
                         ->end()
                     ->end()
                 ->end()
