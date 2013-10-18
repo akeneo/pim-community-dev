@@ -24,7 +24,7 @@ function(_, settings) {
                 timezone: null,
                 format: {
                     address: {
-                        en: '%name%\n%organization%\n%street%\n%CITY% %REGION% %COUNTRY% %postal_code%'
+                        US: '%name%\n%organization%\n%street%\n%CITY% %REGION% %COUNTRY% %postal_code%'
                     },
                     name: {
                         en_US: '%prefix% %first_name% %middle_name% %last_name% %suffix%'

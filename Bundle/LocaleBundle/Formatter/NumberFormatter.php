@@ -12,6 +12,9 @@ class NumberFormatter
      */
     protected $localeSettings;
 
+    /**
+     * @param LocaleSettings $localeSettings
+     */
     public function __construct(LocaleSettings $localeSettings)
     {
         $this->localeSettings = $localeSettings;
