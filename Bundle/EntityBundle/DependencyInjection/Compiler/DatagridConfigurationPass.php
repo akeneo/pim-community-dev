@@ -16,27 +16,28 @@ class DatagridConfigurationPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $tags = $container->findTaggedServiceIds(self::TAG_NAME);
-
-        foreach ($tags as $id => $tag) {
-            if (!isset($tag[0]['entity_name'])) {
-                continue;
-            }
-
-            /** @var Definition $service */
-            $service = $container->getDefinition($id);
-
-            $className = $service->getClass();
-            if (strpos($className, '%') !== false) {
-                $className = $container->getParameter(substr($className, 1, strlen($className) - 2));
-            }
-
-            if (is_subclass_of($className, 'Oro\Bundle\EntityBundle\Datagrid\AbstractDatagrid')) {
-                $service->addMethodCall(
-                    'setConfigManager',
-                    array(new Reference('oro_entity_config.config_manager'))
-                );
-            }
-        }
+        /** @TODO add logic here */
+//        $tags = $container->findTaggedServiceIds(self::TAG_NAME);
+//
+//        foreach ($tags as $id => $tag) {
+//            if (!isset($tag[0]['entity_name'])) {
+//                continue;
+//            }
+//
+//            /** @var Definition $service */
+//            $service = $container->getDefinition($id);
+//
+//            $className = $service->getClass();
+//            if (strpos($className, '%') !== false) {
+//                $className = $container->getParameter(substr($className, 1, strlen($className) - 2));
+//            }
+//
+//            if (is_subclass_of($className, 'Oro\Bundle\EntityBundle\Datagrid\AbstractDatagrid')) {
+//                $service->addMethodCall(
+//                    'setConfigManager',
+//                    array(new Reference('oro_entity_config.config_manager'))
+//                );
+//            }
+//        }
     }
 }
