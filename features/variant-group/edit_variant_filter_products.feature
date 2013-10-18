@@ -64,9 +64,9 @@ Feature: Edit a variant group adding/removing products
       | POSTIT  | description | French mobile      | fr_FR  | mobile    |
       | POSTIT  | price       | 40                 |        |           |
     And the following variants:
-      | code   | label      | attributes  |
-      | MUG    | MUG Akeneo | color       |
-      | POSTIT | Postit     | color, size |
+      | code   | label      | attributes  | type    |
+      | MUG    | MUG Akeneo | color       | VARIANT |
+      | POSTIT | Postit     | color, size | VARIANT |
     And I am logged in as "admin"
 
   @insulated

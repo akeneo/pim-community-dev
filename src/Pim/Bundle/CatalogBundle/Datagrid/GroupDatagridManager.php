@@ -79,6 +79,26 @@ class GroupDatagridManager extends DatagridManager
             new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_toString.html.twig')
         );
         $fieldsCollection->add($field);
+
+        $field = new FieldDescription();
+        $field->setName('type');
+        $field->setOptions(
+            array(
+                'type'            => FieldDescriptionInterface::TYPE_TEXT,
+                'label'           => $this->translate('Type'),
+                'field_name'      => 'type',
+                'filter_type'     => FilterInterface::TYPE_ENTITY,
+                'required'        => false,
+                'sortable'        => true,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'multiple'        => false,
+                'class'           => 'PimCatalogBundle:GroupType',
+                'property'        => 'code',
+                'filter_by_where' => true,
+            )
+        );
+        $fieldsCollection->add($field);
     }
 
     /**

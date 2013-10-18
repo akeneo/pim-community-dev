@@ -784,7 +784,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldBeOnTheAttributeGroupPage($group)
     {
-        $expectedAddress = $this->getPage('AttributeGroup edit')->getUrl(array('id' => $this->getAttributeGroup($group)->getId()));
+        $expectedAddress = $this->getPage('AttributeGroup edit')
+            ->getUrl(array('id' => $this->getAttributeGroup($group)->getId()));
         $this->assertAddress($expectedAddress);
     }
 

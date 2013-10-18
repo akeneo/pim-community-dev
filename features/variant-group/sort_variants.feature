@@ -12,10 +12,10 @@ Feature: Sort variants
       | size      | Size       | pim_catalog_simpleselect |
       | dimension | Dimensions | pim_catalog_simpleselect |
     And the following variants:
-      | code          | label          | attributes  |
-      | TSHIRT_ORO    | T-Shirt Oro    | size, color |
-      | MUG           | Mug Akeneo     | color       |
-      | TSHIRT_AKENEO | T-Shirt Akeneo | size        |
+      | code          | label          | attributes  | type    |
+      | TSHIRT_ORO    | T-Shirt Oro    | size, color | VARIANT |
+      | MUG           | Mug Akeneo     | color       | VARIANT |
+      | TSHIRT_AKENEO | T-Shirt Akeneo | size        | VARIANT |
     And I am logged in as "admin"
 
   Scenario: Successfully display the sortable columns

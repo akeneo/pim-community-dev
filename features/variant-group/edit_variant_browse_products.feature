@@ -34,9 +34,9 @@ Feature: Edit a variant group adding/removing products
       | POSTIT  | color     | Blue  |
       | POSTIT  | size      | M     |
     And the following variants:
-      | code   | label      | attributes  |
-      | MUG    | MUG Akeneo | color       |
-      | POSTIT | Postit     | color, size |
+      | code   | label      | attributes  | type    |
+      | MUG    | MUG Akeneo | color       | VARIANT |
+      | POSTIT | Postit     | color, size | VARIANT |
     And I am logged in as "admin"
 
   Scenario: Successfully display the product datagrid when I edit a variant group
