@@ -9,6 +9,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -1406,56 +1407,24 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $code
+     * @param JobInstance $job
      *
-     * @Then /^I should be on the "([^"]*)" import job page$/
+     * @Given /^I am on the ("([^"]*)" import job) page$/
      */
-    public function iShouldBeOnTheImportJobPage($code)
+    public function iAmOnTheImportJobPage(JobInstance $job)
     {
-        $expectedAddress = $this->getPage('Import show')->getUrl(array('id' => $this->getJobInstance($code)->getId()));
-        $this->assertAddress($expectedAddress);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @Given /^I am on the "([^"]*)" import job page$/
-     */
-    public function iAmOnTheImportJobPage($code)
-    {
-        $this->openPage('Import show', array('id' => $this->getJobInstance($code)->getId()));
+        $this->openPage('Import show', array('id' => $job->getId()));
         $this->wait();
     }
 
     /**
-     * @param string $code
+     * @param JobInstance $job
      *
-     * @When /^I launch the "([^"]*)" import job$/
+     * @Given /^I am on the ("([^"]*)" export job) page$/
      */
-    public function iLaunchTheImportJob($code)
+    public function iAmOnTheExportJobPage(JobInstance $job)
     {
-        $this->openPage('Import launch', array('id' => $this->getJobInstance($code)->getId()));
-    }
-
-    /**
-     * @param string $code
-     *
-     * @Then /^I should be on the "([^"]*)" export job page$/
-     */
-    public function iShouldBeOnTheExportJobPage($code)
-    {
-        $expectedAddress = $this->getPage('Export show')->getUrl(array('id' => $this->getJobInstance($code)->getId()));
-        $this->assertAddress($expectedAddress);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @Given /^I am on the "([^"]*)" export job page$/
-     */
-    public function iAmOnTheExportJobPage($code)
-    {
-        $this->openPage('Export show', array('id' => $this->getJobInstance($code)->getId()));
+        $this->openPage('Export show', array('id' => $job->getId()));
         $this->wait();
     }
 

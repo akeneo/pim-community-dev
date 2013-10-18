@@ -50,6 +50,18 @@ class TransformationContext extends RawMinkContext
     }
 
     /**
+     * @param string $code
+     *
+     * @Transform /^"([^"]*)" (?:import|export) job$/
+     *
+     * @return JobInstance
+     */
+    public function castJobInstanceCodeToJobInstance($code)
+    {
+        return $this->getFixturesContext()->getJobInstance($code);
+    }
+
+    /**
      * @return FixturesContext
      */
     private function getFixturesContext()
