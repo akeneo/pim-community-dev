@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\EntityBundle\Owner\Metadata;
+namespace Oro\Bundle\SecurityBundle\Owner\Metadata;
 
 /**
  * This class represents the entity ownership metadata

@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures;
 
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 
 class OwnershipMetadataProviderStub extends OwnershipMetadataProvider
 {

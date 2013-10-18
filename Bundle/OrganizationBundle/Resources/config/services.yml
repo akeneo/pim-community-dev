@@ -82,7 +82,7 @@ services:
         class:                        %oro_organization.type.form_type.class%
         arguments:
             - @security.context
-            - @oro_entity.owner.ownership_metadata_provider
+            - @oro_security.owner.ownership_metadata_provider
             - @oro_organization.business_unit_manager
             - @oro_security.security_facade
             - @translator
