@@ -45,20 +45,18 @@ class BindVariantGroupProductsSubscriber implements EventSubscriberInterface
     /**
      * Bind products
      *
-     * @param VariantGroup $variantGroup
+     * @param VariantGroup $group
      * @param array        $appendProducts
      * @param array        $removeProducts
      */
-    private function bindProducts(VariantGroup $variantGroup, array $appendProducts, array $removeProducts)
+    private function bindProducts(VariantGroup $group, array $appendProducts, array $removeProducts)
     {
         foreach ($appendProducts as $product) {
-            $variantGroup->addProduct($product);
-            $product->setVariantGroup($variantGroup);
+            $product->addGroup($group);
         }
 
         foreach ($removeProducts as $product) {
-            $variantGroup->removeProduct($product);
-            $product->setVariantGroup(null);
+            $product->removeGroup($group);
         }
     }
 }
