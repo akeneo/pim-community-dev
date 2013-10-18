@@ -4,6 +4,7 @@ namespace Oro\Bundle\EntityExtendBundle\EventListener;
 
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\EntityConfigBundle\Event\Events;
@@ -64,9 +65,7 @@ class ConfigSubscriber implements EventSubscriberInterface
             && $event->getConfig()->is('owner', ExtendManager::OWNER_CUSTOM)
             && count(array_intersect_key(array_flip(array('length', 'precision', 'scale', 'state')), $change))
         ) {
-            $entityConfig = $event->getConfigManager()
-                ->getProvider($scope)
-                ->getConfig($className);
+            $entityConfig = $event->getConfigManager()->getProvider($scope)->getConfig($className);
 
             if ($event->getConfig()->get('state') != ExtendManager::STATE_NEW
                 && $event->getConfig()->get('state') != ExtendManager::STATE_DELETED
@@ -74,6 +73,78 @@ class ConfigSubscriber implements EventSubscriberInterface
             ) {
                 $event->getConfig()->set('state', ExtendManager::STATE_UPDATED);
                 $event->getConfigManager()->calculateConfigChangeSet($event->getConfig());
+            }
+
+            /**
+             * Relations case
+             */
+            if ($entityConfig->get('state') == ExtendManager::STATE_NEW) {
+                $targetEntityClass = $event->getConfig()->get('target_entity');
+                $selfFieldType     = $event->getConfig()->getId()->getFieldType();
+                $selfFieldName     = $event->getConfig()->getId()->getFieldName();
+
+                /**
+                 * in case of oneToMany relation
+                 * automatically create target field (type: manyToOne)
+                 */
+                $targetFieldId = false;
+                if ($selfFieldType == 'oneToMany') {
+                    $classNameArray = explode('\\', $className);
+                    $relationFieldName = strtolower(array_pop($classNameArray)) . '_' . $selfFieldName;
+
+                    $targetFieldId = new FieldConfigId(
+                        $targetEntityClass,
+                        $scope,
+                        $relationFieldName,
+                        ExtendHelper::getReversRelationType($selfFieldType)
+                    );
+
+                    /*
+                    $this->extendManager->createField(
+                        $targetEntityClass,
+                        $relationFieldName,
+                        array(
+                            'type' => ExtendHelper::getReversRelationType($selfFieldType),
+                            'options' => array(
+                                'is_inverse' => true,
+                                'target_entity' => $className
+                            )
+                        )
+                    );
+                    */
+                }
+
+                $selfRelationConfig = array(
+                    'assign'   => false,
+                    'field_id' => $event->getConfig()->getId(),
+                    'owner'    => true,
+                    'target_entity'   => $targetEntityClass,
+                    'target_field_id' => $targetFieldId  // for 1:*, create field
+                );
+
+                $selfRelations   = $entityConfig->get('relation') ? : array();
+                $selfRelations[] = $selfRelationConfig;
+
+                $entityConfig->set('relation', $selfRelations);
+
+                $event->getConfigManager()->persist($entityConfig);
+
+                $targetConfig = $event->getConfigManager()->getProvider($scope)->getConfig($targetEntityClass);
+
+                $targetRelationConfig = array(
+                    'assign'   => false,
+                    'field_id' => $targetFieldId, // for 1:*, new created field
+                    'owner'    => false,
+                    'target_entity'   => $className,
+                    'target_field_id' => $event->getConfig()->getId(),
+                );
+
+                $targetRelations   = $targetConfig->get('relation') ? : array();
+                $targetRelations[] = $targetRelationConfig;
+
+                $targetConfig->set('relation', $targetRelations);
+
+                $event->getConfigManager()->persist($targetConfig);
             }
 
             if ($entityConfig->get('state') != ExtendManager::STATE_NEW) {
@@ -139,6 +210,7 @@ class ConfigSubscriber implements EventSubscriberInterface
             $configProvider->persist($entityConfig);
         }
 
+        /*
         $fieldConfig = $configProvider->getConfig($event->getClassName(), $event->getFieldName());
         if (in_array($event->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))
             && $fieldConfig->is('is_inverse', false)
@@ -163,5 +235,6 @@ class ConfigSubscriber implements EventSubscriberInterface
                     $type = '';
             }
         }
+        */
     }
 }

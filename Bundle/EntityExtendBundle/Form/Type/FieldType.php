@@ -2,10 +2,13 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Form\Type;
 
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 class FieldType extends AbstractType
 {
@@ -25,6 +28,16 @@ class FieldType extends AbstractType
     );
 
     /**
+     * @var ConfigManager
+     */
+    protected $configManager;
+
+    public function __construct(ConfigManager $configManager)
+    {
+        $this->configManager = $configManager;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -37,6 +50,38 @@ class FieldType extends AbstractType
                 'block' => 'type',
             )
         );
+
+        $entityProvider = $this->configManager->getProvider('entity');
+        $extendProvider = $this->configManager->getProvider('extend');
+
+        $entityConfig = $extendProvider->getConfig($options['class_name']);
+        if ($entityConfig->is('relation')) {
+            $types = array();
+            foreach ($entityConfig->get('relation') as $relation) {
+                $fieldId       = $relation['field_id'];
+                $targetFieldId = $relation['target_field_id'];
+
+                if ($relation['assign'] == true
+                    && $fieldId
+                    && !$extendProvider->hasConfig($fieldId->getClassName(), $fieldId->getFieldName())
+                ) {
+                    $fieldType = ExtendHelper::getReversRelationType($targetFieldId->getFieldType());
+
+                    $entityLabel = $entityProvider->getConfig($targetFieldId->getClassName())->get('label');
+                    $fieldLabel  = $entityProvider->getConfig(
+                        $targetFieldId->getClassName(),
+                        $targetFieldId->getFieldName()
+                    )->get('label');
+
+                    $key = 'relation' . '|' . $fieldType . '|' . $fieldId->getFieldName();
+
+                    $types[$key] = 'Relation (' . $entityLabel . ') ' . $fieldLabel;
+                }
+            }
+
+            $this->types = array_merge($this->types, $types);
+        }
+
         $builder->add(
             'type',
             'choice',
@@ -53,17 +98,19 @@ class FieldType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(
-            array(
-                'require_js'   => array(),
-                'block_config' => array(
-                    'type' => array(
-                        'title'    => 'General',
-                        'priority' => 1,
+        $resolver
+            ->setRequired(array('class_name'))
+            ->setDefaults(
+                array(
+                    'require_js'   => array(),
+                    'block_config' => array(
+                        'type' => array(
+                            'title'    => 'General',
+                            'priority' => 1,
+                        )
                     )
                 )
-            )
-        );
+            );
     }
 
     /**

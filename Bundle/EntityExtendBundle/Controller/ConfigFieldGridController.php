@@ -22,7 +22,6 @@ use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-use Oro\Bundle\EntityExtendBundle\Form\Type\FieldType;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -73,7 +72,11 @@ class ConfigFieldGridController extends Controller
         $newFieldModel = new FieldConfigModel();
         $newFieldModel->setEntity($entity);
 
-        $form    = $this->createForm(new FieldType(), $newFieldModel);
+        $form = $this->createForm(
+            'oro_entity_extend_field_type',
+            $newFieldModel,
+            array('class_name' => $entity->getClassName())
+        );
         $request = $this->getRequest();
 
         if ($request->getMethod() == 'POST') {
