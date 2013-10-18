@@ -8,7 +8,8 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": ">=2.1",
-        "oro/requirejs-bundle": "dev-master"
+        "oro/requirejs-bundle": "dev-master",
+        "oro/config-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\LocaleBundle": "" }

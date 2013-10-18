@@ -1,0 +1,9 @@
+placeholders:
+    scripts_after:
+        items:
+            locale_settings:
+                order: 500
+
+items:
+    locale_settings:
+        template: OroLocaleBundle::locale_settings.html.twig

@@ -1,0 +1,28 @@
+<script type="text/javascript">
+require(['oro/locale-settings'],
+function(localeSettings) {
+    {% set settings = {
+        'system': {
+            'locale': null,
+            'timezone': null,
+            'format': {
+                'moment': {
+                    'date': 'YYYY-MM-DD',
+                    'time': 'HH:mm:ss',
+                    'date_time': 'YYYY-MM-DD HH:mm:ss'
+                }
+            }
+        },
+        'user': {
+            'locale': oro_config_value('oro_locale.locale'),
+            'timezone': oro_config_value('oro_locale.timezone'),
+            'country': oro_config_value('oro_locale.country')
+        }
+    } %}
+    var settings = {{ settings|json_encode|raw }};
+    settings.user.format = {name: {}};
+    settings.user.format.name[settings.user.locale]
+        = {{ oro_config_value('oro_locale.name_format')|json_encode|raw }};
+    localeSettings.extendSettings(settings);
+});
+</script>

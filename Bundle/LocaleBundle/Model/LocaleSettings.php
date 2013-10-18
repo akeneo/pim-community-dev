@@ -127,6 +127,16 @@ class LocaleSettings
     }
 
     /**
+     * Get name formats.
+     *
+     * @return array
+     */
+    public function getNameFormats()
+    {
+        return $this->nameFormats;
+    }
+
+    /**
      * @param array $formats
      */
     public function addAddressFormats(array $formats)
@@ -135,11 +145,31 @@ class LocaleSettings
     }
 
     /**
+     * Get address formats.
+     *
+     * @return array
+     */
+    public function getAddressFormats()
+    {
+        return $this->addressFormats;
+    }
+
+    /**
      * @param array $data
      */
     public function addLocaleData(array $data)
     {
         $this->localeData = array_merge($this->localeData, $data);
+    }
+
+    /**
+     * Get locale data.
+     *
+     * @return array
+     */
+    public function getLocaleData()
+    {
+        return $this->localeData;
     }
 
     /**
