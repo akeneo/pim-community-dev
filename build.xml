@@ -214,6 +214,7 @@
 
     <target name="composer" description="Install composer.phar">
         <exec executable="bash">
+            <env key="SYMFONY__DATABASE__NAME" value="akeneo_ci_pim_pr_behat"/>
             <arg value="-c"/>
             <arg value="curl -s http://getcomposer.org/installer | php"/>
         </exec>
