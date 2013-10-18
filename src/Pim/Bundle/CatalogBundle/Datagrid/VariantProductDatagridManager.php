@@ -25,29 +25,8 @@ use Pim\Bundle\GridBundle\Filter\FilterInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantProductDatagridManager extends FlexibleDatagridManager
+class VariantProductDatagridManager extends GroupProductDatagridManager
 {
-    /**
-     * @var VariantGroup $variantGroup
-     */
-    private $variantGroup;
-
-    /**
-     * @var string
-     */
-    protected $hasProductExpression;
-
-    /**
-     * Define constructor to add new price type
-     */
-    public function __construct()
-    {
-        self::$typeMatches['prices'] = array(
-            'field'  => FieldDescriptionInterface::TYPE_OPTIONS,
-            'filter' => FilterInterface::TYPE_CURRENCY
-        );
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -60,7 +39,7 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
         $field = $this->createFlexibleField($identifier);
         $fieldsCollection->add($field);
 
-        foreach ($this->getVariantGroup()->getAttributes() as $attribute) {
+        foreach ($this->getGroup()->getAttributes() as $attribute) {
             $field = $this->createFlexibleField($attribute);
             $fieldsCollection->add($field);
         }
@@ -113,31 +92,11 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
 
         $result['show_filter'] = $attribute->getAttributeType() === 'pim_catalog_identifier';
 
-        if (!in_array($attribute->getId(), $this->getVariantGroup()->getAttributeIds())) {
+        if (!in_array($attribute->getId(), $this->getGroup()->getAttributeIds())) {
             $result['show_column'] = $attribute->getAttributeType() === 'pim_catalog_identifier';
         }
 
         return $result;
-    }
-
-    /**
-     * Get expression for assigned checkbox
-     *
-     * @return string
-     */
-    protected function getHasProductExpression()
-    {
-        if (null === $this->hasProductExpression) {
-            $this->hasProductExpression =
-                "(CASE WHEN ".
-                "(o.variantGroup = %s OR o.id IN (:data_in)) ".
-                "AND o.id NOT IN (:data_not_in)".
-                "THEN true ELSE false END)";
-            $this->hasProductExpression =
-                sprintf($this->hasProductExpression, $this->getVariantGroup()->getId());
-        }
-
-        return $this->hasProductExpression;
     }
 
     /**
@@ -161,7 +120,7 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
                 continue;
             }
 
-            if (in_array($attribute->getId(), $this->getVariantGroup()->getAttributeIds())) {
+            if (in_array($attribute->getId(), $this->getGroup()->getAttributeIds())) {
                 continue;
             }
 
@@ -246,7 +205,7 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices');
 
-        $this->applyVariantExpression($proxyQuery);
+        // TODO USELESS ?        $this->applyVariantExpression($proxyQuery);
 
         $this->applyAttributeExpression($proxyQuery);
 
@@ -264,9 +223,9 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
     {
         $rootAlias = $proxyQuery->getRootAlias();
 
-        $variantField    = $rootAlias .'.variantGroup';
+        $variantField    = $rootAlias .'.groups';
         $exprVariantNull = $proxyQuery->expr()->isNull($variantField);
-        $exprVariantEq   = $proxyQuery->expr()->eq($variantField, $this->getVariantGroup()->getId());
+        $exprVariantEq   = $proxyQuery->expr()->in($variantField, $this->getGroup()->getId());
         $proxyQuery->orWhere($exprVariantEq, $exprVariantNull);
     }
 
@@ -280,7 +239,7 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
     {
         $rootAlias = $proxyQuery->getRootAlias();
 
-        foreach ($this->getVariantGroup()->getAttributes() as $attribute) {
+        foreach ($this->getGroup()->getAttributes() as $attribute) {
             $valueField = sprintf('v_%s', $attribute->getId());
             $proxyQuery
                 ->innerJoin(
@@ -291,59 +250,5 @@ class VariantProductDatagridManager extends FlexibleDatagridManager
                 )
                 ->andWhere($proxyQuery->expr()->isNotNull($valueField.'.option'));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getQueryParameters()
-    {
-        $additionalParameters = $this->parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
-        $dataIn    = !empty($additionalParameters['data_in']) ? $additionalParameters['data_in'] : array(0);
-        $dataNotIn = !empty($additionalParameters['data_not_in']) ? $additionalParameters['data_not_in'] : array(0);
-
-        return array(
-            'data_in'     => $dataIn,
-            'data_not_in' => $dataNotIn,
-            'scopeCode'   => $this->flexibleManager->getScope()
-        );
-    }
-
-    /**
-     * Set a variant group
-     *
-     * @param VariantGroup $variantGroup
-     */
-    public function setVariantGroup(VariantGroup $variantGroup)
-    {
-        $this->variantGroup = $variantGroup;
-
-        $this->routeGenerator->setRouteParameters(
-            array('id' => $this->variantGroup->getId())
-        );
-    }
-
-    /**
-     * Get the variant group
-     *
-     * @throws \LogicException
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
-     */
-    protected function getVariantGroup()
-    {
-        if (!$this->variantGroup) {
-            throw new \LogicException('Datagrid manager has no configured Variant group');
-        }
-
-        return $this->variantGroup;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFlexibleManager(FlexibleManager $flexibleManager)
-    {
-        $this->flexibleManager = $flexibleManager;
     }
 }
