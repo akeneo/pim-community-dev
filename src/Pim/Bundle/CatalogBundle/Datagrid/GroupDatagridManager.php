@@ -140,15 +140,17 @@ class GroupDatagridManager extends DatagridManager
      */
     protected function prepareQuery(ProxyQueryInterface $proxyQuery)
     {
-        $rootAlias = $proxyQuery->getRootAlias();
+        $proxyQuery
+            ->select('g')
+            ->from('PimCatalogBundle:Group', 'g');
 
+        $rootAlias = $proxyQuery->getRootAlias();
         $labelExpr = sprintf(
             "(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)",
             $rootAlias
         );
 
         $proxyQuery
-            ->addSelect($rootAlias)
             ->addSelect(sprintf("%s AS groupLabel", $labelExpr), true)
             ->addSelect('translation.label', true);
 
