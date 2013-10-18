@@ -2,6 +2,9 @@ parameters:
     oro_locale.settings.class: Oro\Bundle\LocaleBundle\Model\LocaleSettings
     oro_locale.twig.dateformat.class: Oro\Bundle\LocaleBundle\Twig\DateFormatExtension
     oro_locale.form.type.name_format.type.class: Oro\Bundle\LocaleBundle\Form\Type\NameFormatType
+    oro_locale.format_converter.date_time.registry.class: Oro\Bundle\LocaleBundle\Converter\DateTimeFormatConverterRegistry
+    oro_locale.format_converter.date_time.intl.class: Oro\Bundle\LocaleBundle\Converter\IntlDateTimeFormatConverter
+    oro_locale.format_converter.date_time.moment.class: Oro\Bundle\LocaleBundle\Converter\MomentDateTimeFormatConverter
 
 services:
     oro_locale.settings:
@@ -26,3 +29,20 @@ services:
             - @oro_locale.settings
         tags:
             - { name: form.type, alias: "oro_name_format" }
+            
+    oro_locale.format_converter.date_time.registry:
+        class: %oro_locale.format_converter.date_time.registry.class%
+
+    oro_locale.format_converter.date_time.intl:
+        class: %oro_locale.format_converter.date_time.intl.class%
+        arguments:
+            - @oro_locale.settings
+        tags:
+            - { name: oro_locale.format_converter.date_time, alias: intl }
+
+    oro_locale.format_converter.date_time.moment:
+        class: %oro_locale.format_converter.date_time.moment.class%
+        arguments:
+            - @oro_locale.settings
+        tags:
+            - { name: oro_locale.format_converter.date_time, alias: moment }

@@ -94,7 +94,6 @@ BS:
 BT:
     phone_prefix: '975'
     default_locale: dz
-BV:
 BW:
     phone_prefix: '267'
     default_locale: en_BW
@@ -277,8 +276,6 @@ GY:
 HK:
     phone_prefix: '852'
     default_locale: zh_HK
-HM:
-    phone_prefix: ''
 HN:
     phone_prefix: '504'
     default_locale: es_HN

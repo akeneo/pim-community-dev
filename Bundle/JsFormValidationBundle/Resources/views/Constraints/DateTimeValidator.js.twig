@@ -1,4 +1,4 @@
-function Date(field, params)
+function DateTime(field, params)
 {
     var value = field && field.nodeName ? {{ getJsFormElementValue('field') }} : field;
 
@@ -7,8 +7,8 @@ function Date(field, params)
     }
 
     // TODO: use moment JS format for current locale
-    var dateFormat = 'MMM D, YYYY';
-    if (Moment(String(value), dateFormat, true).isValid()) {
+    var dateTimeFormat = 'MMM D, YYYY h:mm A';
+    if (Moment(String(value), dateTimeFormat, true).isValid()) {
         return true;
     }
 
