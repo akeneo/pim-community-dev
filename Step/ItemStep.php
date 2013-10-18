@@ -3,7 +3,6 @@
 namespace Oro\Bundle\BatchBundle\Step;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
@@ -167,7 +166,7 @@ class ItemStep extends AbstractStep
 
         $this->initializeStepComponents($stepExecution);
 
-        while (($item = $this->reader->read($stepExecution)) !== null) {
+        while (($item = $this->reader->read()) !== null) {
             if (false === $item) {
                 $this->dispatchStepExecutionEvent(EventInterface::INVALID_READER_EXECUTION, $stepExecution);
                 continue;

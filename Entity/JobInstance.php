@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\BatchBundle\Job\Job;
 
 /**
@@ -95,6 +96,7 @@ class JobInstance
     /**
      * @var Job
      * @Assert\Valid
+     * @Exclude
      */
     protected $job;
 
@@ -106,6 +108,7 @@ class JobInstance
      *      cascade={"persist", "remove"},
      *      orphanRemoval=true
      * )
+     * @Exclude
      */
     protected $jobExecutions;
 
@@ -295,8 +298,7 @@ class JobInstance
         $this->job = $job;
 
         if ($job) {
-            $jobConfiguration = $job->getConfiguration();
-            $this->rawConfiguration = array_merge_recursive($this->rawConfiguration, $jobConfiguration);
+            $this->rawConfiguration = $job->getConfiguration();
         }
 
         return $this;

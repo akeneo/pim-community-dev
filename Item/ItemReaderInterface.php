@@ -32,5 +32,5 @@ interface ItemReaderInterface
      * @throws \Exception if an there is a non-specific error.
      * @return null|mixed Returns false in case of reading error
      */
-    public function read(StepExecution $stepExecution);
+    public function read();
 }
