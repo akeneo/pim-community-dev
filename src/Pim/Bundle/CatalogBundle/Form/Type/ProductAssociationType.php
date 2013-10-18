@@ -22,10 +22,21 @@ class ProductAssociationType extends AbstractType
     {
         $builder
             ->add(
-                'targets',
-                'entity',
+                'appendTargets',
+                'oro_entity_identifier',
                 array(
                     'class'    => 'Pim\Bundle\CatalogBundle\Entity\Product',
+                    'mapped'   => false,
+                    'required' => false,
+                    'multiple' => true
+                )
+            )
+            ->add(
+                'removeTargets',
+                'oro_entity_identifier',
+                array(
+                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\Product',
+                    'mapped'   => false,
                     'required' => false,
                     'multiple' => true
                 )
