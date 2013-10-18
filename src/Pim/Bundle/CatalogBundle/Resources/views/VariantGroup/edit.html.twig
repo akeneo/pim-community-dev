@@ -20,8 +20,8 @@
     {% set listenerParameters = {
         'columnName': 'has_product',
         'selectors': {
-            'included': '#variantAppendProducts',
-            'excluded': '#variantRemoveProducts'
+            'included': '#appendProducts',
+            'excluded': '#removeProducts'
         }
     } %}
 
@@ -77,8 +77,8 @@
                 'Labels': form_row(form.label)
             }) }}
 
-            {{ form_widget(form.appendProducts, {'id': 'variantAppendProducts'}) }}
-            {{ form_widget(form.removeProducts, {'id': 'variantRemoveProducts'}) }}
+            {{ form_widget(form.appendProducts, {'id': 'appendProducts'}) }}
+            {{ form_widget(form.removeProducts, {'id': 'removeProducts'}) }}
 
             <div id="variant-products-grid"></div>
 
