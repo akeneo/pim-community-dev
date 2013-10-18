@@ -33,8 +33,8 @@ class VariantGroupSubscriber implements EventSubscriberInterface
      */
     public function postSetData(FormEvent $event)
     {
-        $variant = $event->getData();
-        if (null === $variant || !$variant->getId()) {
+        $group = $event->getData();
+        if (null === $group || !$group->getId()) {
             return;
         }
 
