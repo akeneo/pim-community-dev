@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
-use Pim\Bundle\CatalogBundle\Entity\Product;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Product association repository
@@ -14,17 +14,28 @@ use Pim\Bundle\CatalogBundle\Entity\Product;
  */
 class AssociationRepository extends EntityRepository
 {
-    public function buildMissingAssociations(Product $product)
+    /**
+     * Build all association entities not yet linked to a product
+     *
+     * @param ProductInterface $product
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function buildMissingAssociations(ProductInterface $product)
     {
         $qb = $this->createQueryBuilder('pa');
 
-        $associationIds = $product->getProductAssociations()->map(function ($productAssociation) {
-            return $productAssociation->getAssociation()->getId();
-        });
-
-        $qb->andWhere(
-            $qb->expr()->notIn('pa.id', $associationIds->toArray())
+        $associationIds = $product->getProductAssociations()->map(
+            function ($productAssociation) {
+                return $productAssociation->getAssociation()->getId();
+            }
         );
+
+        if (!empty($associationIds)) {
+            $qb->andWhere(
+                $qb->expr()->notIn('pa.id', $associationIds->toArray())
+            );
+        }
 
         return $qb;
     }
