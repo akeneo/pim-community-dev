@@ -14,6 +14,18 @@ use Behat\MinkExtension\Context\RawMinkContext;
 class TransformationContext extends RawMinkContext
 {
     /**
+     * @param string $sku
+     *
+     * @Transform /^product "([^"]*)"$/
+     *
+     * @return Product
+     */
+    public function castProductSkuToProduct($sku)
+    {
+        return $this->getFixturesContext()->getProduct($sku);
+    }
+
+    /**
      * @param string $code
      *
      * @Transform /^category "([^"]*)"$/
@@ -59,6 +71,18 @@ class TransformationContext extends RawMinkContext
     public function castJobInstanceCodeToJobInstance($code)
     {
         return $this->getFixturesContext()->getJobInstance($code);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @Transform /^"([^"]*)" association$/
+     *
+     * @return Association
+     */
+    public function castAssociationCodeToAssociation($code)
+    {
+        return $this->getFixturesContext()->getAssociation($code);
     }
 
     /**

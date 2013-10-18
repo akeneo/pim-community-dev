@@ -11,8 +11,10 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Product;
 
 /**
  * Context of the website
@@ -803,15 +805,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $association
+     * @param Association $association
      *
-     * @Given /^I should be on the "([^"]*)" association page$/
+     * @Given /^I should be on the ("([^"]*)" association) page$/
      */
-    public function iShouldBeOnTheAssociationPage($association)
+    public function iShouldBeOnTheAssociationPage(Association $association)
     {
-        $expectedAddress = $this->getPage('Association edit')->getUrl(
-            array('id' => $this->getAssociation($association)->getId())
-        );
+        $expectedAddress = $this->getPage('Association edit')->getUrl(array('id' => $association->getId()));
         $this->assertAddress($expectedAddress);
     }
 
@@ -1167,13 +1167,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $sku
+     * @param Product $product
      *
-     * @Given /^product "([^"]*)" should be disabled$/
+     * @Given /^(product "([^"]*)") should be disabled$/
      */
-    public function productShouldBeDisabled($sku)
+    public function productShouldBeDisabled(Product $product)
     {
-        $product = $this->getProduct($sku);
         $this->getMainContext()->getEntityManager()->refresh($product);
         if ($product->isEnabled()) {
             throw $this->createExpectationException('Product was expected to be be disabled');
@@ -1181,13 +1180,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $sku
+     * @param Product $product
      *
-     * @Given /^product "([^"]*)" should be enabled$/
+     * @Given /^(product "([^"]*)") should be enabled$/
      */
-    public function productShouldBeEnabled($sku)
+    public function productShouldBeEnabled(Product $product)
     {
-        $product = $this->getProduct($sku);
         $this->getMainContext()->getEntityManager()->refresh($product);
         if (!$product->isEnabled()) {
             throw $this->createExpectationException('Product was expected to be be enabled');
@@ -1203,7 +1201,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theFamilyOfProductShouldBe($sku, $expectedFamily = '')
     {
-        $product = $this->getProduct($sku);
+        $product = $this->getFixturesContext()->getProduct($sku);
         $this->getMainContext()->getEntityManager()->refresh($product);
 
         $actualFamily = $product->getFamily() ? $product->getFamily()->getCode() : '';
@@ -1461,13 +1459,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $code
+     * @param JobInstance $job
      *
-     * @When /^I launch the "([^"]*)" export job$/
+     * @When /^I launch the ("([^"]*)" export job)$/
      */
-    public function iLaunchTheExportJob($code)
+    public function iLaunchTheExportJob(JobInstance $job)
     {
-        $this->openPage('Export launch', array('id' => $this->getJobInstance($code)->getId()));
+        $this->openPage('Export launch', array('id' => $job->getId()));
     }
 
     /**
@@ -1965,26 +1963,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $sku
-     *
-     * @return Product
-     */
-    private function getProduct($sku)
-    {
-        return $this->getFixturesContext()->getProduct($sku);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return Association
-     */
-    private function getAssociation($code)
-    {
-        return $this->getFixturesContext()->getAssociation($code);
-    }
-
-    /**
      * @return FixturesContext
      */
     private function getFixturesContext()
@@ -2010,16 +1988,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getLocaleCode($language)
     {
         return $this->getFixturesContext()->getLocaleCode($language);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return Job
-     */
-    private function getJobInstance($code)
-    {
-        return $this->getFixturesContext()->getJobInstance($code);
     }
 
     /**
