@@ -1,0 +1,22 @@
+{
+    "name": "oro/distribution-bundle",
+    "type": "symfony-bundle",
+    "description": "Oro Distribution Bundle",
+    "keywords": ["BAP"],
+    "homepage": "https://github.com/laboro/DistributionBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.3.*"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\DistributionBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/DistributionBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
