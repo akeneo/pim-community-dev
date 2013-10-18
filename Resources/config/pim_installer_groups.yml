@@ -1,21 +1,28 @@
 groups:
-    general:
+    AKENEO_MUG:
+        type: VARIANT
         labels:
-            en_US: General
-            fr_FR: Général
-    seo:
+            en_US: Akeneo Mug
+            fr_FR: Tasse Akeneo
+        attributes:
+            - unique_color
+    AKENEO_TSHIRT:
+        type: VARIANT
         labels:
-            en_US: SEO
-            fr_FR: SEO
-    marketing:
+            en_US: Akeneo T-Shirt
+            fr_FR: T-Shirt Akeneo
+        attributes:
+            - unique_color
+            - size
+    ORO_TSHIRT:
+        type: VARIANT
         labels:
-            en_US: Marketing
-            fr_FR: Commercial
-    sizes:
+            en_US: Oro T-Shirt
+            fr_FR: T-Shirt Oro
+        attributes:
+            - size
+    AKENEO_XSELL:
+        type: X_SELL
         labels:
-            en_US: Sizes
-            fr_FR: Tailles
-    colors:
-        labels:
-            en_US: Colors
-            fr_FR: Couleurs
+            en_US: Akeneo X-sell
+            fr_FR: Akeneo X-sell
