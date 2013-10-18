@@ -1,9 +1,9 @@
 group_types:
     VARIANT:
-        entity: Pim\Bundle\CatalogBundle\Entity\VariantGroup
+        is_variant: 1
     X_SELL:
-        entity: Pim\Bundle\CatalogBundle\Entity\Group
+        is_variant: 0
     ADDITIONAL:
-        entity: Pim\Bundle\CatalogBundle\Entity\Group
+        is_variant: 0
     RELATED:
-        entity: Pim\Bundle\CatalogBundle\Entity\Group
+        is_variant: 0
